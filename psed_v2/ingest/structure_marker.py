@@ -29,7 +29,20 @@ else the previous figure caption on the page, else the next one, else it stays u
 goes to the nearest unused table caption on the same page; one caption per kind+number (a caption in a
 group with content wins, then one with punctuation after the number, then the first). Tables are the Table block's HTML as a github-style markdown table (tabulate, as Docling); the <th>
 rows at the top are merged into one header line per column, joined with " / " (parse_docling.py's
-multi-row header rule).
+multi-row header rule); the markdown is built without tabulate's number parsing, so trailing zeros
+stay (0.10, 8.0). Each table entry also gets a crop (table_<P-1>_<K>.png: the caption band above,
+the table, 30 pt below, scale 3) and a rule check, "check": "ok" | "flag" with "check_reasons":
+(a) the numeric tokens of the PDF text layer inside the table box (sign, decimals, exponents;
+superscripts read by font size) against the delivered markdown (rowspan/colspan repeats counted
+once), plus the count of ±; (b) letters of the layer that the table lacks (LaTeX, Greek, sub- and
+superscripts normalised, Greek look-alike capitals mapped); (c) structure: header colspans against
+the body's columns, an empty trailing header cell, an empty column, a short last row, numbers just
+below the box on the table's number columns; (d) fewer than 5 text-layer words in the box (scanned
+or image table). No exception excuses a mismatch: footnotes or a hidden duplicate text layer inside
+the box also raise a flag. On the 16 numbered tables of the 13 papers (page judgements of
+2026-10-12): 5 wrong tables flagged, 0 missed, 3 right tables flagged (footnotes inside the box, an
+unmapped minus glyph, the MDPI hidden text layer). A flagged table is for the vision-model review at
+extract time; nothing here reads the crop.
 Equations are the Equation blocks' <math> content (LaTeX), with the number Marker kept in it, plus
 short standalone blocks (ChemicalBlock, Text, TextInlineMath of 25 words or fewer) that hold a
 reaction arrow (→ or \\rightarrow); such a ChemicalBlock is not counted as a picture.
@@ -349,10 +362,7 @@ def _table_markdown(html):
             if t and t not in parts:
                 parts.append(t)
         header.append(" / ".join(parts))
-    try:
-        return tabulate(rows[n_hdr:], headers=header, tablefmt="github")
-    except ValueError:
-        return tabulate(rows[n_hdr:], headers=header, tablefmt="github", disable_numparse=True)
+    return tabulate(rows[n_hdr:], headers=header, tablefmt="github", disable_numparse=True)   # keeps 0.10, 8.0
 
 
 def _equation(item):
@@ -389,6 +399,181 @@ def _span(item):
 
 def _overlap(a, b):
     return a is not None and b is not None and a[0] < b[1] and b[0] < a[1]
+
+
+# ---- table checks ------------------------------------------------------------------------------
+GREEK = {"alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η",
+         "theta": "θ", "kappa": "κ", "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ", "sigma": "σ",
+         "tau": "τ", "phi": "φ", "varphi": "φ", "chi": "χ", "psi": "ψ", "omega": "ω", "Gamma": "Γ", "Delta": "Δ",
+         "Theta": "Θ", "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Phi": "Φ", "Psi": "Ψ", "Omega": "Ω"}
+NUM_TOKEN_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
+LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")
+
+
+def _norm_cell_text(t):
+    """Cell or layer text in one form: Greek commands as letters, \\text{} unwrapped, ^{} and _{} as ^ and _,
+    other LaTeX commands removed, minus signs and µ unified, NFKC."""
+    import unicodedata
+    t = t.replace("&#124;", "|")
+    t = re.sub(r"\\(" + "|".join(GREEK) + r")(?![a-zA-Z])", lambda m: GREEK[m.group(1)], t)
+    t = re.sub(r"\\(text|mathrm|mathit|mathbf|textbf)\{([^}]*)\}", r"\2", t)
+    t = t.replace("\\times", "×").replace("\\pm", "±").replace("\\cdot", "·")
+    t = re.sub(r"\^\{([^}]*)\}", r"^\1", t)
+    t = re.sub(r"_\{([^}]*)\}", r"_\1", t)
+    t = t.replace("{", "").replace("}", "")
+    t = re.sub(r"\\[a-zA-Z]+", " ", t)
+    return unicodedata.normalize("NFKC", t.replace("−", "-").replace("–", "-").replace("µ", "μ"))
+
+
+def _num_tokens(t):
+    return NUM_TOKEN_RE.findall(re.sub(r"[\^_]", " ", t))
+
+
+def _letter_counts(t):
+    from collections import Counter
+    return Counter(ch for ch in re.sub(r"[\^_]", "", t).translate(LOOKALIKE) if ch.isalpha())
+
+
+def _layer_lines(page, box):
+    """Lines of the PDF text layer inside box (pdfplumber page), '^' before a superscript run (a char
+    smaller than the line's font and raised); unmapped glyphs as '?'. Returns (lines, word count)."""
+    l, t, r, b = box
+    chars = [c for c in page.chars if c["x0"] >= l - 3 and c["x1"] <= r + 3 and c["top"] >= t - 3
+             and c["bottom"] <= b + 6 and c["text"].strip()]
+    if not chars:
+        return [], 0
+    for c in chars:
+        if c["text"].startswith("(cid:"):
+            c["text"] = "?"
+    size0 = sorted(c["size"] for c in chars)[len(chars) // 2]
+    lines = []
+    for c in sorted([c for c in chars if c["size"] >= 0.85 * size0], key=lambda c: c["bottom"]):
+        if lines and abs(lines[-1][0] - c["bottom"]) <= 2.5:
+            lines[-1][1].append(c)
+        else:
+            lines.append([c["bottom"], [c]])
+    for c in chars:
+        if c["size"] < 0.85 * size0 and lines:
+            k = min(range(len(lines)), key=lambda i: abs(lines[i][0] - c["bottom"] - 2))
+            if abs(lines[k][0] - c["bottom"]) <= 7:
+                lines[k][1].append(c)
+    out, nwords = [], 0
+    for base_bottom, cs in lines:
+        cs.sort(key=lambda c: c["x0"])
+        txt, prev, sup = "", None, False
+        for c in cs:
+            small = c["size"] < 0.85 * size0 and c["bottom"] < base_bottom - 1
+            if prev is not None and c["x0"] - prev["x1"] > 1.5:
+                txt += " "; sup = False; nwords += 1
+            if small and not sup:
+                txt += "^"; sup = True
+            elif not small and sup:
+                txt += " "; sup = False
+            txt += c["text"]; prev = c
+        out.append(txt); nwords += 1
+    return [_norm_cell_text(x) for x in out], nwords
+
+
+def _md_cells(md):
+    return [[c.strip() for c in l.strip("|").split("|")] for l in md.split("\n")
+            if l.startswith("|") and not re.match(r"^\|[\s\-:|]+\|$", l)]
+
+
+def _html_cells(html):
+    """[(tag, colspan, rowspan, text)] per row of a Marker table html, sup/sub as ^ and _."""
+    rows = []
+    for tr in re.findall(r"<tr>(.*?)</tr>", html or "", re.S):
+        row = []
+        for tag, attrs, inner in re.findall(r"<(t[dh])([^>]*)>(.*?)</t[dh]>", tr, re.S):
+            cs = int((re.search(r'colspan="(\d+)"', attrs) or [0, "1"])[1])
+            rs = int((re.search(r'rowspan="(\d+)"', attrs) or [0, "1"])[1])
+            text = re.sub(r"<[^>]+>", "", re.sub(r"<sup>", "^", re.sub(r"<sub>", "_", inner))).strip()
+            row.append((tag, cs, rs, html_mod.unescape(text)))
+        rows.append(row)
+    return rows
+
+
+def _table_check(entry, html, page):
+    """Rule check of one table entry against the PDF text layer (pdfplumber page); returns (status, reasons)."""
+    from collections import Counter
+    reasons = []
+    box = entry["bbox"]
+    lines, nwords = _layer_lines(page, box)
+    cells = _md_cells(entry["table"])
+    if nwords < 5:
+        reasons.append("no text layer in the table box (scanned or image table)")
+    else:
+        ltext = " ".join(lines)
+        ttext = _norm_cell_text(" ".join(c for r in cells for c in r))
+        repeats = Counter()
+        for row in _html_cells(html):
+            for tag, cs, rs, text in row:
+                k = (cs - 1) if tag == "th" else (rs * cs - 1)       # the header merge collapses a header rowspan
+                if k > 0 and text:
+                    repeats[_norm_cell_text(text)] += k
+        ln, tn = Counter(_num_tokens(ltext)), Counter(_num_tokens(ttext))
+        ll, tl = _letter_counts(ltext), _letter_counts(ttext)
+        for text, k in repeats.items():
+            for tok in _num_tokens(text):
+                tn[tok] -= min(k, tn[tok])
+            for ch, n in _letter_counts(text).items():
+                tl[ch] -= min(k * n, tl[ch])
+        miss, extra = sorted((ln - tn).elements()), sorted((tn - ln).elements())
+        if miss or extra:
+            reasons.append(f"numbers: in the text layer only {miss[:12]}, in the table only {extra[:12]}")
+        if ltext.count("±") != ttext.count("±"):
+            reasons.append(f"± count: text layer {ltext.count('±')}, table {ttext.count('±')}")
+        dl = "".join(sorted((ll - tl).elements()))
+        if dl:
+            reasons.append(f"letters in the text layer missing from the table: {dl[:40]}")
+    if cells:
+        width = max(len(r) for r in cells)
+        body = cells[1:]
+        empty = [j for j in range(width) if all(j >= len(r) or not r[j] for r in cells)]
+        if empty:
+            reasons.append(f"empty column(s) {empty}")
+        if cells[0] and not cells[0][-1].strip():
+            reasons.append("empty trailing header cell")
+        if len(body) >= 3:
+            ne = [sum(1 for c in r if c) for r in body]
+            if ne[-1] < max(ne) - 1 and ne[-1] < ne[-2]:
+                reasons.append(f"short last row ({ne[-1]} filled cells)")
+    hrows = _html_cells(html)
+    head = [r for r in hrows if r and all(tag == "th" for tag, _, _, _ in r)]
+    bodyr = [r for r in hrows if r and not all(tag == "th" for tag, _, _, _ in r)]
+    if head and bodyr:
+        hspan = max(sum(cs for _, cs, _, _ in r) for r in head)
+        bspan = max(sum(cs for _, cs, _, _ in r) for r in bodyr)
+        if hspan != bspan:
+            reasons.append(f"header colspans sum to {hspan}, body rows have {bspan} columns")
+    if nwords >= 5:
+        l, t, r, b = box
+        words = page.extract_words()
+        isnum = lambda w: NUM_TOKEN_RE.fullmatch(w["text"].replace("−", "-")) is not None
+        inside = [w for w in words if w["x0"] >= l - 3 and w["x1"] <= r + 3 and w["top"] >= t - 3 and w["bottom"] <= b + 3 and isnum(w)]
+        below = [w for w in words if w["x0"] >= l - 3 and w["x1"] <= r + 3 and b + 1 < w["top"] <= b + 16 and isnum(w)]
+        cols = [(w["x0"] + w["x1"]) / 2 for w in inside]
+        hits = [w["text"] for w in below if any(abs((w["x0"] + w["x1"]) / 2 - x) < 8 for x in cols)]
+        if len(hits) >= 2:
+            reasons.append(f"numbers just below the box on the table's columns: {hits[:6]}")
+    return ("flag" if reasons else "ok"), reasons
+
+
+def _table_crop(d, pdf, entry, k):
+    """Crop of the table with the caption band above it: table_<P-1>_<K>.png (scale 3)."""
+    import pypdfium2
+    name = f"table_{entry['page'] - 1}_{k}.png"
+    try:
+        key = (str(pdf), entry["page"])
+        if key not in _PAGE_CACHE:
+            _PAGE_CACHE[key] = pypdfium2.PdfDocument(str(pdf))[entry["page"] - 1].render(scale=3).to_pil()
+        im = _PAGE_CACHE[key]
+        l, t, r, b = entry["bbox"]
+        im.crop((max(0, int((l - 8) * 3)), max(0, int((t - 55) * 3)), min(im.width, int((r + 8) * 3)), min(im.height, int((b + 30) * 3)))).save(d / name)
+        return name
+    except Exception as e:
+        print(f"  table crop failed ({e.__class__.__name__}: {e})", flush=True)
+        return ""
 
 
 def structure(paper_id):
@@ -543,6 +728,17 @@ def structure(paper_id):
         if ow and len(_words(abstract) & ow) / len(ow) < 0.8:
             abstract, source = re.sub(r"\s+", " ", oa_text).strip(), "openalex"
 
+    # tables: crop and rule check (see the module docstring)
+    html_by_bbox = {tuple(it["bbox"]): (it["html"], it["id"]) for it in items if it["type"] == "Table" and it.get("bbox")}
+    tabs = [e for e in entries if e["kind"] == "table" and e.get("bbox")]
+    if tabs:
+        import pdfplumber
+        with pdfplumber.open(str(pdf)) as pl:
+            for e in tabs:
+                html, tid = html_by_bbox.get(tuple(e["bbox"]), ("", ""))
+                e["check"], e["check_reasons"] = _table_check(e, html, pl.pages[e["page"] - 1])
+                e["crop"] = _table_crop(d, pdf, e, tid.rsplit("/", 1)[-1] if tid else "x")
+
     # document.md without running lines; Marker's own markdown kept as marker.md
     raw = d / "marker.md"
     if not raw.exists():
@@ -576,7 +772,8 @@ def main(argv):
             continue
         st, dropped = structure(pid)
         n_num = sum(1 for e in st["captions"] if e["number"] is not None)
-        print(f"[structure_marker] {pid}: {st['n_pictures']} pictures, {st['n_tables']} tables, "
+        n_flag = sum(1 for e in st["captions"] if e["kind"] == "table" and e.get("check") == "flag")
+        print(f"[structure_marker] {pid}: {st['n_pictures']} pictures, {st['n_tables']} tables ({n_flag} flagged), "
               f"{n_num} numbered captions, {len(st['equations'])} equations, abstract {st['abstract_source']} "
               f"({len(st['abstract'].split())} w), {sum(dropped.values())} running lines dropped")
 

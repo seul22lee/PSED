@@ -17,10 +17,15 @@ psed_v2/
   corpus/report.csv         # tracked: reader-facing view: metadata, in_scope, collected, origins and evidence, decisions
   corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
-  ingest/parse_docling.py   # tracked: Docling parse of in-scope corpus/raw/ PDFs (conda env psed310), writes the manifest `docling` column
-  ingest/docling/<paper_id>/ # gitignored: docling.json, figures/pic_K.png, document.md, structure.json (paper-derived)
-  ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column
-  ingest/marker/<paper_id>/  # gitignored: document.md + images, document_meta.json, blocks.json (paper-derived)
+  ingest/parse_docling.py   # tracked: Docling parse (conda env psed310); the final output uses only --formulas (CodeFormula on R1/R2 crops -> equations.json)
+  ingest/docling/<paper_id>/ # gitignored: equations.json (used by merge.py); docling.json, figures/, document.md, structure.json from the full parse (not used by final)
+  ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
+  ingest/marker/<paper_id>/  # gitignored: document.md + images, document_meta.json, blocks.json, structure.json, table crops (paper-derived)
+  ingest/structure_marker.py # tracked: structure.json from Marker's blocks (captions, tables with rule check, equations, abstract)
+  ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/
+  ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
+  ingest/reports/           # gitignored: review HTML reports (e.g. the Docling-vs-Marker disagreement report)
+  ingest/INGEST.md, ERRORS.md # tracked: what ingest extracts and how; the remaining errors per item
 ```
 
 ## Environments

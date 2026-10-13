@@ -1,170 +1,180 @@
 # Ingest stage
 
-PDF → text, figures, tables, equations for each in-scope paper. No LLM in this stage.
-This file holds what ingest extracts, how, the decisions behind it, the known limits, and a change log.
-`CLAUDE.md` points here; keep ingest details in this file only.
+PDF → text, figures, tables, equations for each in-scope paper, one folder per paper in
+`ingest/final/<paper_id>/`. No external LLM API is called. Two local vision-language models run:
+Docling's CodeFormula (CodeFormulaV2, equations) and Marker's surya-ocr-2 (page OCR and the band-crop
+repairs, served by llama.cpp). This file holds what ingest extracts, with which tool, the numbers
+behind each choice, the environments and a change log. The errors that remain after the rules are in
+[ERRORS.md](ERRORS.md). `CLAUDE.md` points here; keep ingest details in these two files only.
 
-## What comes from where
+All numbers below: 2026-10-12, the 13 Marker papers (one per DOI prefix of the 44 in scope), checked
+by Claude Code on the PDF pages and crops ("page") or by script against the PDF text layer or
+pdftotext ("script"), at the commit named in the change log line of the same date. The user has
+not re-checked them.
 
-| Item | Source | Tool | Output |
-| --- | --- | --- | --- |
-| DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | none: never extracted from the PDF | manifest columns |
-| Abstract | PDF (+ OpenAlex abstract as a locator) | Docling text items + four rules in order (heading, OpenAlex match, layout, order) | `structure.json` → `abstract`, `abstract_source` |
-| Body text | PDF | Docling | `document.md` |
-| Figures + captions | PDF | Docling for crops; caption binding by our rules (Docling's own binding is not used) | `structure.json` → captions with `images`; crops in `figures/pic_K.png` |
-| Tables + captions | PDF | Docling for cells and position; caption: Docling's table–caption link first, else our same-page rule | `structure.json` → captions with `table` (markdown) and `image` (crop) |
-| Equations | PDF | Docling and Marker, compared | planned: per-equation LaTeX from both, agreement flag |
+## Pipeline
 
-Paths: `ingest/docling/<paper_id>/` (gitignored). Progress: manifest column `docling`.
-`corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts of the in-scope papers, fetched once with `parse_docling.py --fetch-abstracts` (the only network call in ingest; `--rebind` never calls the network). Fetched 2026-10-12: 273 of 327 in-scope papers have one.
+```
+psed_marker env:  parse_marker.py --all                 Marker 2.0 (force_ocr) + band-crop OCR -> ingest/marker/<id>/
+psed310 env:      structure_marker.py --all             structure.json (captions, tables + check, equations, abstract)
+psed310 env, GPU: parse_docling.py --formulas <ids>     Docling layout + CodeFormula on R1/R2 crops -> docling/<id>/equations.json
+psed310 env:      merge.py --all                        ingest/final/<id>/ (Marker items + paired equations)
+```
+
+| Item | Tool | How | Output in `final/<id>/structure.json` | Numbers (13 papers) |
+| --- | --- | --- | --- | --- |
+| DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | never extracted from the PDF | — | — |
+| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters) | `document.md` | reading order title → authors → abstract → body right in 12 of 13 (page); the exception, 10.1021_acs.jpcc.9b08176, is repaired by the band OCR; one block out of order on 10.1186_s11671-015-0872-9 p 4 |
+| Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; OpenAlex text when the block is OCR-only and recall < 80 % | `abstract`, `abstract_source` | 13 of 13 right (page; the ACS abstract after the band OCR) |
+| Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture | `captions` with `images` | 13 papers, every numbered figure caption right (page): 11 disagreement rows with Docling all Marker's side right after the band OCR |
+| Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `crop` | 16 numbered tables: 11 fully right, 5 wrong, all 5 flagged, 3 right ones flagged (page) |
+| Equations | Docling + Marker | Docling's layout gives the formula boxes, CodeFormula reads our crops (R1 tight box at 216 dpi; R2 band box when the box is ≤ 25 pt wide); Marker's `<math>` blocks; pairs by page and box, `agree` / `differ` | `equations[{page, bbox, number, docling, marker, status}]` | 103 pairs: 74 agree, 29 differ (Marker right 14, Docling right 7, both wrong 3, equivalent forms 5) (page) |
+
+Paths: `ingest/marker/<id>/`, `ingest/docling/<id>/`, `ingest/final/<id>/` (all gitignored). Progress:
+manifest columns `marker` and `docling` (ok | failed | blank). `corpus/openalex_abstracts.json`
+(gitignored): OpenAlex abstracts, fetched once with `parse_docling.py --fetch-abstracts` (the only
+network call in ingest), used by the abstract rule and its fallback.
+
+Docling's full parse (`parse_docling.py --all`: docling.json, document.md, structure.json, figure and
+table crops, 44 papers) still runs and is kept for comparison, but the final output takes nothing from
+it; `--formulas` runs its own conversion.
+
+## Why Marker for text, figures, tables and the abstract
+
+Item-by-item comparison of the two tools on the 13 papers (every disagreement one row, crop viewed or
+checked against pdftotext; the report is in `ingest/reports/disagreements.html`, gitignored):
+114 rows before any rule, 26 of them not errors (citation numbers, running heads, counting
+artefacts); of the 88 real ones Docling's side was wrong in 79 and Marker's in 19. Root causes
+(Docling / Marker): layout 30 / 6, model input 30 / 0, recognition 15 / 11, our post-processing 4 / 2.
+After the rules below, 68 rows remain, 29 of them equations. Decisive items: Docling reads the
+MDPI paper's duplicated text layer twice (10 captions doubled), flattens exponents in tables
+("10 - 5"), merges table rows (4 of 16 tables), and reads the introduction before the title on RSC,
+Wiley and Beilstein pages; Marker's page OCR gets these right. Marker's failures are a caption bar
+taken into the picture (2 cases) and an abstract beside a TOC graphic rendered as an image (1 case):
+both repaired by OCR of the band (`parse_marker.py --bands`).
 
 ## Status
 
-fixed / limit / open; checked by auto script, Claude or user.
+fixed / limit / open; checked by script, Claude Code or user.
 
-| ID | Item | Problem | Status | Checked by | Evidence (commit, papers) |
+| ID | Item | Problem | Status | Checked by | Evidence |
 |---|---|---|---|---|---|
-| F1 | Figures | Docling's own caption binding mostly wrong | fixed (own binding rules) | Claude (planning chat): 8 sampled papers (review_all.html), and 3 Dev papers, Ylilammi 10.1063_1.5028178, Yim 10.1039_d0cp03358h, pssa 10.1002_pssa.201532305, against review_dev.html and the PDFs: Ylilammi Fig. 1–7 and Yim Fig. 1–11 exact; pssa Fig. 8 went to Fig. 9, and logos attached to pssa Fig. 1 and 4. Done before later rule changes; pssa is now out of scope. | 647add1, 5918542, 70d98ab, bcf0d98; checked by hand on 8 sampled papers (74 of 75 exact, a120f36) and on Dev papers (count not recorded) |
-| F2 | Figures | Docling merges side-by-side figures into one crop | limit | Claude | a120f36; 10.1116_6.0002804 Figures 6 and 8 have no crop of their own (merged into 5 and 7), also 10.1002_admi.202000318, 10.1039_d1dt03543f, 10.1186_s11671-015-0872-9 |
-| F3 | Figures | Caption read before its picture; the picture goes to the next caption | limit | Claude | a120f36; 10.1002_pssa.201532305 Figure 8 went to Figure 9 |
-| F4 | Figures | Nested caption without a label loses short pieces | limit | Claude | 1350a2c; 10.1186_s11671-015-0872-9 Figure 5 |
-| F5 | Figures | Journal logos and banners attach to a figure | limit | Claude | a120f36; pssa Figures 1 and 4 |
-| F6 | Figures | Figure-check count in INGEST.md (48 of 49) predates the current 44 papers | open | user | Figures section |
-| T1 | Tables | Caption binding shifted by one; 11 of 63 tables right | fixed: 59 of 63 (the other 4 have no caption) | Claude (expected bindings) + auto score | 89f7357; 44 papers, 2026-10-12 |
-| T2 | Tables | Multi-row headers flattened in the markdown | fixed (9 tables) | auto script (54 single-header tables byte-identical) + Claude | 7107b50 |
-| T3 | Tables | Cell structure errors: merged or dropped rows, rotated table transposed | limit; a crop per table is saved for a vision model as last resort | Claude (8 picks against page renders) | 89f7357; Yim 10.1039_d0cp03358h Table 1, jpcc.9b08176, chemmater.1c03164, separations11010024, 2.067203jes |
-| T4 | Tables | /C0, /C2 glyph names in cells | limit (no guessed substitution maps) | Claude | 89f7357 review; 22 tables, 17 of them RSC |
-| T5 | Tables | Exponents and footnote letters split or glued in cells | limit | Claude | 89f7357 review; 21 tables with exponents, about 7 with footnote letters |
-| T6 | Tables | Image-rendered table read by OCR | limit | auto script + Claude | c49f8c8; 10.1116_6.0003182 table 0 (page 4) |
-| A1 | Abstract | Extraction for the 44 papers | fixed: 44 of 44 (24 heading, 19 openalex_match, 1 openalex) | Claude (planning chat), 2026-10-12: c7ta03257a and d4nr03749a against page renders; c5ta00205b, ijpharm.2017.04.031, mee.2018.01.027, mee.2018.01.033 by reading the extracted text only. Marks set on the user's instruction. The user did not check them. | 6c5cafa, 1ac60a6, b17bf29, 9e87def; marks in manifest abstract_review |
-| A2 | Abstract | 10.1039_c4nr05049e drawn as image strips; OCR missed about 60 of 157 words | fixed (OpenAlex fallback, source openalex) | Claude (pdftotext, pdfplumber) + auto | 9e87def |
-| A3 | Abstract | Fallback rules 3 (layout) and 4 (order) never used on the 44 papers | open (untested) | auto script (sources) | b17bf29; 0 of 44 |
-| B1 | Body | Private-use ligature characters break words ("speci c", "a er") | open | auto script | 10 of 44 papers (2026-10-12), most in 10.1039_c5ta00205b, c7ta03257a, c3ra42928h |
-| B2 | Body | Reading order puts title, authors and abstract inside the introduction; footnotes split sentences | open | Claude | seen in 10.1039_c7ta03257a page 2 (2026-10-12) |
-| B3 | Body | Cover-page text at the top of document.md | open | Claude | AIP papers, e.g. 10.1063_5.0168768, 10.1063_1.5028178 |
-| B4 | Body | Part of the text nested in figures (axis labels, legends, OCR'd labels) is written into document.md | open | auto script | 303 of 759 nested texts of 4+ words appear in document.md (44 papers, 2026-10-12); the OCR'd labels (43 papers, about 9,900 words) are only partly exported |
-| B5 | Body | Running heads and footers | fixed (exact list verified) | auto script | b17bf29; 7 papers |
-| B6 | Body | /C0, /C14, ¼ glyphs | limit (glyph names carry no meaning) | Claude | a120f36, ccce8fd |
-| B7 | Body | Digit drawn for a degree sign ("300 1 C") | fixed as a "[?]" mark from PDF font evidence | auto script | ccce8fd; 170 digits in 4 papers |
-| B8 | Body | Text-coverage check compares with pdftotext, which also breaks ligatures and cannot see OCR'd regions | open | Claude | 01f85c6 check, 2026-10-12 |
-| B9 | Body | Headings drawn as outlines, read by OCR | limit | auto script + Claude | c49f8c8; 10.1021_acs.chemmater.1c03164, 17 headings |
-| E1 | Equations | Not decoded | open (plan: Docling + Marker, a person decides disagreements) | user | Equations section; one-off test on Ylilammi 2018, 2026-10-12 |
-| D1 | Docs | Numbers in INGEST.md lack date, commit, papers and method; some are stale | open | user | this file |
-| D2 | Docs | Some "checked" marks were by Claude, not a person | open (to be labelled) | user | this file |
+| M1 | Body | Marker drops the letters of private-use ligatures and the °, −, µ glyphs with the text layer | fixed: `force_ocr` | Claude Code, page | 10.1039_c7ta03257a, 2026-10-12 |
+| M2 | Body | Reading order: Docling puts the introduction before the title/abstract on RSC, Wiley, Beilstein pages | fixed by using Marker's order | Claude Code, page | 10.1039_c7ta03257a p 2, 10.1002_adem.202201901 p 1, 10.3762_bjnano.5.25 p 1 |
+| M3 | Body | "<001>" written "001" (Marker's renderer) | limit | Claude Code, script | 10.1002_adem.202201901 |
+| M4 | Figures | Caption bar inside the picture (BMC) | fixed: T1 band OCR | Claude Code, page | 10.1186_s11671-015-0872-9 Figures 1, 3 |
+| M5 | Abstract | Abstract beside the TOC graphic rendered as an image (ACS) | fixed: T2 band OCR | Claude Code, page | 10.1021_acs.jpcc.9b08176 |
+| M6 | Tables | Marker's TableGroup pairs a caption with the neighbouring table | fixed: position rule | Claude Code, page | 10.3390_separations11010024 Tables A1–A3 |
+| M7 | Tables | Trailing zeros dropped by tabulate (0.10 → 0.1) in both tools | fixed: no number parsing | script | 7 cells in 5 tables, no other change |
+| M8 | Tables | Extra empty column from Marker's header colspans; header shifted; a symbol misread | limit, flagged by the rule check | Claude Code, page | 5 of 16 tables, see ERRORS.md |
+| M9 | Tables | Right tables flagged (footnotes in the box, unmapped minus glyph, hidden duplicate text layer) | limit: 3 false flags on 16 | Claude Code, page | ERRORS.md |
+| E1 | Equations | Docling's enrichment crop (box + 18 %, 120 dpi) takes in neighbouring text; Beilstein boxes hold only the number | fixed: R1 tight crop at 216 dpi (18 fixed, 1 broken), R2 band box (12 of 19 fixed) | Claude Code, crops | 103 pairs, cf. ERRORS.md |
+| E2 | Equations | Both tools misread some formulas | limit: `differ` pairs for review | Claude Code, crops | 29 of 103 pairs differ |
+| E3 | Equations | Marker re-recognition of its own equations on a 216-dpi crop | rejected: fixed 2, broke 13 | script + crops | not applied |
+| I1 | Input | MDPI duplicated text layer (caption regions drawn twice in two fonts) | limit | Claude Code, text layer | 10.3390_separations11010024 only, of the 13 |
+| D1 | Docling | Docling-stage rules (figure/table binding, abstract, running lines, glyph repairs) | superseded: not used by the final output; code kept for `--formulas` and comparison | — | this commit |
 
 Rule: update the row in the same commit as any change that affects it.
 
 ## Environments
 
-- `psed310`: Docling, pdfplumber. Runs `ingest/parse_docling.py`.
-- `psed_marker`: Marker 2.0.0 only (llama.cpp backend, binary in `~/opt/llama.cpp/`).
+- `psed310`: Docling, pdfplumber, pypdfium2, tabulate. Runs `parse_docling.py`, `structure_marker.py`, `merge.py`.
+- `psed_marker`: Marker 2.0.0 only (llama.cpp backend, binary in `~/opt/llama.cpp/`). Runs `parse_marker.py`.
   Kept separate: Docling pins transformers <5 and huggingface_hub <1, Marker needs newer; pillow pins conflict.
-- Marker output is not fully deterministic across runs: run once per paper and keep the result.
-
-## Marker
-
-`ingest/parse_marker.py` (conda env `psed_marker`, llama.cpp settings from CLAUDE.md, set by the script when absent) runs Marker 2.0.0 once per paper and writes `ingest/marker/<paper_id>/` (gitignored): `document.md` with its figure crops (`_page_P_<Type>_K.jpeg`), `document_meta.json`, and `blocks.json`, the block tree rendered from the same conversion: block_type (Text, SectionHeader, Caption, Figure, Picture, Table, Equation, Footnote, PageHeader, PageFooter, …), page (1-based), bbox [l, t, r, b] in PDF points from the top-left, polygon, html, children. Same CLI shape as `parse_docling.py` (`<paper_id>…` | `--all`; in-scope rows with `pdf_status` ok; rows already ok are skipped and overwritten only with `--redo`). Manifest column `marker`: ok | failed | blank. Marker output is not deterministic across runs.
-
-Settings: `force_ocr` (full-page OCR by the surya-ocr-2 VLM, layout from the OCR pass). Reason, checked on 10.1039_c7ta03257a on 2026-10-12: with the text layer Marker drops the letters of private-use ligatures ("specic", "aer", "soware") and the °, −, µ glyphs; with `force_ocr` the words and symbols come out right ("specific", "after", "°C", "min<sup>-1</sup>", "µg") and the reading order is the print order (title, authors, abstract, then the body). Runtime: 63–174 s per paper on one A6000 (13 papers, 2026-10-12; the llama.cpp server starts once per process).
-
-`ingest/structure_marker.py` (psed310) turns Marker's output into `structure.json` in Docling's schema, plus `equations` (LaTeX with page and bbox) and `document.md` without running lines (Marker's own markdown kept as `marker.md`). Rules, only those `parse_docling.py` already has: a block whose text starts with Fig./Figure/Scheme/Table + number is a caption if Marker labels it Caption, the number is followed by ".", ":" or "|", or a Table caption's number is followed by a capitalised word (Text blocks count); a caption continues with the Text block directly below it in the same column when the gap is at most 4 pt (wider gaps joined body text in 8 captions, so 7-9 pt gaps under MDPI captions stay unjoined); figures are bound by Marker's FigureGroup/PictureGroup blocks, else by the position rules; tables ignore Marker's TableGroup (it pairs neighbouring captions and tables wrongly) and use the nearest unused table caption on the same page; tables as github markdown with the <th> rows merged into one header line (" / "), rowspans and colspans honoured, superscripts as ^; a Figure/Picture/Diagram/ChemicalBlock without an image file is cropped from the PDF page by its bbox (scale 3, `crop_page_<P-1>_<Type>_<K>.png`); a short standalone block (25 words or fewer) holding → or \rightarrow counts as an equation; abstract by the copied Docling rules with the OpenAlex fallback. Not fixable from Marker's output: captions drawn inside the figure image (BMC Figures 1 and 3), the ACS abstract and author line beside the TOC graphic (image placeholders), "<001>" in the Wiley paper (angle brackets dropped), a few numbers.
-
-Disagreement check 2026-10-12 after these rules (scratch report, 57 rows over the 13 papers; a row is one disagreement per item, formatting excluded, numbers compared after normalisation and only with a decimal point or 3+ digits): Docling right 28, Marker right 28, both wrong 1, none unchecked; the wrong side's content is still in its own output in 21 Docling and 17 Marker rows (reading order, table cells, caption segmentation) and lost in 8 Docling and 12 Marker rows.
-
-Earlier status, 13 papers (one per DOI prefix of the 44) compared with Docling against pdftotext body pages, 2026-10-12, by Claude: no body number changed by either tool; Docling splits decimals in one Elsevier paper ("0 . 178 eV", 10.1016_j.sse.2022.108584) and leaves /C glyphs and ligature characters, Marker renders them right; Marker turns the author line and the abstract block beside the TOC graphic into image placeholders in the ACS paper 10.1021_acs.jpcc.9b08176 (both lost) and splits the first Introduction paragraph by the affiliation block in 10.1002_adem.202201901; reading order title → authors → abstract → Introduction holds in Marker for all papers with such headings except the ACS one, in Docling it fails for RSC, Wiley and Beilstein layouts. Not used by the extraction yet; the plan is to use it for equations and to repair Docling's text where both differ (a decision for the user).
+- Marker output is not fully deterministic across runs: run once per paper and keep the result (`--redo` to overwrite).
+- `parse_docling.py --formulas` needs a GPU with about 6 GB free; set `CUDA_DEVICE_ORDER=PCI_BUS_ID` so that
+  `CUDA_VISIBLE_DEVICES` matches nvidia-smi's numbering.
 
 ## Rules per item
 
-### Figures
-Caption binding replaces Docling's; rules are in the `parse_docling.py` docstring.
-Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure check: 48 of 49 papers pass at the last full count.
+### Marker conversion (`parse_marker.py`)
+`force_ocr`: full-page OCR by surya-ocr-2, layout from the OCR pass; 63–174 s per paper on one A6000. Writes
+`document.md` with its figure crops (`_page_P_<Type>_K.jpeg`), `document_meta.json`, `blocks.json` (block tree
+with page, bbox from the top-left, html). Band-crop OCR after the conversion (or `--bands` on existing
+output): T1, a Figure/Picture/Diagram block whose box holds a text-layer line starting with a caption
+label while the page has no Caption block with that number → the band from that line to the block's bottom
+is OCR'd and inserted as a Caption block; T2, a Text block that is only an image → OCR'd, its html and
+markdown placeholder replaced. Records in `bands.json`. 13 papers: 2 captions and 1 abstract recovered,
+3 author lines and 3 "Check for updates" badges added as text, nothing lost.
 
-### Tables
-- Caption binding: Docling's own table–caption link first (if its text starts with "Table N"); else the nearest unused Table caption on the same page, before or after. Never across pages.
-- Caption numbers: letter prefixes allowed (A1, S1); "Table N" followed by a capitalised word counts even without punctuation.
-- Glyph repairs apply to table markdown as to text.
-- Each table also has a crop image (`figures/tab_K.png`, K = index in Docling's tables, cut from the PDF page with pypdfium2 at the picture scale; `image` in the structure.json entry), for checking and, as a last resort, reading by a vision model at extract time.
-- Result of the 2026-10-12 change (63 tables in 28 of the 44 parsed papers, scored against Docling's own caption links and a hand check of the rest): 11 → 59 tables numbered as expected, none worse; the 4 others have no caption anywhere (bjnano.5.25 t0/t1, acsami.0c06879 t0, 6.0003182 t0). Before, 15 tables were shifted by one because Docling places the linked caption after the table in reading order although 43 of the 45 are printed above it, 24 were unnumbered, and 4 symbol lists had taken leftover captions. Figure entries unchanged, except Figure A1 of 10.3390_separations11010024, now bound thanks to the letter prefix.
-- Known, not fixed: TableFormer structure errors in 7 of 9 inspected tables (merged or dropped rows, a spurious empty column, table footnotes absorbed as rows, ± dropped in one row, a rotated page read transposed: Yim Table 1); `/Cn` glyphs in 22 tables (mostly RSC); exponents and footnote letters flattened ("1 × 10 - 4", "Kn c 1 c"); multi-row headers appear only as row 0 in the markdown.
-- Markdown is built from Docling's cell grid: the column-header rows at the top (Docling's `column_header` flag) become one header line, the texts per column joined with " / " (a cell spanning several columns applies to each; repeated identical parts skipped). Tables with one header row are Docling's own export, byte for byte. 2026-10-12: 9 tables changed, 54 unchanged.
-- Not done: substitution maps for `/Cn` glyphs, rewriting exponents, symbol lists read as tables (left unnumbered).
+### Structure (`structure_marker.py`)
+- Captions: a block whose text starts with Fig./Figure/Scheme/Table + number (letter prefix allowed) is a caption if
+  Marker labels it Caption, the number is followed by ".", ":" or "|", or a Table caption's number is followed by a
+  capitalised word (Text blocks count); it continues with the Text block directly below in the same column when the
+  gap is at most 4 pt.
+- Figures: bound by Marker's FigureGroup/PictureGroup, else the position rules (next caption on the page whose
+  horizontal span overlaps the picture, else the previous one, else the next). A Figure/Picture/Diagram/ChemicalBlock
+  without an image file is cropped from the page (`crop_page_<P-1>_<Type>_<K>.png`).
+- Tables: the nearest unused table caption on the same page (Marker's TableGroup ignored); html → markdown with the
+  `<th>` rows merged into one header line (" / "), rowspans and colspans honoured, `<sup>` as `^`, tabulate without
+  number parsing. Crop `table_<P-1>_<K>.png` (caption band above, 30 pt below). Rule check → `check`: ok | flag,
+  `check_reasons`: (a) numeric tokens of the PDF text layer inside the box vs the markdown (superscripts read by
+  font size; rowspan/colspan repeats counted once) and the count of ±; (b) letters of the layer the table lacks
+  (LaTeX, Greek, sub/superscripts normalised); (c) header colspans vs body columns, empty trailing header, empty
+  column, short last row, numbers just below the box on the table's columns; (d) fewer than 5 layer words. No
+  exception: footnotes or a hidden duplicate layer inside the box also flag. 16 numbered tables: 5 wrong caught,
+  0 missed, 3 right flagged. A flagged table is read by a vision model at extract time; nothing here does.
+- Equations: Equation blocks' `<math>` LaTeX with the number Marker kept, plus short standalone blocks (≤ 25 words)
+  holding → or \rightarrow.
+- Abstract: the Docling-stage rules on Marker's blocks (heading / "Abstract:" paragraph with its continuation,
+  else the OpenAlex match on pages 1–2, else the widest page-1 item, else the longest early paragraph), with the
+  OpenAlex fallback when the items are OCR-only and recall < 80 %.
+- `document.md`: Marker's markdown without running lines; the original kept as `marker.md`.
 
-### Equations
-- `parse_docling.py --formulas <paper_id>…` writes `docling/<paper_id>/equations.json`: one entry per Docling formula item with page, bbox (bottom-left origin), LaTeX and the printed equation number (from the LaTeX or the PDF text right of the formula). Run on the 13 Marker papers on 2026-10-12.
-- Both Docling (`do_formula_enrichment`) and Marker extract LaTeX. Tested on Ylilammi 2018: each got about 37 of 46 right, wrong on different equations.
-- Decision: keep both. Equations where they agree (after notation normalisation) are accepted; where they disagree, a person decides. Not yet built.
-
-### Abstract
-`structure.json` → `abstract`, `abstract_source`. Picked from Docling's text items, not reading order alone, so an abstract placed inside the introduction is still found. "Page 1" below is the first page with running text (publisher cover pages are skipped). In order:
-1. the text under a heading "Abstract", or a paragraph starting with "Abstract:" (ACS), with its continuation items (past pictures and short widgets; the block ends where the overlap with the OpenAlex abstract drops, else where the column narrows, at a heading or keywords line, or at 400 words) → `heading`;
-2. else, if OpenAlex has an abstract (`corpus/openalex_abstracts.json`, any length): the text item on pages 1–2 with the highest word overlap with it, joined with adjacent items that also overlap → `openalex_match`;
-3. else the longest text item on page 1 wider than the body columns (1.4 × the median column width, i.e. full-width on a two-column page) → `layout`;
-4. else the longest paragraph (40+ words) on page 1 after the author block and before the first body heading → `order`; if nothing, empty and `none`.
-- Fallback: if the abstract's Docling items have no PDF text layer under them (OCR; pdfplumber finds no characters in their boxes) and recall against the OpenAlex abstract is below 80%, the OpenAlex abstract is used instead → `openalex` (one paper, 10.1039_c4nr05049e).
-- Glyph repairs apply; `document.md` is unchanged. This is the extraction of commit 1ac60a6; the position, page-1 (2+ items) and abstract-side running-line variants tried on 2026-10-12 failed verification and were reverted (Change log).
-- Check: `parse_docling.py --check-abstracts` prints, per paper, recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words / OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6. In the check only, an OpenAlex abstract under 50 words (a cover blurb) counts as missing; a paper without a usable OpenAlex abstract is flagged only if its abstract fails the form check: 80–400 words, ends with ".", and its first text item comes right after the title/author block (no body paragraph of 40+ words before it on that page; author and affiliation blocks excepted). An empty abstract is always flagged. Manifest column `abstract_review` records a review as `ok:<hash>` or `limit:<hash>` (first 8 hex of the sha1 of the reviewed abstract); a paper is skipped only while its abstract still has that hash, so a changed extraction is checked again; blank means not reviewed. Writes `ingest/review/abstract_check.html` (gitignored; ours next to OpenAlex's, pages 1–2 rendered) for the flagged papers.
-- Result 2026-10-12 (44 parsed papers): 24 `heading`, 20 `openalex_match`, none from `layout`, `order` or `none`. Reviewed by eye, 7 marks: `limit` for c4nr05049e (Docling merged the abstract's two parts into one garbled item, recall 63%); `ok` for c7ta03257a, c5ta00205b, d4nr03749a (right, but their OpenAlex record is a short blurb) and for ijpharm.2017.04.031, mee.2018.01.027, mee.2018.01.033 (no OpenAlex abstract). Check after the revert: 0 flagged; the 37 unmarked papers have recall min 92%, precision min 83%, length ratio 0.92–1.42 against OpenAlex.
-
-### Body text
-- Running heads, footers and download stamps: a line of 10 words or fewer that appears identically (after the glyph repairs) on 3 or more pages and contains 4 or more letters (A–Z, a–z) is dropped from `document.md`; the abstract items, captions and tables are not touched. 2026-10-12, 44 papers: lines dropped in 7 papers only — "ARTICLE" (6.0001094 ×14, 6.0003182 ×7), "LETTER" (6.0002993 ×7), the two journal URLs (adem.202201901, ×9 and ×6), the DOI and journal-citation footers (jpcc.9b08176, ×3 each), "Separations" (separations11010024 ×4), and in 1.5116136 the manuscript title header (×9) and "Science Technology A Journal of Vacuum" (×4). The letter condition keeps the equation numbers, glyph names and single letters that also repeat across pages; a position rule (top or bottom 8% of the page) was tried the same day and caught only 1 of these lines, so it was not adopted.
-- Coverage check (2026-10-12, commit 01f85c6, 44 papers, method auto, read-only): share of pdftotext words (lowercased, 4+ letters, reference list excluded) found in `document.md`: min 94.3%, median 98.7%. Only 10.3390_separations11010024 is below 95%, and its missing words are pdftotext artefacts (dropped spaces: "theflow"); the other low ones are ligature fragments ("usion", "cient") and the RSC footer. No real body text found missing. Below 95% is the flag for the next run.
-
-### Glyph repairs (text, captions, tables)
-- `/uniXXXX`, `/uXXXXX` → the character; ligatures → plain letters.
-- A digit drawn in a symbol font between a number and C/K ("300 1 C") → "300 [?] C", using PDF font evidence. The symbol is not guessed.
-- Other broken glyphs (`/C0`, `/C14`, `¼`, private-use) are left as they are.
+### Equations (`parse_docling.py --formulas`, `merge.py`)
+- Docling's layout gives the formula items; CodeFormula reads our crops: R1, the formula box without expansion at
+  216 dpi; R2, a box of at most 25 pt width (only the printed number) → the band of its text column between the
+  text items above and below. `equations.json`: page, bbox (bottom-left), LaTeX, printed number (from the LaTeX or
+  the "(N)" word right of the formula), rule, crop box. 103 paired equations: R1 fixed 18 and broke 1 (10.1063_1.5028178
+  eq 20); R2 fixed 12 of 19 Beilstein equations.
+- `merge.py` pairs Docling's and Marker's equations on a page by box (IoU + vertical overlap ≥ 0.6), the rest by
+  printed number, and marks each pair `agree` (equal after notation normalisation: \text{}, \left/\right,
+  spacing, aligned environments, trailing number, \cdot/\times, braces) or `differ`; unpaired ones `docling only` /
+  `marker only`. 74 of 103 agree. A `differ` pair is decided at extract time (a person or a vision model on the crop).
 
 ### Last resort
-A vision model reading the crop (figure, table, equation) is allowed only where rules and the two tools fail, and only at extract time.
+A vision model reading the crop (flagged table, `differ` equation) is allowed only at extract time.
 
-## Known limits
-Accepted limits of the Docling stage; do not fix without a new decision. Moved from `CLAUDE.md` on 2026-10-12.
-
-- Figure binding was checked by hand on 8 sampled papers: 74 of 75 figures exact.
-- Docling-side misses: a few captions are absent from Docling output (image-only PDF, caption drawn as image) or two side-by-side figures are merged into one crop. Seen in 10.1002_admi.202000318, 10.1039_d1dt03543f, 10.1186_s11671-015-0872-9, 10.1116_6.0002804.
-- Captions split across two columns keep only the first part. Captions split across pages are joined.
-- A non-figure image (equation, banner whose copy differs slightly) on a figure's page can attach to that figure as an extra image.
-- Tables: caption binding is not validated. Known issues: shift by one when Docling reads a table before its caption, tables Docling does not detect, captions placed inside the table's first row. [The shift by one was fixed on 2026-10-12, see Tables and the change log; the other two remain.]
-- Broken glyphs from PDF fonts (e.g. "/C14" for °, "/C0" for −, "¼" for =, private-use characters) are not fixed yet. Fixed: "/uniXXXX" and "/uXXXXX" glyph names; a digit standing for a degree sign ("300 1 C") is marked "[?]" where the PDF font shows it.
-- Equations are not decoded.
-- 10.1146_annurev-chembioeng-060816-101547 is a review paper; whether it belongs in the corpus is a corpus question.
-- Docling occasionally reads a caption before its picture although the caption is below it; the picture then goes to the next caption (seen: 10.1002_pssa.201532305 Figure 8 went to Figure 9).
-- Repeated journal logos whose copies differ slightly are not caught as decoration and can attach to a figure (seen: pssa Figures 1 and 4).
-- A paper that prints the same figure number twice keeps one caption; the other figure can lose its image (seen: 10.1021_acsaelm.3c00245 Figure 10).
-- Manuscripts that list all captions together and put the figures at the end cannot be bound by position (seen: 10.1116_1.5116136).
-- Docling sometimes labels a body sentence as a caption, which then replaces the real one (seen: 10.1021_acs.chemmater.9b05116 Figure 10).
-- A caption nested inside its picture without a caption label keeps only text items of 4 or more words, so short pieces (panel markers like (a), short phrases) can drop out (seen: 10.1186_s11671-015-0872-9 Figure 5).
-- Abstract fallback: if the abstract's Docling items have no PDF text layer under them (OCR) and recall against the OpenAlex abstract is below 80%, the OpenAlex abstract is used, `abstract_source` = `openalex`. Reason: 10.1039_c4nr05049e draws its abstract as image strips and Docling's OCR missed about 60 of 157 words; the OpenAlex text is used and the source is marked (2026-10-12).
-- OCR in general: our text checks compare against the PDF text layer, so they cannot see words missing from OCR'd regions. Census 2026-10-12 (pdfplumber characters under each Docling item, cross-checked with pdftotext; by Claude): Docling OCRs the labels inside figures in 43 of the 44 papers (about 7,000 items, 9,900 words; not body text). Outside figures, OCR-only text is substantive in 3 papers: the abstract and title of 10.1039_c4nr05049e, 17 section headings of 10.1021_acs.chemmater.1c03164 (46 words), and table 0 on page 4 of 10.1116_6.0003182; elsewhere it is page furniture only: manuscript stamps in 10.1116_1.5116136, cover-page adverts in 10.1116_6.0002993, 10.1116_6.0003182 and 10.1063_5.0168768, an "Export Citation" widget in 10.1116_6.0001094, one panel label in 10.1038_s41467-022-35428-6, one heading in 10.1039_c5ta00205b, one footer in 10.1039_d0cp03358h.
+### Docling stage (kept, not used by the final output)
+`parse_docling.py --all`, `--rebind`, `--check-abstracts`: the earlier figure/table binding, abstract, running-line
+and glyph-repair rules of this stage (change log 2026-09-30 to 2026-10-12) still produce `ingest/docling/<id>/`
+for the 44 papers. Their limits (side-by-side figures merged into one crop, a picture bound to the next caption,
+captions nested in pictures, `/C0`-type glyph names, TableFormer row merges, exponents flattened to "10 - 5",
+abstract fallbacks) no longer affect the final output.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
-- 2026-10-12 — `structure_marker.py` rules from parse_docling.py (Text-block captions, 4-pt caption continuation, table position rule instead of TableGroup, multi-row header merge with rowspans, PDF crops for image blocks without a file, arrow blocks as equations). Effect: disagreement rows 142 → 57, no row that was right turned wrong, 0 unchecked; Docling right 28, Marker right 28. — this commit.
-- 2026-10-12 — `parse_docling.py --formulas`: Docling with formula enrichment (CodeFormula) writes docling/<paper_id>/equations.json only (page, bbox, LaTeX, printed number from the LaTeX or from the PDF text right of the formula); no other Docling file touched. Effect on the 13 Marker papers: 103 formula items with LaTeX (Ylilammi 46 of 46 numbered right); 6 to 221 s per paper. — this commit.
-- 2026-10-12 — `structure_marker.py`: structure.json from Marker's blocks in Docling's schema (captions bound by Marker's groups, else parse_docling.py's position rules; tables as markdown; equations as LaTeX with page and bbox; abstract by the copied rules; document.md without running lines, Marker's own markdown kept as marker.md). Effect: 13 papers; compared with Docling item by item (review HTML in scratch, not committed). — this commit.
-- 2026-10-12 — Marker stage added: `parse_marker.py` (Marker 2.0.0, force_ocr, llama.cpp backend) writes ingest/marker/<paper_id>/ with document.md, images and blocks.json; manifest column `marker`. Effect: 13 papers converted (one per DOI prefix), 63–174 s each; not used by the extraction yet. — this commit.
-- 2026-10-12 — Abstract fallback to the OpenAlex text when the abstract is OCR-only and recall is below 80% (`openalex`). Effect: 10.1039_c4nr05049e gets its full 157-word abstract, mark ok:09ab0660; nothing else changed. — this commit.
-- 2026-10-12 — Abstract extraction reverted to 1ac60a6 (heading, OpenAlex match, layout, order); kept check-side only: hash-bound `abstract_review` marks, empty abstract always flagged, form check without a usable OpenAlex abstract, 50-word rule in the check. Running lines (10 words or fewer, 3+ pages, 4+ letters) dropped from document.md only. Effect: all 7 marks verified (c7ta03257a = 4275c395), abstracts and captions unchanged, running heads/footers gone from 7 papers, 0 flagged. — this commit.
-- 2026-10-12 — Page-1 rule for the abstract (2+ items of 25+ words), `abstract_review` marks bound to the abstract's hash (empty abstract always flagged), running heads/footers/stamps (10 words or fewer, identical on 3+ pages) dropped from document.md and from the abstract's items. Effect: 262 lines dropped in 13 papers, no abstract changed, c7ta03257a still empty (open), 1 flagged. — this commit.
-- 2026-10-12 — Abstract follow-up: OpenAlex abstracts under 50 words count as missing; --check-abstracts form check (80–400 words, final period, after the title/author block) for papers without a usable OpenAlex abstract; manifest column `abstract_review` (ok/limit skipped). Effect: 3 abstracts changed source, one of them (c7ta03257a) now empty; 0 flagged. — this commit.
-- 2026-10-12 — Abstract check closed: 43 of 44 correct, 1 known limit (c4nr05049e); RSC blurb abstracts and the 3 papers without an OpenAlex abstract checked by eye. Effect: documented only. — this commit.
-- 2026-10-12 — Abstract: `abstract` and `abstract_source` in structure.json (heading, OpenAlex match, layout, order rules); `--fetch-abstracts` writes corpus/openalex_abstracts.json once; `--check-abstracts` scores against OpenAlex and writes review/abstract_check.html. Effect: 44 of 44 abstracts found (24 heading, 20 OpenAlex match), overlap median 98%, 1 flagged. — this commit.
-- 2026-10-12 — Tables: markdown built from Docling's cell grid; column-header rows merged into one header line joined with " / ". Effect: 9 tables with 2–3 header rows changed, the 54 single-header tables byte-identical. — this commit.
-- 2026-10-12 — Tables: caption binding uses Docling's table–caption link first, then the nearest unused same-page caption; letter-prefixed numbers (A1, S1) and "Table N Capitalised" items of any label accepted; glyph repairs on table markdown; crop per table (`figures/tab_K.png`, `image` in structure.json). Effect: 11 → 59 of 63 tables numbered as expected, none worse; Figure A1 of separations11010024 gained. Known limits moved here from CLAUDE.md. — this commit.
+- 2026-10-12 — Final ingest rules: Marker supplies body, abstract, figures, captions and tables; `parse_marker.py --bands`
+  (T1/T2 band-crop OCR); `structure_marker.py` with tabulate number parsing off, a rule check and a crop per table;
+  `parse_docling.py --formulas` with the R1/R2 crops and CodeFormula on them; new `merge.py` → `ingest/final/<id>/` with
+  paired equations; `ERRORS.md`. Effect on the 13 papers: 2 captions and 1 abstract recovered; 16 tables with 11 fully
+  right, 5 wrong all flagged, 3 right flagged; 103 equation pairs, 74 agree; disagreement rows with Docling 114 → 68. — this commit.
+- 2026-10-12 — `structure_marker.py` rules from parse_docling.py (Text-block captions, 4-pt caption continuation, table position rule instead of TableGroup, multi-row header merge with rowspans, PDF crops for image blocks without a file, arrow blocks as equations). Effect: disagreement rows 142 → 57, no row that was right turned wrong, 0 unchecked; Docling right 28, Marker right 28. — 0e2d59c
+- 2026-10-12 — `parse_docling.py --formulas`: Docling with formula enrichment (CodeFormula) writes docling/<paper_id>/equations.json only (page, bbox, LaTeX, printed number from the LaTeX or from the PDF text right of the formula); no other Docling file touched. Effect on the 13 Marker papers: 103 formula items with LaTeX (Ylilammi 46 of 46 numbered right); 6 to 221 s per paper. — 1bb790d
+- 2026-10-12 — `structure_marker.py`: structure.json from Marker's blocks in Docling's schema (captions bound by Marker's groups, else parse_docling.py's position rules; tables as markdown; equations as LaTeX with page and bbox; abstract by the copied rules; document.md without running lines, Marker's own markdown kept as marker.md). Effect: 13 papers; compared with Docling item by item. — 31ca1cb
+- 2026-10-12 — Marker stage added: `parse_marker.py` (Marker 2.0.0, force_ocr, llama.cpp backend) writes ingest/marker/<paper_id>/ with document.md, images and blocks.json; manifest column `marker`. Effect: 13 papers converted (one per DOI prefix), 63–174 s each. — dbc2c43
+- 2026-10-12 — Abstract fallback to the OpenAlex text when the abstract is OCR-only and recall is below 80% (`openalex`). Effect: 10.1039_c4nr05049e gets its full 157-word abstract, mark ok:09ab0660; nothing else changed.
+- 2026-10-12 — Abstract extraction reverted to 1ac60a6 (heading, OpenAlex match, layout, order); kept check-side only: hash-bound `abstract_review` marks, empty abstract always flagged, form check without a usable OpenAlex abstract, 50-word rule in the check. Running lines (10 words or fewer, 3+ pages, 4+ letters) dropped from document.md only. Effect: all 7 marks verified, abstracts and captions unchanged, running heads/footers gone from 7 papers, 0 flagged.
+- 2026-10-12 — Page-1 rule for the abstract, `abstract_review` marks bound to the abstract's hash, running heads/footers/stamps dropped from document.md and from the abstract's items. Effect: 262 lines dropped in 13 papers, no abstract changed, 1 flagged.
+- 2026-10-12 — Abstract follow-up: OpenAlex abstracts under 50 words count as missing; --check-abstracts form check; manifest column `abstract_review`. Effect: 3 abstracts changed source; 0 flagged.
+- 2026-10-12 — Abstract check closed: 43 of 44 correct, 1 known limit (c4nr05049e). Effect: documented only.
+- 2026-10-12 — Abstract: `abstract` and `abstract_source` in structure.json (heading, OpenAlex match, layout, order rules); `--fetch-abstracts` writes corpus/openalex_abstracts.json once; `--check-abstracts` scores against OpenAlex. Effect: 44 of 44 abstracts found, overlap median 98%, 1 flagged.
+- 2026-10-12 — Tables: markdown built from Docling's cell grid; column-header rows merged into one header line joined with " / ". Effect: 9 tables with 2–3 header rows changed, the 54 single-header tables byte-identical.
+- 2026-10-12 — Tables: caption binding uses Docling's table–caption link first, then the nearest unused same-page caption; letter-prefixed numbers and "Table N Capitalised" items accepted; glyph repairs on table markdown; crop per table. Effect: 11 → 59 of 63 tables numbered as expected. Known limits moved here from CLAUDE.md.
 - 2026-10-12 — CLAUDE.md records the Marker environment (psed_marker env, llama.cpp backend, `~/opt/llama.cpp/`). Effect: Marker 2.0.0 runs without touching psed310. — 2118b2a
-- 2026-10-03 — Known limit added: a caption nested in its picture without a label keeps only text items of 4+ words. Effect: documented only. — 1350a2c
-- 2026-10-03 — parse_docling.py split into a Docling step (docling.json, figures/pic_K.png) and a binding step; `--rebind` reruns binding and text repairs without Docling; binding fixes for the last figure failures. Effect: rebinding takes seconds per paper. — bcf0d98
-- 2026-10-01 — Broken-glyph known limit extended with private-use characters. Effect: documented only. — f977f3d
-- 2026-10-01 — Glyph names `/uniXXXX` and `/uXXXXX` replaced (ligatures as plain letters); digit-like degree signs marked "[?]" from PDF font evidence. Effect: 2,400 glyph names in 14 papers, 170 digits in 4 papers; figure check unchanged at 52/59. — ccce8fd
-- 2026-10-01 — Chinese caption words (图, 表) accepted; two known limits added (captions listed together with the figures at the end; body sentences Docling labels caption). Effect: bilingual captions bound. — d86775f
-- 2026-10-01 — Scope column in the manifest; parse_docling.py parses in-scope papers only. Effect: out-of-scope papers are skipped. — 101ade3
-- 2026-10-01 — Paths fixed after the move to ingest/. Effect: none on output. — 0caa45b
-- 2026-10-01 — Docling stage moved from corpus/ to psed_v2/ingest/. Effect: none on output. — 82896bd
-- 2026-10-01 — parse_docling.py empties a paper's figures/ before parsing it. Effect: no stale crops from earlier parses. — ec3983f
-- 2026-10-01 — CLAUDE.md records the Docling stage's known limits (11 bullets, with the papers where each was seen). Effect: documented only. — a120f36
-- 2026-10-01 — Picture binding refinements: pictures outside the page area and repeated decoration images ignored; the next-page rule only for a picture after the last text item; previous-else-next caption fallback. Effect: margin stamps and logos no longer bound. — 70d98ab
-- 2026-10-01 — Pictures bound by caption position (next overlapping caption on the page, else the next page's first caption, else the previous one); captions nested in pictures seen; heading rule dropped. Effect: 5 of the 10 failing papers pass. — 5918542
-- 2026-09-30 — Own caption binding replaces Docling's for pictures and tables, in reading order; structure.json lists one entry per caption. Effect: first bound structure.json. — 647add1
-- 2026-09-30 — docling_parse.py renamed parse_docling.py. Effect: none on output. — ee51eca
-- 2026-09-30 — v1's Docling parse stage ported (corpus/docling_parse.py), manifest column `docling`; run on one paper (Ylilammi 2018). Effect: first ingest output. — cc5e59d
+- 2026-10-03 — Known limit added: a caption nested in its picture without a label keeps only text items of 4+ words. — 1350a2c
+- 2026-10-03 — parse_docling.py split into a Docling step (docling.json, figures/pic_K.png) and a binding step; `--rebind` reruns binding and text repairs without Docling. Effect: rebinding takes seconds per paper. — bcf0d98
+- 2026-10-01 — Broken-glyph known limit extended with private-use characters. — f977f3d
+- 2026-10-01 — Glyph names `/uniXXXX` and `/uXXXXX` replaced (ligatures as plain letters); digit-like degree signs marked "[?]" from PDF font evidence. Effect: 2,400 glyph names in 14 papers, 170 digits in 4 papers. — ccce8fd
+- 2026-10-01 — Chinese caption words (图, 表) accepted; two known limits added. — d86775f
+- 2026-10-01 — Scope column in the manifest; parse_docling.py parses in-scope papers only. — 101ade3
+- 2026-10-01 — Paths fixed after the move to ingest/. — 0caa45b
+- 2026-10-01 — Docling stage moved from corpus/ to psed_v2/ingest/. — 82896bd
+- 2026-10-01 — parse_docling.py empties a paper's figures/ before parsing it. — ec3983f
+- 2026-10-01 — CLAUDE.md records the Docling stage's known limits (11 bullets). — a120f36
+- 2026-10-01 — Picture binding refinements: pictures outside the page area and repeated decoration images ignored; the next-page rule only for a picture after the last text item; previous-else-next caption fallback. — 70d98ab
+- 2026-10-01 — Pictures bound by caption position; captions nested in pictures seen; heading rule dropped. Effect: 5 of the 10 failing papers pass. — 5918542
+- 2026-09-30 — Own caption binding replaces Docling's for pictures and tables, in reading order. Effect: first bound structure.json. — 647add1
+- 2026-09-30 — docling_parse.py renamed parse_docling.py. — ee51eca
+- 2026-09-30 — v1's Docling parse stage ported (corpus/docling_parse.py), manifest column `docling`; run on one paper. Effect: first ingest output. — cc5e59d
