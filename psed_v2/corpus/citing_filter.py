@@ -14,7 +14,14 @@ Keyword rule (title + OpenAlex abstract):
 
 Output cremers_citing_all.csv, one row per citing work:
     doi, title, year, type, has_abstract, matched_keywords, passed (yes/no),
-    in_manifest (yes/no, by DOI, any origin), fetched_on (date of this run)
+    in_manifest (yes/no, by DOI, any origin), fetched_on (date of this run),
+    outcome, outcome_detail:
+        no_keyword          did not pass the keyword rule (detail empty)
+        in_manifest         passed and is a manifest row; detail = the row's status and reason
+                            ("status: reason"), or "undecided" when status is blank
+        duplicate_preprint  passed, not in the manifest, same title as a manifest row;
+                            detail = the DOI of that article
+        new                 passed, not in the manifest, no manifest row with that title
 
 The printed report classifies the passing works that are not in the manifest:
     new since 2026-10-01   OpenAlex created_date after the first pull (2026-10-01)
@@ -43,7 +50,7 @@ KEYWORDS = ["conformality", "conformal", "high-aspect-ratio", "aspect ratio", "L
             "step coverage", "trench", "penetration depth", "saturation profile"]
 SELECT = "id,doi,title,publication_year,type,abstract_inverted_index,created_date"
 FIELDS = ["doi", "title", "year", "type", "has_abstract", "matched_keywords", "passed",
-          "in_manifest", "fetched_on"]
+          "in_manifest", "fetched_on", "outcome", "outcome_detail"]
 
 
 # ----------------------------------------------------------------------------- keyword rule
@@ -91,6 +98,16 @@ def fetch_citing(session) -> list[dict]:
     return works
 
 
+def outcome(row: dict, manifest: dict, manifest_titles: dict) -> tuple[str, str]:
+    if row["passed"] == "no":
+        return "no_keyword", ""
+    m = manifest.get(row["doi"]) if row["doi"] else None
+    if m is not None:
+        return "in_manifest", f"{m['status']}: {m['reason']}" if m["status"] else "undecided"
+    article = manifest_titles.get(normalise(row["title"]))
+    return ("duplicate_preprint", article) if article else ("new", "")
+
+
 # ----------------------------------------------------------------------------- main
 
 def main() -> None:
@@ -112,6 +129,7 @@ def main() -> None:
                "has_abstract": "yes" if abstract else "no", "matched_keywords": "; ".join(kws),
                "passed": "yes" if kws else "no", "in_manifest": "yes" if doi in manifest else "no",
                "fetched_on": today}
+        row["outcome"], row["outcome_detail"] = outcome(row, manifest, manifest_titles)
         recs.append((row, w, bool(matched(normalise(text, all_hyphens=False)))))
     recs.sort(key=lambda t: (t[0]["doi"] == "", t[0]["doi"], t[0]["title"]))
     rows = [r for r, _, _ in recs]
