@@ -6,10 +6,12 @@ on the PDF pages and crops by Claude Code (commits in the change log of `INGEST.
 "text layer" were found by `body_flags` on 2026-10-13 and judged on the decoded text layer against the output
 text (script), not on the page, unless a crop is named. Per error type: an
 example, the count, whether a rule check flags it, and how it is handled. Handling: **flag → review** = the
-`check` field of the table entry is `flag`; **differ → review** = the equation pair has `status: differ`.
-Both are resolved by an external vision-language model reading the crop, as a pre-processing step of the
-extraction stage (planned, not part of ingest); ingest only writes the flags, the reasons, the tokens and the
-crops. **known limit** = nothing flags it; the KB must tolerate it. Tables and equations of all 44 papers are
+`check` field of the table entry is `flag`, or the body flag is in `body_flags`; **differ → review** = the
+equation pair has `status: differ`. All three are resolved by an external vision-language model at the start
+of the extraction stage (planned, not part of ingest), given the crop and, for a body flag, the output sentence
+and the decoded text-layer line; ingest only writes the flags, the reasons, the tokens and the crops. Claude
+Code's page judgements of these items are the answer set in `ingest/answers/` (tracked, ids and verdicts only);
+the review step is scored against it before it is used. **known limit** = nothing flags it; the KB must tolerate it. Tables and equations of all 44 papers are
 in `ingest/reports/review_44.html`, the body/abstract/figure/caption checks of the 31 papers in
 `review_31.html` (both gitignored).
 

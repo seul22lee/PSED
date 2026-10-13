@@ -26,6 +26,7 @@ psed_v2/
   ingest/line_numbers.py    # tracked: margin line numbers of a line-numbered manuscript removed from document.md
   ingest/body_check.py      # tracked: body-number check, decoded text layer vs document.md per paragraph -> body_flags
   ingest/body_repair.py     # tracked: countermeasures on document.md (a number replaced from the text layer, a dropped line restored) -> body_repairs
+  ingest/answers/           # tracked: answer set, Claude Code's page judgements (tables.json, equations.json, body_flags.json): ids and verdicts only, no paper text
   ingest/glyph_codes.json   # tracked: per-font decoding tables for the PDF text layer, with evidence
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
   ingest/reports/           # gitignored: review HTML reports (e.g. the Docling-vs-Marker disagreement report)

@@ -29,7 +29,7 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 | Item | Tool | How | Output in `final/<id>/structure.json` | Numbers (13 or 44 papers, as each cell says) |
 | --- | --- | --- | --- | --- |
 | DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | never extracted from the PDF | — | — |
-| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks written into it; margin line numbers of a line-numbered manuscript removed (`line_numbers.py`); body-number check (`body_check.py`: decoded text layer vs document.md per paragraph, both directions); two countermeasures on born-digital pages (`body_repair.py`: a number replaced from the text layer, a dropped line restored) | `document.md`; `body_flags` (one entry per mismatch: page, kind, number, text-layer line, output sentence, numbers on each side, line box and crop), `body_check` (counts, not-checkable reasons, line-number counts), `body_repairs` | 44 papers, 2026-10-13. 23,939 body lines read, 22,386 checked (median 97 % per paper, min 68 %); 1,075 lines not checkable (undecoded glyph), 160 (other), 22,022 rotated characters. Every body flag of the 44 papers judged by Claude Code on the line crop (388 flag keys over the passes: 119 real, 269 not errors), see ERRORS.md: 41 distinct real errors of Marker's body text in the 44 papers (10 in the 13 papers, 31 in the 31), 1.8 per 1,000 checked lines, found through numbers only. Final output: 224 flags (12 lines not found, 108 text-layer numbers missing, 104 output numbers absent), 13 papers without a flag; of the 222 judged flags 70 are real, 152 not (precision 32 %). Countermeasures: 1,044 margin numbers removed from 10.1021_acs.chemmater.9b05116 (no other paper changes); 12 repairs (5 numbers replaced, 7 dropped lines restored), tested on the judged flags: 12 fixed, 0 broken. All 41 real errors stay detected (flagged, repaired or removed) |
+| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks written into it; margin line numbers of a line-numbered manuscript removed (`line_numbers.py`); body-number check (`body_check.py`: decoded text layer vs document.md per paragraph, both directions); two countermeasures on born-digital pages (`body_repair.py`: a number replaced from the text layer, a dropped line restored) | `document.md`; `body_flags` (one entry per mismatch: page, kind, number, text-layer line, output sentence, numbers on each side, line box and crop), `body_check` (counts, not-checkable reasons, line-number counts), `body_repairs` | 44 papers, 2026-10-13. 23,939 body lines read, 22,386 checked (median 97 % per paper, min 68 %); 1,075 lines not checkable (undecoded glyph), 160 (other), 22,022 rotated characters. Every body flag of the 44 papers judged by Claude Code on the line crop (388 flag keys over the passes: 119 real, 269 not errors), see ERRORS.md: 41 distinct real errors of Marker's body text in the 44 papers (10 in the 13 papers, 31 in the 31), 1.8 per 1,000 checked lines, found through numbers only. Final output: 224 flags (12 lines not found, 108 text-layer numbers missing, 104 output numbers absent), 13 papers without a flag; of the 222 judged flags 70 are real, 152 not (precision 32 %). Countermeasures: 1,044 margin numbers removed from 10.1021_acs.chemmater.9b05116 (no other paper changes); 12 repairs (5 numbers replaced, 7 dropped lines restored), tested on the judged flags: 12 fixed, 0 broken. All 41 real errors stay detected (flagged, repaired or removed). Handling: flag → review by the external vision model at the extraction stage (crop, output sentence, text-layer line), like flagged tables and differ equations; the judgements are the answer set `ingest/answers/body_flags.json` |
 | Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; the OpenAlex text when it has 50+ words and the extracted abstract is empty or has recall < 80 % against it | `abstract`, `abstract_source` | 44 of 44 right: 23 heading, 20 openalex_match, 1 openalex (10.1021_acs.langmuir.6b03119, whose abstract block is an image the band OCR could not read). How checked: the 13 papers on the page; of the 31, the 26 with a usable OpenAlex abstract (50+ words) by word recall against it (all 26 ≥ 90 %, script), the 5 without one (10.1016_j.ijpharm.2017.04.031, 10.1016_j.mee.2018.01.027, 10.1016_j.mee.2018.01.033, 10.1039_c5ta00205b, 10.1039_d4nr03749a) on the page on 2026-10-13 |
 | Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture; captions do not continue into a body paragraph; figures placed after all captions bound by page order | `captions` with `images` | 44 papers: every numbered caption has its image and text. How checked: the 13 papers on the page; the 31 by script (caption numbers, images, text against the text layer), the flagged items viewed on the page; 2 figures split into panel blocks keep one panel unbound (ERRORS.md) |
 | Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check against the decoded text layer (`glyph_codes.json`) + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `check_detail`, `crop` | 69 tables in 28 papers (page): 41 right, 28 wrong; the check flags 27 of the 28, misses 0, flags 7 right tables, 1 wrong table not checkable (rotated) |
@@ -37,15 +37,20 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 
 Paths: `ingest/marker/<id>/` (blocks.json, marker.md, document.md, images, structure.json, table crops,
 bands.json), `ingest/docling/<id>/equations.json`, `ingest/final/<id>/` (all gitignored; the body-flag crops are
-`final/<id>/figures/body_p<P>_<k>.png`). Progress:
+`final/<id>/figures/body_p<P>_<k>.png`). `ingest/answers/` (tracked): the answer set, Claude Code's page judgements
+with ids and verdicts only (tables.json, equations.json, body_flags.json). Progress:
 manifest column `marker` (ok | failed | blank); `--formulas` and `merge.py` write no column.
 `corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts, fetched once with
 `parse_docling.py --fetch-abstracts` (the only network call in ingest), used by the abstract rule and
 its fallback.
 
-Review of what ingest flags is not part of ingest: a flagged table (`check: flag`) and an equation pair
-with `status: differ` are resolved by an external vision-language model on the crop as a pre-processing
-step of the extraction stage (planned). Ingest only writes the flags, the reasons and the crops.
+Review of what ingest flags is not part of ingest: a flagged table (`check: flag`), an equation pair with
+`status: differ` and a body flag (`body_flags`) are resolved by an external vision-language model at the
+start of the extraction stage (planned), given the crop; for a body flag also the output sentence and the
+decoded text-layer line. Ingest only writes the flags, the reasons and the crops. Claude Code's page
+judgements are kept apart as the reference for that step, in `ingest/answers/` (tracked: ids and verdicts
+only, no paper text): `tables.json` (69 tables), `equations.json` (103 pairs of the 13 papers),
+`body_flags.json` (388 judged body flags); the review step is scored against them before it is used.
 
 ## Why Marker for text, figures, tables and the abstract
 
@@ -241,8 +246,13 @@ sentence (replaced a correct 55 by 155), pairs that differ in letters (turned E_
   `marker only`. 74 of 103 agree. A `differ` pair is decided at extract time (a person or a vision model on the crop).
 
 ### Review of flags (not part of ingest)
-A flagged table and a `differ` equation pair are resolved by an external vision-language model reading the crop,
-as a pre-processing step of the extraction stage (planned). Ingest writes the flag, the reasons and the crop path.
+A flagged table, a `differ` equation pair and a body flag are resolved by an external vision-language model at the
+start of the extraction stage (planned): it reads the crop, and for a body flag the output sentence and the decoded
+text-layer line, and decides whether the output is right, what the right value is, or that the item is a measurement
+artefact. Ingest writes the flag, the reasons, the tokens and the crop path; `body_repair.py` fixes only what a rule
+can fix without that review. The answer set in `ingest/answers/` (Claude Code's judgements of 2026-10-12/13: 69
+tables, 103 equation pairs, 388 body flags; ids and verdicts only) scores the review step before it is used: a review
+that disagrees with the answer set on more than a few items is not switched on.
 
 ### Docling stage (removed)
 The earlier Docling rules of this stage (figure/table binding, abstract, running lines, glyph repairs; change log
@@ -252,6 +262,11 @@ change log are historical.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
+
+- 2026-10-13 — Answer set `ingest/answers/` (tables 69, equation pairs 103, body flags 388: ids and verdicts of Claude Code's
+  page judgements, no paper text); body flags go to the same review step as flagged tables and differ equations (external
+  vision model at the extraction stage), scored against the answer set first; docs and CLAUDE.md updated; the user's plan
+  committed. Effect: documentation and data only, no pipeline output changed. — (hash: next line)
 
 - 2026-10-13 — Body text verification: `line_numbers.py` (margin line numbers removed, 1 paper), `body_check.py` measurement
   fixes (stacked indices, equation boxes, neighbouring units, duplicate lines, table rows, furniture both sides, author lines,
