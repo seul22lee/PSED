@@ -1,6 +1,6 @@
 # PSED v2 Plan
 
-Sep 30, 2026 · @Seul
+Sep 30, 2026 · updated Oct 13, 2026 · @Seul
 
 ## Purpose and scope
 
@@ -24,7 +24,7 @@ The schedule is not a constraint. The work is done properly, in order.
 1. **The competency questions cap the scope.** A feature that answers none of them is not built. A new need means adding a question first.
 2. **One data format.** Six tables, identical for the gold set and the pipeline output.
 3. **One place decides experiment identity.** A paper is not one experiment and a figure is not one experiment. The `resolve` stage is the only place this is judged.
-4. **LLM calls are made once per paper and cached.** Everything after extraction is deterministic code.
+4. **LLM calls are made once per paper and cached.** Everything after extraction is deterministic code. Ingest calls no external LLM; its two local vision models (Marker's OCR, Docling's formula reader) are not bit-for-bit reproducible, so each paper is converted once and the result is kept.
 5. **An unknown quantity is not an error.** It keeps its original label and unit and is listed for later.
 6. **Verification is the gold score only.** No count-pinning tests, no re-audits, no manual inspection of every output.
 7. **Simple is best.** The simplest thing that answers the competency questions wins.
@@ -83,12 +83,16 @@ A corpus stage plus four processing stages replace the 13 in v1.
 | Stage | What it does | How |
 | --- | --- | --- |
 | 0. corpus | Decide which papers are in, get their PDFs | Manifest CSV + OpenAlex lookup + downloads; see Corpus management |
-| ingest | PDF to body text, captions, tables, panel crops | Docling (v1 code, re-run on every in-scope PDF) plus its own caption binding; known limits in `CLAUDE.md` |
-| extract | Per panel: series, points, candidate conditions with evidence sentences | LLM, cached |
+| ingest | PDF to body text, abstract, captions, figure crops, tables, equations, with flags where the output may be wrong | Marker (body, abstract, figures, captions, tables) and Docling (equations only, compared with Marker's); rule checks against the PDF text layer; no LLM. Details and numbers in `ingest/INGEST.md`, remaining errors in `ingest/ERRORS.md` |
+| extract | Pre-processing: resolve what ingest flagged. Then per panel: series, points, candidate conditions with evidence sentences | Pre-processing by an external vision model on the crops (see below); extraction by LLM; both cached |
 | resolve | Reads the whole paper, builds the experiment list, links series and conditions to experiments | One LLM call per paper plus deterministic rules; the only judgment point |
 | normalize | Maps labels to the ontology, converts units, applies normalizing transforms | Deterministic |
 
 The comparison view and the twin read the tables that `normalize` writes. They add no new data layer.
+
+**Ingest output.** One folder per paper (`ingest/final/<paper_id>/`): body text, abstract, figures with captions and crops, tables with a rule check (`ok`, `flag` with reasons, or `not checkable`) and a crop, and equations from both tools marked `agree`, `differ`, or found by one tool only. On the 44 papers with a PDF (Oct 13, 2026): 69 tables, 28 of them wrong when judged on the page, all 28 flagged; 321 equations, 197 agree.
+
+**Flag review (start of extract).** A flagged table and an equation that is not `agree` are resolved by an external vision model before extraction. The model is constrained: for an equation it chooses between the two candidates or writes the formula when both are wrong; for a table it corrects only what the check flagged, with the decoded PDF text of the table area as reference. The original output is kept beside the correction. Before use, the step is scored on the ingest answer set: the 69 page-judged tables and the 103 page-judged equation pairs. A sample of its corrections is checked by the expert.
 
 Two lessons from v1 are fixed in the design. Image panels are extracted as panels in their own right, so a figure that mixes a plot and a TEM image no longer loses the image. Points interpolated along a drawn line are never turned into separate experiments.
 
@@ -157,7 +161,7 @@ Papers added by hand are marked `extra`.
 2. Download open PDFs directly.
 3. Get the rest through Northwestern access (publisher TDM API where available, otherwise Zotero "Find Available PDF").
 
-OA status is a column, not a filter. All in-scope papers are read and extracted. Only extracted data (conditions, digitized points, provenance) is published; PDFs, full text, and figure crops are redistributed only for CC-licensed papers. `psed_v2/corpus/raw/` keeps every collected PDF, in scope or not; Docling (`psed_v2/ingest/`) parses in-scope papers only. PDFs, Docling output, and figure crops are never committed to git.
+OA status is a column, not a filter. All in-scope papers are read and extracted. Only extracted data (conditions, digitized points, provenance) is published; PDFs, full text, and figure crops are redistributed only for CC-licensed papers. `psed_v2/corpus/raw/` keeps every collected PDF, in scope or not; ingest (`psed_v2/ingest/`) parses in-scope papers only. PDFs, ingest output, and figure crops are never committed to git.
 
 **Tiers.**
 
@@ -178,7 +182,7 @@ Dev and Held-out papers may come from outside the two reviews; such papers are a
 
 **Papers without gold are not checked one by one.** They are judged by the corpus report statistics and a skim of 10 randomly chosen series.
 
-**Manifest.** One CSV lists every candidate. The first columns are `doi`, `title`, `year`, `journal`, `in_scope`, `pdf_status`, then one mark per source (`popov`, `cremers`, `cremers_citing`: "O" or empty) and the evidence for each (`popov_ref`; `cremers_ref` and `cremers_context`; `cites_cremers_keywords`; `extra_reason`). It also records PDF source, OA status, license, and the decision on each paper (`status`, `reason`, `decision` auto or manual, `decided_on`). Excluded papers keep their rows. Pipeline progress is one column per stage (`docling`: ok, failed, or empty for not run); no separate progress files.
+**Manifest.** One CSV lists every candidate. The first columns are `doi`, `title`, `year`, `journal`, `in_scope`, `pdf_status`, then one mark per source (`popov`, `cremers`, `cremers_citing`: "O" or empty) and the evidence for each (`popov_ref`; `cremers_ref` and `cremers_context`; `cites_cremers_keywords`; `extra_reason`). It also records PDF source, OA status, license, and the decision on each paper (`status`, `reason`, `decision` auto or manual, `decided_on`). Excluded papers keep their rows. Pipeline progress is one column per stage (`marker`: ok, failed, or empty for not run); no separate progress files.
 
 ## Work order
 
@@ -186,7 +190,7 @@ Nine phases (0 to 8) run in sequence; each ends when its done criterion is met.
 
 | Phase | Work | Done when |
 | --- | --- | --- |
-| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel |
+| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs; ingest the PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel. Ingest done for the 44 in-scope papers with a PDF (Oct 13, 2026); new PDFs are ingested as they arrive |
 | 1 | Gold set: Ylilammi pilot, then the five Dev papers | Format fixed; all five papers checked by the expert |
 | 2 | Ontology v0 | Every quantity in the gold set is mapped or declared native |
 | 3 | Convert v1 output to the six tables and score it | Baseline score exists; list of reusable v1 extraction results exists |
@@ -236,7 +240,7 @@ v1 is frozen with a tag and kept for reference. v2 starts in a new directory.
 
 | v1 part | In v2 |
 | --- | --- |
-| Docling parsing and figure crops (44 papers) | Code reused (`psed_v2/ingest/parse_docling.py`); re-run on every in-scope paper. v1 outputs are not used |
+| Docling parsing and figure crops (44 papers) | Replaced. Ingest uses Marker for body, figures, captions and tables, and Docling only for equations (`psed_v2/ingest/`). v1 code and outputs are not used |
 | LLM extraction results (`figure_data.json`, `records.json`, 41 papers) | Reused as the starting input; figures with image panels or interpolated line curves are re-extracted |
 | Unit parser and dimension check (`units.py`) | Kept |
 | Condition scope and evidence (ConditionAssertion) | Idea kept, implementation simplified into the `conditions` table |
@@ -254,5 +258,6 @@ v1 is frozen with a tag and kept for reference. v2 starts in a new directory.
 - [ ] Confirm the five Dev papers.
 - [ ] Choose the three Held-out papers.
 - [ ] Choose the LLM for gold drafts and the LLM for the pipeline (they must differ).
+- [ ] Choose the external vision model for flag review (pipeline side, so it must differ from the gold draft model) and its passing score on the ingest answer set.
 - [ ] Confirm the competency question list, or add to it.
 - [ ] Set the Phase 4 target score after the Phase 3 baseline.

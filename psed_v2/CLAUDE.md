@@ -22,7 +22,9 @@ psed_v2/
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
   ingest/marker/<paper_id>/  # gitignored: document.md + images, blocks.json, bands.json, structure.json, table crops (paper-derived)
   ingest/structure_marker.py # tracked: structure.json from Marker's blocks (captions, tables with rule check, equations, abstract)
-  ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/
+  ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/ (runs body_check.py)
+  ingest/body_check.py      # tracked: body-number check, decoded text layer vs document.md per paragraph -> body_flags
+  ingest/glyph_codes.json   # tracked: per-font decoding tables for the PDF text layer, with evidence
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
   ingest/reports/           # gitignored: review HTML reports (e.g. the Docling-vs-Marker disagreement report)
   ingest/INGEST.md, ERRORS.md # tracked: what ingest extracts and how; the remaining errors per item
@@ -37,7 +39,8 @@ psed_v2/
   `LLAMA_CPP_BINARY=~/opt/llama.cpp/llama-b11574/llama-server`, and both llama.cpp folders
   (`~/opt/llama.cpp/llama-b11574`, `~/opt/llama.cpp/cudart-llama-b11574-bin-ubuntu-cuda-12.8-x64`)
   on `LD_LIBRARY_PATH`.
-- Marker output is not fully deterministic across runs: run once per paper and keep the result.
+- Marker output is not deterministic across runs (llama.cpp backend, no fixed seed or temperature): run once per
+  paper and keep the result; the 44 outputs are not reproducible bit for bit.
 
 ## Rules
 

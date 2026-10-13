@@ -2,7 +2,9 @@
 
 What is still wrong in the final output (`ingest/final/<paper_id>/`) after the rules of 2026-10-12/13, on
 the 44 in-scope papers with a PDF (13 checked item by item on 2026-10-12, the other 31 on 2026-10-13), judged
-on the PDF pages and crops by Claude Code (commits in the change log of `INGEST.md`). Per error type: an
+on the PDF pages and crops by Claude Code (commits in the change log of `INGEST.md`); the body rows marked
+"text layer" were found by `body_flags` on 2026-10-13 and judged on the decoded text layer against the output
+text (script), not on the page, unless a crop is named. Per error type: an
 example, the count, whether a rule check flags it, and how it is handled. Handling: **flag → review** = the
 `check` field of the table entry is `flag`; **differ → review** = the equation pair has `status: differ`.
 Both are resolved by an external vision-language model reading the crop, as a pre-processing step of the
@@ -15,12 +17,28 @@ in `ingest/reports/review_44.html`, the body/abstract/figure/caption checks of t
 
 | Error | Example | Count (44 papers) | Flagged | Handling |
 |---|---|---|---|---|
-| A sentence of a line-numbered manuscript page dropped | 10.1021_acs.chemmater.9b05116 p 33: "The mean pore radii of the porous films all lie between approximately 0.9 nm and 1.6 nm." | 1 | no | known limit |
-| A decimal point read as a comma, a digit read as a letter | 10.1021_acs.chemmater.2c01154: "a-MoS3,0" for a-MoS3.0, "SP4-4004STRS" for SP4-40045TRS | 3 numbers | no | known limit |
-| Angle brackets dropped by Marker's renderer ("<001>" written "001") | 10.1002_adem.202201901 p 10 | 1 | no | known limit |
+| A sentence of a line-numbered manuscript page dropped | 10.1021_acs.chemmater.9b05116 p 33: "The mean pore radii of the porous films all lie between approximately 0.9 nm and 1.6 nm." | 1 | yes: `body_flags` "line not found in the output" | flag → review |
+| A decimal point read as a comma, a digit read as a letter | 10.1021_acs.chemmater.2c01154: "a-MoS3,0" for a-MoS3.0, "SP4-4004STRS" for SP4-40045TRS | 3 numbers | yes: `body_flags` (MoS3.0 missing / MoS3,0 absent; 40045 missing / 4004STRS absent) | flag → review |
+| Angle brackets rendered as math: "<001>" written "< 0.01 >" (the 2026-10-12 row said "001") | 10.1002_adem.202201901 p 10 | 1 | yes: `body_flags` (001 missing, 0.01 absent) | flag → review |
 | Two-column page read right column first for one block | 10.1186_s11671-015-0872-9 p 4 | 1 page | no | known limit |
+| Margin line numbers of a line-numbered manuscript merged into the text (text layer) | 10.1021_acs.chemmater.9b05116, every page | 761 numbers | yes: `body_flags` "number of the output paragraph absent from the text layer" | flag → review; the KB must drop them |
+| A digit or letter changed inside a formula, a label or a unit (text layer; the MoS2 case also on the crop) | 10.1021_acs.chemmater.2c01154: Mo(N^tBu)2 → Mo(N^4Bu)2 (p 2, 8), E₂¹g → E_1g (p 3), Mo 3d5/2 → 3d3/2 (p 4), "MoS2, TiS2, and WS2" → MoS_2.2, TiS_2.2, WS_2.2 (p 9); 10.1039_d0cp03358h GPC_I → GPC_1 (p 11); 10.1039_d4cp00131a "c (-)" → "c (s^-1)" (p 2), footnote mark ^a → ^2 (p 4); 10.1021_acs.jpcc.5c06502 "Figure 5f" → "Figure Sf" (p 6), g/cm^-3 → g/cm^3 twice (p 5); 10.1116_6.0003182 "material^44" → "^14" (p 4); 10.1021_acs.chemmater.1c03164 n_0 → n (p 1) | 13 | yes: `body_flags` | flag → review |
+| A citation number rewritten or dropped (text layer) | 10.1039_d0cp03358h: "^1,2" → "^12" (p 1), "(2017).^54" → "(2017)." (p 11) | 2 | yes: `body_flags` | flag → review |
+| A sentence, paragraph or caption sentence dropped (text layer, absence confirmed in document.md) | 10.1039_d0cp03358h p 8 ("Fig. 11a shows the effect of TMA pulse time … Series E in Table 1 …"), p 9 (caption sentence "Parameter values: T = 300 °C, t_P = 0.10 s, p_A0 = 65 Pa …"); 10.1063_1.5028178 p 6 ("… channel height values are shown in Fig. 4."); 10.1021_acs.chemmater.9b05116 p 22 (Table 2 caption) | 4 | yes: `body_flags` ("line not found" or the numbers missing) | flag → review |
 | An abstract block rendered as an image whose band OCR returns no text | 10.1021_acs.langmuir.6b03119 p 1 | 1 | `bands.json` (applied: false) | the abstract field falls back to OpenAlex; the paragraph stays missing from the body |
 | Author lines and "Check for updates" badges rendered as images, then OCR'd into the text | 25 band repairs in 20 papers: 2 captions, 4 abstracts, 1 table, 11 author lines, 7 badges | author lines and badges | recorded in `bands.json` | known limit (text added, nothing lost) |
+
+`body_flags` (2026-10-13, 44 papers, script): 1,154 flags, 13 "line not found", 163 text-layer numbers missing from the
+output paragraph, 978 output numbers absent from the text layer (761 of them the margin line numbers of 9b05116); 10 papers
+without a flag. Against the page verdicts: 3 of 3 known real errors caught, 0 of the 41 known not-errors flagged. Not
+checkable, reported per paper with the reason: 2,726 lines with an undecoded symbol-font glyph (AdvOT private-use
+characters, AdvP4C4E74 cids, AdvPSMP10 letters: RSC, AIP and Wiley body text), 72 garbled lines of the MDPI duplicate
+layer, 192 output sentences the layer does not cover, 37 paragraphs shared with a not-checkable unit, 22,022 rotated
+characters. False flags remain (samples, not counted over the 44): stacked sub/superscripts written in another order
+(O₂⁺, E₂¹g, n_0^t), inline equations kept in the output paragraph while their Equation box is excluded on the layer
+side (10.3762_bjnano.5.25), a paragraph straddling a column break, enumeration numbers of a split paragraph
+(10.1016_j.mee.2018.01.027), the MDPI duplicate-layer residue (74 flags). The rows above list the flags that were judged;
+the other flags were not reviewed.
 
 ## Abstract (Marker, OpenAlex fallback)
 
@@ -81,7 +99,8 @@ Marker's own equations were not re-recognised: on its own box at 216 dpi that fi
 
 | Limit | Example | Effect | Handling |
 |---|---|---|---|
-| Duplicated text layer: caption regions and some paragraphs drawn twice in two fonts | 10.3390_separations11010024 (12 % of the characters on p 7; no other paper of the 44) | Docling repeated those captions (not used); the table check sees stray letters (one false flag) | known limit |
+| Duplicated text layer: caption regions and some paragraphs drawn twice, the hidden copy at the page's top edge or shifted over other lines | 10.3390_separations11010024 (12 % of the characters on p 7; no other paper of the 44) | Docling repeated those captions (not used); the table check sees stray letters (one false flag); the body check drops 6,649 off-page and 1,183 shifted duplicate characters, reports 72 garbled lines as not checkable and still raises 74 flags, mostly false | known limit |
+| Symbol-font glyphs of body text without a decoding (AdvOT private-use characters, AdvP4C4E74 cids, AdvPSMP10 letters) | RSC, AIP, Wiley papers (most: 10.1039_c7ta03257a, c5ta00205b, 10.1021_acsnano.5b03429, 10.1039_c3ra42928h) | 2,726 body lines not checkable by the body check (reason and count per paper in `body_check`) | known limit; decode on evidence when needed |
 | Symbol fonts whose text layer gives letters (AdvPi2 "y" for θ) or subset glyph codes ((cid:3) is − in one paper and × in another) | RSC, AIP, Elsevier tables of 12 papers | decoded per font family / per embedded subset with evidence (`glyph_codes.json`); a code without a table makes the table "not checkable" | — |
 | A rotated table | 10.1039_d0cp03358h Table 1 | not checkable (Marker read it; the header is shifted) | review |
 | Figures placed after all captions (manuscript) | 10.1116_1.5116136 | bound by page order | — |

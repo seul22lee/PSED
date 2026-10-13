@@ -13,7 +13,9 @@ parse_docling.py --formulas). Writes:
     final/<paper_id>/structure.json    {abstract, abstract_source, sections, n_pictures, n_tables,
                                         captions[...] as Marker's structure.json (tables carry check,
                                         check_reasons, crop), equations[{page, bbox [l, t, r, b] from
-                                        the top-left, number, docling, marker, status}], sources}
+                                        the top-left, number, docling, marker, status}], body_flags
+                                        and body_check (body_check.py: numbers of the decoded text
+                                        layer vs document.md, per paragraph, with line crops), sources}
     final/<paper_id>/figures/          the image files the captions and table crops refer to
 
 Equations: Docling's formula items and Marker's equations are paired on the same page by their
@@ -150,7 +152,12 @@ def merge_one(paper_id):
             heights[p] = pdf[p - 1].get_size()[1]
         return heights[p]
     equations = pair_equations(docling_eqs, st.get("equations", []), page_height)
-    final = {"paper_id": paper_id,
+    import body_check
+    tree = json.loads((md_dir / "blocks.json").read_text())
+    body = body_check.check_body(RAW / f"{paper_id}.pdf", (out / "document.md").read_text(), tree, out / "figures")
+    for f in body["body_flags"]:
+        f["crop"] = f"figures/{f['crop']}"
+    final = {"paper_id": paper_id, "body_flags": body["body_flags"], "body_check": body["body_check"],
              "abstract": st.get("abstract", ""), "abstract_source": st.get("abstract_source"),
              "sections": st.get("sections", []), "n_pictures": st.get("n_pictures"), "n_tables": st.get("n_tables"),
              "captions": captions, "equations": equations,
@@ -177,7 +184,9 @@ def main(argv):
         f = merge_one(pid)
         eq = f["equations"]
         n_flag = sum(1 for c in f["captions"] if c["kind"] == "table" and c.get("check") == "flag")
-        print(f"[merge] {pid}: {sum(1 for c in f['captions'] if c['kind'] != 'table')} figure captions, "
+        bc = f["body_check"]["counts"]
+        print(f"[merge] {pid}: body {bc.get('checked', 0)} lines checked, {bc.get('flags', 0)} flags, {bc.get('not checkable: undecoded glyph', 0)} not checkable; "
+              f"{sum(1 for c in f['captions'] if c['kind'] != 'table')} figure captions, "
               f"{sum(1 for c in f['captions'] if c['kind'] == 'table')} tables ({n_flag} flagged), "
               f"{len(eq)} equations ({sum(1 for e in eq if e['status'] == 'agree')} agree, "
               f"{sum(1 for e in eq if e['status'] == 'differ')} differ, "
