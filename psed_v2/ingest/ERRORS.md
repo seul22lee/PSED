@@ -43,20 +43,28 @@ blocked before.
 | An abstract block rendered as an image whose band OCR returns no text | 10.1021_acs.langmuir.6b03119 p 1 | 1 | 31 | `bands.json` (applied: false) | the abstract field falls back to OpenAlex; the paragraph stays missing from the body |
 | Author lines and "Check for updates" badges rendered as images, then OCR'd into the text | 25 band repairs in 20 papers: 2 captions, 4 abstracts, 1 table, 11 author lines, 7 badges | author lines and badges | both | recorded in `bands.json` | known limit (text added, nothing lost) |
 
-`body_flags` in the final output (2026-10-13, 44 papers): 244 flags (12 "line not found", 120 text-layer numbers
-missing from the output paragraph, 112 output numbers absent from the text layer), 12 papers without a flag; 77 of the 244
-judged flags are real (precision 32 %), 167 are not errors: lines of one paragraph or caption in other units or inside a
+`body_flags` in the final output (2026-10-13, 44 papers): 230 flags (12 "line not found", 110 text-layer numbers
+missing from the output paragraph, 104 output numbers absent from the text layer, 4 "letters of the text layer differ from
+the output"), 12 papers without a flag; 77 of the 219 judged flags are real (precision 35 %), 142 are not errors, 11
+flags are new after the lookup of short units and garbled lines and the subscript rule (not yet judged, listed with their
+crops in review_body.html): lines of one paragraph or caption in other units or inside a
 figure box (35), equations and formulas kept in the paragraph by Marker while their boxes are excluded (17 + 5 in pass 2),
 undecoded or garbled glyphs (16), the MDPI duplicate layer (14), layer tokenisation of subscripts, stacked indices, gaps
 and line breaks (15 + 5), furniture (7), table footnotes (4), count mismatches (2 + 2), other (12 + 2). Pass 2 (the glyph
 table extended, 1,073 more lines checked) raised 28 new flags: 9 real, 19 not errors, 4 of which vanished after the
-AdvPi1 "+" glyph was decoded as ± (on the crop). Besides these, 503 flags of kind "not checkable" name the lines the check
-cannot compare, with the reason and the line crop, so that the flag review sees them like a not-checkable table; together
-they cover every unchecked line (484 of 23,936; checked per paper): 380 lines of units under 4 words (headings, labels and
-fragments: SectionHeader 256, Text 69, outside the blocks 52, Caption 3; 82 carry a digit, 298 none; listed by block type
-in review_body.html), 98 garbled lines of the overlapping duplicate layer (74 in 10.3390_separations11010024, 16 in
-10.1016_j.mee.2018.01.027, 8 in 7 papers), 20 equation or weak lines holding undecoded delimiter pieces (they block the
-extra direction of 38 paragraphs), 4 units too short to locate, 1 unit of 2 lines with undecoded pieces. Countermeasures
+AdvPi1 "+" glyph was decoded as ± (on the crop). Besides these, 268 flags of kind "not checkable" name what the check
+cannot compare, with the reason and a crop, so that the flag review sees them like a not-checkable table; together they
+cover every unchecked layer line (156 of 23,931) and every output unit whose numbers are not compared (checked per paper).
+Layer side: 67 lines of units under 4 words that the lookup near the previous match did not find in the output (headings
+Marker dropped, labels, fragments: SectionHeader 24, Text 5, outside the blocks 38, Caption 0; 7 carry a digit; 380 before
+the lookup, 303 found and checked), 83 garbled lines of the overlapping duplicate layer (82 in 10.3390_separations11010024
+and 1 in 10.1063_5.0168768; 98 before the lookup, which recovered the 16 spaceless lines of 10.1016_j.mee.2018.01.027 and
+5 others, 11 without spaces and 10 by similarity), 20 equation or weak lines holding undecoded delimiter pieces, 4 units too short to locate, 1 unit of 2 lines
+with undecoded pieces. Output side: 55 sentences the layer lines of their paragraph do not cover (a paragraph spanning a
+column or page break into another unit, text Marker added) and 38 paragraphs blocked by an undecoded glyph in an equation
+or neighbour line; both carry the output text, the numbers left unchecked and a crop of the Marker block. Not flagged: 1,574
+output paragraphs with numbers that no layer unit matches (1,049 at or after the References heading, the rest display
+equations, author and furniture lines and paragraphs of excluded blocks), counted in `body_check.counts`. Countermeasures
 (`body_repair.py`, 2026-10-13): 12 repair records in 8 papers, 0 undone by the recheck, each viewed on its crop: 8 distinct
 errors corrected (<001>, 3d_5/2, g/cm^-3 at both occurrences, ^4,35,36, four dropped lines or captions), 1 partly (the
 Figure 1 caption of 10.1186_s11671-015-0872-9: 2 of 3 lines restored, the middle line stays flagged); the other 35 errors
@@ -72,50 +80,50 @@ checkable by cause):
 
 | paper | body lines read | checked | share | not checkable: undecoded glyph (lines; fonts) | rotated (characters) | other (lines/sentences) | flags | not-checkable flags | repairs |
 |---|---|---|---|---|---|---|---|---|---|
-| 10.1002_adem.202201901 | 749 | 738 | 99 % | 0 | 3759 | 13 | 5 | 15 | 1 |
-| 10.1007_s12274-010-0066-9 | 352 | 348 | 99 % | 0 | 0 | 4 | 0 | 4 | 0 |
-| 10.1016_j.ijpharm.2017.04.031 | 635 | 627 | 99 % | 0 | 0 | 9 | 4 | 8 | 0 |
-| 10.1016_j.mee.2018.01.027 | 269 | 250 | 93 % | 0 | 0 | 24 | 3 | 19 | 0 |
-| 10.1016_j.mee.2018.01.033 | 217 | 211 | 97 % | 0 | 0 | 6 | 0 | 6 | 0 |
-| 10.1016_j.sse.2022.108584 | 363 | 357 | 98 % | 0 | 44 | 6 | 0 | 6 | 0 |
-| 10.1021_acs.chemmater.1c03164 | 944 | 933 | 99 % | 0 | 0 | 11 | 1 | 11 | 1 |
-| 10.1021_acs.chemmater.2c01154 | 926 | 917 | 99 % | 0 | 1625 | 13 | 15 | 9 | 1 |
-| 10.1021_acs.chemmater.6c00816 | 1198 | 1190 | 99 % | 0 | 2520 | 9 | 5 | 8 | 0 |
-| 10.1021_acs.chemmater.9b05116 | 754 | 743 | 99 % | 0 | 297 | 15 | 43 | 11 | 2 |
-| 10.1021_acs.jpcc.5c06502 | 676 | 667 | 99 % | 0 | 1536 | 9 | 10 | 9 | 2 |
-| 10.1021_acs.jpcc.9b08176 | 367 | 362 | 99 % | 0 | 822 | 6 | 9 | 5 | 0 |
-| 10.1021_acs.jpclett.4c03545 | 269 | 262 | 97 % | 0 | 147 | 7 | 0 | 7 | 0 |
-| 10.1021_acs.langmuir.6b03119 | 503 | 497 | 99 % | 0 | 1136 | 6 | 4 | 6 | 0 |
-| 10.1021_acsami.0c06879 | 481 | 476 | 99 % | 0 | 201 | 5 | 0 | 5 | 0 |
-| 10.1021_acsami.0c22121 | 301 | 293 | 97 % | 0 | 0 | 10 | 7 | 8 | 0 |
-| 10.1021_acsnano.5b03429 | 473 | 470 | 99 % | 0 | 980 | 4 | 3 | 3 | 0 |
-| 10.1038_s41467-022-35428-6 | 540 | 532 | 99 % | 0 | 30 | 9 | 5 | 9 | 1 |
-| 10.1038_srep18401 | 226 | 222 | 98 % | 0 | 0 | 7 | 0 | 4 | 0 |
-| 10.1039_c3ra42928h | 318 | 311 | 98 % | 0 | 0 | 7 | 0 | 7 | 0 |
-| 10.1039_c4nr05049e | 374 | 369 | 99 % | 0 | 0 | 5 | 0 | 5 | 0 |
-| 10.1039_c5ta00205b | 542 | 535 | 99 % | 0 | 0 | 7 | 2 | 7 | 0 |
-| 10.1039_c7ta03257a | 602 | 591 | 98 % | 0 | 0 | 11 | 0 | 11 | 0 |
-| 10.1039_d0cp03358h | 739 | 731 | 99 % | 0 | 2684 | 8 | 18 | 8 | 0 |
-| 10.1039_d1cp04758b | 796 | 792 | 99 % | 0 | 0 | 9 | 23 | 4 | 0 |
-| 10.1039_d3cp01829f | 690 | 681 | 99 % | 0 | 0 | 9 | 6 | 9 | 0 |
-| 10.1039_d3cp05639b | 631 | 623 | 99 % | 0 | 0 | 8 | 12 | 8 | 0 |
-| 10.1039_d4cp00131a | 997 | 988 | 99 % | 0 | 0 | 10 | 5 | 9 | 2 |
-| 10.1039_d4nr03749a | 674 | 664 | 99 % | 0 | 0 | 10 | 2 | 10 | 0 |
+| 10.1002_adem.202201901 | 749 | 749 | 100 % | 0 | 3759 | 2 | 5 | 15 | 1 |
+| 10.1007_s12274-010-0066-9 | 352 | 351 | 100 % | 0 | 0 | 2 | 0 | 2 | 0 |
+| 10.1016_j.ijpharm.2017.04.031 | 635 | 635 | 100 % | 0 | 0 | 1 | 4 | 1 | 0 |
+| 10.1016_j.mee.2018.01.027 | 269 | 269 | 100 % | 0 | 0 | 4 | 2 | 4 | 0 |
+| 10.1016_j.mee.2018.01.033 | 217 | 217 | 100 % | 0 | 0 | 0 | 0 | 0 | 0 |
+| 10.1016_j.sse.2022.108584 | 363 | 363 | 100 % | 0 | 44 | 0 | 0 | 0 | 0 |
+| 10.1021_acs.chemmater.1c03164 | 944 | 941 | 100 % | 0 | 0 | 3 | 1 | 3 | 1 |
+| 10.1021_acs.chemmater.2c01154 | 926 | 925 | 100 % | 0 | 1625 | 5 | 15 | 5 | 1 |
+| 10.1021_acs.chemmater.6c00816 | 1198 | 1197 | 100 % | 0 | 2520 | 2 | 5 | 2 | 0 |
+| 10.1021_acs.chemmater.9b05116 | 754 | 751 | 100 % | 0 | 297 | 7 | 41 | 7 | 2 |
+| 10.1021_acs.jpcc.5c06502 | 676 | 674 | 100 % | 0 | 1536 | 2 | 10 | 2 | 2 |
+| 10.1021_acs.jpcc.9b08176 | 367 | 364 | 99 % | 0 | 822 | 4 | 8 | 4 | 0 |
+| 10.1021_acs.jpclett.4c03545 | 269 | 269 | 100 % | 0 | 147 | 0 | 0 | 0 | 0 |
+| 10.1021_acs.langmuir.6b03119 | 502 | 499 | 99 % | 0 | 1136 | 3 | 0 | 3 | 0 |
+| 10.1021_acsami.0c06879 | 481 | 481 | 100 % | 0 | 201 | 0 | 0 | 0 | 0 |
+| 10.1021_acsami.0c22121 | 301 | 301 | 100 % | 0 | 0 | 2 | 7 | 2 | 0 |
+| 10.1021_acsnano.5b03429 | 473 | 473 | 100 % | 0 | 980 | 1 | 3 | 1 | 0 |
+| 10.1038_s41467-022-35428-6 | 540 | 540 | 100 % | 0 | 30 | 1 | 5 | 5 | 1 |
+| 10.1038_srep18401 | 226 | 226 | 100 % | 0 | 0 | 3 | 0 | 3 | 0 |
+| 10.1039_c3ra42928h | 318 | 318 | 100 % | 0 | 0 | 0 | 0 | 0 | 0 |
+| 10.1039_c4nr05049e | 374 | 373 | 100 % | 0 | 0 | 1 | 0 | 1 | 0 |
+| 10.1039_c5ta00205b | 542 | 540 | 100 % | 0 | 0 | 2 | 2 | 2 | 0 |
+| 10.1039_c7ta03257a | 602 | 602 | 100 % | 0 | 0 | 0 | 0 | 0 | 0 |
+| 10.1039_d0cp03358h | 739 | 739 | 100 % | 0 | 2684 | 0 | 14 | 0 | 0 |
+| 10.1039_d1cp04758b | 796 | 794 | 100 % | 0 | 0 | 7 | 23 | 7 | 0 |
+| 10.1039_d3cp01829f | 690 | 690 | 100 % | 0 | 0 | 0 | 6 | 0 | 0 |
+| 10.1039_d3cp05639b | 631 | 628 | 100 % | 0 | 0 | 3 | 12 | 3 | 0 |
+| 10.1039_d4cp00131a | 997 | 996 | 100 % | 0 | 0 | 2 | 5 | 2 | 2 |
+| 10.1039_d4nr03749a | 674 | 673 | 100 % | 0 | 0 | 1 | 2 | 1 | 0 |
 | 10.1063_1.2338776 | 277 | 277 | 100 % | 0 | 92 | 0 | 3 | 0 | 0 |
-| 10.1063_1.5028178 | 410 | 403 | 98 % | 0 | 171 | 8 | 1 | 7 | 0 |
-| 10.1063_5.0168768 | 308 | 303 | 98 % | 0 | 126 | 9 | 2 | 7 | 0 |
-| 10.1093_nsr_nwaf247 | 849 | 840 | 99 % | 0 | 1730 | 9 | 0 | 14 | 0 |
-| 10.1116_1.4892385 | 493 | 483 | 98 % | 0 | 184 | 12 | 1 | 10 | 0 |
-| 10.1116_1.5116136 | 202 | 196 | 97 % | 0 | 3213 | 6 | 5 | 6 | 0 |
-| 10.1116_6.0001094 | 898 | 879 | 98 % | 2 (AdvP4C4E46 4) | 0 | 18 | 8 | 25 | 0 |
-| 10.1116_6.0001679 | 236 | 230 | 97 % | 0 | 0 | 9 | 1 | 6 | 0 |
-| 10.1116_6.0002804 | 423 | 413 | 98 % | 0 | 189 | 10 | 0 | 10 | 0 |
-| 10.1116_6.0002993 | 382 | 372 | 97 % | 0 | 168 | 10 | 2 | 10 | 0 |
-| 10.1116_6.0003182 | 719 | 712 | 99 % | 0 | 252 | 8 | 3 | 7 | 0 |
-| 10.1149_2.067203jes | 721 | 707 | 98 % | 0 | 116 | 18 | 14 | 15 | 0 |
-| 10.1186_s11671-015-0872-9 | 271 | 262 | 97 % | 0 | 0 | 9 | 6 | 9 | 2 |
-| 10.3390_separations11010024 | 646 | 512 | 79 % | 0 | 0 | 139 | 16 | 134 | 0 |
-| 10.3762_bjnano.5.25 | 495 | 483 | 98 % | 0 | 0 | 13 | 0 | 12 | 0 |
+| 10.1063_1.5028178 | 410 | 410 | 100 % | 0 | 171 | 1 | 1 | 1 | 0 |
+| 10.1063_5.0168768 | 308 | 307 | 100 % | 0 | 126 | 5 | 2 | 13 | 0 |
+| 10.1093_nsr_nwaf247 | 849 | 849 | 100 % | 0 | 1730 | 0 | 0 | 9 | 0 |
+| 10.1116_1.4892385 | 493 | 493 | 100 % | 0 | 184 | 2 | 1 | 2 | 0 |
+| 10.1116_1.5116136 | 202 | 202 | 100 % | 0 | 3213 | 1 | 5 | 1 | 0 |
+| 10.1116_6.0001094 | 894 | 892 | 100 % | 2 (AdvP4C4E46 4) | 0 | 1 | 7 | 22 | 0 |
+| 10.1116_6.0001679 | 236 | 235 | 100 % | 0 | 0 | 4 | 1 | 4 | 0 |
+| 10.1116_6.0002804 | 423 | 416 | 98 % | 0 | 189 | 7 | 3 | 7 | 0 |
+| 10.1116_6.0002993 | 382 | 382 | 100 % | 0 | 168 | 0 | 2 | 0 | 0 |
+| 10.1116_6.0003182 | 719 | 719 | 100 % | 0 | 252 | 1 | 3 | 1 | 0 |
+| 10.1149_2.067203jes | 721 | 720 | 100 % | 0 | 116 | 5 | 7 | 9 | 0 |
+| 10.1186_s11671-015-0872-9 | 271 | 271 | 100 % | 0 | 0 | 0 | 6 | 0 | 2 |
+| 10.3390_separations11010024 | 646 | 529 | 82 % | 0 | 0 | 123 | 19 | 123 | 0 |
+| 10.3762_bjnano.5.25 | 495 | 495 | 100 % | 0 | 0 | 1 | 0 | 1 | 0 |
 
 The text layer of 10.1116_1.5116136 (page box from −92) and the cover-page "Reference" heading of the same paper, and the
 units of 10.1116_6.0002804 and 10.1039_d1cp04758b matching paragraphs after the References heading, had stopped the
@@ -180,7 +188,7 @@ Marker's own equations were not re-recognised: on its own box at 216 dpi that fi
 
 | Limit | Example | Effect | Handling |
 |---|---|---|---|
-| Duplicated text layer: caption regions and some paragraphs drawn twice, the hidden copy at the page's top edge or shifted over other lines | 10.3390_separations11010024 (12 % of the characters on p 7; no other paper of the 44) | Docling repeated those captions (not used); the table check sees stray letters (one false flag); the body check drops 6,649 off-page and 1,183 shifted duplicate characters, reports 72 garbled lines as not checkable and still raises 74 flags, mostly false | known limit |
+| Duplicated text layer: caption regions and some paragraphs drawn twice, the hidden copy at the page's top edge or shifted over other lines | 10.3390_separations11010024 (12 % of the characters on p 7; no other paper of the 44) | Docling repeated those captions (not used); the table check sees stray letters (one false flag); the body check drops the off-page and shifted duplicate characters, reports 82 garbled lines as not checkable (each a flag with the reason: a copy elsewhere in the output or doubled characters) and raises 19 number flags, mostly false | known limit |
 | Symbol-font glyphs and (cid:N) subset codes of body text without a decoding | before pass 2: RSC and AIP papers (10.1039_c7ta03257a 114 lines, 10.1063_1.5028178 91, 10.1063_1.2338776 90, 10.1039_d4cp00131a 177); after: 10.1116_6.0001094 only | 2 body lines not checkable (1,075 before pass 2, 2,726 before the first additions); on 2026-10-13 every undecoded glyph of the 44 papers was viewed on crops (150 font-subset/code keys, `reports/glyph_evidence/`): 110 decoded (operators, Greek letters, tall parentheses and brackets, s̄, v̄, Á, icons and brace pieces that carry no text) plus the AdvPi1 "+" that draws ±; 22 pieces of multi-part delimiters in 5 papers stay undecoded with the reason in `glyph_codes.json` ("undecoded"): they block 2 text lines and 20 equation lines (38 paragraphs lose the extra direction, 334 before) | known limit for the delimiter pieces; every blocked line is a "not checkable" flag |
 | A page box that does not start at (0, 0) | 10.1116_1.5116136 (media box from −92) | Marker's boxes are 0-based, pdfplumber keeps the PDF origin: the body check shifts the boxes (M19) | — |
 | A repository cover page with a "Reference" heading | 10.1116_1.5116136 p 1 | stopped the body check on page 1 until the stop was limited to the second half of a paper (M20) | — |

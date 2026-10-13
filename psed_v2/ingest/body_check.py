@@ -7,8 +7,10 @@ decoding is not checkable and is counted with its reason. Characters outside the
 drawn twice at a slightly different size on one baseline is read once, a line printed twice on a page is read once
 (the MDPI duplicate layer). Characters are read block by block inside Marker's text blocks (Text, SectionHeader,
 Caption, ListItem, TextInlineMath, Footnote), lines by the baseline of the normal-size characters; small characters
-(citation and affiliation numbers, exponents) join the line whose baseline and size span they overlap, superscripts
-marked '^'; a few same-size characters without a word on their own baseline (LaTeX sub- and superscripts) join the
+(citation and affiliation numbers, exponents) join the line whose baseline and size span they overlap, a subscript
+that sits just below a line's baseline (its bottom within half the font size below it, its top above it) and in a gap
+of that line (over none of its characters) that line,
+superscripts marked '^'; a few same-size characters without a word on their own baseline (LaTeX sub- and superscripts) join the
 nearest line; stacked sub- and superscripts are read subscript first (O_2^+); a word space is a gap above 13 % of
 the line's font size. The lines of an Equation box join the text unit before it as weak lines. Characters outside
 every block are read as segments split at gaps of 20 pt or more. Excluded, with counts: PageHeader / PageFooter /
@@ -26,6 +28,20 @@ units under 4 words (headings, labels, fragments), units of fewer than 3 words, 
 the output, or two long unknown words), output sentences the layer does not cover (70 % of their words of 4+
 letters), output paragraphs a not-checkable unit also matches, paragraphs whose equation lines hold an undecoded
 glyph. A weak line (no word of 4+ letters, or a reaction line) is kept for the extra direction only.
+A short unit (under 4 words, or fewer than 3 tokens) is looked up in the output near the previous match (3 paragraphs
+before to 10 after it) after normalisation (case, whitespace, markup, LaTeX commands, hyphenation at line ends), with
+and without spaces; found, it is checked as a normal unit (its numbers compared), else it is not checkable. A line the
+vocabulary test calls garbled (under 30 % of its words of 4+ letters in the output vocabulary, or two unknown words
+of 8+ letters; a line of the page abstract when the abstract comes from OpenAlex is excluded instead) is looked up the
+same way, then by similarity (85 % of its characters in matching runs
+of 3+); a similarity match is checked as a normal line and its letters are compared too (flag "letters of the text
+layer differ from the output"; a line without word spaces and the fragments of hyphenated words are not compared);
+what is not found stays a garbled line, with the reason why. The output side: a sentence the
+layer lines do not cover, a paragraph blocked by an undecoded glyph in an equation or neighbour line, and a paragraph a
+not-checkable unit also matches get a flag of kind "not checkable" with the output text, its numbers and a crop of the
+Marker block(s) matched to the paragraph. The units found near the previous match are listed in body_check.recovered.
+A number flag crops the layer line that holds the number when that line is the only one (a missing number) or holds
+the output sentence (an absent number); otherwise the crop is the whole paragraph block (crop_scope "paragraph").
 What stays not checkable at the line level is also written as a flag of kind "not checkable" (reason, the line's text,
 numbers, box and crop; for a unit with an undecoded glyph one flag with the glyph line and the unit's line count), so
 that the flag review sees these lines as it sees a not-checkable table: one flag per unit with an undecoded glyph, per
@@ -56,6 +72,7 @@ the layer lines cover, with the lines of the neighbouring units counting for the
 crosses a column or page break). Each flag has page, kind, number, the text-layer line, the output sentence, the
 numbers on each side, the line's box and crop, and the paragraph run (raw chunk indices) for body_repair.py.
 """
+import difflib
 import os
 import re
 from collections import Counter, defaultdict
@@ -82,6 +99,44 @@ OUT_FURN_RE = re.compile(r"https?://\S+|\b10\.\d{4,}/\S+|\b(received|accepted|pu
 FURN_RE = re.compile(r"published by|copyright|©|licen[cs]e|creative commons|doi\.org|downloaded|cite (this|as)|this journal is|\bdoi:|^\s*[a-z]+\d{8,}\s*$|"
                      r"https?://|\d{4}-\d{4}-\d{4}-\d{3}[\dX]|contact information|^\s*10\.\d{4,}/\S+\s*$", re.I)
 TOK_RE = re.compile(r"[a-z0-9]{2,}")
+LET_RE = re.compile(r"[^\W\d_]{2,}")
+GREEK = {"alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η",
+         "theta": "θ", "vartheta": "θ", "iota": "ι", "kappa": "κ", "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π",
+         "rho": "ρ", "varrho": "ρ", "sigma": "σ", "tau": "τ", "upsilon": "υ", "phi": "φ", "varphi": "φ", "chi": "χ", "psi": "ψ",
+         "omega": "ω", "Gamma": "Γ", "Delta": "Δ", "Theta": "Θ", "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Phi": "Φ",
+         "Psi": "Ψ", "Omega": "Ω", "times": "×", "pm": "±", "approx": "≈", "sim": "∼", "le": "≤", "leq": "≤", "ge": "≥", "geq": "≥",
+         "ll": "≪", "gg": "≫", "cdot": "·", "infty": "∞", "degree": "°", "circ": "°", "rightarrow": "→", "to": "→", "neq": "≠",
+         "ne": "≠", "partial": "∂"}
+WIN_LO, WIN_HI = 3, 10            # the window around the previous match in which a short unit or a garbled line is looked up
+
+
+def _cmp_norm(s):
+    """Text for the exact comparison of a layer unit with the output: lower case, html tags and markdown markers gone,
+    LaTeX commands turned into their symbol or dropped, dashes unified, whitespace collapsed."""
+    s = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", s or "")
+    s = re.sub(r"</?[A-Za-z][^<>]*>", "", s)
+    s = re.sub(r"\\text\s*\{([^}]*)\}", r"\1", s)
+    s = re.sub(r"\\([A-Za-z]+)", lambda m: GREEK.get(m.group(1), ""), s)
+    s = re.sub(r"[$_^{}*#|`~\\]", "", s)
+    s = re.sub(r"[–—−‐]", "-", s)
+    s = re.sub(r"[‘’´`]", "'", s).replace("“", '"').replace("”", '"').replace("ﬁ", "fi").replace("ﬂ", "fl")
+    return re.sub(r"\s+", " ", s).strip().lower()
+
+
+def _nospace(s):
+    return re.sub(r"[\s-]", "", s)
+
+
+def _join_lines(lines):
+    """A unit's lines as one text, a word split by a hyphen at a line end joined."""
+    out = ""
+    for l in lines:
+        s = l[0].strip()
+        if out.endswith("-") and s[:1].islower():
+            out = out[:-1] + s
+        else:
+            out = (out + " " + s).strip()
+    return out
 RUN_RE = re.compile(r"[A-Za-z0-9\u0370-\u03ff]+(?:(?<=\d)[.,](?=\d)[A-Za-z0-9\u0370-\u03ff]+)*")   # . or , joins digits only (3.0, 1,2, 10,000); Greek letters count as letters
 AUTHOR_RE = re.compile(r"[A-Z][a-z'’-]+,?\s*\^?\d[\d,]*(?![\d,]*\s*[a-z%°])")   # "Lastname^1,2", "Lastname,^1", "Pei1,2,4": a name with its affiliation marker
 FORMULA_LINE_RE = re.compile(r"[→⇌⇄↔]|\\(rightarrow|leftrightarrow|rightleftharpoons)")
@@ -185,6 +240,16 @@ def _lines_of(chars):
     else:
         for c in chars:
             if c["size"] < 0.85 * size0:
+                w = c["x1"] - c["x0"]
+                def free(i):                        # a line of normal-size text, and the glyph sits in a gap of it
+                    big = [x for x in lines[i][1] if x["size"] >= 0.85 * size0]
+                    return bool(big) and not any(x["x0"] < c["x1"] - 0.2 * w and x["x1"] > c["x0"] + 0.2 * w for x in big)
+                subs = [i for i in range(len(lines)) if -1 <= c["bottom"] - lines[i][0] <= 0.5 * size0   # a subscript ends just
+                        and c["top"] - lines[i][0] <= 0.1 * size0 and free(i)]                          # below a baseline, starts
+                if subs and "subscript_attach" not in DISABLED:                                        # above it and sits in a
+                    lines[min(subs, key=lambda i: c["bottom"] - lines[i][0])][1].append(c)              # gap of that line (a
+                    continue                                                                            # superscript of the next
+                                                                                                        # line overlaps its text)
                 cands_ = [i for i in range(len(lines)) if c["top"] < lines[i][0] + 0.35 * size0 and c["bottom"] > lines[i][0] - 1.3 * size0]
                 k = min(cands_ or range(len(lines)), key=lambda i: abs(lines[i][0] - c["bottom"] - 2))
                 if cands_ and abs(lines[k][0] - c["bottom"]) <= 7:
@@ -288,6 +353,76 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         for k in range(len(toks) - 2):
             grams[(toks[k], toks[k + 1], toks[k + 2])].add(i)
     counts, not_checkable, flags = Counter(), Counter(), []
+    recovered = []                                 # short units and garbled lines found near the previous match (A, B)
+    pn_cmp = [_cmp_norm(p[1]) for p in paras]
+    pn_cmps = [_nospace(x) for x in pn_cmp]
+    doc_nospace = "\n".join(pn_cmps)
+    def window(cur):
+        return range(max(0, cur - WIN_LO), min(len(paras), cur + WIN_HI + 1))
+    def find_near(txt, cur):
+        """(paragraph, how) when the normalised text occurs in a paragraph near the previous match, else (None, None)."""
+        a = _cmp_norm(txt); b = _nospace(a)
+        if len(b) < 3:
+            return None, None
+        for j in window(cur):
+            if a in pn_cmp[j]:
+                return j, "exact"
+        for j in window(cur):
+            if b in pn_cmps[j]:
+                return j, "without spaces"
+        return None, None
+    def find_fuzzy(txt, cur):
+        """(paragraph, similarity): the share of the line's characters (no spaces) in matching blocks of 3+ characters
+        with a paragraph near the previous match."""
+        b = _nospace(_cmp_norm(txt))
+        if len(b) < 12:
+            return None, 0.0
+        best_j, best_r = None, 0.0
+        for j in window(cur):
+            if not pn_cmps[j]:
+                continue
+            sm = difflib.SequenceMatcher(None, b, pn_cmps[j], autojunk=False)
+            r = sum(bl.size for bl in sm.get_matching_blocks() if bl.size >= 3) / len(b)
+            if r > best_r:
+                best_j, best_r = j, r
+        return best_j, best_r
+    def garbled_why(txt, cur):
+        a = _cmp_norm(txt); b = _nospace(a)
+        w4 = WORD4_RE.findall(txt)
+        share = sum(1 for w in w4 if w.lower() in vocab) / len(w4) if w4 else 0
+        why = f"{share:.0%} of its words of 4+ letters in the output vocabulary; "
+        doubled = sum(1 for i in range(len(b) - 1) if b[i] == b[i + 1]) / max(1, len(b) - 1)
+        if b and b in doc_nospace:
+            why += "an identical copy of the text stands elsewhere in the output, outside the window around the previous match"
+        elif doubled >= 0.25:
+            why += f"characters doubled by an overlapping layer ({doubled:.0%} of adjacent characters equal)"
+        else:
+            j, r = find_fuzzy(txt, cur)
+            why += f"nearest text in the window: similarity {r:.0%} (below 85 %)" if j is not None else "no text of similar length in the window"
+        return why
+    def letter_diff(txt, j, prev_hyphen=False):
+        """Words of the layer line (letters only) absent from the paragraph, each with its closest output word. A line
+        without word spaces (a run of 20+ letters) is not compared; a fragment of a word split by a hyphen at the
+        line's start or end, or a fragment that begins or ends a paragraph word, is no difference."""
+        words = LET_RE.findall(_cmp_norm(txt))
+        if any(len(w) > 20 for w in words):
+            return [], []
+        if txt.rstrip().endswith("-") and words:
+            words = words[:-1]
+        if prev_hyphen and words:
+            words = words[1:]
+        lw, seen = [], set()
+        for w in words:
+            if w not in seen:
+                seen.add(w); lw.append(w)
+        pw = set(LET_RE.findall(pn_cmp[j]))
+        missing = [w for w in lw if w not in pw and not (len(w) >= 3 and any(x.startswith(w) or x.endswith(w) for x in pw))]
+        close = [(difflib.get_close_matches(w, list(pw), n=1, cutoff=0.5) or [""])[0] for w in missing]
+        return missing, close
+    def best_sentence(j, txt):
+        sents = re.split(r"(?<=[.!?])\s+(?=[A-Z(])", paras[j][2]) or [paras[j][2]]
+        lw = set(TOK_RE.findall(txt.lower()))
+        return SM._norm_cell_text(max(sents, key=lambda s: len(lw & set(TOK_RE.findall(s.lower())))))[:400]
     pl = pdfplumber.open(str(pdf_path))
     pdoc = pypdfium2.PdfDocument(str(pdf_path))
     # units: (page, block type, bbox, lines) in reading order; segments outside the blocks as units of their own
@@ -433,19 +568,44 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
             counts["excluded: after the references/acknowledgements heading"] += len(lines)
             continue
         counts["lines"] += len(lines)
-        if len(text.split()) < 4:                     # a heading, label or fragment: nothing to locate in the output
-            counts["not checkable: unit under 4 words"] += len(lines)
-            for l in lines:
-                nc_flag(pno, l, f"unit under 4 words ({len(lines)} line(s))", bt, 1)
-            continue
-        garbled = [l for l in lines if (len(WORD4_RE.findall(l[0])) >= 3
-                   and sum(1 for w in WORD4_RE.findall(l[0]) if w.lower() in vocab) < 0.3 * len(WORD4_RE.findall(l[0])))
+        short_unit = len(text.split()) < 4            # a heading, label or fragment: looked up near the previous match (A)
+        forced, fuzzy_lines = Counter(), []           # paragraphs fixed by a lookup; lines matched by similarity (B)
+        # B: a line whose words are mostly unknown to the output (a doubled or spaceless layer, a typo) is looked up
+        # near the previous match after normalisation, with and without spaces, then by similarity; found, it is
+        # checked as a normal line (a similarity match also compares its letters); else it is a garbled line
+        def vshare(l):
+            w4 = WORD4_RE.findall(l[0])
+            return sum(1 for w in w4 if w.lower() in vocab) / len(w4) if w4 else 1.0
+        garbled = [l for l in lines if (len(WORD4_RE.findall(l[0])) >= 3 and vshare(l) < 0.3)
                    or sum(1 for w in re.findall(r"[A-Za-z]{8,}", l[0]) if w.lower() not in vocab) >= 2]
-        if garbled:                                   # two lines drawn over each other (MDPI's misplaced duplicate layer)
-            counts["not checkable: garbled text-layer line (overlapping duplicate layer; fewer than 30 % of its words occur in the output)"] += len(garbled)
+        if garbled and openalex_abstract and pno <= 2:          # the page abstract, replaced by the OpenAlex text:
+            abs_lines = [l for l in garbled if (lambda w4: w4 and len(w4 & oa_words) >= 0.6 * len(w4))({w.lower() for w in WORD4_RE.findall(l[0])})]
+            if abs_lines:                                        # its lines are not in the output and not garbled
+                counts["excluded: page abstract replaced by the OpenAlex abstract (abstract_source openalex)"] += len(abs_lines)
+                counts["lines"] -= len(abs_lines)
+                garbled = [l for l in garbled if l not in abs_lines]
+                lines = [l for l in lines if l not in abs_lines]
+                if not lines:
+                    continue
+        if garbled:
+            still = []
             for l in garbled:
-                nc_flag(pno, l, "garbled text-layer line (overlapping duplicate layer; fewer than 30 % of its words occur in the output)", bt, 1)
-            lines = [l for l in lines if l not in garbled]
+                j, how = find_near(l[0], last_best)
+                if j is None:
+                    fj, fr = find_fuzzy(l[0], last_best)
+                    if fj is not None and fr >= 0.85:
+                        j, how = fj, f"similarity {fr:.0%}"
+                        fuzzy_lines.append((l, fj, fr))
+                if j is not None:
+                    forced[j] += 1
+                    recovered.append({"page": pno, "kind": "garbled line", "how": how, "layer_text": l[0][:300],
+                                      "output_text": paras[j][1][:300], "paragraph": paras[j][3], "block": bt})
+                else:
+                    still.append(l)
+            counts["not checkable: garbled text-layer line (overlapping duplicate layer)"] += len(still)
+            for l in still:
+                nc_flag(pno, l, "garbled text-layer line (overlapping duplicate layer): " + garbled_why(l[0], last_best), bt, 1)
+            lines = [l for l in lines if l not in still]
             if not lines:
                 continue
         unk = Counter()
@@ -456,12 +616,15 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         for k in range(len(toks) - 2):
             for i in grams.get((toks[k], toks[k + 1], toks[k + 2]), ()):
                 cand[i] += 1
-        if cand:                                       # the best paragraph; ties go to the first one after the last match
-            n = max(cand.values())
-            tied = sorted(i for i, c in cand.items() if c == n)
-            best = next((i for i in tied if i >= last_best), tied[0])
-        else:
-            best, n = None, 0
+        for j, c in forced.items():
+            cand[j] += 10 ** 6 * c
+        def pick_best():
+            if cand:                                   # the best paragraph; ties go to the first one after the last match
+                n = max(cand.values())
+                tied = sorted(i for i, c in cand.items() if c == n)
+                return next((i for i in tied if i >= last_best), tied[0]), n
+            return None, 0
+        best, n = pick_best()
         need = 1 if len(toks) < 6 else max(2, -(-(len(toks) - 2) // 5))   # a fifth of the unit's 3-grams (2 at least)
         if unk:
             glyphs = ", ".join(f"{fam} {code}" for (fam, code) in sorted(unk))
@@ -471,10 +634,19 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
                 blocked.add(best)                 # its output paragraph is not checked in the extra direction either
             nc_flag(pno, next(l for l in lines if l[5]), f"undecoded glyph {glyphs}: the unit's {len(lines)} line(s) not checked", bt, len(lines))
             continue
-        if len(toks) < 3:
-            counts["not checkable: unit too short to locate in the output (fewer than 3 words)"] += len(lines)
-            nc_flag(pno, lines[0], f"unit too short to locate in the output (fewer than 3 words; {len(lines)} line(s))", bt, len(lines))
-            continue
+        if (short_unit or len(toks) < 3) and not forced:     # A: the unit's text looked up near the previous match
+            j, how = find_near(_join_lines(lines), last_best)
+            if j is None:
+                reason = "unit under 4 words" if short_unit else "unit too short to locate in the output (fewer than 3 words)"
+                counts["not checkable: " + reason] += len(lines)
+                for l in lines:
+                    nc_flag(pno, l, f"{reason}: not found within {WIN_LO} paragraphs before and {WIN_HI} after the previous match ({len(lines)} line(s))", bt, 1)
+                continue
+            forced[j] += 1
+            cand[j] += 10 ** 6
+            best, n = pick_best()
+            recovered.append({"page": pno, "kind": "short unit" if short_unit else "unit too short to locate", "how": how,
+                              "layer_text": _join_lines(lines)[:300], "output_text": paras[j][1][:300], "paragraph": paras[j][3], "block": bt})
         counts["checked"] += len(lines)
         if (best is None or n < need) and openalex_abstract and pno <= 2:
             w4 = {w.lower() for w in WORD4_RE.findall(text)}
@@ -506,6 +678,17 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
             hi += 1
         key = tuple(range(lo, hi + 1))
         last_best = max(last_best, best)
+        for l, fj, fr in fuzzy_lines:                 # a line matched by similarity: its letters compared as well
+            li = lines.index(l) if l in lines else -1
+            missing, close = letter_diff(l[0], fj, prev_hyphen=(li > 0 and lines[li - 1][0].rstrip().endswith("-")))
+            if missing:
+                k = len(flags)
+                s = best_sentence(fj, l[0])
+                flags.append({"page": pno, "kind": "letters of the text layer differ from the output", "number": missing[0],
+                              "layer_words": missing, "output_words": close, "layer_line": l[0], "output_sentence": s,
+                              "layer_numbers": _nums(l[0]), "output_numbers": _nums(s)[:30], "crop": crop(pno, l, k),
+                              "bbox": [l[3], l[1], l[4], l[2]], "paragraph": paras[fj][3], "paragraphs": [paras[fj][3]],
+                              "similarity": round(fr, 2)})
         for l in lines:
             assigned[key].append((l, pno))
         for l in weak:
@@ -531,10 +714,30 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
     members = defaultdict(set)
     for key in list(assigned) + list(assigned_weak):
         members[find(key[0])].update(key)
+    nc_out_seen = set()
+    def nc_out_flag(pno, box, reason, text, nums, para_idx):
+        """A flag of kind "not checkable" for an output unit (sentence or paragraph) whose numbers are not compared:
+        the reason, the output text, the numbers left unchecked and a crop of the Marker block(s) matched to it."""
+        key_ = ("out", pno, para_idx, text[:60])
+        if key_ in nc_out_seen:
+            return
+        nc_out_seen.add(key_)
+        k = len(flags)
+        flags.append({"page": pno, "kind": "not checkable", "side": "output", "reason": reason, "layer_line": "",
+                      "output_sentence": text[:400], "layer_numbers": [], "output_numbers": nums[:30],
+                      "crop": crop(pno, ("", box[1], box[3], box[0], box[2], None), k) if box else "", "bbox": box,
+                      "paragraph": para_idx, "lines": 0})
     for root, lines in groups.items():
         key = tuple(sorted(members[root]))
         assigned_weak_i = list(groups_weak.get(root, []))
         us = groups_units.get(root, set())             # a paragraph that crosses a column or page break, or that
+        u0 = min(us) if us else None                   # the Marker block(s) matched to this paragraph, for the crop
+        gp = units[u0][0] if u0 is not None else None
+        gboxes = [units[u][2] for u in us if units[u][0] == gp]
+        gbox = [min(b[0] for b in gboxes), min(b[1] for b in gboxes), max(b[2] for b in gboxes), max(b[3] for b in gboxes)] if gboxes else None
+        def out_nums(txt):
+            nn = SM._norm_cell_text(txt)
+            return sorted(set(_nums(nn)) | set(_nums(SM._join_thousands(nn))))
         for v in sorted({v for u in us for v in (u - 1, u + 1)} - us):   # Marker split: the neighbouring units'
             if 0 <= v < len(units) and "neighbours" not in DISABLED:    # lines count for the extra direction
                 assigned_weak_i.extend((l, units[v][0]) for l in units[v][3] + units[v][4])
@@ -573,15 +776,20 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         for s in sentences:
             sn = SM._norm_cell_text(s)
             st = [w for w in TOK_RE.findall(sn.lower()) if len(w) >= 4] or TOK_RE.findall(sn.lower())
-            if not st or sum(1 for w in st if w in lt) / len(st) >= 0.7:
+            share = sum(1 for w in st if w in lt) / len(st) if st else 1.0
+            if not st or share >= 0.7:
                 covered.append(sn)
             elif _tokens(sn)[0] or _tokens(sn)[1]:
                 counts["not checkable: output sentence not covered by the text layer (its numbers not compared)"] += 1
+                nc_out_flag(gp, gbox, f"output sentence not covered by the text layer ({share:.0%} of its words of 4+ letters in the layer lines of its paragraph group): its numbers not compared", sn, out_nums(sn), key[0])
         if any(j in blocked for j in key):
             counts["not checkable: output paragraph also matched by a not-checkable unit (extra numbers not compared)"] += 1
+            nc_out_flag(gp, gbox, "output paragraph also matched by a unit with an undecoded glyph: its output numbers not compared with the layer", porig, out_nums(porig), key[0])
             covered = []
         elif any(l[5] for l, _ in assigned_weak_i):
             counts["not checkable: paragraph with an equation or neighbour line holding an undecoded glyph (extra numbers not compared)"] += 1
+            gl = sorted({f"{fam} {code}" for l, _ in assigned_weak_i if l[5] for (fam, code) in l[5]})
+            nc_out_flag(gp, gbox, "paragraph with an equation or neighbour line holding an undecoded glyph (" + ", ".join(gl) + "): its output numbers not compared with the layer", porig, out_nums(porig), key[0])
             for l, p_ in assigned_weak_i:
                 if l[5]:
                     nc_flag(p_, l, "undecoded glyph " + ", ".join(f"{fam} {code}" for (fam, code) in sorted(l[5])) + " in an equation or weak line: the output numbers of its paragraph are not compared with the layer", "Equation", 1)
@@ -600,25 +808,43 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         def sentence_like(line_text):
             lw = set(TOK_RE.findall(line_text.lower()))
             return max(sentences, key=lambda s: len(lw & set(TOK_RE.findall(s.lower()))))
+        def para_box(pno_):
+            """The Marker block(s) of the group on that page, for a crop of the whole paragraph."""
+            bs = [units[u][2] for u in us if units[u][0] == pno_] or gboxes
+            return [min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs)] if bs else None
+        def crop_for(pno_, line, k, pin):
+            """The line's crop when the differing line is pinned down, else a crop of the whole paragraph block."""
+            box = None if pin else para_box(pno_)
+            if box is None:
+                return crop(pno_, line, k), [line[3], line[1], line[4], line[2]], "line"
+            return crop(pno_, ("", box[1], box[3], box[0], box[2], None), k), box, "paragraph"
         for tok in sorted(miss.elements()):
-            line, pno = next(((l, p) for l, p in lines if tok in _nums(l[0]) or tok in _nums(SM._join_thousands(l[0]))), lines[0])
+            holders = [(l, p) for l, p in lines if tok in _nums(l[0]) or tok in _nums(SM._join_thousands(l[0]))]
+            line, pno = holders[0] if holders else lines[0]
             s = sentence_like(line[0])
             k = len(flags)
+            cr, bb, scope = crop_for(pno, line, k, len(holders) == 1)   # several lines hold the number: the whole paragraph
             flags.append({"page": pno, "kind": "number of the text layer missing from the output paragraph", "number": tok,
                           "layer_line": line[0], "output_sentence": s[:400], "layer_numbers": _nums(line[0]),
-                          "output_numbers": _nums(SM._norm_cell_text(s))[:30], "crop": crop(pno, line, k), "bbox": [line[3], line[1], line[4], line[2]],
+                          "output_numbers": _nums(SM._norm_cell_text(s))[:30], "crop": cr, "bbox": bb, "crop_scope": scope,
                           "paragraph": paras[key[0]][3], "paragraphs": [paras[j][3] for j in key], "layer_context": line[0]})
         for tok in sorted(extra.elements()):
             s = next((s for s in sentences if tok in sent_nums(s)), sentences[0])
+            sw = {w for w in TOK_RE.findall(s.lower()) if len(w) >= 4} or set(TOK_RE.findall(s.lower()))
             line, pno = max(lines, key=lambda lp: len(set(TOK_RE.findall(lp[0][0].lower())) & set(TOK_RE.findall(s.lower()))))
+            pin = bool(sw) and len(sw & set(TOK_RE.findall(line[0].lower()))) >= 0.7 * len(sw)   # the sentence lies in that line
             k = len(flags)
+            cr, bb, scope = crop_for(pno, line, k, pin)       # else the whole paragraph block
             flags.append({"page": pno, "kind": "number of the output paragraph absent from the text layer", "number": tok,
                           "layer_line": line[0], "output_sentence": s[:400], "layer_numbers": _nums(line[0]),
-                          "output_numbers": _nums(SM._norm_cell_text(s))[:30], "crop": crop(pno, line, k), "bbox": [line[3], line[1], line[4], line[2]],
+                          "output_numbers": _nums(SM._norm_cell_text(s))[:30], "crop": cr, "bbox": bb, "crop_scope": scope,
                           "paragraph": paras[key[0]][3], "paragraphs": [paras[j][3] for j in key]})
+    matched_paras = {j for key in list(assigned) + list(assigned_weak) for j in key}
+    counts["output paragraphs with numbers matched by no unit (not compared; references, tables, furniture)"] = sum(
+        1 for i, (pn, _, _, _) in enumerate(paras) if i not in matched_paras and _nums(pn))
     pl.close()
     counts["flags"] = sum(1 for f in flags if f["kind"] != "not checkable")
     counts["not-checkable flags"] = sum(1 for f in flags if f["kind"] == "not checkable")
     return {"body_flags": flags,
-            "body_check": {"counts": dict(counts), "not_checkable_reasons": dict(not_checkable),
+            "body_check": {"counts": dict(counts), "not_checkable_reasons": dict(not_checkable), "recovered": recovered,
                            "method": "decoded text layer (glyph_codes.json) read inside Marker's text blocks vs document.md paragraphs matched by word 3-grams; numbers compared both ways"}}
