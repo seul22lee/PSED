@@ -16,6 +16,9 @@ psed_v2/
   corpus/make_report.py     # tracked: sets in_scope in manifest.csv (the scope rule lives here) and derives report.csv
   corpus/report.csv         # tracked: reader-facing view: metadata, in_scope, collected, origins and evidence, decisions
   corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
+  corpus/citing_filter.py   # tracked: works citing Cremers 2019 from OpenAlex against the conformality keyword rule; writes cremers_citing_all.csv
+  corpus/cremers_citing_all.csv # tracked: one row per citing work: matched keywords, passed, in_manifest, outcome and outcome_detail
+  corpus/ald_filter.py      # tracked: the not-ALD rule; lists the rows with no ALD term in title or OpenAlex abstract, writes nothing
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
   corpus/CORPUS.md          # tracked: how the corpus was built: counts, PDF sources, open questions
   cases/                    # tracked: case-study exploration, by hand: figures.csv and papers.csv (figure inventory of the parsed papers, own words),
@@ -99,26 +102,16 @@ Origin columns, each `O` or empty; a paper can have several. Each has its eviden
 - `cremers`: `cremers_ref`, the reference number in Cremers 2019, and `cremers_context`, where
   Cremers cites it.
 - `cremers_citing`: `cites_cremers_keywords`, the conformality keywords matched in the title or
-  abstract of a paper that cites Cremers 2019 in OpenAlex (pulled 2026-10-01; preprints that
-  duplicate a published article were dropped).
+  abstract of a paper that cites Cremers 2019 in OpenAlex (pulled 2026-10-01 and re-run on
+  2026-10-13 with `citing_filter.py`; preprints that duplicate a published article were dropped).
 - added by hand: no flag column; `extra_reason` says why.
 `processes` merges both reviews' process lists with ` | `.
 
 `status` is `excluded`, `included`, or blank (no decision recorded), with a one-line `reason`,
 `decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date).
-Excluded rows stay in the manifest and keep their PDFs. Exclusion rules applied so far:
-- not ALD: found only through the Cremers-citing search, and neither title nor abstract
-  mentions "atomic layer" or "ALD" (auto), plus two judged by title and two judged by the
-  parsed full text (manual);
-- `type`: the OpenAlex work type is not `article` or `letter` (auto, reason "type: <type>");
-- review by title/journal (auto): the title has the whole word review, perspective, survey,
-  overview or tutorial, or the journal is Chemical Reviews, Chemical Society Reviews, Applied
-  Physics Reviews, Annual Review of *, Progress in Materials Science, Materials Science and
-  Engineering R, Nature Reviews *, or Coordination Chemistry Reviews;
-- no DOI: Cremers footnotes and notes that are not publications (auto), and books, patents,
-  theses and proceedings (manual). The four Popov rows without a DOI are undecided;
-- review by full text (manual): the parsed text carries a review label or calls itself a review,
-  or its figures and captions show it is an overview of other work.
+Excluded rows stay in the manifest and keep their PDFs. The exclusion rules and their counts are in
+the Exclusions table of `corpus/CORPUS.md`. The not-ALD rule (`corpus/ald_filter.py`) applies to every
+source except Cremers references with a table tag (II–V, VIII, IX).
 
 ### Scope
 
