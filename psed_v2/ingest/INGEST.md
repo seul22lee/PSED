@@ -266,7 +266,7 @@ Newest first. One line per change: date, what changed, effect, commit.
 - 2026-10-13 — Answer set `ingest/answers/` (tables 69, equation pairs 103, body flags 388: ids and verdicts of Claude Code's
   page judgements, no paper text); body flags go to the same review step as flagged tables and differ equations (external
   vision model at the extraction stage), scored against the answer set first; docs and CLAUDE.md updated; the user's plan
-  committed. Effect: documentation and data only, no pipeline output changed. — (hash: next line)
+  committed. Effect: documentation and data only, no pipeline output changed. — f35fa71 (this line's hash: the next commit)
 
 - 2026-10-13 — Body text verification: `line_numbers.py` (margin line numbers removed, 1 paper), `body_check.py` measurement
   fixes (stacked indices, equation boxes, neighbouring units, duplicate lines, table rows, furniture both sides, author lines,
