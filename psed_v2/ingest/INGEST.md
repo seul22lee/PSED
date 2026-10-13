@@ -215,7 +215,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   AdvEls-ent5 "1" is the degree sign (the earlier entry said digit one), AdvP4C4E74 "0" the prime; docs state how each
   subset was checked, M7 re-judged on the crops, M3 corrected ("< 0.01 >"), Marker non-determinism stated. Effect:
   1,154 flags in the 44 papers, 3 of 3 known errors caught, 0 of 41 known not-errors flagged; tables unchanged (27 of
-  28 wrong flagged, 7 false, 1 not checkable; the 3 RSC tables with the ent5 glyph unchanged, ok). — hash: see the follow-up line below
+  28 wrong flagged, 7 false, 1 not checkable; the 3 RSC tables with the ent5 glyph unchanged, ok). — e69310f (this line's hash: the next commit)
 
 - 2026-10-13 — Table check rebuilt on a decoded text layer (`glyph_codes.json`: 13 symbol-font families, 13 embedded subsets, every
   code checked on a glyph crop; thousands separators; footnote numbers; symbol counts; "not checkable" for undecoded glyphs and
