@@ -31,18 +31,29 @@ group with content wins, then one with punctuation after the number, then the fi
 rows at the top are merged into one header line per column, joined with " / " (parse_docling.py's
 multi-row header rule); the markdown is built without tabulate's number parsing, so trailing zeros
 stay (0.10, 8.0). Each table entry also gets a crop (table_<P-1>_<K>.png: the caption band above,
-the table, 30 pt below, scale 3) and a rule check, "check": "ok" | "flag" with "check_reasons":
-(a) the numeric tokens of the PDF text layer inside the table box (sign, decimals, exponents;
-superscripts read by font size) against the delivered markdown (rowspan/colspan repeats counted
-once), plus the count of ±; (b) letters of the layer that the table lacks (LaTeX, Greek, sub- and
-superscripts normalised, Greek look-alike capitals mapped); (c) structure: header colspans against
-the body's columns, an empty trailing header cell, an empty column, a short last row, numbers just
-below the box on the table's number columns; (d) fewer than 5 text-layer words in the box (scanned
-or image table). No exception excuses a mismatch: footnotes or a hidden duplicate text layer inside
-the box also raise a flag. On the 16 numbered tables of the 13 papers (page judgements of
-2026-10-12): 5 wrong tables flagged, 0 missed, 3 right tables flagged (footnotes inside the box, an
-unmapped minus glyph, the MDPI hidden text layer). A flagged table is for the vision-model review at
-extract time; nothing here reads the crop.
+the table, 30 pt below, scale 3) and a rule check, "check": "ok" | "flag" | "not checkable", with
+"check_reasons" and "check_detail" (the tokens involved, the decoded text layer). The PDF text
+layer inside the table box is decoded per font with glyph_codes.json: named characters of
+symbol-encoded fonts through a table per font family (AdvPi2 y -> θ, AdvP80675 6 -> ±, AdvP4C4E51
+: -> .), (cid:N) codes through a table per embedded font subset (a cid is a glyph index of the
+subset: the same code is − in one paper's subset and × in another's); a glyph without a decoding,
+or a rotated table, makes the table "not checkable" with the reason. Flag reasons: (a) numeric
+tokens of the layer missing from the table or extra in it (sign, decimals, exponents; superscripts
+read by font size; compared with and without thousands separators, "16 000" = 16000; a superscript
+number of the layer counts as present when it is anywhere in the paper's markdown, a footnote
+marker), and the counts of the symbols ± ↑ ↓ ↗ ↘ ≤ ≥ ≈ ∼ ≪ ≫ ×; (b) letters of the layer the table lacks (LaTeX, Greek, operator
+names, sub- and superscripts normalised, Greek look-alike capitals mapped); (c) structure: header
+colspans against the body columns, an empty trailing header cell, an empty column, a short last
+row, numbers just below the box on the table's columns; (d) fewer than 5 layer words in the box;
+(e) no table cells (the table block was an image). Table footnotes inside the box stay in the
+comparison. Results on the 44 papers are in INGEST.md. A flagged table is for the vision-model
+review at extract time; nothing here reads the crop.
+Caption continuation stops where the caption ends a sentence and the next block starts a new one
+(a body paragraph); it continues into a block that starts lowercase or with a panel letter.
+Figures placed after all captions (manuscripts): the numbered captions without an image take the
+large loose pictures of the pages after the last caption, one page per caption, when the counts
+match. Abstract: the OpenAlex text replaces the extracted abstract when OpenAlex has 50 words or
+more and the extracted text is empty or has recall below 80 % against it.
 Equations are the Equation blocks' <math> content (LaTeX), with the number Marker kept in it, plus
 short standalone blocks (ChemicalBlock, Text, TextInlineMath of 25 words or fewer) that hold a
 reaction arrow (→ or \\rightarrow); such a ChemicalBlock is not counted as a picture.
@@ -402,31 +413,66 @@ def _overlap(a, b):
 
 
 # ---- table checks ------------------------------------------------------------------------------
+GLYPHS = json.loads((HERE / "glyph_codes.json").read_text())      # text-layer decoding, with its evidence
 GREEK = {"alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η",
-         "theta": "θ", "kappa": "κ", "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ", "sigma": "σ",
-         "tau": "τ", "phi": "φ", "varphi": "φ", "chi": "χ", "psi": "ψ", "omega": "ω", "Gamma": "Γ", "Delta": "Δ",
-         "Theta": "Θ", "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Phi": "Φ", "Psi": "Ψ", "Omega": "Ω"}
+         "theta": "θ", "vartheta": "θ", "kappa": "κ", "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ",
+         "varrho": "ρ", "sigma": "σ", "tau": "τ", "phi": "φ", "varphi": "φ", "chi": "χ", "psi": "ψ", "omega": "ω",
+         "Gamma": "Γ", "Delta": "Δ", "Theta": "Θ", "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Phi": "Φ", "Psi": "Ψ",
+         "Omega": "Ω"}
+OPERATORS = ("min", "max", "exp", "log", "ln", "sin", "cos", "tan", "lim", "det", "dim", "arg")
+SYMBOLS = {"pm": "±", "uparrow": "↑", "downarrow": "↓", "nearrow": "↗", "searrow": "↘", "leq": "≤", "le": "≤", "geq": "≥",
+           "ge": "≥", "approx": "≈", "sim": "∼", "ll": "≪", "gg": "≫", "times": "×", "cdot": "·", "circ": "°",
+           "rightarrow": "→", "leftrightarrow": "↔", "infty": "∞", "propto": "∝", "neq": "≠", "ne": "≠"}
+COUNTED_SYMBOLS = "±↑↓↗↘≤≥≈∼≪≫×"
 NUM_TOKEN_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
+THOUSANDS_RE = re.compile(r"(?<![\d.])(\d{1,3}) (\d{3})(?![\d.])")
 LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")
 
 
 def _norm_cell_text(t):
-    """Cell or layer text in one form: Greek commands as letters, \\text{} unwrapped, ^{} and _{} as ^ and _,
-    other LaTeX commands removed, minus signs and µ unified, NFKC."""
+    """Cell or layer text in one form: Greek commands and operator names as text, \text{} and accents unwrapped,
+    ^{} and _{} as ^ and _, other LaTeX commands removed, minus signs, degree signs and µ unified, a range dash
+    between numbers a separator, NFKC (math italics to plain letters)."""
     import unicodedata
-    t = t.replace("&#124;", "|")
-    t = re.sub(r"\\(" + "|".join(GREEK) + r")(?![a-zA-Z])", lambda m: GREEK[m.group(1)], t)
-    t = re.sub(r"\\(text|mathrm|mathit|mathbf|textbf)\{([^}]*)\}", r"\2", t)
-    t = t.replace("\\times", "×").replace("\\pm", "±").replace("\\cdot", "·")
+    t = t.replace("&#124;", "|").replace("\u2009", " ").replace("\u202f", " ")
+    t = re.sub(r"\\[,;:! ]", " ", t)                                                   # thin spaces: "10\,000"
+    t = t.replace("\\AA", "Å")
+    names = sorted(set(GREEK) | set(SYMBOLS) | set(OPERATORS), key=len, reverse=True)
+    sym = lambda n: GREEK.get(n) or SYMBOLS.get(n) or n
+    t = re.sub(r"\\(" + "|".join(names) + r")(?![a-z])", lambda m: sym(m.group(1)), t)   # \pmUncertainty, \circC: a command before a word
+    for _ in range(2):
+        t = re.sub(r"\\(text|mathrm|mathit|mathbf|textbf|tilde|bar|hat|vec|overline|underline|mathcal|mathbb)\{([^{}]*)\}", r"\2", t)
+        t = re.sub(r"\\frac\{([^{}]*)\}\{([^{}]*)\}", r"\1/\2", t)
     t = re.sub(r"\^\{([^}]*)\}", r"^\1", t)
     t = re.sub(r"_\{([^}]*)\}", r"_\1", t)
-    t = t.replace("{", "").replace("}", "")
-    t = re.sub(r"\\[a-zA-Z]+", " ", t)
-    return unicodedata.normalize("NFKC", t.replace("−", "-").replace("–", "-").replace("µ", "μ"))
+    t = t.replace("{", " ").replace("}", " ")
+    def split_cmd(m):                                                                  # \mum -> μm: the longest known name
+        word = m.group(1)
+        for n in names:
+            if word.startswith(n):
+                return sym(n) + word[len(n):]
+        return " "
+    t = re.sub(r"\\([a-zA-Z]+)", split_cmd, t)
+    t = t.replace("−", "-").replace("◦", "°").replace("∘", "°").replace("µ", "μ").replace("~", "∼").replace("≲", "≤")
+    t = t.replace("ϵ", "ε").replace("ϑ", "θ").replace("ϱ", "ρ").replace("ϕ", "φ").replace("ϖ", "π")
+    t = re.sub(r"\^-\s+\^?(?=\d)", "^-", t)                 # a superscript minus set apart from its digit
+    t = re.sub(r"(?<=\d)\s*[-–—]\s*(?=\d)", " ", t)        # a dash between two numbers is a range, not a sign
+    t = t.replace("—", " ").replace("–", "-")                 # an em dash (empty cell) is never a sign
+    t = re.sub(r"(?<![\w.^])-\s+(?=\d)", "-", t)             # a sign glyph set apart from its number
+    return unicodedata.normalize("NFKC", t)
 
 
 def _num_tokens(t):
     return NUM_TOKEN_RE.findall(re.sub(r"[\^_]", " ", t))
+
+
+def _join_thousands(t):
+    """'16 000' -> '16000' (repeated for longer numbers); used for a second tokenisation on both sides."""
+    while True:
+        t2 = THOUSANDS_RE.sub(r"\1\2", t)
+        if t2 == t:
+            return t
+        t = t2
 
 
 def _letter_counts(t):
@@ -434,17 +480,44 @@ def _letter_counts(t):
     return Counter(ch for ch in re.sub(r"[\^_]", "", t).translate(LOOKALIKE) if ch.isalpha())
 
 
+def _decode_char(ch):
+    """(text, unknown) for one text-layer character: (cid:N) through its embedded font's table, named characters of
+    a symbol font through the family table; a letter of a symbol font or a cid without a table is unknown."""
+    f = ch["fontname"]
+    fam = re.sub(r"^[A-Z]{6}\+", "", f)
+    tx = ch["text"]
+    if tx.startswith("(cid:"):
+        code = "cid:" + tx[5:-1]
+        inst = GLYPHS["instances"].get(f, {})
+        return (inst[code], None) if code in inst else ("?", (fam, code))
+    famtab = GLYPHS["families"].get(fam)
+    if famtab and tx in famtab:
+        return famtab[tx], None
+    if fam in GLYPHS["symbol_families"] and (tx.isalpha() or tx.isdigit()):
+        return "?", (fam, tx)
+    if len(tx) == 1 and 0xE000 <= ord(tx) <= 0xF8FF:
+        return "?", (fam, f"U+{ord(tx):04X}")
+    return tx, None
+
+
 def _layer_lines(page, box):
-    """Lines of the PDF text layer inside box (pdfplumber page), '^' before a superscript run (a char
-    smaller than the line's font and raised); unmapped glyphs as '?'. Returns (lines, word count)."""
+    """Lines of the PDF text layer inside box (pdfplumber page), decoded (glyph_codes.json), '^' before a
+    superscript run (a char smaller than the line's font and raised). Returns (lines, word count, unknown glyph
+    counter, rotated flag)."""
+    from collections import Counter
     l, t, r, b = box
     chars = [c for c in page.chars if c["x0"] >= l - 3 and c["x1"] <= r + 3 and c["top"] >= t - 3
              and c["bottom"] <= b + 6 and c["text"].strip()]
+    unknown = Counter()
     if not chars:
-        return [], 0
+        return [], 0, unknown, False
+    rotated = sum(1 for c in chars if not c.get("upright", True)) > 0.5 * len(chars)
+    chars = [dict(c) for c in chars]
     for c in chars:
-        if c["text"].startswith("(cid:"):
-            c["text"] = "?"
+        c["text"], unk = _decode_char(c)
+        if unk:
+            unknown[unk] += 1
+    chars = [c for c in chars if c["text"] != ""]                       # accents decoded to nothing
     size0 = sorted(c["size"] for c in chars)[len(chars) // 2]
     lines = []
     for c in sorted([c for c in chars if c["size"] >= 0.85 * size0], key=lambda c: c["bottom"]):
@@ -463,15 +536,16 @@ def _layer_lines(page, box):
         txt, prev, sup = "", None, False
         for c in cs:
             small = c["size"] < 0.85 * size0 and c["bottom"] < base_bottom - 1
-            if prev is not None and c["x0"] - prev["x1"] > 1.5:
+            gap = c["x0"] - prev["x1"] if prev is not None else 0.0
+            if prev is not None and gap > 1.5 and not (small and sup and gap <= 4):
                 txt += " "; sup = False; nwords += 1
             if small and not sup:
                 txt += "^"; sup = True
             elif not small and sup:
                 txt += " "; sup = False
             txt += c["text"]; prev = c
-        out.append(txt); nwords += 1
-    return [_norm_cell_text(x) for x in out], nwords
+        out.append(_norm_cell_text(txt)); nwords += 1
+    return out, nwords, unknown, rotated
 
 
 def _md_cells(md):
@@ -493,16 +567,32 @@ def _html_cells(html):
     return rows
 
 
-def _table_check(entry, html, page):
-    """Rule check of one table entry against the PDF text layer (pdfplumber page); returns (status, reasons)."""
+def _table_check(entry, html, page, md_text):
+    """Rule check of one table entry against the PDF text layer. Returns (status, reasons, detail):
+    status ok | flag | not checkable. Not checkable: a rotated table, or a glyph the decoding tables do not cover.
+    Flag reasons: (a) numeric tokens of the layer missing from the table or extra in it (compared with and without
+    thousands separators; a superscript number of the layer counts as present when it is anywhere in the paper's
+    markdown: a footnote marker), and the counts of the symbols ± ↑ ↓ ↗ ↘ ≤ ≥ ≈ ∼ ≪ ≫ ×; (b) letters of the layer the table lacks; (c) structure: an
+    empty column, an empty trailing header cell, a short last row, header colspans against the body columns,
+    numbers just below the box on the table's columns; (d) fewer than 5 layer words in the box; (e) no table cells.
+    Table footnotes inside the box stay in the comparison."""
     from collections import Counter
-    reasons = []
+    reasons, detail = [], {}
     box = entry["bbox"]
-    lines, nwords = _layer_lines(page, box)
+    lines, nwords, unknown, rotated = _layer_lines(page, box)
     cells = _md_cells(entry["table"])
+    detail["layer_words"] = nwords
+    detail["layer_text"] = " / ".join(lines)[:1500]
+    if nwords >= 5 and rotated:
+        return "not checkable", ["rotated table: the text layer is not upright"], detail
+    if unknown:
+        detail["undecoded"] = [f"{fam} {code} ×{n}" for (fam, code), n in sorted(unknown.items())]
+        return "not checkable", ["undecoded glyphs in the text layer: " + ", ".join(detail["undecoded"])], detail
     if nwords < 5:
         reasons.append("no text layer in the table box (scanned or image table)")
-    else:
+    if not cells:
+        reasons.append("no table cells in Marker's output (the table block is an image)")
+    if nwords >= 5:
         ltext = " ".join(lines)
         ttext = _norm_cell_text(" ".join(c for r in cells for c in r))
         repeats = Counter()
@@ -511,19 +601,33 @@ def _table_check(entry, html, page):
                 k = (cs - 1) if tag == "th" else (rs * cs - 1)       # the header merge collapses a header rowspan
                 if k > 0 and text:
                     repeats[_norm_cell_text(text)] += k
-        ln, tn = Counter(_num_tokens(ltext)), Counter(_num_tokens(ttext))
-        ll, tl = _letter_counts(ltext), _letter_counts(ttext)
-        for text, k in repeats.items():
-            for tok in _num_tokens(text):
-                tn[tok] -= min(k, tn[tok])
-            for ch, n in _letter_counts(text).items():
-                tl[ch] -= min(k * n, tl[ch])
-        miss, extra = sorted((ln - tn).elements()), sorted((tn - ln).elements())
+        def diff(a, b):
+            la, tb = Counter(_num_tokens(a)), Counter(_num_tokens(b))
+            for text, k in repeats.items():
+                for tok in _num_tokens(text):
+                    tb[tok] -= min(k, tb[tok])
+            return la - tb, tb - la
+        m1, e1 = diff(ltext, ttext)
+        m2, e2 = diff(_join_thousands(ltext), _join_thousands(ttext))
+        miss = sorted((m1 & m2).elements()) if m1 and m2 else []
+        extra = sorted((e1 & e2).elements()) if e1 and e2 else []
+        sup_nums = {x for line in lines for x in re.findall(r"\^(\d+)", line)}
+        excused = [x for x in miss if x in sup_nums and re.search(r"(?<!\d)" + re.escape(x) + r"(?!\d)", md_text)]
+        miss = [x for x in miss if x not in excused]
+        sym = {s: (ltext.count(s), ttext.count(s)) for s in COUNTED_SYMBOLS if ltext.count(s) != ttext.count(s)}
+        detail.update({"numbers_layer_only": miss[:20], "numbers_table_only": extra[:20],
+                       "footnote_numbers_in_markdown": excused[:10], "symbols": {s: list(v) for s, v in sym.items()}})
         if miss or extra:
             reasons.append(f"numbers: in the text layer only {miss[:12]}, in the table only {extra[:12]}")
-        if ltext.count("±") != ttext.count("±"):
-            reasons.append(f"± count: text layer {ltext.count('±')}, table {ttext.count('±')}")
+        if sym:
+            reasons.append("symbol counts (text layer, table): " + ", ".join(f"{s} {a} vs {b}" for s, (a, b) in sym.items()))
+        ll, tl = _letter_counts(ltext), _letter_counts(ttext)
+        for text, k in repeats.items():
+            for ch, n in _letter_counts(text).items():
+                tl[ch] -= min(k * n, tl[ch])
         dl = "".join(sorted((ll - tl).elements()))
+        detail["letters_layer_only"] = dl[:60]
+        detail["letters_table_only"] = "".join(sorted((tl - ll).elements()))[:60]
         if dl:
             reasons.append(f"letters in the text layer missing from the table: {dl[:40]}")
     if cells:
@@ -556,7 +660,7 @@ def _table_check(entry, html, page):
         hits = [w["text"] for w in below if any(abs((w["x0"] + w["x1"]) / 2 - x) < 8 for x in cols)]
         if len(hits) >= 2:
             reasons.append(f"numbers just below the box on the table's columns: {hits[:6]}")
-    return ("flag" if reasons else "ok"), reasons
+    return ("flag" if reasons else "ok"), reasons, detail
 
 
 def _table_crop(d, pdf, entry, k):
@@ -615,7 +719,10 @@ def structure(paper_id):
             overlap = min(r1, r2) - max(l1, l2)
             if overlap < 0.5 * min(r1 - l1, r2 - l2) or t2 - b1 > 4:
                 break
-            c["text"] = (c.get("text") or it["text"]) + " " + nxt["text"]
+            cur = c.get("text") or it["text"]
+            if re.search(r"[.!?]['\")]?\s*$", cur) and not re.match(r"\s*(\(?[a-zA-Z0-9]\)\s|[a-z])", nxt["text"]):
+                break        # the caption ends a sentence and the next block starts a new one: a body paragraph
+            c["text"] = cur + " " + nxt["text"]
             last = nxt; k += 1
     for c in cands:
         c["text"] = c.get("text") or c["item"]["text"]
@@ -680,6 +787,7 @@ def structure(paper_id):
     for i in sorted(loose_caps, key=lambda i: pos[cands[i]["item"]["id"]]):
         c = cands[i]; cap_entries[i] = entry_for(c, c["kind"]); entries.append(cap_entries[i])
     fig_caps = [i for i in loose_caps if cands[i]["kind"] != "table"]
+    loose_pics = []
     for it in items:
         if it["type"] not in IMAGE_TYPES or it["id"] in used_items:
             continue
@@ -697,6 +805,23 @@ def structure(paper_id):
                 cap_entries[target]["images"].append(img)
         else:
             entries.append({"kind": "figure", "number": None, "caption": "", "images": [img] if img else [], "page": it["page"]})
+            loose_pics.append((entries[-1], it))
+    # a manuscript with the figures after all captions: the numbered figure captions without an image, in number
+    # order, take the large loose pictures (80 pt or more on both sides, no logos) of the pages after the last
+    # caption, one page per caption, when the page count equals the caption count (2 or more)
+    noimg = [e for e in entries if e["kind"] != "table" and e["number"] and re.fullmatch(r"\d+", e["number"]) and not e["images"]]
+    cap_pages = [c["item"]["page"] for i, c in enumerate(cands) if c["number"] and c["kind"] != "table"]
+    if len(noimg) >= 2 and cap_pages:
+        last = max(cap_pages)
+        big = [(e, it) for e, it in loose_pics if it["page"] > last and it.get("bbox")
+               and min(it["bbox"][2] - it["bbox"][0], it["bbox"][3] - it["bbox"][1]) >= 80 and e["images"]]
+        pages = sorted({it["page"] for e, it in big})
+        if len(pages) == len(noimg):
+            for cap, pg in zip(sorted(noimg, key=lambda e: int(e["number"])), pages):
+                for e, it in big:
+                    if it["page"] == pg:
+                        cap["images"].extend(e["images"]); entries.remove(e)
+                cap["images_bound_by"] = "page order (figures after the captions)"
     tab_caps = [i for i in loose_caps if cands[i]["kind"] == "table"]
     used_tc = set()
     for it in items:
@@ -723,20 +848,20 @@ def structure(paper_id):
     oa_text = _load_oa_abstracts().get(paper_id)
     abstract, source = _abstract(seq, oa_text)
     abstract = re.sub(r"\s+", " ", abstract).strip()
-    if abstract and oa_text and _abstract_is_ocr(seq, RAW / f"{paper_id}.pdf", abstract):
-        ow = _words(oa_text)
-        if ow and len(_words(abstract) & ow) / len(ow) < 0.8:
-            abstract, source = re.sub(r"\s+", " ", oa_text).strip(), "openalex"
+    ow = _words(oa_text) if oa_text and len(oa_text.split()) >= 50 else set()      # a usable OpenAlex abstract
+    if ow and (not abstract or len(_words(abstract) & ow) / len(ow) < 0.8):
+        abstract, source = re.sub(r"\s+", " ", oa_text).strip(), "openalex"
 
     # tables: crop and rule check (see the module docstring)
     html_by_bbox = {tuple(it["bbox"]): (it["html"], it["id"]) for it in items if it["type"] == "Table" and it.get("bbox")}
     tabs = [e for e in entries if e["kind"] == "table" and e.get("bbox")]
     if tabs:
         import pdfplumber
+        md_raw = (d / "marker.md").read_text() if (d / "marker.md").exists() else (d / "document.md").read_text()
         with pdfplumber.open(str(pdf)) as pl:
             for e in tabs:
                 html, tid = html_by_bbox.get(tuple(e["bbox"]), ("", ""))
-                e["check"], e["check_reasons"] = _table_check(e, html, pl.pages[e["page"] - 1])
+                e["check"], e["check_reasons"], e["check_detail"] = _table_check(e, html, pl.pages[e["page"] - 1], md_raw)
                 e["crop"] = _table_crop(d, pdf, e, tid.rsplit("/", 1)[-1] if tid else "x")
 
     # document.md without running lines; Marker's own markdown kept as marker.md

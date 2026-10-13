@@ -192,15 +192,55 @@ def _band_triggers(tree, pdf):
                     if m and m.group(2) not in cap_numbers and len(text) >= 20:
                         hits.append(("T1", b, parent, [l - 2, top - 3, r + 2, bt + 2], f"{m.group(1)} {m.group(2)}"))
                         break
-            elif b.get("block_type") == "Text" and b.get("bbox"):
+            elif b.get("block_type") in ("Text", "Table") and b.get("bbox"):
                 h = b.get("html", "")
                 if "<img" in h and not re.sub(r"<[^>]+>", "", h).strip():
                     l, t, r, bt = b["bbox"]
-                    hits.append(("T2", b, parent, [l - 2, t - 2, r + 2, bt + 2], ""))
+                    hits.append(("T2", b, parent, [l - 2, t - 2, r + 2, bt + 2], b["block_type"]))
             for c in b.get("children") or []:
                 walk(c, b)
         walk(page, None)
     return hits
+
+
+def _prev_text_block(tree, block_id):
+    """Text of the last block with text before block_id in reading order (for placing OCR text in the markdown)."""
+    prev = None
+    for b in _walk(tree):
+        if b.get("id") == block_id:
+            return prev
+        if b.get("block_type") in ("Text", "SectionHeader", "Caption", "ListItem", "TextInlineMath") and re.sub(r"<[^>]+>", "", b.get("html", "")).strip():
+            prev = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", b.get("html", ""))).strip()
+    return prev
+
+
+def _insert_md_text(d, tree, block_id, src, plain):
+    """Put the OCR text of a T2 block into the markdown: replacing the image placeholder when the block had one,
+    else as a paragraph after the preceding text block. Returns True when written."""
+    for name in ("marker.md", "document.md"):
+        md_path = d / name
+        if not md_path.exists():
+            continue
+        md = md_path.read_text()
+        if plain[:60] in md:
+            return True
+        if src:
+            new = re.sub(r"!\[[^\]]*\]\(" + re.escape(src) + r"\)", plain.replace("\\", "\\\\"), md)
+            if new != md:
+                md_path.write_text(new)
+                return True
+        prev = _prev_text_block(tree, block_id)
+        if prev:
+            key = re.sub(r"[*_`#>\\\s]", "", prev)[:35]              # the markdown may carry *italics*, \escapes, other spacing
+            pat = r"[*_`\\\s]*".join(re.escape(ch) for ch in key)
+            m = re.search(pat, md)
+            if m:
+                j = md.find("\n\n", m.start())
+                j = len(md) if j < 0 else j
+                md_path.write_text(md[:j] + "\n\n" + plain + md[j:])
+                return True
+        return False
+    return False
 
 
 def band_ocr(converter, paper_id):
@@ -246,17 +286,9 @@ def band_ocr(converter, paper_id):
             b["band_ocr"] = "T1-source"
         else:
             src = re.search(r'<img[^>]*src="([^"]+)"', b.get("html", ""))
-            b["html"] = html
+            b["html"] = html                              # a Table block drawn as an image gets its OCR text as a paragraph
             b["band_ocr"] = "T2"
-            if src:
-                for name in ("marker.md", "document.md"):
-                    md_path = d / name
-                    if md_path.exists():
-                        md = md_path.read_text()
-                        new = re.sub(r"!\[[^\]]*\]\(" + re.escape(src.group(1)) + r"\)", plain.replace("\\", "\\\\"), md)
-                        if new != md:
-                            md_path.write_text(new)
-                        break
+            rec["in_markdown"] = _insert_md_text(d, tree, b["id"], src.group(1) if src else None, plain)
         rec["applied"] = True
         done.append(rec)
     (d / "blocks.json").write_text(json.dumps(tree, indent=1, ensure_ascii=False))
@@ -321,6 +353,15 @@ def bands_only(rows, by_id, argv):
             print(f"[bands] {pid}: no blocks.json, skipped")
             continue
         tree = json.loads((OUT / pid / "blocks.json").read_text())
+        recs = json.loads((OUT / pid / "bands.json").read_text()) if (OUT / pid / "bands.json").exists() else []
+        n_ins = 0
+        for rec in recs:                                    # earlier T2 repairs whose text never reached the markdown
+            if rec.get("trigger") == "T2" and rec.get("applied") and rec.get("text") and not rec.get("in_markdown"):
+                rec["in_markdown"] = _insert_md_text(OUT / pid, tree, rec["block"], None, rec["text"])
+                n_ins += rec["in_markdown"]
+        if n_ins:
+            (OUT / pid / "bands.json").write_text(json.dumps(recs, indent=1, ensure_ascii=False))
+            print(f"[bands] {pid}: {n_ins} earlier OCR text(s) inserted into the markdown", flush=True)
         hits = _band_triggers(tree, RAW / f"{pid}.pdf")
         if not hits:
             if not (OUT / pid / "bands.json").exists():

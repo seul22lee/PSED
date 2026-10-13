@@ -1,0 +1,152 @@
+{
+ "about": "Decoding of the PDF text layer inside table boxes for the table check in structure_marker.py. 'families': characters of symbol-encoded fonts (the font's own character codes, the same in every subset of the font); letters of these fonts that are not listed have no decoding and make a table 'not checkable'. 'instances': (cid:N) codes of embedded font subsets; a cid is a glyph index of the subset, so it is decoded only through the table of that embedded instance (subset prefix + family). Every entry was checked on a crop of the glyph by Claude Code on 2026-10-12 (scratch sheets tables2/glyphs/inst*.png); 'evidence' names the paper, page and table of one occurrence. Other characters are taken as they are.",
+ "families": {
+  "AdvP4C4E74": {
+   "¼": "=",
+   "þ": "+",
+   "ð": "(",
+   "Þ": ")"
+  },
+  "AdvP4C4E51": {
+   "=": "/",
+   ":": "."
+  },
+  "AdvP4C4E59": {
+   "~": ""
+  },
+  "AdvP80675": {
+   "6": "±"
+  },
+  "AdvPi1": {
+   "m": "μ"
+  },
+  "AdvPi2": {
+   "O": "Ω",
+   "b": "β",
+   "d": "δ",
+   "e": "ε",
+   "f": "φ",
+   "g": "γ",
+   "l": "λ",
+   "r": "ρ",
+   "s": "σ",
+   "t": "τ",
+   "x": "ξ",
+   "y": "θ"
+  },
+  "AdvPSMP10": {
+   "b": "β",
+   "g": "η",
+   "h": "θ",
+   "q": "ρ",
+   "r": "σ",
+   "s": "τ"
+  },
+  "AdvPSMP13": {
+   "D": "Δ"
+  },
+  "AdvGreekM": {
+   "f": "φ"
+  },
+  "AdvEls-Ent1": {
+   "k": "↓",
+   "m": "↑",
+   "r": "↘",
+   "s": "↗"
+  },
+  "AdvEls-ent4": {
+   "r": "≤",
+   "{": "≪"
+  },
+  "AdvEls-ent5": {
+   "c": "≫",
+   "1": "1"
+  },
+  "AdvEls-ent7": {
+   "B": "∼",
+   "E": "≈"
+  }
+ },
+ "symbol_families": [
+  "AdvPi1",
+  "AdvPi2",
+  "AdvPSMP10",
+  "AdvPSMP13",
+  "AdvGreekM",
+  "AdvEls-Ent1",
+  "AdvEls-ent4",
+  "AdvEls-ent5",
+  "AdvEls-ent7",
+  "AdvP80675",
+  "MathematicalPi-Three"
+ ],
+ "instances": {
+  "MBAJJO+AdvP4C4E74": {
+   "cid:2": "−",
+   "cid:3": "×"
+  },
+  "MEPBAO+AdvP4C4E74": {
+   "cid:2": "−"
+  },
+  "GENDPM+AdvP4C4E74": {
+   "cid:2": "−"
+  },
+  "EAGHDP+AdvP4C4E74": {
+   "cid:2": "−",
+   "cid:6": "×"
+  },
+  "MNGCOP+AdvP4C4E74": {
+   "cid:2": "−",
+   "cid:3": "×"
+  },
+  "XAOQNP+AdvP4C4E74": {
+   "cid:2": "−"
+  },
+  "FGIIBN+AdvP4C4E74": {
+   "cid:1": "×",
+   "cid:3": "−"
+  },
+  "CBPCMD+AdvP4C4E74": {
+   "cid:2": "°",
+   "cid:3": "−",
+   "cid:4": "·",
+   "cid:6": "×"
+  },
+  "CBPCNE+AdvP4C4E51": {
+   "cid:2": "ϵ"
+  },
+  "MNGEJG+AdvP4C4E59": {
+   "cid:2": ""
+  },
+  "MEPGPE+AdvP4C4E46": {
+   "cid:7": "|",
+   "cid:8": "(",
+   "cid:9": ")"
+  },
+  "MNGEGD+AdvP4C4E46": {
+   "cid:5": "|",
+   "cid:6": "(",
+   "cid:7": ")"
+  },
+  "MACDEI+MathematicalPi-Three": {
+   "cid:1": "(",
+   "cid:2": ")"
+  }
+ },
+ "evidence": {
+  "AdvP4C4E74 ¼ þ ð Þ": "10.1039_d1cp04758b p10 T2 (θ=1/2), 10.1116_6.0003182 p8 TI (ȳ = Δn_g/Δn_s + 1), 10.1039_d0cp03358h p4 T1 (d(S/N))",
+  "AdvP4C4E51 = :": "10.1039_d0cp03358h p4 T1 (S/N), 10.1116_1.4892385 p5 TI (m^2/g), 10.1039_d4cp00131a p13 T2 (θ=0.5 written 0:5)",
+  "AdvP4C4E59 ~": "tilde accent over x (x̃), 10.1039_d1cp04758b p10 T2",
+  "AdvP80675 6": "± in (4 ± 2) × 10^-4, 10.1063_5.0168768 p5 TI",
+  "AdvPi1 m": "μ in (μm), 10.1039_d0cp03358h p4 T1, 10.1039_d1cp04758b p8 T1, 10.1039_d3cp01829f p5 T1",
+  "AdvPi2 letters": "symbol lists of 10.1039_d0cp03358h p12, d1cp04758b p14, d3cp01829f p5/p11/p12, d3cp05639b p4/p10, d4cp00131a p13/p16/p17 (λ ρ ξ θ γ σ Ω β δ φ ε τ)",
+  "AdvPSMP10 letters": "10.1063_1.5028178 p2 nomenclature (η θ ρ τ), 10.1116_1.4892385 p5 TI/TII (β σ τ)",
+  "AdvPSMP13 D": "Δs, 10.1063_1.5028178 p2",
+  "AdvGreekM f": "φ_f final porosity, 10.1116_6.0003182 p8 TI",
+  "AdvEls-Ent1 k m r s": "arrows ↓ ↑ ↘ ↗, 10.1039_d1cp04758b p10 T2, 10.1039_d4cp00131a p13 T2",
+  "AdvEls-ent4 r {": "≤ in (0 ≤ θ ≤ 1), ≪ in Kn ≪ 1; 10.1039_d0cp03358h p12, d1cp04758b p14, d3cp05639b p10, d4cp00131a p13",
+  "instances": "each cid judged on the glyph crop in the named paper: MBAJJO d0cp03358h p4 (− ×), MEPBAO d1cp04758b p8 (−), GENDPM d3cp01829f p5 (−), EAGHDP d3cp05639b p4 (− ×), MNGCOP d4cp00131a p4 (− ×), XAOQNP 1.5028178 p8 (−), FGIIBN 5.0168768 p5 (× −), CBPCMD 1.4892385 p5 (° − · ×), CBPCNE 1.4892385 p5 (ϵ), MNGEJG d4cp00131a p17 (macron accent), MEPGPE d1cp04758b p10 and MNGEGD d4cp00131a p13 (| ( ) delimiters), MACDEI 1.2338776 p3 (parentheses)",
+  "AdvEls-ent5 c 1": "Kn ≫ 1: the '1' of this font is the digit one (crop), 10.1039_d1cp04758b p10 T2, d4cp00131a p13 T2",
+  "AdvEls-ent7 B E": "∼100:1, Kn ≈ 1; 10.1039_d0cp03358h p11 T2, d1cp04758b p10 T2, d4cp00131a p13 T2"
+ }
+}

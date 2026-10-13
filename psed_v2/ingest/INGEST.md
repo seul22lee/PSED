@@ -7,10 +7,10 @@ repairs, served by llama.cpp). This file holds what ingest extracts, with which 
 behind each choice, the environments and a change log. The errors that remain after the rules are in
 [ERRORS.md](ERRORS.md). `CLAUDE.md` points here; keep ingest details in these two files only.
 
-All numbers below: 2026-10-12, the 13 Marker papers (one per DOI prefix of the 44 in scope), checked
-by Claude Code on the PDF pages and crops ("page") or by script against the PDF text layer or
-pdftotext ("script"), at the commit named in the change log line of the same date. The user has
-not re-checked them.
+All numbers below: 2026-10-12 for the 13 Marker papers (one per DOI prefix of the 44 in scope) and
+2026-10-13 for the other 31 (the "44" numbers), checked by Claude Code on the PDF pages and crops
+("page") or by script against the PDF text layer or pdftotext ("script"), at the commit named in the
+change log line of the same date. The user has not re-checked them.
 
 ## Pipeline
 
@@ -24,11 +24,11 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 | Item | Tool | How | Output in `final/<id>/structure.json` | Numbers (13 papers) |
 | --- | --- | --- | --- | --- |
 | DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | never extracted from the PDF | — | — |
-| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters) | `document.md` | reading order title → authors → abstract → body right in 12 of 13 (page); the exception, 10.1021_acs.jpcc.9b08176, is repaired by the band OCR; one block out of order on 10.1186_s11671-015-0872-9 p 4 |
-| Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; OpenAlex text when the block is OCR-only and recall < 80 % | `abstract`, `abstract_source` | 13 of 13 right (page; the ACS abstract after the band OCR) |
-| Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture | `captions` with `images` | 13 papers, every numbered figure caption right (page): 11 disagreement rows with Docling all Marker's side right after the band OCR |
-| Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `crop` | 16 numbered tables: 11 fully right, 5 wrong, all 5 flagged, 3 right ones flagged (page) |
-| Equations | Docling + Marker | Docling's layout gives the formula boxes, CodeFormula reads our crops (R1 tight box at 216 dpi; R2 band box when the box is ≤ 25 pt wide); Marker's `<math>` blocks; pairs by page and box, `agree` / `differ` | `equations[{page, bbox, number, docling, marker, status}]` | 103 pairs: 74 agree, 29 differ (Marker right 14, Docling right 7, both wrong 3, equivalent forms 5) (page) |
+| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks (abstracts, author lines, an image-only table) written into it | `document.md` | 44 papers: numbers and 25-word blocks of the text layer checked by script, flags viewed on the page: 1 sentence of a line-numbered manuscript page lost, 3 numbers misread, "<001>" written "001", 1 block out of column order, 1 abstract paragraph lost (its band OCR returned nothing); see ERRORS.md |
+| Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; the OpenAlex text when it has 50+ words and the extracted abstract is empty or has recall < 80 % against it | `abstract`, `abstract_source` | 44 of 44 right (page or recall ≥ 90 %): 23 heading, 20 openalex_match, 1 openalex (10.1021_acs.langmuir.6b03119, whose abstract block is an image the band OCR could not read) |
+| Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture; captions do not continue into a body paragraph; figures placed after all captions bound by page order | `captions` with `images` | 44 papers: every numbered caption has its image and text (page); 2 figures split into panel blocks keep one panel unbound (ERRORS.md) |
+| Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check against the decoded text layer (`glyph_codes.json`) + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `check_detail`, `crop` | 69 tables in 28 papers (page): 41 right, 28 wrong; the check flags 27 of the 28, misses 0, flags 7 right tables, 1 wrong table not checkable (rotated) |
+| Equations | Docling + Marker | Docling's layout gives the formula boxes, CodeFormula reads our crops (R1 tight box at 216 dpi; R2 band box when the box is ≤ 25 pt wide); Marker's `<math>` blocks; pairs by page and box, `agree` / `differ` | `equations[{page, bbox, number, docling, marker, status}]` | 44 papers: 321 entries, 197 agree, 109 differ, 15 one tool only; on the 13 checked papers 103 pairs: 74 agree, 29 differ (Marker right 14, Docling right 7, both wrong 3, equivalent forms 5) (page) |
 
 Paths: `ingest/marker/<id>/` (blocks.json, marker.md, document.md, images, structure.json, table crops,
 bands.json), `ingest/docling/<id>/equations.json`, `ingest/final/<id>/` (all gitignored). Progress:
@@ -68,8 +68,13 @@ fixed / limit / open; checked by script, Claude Code or user.
 | M5 | Abstract | Abstract beside the TOC graphic rendered as an image (ACS) | fixed: T2 band OCR | Claude Code, page | 10.1021_acs.jpcc.9b08176 |
 | M6 | Tables | Marker's TableGroup pairs a caption with the neighbouring table | fixed: position rule | Claude Code, page | 10.3390_separations11010024 Tables A1–A3 |
 | M7 | Tables | Trailing zeros dropped by tabulate (0.10 → 0.1) in both tools | fixed: no number parsing | script | 7 cells in 5 tables, no other change |
-| M8 | Tables | Extra empty column from Marker's header colspans; header shifted; a symbol misread | limit, flagged by the rule check | Claude Code, page | 5 of 16 tables, see ERRORS.md |
-| M9 | Tables | Right tables flagged (footnotes in the box, unmapped minus glyph, hidden duplicate text layer) | limit: 3 false flags on 16 | Claude Code, page | ERRORS.md |
+| M8 | Tables | Structure (extra empty column, header shifted, column lost, rowspan misread), symbols misread (μ lost, O/0, Θ/θ, ξ/ζ, subscript case), arrow counts, one table drawn as an image | limit, flagged by the rule check: 27 of 28 wrong tables, 1 not checkable | Claude Code, page | 69 tables of 44 papers, 2026-10-13; ERRORS.md |
+| M9 | Tables | Right tables flagged (footnotes in or just below the box, a box covering body text, the MDPI duplicate layer, a font encoding ν as "n") | limit: 7 false flags on 41 right tables | Claude Code, page | ERRORS.md |
+| M10 | Tables | Text layer of symbol fonts read as letters or (cid:N) subset glyph codes | fixed: decoded per font family and per embedded subset, `glyph_codes.json` (13 families, 13 subsets, every code checked on a glyph crop); a code without a table makes the table "not checkable" | Claude Code, glyph crops | 12 papers, 2026-10-13 |
+| M11 | Captions | A caption continued into the body paragraph below | fixed: no continuation past a sentence end into a block that starts a new sentence | Claude Code, page | 10.1021_acs.chemmater.1c03164 Figures 1, 3 |
+| M12 | Figures | A manuscript with all figures after the captions: captions without an image | fixed: bound by page order when the counts match | Claude Code, page | 10.1116_1.5116136 Figures 1–5 |
+| M13 | Abstract | OpenAlex fallback only for OCR-only blocks | fixed: fallback whenever a usable OpenAlex abstract exists and recall < 80 % or the abstract is empty | script | 10.1021_acs.langmuir.6b03119 |
+| M14 | Body | OCR'd abstract text not written into document.md; table blocks drawn as an image not repaired | fixed: the band repair anchors the text in the markdown; T2 also for image-only Table blocks | script | 4 ACS papers, 10.1021_acsnano.5b03429 |
 | E1 | Equations | Docling's enrichment crop (box + 18 %, 120 dpi) takes in neighbouring text; Beilstein boxes hold only the number | fixed: R1 tight crop at 216 dpi (18 fixed, 1 broken), R2 band box (12 of 19 fixed) | Claude Code, crops | 103 pairs, cf. ERRORS.md |
 | E2 | Equations | Both tools misread some formulas | limit: `differ` pairs for review | Claude Code, crops | 29 of 103 pairs differ |
 | E3 | Equations | Marker re-recognition of its own equations on a 216-dpi crop | rejected: fixed 2, broke 13 | script + crops | not applied |
@@ -96,31 +101,44 @@ from the top-left, html). Band-crop OCR after the conversion (or `--bands` on ex
 output): T1, a Figure/Picture/Diagram block whose box holds a text-layer line starting with a caption
 label while the page has no Caption block with that number → the band from that line to the block's bottom
 is OCR'd and inserted as a Caption block; T2, a Text block that is only an image → OCR'd, its html and
-markdown placeholder replaced. Records in `bands.json`. 13 papers: 2 captions and 1 abstract recovered,
-3 author lines and 3 "Check for updates" badges added as text, nothing lost.
+markdown placeholder replaced, or the text placed after the preceding block when there is no placeholder; a Table
+block that is only an image is OCR'd the same way (its cell texts go into the markdown as a paragraph). Records in
+`bands.json`. 44 papers, 25 repairs in 20 papers: 2 captions and 4 abstracts recovered, 1 image table's texts, 11 author
+lines and 7 "Check for updates" badges added as text, nothing lost; one abstract block returned no text
+(10.1021_acs.langmuir.6b03119).
 
 ### Structure (`structure_marker.py`)
 - Captions: a block whose text starts with Fig./Figure/Scheme/Table + number (letter prefix allowed) is a caption if
   Marker labels it Caption, the number is followed by ".", ":" or "|", or a Table caption's number is followed by a
   capitalised word (Text blocks count); it continues with the Text block directly below in the same column when the
-  gap is at most 4 pt.
+  gap is at most 4 pt, unless the caption ends a sentence and the next block starts a new one (a body paragraph);
+  a block that starts lowercase or with a panel letter continues the caption.
 - Figures: bound by Marker's FigureGroup/PictureGroup, else the position rules (next caption on the page whose
   horizontal span overlaps the picture, else the previous one, else the next). A Figure/Picture/Diagram/ChemicalBlock
-  without an image file is cropped from the page (`crop_page_<P-1>_<Type>_<K>.png`).
+  without an image file is cropped from the page (`crop_page_<P-1>_<Type>_<K>.png`). A manuscript with its figures
+  after all captions: the numbered captions without an image take the large loose pictures (80 pt or more on both
+  sides) of the pages after the last caption, one page per caption, when the counts match.
 - Tables: the nearest unused table caption on the same page (Marker's TableGroup ignored); html → markdown with the
   `<th>` rows merged into one header line (" / "), rowspans and colspans honoured, `<sup>` as `^`, tabulate without
-  number parsing. Crop `table_<P-1>_<K>.png` (caption band above, 30 pt below). Rule check → `check`: ok | flag,
-  `check_reasons`: (a) numeric tokens of the PDF text layer inside the box vs the markdown (superscripts read by
-  font size; rowspan/colspan repeats counted once) and the count of ±; (b) letters of the layer the table lacks
-  (LaTeX, Greek, sub/superscripts normalised); (c) header colspans vs body columns, empty trailing header, empty
-  column, short last row, numbers just below the box on the table's columns; (d) fewer than 5 layer words. No
-  exception: footnotes or a hidden duplicate layer inside the box also flag. 16 numbered tables: 5 wrong caught,
-  0 missed, 3 right flagged. A flagged table is read by a vision model at extract time; nothing here does.
+  number parsing. Crop `table_<P-1>_<K>.png` (caption band above, 30 pt below). Rule check → `check`: ok | flag |
+  not checkable, with `check_reasons` and `check_detail`. The text layer inside the box is decoded per font
+  (`glyph_codes.json`): named characters of symbol-encoded fonts by a table per font family (AdvPi2 y → θ, AdvPSMP10
+  g → η, AdvP80675 6 → ±, AdvP4C4E51 : → .), (cid:N) codes by a table per embedded subset (a cid is a glyph index of
+  the subset: (cid:3) is − in the AIP subsets and × in an RSC one); every entry checked on a glyph crop. A glyph
+  without a table, or a rotated table, makes the table not checkable (reason given). Flag reasons: (a) numeric
+  tokens of the layer missing from or extra in the markdown (sign, decimals, exponents by font size; compared with
+  and without thousands separators; a superscript number counts as present when it is anywhere in the markdown:
+  a footnote marker) and the counts of ± ↑ ↓ ↗ ↘ ≤ ≥ ≈ ∼ ≪ ≫ ×; (b) letters of the layer the table lacks (LaTeX,
+  Greek, operator names, sub/superscripts, math italics normalised); (c) header colspans vs body columns, empty
+  trailing header, empty column, short last row, numbers just below the box on the table's columns; (d) fewer
+  than 5 layer words; (e) no table cells. No exception: footnotes or a hidden duplicate layer inside the box also
+  flag. 69 tables of 44 papers (2026-10-13): 27 of 28 wrong tables flagged, 0 missed, 7 right tables flagged,
+  1 not checkable. A flagged table is read by a vision model at extract time; nothing here does.
 - Equations: Equation blocks' `<math>` LaTeX with the number Marker kept, plus short standalone blocks (≤ 25 words)
   holding → or \rightarrow.
 - Abstract: the Docling-stage rules on Marker's blocks (heading / "Abstract:" paragraph with its continuation,
-  else the OpenAlex match on pages 1–2, else the widest page-1 item, else the longest early paragraph), with the
-  OpenAlex fallback when the items are OCR-only and recall < 80 %.
+  else the OpenAlex match on pages 1–2, else the widest page-1 item, else the longest early paragraph); the OpenAlex
+  text replaces it when OpenAlex has 50 words or more and the extracted abstract is empty or has recall < 80 %.
 - `document.md`: Marker's markdown without running lines; the original kept as `marker.md`.
 
 ### Equations (`parse_docling.py --formulas`, `merge.py`)
@@ -146,6 +164,14 @@ change log are historical.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
+
+- 2026-10-13 — Table check rebuilt on a decoded text layer (`glyph_codes.json`: 13 symbol-font families, 13 embedded subsets, every
+  code checked on a glyph crop; thousands separators; footnote numbers; symbol counts; "not checkable" for undecoded glyphs and
+  rotated tables); band repair writes the OCR text into the markdown and covers image-only Table blocks; caption continuation stops
+  at a body paragraph; figures-after-captions manuscripts bound by page order; OpenAlex abstract fallback on low recall; all 69
+  tables of the 44 papers judged on the crop. Effect: 27 of 28 wrong tables flagged, 0 missed, 7 right tables flagged, 1 not
+  checkable; 11 review_31 real errors fixed (4 abstracts into document.md, 2 captions, 5 figure images, 1 abstract), 0 broken;
+  ERRORS.md and review_44.html rebuilt. — this commit.
 
 - 2026-10-12 — Docling stage removed: `parse_docling.py` keeps `--formulas` and `--fetch-abstracts` only; `ingest/review/`, the
   Docling full-parse outputs (docling.json, document.md, structure.json, figures/, 132 MB over 44 papers) and the manifest
