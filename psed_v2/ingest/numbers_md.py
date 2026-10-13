@@ -7,6 +7,9 @@ and glyph_codes.json. The judged numbers (the distinct real errors per class, wh
 verdicts) come from the answer set and are marked as such. Two recorded numbers that no file holds are kept in RECORDED
 with their origin: the breakdown of the unmatched output paragraphs by kind (a read-only recount of 2026-10-13) and
 the class list of the 44 distinct errors (ingest/ERRORS.md).
+
+The table has three number columns: all papers, the first 44 (covered by the answer set) and the 15 whose PDFs were
+obtained by hand on 2026-10-13 (not judged).
 """
 import json
 import statistics
@@ -28,16 +31,18 @@ RECORDED = {
 }
 
 
-def main():
+def block(pids, judged_scope):
+    """The table rows (item, number, source) and the per-paper rows for one set of papers. judged_scope: True when the
+    answer set covers every paper of the set (the first 44), False when it covers none (the 15 added on 2026-10-13),
+    None when it covers part of it (all 59): judged numbers are then those of the 44 and say so."""
     T, E, B, K, R, NC, SC, A = Counter(), Counter(), Counter(), Counter(), Counter(), Counter(), Counter(), {}
     cov, rows, nopaper, rec, lnum, figs = [], [], 0, Counter(), Counter(), Counter()
-    pids = sorted(p.name for p in FINAL.iterdir() if (p / "structure.json").exists())
     for pid in pids:
         st = json.load(open(FINAL / pid / "structure.json"))
         for c in st["captions"]:
             if c["kind"] == "table":
                 T["total"] += 1
-                T[c["check"]] += 1
+                T[c.get("check", "no check")] += 1
             elif c["kind"] == "figure":
                 figs["numbered" if c.get("number") else "unnumbered"] += 1
             else:
@@ -47,9 +52,9 @@ def main():
             E[e["status"]] += 1
         c = st["body_check"]["counts"]
         B["lines"] += c["lines"]
-        B["checked"] += c["checked"]
+        B["checked"] += c.get("checked", 0)
         B["rotated"] += c.get("not checkable: rotated text (characters)", 0)
-        cov.append(100 * c["checked"] / c["lines"] if c["lines"] else 100)
+        cov.append(100 * c.get("checked", 0) / c["lines"] if c["lines"] else 100)
         for k, v in c.items():
             if k.startswith("not checkable") and "rotated" not in k:
                 NC[k.replace("not checkable: ", "")] += v
@@ -82,7 +87,7 @@ def main():
             lnum["kept"] += ln.get("kept_real", 0)
         und = c.get("not checkable: undecoded glyph", 0)
         other = sum(v for k, v in c.items() if k.startswith("not checkable") and "undecoded" not in k and "rotated" not in k)
-        rows.append((pid, c["lines"], c["checked"], und, c.get("not checkable: rotated text (characters)", 0), other, n, layer + out, len(st["body_repairs"])))
+        rows.append((pid, c["lines"], c.get("checked", 0), und, c.get("not checkable: rotated text (characters)", 0), other, n, layer + out, len(st["body_repairs"])))
     bands = Counter()
     for pid in pids:
         for b in json.load(open(MARKER / pid / "bands.json")):
@@ -101,9 +106,9 @@ def main():
             key = (pid, str(t["page"]), t["number"], seen[k])
             seen[k] += 1
             if key in wrong:
-                wrong_flag += t["check"] == "flag"
-                wrong_nc += t["check"] == "not checkable"
-            elif t["check"] == "flag":
+                wrong_flag += t.get("check") == "flag"
+                wrong_nc += t.get("check") == "not checkable"
+            elif t.get("check") == "flag":
                 right_flag += 1
     ev = Counter(a["verdict"] for a in ans_e)
     judged = {a["flag_key"]: a["verdict"] for a in ans_b}
@@ -123,16 +128,12 @@ def main():
     flags = sum(v for k, v in K.items() if not k.startswith("not checkable"))
     ncl, nco = K["not checkable, layer side"], K["not checkable, output side"]
     L = []
-    L.append(f"# Ingest numbers ({len(pids)} in-scope papers with a PDF; written by ingest/numbers_md.py from the final output)\n")
-    L.append("One table; every number in INGEST, ERRORS and the plan must match it. \"structure.json\" means the sum over\n"
-             "`ingest/final/<paper_id>/structure.json`. Judged numbers come from the answer set `ingest/answers/` (Claude Code's\n"
-             "page judgements) and are marked as such; two recorded numbers name their origin.\n")
-    L.append("| Item | Number | Source |\n|---|---|---|")
     L.append(f"| Papers ingested | {len(pids)} | `ingest/final/` (manifest `marker` = ok) |")
     L.append(f"| **Tables** total | {T['total']} | {sj} `captions[kind=table]` |")
     L.append(f"| Tables `check` = flag | {T['flag']} | {sj} `captions[].check` |")
     L.append(f"| Tables `check` = ok | {T['ok']} | {sj} `captions[].check` |")
     L.append(f"| Tables `check` = not checkable | {T['not checkable']} | {sj} `captions[].check` |")
+    L.append(f"| Tables without a check (the table holds plots, no cells) | {T['no check']} | {sj} `captions[kind=table]` without `check` |")
     L.append(f"| Tables wrong on the page (judged) | {len(wrong)} of {T['total']}; {wrong_flag} of them flagged, {wrong_nc} not checkable; {right_flag} right tables flagged | `answers/tables.json` against `check` |")
     L.append(f"| **Equations** pairs | {E['pairs']} | {sj} `equations` |")
     L.append(f"| Equations `agree` | {E['agree']} | {sj} `equations[].status` |")
@@ -141,7 +142,7 @@ def main():
     ed = Counter(a["verdict"] for a in ans_e if a["status"] == "differ")
     es = Counter(a["verdict"] for a in ans_e if a["status"] not in ("differ", "agree"))
     n_ag = sum(1 for a in ans_e if a["status"] == "agree")
-    L.append(f"| Equation pairs judged (answer set, 44 papers) | {len(ans_e)} items: {n_ag} agree accepted (not judged); {sum(ed.values())} differ pairs judged on the crop: "
+    L.append(f"| Equation pairs judged (answer set) | {len(ans_e)} items: {n_ag} agree accepted (not judged); {sum(ed.values())} differ pairs judged on the crop: "
              f"Marker right {ed.get('Marker right', 0)}, Docling right {ed.get('Docling right', 0)}, both wrong {ed.get('both wrong', 0)}, equivalent {ed.get('not an error', 0)}; "
              f"{sum(es.values())} single-tool items judged: Docling right {es.get('Docling right', 0)}, Docling wrong {es.get('Docling wrong', 0)}, Marker right {es.get('Marker right', 0)}, Marker wrong {es.get('Marker wrong', 0)} | `answers/equations.json` |")
     L.append(f"| **Body** lines read | {B['lines']:,} | {sj} `body_check.counts.lines` |")
@@ -174,12 +175,52 @@ def main():
     other = ", ".join(f"{v} {k}" for k, v in sorted(figs.items()) if k not in ("numbered", "unnumbered"))
     L.append(f"| Figure captions | {figs['numbered'] + figs['unnumbered']} ({figs['numbered']} numbered, {figs['unnumbered']} unnumbered pictures){'; other kinds: ' + other if other else ''} | {sj} `captions[kind=figure]`{' and the other non-table kinds' if other else ''} |")
     L.append(f"| Glyph table | {n_entries} entries ({len(g['families'])} families, {len(g['instances'])} subsets), {len(g.get('undecoded', {}))} groups left undecoded with the reason | `glyph_codes.json` |")
+    J = ("Tables wrong on the page", "Equation pairs judged", "Body flags judged", "Answer-set body flag keys", "Distinct real")
+    out = []
+    for line in L:
+        item, number, source = [c.strip() for c in line.strip().strip("|").split(" | ", 2)]
+        source = source.rstrip(" |")
+        if item.startswith(J):
+            if judged_scope is False:
+                number = "not judged (the answer set covers the first 44 papers only)"
+            elif judged_scope is None:
+                number = "44 papers only: " + number
+        out.append((item, number, source))
+    return out, rows
+
+
+def main():
+    import csv
+    pids = sorted(p.name for p in FINAL.iterdir() if (p / "structure.json").exists())
+    with (HERE.parent / "corpus" / "manifest.csv").open(newline="", encoding="utf-8") as f:
+        by_hand = {r["paper_id"] for r in csv.DictReader(f) if r["pdf_source"] == "library_manual"}
+    new = [p for p in pids if p in by_hand]
+    old = [p for p in pids if p not in by_hand]
+    (a_all, rows), (a_old, _), (a_new, _) = block(pids, None), block(old, True), block(new, False)
+    L = [f"# Ingest numbers ({len(pids)} in-scope papers with a PDF; written by ingest/numbers_md.py from the final output)\n"]
+    L.append("One table; every number in INGEST, ERRORS and the plan must match it. \"structure.json\" means the sum over\n"
+             "`ingest/final/<paper_id>/structure.json`. Three number columns: all papers, the first " + str(len(old)) + " (PDFs obtained by script\n"
+             "or copied), and the " + str(len(new)) + " whose PDFs were obtained by hand on 2026-10-13 (manifest `pdf_source` = library_manual).\n\n"
+             "**The answer set `ingest/answers/` (Claude Code's page judgements) covers the first " + str(len(old)) + " papers only.** Every judged\n"
+             "number (tables wrong on the page, equation verdicts, body flags real or not, distinct real errors) holds for those\n"
+             + str(len(old)) + " and is marked so; the flags, differ pairs and flagged tables of the " + str(len(new)) + " new papers are not judged.\n"
+             "Two recorded numbers name their origin and were recorded for the first " + str(len(old)) + ".\n")
+    L.append(f"| Item | All {len(pids)} | First {len(old)} | New {len(new)} | Source |\n|---|---|---|---|---|")
+    for (item, n_all, src), (_, n_old, _), (_, n_new, _) in zip(a_all, a_old, a_new):
+        if "recount 2026-10-13" in n_all:   # the breakdown by kind was recounted for the first 44 only
+            n_all = n_all.split(" (")[0] + " (kinds recounted for the first 44 only)"; n_new = n_new.split(" (")[0]
+        if n_all.startswith("44 papers only: "):   # a judged number: the value of the first 44, never recomputed over unjudged papers
+            n_all = "44 papers only: " + n_old
+        if item.startswith("Glyph table"):
+            n_old = n_new = "one table for all papers"
+        L.append(f"| {item} | {n_all} | {n_old} | {n_new} | {src} |")
     L.append("\n## Per paper (body check)\n")
     L.append("| paper | body lines read | checked | share | not checkable: undecoded glyph (lines) | rotated (characters) | other not checkable (lines/sentences) | number or letter flags | not-checkable flags | repairs |\n|---|---|---|---|---|---|---|---|---|---|")
     for r in rows:
         L.append(f"| {r[0]} | {r[1]} | {r[2]} | {round(100 * r[2] / r[1]) if r[1] else 0} % | {r[3]} | {r[4]} | {r[5]} | {r[6]} | {r[7]} | {r[8]} |")
     (HERE / "NUMBERS.md").write_text("\n".join(L) + "\n")
-    print(f"NUMBERS.md written: tables {T['total']}, equations {E['pairs']}, lines {B['lines']:,} checked {B['checked']:,}, flags {flags}, not-checkable {ncl + nco}, repairs {sum(v for k, v in R.items() if k != 'undone')}")
+    print(f"NUMBERS.md written: {len(pids)} papers ({len(old)} + {len(new)})")
+    for it in a_new[:12]: print("  new:", it[0], "|", it[1])
 
 
 if __name__ == "__main__":

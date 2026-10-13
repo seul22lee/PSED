@@ -26,6 +26,8 @@ Manifest columns written by this script
                 openalex      best_oa_location.pdf_url, downloaded by this script
                 openalex_alt  another OpenAlex `locations` entry (one-off pass, 2026-09-30)
                 v1_copy       copied from the pre-purge psed_v1 checkout (one-off pass, 2026-09-30)
+                library_manual  obtained by hand from the publisher through library access and
+                              renamed to <paper_id>.pdf (15 files, 2026-10-13)
                 (blank)       not collected
 
 raw/<paper_id>.pdf (next to this script) is gitignored: paper_id is the DOI with "/" -> "_", lowercased.

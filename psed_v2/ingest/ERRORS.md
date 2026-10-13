@@ -1,5 +1,7 @@
 # Ingest: errors and known limits
 
+Scope: the first 44 papers. The 15 papers added on 2026-10-13 are parsed but not judged, so nothing below counts them; their flags are in `NUMBERS.md` (column "New 15").
+
 What is wrong in the final output (`ingest/final/<paper_id>/`) of the 44 in-scope papers with a PDF, judged on the
 PDF pages and crops by Claude Code (the verdicts are the answer set `ingest/answers/`), with the counts of
 `ingest/NUMBERS.md`, and what the checks cannot see. Handling: **flag → review** = the item carries a flag for the

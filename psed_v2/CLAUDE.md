@@ -17,6 +17,10 @@ psed_v2/
   corpus/report.csv         # tracked: reader-facing view: metadata, in_scope, collected, origins and evidence, decisions
   corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
+  corpus/CORPUS.md          # tracked: how the corpus was built: counts, PDF sources, open questions
+  cases/                    # tracked: case-study exploration, by hand: figures.csv and papers.csv (figure inventory of the parsed papers, own words),
+                            #   CANDIDATES.md, make_cases.py; cremers/ = the Cremers 2019 tables typed in (CSVs, CREMERS.md, IDEAS.md, scripts)
+  cases/reports/            # gitignored: cases.html (embeds figure crops); the points read by eye are in cases/points.json (tracked)
   ingest/parse_docling.py   # tracked: Docling for equations only (--formulas: CodeFormula on R1/R2 crops -> equations.json; conda env psed310) and the OpenAlex abstract fetch
   ingest/docling/<paper_id>/ # gitignored: equations.json (paper-derived)
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
@@ -47,7 +51,7 @@ psed_v2/
   (`~/opt/llama.cpp/llama-b11574`, `~/opt/llama.cpp/cudart-llama-b11574-bin-ubuntu-cuda-12.8-x64`)
   on `LD_LIBRARY_PATH`.
 - Marker output is not deterministic across runs (llama.cpp backend, no fixed seed or temperature): run once per
-  paper and keep the result; the 44 outputs are not reproducible bit for bit.
+  paper and keep the result; the 59 outputs are not reproducible bit for bit.
 
 ## Rules
 
@@ -134,7 +138,8 @@ in scope or not. `manual_list.csv` and `ingest/parse_marker.py` cover in-scope p
 `pdf_source` records where a collected file came from: `openalex` (best_oa_location URL,
 downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off pass on
 2026-09-30), `v1_copy` (copied from psed_v1 PDFs on local disk, one-off passes on
-2026-09-30), or blank when not collected.
+2026-09-30), `library_manual` (obtained by hand from the publisher through library access and
+renamed to `<paper_id>.pdf`; 15 files on 2026-10-13), or blank when not collected.
 
 `marker` is `ok` (ingest/marker/<paper_id>/ written), `failed`, or blank (not run). `parse_marker.py`
 writes it after each paper and skips rows already `ok` (`--redo` to overwrite). The other ingest steps
