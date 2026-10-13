@@ -260,7 +260,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   0 broken); every body flag of the 44 papers judged on its crop (41 distinct real errors), `reports/review_body.html`.
   Effect: body flags 1,154 → 224, precision 32 %, coverage median 97 % of body lines; tables unchanged (27 of 28 wrong
   flagged, 7 false, 1 not checkable); all page verdicts hold (the 3 known errors flagged or repaired, 0 of 41 known
-  not-errors flagged, 41 of 41 judged errors still detected). — (hash: next line)
+  not-errors flagged, 41 of 41 judged errors still detected). — fa7e735 (this line's hash: the next commit)
 
 - 2026-10-13 — Body-number flags: `body_check.py` (decoded text layer vs document.md per paragraph, both directions,
   "not checkable" with reasons) run by `merge.py` into `body_flags` / `body_check` of final structure.json; glyph table:
