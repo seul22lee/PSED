@@ -1,4 +1,4 @@
-# Ingest numbers (44 in-scope papers with a PDF; written by ingest/numbers.py from the final output)
+# Ingest numbers (44 in-scope papers with a PDF; written by ingest/numbers_md.py from the final output)
 
 One table; every number in INGEST, ERRORS and the plan must match it. "structure.json" means the sum over
 `ingest/final/<paper_id>/structure.json`. Judged numbers come from the answer set `ingest/answers/` (Claude Code's

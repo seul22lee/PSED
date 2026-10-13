@@ -121,7 +121,7 @@ def main():
     flags = sum(v for k, v in K.items() if not k.startswith("not checkable"))
     ncl, nco = K["not checkable, layer side"], K["not checkable, output side"]
     L = []
-    L.append(f"# Ingest numbers ({len(pids)} in-scope papers with a PDF; written by ingest/numbers.py from the final output)\n")
+    L.append(f"# Ingest numbers ({len(pids)} in-scope papers with a PDF; written by ingest/numbers_md.py from the final output)\n")
     L.append("One table; every number in INGEST, ERRORS and the plan must match it. \"structure.json\" means the sum over\n"
              "`ingest/final/<paper_id>/structure.json`. Judged numbers come from the answer set `ingest/answers/` (Claude Code's\n"
              "page judgements) and are marked as such; two recorded numbers name their origin.\n")
