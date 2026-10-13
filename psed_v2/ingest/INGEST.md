@@ -30,14 +30,16 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 | Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `crop` | 16 numbered tables: 11 fully right, 5 wrong, all 5 flagged, 3 right ones flagged (page) |
 | Equations | Docling + Marker | Docling's layout gives the formula boxes, CodeFormula reads our crops (R1 tight box at 216 dpi; R2 band box when the box is ≤ 25 pt wide); Marker's `<math>` blocks; pairs by page and box, `agree` / `differ` | `equations[{page, bbox, number, docling, marker, status}]` | 103 pairs: 74 agree, 29 differ (Marker right 14, Docling right 7, both wrong 3, equivalent forms 5) (page) |
 
-Paths: `ingest/marker/<id>/`, `ingest/docling/<id>/`, `ingest/final/<id>/` (all gitignored). Progress:
-manifest columns `marker` and `docling` (ok | failed | blank). `corpus/openalex_abstracts.json`
-(gitignored): OpenAlex abstracts, fetched once with `parse_docling.py --fetch-abstracts` (the only
-network call in ingest), used by the abstract rule and its fallback.
+Paths: `ingest/marker/<id>/` (blocks.json, marker.md, document.md, images, structure.json, table crops,
+bands.json), `ingest/docling/<id>/equations.json`, `ingest/final/<id>/` (all gitignored). Progress:
+manifest column `marker` (ok | failed | blank); `--formulas` and `merge.py` write no column.
+`corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts, fetched once with
+`parse_docling.py --fetch-abstracts` (the only network call in ingest), used by the abstract rule and
+its fallback.
 
-Docling's full parse (`parse_docling.py --all`: docling.json, document.md, structure.json, figure and
-table crops, 44 papers) still runs and is kept for comparison, but the final output takes nothing from
-it; `--formulas` runs its own conversion.
+Review of what ingest flags is not part of ingest: a flagged table (`check: flag`) and an equation pair
+with `status: differ` are resolved by an external vision-language model on the crop as a pre-processing
+step of the extraction stage (planned). Ingest only writes the flags, the reasons and the crops.
 
 ## Why Marker for text, figures, tables and the abstract
 
@@ -72,13 +74,13 @@ fixed / limit / open; checked by script, Claude Code or user.
 | E2 | Equations | Both tools misread some formulas | limit: `differ` pairs for review | Claude Code, crops | 29 of 103 pairs differ |
 | E3 | Equations | Marker re-recognition of its own equations on a 216-dpi crop | rejected: fixed 2, broke 13 | script + crops | not applied |
 | I1 | Input | MDPI duplicated text layer (caption regions drawn twice in two fonts) | limit | Claude Code, text layer | 10.3390_separations11010024 only, of the 13 |
-| D1 | Docling | Docling-stage rules (figure/table binding, abstract, running lines, glyph repairs) | superseded: not used by the final output; code kept for `--formulas` and comparison | — | this commit |
+| D1 | Docling | Docling-stage rules (figure/table binding, abstract, running lines, glyph repairs) | removed on 2026-10-12: code, outputs and manifest columns deleted; `parse_docling.py` keeps `--formulas` and `--fetch-abstracts` | — | this commit |
 
 Rule: update the row in the same commit as any change that affects it.
 
 ## Environments
 
-- `psed310`: Docling, pdfplumber, pypdfium2, tabulate. Runs `parse_docling.py`, `structure_marker.py`, `merge.py`.
+- `psed310`: Docling, pdfplumber, pypdfium2, tabulate. Runs `parse_docling.py` (`--formulas`, `--fetch-abstracts`), `structure_marker.py`, `merge.py`.
 - `psed_marker`: Marker 2.0.0 only (llama.cpp backend, binary in `~/opt/llama.cpp/`). Runs `parse_marker.py`.
   Kept separate: Docling pins transformers <5 and huggingface_hub <1, Marker needs newer; pillow pins conflict.
 - Marker output is not fully deterministic across runs: run once per paper and keep the result (`--redo` to overwrite).
@@ -89,8 +91,8 @@ Rule: update the row in the same commit as any change that affects it.
 
 ### Marker conversion (`parse_marker.py`)
 `force_ocr`: full-page OCR by surya-ocr-2, layout from the OCR pass; 63–174 s per paper on one A6000. Writes
-`document.md` with its figure crops (`_page_P_<Type>_K.jpeg`), `document_meta.json`, `blocks.json` (block tree
-with page, bbox from the top-left, html). Band-crop OCR after the conversion (or `--bands` on existing
+`document.md` with its figure crops (`_page_P_<Type>_K.jpeg`) and `blocks.json` (block tree with page, bbox
+from the top-left, html). Band-crop OCR after the conversion (or `--bands` on existing
 output): T1, a Figure/Picture/Diagram block whose box holds a text-layer line starting with a caption
 label while the page has no Caption block with that number → the band from that line to the block's bottom
 is OCR'd and inserted as a Caption block; T2, a Text block that is only an image → OCR'd, its html and
@@ -132,24 +134,28 @@ markdown placeholder replaced. Records in `bands.json`. 13 papers: 2 captions an
   spacing, aligned environments, trailing number, \cdot/\times, braces) or `differ`; unpaired ones `docling only` /
   `marker only`. 74 of 103 agree. A `differ` pair is decided at extract time (a person or a vision model on the crop).
 
-### Last resort
-A vision model reading the crop (flagged table, `differ` equation) is allowed only at extract time.
+### Review of flags (not part of ingest)
+A flagged table and a `differ` equation pair are resolved by an external vision-language model reading the crop,
+as a pre-processing step of the extraction stage (planned). Ingest writes the flag, the reasons and the crop path.
 
-### Docling stage (kept, not used by the final output)
-`parse_docling.py --all`, `--rebind`, `--check-abstracts`: the earlier figure/table binding, abstract, running-line
-and glyph-repair rules of this stage (change log 2026-09-30 to 2026-10-12) still produce `ingest/docling/<id>/`
-for the 44 papers. Their limits (side-by-side figures merged into one crop, a picture bound to the next caption,
-captions nested in pictures, `/C0`-type glyph names, TableFormer row merges, exponents flattened to "10 - 5",
-abstract fallbacks) no longer affect the final output.
+### Docling stage (removed)
+The earlier Docling rules of this stage (figure/table binding, abstract, running lines, glyph repairs; change log
+2026-09-30 to 2026-10-12) were removed on 2026-10-12 with their outputs (`ingest/docling/<id>/` except
+equations.json, `ingest/review/`) and the manifest columns `docling` and `abstract_review`. Their numbers in the
+change log are historical.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — Docling stage removed: `parse_docling.py` keeps `--formulas` and `--fetch-abstracts` only; `ingest/review/`, the
+  Docling full-parse outputs (docling.json, document.md, structure.json, figures/, 132 MB over 44 papers) and the manifest
+  columns `docling` and `abstract_review` deleted; Marker's `document_meta.json` and band crops deleted. Flag review assigned
+  to the extraction stage (external VLM, planned). Effect: equations.json of 10.1063_1.5028178 unchanged on rerun. — this commit.
 - 2026-10-12 — Final ingest rules: Marker supplies body, abstract, figures, captions and tables; `parse_marker.py --bands`
   (T1/T2 band-crop OCR); `structure_marker.py` with tabulate number parsing off, a rule check and a crop per table;
   `parse_docling.py --formulas` with the R1/R2 crops and CodeFormula on them; new `merge.py` → `ingest/final/<id>/` with
   paired equations; `ERRORS.md`. Effect on the 13 papers: 2 captions and 1 abstract recovered; 16 tables with 11 fully
-  right, 5 wrong all flagged, 3 right flagged; 103 equation pairs, 74 agree; disagreement rows with Docling 114 → 68. — this commit.
+  right, 5 wrong all flagged, 3 right flagged; 103 equation pairs, 74 agree; disagreement rows with Docling 114 → 68. — 2d53705
 - 2026-10-12 — `structure_marker.py` rules from parse_docling.py (Text-block captions, 4-pt caption continuation, table position rule instead of TableGroup, multi-row header merge with rowspans, PDF crops for image blocks without a file, arrow blocks as equations). Effect: disagreement rows 142 → 57, no row that was right turned wrong, 0 unchecked; Docling right 28, Marker right 28. — 0e2d59c
 - 2026-10-12 — `parse_docling.py --formulas`: Docling with formula enrichment (CodeFormula) writes docling/<paper_id>/equations.json only (page, bbox, LaTeX, printed number from the LaTeX or from the PDF text right of the formula); no other Docling file touched. Effect on the 13 Marker papers: 103 formula items with LaTeX (Ylilammi 46 of 46 numbered right); 6 to 221 s per paper. — 1bb790d
 - 2026-10-12 — `structure_marker.py`: structure.json from Marker's blocks in Docling's schema (captions bound by Marker's groups, else parse_docling.py's position rules; tables as markdown; equations as LaTeX with page and bbox; abstract by the copied rules; document.md without running lines, Marker's own markdown kept as marker.md). Effect: 13 papers; compared with Docling item by item. — 31ca1cb

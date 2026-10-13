@@ -17,10 +17,10 @@ psed_v2/
   corpus/report.csv         # tracked: reader-facing view: metadata, in_scope, collected, origins and evidence, decisions
   corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
-  ingest/parse_docling.py   # tracked: Docling parse (conda env psed310); the final output uses only --formulas (CodeFormula on R1/R2 crops -> equations.json)
-  ingest/docling/<paper_id>/ # gitignored: equations.json (used by merge.py); docling.json, figures/, document.md, structure.json from the full parse (not used by final)
+  ingest/parse_docling.py   # tracked: Docling for equations only (--formulas: CodeFormula on R1/R2 crops -> equations.json; conda env psed310) and the OpenAlex abstract fetch
+  ingest/docling/<paper_id>/ # gitignored: equations.json (paper-derived)
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
-  ingest/marker/<paper_id>/  # gitignored: document.md + images, document_meta.json, blocks.json, structure.json, table crops (paper-derived)
+  ingest/marker/<paper_id>/  # gitignored: document.md + images, blocks.json, bands.json, structure.json, table crops (paper-derived)
   ingest/structure_marker.py # tracked: structure.json from Marker's blocks (captions, tables with rule check, equations, abstract)
   ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
@@ -111,7 +111,7 @@ place: `SCOPE_ORIGINS` / `in_scope()` in `corpus/make_report.py`:
 Popov-only papers are out of scope but are not marked excluded, so the scope can be widened by
 changing that constant and rerunning `make_report.py`. Rerun it after any change to the origin
 columns or to `status`; it rewrites `in_scope` in the manifest. `corpus/raw/` keeps every PDF,
-in scope or not. `manual_list.csv` and `ingest/parse_docling.py` cover in-scope papers only.
+in scope or not. `manual_list.csv` and `ingest/parse_marker.py` cover in-scope papers only.
 
 `pdf_status` is `ok` (file in raw/), `manual` (no OA PDF or download failed; see
 `corpus/manual_list.csv`), or `missing_doi`. Rows already present in `raw/` are skipped.
@@ -121,18 +121,14 @@ downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off
 2026-09-30), `v1_copy` (copied from psed_v1 PDFs on local disk, one-off passes on
 2026-09-30), or blank when not collected.
 
-`docling` is `ok` (ingest/docling/<paper_id>/ written), `failed`, or blank (not run).
-`parse_docling.py` writes it after each paper and skips rows already `ok`.
+`marker` is `ok` (ingest/marker/<paper_id>/ written), `failed`, or blank (not run). `parse_marker.py`
+writes it after each paper and skips rows already `ok` (`--redo` to overwrite). The other ingest steps
+(`structure_marker.py`, `parse_docling.py --formulas`, `merge.py`) write no manifest column.
 
-A full parse saves Docling's own output (`docling.json`, images as placeholders, plus one crop
-per picture in `figures/pic_K.png`). Caption binding and the text repairs then run from those
-files. **When only the binding rules change, use `parse_docling.py --rebind --all`** (seconds
-per paper, no Docling); rerun Docling only when the conversion itself changes.
+After each Marker run, check the newly parsed papers for review signs in the first pages of their
+document.md (about the first 3,000 characters): an article-type label such as Review, Review Article,
+Minireview, Perspective, Feature Article, Highlight, Tutorial or Account, or a self-description such as
+"this review", "in this perspective", "we review". List each hit (paper_id, title, matched text) for the
+user to check; do not exclude on your own.
 
-After each Docling run, check the newly parsed papers for review signs in their first pages
-(about the first 3,000 characters of document.md): an article-type label such as Review,
-Review Article, Minireview, Perspective, Feature Article, Highlight, Tutorial or Account, or
-a self-description such as "this review", "in this perspective", "we review". List each hit
-(paper_id, title, matched text) for the user to check; do not exclude on your own.
-
-Ingest (Docling, Marker, what is extracted, known limits, change log): see ingest/INGEST.md.
+Ingest (Marker, Docling equations, what is extracted, change log): see ingest/INGEST.md; the remaining errors: ingest/ERRORS.md.

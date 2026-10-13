@@ -4,9 +4,10 @@ What is still wrong in the final output (`ingest/final/<paper_id>/`) after the r
 the 13 Marker papers (one per DOI prefix of the 44 in scope), judged on the PDF pages and crops by
 Claude Code (commit in the change log of `INGEST.md`). Per error type: an example, the count on the
 13 papers, whether a rule check flags it, and how it is handled. Handling: **flag → review** = the
-`check` field of the table entry is `flag`, a vision model reads the crop at extract time;
-**differ → review** = the equation pair has `status: differ`, a person or a vision model decides at
-extract time; **known limit** = nothing flags it; the KB must tolerate it.
+`check` field of the table entry is `flag`; **differ → review** = the equation pair has
+`status: differ`. Both are resolved by an external vision-language model reading the crop, as a
+pre-processing step of the extraction stage (planned, not part of ingest); ingest only writes the
+flags, the reasons and the crops. **known limit** = nothing flags it; the KB must tolerate it.
 
 ## Body text (Marker)
 
