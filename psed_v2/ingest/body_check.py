@@ -26,6 +26,11 @@ units of fewer than 3 words, garbled lines (two lines drawn over each other: few
 the output, or two long unknown words), output sentences the layer does not cover (70 % of their words of 4+
 letters), output paragraphs a not-checkable unit also matches, paragraphs whose equation lines hold an undecoded
 glyph. A weak line (no word of 4+ letters, or a reaction line) is kept for the extra direction only.
+What stays not checkable at the line level is also written as a flag of kind "not checkable" (reason, the line's text,
+numbers, box and crop; for a unit with an undecoded glyph one flag with the glyph line and the unit's line count), so
+that the flag review sees these lines as it sees a not-checkable table: one flag per unit with an undecoded glyph, per
+garbled line, per unit too short to locate, and per equation or weak line with an undecoded glyph (it blocks the extra
+direction of its paragraph). These flags are counted apart ("not-checkable flags"), not among "flags".
 
 Tokens: both sides are normalised as the table check does (structure_marker._norm_cell_text); a subscript joins its
 base (H2O), a superscript stands alone (10^12 -> 10, 12), a number with a unit or a lowercase word glued to it
@@ -368,6 +373,17 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         name = f"{crop_prefix}_p{pno}_{k}.png"
         im.crop(box).save(Path(crop_dir) / name)
         return name
+    nc_seen = set()
+    def nc_flag(pno, l, reason, bt, n_lines):
+        """A flag of kind "not checkable" for a layer line (once per line)."""
+        key = (pno, round(l[1]), round(l[3]), l[0][:40])
+        if key in nc_seen:
+            return
+        nc_seen.add(key)
+        k = len(flags)
+        flags.append({"page": pno, "kind": "not checkable", "reason": reason, "layer_line": l[0], "output_sentence": "",
+                      "layer_numbers": _nums(l[0]), "output_numbers": [], "crop": crop(pno, l, k), "bbox": [l[3], l[1], l[4], l[2]],
+                      "lines": n_lines, "block": bt})
     stop_heads = [i for i, (pn, po, _, _) in enumerate(paras) if STOP_HEAD_RE.match(po.strip()) and len(po.split()) <= 4]
     ref_idx = next((i for i in stop_heads if i >= len(paras) * 0.5), None)   # the first stop heading in the second half
     last_best = 0                      # reading-order cursor for ties
@@ -424,6 +440,8 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
                    or sum(1 for w in re.findall(r"[A-Za-z]{8,}", l[0]) if w.lower() not in vocab) >= 2]
         if garbled:                                   # two lines drawn over each other (MDPI's misplaced duplicate layer)
             counts["not checkable: garbled text-layer line (overlapping duplicate layer; fewer than 30 % of its words occur in the output)"] += len(garbled)
+            for l in garbled:
+                nc_flag(pno, l, "garbled text-layer line (overlapping duplicate layer; fewer than 30 % of its words occur in the output)", bt, 1)
             lines = [l for l in lines if l not in garbled]
             if not lines:
                 continue
@@ -443,14 +461,17 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
             best, n = None, 0
         need = 1 if len(toks) < 6 else max(2, -(-(len(toks) - 2) // 5))   # a fifth of the unit's 3-grams (2 at least)
         if unk:
-            not_checkable[", ".join(f"{fam} {code}" for (fam, code) in sorted(unk))] += len(lines)
+            glyphs = ", ".join(f"{fam} {code}" for (fam, code) in sorted(unk))
+            not_checkable[glyphs] += len(lines)
             counts["not checkable: undecoded glyph"] += len(lines)
             if best is not None and n >= need:
                 blocked.add(best)                 # its output paragraph is not checked in the extra direction either
+            nc_flag(pno, next(l for l in lines if l[5]), f"undecoded glyph {glyphs}: the unit's {len(lines)} line(s) not checked", bt, len(lines))
             continue
         counts["checked"] += len(lines)
         if len(toks) < 3:
             counts["not checkable: unit too short to locate in the output (fewer than 3 words)"] += len(lines)
+            nc_flag(pno, lines[0], f"unit too short to locate in the output (fewer than 3 words; {len(lines)} line(s))", bt, len(lines))
             continue
         if (best is None or n < need) and openalex_abstract and pno <= 2:
             w4 = {w.lower() for w in WORD4_RE.findall(text)}
@@ -558,6 +579,9 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
             covered = []
         elif any(l[5] for l, _ in assigned_weak_i):
             counts["not checkable: paragraph with an equation or neighbour line holding an undecoded glyph (extra numbers not compared)"] += 1
+            for l, p_ in assigned_weak_i:
+                if l[5]:
+                    nc_flag(p_, l, "undecoded glyph " + ", ".join(f"{fam} {code}" for (fam, code) in sorted(l[5])) + " in an equation or weak line: the output numbers of its paragraph are not compared with the layer", "Equation", 1)
             covered = []
         ctext = " ".join(covered)
         ca, cb = tokens(ctext)
@@ -590,7 +614,8 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
                           "output_numbers": _nums(SM._norm_cell_text(s))[:30], "crop": crop(pno, line, k), "bbox": [line[3], line[1], line[4], line[2]],
                           "paragraph": paras[key[0]][3], "paragraphs": [paras[j][3] for j in key]})
     pl.close()
-    counts["flags"] = len(flags)
+    counts["flags"] = sum(1 for f in flags if f["kind"] != "not checkable")
+    counts["not-checkable flags"] = sum(1 for f in flags if f["kind"] == "not checkable")
     return {"body_flags": flags,
             "body_check": {"counts": dict(counts), "not_checkable_reasons": dict(not_checkable),
                            "method": "decoded text layer (glyph_codes.json) read inside Marker's text blocks vs document.md paragraphs matched by word 3-grams; numbers compared both ways"}}

@@ -199,7 +199,7 @@ def main(argv):
         eq = f["equations"]
         n_flag = sum(1 for c in f["captions"] if c["kind"] == "table" and c.get("check") == "flag")
         bc = f["body_check"]["counts"]
-        print(f"[merge] {pid}: body {bc.get('checked', 0)} lines checked, {bc.get('flags', 0)} flags, {bc.get('not checkable: undecoded glyph', 0)} not checkable; "
+        print(f"[merge] {pid}: body {bc.get('checked', 0)} lines checked, {bc.get('flags', 0)} flags, {bc.get('not checkable: undecoded glyph', 0)} lines not checkable ({bc.get('not-checkable flags', 0)} not-checkable flags); "
               f"{sum(1 for c in f['captions'] if c['kind'] != 'table')} figure captions, "
               f"{sum(1 for c in f['captions'] if c['kind'] == 'table')} tables ({n_flag} flagged), "
               f"{len(eq)} equations ({sum(1 for e in eq if e['status'] == 'agree')} agree, "

@@ -29,7 +29,7 @@ psed_v2/
   ingest/answers/           # tracked: answer set, Claude Code's page judgements (tables.json, equations.json, body_flags.json): ids and verdicts only, no paper text
   ingest/glyph_codes.json   # tracked: per-font decoding tables for the PDF text layer, with evidence
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
-  ingest/reports/           # gitignored: review HTML reports (e.g. the Docling-vs-Marker disagreement report)
+  ingest/reports/           # gitignored: review HTML reports (papers.html, review_body.html, review_44.html) and glyph_evidence/ (crops behind glyph_codes.json)
   ingest/INGEST.md, ERRORS.md # tracked: what ingest extracts and how; the remaining errors per item
 ```
 

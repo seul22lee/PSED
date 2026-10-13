@@ -29,7 +29,7 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 | Item | Tool | How | Output in `final/<id>/structure.json` | Numbers (13 or 44 papers, as each cell says) |
 | --- | --- | --- | --- | --- |
 | DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | never extracted from the PDF | — | — |
-| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks written into it; margin line numbers of a line-numbered manuscript removed (`line_numbers.py`); body-number check (`body_check.py`: decoded text layer vs document.md per paragraph, both directions); two countermeasures on born-digital pages (`body_repair.py`: a number replaced from the text layer, a dropped line restored) | `document.md`; `body_flags` (one entry per mismatch: page, kind, number, text-layer line, output sentence, numbers on each side, line box and crop), `body_check` (counts, not-checkable reasons, line-number counts), `body_repairs` | 44 papers, 2026-10-13. 23,939 body lines read, 22,386 checked (median 97 % per paper, min 68 %); 1,075 lines not checkable (undecoded glyph), 160 (other), 22,022 rotated characters. Every body flag of the 44 papers judged by Claude Code on the line crop (388 flag keys over the passes: 119 real, 269 not errors), see ERRORS.md: 41 distinct real errors of Marker's body text in the 44 papers (10 in the 13 papers, 31 in the 31), 1.8 per 1,000 checked lines, found through numbers only. Final output: 224 flags (12 lines not found, 108 text-layer numbers missing, 104 output numbers absent), 13 papers without a flag; of the 222 judged flags 70 are real, 152 not (precision 32 %). Countermeasures: 1,044 margin numbers removed from 10.1021_acs.chemmater.9b05116 (no other paper changes); 12 repairs (5 numbers replaced, 7 dropped lines restored), tested on the judged flags: 12 fixed, 0 broken. All 41 real errors stay detected (flagged, repaired or removed). Handling: flag → review by the external vision model at the extraction stage (crop, output sentence, text-layer line), like flagged tables and differ equations; the judgements are the answer set `ingest/answers/body_flags.json` |
+| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks written into it; margin line numbers of a line-numbered manuscript removed (`line_numbers.py`); body-number check (`body_check.py`: decoded text layer vs document.md per paragraph, both directions); two countermeasures on born-digital pages (`body_repair.py`: a number replaced from the text layer, a dropped line restored) | `document.md`; `body_flags` (one entry per mismatch: page, kind, number, text-layer line, output sentence, numbers on each side, line box and crop; entries of kind "not checkable" with the reason, line count, box and crop), `body_check` (counts, not-checkable reasons, line-number counts), `body_repairs` | 44 papers, 2026-10-13. 23,936 body lines read, 23,456 checked (98 %; median 99 % per paper, min 79 %); 2 lines not checkable (undecoded glyph; 1,075 before pass 2), 155 (other: 98 garbled, 4 too short, 53 output sentences not covered), 22,022 rotated characters. Every body flag of the 44 papers judged by Claude Code on the line crop (415 flag keys over the passes: 128 real, 287 not errors), see ERRORS.md: 44 distinct real errors of Marker's body text in the 44 papers (11 in the 13 papers, 33 in the 31), 1.9 per 1,000 checked lines, found through numbers only. Final output: 248 flags (12 lines not found, 122 text-layer numbers missing, 114 output numbers absent), 12 papers without a flag; 81 of the 248 judged flags are real, 167 not (precision 33 %); 123 flags of kind "not checkable" (98 garbled lines, 20 equation lines with undecoded delimiter pieces, 4 units too short, 1 unit with undecoded pieces) name the lines the check cannot compare. Countermeasures: 1,044 margin numbers removed from 10.1021_acs.chemmater.9b05116 (no other paper changes); 12 repairs (5 numbers replaced, 7 dropped lines restored), tested on the judged flags: 12 fixed, 0 broken. All 44 real errors stay detected (flagged, repaired or removed). Handling: flag → review by the external vision model at the extraction stage (crop, output sentence, text-layer line), like flagged tables and differ equations; the judgements are the answer set `ingest/answers/body_flags.json` |
 | Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; the OpenAlex text when it has 50+ words and the extracted abstract is empty or has recall < 80 % against it | `abstract`, `abstract_source` | 44 of 44 right: 23 heading, 20 openalex_match, 1 openalex (10.1021_acs.langmuir.6b03119, whose abstract block is an image the band OCR could not read). How checked: the 13 papers on the page; of the 31, the 26 with a usable OpenAlex abstract (50+ words) by word recall against it (all 26 ≥ 90 %, script), the 5 without one (10.1016_j.ijpharm.2017.04.031, 10.1016_j.mee.2018.01.027, 10.1016_j.mee.2018.01.033, 10.1039_c5ta00205b, 10.1039_d4nr03749a) on the page on 2026-10-13 |
 | Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture; captions do not continue into a body paragraph; figures placed after all captions bound by page order | `captions` with `images` | 44 papers: every numbered caption has its image and text. How checked: the 13 papers on the page; the 31 by script (caption numbers, images, text against the text layer), the flagged items viewed on the page; 2 figures split into panel blocks keep one panel unbound (ERRORS.md) |
 | Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check against the decoded text layer (`glyph_codes.json`) + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `check_detail`, `crop` | 69 tables in 28 papers (page): 41 right, 28 wrong; the check flags 27 of the 28, misses 0, flags 7 right tables, 1 wrong table not checkable (rotated) |
@@ -38,7 +38,8 @@ psed310 env:      merge.py --all                        ingest/final/<id>/ (Mark
 Paths: `ingest/marker/<id>/` (blocks.json, marker.md, document.md, images, structure.json, table crops,
 bands.json), `ingest/docling/<id>/equations.json`, `ingest/final/<id>/` (all gitignored; the body-flag crops are
 `final/<id>/figures/body_p<P>_<k>.png`). `ingest/answers/` (tracked): the answer set, Claude Code's page judgements
-with ids and verdicts only (tables.json, equations.json, body_flags.json). Progress:
+with ids and verdicts only (tables.json, equations.json, body_flags.json). `ingest/reports/glyph_evidence/` (gitignored):
+the crop sheets and the census behind the glyph entries of 2026-10-13. Progress:
 manifest column `marker` (ok | failed | blank); `--formulas` and `merge.py` write no column.
 `corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts, fetched once with
 `parse_docling.py --fetch-abstracts` (the only network call in ingest), used by the abstract rule and
@@ -50,7 +51,7 @@ start of the extraction stage (planned), given the crop; for a body flag also th
 decoded text-layer line. Ingest only writes the flags, the reasons and the crops. Claude Code's page
 judgements are kept apart as the reference for that step, in `ingest/answers/` (tracked: ids and verdicts
 only, no paper text): `tables.json` (69 tables), `equations.json` (103 pairs of the 13 papers),
-`body_flags.json` (388 judged body flags); the review step is scored against them before it is used.
+`body_flags.json` (415 judged body flags); the review step is scored against them before it is used.
 
 ## Why Marker for text, figures, tables and the abstract
 
@@ -87,11 +88,14 @@ fixed / limit / open; checked by script, Claude Code or user.
 | M13 | Abstract | OpenAlex fallback only for OCR-only blocks | fixed: fallback whenever a usable OpenAlex abstract exists and recall < 80 % or the abstract is empty | script | 10.1021_acs.langmuir.6b03119 |
 | M14 | Body | OCR'd abstract text not written into document.md; table blocks drawn as an image not repaired | fixed: the band repair anchors the text in the markdown; T2 also for image-only Table blocks | script | 4 ACS papers, 10.1021_acsnano.5b03429 |
 | M15 | Body | Numbers of the body changed, dropped or added by Marker: sentences, paragraphs and captions dropped (10 of 41 errors), citation numbers changed, dropped or fused (7), digits changed (4), letter/digit confusions t→4, I→1, 1→I, S→2, 5→S, 0→o (4), lookalike letters v→ν, p→ρ (5), subscript digits dropped (3), text added (3), a decimal point inserted or replaced by a comma (2), an exponent sign dropped (1), a caption label merged into a paragraph (1), margin line numbers merged (1 paper) | limit, flagged: `body_flags` by `body_check.py`; 12 repaired by `body_repair.py` (ERRORS.md lists each error, its cause and whether a countermeasure fixes it) | Claude Code on the line crops: every flag of the 44 papers (388 flag keys over the passes) | 41 distinct real errors, 2026-10-13; the 3 known errors of 2026-10-12/13 among them |
-| M16 | Body | Symbol-font glyphs of the text layer without a decoding in body lines (AdvP4C4E74 cids of further subsets, AdvEls-ent4 "o", AdvEls-ent5 "Z"); rotated text; the MDPI duplicate layer | limit: those lines are "not checkable" with the reason and count in `body_check`; 27 glyph entries added on 2026-10-13 from body crops (ligatures fi/fl/ft, °, −, ×, ≈, Δ, μ, ∂, →, ′, a vector accent) | Claude Code, glyph crops | 1,075 undecoded lines (2,726 before the additions), 98 garbled lines, 22,022 rotated characters in the 44 papers; coverage per paper in ERRORS.md |
+| M16 | Body | Symbol-font glyphs and (cid:N) subset codes of the text layer without a decoding in body lines; rotated text; the MDPI duplicate layer | limit: those lines are "not checkable" with the reason and count in `body_check` and a flag each; 27 glyph entries added on 2026-10-13 from body crops, then in pass 2 every remaining undecoded body glyph (150 font-subset/code keys) viewed on crops (`reports/glyph_evidence/`): 111 entries added, 22 pieces of multi-part delimiters in 5 papers left undecoded with the reason | Claude Code, glyph crops | 2 undecoded lines (1,075 before pass 2, 2,726 before the first additions), 98 garbled lines, 22,022 rotated characters in the 44 papers; coverage per paper in ERRORS.md |
 | M17 | Body | Margin line numbers of a line-numbered manuscript merged into the text by Marker (every line; 761 numbers flagged on 2026-10-13) | fixed: `line_numbers.py` finds the margin column in the text layer and removes the numbers at line breaks, alone on a line, or in runs; fires on 10.1021_acs.chemmater.9b05116 only (48 pages, 1,044 removed, 5 real numbers kept), no other document.md changes | script + Claude Code on crops (leftovers judged) | 10.1021_acs.chemmater.9b05116; 5 leftovers at breaks where the same bare number stands in the adjacent line |
 | M18 | Body | Countermeasures for Marker's body errors | fixed where a rule applies: `body_repair.py` replaces a number from the text layer when one missing and one absent number pair up in a paragraph (same letters, at most two characters apart) and restores a dropped line of a Text/Caption block (8+ words, vocabulary 70 %, no undecoded glyph); born-digital pages only; recorded in `body_repairs` | Claude Code on the judged flags: 12 fixed, 0 broken; three stricter variants rejected on the way (sentence-level pairing broke 1, letter differences broke 1, ambiguous pairs broke 1) | 12 repairs in 8 papers; errors without a rule (letters, lookalikes, hallucinated subscripts, dropped paragraphs matched elsewhere) stay flagged |
 | M19 | Body | A page box that does not start at (0, 0) (10.1116_1.5116136, media box from −92): Marker's boxes are 0-based, pdfplumber keeps the PDF origin | fixed: boxes shifted by the page box origin | script | 10.1116_1.5116136 (196 lines checked instead of 2) |
 | M20 | Body | A cover page whose "Reference" heading, or a unit matching a paragraph after the References heading, stopped the check on page 1 | fixed: both stops apply in the second half of a paper only | script | 10.1116_1.5116136, 10.1116_6.0002804, 10.1039_d1cp04758b (866 lines regained) |
+| M21 | Body | Lines the check cannot compare were only counted | fixed: a flag of kind "not checkable" (reason, line crop) per unit with an undecoded glyph, per garbled line, per unit too short to locate and per equation or weak line with an undecoded glyph; counted apart from the number flags, reviewed like a not-checkable table | script; the flags listed in review_body.html | 123 flags in 13 papers (98 garbled, 20 equation lines, 4 too short, 1 unit), 2026-10-13 |
+| M22 | Body | The "+" of the AdvPi1 symbol font draws ±; read as + and joined to the number it gave four false flags | fixed: family entry with crops as evidence | Claude Code, glyph crops | 10.1116_6.0001094 p14 |
+| M23 | Bands | A later `--bands` run overwrote bands.json; 9 records rebuilt from the `band_ocr` mark had no crop | fixed: records merged per (trigger, block) (`parse_marker.py`, tested with a stub converter on a scratch copy); the 9 crops rendered again from the PDF and the band box, each record's text confirmed in document.md or the captions of structure.json | script | 6 papers, 2026-10-13 |
 | E1 | Equations | Docling's enrichment crop (box + 18 %, 120 dpi) takes in neighbouring text; Beilstein boxes hold only the number | fixed: R1 tight crop at 216 dpi (18 fixed, 1 broken), R2 band box (12 of 19 fixed) | Claude Code, crops | 103 pairs, cf. ERRORS.md |
 | E2 | Equations | Both tools misread some formulas | limit: `differ` pairs for review | Claude Code, crops (13 papers only) | 29 of 103 pairs differ on the 13 papers; the 31 papers' 80 differ pairs not judged |
 | E3 | Equations | Marker re-recognition of its own equations on a 216-dpi crop | rejected: fixed 2, broke 13 | script + crops | not applied |
@@ -121,9 +125,15 @@ label while the page has no Caption block with that number → the band from tha
 is OCR'd and inserted as a Caption block; T2, a Text block that is only an image → OCR'd, its html and
 markdown placeholder replaced, or the text placed after the preceding block when there is no placeholder; a Table
 block that is only an image is OCR'd the same way (its cell texts go into the markdown as a paragraph). Records in
-`bands.json`. 44 papers, 25 repairs in 20 papers: 2 captions and 4 abstracts recovered, 1 image table's texts, 11 author
-lines and 7 "Check for updates" badges added as text, nothing lost; one abstract block returned no text
-(10.1021_acs.langmuir.6b03119).
+`bands.json`, one per (trigger, block) with the band crop `band_<trigger>_<block>.png` beside it: a later `--bands` run
+adds records for new triggers and replaces the record of a block it OCRs again; earlier records are kept (tested on a
+scratch copy of 10.1038_s41467-022-35428-6 with a stub converter on 2026-10-13: the duplicate pair of one block
+collapsed to one record, the re-OCR'd block updated in place, the other records kept). 44 papers, 25 repairs in 20
+papers: 2 captions and 4 abstracts recovered, 1 image table's texts, 11 author lines and 7 "Check for updates" badges
+added as text, nothing lost; one abstract block returned no text (10.1021_acs.langmuir.6b03119). The 9 records rebuilt
+from the `band_ocr` mark after the first run (which overwrote bands.json) had no crop; on 2026-10-13 each record's text
+was confirmed in document.md (the two T1 captions in `captions` of structure.json; one of them also restored into
+document.md by `body_repair.py`) and the crop rendered again from the PDF page and the record's band (no OCR rerun).
 
 ### Structure (`structure_marker.py`)
 - Captions: a block whose text starts with Fig./Figure/Scheme/Table + number (letter prefix allowed) is a caption if
@@ -170,8 +180,9 @@ number occurs in those lines; numbers alone on a markdown line and runs of 3+ co
 files are byte-identical with and without the rule (checked 2026-10-13).
 
 ### Body numbers (`body_check.py`, run by `merge.py`)
-- Text layer: pdfplumber characters decoded per embedded font with `glyph_codes.json` (86 entries: 15 families, 22
-  subsets; 27 added from body crops on 2026-10-13). Dropped or read once: characters outside the page box, a
+- Text layer: pdfplumber characters decoded per embedded font with `glyph_codes.json` (198 entries: 19 families, 43
+  subsets; 27 added from body crops on 2026-10-13, 111 more in pass 2 after every remaining undecoded body glyph was
+  viewed on crops, `reports/glyph_evidence/`; 22 delimiter pieces listed under "undecoded" with the reason). Dropped or read once: characters outside the page box, a
   character drawn twice at a slightly different size on one baseline, a line printed twice on a page (the MDPI hidden
   layer). Lines are read inside Marker's text blocks (Text, SectionHeader, Caption, ListItem, TextInlineMath,
   Footnote; boxes shifted by the page box origin) by the baseline of the normal-size characters; small characters join
@@ -192,7 +203,9 @@ files are byte-identical with and without the rule (checked 2026-10-13).
 - Not checkable, with reason and count: rotated characters, undecoded glyphs (font and code in
   `not_checkable_reasons`), units under 3 words, garbled lines (two lines drawn over each other), output sentences the
   layer lines do not cover (70 % of their words of 4+ letters), paragraphs a not-checkable unit also matches or whose
-  equation lines hold an undecoded glyph.
+  equation lines hold an undecoded glyph. Each line-level case is also a flag of kind "not checkable" (reason, line
+  count, crop): one per unit with an undecoded glyph, per garbled line, per unit too short, per equation or weak line
+  with an undecoded glyph; counted apart from the number flags ("not-checkable flags").
 - Numbers: both sides normalised as the table check does; a subscript joins its base (H2O), a superscript stands alone
   (10^12 → 10, 12), a number with a unit or a lowercase word glued to it counts as the number (514nm, 30μm, 4seconds),
   a comma run is a list in the plain variant and a thousands number in the other, the letter x between digits and 10
@@ -214,13 +227,16 @@ files are byte-identical with and without the rule (checked 2026-10-13).
   with the comma-list, author-line, date and DOI rules → 216 with the stricter matching, repeated-text presence rule
   and tokeniser fixes → 246 after the two stops were limited to the second half (three papers regained) → 224 final,
   after the page-box shift, × typed as x, and the 12 repairs.
-- Judgement (Claude Code, every flag on its line crop, 2026-10-13): 388 flag keys over the passes, 119 real (41
-  distinct errors), 269 not errors; of the 224 final flags 70 are real, 152 not, 2 unjudged (precision 32 %).
-  Remaining not-error causes: lines of one paragraph or caption in other units or in a figure box (35), equations
-  and formulas kept in the paragraph by Marker (17), undecoded or garbled glyphs (16), the MDPI duplicate layer (14),
-  layer tokenisation of subscripts, stacked indices and gaps (15), furniture (7), table footnotes (4), count
-  mismatches (2), other (12). Real errors by cause: c recognition 31, a layout 9, d our post-processing 1 (the
-  margin numbers, now removed).
+- Judgement (Claude Code, every flag on its line crop, 2026-10-13): 415 flag keys over the passes, 128 real (44
+  distinct errors), 287 not errors; of the 248 final flags 81 are real, 167 not (precision 33 %). Pass 2 (glyph table
+  extended: 2 lines not checkable instead of 1,075; 23,456 of 23,936 lines checked instead of 22,386) raised 28 new
+  flags, 9 real (3 distinct errors not seen before: a citation list changed, a footnote mark a → 2, p_I → p_1) and 19
+  not; 4 of the not-errors vanished with the AdvPi1 ± entry, no other flag vanished. Remaining not-error causes: lines
+  of one paragraph or caption in other units or in a figure box (35), equations and formulas kept in the paragraph
+  by Marker (17 + 5), undecoded or garbled glyphs (16), the MDPI duplicate layer (14), layer tokenisation of
+  subscripts, stacked indices, gaps and line breaks (15 + 5), furniture (7), table footnotes (4), count mismatches
+  (2 + 2), other (12 + 2). Real errors by cause: c recognition 34, a layout 9, d our post-processing 1 (the margin
+  numbers, now removed).
 
 ### Countermeasures (`body_repair.py`, run by `merge.py`)
 On born-digital pages (embedded fonts, no OCR font, no full-page image): R1 a number of the output is replaced by the
@@ -251,7 +267,7 @@ start of the extraction stage (planned): it reads the crop, and for a body flag 
 text-layer line, and decides whether the output is right, what the right value is, or that the item is a measurement
 artefact. Ingest writes the flag, the reasons, the tokens and the crop path; `body_repair.py` fixes only what a rule
 can fix without that review. The answer set in `ingest/answers/` (Claude Code's judgements of 2026-10-12/13: 69
-tables, 103 equation pairs, 388 body flags; ids and verdicts only) scores the review step before it is used: a review
+tables, 103 equation pairs, 415 body flags; ids and verdicts only) scores the review step before it is used: a review
 that disagrees with the answer set on more than a few items is not switched on.
 
 ### Docling stage (removed)
@@ -262,6 +278,14 @@ change log are historical.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
+
+- 2026-10-13 — Glyph table pass 2: every undecoded body glyph of the 44 papers viewed on crops (150 keys; 111 entries
+  added, 22 delimiter pieces listed undecoded with the reason, AdvPi1 + = ±); `body_check.py` writes flags of kind
+  "not checkable" (reason, line crop) for the lines it cannot compare; 28 new flags judged (9 real, 3 new distinct
+  errors; answer set 415 keys); `parse_marker.py` merges bands.json records per block (tested), the 9 band crops
+  regenerated. Effect: body lines not checkable for undecoded glyphs 1,075 → 2, lines checked 22,386 → 23,456 of
+  23,936, flags 224 → 248 (none vanished), 123 not-checkable flags; tables unchanged (34 ok, 34 flag, 1 not
+  checkable); reports papers.html 49 MB and review_body.html 11 MB rebuilt. — (hash: next line)
 
 - 2026-10-13 — Answer set `ingest/answers/` (tables 69, equation pairs 103, body flags 388: ids and verdicts of Claude Code's
   page judgements, no paper text); body flags go to the same review step as flagged tables and differ equations (external

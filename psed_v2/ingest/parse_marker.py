@@ -30,7 +30,8 @@ from that line down to the block's bottom is OCR'd and inserted after the block 
 (id "<block id>/cap"). T2: a Text block whose html holds no text but an image (a text block Marker
 rendered as a picture, e.g. an abstract beside a TOC graphic) -> the block is OCR'd and its html
 replaced; the image placeholder in the markdown is replaced by the text. Each repair is recorded in
-bands.json; a block already repaired is skipped. Checked on the 13 papers, 2026-10-12: 2 captions
+bands.json, one record per (trigger, block): a later run adds records for new triggers and replaces the record of
+a block it OCRs again, earlier records are kept; a block already repaired is skipped. Checked on the 13 papers, 2026-10-12: 2 captions
 (10.1186_s11671-015-0872-9 Figures 1 and 3) and the abstract of 10.1021_acs.jpcc.9b08176 recovered;
 7 other T2 hits were author lines and "Check for updates" badges (text added, nothing lost).
 
@@ -243,6 +244,24 @@ def _insert_md_text(d, tree, block_id, src, plain):
     return False
 
 
+def _load_records(d):
+    """bands.json records, one per (trigger, block): a later record of the same block replaces an earlier one."""
+    recs = json.loads((d / "bands.json").read_text()) if (d / "bands.json").exists() else []
+    out = {}
+    for r in recs:
+        out[(r.get("trigger"), r.get("block"))] = r
+    return list(out.values())
+
+
+def _upsert(done, rec):
+    """Add rec to done, or replace the record of the same (trigger, block)."""
+    for i, r in enumerate(done):
+        if (r.get("trigger"), r.get("block")) == (rec["trigger"], rec["block"]):
+            done[i] = rec
+            return
+    done.append(rec)
+
+
 def band_ocr(converter, paper_id):
     """T1 / T2 repairs on marker/<paper_id>/: blocks.json patched, the markdown placeholder of a T2
     block replaced by its text, bands.json written. Returns the number of repairs."""
@@ -252,7 +271,7 @@ def band_ocr(converter, paper_id):
     pdf = RAW / f"{paper_id}.pdf"
     tree = json.loads((d / "blocks.json").read_text())
     hits = _band_triggers(tree, pdf)
-    done = json.loads((d / "bands.json").read_text()) if (d / "bands.json").exists() else []   # earlier repairs kept
+    done = _load_records(d)                                 # earlier repairs kept, one record per (trigger, block)
     if not hits:
         (d / "bands.json").write_text(json.dumps(done, indent=1, ensure_ascii=False))
         return 0
@@ -275,7 +294,7 @@ def band_ocr(converter, paper_id):
         if not plain:
             rec["applied"] = False
             b["band_ocr"] = "empty"                       # not retried
-            done.append(rec)
+            _upsert(done, rec)
             continue
         if trigger == "T1":
             cap = {"id": b["id"] + "/cap", "block_type": "Caption", "bbox": band,
@@ -290,7 +309,7 @@ def band_ocr(converter, paper_id):
             b["band_ocr"] = "T2"
             rec["in_markdown"] = _insert_md_text(d, tree, b["id"], src.group(1) if src else None, plain)
         rec["applied"] = True
-        done.append(rec)
+        _upsert(done, rec)
     (d / "blocks.json").write_text(json.dumps(tree, indent=1, ensure_ascii=False))
     (d / "bands.json").write_text(json.dumps(done, indent=1, ensure_ascii=False))
     return sum(1 for x in done if x["applied"] and x["block"] in {h[1]["id"] for h in hits})
@@ -353,7 +372,7 @@ def bands_only(rows, by_id, argv):
             print(f"[bands] {pid}: no blocks.json, skipped")
             continue
         tree = json.loads((OUT / pid / "blocks.json").read_text())
-        recs = json.loads((OUT / pid / "bands.json").read_text()) if (OUT / pid / "bands.json").exists() else []
+        recs = _load_records(OUT / pid)
         n_ins = 0
         for rec in recs:                                    # earlier T2 repairs whose text never reached the markdown
             if rec.get("trigger") == "T2" and rec.get("applied") and rec.get("text") and not rec.get("in_markdown"):

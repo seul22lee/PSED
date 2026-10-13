@@ -1,5 +1,5 @@
 {
- "about": "Decoding of the PDF text layer for the table check (structure_marker.py) and the body check (body_check.py). 'families': characters of symbol-encoded fonts (the font's own character codes, the same in every subset of the font); letters of these fonts that are not listed have no decoding and make a table 'not checkable'. 'instances': (cid:N) codes of embedded font subsets; a cid is a glyph index of the subset, so it is decoded only through the table of that embedded instance (subset prefix + family). Every entry was checked on a crop of the glyph by Claude Code on 2026-10-12 (scratch sheets tables2/glyphs/inst*.png); 'evidence' names the paper, page and table of one occurrence. Other characters are taken as they are.",
+ "about": "Decoding of the PDF text layer for the table check (structure_marker.py) and the body check (body_check.py). 'families': characters of symbol-encoded fonts (the font's own character codes, the same in every subset of the font); letters of these fonts that are not listed have no decoding and make a table 'not checkable'. 'instances': (cid:N) codes of embedded font subsets; a cid is a glyph index of the subset, so it is decoded only through the table of that embedded instance (subset prefix + family). Every entry was checked on a crop of the glyph by Claude Code on 2026-10-12 (scratch sheets tables2/glyphs/inst*.png); 'evidence' names the paper, page and table of one occurrence. Other characters are taken as they are. 'undecoded': glyphs viewed on crops and left without a decoding, with the reason.",
  "families": {
   "AdvP4C4E74": {
    "¼": "=",
@@ -21,7 +21,14 @@
   },
   "AdvPi1": {
    "m": "μ",
-   "q": "∂"
+   "q": "∂",
+   "4": ">",
+   "D": "Δ",
+   "a": "α",
+   "d": "δ",
+   "g": "γ",
+   "p": "π",
+   "+": "±"
   },
   "AdvPi2": {
    "O": "Ω",
@@ -35,7 +42,9 @@
    "s": "σ",
    "t": "τ",
    "x": "ξ",
-   "y": "θ"
+   "y": "θ",
+   "a": "α",
+   "E": "ε"
   },
   "AdvPSMP10": {
    "b": "β",
@@ -44,10 +53,16 @@
    "q": "ρ",
    "r": "σ",
    "s": "τ",
-   "l": "μ"
+   "l": "μ",
+   "k": "λ",
+   "p": "π",
+   "i": "ι",
+   "j": "κ"
   },
   "AdvPSMP13": {
-   "D": "Δ"
+   "D": "Δ",
+   "H": "Θ",
+   "l": "μ"
   },
   "AdvGreekM": {
    "f": "φ"
@@ -60,11 +75,13 @@
   },
   "AdvEls-ent4": {
    "r": "≤",
-   "{": "≪"
+   "{": "≪",
+   "o": "<"
   },
   "AdvEls-ent5": {
    "c": "≫",
-   "1": "°"
+   "1": "°",
+   "Z": "≥"
   },
   "AdvEls-ent7": {
    "B": "∼",
@@ -76,6 +93,25 @@
   },
   "AdvOT999035f4+e0": {
    "": "ft"
+  },
+  "Symbol": {
+   "": "−",
+   "": "α",
+   "": "+",
+   "": "→",
+   "": "=",
+   "": "θ",
+   "": "Δ"
+  },
+  "SymbolMT": {
+   "": "•"
+  },
+  "AdvOTce71c481.I+e1": {
+   "": "fi"
+  },
+  "white-label": {
+   "": "",
+   "": ""
   }
  },
  "symbol_families": [
@@ -94,36 +130,57 @@
  "instances": {
   "MBAJJO+AdvP4C4E74": {
    "cid:2": "−",
-   "cid:3": "×"
+   "cid:3": "×",
+   "cid:4": "±",
+   "cid:5": "≈"
   },
   "MEPBAO+AdvP4C4E74": {
    "cid:2": "−",
-   "cid:3": "×"
+   "cid:3": "×",
+   "cid:4": "·"
   },
   "GENDPM+AdvP4C4E74": {
-   "cid:2": "−"
+   "cid:2": "−",
+   "cid:4": "×",
+   "cid:3": "≈"
   },
   "EAGHDP+AdvP4C4E74": {
    "cid:2": "−",
-   "cid:6": "×"
+   "cid:6": "×",
+   "cid:3": "·",
+   "cid:4": "]",
+   "cid:5": "≥"
   },
   "MNGCOP+AdvP4C4E74": {
    "cid:2": "−",
-   "cid:3": "×"
+   "cid:3": "×",
+   "cid:5": "·",
+   "cid:4": "≈"
   },
   "XAOQNP+AdvP4C4E74": {
-   "cid:2": "−"
+   "cid:2": "−",
+   "cid:3": "°",
+   "cid:4": "≈",
+   "cid:5": "≫",
+   "cid:6": "×",
+   "cid:7": "≪"
   },
   "FGIIBN+AdvP4C4E74": {
    "cid:1": "×",
    "cid:3": "−",
-   "cid:5": "°"
+   "cid:5": "°",
+   "cid:4": "∼",
+   "cid:6": "≫",
+   "cid:7": "≪",
+   "cid:8": "≈"
   },
   "CBPCMD+AdvP4C4E74": {
    "cid:2": "°",
    "cid:3": "−",
    "cid:4": "·",
-   "cid:6": "×"
+   "cid:6": "×",
+   "cid:5": "]",
+   "cid:7": "≥"
   },
   "CBPCNE+AdvP4C4E51": {
    "cid:2": "ϵ"
@@ -134,38 +191,58 @@
   "MEPGPE+AdvP4C4E46": {
    "cid:7": "|",
    "cid:8": "(",
-   "cid:9": ")"
+   "cid:9": ")",
+   "cid:2": "(",
+   "cid:3": ")",
+   "cid:4": "[",
+   "cid:5": "]"
   },
   "MNGEGD+AdvP4C4E46": {
    "cid:5": "|",
    "cid:6": "(",
-   "cid:7": ")"
+   "cid:7": ")",
+   "cid:3": "(",
+   "cid:4": ")"
   },
   "MACDEI+MathematicalPi-Three": {
    "cid:1": "(",
-   "cid:2": ")"
+   "cid:2": ")",
+   "cid:3": "[",
+   "cid:4": "]",
+   "cid:5": "∼"
   },
   "HIJGPK+AdvP4C4E74": {
    "cid:1": "−",
-   "cid:4": "×"
+   "cid:4": "×",
+   "cid:3": "°",
+   "cid:5": "≈"
   },
   "PGKKFB+AdvP4C4E74": {
-   "cid:1": "−"
+   "cid:1": "−",
+   "cid:3": "×"
   },
   "DNGEMD+AdvP4C4E74": {
    "cid:1": "°",
-   "cid:3": "−"
+   "cid:3": "−",
+   "cid:4": "±"
   },
   "GLBOJN+AdvP4C4E74": {
    "cid:2": "≈",
-   "cid:3": "−"
+   "cid:3": "−",
+   "cid:4": "×",
+   "cid:5": "≪"
   },
   "EPMNFK+AdvP4C4E74": {
-   "cid:3": "°"
+   "cid:3": "°",
+   "cid:4": "−",
+   "cid:1": "∼"
   },
   "MALNLA+AdvP4C4E74": {
    "cid:4": "°",
-   "cid:5": "−"
+   "cid:5": "−",
+   "cid:1": "∼",
+   "cid:3": "×",
+   "cid:6": "±"
   },
   "EGAVBT+CMMI12": {
    "cid:126": ""
@@ -175,6 +252,91 @@
   },
   "HMBFNB+LucidaSansUnicode22": {
    "cid:2": "Δ"
+  },
+  "AFAENB+AdvP4C4E74": {
+   "cid:2": "−"
+  },
+  "MACDFJ+MathematicalPi-One": {
+   "cid:1": "×",
+   "cid:2": "<"
+  },
+  "GLKIFC+MTSY": {
+   "cid:6": "≠"
+  },
+  "GLKIFD+RMTMI": {
+   "cid:2": "Ω",
+   "cid:3": "Δ"
+  },
+  "HMBDOJ+RMTMI": {
+   "cid:2": "Φ"
+  },
+  "GLKMMJ+MTGU": {
+   "cid:8": "ε"
+  },
+  "OBBJRN+CMSY10": {
+   "cid:54": "≠"
+  },
+  "HIJHAN+AdvPS4C9543": {
+   "cid:1": "∼"
+  },
+  "MACDDG+Universal-GreekwithMathPi": {
+   "cid:1": ")"
+  },
+  "EDMNXU+AdvP4C4E46": {
+   "cid:2": "(",
+   "cid:3": ")",
+   "cid:4": "[",
+   "cid:5": "]",
+   "cid:7": "(",
+   "cid:8": ")"
+  },
+  "GENEAP+AdvP4C4E46": {
+   "cid:2": "(",
+   "cid:3": ")"
+  },
+  "FGIIEF+AdvP4C4E46": {
+   "cid:5": "(",
+   "cid:6": ")"
+  },
+  "CBPFCJ+AdvP4C4E46": {
+   "cid:2": "(",
+   "cid:3": ")",
+   "cid:4": "|",
+   "cid:5": "[",
+   "cid:6": "]"
+  },
+  "EAHFHN+AdvP4C4E46": {
+   "cid:2": "[",
+   "cid:3": "]",
+   "cid:5": "|"
+  },
+  "CBPAFP+AdvP4C4E59": {
+   "cid:2": "s̄"
+  },
+  "MEPGOE+AdvP4C4E59": {
+   "cid:2": "v̄"
+  },
+  "EAHFIO+AdvP4C4E59": {
+   "cid:2": "s̄"
+  },
+  "PGLGHD+AdvP4C4E59": {
+   "cid:2": "Á"
+  },
+  "QXMWBC+CMEX10": {
+   "cid:12": "|",
+   "cid:122": "",
+   "cid:123": "",
+   "cid:124": "",
+   "cid:125": ""
+  },
+  "EQGFDV+CMEX10": {
+   "cid:16": "(",
+   "cid:17": ")",
+   "cid:2": "[",
+   "cid:3": "]"
+  },
+  "FAHBIC+Wingdings": {
+   "cid:13": ""
   }
  },
  "evidence": {
@@ -194,6 +356,16 @@
   "AdvEls-ent7 B E": "∼100:1, Kn ≈ 1; 10.1039_d0cp03358h p11 T2, d1cp04758b p10 T2, d4cp00131a p13 T2",
   "AdvP4C4E74 0": "prime: 8″ (8 inch) drawn as two '0' glyphs of this font, 10.1002_adem.202201901 p10 body (crop viewed 2026-10-13)",
   "body glyphs 2026-10-13": "24 most frequent undecoded glyphs of the body text, one context crop each viewed (scratch body/glyph_sheet_0/1.png): AdvOT999035f4+e1 U+E103 fi (10.1039_c5ta00205b p1 'artificial', c7ta03257a p2 'specific', c3ra42928h p1 'films'), U+E104 fl (c5ta00205b p1 'flurry', c3ra42928h p2 'flowed'); AdvOT999035f4+e0 U+E09D ft (c7ta03257a p2 'soft', c3ra42928h p1 'after'); AdvPSMP10 l = μ (10.1063_1.5028178 p3 '1 μm'); AdvPi1 q = ∂ (10.1039_d3cp05639b p3 '∂n_p/∂t'); HIJGPK cid:1 − (10.1116_6.0001094 p2 '10^−4'), cid:4 × (p4 '50.0 × 50.0'); PGKKFB cid:1 − (10.1021_acsnano.5b03429 p1 title 'Metal−Organic'); DNGEMD cid:1 ° (10.1039_c5ta00205b p2 '2 °C'), cid:3 − (p2 'μg^−1'); GLBOJN cid:2 ≈ (10.1002_adem.202201901 p3 '≈1.56'), cid:3 − (p4 'cycle^−1'); EPMNFK cid:3 ° (10.1039_c3ra42928h p2 '550 °C'); MALNLA cid:4 ° (10.1039_c7ta03257a p3 '95 °C'), cid:5 − (p3 'min^−1'); MEPBAO cid:3 × (10.1039_d1cp04758b p4 '5.91 × 10^−10'); EGAVBT+CMMI12 cid:126 = vector arrow accent over r, decoded as nothing (10.1016_j.sse.2022.108584 p5); PGKLEM+Advsymbol cid:1 ° (acsnano.5b03429 p2 '>400 °C'); HMBFNB+LucidaSansUnicode22 cid:2 Δ (10.1093_nsr_nwaf247 p3 'Δp'); FGIIBN cid:5 ° (10.1063_5.0168768 p3 '100 °C')",
-  "AdvP4C4E74 !": "reaction arrow → in the body of 10.1116_1.4892385 p3 (crop glyph_arrow.png viewed 2026-10-13)"
+  "AdvP4C4E74 !": "reaction arrow → in the body of 10.1116_1.4892385 p3 (crop glyph_arrow.png viewed 2026-10-13)",
+  "body glyphs 2026-10-13 pass 2": "every undecoded glyph of the body lines of the 44 papers (150 font-subset/code keys, census in ingest/reports/glyph_evidence/census_2026-10-13_pass2.json), up to 4 context crops each viewed by Claude Code (ingest/reports/glyph_evidence/gsheet_00..10.png, entry #n = census row n). Families: AdvEls-ent4 o = < (#4 #7 #15 #32), AdvEls-ent5 Z = ≥ (#9 #17 #19), AdvPi1 4 = > (#12 #13 #42 #102), D = Δ (#29 #33), a = α (#31 Al-Kα), d = δ and g = γ (#35 #36 P_δγ), p = π (#68 #69 #103 #138); AdvPi2 a = α (#25), E = ε (#95); AdvPSMP10 k = λ (#27), p = π (#52 #67 #90), i = ι (#51), j = κ (#54 high-κ): the font's letters are the Greek alphabet in order (a=α … h=θ, i=ι, j=κ, k=λ, l=μ, p=π), as AdvPSMP13 H = Θ (#18) and l = μ (#91 μm); Symbol U+F02D − (#8), U+F061 α (#49), U+F02B + (#56), U+F0AE → (#57), U+F03D = (#87), U+F071 θ (#92), U+F044 Δ (#129); SymbolMT U+F0B7 • (#55); AdvOTce71c481.I+e1 U+E103 fi (#133 'Purification'); white-label U+E907 (check badge) and U+E923 (envelope icon) carry no text, decoded as nothing (#60 #61), as Wingdings cid:13 (envelope, #124) and the overbrace pieces CMEX10 cid:122-125 (#125-#128). Subsets: AdvP4C4E74 cids per subset as listed in 'instances' (· ∼ × ° − ≈ ≫ ≪ ± ] ≥, #0-#3 #5 #6 #10 #11 #21 #22 #30 #34 #37 #38 #40 #45-#48 #50 #53 #58 #59 #75 #76 #96 #97 #104 #111 #134 #135 #139 #149); MathematicalPi-One cid:1 × cid:2 < (#2 #39); MathematicalPi-Three cid:3 [ cid:4 ] cid:5 ∼ (#23 #24 #28); MTSY cid:6 ≠ (#14); RMTMI cid:2 Ω cid:3 Δ (#16 #20), HMBDOJ cid:2 Φ (#85); MTGU cid:8 ε (#26); CMSY10 cid:54 ≠ (#43); AdvPS4C9543 cid:1 ∼ (#41); Universal-GreekwithMathPi cid:1 ) of a superscript 'a)' (#64); tall delimiters AdvP4C4E46 and CMEX10 where the crop shows the whole parenthesis or bracket (#65 #66 #70 #71 #77 #78 #80 #81 #88 #89 #93 #94 #100 #101 #105 #106 #109 #110 #112-#117 #136 #137), evaluation bars | (#83 #84 #86); AdvP4C4E59 cid:2 = s̄ (#74 #82), v̄ (#79), Á (#130). Pieces of multi-part delimiters stay undecoded, see 'undecoded'.",
+  "AdvPi1 +": "the '+' character of the AdvPi1 symbol font draws ± : both occurrences in the 44 papers (10.1116_6.0001094 p14, '0.316 ± 0.004' and '0.172 ± 0.003'; crops ingest/reports/glyph_evidence/advpi1_plus.png and advpi1_plus_context.png viewed 2026-10-13); read as '+' it produced four false body flags (+0.004 / +0.003 joined to the number)"
+ },
+ "undecoded": {
+  "HIKBBI+AdvP4C4E46 cid:1, cid:3, cid:4, cid:5": "pieces of two-line square brackets around ∂n_i/∂t (10.1116_6.0001094 p8-9, #62 #63 #72 #73): which piece is the top, bottom, left or right one cannot be told on the crops; 7+7+2+2 lines",
+  "GLCAMG+AdvP4C4E46 cid:3, cid:4, cid:5, cid:6, cid:7, cid:8": "pieces of multi-part tall parentheses in fractions (10.1002_adem.202201901 p6, p8-9, #98 #99 #120-#123); the two pieces of one parenthesis both sit at its left edge on the crops",
+  "HMBGML+MTEX cid:2 to cid:8": "pieces of tall delimiters and evaluation bars in one fraction (10.1093_nsr_nwaf247 p5, #107 #108 #144-#148)",
+  "GLMAGH+MTEX cid:2, cid:3": "pieces of a tall parenthesis (10.1149_2.067203jes p9, #118 #119)",
+  "CFMDGH+AdvP4C4E46 cid:3, cid:4": "pieces of a tall parenthesis (10.1038_s41467-022-35428-6 p6, #131 #132)",
+  "FGIIEF+AdvP4C4E46 cid:3, cid:4, cid:7, cid:8": "pieces of tall parentheses (10.1063_5.0168768 p3, p5, #140-#143); cid:5 and cid:6 of the same subset are whole parentheses and are decoded"
  }
 }
