@@ -1,66 +1,88 @@
 # Ingest: remaining errors after the rules
 
-What is still wrong in the final output (`ingest/final/<paper_id>/`) after the rules of 2026-10-12, from
-the 13 Marker papers (one per DOI prefix of the 44 in scope), judged on the PDF pages and crops by
-Claude Code (commit in the change log of `INGEST.md`). Per error type: an example, the count on the
-13 papers, whether a rule check flags it, and how it is handled. Handling: **flag → review** = the
-`check` field of the table entry is `flag`; **differ → review** = the equation pair has
-`status: differ`. Both are resolved by an external vision-language model reading the crop, as a
-pre-processing step of the extraction stage (planned, not part of ingest); ingest only writes the
-flags, the reasons and the crops. **known limit** = nothing flags it; the KB must tolerate it.
+What is still wrong in the final output (`ingest/final/<paper_id>/`) after the rules of 2026-10-12/13, on
+the 44 in-scope papers with a PDF (13 checked item by item on 2026-10-12, the other 31 on 2026-10-13), judged
+on the PDF pages and crops by Claude Code (commits in the change log of `INGEST.md`). Per error type: an
+example, the count, whether a rule check flags it, and how it is handled. Handling: **flag → review** = the
+`check` field of the table entry is `flag`; **differ → review** = the equation pair has `status: differ`.
+Both are resolved by an external vision-language model reading the crop, as a pre-processing step of the
+extraction stage (planned, not part of ingest); ingest only writes the flags, the reasons, the tokens and the
+crops. **known limit** = nothing flags it; the KB must tolerate it. Tables and equations of all 44 papers are
+in `ingest/reports/review_44.html`, the body/abstract/figure/caption checks of the 31 papers in
+`review_31.html` (both gitignored).
 
 ## Body text (Marker)
 
-| Error | Example | Count | Flagged | Handling |
+| Error | Example | Count (44 papers) | Flagged | Handling |
 |---|---|---|---|---|
-| Angle brackets dropped by Marker's renderer: "<001>" written "001" | 10.1002_adem.202201901, p 10 | 1 number in 13 papers | no | known limit |
-| Two-column page read right column first for one block | 10.1186_s11671-015-0872-9, p 4 | 1 page in 13 papers | no | known limit |
-| Author line or "Check for updates" badge rendered as an image, then OCR'd by the band repair as text | 10.1021_acs.jpcc.9b08176 p 1, 10.1116_6.0002993 p 2, 10.3390_separations11010024 p 1 | 3 author lines, 3 badges | recorded in `bands.json` | known limit (text added, nothing lost) |
+| A sentence of a line-numbered manuscript page dropped | 10.1021_acs.chemmater.9b05116 p 33: "The mean pore radii of the porous films all lie between approximately 0.9 nm and 1.6 nm." | 1 | no | known limit |
+| A decimal point read as a comma, a digit read as a letter | 10.1021_acs.chemmater.2c01154: "a-MoS3,0" for a-MoS3.0, "SP4-4004STRS" for SP4-40045TRS | 3 numbers | no | known limit |
+| Angle brackets dropped by Marker's renderer ("<001>" written "001") | 10.1002_adem.202201901 p 10 | 1 | no | known limit |
+| Two-column page read right column first for one block | 10.1186_s11671-015-0872-9 p 4 | 1 page | no | known limit |
+| An abstract block rendered as an image whose band OCR returns no text | 10.1021_acs.langmuir.6b03119 p 1 | 1 | `bands.json` (applied: false) | the abstract field falls back to OpenAlex; the paragraph stays missing from the body |
+| Author lines and "Check for updates" badges rendered as images, then OCR'd into the text | 25 band repairs in 20 papers: 2 captions, 4 abstracts, 1 table, 11 author lines, 7 badges | author lines and badges | recorded in `bands.json` | known limit (text added, nothing lost) |
 
-Figures, captions and the abstract have no remaining error on the 13 papers after the band-crop OCR
-(captions drawn inside the picture: 10.1186_s11671-015-0872-9 Figures 1 and 3; abstract beside the
-TOC graphic: 10.1021_acs.jpcc.9b08176).
+## Abstract (Marker, OpenAlex fallback)
 
-## Tables (Marker, 16 numbered tables in the 13 papers)
+44 of 44 abstracts right: 23 `heading`, 20 `openalex_match`, 1 `openalex` (10.1021_acs.langmuir.6b03119, see above);
+recall against a usable OpenAlex abstract 90 % or more where one exists (the RSC and Elsevier records are short blurbs
+or absent). No remaining error.
 
-| Error | Example | Count | Flagged | Handling |
-|---|---|---|---|---|
-| An extra empty column: Marker's header colspans sum to one more than the body has | 10.3390_separations11010024 Tables A1, A2 (p 14), A4 (p 15) | 3 | yes (header colspans vs body columns) | flag → review |
-| Header shifted by one column: a sub-header cell lost ("[K]") | 10.3390_separations11010024 Table A3, p 14 | 1 | yes (letters, empty trailing header, colspans) | flag → review |
-| A symbol misread ("l" for "I") and a wrong exponent sign in a unit (cm^-2 for cm^2) | 10.3762_bjnano.5.25 Table 2, p 10 | 1 | yes (numbers, letters) | flag → review |
-| Right table flagged: footnotes inside Marker's table box | 10.1021_acs.jpcc.9b08176 Table 1, p 4 | 1 | — | review finds nothing wrong |
-| Right table flagged: a minus drawn from an unmapped glyph in the PDF text layer | 10.1063_1.5028178 Table I, p 8 | 1 | — | review finds nothing wrong |
-| Right table flagged: the MDPI hidden duplicate text layer puts stray letters in the box | 10.3390_separations11010024 Table 1, p 11 | 1 | — | review finds nothing wrong |
-
-Check result on the 16 tables: 5 wrong tables flagged, 0 missed, 3 right tables flagged (11 of 16
-are fully right). Undetectable by the checks, not seen on the 13 papers but possible: a caption bound
-to the wrong table (the caption is outside the box the check reads), a pure column shift with every
-token present and the header and body column counts equal, and tables on pages without a usable text
-layer (scanned PDFs), which the check flags wholesale (`no text layer in the table box`).
-
-Fixed on 2026-10-12, no longer errors: trailing zeros dropped by tabulate's number parsing (0.10 →
-0.1, 8.0 → 8; 7 cells in 5 tables), Greek letters in headers (they were always in Marker's output as
-LaTeX, `\beta_0`; the comparison stripped them).
-
-## Equations (Docling CodeFormula on R1/R2 crops + Marker, 103 pairs in the 13 papers)
+## Figures and captions (Marker)
 
 | Error | Example | Count | Flagged | Handling |
 |---|---|---|---|---|
-| Marker's LaTeX wrong where Docling's is right (symbol, missing term, scope of a root) | 10.1002_adem.202201901 eq (9), p 8: ν for v | 14 pairs | yes (`differ`) | differ → review |
-| Docling's LaTeX wrong where Marker's is right (symbol, junk text, a term missing) | 10.3390_separations11010024 eq (3), p 6: "lare" for "layer" | 7 pairs | yes (`differ`) | differ → review |
-| Both wrong | 10.1063_1.5028178 eq (32), p 6 | 3 pairs | yes (`differ`) | differ → review |
-| Equivalent forms or alignment markup only | 10.1063_1.5028178 eq (10), p 4: 4/h·RT/N_0 vs 4RT/(hN_0) | 5 pairs | yes (`differ`) | differ → review (nothing wrong) |
-| Equation present in one tool only | — | 0 on the 13 papers | yes (`docling only` / `marker only`) | review |
+| A figure split into several picture blocks, only one bound to the caption; the other panel stays an unnumbered entry | 10.1039_c3ra42928h p 4 (TEM panel a), 10.1039_c4nr05049e p 4 (plot panel a) | 2 | no | known limit |
+| Journal logos, badges, covers and reaction equations drawn as pictures stay as unnumbered entries | 31 papers | — | no | known limit (no caption exists) |
 
-74 of the 103 pairs agree. The R1 crop (tight formula box, 216 dpi) fixed 18 Docling equations and
-broke 1 (10.1063_1.5028178 eq (20)); the R2 band box fixed 12 of the 19 Beilstein equations whose
-Docling box held only the number; the remaining Docling errors are CodeFormula's reading of the crop.
+Fixed on 2026-10-13 (no longer errors): captions joined with the body paragraph below (10.1021_acs.chemmater.1c03164
+Figures 1 and 3); figures placed after all captions left without an image (10.1116_1.5116136 Figures 1–5); OCR'd
+abstracts not written into document.md (4 ACS papers).
+
+## Tables (Marker, 69 tables in 28 papers: 53 numbered tables, 16 unnumbered symbol lists)
+
+Judged on the crop: 41 right, 28 wrong. The rule check (decoded text layer, `glyph_codes.json`) flags 27 of the 28,
+misses 0, flags 7 right tables, and reports 1 as not checkable (the wrong one it cannot read).
+
+| Error | Example | Count | Flagged | Handling |
+|---|---|---|---|---|
+| Structure: an extra empty column or trailing header cell, a header shifted by one column, a column lost in every row | 10.3390_separations11010024 A1, A2, A3, A4; 10.1021_acs.chemmater.9b05116 p 22; 10.1039_d4cp00131a Table 2 (a column lost); 10.1039_d0cp03358h Table 1 (header split, rotated) | 7 | 6 yes, 1 not checkable (rotated) | flag → review; the rotated table goes to review as "not checkable" |
+| Rowspan misread: repetition counts or series labels shifted by one row | 10.1021_acs.chemmater.1c03164 Table 1; 10.1039_d1cp04758b Table 3 | 2 | yes | flag → review |
+| The table block drawn as an image: no cells (the band OCR gives the cell texts without structure, put into document.md) | 10.1021_acsnano.5b03429 Table 1 | 1 | yes (no cells) | flag → review |
+| A symbol misread: μ lost in "(μm)", letter O as digit 0 (Cu2O, A_O), Θ as θ, ξ as ζ, ȳ as ν̄, v as ν, l for I, a dash lost | acsami.0c06879 S1/S2; 1.5116136 Table I; 1.4892385 Table I; d3cp05639b Tables 1, 2, list; chemmater.1c03164 list; d3cp01829f Table 2, list; 6.0003182 Table I; d1cp04758b list; bjnano.5.25 Table 2 | 12 | yes | flag → review |
+| Subscript case or letter wrong (p_I written p_i or p_t, P_d written p_d, σ_P written σ_p) | 10.1039_d1cp04758b Table 1 and list, d3cp01829f list, d4cp00131a Table 1, d3cp05639b Table 2 | 5 | yes | flag → review |
+| Arrow counts wrong (↓↓↓↓ for ↓↓↓ or ↓) | 10.1039_d1cp04758b Table 2 | 1 | yes (symbol counts) | flag → review |
+
+Right tables the check flags (7): table footnotes inside Marker's table box (10.1021_acs.jpcc.9b08176 Table 1),
+numbers of a footnote line just below the box on the table's columns (10.1021_acs.chemmater.6c00816 Table 1),
+the box covering body text beside a nomenclature list (10.1063_1.5028178 p 2), the MDPI hidden duplicate text
+layer (10.3390_separations11010024 Table 1), a text font that encodes ν as "n" (10.1039_d4cp00131a p 17), one
+unexplained P/p case difference in a symbol list (10.1039_d0cp03358h p 12), and footnote letters glued to
+exponents (10.1039_d0cp03358h Table 2). Undetectable by the checks: a caption bound to the wrong table, and a
+pure column shift with every token present and equal column counts (not seen on the 44 papers).
+
+Fixed on 2026-10-12/13, no longer errors: trailing zeros dropped by tabulate (0.10 → 0.1); Greek letters in
+headers (a comparison artefact); the text layer of RSC, AIP and Elsevier symbol fonts read as letters or (cid:N)
+codes (now decoded per font, `glyph_codes.json`).
+
+## Equations (Docling CodeFormula on R1/R2 crops + Marker; 321 entries in the 44 papers)
+
+| Status | Count | Handling |
+|---|---|---|
+| agree | 197 | accepted |
+| differ | 109 | differ → review (on the 13 checked papers: Marker right 14, Docling right 7, both wrong 3, equivalent forms 5 of 29) |
+| docling only / marker only | 12 / 3 | review |
+
+The R1 crop (tight formula box, 216 dpi) fixed 18 Docling equations and broke 1 (10.1063_1.5028178 eq 20) on the 13
+checked papers; the R2 band box fixed 12 of the 19 Beilstein equations whose Docling box held only the number.
 Marker's own equations were not re-recognised: on its own box at 216 dpi that fixed 2 and broke 13.
 
-## Input limits seen on the 13 papers
+## Input limits seen
 
 | Limit | Example | Effect | Handling |
 |---|---|---|---|
-| Duplicated text layer: caption regions and some paragraphs drawn twice in two fonts, 9 pt apart | 10.3390_separations11010024 (12 % of the characters on p 7; none of the other 12 papers) | Docling repeats those captions 2–3× (not used by final); the table check sees stray letters (one false flag) | known limit |
-| Layout reading order with a left sidebar | 10.3762_bjnano.5.25 p 1, 10.1093_nsr_nwaf247 p 1 | Docling reads the sidebar before the title (not used by final); Marker reads the print order | — |
-| Pages without a text layer (OCR-only regions) | none among the 13; in the 44: 10.1039_c4nr05049e abstract, 10.1021_acs.chemmater.1c03164 headings, 10.1116_6.0003182 table | Marker OCRs them itself; the table check cannot compare and flags such tables | flag → review |
+| Duplicated text layer: caption regions and some paragraphs drawn twice in two fonts | 10.3390_separations11010024 (12 % of the characters on p 7; no other paper of the 44) | Docling repeated those captions (not used); the table check sees stray letters (one false flag) | known limit |
+| Symbol fonts whose text layer gives letters (AdvPi2 "y" for θ) or subset glyph codes ((cid:3) is − in one paper and × in another) | RSC, AIP, Elsevier tables of 12 papers | decoded per font family / per embedded subset with evidence (`glyph_codes.json`); a code without a table makes the table "not checkable" | — |
+| A rotated table | 10.1039_d0cp03358h Table 1 | not checkable (Marker read it; the header is shifted) | review |
+| Figures placed after all captions (manuscript) | 10.1116_1.5116136 | bound by page order | — |
+| Pages without a text layer (OCR-only regions) | 10.1039_c4nr05049e abstract, 10.1021_acs.chemmater.1c03164 headings, 10.1116_6.0003182 table (this one has a text layer in Marker's box) | Marker OCRs them itself; a table without a text layer is flagged | flag → review |
