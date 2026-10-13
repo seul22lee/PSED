@@ -5,9 +5,9 @@
 
 Rule (title + OpenAlex abstract, every hyphen character read as "-"): a row has an ALD term when
 the text matches atomic[\\s-]layer (case-insensitive) or \\bALD\\b (case-sensitive).
-A row is tested when
-  - cremers = O, unless cremers_context has a table tag (II-V, VIII, IX): Cremers lists those as ALD data;
-  - cremers_citing = O and no other origin.
+Every candidate row is tested (cremers, cremers_citing or added by hand, also when it is in Popov
+as well), except a Cremers reference whose cremers_context has a table tag (II-V, VIII, IX):
+Cremers lists those as ALD data.
 A tested row without an ALD term is listed:
     exclude (auto)   it has an abstract
     judge by hand    it has no abstract (the title alone decides nothing)
@@ -34,9 +34,9 @@ def source(row: dict) -> str:
     """Which list the rule tests the row under ("" = not tested)."""
     if row["cremers"] == "O":
         return "" if row["cremers_context"] not in ("", "text") else "cremers"
-    if row["cremers_citing"] == "O" and not (row["popov"] or row["extra_reason"]):
+    if row["cremers_citing"] == "O":
         return "cremers_citing"
-    return ""
+    return "extra" if row["extra_reason"] else ""
 
 
 def main() -> None:
