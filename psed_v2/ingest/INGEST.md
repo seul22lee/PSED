@@ -285,7 +285,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   errors; answer set 415 keys); `parse_marker.py` merges bands.json records per block (tested), the 9 band crops
   regenerated. Effect: body lines not checkable for undecoded glyphs 1,075 → 2, lines checked 22,386 → 23,456 of
   23,936, flags 224 → 248 (none vanished), 123 not-checkable flags; tables unchanged (34 ok, 34 flag, 1 not
-  checkable); reports papers.html 49 MB and review_body.html 11 MB rebuilt. — (hash: next line)
+  checkable); reports papers.html 49 MB and review_body.html 11 MB rebuilt. — fdbd9f5 (this line's hash: the next commit)
 
 - 2026-10-13 — Answer set `ingest/answers/` (tables 69, equation pairs 103, body flags 388: ids and verdicts of Claude Code's
   page judgements, no paper text); body flags go to the same review step as flagged tables and differ equations (external
