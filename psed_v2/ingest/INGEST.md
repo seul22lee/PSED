@@ -296,7 +296,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   paragraph crops when the differing line cannot be pinned down (129 flags); subscripts just below a baseline join their
   line (15 flag keys removed, 7 added); the "1.2" citation of 10.1116_6.0001679 is a printed period, no glyph entry.
   Effect: lines checked 23,452 → 23,775 of 23,931, not checkable 484 → 156 (every one flagged), flags 244 → 230 (11 new,
-  unjudged); regression clean; reports rebuilt (papers.html 64 MB, review_body.html 38 MB). — (hash: next line)
+  unjudged); regression clean; reports rebuilt (papers.html 64 MB, review_body.html 38 MB). — b4306e9 (this line's hash: the next commit)
 
 - 2026-10-13 — `body_repair.py`: one distinct position per repair and a recheck that undoes a repair whose sentence stays
   flagged (the first run had written g/cm^--3 in 10.1021_acs.jpcc.5c06502 and left the second g/cm^3); `body_check.py`:
