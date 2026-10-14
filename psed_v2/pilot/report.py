@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """Writes reports/pilot.html, the one report page of the pilot (untracked; self-contained, works offline), with three tabs:
 - Facts, per paper: (a) the paper in reading order, each element coloured covered / no knowledge / missed, click for its
-  facts; (b) the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
+  facts; (b) the tree, as a map (default) or as text. Map: rows = groups (collapsible) and runs, the process conditions as
+  chips on top; columns = the quantities (with qualifiers) of the facts in each run's subtree, grouped setting |
+  observation | derived | other, settings ordered by how many runs differ from the paper's most common value; a setting
+  cell is a grey dot when equal to that value, else a chip with the value; an observation or derived cell is shaded by
+  value within its column (log when the span is over two decades) with the number shown, a curve with points as a
+  sparkline; facts with no quantity are dots in a notes column; the last column has one dot per claim linked to the run
+  or its group (click: the claim's linked facts are outlined and the claim shown in the side panel). Clicking a cell
+  opens its first evidence element. Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
   next to its facts. Tree rows (ids without "#") are not counted as facts anywhere. Above the trees, the forest: a quantity
@@ -137,6 +144,15 @@ svg.sc{width:100%;max-width:820px;height:auto;display:block}svg.sc text{font-siz
 svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
 .demo{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start;margin:6px 0 10px}.demo svg,.demo img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:4px;background:#fff}
 .demo .cap{font-size:11px;color:var(--mut);text-align:center;margin-top:2px}@media(max-width:1100px){.demo{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mapwrap{overflow:auto;max-height:82vh;border:1px solid var(--line);border-radius:6px;background:var(--card)}table.map{border-collapse:separate;border-spacing:0;font-size:11.5px}
+table.map th{position:sticky;top:0;background:var(--card);font-weight:500;padding:3px 4px;border-bottom:1px solid var(--line);vertical-align:bottom;max-width:76px;font-size:10.5px;line-height:1.15;white-space:normal;z-index:2}
+table.map th.band{text-align:left;font-weight:600;color:var(--acc);border-bottom:2px solid var(--acc);text-transform:uppercase;font-size:10px;letter-spacing:.04em}table.map th .ql{display:block;color:var(--mut);font:9.5px ui-monospace,monospace}
+table.map td{padding:2px 4px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}table.map td.rn{position:sticky;left:0;background:var(--card);z-index:1;max-width:230px;white-space:normal;font-size:11px}
+table.map th.rn{left:0;z-index:3}tr.grp td{background:var(--nk);font-weight:600}tr.grp td.rn{background:var(--nk);cursor:pointer}tr.hid{display:none}
+.gd{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--nkb)}.chip{display:inline-block;background:var(--sel);border:1px solid #d9b94a;border-radius:4px;padding:0 4px;font-weight:600;cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.num{display:inline-block;border-radius:3px;padding:0 4px;cursor:pointer;margin:1px 0}.spw{display:inline-block;cursor:pointer;vertical-align:middle}svg.sp{width:56px;height:18px;display:block}
+.cv.out{outline:2px solid var(--missb);outline-offset:1px}tr.out td.rn{box-shadow:inset 3px 0 0 var(--missb)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--covb);margin:0 2px;cursor:pointer;vertical-align:middle}.dot.on{outline:2px solid var(--missb)}
+.cv.hl{box-shadow:0 0 0 2px var(--acc)}.ndot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mut);margin:0 1px;cursor:pointer}.pchips{margin:6px 0 8px;white-space:nowrap;overflow-x:auto;padding-bottom:4px;font-size:11px}.pchips .chip{background:var(--nk);border-color:var(--line);font-weight:500;max-width:none;margin-right:3px}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
 </style></head><body>
 <header><h1>Facts layer: pilot papers</h1><span id="papers"></span><span id="views"></span>
@@ -144,7 +160,7 @@ h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{col
 <main><div class="sum" id="sum"></div><div id="view"></div></main>
 <script>
 const DATA=__DATA__;
-let P=0,V="read",SP=0;
+let P=0,V="tree",SP=0;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const clean=s=>esc(String(s||"").replace(/\\text\{([^}]*)\}|\\mathrm\{([^}]*)\}/g,"$1$2").replace(/<\/?sup>/g,"").replace(/\$/g,""));
@@ -236,12 +252,12 @@ function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(
  <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${q} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
  <button onclick="DEMO=false;FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="DEMO=false;FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button> <button class="${DEMO?"on":""}" onclick="DEMO=true;FQ='';applyForest()">Fig. 9 from tree</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
-function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".nd.hl").forEach(n=>n.classList.remove("hl"));
+function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".hl").forEach(n=>n.classList.remove("hl"));
  document.querySelectorAll(".q.red").forEach(n=>{n.classList.remove("red");if(n.dataset.k==="unit")n.hidden=true});
  if(DEMO){const dm=demoHTML(DATA[0]);$("#fn").textContent=`Fig. 9 of yim20 rebuilt from the tree: ${dm.used.length} leaves used`;$("#scat").innerHTML=dm.html;
-  dm.used.forEach(id=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}});return}
+  dm.used.forEach(id=>{const el=document.querySelector(`[data-f="${CSS.escape(id)}"]:not(.linked)`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}});return}
  const ls=fleaves();let shown=0;const pts=[];
- ls.forEach(l=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}
+ ls.forEach(l=>{const el=document.querySelector(`[data-f="${CSS.escape(l.f.fact_id)}"]:not(.linked)`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}
    (l.f.flag||[]).forEach(k=>el.querySelectorAll(`.q[data-k="${k}"]`).forEach(b=>{b.classList.add("red");b.hidden=false}))}
   const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y:fv(l.f)});shown++}});
  const amb=ls.filter(l=>l.f.ctx[FX]==="ambiguous").length,nox=ls.length-shown-amb;
@@ -268,16 +284,56 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if(f.censor)g+=`<text x="${(x+7).toFixed(1)}" y="${(y+4).toFixed(1)}" class="tk">${esc(f.censor)}</text>`;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
-function jump(fid){const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(fid)}"]`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
-function treeView(){const trees=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;
-  return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
- return `<div id="forest"></div><div class="wrap"><div>${trees}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
+function jump(fid){const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]:not(.linked)`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
+let TM="map";const COLL=new Set();
+const TG={setting:0,observation:1,model:1,derived:2};
+const ckey=f=>`${f.type}|${f.quantity||"—"}|${f.qualifiers}|${f.quantity==="other"?f.label_as_printed:""}|${f.points_ref?"curve":""}`;
+const ctext=f=>valStr(f)||f.statement.replace(/^[^:]*:\s*/,"").slice(0,32);
+function subtree(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(c.type==="run"||c.type==="group")continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}
+function mapView(d,i){const T=buildTree(d);if(!T.root)return `<div class="mut">${d.key}: no tree yet</div>`;
+ const rows=[];(function walk(x,depth,path){for(const c of T.kids[x]||[]){if(c.type==="process")walk(c.fact_id,depth,path);else if(c.type==="group"||c.type==="run"){rows.push({kind:c.type,n:c,depth,path});walk(c.fact_id,depth+1,[...path,c.fact_id])}}})(T.root.fact_id,0,[]);
+ rows.forEach(r=>{r.facts=subtree(T,r.n.fact_id);r.kids=rows.filter(x=>x.path[x.path.length-1]===r.n.fact_id).length});
+ const runs=rows.filter(r=>r.kind==="run");const cols={};
+ rows.forEach(r=>r.facts.forEach(f=>{if(!f.quantity&&!f.points_ref)return;const k=ckey(f);(cols[k]=cols[k]||{k,f,runs:new Set(),vals:[]});if(r.kind==="run")cols[k].runs.add(r.n.fact_id);cols[k].vals.push(f)}));
+ Object.values(cols).forEach(c=>{const cnt={};runs.forEach(r=>{const fs=r.facts.filter(f=>ckey(f)===c.k);if(fs.length){const t=fs.map(ctext).join("; ");cnt[t]=(cnt[t]||0)+1}});
+  c.mode=(Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0]||[""])[0];c.vary=runs.filter(r=>{const fs=r.facts.filter(f=>ckey(f)===c.k);return fs.length&&fs.map(ctext).join("; ")!==c.mode}).length;
+  const nums=c.vals.map(fv).filter(v=>v!=null&&!isNaN(v));c.min=Math.min(...nums);c.max=Math.max(...nums);c.log=nums.length>1&&nums.every(v=>v>0)&&Math.log10(c.max/c.min)>2});
+ const G=[[],[],[],[]];Object.values(cols).forEach(c=>G[TG[c.f.type]??3].push(c));G[0].sort((a,b)=>b.vary-a.vary||b.runs.size-a.runs.size);[1,2,3].forEach(g=>G[g].sort((a,b)=>b.runs.size-a.runs.size));
+ const order=[...G[0],...G[1],...G[2],...G[3]];
+ const shade=(c,v)=>{if(v==null||isNaN(v)||!(c.max>c.min))return"";const t=c.log?(Math.log10(v)-Math.log10(c.min))/(Math.log10(c.max)-Math.log10(c.min)):(v-c.min)/(c.max-c.min);return `background:color-mix(in srgb,var(--acc) ${Math.round(8+42*t)}%,transparent)`};
+ const spark=p=>{const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);return `<svg class="sp" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--acc)" stroke-width="1.2" points="${p.map(a=>(2+52*(a[0]-x0)/((x1-x0)||1)).toFixed(1)+","+(16-14*(a[1]-y0)/((y1-y0)||1)).toFixed(1)).join(" ")}"/></svg>`};
+ const ev=f=>`onclick="side('${f.evidence.split(";")[0]}',${i})"`;
+ const cell=(r,c)=>{const fs=r.facts.filter(f=>ckey(f)===c.k);if(!fs.length)return"<td></td>";
+  if(c.f.type==="setting"){const t=fs.map(ctext).join("; ");const same=r.kind==="run"&&t===c.mode;return `<td>${fs.map(f=>`<span class="cv ${same?"":"chip"}" data-f="${f.fact_id}" title="${esc(f.statement)}" ${ev(f)}>${same?'<span class="gd"></span>':esc(ctext(f))}</span>`).join(same?"":" ")}</td>`}
+  if(c.k.endsWith("curve"))return `<td>${fs.map(f=>`<span class="cv spw" data-f="${f.fact_id}" title="${esc(f.statement)}" ${ev(f)}>${f.points?spark(f.points):'<span class="mut">no pts</span>'}</span>`).join("")}</td>`;
+  return `<td>${fs.map(f=>`<span class="cv num" data-f="${f.fact_id}" style="${shade(c,fv(f))}" title="${esc(f.statement)}" ${ev(f)}>${esc(ctext(f))}</span>`).join("<br>")}</td>`};
+ const rowOf=id=>{let x=id;while(x&&T.byId[x]&&!(T.byId[x].type==="run"||T.byId[x].type==="group"))x=T.up[x];return x};
+ const claims={};d.facts.filter(f=>f.type==="claim"&&f.links).forEach(c=>new Set(c.links.split(";").map(rowOf).filter(Boolean)).forEach(t=>(claims[t]=claims[t]||[]).push(c)));
+ const notes=r=>r.facts.filter(f=>!f.quantity&&!f.points_ref);
+ const lab=c=>`${c.f.quantity==="other"?esc(c.f.label_as_printed):esc((c.f.quantity||"—").replace(/_/g," "))}${c.k.endsWith("curve")?" ∿":""}${c.f.qualifiers?`<span class="ql">${esc(c.f.qualifiers.replace(/;/g," "))}</span>`:""}`;
+ const proc=T.kids[`${d.key}:process`]||[];const chips=proc.filter(f=>f.fact_id.includes("#")&&f.quantity&&(f.value||f.value_min)).map(f=>`<span class="cv chip" data-f="${f.fact_id}" title="${esc(f.statement)}" ${ev(f)}>${esc((f.quantity==="other"?f.label_as_printed:f.quantity).replace(/_/g," "))} ${esc(valStr(f))}</span>`).join(" ");
+ const bands=[["setting",G[0].length],["observation",G[1].length],["derived",G[2].length],["other",G[3].length]].filter(b=>b[1]).map(([n,k])=>`<th class="band" colspan="${k}">${n}</th>`).join("");
+ let h=`<div class="pchips"><b>process</b> ${chips||'<span class="mut">no shared valued conditions</span>'}</div><div class="mapwrap"><table class="map"><thead><tr><th class="rn"></th>${bands}<th class="band">notes</th><th class="band">claims</th></tr>
+ <tr><th class="rn">${rows.length} rows: ${runs.length} runs</th>${order.map(c=>`<th title="${esc(c.k)}">${lab(c)}${c.f.type==="setting"&&c.vary?` <span class="mut">(${c.vary} differ)</span>`:""}</th>`).join("")}<th></th><th></th></tr></thead><tbody>`;
+ for(const r of rows){const hid=r.path.some(g=>COLL.has(g));const tg=r.kids?`<span class="mut">${COLL.has(r.n.fact_id)?"▸":"▾"}</span> `:"";
+  const name=r.kind==="group"?(r.n.label_as_printed||r.n.statement.slice(0,60)):(r.n.label_as_printed||r.n.fact_id.split(":").slice(1).join(":"));
+  h+=`<tr class="${r.kind==="group"||r.kids?"grp":""}${hid?" hid":""}" data-r="${r.n.fact_id}" data-path="${r.path.join(" ")}"><td class="rn" style="padding-left:${6+14*r.depth}px" title="${esc(r.n.statement)}" ${r.kids?`onclick="tgl('${r.n.fact_id}')"`:""}>${tg}<span class="ty ${r.kind}">${r.kind}</span>${esc(name)}</td>${order.map(c=>cell(r,c)).join("")}
+  <td>${notes(r).map(f=>`<span class="cv ndot" data-f="${f.fact_id}" title="${esc(f.statement)}" ${ev(f)}></span>`).join("")}</td><td>${(claims[r.n.fact_id]||[]).map(c=>`<span class="dot" data-c="${c.fact_id}" title="${esc(c.statement)}" onclick="claimDot('${c.fact_id}',${i})"></span>`).join("")}</td></tr>`}
+ return h+"</tbody></table></div>"}
+function tgl(id){if(COLL.has(id))COLL.delete(id);else COLL.add(id);document.querySelectorAll("tr[data-path]").forEach(tr=>tr.classList.toggle("hid",tr.dataset.path.split(" ").some(g=>COLL.has(g))));const t=document.querySelector(`tr[data-r="${CSS.escape(id)}"] td.rn span.mut`);if(t)t.textContent=COLL.has(id)?"▸":"▾"}
+function claimDot(fid,i){const d=DATA[i],c=d.facts.find(f=>f.fact_id===fid),T=buildTree(d);document.querySelectorAll(".cv.out,tr.out,.dot.on").forEach(n=>n.classList.remove("out","on"));
+ const L=c.links.split(";");L.forEach(l=>{document.querySelectorAll(`.cv[data-f="${CSS.escape(l)}"]`).forEach(n=>n.classList.add("out"));document.querySelectorAll(`tr[data-r="${CSS.escape(l)}"]`).forEach(n=>n.classList.add("out"))});
+ document.querySelectorAll(`.dot[data-c="${CSS.escape(fid)}"]`).forEach(n=>n.classList.add("on"));SP=i;
+ $("#side").innerHTML=`<h3>claim</h3>${factHTML(c)}<h3>linked facts (${L.length})</h3>${L.map(l=>T.byId[l]).filter(Boolean).map(n=>n.fact_id.includes("#")?factHTML(n):`<div class="fact"><div class="t">${esc(n.type)} <code class="mut">${esc(n.fact_id)}</code></div>${esc(n.statement)}</div>`).join("")}`}
+function treeView(){const tog=`<div class="fl"><button class="${TM==="map"?"on":""}" onclick="TM='map';render()">map</button><button class="${TM==="text"?"on":""}" onclick="TM='text';render()">text tree</button></div>`;
+ const body=TM==="map"?mapView(DATA[P],P):DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
+ return `<div id="forest"></div>${tog}<div class="wrap"><div>${body}</div><div class="side" id="side"><span class="mut">${TM==="map"?"Click a cell for its evidence, a green dot for a claim.":"Click an element id to see the element, its crop and its facts."}</span></div></div>`}
 function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");return ps.map(e=>{const fs=factsOf(d,e.id);
  return `<div class="panel"><div><h3>${e.id} <span class="mut">${esc(e.st)}${e.why?": "+esc(e.why):""} · ${fs.length} facts</span></h3>${d.imgs[e.crop]?`<img loading="lazy" src="${d.imgs[e.crop]}">`:"<i>no crop</i>"}</div>
  <div>${fs.map(factHTML).join("")||"<i class='mut'>no facts</i>"}</div></div>`}).join("")}
 function render(){const d=DATA[P];
  $("#papers").innerHTML=DATA.map((x,i)=>`<button class="${i===P?"on":""}" onclick="P=${i};render();if(V==='tree'){const t=document.getElementById('tree'+${i});if(t)t.scrollIntoView()}">${x.key}</button>`).join(" ");
- $("#views").innerHTML=[["read","(a) paper"],["tree","(b) tree"],["figs","(c) figures"]].map(([k,l])=>`<button class="${V===k?"on":""}" onclick="V='${k}';render()">${l}</button>`).join(" ");
+ $("#views").innerHTML=[["read","(a) paper"],["tree","(b) map / tree"],["figs","(c) figures"]].map(([k,l])=>`<button class="${V===k?"on":""}" onclick="V='${k}';render()">${l}</button>`).join(" ");
  const s=d.summary||{};const st={};d.elements.forEach(e=>st[e.st]=(st[e.st]||0)+1);
  const tn=s.text_numbers||[0,0];
  $("#sum").innerHTML=`<div class="tile"><b>${d.elements.length}</b><span>${esc(d.pid)}<br>elements</span></div>
