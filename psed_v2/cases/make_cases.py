@@ -143,67 +143,149 @@ code = lambda t: f"<code>{E(t)}</code>"
 
 # ----------------------------------------------------------------------------- case 1
 
-def case1():
-    ser = [p for p in PTS if p["case"] == 1]
-    seen, plots, legend, half = {}, {}, [], {}
+CLASSES = [  # key, panel title, x label, width rule
+    ("channel_thermal", "Channels and slots, thermal", "x / H", "channel or slot height H"),
+    ("channel_plasma", "Channels and slots, plasma", "x / H", "channel or slot height H"),
+    ("hole", "Holes and trenches", "x / d (hole) or x / w (trench)", "hole diameter d (top for tapered holes) or trench width w"),
+    ("pore", "Pores, from the nearer face", "distance from the nearer face / d", "pore diameter d; a pore open at both ends is counted from its nearer face"),
+    ("radial", "Radial cavity", "distance from the access hole / H", "cavity height H"),
+    ("porous", "CNT forest and porous bodies", "x / λ or x / d_pore", "the stated mean flight path λ (forest) or pore diameter (porous body)"),
+    ("plain", "Plain depth (no width stated)", "depth (µm)", "none stated: plain depth"),
+]
+_C1_SKIP9 = {(Y, "6"), (M, "9c"), (GAO, "5a")}                  # already in the case 1 set
 
-    def xhalf(pts):                                   # x/H where the curve crosses one half, by linear interpolation
-        for (xa, ya), (xb, yb) in zip(pts, pts[1:]):
-            if ya >= 0.5 > yb:
-                return xa + (ya - 0.5) * (xb - xa) / (ya - yb)
+
+def case1_series():
+    """Every measured depth profile on the page, as dicts with class, normalized points (x̃, θ), width and reference."""
+    out = []
+    for p in (q for q in PTS if q["case"] == 1):
+        if "structure_class" not in p:                        # the first case 1 set: channels and slots
+            fx = (p["x_to_um"] / p["H_um"]) if p["H_um"] else 1.0
+            pts = [(x * fx, y / p["ref_value"]) for x, y in p["points"]]
+            cls = "channel_thermal" if p["process"] == "thermal" else "channel_plasma"
+            out.append(dict(p=p, cls=cls, pts=pts, width=f"H = {p['H_um']:g} µm" if p["H_um"] else "x̃ as printed", ref=p["reference"], two=False))
+            continue
+        sc = p["structure_class"]
+        ys = lambda y: ((y - p["bare_diameter_nm"]) / 2 / ((p["reference_value"] - p["bare_diameter_nm"]) / 2)) if p.get("y_is_diameter") else y / p["reference_value"]
+        raw = [((y, x) if p.get("axes_swapped") else (x, y)) for x, y in p["points"]]
+        w = p["width_um"]
+        if w is None and p.get("inner_diameter_nm"):
+            w = max(p["inner_diameter_nm"]) / 1000 if isinstance(p["inner_diameter_nm"], list) else None
+        L = p.get("total_length_um")
+        xs = []
+        for x, y in raw:
+            xu = x * p["x_to_um"]
+            if p.get("two_sided") and L:
+                if xu < 0 or xu > L:
+                    continue
+                xu = min(xu, L - xu)
+            xs.append((xu, ys(y)))
+        if sc.startswith("hole"):
+            cls = "hole"
+        elif sc.startswith("pore"):
+            cls = "pore"
+        elif w is None:
+            cls = "plain"
+        else:
+            cls = "porous"
+        pts = [(x / w, t) for x, t in xs] if (w and cls != "plain") else xs
+        wtxt = (("λ" if "forest" in sc else "d_pore" if cls == "porous" else "w" if "trench" in p["series"].lower() or "trench" in sc else "d") + f" = {w:g} µm") if w and cls != "plain" else "none"
+        out.append(dict(p=p, cls=cls, pts=pts, width=wtxt + (", nearer face" if p.get("two_sided") else ""), ref=p["reference"] + (f" ({p['reference_value']:g})" if p.get("reference_value") is not None else ""), two=bool(p.get("two_sided"))))
+    for p in (q for q in PTS if q["case"] == 9):
+        if p["series"].startswith("model curve") or "same as" in p["series"] or "same curve" in p["series"]:
+            continue
+        if (p["paper"], f"{p['figure']}{p['panel']}") in _C1_SKIP9 or (p["paper"] == D09 and "aspect ratio 100" in p["series"]):
+            continue
+        g = p["geometry"]
+        cls = ("channel_thermal" if "channel" in g else "radial" if "cavity" in g else "pore" if "pore" in g else "hole")
+        pl = p["plateau"] or max(y for _, y in p["points"])
+        if p["x_unit_um"] is None:
+            pts = [(x, y / pl) for x, y in p["points"]]
+        else:
+            pts = [(x * p["x_unit_um"] / p["H_um"], y / pl) for x, y in p["points"]]
+        out.append(dict(p=p, cls=cls, pts=pts, width=("H" if cls in ("channel_thermal", "radial") else "d") + f" = {p['H_um']:g} µm", ref="plateau" if p["plateau"] else "maximum", two=False))
+    return out
+
+
+def x50_of(pts):
+    """x̃ where θ first falls through one half after the highest point; None if it never does."""
+    pts = sorted(pts)
+    if not pts:
         return None
-    for key, title in (("thermal", "Thermal ALD: 0.1 to 2 µm channels and one 0.1 mm hole"), ("plasma", "Plasma ALD, 0.5 µm channels"), ("macro", "Plasma ALD, macroscopic holes (shown apart)")):
-        plots[key] = Plot(560, 380, (1, 2000), (0, 1.2), xlog=True, xt=(1, 3, 10, 30, 100, 300, 1000), yt=(0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2),
-                          xl="distance / channel height, x/H (log scale)", yl="thickness / reference", title=title)
-    levels = [0.82, 0.66, 0.5, 0.34, 0.18]
-    for n, p in enumerate(ser, 1):
-        key = "thermal" if p["process"] == "thermal" else "macro" if (p["H_um"] or 0) >= 100 else "plasma"
-        half.setdefault(key, []).append(xhalf([(x * ((p["x_to_um"] / p["H_um"]) if p["H_um"] else 1.0), y / p["ref_value"]) for x, y in p["points"]]))
-        k = seen.setdefault(p["paper"], []); k.append(n)
-        dash = DASH[(len(k) - 1) % len(DASH)]
-        fx = (p["x_to_um"] / p["H_um"]) if p["H_um"] else 1.0
-        pts = [(x * fx, y / p["ref_value"]) for x, y in p["points"] if x * fx >= 1]
-        chosen = p["reference_note"].startswith("NO PLATEAU")
-        plots[key].series(pts, SLOT[p["paper"]], f"{n}*" if chosen else n, f"{n}. {who(p['paper'])}, {p['series']} [{p['reference']}]" + (" (no plateau, reference chosen)" if chosen else ""), dash=dash, tag_level=levels[n % len(levels)])
-        legend.append([f'<span class="num">{n}</span>', swatch(SLOT[p["paper"]], dash), f"{E(who(p['paper']))}, Fig. {p['figure']}{p['panel']}", E(p["series"]), E(p["process"]),
-                       code(f"normalized_thickness{{reference={p['reference']}}}"), ("<b>Reference chosen for this page.</b> " if chosen else "") + E(p["reference_note"].replace("NO PLATEAU: ", ""))])
-    pl = plots["plasma"]
-    pl.raw(f'<text x="{pl.w - pl.r - 6}" y="{pl.Y(1.13):.1f}" class="warn" text-anchor="end">* no plateau on this curve: the reference was chosen for this page</text>')
-    pm = plots["macro"]
-    pm.raw(f'<line x1="{pm.X(20):.1f}" x2="{pm.X(20):.1f}" y1="{pm.t}" y2="{pm.h - pm.b}" stroke="var(--text2)" stroke-dasharray="3 3"/><text x="{pm.X(20) + 6:.1f}" y="{pm.t + 14}" class="warn">ends of the two holes, x/H = 20 and 40</text>')
-    pm.raw(f'<line x1="{pm.X(40):.1f}" x2="{pm.X(40):.1f}" y1="{pm.t + 20}" y2="{pm.h - pm.b}" stroke="var(--text2)" stroke-dasharray="3 3"/>')
-    hp = [v for v in half["plasma"] if v]; ht = [v for v in half["thermal"] if v]; hm = [v for v in half["macro"] if v]
-    cards_new = [
-        (D09, 5, "", [("axes as printed", "depth (mm) / relative thickness"), ("normalization", "by the authors; reference not printed, curves start at 1"), ("structure", "macroscopic rectangular hole, 5 x 20 mm, aspect ratio 33, 50, 100"), ("conditions", "Al2O3 from TMA and water, 200 °C, 150 cycles, TMA 4 s at about 0.3 Pa (body text)"), ("data kind", "measured (ellipsometry)")]),
-        (GAO, 5, "a-b", [("axes as printed", "Distance (µm), with Aspect Ratio on top / Thickness (nm); Aspect Ratio / Thickness (nm)"), ("normalization", "none"), ("structure", "lateral channel, gap 200, 500, 1000 nm"), ("conditions", "Al2O3 at 300 °C, 1109 cycles; TiO2 at 110 °C, 2000 cycles; 0.1 s pulses, no partial pressure given"), ("data kind", "measured (reflectometer, spot about 5 µm)")]),
-        (A21, 2, "A", [("axes as printed", "Distance / cavity height / Normalized thickness"), ("normalization", "over the thickness just inside the cavity (stated)"), ("structure", "PillarHall, gap 500 nm"), ("conditions", "SiO2 from BDEAS and O2/Ar plasma, 50 mTorr, four table temperatures, 12 s plasma"), ("data kind", "measured (reflectometry)")]),
-        (D10, 2, "a-b", [("axes as printed", "depth inside the test structure (mm) / film thickness (nm)"), ("normalization", "none"), ("structure", "macroscopic rectangular hole, 5 x 20 mm, aspect ratio 5, 10, 22, 50"), ("conditions", "Al2O3 from TMA with water (a) or O2 plasma (b), 200 °C, 200 cycles, same exposures (stated)"), ("data kind", "measured (ellipsometry)")]),
-    ]
+    pts = pts[max(range(len(pts)), key=lambda i: pts[i][1]):]
+    return next((xa + (ya - 0.5) * (xb - xa) / (ya - yb) for (xa, ya), (xb, yb) in zip(pts, pts[1:]) if ya >= 0.5 > yb), None)
+
+
+def case1():
+    ser = case1_series()
+    by = {k: [s for s in ser if s["cls"] == k] for k, *_ in CLASSES}
+    plots, legend, pd = {}, [], {}
+    n = 0
+    for k, title, xl, wr in CLASSES:
+        ss = by[k]
+        if not ss:
+            continue
+        allx = [x for s in ss for x, _ in s["pts"] if x > 0]
+        lo, hi = 10 ** math.floor(math.log10(max(min(allx), 1e-3))), 10 ** math.ceil(math.log10(max(allx)))
+        xt = tuple(v for e in range(round(math.log10(lo)), round(math.log10(hi)) + 1) for v in (10 ** e, 3 * 10 ** e) if lo <= v <= hi)
+        ytop = min(2.2, max(1.4, math.ceil(max(y for s in ss for _, y in s["pts"]) * 5) / 5))
+        plots[k] = Plot(560, 380, (lo, hi), (0, ytop), xlog=True, xt=xt, yt=tuple(round(0.2 * i, 1) for i in range(int(round(ytop / 0.2)) + 1)), xl=xl + " (log scale)", yl="thickness / reference", title=f"{title} ({len({s['p']['paper'] for s in ss})} papers)")
+        seen = {}
+        for s in ss:
+            n += 1
+            p = s["p"]
+            kk = seen.setdefault(p["paper"], []); kk.append(n)
+            pids = list(dict.fromkeys(t["p"]["paper"] for t in ss))
+            slot = pids.index(p["paper"]) % 8 + 1
+            dash = DASH[(len(kk) - 1) % len(DASH)]
+            nofront = str(p.get("quality", "")).startswith("no front")
+            x50 = None if nofront else x50_of(s["pts"])
+            sp = sorted(s["pts"])
+            rises = bool(sp) and sp[0][1] < 0.8 and sp[-1][1] > sp[0][1] + 0.2
+            pd.setdefault(k, []).append((x50, p["paper"], n))
+            plots[k].series([(x, y) for x, y in sorted(s["pts"]) if x > 0], slot, n, f"{n}. {who(p['paper'])}, {p['series']}", dash=dash, line=not s["two"], tag_level=[0.82, 0.66, 0.5, 0.34][n % 4])   # folded two-sided scans: points only
+            legend.append([f'<span class="num">{n}</span>', swatch(slot, dash), E(dict((c[0], c[1]) for c in CLASSES)[k]), f"{E(who(p['paper']))}, Fig. {p['figure']}{E(str(p.get('panel', '')))}", E(p["series"]), E(s["width"]),
+                           code(f"normalized_thickness{{reference={s['ref'].split(' ')[0]}}}") + (" " + E(s["ref"][len(s['ref'].split(' ')[0]):]) if " " in s["ref"] else ""),
+                           f"{x50:.3g}" if x50 else ("no front: fully coated to the closed end" if nofront else "no front: grows with depth" if rises else f"no crossing (θ ≥ 0.5 to {max(x for x, _ in s['pts']):.3g})")])
+    pdrows, stats = [], {}
+    for k, title, xl, wr in CLASSES:
+        v = sorted(x for x, _, _ in pd.get(k, []) if x)
+        allv = pd.get(k, [])
+        if not allv:
+            continue
+        stats[k] = v
+        pdrows.append([E(title), E(wr), str(len(allv)), str(len({p for _, p, _ in allv})), str(len(v)), (f"{v[0]:.3g} to {v[-1]:.3g}" if v else "—"), (f"{v[len(v) // 2]:.3g}" if v else "—"), (f"{v[-1] / v[0]:.0f}" if len(v) > 1 else "—")])
     cards = [
-        (Y, 6, "", [("axes as printed", "Location (µm) / Film thickness (nm)"), ("normalization", "none"), ("structure", "PillarHall prototype 3, gap 0.5 µm nominal, AR 2000"), ("conditions", "Al2O3 from TMA and water, 500 cycles; temperature only in the body text"), ("data kind", "measured points with a fitted model curve")]),
-        (M, 9, "a-f", [("axes as printed", "Distance inside the channel x (µm) / Film thickness S (nm); x̃ / S/N (nm); x̃ / Normalized thickness (-)"), ("normalization", "three forms of the same data, the last over the flat-region value, or over the entrance value where there is no flat region (H 100 nm)"), ("structure", "PillarHall, H 100, 500, 2000 nm"), ("conditions", "Al2O3 from TMA and water, 300 °C, 250 to 1000 cycles; samples defined in Table 1"), ("data kind", "measured")]),
-        (W, 12, "", [("axes as printed", "Depth (m) / Coverage, with Thickness (nm) on a second axis"), ("normalization", "over an assumed saturated thickness of 22 nm (body text)"), ("structure", "macroscopic lateral trench, opening 1 mm, depth 20 mm, AR 20"), ("conditions", "Al2O3 from TMA and oxygen plasma, 150 W, 5 s, 120 °C (body text)"), ("data kind", "measured points with fitted curves")]),
-        (A9, 2, "B", [("axes as printed", "Distance / cavity height, with Distance (µm) on top / Normalized thickness"), ("normalization", "reference not printed; curves start near 1"), ("structure", "PillarHall, gap 500 nm (body text)"), ("conditions", "four oxides, oxygen plasma 3.8 to 120 s, 50 mTorr, 200 °C (body text)"), ("data kind", "measured")]),
-        (PP, 2, "a-b", [("axes as printed", "Distance / cavity height, with Distance (µm) on top / Thickness (nm)"), ("normalization", "none"), ("structure", "PillarHall LHAR4, gap 500 nm (body text)"), ("conditions", "SiO2 and TiO2, atmospheric-pressure spatial plasma ALD, 100 °C, plasma 0.24 to 0.73 s"), ("data kind", "measured")]),
-        (J5, 10, "b", [("axes as printed", "Depth (µm) / Thickness (nm)"), ("normalization", "none"), ("structure", "PillarHall, gap 500 nm (body text)"), ("conditions", "IrOx, atmospheric-pressure spatial plasma ALD; samples A to D defined in Table 1"), ("data kind", "measured (optical grey scale scaled by ellipsometry)")]),
+        (Y, 6, "", [("structure", "PillarHall, gap 0.5 µm"), ("data kind", "measured points with a fitted curve")]),
+        (M, 9, "c", [("structure", "PillarHall, H 100, 500, 2000 nm"), ("data kind", "measured, normalized by the authors")]),
+        (AP10, 1, "a-c", [("structure", "cylindrical holes, 130 nm wide, about 2 µm deep"), ("data kind", "TEM points with simulated curves")]),
+        (CM, 6, "a", [("structure", "anodic alumina, pores 19, 46, 65 nm, entered from both faces"), ("data kind", "EPMA line scans scaled to their maximum")]),
+        (KR, 8, "", [("structure", "cavity 4.5 µm high entered through one access hole"), ("data kind", "micro-spot ellipsometry line scans")]),
+        (CNT, 9, "", [("structure", "vertically aligned CNT forest, about 300 µm"), ("data kind", "measured coated-tube diameter against depth")]),
+        (SC, 5, "", [("structure", "fibre-filled hole, 1 × 1 × 5 cm"), ("data kind", "EDX Al signal, half-value depths drawn by the authors")]),
     ]
     onto = table(["Printed label", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
-        ["Location (µm); Distance inside the channel x (µm); Depth (µm); Depth (m)", code("distance"), code("x_over_width") + ": x / w with w = " + code("feature_width") + " → " + code("dimensionless_distance{by=H}"), "nothing; but H is only in the body text for three of the six papers"],
-        ["Dimensionless distance x̃; Distance / cavity height", code("dimensionless_distance{by=H}"), "none", "the " + code("by") + " qualifier is not in the v0 qualifier list (added in this exploration)"],
-        ["Film thickness (nm); Film thickness S (nm); Thickness (nm)", code("film_thickness"), code("normalize_thickness") + ": d(x) / d_ref → " + code("normalized_thickness{reference=…}"), "a reference value for a profile without a flat region; the v0 list has top, planar, assumed_saturation, and no value for “maximum” or “chosen”"],
-        ["Normalized thickness (-)", code("normalized_thickness{reference=plateau}") + " (Yim, H 500 and 2000 nm), " + code("{reference=entrance}") + " (Yim, H 100 nm: no flat region), " + code("{reference=entrance}") + " (Arts, reference not printed)", "none", "“plateau” and “entrance” are not in the v0 list either"],
-        ["Coverage", code("normalized_thickness{reference=assumed_saturation}"), "none", "“coverage” is an ambiguous alias (surface_coverage or normalized_thickness); resolved from the body text, not from the figure"],
+        ["Location; Distance; depth; Position; Depth into CNT forest", code("distance"), code("x_over_width") + " with the width of the structure class: H, d, w, λ or d_pore → " + code("dimensionless_distance{by=…}"), "the width rule per class; the nearer face of a pore open at both ends; a mean flight path as a width"],
+        ["Dimensionless distance x̃; Distance / cavity height; Aspect Ratio", code("dimensionless_distance{by=H}"), "none", "the " + code("by") + " qualifier (added in this exploration)"],
+        ["Film thickness; Thickness; relative thickness; Zn counts; coated tube diameter", code("film_thickness") + ", or a signal or a diameter", code("normalize_thickness") + " against plateau, entrance, maximum or a stated value; a diameter first to (d − d_bare)/2", "references “maximum” and “stated value”; a signal (counts) as a thickness proxy; diameter to thickness as a transform"],
+        ["Coverage; Normalized Al concentration", code("normalized_thickness{reference=…}"), "none", "“coverage” is ambiguous (Case 5)"],
     ])
+    plain = [s for s in ser if s["cls"] == "plain"]
+    med = {k: (v[len(v) // 2] if v else None) for k, v in stats.items()}
+    rng = lambda k: (f"{stats[k][0]:.3g} to {stats[k][-1]:.3g}" if stats.get(k) else "none")
+    papers = sorted({s["p"]["paper"] for s in ser})
     return f"""
 <section id="c1"><h2>Case 1. Profiles across papers</h2>
-<p class="q"><b>Question.</b> Once position is counted in channel heights and thickness in units of its own reference, how do thermal and plasma profiles from ten papers compare?</p>
-<h3><span class="step">Before</span> The crops as published</h3>{before(cards + cards_new)}
-<h3><span class="step">Ontology step</span> From printed labels to one pair of ids</h3>{onto}
-<h3><span class="step">After</span> All on <code>dimensionless_distance{{by=H}}</code> against <code>normalized_thickness</code></h3>{ILL}
-<div class="plots">{plots['thermal'].svg()}{plots['plasma'].svg()}{plots['macro'].svg()}</div>
-{table(["#", "", "Source", "Series", "Process", "y id with its reference", "How the reference was set"], legend, "leg")}
-<p class="take"><b>Takeaway.</b> The half-thickness depth of the six thermal alumina profiles lies between x/H of {min(ht):.0f} and {max(ht):.0f}, from four papers and channel heights from 0.1 µm to 0.1 mm; five of the six fall between {sorted(ht)[1]:.0f} and {max(ht):.0f}. Among the 0.5 µm channels alone, the plasma profiles run from about {min(hp):.0f} to {max(hp):.0f} channel heights, a factor of {max(hp) / min(hp):.0f}. The two macroscopic plasma holes add nothing to that spread: they reach one half at x/H of {" and ".join(f"{v:.0f}" for v in hm)}, close to their ends at 20 and 40, so they are limited by their own length and are drawn apart. Only three of the nine plasma curves in microscopic channels, all SiO2, have a flat or nearly flat region to normalize by.</p>
-<p class="lim"><b>Limits.</b> Points were read by eye from the crops. Curves marked * depend on a reference chosen here, so their height is a convention, not a result. One macroscopic hole uses its authors' assumed 22 nm, and its points near the entrance sit above 1. The 0.1 mm thermal hole ends at x/H = 200, close to its front. Cycles, pulse times and partial pressures still differ between curves; this view removes only the units and the normalization. Channel narrowing by film growth is not corrected.</p>
+<p class="q"><b>Question.</b> Once position is counted in the width of each structure class and thickness in units of its own reference, how do measured depth profiles compare within and across classes? Papers: {len(papers)}, series: {len(ser)}.</p>
+<h3><span class="step">Before</span> The crops as published (a selection)</h3>{before(cards)}
+<h3><span class="step">Ontology step</span> One width rule per structure class</h3>{onto}
+<h3><span class="step">After</span> One panel per structure class</h3>{ILL}
+<div class="plots">{"".join(p.svg() for p in plots.values())}</div>
+<h4>Half-thickness depth in normalized units, per class</h4>
+{table(["Class", "Width used", "Series", "Papers", "With a crossing", "x̃ at one half, range", "Median", "Max over min"], pdrows)}
+<details><summary>All {len(ser)} series: width, reference and x̃ at one half</summary>{table(["#", "", "Class", "Source", "Series", "Width used", "y id with its reference", "x̃ at one half"], legend, "leg")}</details>
+<p class="take"><b>Takeaway.</b> Within a class the half-thickness depth still spreads: thermal channels and slots {rng("channel_thermal")} channel heights (a factor of {stats["channel_thermal"][-1] / stats["channel_thermal"][0]:.1f}, from 0.1 µm channels to 0.3 mm slots, 150 to 2000 cycles, TMA, TiCl4 and water fronts), plasma channels {rng("channel_plasma")} (a factor of {stats["channel_plasma"][-1] / stats["channel_plasma"][0]:.0f}, set by recombination and pressure regime, Case 11), pores {rng("pore")} pore diameters over 1 to 10 s exposures. What collapses is the scale of thermal fronts: counted in their own width, channels (median {med["channel_thermal"]:.0f}) and pores (median {med["pore"]:.0f}) agree within a factor of {max(med["channel_thermal"], med["pore"]) / min(med["channel_thermal"], med["pore"]):.1f}, from 19 nm pores to 0.3 mm slots. Holes and trenches mostly show no front: {len(pd["hole"]) - len(stats["hole"])} of {len(pd["hole"])} series are coated to the bottom or grow with depth, and the {len(stats["hole"])} crossings sit at {rng("hole")} hole diameters. The radial cavity reaches one half at {rng("radial")} cavity heights, a median {med["channel_thermal"] / med["radial"]:.1f} times below straight thermal channels, as the flux spreads radially. The forest and porous bodies give {rng("porous")} in units of their mean flight path or pore diameter, two crossings a factor of {stats["porous"][-1] / stats["porous"][0]:.0f} apart, so that width does not normalize them; {len(plain)} series stay in plain depth for lack of a stated width.</p>
+<p class="lim"><b>Limits.</b> Points read by eye from the crops. The width rule is set here per class; for tapered holes and tubes the top width is used, and the CNT forest of 10.3762_bjnano.5.25 has no stated spacing. References differ by series (plateau, entrance, maximum, a stated value; listed per series); curves without a plateau depend on that choice. Cycles, exposures and temperatures differ between series; only units and normalization are removed. Profiles that grow with depth (inhibitor runs) or are flat (fully coated trenches, compacts) have no half-thickness depth. Channel narrowing is not corrected. Scans of pores and compacts open at both ends are folded onto the distance from the nearer face and drawn as points only.</p>
 </section>"""
 
 
@@ -253,7 +335,7 @@ def case2():
 <div class="plots one">{pl.svg()}</div>
 {table(["#", "", "Source", "Material", "Pressure regime", "Slope of the line as drawn", "r printed by the authors", "Where the points come from"], rows, "leg")}
 <p class="note"><b>Equal slopes do not mean equal probabilities.</b> With the two relations printed on the plots, one probability of {r:g} gives a slope of {math.sqrt(4 / (3 * r)):.0f} at low pressure and {1 / math.sqrt(4.26 * r):.0f} at atmospheric pressure. TiO2 shows this: its two lines differ in slope by more than a factor of two (lines 2 and 4), yet the authors report nearly the same probability in both regimes. A slope can be compared only inside one regime.</p>
-<p class="take"><b>Takeaway.</b> The three papers share both axis ids, so they can be put on one plot, but the result to compare is the probability with its regime attached, not the slope.</p>
+<p class="take"><b>Takeaway.</b> The three papers share both axis ids, so they can be put on one plot, but the result to compare is the probability with its regime attached, not the slope. No other paper in the corpus adds a measured value: of the six more with a recombination probability in the matrix, four carry only model inputs or literature values, one holds a literature value fixed in a fit, and the one half-thickness-against-time plot (10.1039_d3cp01829f Fig. 4e) is a simulation.</p>
 <p class="lim"><b>Limits.</b> Points and line ends were read by eye; slopes here are those of the lines as drawn, not refits. The IrOx points are the four table values. The first atmospheric TiO2 point may not be recombination limited, as its authors note. Plasma power, gas mixture and temperature differ between the papers and are not on this plot. Lines 6 to 8 are three of the twelve conditions of one paper, added on 2026-10-13: within one regime and one reactor the slope still changes by a factor of two with temperature.</p>
 </section>"""
 
@@ -290,6 +372,7 @@ def case3():
               ("Fig. 6b", "SEM, tube diameter", "depth 0 to 40 µm", "oxide thickness against depth, for 400 and 200 cycles")],
              "Stated. One figure; the caption says the image is the 400-cycle array and that the thickness in panel b was obtained from the coated tube diameters.", [(BJ, 6)]),
     ]
+    cards += [card(c[0].format(who=who(pid)), *c[1:5], kind=c[5]) for pid, c in C3_NEW]
     onto = table(["What has to be recorded", "Where it goes", "Missing"], [
         ["which physical sample a panel shows", "the sample key of the gold tables (" + code("experiment_kind = sample") + ")", "nothing in the vocabulary; the link itself has to be extracted, with its evidence"],
         ["how each panel was obtained", code("measurement_method") + " (reflectometry, sem, sem_eds, optical_microscopy, afm, …)", "tem is not in the v0 list; “derived from another panel” has no value"],
@@ -303,7 +386,7 @@ def case3():
 <p>Among the selected profile papers, four sample sets pair a profile with an image and state the link. The crops are shown inside each card below.</p>
 <h3><span class="step">Ontology step</span> What a sample link needs</h3>{onto}
 <h3><span class="step">After</span> One card per sample</h3>{''.join(cards)}
-<p class="take"><b>Takeaway.</b> A profile becomes checkable when its sample key also points to an image: here four sample sets carry such a stated link, three inside one figure and one across two figures through a sample number.</p>
+<p class="take"><b>Takeaway.</b> A profile becomes checkable when its sample key also points to an image: {len(cards)} sample sets carry a link stated in a caption, {sum(1 for c in cards if c.count('<figure>') == 1)} inside one figure and {sum(1 for c in cards if c.count('<figure>') > 1)} across figures (through a sample number, or a caption naming the images the values were read from). A stated link does not make a profile usable: one of them is a composition scan without a length scale, and in another only one of several membranes is tied to its map.</p>
 <p class="lim"><b>Limits.</b> Only stated links are shown; links that rest on matching conditions alone are listed as “possibly” in CANDIDATES.md and left out here. Three of the four are links inside a single figure, which are the easy case. No points were read for this case. {len(sets)} inventory rows of these four papers carry a named sample key.</p>
 </section>"""
 
@@ -411,6 +494,40 @@ N3 = [
     ("10.1021_acs.jpclett.4c03545", "1, 2", "SC", "bottom thickness over top thickness: 1 and 1.6", "step_coverage{position=bottom}"),
     ("10.1021_acsami.0c06879", "S2", "SC", "shell thickness at two points 900 nm apart along a wire", "step_coverage, with no matching position value"),
 ]
+# Case 3 and Case 7 cards and Case 5 rows added on 2026-10-14 from the paper x case candidates (own words; {who} is the paper's label)
+C3_NEW = [
+ ('10.1021_cm0303080', ('{who} · sample Z5000', 'ZnO from diethylzinc and water at 177 °C in an anodic alumina membrane with 19 nm pores through about 92 µm (L/d about 5000), 19 cycles with 120 s exposures at 5 Torr.', [('Fig. 7a', 'EPMA element map', 'cross-section of the Z5000 membrane', 'Zn spread across the full thickness'), ('Fig. 7b', 'EPMA line scan', 'face to face, about 0 to 95 µm', 'Zn signal over its maximum: no dip at the centre, a steady rise from one face to the other')], 'Stated: the caption of Fig. 7 gives the map and the profile as the one membrane of aspect ratio about 5000. The 65 nm membranes of Figs. 4 and 5 are left out: their captions name the same cycles and exposure times, but none says the scans were taken on the mapped sections.', [('10.1021_cm0303080', 7)], '')),
+ ('10.1063_1.4972120', ('{who} · sample E1000', 'Pt from (MeCp)PtMe3 and O2 plasma at 300 °C, 1000 cycles (3 s precursor, 1.5 s plasma), in a Si trench 22 µm deep and 1 µm wide (aspect ratio 22); 48 nm on the planar reference coated alongside.', [('Fig. 6a-g', 'HAADF-STEM of a FIB lift-out lamella', 'trench wall near the top (a), at about 2, 3, 10, 16 and 18 µm depth (b-f), and the bottom (g)', 'the Pt layer as a bright band on the wall; a and b include a spot where the film was lost during preparation'), ('Fig. 7', 'thickness read on the STEM images', '0 to 22 µm depth, sorted by sidewall angle, plus the bottom', '160 values between about 40 and 52 nm, with no decline toward the bottom')], 'Stated: the caption of Fig. 7 says its 160 values were taken from the images of Fig. 6; the body text names the 1000-cycle run as the one prepared for TEM.', [('10.1063_1.4972120', 6), ('10.1063_1.4972120', 7)], '')),
+ ('10.1149_1.2789802', ('{who} · sample K5', 'TiO2 from TTIP and oxygen plasma at 225 °C, TTIP source at 60 °C, 500 cycles with 5 s TTIP injection, in holes 0.15 µm wide with aspect ratio 8.7.', [('Fig. 4b', 'TEM cross-section with three close-ups', 'one hole: top, mid wall, bottom', 'thickness written on the close-ups: 174 Å on top, 121 and 125 then 108 and 113 Å on the wall, 67 and 91 Å at the bottom'), ('Fig. 4a', 'model, with the TEM values as dots', 'hole outline, height against radius', 'the simulated film outline after 500 cycles with the measured values of panel b drawn on it')], 'Stated: one figure; the caption gives panel b as the 5 s, 500-cycle hole and says the thicknesses measured on its TEM images are the dots in panel a.', [('10.1149_1.2789802', 4)], '')),
+ ('10.1021_acsnano.5b03429', ('{who} · sample MOF1', 'Cobalt sulfide from a bis-amidinato cobalt precursor and H2S, one cycle into NU-1000 framework crystallites (the CoS-AIM material); conditions only in the body text.', [('Fig. 5b', 'SEM with the EDS scan line drawn', 'one crystallite, line along its length', 'the crystallite and the path of the line scan'), ('Fig. 5c', 'SEM-EDS line scan', 'along that line, across the whole crystallite', 'Zr, S and Co counts: S and Co level wherever Zr is present; x has no scale')], 'Stated: one figure; the caption calls panel c the line scans that belong to panel b, across a single crystallite. The profile is a composition signal, not a thickness.', [('10.1021_acsnano.5b03429', 5)], '')),
+ ('10.1021_acs.langmuir.6b03119', ('{who} · samples NT0.5, NT2, NT5, NT10', 'Al2O3 from TMA and water at 200 °C and 50 Pa in a TiO2 nanotube layer 20 µm thick, tubes about 110 nm wide at the top and narrowing downward; one layer per TMA exposure time (0.5, 2, 5, 10 s).', [('Fig. 3a', 'SEM, coating thickness measured on cross-section images', 'four depth levels from top to bottom (0 to 20 µm), given through the local tube width', 'thickness against tube width, depth on a second axis: flat near 26 nm, thinner at the bottom, most for 0.5 and 2 s'), ('Fig. 3b-e', 'SEM', 'tube bottoms, one image per exposure time', 'coated tube ends at the bottom of each layer')], 'Stated within one figure: the caption gives panel a as the thickness for the exposure times and panels b to e as the tube bottoms of the layers for the same four times; the body text points to panels b and c for the thinning at short exposure. That each image is the layer measured in panel a rests on one layer per exposure time, not on an explicit sentence. Fig. 2 (5 s, four depths) stays only possibly linked, as in Case 7.', [('10.1021_acs.langmuir.6b03119', 3)], '')),
+]
+C7_NEW = [
+ ('10.1116_1.5116136', ('{who} · powders Cu-A, Cu-T', 'Dendritic Cu powder (particles under 45 µm) coated in a rotary reactor at 100 °C: Al2O3 from TMA and water, 150 cycles (Cu-A); TiO2 from TDMAT and water, 300 cycles (Cu-T). The text gives 19.8 and 18.5 nm from STEM.', [('Fig. 1a-b', 'HAADF-STEM with EDX maps', 'a particle cluster and the edge of one particle', 'Al or Ti and O in a thin rim around the Cu'), ('Fig. 2a-b', 'HAADF-STEM', 'particle edges', 'the coating layer whose thickness the text reports'), ('Fig. 3b-c', 'Raman', 'coated powder suspended at pH 12', 'spectra over time'), ('Fig. 4b-c', 'Raman of powder in solution, shown as a map of observations', 'coated powder in solutions from pH 0 to 14', 'time at which corrosion products first appear at each pH')], 'Stated for Figs. 1 and 2: both captions name each powder by the same cycle count, and the text takes the thickness from Fig. 2. Only possibly for the Raman figures: their captions name the powders by an 18 nm coating, which matches the STEM values, but the paper does not say the tested portions came from the same coating batches.', [('10.1116_1.5116136', 1), ('10.1116_1.5116136', 2), ('10.1116_1.5116136', 4)], 'Characterization to performance test: the coating imaged on the powder, then the coated powder tested for corrosion; the second step is only possibly the same batch.')),
+ ('10.1039_c4nr05049e', ('{who} · film M1', 'TiO2 from TDMAT and water at 200 °C inside a mesoporous titania film about 80 nm thick on Si, followed through about 40 cycles at a synchrotron beamline.', [('Fig. 5a, c-f', 'in-situ GISAXS', 'the film, after 0, 10, 20, 30 and 38 cycles', 'two-dimensional scattering patterns'), ('Fig. 6a-b', 'cuts of the Fig. 5 patterns', 'out-of-plane cut at the line marked in Fig. 5', 'the cuts, and the critical angle against cycles: rising to about cycle 24, then flat'), ('Fig. 7a-b', 'cuts of the Fig. 5 patterns', 'in-plane cut at the line marked in Fig. 5', 'the cuts, and the integrated intensity against cycles: falling as pores fill, flat after about cycle 24'), ('Fig. 8', 'in-situ XRF', 'the same film after each cycle, beside a planar SiO2 reference', 'Ti signal against cycles; steep in the porous film until the pores close'), ('Fig. 2d-f', 'electron tomography', 'a FIB pillar from a film after 40 cycles', 'the pore network after deposition')], 'Stated: the captions of Fig. 6 and Fig. 7 say their cuts were taken at the lines drawn in Fig. 5, and the body text says an XRF measurement followed each cycle of the same in-situ run. Only possibly for Fig. 2: the tomography film also had 40 cycles, but the paper does not say the pillar came from the film followed in situ.', [('10.1039_c4nr05049e', 5), ('10.1039_c4nr05049e', 6), ('10.1039_c4nr05049e', 8)], 'One in-situ run processed into several figures: patterns, cuts and trends from one measurement, plus a second in-situ method on the same run.')),
+ ('10.1093_nsr_nwaf247', ('{who} · runs R0 and RB, position 11', 'Al2O3 by ALD (200 cycles in the coupon runs) on a showerhead-shaped aluminium alloy part, without baffles (R0) and with the optimized baffle set (RB); silicon coupons attached at positions 1, 4, 7, 9 and 11.', [('Fig. 3a, d', 'ellipsometry and plasma etch test', 'eleven points on the part; refractive index and etch rate at the five coupon positions', 'at position 11 the etch rate is about 5 nm/min without baffles and about 1 with them'), ('Fig. 4a-b', 'AFM', 'film at position 11', 'surface of the film from each run'), ('Fig. 4c-d', 'SEM', 'silicon coupon and alloy at position 11, before and after etching', 'smooth silicon, grains on the alloy; larger grains for the run without baffles'), ('Fig. 4e', 'plasma etch test', 'position 11', '1.11 nm/min for the run with baffles, 5.19 nm/min without, against thermal SiO2')], 'Stated through the position: the caption of Fig. 4 places its films at position 11 and calls them ideal and non-ideal; the body text ties the ideal film to the baffle run, and the two etch rates of Fig. 4e equal the position-11 points of Fig. 3a and 3d. The electrochemistry of Fig. 4f-g is on a separate 2 x 2 cm alloy piece placed at position 11. Fig. 3 is also used in Case 6, there for uniformity.', [('10.1093_nsr_nwaf247', 3), ('10.1093_nsr_nwaf247', 4)], 'One position on a part followed from a map of the run to several methods on the coupon placed there.')),
+ ('10.1063_1.2714685', ('{who} · holes K02, K05, K3', 'Al2O3 from TMA (0.01 Torr) and oxygen plasma at 225 °C in holes; TMA injection 0.2 s (700 cycles), 0.5 s (500 cycles) and 3 s (450 cycles).', [('Fig. 7b', 'SEM cross-section', 'hole bottoms, one per injection time', 'no film at 0.2 s; 260 Å at 0.5 s and 496 Å at 3 s written on the images'), ('Fig. 7a', 'SEM thickness per cycle, with model curves', 'flat surface and hole bottom', 'thickness per cycle against injection time; the bottom points at 0.5 and 3 s equal the image values divided by the cycles (0.52 and 1.10 Å per cycle)'), ('Fig. 8a-b', 'model against measured bottom values', 'hole bottom', 'simulated bottom growth against sticking probability at 1 and 3 s; the crossing with the measured 0.78 and 1.10 Å per cycle gives 0.026')], 'Stated on the image and in the text: the images of Fig. 7b carry the injection time and cycle count, their thicknesses divided by the cycles give the bottom points of Fig. 7a, and the body text takes the measured bottom values at 1 and 3 s into Fig. 8. The 0.2 s image is not given a thickness.', [('10.1063_1.2714685', 7), ('10.1063_1.2714685', 8)], 'Image to number to model: values written on micrographs become plot points, which then fix a model parameter.')),
+ ('10.1186_s11671-015-0872-9', ('{who} · template F1', 'TiO2 from TiCl4 and water at 200 °C and 230 mTorr (pulse 250 ms, 0.05 nm per cycle) filling a 500 nm anodic alumina template on aluminium.', [('Fig. 4a-b', 'FIB cross-section, SEM', 'the lamella prepared for TEM, with an enlargement of the pore bottoms', 'layer thicknesses written on the image: 170 nm on top, 500 nm of filled template'), ('Fig. 4c, c-1 to c-3', 'SEM with EDS line scan', 'across three filled pores, along the line drawn in panel c', 'O, Al and Ti in atomic percent; Ti peaks where Al dips, in the pores'), ('Fig. 5a-f', 'TEM, high-resolution TEM, FFT', 'cross-section of the TEM samples: film, template, substrate', 'anatase in the pores, amorphous template'), ('Fig. 3', 'XRD', 'the filled template on Al', 'anatase and Al peaks')], 'Stated: the caption of Fig. 4 ties the line scans to the line in panel c; Fig. 4 and Fig. 5 both name the TEM samples, and the body text says the TEM sample was the FIB lamella of Fig. 4a. Only possibly for the XRD of Fig. 3, which is a filled template but not said to be the same piece.', [('10.1186_s11671-015-0872-9', 4), ('10.1186_s11671-015-0872-9', 5)], 'Several methods on one prepared piece: cross-section image, element line scan and TEM of the same lamella.')),
+]
+N3 += [
+ ('10.1021_acs.chemmater.1c03164', '3a-b', 'Coverage', 'share of sites covered by a single cycle in the model, against depth in units of the characteristic length: 1, a front, then 0', 'surface_coverage'),
+ ('10.1021_cm0303080', '5a, 6a, 7b', 'Relative ZnO Coverage', 'measured EPMA Zn signal over its highest value along the scan, averaged over 3 to 5 µm, taken as coverage', 'normalized_thickness{reference=max}; a signal, not a thickness'),
+ ('10.1021_cm0303080', '10a, 11a', 'Relative ZnO Coverage', 'the same label for the Monte Carlo result after the full number of cycles, 1 meaning a fully coated wall', 'normalized_thickness{reference=other:full coating in the model}'),
+ ('10.1021_cm0303080', '9a', 'Relative Al2O3 Coverage', 'simulated alumina profile along the pore, 1 meaning fully coated; the body text calls it a relative thickness', 'normalized_thickness{reference=other:full coating in the model}'),
+ ('10.1021_cm0303080', '5b, 6b, 10b, 11b', 'Normalized Integrated ZnO Coverage', 'area under a relative profile, scaled so that a fully coated pore gives 1; one number per membrane or run', 'no entry: an integral of normalized_thickness over depth, neither penetration_depth nor coated_aspect_ratio'),
+ ('10.1021_cm0303080', '9b', 'Normalized Integrated Al2O3 Coverage', 'the same integral for the simulated alumina profiles', 'no entry: an integral of normalized_thickness over depth'),
+ ('10.1021_cm0303080', '12a-b', 'Normalized Integrated Coverage', 'the same integral for model runs in the diffusion- and reaction-limited cases; no material on the axis', 'no entry: an integral of normalized_thickness over depth'),
+ ('10.1116_1.4971196', '6, 7a-b', 'Precursor coverage Θ', 'simulated share of reactive sites taken by the precursor', 'surface_coverage'),
+ ('10.1116_1.4971196', '9, Table I', 'Precursor coverage Θ', 'measured alumina thickness over cycles times 0.90 Å, a level the authors picked where the slow decline turns into the drop; values above 1 occur', 'normalized_thickness{reference=other:chosen saturation level}'),
+ ('10.1116_1.4971196', '12, Table II', 'Precursor coverage Θ', 'measured SiO2 thickness over the thickness on a bare test wafer', 'normalized_thickness{reference=planar}'),
+ ('10.1116_1.4971196', '6, 7, Tables I-II', 'SC', 'sticking coefficient of the precursor, the fitted model parameter (2e-2 for TMA, 3e-5 for BDEAS)', 'initial_sticking_coefficient{species=TMA|BDEAS}; not step_coverage, which prints the same SC'),
+ ('10.1149_1.2789802', '5', 'Step coverage [%]', 'thickness at the hole bottom over thickness on the flat surface, in percent: about 73 at 200 cycles, 52 at 500', 'step_coverage{position=bottom}'),
+ ('10.1149_1.3072694', '3, 6', 'coverage', 'simulated TMA-step coverage along the hole after one pulse; the body text reads it as the final thickness profile because the water step is assumed saturated', 'surface_coverage; normalized_thickness{reference=assumed_saturation} only under that assumption'),
+ ('10.1149_1.3301664', '7b', 'coverage', 'Monte Carlo coverage left by plasma radicals along a hole, depth in arbitrary units, for three recombination probabilities', 'surface_coverage'),
+ ('10.1149_1.3301664', '7b (caption)', 'penetration depth', 'where the simulated front sits; named in the caption with no value and no level', 'penetration_depth{level=other:model front}, no number'),
+ ('10.3762_bjnano.5.25', '3d', 'Penetration depth, x (µm)', 'simulated depth where the deposit of one cycle falls to half its maximum (body text), against four different inputs on one log axis', 'penetration_depth{level=50%}, of a single cycle'),
+ ('10.3762_bjnano.5.25', '4', 'Penetration depth, x_p (µm)', 'the same half-maximum depth from the full model, beside a closed formula that assumes a sharp front', 'penetration_depth{level=50%}; the formula gives penetration_depth{level=other:model front}'),
+]
 
 
 def case5():
@@ -435,7 +552,7 @@ def case5():
 <h3><span class="step">Ontology step</span> Three words that need a decision each time</h3>{onto}
 <h3><span class="step">After</span> The table</h3>
 <p>No plot and no points in this case: the comparable view is the mapping itself.</p>{after}
-<p class="take"><b>Takeaway.</b> Matching on the printed label would merge six different quantities under “coverage”, one of them the complement of another; the id has to be assigned from what was counted and when.</p>
+<p class="take"><b>Takeaway.</b> Over {len(N3)} printed labels from {len({r[0] for r in N3})} papers, the word “coverage” alone stands for {len({r[4] for r in N3 if 'coverage' in r[2].lower() or r[2].strip() in ('θ', 'Θ')})} different ids or qualified ids: a covered site fraction, its complement, the same on an area basis, a normalized thickness against five different references, a step coverage, and an integral over depth that has no entry; one paper uses SC for a sticking coefficient. Matching on the printed label would merge them; the id has to be assigned from what was counted and when.</p>
 <p class="lim"><b>Limits.</b> The reading of Θ as a free fraction rests on the axis label alone. The 22 nm and the meaning of the hydroxyl coverage are stated only in the body text. The table covers the papers with a PDF, not the field.</p>
 </section>"""
 
@@ -446,12 +563,14 @@ def case6():
     ser = [p for p in PTS if p["case"] == 6]
     panels = {"part": ("Points on a 3D part", (0.5, 11.5), tuple(range(1, 12)), "point number on the part (as printed: Location)"),
               "tube": ("Spots along a tube", (0.5, 5.5), (1, 2, 3, 4, 5), "spot number from the inlet (as printed: Measurement position)"),
-              "batch": ("Slots of a wafer batch", (0, 26), (1, 5, 10, 20, 25), "slot number in the carrier (as printed: Wafer slot)")}
+              "batch": ("Slots of a wafer batch", (0, 26), (1, 5, 10, 20, 25), "slot number in the carrier (as printed: Wafer slot)"),
+              "wafer": ("Across one wafer", (-50, 50), (-40, -20, 0, 20, 40), "position along a diameter, mm (read off a map)")}
     plots = {k: Plot(430, 330, xr, (0, 2.4), xt=xt, yt=(0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4), xl=xl, yl="growth per cycle / series mean", title=t) for k, (t, xr, xt, xl) in panels.items()}
     count, rows = {}, []
     for n, p in enumerate(ser, 1):
         k = p["panel_key"]; i = count.get(k, 0); count[k] = i + 1
         ys = [y for _, y in p["points"]]; mean = sum(ys) / len(ys)
+        p.setdefault("printed_spread", "")
         pts = [(x, y / mean) for x, y in p["points"]]
         plots[k].series(pts, i + 1, n, f"{n}. {who(p['paper'])}, {p['series']}", dash=DASH[i])
         x, y = pts[-1]; plots[k].tag(x, y, n, dx=-2, dy=-16 if i % 2 == 0 else 18)
@@ -461,6 +580,7 @@ def case6():
         (NSR, 3, "a, d", [("position given as", "a point number, 1 to 11, on a drawing of the part"), ("axes as printed", "Location / GPC (Å cycle-1), with coverage, refractive index and etch rate stacked above and below"), ("conditions", "alumina from TMA and water, without and with baffles"), ("data kind", "measured, with a simulated coverage in the top strip")]),
         (SEP, 3, "", [("position given as", "a spot number, 1 to 5, along a 100 mm strip in the tube; spacing not on the figure"), ("axes as printed", "Measurement position (-) / GPC (Å)"), ("conditions", "titania from TiCl4 and water, atmospheric pressure, 125 °C, three carrier flows"), ("data kind", "measured")]),
         (ADEM, 3, "a-b", [("position given as", "none: one percentage per wafer"), ("axes as printed", "Precursor dose (Torr) or Temperature (°C) / Non-uniformity (%)"), ("conditions", "alumina from TMA and water, pump-type batch reactor"), ("data kind", "measured; the percentage is defined in the paper from maximum, minimum and mean")]),
+        ("10.1021_acs.chemmater.2c01154", 1, "c", [("position given as", "a colour map over a 4 inch wafer (37 measured spots, interpolated)"), ("axes as printed", "no axes; colour scale Thickness (nm)"), ("conditions", "a thin film on a SiO2/Si wafer"), ("data kind", "measured (ellipsometry map); mean and standard deviation printed")]),
         (ADEM, 4, "a", [("position given as", "a slot number, 1 to 25, in the wafer carrier"), ("axes as printed", "Wafer slot / GPC (Å/cycle), with Non-uniformity (%) on a second axis"), ("conditions", "loads of 5 and 25 wafers"), ("data kind", "measured")]),
     ]
     onto = table(["Printed label", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
@@ -471,13 +591,13 @@ def case6():
     ])
     return f"""
 <section id="c6"><h2>Case 6. Reactor-scale uniformity</h2>
-<p class="q"><b>Question.</b> How even is growth over a part, along a tube and across a batch, and can the three be put on one scale?</p>
+<p class="q"><b>Question.</b> How even is growth over a part, along a tube, across a batch and across one wafer, and can the four be put on one scale?</p>
 <h3><span class="step">Before</span> The crops as published</h3>{before(cards)}
 <h3><span class="step">Ontology step</span> The quantity maps, the position does not</h3>{onto}
 <h3><span class="step">After</span> Side by side, not overlaid: each series over its own mean, against the position label as given</h3>{ILL}
-<div class="plots">{plots['part'].svg()}{plots['tube'].svg()}{plots['batch'].svg()}</div>
-{table(["#", "", "Source", "Series", "Points", "Range read (Å per cycle)", "Half-range over mean, from the points read", "Spread printed by the authors"], rows, "leg")}
-<p class="take"><b>Takeaway.</b> The three studies can share a y axis but not an x axis: what can be compared is one spread per series, from a few percent in a wafer batch to tens of percent on a 3D part without baffles.</p>
+<div class="plots">{plots['part'].svg()}{plots['tube'].svg()}{plots['batch'].svg()}{plots['wafer'].svg()}</div>
+{table(["#", "", "Source", "Series", "Points", "Range read (as printed: Å per cycle, nm for the wafer)", "Half-range over mean, from the points read", "Spread printed by the authors"], rows, "leg")}
+<p class="take"><b>Takeaway.</b> The four studies can share a y axis but not an x axis: what can be compared is one spread per series, from a half-range of about 5% across one wafer (a one-sided gradient on the map; the authors print a 3.3% standard deviation) and a few percent in a wafer batch to tens of percent on a 3D part without baffles. Across a wafer the position is a length and could be a coordinate; on the part, the tube and the batch it is a label.</p>
 <p class="lim"><b>Limits.</b> Points were read by eye. The half-range over mean computed here follows the formula one of the papers prints; whether the other paper's printed percentages use the same formula is not stated, and they do not match the values computed here. The three x axes are labels and must not be read as distances; the panels are separate for that reason. The wafer-batch series carries a within-wafer value on a second axis that is a different scope.</p>
 </section>"""
 
@@ -529,6 +649,7 @@ def case7():
              "Possibly, not stated: the conditions match (5 s exposure) but no caption or sentence says the layer of Fig. 2 is the one measured in Fig. 3. The third crop is the reason this matters: nominally equal runs do not give equal profiles, so equal conditions cannot stand in for a sample link.",
              [(LAN, 2), (LAN, 3), (M, 8)], kind="No link: matching conditions only."),
     ]
+    cards += [card(c[0].format(who=who(pid)), *c[1:5], kind=c[5]) for pid, c in C7_NEW]
     onto = table(["What the knowledge base has to hold", "Where it goes in v0", "What v0 lacks"], [
         ["a key for the physical sample, and one for the run that made it", code("experiment_kind") + " = sample or in_situ_run", "no relation between a run record and the samples it produced; no level (run, piece)"],
         ["how each panel was obtained", code("measurement_method") + ": reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp", "tem, stem, stem_eds, xrd, a pressure or temperature record of the process, a photograph"],
@@ -544,7 +665,7 @@ def case7():
 <p>Five stated sample sets from part B of CANDIDATES.md, and one contrast. The crops are inside each card.</p>
 <h3><span class="step">Ontology step</span> What a link needs</h3>{onto}
 <h3><span class="step">After</span> One card per sample</h3>{''.join(cards)}
-<p class="take"><b>Takeaway.</b> Four kinds of link occur: a process record tied to its outcome, several methods on one sample, an image turned into numbers, and an image that is itself the measurement. Each is stated in a caption, and none can be recovered from matching conditions alone.</p>
+<p class="take"><b>Takeaway.</b> Over {len(cards)} sample sets, seven kinds of link occur: a process record tied to its outcome, several methods on one sample or prepared piece, an image turned into numbers (and on into a model parameter), an image that is itself the measurement, one in-situ run split into several figures, one position on a part followed to the coupon placed there, and a characterization tied to a performance test (only possibly). Each is stated in a caption or the body, and none can be recovered from matching conditions alone.</p>
 <p class="lim"><b>Limits.</b> The thickness pairs of the stack were read by eye and are illustrative. For the compacts the link holds for the run, not for a named piece. The percentages on the molybdenum image have no nanometre values behind them in the paper. The contrast card shows one of 18 “possibly” links; the others are in CANDIDATES.md.</p>
 </section>"""
 
@@ -613,9 +734,12 @@ def case8():
 <h4>f. How many coated values are bounds</h4><p class="ill">Transcribed from Cremers 2019, cited data.</p>
 {T(["Table", "complete (lower bound)", "PD50% (measured)", "conformal (no number)", "blank or other"], B['f_cnt'])}
 <h4>b. Internal consistency of the review</h4>{binc}
+<h4>h. The in-corpus papers the review cites outside Tables II to VII</h4>
+<p class="note">{len({t[3] for t in B['SC_CITED']})} papers, {len(B['SC_CITED'])} statements: {sum(t[0] == 'VIII' for t in B['SC_CITED'])} rows of Table VIII (modelling), both agree; {sum(t[0] == 'text' for t in B['SC_CITED'])} citations in the text or a caption, of which {sum(t[0] == 'text' and 'differ' in t[6].lower()[:200] for t in B['SC_CITED'])} differ from the source.</p>
+{T(["Table", "Statement", "Ref.", "Paper", "Verdict", "Where in the source", "Remark"], [list(t) for t in B['SC_CITED']])}
 <h4>g. Rows with a published profile (marked D)</h4>
 {T(["Ref.", "DOI", "Films (table)", "Year", "PDF", "Open access"], B['g_rows'])}
-<p class="take"><b>Takeaway.</b> Typed in, the tables give counts the review does not state: an exposure in 27 of 140 rows, and a measured depth in 20, against 87 lower bounds. Joined to their sources, they give two results the review could not: the square law of ref. 62 for TMA and water matches one source (ref. 67) and overestimates the needed exposure for the other (ref. 65) by about 1.2 to 3.5 times, and the recombination values listed for oxide surfaces are not those of growing films. Values from 10.1016_j.cattod.2003.11.022 (Guyon 2004) are marked: that paper is out of scope as not an ALD paper and is used only as a cited source.</p>
+<p class="take"><b>Takeaway.</b> Typed in, the tables give counts the review does not state: an exposure in 27 of 140 rows, and a measured depth in 20, against 87 lower bounds. Joined to their sources, they give two results the review could not: the square law of ref. 62 for TMA and water matches one source (ref. 67) and overestimates the needed exposure for the other (ref. 65) by about 1.2 to 3.5 times, and the recombination values listed for oxide surfaces are not those of growing films. The eight in-corpus papers the review cites only in its text or in Table VIII hold no table value to check; of their {len(B['SC_CITED'])} statements, {sum('differ' in t[6].lower()[:200] for t in B['SC_CITED'])} differ from the source (a pore geometry, and a Monte Carlo trend the source does not show). Values from 10.1016_j.cattod.2003.11.022 (Guyon 2004) are marked: that paper is out of scope as not an ALD paper and is used only as a cited source.</p>
 <p class="lim"><b>Limits.</b> {len(B['SC'])} of 208 table rows were checked against a source ({B['sc_cnt']['agree']} agree, {B['sc_cnt']['differ']} differ, {B['sc_cnt']['not found']} not found); the rest are as printed. Source values marked "by eye" were read from figures. The square-law line assumes a saturation density taken from another paper. The joins in c use a surface match chosen here, and 30 plasma rows have no fair match. Only {sum(1 for g in B['g_rows'] if g[4] == 'have it')} of the {len(B['g_rows'])} profile sources have a PDF.</p>
 </section>"""
 
@@ -1034,8 +1158,8 @@ def main() -> None:
 <h2>Points read by eye</h2><p>The same content as <code>points.json</code>, as a table.</p><details><summary>Show the {sum(len(p['points']) for p in PTS)} points of {len(PTS)} series</summary>{ptab}</details>
 </main></body></html>"""
     for i in range(1, 12):
-        k = f"c{i}"; nu = sum(r[k].startswith("used") for r in PC.values()); nc = sum(r[k].startswith("candidate") for r in PC.values())
-        page = re.sub(rf'(<section id="c{i}"><h2>.*?</h2>)', lambda m: m.group(1) + f'<p class="pc"><a href="matrix.html#case={k}">{nu} papers used, {nc} candidates not used</a> (paper × case view in matrix.html)</p>', page, count=1, flags=re.S)
+        k = f"c{i}"; nu = sum(r[k].startswith("used") for r in PC.values()); nc = sum(r[k].startswith(("candidate", "excluded")) for r in PC.values())
+        page = re.sub(rf'(<section id="c{i}"><h2>.*?</h2>)', lambda m: m.group(1) + f'<p class="pc"><a href="matrix.html#case={k}">{nu} papers used, {nc} excluded</a> (paper × case view in matrix.html)</p>', page, count=1, flags=re.S)
     OUT.write_text(page, encoding="utf-8")
     print(f"{OUT}: {OUT.stat().st_size / 1e6:.2f} MB; selected rows {len(sel)} in {len(papers)} papers; series plotted {len(PTS)}")
 

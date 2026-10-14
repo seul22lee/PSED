@@ -5,8 +5,9 @@
     python3 psed_v2/cases/paper_case.py        (then make_cases.py and make_matrix_html.py, which read the CSV)
 
 A cell is "used: <figures>" when the case draws on the paper (figure crops shown, points read, values in the case's CSV),
-"candidate, not used: <reason>" when the case's own rule, applied to figures.csv and quantity_matrix.csv, selects the paper
-but the case does not draw on it, and empty otherwise. "Used" is recorded by running the case functions of make_cases.py
+"excluded: <reason>" when the case's own rule, applied to figures.csv and quantity_matrix.csv, selects the paper but it was
+judged not to belong (case_decisions.csv), "candidate, not used: <reason>" when selected and not yet decided (none for
+Cases 1 to 11), and empty otherwise. "Used" is recorded by running the case functions of make_cases.py
 with the crop call instrumented, so it follows the page as built.
 """
 import csv, importlib.util, json, re
@@ -89,6 +90,10 @@ def used_by_case():
         cur["k"] = f"c{i}"
         getattr(mc, f"case{i}")()
     mc.crop = real
+    for sr in mc.case1_series():                          # case 1: every profile it plots, from its own points or from Case 9's
+        U["c1"].setdefault(sr["p"]["paper"], []).append(figlab(sr["p"]["figure"], sr["p"].get("panel", "")))
+    for pid, fig, sym, *_ in mc.N3:                       # case 5: rows of its label table
+        U["c5"].setdefault(pid, []).append(f"Fig. {fig} ({sym})")
     for p in PTS:                                         # points read by eye belong to their case
         U[f"c{p['case']}"].setdefault(p["paper"], []).append(figlab(p["figure"], p.get("panel", "")))
     for r in rd("cremers/source_checks.csv"):             # case 8: rows of the review checked against the source
@@ -127,16 +132,20 @@ def candidates(pid):
         C["c2"] = f"half-thickness depth against plasma time ({figs(rec)})"
     elif hand and not no(q.get("recombination_prob", "")):
         C["c2"] = "recombination probability in the matrix: " + q["recombination_prob"][:80]
-    samp = {}
+    samp, stated = {}, {}                                  # named samples only: "u:<fig>" marks an unnamed sample
     for r in FIG:
-        if r["paper_id"] == pid and r["sample"].strip():
-            samp.setdefault(re.sub(r"^possibly ", "", r["sample"].split(":")[0].strip()), []).append(r)
-    imgs = [s for s, rs in samp.items() if any(r["kind"] == "image" for r in rs) and any(is_profile(r) for r in rs)]
+        sid = r["sample"].split(":")[0].strip()
+        if r["paper_id"] == pid and sid and sid != "u":
+            key = re.sub(r"^possibly ", "", sid)
+            samp.setdefault(key, []).append(r)
+            if not sid.startswith("possibly"):
+                stated.setdefault(key, []).append(r)
+    imgs = [s for s, rs in stated.items() if any(r["kind"] == "image" for r in rs) and any(is_profile(r) for r in rs)]
     if imgs:
-        C["c3"] = f"profile and image share a sample id ({', '.join(imgs[:3])})"
-    reuse = rows_of(pid, lambda r: r["kind"] == "plot" and ("cited" in r["data_kind"] or ("fit" in r["data_kind"] and "measured" in r["data_kind"])))
+        C["c3"] = f"profile and image of the same named sample, link stated ({', '.join(imgs[:3])})"
+    reuse = rows_of(pid, lambda r: r["kind"] == "plot" and "cited" in r["data_kind"])
     if reuse:
-        C["c4"] = f"cited data or a model curve drawn with measured points ({figs(reuse)})"
+        C["c4"] = f"curves of another paper drawn again ({figs(reuse)})"
     words = rows_of(pid, lambda r: r["kind"] == "plot" and re.search(r"coverage|penetration|conformality", r["y"], re.I))
     if words:
         C["c5"] = f"coverage, penetration or conformality word on an axis ({figs(words)})"
@@ -144,9 +153,9 @@ def candidates(pid):
                   and re.search(r"location|position|slot|wafer|point|radius|inlet", r["x"], re.I))
     if uni:
         C["c6"] = f"growth or thickness against position on a part, tube or batch ({figs(uni)})"
-    multi = [s for s, rs in samp.items() if len({r["figure"] for r in rs}) >= 2 or len({r["method"] for r in rs if r["method"]}) >= 2]
+    multi = [s for s, rs in stated.items() if len({r["figure"] for r in rs}) >= 2 or len({r["method"] for r in rs if r["method"]}) >= 2]
     if multi and not prof:
-        C["c7"] = f"a sample seen by several figures or methods ({', '.join(multi[:3])})"
+        C["c7"] = f"a named sample seen by several figures or methods ({', '.join(multi[:3])})"
     if MAN[pid].get("cremers") == "O":
         C["c8"] = "cited in the review (Cremers 2019 reference list)"
     if prof or (hand and not no(q.get("measured_profile", ""))):
@@ -181,6 +190,7 @@ def candidates(pid):
 
 def main():
     U = used_by_case()
+    DEC = {(r["case"], r["paper_id"]): r["reason"] for r in rd("case_decisions.csv") if r["decision"] == "excluded"}
     out = []
     for pid in PAPERS:
         m = MAN[pid]
@@ -188,15 +198,22 @@ def main():
         row = {"paper_id": pid, "year": m.get("year", ""), "first_author": a.split(" ")[-1] if a else "", "read_by_hand": "yes" if pid in HAND else "no"}
         C = candidates(pid)
         for k, _ in COLS:
-            row[k] = f"used: {U[k][pid]}" if pid in U[k] else (f"candidate, not used: {C[k]}" if k in C else "")
+            if pid in U[k]:
+                row[k] = f"used: {U[k][pid]}"
+            elif (k, pid) in DEC:
+                row[k] = f"excluded: {DEC[(k, pid)]}"
+            else:
+                row[k] = f"candidate, not used: {C[k]}" if k in C else ""
         row["in_no_case"] = "yes" if not any(row[f"c{i}"].startswith("used") for i in range(1, 12)) else "no"
         out.append(row)
     with (HERE / "paper_case.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["paper_id", "year", "first_author", "read_by_hand"] + [k for k, _ in COLS] + ["in_no_case"])
         w.writeheader(); w.writerows(out)
     for k, t in COLS:
-        print(f"{k:4s} used {sum(r[k].startswith('used') for r in out):2d}  candidate {sum(r[k].startswith('candidate') for r in out):2d}  {t}")
+        print(f"{k:4s} used {sum(r[k].startswith('used') for r in out):2d}  excluded {sum(r[k].startswith('excluded') for r in out):2d}  candidate {sum(r[k].startswith('candidate') for r in out):2d}  {t}")
     print("papers in no case:", sum(r["in_no_case"] == "yes" for r in out), "of", len(out))
+    left = [(k, r["paper_id"]) for r in out for k in (f"c{i}" for i in range(1, 12)) if r[k].startswith("candidate")]
+    print("unresolved candidates in Cases 1-11:", len(left), left[:12])
 
 
 if __name__ == "__main__":

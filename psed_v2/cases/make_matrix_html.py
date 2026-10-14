@@ -35,7 +35,7 @@ COUNTS = {
     "S6": ("depth over channel height across scales", lambda r: "S6" in r.get("usable_for", "")),
 }
 counts = [(k, d, sum(1 for r in rows if f(r))) for k, (d, f) in COUNTS.items()]
-ccounts = [(k, t, sum(r["_cases"][k].startswith("used") for r in rows), sum(r["_cases"][k].startswith("candidate") for r in rows)) for k, t in CASES]
+ccounts = [(k, t, sum(r["_cases"][k].startswith("used") for r in rows), sum(r["_cases"][k].startswith(("candidate", "excluded")) for r in rows)) for k, t in CASES]
 hand = sum(1 for r in rows if r["read_by_hand"] == "yes")
 ppt = sum(1 for r in rows if r["read_by_hand"] == "yes" and r["exposure_or_pp_and_pulse"].startswith("pp × time"))
 lim = sum(1 for r in rows if r.get("limiting_step_exposure") == "yes")
@@ -90,7 +90,7 @@ tr{{cursor:pointer}}tr.on td{{outline:2px solid var(--accent);outline-offset:-2p
 <div class="counts">{"".join(f'<div class="cnt cc" data-k="{k}"><b>{u} · {c}</b>{E(k)}<br><span>{E(t)}</span></div>' for k, t, u, c in ccounts)}<div class="cnt"><b>{none}</b>no case<br><span>papers used by no case 1 to 11</span></div></div>
 <div class="bar"><label>Show<select id="fv"><option value="">all papers</option><option value="none">papers in no case</option><option value="hand">read by hand</option></select></label>
 <label>Search<input id="fs2" placeholder="paper, figure, word" size="18"></label></div>
-<div class="legend"><span><i class="sw" style="background:var(--used)"></i>used: the case draws on the paper</span><span><i class="sw" style="background:var(--cand)"></i>candidate, not used: the case's rule selects it</span><span><i class="sw" style="background:var(--surface);border:1px solid var(--line)"></i>empty</span><span>Counts are used · candidate. Click a case header for its papers, a row for the paper in both views. S4 to S11 are part E candidates not built yet.</span></div>
+<div class="legend"><span><i class="sw" style="background:var(--used)"></i>used: the case draws on the paper</span><span><i class="sw" style="background:var(--no)"></i>excluded: selected by the rule, judged not to belong (reason given)</span><span><i class="sw" style="background:var(--cand)"></i>candidate, not decided (part E columns)</span><span><i class="sw" style="background:var(--surface);border:1px solid var(--line)"></i>empty</span><span>Counts are used · excluded or candidate. Click a case header for its papers, a row for the paper in both views. S4 to S11 are part E candidates not built yet.</span></div>
 <div id="clist" class="det"><i>Click a case header or count for its papers.</i></div>
 <div class="tw"><table><thead><tr><th class="p">Paper</th>{"".join(f'<th class="ch" data-k="{k}" title="{E(t)}">{E(k)} {E(" ".join((t.split(" ", 2)[-1] if k.startswith("c") else t.split(" ", 1)[1]).split(" ")[:3]))}</th>' for k, t in CASES)}<th>in no case</th></tr></thead><tbody id="tb2"></tbody></table></div>
 </section>
@@ -101,7 +101,7 @@ const R={json.dumps(rows, ensure_ascii=False)};const C={json.dumps(cols)};const 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}}[c]));
 const kind=(r,c,v)=>v==="no"||v.startsWith("no ")||v.startsWith("no (")||v==="not read"?"n":(r.read_by_hand==="yes"?"h":"k");
-const ck=v=>v.startsWith("used")?"u":v.startsWith("candidate")?"a":"e";
+const ck=v=>v.startsWith("used")?"u":v.startsWith("candidate")?"a":v.startsWith("excluded")?"n":"e";
 let sel=null,cas=null;
 function ok(r){{
   const h=$("fh").value; if(h&&r.read_by_hand!==h) return false;
@@ -130,8 +130,8 @@ function show(p){{sel=p;const r=R.find(x=>x.paper_id===p);if(!r) return;
   "<h4>Quantities</h4><dl>"+C.map(c=>`<dt>${{esc(c)}}</dt><dd>${{esc(r[c]||"")}}</dd>`).join("")+"</dl>";draw();}}
 function showCase(k){{cas=k;const t=K.find(x=>x[0]===k);if(!t) return;
   const u=R.filter(r=>r._cases[k].startsWith("used")),c=R.filter(r=>r._cases[k].startsWith("candidate"));
-  const tab=(rs,h)=>rs.length?`<h4>${{h}} (${{rs.length}})</h4><table><tbody>`+rs.map(r=>`<tr data-p="${{esc(r.paper_id)}}"><td class="p">${{esc(r._who)}}<span class="pid">${{esc(r.paper_id)}}</span></td><td>${{esc(r._cases[k].replace(/^(used|candidate, not used): /,""))}}</td></tr>`).join("")+"</tbody></table>":`<h4>${{h}} (0)</h4>`;
-  $("clist").innerHTML=`<b>${{esc(t[1])}}</b>`+tab(u,"Used: figure or table")+tab(c,"Candidate, not used: reason");draw();}}
+  const tab=(rs,h)=>rs.length?`<h4>${{h}} (${{rs.length}})</h4><table><tbody>`+rs.map(r=>`<tr data-p="${{esc(r.paper_id)}}"><td class="p">${{esc(r._who)}}<span class="pid">${{esc(r.paper_id)}}</span></td><td>${{esc(r._cases[k].replace(/^(used|excluded|candidate, not used): /,""))}}</td></tr>`).join("")+"</tbody></table>":`<h4>${{h}} (0)</h4>`;
+  $("clist").innerHTML=`<b>${{esc(t[1])}}</b>`+tab(u,"Used: figure or table")+tab(R.filter(r=>r._cases[k].startswith("excluded")),"Excluded: reason")+tab(c,"Candidate, not decided: reason");draw();}}
 function view(n){{$("v1").classList.toggle("on",n===1);$("v2").classList.toggle("on",n===2);$("t1").classList.toggle("on",n===1);$("t2").classList.toggle("on",n===2);}}
 for(const id of ["tb","tb2","clist"]) $(id).addEventListener("click",e=>{{const tr=e.target.closest("tr[data-p]");if(tr) show(tr.dataset.p);}});
 document.querySelector("#v2 thead").addEventListener("click",e=>{{const th=e.target.closest("th.ch");if(th) showCase(th.dataset.k);}});
