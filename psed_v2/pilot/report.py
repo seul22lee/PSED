@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Writes reports/pilot.html, the one report page of the pilot (untracked; self-contained, works offline), with three tabs:
 - Facts, per paper: (a) the paper in reading order, each element coloured covered / no knowledge / missed, click for its
-  facts; (b) facts by type with counts, filterable; (c) figures: each panel's crop next to its facts.
+  facts; (b) the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
+  branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
+  runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
+  next to its facts. Tree rows (ids without "#") are not counted as facts anywhere.
 - Cases: the thirteen case studies (cases.py; Case 8 draws on cremers.py).
 - Matrix: quantities per paper and papers x cases (matrix.py).
 
@@ -25,7 +28,9 @@ def rd(p):
 
 
 def paper(pid, key):
-    els, facts = rd(HERE / f"{pid}.elements.csv"), rd(HERE / f"{pid}.facts.csv")
+    els, rows = rd(HERE / f"{pid}.elements.csv"), rd(HERE / f"{pid}.facts.csv")
+    facts = [r for r in rows if "#" in r["fact_id"]]
+    tree = [r for r in rows if "#" not in r["fact_id"]]
     cov = {c["element_id"]: c for c in rd(HERE / f"{pid}.coverage.csv")}
     pts = json.loads((HERE / f"{pid}.points.json").read_text(encoding="utf-8")) if (HERE / f"{pid}.points.json").exists() else {}
     texts = elements.texts(pid)
@@ -47,7 +52,7 @@ def paper(pid, key):
         if f["points_ref"] in pts:
             f["points"] = pts[f["points_ref"]]["points"]
     s = summary({e["element_id"]: e for e in els}, facts, list(cov.values())) if facts else {}
-    return dict(pid=pid, key=key, elements=E, facts=facts, imgs=imgs, summary=s)
+    return dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s)
 
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -79,6 +84,13 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 .panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;border-top:1px solid var(--line);padding:12px 0}
 @media(max-width:900px){.panel{grid-template-columns:1fr}}.panel img{max-width:100%;border:1px solid var(--line);border-radius:4px;background:#fff}
 .legend span{display:inline-block;padding:1px 8px;border-radius:4px;margin-right:6px;font-size:12px}
+.nd{margin-left:16px;padding:1px 0;line-height:1.35}.nd.leaf{padding-left:14px}summary{cursor:pointer;list-style-position:outside}
+.nd .ty{display:inline-block;min-width:34px;font:600 10px/1.5 ui-monospace,monospace;text-transform:uppercase;color:var(--mut);text-align:center;border:1px solid var(--line);border-radius:3px;padding:0 3px;margin-right:4px}
+.nd .ty.run,.nd .ty.paper,.nd .ty.process,.nd .ty.group{color:var(--acc);border-color:var(--acc)}.nd .ty.claim{color:var(--covb);border-color:var(--covb)}
+.nd .v{color:var(--acc)}.nd.vary>summary,.nd.vary{font-weight:650}.nd.linked{opacity:.85;border-left:2px dashed var(--line);margin-left:30px;padding-left:6px}
+.nd code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.nd code.ev:hover{color:var(--acc);text-decoration:underline}
+.nd.hl>summary,.nd.hl{background:var(--sel);border-radius:3px}.tree{margin-bottom:10px}.tree>details>summary{font-size:15px;font-weight:600}
+.flag{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
 </style></head><body>
 <header><h1>Facts layer: pilot papers</h1><span id="papers"></span><span id="views"></span>
@@ -86,7 +98,7 @@ h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{col
 <main><div class="sum" id="sum"></div><div id="view"></div></main>
 <script>
 const DATA=__DATA__;
-let P=0,V="read";
+let P=0,V="read",SP=0;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const clean=s=>esc(String(s||"").replace(/\\text\{([^}]*)\}|\\mathrm\{([^}]*)\}/g,"$1$2").replace(/<\/?sup>/g,"").replace(/\$/g,""));
@@ -101,11 +113,11 @@ function plot(p){if(!p.length)return"";const xs=p.map(a=>a[0]),ys=p.map(a=>a[1])
  const X=x=>8+284*(x-x0)/((x1-x0)||1),Y=y=>142-134*(y-y0)/((y1-y0)||1);
  return `<svg class="pts" viewBox="0 0 300 150"><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="${p.map(a=>X(a[0])+","+Y(a[1])).join(" ")}"/>
  <text x="8" y="12" font-size="9" fill="var(--mut)">y ${y0}…${y1}; x ${x0}…${x1}</text></svg>`}
-function side(id){const d=DATA[P],e=d.elements.find(x=>x.id===id);document.querySelectorAll(".sel").forEach(x=>x.classList.remove("sel"));
+function side(id,pi){if(pi!==undefined)SP=pi;else SP=P;const d=DATA[SP],e=d.elements.find(x=>x.id===id);if(!e)return;document.querySelectorAll(".sel").forEach(x=>x.classList.remove("sel"));
  document.querySelectorAll(`[data-id="${id}"]`).forEach(x=>x.classList.add("sel"));const fs=factsOf(d,id);
  $("#side").innerHTML=`<h3>${esc(id)} <span class="mut">${esc(e.loc)}</span></h3><div class="mut">${esc(e.st)}${e.why?": "+esc(e.why):""}${e.nn!==""?` · numbers ${e.nr}/${e.nn} reach a fact`:""}</div>
  ${e.crop&&d.imgs[e.crop]&&e.kind==="panel"?`<img src="${d.imgs[e.crop]}" style="max-width:100%;margin-top:6px">`:""}${fs.map(factHTML).join("")||""}`}
-function goto(id){V="read";render();setTimeout(()=>{const n=document.querySelector(`[data-id="${id}"]`);if(n)n.scrollIntoView({block:"center"});side(id)},0)}
+function goto(id){P=SP;V="read";render();setTimeout(()=>{const n=document.querySelector(`[data-id="${id}"]`);if(n)n.scrollIntoView({block:"center"});side(id,P)},0)}
 function readView(d){let h="",tabs={};const els=d.elements;
  for(const e of els){if(e.kind==="table_cell"){(tabs[e.sec]=tabs[e.sec]||[]).push(e);continue}
   const cls=e.st==="covered"?"covered":e.st==="missed"?"missed":"";
@@ -118,31 +130,45 @@ function readView(d){let h="",tabs={};const els=d.elements;
    return c?`<td class="${c.st==="covered"?"covered":c.st==="missed"?"missed":"nk"}" data-id="${c.id}" onclick="side('${c.id}')">${clean(c.text)}</td>`:"<td></td>"}).join("")+"</tr>").join("")}</table></div>`};
  for(const t of Object.keys(tabs)){if(h.includes(`@@${t}@@`))h=h.replace(`@@${t}@@`,grid(t));else h+=`<h3>${t} (no caption)</h3>`+grid(t)}
  return `<div class="wrap"><div>${h.replace(/@@[^@]+@@/g,"")}</div><div class="side" id="side"><span class="mut">Click an element to see its facts.</span></div></div>`}
-let FT="",FQ="",FS="";
-function factsView(d){const types=["setting","observation","derived","model","definition","claim","cited"];const cnt={};d.facts.forEach(f=>cnt[f.type]=(cnt[f.type]||0)+1);
- const qs=[...new Set(d.facts.map(f=>f.quantity).filter(Boolean))].sort();
- const rows=d.facts.filter(f=>(!FT||f.type===FT)&&(!FQ||f.quantity===FQ)&&(!FS||JSON.stringify(f).toLowerCase().includes(FS.toLowerCase())));
- return `<div class="fl">${["",...types].map(t=>`<button class="${FT===t?"on":""}" onclick="FT='${t}';render()">${t||"all"} (${t?cnt[t]||0:d.facts.length})</button>`).join("")}
- <select onchange="FQ=this.value;render()"><option value="">any quantity</option>${qs.map(q=>`<option ${q===FQ?"selected":""}>${q}</option>`).join("")}</select>
- <input placeholder="search" value="${esc(FS)}" onchange="FS=this.value;render()"> <span class="mut">${rows.length} shown</span></div>
- <div style="overflow-x:auto"><table class="ft"><tr><th>id</th><th>type</th><th>statement</th><th>quantity</th><th>value</th><th>kind / method</th><th>mentions</th><th>evidence</th></tr>
- ${rows.map(f=>`<tr><td><code>${esc(f.fact_id.split(":")[1])}</code></td><td>${f.type}</td><td>${esc(f.statement)}</td><td>${esc(f.quantity)}${f.label_as_printed?` <span class="mut">${esc(f.label_as_printed)}</span>`:""}${f.qualifiers?`<br><span class="mut">${esc(f.qualifiers)}</span>`:""}</td>
- <td>${esc(f.censor+f.value)}${f.value_min||f.value_max?` ${esc(f.value_min)}–${esc(f.value_max)}`:""} ${esc(f.unit)}${f.points_ref?`<br><span class="mut">${f.points?f.points.length:""} pts</span>`:""}</td>
- <td>${esc(f.data_kind)}<br><span class="mut">${esc(f.method)}</span></td><td>${esc(f.mentions)}</td><td>${f.evidence.split(";").map(e=>`<span class="lnk" onclick="goto('${e}')">${e}</span>`).join(" ")}</td></tr>`).join("")}</table></div>`}
+const ORDER={paper:-1,process:0,group:1,run:2,setting:3,observation:4,derived:5,model:6,definition:7,claim:8,cited:9};
+const valStr=f=>[f.censor+f.value,f.value_min&&f.value_max?`${f.value_min}–${f.value_max}`:(f.value_min||f.value_max)].filter(Boolean).join(" ")+(f.unit?" "+f.unit:"");
+const skey=f=>f.quantity+"|"+f.qualifiers+"|"+(f.quantity==="other"?f.label_as_printed:"");
+function buildTree(d){if(d._T)return d._T;const byId={},kids={};[...d.tree,...d.facts].forEach(n=>{byId[n.fact_id]=n;if(n.parent)(kids[n.parent]=kids[n.parent]||[]).push(n)});
+ for(const k in kids)kids[k].sort((a,b)=>(ORDER[a.type]??5)-(ORDER[b.type]??5));
+ const vary=new Set();                                   // among sibling runs, the settings whose value differs or is missing in a sibling
+ for(const k in kids){const runs=kids[k].filter(n=>n.type==="run");if(runs.length<2)continue;
+  const per=runs.map(r=>{const m={};(kids[r.fact_id]||[]).filter(f=>f.type==="setting").forEach(f=>{m[skey(f)]=(m[skey(f)]?m[skey(f)]+"; ":"")+valStr(f)});return m});
+  const keys=new Set(per.flatMap(m=>Object.keys(m)));
+  for(const key of keys){if(new Set(per.map(m=>m[key]??"∅")).size>1)runs.forEach(r=>(kids[r.fact_id]||[]).forEach(f=>{if(f.type==="setting"&&skey(f)===key)vary.add(f.fact_id)}))}}
+ const root=d.tree.find(n=>n.type==="paper");const up={};[...d.tree,...d.facts].forEach(n=>up[n.fact_id]=n.parent);
+ return d._T={byId,kids,vary,root,up}}
+function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(n);const ev=(n.evidence||"").split(";")[0];
+ const q=node&&n.qualifiers?` <span class="mut">${esc(n.qualifiers)}</span>`:"";const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
+ const fl=(n.flag||[]).map(k=>`<span class="flag">${esc(k)}</span>`).join("");
+ return `<span class="ty ${n.type}">${node?n.type:n.type.slice(0,3)}</span>${esc(n.statement)}${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${fl}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
+function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="claim"&&n.links?n.links.split(";").map(l=>T.byId[l]).filter(Boolean):[];
+ const cls=`nd${T.vary.has(n.fact_id)?" vary":""}`;
+ if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
+ const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
+ return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
+function treeView(){const trees=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;
+  return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
+ return `<div id="forest"></div><div class="wrap"><div>${trees}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
 function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");return ps.map(e=>{const fs=factsOf(d,e.id);
  return `<div class="panel"><div><h3>${e.id} <span class="mut">${esc(e.st)}${e.why?": "+esc(e.why):""} · ${fs.length} facts</span></h3>${d.imgs[e.crop]?`<img loading="lazy" src="${d.imgs[e.crop]}">`:"<i>no crop</i>"}</div>
  <div>${fs.map(factHTML).join("")||"<i class='mut'>no facts</i>"}</div></div>`}).join("")}
 function render(){const d=DATA[P];
- $("#papers").innerHTML=DATA.map((x,i)=>`<button class="${i===P?"on":""}" onclick="P=${i};FT=FQ=FS='';render()">${x.key}</button>`).join(" ");
- $("#views").innerHTML=[["read","(a) paper"],["facts","(b) facts"],["figs","(c) figures"]].map(([k,l])=>`<button class="${V===k?"on":""}" onclick="V='${k}';render()">${l}</button>`).join(" ");
+ $("#papers").innerHTML=DATA.map((x,i)=>`<button class="${i===P?"on":""}" onclick="P=${i};render();if(V==='tree'){const t=document.getElementById('tree'+${i});if(t)t.scrollIntoView()}">${x.key}</button>`).join(" ");
+ $("#views").innerHTML=[["read","(a) paper"],["tree","(b) tree"],["figs","(c) figures"]].map(([k,l])=>`<button class="${V===k?"on":""}" onclick="V='${k}';render()">${l}</button>`).join(" ");
  const s=d.summary||{};const st={};d.elements.forEach(e=>st[e.st]=(st[e.st]||0)+1);
  const tn=s.text_numbers||[0,0];
  $("#sum").innerHTML=`<div class="tile"><b>${d.elements.length}</b><span>${esc(d.pid)}<br>elements</span></div>
  <div class="tile"><b>${st.covered||0} / ${st["no knowledge"]||0} / ${st.missed||0}</b><span>covered / no knowledge / missed</span></div>
  <div class="tile"><b>${d.facts.length}</b><span>facts</span></div>
+ <div class="tile"><b>${d.tree.filter(n=>n.type==="run").length} / ${d.tree.filter(n=>n.type==="group").length} / ${d.tree.filter(n=>n.type==="cited").length}</b><span>tree: runs / groups / cited works (not facts)</span></div>
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
- $("#view").innerHTML=V==="read"?readView(d):V==="facts"?factsView(d):figView(d)}
+ $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d)}
 render();
 </script></body></html>"""
 
