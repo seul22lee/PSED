@@ -89,6 +89,11 @@ writes bold or stray characters. A "both wrong" pair needs the formula written a
 - **Lookalike letters.** Latin v and p of the italic text font written Greek ν and ρ (6 body errors, 2 table symbol
   errors); a flag only when the token holds a digit (v1, p_A0, v_th). The text layer carries the Latin letter: the review
   gets it as evidence.
+- **The table check compares tokens, not their position.** It compares numbers, letters and symbols and the outer
+  structure (column counts, empty cells, short rows), not where a token sits. A table with every token present but
+  placed wrongly passes as ok and never reaches the review: a body row put into the header, or a row label put on
+  the wrong row. In the 58 papers: 10.1016_j.surfcoat.2012.02.038 Table 1 (both errors). Table recall on the page:
+  32 of 33.
 - **Symbols not compared in the body.** The body check compares numbers and letters, not the operator symbols: ≈
   written ~, × written x, a lost dash in "7–9" are not flagged (the table check counts ± ↑ ↓ ≤ ≥ ≈ ∼ ≪ ≫ ×).
 - **Escaped underscores in inline LaTeX break the subscript join.** Marker writes `\text{Al}\_2\text{O}\_3` in some
@@ -121,6 +126,11 @@ writes bold or stray characters. A "both wrong" pair needs the formula written a
   (10.1116_6.0002804 p 2, 10.1021_acs.jpcc.9b08176 p 2, 10.3390_separations11010024 p 7). A check must not alter
   its own reference, so the line assembly of e5cb97c stands; the subscript flags it had removed (all judged not
   errors) go to the review, as do the displaced-subscript flags of the JES layouts added on 2026-10-13.
+- **A header-rule position test, tried and not applied** (2026-10-13, read only). Header cells of Marker's html
+  would have to be printed above the rule that ends the header on the page (variants A, B, C of the rule's
+  definition, tested on the 90 tables against `answers/tables.json`; variant C flagged the surfcoat table and no
+  right table). It was tuned on the same tables it was tested on, so it was not adopted. A general fix needs
+  independent evidence of the table structure, for example a second table extractor, and stays an open question.
 - **Output paragraphs with numbers that no layer unit matches.** 1,867 in the 58 papers; the kinds were recounted for
   the first 44 on 2026-10-13 (1,573: 1,046 at or after the References heading, 527 before it: 294 display equations
   written as LaTeX paragraphs, 127 author, affiliation, licence and furniture lines, 91 headings, labels and fragments,
