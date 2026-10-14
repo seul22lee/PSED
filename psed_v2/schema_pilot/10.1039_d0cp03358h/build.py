@@ -4,7 +4,7 @@ import csv, json, os
 
 REPO = '/home/ftk3187/github/PSED/psed_v2'
 PID = '10.1039_d0cp03358h'
-OUT = f'{REPO}/schema_pilot/{PID}'
+OUT = f'{REPO}/schema_pilot/{PID}/draft'
 K = 'yim20'
 
 def sid(x):

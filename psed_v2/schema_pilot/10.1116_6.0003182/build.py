@@ -3,7 +3,7 @@ import csv, json, os, sys
 
 P = "10.1116_6.0003182"
 REPO = "/home/ftk3187/github/PSED/psed_v2"
-OUT = os.path.join(REPO, "schema_pilot", P)
+OUT = os.path.join(REPO, "schema_pilot", P, "draft")
 K = "gre23"
 R120, R160, RCYC = f"{K}:120", f"{K}:160", f"{K}:120/160"
 RUNS = [R120, R160, RCYC]

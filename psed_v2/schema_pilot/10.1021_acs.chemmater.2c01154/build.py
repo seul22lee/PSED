@@ -1,6 +1,6 @@
 import csv, json, os
 P='10.1021_acs.chemmater.2c01154'; K='mat22'
-OUT='/home/ftk3187/github/PSED/psed_v2/schema_pilot/'+P
+OUT='/home/ftk3187/github/PSED/psed_v2/schema_pilot/'+P+'/draft'
 pts=json.load(open('/home/ftk3187/github/PSED/psed_v2/cases/points.json'))['series']
 pt1c=[s for s in pts if s['paper']==P and s['figure']=='1' and s['panel']=='c'][0]['points']
 

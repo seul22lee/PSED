@@ -1,21 +1,33 @@
 # Checklist: 10.1021_acs.chemmater.2c01154 (mat22)
 
-Planar films only; the paper has no test structure. Supporting Information is not in document.md, so anything only in Figs. S1-S22 or Tables S1-S8 is "not in document".
+Core list (the 14 quantity_matrix columns plus saturation_checked). Status: found (ids in the tables) / not stated / not in document (SI) / not read. Ids are found in the final tables by rule; the reason column says what a status means here.
 
+| Core item | Status | Ids | Note |
+|---|---|---|---|
+| measured_profile | not stated | mat22:s1c_map | planar films only; the series shown is a lateral thickness map over a 4 inch wafer, not a depth profile |
+| pd50_or_coated_ar | not stated | — | planar films only |
+| structure_class | found | mat22:uT250R000, mat22:uT200R000, mat22:uT150R000 (+54) |  |
+| structure_dims | not stated | — | planar substrates (Si with thermal SiO2, glassy carbon, PET foil); no 3D structure |
+| exposure_or_pp_and_pulse | found | mat22:c361, mat22:c371 | pulse times and pressures of the cycle recipe; no precursor partial pressure |
+| deposition_temperature | found | mat22:c001, mat22:c003, mat22:c005, mat22:c007, mat22:c009, mat22:c011, mat22:c013, mat22:c015 (+47) |  |
+| cycles | found | mat22:c002, mat22:c004, mat22:c006, mat22:c008, mat22:c010, mat22:c012, mat22:c014, mat22:c016 (+79) |  |
+| planar_gpc | found | mat22:v065, mat22:v066, mat22:v067, mat22:v068, mat22:v069, mat22:v070, mat22:v071, mat22:v072 (+24) |  |
+| sticking_or_reaction_prob | not stated | — |  |
+| recombination_prob | not stated | — | H2S/H2/Ar plasma; no radical loss reported |
+| step_coverage | not stated | — | planar films only |
+| front_slope_or_width | not stated | — | planar films only |
+| pore_or_channel_width | not stated | — | planar films only |
+| process_mode | found | mat22:uT250R000, mat22:uT200R000, mat22:uT150R000 (+52) |  |
+| saturation_checked | not in document (SI) | — | saturation curves stated to be in SI Figure S1 (Results, Concept para) |
+
+## Paper-specific extras (from the first pass)
+
+| Key quantity | Status | Where |
+|---|---|---|
 | Quantity | Status |
-|---|---|
-| Structure dims / feature width | not applicable (planar). Substrate pieces 1x1 to 3x3 cm2 (condition `substrate_size`), 4 inch wafer (W1), 15x15 cm PET (PET) |
-| Deposition temperature | found: 50-450 °C table setpoint per sample (sample.csv temperature_C). Exp. section notes the real substrate is cooler at >=200 °C (condition `temperature_reported_as`) |
-| Exposure / partial pressure x time, step A | not stated as exposure or partial pressure. Found: 6 s pulse at 200 mTorr total (set by the valve), source at 50 °C, 50 sccm Ar carrier (condition rows, step A) |
-| Exposure, plasma step | not stated. Found: 20 s at 100 W, about 6 mTorr, flows per H2 ratio from Table 2 (per-sample gas_flow_rate rows) |
 | Purge times | found: 10 s after A (6 s flow + 4 s pump), 6 s after plasma, 300 sccm Ar; cycle 51 s |
-| Cycles | found: per sample (100/120/140 rule for the grid; 10-500 for named samples); RBS films: not stated |
-| Planar GPC | found: 32 grid cells read from the Fig. 7b colour scale (mat22:v065-v096, ±0.03 Å/cycle; checked against Fig. 7a at 150 °C). Mo atoms per cycle by RBS (v190-v192). Saturation curves (Fig. S1): not in document |
 | Film thickness | found: Fig. 1b legend (v140-v143), wafer mean/sd (v144, v145), Fig. 7a at 140 cycles read by eye (v134-v139), ~50 nm RBS/TEM films (v173, v181, v189, v196), ~5 nm PET/FET films (v147, v150...) |
-| Thickness profile / PD50 / step coverage | not applicable (no 3D structure) |
 | Uniformity | found: 3.3% sigma over 4 inch wafer (v146); map points from points.json (series s1c_map) |
-| Sticking / reaction probability | not stated |
-| Recombination probability | not stated (OES only qualitative: H, S, S+, S2, SH+, H2S+ seen; Fig. S20-S21 not in document) |
 | Composition | found: S/Mo by XPS for all 32 grid cells (Fig. 4, v033-v064), Fig. 5 labels (v129-v133), RBS/ERD Table 1 (v166-v189), WS2/TiS2 ratios (v247ff). Table S1/S7: not in document |
 | Crystallinity | found: 32 grid cells (Fig. 2, v001-v032) and named samples; XRD (Fig. S2) not in document |
 | Roughness | found: Rq for 6 ratios at 150 °C (Fig. 6a, v198-v208), 0.75 nm for the 100 °C TEM/FET film (v154) |
