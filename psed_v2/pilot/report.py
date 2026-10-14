@@ -7,7 +7,10 @@
   next to its facts. Tree rows (ids without "#") are not counted as facts anywhere. Above the trees, the forest: a quantity
   picker highlights every numeric leaf of that quantity in all three trees (cited works included) and draws one scatter of
   them (x = a chosen quantity taken from the leaf's nearest scope, forest.context; colour = paper; hollow = cited; a leaf
-  whose qualifiers or unit differ from the majority is flagged with the differing key).
+  whose qualifiers or unit differ from the majority is flagged with the differing key). In the tree, qualifiers are grey
+  badges, red only on the picked quantity's leaves where the forest flags them; a curve the figure shows but that has no points (a fact citing a panel,
+  with no points and no value, not the panel's first fact, whose statement names a curve, series, trace, spectrum or
+  pattern in lowercase) is dimmed.
 - Cases: the thirteen case studies (cases.py; Case 8 draws on cremers.py).
 - Matrix: quantities per paper and papers x cases (matrix.py).
 
@@ -16,7 +19,7 @@
 Embeds element texts and figure crops from ingest/final (and a page of the review PDF for the cases), so the page stays
 out of git. Each tab is its own document in an iframe, so the three views keep their styles and scripts apart.
 """
-import base64, csv, html, json, runpy, sys
+import base64, csv, html, json, re, runpy, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -42,6 +45,7 @@ def paper(pid, key):
     cov = {c["element_id"]: c for c in rd(HERE / f"{pid}.coverage.csv")}
     pts = json.loads((HERE / f"{pid}.points.json").read_text(encoding="utf-8")) if (HERE / f"{pid}.points.json").exists() else {}
     texts = elements.texts(pid)
+    kinds = {e["element_id"]: e["kind"] for e in els}
     imgs = {}
     for e in els:
         if e["crop"] and e["crop"] not in imgs:
@@ -60,6 +64,10 @@ def paper(pid, key):
         if f["points_ref"] in pts:
             f["points"] = pts[f["points_ref"]]["points"]
         f.update(PAGE_FIELDS[key].get(f["fact_id"], {}))
+        e0 = f["evidence"].split(";")[0]
+        if (kinds.get(e0) == "panel" and not f["fact_id"].endswith("#1") and not f["points_ref"] and not (f["value"] or f["value_min"] or f["value_max"])
+                and f["type"] in ("observation", "model") and re.search(r"\b(curve|series|traces?|spectrum|pattern)\b", f["statement"])):   # lowercase: "Series C" is a name
+            f["nopts"] = True
     s = summary({e["element_id"]: e for e in els}, facts, list(cov.values())) if facts else {}
     return dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s, quantities=FOREST.quantities())
 
@@ -99,7 +107,8 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 .nd .v{color:var(--acc)}.nd.vary>summary,.nd.vary{font-weight:650}.nd.linked{opacity:.85;border-left:2px dashed var(--line);margin-left:30px;padding-left:6px}
 .nd code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.nd code.ev:hover{color:var(--acc);text-decoration:underline}
 .nd.hl>summary,.nd.hl{background:var(--sel);border-radius:3px}.tree{margin-bottom:10px}.tree>details>summary{font-size:15px;font-weight:600}
-.flag{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
+.q{font:10px/1.4 ui-monospace,monospace;color:var(--mut);border:1px solid var(--line);border-radius:3px;padding:0 3px;margin-left:4px}
+.q.red{color:var(--missb);border-color:var(--missb);font-weight:600}.nd.dim{opacity:.5}
 #forest{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:10px}
 svg.sc{width:100%;max-width:820px;height:auto;display:block}svg.sc text{font-size:11px;fill:var(--fg)}svg.sc .tk{fill:var(--mut);font-size:10px}svg.sc .gr{stroke:var(--line)}
 svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
@@ -154,12 +163,12 @@ function buildTree(d){if(d._T)return d._T;const byId={},kids={};[...d.tree,...d.
   for(const key of keys){if(new Set(per.map(m=>m[key]??"∅")).size>1)runs.forEach(r=>(kids[r.fact_id]||[]).forEach(f=>{if(f.type==="setting"&&skey(f)===key)vary.add(f.fact_id)}))}}
  const root=d.tree.find(n=>n.type==="paper");const up={};[...d.tree,...d.facts].forEach(n=>up[n.fact_id]=n.parent);
  return d._T={byId,kids,vary,root,up}}
-function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(n);const ev=(n.evidence||"").split(";")[0];
- const q=node&&n.qualifiers?` <span class="mut">${esc(n.qualifiers)}</span>`:"";const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
- const fl=(n.flag||[]).map(k=>`<span class="flag">${esc(k)}</span>`).join("");
- return `<span class="ty ${n.type}">${node?n.type:n.type.slice(0,3)}</span>${esc(n.statement)}${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${fl}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
+function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(n);const ev=(n.evidence||"").split(";")[0];const fl=n.flag||[];
+ const q=(n.qualifiers||"").split(";").filter(Boolean).map(p=>`<span class="q" data-k="${esc(p.split("=")[0])}">${esc(p)}</span>`).join("")+(n.unit&&!node?`<span class="q" data-k="unit" hidden>unit</span>`:"");
+ const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
+ return `<span class="ty ${n.type}">${node?n.type:n.type.slice(0,3)}</span>${esc(n.statement)}${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
 function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="claim"&&n.links?n.links.split(";").map(l=>T.byId[l]).filter(Boolean):[];
- const cls=`nd${T.vary.has(n.fact_id)?" vary":""}`;
+ const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}`;
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
  const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
  return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
@@ -175,8 +184,10 @@ function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(
  <button onclick="FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
 function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".nd.hl").forEach(n=>n.classList.remove("hl"));
+ document.querySelectorAll(".q.red").forEach(n=>{n.classList.remove("red");if(n.dataset.k==="unit")n.hidden=true});
  const ls=fleaves();let shown=0;const pts=[];
- ls.forEach(l=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}
+ ls.forEach(l=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}
+   (l.f.flag||[]).forEach(k=>el.querySelectorAll(`.q[data-k="${k}"]`).forEach(b=>{b.classList.add("red");b.hidden=false}))}
   const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y:fv(l.f)});shown++}});
  const amb=ls.filter(l=>l.f.ctx[FX]==="ambiguous").length,nox=ls.length-shown-amb;
  $("#fn").textContent=FQ?`${ls.length} leaves highlighted; ${shown} in the scatter${amb?`, ${amb} with an ambiguous ${FX}`:""}${nox?`, ${nox} with no ${FX} in scope`:""}`:"";
