@@ -5,8 +5,9 @@
 Everything is read from ingest/final/<paper_id>/structure.json, ingest/marker/<paper_id>/bands.json, ingest/answers/
 and glyph_codes.json. The judged numbers (tables wrong on the page, the equation verdicts, body flags real or not,
 the distinct real errors) come from the answer set and are marked as such. Two recorded numbers that no file holds
-are kept in RECORDED with their origin: the breakdown of the unmatched output paragraphs by kind (a read-only
-recount of the first 44 papers on 2026-10-13) and the class list of the distinct real errors (ingest/ERRORS.md).
+is kept in RECORDED with its origin: the breakdown of the unmatched output paragraphs by kind (a read-only recount of
+the first 44 papers on 2026-10-13). The distinct real errors, their classes, causes and repair status are computed by
+judged_counts() from the answer set, body_repairs and the current flags (also used by the ERRORS.md rows).
 
 The table has two number columns: the in-scope papers (manifest in_scope = yes, covered by the answer set) and, on
 its own and outside every total, Guyon 2004 (10.1016_j.cattod.2003.11.022: ingested, excluded from the scope, not
@@ -25,14 +26,75 @@ RECORDED = {
     "unmatched_kinds": ("kinds from a read-only recount of the first 44 papers on 2026-10-13: 1,046 at or after the References heading; "
                         "before it 527: 294 equations, 127 author/affiliation/licence/furniture lines, 91 headings/labels/fragments, "
                         "9 captions, 4 author lists read as text, 2 reaction table rows"),
-    "distinct_errors": ("58: 12 dropped text, 8 citations, 7 letter/digit, 6 lookalike letters, 6 digits, 5 text added, 3 subscripts, "
-                        "2 decimal points, 2 prescripts of J, 2 affiliation marks, 1 exponent sign, 1 caption label out of order, "
-                        "1 caption label fused, 1 letter case, 1 margin numbers (ingest/ERRORS.md, judged on crops; the 14 of the "
-                        "papers added on 2026-10-13 carry distinct_error in answers/body_flags.json)"),
-    "corrected": "9 corrected (each viewed on its crop; 10.1021_cm0303080 p11 t^4 → t^1 by R1), 2 partly (10.1186_s11671-015-0872-9 Figure 1 caption: "
-                 "2 of 3 lines restored; 10.1021_cm0303080 p2: 1 line of the dropped references restored by R2), 47 flagged only (one of them, "
-                 "the margin numbers, removed by line_numbers.py with 5 leftovers flagged)",
 }
+
+# error classes of ERRORS.md, by the first keyword found in the answer set's error_type (order matters)
+CLASSES = [("margin line number", "margin numbers"), ("citation", "citations"), ("subscript digit", "subscripts"), ("exponent sign", "exponent sign"),
+           ("prescript", "prescripts of J"), ("sentence, paragraph or caption dropped", "dropped text"), ("lookalike", "lookalike letters"),
+           ("affiliation mark", "affiliation marks"), ("letter read as digit", "letter/digit"), ("letter/digit", "letter/digit"),
+           ("digit changed", "digits"), ("text added", "text added"), ("decimal point", "decimal points"),
+           ("text out of order", "caption label out of order"), ("caption label fused", "caption label fused"), ("letter case", "letter case")]
+
+
+def error_class(t):
+    t = (t or "").split("; the same key")[0].lower()        # a key shared by two flag kinds carries a note after the type
+    for key, name in CLASSES:
+        if key in t:
+            return name
+    return "other"
+
+
+def judged_counts(pids):
+    """From answers/body_flags.json, final/*/structure.json body_repairs and the current body_flags: the distinct real errors
+    (grouped by distinct_error where the item has one, else by paper, page and class; the margin numbers of a paper as one
+    error), their classes, their causes (the answer set's labels as they are), and how the repairs cover them: corrected =
+    a repair covers a key of the error and none of its keys is still flagged; partly = a repair covers a key and another
+    key is still flagged; flagged only = no repair covers it (regression.py's coverage rule: same page, the number in the
+    repaired token, sentence or restored line; a dropped-line repair for a 'line not found' key)."""
+    import re
+    from collections import Counter, defaultdict
+    items = [a for a in json.load(open(ANSWERS / "body_flags.json"))["items"] if a["paper_id"] in pids and a["verdict"] == "real error"]
+    reps, flagged = defaultdict(list), set()
+    for pid in pids:
+        st = json.load(open(FINAL / pid / "structure.json"))
+        reps[pid] = st.get("body_repairs", [])
+        flagged |= {f"{pid}|{f['page']}|{f['kind'][:6]}|{f.get('number')}" for f in st["body_flags"] if f["kind"] != "not checkable"}
+    plain = lambda s: re.sub(r"<[^>]+>|[_^{}$\\]", "", s or "")
+    def covering(a):
+        pid, page, _, num = a["flag_key"].split("|")
+        for r in reps[pid]:
+            if r["page"] != int(page):
+                continue
+            if num == "None":
+                if r["kind"].startswith("dropped line"):
+                    return r
+            elif any(num in x or num.lstrip("-") in x for x in (plain(r["from"]), plain(r["to"]), r.get("sentence", ""))):
+                return r
+        return None
+    groups = defaultdict(list)
+    for a in items:
+        c = error_class(a.get("error_type"))
+        g = a.get("distinct_error") or (f"{a['paper_id']}|margin numbers" if c == "margin numbers" else f"{a['paper_id']}|{a['page']}|{c}")
+        groups[g].append(a)
+    out = {"n": len(groups), "classes": Counter(), "causes": Counter(), "corrected": [], "partly": [], "flagged_only": [], "groups": {}}
+    for g, its in groups.items():
+        cls = error_class(its[0].get("error_type")); out["classes"][cls] += 1; out["causes"][its[0].get("cause") or "none"] += 1
+        pid = its[0]["paper_id"]; pages = {a["page"] for a in its}
+        covered = []
+        for r in [covering(a) for a in its]:
+            if r is not None and r not in covered:
+                covered.append(r)
+        if covered and any(r["kind"].startswith("dropped line") for r in covered):   # a dropped passage: every R2 line of the page
+            for r in reps[pid]:
+                if r["kind"].startswith("dropped line") and r["page"] in pages and r not in covered:
+                    covered.append(r)
+        still = [a["flag_key"] for a in its if a["flag_key"] in flagged]
+        status = "corrected" if covered and not still else "partly" if covered else "flagged only"
+        label = f"{its[0]['paper_id']} p{its[0]['page']} {cls}"
+        out[{"corrected": "corrected", "partly": "partly", "flagged only": "flagged_only"}[status]].append(label)
+        out["groups"][g] = {"class": cls, "status": status, "keys": [a["flag_key"] for a in its], "pages": sorted({a["page"] for a in its}), "paper": its[0]["paper_id"],
+                            "repairs": [(r["page"], r["kind"][:12], plain(r["from"]), plain(r["to"])[:60]) for r in covered], "still_flagged": still}
+    return out
 
 
 def block(pids, judged):
@@ -173,8 +235,15 @@ def block(pids, judged):
     L.append(f"| Papers without a number flag | {nopaper} | {sj} `body_flags` |")
     L.append(f"| **Not-checkable flags** | {ncl + nco}: layer side {ncl}, output side {nco} | {sj} `body_flags[kind=not checkable]` |")
     L.append(f"| **Repairs** applied | {sum(v for k, v in R.items() if k != 'undone')} records ({R['number replaced from the text layer']} R1 numbers replaced, {R['dropped line restored from the text layer']} R2 lines restored), {R['undone']} undone | {sj} `body_repairs`, `body_repairs_undone` |")
-    L.append(f"| Distinct real body errors (judged, a lower bound) | {RECORDED['distinct_errors']} | `answers/body_flags.json` verdicts grouped by error, classes recorded from ERRORS.md |")
-    L.append(f"| Distinct real errors corrected / partly / flagged only | {RECORDED['corrected']} | `body_repairs`, `body_flags`, recorded |")
+    jc = judged_counts(pids) if judged else None
+    if jc:
+        classes = ", ".join(f"{v} {k}" for k, v in sorted(jc["classes"].items(), key=lambda x: (-x[1], x[0])))
+        causes = ", ".join(f"{k} {v}" for k, v in sorted(jc["causes"].items(), key=lambda x: (-x[1], x[0])))
+        L.append(f"| Distinct real body errors (judged, a lower bound) | {jc['n']}: {classes}; causes (answer-set labels): {causes} | `answers/body_flags.json` real keys grouped by distinct_error, else by paper, page and class (numbers_md.py CLASSES); margin numbers one error per paper |")
+        L.append(f"| Distinct real errors corrected / partly / flagged only | {len(jc['corrected'])} corrected ({'; '.join(jc['corrected'])}), {len(jc['partly'])} partly ({'; '.join(jc['partly'])}), {len(jc['flagged_only'])} flagged only (the margin numbers among them, removed by line_numbers.py with the leftovers flagged) | `body_repairs` covering a key of the error (regression.py's rule), `body_flags` for a key still flagged |")
+    else:
+        L.append("| Distinct real body errors (judged, a lower bound) | not judged | `answers/body_flags.json` |")
+        L.append("| Distinct real errors corrected / partly / flagged only | not judged | `body_repairs`, `body_flags` |")
     L.append(f"| Margin line numbers removed | {lnum['removed']:,} in {lnum['papers']} paper, {lnum['kept']} real numbers kept | {sj} `body_check.line_numbers` |")
     L.append(f"| Band repairs (parse_marker.py --bands) | {bands['applied']} applied of {bands['records']} records | `marker/<id>/bands.json` |")
     src = Counter(json.load(open(FINAL / pid / "structure.json")).get("abstract_source") for pid in pids)

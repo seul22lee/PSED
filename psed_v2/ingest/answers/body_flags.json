@@ -1,5 +1,5 @@
 {
- "about": "Reference judgements of the body flags (ingest/final/<paper_id>/structure.json body_flags) of the 44 papers, every flag of the 2026-10-13 passes judged on its line crop. flag_key = paper_id|page|kind prefix|number token. Verdict real error (error_type, cause a layout / c recognition / d our post-processing; set 13 or 31 = the paper group) or not an error (measurement_cause, fixable yes/no/maybe at judgement time). Used to score the flag review step before it is used. Pass 2 (2026-10-13, glyph table extended): 27 new flags judged on their crops (9 real, 18 not errors; 4 of the not-errors vanished after a further glyph entry). The 4 letter flags of 2026-10-13 judged on their crops (1 real, 3 not errors). The 14 in-scope papers ingested on 2026-10-13 (set 15): every body flag of the run of 2026-10-13 judged on its line crop (93 keys: 23 real in 14 distinct errors, 70 not errors); distinct_error names the error a flag belongs to (the flags of one error share it); a key shared by two flag kinds with different verdicts carries the real-error verdict and says so. 2 keys vanished after the ChemBats g and AdvP4C4E74 2 entries (fixable 'fixed: ...') and 1 (10.1021_cm0303080 p11 t^4) is now repaired by body_repair.py; they are kept.",
+ "about": "Reference judgements of the body flags (ingest/final/<paper_id>/structure.json body_flags) of the 44 papers, every flag of the 2026-10-13 passes judged on its line crop. flag_key = paper_id|page|kind prefix|number token. Verdict real error (error_type, cause a layout / c recognition / d our post-processing; set 13 or 31 = the paper group) or not an error (measurement_cause, fixable yes/no/maybe at judgement time). Used to score the flag review step before it is used. Pass 2 (2026-10-13, glyph table extended): 27 new flags judged on their crops (9 real, 18 not errors; 4 of the not-errors vanished after a further glyph entry). The 4 letter flags of 2026-10-13 judged on their crops (1 real, 3 not errors). The 14 in-scope papers ingested on 2026-10-13 (set 15): every body flag of the run of 2026-10-13 judged on its line crop (93 keys: 23 real in 14 distinct errors, 70 not errors); distinct_error names the error a flag belongs to (the flags of one error share it); a key shared by two flag kinds with different verdicts carries the real-error verdict and says so. 2 keys vanished after the ChemBats g and AdvP4C4E74 2 entries (fixable 'fixed: ...') and 1 (10.1021_cm0303080 p11 t^4) is now repaired by body_repair.py; they are kept. Audit of 2026-10-13: the R1 repair of 10.1149_1.3491381 p9 (4 → 41) corrected a real error before any flag was raised; judged real on its crop (reports/judgements/10.1149_1.3491381_p9_41.png) and added as the two keys the flag pair would have had.",
  "items": [
   {
    "paper_id": "10.1002_adem.202201901",
@@ -6302,6 +6302,36 @@
    "date": "2026-10-13",
    "measurement_cause": "furniture, author or affiliation line, references: a URL in a reference line",
    "fixable": "may"
+  },
+  {
+   "paper_id": "10.1149_1.3491381",
+   "page": 9,
+   "verdict": "real error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "error_type": "digit changed (41 written 4: 'a factor of 41 for r = 0.30 and AR = 15'; repaired by R1 before any flag was raised)",
+   "cause": "c recognition",
+   "set": "15",
+   "distinct_error": "3491381 p9 factor of 41 written 4",
+   "crop": "reports/judgements/10.1149_1.3491381_p9_41.png",
+   "flag_key": "10.1149_1.3491381|9|number|41",
+   "kind": "number of the text layer missing from the output paragraph"
+  },
+  {
+   "paper_id": "10.1149_1.3491381",
+   "page": 9,
+   "verdict": "real error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "error_type": "digit changed (41 written 4: 'a factor of 41 for r = 0.30 and AR = 15'; repaired by R1 before any flag was raised)",
+   "cause": "c recognition",
+   "set": "15",
+   "distinct_error": "3491381 p9 factor of 41 written 4",
+   "crop": "reports/judgements/10.1149_1.3491381_p9_41.png",
+   "flag_key": "10.1149_1.3491381|9|number|4",
+   "kind": "number of the output paragraph absent from the text layer"
   }
  ]
 }

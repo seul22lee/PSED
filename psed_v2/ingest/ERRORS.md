@@ -8,15 +8,15 @@ What is wrong in the final output (`ingest/final/<paper_id>/`) of the 58 papers,
 Handling: **flag → review** = the item carries a flag for the review at the start of the extraction stage; **repaired** = corrected by
 `body_repair.py`; **known limit** = nothing flags it and the knowledge base must tolerate it.
 
-## Body text (Marker): 58 distinct real errors in 30,516 checked lines (1.9 per 1,000)
+## Body text (Marker): 59 distinct real errors in 30,516 checked lines (1.9 per 1,000)
 
 | Error class | Count | Papers (page) | Handling |
 |---|---|---|---|
-| A sentence, paragraph, caption or reference block dropped (a line between display equations, a line after inline math, a paragraph beside a heading or figure, a table caption, a caption drawn inside the figure, the page-bottom references of an ACS page) | 12 | 10.1021_acs.chemmater.9b05116 p 22, p 33; 10.1002_adem.202201901 p 8; 10.1021_acs.chemmater.1c03164 p 10; 10.1021_acs.jpcc.9b08176 p 3; 10.1039_d0cp03358h p 4; 10.1186_s11671-015-0872-9 p 4; 10.1021_acs.chemmater.2c01154 p 3; 10.3390_separations11010024 p 5; 10.1116_6.0001679 p 6; 10.1021_cm0303080 p 2 (references (28)–(30), (35)–(37) at the column bottoms); 10.1002_cvde.200390005 p 4 (a sentence between two equations) | 7 lines restored by R2 (6 whole, the Figure 1 caption of s11671 2 of 3 lines; 1 line of the cm0303080 references); the others flag → review |
+| A sentence, paragraph, caption or reference block dropped (a line or paragraph, a figure caption, the page-bottom references of an ACS page) | 12 | 10.1002_adem.202201901 p 8; 10.1002_cvde.200390005 p 4 (the sentence 'Writing this result in terms of the aspect ratio ...' between two equations); 10.1021_acs.chemmater.1c03164 p 10; 10.1021_acs.chemmater.9b05116 p 22, p 33; 10.1021_acs.jpcc.5c06502 p 6; 10.1021_cm0303080 p 2 (page-bottom footnote references (28)-(30), (35)-(37) of p2 dropped); 10.1039_d0cp03358h p 8; 10.1039_d4cp00131a p 8; 10.1063_1.5028178 p 6; 10.1186_s11671-015-0872-9 p 3 (the Figure 1 caption), p 4 | 8 lines restored by R2: 4 errors whole (acs.chemmater.1c03164 p 10; acs.chemmater.9b05116 p 33; acs.chemmater.9b05116 p 22; d4cp00131a p 8, 2 lines), 2 partly (cm0303080 p 2: 1 line(s), 6 key(s) still flagged; s11671-015-0872-9 p 3: 2 line(s), 1 key(s) still flagged); the others flag → review |
 | Citation number changed, dropped or fused into an exponent | 8 | 10.1039_d0cp03358h p 1, p 11; 10.1116_6.0001094 p 13; 10.1116_6.0003182 p 4; 10.1038_s41467-022-35428-6 p 8; 10.1021_acs.chemmater.9b05116 p 29; 10.1039_d3cp05639b p 3; 10.1039_d1cp04758b p 2 | 1 repaired by R1 (s41467 ^43 → ^4); the others flag → review |
 | A letter read as a digit or a digit as a letter (t→4, I→1, 1→I, 5→S, a→2, l→.1) | 7 | 10.1021_acs.chemmater.2c01154 p 2 and 8; 10.1039_d0cp03358h p 11; 10.1038_s41467-022-35428-6 p 7; 10.1021_acs.jpcc.5c06502 p 6; 10.1039_d4cp00131a p 4, p 13; 10.1063_1.4972120 p 5 ("9 l" written 9.1) | flag → review (no rule: the pair differs in letters) |
 | A lookalike letter: Latin v or p written Greek ν or ρ | 6 | 10.1002_adem.202201901 p 8; 10.1039_d0cp03358h p 9 (two tokens of one caption: p_A0 and p_B); 10.1039_d1cp04758b p 8, p 11; 10.1039_d4cp00131a p 6; 10.1021_acs.jpcc.1c01505 p 3 (n_0 v_th written ν_th) | flag → review, with the text-layer letter as evidence |
-| A digit changed (in the exponent too: t^1 written t^4) | 6 | 10.1021_acs.chemmater.2c01154 p 4, p 10; 10.1116_6.0002993 p 4; 10.1039_d3cp05639b p 9; 10.1021_cm0303080 p 10, p 11 | 2 repaired by R1 (3d_3/2 → 3d_5/2; cm0303080 p 11 t^4 → t^1); the others flag → review |
+| A digit changed (in the exponent too: t^1 written t^4; 41 written 4) | 7 | 10.1021_acs.chemmater.2c01154 p 4, p 10; 10.1021_acs.jpcc.5c06502 p 6; 10.1021_cm0303080 p 10, p 11; 10.1039_d3cp05639b p 9; 10.1149_1.3491381 p 9 | 3 repaired by R1 (acs.chemmater.2c01154 p 4 3d3 → 3d5; cm0303080 p 11 4 → 1; 1.3491381 p 9 4 → 41); the others flag → review |
 | Text added (a subscript invented, a label repeated, a list number written twice: "1. 1.", "2. 2.") | 5 | 10.1021_acs.chemmater.2c01154 p 9; 10.1186_s11671-015-0872-9 p 4; 10.1039_d3cp05639b p 10; 10.1002_cvde.200390005 p 1; 10.1063_1.4972120 p 4 | flag → review |
 | A subscript digit dropped or fused | 3 | 10.1021_acs.chemmater.1c03164 p 1; 10.1021_acs.chemmater.2c01154 p 3; 10.1021_acs.chemmater.9b05116 p 15 | flag → review |
 | A decimal point inserted or replaced by a comma | 2 | 10.1002_adem.202201901 p 10; 10.1021_acs.chemmater.2c01154 p 4 | 1 repaired by R1 (<001>); the other flag → review |
@@ -28,8 +28,8 @@ Handling: **flag → review** = the item carries a flag for the review at the st
 | Letter case changed (HfO2 written HFO2, a figure caption) | 1 | 10.1002_cvde.200390005 p 5 | flag → review |
 | Margin line numbers of a line-numbered manuscript merged into the text | 1 paper | 10.1021_acs.chemmater.9b05116 | 1,044 removed by `line_numbers.py`; 5 leftovers flag → review |
 
-Totals: 9 errors corrected by the repairs, 2 partly, 47 flagged only. Causes: Marker's recognition 43, layout 11, Marker's markdown
-construction 3 (the list numbers, the caption label), our own post-processing 1 (the margin numbers, removed). Found through numbers
+Totals: 10 errors corrected by the repairs, 2 partly, 47 flagged only. Causes, the answer set's labels per error:
+c recognition 41, a layout 11, c Marker 5, c Marker: ^4,7,13,17,20,30 written ^4,7,8,11,12,30–34 1, d post-processing 1. Found through numbers
 only: an error that changes no number and drops no numbered line is not seen (lower bound). The classes first seen in the 14 papers
 added on 2026-10-13: page-bottom references dropped, list numbers duplicated, prescripts of J, affiliation marks written as digits,
 a caption label fused with its caption, a letter case changed, an exponent digit changed (t^1 → t^4).
@@ -78,9 +78,9 @@ Every differ pair and single-tool item of the 58 papers is judged on the formula
 74 accepted agree pairs of the first 13 papers). The 158 differ pairs: Marker right 74, Docling right 39, both wrong 18, equivalent
 forms 27. The 22 single-tool items: the one tool right in 15 (Docling 10, Marker 5), Docling wrong in 7 (reaction equations with l read
 as I or O as 0, a sliver of two equations, arrow labels written as fractions). Recurring errors: Marker writes θ for Θ (10 pairs of
-10.1021_acs.chemmater.1c03164), K_n for Kn (5), λ as l, drops s̄ (4), a second line of a two-line equation (3) and the prescript of a
+10.1021_acs.chemmater.1c03164), K_n for Kn (5), λ as l, drops s̄ (4), a second line of a two-line equation (2) and the prescript of a
 symbol in inline text, folds a trailing factor into a denominator and misplaces the scope of a root (10.1021_acs.jpcc.1c01505 eqs 5
-and 9); Docling reads O as 0 (7 pairs of 10.1116_1.4892385), l as I, T as Γ (4 pairs of 10.1016_j.surfcoat.2012.02.038), drops the ∂t
+and 9); Docling reads O as 0 (7 pairs of 10.1116_1.4892385), l as I, T as Γ (3 pairs of 10.1016_j.surfcoat.2012.02.038), drops the ∂t
 of a left side (4) and prescripts, garbles text labels in equations and appends text (`\intertext` garbage in the ACS layout), and
 writes bold or stray characters. A "both wrong" pair needs the formula written anew by the review.
 
@@ -118,7 +118,7 @@ writes bold or stray characters. A "both wrong" pair needs the formula written a
   paragraph block (`crop_scope`), and the review should read the paragraph, not the one line.
 - **The MDPI duplicate layer.** 10.3390_separations11010024 draws caption regions and some paragraphs twice (a
   hidden copy at the page's top edge or shifted over other lines). The check drops the off-page and shifted
-  copies, reports 82 garbled lines as not checkable (each a flag with the reason) and still raises 19 number flags,
+  copies, reports 82 garbled lines as not checkable (each a flag with the reason) and still raises 16 number flags,
   mostly false; the table check sees stray letters in Table 1.
 - **The subscript attachment rule, tried and reverted** (b4306e9 → f94e9f0). A small glyph just below a line's
   baseline was attached to that line (TiO_2 read as "TiO" + "^2" of the next line). It also moved superscript

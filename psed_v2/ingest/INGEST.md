@@ -146,7 +146,7 @@ body_repairs_undone, sources; `final/<id>/figures/` (figure crops, table crops, 
 rerun without the vision models: `marker/<id>/` (blocks.json, marker.md and document.md, images, bands.json with its
 band crops, structure.json, table crops) and `docling/<id>/equations.json`. Tracked: the seven pipeline scripts, the four report and check scripts, `glyph_codes.json`, `answers/` (Claude Code's
 page judgements with ids and verdicts only: `tables.json` 90 tables, `equations.json` 254 items (every differ pair and single-tool item of the 58 papers judged
-on the crop, the agree pairs of the first 13 papers accepted), `body_flags.json` 512 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
+on the crop, the agree pairs of the first 13 papers accepted), `body_flags.json` 514 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
 `ERRORS.md`, `NUMBERS.md`, `CHANGELOG.md`.
 
 ## Numbers
@@ -158,7 +158,7 @@ outside every total).
 on the page, 32 of them reaching the review, 1 missed), 434 equation pairs (254 agree, 158 differ, 22 one tool; every differ pair judged
 on the crop: Marker right 74, Docling right 39, both wrong 18, equivalent 27; the single-tool items: 15 right, 7 wrong), 30,683 body
 lines of which 30,516 checked (99.5 %) and 167 not checkable with a flag each, 344 number or letter flags (all judged: 106 real, 238 not
-errors), 396 not-checkable flags, 15 repairs (0 undone); 58 distinct real body errors in the answer set, 9 corrected by the repairs,
+errors), 396 not-checkable flags, 15 repairs (0 undone); 59 distinct real body errors in the answer set, 10 corrected by the repairs,
 2 partly.
 
 **Guyon 2004** (10.1016_j.cattod.2003.11.022: ingested, then excluded from the scope as not an ALD paper; not judged; in no total):

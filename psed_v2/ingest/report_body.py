@@ -73,11 +73,17 @@ def main():
             if v == "unjudged":
                 newrows.append(row)
     n = len(rows)
-    n_papers = sum(1 for p in FINAL.iterdir() if (p / "structure.json").exists())
+    import csv
+    with (HERE.parent / "corpus" / "manifest.csv").open(newline="", encoding="utf-8") as fh:
+        rows = {r["paper_id"]: r for r in csv.DictReader(fh)}
+    have = [p.name for p in FINAL.iterdir() if (p / "structure.json").exists()]
+    n_in = sum(1 for p in have if rows.get(p, {}).get("in_scope") == "yes")
+    out_names = [f"{(rows[p].get('authors') or p).split(',')[0].split(';')[0].strip().split()[-1]} {rows[p].get('year', '')}".strip() for p in sorted(have) if rows.get(p, {}).get("in_scope") != "yes"]
+    n_papers = f"{n_in} in-scope papers" + (" and " + ", ".join(out_names) if out_names else "")
     H = [f"""<!doctype html><html><head><meta charset="utf-8"><title>Body flags review</title><style>
 body{{font-family:sans-serif;font-size:13px}} table{{border-collapse:collapse}} td{{border:1px solid #ccc;padding:4px;vertical-align:top;max-width:520px}}
 img{{max-width:500px}} tr.real td.v{{background:#fdd}} tr.not td.v{{background:#dfd}} tr.unjudged td.v{{background:#fc9}} tr.nc td.v{{background:#eee}}</style></head><body>
-<h1>Body flags of the final output ({n} flags in the main table, {len(short)} under-4-word lines, {n_papers} papers)</h1>
+<h1>Body flags of the final output ({n} flags in the main table, {len(short)} under-4-word lines, {n_papers})</h1>
 <p>Built {datetime.date.today().isoformat()} by ingest/report_body.py from ingest/final/*/structure.json. Verdict per flag from ingest/answers/body_flags.json
 (Claude Code on the crop): real = Marker's text differs from the PDF text layer at that number; not = the number is right, the flag is a
 measurement artefact (cause given); not checkable = what the check cannot compare (reason given), reviewed like a not-checkable table;
