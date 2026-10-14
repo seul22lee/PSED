@@ -26,6 +26,8 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "level": {"50%", "front_start", "front_end"},
     "basis": {"AR", "EAR"},
     "species": None, "gas": None, "element": None,
+    "run": {"deposition", "specimen", "simulation"}, "how": {"stated", "inferred"},   # tree rows (stage 3)
+    "sample": None, "sim": None,
 }
 
 METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
@@ -35,6 +37,7 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited"]
+NODE_TYPES = ["paper", "process", "group", "run"]     # tree rows of stage 3 (cited works use type cited)
 DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
 
 

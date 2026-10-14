@@ -70,18 +70,23 @@ Stages:
    one row per piece of knowledge, typed setting / observation / derived / model / definition / claim / cited. Local only:
    mentions are copied as printed ("sample 8", "H 500 nm"), with no decision on what they refer to. Values and units as printed.
    Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14: yim20 692 facts, mat22 452, gre23 324.
-3. **Anchors** (a separate, paper-wide step): list the depositions (one reactor process each), specimens, simulations, structure
-   designs, methods and cited works from the methods, tables and text; link each fact's mentions to anchors with status stated /
-   inferred / unresolved and the evidence for the link; merge facts that state the same thing.
-4. **Relations** between facts: derived_from, shown_in, same_data_as, uses_model, supports. Units converted to `lists.UNITS` and
-   quantity ids standardized.
+3. **One tree per paper** (replaces the earlier separate anchors and relations steps): inside `<paper_id>.facts.csv`, two more
+   columns, `parent` (one id: the row without which the fact would not exist) and `links` (a second home: a claim's supporting
+   facts, series membership, the same data shown in another panel), and tree rows in the same file (ids without "#"): the paper
+   (root), `:process` (conditions shared by every run), groups the paper names (series, sets), runs (a deposition, specimen or
+   simulation; qualifiers run=<kind>;how=stated|inferred;<key>=<v>) and cited works (`:refs:N`). Parent rule: settings and
+   observations under their run; runs under the process or a group; a calculated value under its first input; a figure curve
+   under the table value it plots, else its run; a model under its simulation run; a cited value under its reference; claims and
+   definitions under the paper. `check.py` checks one root, existing parents, no cycles, a child for every run, a link for every
+   claim; tree rows are not counted as facts. Done for yim20 on 2026-10-14 (60 tree rows); mat22 and gre23 next.
+4. **Standardization**: units converted to `lists.UNITS` and quantity ids standardized, in the facts file.
 5. **Views and demo**, seven views: coverage (nothing lost); facts by type; experiment view (per deposition: conditions,
    measurements, results, link status coloured); figure view (crop next to its facts); evidence trace (a claim → derived →
    observation → crop or table cell); cross-paper comparison (same quantity, comparable only with matching qualifiers and
    data_kind); v1 comparison by fact type. The KG is these files as a graph and serves the trace and cross-paper views.
 
-Files per paper: `.elements.csv`, `.facts.csv`, `.points.json` (stages 1–2), `.anchors.csv`, `.fact_anchor.csv` (stage 3),
-`.fact_links.csv` (stage 4). They are the source; the KG and the pages are rebuilt from them. Order: stages 1–2 → 3 → 4 → 5, with a
+Files per paper: `.elements.csv`, `.facts.csv` (facts and the tree), `.coverage.csv`, `.points.json`; no separate anchor or link
+files. They are the source; the KG and the pages are rebuilt from them. Order: stages 1–2 → 3 → 4 → 5, with a
 short report after each. Views 1, 2 and 4 are the Facts tab of `reports/pilot.html`.
 
 ## Pipeline decisions to make (what did not fit the fact columns, stage 2)

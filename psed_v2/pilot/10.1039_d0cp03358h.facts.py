@@ -17,7 +17,8 @@ import sys
 
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 import facts as C  # noqa: E402
-from facts import F, NK, P, write  # noqa: E402
+from facts import F, N, NK, P, write  # noqa: E402
+import re  # noqa: E402
 
 K, PID = "yim20", "10.1039_d0cp03358h"
 
@@ -826,4 +827,170 @@ for (t, r), (sym, what, unit) in SYM.items():
     F(K, f"{t}.r{r}c0;{t}.r{r}c1", "definition", f"symbol {sym}: {what}" + (f"; unit {unit}" if unit else ""),
       label_as_printed=sym, unit=unit, mentions="Symbols and abbreviations")
 
+# ================================================================== stage 3: one tree (parent, links)
+# Runs come from Table 1 (one specimen per sample code; Series A is also one stated ALD run, s6.p2), the AFM specimen of Fig. 6
+# (Table S4) and the simulations (Fig. 10 curves, ESI sensitivity runs). Parent rule: the row without which the fact would not
+# exist; links: a second home (series membership, a claim's support, the same data in another panel).
+ROWS = {1: [1], 2: [2], 3: [3], 4: [4], 5: [5], 6: [6], 7: [7], 8: [8, 11], 9: [9], 10: [10], 11: [12], 12: [13, 17], 13: [14],
+        14: [15], 15: [16], 16: [18]}                                         # sample code -> Table 1 rows (8 and 12 printed twice)
+SERIES = {"A": (1, 2, 3), "B": (4, 5, 6), "C": (7, 8, 9), "D": (8, 10, 11), "E": (12, 13, 14), "F": (12, 15, 16)}
+VARIED = {"A": "pillar layout", "B": "reflectometer magnification", "C": "design channel height", "D": "number of ALD cycles",
+          "E": "TMA pulse time", "F": "purge time"}
+PAPER, PROC = K, f"{K}:process"
+run = lambda n: f"{K}:run{n}"
+grp = lambda g: f"{K}:grp:{g}"
+SIMS = {"H100": ("100", "500"), "H200": ("200", "500"), "H500": ("500", "500"), "H1000": ("1000", "500"), "H2000": ("2000", "500"),
+        "N100": ("500", "100"), "N250": ("500", "250"), "N1000": ("500", "1000"), "N2000": ("500", "2000")}
+sim = lambda k: f"{K}:sim:{k}"
+N(PAPER, "paper", "Yim et al. 2020, PCCP: PillarHall-3 LHAR test chips and saturation-profile analysis of TMA-water Al2O3 ALD", "",
+  evidence="abs.g1", label_as_printed="10.1039/d0cp03358h")
+N(PROC, "process", "shared process: thermal Al2O3 ALD from TMA and water at 300 °C in a Picosun R-150 on PillarHall-3 LHAR chips, "
+  "with the shared characterization methods", PAPER, evidence="s6.p1;s5.p1;s7.p1")
+for g, smp in SERIES.items():
+    N(grp(g), "group", f"Series {g} of Table 1: {VARIED[g]} varied over samples {', '.join(map(str, smp))}", PROC,
+      evidence=f"s3.p9;tab1.r{ROWS[smp[0]][0]}c0", label_as_printed=f"Series {g}", qualifiers="how=stated")
+N(f"{K}:dep:A", "run", "one ALD run that coated samples 1, 2 and 3 (Series A) together, all on one wafer", grp("A"),
+  evidence="s6.p2", label_as_printed="Series A", qualifiers="run=deposition;how=stated")
+SER_OF = {}
+for g, smp in SERIES.items():
+    for n in smp:
+        SER_OF.setdefault(n, []).append(g)
+for n, rows in ROWS.items():
+    gs = SER_OF[n]
+    N(run(n), "run", f"specimen sample {n} of Table 1 (Series {' and '.join(gs)})", f"{K}:dep:A" if gs == ["A"] else grp(gs[0]),
+      evidence=";".join(f"tab1.r{r}c0;tab1.r{r}c1" for r in rows), label_as_printed=f"sample {n}",
+      qualifiers=f"run=specimen;how=stated;sample={n}", links=";".join(grp(g) for g in gs[1:]))
+N(f"{K}:runS4", "run", "AFM specimen of Fig. 6: 500 nm design channel, 500 cycles at 300 °C, listed in ESI Table S4", PROC,
+  evidence="fig6.cap;s10.x3", label_as_printed="Table S4", qualifiers="run=specimen;how=stated;sample=TableS4")
+N(grp("repro"), "group", "reproducibility set: samples 2, 4, 8 and 12, alike ALD parameters on different chips, runs and times",
+  PROC, evidence="fig8.cap;s12.x2;s16.p10;tab2.r7c6", label_as_printed="sample 2, 4, 8, and 12", qualifiers="how=stated",
+  links=";".join(run(n) for n in (2, 4, 8, 12)))
+N(grp("sims"), "group", "simulations with the MATLAB diffusion-reaction model (Ylilammi et al. 2018) and their shared inputs",
+  PAPER, evidence="s8.p1;s13.p2;fig10.cap", qualifiers="how=stated")
+for k, (h, n) in SIMS.items():
+    N(sim(k), "run", f"simulated profile for channel height {h} nm and {n} cycles (Fig. 10)", grp("sims"), evidence="fig10.cap",
+      label_as_printed=f"{h} nm" if k.startswith("H") else f"{n} cycles", qualifiers=f"run=simulation;how=stated;sim=H{h}_N{n}")
+N(sim("esi"), "run", "sensitivity simulations of the ESI: channel-height error and pillar effect on penetration depth", grp("sims"),
+  evidence="s16.p4;s16.p5", label_as_printed="ESI Fig. S10-S12", qualifiers="run=simulation;how=stated;sim=ESI")
+
+PARENT, LINKS = {}, {}
+FX = {f["fact_id"]: f for f in C.facts()}
+fid = lambda s_: f"{K}:{s_}"
+
+
+def put(parent, *ids, links=""):
+    for i in ids:
+        assert fid(i) in FX, i
+        PARENT[fid(i)] = parent
+        if links:
+            LINKS[fid(i)] = links
+
+
+def ln(i, *targets):
+    LINKS[fid(i)] = ";".join(t if t.startswith(K + ":") else fid(t) for t in targets)
+
+
+# Table 1 cells: under the sample's run; a value computed from others goes under its first input
+for f in C.facts():
+    m = re.match(rf"{K}:tab1\.r(\d+)c\d+#", f["fact_id"])
+    if m and int(m.group(1)) > 0:
+        n = int(re.search(r"sample (\d+)", f["mentions"]).group(1))
+        PARENT[f["fact_id"]] = f["inputs"].split(";")[0] if f["type"] == "derived" and f["inputs"] else run(n)
+# figure curves of measured runs
+CURVE = {"fig4a#1": 1, "fig4b#1": 2, "fig4c#1": 3, "fig5b#1": 11, "fig5b#2": 11, "fig5b#3": 11,
+         "fig7#2": 6, "fig7#3": 5, "fig7#4": 4, "fig8b#1": 2, "fig8b#2": 4, "fig8b#3": 8, "fig8b#4": 12,
+         "fig11a#2": 12, "fig11a#3": 13, "fig11a#4": 14, "fig11b#2": 15, "fig11b#3": 12, "fig11b#4": 16}
+CURVE.update({f"fig8a#{i}": 8 for i in range(1, 10)})
+for p in "abc":
+    CURVE.update({f"fig9{p}#2": 7, f"fig9{p}#3": 8, f"fig9{p}#4": 9})
+for p in "def":
+    CURVE.update({f"fig9{p}#2": 10, f"fig9{p}#3": 8, f"fig9{p}#4": 11})
+for i, n in CURVE.items():
+    put(run(n), i)
+for p, ks in (("abc", ("H100", "H200", "H500", "H1000", "H2000")), ("def", ("N100", "N250", "H500", "N1000", "N2000"))):
+    for q in p:
+        for j, k in enumerate(ks):
+            put(sim(k), f"fig10{q}#{j + 2}")
+# the same profile shown again: later panels link to the first panel showing it
+first = {}
+for i in sorted(list(CURVE) + [f"fig10{q}#{j}" for q in "abcdef" for j in range(2, 7)], key=lambda x: list(FX).index(fid(x))):
+    if i.startswith(("fig8a", "fig8b", "fig4", "fig5b")):                     # separate scans or figures, not the same data
+        continue
+    who = PARENT[fid(i)]
+    if who in first:
+        ln(i, first[who])
+    else:
+        first[who] = i
+# cited facts: under the first reference they name
+REFS = {}
+for f in C.facts():
+    if f["type"] == "cited" and f["fact_id"] not in PARENT:
+        m = re.search(r"ref\. (\d+)", f["mentions"])
+        if m:
+            PARENT[f["fact_id"]] = f"{K}:refs:{m.group(1)}"
+put(f"{K}:refs:54", "s18.p3#5", "s18.p3#6", "s18.p3#7")                        # Vandalon et al. (2017) is ref. 54 in the reference list
+
+# settings, observations and models that the rules above do not place
+put(PROC, "abs.g2#1", *[f"s6.p1#{i}" for i in range(1, 13)], *[f"s5.p1#{i}" for i in range(1, 10)], "s5.p2#1", "s7.p1#1", "s7.p1#2",
+    "s7.p2#1", "s7.p2#2", *[f"s7.p3#{i}" for i in range(1, 5)], *[f"s7.p4#{i}" for i in range(1, 4)],
+    *[f"s7.p5#{i}" for i in range(1, 10)], "s11.x1#4", "fig3.cap#3", "s12.x1#4", "s16.p3#2", "s16.p4#1", "s16.p4#2", "s16.p4#3",
+    "s16.p5#2", "s16.p5#3", "s16.p5#4", "s16.p5#5", "s16.p5#6", "s16.p7#2", "s16.p7#4", "s16.p8#2", "s16.p8#3", "s17.p1#2",
+    "s17.p2#1", "s17.p2#2", "s19.p3#1", "s19.p3#2", "s19.p3#3", "s19.p3#4", "s19.p3#5", "s19.p3#6", "tab2.r6c1#1", "tab2.r6c2#1")
+put(f"{K}:dep:A", "s6.p2#1")
+put(grp("A"), "s10.x1#1", "fig4.cap#1", "s10.p1#1", "s10.p1#5")
+put(grp("A"), "s10.p1#2", links=f"{run(1)};{run(2)}")
+put(run(3), "s10.p1#3")
+put(run(11), "s7.p2#3", "s10.x2#1", "s10.x2#2", "s10.x2#3", "s10.x2#5", "s10.p2#1", "s10.p2#2", "s13.p1#3")
+put(f"{K}:runS4", "s10.x3#1", "fig6#1", "s10.x3#2", "s10.x3#3")
+put(grp("B"), "s7.p5#10", "fig7#1", "s11.x1#1", "s11.x1#3")
+put(run(8), "s12.x1#1", "s13.p1#2")
+put(grp("repro"), "s12.x2#1", "s12.x2#2", "s16.p10#2", "s16.p10#3", "s16.p10#4", "tab2.r7c6#1")
+put(grp("C"), "fig9a#1", "fig9b#1", "fig9c#1", "s13.x1#2", "s13.x1#3")
+put(grp("C"), "s13.x1#1", links=f"{run(8)};{run(9)}")
+put(run(7), "s13.x1#4")
+put(grp("D"), "fig9d#1", "fig9e#1", "fig9f#1", "s13.x2#1", "s13.x2#2", "s13.p1#4", "s13.p1#5", "s13.p1#6")
+put(run(10), "s13.p1#1")
+put(grp("sims"), *[f"s8.p1#{i}" for i in range(1, 7)], "s13.p2#1", "s13.p2#2", "s13.p2#3",
+    *[f"fig10{q}#1" for q in "abcdef"], *[f"fig10.cap#{i}" for i in range(1, 17)])
+put(sim("esi"), "s16.p4#5", "s16.p5#1")
+put(grp("E"), "fig11a#1", "s14.p1#1")
+put(grp("E"), "s14.p1#2", links=run(14))
+put(grp("F"), "fig11b#1", "s14.x1#1", "s14.x1#2", "s14.x1#3")
+put(f"{K}:refs:36", "s19.p1#1", "s19.p1#2")                                    # the Arts et al. slope method
+put(PAPER, "fig3a#1", "fig3b#1")                                               # illustrations with no axis numbers and no stated sample
+# claims: under the paper, linked to what supports them
+CLAIM = {"abs.g1#1": (PROC, "s5.p1#1"), "abs.g2#2": ("s5.p2#1",), "abs.g3#1": (grp("repro"), "s12.x1#2", "s16.p10#1"),
+         "abs.g3#2": (grp("E"), grp("F")), "abs.g4#1": ("s3.p2#1",), "s2.p13#1": (PROC, "s2.p11#1"), "s2.p13#2": ("abs.g3#1",),
+         "s3.p2#1": ("s3.p2#2", "s3.p3#1", "s3.p5#1", "s3.p5#4"), "s3.p4#1": ("s3.p3#2",), "s3.p6#3": ("s3.p6#1", "s3.p6#2"),
+         "s3.p9#4": ("s3.p9#3",), "s7.p5#11": ("s7.p5#9",), "s8.p1#7": ("s8.p1#1",), "fig1.cap#3": ("fig1a#1",),
+         "s10.p1#4": ("s10.p1#3",), "s10.x2#4": ("s7.p2#2", "fig5b#3"), "s11.x1#2": ("s11.x1#1", "fig7#1"), "s12.x1#2": ("s12.x1#1",),
+         "s12.x1#3": ("s12.x1#1", "fig8a#9"), "s12.p1#1": ("s12.x2#2",), "s13.x1#5": ("s13.x1#4",), "s13.x2#3": ("s13.x2#2", "s13.p1#1"),
+         "s13.p2#4": (grp("sims"), grp("C"), grp("D")), "s14.p1#3": ("s14.p1#1", "s14.p1#2"), "s14.p1#4": ("s14.p1#2", f"{K}:refs:36"),
+         "s16.p1#1": ("s16.p3#1", "s16.p7#1", "s16.p9#1"), "s16.p3#1": ("s16.p3#2", "s16.p5#4"), "s16.p4#4": ("s16.p4#1", "s16.p4#3"),
+         "s16.p5#7": ("s16.p3#2",), "s16.p5#8": ("s16.p5#7",), "s16.p6#1": ("s10.p1#2", "s16.p5#4"), "s16.p7#1": ("s16.p7#2", "s16.p8#2"),
+         "s16.p7#3": ("s16.p7#2",), "s16.p8#1": ("s16.p7#4",), "s16.p9#1": ("s12.x2#2",), "s16.p10#1": (grp("repro"), "s16.p10#2"),
+         "s17.p2#3": ("s17.p2#2",), "s18.p4#1": ("s14.x1#2",), "s18.p5#1": ("s14.x1#3",), "s18.p6#1": ("s14.x1#2", "fig11b#1"),
+         "s19.p3#7": ("s19.p3#5", "s19.p3#6", "s19.p1#2"), "s19.p4#2": ("tab2.r7c6#1", "tab2.r5c6#1", "tab2.r4c6#1"),
+         "s19.p4#3": ("tab2.r7c7#1", "tab2.r5c7#1"), "s20.p1#1": ("s16.p1#1",), "s20.p2#1": (grp("C"), grp("D")),
+         "s20.p2#2": ("s13.x1#3", "fig9b#1", "fig9e#1"), "s20.p2#3": ("s19.p3#5", "s13.p1#1"), "s20.p3#1": ("s10.p2#2", "s14.x1#1")}
+for c, sup in CLAIM.items():
+    put(PAPER, c)
+    ln(c, *sup)
+for f in C.facts():                                                            # definitions: terms and symbols of the paper
+    if f["type"] == "definition" and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = PAPER
+for f in C.facts():                                                            # a value computed from others: under its first input
+    if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
+assert not left, left
+for r in sorted({p for p in PARENT.values() if ":refs:" in p}, key=lambda x: int(x.rsplit(":", 1)[1])):
+    kids = [f for f in C.facts() if PARENT.get(f["fact_id"]) == r]
+    ev = list(dict.fromkeys(f["evidence"].split(";")[0] for f in kids))
+    N(r, "cited", f"cited work, reference {r.rsplit(':', 1)[1]} of the paper", PAPER, evidence=";".join(ev),
+      label_as_printed=f"ref. {r.rsplit(':', 1)[1]}")
+for f in C.facts():
+    if f["fact_id"] in PARENT:
+        f["parent"] = PARENT[f["fact_id"]]
+        f["links"] = LINKS.get(f["fact_id"], "")
 write(K, PID)

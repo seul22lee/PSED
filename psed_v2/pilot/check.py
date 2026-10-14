@@ -9,6 +9,8 @@ are numbers; every points_ref names a curve of <paper_id>.points.json and every 
 quantity, qualifiers, value, range, unit, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
+Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
+every run has a child; every claim has a link; tree rows (ids without "#") are not counted as facts.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
 import collections, csv, json, re, sys
@@ -33,7 +35,8 @@ def words(t):
 def check(pid):
     err = []
     els = {r["element_id"]: r for r in rd(HERE / f"{pid}.elements.csv")}
-    facts = rd(HERE / f"{pid}.facts.csv")
+    rows = rd(HERE / f"{pid}.facts.csv")
+    facts = [r for r in rows if "#" in r["fact_id"]]                 # tree rows (stage 3) have ids without "#"
     cov = rd(HERE / f"{pid}.coverage.csv")
     pts = json.loads((HERE / f"{pid}.points.json").read_text(encoding="utf-8")) if (HERE / f"{pid}.points.json").exists() else {}
     if not facts:
@@ -114,7 +117,60 @@ def check(pid):
                     err.append(f"{c['element_id']}: covered by {i}, which does not cite it")
         elif c["status"] == "no knowledge" and not c["reason"]:
             err.append(f"{c['element_id']}: no knowledge without a reason")
-    return err, summary(els, facts, cov)
+    err += check_tree(rows, els)
+    s = summary(els, facts, cov)
+    s["tree"] = tree_summary(rows) if any(r["type"] == "paper" for r in rows) else {}
+    return err, s
+
+
+def check_tree(rows, els):
+    """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links
+    resolve; no cycles; every run has a child; every claim has a link; tree rows use the node types (cited works: cited)."""
+    if not any(r["type"] == "paper" for r in rows):
+        return []
+    err = []
+    R = {r["fact_id"]: r for r in rows}
+    roots = [r["fact_id"] for r in rows if not r.get("parent")]
+    if [R[i]["type"] for i in roots] != ["paper"]:
+        err.append(f"tree: roots {roots[:5]} (want one paper row)")
+    for r in rows:
+        i, p = r["fact_id"], r.get("parent", "")
+        if p and p not in R:
+            err.append(f"{i}: parent {p} does not exist")
+        for l in filter(None, r.get("links", "").split(";")):
+            if l not in R:
+                err.append(f"{i}: link {l} does not exist")
+        if "#" not in i:
+            if r["type"] not in L.NODE_TYPES + ["cited"]:
+                err.append(f"{i}: tree row type {r['type']}")
+            for e in filter(None, r["evidence"].split(";")):
+                if e not in els:
+                    err.append(f"{i}: evidence {e} not an element")
+            for q in L.qualifiers_ok(r["qualifiers"]):
+                err.append(f"{i}: qualifier {q}")
+        if r["type"] == "claim" and not r.get("links"):
+            err.append(f"{i}: claim without links")
+    for r in rows:                                                      # walk up: must reach the root without a repeat
+        seen, i = set(), r["fact_id"]
+        while i in R and R[i].get("parent"):
+            if i in seen:
+                err.append(f"{r['fact_id']}: cycle through {i}"); break
+            seen.add(i); i = R[i]["parent"]
+    kids = collections.Counter(r.get("parent") for r in rows)
+    for r in rows:
+        if r["type"] == "run" and not kids[r["fact_id"]]:
+            err.append(f"{r['fact_id']}: run without children")
+    return err
+
+
+def tree_summary(rows):
+    R = {r["fact_id"]: r for r in rows}
+    root = next(r["fact_id"] for r in rows if r["type"] == "paper")
+    under = [r for r in rows if r.get("parent") == root and "#" in r["fact_id"]]
+    runs = collections.Counter(re.search(r"run=(\w+)", r["qualifiers"]).group(1) for r in rows if r["type"] == "run")
+    return dict(tree_rows=collections.Counter(r["type"] for r in rows if "#" not in r["fact_id"]), runs=dict(runs),
+                under_paper=collections.Counter(r["type"] for r in under),
+                claims_unlinked=sum(1 for r in rows if r["type"] == "claim" and not r.get("links")))
 
 
 def summary(els, facts, cov):
@@ -162,6 +218,10 @@ if __name__ == "__main__":
         if s:
             print("   elements:", s["elements"])
             print("   facts:", s["n_facts"], s["facts"], "| quantity other:", s["quantity_other"])
+            if s.get("tree"):
+                t = s["tree"]
+                print("   tree rows:", dict(t["tree_rows"]), "| runs:", t["runs"], "| facts directly under the paper:",
+                      sum(t["under_paper"].values()), dict(t["under_paper"]), "| claims without links:", t["claims_unlinked"])
             print("   panels:", s["panels"])
             for lab, (r, n) in (("text", s["text_numbers"]), ("table", s["table_numbers"])):
                 print(f"   numbers in {lab} reaching a fact: {r}/{n} ({100 * r / max(n, 1):.0f}%)")

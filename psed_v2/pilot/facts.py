@@ -22,6 +22,16 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   method       a short id from lists.METHODS
   mentions     sample, series, condition, figure and reference labels written in the element, as printed, ";"-separated
   inputs       fact_ids this fact is computed or fitted from, when the element says so
+  parent       (stage 3) one id: the row without which this fact would not exist; blank only for the paper row
+  links        (stage 3) ids of a second home, ";"-separated: a claim's supporting facts, the same data shown twice
+
+Stage 3 makes each paper one tree inside its facts file. Tree rows have ids without "#" and are added with N():
+  <key>                    type=paper, the root
+  <key>:process            type=process, conditions shared by every run
+  <key>:grp:<name>         type=group, a set of runs the paper names (a series, a reproducibility set, the simulations)
+  <key>:run<n>, :sim:<k>   type=run, a deposition, a specimen or a simulation; qualifiers run=<kind>;how=stated|inferred;<key>=<v>
+  <key>:refs:<n>           type=cited, a cited work (reference number n)
+Tree rows do not count as facts and do not enter coverage.csv.
 """
 import csv, json, re, sys
 from pathlib import Path
@@ -32,7 +42,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "points_ref", "data_kind", "method", "mentions", "inputs"]
+          "value_max", "censor", "unit", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -51,6 +61,23 @@ def F(key, evidence, type_, statement, **kw):
         row[k] = ";".join(v) if isinstance(v, (list, tuple)) else str(v)
     _facts.append(row)
     return fid
+
+
+def N(fid, type_, statement, parent, evidence="", **kw):
+    """Add a tree row (paper, process, group, run or cited work); returns its id."""
+    row = {k: "" for k in FIELDS}
+    row.update(fact_id=fid, type=type_, statement=statement, parent=parent, evidence=evidence)
+    for k, v in kw.items():
+        if k not in FIELDS:
+            raise KeyError(k)
+        row[k] = ";".join(v) if isinstance(v, (list, tuple)) else str(v)
+    _facts.append(row)
+    return fid
+
+
+def facts():
+    """The rows added so far (for a paper script's stage-3 pass)."""
+    return _facts
 
 
 def NK(element_ids, reason):
@@ -127,6 +154,8 @@ def write(key, pid):
     texts = elements.texts(pid)
     by_el = {}
     for r in _facts:
+        if "#" not in r["fact_id"]:
+            continue                                          # tree rows are not facts
         for e in r["evidence"].split(";"):
             by_el.setdefault(e, []).append(r)
     rows = []
@@ -140,5 +169,6 @@ def write(key, pid):
     with (HERE / f"{pid}.coverage.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COV_FIELDS); w.writeheader(); w.writerows(rows)
     import collections
-    print(pid, len(_facts), "facts", dict(collections.Counter(r["type"] for r in _facts)),
+    fs = [r for r in _facts if "#" in r["fact_id"]]
+    print(pid, len(fs), "facts", dict(collections.Counter(r["type"] for r in fs)), "| tree rows", len(_facts) - len(fs),
           dict(collections.Counter(r["status"] for r in rows)))
