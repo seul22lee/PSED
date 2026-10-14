@@ -4,7 +4,10 @@
   facts; (b) the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
-  next to its facts. Tree rows (ids without "#") are not counted as facts anywhere.
+  next to its facts. Tree rows (ids without "#") are not counted as facts anywhere. Above the trees, the forest: a quantity
+  picker highlights every numeric leaf of that quantity in all three trees (cited works included) and draws one scatter of
+  them (x = a chosen quantity taken from the leaf's nearest scope, forest.context; colour = paper; hollow = cited; a leaf
+  whose qualifiers or unit differ from the majority is flagged with the differing key).
 - Cases: the thirteen case studies (cases.py; Case 8 draws on cremers.py).
 - Matrix: quantities per paper and papers x cases (matrix.py).
 
@@ -21,10 +24,15 @@ V2 = HERE.parent
 sys.path.insert(0, str(HERE))
 import elements  # noqa: E402
 from check import KEYS, summary  # noqa: E402
+from forest import Forest  # noqa: E402
 
 
 def rd(p):
     return list(csv.DictReader(p.open(encoding="utf-8"))) if p.exists() else []
+
+
+FOREST = Forest()
+PAGE_FIELDS = FOREST.page_fields()
 
 
 def paper(pid, key):
@@ -51,18 +59,19 @@ def paper(pid, key):
     for f in facts:
         if f["points_ref"] in pts:
             f["points"] = pts[f["points_ref"]]["points"]
+        f.update(PAGE_FIELDS[key].get(f["fact_id"], {}))
     s = summary({e["element_id"]: e for e in els}, facts, list(cov.values())) if facts else {}
-    return dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s)
+    return dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s, quantities=FOREST.quantities())
 
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pilot Facts Layer</title><style>
 :root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#6b6a66;--line:#e2dfd8;--card:#fff;--cov:#d8eedb;--covb:#2e7d3a;--nk:#ecebe7;--nkb:#9a978f;
---miss:#f7d6d2;--missb:#b3261e;--acc:#1f5fa8;--sel:#fff3c4}
+--miss:#f7d6d2;--missb:#b3261e;--acc:#1f5fa8;--sel:#fff3c4;--c0:#1f5fa8;--c1:#c0392b;--c2:#2e7d3a}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--fg:#e8e6e1;--mut:#a3a19b;--line:#33352f;--card:#1f2123;
---cov:#1f3a25;--covb:#6cc37a;--nk:#2a2b2d;--nkb:#77756f;--miss:#4a1f1c;--missb:#ff8a80;--acc:#7fb0ef;--sel:#4a4226}}
+--cov:#1f3a25;--covb:#6cc37a;--nk:#2a2b2d;--nkb:#77756f;--miss:#4a1f1c;--missb:#ff8a80;--acc:#7fb0ef;--sel:#4a4226;--c0:#7fb0ef;--c1:#ff8a80;--c2:#6cc37a}}
 :root[data-theme="dark"]{--bg:#17181a;--fg:#e8e6e1;--mut:#a3a19b;--line:#33352f;--card:#1f2123;--cov:#1f3a25;--covb:#6cc37a;--nk:#2a2b2d;
---nkb:#77756f;--miss:#4a1f1c;--missb:#ff8a80;--acc:#7fb0ef;--sel:#4a4226}
+--nkb:#77756f;--miss:#4a1f1c;--missb:#ff8a80;--acc:#7fb0ef;--sel:#4a4226;--c0:#7fb0ef;--c1:#ff8a80;--c2:#6cc37a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
 header{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 h1{font-size:17px;margin:0 12px 0 0}button,select,input{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
@@ -91,6 +100,9 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 .nd code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.nd code.ev:hover{color:var(--acc);text-decoration:underline}
 .nd.hl>summary,.nd.hl{background:var(--sel);border-radius:3px}.tree{margin-bottom:10px}.tree>details>summary{font-size:15px;font-weight:600}
 .flag{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
+#forest{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:10px}
+svg.sc{width:100%;max-width:820px;height:auto;display:block}svg.sc text{font-size:11px;fill:var(--fg)}svg.sc .tk{fill:var(--mut);font-size:10px}svg.sc .gr{stroke:var(--line)}
+svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
 </style></head><body>
 <header><h1>Facts layer: pilot papers</h1><span id="papers"></span><span id="views"></span>
@@ -151,6 +163,45 @@ function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
  const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
  return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
+let FQ="",FX="";
+const PAPERQ=()=>{const c={};DATA.forEach(d=>Object.entries(d.quantities).forEach(([q,n])=>c[q]=n));return c};
+function fleaves(){const out=[];if(!FQ)return out;DATA.forEach((d,i)=>d.facts.forEach(f=>{if(f.quantity===FQ&&f.ctx)out.push({d,i,f})}));return out}
+const fv=f=>{const v=parseFloat(String(f.value).replace("−","-").replace(/\s/g,""));if(!isNaN(v))return v;const lo=parseFloat(f.value_min),hi=parseFloat(f.value_max);
+ if(!isNaN(lo)&&!isNaN(hi))return lo>0&&hi>0?Math.sqrt(lo*hi):(lo+hi)/2;return isNaN(lo)?hi:lo};
+function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(l=>Object.entries(l.f.ctx).forEach(([q,c])=>{if(c!=="ambiguous"&&q!==FQ)xs[q]=(xs[q]||0)+1}));
+ if(FQ&&!(FX in xs))FX=("deposition_temperature" in xs)?"deposition_temperature":Object.keys(xs)[0]||"";
+ return `<div class="fl"><label>quantity <select onchange="FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${q} (${Q[q]})</option>`).join("")}</select></label>
+ <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${q} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
+ <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
+function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".nd.hl").forEach(n=>n.classList.remove("hl"));
+ const ls=fleaves();let shown=0;const pts=[];
+ ls.forEach(l=>{const el=document.querySelector(`[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}
+  const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y:fv(l.f)});shown++}});
+ const amb=ls.filter(l=>l.f.ctx[FX]==="ambiguous").length,nox=ls.length-shown-amb;
+ $("#fn").textContent=FQ?`${ls.length} leaves highlighted; ${shown} in the scatter${amb?`, ${amb} with an ambiguous ${FX}`:""}${nox?`, ${nox} with no ${FX} in scope`:""}`:"";
+ $("#scat").innerHTML=pts.length?scatter(pts):""}
+function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
+ const xs=pts.flatMap(p=>[p.x,p.l.f.ctx[FX][3],p.l.f.ctx[FX][4]]).filter(v=>v!=null&&!isNaN(v)),ys=pts.flatMap(p=>[p.y,parseFloat(p.l.f.value_min),parseFloat(p.l.f.value_max)]).filter(v=>!isNaN(v));
+ const pos=a=>a.every(v=>v>0),span=a=>Math.log10(Math.max(...a)/Math.min(...a));const lx=pos(xs)&&span(xs)>2,ly=pos(ys)&&span(ys)>2;
+ const tx=v=>lx?Math.log10(v):v,ty=v=>ly?Math.log10(v):v;let x0=Math.min(...xs.map(tx)),x1=Math.max(...xs.map(tx)),y0=Math.min(...ys.map(ty)),y1=Math.max(...ys.map(ty));
+ if(x1===x0){x0-=1;x1+=1}if(y1===y0){y0-=1;y1+=1}const px=(x1-x0)*0.06,py=(y1-y0)*0.08;x0-=px;x1+=px;y0-=py;y1+=py;
+ const X=v=>L+(tx(v)-x0)/(x1-x0)*(W-L-R),Y=v=>H-B-(ty(v)-y0)/(y1-y0)*(H-T-B);
+ const ticks=(a,b,log)=>{if(log){const o=[];for(let k=Math.ceil(a);k<=Math.floor(b);k++)o.push(10**k);return o}const st=10**Math.floor(Math.log10((b-a)/4||1)),s2=(b-a)/st>8?5*st:(b-a)/st>4?2*st:st;const o=[];for(let v=Math.ceil(a/s2)*s2;v<=b+1e-9;v+=s2)o.push(+v.toPrecision(10));return o};
+ const fmt=v=>Math.abs(v)>=1e4||Math.abs(v)<1e-2?v.toExponential(0).replace("e+","e"):+v.toPrecision(3);
+ const units=[...new Set(pts.map(p=>p.l.f.unit))].join(", "),xunits=[...new Set(pts.map(p=>p.xs.replace(/^[^\s]+\s?/,"")))].filter(Boolean).join(", ");
+ let g=`<svg class="sc" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(FQ)} against ${esc(FX)}">`;
+ ticks(x0,x1,lx).forEach(v=>{const vv=lx?v:v;const x=L+(( lx?Math.log10(v):v)-x0)/(x1-x0)*(W-L-R);g+=`<line class="gr" x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${T}" y2="${H-B}"/><text class="tk" x="${x.toFixed(1)}" y="${H-B+14}" text-anchor="middle">${fmt(vv)}</text>`});
+ ticks(y0,y1,ly).forEach(v=>{const y=H-B-((ly?Math.log10(v):v)-y0)/(y1-y0)*(H-T-B);g+=`<line class="gr" x1="${L}" x2="${W-R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/><text class="tk" x="${L-6}" y="${(y+3).toFixed(1)}" text-anchor="end">${fmt(v)}</text>`});
+ g+=`<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle">${esc(FX)}${xunits?` (${esc(xunits)})`:""}${lx?", log":""}</text><text transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">${esc(FQ)}${units?` (${esc(units)})`:""}${ly?", log":""}</text>`;
+ pts.forEach(p=>{const f=p.l.f,c=`var(--c${p.l.i})`,x=X(p.x),y=Y(p.y);const lo=parseFloat(f.value_min),hi=parseFloat(f.value_max);
+  if(!isNaN(lo)&&!isNaN(hi)&&(!ly||(lo>0&&hi>0)))g+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(lo).toFixed(1)}" y2="${Y(hi).toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
+  const cx=f.ctx[FX];if(cx[3]!=null&&cx[4]!=null&&(!lx||(cx[3]>0&&cx[4]>0)))g+=`<line x1="${X(cx[3]).toFixed(1)}" x2="${X(cx[4]).toFixed(1)}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
+  const tip=`${p.l.d.key} ${f.fact_id.split(":")[1]}: ${esc(f.statement)}\n${esc(FQ)} = ${esc(valStr(f))}${f.qualifiers?" ["+esc(f.qualifiers)+"]":""} · ${esc(f.data_kind)}${f.cited?" · cited":""}\n${esc(FX)} = ${esc(p.xs)} (${esc(f.ctx[FX][2].split(":")[1])})${(f.flag||[]).length?"\nflag: "+f.flag.join(", "):""}`;
+  g+=`<circle class="pt" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="${f.cited?"var(--card)":c}" stroke="${c}" stroke-width="2" onclick="jump('${f.fact_id}')"><title>${tip}</title></circle>`;
+  if(f.censor)g+=`<text x="${(x+7).toFixed(1)}" y="${(y+4).toFixed(1)}" class="tk">${esc(f.censor)}</text>`;
+  if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
+ return g+"</svg>"}
+function jump(fid){const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
 function treeView(){const trees=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;
   return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
  return `<div id="forest"></div><div class="wrap"><div>${trees}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
@@ -168,7 +219,7 @@ function render(){const d=DATA[P];
  <div class="tile"><b>${d.tree.filter(n=>n.type==="run").length} / ${d.tree.filter(n=>n.type==="group").length} / ${d.tree.filter(n=>n.type==="cited").length}</b><span>tree: runs / groups / cited works (not facts)</span></div>
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
- $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d)}
+ $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree")applyForest()}
 render();
 </script></body></html>"""
 
