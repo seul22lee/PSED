@@ -1,10 +1,10 @@
 # Ingest
 
-Ingest turns each in-scope PDF (`corpus/raw/<paper_id>.pdf`, 59 papers with a PDF on 2026-10-13: 44 obtained by script or copied, 15 obtained by hand that day) into one folder
+Ingest turns each in-scope PDF (`corpus/raw/<paper_id>.pdf`, 58 in-scope papers with a PDF on 2026-10-13, plus Guyon 2004, ingested before its exclusion from the scope) into one folder
 `ingest/final/<paper_id>/` with the body text, the abstract, the figures with their captions and crops, the tables
 with a rule check and a crop, the equations from two tools, and flags wherever the output may be wrong. No LLM is
 called. The two local vision models (Marker's OCR, Docling's formula reader) are not reproducible bit for bit, so each
-paper is converted once and the result is kept. The numbers of the 59 papers, with the first 44 and the 15 added shown separately, are in `ingest/NUMBERS.md`; what is still
+paper is converted once and the result is kept. The numbers of the 58 papers, with Guyon 2004 on its own line outside every total, are in `ingest/NUMBERS.md`; what is still
 wrong, and the known limits, in `ingest/ERRORS.md`.
 
 ## Rerun
@@ -59,8 +59,8 @@ the decoded text layer inside the box: `ok`, `flag` with reasons, or `not checka
 a decoding). Flag reasons: numeric tokens of the layer missing from or extra in the markdown (sign, decimals,
 exponents; with and without thousands separators) and the counts of ± ↑ ↓ ↗ ↘ ≤ ≥ ≈ ∼ ≪ ≫ ×; letters of the layer the
 table lacks; header colspans against body columns, an empty trailing header or column, a short last row, numbers just
-below the box on the table's columns; fewer than 5 layer words; no cells. No exception: footnotes or a hidden duplicate
-layer inside the box also flag.
+below the box on the table's columns; fewer than 5 layer words; no cells (the table block drawn as an image, or a Table caption bound
+to no table block at all: a picture, or the caption alone). No exception: footnotes or a hidden duplicate layer inside the box also flag.
 
 **Equations** (`equations[{page, bbox, number, docling, marker, status}]`). Docling's layout gives the formula boxes;
 CodeFormula reads our crops (R1 the formula box at 216 dpi, R2 the band of the text column when the box is at most
@@ -70,8 +70,10 @@ notation normalisation), `differ`, `docling only`, `marker only`.
 
 **Text-layer decoding** (`glyph_codes.json`, used by the table check and the body check). Named characters of
 symbol-encoded fonts by a table per font family, `(cid:N)` codes by a table per embedded subset, every entry checked
-on a glyph crop (`reports/glyph_evidence/`); glyphs viewed and left undecoded are listed with the reason. A unit or a
-table with an undecoded glyph is not checkable.
+on a glyph crop (`reports/glyph_evidence/`); glyphs viewed and left undecoded are listed with the reason. A font whose named
+characters carry wrong Unicode values (the Wiley fonts of 10.1002_cvde.200390005) is decoded by a family table like a symbol font. A unit
+or a table with an undecoded glyph is not checkable; a unit whose only words of 4+ letters hold undecoded glyphs is not checkable too,
+never excluded as a unit without a word.
 
 ## Body check
 
@@ -119,7 +121,7 @@ to locate, per equation line with an undecoded glyph; output side per sentence t
 paragraph blocked by an undecoded glyph in an equation or neighbour line, per paragraph a not-checkable unit also
 matches (output text, the numbers left unchecked, a crop of the Marker block). Every line counted in
 `body_check.counts.lines` is either checked or covered by a layer-side flag; every output unit counted as not
-checkable carries an output-side flag (both identities hold on the 59 papers). Output paragraphs with numbers that no
+checkable carries an output-side flag (both identities hold on all 59 ingested papers). Output paragraphs with numbers that no
 unit matches (reference entries, display equations, furniture) are counted, not flagged.
 
 ## Repairs (`body_repair.py`, born-digital pages only)
@@ -143,29 +145,28 @@ body_flags, body_check (counts, not_checkable_reasons, recovered, line_numbers, 
 body_repairs_undone, sources; `final/<id>/figures/` (figure crops, table crops, flag crops). Intermediates kept for a
 rerun without the vision models: `marker/<id>/` (blocks.json, marker.md and document.md, images, bands.json with its
 band crops, structure.json, table crops) and `docling/<id>/equations.json`. Tracked: the seven pipeline scripts, the four report and check scripts, `glyph_codes.json`, `answers/` (Claude Code's
-page judgements with ids and verdicts only: `tables.json` 69 tables, `equations.json` 198 items of the first 44 papers (every differ pair and single-tool item judged
-on the crop, the agree pairs accepted), `body_flags.json` 419 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
+page judgements with ids and verdicts only: `tables.json` 90 tables, `equations.json` 254 items (every differ pair and single-tool item of the 58 papers judged
+on the crop, the agree pairs of the first 13 papers accepted), `body_flags.json` 512 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
 `ERRORS.md`, `NUMBERS.md`, `CHANGELOG.md`.
 
 ## Numbers
 
-See `ingest/NUMBERS.md` (one table, each number with the file it comes from; three columns: all 59 papers, the first 44, the 15 added on 2026-10-13).
+See `ingest/NUMBERS.md` (one table, each number with the file it comes from; the 58 in-scope papers, and Guyon 2004 on its own line
+outside every total).
 
-**The first 44 papers** (the answer set `ingest/answers/` covers these and only these): 69 tables
-(34 ok, 34 flagged, 1 not checkable), 321 equation pairs (197 agree, 109 differ, 15 one tool; every differ pair judged on the crop: Marker right 44,
-Docling right 33, both wrong 16, equivalent 16; the single-tool items: 12 right, 3 wrong), 23,935 body lines of
-which 23,779 checked (99.3 %) and 156 not checkable with a flag each, 238 number or letter flags (all judged: 78 real, 160 not errors), 268 not-checkable
-flags, 12 repairs (0 undone); 44 distinct real body errors in the answer set, 8 corrected by the repairs, 1 partly.
+**The 58 in-scope papers** (the answer set `ingest/answers/` covers all of them): 90 tables (46 ok, 43 flagged, 1 not checkable; 33 wrong
+on the page, 32 of them reaching the review, 1 missed), 434 equation pairs (254 agree, 158 differ, 22 one tool; every differ pair judged
+on the crop: Marker right 74, Docling right 39, both wrong 18, equivalent 27; the single-tool items: 15 right, 7 wrong), 30,683 body
+lines of which 30,516 checked (99.5 %) and 167 not checkable with a flag each, 344 number or letter flags (all judged: 106 real, 238 not
+errors), 396 not-checkable flags, 15 repairs (0 undone); 58 distinct real body errors in the answer set, 9 corrected by the repairs,
+2 partly.
 
-**The 15 papers added on 2026-10-13** (PDFs obtained by hand; nothing judged): 23 tables (9 ok, 2 flagged, 10 not checkable, 2 without a check
-because the table holds plots), 137 equation pairs (68 agree, 60 differ, 9 one tool), 6,644 body lines of which 3,875 checked (58.3 %), 90 number or
-letter flags, 921 not-checkable flags, 1 repair. The body check covers much less of these papers: 2,707 lines are not checkable because their glyphs
-are not in `glyph_codes.json`, which was built from the fonts of the first 44 (14 of the 15 date from 2003 to 2017 and embed other fonts); one
-paper (10.1002_cvde.200390005) has no checked line at all. The glyph table was not extended and the new flags were not judged in this run.
+**Guyon 2004** (10.1016_j.cattod.2003.11.022: ingested, then excluded from the scope as not an ALD paper; not judged; in no total):
+2 tables (both flagged), 24 equation pairs (11 agree, 11 differ, 2 one tool), 364 body lines of which 308 checked (84.6 %), 30 number
+flags (unjudged), 82 not-checkable flags, 0 repairs.
 
-**All 59**: 92 tables, 458 equation pairs, 30,579 body lines of which 27,654 checked (90.4 %), 328 number or letter flags (238 judged), 1,189
-not-checkable flags, 13 repairs. "All judged" holds for the 44, not for the 59. `regression.py` passes on the 59 (every known real error kept, no known
-not-error newly flagged, repairs intact; 72 unjudged flag keys added), and the 44 earlier outputs in `final/` are byte for byte as before.
+`regression.py` passes on `final/` (every known real error kept, no known not-error newly flagged, repairs intact; the 25 unjudged
+keys are Guyon's).
 
 ## Hand-off to the extraction stage
 

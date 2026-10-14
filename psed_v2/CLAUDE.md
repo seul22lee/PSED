@@ -54,7 +54,7 @@ psed_v2/
   (`~/opt/llama.cpp/llama-b11574`, `~/opt/llama.cpp/cudart-llama-b11574-bin-ubuntu-cuda-12.8-x64`)
   on `LD_LIBRARY_PATH`.
 - Marker output is not deterministic across runs (llama.cpp backend, no fixed seed or temperature): run once per
-  paper and keep the result; the 59 outputs are not reproducible bit for bit.
+  paper and keep the result; the 59 ingested outputs (58 in scope and Guyon 2004) are not reproducible bit for bit.
 
 ## Rules
 

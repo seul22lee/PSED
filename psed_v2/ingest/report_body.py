@@ -29,7 +29,7 @@ def img(pid, crop):
         return ""
     try:
         b = (FINAL / pid / crop).read_bytes()
-    except FileNotFoundError:
+    except (FileNotFoundError, IsADirectoryError):
         return "(no crop)"
     return f'<img src="data:image/png;base64,{base64.b64encode(b).decode()}">'
 
@@ -73,10 +73,11 @@ def main():
             if v == "unjudged":
                 newrows.append(row)
     n = len(rows)
+    n_papers = sum(1 for p in FINAL.iterdir() if (p / "structure.json").exists())
     H = [f"""<!doctype html><html><head><meta charset="utf-8"><title>Body flags review</title><style>
 body{{font-family:sans-serif;font-size:13px}} table{{border-collapse:collapse}} td{{border:1px solid #ccc;padding:4px;vertical-align:top;max-width:520px}}
 img{{max-width:500px}} tr.real td.v{{background:#fdd}} tr.not td.v{{background:#dfd}} tr.unjudged td.v{{background:#fc9}} tr.nc td.v{{background:#eee}}</style></head><body>
-<h1>Body flags of the final output ({n} flags in the main table, {len(short)} under-4-word lines, 44 papers)</h1>
+<h1>Body flags of the final output ({n} flags in the main table, {len(short)} under-4-word lines, {n_papers} papers)</h1>
 <p>Built {datetime.date.today().isoformat()} by ingest/report_body.py from ingest/final/*/structure.json. Verdict per flag from ingest/answers/body_flags.json
 (Claude Code on the crop): real = Marker's text differs from the PDF text layer at that number; not = the number is right, the flag is a
 measurement artefact (cause given); not checkable = what the check cannot compare (reason given), reviewed like a not-checkable table;
