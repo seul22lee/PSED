@@ -242,19 +242,24 @@ def case1():
             x50 = None if nofront else x50_of(s["pts"])
             sp = sorted(s["pts"])
             rises = bool(sp) and sp[0][1] < 0.8 and sp[-1][1] > sp[0][1] + 0.2
-            pd.setdefault(k, []).append((x50, p["paper"], n))
+            fac = 0.5 if (k in ("channel_thermal", "channel_plasma", "radial") or s["width"].startswith("w ")) else 1.0 if k in ("hole", "pore") else None
+            pd.setdefault(k, []).append((x50, p["paper"], n, fac))
             plots[k].series([(x, y) for x, y in sorted(s["pts"]) if x > 0], slot, n, f"{n}. {who(p['paper'])}, {p['series']}", dash=dash, line=not s["two"], tag_level=[0.82, 0.66, 0.5, 0.34][n % 4])   # folded two-sided scans: points only
             legend.append([f'<span class="num">{n}</span>', swatch(slot, dash), E(dict((c[0], c[1]) for c in CLASSES)[k]), f"{E(who(p['paper']))}, Fig. {p['figure']}{E(str(p.get('panel', '')))}", E(p["series"]), E(s["width"]),
                            code(f"normalized_thickness{{reference={s['ref'].split(' ')[0]}}}") + (" " + E(s["ref"][len(s['ref'].split(' ')[0]):]) if " " in s["ref"] else ""),
                            f"{x50:.3g}" if x50 else ("no front: fully coated to the closed end" if nofront else "no front: grows with depth" if rises else f"no crossing (θ ≥ 0.5 to {max(x for x, _ in s['pts']):.3g})")])
-    pdrows, stats = [], {}
+    pdrows, stats, ear = [], {}, {}
+    EARRULE = {"channel_thermal": "x / (2H)", "channel_plasma": "x / (2H)", "hole": "x / d (hole), x / (2w) (trench)", "pore": "x / d", "radial": "x / (2H)", "porous": "no rule in the review", "plain": "—"}
     for k, title, xl, wr in CLASSES:
-        v = sorted(x for x, _, _ in pd.get(k, []) if x)
         allv = pd.get(k, [])
         if not allv:
             continue
-        stats[k] = v
-        pdrows.append([E(title), E(wr), str(len(allv)), str(len({p for _, p, _ in allv})), str(len(v)), (f"{v[0]:.3g} to {v[-1]:.3g}" if v else "—"), (f"{v[len(v) // 2]:.3g}" if v else "—"), (f"{v[-1] / v[0]:.0f}" if len(v) > 1 else "—")])
+        v = sorted(x for x, _, _, _ in allv if x)
+        e = sorted(x * f for x, _, _, f in allv if x and f)
+        stats[k], ear[k] = v, e
+        mid = lambda a: a[len(a) // 2] if len(a) % 2 else (a[len(a) // 2 - 1] + a[len(a) // 2]) / 2
+        pdrows.append([E(title), E(wr), str(len(allv)), str(len({p for _, p, _, _ in allv})), str(len(v)), (f"{v[0]:.3g} to {v[-1]:.3g}" if v else "—"), (f"{mid(v):.3g}" if v else "—"),
+                       E(EARRULE[k]), (f"{e[0]:.3g} to {e[-1]:.3g}" if e else "—"), (f"{mid(e):.3g}" if e else "—"), ((f"{v[-1] / v[0]:.1f}" if v[-1] / v[0] < 10 else f"{v[-1] / v[0]:.0f}") if len(v) > 1 else "—")])
     cards = [
         (Y, 6, "", [("structure", "PillarHall, gap 0.5 µm"), ("data kind", "measured points with a fitted curve")]),
         (M, 9, "c", [("structure", "PillarHall, H 100, 500, 2000 nm"), ("data kind", "measured, normalized by the authors")]),
@@ -271,7 +276,9 @@ def case1():
         ["Coverage; Normalized Al concentration", code("normalized_thickness{reference=…}"), "none", "“coverage” is ambiguous (Case 5)"],
     ])
     plain = [s for s in ser if s["cls"] == "plain"]
-    med = {k: (v[len(v) // 2] if v else None) for k, v in stats.items()}
+    mid = lambda a: (a[len(a) // 2] if len(a) % 2 else (a[len(a) // 2 - 1] + a[len(a) // 2]) / 2) if a else None
+    med = {k: mid(v) for k, v in stats.items()}
+    mede = {k: mid(v) for k, v in ear.items()}
     rng = lambda k: (f"{stats[k][0]:.3g} to {stats[k][-1]:.3g}" if stats.get(k) else "none")
     papers = sorted({s["p"]["paper"] for s in ser})
     return f"""
@@ -282,9 +289,10 @@ def case1():
 <h3><span class="step">After</span> One panel per structure class</h3>{ILL}
 <div class="plots">{"".join(p.svg() for p in plots.values())}</div>
 <h4>Half-thickness depth in normalized units, per class</h4>
-{table(["Class", "Width used", "Series", "Papers", "With a crossing", "x̃ at one half, range", "Median", "Max over min"], pdrows)}
+{table(["Class", "Width as stored", "Series", "Papers", "With a crossing", "PD50 as stored, range", "Median", "EAR rule of the review", "PD50 as EAR, range", "Median", "Spread within the class (max over min)"], pdrows)}
 <details><summary>All {len(ser)} series: width, reference and x̃ at one half</summary>{table(["#", "", "Class", "Source", "Series", "Width used", "y id with its reference", "x̃ at one half"], legend, "leg")}</details>
-<p class="take"><b>Takeaway.</b> Within a class the half-thickness depth still spreads: thermal channels and slots {rng("channel_thermal")} channel heights (a factor of {stats["channel_thermal"][-1] / stats["channel_thermal"][0]:.1f}, from 0.1 µm channels to 0.3 mm slots, 150 to 2000 cycles, TMA, TiCl4 and water fronts), plasma channels {rng("channel_plasma")} (a factor of {stats["channel_plasma"][-1] / stats["channel_plasma"][0]:.0f}, set by recombination and pressure regime, Case 11), pores {rng("pore")} pore diameters over 1 to 10 s exposures. What collapses is the scale of thermal fronts: counted in their own width, channels (median {med["channel_thermal"]:.0f}) and pores (median {med["pore"]:.0f}) agree within a factor of {max(med["channel_thermal"], med["pore"]) / min(med["channel_thermal"], med["pore"]):.1f}, from 19 nm pores to 0.3 mm slots. Holes and trenches mostly show no front: {len(pd["hole"]) - len(stats["hole"])} of {len(pd["hole"])} series are coated to the bottom or grow with depth, and the {len(stats["hole"])} crossings sit at {rng("hole")} hole diameters. The radial cavity reaches one half at {rng("radial")} cavity heights, a median {med["channel_thermal"] / med["radial"]:.1f} times below straight thermal channels, as the flux spreads radially. The forest and porous bodies give {rng("porous")} in units of their mean flight path or pore diameter, two crossings a factor of {stats["porous"][-1] / stats["porous"][0]:.0f} apart, so that width does not normalize them; {len(plain)} series stay in plain depth for lack of a stated width.</p>
+<p class="take"><b>Takeaway.</b> Medians of the half-thickness depth as stored: thermal channels and slots {med["channel_thermal"]:.0f} H, pores {med["pore"]:.0f} d (pores {med["pore"] / med["channel_thermal"]:.1f} times deeper); as EAR by the review's rule (slit x/(2H), pore x/d): channels {mede["channel_thermal"]:.0f}, pores {mede["pore"]:.0f} ({mede["pore"] / mede["channel_thermal"]:.1f} times). Within each class the spread stays: thermal channels a factor of {stats["channel_thermal"][-1] / stats["channel_thermal"][0]:.1f} (0.1 µm to 0.3 mm, 150 to 2000 cycles, TMA, TiCl4 and water fronts), plasma channels {stats["channel_plasma"][-1] / stats["channel_plasma"][0]:.0f} (recombination and regime, Case 11), pores {stats["pore"][-1] / stats["pore"][0]:.1f} (1 to 10 s exposures), the radial cavity {stats["radial"][-1] / stats["radial"][0]:.1f} (median {med["radial"]:.0f} H); holes and trenches have only {len(stats["hole"])} crossings in {len(pd["hole"])} series ({rng("hole")} d), the rest coated to the bottom or growing with depth; the two forest and porous crossings are {stats["porous"][-1] / stats["porous"][0]:.0f} times apart; {len(plain)} series stay in plain depth. Exposures are not normalized here (Case 10 does that), so the spreads mix exposure with geometry.</p>
+<p class="note"><b>Width convention.</b> The class-to-class comparison changes by about 2× with the width convention (channels against pores: {med["pore"] / med["channel_thermal"]:.1f} as stored, {mede["pore"] / mede["channel_thermal"]:.1f} as EAR), so <code>dimensionless_distance</code> must store its width: <code>by=H</code>, <code>by=2H</code> or <code>by=d</code>.</p>
 <p class="lim"><b>Limits.</b> Points read by eye from the crops. The width rule is set here per class; for tapered holes and tubes the top width is used, and the CNT forest of 10.3762_bjnano.5.25 has no stated spacing. References differ by series (plateau, entrance, maximum, a stated value; listed per series); curves without a plateau depend on that choice. Cycles, exposures and temperatures differ between series; only units and normalization are removed. Profiles that grow with depth (inhibitor runs) or are flat (fully coated trenches, compacts) have no half-thickness depth. Channel narrowing is not corrected. Scans of pores and compacts open at both ends are folded onto the distance from the nearer face and drawn as points only.</p>
 </section>"""
 
@@ -387,7 +395,7 @@ def case3():
 <h3><span class="step">Ontology step</span> What a sample link needs</h3>{onto}
 <h3><span class="step">After</span> One card per sample</h3>{''.join(cards)}
 <p class="take"><b>Takeaway.</b> A profile becomes checkable when its sample key also points to an image: {len(cards)} sample sets carry a link stated in a caption, {sum(1 for c in cards if c.count('<figure>') == 1)} inside one figure and {sum(1 for c in cards if c.count('<figure>') > 1)} across figures (through a sample number, or a caption naming the images the values were read from). A stated link does not make a profile usable: one of them is a composition scan without a length scale, and in another only one of several membranes is tied to its map.</p>
-<p class="lim"><b>Limits.</b> Only stated links are shown; links that rest on matching conditions alone are listed as “possibly” in CANDIDATES.md and left out here. Three of the four are links inside a single figure, which are the easy case. No points were read for this case. {len(sets)} inventory rows of these four papers carry a named sample key.</p>
+<p class="lim"><b>Limits.</b> Only links stated in a caption are shown ({len(cards)} sample sets in {len({c.split('class="pid">')[1].split('<')[0] for c in cards})} papers); links that rest on matching conditions alone are listed as “possibly” in CANDIDATES.md and left out, among them the 65 nm membranes of 10.1021_cm0303080. {sum(1 for c in cards if c.count('<figure>') == 1)} of the {len(cards)} are links inside a single figure, the easy case. No points were read for this case. {sum(1 for r in FIG if r["paper_id"] in {c.split('class="pid">')[1].split('<')[0] for c in cards} and r["sample"].strip() and not r["sample"].startswith(("u:", "possibly")))} inventory rows of these papers carry a named sample key.</p>
 </section>"""
 
 
@@ -598,7 +606,7 @@ def case6():
 <div class="plots">{plots['part'].svg()}{plots['tube'].svg()}{plots['batch'].svg()}{plots['wafer'].svg()}</div>
 {table(["#", "", "Source", "Series", "Points", "Range read (as printed: Å per cycle, nm for the wafer)", "Half-range over mean, from the points read", "Spread printed by the authors"], rows, "leg")}
 <p class="take"><b>Takeaway.</b> The four studies can share a y axis but not an x axis: what can be compared is one spread per series, from a half-range of about 5% across one wafer (a one-sided gradient on the map; the authors print a 3.3% standard deviation) and a few percent in a wafer batch to tens of percent on a 3D part without baffles. Across a wafer the position is a length and could be a coordinate; on the part, the tube and the batch it is a label.</p>
-<p class="lim"><b>Limits.</b> Points were read by eye. The half-range over mean computed here follows the formula one of the papers prints; whether the other paper's printed percentages use the same formula is not stated, and they do not match the values computed here. The three x axes are labels and must not be read as distances; the panels are separate for that reason. The wafer-batch series carries a within-wafer value on a second axis that is a different scope.</p>
+<p class="lim"><b>Limits.</b> Points were read by eye; the wafer line comes from a colour map (about ±0.05 nm, ±2 mm). The half-range over mean computed here and a standard deviation printed by the authors are different statistics, so different numbers are expected and are not a mismatch; one paper defines its percentage from maximum, minimum and mean, the others print a standard deviation or leave the formula unstated. Three of the four x axes are labels (a point on a part, a spot in a tube, a slot in a batch) and must not be read as distances; the wafer position is a length, in mm along a diameter. The panels are separate for that reason. The wafer-batch series carries a within-wafer value on a second axis that is a different scope.</p>
 </section>"""
 
 
@@ -1105,6 +1113,190 @@ def case11():
 </section>"""
 
 
+# ----------------------------------------------------------------------------- case 12 (S5)
+
+def _match(p, r):
+    return p["paper"] == r["paper_id"] and str(p["figure"]) == r["figure"] and str(p.get("panel", "")).startswith(r["panel"]) and r["series_match"] in p["series"]
+
+
+def case12():
+    with (HERE / "narrowing.csv").open(newline="", encoding="utf-8") as f:
+        NR = list(csv.DictReader(f))
+    c1 = case1_series()
+    c9 = [p for p in PTS if p["case"] == 9 and not p["series"].startswith("model curve")]
+    rows, moved, pts = [], [], []
+    for r in NR:
+        s_nm, w_nm = float(r["film_nm"]), float(r["width_nm"])
+        wm, we = w_nm - s_nm, w_nm - 2 * s_nm                       # mean width over the run (linear growth) and final width
+        share = 2 * s_nm / w_nm
+        hit = next((s for s in c1 if _match(s["p"], r)), None)
+        x50 = x50_of(hit["pts"]) if hit and not str(hit["p"].get("quality", "")).startswith("no front") else None
+        h9 = next((p for p in c9 if _match(p, r)), None)
+        sl = slope_method(h9)[0] if h9 else None
+        c = 13.9 * sl * sl if sl else None
+        cls = hit["cls"] if hit else ""
+        moved.append(dict(r=r, cls=cls, x50=x50, x50m=x50 * w_nm / wm if x50 else None, c=c, cm=c * (wm / w_nm) ** 2 if c else None, ce=c * (we / w_nm) ** 2 if (c and we > 0) else None))
+        pts.append((share, w_nm / wm, w_nm / we if we > 0 else None, r))
+        rows.append([E(who(r["paper_id"])), f"Fig. {r['figure']}{r['panel']}", E(r["series_match"]), f"{w_nm:g}", f"{s_nm:g}", E(r["source"]), f"{share:.0%}",
+                     f"{x50:.3g}" if x50 else "—", f"{x50 * w_nm / wm:.3g}" if x50 else "—", (f"{x50 * w_nm / we:.3g}" if (x50 and we > 0) else ("closed" if we <= 0 else "—")),
+                     f"{c:.2g}" if c else "—", f"{c * (wm / w_nm) ** 2:.2g}" if c else "—", (f"{c * (we / w_nm) ** 2:.2g}" if (c and we > 0) else ("closed" if (c and we <= 0) else "—"))])
+    # plot: factor by which a depth in widths grows, against the share of the width the film fills
+    pl = Plot(620, 360, (0, 1.05), (1, 4), xt=(0, 0.2, 0.4, 0.6, 0.8, 1.0), yt=(1, 1.5, 2, 2.5, 3, 3.5, 4), xl="share of the width filled by the film at the end, 2s/W", yl="depth in widths: narrowed over nominal", title="How much a normalized depth grows when the narrowed width is used")
+    for share, fm, fe, r in pts:
+        pl.raw(f'<circle cx="{pl.X(share):.1f}" cy="{pl.Y(fm):.1f}" r="5" fill="var(--s1)"><title>{E(who(r["paper_id"]))} Fig. {r["figure"]}{r["panel"]} {E(r["series_match"])}: mean width, ×{fm:.2f}</title></circle>')
+        if fe and fe <= 4:
+            pl.raw(f'<rect x="{pl.X(share) - 4.5:.1f}" y="{pl.Y(fe) - 4.5:.1f}" width="9" height="9" fill="var(--surface)" stroke="var(--s2)" stroke-width="2"><title>{E(who(r["paper_id"]))} Fig. {r["figure"]}{r["panel"]} {E(r["series_match"])}: final width, ×{fe:.2f}</title></rect>')
+    pl.raw(f'<text x="{pl.X(0.02):.1f}" y="{pl.Y(3.8):.1f}" class="warn">filled: mean width W − s · open squares: final width W − 2s (off the plot when the channel closes)</text>')
+    # what moves: Case 1 medians, Case 9 values, Case 10 ratios
+    def med(a):
+        a = sorted(a); return (a[len(a) // 2] if len(a) % 2 else (a[len(a) // 2 - 1] + a[len(a) // 2]) / 2) if a else None
+    base = {k: [] for k in ("channel_thermal", "pore")}; corr = {k: [] for k in base}
+    for s in c1:
+        if s["cls"] not in base:
+            continue
+        x = None if str(s["p"].get("quality", "")).startswith("no front") else x50_of(s["pts"])
+        if not x:
+            continue
+        m = next((mm for mm in moved if mm["x50"] and _match(s["p"], mm["r"])), None)
+        base[s["cls"]].append(x); corr[s["cls"]].append(m["x50m"] if m else x)
+    yim = {k: next(mm for mm in moved if mm["r"]["paper_id"] == M and mm["r"]["series_match"] == f"H {k} nm") for k in (100, 500, 2000)}
+    tma = [mm for mm in moved if mm["c"] and mm["r"]["paper_id"] in (Y, M) and (mm["r"]["series_match"] in ("500 cycles", "H 500 nm"))]
+    with (HERE / "exposure_ear.csv").open(newline="", encoding="utf-8") as f:
+        V = [v for v in csv.DictReader(f) if v["paper_id"] == CM and v["species"] == "DEZ" and v["reading"] == "measured"]
+    kB, u = 1.380649e-23, 1.6605e-27
+    need = lambda a: 1 + 4.75 * a + 1.5 * a * a
+    rr = []
+    for v in V:
+        d = float(re.search(r"d=(\d+)", v["dims"]).group(1)); a = float(v["ear"])
+        flat = float(v["sat_density_per_nm2"]) * 1e18 * math.sqrt(2 * math.pi * float(v["mass_amu"]) * u * kB * (float(v["T_C"]) + 273.15))
+        x = float(v["exposure_pa_s"]) / flat
+        rr.append((x / need(a), x / need(a * d / (d * 0.8))))     # mean diameter: 40% narrowing at the end, 20% on average
+    within = lambda L, f: sum(1 for t in L if 1 / f <= t <= f)
+    with (HERE / "exposure_ear.csv").open(newline="", encoding="utf-8") as f:
+        ALL = [v for v in csv.DictReader(f) if v["reading"] == "measured"]
+    def _ratio(v):
+        flat = float(v["sat_density_per_nm2"]) * 1e18 * math.sqrt(2 * math.pi * float(v["mass_amu"]) * u * kB * (float(v["T_C"]) + 273.15))
+        return float(v["exposure_pa_s"]) / flat / need(float(v["ear"]))
+    c10_n = len(ALL); c10_in = sum(1 for v in ALL if 1 / 1.5 <= _ratio(v) <= 1.5)
+    return f"""
+<section id="c12"><h2>Case 12. Channel narrowing (S5)</h2>
+<p class="q"><b>Question.</b> Where the film fills a measurable share of the channel or pore, how much do the half-thickness depth and the re-derived sticking value change if the narrowed width is used instead of the nominal one, and which earlier results move? Papers: {len({r["paper_id"] for r in NR})}, series: {len(NR)}.</p>
+<h3><span class="step">Before</span> The film thickness against the width, as stated</h3>
+<p>No new crops: the profiles are those of Cases 1 and 9. The film thickness comes from the plateau of the profile, from a growth per cycle times cycles stated in the text, or from a stated narrowing (sources per row).</p>
+<h3><span class="step">Ontology step</span> A width that changes during the run</h3>
+{table(["What has to be recorded", "Where it goes", "Missing in v0"], [
+        ["the nominal width (H, d)", code("feature_width"), "nothing"],
+        ["the film thickness at the entrance after the run", code("film_thickness{position=entrance}"), "nothing"],
+        ["the open fraction 1 − 2s/W", code("open_fraction") + " (new, derived)", "no entry; S5 proposed it"],
+        ["which width a normalized depth used", code("dimensionless_distance{by=H|H_mean|H_end}"), "the width qualifier must allow a narrowed width (see Case 1)"],
+    ])}
+<h3><span class="step">After</span> Nominal against narrowed width</h3>{ILL}
+<div class="plots one">{pl.svg()}</div>
+{table(["Paper", "Figure", "Series", "Width W (nm)", "Film s (nm)", "Source of s", "Share filled 2s/W", "PD50 / W", "PD50 / (W − s)", "PD50 / (W − 2s)", "c (Case 9)", "c with W − s", "c with W − 2s"], rows)}
+<h4>Which earlier results move</h4>
+{table(["Case", "Result", "As published on this page", "With the mean narrowed width"], [
+        ["1", "median half-thickness depth, thermal channels (x/H)", f"{med(base['channel_thermal']):.0f}", f"{med(corr['channel_thermal']):.0f}"],
+        ["1", "median half-thickness depth, pores (x/d)", f"{med(base['pore']):.0f}", f"{med(corr['pore']):.0f}"],
+        ["1", "pores over channels (as stored)", f"{med(base['pore']) / med(base['channel_thermal']):.2f}", f"{med(corr['pore']) / med(corr['channel_thermal']):.2f}"],
+        ["9", "Yim 2020, c at H 100, 500, 2000 nm", ", ".join(f"{yim[k]['c']:.1e}" for k in (100, 500, 2000)), ", ".join(f"{yim[k]['cm']:.1e}" for k in (100, 500, 2000))],
+        ["9", "Yim 2020, spread of c across H (max over min)", f"{yim[2000]['c'] / yim[100]['c']:.0f}", f"{yim[2000]['cm'] / yim[100]['cm']:.0f}"],
+        ["9", "TMA in 0.5 µm channels, Ylilammi and Yim", ", ".join(f"{m['c']:.1e}" for m in tma), ", ".join(f"{m['cm']:.1e}" for m in tma)],
+        ["10", f"alumina-pore DEZ depths within 1.5 / 3 of the square law ({len(rr)} measured)", f"{within([a for a, b in rr], 1.5)} / {within([a for a, b in rr], 3)}", f"{within([b for a, b in rr], 1.5)} / {within([b for a, b in rr], 3)}"],
+        ["10", "their exposure over predicted need, range", f"{min(a for a, b in rr):.2g} to {max(a for a, b in rr):.2g}", f"{min(b for a, b in rr):.2g} to {max(b for a, b in rr):.2g}"],
+    ])}
+<p class="take"><b>Takeaway.</b> In the 0.1 µm channel of Yim 2020 the film closes the channel (2s/W about 1), and in the TiCl4 runs of Gao 2015 it fills {next(p[0] for p in pts if p[3]["series_match"] == "gap 200 nm"):.0%} of the 200 nm gap; in the other channels and pores it fills {min(p[0] for p in pts if p[0] < 0.9 and p[0] > 0.01):.0%} to {max(p[0] for p in pts if p[0] < 0.9):.0%}. With the mean narrowed width the thermal-channel median moves from {med(base['channel_thermal']):.0f} to {med(corr['channel_thermal']):.0f} and the pore median from {med(base['pore']):.0f} to {med(corr['pore']):.0f}. Narrowing does not explain the spread of c across channel heights in Yim 2020: the 100 nm channel loses most width, so its c drops further and the spread grows from {yim[2000]['c'] / yim[100]['c']:.0f} to {yim[2000]['cm'] / yim[100]['cm']:.0f}. For the alumina pores of Case 10 the narrowed diameter lowers the exposure-over-need ratios by about a third ({min(a for a, b in rr):.2g}–{max(a for a, b in rr):.2g} to {min(b for a, b in rr):.2g}–{max(b for a, b in rr):.2g}), so {within([a for a, b in rr], 1.5) - within([b for a, b in rr], 1.5)} of its depths leave the factor-1.5 band of the square law: Case 10's share within 1.5 would fall from {c10_in} of {c10_n} to {c10_in - within([a for a, b in rr], 1.5) + within([b for a, b in rr], 1.5)} of {c10_n}. Which width the law should use, nominal or narrowed, is itself a convention to record.</p>
+<p class="lim"><b>Limits.</b> The mean width assumes the film grows linearly with cycles at the entrance; the front moves through a narrowing channel, so neither the mean nor the final width is exact. Film thickness is the entrance or plateau value, deeper the film is thinner. For the alumina pores the narrowing is the stated 40% at the entrance; the TMA-coated membranes have no stated narrowing and are left as they are. The CNT forest is listed with its mean flight path as the width; the forest has no closed channel to fill.</p>
+</section>"""
+
+
+# ----------------------------------------------------------------------------- case 13 (S8)
+
+def case13():
+    with (HERE / "gpc_temperature.csv").open(newline="", encoding="utf-8") as f:
+        GT = list(csv.DictReader(f))
+    pl = [g for g in GT if g["plotted"] == "yes"]
+    pids = list(dict.fromkeys(g["paper_id"] for g in pl))
+    slot = {p: i % 8 + 1 for i, p in enumerate(pids)}
+    P = Plot(760, 420, (20, 320), (0.5, 1.4), xt=(25, 50, 100, 150, 200, 250, 300), yt=(0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4), xl="deposition temperature (°C)", yl="planar growth per cycle (Å)", title="TMA/H2O alumina: planar growth per cycle against temperature")
+    for p in pids:
+        gs = sorted(((float(g["T_C"]), float(g["gpc_A"])) for g in pl if g["paper_id"] == p and g["reading"].startswith("read")))
+        st = [(float(g["T_C"]), float(g["gpc_A"])) for g in pl if g["paper_id"] == p and not g["reading"].startswith("read")]
+        if len(gs) > 1:
+            P.series(gs, slot[p], "", f"{who(p)} (read by eye)", line=True)
+        elif gs:
+            st += gs
+        for t, v in st:
+            P.raw(f'<rect x="{P.X(t) - 5:.1f}" y="{P.Y(v) - 5:.1f}" width="10" height="10" fill="var(--surface)" stroke="var(--s{slot[p]})" stroke-width="2"><title>{E(who(p))}: {v:g} Å at {t:g} °C (stated)</title></rect>')
+    P.raw(f'<text x="{P.X(24):.1f}" y="{P.Y(1.36):.1f}" class="warn">lines with dots: a temperature series read by eye · open squares: values stated in the text or a table</text>')
+    def ctx(p):
+        g = next(x for x in GT if x["paper_id"] == p)
+        return [f'<svg class="sw" viewBox="0 0 38 14"><circle cx="19" cy="7" r="5" fill="var(--s{slot[p]})"/></svg>' if p in slot else "", f"{E(who(p))}<span class='pid'>{p}</span>", E(g["reactor"]), E(g["pressure"]), E(g["tma_dose"]), E(g["saturation"]), E(g["method"]), E(g["substrate"]),
+                ", ".join(f"{float(x['gpc_A']):g} at {float(x['T_C']):g}" for x in GT if x["paper_id"] == p) + ("" if p in slot else " (" + E(next(x["kind"] for x in GT if x["paper_id"] == p)) + ", not plotted)")]
+    allp = list(dict.fromkeys(g["paper_id"] for g in GT))
+    v = lambda p, t: [float(g["gpc_A"]) for g in pl if g["paper_id"] == p and abs(float(g["T_C"]) - t) < 1]
+    low_a = [float(g["gpc_A"]) for g in pl if g["paper_id"] == "10.1002_adem.202201901" and float(g["T_C"]) <= 100]
+    low_s = [float(g["gpc_A"]) for g in pl if g["paper_id"] == SC and float(g["T_C"]) <= 100]
+    at200 = [float(g["gpc_A"]) for g in pl if abs(float(g["T_C"]) - 200) < 1]
+    at300 = [float(g["gpc_A"]) for g in pl if abs(float(g["T_C"]) - 300) < 1]
+    at150 = [float(g["gpc_A"]) for g in pl if abs(float(g["T_C"]) - 150) < 1]
+    cards = [
+        ("10.1002_adem.202201901", 2, "a", [("reactor", "pump-type batch chamber, no carrier gas"), ("axes as printed", "Temperature / GPC"), ("data kind", "measured, ellipsometry")]),
+        (SC, 9, "", [("reactor", "home-built high-vacuum chamber"), ("axes as printed", "Temperature / GPC, thermal and plasma"), ("data kind", "measured")]),
+    ]
+    onto = table(["In the papers", "Ontology id with qualifiers", "Transform", "Missing in v0"], [
+        ["GPC (Å), growth per cycle, S1/N", code("growth_per_cycle{position=planar}"), "nm to Å", "how it was measured (ellipsometry, reflectometry, XRR) as an attribute; whether it is a fit parameter"],
+        ["deposition temperature, substrate temperature", code("deposition_temperature"), "none", "set point against measured temperature (Case 11)"],
+        ["reactor make and type, pressure", code("reactor_type") + ", " + code("process_pressure"), "units to Pa", "a reactor identity to group values by; the flow regime"],
+        ["saturation checked (stated or not)", "no entry", "none", "a flag for saturated dosing, needed before two GPC values can be compared"],
+    ])
+    return f"""
+<section id="c13"><h2>Case 13. Same temperature, different reactors (S8)</h2>
+<p class="q"><b>Question.</b> For one chemistry (TMA and water, thermal alumina), how far do reactors agree on the planar growth per cycle at the same temperature, and where do they split? Papers: {len(pids)} plotted with measured values, {len(allp) - len(pids)} more listed (cited, fitted, or at an assumed temperature).</p>
+<h3><span class="step">Before</span> The two temperature series as published</h3>{before(cards)}
+<h3><span class="step">Ontology step</span> A growth per cycle with its reactor and dose</h3>{onto}
+<h3><span class="step">After</span> One axis, one colour per reactor</h3>{ILL}
+<div class="plots one">{P.svg()}</div>
+{table(["", "Paper", "Reactor", "Pressure", "TMA dose", "Saturation checked", "How GPC was measured", "Substrate", "Values (Å at °C)"], [ctx(p) for p in allp])}
+<p class="take"><b>Takeaway.</b> Two reactors measured a temperature series. Below 150 °C they split: the batch chamber stays at {min(low_a):.2f} to {max(low_a):.2f} Å from 35 to 100 °C, the high-vacuum chamber falls to {min(low_s):.2f} to {max(low_s):.2f} Å, a factor of {min(low_a) / max(low_s):.1f} at 50 to 100 °C. At 150 °C the two series stand at {v("10.1002_adem.202201901", 150)[0]:.2f} and {v(SC, 150)[0]:.2f} Å; with one more reactor the values there span {min(at150):.2f} to {max(at150):.2f} Å. At 200 °C four papers span {min(at200):.2f} to {max(at200):.2f} Å (a factor of {max(at200) / min(at200):.1f}): the top comes from one cross-flow reactor whose growth rises with pulse length (1.19 at 0.3 s, 1.29 at 1.0 s; called supersaturation by its authors), against 0.88 to 1.0 Å in the high-vacuum chamber. At 300 °C two papers agree within {min(at300):.2f} to {max(at300):.2f} Å. Only {sum(1 for p in allp if next(x for x in GT if x['paper_id'] == p)['saturation'].lower().startswith('yes'))} of the {len(allp)} papers state that saturation was checked.</p>
+<p class="lim"><b>Limits.</b> The two series were read by eye; the other values are stated. Substrates, measuring methods and cycle counts differ (listed). Cited values (one paper's 1.29 Å at 177 °C, from its own reference) and a model fit parameter (1.056 Å) are listed, not plotted. Plasma and ozone processes are left out. The point at 150 °C of the 3D-part paper comes from a position-dependent growth, so it is not a saturated value everywhere.</p>
+</section>"""
+
+
+# ----------------------------------------------------------------------------- reading check
+
+def reading_check():
+    """Compare the second, independent reading (recheck.json) with points.json; returns one line per case."""
+    R = {r["n"]: r for r in json.loads((HERE / "recheck.json").read_text(encoding="utf-8"))["series"]}
+    find = lambda case, paper, fig, sub: next(p for p in PTS if p["case"] == case and p["paper"] == paper and str(p["figure"]) == fig and sub in p["series"])
+    pc = lambda a, b: abs(b - a) / a * 100
+    out = {}
+    a = find(1, SC, "5", "8 s"); x1 = (x50_of([(x, y / a["reference_value"]) for x, y in a["points"]]), x50_of([(x, y / R[1]["plateau"]) for x, y in R[1]["points"]]))
+    a = find(1, CNT, "9", "coated"); x2 = (x50_of([(x, (y - 13.79) / (27.1 - 13.79)) for x, y in a["points"]]), x50_of([(x, (y - 13.7) / (R[2]["plateau"] - 13.7)) for x, y in R[2]["points"]]))
+    nine = {}
+    for n, paper, fig, sub in ((3, M, "9", "H 500 nm, 500"), (4, GAO, "5", "Al2O3"), (6, CM, "5", "exposure 3 s"), (9, CM, "6", "d 46 nm")):
+        a = find(9, paper, fig, sub); b = dict(a); b["points"] = R[n]["points"]; b["plateau"] = R[n]["plateau"]
+        (sa, _, xa), (sb, _, xb) = slope_method(a), slope_method(b)
+        nine[n] = (pc(xa, xb), pc(sa, sb), pc(13.9 * sa * sa, 13.9 * sb * sb))
+    a = find(1, D09, "5", "aspect ratio 100"); x5 = (x50_of(a["points"]), x50_of([(x, y / R[5]["plateau"]) for x, y in R[5]["points"]]))
+    with (HERE / "recombination.csv").open(newline="", encoding="utf-8") as f:
+        rc = [float(r["r"]) for r in csv.DictReader(f) if r["paper_id"] == A21 and r["where"] == "Fig. 5A" and r["surface"].startswith("SiO2")]
+    r7 = [pc(a_, b_[1]) for a_, b_ in zip(rc, R[7]["points"])]
+    (lx1, ly1), (lx2, ly2) = R[8]["line"]; s8 = (ly2 - ly1) / (lx2 - lx1)
+    need = lambda a_: 1 + 4.75 * a_ + 1.5 * a_ * a_
+    frac = R[10]["fraction"]
+    r10a, r10b = 3.09, 3.09 * need(11) / need(frac * 43)
+    rep = " Both readings work from the same crops, so this measures how repeatable the reading is, not its accuracy against the authors' data."
+    out["c1"] = f"A second reader, blind to points.json, re-read two Case 1 series: half-thickness depth differs by {pc(*x1):.1f}% (fibre plug, TMA 8 s) and {pc(*x2):.1f}% (CNT forest). No takeaway changes." + rep
+    out["c2"] = f"The re-read SiO2 line of 10.1021_acs.jpcc.9b08176 Fig. 3 has a slope of {s8:.0f} against 143 here ({pc(143.4, s8):.1f}%). No takeaway changes."
+    out["c9"] = "A second reader re-read four Case 9 series: x̃ at one half differs by " + ", ".join(f"{v[0]:.1f}" for v in nine.values()) + "%, the slope by " + ", ".join(f"{v[1]:.1f}" for v in nine.values()) + "%, so c by up to " + f"{max(v[2] for v in nine.values()):.1f}%. No takeaway changes; the reading error is far below the spreads (factors of 3 to 53)." + rep
+    out["c10"] = f"Re-read: the half-thickness depth of the aspect ratio 100 slot differs by {pc(*x5):.1f}% and that of the 46 nm pore by {nine[9][0]:.1f}% (its ratio 0.76 stays inside the factor-1.5 band). Near a threshold: the Hf-amide hole at 2 × 10³ L reads as {frac:.2f} of the hole coated on the image, against the quarter the authors state; with {frac:.2f} its ratio would fall from {r10a:.1f} to {r10b:.1f}, inside a factor of 3, and the share within 3 would rise from 13 to 14 of 16. The case keeps the stated quarter." + rep
+    out["c11"] = "Re-read: r of SiO2 in 10.1021_acs.jpcc.1c01505 Fig. 5A differs by " + ", ".join(f"{v:.1f}" for v in r7) + f"% at the three temperatures; the 10.1021_acs.jpcc.9b08176 slope by {pc(143.4, s8):.1f}%. No takeaway changes." + rep
+    out["c12"] = "Case 12 uses the Case 1 and 9 points: see their reading error (below 1.5% on depths, 2.5% on c); the film thicknesses are stated values, not re-read."
+    for k in ("c4", "c6", "c13"):
+        out[k] = "Points of this case were not re-read in the reading check (two series each of Cases 1, 9, 10 and 11 were, with differences below 1.5% except one coated fraction read off an image)."
+    return out
+
+
 # ----------------------------------------------------------------------------- page
 
 CSS = """
@@ -1149,17 +1341,19 @@ def main() -> None:
     ptab = table(["Case", "Source", "Series", "x as printed", "y as printed", "Points (x, y)"], [
         [p["case"], f"{E(who(p['paper']))}, Fig. {p['figure']}{p['panel']}", E(p["series"]), E(p["x_label_as_printed"]), E(p["y_label_as_printed"]), E("; ".join(f"{x:g}, {y:g}" for x, y in p["points"]))] for p in PTS])
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PSED case studies</title><style>{CSS}</style></head><body><main>
-<h1>Eleven case studies from the ingested papers</h1>
-<p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data; cases 9 to 11 carry the part E candidates S1, S2, and S3 with S6, on the hand-read quantity matrix. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
+<h1>Thirteen case studies from the ingested papers</h1>
+<p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data; cases 9 to 13 carry the part E candidates S1, S2, S3 with S6, S5 and S8, on the hand-read quantity matrix. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
 <div class="flow"><span>Before: the source crops as published</span><span>→ Ontology step: printed label to id, transform, gaps</span><span>→ After: the comparable view</span></div>
 <h2>Selected profile panels</h2>
 <p>Measured plot rows of the figure inventory whose x is a distance (plain or divided by a length) and whose y is a film thickness, a normalized thickness, a local growth per cycle or a coated aspect ratio, plus the measured depth profiles named in the hand-read matrix whose y is a diameter, counts, a signal or a composition: {len(sel)} rows in {len(papers)} papers.</p>{seltab}
-{case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}{case9()}{case10()}{case11()}
+{case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}{case9()}{case10()}{case11()}{case12()}{case13()}
 <h2>Points read by eye</h2><p>The same content as <code>points.json</code>, as a table.</p><details><summary>Show the {sum(len(p['points']) for p in PTS)} points of {len(PTS)} series</summary>{ptab}</details>
 </main></body></html>"""
-    for i in range(1, 12):
+    for i in range(1, 14):
         k = f"c{i}"; nu = sum(r[k].startswith("used") for r in PC.values()); nc = sum(r[k].startswith(("candidate", "excluded")) for r in PC.values())
         page = re.sub(rf'(<section id="c{i}"><h2>.*?</h2>)', lambda m: m.group(1) + f'<p class="pc"><a href="matrix.html#case={k}">{nu} papers used, {nc} excluded</a> (paper × case view in matrix.html)</p>', page, count=1, flags=re.S)
+    for k, line in reading_check().items():
+        page = re.sub(rf'(<section id="{k}">.*?)(</section>)', lambda m: m.group(1) + f'<p class="lim"><b>Reading error.</b> {E(line)}</p>\n' + m.group(2), page, count=1, flags=re.S)
     OUT.write_text(page, encoding="utf-8")
     print(f"{OUT}: {OUT.stat().st_size / 1e6:.2f} MB; selected rows {len(sel)} in {len(papers)} papers; series plotted {len(PTS)}")
 

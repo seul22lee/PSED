@@ -414,6 +414,8 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Ontology.** v0 lacks the open fraction of a channel as a derived quantity.
 - **Feasibility: feasible partly.**
 
+- **Result (Case 12, for S5).** With the mean narrowed width (W − s), thermal-channel median depth moves 141 → 184 H and pores 215 → 269 d; Yim 2020's 100 nm channel is closed by its film, and the spread of c across H grows 143 → 545, so narrowing does not explain it; Case 10's alumina pores drop from 5 to 1 of 6 within a factor of 1.5 of the square law.
+
 ### S6. Where depth in units of channel height stops scaling
 - **Question.** Does half-thickness depth over H stay constant from 0.1 µm channels to 1 mm holes, and where does it break as the Knudsen number falls?
 - **Papers and figures.** 10.1039_d0cp03358h Fig. 9 (0.1 to 2 µm); 10.1116_1.4903941 Fig. 5b (0.2 to 1 µm); 10.1149_1.3072694 Fig. 5 (0.1 mm); 10.1149_1.3301664 Fig. 2a (thermal, 0.5 mm); 10.1039_d4cp00131a Fig. 5, 8 (model).
@@ -444,6 +446,8 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Possible finding.** Reactors agree near 200 to 300 °C and disagree by up to 1.5 times below 150 °C.
 - **Ontology.** `growth_per_cycle{position=planar}` exists; v0 lacks a flag for saturated dosing.
 - **Feasibility: feasible now.**
+
+- **Result (Case 13, for S8).** TMA/water planar growth: a batch chamber stays at 0.93–0.96 Å from 35 to 100 °C while a high-vacuum chamber falls to 0.65–0.67 Å (1.4×); at 200 °C four papers span 0.88–1.29 Å, the top from a cross-flow reactor with pulse-dependent growth; at 300 °C two papers agree within 0.90–1.03 Å; 3 of 10 papers state that saturation was checked.
 
 ### S9. Pore-closure cycle against pore width over growth per cycle
 - **Question.** Does the cycle at which pores close follow pore width over twice the planar growth per cycle across papers?

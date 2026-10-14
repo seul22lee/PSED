@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """Exploration: writes cases/paper_case.csv, one row per in-scope paper with a PDF (58) and one column per case of cases.html
-(1 to 11) and per part E candidate not built yet (S4, S5, S7 to S11).
+(1 to 13) and per part E candidate not built yet (S4, S7, S9, S10, S11).
 
     python3 psed_v2/cases/paper_case.py        (then make_cases.py and make_matrix_html.py, which read the CSV)
 
 A cell is "used: <figures>" when the case draws on the paper (figure crops shown, points read, values in the case's CSV),
 "excluded: <reason>" when the case's own rule, applied to figures.csv and quantity_matrix.csv, selects the paper but it was
-judged not to belong (case_decisions.csv), "candidate, not used: <reason>" when selected and not yet decided (none for
-Cases 1 to 11), and empty otherwise. "Used" is recorded by running the case functions of make_cases.py
+judged not to belong (case_decisions.csv), "candidate, not used: <reason>" when selected and not yet decided (none), and empty otherwise. "Used" is recorded by running the case functions of make_cases.py
 with the crop call instrumented, so it follows the page as built.
 """
 import csv, importlib.util, json, re
@@ -28,8 +27,9 @@ COLS = [("c1", "Case 1 profiles across papers"), ("c2", "Case 2 O-radical recomb
         ("c6", "Case 6 reactor-scale uniformity"), ("c7", "Case 7 samples across figures and methods"), ("c8", "Case 8 the review read as data"),
         ("c9", "Case 9 one method for every sticking value (S1)"), ("c10", "Case 10 coated EAR against limiting-step exposure (S2)"),
         ("c11", "Case 11 recombination against temperature and pressure, Knudsen break (S3, S6)"),
-        ("S4", "S4 thermal against plasma depth"), ("S5", "S5 channel narrowing"), ("S7", "S7 planar saturation exposure of TMA"),
-        ("S8", "S8 planar growth per cycle against temperature"), ("S9", "S9 pore-closure cycle"), ("S10", "S10 Arrhenius of sticking and recombination"),
+        ("c12", "Case 12 channel narrowing (S5)"), ("c13", "Case 13 planar growth per cycle against temperature across reactors (S8)"),
+        ("S4", "S4 thermal against plasma depth"), ("S7", "S7 planar saturation exposure of TMA"),
+        ("S9", "S9 pore-closure cycle"), ("S10", "S10 Arrhenius of sticking and recombination"),
         ("S11", "S11 growth above the planar value near the entrance")]
 
 
@@ -86,7 +86,7 @@ def used_by_case():
         U[cur["k"]].setdefault(pid, []).append(figlab(fig))
         return ""
     mc.crop = rec
-    for i in range(1, 12):
+    for i in range(1, 14):
         cur["k"] = f"c{i}"
         getattr(mc, f"case{i}")()
     mc.crop = real
@@ -101,6 +101,10 @@ def used_by_case():
             U["c8"].setdefault(r["paper_id"], []).append(f"source check ({r['where']})")
     for r in rd("sticking_reported.csv"):                 # case 9 lists the reported value of every S1 paper, also without a profile read
         U["c9"].setdefault(r["paper_id"], []).append(f"reported value ({r['where']})")
+    for r in rd("narrowing.csv"):
+        U["c12"].setdefault(r["paper_id"], []).append(f"Fig. {r['figure']}{r['panel']} ({r['series_match']})")
+    for r in rd("gpc_temperature.csv"):
+        U["c13"].setdefault(r["paper_id"], []).append(r["where"])
     for r in rd("exposure_ear.csv"):
         U["c10"].setdefault(r["paper_id"], []).append(r["where"])
     for r in rd("recombination.csv"):
@@ -168,15 +172,15 @@ def candidates(pid):
     if (prof or (hand and not no(q.get("measured_profile", "")))) and re.search(r"plasma", pm, re.I) and re.search(r"thermal|H2O|water|ozone|O3", pm, re.I):
         C["S4"] = "measured profile and both thermal and plasma processes"
     if (prof or (hand and not no(q.get("measured_profile", "")))) and hand and re.search(r"lateral|channel|gap|PillarHall|LHAR|cavity", q.get("structure_class", ""), re.I) and not no(q.get("pore_or_channel_width", "")):
-        C["S5"] = "measured profile in a lateral channel with a stated height"
+        C["c12"] = "measured profile in a lateral channel with a stated height"
     sat = rows_of(pid, lambda r: measured(r) and ("pulse_time" in r["x_id"] or "exposure" in r["x_id"]) and "growth_per_cycle{position=planar" in r["y_id"])
     if sat and re.search(r"TMA", " ".join(r["precursor"] for r in sat)):
         C["S7"] = f"planar growth against TMA pulse or exposure ({figs(sat)})"
     gt = rows_of(pid, lambda r: measured(r) and "deposition_temperature" in r["x_id"] and "growth_per_cycle" in r["y_id"])
     if gt:
-        C["S8"] = f"growth per cycle against temperature ({figs(gt)})"
+        C["c13"] = f"growth per cycle against temperature ({figs(gt)})"
     elif hand and not no(q.get("planar_gpc", "")) and not no(q.get("deposition_temperature", "")):
-        C["S8"] = "planar growth per cycle at a stated temperature (text or table)"
+        C["c13"] = "planar growth per cycle at a stated temperature (text or table)"
     if hand and not no(q.get("pore_or_channel_width", "")) and re.search(r"pore|AAO|membrane|MOF|particle|powder|porous|forest", q.get("structure_class", ""), re.I) and not no(q.get("cycles", "")):
         C["S9"] = "pore width, porous structure and cycle counts stated"
     arr = rows_of(pid, lambda r: "deposition_temperature" in r["x_id"] and re.search(r"initial_sticking_coefficient|recombination_probability", r["y_id"]))
@@ -204,7 +208,7 @@ def main():
                 row[k] = f"excluded: {DEC[(k, pid)]}"
             else:
                 row[k] = f"candidate, not used: {C[k]}" if k in C else ""
-        row["in_no_case"] = "yes" if not any(row[f"c{i}"].startswith("used") for i in range(1, 12)) else "no"
+        row["in_no_case"] = "yes" if not any(row[f"c{i}"].startswith("used") for i in range(1, 14)) else "no"
         out.append(row)
     with (HERE / "paper_case.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["paper_id", "year", "first_author", "read_by_hand"] + [k for k, _ in COLS] + ["in_no_case"])
@@ -212,8 +216,8 @@ def main():
     for k, t in COLS:
         print(f"{k:4s} used {sum(r[k].startswith('used') for r in out):2d}  excluded {sum(r[k].startswith('excluded') for r in out):2d}  candidate {sum(r[k].startswith('candidate') for r in out):2d}  {t}")
     print("papers in no case:", sum(r["in_no_case"] == "yes" for r in out), "of", len(out))
-    left = [(k, r["paper_id"]) for r in out for k in (f"c{i}" for i in range(1, 12)) if r[k].startswith("candidate")]
-    print("unresolved candidates in Cases 1-11:", len(left), left[:12])
+    left = [(k, r["paper_id"]) for r in out for k, _ in COLS if r[k].startswith("candidate")]
+    print("unresolved candidates:", len(left), left[:12])
 
 
 if __name__ == "__main__":
