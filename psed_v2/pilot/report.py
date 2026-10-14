@@ -172,10 +172,11 @@ function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(
  if(FQ&&!(FX in xs))FX=("deposition_temperature" in xs)?"deposition_temperature":Object.keys(xs)[0]||"";
  return `<div class="fl"><label>quantity <select onchange="FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${q} (${Q[q]})</option>`).join("")}</select></label>
  <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${q} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
+ <button onclick="FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
 function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".nd.hl").forEach(n=>n.classList.remove("hl"));
  const ls=fleaves();let shown=0;const pts=[];
- ls.forEach(l=>{const el=document.querySelector(`[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}
+ ls.forEach(l=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}
   const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y:fv(l.f)});shown++}});
  const amb=ls.filter(l=>l.f.ctx[FX]==="ambiguous").length,nox=ls.length-shown-amb;
  $("#fn").textContent=FQ?`${ls.length} leaves highlighted; ${shown} in the scatter${amb?`, ${amb} with an ambiguous ${FX}`:""}${nox?`, ${nox} with no ${FX} in scope`:""}`:"";
@@ -187,7 +188,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
  if(x1===x0){x0-=1;x1+=1}if(y1===y0){y0-=1;y1+=1}const px=(x1-x0)*0.06,py=(y1-y0)*0.08;x0-=px;x1+=px;y0-=py;y1+=py;
  const X=v=>L+(tx(v)-x0)/(x1-x0)*(W-L-R),Y=v=>H-B-(ty(v)-y0)/(y1-y0)*(H-T-B);
  const ticks=(a,b,log)=>{if(log){const o=[];for(let k=Math.ceil(a);k<=Math.floor(b);k++)o.push(10**k);return o}const st=10**Math.floor(Math.log10((b-a)/4||1)),s2=(b-a)/st>8?5*st:(b-a)/st>4?2*st:st;const o=[];for(let v=Math.ceil(a/s2)*s2;v<=b+1e-9;v+=s2)o.push(+v.toPrecision(10));return o};
- const fmt=v=>Math.abs(v)>=1e4||Math.abs(v)<1e-2?v.toExponential(0).replace("e+","e"):+v.toPrecision(3);
+ const fmt=v=>v===0?"0":Math.abs(v)>=1e6||Math.abs(v)<1e-2?v.toExponential(2).replace(/\.?0+e/,"e").replace("e+","e"):String(+v.toPrecision(5));
  const units=[...new Set(pts.map(p=>p.l.f.unit))].join(", "),xunits=[...new Set(pts.map(p=>p.xs.replace(/^[^\s]+\s?/,"")))].filter(Boolean).join(", ");
  let g=`<svg class="sc" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(FQ)} against ${esc(FX)}">`;
  ticks(x0,x1,lx).forEach(v=>{const vv=lx?v:v;const x=L+(( lx?Math.log10(v):v)-x0)/(x1-x0)*(W-L-R);g+=`<line class="gr" x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${T}" y2="${H-B}"/><text class="tk" x="${x.toFixed(1)}" y="${H-B+14}" text-anchor="middle">${fmt(vv)}</text>`});
@@ -201,7 +202,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if(f.censor)g+=`<text x="${(x+7).toFixed(1)}" y="${(y+4).toFixed(1)}" class="tk">${esc(f.censor)}</text>`;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
-function jump(fid){const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
+function jump(fid){const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(fid)}"]`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
 function treeView(){const trees=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;
   return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
  return `<div id="forest"></div><div class="wrap"><div>${trees}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
