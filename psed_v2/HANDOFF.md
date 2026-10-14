@@ -109,6 +109,9 @@ The columns were kept as they are; these are open decisions for the pipeline sch
    distinction needs a qualifier key, as do map vs line scan (sem_eds) and gauge vs thermocouple (process_monitor).
 8. **Run attributes.** A run row's kind, how it was assigned and its key currently live in `qualifiers` (run=, how=, sample=,
    sim=) because only parent and links were added as columns; decide later whether they get their own columns.
+9. **What a run is.** yim20 uses one physical deposition or specimen per run (Table 1 sample codes); mat22 uses one condition set
+   (films sharing (T, H2 ratio) share a run, whatever their cycles or substrate); gre23 one deposition per temperature schedule.
+   Decide for the pipeline.
 Also seen: multi-number table cells (yim20 pulse-purge sequences "0.1-4.0-0.1-4.0") split into one fact per step; text that rounds a
 table value kept as one fact with the table value; conflicts between text and table kept as printed. Channel height H of lateral
 channels is `feature_height` (added to the lists). Twelve yim20 curves have facts but no points (rejected in v1, absent from
