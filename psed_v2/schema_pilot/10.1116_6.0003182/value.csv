@@ -1,0 +1,126 @@
+value_id,sample_id,from_series,quantity,qualifiers,value,unit,data_kind,method,relation,regime,evidence
+gre23:v001,*,,feature_depth,full thickness 2L,1.55 ± 0.05,mm,measured,electronic calipers,,,Sec. II A; abstract
+gre23:v002,*,,feature_depth,half-thickness L (reactants enter both faces),0.78 ± 0.02,mm,calculated,,L = thickness/2,,Sec. I last para; Sec. IV
+gre23:v003,*,,disc_diameter (new),,11.43 ± 0.02,mm,measured,electronic calipers,,,Sec. II A; Fig. 1a and 4a (~11.4 mm written)
+gre23:v004,*,,porosity (new),"initial, phi_i",50.5 ± 0.3,%,measured,"not stated (from mass and dimensions, presumably)",,,Sec. II A; abstract; Table I caption
+gre23:v005,*,,particle_diameter (new),"Al2O3 NP, d_NP",100,nm,calculated,from BET specific surface area (manufacturer spec),,,Sec. II A
+gre23:v006,*,,specific_surface_area (new),Al2O3 powder BET,15,m2/g,literature,manufacturer spec (BET),,,Sec. II A
+gre23:v007,*,,feature_width,pore diameter d_pore ~ d_NP,~100,nm,assumed,,d_pore ~ d_NP at ~50 % porosity,,Sec. I last para; Sec. II A
+gre23:v008,*,,aspect_ratio,AR = L/d_pore on half-thickness,7800 ± 200,1,calculated,,AR = L/d_pore,,abstract; Sec. I last para; Sec. IV
+gre23:v009,*,,corundum_grain_size (new),"Al2O3, XRD",90-100,nm,fit,Rietveld / Halder-Wagner (JADE 9),,,"Sec. II C, 1st para"
+gre23:v010,*,,rietveld_residual (new),all three samples,~15 (within 1 point),%,fit,Rietveld whole-pattern fit,,,"Sec. II C, 1st para"
+gre23:v011,*,,high_density_band_width (new),Al2O3 denser band near bottom of each section,~0.3-0.5,mm,measured,"SEM, Al K-alpha maps/line scans",,,"Sec. III C, 1st para"
+gre23:v012,,,surface_coverage,target final H2O coverage theta_f after purge,5e-3,1,chosen input,,Eq. 2,,"Sec. II B, 4th para (from Cendejas et al. ref. 8)"
+gre23:v013,,,desorption_prefactor (new),"nu, H2O desorption",1e13,1/s,literature,,Eq. 2,,"Sec. II B, 4th para (ref. 21)"
+gre23:v014,,,purge_time,"required H2O purge, T = 120 C",360,min,calculated,,Eq. 2: t_purge = ln(1/theta_f)/(nu exp(-E_des/RT)),,"Sec. II B, 4th para"
+gre23:v015,,,purge_time,"required H2O purge, T = 160 C",11,min,calculated,,Eq. 2,,"Sec. II B, 4th para"
+gre23:v016,,,purge_time,chosen purge (both reactants),48,min,chosen input,,,,"Sec. II B, 4th para; Sec. III C (DEZ purge set equal to H2O purge, not optimized)"
+gre23:v017,,,hold_time (new),design relation,,s,chosen input,,"Eq. 1: t_hold = L_pore^2/(D gamma), Knudsen D",Knudsen diffusion,"Sec. II B, 4th para (inputs in Note S1, not in main text)"
+gre23:v018,gre23:120,,mass_gain (new),"NPC mass gain, pair mean, +- within pair",28.4 ± 0.1,%,measured,weighing before/after ALD,,,Table I row '120'; Sec. III A 1st para
+gre23:v019,gre23:120,,porosity (new),"final, phi_f, assuming uniform coating",36.7 ± 0.1,%,calculated,from mass gain,,,"Table I row '120' (text Sec. III A lists them in a different order, see notes)"
+gre23:v020,gre23:120,,growth_per_cycle,"average over 20 cycles, from mass gain (mean of spherical-NP and spherical-pore models), assumes pure ZnO",2.37 ± 0.02,Å/cycle,calculated,mass gain to porosity to thickness,,,Table I row '120'; Sec. III A 1st para
+gre23:v021,gre23:120,,solid_moles_per_cycle (new),"Delta n_s bar, pair total, assumes ZnO",150,µmol/cycle,calculated,from GPC,,,Table I row '120'
+gre23:v022,gre23:120,,gas_moles_gain (new),"Delta n_g bar, cycle-averaged, DEZ hold, pair total",59.3,µmol/cycle,calculated,pressure trace analysis,,,Table I row '120'; Fig. 3b
+gre23:v023,gre23:120,,gas_solid_ratio (new),y bar = Delta n_g/Delta n_s + 1 (printed as y; parser renders nu),1.395,1,calculated,,Eqs. 6-8,,"Table I row '120'; Sec. III A, after Eq. 8"
+gre23:v024,gre23:160,,mass_gain (new),"NPC mass gain, pair mean, +- within pair",36.4 ± 1.6,%,measured,weighing before/after ALD,,,Table I row '160'; Sec. III A 1st para
+gre23:v025,gre23:160,,porosity (new),"final, phi_f, assuming uniform coating",30.6 ± 1.4,%,calculated,from mass gain,,,"Table I row '160' (text Sec. III A lists them in a different order, see notes)"
+gre23:v026,gre23:160,,growth_per_cycle,"average over 20 cycles, from mass gain (mean of spherical-NP and spherical-pore models), assumes pure ZnO",3.48 ± 0.26,Å/cycle,calculated,mass gain to porosity to thickness,,,Table I row '160'; Sec. III A 1st para
+gre23:v027,gre23:160,,solid_moles_per_cycle (new),"Delta n_s bar, pair total, assumes ZnO",217,µmol/cycle,calculated,from GPC,,,Table I row '160'
+gre23:v028,gre23:160,,gas_moles_gain (new),"Delta n_g bar, cycle-averaged, DEZ hold, pair total",191,µmol/cycle,calculated,pressure trace analysis,,,Table I row '160'; Fig. 3b
+gre23:v029,gre23:160,,gas_solid_ratio (new),y bar = Delta n_g/Delta n_s + 1 (printed as y; parser renders nu),1.880,1,calculated,,Eqs. 6-8,,"Table I row '160'; Sec. III A, after Eq. 8"
+gre23:v030,gre23:120/160,,mass_gain (new),"NPC mass gain, pair mean, +- within pair",26.4 ± 0.1,%,measured,weighing before/after ALD,,,Table I row '120/160'; Sec. III A 1st para
+gre23:v031,gre23:120/160,,porosity (new),"final, phi_f, assuming uniform coating",38.0 ± 0.1,%,calculated,from mass gain,,,"Table I row '120/160' (text Sec. III A lists them in a different order, see notes)"
+gre23:v032,gre23:120/160,,growth_per_cycle,"average over 20 cycles, from mass gain (mean of spherical-NP and spherical-pore models), assumes pure ZnO",2.14 ± 0.01,Å/cycle,calculated,mass gain to porosity to thickness,,,Table I row '120/160'; Sec. III A 1st para
+gre23:v033,gre23:120/160,,solid_moles_per_cycle (new),"Delta n_s bar, pair total, assumes ZnO",139,µmol/cycle,calculated,from GPC,,,Table I row '120/160'
+gre23:v034,gre23:120/160,,gas_moles_gain (new),"Delta n_g bar, cycle-averaged, DEZ hold, pair total",50.8,µmol/cycle,calculated,pressure trace analysis,,,Table I row '120/160'; Fig. 3b
+gre23:v035,gre23:120/160,,gas_solid_ratio (new),y bar = Delta n_g/Delta n_s + 1 (printed as y; parser renders nu),1.365,1,calculated,,Eqs. 6-8,,"Table I row '120/160'; Sec. III A, after Eq. 8"
+gre23:v036,*,,gas_moles_gain (new),measurement uncertainty of Delta n_s and Delta n_g,±0.1,µmol/cycle,measured,,,,Table I caption
+gre23:v037,*,,gas_solid_ratio (new),measurement uncertainty,±0.001,1,measured,,,,Table I caption; Sec. III A
+gre23:v038,gre23:120/160,,growth_per_cycle,abstract rounding,~2.1,Å/cycle,calculated,from mass gain,,,abstract
+gre23:v039,gre23:120,,film_thickness,ZnO coating thickness inferred from mass gain,4.73 ± 0.03,nm,calculated,from mass gain,,,"Sec. III B, 2nd para (cont.)"
+gre23:v040,gre23:120/160,,film_thickness,ZnO coating thickness inferred from mass gain,4.28 ± 0.03,nm,calculated,from mass gain,,,"Sec. III B, 2nd para (cont.)"
+gre23:v041,gre23:120,,film_thickness,excess deposition vs cycled run,0.4-0.5,nm,calculated,,,,"Sec. III C, after Table II"
+gre23:v042,gre23:160,,dez_moles_relative (new),DEZ moles per pulse vs 120 C at equal pressure,~10 % fewer,,calculated,,"ideal gas, same pressure, higher T",,"Sec. III C, 3rd para"
+gre23:v043,gre23:120,gre23:s5_120,composition,"phase wt% ZnO (zincite), top surface, +- fit error",23.3 ± 0.2,wt%,fit,XRD Rietveld,,,Table II row '120'
+gre23:v044,gre23:120,gre23:s5_120,crystallite_size (new),"ZnO (zincite), +- fit error",6.0 ± 1.1,nm,fit,XRD Halder-Wagner,,,Table II row '120'
+gre23:v045,gre23:120,gre23:s5_120,composition,phase wt% metallic Zn,not detected,wt%,fit,XRD Rietveld,,,Table II row '120'
+gre23:v046,gre23:u7,,resistivity,"through-thickness, +- from electrode area (flaking)",1.3 ± 0.2 × 10^7,Ω cm,measured,"two-point I-V at 10 V, Ti/Au electrodes",,,Table II row '120'; Sec. III B 3rd para (~8e3 and ~1e7 in text)
+gre23:v047,gre23:160,gre23:s5_160,composition,"phase wt% ZnO (zincite), top surface, +- fit error",17.1 ± 0.2,wt%,fit,XRD Rietveld,,,Table II row '160'
+gre23:v048,gre23:160,gre23:s5_160,crystallite_size (new),"ZnO (zincite), +- fit error",6.0 ± 1.5,nm,fit,XRD Halder-Wagner,,,Table II row '160'
+gre23:v049,gre23:160,gre23:s5_160,composition,phase wt% metallic Zn,12.5 ± 0.7,wt%,fit,XRD Rietveld,,,Table II row '160'
+gre23:v050,gre23:160,gre23:s5_160,crystallite_size (new),metallic Zn,57 ± 42,nm,fit,XRD Halder-Wagner,,,Table II row '160'
+gre23:v051,gre23:u8,,resistivity,"through-thickness, +- from electrode area (flaking)",8.3 ± 1.0 × 10^3,Ω cm,measured,"two-point I-V at 10 V, Ti/Au electrodes",,,Table II row '160'; Sec. III B 3rd para (~8e3 and ~1e7 in text)
+gre23:v052,gre23:120/160,gre23:s5_120160,composition,"phase wt% ZnO (zincite), top surface, +- fit error",17.7 ± 0.1,wt%,fit,XRD Rietveld,,,Table II row '120/160'
+gre23:v053,gre23:120/160,gre23:s5_120160,crystallite_size (new),"ZnO (zincite), +- fit error",5.1 ± 1.1,nm,fit,XRD Halder-Wagner,,,Table II row '120/160'
+gre23:v054,gre23:120/160,gre23:s5_120160,composition,phase wt% metallic Zn,not detected,wt%,fit,XRD Rietveld,,,Table II row '120/160'
+gre23:v055,gre23:u9,,resistivity,"through-thickness, +- from electrode area (flaking)",1.2 ± 0.1 × 10^7,Ω cm,measured,"two-point I-V at 10 V, Ti/Au electrodes",,,Table II row '120/160'; Sec. III B 3rd para (~8e3 and ~1e7 in text)
+gre23:v056,gre23:120,gre23:s5_120,crystallinity,phases seen,corundum + broad zincite,,measured,XRD,,,"Sec. III B, 2nd para; Fig. 5"
+gre23:v057,gre23:160,gre23:s5_160,crystallinity,phases seen,corundum + broad zincite + metallic Zn,,measured,XRD,,,"Sec. III B, 2nd para; Fig. 5"
+gre23:v058,gre23:120/160,gre23:s5_120160,crystallinity,phases seen,corundum + broad zincite,,measured,XRD,,,"Sec. III B, 2nd para; Fig. 5"
+gre23:v059,*,,vertical_current (new),"all three samples, at 10 V",>= ~300,nA,measured,two-point I-V,,,"Sec. III B, 3rd para (six orders above noise floor: percolating network)"
+gre23:v060,gre23:120,gre23:s4b,colour (new),,"slight yellowing, surface and interior",,measured,photograph / by eye,,,Sec. III B 1st para; Fig. 4 caption
+gre23:v061,gre23:160,gre23:s4c,colour (new),,"charcoal gray, surface and interior",,measured,photograph / by eye,,,Sec. III B 1st para; Fig. 4 caption
+gre23:v062,gre23:120/160,gre23:s4d,colour (new),,top surface light gray; interior like 120 C,,measured,photograph / by eye,,,Sec. III B 1st para; Fig. 4 caption
+gre23:v063,gre23:u10,gre23:s4a,colour (new),before ALD,white,,measured,photograph,,,Sec. III B 1st para; Fig. 4a
+gre23:v064,*,,process_pressure,"pulse peak, both reactants",~9,Torr,measured,Baratron,,,"Sec. III A, 2nd para; Fig. 2"
+gre23:v065,*,,pressure_spike (new),"purge, N2 feed-line drops",~1,Torr,measured,Baratron,,,Fig. 2 caption
+gre23:v066,gre23:120/160,gre23:s3a_120160,pressure_change (new),"DEZ hold cycle 15, plateau",~450,mTorr,measured,pressure trace,,,"Sec. III A, 4th para"
+gre23:v067,gre23:120/160,gre23:s3a_120160,time_to_max_pressure_change (new),"DEZ hold cycle 15, rise duration",~10,min,measured,pressure trace,,,"Sec. III A, 4th para"
+gre23:v068,gre23:120/160,gre23:s3a_120160,terminal_slope (new),"DEZ hold cycle 15, last ~10 min",~-2,mTorr/min,calculated,slope of trace,,leak-dominated,"Sec. III A, 4th para"
+gre23:v069,gre23:120,gre23:s3a_120,pressure_change (new),"DEZ hold cycle 15, maximum",~500,mTorr,measured,pressure trace,,,"Sec. III A, 4th para"
+gre23:v070,gre23:120,gre23:s3a_120,time_to_max_pressure_change (new),DEZ hold cycle 15,~15,min,measured,pressure trace,,,"Sec. III A, 4th para"
+gre23:v071,gre23:120,gre23:s3a_120,terminal_slope (new),DEZ hold cycle 15,~-1,mTorr/min,calculated,slope of trace,,leak-dominated,"Sec. III A, 4th para"
+gre23:v072,gre23:160,gre23:s3a_160,terminal_slope (new),DEZ hold cycle 15,~80,mTorr/min,calculated,slope of trace,,reaction ongoing (non-self-limiting),"Sec. III A, 4th para (cont.)"
+gre23:v073,gre23:160,gre23:s3a_160,pressure_change (new),"DEZ hold cycle 15, at end of hold",~2.7,Torr,measured,pressure trace,,,"Sec. III A, 4th para (cont.)"
+gre23:v074,,,reaction_parameter_x (new),"ZnO ALD on silica powder, 80 C",~1,1,literature,,Eqs. 4-5,,"Sec. III A, after Eq. 5 (ref. 10)"
+gre23:v075,,,reaction_parameter_x (new),"ZnO ALD on QCM, 177 C",1.37,1,literature,QCM,Eqs. 4-5,,"Sec. III A, after Eq. 5 (ref. 28)"
+gre23:v076,,,reaction_parameter_x (new),"ZnO ALD on QCM, 80-250 C",~1.4-1.6,1,literature,QCM,Eqs. 4-5,,"Sec. III A, after Eq. 5 (ref. 27)"
+gre23:v077,gre23:120,gre23:s6d_Zn,zn_profile_shape (new),"EDS signal, not thickness: Zn K-alpha flat through thickness except within ~0.2 mm of faces",essentially constant,,measured,SEM-EDS line scan,,,"Sec. III C, 1st para"
+gre23:v078,gre23:120/160,gre23:s6f_Zn,zn_profile_shape (new),"EDS signal, not thickness: Zn K-alpha flat through thickness except within ~0.2 mm of faces",essentially constant,,measured,SEM-EDS line scan,,,"Sec. III C, 1st para"
+gre23:v079,gre23:120,gre23:s6d_Zn,depletion_zone_depth (new),Zn decrease near top and bottom faces (XPS: thinner ZnO),~0.2,mm,measured,SEM-EDS + XPS,,,Sec. III C 1st-2nd para; Sec. IV
+gre23:v080,gre23:120/160,gre23:s6f_Zn,depletion_zone_depth (new),Zn decrease near top and bottom faces,~0.2,mm,measured,SEM-EDS + XPS,,,Sec. III C 1st-2nd para; abstract; Sec. IV
+gre23:v081,gre23:120,,eds_zn_ratio (new),"normalized Zn K-alpha, 120 C vs 120/160 C",+12,%,measured,SEM-EDS,,,Sec. III C 1st para (vs 10 % higher mass gain)
+gre23:v082,gre23:160,gre23:s6e_Zn,zn_profile_shape (new),EDS signal: Zn K-alpha,dip near centre of the section,,measured,SEM-EDS line scan,,non-self-limiting Zn deposition,"Sec. III C, 3rd para"
+gre23:v083,gre23:120,,coated_aspect_ratio,full thickness infiltrated,7800,1,calculated,SEM-EDS,coated AR = structure AR for full coverage,,Sec. III C 1st para; abstract; quantity_matrix pd50_or_coated_ar
+gre23:v084,gre23:120/160,,coated_aspect_ratio,full thickness infiltrated,7800,1,calculated,SEM-EDS,coated AR = structure AR for full coverage,,Sec. III C 1st para; abstract; Sec. IV
+gre23:v085,gre23:160,,coated_aspect_ratio,"coating spans thickness, non-uniform",7800,1,calculated,SEM-EDS,coated AR = structure AR for full coverage,,Sec. III C 1st para ('all NPCs infiltrated'); Sec. III B 3rd para (percolating)
+gre23:v086,gre23:120,gre23:s6d_Zn,eds_normalized_counts (new),Zn K-alpha plateau level,3.75,1,measured,read by eye (points.json),,,Fig. 6d; cases/points.json reference_value
+gre23:v087,gre23:160,gre23:s6e_Zn,eds_normalized_counts (new),Zn K-alpha maximum level,5.7,1,measured,read by eye (points.json),,,Fig. 6e; cases/points.json reference_value
+gre23:v088,gre23:120/160,gre23:s6f_Zn,eds_normalized_counts (new),Zn K-alpha plateau level,3.3,1,measured,read by eye (points.json),,,Fig. 6f; cases/points.json reference_value
+gre23:v089,gre23:160,gre23:s6e_Zn,eds_normalized_counts (new),"ratio: centre minimum / maximum of Zn K-alpha counts, 0.5-1.4 mm (signal, not thickness)",0.89,1,calculated,from points.json (5.1/5.7),,,Fig. 6e; points read by eye
+gre23:v090,,,aspect_ratio,"NP thin films, typical",~100 or less,1,literature,,,,"Sec. I, 1st para"
+gre23:v091,,,porosity (new),"NP thin films, typical",~0.3-0.5,1,literature,,,,"Sec. I, 1st para"
+gre23:v092,,,feature_depth,"NP thin films, L",~100 nm - ~1 um,,literature,,,,"Sec. I, 1st para"
+gre23:v093,,,feature_width,"NP thin films, d_pore",~5-20,nm,literature,,,,"Sec. I, 1st para"
+gre23:v094,,,exposure,"NP thin films, sufficient",~1 Torr for ~1 s or less,,literature,,,,"Sec. I, 1st para"
+gre23:v095,,,porosity (new),silica aerogel monolith,0.95,1,literature,,,,"Sec. I, 2nd para (ref. 9, Gayle)"
+gre23:v096,,,aspect_ratio,"silica aerogel monolith, on half-thickness",>60000,1,literature,,,,"Sec. I, 2nd para (ref. 9)"
+gre23:v097,,,feature_width,aerogel d_pore,~20,nm,literature,,,,"Sec. I, 2nd para (ref. 9)"
+gre23:v098,,,feature_depth,aerogel half-thickness,~1.25,mm,literature,,,,"Sec. I, 2nd para (ref. 9)"
+gre23:v099,,,exposure,"TMA, 12 doses total, full infiltration",>1e4,Torr s,literature,,,,"Sec. I, 2nd para (ref. 9)"
+gre23:v100,,,deposition_temperature,ZnO on mesoporous SiO2 powder,80,°C,literature,,,,"Sec. I, 3rd para (ref. 10, Ingale)"
+gre23:v101,,,specific_surface_area (new),mesoporous SiO2,505,m2/g,literature,,,,"Sec. I, 3rd para (ref. 10)"
+gre23:v102,,,growth_per_cycle,"ZnO, powder bed",~1,Å/cycle,literature,,,,"Sec. I, 3rd para (ref. 10)"
+gre23:v103,,,deposition_temperature,ZnO on ZrO2 NP powder,177,°C,literature,,,,"Sec. I, 3rd para (ref. 11, Ferguson)"
+gre23:v104,,,specific_surface_area (new),ZrO2 NP,20.2,m2/g,literature,,,,"Sec. I, 3rd para (ref. 11)"
+gre23:v105,,,particle_diameter (new),ZrO2 NP,50,nm,literature,,,,"Sec. I, 3rd para (ref. 11)"
+gre23:v106,,,growth_per_cycle,ZnO by TEM,~2.2,Å/cycle,literature,,,,"Sec. I, 3rd para (ref. 11)"
+gre23:v107,,,exposure,"DEZ, maximum used",900,Torr s,literature,,,,"Sec. I, 3rd para (ref. 11)"
+gre23:v108,,,specific_surface_area (new),silica gel,100,m2/g,literature,,,,"Sec. I, 3rd para (ref. 12, Libera)"
+gre23:v109,,,exposure,"DEZ, held constant",22.5,Torr s,literature,,,,"Sec. I, 3rd para (ref. 12)"
+gre23:v110,,,cycle_number,ZnO on silica gel,10,cycle,literature,,,,"Sec. I, 3rd para (ref. 12)"
+gre23:v111,,,deposition_temperature,range scanned,150-200,°C,literature,,,,"Sec. I, 3rd para (ref. 12)"
+gre23:v112,,,deposition_temperature,onset of Zn XRD peaks,155,°C,literature,,,,"Sec. I, 3rd para (ref. 12)"
+gre23:v113,,,exposure,no Zn at 200 C below,<10,Torr s,literature,,,,"Sec. I, 3rd para (ref. 12)"
+gre23:v114,,,deposition_temperature,"ZnO in NP thin films, no Zn",180,°C,literature,,,,"Sec. I, 3rd para (refs. 4, 6-8)"
+gre23:v115,,,exposure,"ZnO in NP thin films, DEZ",<1,Torr s,literature,,,,"Sec. I, 3rd para (refs. 4, 6-8)"
+gre23:v116,,,exposure,DEZ range giving Zn metal at ~180 C,10-1e3,Torr s,literature,,,,Abstract
+gre23:v117,,,deposition_temperature,below this ZnO resistivity often rises with T,~170,°C,literature,,,,"Sec. I, 4th para (refs. 13-14)"
+gre23:v118,,,film_thickness,typical ALD ZnO films for electrical work,~100,nm,literature,,,,"Sec. III B, 3rd para (refs. 13-14)"
+gre23:v119,,,resistivity,typical ALD ZnO films,~1e-2,Ω cm,literature,,,,"Sec. III B, 3rd para (refs. 13-14)"
+gre23:v120,,,purge_time,H2O desorption rate vs T,exponential in T,,literature,,,,"Sec. I, 4th para (ref. 15)"
+gre23:v121,,,growth_per_cycle,"conventional ZnO ALD on flat substrates, upper end",~2.1,Å/cycle,literature,,,,"Sec. III A, 1st para (refs. 14, 25)"
+gre23:v122,,,absorption_edge (new),Zn L edge,~1.2,keV,literature,,,,"Sec. III C, 3rd para"
+gre23:v123,,,absorption_edge (new),Al K edge,~1.6,keV,literature,,,,"Sec. III C, 3rd para"
+gre23:v124,,,temperature_jump (new),flash lamp on Si within 5 s,up to ~400,°C,literature,,,,"Sec. IV, 3rd para (ref. 42)"
+gre23:v125,,,temperature_jump (new),resistive heater on sapphire within 15 s,up to ~800,°C,literature,,,,"Sec. IV, 3rd para (ref. 43)"
