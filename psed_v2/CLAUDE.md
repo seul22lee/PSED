@@ -24,7 +24,7 @@ psed_v2/
   cases/                    # tracked: case-study exploration, by hand: figures.csv and papers.csv (figure inventory of the parsed papers, own words),
                             #   CANDIDATES.md, make_cases.py; cremers/ = the Cremers 2019 tables typed in (CSVs, CREMERS.md, IDEAS.md, scripts)
   cases/reports/            # gitignored: cases.html (embeds figure crops); the points read by eye are in cases/points.json (tracked)
-  schema_pilot/              # tracked: five-table schema pilot on three papers (per folder: final CSVs, draft/, checklist.md, notes.md, build.py); lists.py, convert.py, validate.py, checklist.py, make_report.py, SCHEMA.md, v1_points*.{csv,json}; reports/ gitignored
+  schema_pilot/              # tracked: five-table schema pilot on three papers (per folder: final CSVs, draft/, checklist.md, notes.md, build.py); lists.py, convert.py, validate.py, checklist.py, make_report.py, SCHEMA.md, v1_points*.{csv,json}; v2/ = re-extraction grounded in element ids (inventory, coverage, validate, compare, kg/ graph exports, make_reports); reports/ gitignored
   ingest/parse_docling.py   # tracked: Docling for equations only (--formulas: CodeFormula on R1/R2 crops -> equations.json; conda env psed310) and the OpenAlex abstract fetch
   ingest/docling/<paper_id>/ # gitignored: equations.json (paper-derived)
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images

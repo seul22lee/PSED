@@ -40,7 +40,7 @@ NOTE = {  # (paper key, item): (status, reason) when the tables hold no id for i
 
 
 def ids(rows, test, key, n=8):
-    out = [r[key] for r in rows if test(r)]
+    out = [r.get(key) or r.get("condition_id", "") for r in rows if test(r)]
     return (", ".join(out[:n]) + (f" (+{len(out) - n})" if len(out) > n else "")) if out else ""
 
 

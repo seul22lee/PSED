@@ -72,3 +72,13 @@ the mat22 grid variables h2_flow_ratio and atomic_ratio, the gre23 hold analysis
 v1 against the pilot (details in each notes.md and the report): yim20 v1 has no result values (all 142 Table 1 cells, the sticking values
 and the literature table missing) and counts each curve as a case; mat22 v1 misreads the Fig. 4 axis, stores "above the detection limit" as
 5000, has two Fig. 8 cells that contradict the text and misses Fig. 7b, the wafer map, Tables 1 and 2 and the H2S plasma; gre23 has no v1 output.
+
+## v2: re-extraction grounded in the paper's elements (`v2/`)
+
+The three papers were extracted again from scratch, every row citing element ids made by `v2/inventory.py` (abs.gN, sN.pM, sN.xK,
+figN.cap, figN<panel>, tabN.rIcJ, eqN; the tracked inventory holds ids and counts, never text). Rules added over the tables above:
+conditions at the narrowest true scope and never repeated per sample from a "*" row; units of listed quantities normalized (lists.UNITS);
+from_series for every value read from or measured behind a series; relation starts with the equation id; data_kind by what was done.
+`coverage.csv` lists every element with its rows or "no knowledge" and a reason. `v2/validate.py` checks all of it and passes;
+`v2/compare.py` writes compare.md (against 840674c); `v2/kg.py` writes kg/graph.json and kg/graph.graphml; `v2/make_reports.py`
+writes reports/pilot.html (with a coverage view) and reports/kg.html (untracked). S/Mo ratios are `other`, not composition (an atomic fraction).

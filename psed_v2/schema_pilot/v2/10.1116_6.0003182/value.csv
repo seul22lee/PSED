@@ -1,0 +1,128 @@
+value_id,sample_id,from_series,quantity,label_as_printed,qualifiers,value,value_min,value_max,censor,unit,data_kind,method,relation,regime,cited_ref,note,evidence
+gre23:v001,gre23:compacts,,other,NPC thickness 2L,,1.55,,,,mm,measured,,,,,+/- 0.05 mm,s8.p1; compact thickness by calipers
+gre23:v002,gre23:compacts,,other,NPC diameter,,11.43,,,,mm,measured,,,,,+/- 0.02 mm,s8.p1; compact diameter by calipers
+gre23:v003,gre23:compacts,,other,initial porosity φi,,50.5,,,,%,measured,,,,,+/- 0.3%; how it was obtained is not stated; Table I caption and s12.p1 print it as φf / φ1 (typo),"s8.p1, s6.p8, s15.p2, s12.p1, tabI.cap, s13.p5; initial porosity of the compacts"
+gre23:v004,gre23:compacts,,other,d_NP,,100,,,,nm,calculated,calculation,d_NP from specific surface area 15 m2/g,,,,"s8.p1, s10.p1; NP diameter from the BET surface area spec"
+gre23:v005,gre23:compacts,,feature_width,d_pore,,100,,,,nm,assumed,,,,,"approximate equality stated, not measured","s8.p1, s6.p8, s14.p10; pore diameter taken equal to d_NP at 50% porosity"
+gre23:v006,gre23:compacts,,feature_depth,L,,780000,,,,nm,calculated,calculation,L = thickness / 2,,,printed 0.78 +/- 0.02 mm,"s6.p8, s15.p2, fig1; L = half the compact thickness (both faces open)"
+gre23:v007,gre23:compacts,,aspect_ratio,AR,basis=AR,7800,,,,,calculated,calculation,AR = L / d_pore,,,+/- 200,"s6.p8, s15.p2; AR from half-thickness over pore diameter"
+gre23:v008,gre23:compacts,,other,AR relative to typical ZnO-coated NP thin films,,100,,,,,calculated,calculation,,,,order of magnitude,s6.p8; AR about 100 times that of NP thin films coated with ZnO before
+gre23:v009,gre23:compacts,gre23:F1a,other,~11.4 mm,,11.4,,,,mm,measured,,,,,rounded label,"fig1, fig1.cap; diameter label on the sketch"
+gre23:v010,gre23:compacts,gre23:F1a,other,2L ≈ 1.6 mm,,1.6,,,,mm,measured,,,,,rounded label,"fig1, fig1.cap; thickness label on the sketch"
+gre23:v011,gre23:compacts,gre23:F1a,other,φi ≈ 51%,,51,,,,%,measured,,,,,rounded label,"fig1, fig1.cap; porosity label on the sketch"
+gre23:v012,gre23:compacts,gre23:F1a,other,d_NP = 100 nm,,100,,,,nm,calculated,,,,,,"fig1, fig1.cap; NP diameter label on the sketch"
+gre23:v013,gre23:bare,gre23:F4a,other,~11.4 mm,,11.4,,,,mm,measured,photograph,,,,,fig4; diameter arrow on the uncoated compact photo
+gre23:v014,gre23:runs,,other,corundum grain size,,,90,100,,nm,fit,xrd,Halder-Wagner crystallite size analysis (JADE 9),,,,"s10.p1; corundum grain size from Halder-Wagner, matches d_NP"
+gre23:v015,gre23:runs,,other,Rietveld residual,,15,14,16,,%,fit,xrd,,,,,s10.p1; whole-pattern residual stabilised within one point of 15% for all three
+gre23:v016,gre23:R120-pair,,other,Mass gain (%),,28.4,,,,%,measured,gravimetry,,,,+/- 0.1 = spread within the pair; also called coating weight percentage,"tabI.r1c1, tabI.r0c1, s12.p1, s13.p3, tabI.cap; mass gain of the pair, 120 run"
+gre23:v017,gre23:R120-pair,,other,"Final porosity, φf (%)",,36.7,,,,%,calculated,calculation,porosity reduction from mass gain assuming uniform coating,,,"+/- 0.1; the text lists 36.7, 30.6, 38.0 for 120/160, 120, 160, an order that contradicts the table and the mass gains; table order kept","tabI.r1c2, tabI.r0c2, s12.p1; final porosity, 120 run"
+gre23:v018,gre23:R120-pair,,growth_per_cycle,GPC (Å/cyc),,2.37,,,,Å,calculated,calculation,"porosity loss to coating thickness, mean of spherical-NP and spherical-pore models, over 20 cycles",,,+/- 0.02 = spread in mass gain within the pair,"tabI.r1c3, tabI.r0c3, s12.p1, tabI.cap, s15.p3; GPC from mass gain, 120 run"
+gre23:v019,gre23:R120-pair,,other,Δn_s (µmol/cyc),,150,,,,µmol/cyc,calculated,calculation,eq3: GPC converted to moles of ZnO deposited on the pair per cycle,,,measurement uncertainty about +/- 0.1,"tabI.r1c4, tabI.r0c4, s12.p9, eq3, tabI.cap; moles of solid per cycle assuming ZnO, 120 run"
+gre23:v020,gre23:R120,gre23:F3b-120,other,Δn_g (µmol/cyc),,59.3,,,,µmol/cyc,calculated,process_monitor,mean over 20 cycles of Δn_g from Fig. 3b,,,measurement uncertainty about +/- 0.1,"tabI.r1c5, tabI.r0c5, s12.p9, tabI.cap; cycle-averaged gas mole gain over the DEZ hold, 120 run"
+gre23:v021,gre23:R120,gre23:F3b-120,other,ȳ = Δn_g/Δn_s + 1,,1.395,,,,,calculated,calculation,eq6: y = 1 + Δn_g/Δn_s; eq7: equals the mean reaction parameter x when only Eqs. 4-5 occur,,,measurement uncertainty about +/- 0.001; printed as ν̄ in the text layer,"tabI.r1c6, tabI.r0c6, s12.p14, s12.p15, eq6, eq7, eq8, s12.p10, s12.p11, s12.p13, s12.p17; gas-solid product ratio, 120 run"
+gre23:v022,gre23:R160-pair,,other,Mass gain (%),,36.4,,,,%,measured,gravimetry,,,,+/- 1.6 = spread within the pair; also called coating weight percentage,"tabI.r2c1, tabI.r0c1, s12.p1, s13.p3, tabI.cap; mass gain of the pair, 160 run"
+gre23:v023,gre23:R160-pair,,other,"Final porosity, φf (%)",,30.6,,,,%,calculated,calculation,porosity reduction from mass gain assuming uniform coating,,,"+/- 1.4; the text lists 36.7, 30.6, 38.0 for 120/160, 120, 160, an order that contradicts the table and the mass gains; table order kept","tabI.r2c2, tabI.r0c2, s12.p1; final porosity, 160 run"
+gre23:v024,gre23:R160-pair,,growth_per_cycle,GPC (Å/cyc),,3.48,,,,Å,calculated,calculation,"porosity loss to coating thickness, mean of spherical-NP and spherical-pore models, over 20 cycles",,,+/- 0.26 = spread in mass gain within the pair,"tabI.r2c3, tabI.r0c3, s12.p1, tabI.cap; GPC from mass gain, 160 run"
+gre23:v025,gre23:R160-pair,,other,Δn_s (µmol/cyc),,217,,,,µmol/cyc,calculated,calculation,eq3: GPC converted to moles of ZnO deposited on the pair per cycle,,,measurement uncertainty about +/- 0.1,"tabI.r2c4, tabI.r0c4, s12.p9, eq3, tabI.cap; moles of solid per cycle assuming ZnO, 160 run"
+gre23:v026,gre23:R160,gre23:F3b-160,other,Δn_g (µmol/cyc),,191,,,,µmol/cyc,calculated,process_monitor,mean over 20 cycles of Δn_g from Fig. 3b,,,measurement uncertainty about +/- 0.1,"tabI.r2c5, tabI.r0c5, s12.p9, tabI.cap; cycle-averaged gas mole gain over the DEZ hold, 160 run"
+gre23:v027,gre23:R160,gre23:F3b-160,other,ȳ = Δn_g/Δn_s + 1,,1.880,,,,,calculated,calculation,"eq6: y = 1 + Δn_g/Δn_s; eq8: y = x + c, c from Zn metal deposition (2 ethane per DEZ, ZnO molar mass overestimates)",,,measurement uncertainty about +/- 0.001; printed as ν̄ in the text layer,"tabI.r2c6, tabI.r0c6, s12.p14, s12.p15, eq6, eq7, eq8, s12.p10, s12.p11, s12.p13, s12.p17; gas-solid product ratio, 160 run"
+gre23:v028,gre23:R120-160-pair,,other,Mass gain (%),,26.4,,,,%,measured,gravimetry,,,,+/- 0.1 = spread within the pair; also called coating weight percentage,"tabI.r3c1, tabI.r0c1, s12.p1, s13.p3, tabI.cap; mass gain of the pair, cyc run"
+gre23:v029,gre23:R120-160-pair,,other,"Final porosity, φf (%)",,38.0,,,,%,calculated,calculation,porosity reduction from mass gain assuming uniform coating,,,"+/- 0.1; the text lists 36.7, 30.6, 38.0 for 120/160, 120, 160, an order that contradicts the table and the mass gains; table order kept","tabI.r3c2, tabI.r0c2, s12.p1; final porosity, cyc run"
+gre23:v030,gre23:R120-160-pair,,growth_per_cycle,GPC (Å/cyc),,2.14,,,,Å,calculated,calculation,"porosity loss to coating thickness, mean of spherical-NP and spherical-pore models, over 20 cycles",,,+/- 0.01 = spread in mass gain within the pair,"tabI.r3c3, tabI.r0c3, s12.p1, tabI.cap, s15.p2; GPC from mass gain, cyc run"
+gre23:v031,gre23:R120-160-pair,,other,Δn_s (µmol/cyc),,139,,,,µmol/cyc,calculated,calculation,eq3: GPC converted to moles of ZnO deposited on the pair per cycle,,,measurement uncertainty about +/- 0.1,"tabI.r3c4, tabI.r0c4, s12.p9, eq3, tabI.cap; moles of solid per cycle assuming ZnO, cyc run"
+gre23:v032,gre23:R120-160,gre23:F3b-cyc,other,Δn_g (µmol/cyc),,50.8,,,,µmol/cyc,calculated,process_monitor,mean over 20 cycles of Δn_g from Fig. 3b,,,measurement uncertainty about +/- 0.1,"tabI.r3c5, tabI.r0c5, s12.p9, tabI.cap; cycle-averaged gas mole gain over the DEZ hold, cyc run"
+gre23:v033,gre23:R120-160,gre23:F3b-cyc,other,ȳ = Δn_g/Δn_s + 1,,1.365,,,,,calculated,calculation,eq6: y = 1 + Δn_g/Δn_s; eq7: equals the mean reaction parameter x when only Eqs. 4-5 occur,,,measurement uncertainty about +/- 0.001; printed as ν̄ in the text layer,"tabI.r3c6, tabI.r0c6, s12.p14, s12.p15, eq6, eq7, eq8, s12.p10, s12.p11, s12.p13, s12.p17; gas-solid product ratio, cyc run"
+gre23:v034,gre23:R120-pair,,film_thickness,,,4.73,,,,nm,calculated,calculation,20 cycles x GPC from mass gain,,,+/- 0.03,"s13.p3; coating thickness inferred from mass gain, 120 run"
+gre23:v035,gre23:R120-160-pair,,film_thickness,,,4.28,,,,nm,calculated,calculation,20 cycles x GPC from mass gain,,,+/- 0.03,"s13.p3; coating thickness inferred from mass gain, 120/160 run"
+gre23:v036,gre23:R120,,other,excess coating thickness vs 120/160,,,0.4,0.5,,nm,calculated,calculation,4.73 - 4.28 nm,,,compared with ~100 nm pores,s14.p10; extra deposition of the 120 run over the cycled run
+gre23:v037,gre23:R120,,other,GPC difference vs 120/160,,10,,,,%,calculated,calculation,,,,,s14.p10; GPC of the 120 run about 10% above the cycled run
+gre23:v038,gre23:R120,,other,fractional mass gain vs 120/160,,10,,,,%,calculated,gravimetry,,,,,s14.p1; fractional mass gain 10% higher than the cycled run
+gre23:v039,gre23:runs,,other,reaction parameter x,,1,,,>,,calculated,process_monitor,"eq4, eq5: net gas gain in the DEZ half-reaction when x > 1",,,inferred from the sign of the hold pressure change,"s12.p6, eq4, eq5, fig2a, fig2b, fig2c; pressure rises in DEZ hold and falls in H2O hold, so x above 1"
+gre23:v040,gre23:runs,,other,purge pressure spikes,,1,,,,Torr,measured,process_monitor,,,,artefact: glovebox drawing N2 from the shared feed line,"fig2.cap, s12.p12; spikes and dips in purges from N2 line pressure drops"
+gre23:v041,gre23:Rtest,gre23:F2d,deposition_temperature,,kind=measured;step=purge_B,157,,,,°C,measured,process_monitor,,,,read by eye; peak about 157 C,"fig2d; boat temperature peak during the H2O purge, read by eye"
+gre23:v042,gre23:Rtest,gre23:F2d,deposition_temperature,,kind=measured,,115,119,,°C,measured,process_monitor,,,,read by eye; dips to ~115 C right after the ramp down,"fig2d; boat temperature during the other steps, read by eye"
+gre23:v043,gre23:R120-160,gre23:F3a-cyc,other,δp maximum,,450,,,,mTorr,measured,process_monitor,,reaction then leak dominated,,"reached after ~10 min, then slowly falls (net leak across the pump valve)","s12.x1, fig3a; plateau of δp in the cycle-15 DEZ hold, 120/160 run"
+gre23:v044,gre23:R120-160,gre23:F3a-cyc,other,time to δp maximum,,10,,,,min,measured,process_monitor,,,,approximate,"s12.x1, fig3a; time to the δp maximum, 120/160 run"
+gre23:v045,gre23:R120-160,gre23:F3a-cyc,other,TS,,-2,,,,mTorr/min,measured,process_monitor,,leak dominated,,approximate,"s12.x1, fig3a, s12.p7; terminal slope, cycle 15, 120/160 run"
+gre23:v046,gre23:R120,gre23:F3a-120,other,δp maximum,,500,,,,mTorr,measured,process_monitor,,,,approximate,"s12.x1, fig3a, s12.p7; δp maximum, cycle 15, 120 run"
+gre23:v047,gre23:R120,gre23:F3a-120,other,time to δp maximum,,15,,,,min,measured,process_monitor,,,,approximate,"s12.x1, fig3a; time to the δp maximum, 120 run"
+gre23:v048,gre23:R120,gre23:F3a-120,other,TS,,-1,,,,mTorr/min,measured,process_monitor,,,,approximate,"s12.x1, fig3a, s12.p7; terminal slope, cycle 15, 120 run"
+gre23:v049,gre23:R160,gre23:F3a-160,other,TS,,80,,,,mTorr/min,measured,process_monitor,,non-self-limiting gas generation,,approximate,"s12.p7, fig3a; positive terminal slope, cycle 15, 160 run"
+gre23:v050,gre23:R160,gre23:F3a-160,other,δp at end of hold,,2.7,,,,Torr,measured,process_monitor,,,,rises through the whole hold,"s12.p7, fig3a; δp at the end of the cycle-15 DEZ hold, 160 run"
+gre23:v051,gre23:R160,gre23:F3b-160,other,Δn_g maximum,,260,,,,µmol,measured,process_monitor,,,,read by eye; cycles 6-20 rank 160 >> 120 > 120/160 (s12.p8),"fig3b; maximum Δn_g near cycle 10, 160 run, read by eye"
+gre23:v052,gre23:R160,gre23:F3c-160,other,TS maximum,,88,,,,mTorr/min,measured,process_monitor,,,,read by eye,"fig3c; maximum terminal slope near cycle 10, 160 run, read by eye"
+gre23:v053,gre23:R160,,other,DEZ moles per pulse vs 120 run,,-10,,,,%,calculated,calculation,ideal gas at fixed pulse pressure,,,,s14.p7; DEZ moles per pulse about 10% lower at 160 than 120 C at equal pressure
+gre23:v054,gre23:R120,gre23:F5-120,composition,ZnO (zincite) Wt. %,species=ZnO,23.3,,,,wt%,fit,xrd,Rietveld refinement,,,+/- 0.2 fitting error,"tabII.r1c1, tabII.r0c1, tabII.cap, s13.p3; zincite weight percent, 120 run"
+gre23:v055,gre23:R120,gre23:F5-120,other,ZnO crystallite size (nm),species=ZnO,6.0,,,,nm,fit,xrd,Halder-Wagner,,,+/- 1.1 fitting error,"tabII.r1c2, tabII.r0c2, tabII.cap, s13.p3; zincite crystallite size, 120 run"
+gre23:v056,gre23:R120,gre23:F5-120,composition,Zn (metallic) Wt. %,species=Zn,,,,<dl,wt%,fit,xrd,,,,printed Not detected; crystallite size cell is a dash,"tabII.r1c3, tabII.r1c4, tabII.r0c3, tabII.r0c4, s13.p2; metallic Zn not detected, no size, 120 run"
+gre23:v057,gre23:R120-prism,,resistivity,"Electrical resistivity, ρ (Ω-cm)",,1.3e7,,,,Ω cm,measured,electrical,,,,+/- 0.2e7 from Ti/Au electrode area (flaking); text rounds to ~1e7,"tabII.r1c5, tabII.r0c5, tabII.cap, s13.p4; vertical two-point resistivity, 120 run"
+gre23:v058,gre23:R160,gre23:F5-160,composition,ZnO (zincite) Wt. %,species=ZnO,17.1,,,,wt%,fit,xrd,Rietveld refinement,,,+/- 0.2 fitting error,"tabII.r2c1, tabII.r0c1, tabII.cap, s13.p3; zincite weight percent, 160 run"
+gre23:v059,gre23:R160,gre23:F5-160,other,ZnO crystallite size (nm),species=ZnO,6.0,,,,nm,fit,xrd,Halder-Wagner,,,+/- 1.5 fitting error,"tabII.r2c2, tabII.r0c2, tabII.cap, s13.p3; zincite crystallite size, 160 run"
+gre23:v060,gre23:R160,gre23:F5-160,composition,Zn (metallic) Wt. %,species=Zn,12.5,,,,wt%,fit,xrd,Rietveld refinement,,,+/- 0.7 fitting error,"tabII.r2c3, tabII.r0c3, s13.p2; metallic Zn weight percent, 160 run"
+gre23:v061,gre23:R160,gre23:F5-160,other,Zn crystallite size (nm),species=Zn,57,,,,nm,fit,xrd,Halder-Wagner,,,+/- 42 fitting error,"tabII.r2c4, tabII.r0c4; metallic Zn crystallite size, 160 run"
+gre23:v062,gre23:R160-prism,,resistivity,"Electrical resistivity, ρ (Ω-cm)",,8.3e3,,,,Ω cm,measured,electrical,,,,+/- 1.0e3 from Ti/Au electrode area (flaking); text rounds to ~8e3,"tabII.r2c5, tabII.r0c5, tabII.cap, s13.p4; vertical two-point resistivity, 160 run"
+gre23:v063,gre23:R120-160,gre23:F5-cyc,composition,ZnO (zincite) Wt. %,species=ZnO,17.7,,,,wt%,fit,xrd,Rietveld refinement,,,+/- 0.1 fitting error,"tabII.r3c1, tabII.r0c1, tabII.cap, s13.p3; zincite weight percent, cyc run"
+gre23:v064,gre23:R120-160,gre23:F5-cyc,other,ZnO crystallite size (nm),species=ZnO,5.1,,,,nm,fit,xrd,Halder-Wagner,,,+/- 1.1 fitting error,"tabII.r3c2, tabII.r0c2, tabII.cap, s13.p3; zincite crystallite size, cyc run"
+gre23:v065,gre23:R120-160,gre23:F5-cyc,composition,Zn (metallic) Wt. %,species=Zn,,,,<dl,wt%,fit,xrd,,,,printed Not detected; crystallite size cell is a dash,"tabII.r3c3, tabII.r3c4, tabII.r0c3, tabII.r0c4, s13.p2; metallic Zn not detected, no size, cyc run"
+gre23:v066,gre23:R120-160-prism,,resistivity,"Electrical resistivity, ρ (Ω-cm)",,1.2e7,,,,Ω cm,measured,electrical,,,,+/- 0.1e7 from Ti/Au electrode area (flaking); text rounds to ~1e7,"tabII.r3c5, tabII.r0c5, tabII.cap, s13.p4; vertical two-point resistivity, cyc run"
+gre23:v067,gre23:prisms,,other,vertical current at 10 V,,300,,,>,nA,measured,electrical,,,,at least; percolating coating across the thickness,"s13.p4; vertical current at 10 V, at least about 300 nA"
+gre23:v068,gre23:prisms,,other,current over noise floor,,1e6,,,,,measured,electrical,,,,,s13.p4; current six orders above the noise floor
+gre23:v069,gre23:R160-prism,,other,resistivity ratio of 120 and 120/160 runs to 160 run,,1e3,,,>,,calculated,calculation,,,,,s13.p4; resistivity of 120 and 120/160 more than three orders above 160
+gre23:v070,gre23:runs,,other,width of higher-density band near bottom face,,,0.3,0.5,,mm,measured,sem_eds,,,,attributed to uneven powder packing before pressing,"s14.p1, fig6ac; denser alumina band near the bottom of every section, from SE images and Al maps"
+gre23:v071,gre23:lowT,,distance,depth of near-surface ZnO depletion,origin=nearer_face,200,,,,µm,measured,sem_eds,,,,XPS (SI) supports real thinning; possibly desorption during the long DEZ purge,"s14.p1, s14.p2, s14.p8, s15.p2, s15.p3, fig6d, fig6f; Zn signal lower within ~0.2 mm of each face, else flat"
+gre23:v072,gre23:R120,gre23:F6d-Zn,other,normalized Zn Kα counts vs 120/160,,12,,,,%,measured,sem_eds,,,,,s14.p1; normalised Zn counts 12% above the cycled sample
+gre23:v073,gre23:R120,gre23:F6d-Zn,composition,Normalized X-ray counts,element=Zn;reference=plateau,3.75,,,,,measured,sem_eds,,,,read by eye (cases/points.json reference value); flat face to face,fig6d; Zn line scan reference level read by eye
+gre23:v074,gre23:R160,gre23:F6e-Zn,composition,Normalized X-ray counts,element=Zn;reference=maximum,5.7,,,,,measured,sem_eds,,,,read by eye (cases/points.json reference value); shallow mid-depth dip,fig6e; Zn line scan reference level read by eye
+gre23:v075,gre23:R120-160,gre23:F6f-Zn,composition,Normalized X-ray counts,element=Zn;reference=plateau,3.3,,,,,measured,sem_eds,,,,read by eye (cases/points.json reference value); flat; roll-off within ~0.1 mm of the faces,fig6f; Zn line scan reference level read by eye
+gre23:v076,gre23:R160,gre23:F6e-Zn,composition,Normalized X-ray counts,element=Zn,5.1,,,,,measured,sem_eds,,,,"read by eye at ~0.9 mm; lower Zn far from the faces, consistent with non-self-limiting Zn deposition","fig6e, s14.p7; Zn counts minimum near the section centre, read by eye"
+gre23:v077,,,other,Zn L edge,,1.2,,,,keV,literature,cited,,,,uncited physical constant; explains Al Ka enhancement,s14.p7; Zn L edge energy
+gre23:v078,,,other,Al K edge,,1.6,,,,keV,literature,cited,,,,uncited physical constant,s14.p7; Al K edge energy
+gre23:v079,gre23:eq2,,other,ν,,1e13,,,,s-1,chosen input,calculation,eq2,,21,taken from ref. 21,"s9.p9, eq2; pre-exponential factor of H2O desorption"
+gre23:v080,gre23:eq2,,surface_coverage,θf,species=H2O,5e-3,,,,,chosen input,calculation,eq2,,8,value Cendejas et al. found necessary for uniform infiltration; E_des assumed coverage-independent (value in SI),"s9.p9, eq2; target residual H2O coverage"
+gre23:v081,gre23:eq2-120,,purge_time,,step=purge_B,21600,,,,s,calculated,calculation,eq2: t_purge = ln(1/θf) / (ν exp(-E_des/RT)),,,printed 360 min,"s9.p9, eq2, s12.p1; purge needed at 120 C"
+gre23:v082,gre23:eq2-160,,purge_time,,step=purge_B,660,,,,s,calculated,calculation,eq2: t_purge = ln(1/θf) / (ν exp(-E_des/RT)),,,printed 11 min,"s9.p9, eq2; purge needed at 160 C"
+gre23:v083,gre23:runs,,cycle_number,,,100,,,,,assumed,,,,,"authors' context estimate, not a process setting","s6.p7, s6.p6; about 100 cycles possibly needed for high-conductance coatings"
+gre23:v084,,,other,porosity φ,,,0.3,0.5,,,literature,cited,,,2-8,approximate,s6.p2; porosity of NP thin films coated by ALD
+gre23:v085,,,aspect_ratio,,basis=AR,100,,,<,,literature,cited,,,2-8,about 100 or less,s6.p2; AR of NP thin films
+gre23:v086,,,feature_depth,L,,,100,1000,,nm,literature,cited,,,2-8,~100 nm to ~1 µm,s6.p2; NP film thickness
+gre23:v087,,,feature_width,d_pore,,,5,20,,nm,literature,cited,,,2-8,,s6.p2; pore diameter of NP films
+gre23:v088,,,partial_pressure,,,133.3,,,<,Pa,literature,cited,,,2-8,~1 Torr or less,s6.p2; reactant pressure that suffices for NP films
+gre23:v089,,,pulse_time,,,1,,,<,s,literature,cited,,,2-8,~1 s or less,s6.p2; exposure duration that suffices for NP films
+gre23:v090,,,other,φ,,0.95,,,,,literature,cited,,,9,,s6.p4; silica aerogel porosity (Gayle et al.)
+gre23:v091,,,aspect_ratio,,basis=AR,60000,,,>,,literature,cited,,,9,,"s6.p4; aerogel AR, half thickness"
+gre23:v092,,,feature_width,d_pore,,20,,,,nm,literature,cited,,,9,,s6.p4; aerogel pore diameter
+gre23:v093,,,feature_depth,L,,1250000,,,,nm,literature,cited,,,9,printed ~1.25 mm,s6.p4; aerogel half-thickness
+gre23:v094,,,other,number of TMA doses,,12,,,,,literature,cited,,,9,,s6.p4; TMA doses for complete infiltration (one Al2O3 cycle)
+gre23:v095,,,exposure,,species=TMA,1.333e6,,,>,Pa s,literature,cited,,,9,printed > 1e4 Torr s; infiltration checked by SEM-EDS,s6.p4; total TMA exposure
+gre23:v096,,,other,porosity,,95,,,>,%,literature,cited,,,9;16,95+%,s6.p8; porosity of ALD-coated aerogels
+gre23:v097,,,deposition_temperature,,kind=set_point,80,,,,°C,literature,cited,,,10,,s6.p5; Ingale et al. ZnO on mesoporous SiO2 powder
+gre23:v098,,,cycle_number,,,3,,,,,literature,cited,,,10,up to,s6.p5; up to three ZnO cycles
+gre23:v099,,,other,powder mass,,2,,,,g,literature,cited,,,10,~2 g,s6.p5; powder load
+gre23:v100,,,other,s,,505,,,,m2/g,literature,cited,,,10,,s6.p5; SiO2 powder specific surface area
+gre23:v101,,,growth_per_cycle,,,1,,,,Å,literature,cited,,,10,~1,s6.p5; GPC through the powder bed
+gre23:v102,,,deposition_temperature,,kind=set_point,177,,,,°C,literature,cited,,,11,,s6.p5; Ferguson et al. ZnO on ZrO2 NP powder
+gre23:v103,,,other,s,,20.2,,,,m2/g,literature,cited,,,11,,s6.p5; ZrO2 powder specific surface area
+gre23:v104,,,other,d_NP,,50,,,,nm,literature,cited,,,11,,s6.p5; ZrO2 NP diameter
+gre23:v105,,,growth_per_cycle,,,2.2,,,,Å,literature,cited,,,11,~2.2,s6.p5; GPC from TEM
+gre23:v106,,,exposure,,species=DEZ,1.200e5,,,,Pa s,literature,cited,,,11,printed 900 Torr s (maximum),"s6.p5; largest DEZ exposure, Zn deposition seen by FTIR"
+gre23:v107,,,other,batch mass,,1,,,,g,literature,cited,,,12,,s6.p5; Libera et al. silica gel batch
+gre23:v108,,,other,s,,100,,,,m2/g,literature,cited,,,12,,s6.p5; silica gel specific surface area
+gre23:v109,,,cycle_number,,,10,,,,,literature,cited,,,12,,s6.p5; ZnO cycles
+gre23:v110,,,exposure,,species=DEZ,3000,,,,Pa s,literature,cited,,,12,printed 22.5 Torr s,s6.p5; DEZ exposure kept constant
+gre23:v111,,,deposition_temperature,,kind=set_point,,150,200,,°C,literature,cited,,,12,"white at 150 C, black at 200 C",s6.p5; temperature range studied
+gre23:v112,,,deposition_temperature,Zn onset temperature,kind=set_point,155,,,,°C,literature,cited,,,12,,s6.p5; lowest temperature with detectable Zn metal by XRD
+gre23:v113,,,exposure,,species=DEZ,1333,,,<,Pa s,literature,cited,,,12,printed < 10 Torr s at 200 C,s6.p5; DEZ exposure below which no Zn at 200 C
+gre23:v114,,,deposition_temperature,,kind=set_point,180,,,,°C,literature,cited,,,4;6-8,,s6.p5; NP thin-film ZnO infiltration studies without Zn metal
+gre23:v115,,,exposure,,species=DEZ,133.3,,,<,Pa s,literature,cited,,,4;6-8,printed < 1 Torr s,s6.p5; DEZ exposure of those studies
+gre23:v116,,,deposition_temperature,threshold temperature,kind=set_point,170,,,,°C,literature,cited,,,13;14,,"s6.p6; below about 170 C, ZnO resistivity rises with deposition temperature"
+gre23:v117,,,other,x,,1,,,,,literature,cited,"eq4, eq5",,10,~1,"s12.p6, eq4, eq5; reaction parameter on silica powder at 80 C"
+gre23:v118,,,other,x,,1.37,,,,,literature,cited,"eq4, eq5",,28,,"s12.p6, eq4, eq5; reaction parameter on QCM at 177 C"
+gre23:v119,,,other,x,,,1.4,1.6,,,literature,cited,"eq4, eq5",,27,,"s12.p6, eq4, eq5; reaction parameter on QCM, 80-250 C"
+gre23:v120,,,film_thickness,,,100,,,,nm,literature,cited,,,13;14,order of magnitude,s13.p4; typical ALD ZnO films for electrical work
+gre23:v121,,,resistivity,,,1e-2,,,,Ω cm,literature,cited,,,13;14,order of magnitude,s13.p4; typical ALD ZnO film resistivity
+gre23:v122,,,other,OH desorption time scale,,1e3,,,,s,literature,cited,,,40,assumption of the OH-density argument,s14.p10; time scale on which OH desorption is taken as self-limiting
+gre23:v123,,,other,temperature rise,,400,,,,°C,literature,cited,,,42,up to ~400 C within 5 s,s15.p4; flash-lamp rise of Si substrate temperature
+gre23:v124,,,other,heating time,,5,,,,s,literature,cited,,,42,,s15.p4; time of the flash-lamp rise
+gre23:v125,,,other,temperature rise,,800,,,,°C,literature,cited,,,43,up to ~800 C within 15 s,s15.p8; resistive heater rise of sapphire substrate temperature
+gre23:v126,,,other,heating time,,15,,,,s,literature,cited,,,43,,s15.p8; time of the resistive-heater rise
+gre23:v127,,,other,C2H6 per DEZ (Zn deposition),,2,,,,,literature,cited,eq8: raises c,,,"stoichiometry, refs 25-26 for ethane byproduct","s12.p17, eq8; ethane per DEZ consumed when Zn metal forms"

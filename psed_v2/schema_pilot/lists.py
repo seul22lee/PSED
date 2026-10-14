@@ -70,3 +70,12 @@ def qualifiers_ok(q):
         if allowed == "missing" or (allowed is None and not TOKEN.match(v)) or (allowed and v not in allowed):
             bad.append(part)
     return bad
+
+# canonical units (v2 of the pilot): a row with one of these quantities carries exactly this unit
+UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
+         "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
+         "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
+         "resistivity": "Ω cm", "film_density": "g/cm3", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
+         "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "lumped_sticking_coefficient": "", "initial_sticking_coefficient": "",
+         "recombination_probability": "", "knudsen_number": "", "normalized_thickness": "", "dimensionless_distance": "",
+         "step_coverage": "%", "saturation_density": "nm-2"}
