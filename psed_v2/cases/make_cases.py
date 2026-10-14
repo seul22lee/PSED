@@ -63,15 +63,12 @@ def crop(pid: str, fig) -> str:
 
 
 def selected_rows() -> list[dict]:
-    def ok(r):
-        if r["kind"] != "plot" or "measured" not in r["data_kind"]:
-            return False
-        x, y = r["x_id"], r["y_id"]
-        if x.startswith("film_thickness") and y == "distance":      # axes swapped on the figure
-            return True
-        return re.sub(r"\{.*", "", x) in ("distance", "dimensionless_distance") and y.startswith(
-            ("film_thickness", "normalized_thickness", "growth_per_cycle{position=local}", "coated_aspect_ratio"))
-    return [r for r in FIG if ok(r)]
+    """Measured depth profiles: the axis-id rule (thickness-like y against distance) plus the measured plots named in the
+    hand-read measured_profile cell (y a diameter, counts, a signal or a composition); both rules live in paper_case.py."""
+    import sys
+    sys.path.insert(0, str(HERE))
+    from paper_case import is_profile
+    return [r for r in FIG if is_profile(r)]
 
 
 # ----------------------------------------------------------------------------- svg
@@ -643,10 +640,14 @@ def slope_method(p):
     else:
         f = p["x_unit_um"] / (p["H_um"] if ("channel" in p["geometry"] or "cavity" in p["geometry"]) else p["H_um"] / 2)
     pts = sorted((x * f, y / pl) for x, y in p["points"])
+    pts = pts[max(range(len(pts)), key=lambda i: pts[i][1]):]          # the front only: from the highest point on (an entrance dip is not the front)
     band = [(x, y) for x, y in pts if 0.2 <= y <= 0.8]
     x50 = next((xa + (ya - 0.5) * (xb - xa) / (ya - yb) for (xa, ya), (xb, yb) in zip(pts, pts[1:]) if ya >= 0.5 > yb), None)
-    if len(band) < 2 or x50 is None:
+    if x50 is None or p["quality"].startswith("no front"):               # a fully coated structure ends in its closed end, not a front
         return None, len(band), x50
+    if len(band) < 2:                                                     # too few points on the front: the pair around one half
+        i = next(i for i in range(len(pts) - 1) if pts[i][1] >= 0.5 > pts[i + 1][1])
+        band = pts[i:i + 2]
     mx = sum(x for x, _ in band) / len(band); my = sum(y for _, y in band) / len(band)
     sxx = sum((x - mx) ** 2 for x, _ in band)
     return (abs(sum((x - mx) * (y - my) for x, y in band) / sxx) if sxx else None), len(band), x50
@@ -1007,19 +1008,20 @@ th{color:var(--text2);font-weight:600;font-size:12px}code{font:12px ui-monospace
 .ill{display:inline-block;border:1px dashed var(--text2);border-radius:6px;padding:3px 10px;font-size:13px;font-weight:600;margin:0 0 10px}
 .take{background:var(--panel);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 6px 6px 0}.lim,.note{color:var(--text2);font-size:13.5px}.note{color:var(--text)}
 .card{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0}.cardimg{display:grid;gap:10px;align-content:start}
-.link{font-size:13.5px}@media (max-width:900px){.card{grid-template-columns:1fr}}details{margin:10px 0}summary{cursor:pointer;color:var(--text2)}
+.link{font-size:13.5px}.pc{font-size:13.5px;margin:0 0 6px}.pc a{color:var(--accent)}@media (max-width:900px){.card{grid-template-columns:1fr}}details{margin:10px 0}summary{cursor:pointer;color:var(--text2)}
 """
 
 
 def main() -> None:
     sel = selected_rows()
     papers = sorted({r["paper_id"] for r in sel})
-    seltab = table(["Paper", "Figure", "Panel", "x id → y id", "Structure", "Used in"], [
-        [f"{E(who(r['paper_id']))}<span class='pid'>{r['paper_id']}</span>", r["figure"], r["panel"], code(r["x_id"]) + " → " + code(r["y_id"]), E(r["structure"]),
-         {Y: "case 1", M: "cases 1, 3", W: "case 1", A9: "cases 1, 2, 3", PP: "cases 1, 2", J5: "cases 1, 2", NC: "case 3", BJ: "case 3", D09: "case 1", GAO: "case 1", A21: "cases 1, 2", D10: "case 1",
-          "10.1116_1.4892385": "not used: porous body, no channel height", "10.1016_j.surfcoat.2012.02.038": "not used: fibre-filled hole", "10.1116_1.4971196": "not used: cavity entered through a hole, radial geometry",
-          "10.1021_cm0303080": "not used: X-ray signal across a membrane", "10.1063_1.4972120": "not used: fully coated, no front", "10.1016_j.apsusc.2009.02.055": "not used: four points", "10.1016_j.apsusc.2010.01.025": "not used: four or five points",
-          "10.1149_1.2789802": "not used: one hole, seven values", "10.1063_1.2714685": "not used: model outline only"}.get(r["paper_id"], "not used")] for r in sel])
+    with (HERE / "paper_case.csv").open(newline="", encoding="utf-8") as f:
+        PC = {r["paper_id"]: r for r in csv.DictReader(f)}
+    def used_in(pid):
+        r = PC.get(pid, {}); u = [str(i) for i in range(1, 12) if r.get(f"c{i}", "").startswith("used")]
+        return ("case " if len(u) == 1 else "cases ") + ", ".join(u) if u else "not used" + (": " + r["c1"].split(": ", 1)[1] if r.get("c1", "").startswith("candidate") else "")
+    seltab = table(["Paper", "Figure", "Panel", "x id → y id", "Structure", "Used in (from paper_case.csv)"], [
+        [f"{E(who(r['paper_id']))}<span class='pid'>{r['paper_id']}</span>", r["figure"], r["panel"], code(r["x_id"]) + " → " + code(r["y_id"]), E(r["structure"]), E(used_in(r["paper_id"]))] for r in sel])
     ptab = table(["Case", "Source", "Series", "x as printed", "y as printed", "Points (x, y)"], [
         [p["case"], f"{E(who(p['paper']))}, Fig. {p['figure']}{p['panel']}", E(p["series"]), E(p["x_label_as_printed"]), E(p["y_label_as_printed"]), E("; ".join(f"{x:g}, {y:g}" for x, y in p["points"]))] for p in PTS])
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PSED case studies</title><style>{CSS}</style></head><body><main>
@@ -1027,10 +1029,13 @@ def main() -> None:
 <p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data; cases 9 to 11 carry the part E candidates S1, S2, and S3 with S6, on the hand-read quantity matrix. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
 <div class="flow"><span>Before: the source crops as published</span><span>→ Ontology step: printed label to id, transform, gaps</span><span>→ After: the comparable view</span></div>
 <h2>Selected profile panels</h2>
-<p>Measured plot rows of the figure inventory whose x is a distance (plain or divided by a length) and whose y is a film thickness, a normalized thickness, a local growth per cycle or a coated aspect ratio: {len(sel)} rows in {len(papers)} papers.</p>{seltab}
+<p>Measured plot rows of the figure inventory whose x is a distance (plain or divided by a length) and whose y is a film thickness, a normalized thickness, a local growth per cycle or a coated aspect ratio, plus the measured depth profiles named in the hand-read matrix whose y is a diameter, counts, a signal or a composition: {len(sel)} rows in {len(papers)} papers.</p>{seltab}
 {case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}{case9()}{case10()}{case11()}
 <h2>Points read by eye</h2><p>The same content as <code>points.json</code>, as a table.</p><details><summary>Show the {sum(len(p['points']) for p in PTS)} points of {len(PTS)} series</summary>{ptab}</details>
 </main></body></html>"""
+    for i in range(1, 12):
+        k = f"c{i}"; nu = sum(r[k].startswith("used") for r in PC.values()); nc = sum(r[k].startswith("candidate") for r in PC.values())
+        page = re.sub(rf'(<section id="c{i}"><h2>.*?</h2>)', lambda m: m.group(1) + f'<p class="pc"><a href="matrix.html#case={k}">{nu} papers used, {nc} candidates not used</a> (paper × case view in matrix.html)</p>', page, count=1, flags=re.S)
     OUT.write_text(page, encoding="utf-8")
     print(f"{OUT}: {OUT.stat().st_size / 1e6:.2f} MB; selected rows {len(sel)} in {len(papers)} papers; series plotted {len(PTS)}")
 
