@@ -677,27 +677,55 @@ def logdots(rows, title, xr=(1e-6, 1), w=860):
     return "".join(e) + "</svg>"
 
 
+# probe and lateral resolution of each profile, as stated in the papers (µm; None = not stated)
+RES = {Y: ("reflectometer, 50× objective", 5, "text: roughly 5 µm spot"), M: ("reflectometer, 50× objective", 6, "text: 5–6 µm spot for Fig. 9 (25 and 50 µm in Fig. 7)"),
+       GAO: ("reflectometer, 50×", 5, "text: about 5 × 5 µm² spot"), D09: ("spectroscopic ellipsometer", None, "spot not stated"), D10: ("spectroscopic ellipsometer", None, "spot not stated"),
+       CM: ("EPMA line scan", 5, "text: 3–5 µm spatial resolution"), KR: ("micro-spot ellipsometer", 10, "text: 10 µm spot"),
+       GD: ("TEM", None, "not stated (nm scale)"), AP9: ("TEM", None, "not stated (nm scale)"), AP10: ("TEM", None, "not stated (nm scale)")}
+# the papers' own values for the channel profiles, split by kind (from sticking_reported.csv)
+FIT = {(Y, "TMA"): 5.72e-3, (M, "TMA"): 4e-3, (M, "H2O"): 3e-4, (Y, "TiCl4"): 0.10}
+CHOSEN = {(Y, "TMA"): 0.01, (D09, "TMA"): 0.1, (D10, "TMA"): 0.1, (D10, "H2O"): 0.05}
+
+
+def group9(p):
+    if p["paper"] == GAO:
+        return "Al2O3 (TMA/H2O), limiting species not stated" if p["series"].startswith("Al2O3") else "TiO2 (TiCl4/H2O), limiting species not stated"
+    return "H2O" if p["species_limiting"].startswith("H2O") else p["species_limiting"].split(" ")[0]
+
+
 def case9():
     ser = [p for p in PTS if p["case"] == 9]
     slope_ok, model = USE("S1 slope"), USE("S1 model")
-    rows, per = [], {}
+    rows, per, reslim = [], {}, []
     for n, p in enumerate(ser, 1):
         is_model = p["series"].startswith("model curve")
         s, nb, x50 = slope_method(p)
         c = 13.9 * s * s if s else None
-        per.setdefault(p["paper"], []).append((c, p, is_model))
-        rows.append([f'<span class="num">{n}</span>', f"{E(who(p['paper']))}, Fig. {p['figure']}{E(p['panel'])}", E(p["series"]), E(p["geometry"]), f"{p['H_um']:g}", E(p["species_limiting"]),
-                     str(nb), f"{x50:.0f}" if x50 else "—", f"{s:.3g}" if s else "—", f"{c:.2g}" if c else "—", ("model curve, not data; " if is_model else "") + E(p["quality"])])
+        w_char = p["H_um"] if ("channel" in p["geometry"] or "cavity" in p["geometry"]) else p["H_um"] / 2
+        width = w_char / s if s else None                       # 1 / |dθ/dx| in µm: the front width
+        probe, spot, src = RES.get(p["paper"], ("", None, "not stated"))
+        lim = bool(width and spot and not is_model and width < 3 * spot)
+        dup = "same as" in p["series"] or "same curve" in p["series"]   # one sample plotted twice (10.1039_d0cp03358h Fig. 9c/9f, 10.1149_1.3301664 Fig. 2a/6a)
+        if lim:
+            reslim.append(f"{who(p['paper'])} Fig. {p['figure']}{p['panel']} {p['series']}")
+        per.setdefault(p["paper"], []).append((c, p, is_model or dup, lim))
+        rows.append([f'<span class="num">{n}</span>', f"{E(who(p['paper']))}, Fig. {p['figure']}{E(p['panel'])}", E(p["series"]), E(p["geometry"]), f"{p['H_um']:g}", E(group9(p)),
+                     str(nb), f"{x50:.0f}" if x50 else "—", f"{s:.3g}" if s else "—", f"{c:.2g}" if c else "—", E(f"{probe}; {src}"),
+                     f"{width:.3g}" if width else "—", f"{width / spot:.1f}" if (width and spot) else "—", "<b>yes</b> (c is a lower bound)" if lim else "no" if (width and spot) else "—",
+                     ("model curve, not data; " if is_model else "") + ("duplicate of the sample above, not counted; " if dup else "") + E(p["quality"])])
+    good = lambda pid, g=None: sorted(c for c, p, m, l in per.get(pid, []) if c and not m and not p["quality"].startswith("poor") and (g is None or group9(p) == g))
+    med = lambda v: (v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] * v[len(v) // 2]) ** 0.5) if v else None    # geometric middle for an even count
+
     def summary(pids):
         out, plot = [], []
         for pid in pids:
-            vals = sorted(c for c, p, m in per.get(pid, []) if c and not m and not p["quality"].startswith("poor"))
+            vals = good(pid)
             rep = [r for r in REP if r["paper_id"] == pid and r["quantity"] != "none" and not r["quantity"].startswith("slope")]
-            redo = (f"{vals[len(vals) // 2]:.2g}" + (f" (range {vals[0]:.2g} to {vals[-1]:.2g}, {len(vals)} series)" if len(vals) > 1 else " (1 series)")) if vals else "no usable front"
+            redo = (f"{med(vals):.2g}" + (f" (range {vals[0]:.2g} to {vals[-1]:.2g}, {len(vals)} series)" if len(vals) > 1 else " (1 series)")) if vals else "no usable front"
             out.append([f"{E(who(pid))}<span class='pid'>{pid}</span>", "<br>".join(E(f"{r['species']}: {r['value']}") for r in rep) or "none",
                         "<br>".join(E(r["quantity"]) for r in rep) or "—", "<br>".join(E(r["method"]) for r in rep) or "—", "<br>".join(E(r["model"]) for r in rep) or "—",
                         "<br>".join(E(r["data_kind"]) for r in rep) or "—", E(redo)])
-            marks = [(c, "re", f"re-derived here, Fig. {p['figure']}{p['panel']} {p['series']}") for c, p, m in per.get(pid, []) if c and not m and not p["quality"].startswith("poor")]
+            marks = [(c, "re", f"re-derived here, Fig. {p['figure']}{p['panel']} {p['series']}") for c, p, m, l in per.get(pid, []) if c and not m and not p["quality"].startswith("poor")]
             for r in rep:
                 if "EA =" in r["value"] or ">>" in r["value"]:         # an activation energy or a bound, not a sticking value
                     continue
@@ -712,27 +740,39 @@ def case9():
         return out, plot
     sa, pa = summary(slope_ok)
     sb, pb = summary(model)
-    tma = {pid: sorted(c for c, p, m in per.get(pid, []) if c and not m and p["species_limiting"].startswith("TMA") and not p["quality"].startswith("poor")) for pid in slope_ok}
-    med = {k: v[len(v) // 2] for k, v in tma.items() if v}
-    med_w = next(c for c, p, m in per[D10] if c and not m and not p["quality"].startswith("poor"))
-    d0 = [c for c, p, m in per[M] if c and "H 500 nm" in p["series"] and "500 cycles" in p["series"]]
-    hs = {h: next(c for c, p, m in per[M] if c and f"H {h} nm" in p["series"]) for h in (100, 500, 2000)}
-    wid = {h: (h / 1000) / math.sqrt(hs[h] / 13.9) for h in hs}          # 1 / |dθ/dx| in µm
+    # by limiting species: re-derived against the papers' fits, chosen inputs and quoted literature, kept apart
+    G = [("TMA", Y), ("TMA", M), ("TMA", D09), ("Al2O3 (TMA/H2O), limiting species not stated", GAO), ("TiO2 (TiCl4/H2O), limiting species not stated", GAO), ("H2O", D10)]
+    sp = {"TMA": "TMA", "H2O": "H2O"}
+    grows, redo = [], {}
+    for g, pid in G:
+        v = good(pid, g); redo[(g, pid)] = v
+        k = sp.get(g.split(" ")[0], "TiCl4" if g.startswith("TiO2") else "TMA")
+        grows.append([E(g), E(who(pid)), (f"{med(v):.2g}" + (f" ({v[0]:.2g} to {v[-1]:.2g}, {len(v)} series)" if len(v) > 1 else " (1 series)")) if v else "—",
+                      f"{FIT[(pid, k)]:g}" if (pid, k) in FIT else "—", f"{CHOSEN[(pid, k)]:g}" if (pid, k) in CHOSEN else "—"])
+    grows.append(["for comparison", E(who(M)) + ", water-limited sample 14 (profile not read here)", "—", "3e-4", "—"])
+    grows.append(["for comparison", E(who(Y)) + ", TiO2 from TiCl4 (no plateau, not re-derived)", "—", "0.1", "—"])
+    tma = [med(redo[("TMA", p)]) for p in (Y, M, D09)]
+    al = med(redo[(G[3])]); ti = redo[G[4]]; h2o = med(redo[G[5]])
+    hs = {h: next(c for c, p, m, l in per[M] if c and f"H {h} nm" in p["series"]) for h in (100, 500, 2000)}
+    wid = {h: (h / 1000) / math.sqrt(hs[h] / 13.9) for h in hs}
+    d0 = [c for c, p, m, l in per[M] if c and "H 500 nm" in p["series"] and "500 cycles" in p["series"]]
     cards = [
-        (Y, 6, "", [("structure", "PillarHall, gap 0.5 µm"), ("paper's value", "c = 0.0057 for TMA, fit of a diffusion-adsorption model (Table I)"), ("data kind", "measured points, fitted curve")]),
-        (M, 9, "c, f", [("structure", "PillarHall, H 100, 500, 2000 nm"), ("paper's value", "c = 0.004 for TMA from the slope of the normalized profile (Table 2)"), ("data kind", "measured")]),
-        (D09, 5, "", [("structure", "macroscopic rectangular channel, aspect ratio 33, 50, 100"), ("paper's value", "s0 = 0.1, chosen for a simulation, no fit"), ("data kind", "measured")]),
-        (D10, 2, "a", [("structure", "macroscopic rectangular channel, aspect ratio 22, 50"), ("paper's value", "s0 = 0.1 (TMA), 0.05 (water), chosen for simulations"), ("data kind", "measured")]),
-        (GAO, 5, "a-b", [("structure", "lateral channel, gap 200 to 1000 nm"), ("paper's value", "none"), ("data kind", "measured (reflectometer)")]),
-        (CM, 5, "a", [("structure", "anodic alumina, 65 nm pores, entered from both faces"), ("paper's value", "S = 0.007 for DEZ, chosen for Monte Carlo runs"), ("data kind", "measured (EPMA line scan, 3 to 5 µm resolution)")]),
-        (KR, 8, "", [("structure", "cavity 4.5 µm high entered through one hole (radial)"), ("paper's value", "SC = 0.02 for TMA, Monte Carlo fit"), ("data kind", "measured (micro-spot ellipsometry)")]),
+        (Y, 6, "", [("structure", "PillarHall, gap 0.5 µm"), ("paper's value", "c = 0.0057 for TMA, fit of a diffusion-adsorption model (Table I)"), ("probe", "reflectometer, about 5 µm spot"), ("data kind", "measured points, fitted curve")]),
+        (M, 9, "c, f", [("structure", "PillarHall, H 100, 500, 2000 nm"), ("paper's value", "c = 0.004 for TMA from the slope of the normalized profile (Table 2)"), ("probe", "reflectometer, 5–6 µm spot"), ("data kind", "measured")]),
+        (D09, 5, "", [("structure", "macroscopic rectangular channel, aspect ratio 33, 50, 100"), ("paper's value", "s0 = 0.1, chosen for a simulation, no fit"), ("probe", "ellipsometer, spot not stated"), ("data kind", "measured")]),
+        (D10, 2, "a", [("structure", "macroscopic rectangular channel, aspect ratio 22, 50"), ("paper's value", "s0 = 0.1 (TMA), 0.05 (water), chosen for simulations; the thermal profile is water-limited"), ("probe", "ellipsometer, spot not stated"), ("data kind", "measured")]),
+        (GAO, 5, "a-b", [("structure", "lateral channel, gap 200 to 1000 nm"), ("paper's value", "none"), ("probe", "reflectometer, about 5 µm spot"), ("data kind", "measured")]),
+        (CM, 5, "a", [("structure", "anodic alumina, 65 nm pores, entered from both faces"), ("paper's value", "S = 0.007 for DEZ, chosen for Monte Carlo runs"), ("probe", "EPMA, 3–5 µm resolution"), ("data kind", "measured")]),
+        (KR, 8, "", [("structure", "cavity 4.5 µm high entered through one hole (radial)"), ("paper's value", "SC = 0.02 for TMA, Monte Carlo fit"), ("probe", "micro-spot ellipsometer, 10 µm spot"), ("data kind", "measured")]),
     ]
     onto = table(["Printed label or value", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
         ["Location (µm); Distance; depth (mm); Aspect Ratio; x̃", code("distance") + ", " + code("dimensionless_distance{by=H}"), code("x_over_width") + " with H for slits and cavities, d/2 for holes and pores", "the choice of width per geometry (H, d/2, hydraulic diameter) is a rule, not a stored qualifier"],
         ["thickness, relative thickness, GPC, Zn signal", code("normalized_thickness{reference=plateau|entrance|maximum}"), code("normalize_thickness"), "“maximum” (the EPMA scans are scaled to their highest value) is not in the reference list"],
         ["slope of the front at one half (Table 1 of 10.1039_d0cp03358h)", code("front_slope{at=PD50, by=H}") + " (new)", "least-squares slope of θ against x̃ for 0.2 ≤ θ ≤ 0.8", "no entry for a front slope"],
-        ["c (lumped), s0, β0, SC, S, Γ", code("initial_sticking_coefficient") + " for all of them in v0", code("slope_to_sticking") + ": c = 13.9 · slope² (new, valid only for Kn ≫ 1 and a rectangular channel)", "a lumped c is not an initial s0: the ontology needs a quantity per kind, and method, model and the input-or-result status as attributes of the value"],
+        ["spot size, objective, EPMA resolution", code("probe_resolution{method}") + " (new)", "front width 1/|dθ/dx| over the spot", "no entry; without it a front narrower than the probe cannot be flagged"],
+        ["c (lumped), s0, β0, SC, S, Γ", code("initial_sticking_coefficient") + " for all of them in v0", code("slope_to_sticking") + ": c = 13.9 · slope² (new, valid only for Kn ≫ 1 and a rectangular channel)", "a lumped c is not an initial s0: the ontology needs a quantity per kind, and method, model, limiting species and the fit, chosen-input or literature status as attributes of the value"],
     ])
+    rl = "; ".join(reslim) if reslim else "none"
     return f"""
 <section id="c9"><h2>Case 9. One method for every sticking value</h2>
 <p class="q"><b>Question.</b> Applied to every usable measured profile, does one method (the slope method used by 10.1039_d0cp03358h) bring the sticking values of different papers closer than the values the papers report? Papers: {len(slope_ok)} where the method's geometry holds, {len(model)} that need a geometry model (shown apart).</p>
@@ -741,14 +781,17 @@ def case9():
 <h3><span class="step">After</span> Re-derived next to reported</h3>{ILL}
 <h4>a. Rectangular channels in the free-molecular regime ({len(slope_ok)} papers): the slope method applies</h4>
 <div class="plots one">{logdots(pa, "Re-derived (filled circles) and reported values (squares: fit, diamonds: chosen input, crosses: literature)")}</div>
-{table(["Paper", "Reported value", "Quantity (s or s0)", "Method", "Model", "data_kind", "Re-derived here: c = 13.9 · slope²"], sa)}
+{table(["Limiting species", "Paper", "Re-derived here: c = 13.9 · slope² (median)", "Reported, fit", "Reported, chosen for a simulation"], grows)}
+<details><summary>The papers' reported values with quantity, method, model and data kind</summary>{table(["Paper", "Reported value", "Quantity (s or s0)", "Method", "Model", "data_kind", "Re-derived here"], sa)}</details>
 <h4>b. Other geometries ({len(model)} papers): indicative only, the slope relation is not derived for them</h4>
 <div class="plots one">{logdots(pb, "Holes, pores, radial cavity, forests and porous bodies: indicative re-derivation where a width exists")}</div>
 {table(["Paper", "Reported value", "Quantity (s or s0)", "Method", "Model", "data_kind", "Re-derived here (indicative)"], sb)}
-<details><summary>All {len(ser)} series, with the slope and the value re-derived from each</summary>{table(["#", "Source", "Series", "Geometry", "H or d (µm)", "Limiting species", "Points in 0.2–0.8", "x̃ at one half", "Slope", "c", "Quality"], rows)}</details>
-<p class="note"><b>Check of the eye reading.</b> For the 0.5 µm channel, 500 cycles, of 10.1039_d0cp03358h the points read here give c = {d0[0]:.1e}; the paper's own Table 1 slope (0.019) gives {13.9 * 0.019 ** 2:.1e}. The method reproduces the paper's value from its own data within the reading error.</p>
-<p class="take"><b>Takeaway.</b> Per paper (median of the usable TMA fronts), one method gives {", ".join(f"{v:.1e} ({who(k)})" for k, v in sorted(med.items(), key=lambda kv: kv[1]))}: a factor of {max(med.values()) / min(med.values()):.0f}. The values the same papers report span 0.004 to 0.1 (a factor of 25), and the largest is a value chosen for a simulation; re-derived, that paper's profile gives {med[D09]:.2g}. So one method removes the outlier, but the spread that remains is smaller than the spread inside one paper: the 100, 500 and 2000 nm channels of 10.1039_d0cp03358h give {hs[100]:.1e}, {hs[500]:.1e} and {hs[2000]:.1e}, because the front is {wid[100]:.0f}, {wid[500]:.0f} and {wid[2000]:.0f} µm wide instead of scaling with H. For water, the one thermal macroscopic slot limited by water gives {med_w:.1e}, against 3e-4 from the slope method in 10.1039_d0cp03358h. A sticking value from the slope is comparable across papers only at equal channel height and probe resolution.</p>
-<p class="lim"><b>Limits.</b> Points read by eye; the slope comes from 2 to 15 points per front. The macroscopic channels of 10.1149_1.3072694 have no stated height; it is derived from the paper's aspect-ratio formula. The thermal 10.1149_1.3301664 profile is limited by water, not TMA (stated by the authors). Probe resolution (reflectometer spot, EPMA step) and channel narrowing both widen fronts and lower c. The re-derivations in part b use a width that the slope relation was not derived for; the EPMA scans are scaled to their maximum, not to a plateau. Model curves read from three papers are listed but not used.</p>
+<h4>c. Every series, with the probe's stated resolution</h4>
+<p class="note">Front width = 1/|dθ/dx|, the distance over which the fitted front falls from 1 to 0. A series is marked resolution-limited when that width is below three spots (the upper end of a stated range); its slope is then too shallow and its c a lower bound.</p>
+<details><summary>All {len(ser)} series</summary>{table(["#", "Source", "Series", "Geometry", "H or d (µm)", "Limiting species", "Points in 0.2–0.8", "x̃ at one half", "Slope", "c", "Probe and resolution (stated)", "Front width (µm)", "Width in spots", "Resolution-limited", "Quality"], rows)}</details>
+<p class="note"><b>Check of the eye reading.</b> For the 0.5 µm channel, 500 cycles, of 10.1039_d0cp03358h the points read here give c = {d0[0]:.1e}; the paper's own Table 1 slope (0.019) gives {13.9 * 0.019 ** 2:.1e}.</p>
+<p class="take"><b>Takeaway.</b> Like with like, the two fitted TMA values in 0.5 µm channels are 0.004 (Yim 2020) and 0.0057 (Ylilammi 2018), a factor of 1.4; re-derived by one method from their own profiles they are {tma[1]:.1e} and {tma[0]:.1e}, a factor of {max(tma[:2]) / min(tma[:2]):.1f}, so for fitted values one method adds nothing. Grouped by limiting species, TMA spans {min(tma):.1e} to {max(tma):.1e} (a factor of {max(tma) / min(tma):.1f}) over three papers; the 0.1 reported for the third is a value chosen for a simulation, not a fit. With Gao 2015's Al2O3, whose limiting species is not stated, at {al:.1e}, the spread becomes a factor of {max(tma) / al:.0f}. For water the one water-limited profile (Dendooven 2010) gives {h2o:.1e} against the 3e-4 fitted by Yim 2020, a factor of {h2o / 3e-4:.0f}; Gao's TiO2 ({ti[0]:.1e} to {ti[-1]:.1e}) is about {0.1 / med(ti):.0f} times below Ylilammi's TiCl4 fit of 0.1. So one method removes a chosen value from the TMA comparison but leaves factors of {max(tma) / min(tma):.0f} to {max(max(tma) / al, h2o / 3e-4, 0.1 / med(ti)):.0f} between papers. In Yim 2020 the front is {wid[100]:.0f}, {wid[500]:.0f} and {wid[2000]:.0f} µm wide at H 0.1, 0.5 and 2 µm, {wid[100] / 6:.1f} to {wid[2000] / 5:.1f} spots of its 5–6 µm reflectometer spot: above three spots, so resolution alone does not explain the constant width. Resolution-limited: {E(rl)}.</p>
+<p class="lim"><b>Limits.</b> Points read by eye; the slope comes from 2 to 15 points per front. The macroscopic channels of 10.1149_1.3072694 have no stated height (derived from the paper's aspect-ratio formula) and neither Dendooven paper states the ellipsometer spot, so their fronts cannot be tested for resolution. Channel narrowing by film growth also widens fronts. The re-derivations in part b use a width the slope relation was not derived for; the EPMA scans are scaled to their maximum, not to a plateau. Model curves read from three papers are listed but not used.</p>
 </section>"""
 
 
@@ -803,6 +846,14 @@ def case10():
     within = sum(1 for r in meas if 0.67 <= r <= 1.5)
     contra = [v for v in pts if (v["reading"] == "lower" and v["R"] < 1) or (v["reading"] == "upper" and v["R"] > 1)]
     by = {p: sorted(v["R"] for v in pts if v["paper_id"] == p and v["reading"] == "measured") for p in pids}
+    within3 = sum(1 for r in meas if 1 / 3 <= r <= 3)
+    def spr(p):
+        m = by[p]; lo = [v for v in pts if v["paper_id"] == p and v["reading"] == "lower"]; up = [v for v in pts if v["paper_id"] == p and v["reading"] == "upper"]
+        out = (f"{m[0]:.2g}" if len(m) == 1 else f"{m[0]:.2g} to {m[-1]:.2g}") + f" ({len(m)} measured)" if m else "no measured depth"
+        if lo: out += f", lower bounds {sum(v['R'] >= 1 for v in lo)} of {len(lo)} consistent"
+        if up: out += f", upper bounds {sum(v['R'] <= 1 for v in up)} of {len(up)} consistent"
+        return out
+    spread = {p: spr(p) for p in pids}
     cards = [
         (D09, 5, "", [("exposure", "TMA about 0.3 Pa for 4 s (text); the authors set water higher so TMA limits"), ("reading", "AR 33 fully coated; half thickness inside AR 50 and 100")]),
         (CM, 5, "a", [("exposure", "DEZ 0.068 Torr for 1 to 30 s; pores entered from both faces"), ("reading", "half-thickness depth per exposure, by eye")]),
@@ -823,8 +874,9 @@ def case10():
 <h3><span class="step">Ontology step</span> Exposure of which step, and what the depth means</h3>{onto}
 <h3><span class="step">After</span> One dimensionless exposure for every species</h3>{ILL}
 <div class="plots one">{"".join(e)}</svg></div>{leg}
+{table(["Paper", "Exposure over predicted need, per paper (measured depths; bounds consistent when a fully coated structure has a ratio of 1 or more, an uncoated one 1 or less)"], [[E(who(p)), E(spread[p])] for p in pids])}
 <details><summary>All {len(pts)} records</summary>{rec}</details>
-<p class="take"><b>Takeaway.</b> Of the {len(meas)} measured depths, {within} lie within a factor of 1.5 of the square law (exposure over need from {meas[0]:.2g} to {meas[-1]:.2g}). By paper: DEZ in alumina pores {min(by[CM]):.2g} to {max(by[CM]):.2g}, TMA in the macroscopic slots of 10.1149_1.3072694 {min(by[D09]):.2g} to {max(by[D09]):.2g}, the Hf amide {min(by[FB]):.2g} to {max(by[FB]):.2g}; the water-limited slot of 10.1149_1.3301664 needs {by[D10][0]:.0f} times the predicted exposure and the fibre plug as little as {min(by[SC]):.2g} times. {len(contra)} bounds disagree with it: the TMA-coated membrane of {who(CM)} is fully coated at {next(v["R"] for v in contra if v["paper_id"] == CM):.2g} of the predicted need (the overestimate found in Case 8), and {who(KIM)}'s shortest injection does not reach the hole bottom at {next(v["R"] for v in contra if v["paper_id"] == KIM):.1f} times the need, where even the flat surface is not yet saturated. So for precursors in holes, pores and slots the square law holds within a factor of 1.5 over normalized exposures from {min(v["x"] for v in pts if v["reading"] == "measured" and 0.67 <= v["R"] <= 1.5):.1e} to {max(v["x"] for v in pts if v["reading"] == "measured" and 0.67 <= v["R"] <= 1.5):.1e}; it fails for water and for a fibre plug, a geometry it does not describe.</p>
+<p class="take"><b>Takeaway.</b> Of the {len(meas)} measured depths, {within} ({within / len(meas):.0%}) lie within a factor of 1.5 of Gordon's square law and {within3} ({within3 / len(meas):.0%}) within a factor of 3 (exposure over predicted need, {meas[0]:.2g} to {meas[-1]:.2g}). Per paper: {"; ".join(f"{who(p)} {spread[p]}" for p in pids)}. The lowest point, {min(by[SC]):.2g}, is the fibre plug's 2 s run, which its authors single out as reaching deeper than their simulation and attribute to a pressure build-up at the start of the pulse that a constant-pressure model leaves out. The water-limited slot of 10.1149_1.3301664 sits at {by[D10][0]:.0f} times the predicted need, but that ratio rests on an assumed saturation density for water (1.5 molecules per Al). {len(contra)} bounds disagree with the law: the TMA-coated membrane of {who(CM)} is fully coated at {next(v["R"] for v in contra if v["paper_id"] == CM):.2g} of the predicted need (the overestimate found in Case 8), and {who(KIM)}'s shortest injection does not reach the hole bottom at {next(v["R"] for v in contra if v["paper_id"] == KIM):.1f} times the need, where even the flat surface is not yet saturated.</p>
 <p class="lim"><b>Limits.</b> Saturation densities are stated in four papers and assumed in the rest (named in the legend); a factor of two there moves a point by a factor of two. The EAR of the fibre plug and of the CNT forest are computed here (area to depth over four times the opening, and depth over the mean flight path) and are not those of Gordon's derivation. The 10.1063_1.2714685 records are plasma ALD with the TMA step limiting at short injection; its 0.2 s point lies where even the flat surface is not saturated. Depths at one half were read by eye; the alumina-pore depths are EPMA signals scaled to their maximum.</p>
 </section>"""
 
@@ -886,7 +938,7 @@ def case11():
     s6 = []
     for m in ("SiO2", "TiO2"):
         sl, rl = low[(m, "100")]; sa, ra = atm[(m, "100")]
-        s6.append([m, f"{sl:.0f} (r {rl:.2g})", f"{sa:.0f} (r {ra:.2g})", f"{math.sqrt(4 / (3 * ra)):.0f}", f"{math.sqrt(4 / (3 * ra)) / sa:.1f}", f"{4 / (3 * sa * sa):.1e}", f"{4 / (3 * sa * sa) / rl:.0f}"])
+        s6.append([m, f"{sl:.0f} (r {rl:.2g}, low-pressure relation)", f"{sa:.0f} (r {ra:.2g}, atmospheric relation)", f"{4 / (3 * sa * sa):.1e}", f"{4 / (3 * sa * sa) / rl:.0f}"])
     kn = table(["Paper", "Channel", "Pressure", "Mean free path (as stated or estimated)", "Kn", "Regime"], [
         [E(who(A21)), "PillarHall, H 0.5 µm", "1.6 to 17 Pa (12 to 130 mTorr)", "about 0.1 mm (stated)", "about 200", "free molecular"],
         [E(who(A9)), "PillarHall, H 0.5 µm", "6.7 Pa", "as above (same reactor)", "about 200", "free molecular"],
@@ -909,7 +961,7 @@ def case11():
     rows = table(["Paper", "Where", "Surface", "r", "Range or error", "T (°C)", "Pressure (Pa)", "Regime", "Kind", "Reading"], [
         [E(who(r["paper_id"])), E(r["where"]), E(r["surface"]), r["r"] or "—", f"{r['r_lo'] or '—'} to {r['r_hi'] or '—'}", r["T_C"] or "not stated", f"{float(r['pressure_Pa']):g}", E(r["regime"]), E(r["data_kind"]), E(r["reading"])] for r in pl])
     sio = sorted((float(r["T_C"]), float(r["r"])) for r in pl if mat(r) == "SiO2" and r["paper_id"] == A21 and float(r["pressure_Pa"]) == 6.67)
-    sp = sorted((float(r["pressure_Pa"]), float(r["r"])) for r in pl if mat(r) == "SiO2" and r["paper_id"] == A21 and r["where"] == "Fig. 5B")
+    sp = sorted((float(r["pressure_Pa"]), float(r["r"])) for r in RC if mat(r) == "SiO2" and r["paper_id"] == A21 and r["where"] == "Fig. 5B")   # all four pressures
     lit = [r for r in RC if r["use"].startswith("not plotted: literature")]
     papers = sorted({r["paper_id"] for r in pl})
     return f"""
@@ -922,9 +974,9 @@ def case11():
 <p class="note">{" · ".join(f'<span style="color:var(--s{v})">●</span> {k}' for k, v in slot.items())} (growing films). IrOx (atmospheric, no stated temperature) is in the table below, on neither plot.</p>
 <details><summary>The {len(pl)} plotted values</summary>{rows}</details>
 <h4>Does depth in channel heights keep its free-molecular scaling at atmospheric pressure?</h4>{kn}
-{table(["Film, 100 °C", "Slope of PD50/H against ln t at 50 mTorr", "Slope at atmospheric pressure", "Slope the free-molecular relation predicts for the atmospheric r", "Predicted over observed", "r if the free-molecular relation were applied to the atmospheric slope", "That r over the 50 mTorr r"], s6)}
-<p class="take"><b>Takeaway.</b> In one reactor at 50 mTorr, r of O on growing SiO2 falls from {sio[0][1]:.1e} at {sio[0][0]:.0f} °C to {sio[-1][1]:.1e} at {sio[-1][0]:.0f} °C, and at about 180 °C from {sp[0][1]:.1e} at {sp[0][0]:g} Pa to {sp[-1][1]:.1e} at {sp[-1][0]:.0f} Pa, a factor of {sp[0][1] / sp[-1][1]:.0f} with pressure inside the free-molecular regime. TiO2 stays near 4e-5 up to 180 °C and drops below 1e-5 at 240 °C; Al2O3 and HfO2 are one to three orders higher. At atmospheric pressure (Kn about 0.4) the fronts advance per ln t {s6[0][4]} (SiO2) and {s6[1][4]} (TiO2) times less than the free-molecular relation predicts for the r those authors report; read with the free-molecular relation, the atmospheric slopes would give r {s6[0][6]} and {s6[1][6]} times the 50 mTorr values. So depth in channel heights stops scaling the free-molecular way between Kn of about 200 and 0.4, and an r is comparable across papers only with its regime and relation attached.</p>
-<p class="lim"><b>Limits.</b> {len(papers)} papers, two of them from one group and one reactor; the atmospheric papers share one relation, and one of them carries an erratum notice whose content is not in the ingested text. Fig. 5 values and error bars were read by eye. No paper measures the gas temperature, so mean free paths are as stated or estimated from the substrate temperature. The 50 mTorr and atmospheric comparisons are both at 100 °C but differ in O2 fraction, plasma source and flow. No thermal profile in the corpus is outside the Knudsen regime, so the S6 check rests on plasma data; Case 10 shows thermal depths holding Gordon's law from 65 nm pores to 0.3 mm slots, all at Kn well above 1.</p>
+{table(["Film, 100 °C", "Slope of PD50/H against ln t at 50 mTorr (r as reported)", "Slope at atmospheric pressure (r as reported)", "r from the atmospheric slope read with the low-pressure relation", "That r over the 50 mTorr r"], s6)}
+<p class="take"><b>Takeaway.</b> In one reactor at 50 mTorr, r of O on growing SiO2 falls from {sio[0][1]:.1e} at {sio[0][0]:.0f} °C to {sio[-1][1]:.1e} at {sio[-1][0]:.0f} °C (a factor of {sio[0][1] / sio[-1][1]:.1f}). At about 180 °C it falls with pressure from {sp[0][1]:.1e} at {sp[0][0]:.1f} Pa to {sp[-1][1]:.1e} at {sp[-1][0]:.0f} Pa, a factor of {sp[0][1] / sp[-1][1]:.0f}; without the 1.6 Pa point, whose error bar spans a factor of ten, it falls from {sp[1][1]:.1e} at {sp[1][0]:.1f} Pa to {sp[-1][1]:.1e}, a factor of {sp[1][1] / sp[-1][1]:.1f}. TiO2 stays near 4e-5 up to 180 °C and drops below 1e-5 at 240 °C; Al2O3 and HfO2 are one to three orders higher. Read with one relation (the low-pressure one), the atmospheric slopes give r {s6[0][4]} times (SiO2) and {s6[1][4]} times (TiO2) the 50 mTorr values at the same 100 °C; the atmospheric papers' own relation brings this to {0.0004 / 9.3e-5:.1f} and {6e-5 / 3.65e-5:.1f} times. These data cannot separate a change of r from a change of transport regime: each regime has two papers, one relation, and no overlap in pressure.</p>
+<p class="lim"><b>Limits.</b> {len(papers)} papers, two of them from one group and one reactor; the atmospheric papers share one relation, and one of them carries an erratum notice whose content is not in the ingested text. Fig. 5 values and error bars were read by eye. No paper measures the gas temperature, so mean free paths are as stated or estimated from the substrate temperature. The 50 mTorr and atmospheric comparisons are both at 100 °C but differ in O2 fraction, plasma source and flow. No thermal profile in the corpus is outside the Knudsen regime, so the S6 check rests on plasma data; in Case 10 the thermal depths from 65 nm pores to 0.3 mm slots, all at Kn well above 1, lie mostly within a factor of 3 of Gordon's law.</p>
 </section>"""
 
 

@@ -369,7 +369,8 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Usable now.** 5 papers with rectangular-channel profiles for the slope method; 10 more need a geometry-specific model (15 in all). Done as Case 9.
 - **Possible finding (hypothesis).** The reported TMA values span 0.0005 to 0.026; one method may narrow this to a factor of a few, with the remainder tied to temperature and to the probe's lateral resolution.
 - **Ontology.** `initial_sticking_coefficient` exists; v0 lacks the method and model as attributes of a value, and the probe resolution.
-- **Feasibility: feasible partly** (digitizing needed; three profiles have too few points, see profiles.csv).
+- **Result (Case 9).** Like with like, the two fitted TMA values in 0.5 µm channels (0.004, 0.0057) re-derive to 6.3e-3 and 3.9e-3: one method adds nothing there. By limiting species, TMA spans 3.9e-3 to 1.3e-2 over three papers (a factor of 3.4; the reported 0.1 of the third is a chosen input); with Gao 2015's Al2O3 (limiting species not stated) a factor of 14; water 9.1e-3 against a fitted 3e-4 (30×); TiO2 about 50× below the one TiCl4 fit. Resolution-limited fronts (width under three probe spots): three EPMA scans of 10.1021_cm0303080; Yim 2020's fronts are 3.3 to 6.6 spots wide, so resolution does not explain their constant 20 to 33 µm width.
+- **Feasibility: done as a by-eye case; the verdict stays feasible partly** (one method narrows TMA only by removing a chosen value).
 
 ### S2. Exposure needed against equivalent aspect ratio across structures
 - **Question.** Plotted as exposure against EAR on one scale, do holes, pores, macroscopic holes, fibre plugs and lateral channels lie on one curve near Gordon's square law?
@@ -380,6 +381,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Possible finding.** Gordon's curve matches one source and overestimates the need for another by 1.2 to 3.5 times (Case 8); across eight sources the scatter around the curve may group by structure class.
 - **Ontology.** `exposure` exists with a species qualifier; v0 lacks the one-sided or two-sided entry and an EAR transform per structure class.
 - **Feasibility: feasible partly.**
+- **Result (Case 10).** Of 16 measured depths, 62% lie within a factor of 1.5 of the square law and 81% within a factor of 3. Per paper: alumina pores 0.54 to 1.2, macroscopic slots (TMA) 0.85 to 1.1, Hf amide 0.86 to 3.1, fibre plug 0.19 to 0.89 (the 0.19 is the 2 s run its authors explain by a pressure build-up), CNT forest 2.5, water-limited slot 7.4 (on an assumed saturation density). Two bounds disagree (Elam 2003 TMA at 0.87, Kim 2007 at 4.2 with an unsaturated flat surface).
 
 ### S3. O-radical recombination on SiO2 and TiO2 against temperature and pressure
 - **Question.** Do the recombination probabilities from different reactors and pressures fall on one trend with substrate temperature and pressure?
@@ -390,6 +392,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Possible finding.** On growing SiO2 r falls with temperature and pressure within one reactor and is higher at atmospheric pressure; the bulk-surface values sit two orders above and rise with temperature.
 - **Ontology.** `recombination_probability{species, surface}` exists; v0 lacks temperature, pressure and the surface kind as conditions of the value.
 - **Feasibility: feasible now.**
+- **Result (Case 11).** On growing SiO2 in one reactor r falls 3.4× from 100 to 240 °C, and with pressure 12× from 1.6 to 17 Pa, or 3.2× without the uncertain 1.6 Pa point. Atmospheric values are 23× (SiO2) and 9× (TiO2) the 50 mTorr values when read with the low-pressure relation, 4.3× and 1.6× with their own; the data cannot separate r from regime.
 
 ### S4. Thermal against plasma depth at equal structure and exposure
 - **Question.** Across papers, how much shallower is plasma ALD than thermal ALD at equal structure and exposure, and does the ratio follow the regime diagram of 10.1149_1.3491381?
@@ -419,7 +422,8 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Usable now.** 5 papers (10.1063_1.5028178 added), exposure stated in 2; no pair at matched exposure across scales. Checked in Case 11 with the plasma papers and the Case 10 points.
 - **Possible finding.** The microscopic channels sit in the free-molecular plateau of the model; the macroscopic holes do not.
 - **Ontology.** v0 lacks a Knudsen number.
-- **Feasibility: feasible partly.**
+- **Result (Case 11).** No thermal profile in the corpus is outside the Knudsen regime; the only data below Kn 1 are the two atmospheric plasma papers, which cannot separate a change of r from a change of regime. Thermal depths from 65 nm pores to 0.3 mm slots (Case 10) lie mostly within a factor of 3 of the square law.
+- **Feasibility: not yet for thermal ALD** (no thermal data below Kn 1; the plasma data cannot separate r from regime).
 
 ### S7. Planar saturation exposure of TMA across reactors
 - **Question.** In one unit, how much TMA exposure saturates a flat surface in each reactor?
@@ -482,7 +486,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 | 5 | S2 exposure against EAR | 8 | partial (limiting-step exposure in 8 of 41 hand-read papers) | partly (Case 8 began it) | agent: how much dose for a structure |
 | 6 | S11 entrance excess | 4 | partial | yes | twin model limits |
 | 7 | S5 channel narrowing | 3 | partial | yes | twin model check |
-| 8 | S6 Knudsen break | 5 | exposure stated in 2 | partly | twin validity range |
+| 8 | S6 Knudsen break | 5 | exposure stated in 2; no thermal data below Kn 1 | partly | twin validity range |
 | 9 | S4, S7, S9 | 2 to 3 | too few | — | — |
 
 **Pilot S8 (by eye, pilot).** Growth per cycle in Å, TMA and water: 10.1016_j.surfcoat.2012.02.038 Fig. 9 reads 0.66 at 50 °C, 0.67 at 100, 0.85 at 150, 1.0 at 200, 0.96 at 250, 0.94 at 300; 10.1002_adem.202201901 Fig. 2a reads 0.96 at 35, 0.93 at 60, 0.94 at 80, 0.96 at 100, 1.02 at 125 and 150; text values add 1.0 at 200 (10.1149_1.3072694), 1.29 at 177 (10.1021_cm0303080), 1.19 and 1.29 at 200 (10.1116_1.4971196), and 0.93 to 1.03 at 300 (10.1039_d0cp03358h Table 1). Impression: informative. The two reactors that both span low temperature differ by about 1.4 times at 50 to 100 °C and agree within 0.05 Å at 150 °C and above; the 177 to 200 °C text values spread from 1.0 to 1.3.
