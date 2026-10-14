@@ -359,14 +359,14 @@ Fifteen PDFs were obtained by hand and parsed: Cremers refs 62, 65, 66, 67, 69, 
 
 ## E. Cross-paper synthesis (third search, 2026-10-13)
 
-Each candidate below needs data from three or more papers put on one axis or through one method, and its answer is stated by none of them. Inputs come from `quantity_matrix.csv` (58 in-scope papers with a PDF, 14 quantities; cells give where a value is, read by hand for the 24 conformality papers and found by keyword for the rest). Nothing is computed here except the by-eye pilots at the end, which are marked.
+Each candidate below needs data from three or more papers put on one axis or through one method, and its answer is stated by none of them. Inputs come from `quantity_matrix.csv` (58 in-scope papers with a PDF, 14 quantities; cells give where a value is, every cell read by hand for 36 conformality papers and found by keyword for the other 22; the exposure cell of a hand-read paper starts with a tag, and 10 of the 36 state an exposure as partial pressure and time, or as the exposure itself). Nothing is computed here except the by-eye pilots at the end, which are marked.
 
 ### S1. One method for every sticking coefficient
 - **Question.** If the same method is applied to every digitizable measured profile, do the sticking values of TMA (and other precursors) agree better than the values the papers report?
-- **Papers and figures.** 10.1063_1.5028178 Fig. 6, 7; 10.1039_d0cp03358h Fig. 9, 11 and Table 1 (slopes); 10.1116_1.4903941 Fig. 5; 10.1149_1.3072694 Fig. 5; 10.1149_1.3301664 Fig. 2a, 6a (thermal); 10.1016_j.surfcoat.2012.02.038 Fig. 5; 10.1021_cm0303080 Fig. 5a, 6a; 10.1116_1.4971196 Fig. 8; 10.1016_j.apsusc.2009.02.055 Fig. 3; 10.1016_j.apsusc.2010.01.025 Fig. 1, 3.
+- **Papers and figures.** 10.1063_1.5028178 Fig. 6, 7; 10.1039_d0cp03358h Fig. 9, 11 and Table 1 (slopes); 10.1116_1.4903941 Fig. 5; 10.1149_1.3072694 Fig. 5; 10.1149_1.3301664 Fig. 2a, 6a (thermal); 10.1016_j.surfcoat.2012.02.038 Fig. 5; 10.1021_cm0303080 Fig. 5a, 6a; 10.1116_1.4971196 Fig. 8; 10.1016_j.apsusc.2009.02.055 Fig. 3; 10.1016_j.apsusc.2010.01.025 Fig. 1, 3. Added by the second hand pass, for a geometry-specific model only: 10.1021_acs.chemmater.1c03164 Fig. 9 (CNT forest), 10.3762_bjnano.5.25 Fig. 6b, c (CNT forest), 10.1116_1.4892385 Fig. 5 (porous layer, fitted 2e-4), 10.1021_acs.langmuir.6b03119 Fig. 3a (nanotube layer).
 - **What to compute.** Digitize each profile, normalize it to its plateau, put depth in units of the limiting width, and apply one relation between the slope at half thickness and the sticking coefficient (the free-molecular slope relation used by 10.1039_d0cp03358h), or one model fit; compare with each paper's own value and method.
-- **Inputs.** Profile and width: present in all eleven. Plateau: absent in the TiO2 profiles of 10.1063_1.5028178 and 10.1116_1.4903941. Exposure: needed only for a full fit; stated in 10.1149_1.3072694, 10.1149_1.3301664, 10.1016_j.surfcoat.2012.02.038, 10.1021_cm0303080. Geometry outside the slope relation's validity: fibre plug (10.1016_j.surfcoat.2012.02.038), radial cavity (10.1116_1.4971196), two-sided pores (10.1021_cm0303080).
-- **Usable now.** About 6 lateral-channel and macro-hole profiles for the slope method; 3 more with a geometry-specific model. Missing PDFs that add most: 10.1116/1.5093620 (Arts 2019, the slope method and its water and TMA profiles), ref. 87 (Mattinen 2016, four Ir profiles in channels).
+- **Inputs.** Profile and width: present in the ten listed first and the four added. Plateau: absent in the TiO2 profiles of 10.1063_1.5028178 and 10.1116_1.4903941. Exposure: needed only for a full fit; stated in 10.1149_1.3072694, 10.1149_1.3301664, 10.1016_j.surfcoat.2012.02.038, 10.1021_cm0303080. Geometry outside the slope relation's validity: fibre plug (10.1016_j.surfcoat.2012.02.038), radial cavity (10.1116_1.4971196), two-sided pores (10.1021_cm0303080).
+- **Usable now.** About 6 lateral-channel and macro-hole profiles for the slope method; 7 more with a geometry-specific model (13 in all).
 - **Possible finding (hypothesis).** The reported TMA values span 0.0005 to 0.026; one method may narrow this to a factor of a few, with the remainder tied to temperature and to the probe's lateral resolution.
 - **Ontology.** `initial_sticking_coefficient` exists; v0 lacks the method and model as attributes of a value, and the probe resolution.
 - **Feasibility: feasible partly** (digitizing needed; three profiles have too few points, see profiles.csv).
@@ -375,9 +375,9 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Question.** Plotted as exposure against EAR on one scale, do holes, pores, macroscopic holes, fibre plugs and lateral channels lie on one curve near Gordon's square law?
 - **Papers and figures.** 10.1002_cvde.200390005 Fig. 2, 3 and text; 10.1021_cm0303080 Fig. 3, 5, 13; 10.1149_1.3072694 Fig. 5; 10.1149_1.3301664 Fig. 2a; 10.1016_j.surfcoat.2012.02.038 Fig. 5; 10.1063_1.2714685 Fig. 7; 10.1149_1.2789802 Fig. 3; the review's Table II rows with an exposure.
 - **What to compute.** Exposure in Pa·s from partial pressure and time; EAR from each structure's dimensions with the review's formulas (and half length for two-sided pores); a mark for fully coated (lower bound) or half-thickness depth (measured); Gordon's curve per precursor with its saturation density.
-- **Inputs.** Partial pressure stated in 7 of these papers; absent in the lateral-channel papers (10.1039_d0cp03358h gives it only as a model input) and in 10.1116_1.4971196 and the two Rose papers. Saturation density per precursor: estimated from planar growth.
-- **Usable now.** 7 papers, with TMA, DEZ and Hf amide. Missing PDFs: ref. 96 (Elam 2006, the AAO record rows), ref. 135, ref. 139 (rows with an exposure), ref. 166 (W at the largest exposure).
-- **Possible finding.** Gordon's curve matches one source and overestimates the need for another by 1.2 to 3.5 times (Case 8); across seven sources the scatter around the curve may group by structure class.
+- **Inputs.** Partial pressure and time stated in 6 of the listed papers (10.1149_1.2789802 gives only the bubbler vapour pressure and a fitted flux); two more papers state an exposure with a coated depth: 10.1021_acs.chemmater.1c03164 (wall exposure from a measured TMA pressure trace, CNT forest, Fig. 7, 9) and 10.1116_6.0003182 (about 17,000 Torr·s of DEZ, nanoparticle compact coated through, a lower bound). Exposure absent in the lateral-channel papers (10.1039_d0cp03358h gives it only as a model input) and in 10.1116_1.4971196 and the two Rose papers. Saturation density per precursor: estimated from planar growth.
+- **Usable now.** 8 papers, with TMA, DEZ and Hf amide. The other two papers with a stated exposure (10.1021_acs.jpcc.5c06502, 10.1021_acs.jpcc.1c01505) are limited by the plasma step, not the precursor.
+- **Possible finding.** Gordon's curve matches one source and overestimates the need for another by 1.2 to 3.5 times (Case 8); across eight sources the scatter around the curve may group by structure class.
 - **Ontology.** `exposure` exists with a species qualifier; v0 lacks the one-sided or two-sided entry and an EAR transform per structure class.
 - **Feasibility: feasible partly.**
 
@@ -386,17 +386,17 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1021_acs.jpcc.1c01505 Fig. 5; 10.1021_acs.jpcc.9b08176 Fig. 3 and text; 10.1063_5.0168768 Fig. 3, Table I; 10.1021_acs.jpcc.5c06502 text (IrOx); 10.1149_1.3491381 Table II (literature); the review's Table VII; 10.1016_j.cattod.2003.11.022 Table 1 (out of scope, cited source).
 - **What to compute.** r against substrate temperature with pressure as a second variable, one symbol per reactor and surface kind (growing film, bulk or ceramic).
 - **Inputs.** Temperature and pressure present in all four ALD papers; the surface kind is implicit in the literature tables.
-- **Usable now.** 4 ALD papers, 2 literature tables, 1 cited source. Missing PDFs: ref. 252 and ref. 250 are excluded (not ALD), so the literature values stay cited; in scope, refs 198 and 203 would add plasma SiO2 conformality without r.
+- **Usable now.** 4 ALD papers, 2 literature tables, 1 cited source.
 - **Possible finding.** On growing SiO2 r falls with temperature and pressure within one reactor and is higher at atmospheric pressure; the bulk-surface values sit two orders above and rise with temperature.
 - **Ontology.** `recombination_probability{species, surface}` exists; v0 lacks temperature, pressure and the surface kind as conditions of the value.
 - **Feasibility: feasible now.**
 
 ### S4. Thermal against plasma depth at equal structure and exposure
 - **Question.** Across papers, how much shallower is plasma ALD than thermal ALD at equal structure and exposure, and does the ratio follow the regime diagram of 10.1149_1.3491381?
-- **Papers and figures.** 10.1016_j.surfcoat.2012.02.038 Fig. 10; 10.1149_1.3301664 Fig. 2; 10.1149_1.3491381 Fig. 9; 10.1063_1.2714685 and 10.1149_1.2789802 (plasma only, with exposure); 10.1063_1.4972120 (plasma Pt, full coverage).
+- **Papers and figures.** 10.1016_j.surfcoat.2012.02.038 Fig. 10; 10.1149_1.3301664 Fig. 2; 10.1149_1.3491381 Fig. 9; 10.1063_1.2714685 and 10.1149_1.2789802 (plasma only; partial pressure stated in the first, a fitted flux in the second); 10.1063_1.4972120 (plasma Pt, full coverage).
 - **What to compute.** Depth ratio at equal exposure; position of each case on the r-against-aspect-ratio diagram.
 - **Inputs.** Matched pairs exist in 2 papers; r for the matched surfaces is only in literature tables.
-- **Usable now.** 2 matched pairs and 3 plasma-only papers. Missing PDFs: ref. 198 (five plasma rows), ref. 69's companion work.
+- **Usable now.** 2 matched pairs and 3 plasma-only papers.
 - **Possible finding.** Thermal side reactions make the measured ratio smaller than recombination alone predicts.
 - **Ontology.** v0 lacks a link between two series differing in one condition.
 - **Feasibility: not yet** (two pairs).
@@ -406,7 +406,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1149_1.2789802 Fig. 5; 10.1039_d0cp03358h Fig. 9d-f, Table 1; 10.1116_1.4903941 Fig. 5b; 10.1039_d1cp04758b Fig. 5e (model).
 - **What to compute.** 1 − 2s/H on x for each sample (s from the plateau or the top thickness), coated depth over H or step coverage on y, against the model curve.
 - **Inputs.** Thickness and H present in all four; for 10.1116_1.4903941 only the 200 nm gap closes.
-- **Usable now.** 3 experiments plus the model. Missing PDFs: ref. 89 (trench rows with thickness and depth).
+- **Usable now.** 3 experiments plus the model.
 - **Possible finding.** The experiments fall below the model once 2s/H exceeds about 0.3.
 - **Ontology.** v0 lacks the open fraction of a channel as a derived quantity.
 - **Feasibility: feasible partly.**
@@ -415,8 +415,8 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Question.** Does half-thickness depth over H stay constant from 0.1 µm channels to 1 mm holes, and where does it break as the Knudsen number falls?
 - **Papers and figures.** 10.1039_d0cp03358h Fig. 9 (0.1 to 2 µm); 10.1116_1.4903941 Fig. 5b (0.2 to 1 µm); 10.1149_1.3072694 Fig. 5 (0.1 mm); 10.1149_1.3301664 Fig. 2a (thermal, 0.5 mm); 10.1039_d4cp00131a Fig. 5, 8 (model).
 - **What to compute.** Knudsen number from the reactor pressure and H; depth over H at comparable exposure.
-- **Inputs.** Reactor pressure in text for all; exposure not comparable across them (missing in the lateral-channel papers).
-- **Usable now.** 4 experiments, but at unmatched exposures. Missing PDFs: 10.1116/1.5093620.
+- **Inputs.** Reactor pressure in text for all; partial pressure and time stated only for the two macroscopic holes (10.1149_1.3072694, 10.1149_1.3301664); the lateral-channel papers give times and total pressure only.
+- **Usable now.** 4 experiments, exposure stated in 2; no pair at matched exposure across scales.
 - **Possible finding.** The microscopic channels sit in the free-molecular plateau of the model; the macroscopic holes do not.
 - **Ontology.** v0 lacks a Knudsen number.
 - **Feasibility: feasible partly.**
@@ -426,7 +426,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1002_adem.202201901 Fig. 1b (dose in Torr); 10.1063_1.2714685 Fig. 7a (flat surface, injection time at 0.01 Torr); 10.1021_cm0303080 text (about 10^4 L, quoted); 10.1021_acsami.0c22121 Fig. S1 (TiCl4, no pressure); 10.1149_2.067203jes Fig. 4e (TMA with plasma, time only).
 - **What to compute.** Exposure at 90% of saturated growth in Pa·s.
 - **Inputs.** Pressure stated in 2 of 5.
-- **Usable now.** 2 to 3. Missing PDFs: refs 236, 235 (sticking by QCM and Auger), ref. 237.
+- **Usable now.** 2 to 3.
 - **Possible finding.** The quoted saturation exposures differ by more than the sticking values imply.
 - **Ontology.** v0 lacks a saturation-point quantity.
 - **Feasibility: not yet.**
@@ -436,7 +436,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1002_adem.202201901 Fig. 2a; 10.1016_j.surfcoat.2012.02.038 Fig. 9; 10.1039_d0cp03358h Table 1; 10.1149_1.3072694 text; 10.1021_cm0303080 text; 10.1116_1.4971196 text; 10.1063_1.2714685 Fig. 7 (plasma); 10.1116_6.0001094 text (plasma); 10.1149_2.067203jes Fig. 4e-h (plasma reference); 10.1063_1.5028178 Table I (model value, kept apart).
 - **What to compute.** Growth per cycle against temperature, measured values only, one symbol per reactor; thermal and plasma apart.
 - **Inputs.** Temperature and growth per cycle stated in all; whether doses were saturating is stated in about half.
-- **Usable now.** 6 thermal, 3 plasma. Missing PDFs: none essential; many planar papers outside the conformality scope (Popov rows) would add the most.
+- **Usable now.** 6 thermal, 3 plasma.
 - **Possible finding.** Reactors agree near 200 to 300 °C and disagree by up to 1.5 times below 150 °C.
 - **Ontology.** `growth_per_cycle{position=planar}` exists; v0 lacks a flag for saturated dosing.
 - **Feasibility: feasible now.**
@@ -446,7 +446,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1039_c4nr05049e Fig. 6b, 7b, 8; 10.3390_separations11010024 Fig. 7, 9; 10.1021_cm0303080 text (65 to 39 nm after 100 cycles); 10.1116_6.0003182 (porosity loss, mass gain).
 - **What to compute.** Predicted against observed closure cycle.
 - **Inputs.** Pore width and planar growth stated in 3; closure observed in 2.
-- **Usable now.** 2 (N8 showed one agreement and one mismatch). Missing PDFs: 10.1021/la300045z, 10.1021/jp111314b.
+- **Usable now.** 2 (N8 showed one agreement and one mismatch).
 - **Possible finding.** The neck, not the mean pore, sets closure.
 - **Ontology.** v0 lacks a neck width and a closure cycle.
 - **Feasibility: not yet.**
@@ -456,7 +456,7 @@ Each candidate below needs data from three or more papers put on one axis or thr
 - **Papers and figures.** 10.1016_j.apsusc.2010.01.025 Fig. 4, Table 4 (Hf and Ti amides); 10.1149_1.2789802 Fig. 7b (TTIP); 10.1016_j.sse.2022.108584 Table 1, Fig. 5a (water); 10.1021_acs.jpcc.1c01505 Fig. 5A (O on SiO2, TiO2); 10.1116_1.4903941 Fig. 3 and text (penetration against temperature, qualitative).
 - **What to compute.** ln of each value against 1/T; slopes per series.
 - **Inputs.** Values with temperatures present in 4 papers.
-- **Usable now.** 4. Missing PDFs: ref. 237, 238 (sum-frequency sticking at several temperatures).
+- **Usable now.** 4.
 - **Possible finding.** Precursor sticking rises with temperature in all three amide and alkoxide series, while O recombination on growing films falls.
 - **Ontology.** v0 lacks temperature as a condition on model parameters.
 - **Feasibility: feasible now.**
@@ -477,12 +477,12 @@ Each candidate below needs data from three or more papers put on one axis or thr
 | --- | --- | --- | --- | --- | --- |
 | 1 | S8 planar growth against temperature | 9 | complete | yes, no paper compares reactors | twin prior for saturated growth; agent recipe questions |
 | 2 | S3 recombination against temperature and pressure | 4 plus 2 tables | complete | yes | twin prior for r |
-| 3 | S1 one method for sticking | 6 now, 9 with models | partial (digitizing) | yes | twin calibration and priors |
+| 3 | S1 one method for sticking | 6 now, 13 with models | partial (digitizing) | yes | twin calibration and priors |
 | 4 | S10 Arrhenius across precursors | 4 | complete | yes | twin priors with temperature |
-| 5 | S2 exposure against EAR | 7 | partial (partial pressure in 7 only) | partly (Case 8 began it) | agent: how much dose for a structure |
+| 5 | S2 exposure against EAR | 8 | partial (exposure stated in 10 of 36 hand-read papers) | partly (Case 8 began it) | agent: how much dose for a structure |
 | 6 | S11 entrance excess | 4 | partial | yes | twin model limits |
 | 7 | S5 channel narrowing | 3 | partial | yes | twin model check |
-| 8 | S6 Knudsen break | 4 | exposures unmatched | partly | twin validity range |
+| 8 | S6 Knudsen break | 4 | exposure stated in 2 | partly | twin validity range |
 | 9 | S4, S7, S9 | 2 to 3 | too few | — | — |
 
 **Pilot S8 (by eye, pilot).** Growth per cycle in Å, TMA and water: 10.1016_j.surfcoat.2012.02.038 Fig. 9 reads 0.66 at 50 °C, 0.67 at 100, 0.85 at 150, 1.0 at 200, 0.96 at 250, 0.94 at 300; 10.1002_adem.202201901 Fig. 2a reads 0.96 at 35, 0.93 at 60, 0.94 at 80, 0.96 at 100, 1.02 at 125 and 150; text values add 1.0 at 200 (10.1149_1.3072694), 1.29 at 177 (10.1021_cm0303080), 1.19 and 1.29 at 200 (10.1116_1.4971196), and 0.93 to 1.03 at 300 (10.1039_d0cp03358h Table 1). Impression: informative. The two reactors that both span low temperature differ by about 1.4 times at 50 to 100 °C and agree within 0.05 Å at 150 °C and above; the 177 to 200 °C text values spread from 1.0 to 1.3.
