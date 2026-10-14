@@ -45,7 +45,8 @@ marker), and the counts of the symbols ± ↑ ↓ ↗ ↘ ≤ ≥ ≈ ∼ ≪ �
 names, sub- and superscripts normalised, Greek look-alike capitals mapped); (c) structure: header
 colspans against the body columns, an empty trailing header cell, an empty column, a short last
 row, numbers just below the box on the table's columns; (d) fewer than 5 layer words in the box;
-(e) no table cells (the table block was an image). Table footnotes inside the box stay in the
+(e) no table cells (the table block was an image, or the caption is bound to a picture or stands alone: no table
+block at all). Every table entry gets a check. Table footnotes inside the box stay in the
 comparison. Results on the 44 papers are in INGEST.md. A flagged table is for the vision-model
 review at extract time; nothing here reads the crop.
 Caption continuation stops where the caption ends a sentence and the next block starts a new one
@@ -854,6 +855,12 @@ def structure(paper_id):
 
     # tables: crop and rule check (see the module docstring)
     html_by_bbox = {tuple(it["bbox"]): (it["html"], it["id"]) for it in items if it["type"] == "Table" and it.get("bbox")}
+    for e in entries:                                   # a table caption bound to no Table block (the table is a picture,
+        if e["kind"] == "table" and not e.get("bbox"):  # or the caption stands alone): no cells in the output -> flag
+            e["check"] = "flag"
+            e["check_reasons"] = ["no table cells in Marker's output (no table block: " + ("the caption is bound to a picture" if e.get("images") else "the caption stands alone") + ")"]
+            e["check_detail"] = {}
+            e["crop"] = (e.get("images") or [None])[0]
     tabs = [e for e in entries if e["kind"] == "table" and e.get("bbox")]
     if tabs:
         import pdfplumber

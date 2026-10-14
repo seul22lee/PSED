@@ -42,7 +42,9 @@ def block(pids, judged_scope):
         for c in st["captions"]:
             if c["kind"] == "table":
                 T["total"] += 1
-                T[c.get("check", "no check")] += 1
+                if "check" not in c:
+                    raise SystemExit(f"table without a check: {pid} table {c.get('number')} p {c.get('page')} (every table must be ok, flag or not checkable)")
+                T[c["check"]] += 1
             elif c["kind"] == "figure":
                 figs["numbered" if c.get("number") else "unnumbered"] += 1
             else:
@@ -106,9 +108,9 @@ def block(pids, judged_scope):
             key = (pid, str(t["page"]), t["number"], seen[k])
             seen[k] += 1
             if key in wrong:
-                wrong_flag += t.get("check") == "flag"
-                wrong_nc += t.get("check") == "not checkable"
-            elif t.get("check") == "flag":
+                wrong_flag += t["check"] == "flag"
+                wrong_nc += t["check"] == "not checkable"
+            elif t["check"] == "flag":
                 right_flag += 1
     ev = Counter(a["verdict"] for a in ans_e)
     judged = {a["flag_key"]: a["verdict"] for a in ans_b}
@@ -133,7 +135,6 @@ def block(pids, judged_scope):
     L.append(f"| Tables `check` = flag | {T['flag']} | {sj} `captions[].check` |")
     L.append(f"| Tables `check` = ok | {T['ok']} | {sj} `captions[].check` |")
     L.append(f"| Tables `check` = not checkable | {T['not checkable']} | {sj} `captions[].check` |")
-    L.append(f"| Tables without a check (the table holds plots, no cells) | {T['no check']} | {sj} `captions[kind=table]` without `check` |")
     L.append(f"| Tables wrong on the page (judged) | {len(wrong)} of {T['total']}; {wrong_flag} of them flagged, {wrong_nc} not checkable; {right_flag} right tables flagged | `answers/tables.json` against `check` |")
     L.append(f"| **Equations** pairs | {E['pairs']} | {sj} `equations` |")
     L.append(f"| Equations `agree` | {E['agree']} | {sj} `equations[].status` |")

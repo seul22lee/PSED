@@ -21,7 +21,8 @@ id: the line is cut there or dropped); running lines (10 words or fewer, identic
 counted); segments outside the blocks that hold only a number; the page abstract when the abstract comes from
 OpenAlex (its unmatched lines on pages 1-2). On the output side, URLs, DOIs, received /
 accepted / published dates, ORCID ids, "Citation:" lines and markdown table rows are removed before the comparison.
-Not checkable, with counts: rotated characters, undecoded glyphs (font and code listed in not_checkable_reasons),
+Not checkable, with counts: rotated characters, undecoded glyphs (font and code listed in not_checkable_reasons; a
+unit whose only words of 4+ letters hold undecoded glyphs is not checkable too, never excluded as a weak unit),
 units under 4 words (headings, labels, fragments), units of fewer than 3 words, garbled lines (two lines drawn over each other: fewer than 30 % of their words occur in
 the output, or two long unknown words), output sentences the layer does not cover (70 % of their words of 4+
 letters), output paragraphs a not-checkable unit also matches, paragraphs whose equation lines hold an undecoded
@@ -542,6 +543,16 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
         lines = kept
         weak = [l for l in lines if not WORD4_RE.search(l[0]) or (FORMULA_LINE_RE.search(l[0]) and len(WORD4_RE.findall(l[0])) < 6)]
         lines = [l for l in lines if l not in weak]
+        if not lines and any(l[5] for l in weak):     # no word of 4+ letters because the glyphs are undecoded (a custom-
+            unk = Counter()                           # encoded font): not checkable, never a silent exclusion
+            for l in weak:
+                unk.update(l[5])
+            glyphs = ", ".join(f"{fam} {code}" for (fam, code) in sorted(unk))
+            counts["lines"] += len(weak)
+            not_checkable[glyphs] += len(weak)
+            counts["not checkable: undecoded glyph"] += len(weak)
+            nc_flag(pno, next(l for l in weak if l[5]), f"undecoded glyph {glyphs}: the unit's {len(weak)} line(s) not checked (no decoded word of 4+ letters)", bt, len(weak))
+            continue
         weak = weak + eq_lines
         if not lines:
             counts["excluded: unit without a word of 4+ letters (formula, labels, numbers alone)"] += len(weak)
