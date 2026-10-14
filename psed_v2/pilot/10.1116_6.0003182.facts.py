@@ -148,9 +148,9 @@ f("s9.p1;s9.p3;fig1a", "setting", "the NPCs sit in a round-bottomed rectangular 
   quantity="other", label_as_printed="gap height", value="1", unit="mm", data_kind="chosen input", mentions="Fig. 1")
 f("s9.p3;s12.p1", "setting", "every NPC was weighed before and after ALD to get the deposited ZnO mass", method="gravimetry")
 f("s9.p3", "setting", "chamber pressure read by two Baratron 728A manometers (MKS) heated to 100 °C, with 10 and 1000 Torr full scale",
-  quantity="other", label_as_printed="gauge temperature", value="100", unit="°C", data_kind="chosen input", method="pressure_log")
+  quantity="other", label_as_printed="gauge temperature", value="100", unit="°C", data_kind="chosen input", method="process_monitor")
 f("s9.p3", "setting", "base pressure set to 0 Torr at 120 °C because of gauge drift, i.e. a 0.26 Torr offset subtracted from all pressure data",
-  quantity="other", label_as_printed="pressure offset", value="0.26", unit="Torr", data_kind="chosen input", method="pressure_log")
+  quantity="other", label_as_printed="pressure offset", value="0.26", unit="Torr", data_kind="chosen input", method="process_monitor")
 f("s9.p3", "claim", "the offset does not matter for the trace analysis, which uses pressure changes only")
 f("s9.p4", "setting", "precursors: diethylzinc (min. 95%, Strem Chemicals) and de-ionized H2O",
   quantity="precursor_purity", value="95", unit="%", data_kind="chosen input", qualifiers="species=DEZ")
@@ -180,10 +180,10 @@ f("s9.p5", "setting", "purges open the isolation valve and feed N2: 30 s without
   quantity="carrier_gas", qualifiers="gas=N2")
 f("s9.p5;s9.p6;fig2.cap;s12.p12", "setting", "main purge N2 flow 20 SCCM in total",
   quantity="gas_flow_rate", qualifiers="gas=N2", value="20", unit="SCCM", data_kind="chosen input")
-f("s9.p6", "setting", "chamber heated by an insulating heater jacket controlled by a thermocouple on the chamber outside", method="thermocouple")
+f("s9.p6", "setting", "chamber heated by an insulating heater jacket controlled by a thermocouple on the chamber outside", method="process_monitor")
 f("s9.p6;fig2.cap;s12.p12;fig1a", "definition", "T: approximate steady-state temperature (to the nearest 10 °C) of the inner quartz-boat surface under 20 SCCM N2, found in calibration with a thermocouple touching the boat")
 f("s9.p6", "observation", "calibration runs at the same outside temperature gave deposition temperatures differing by about ±5 °C, from thermocouple placement and pressure",
-  quantity="other", label_as_printed="calibration spread", value="5", unit="°C", data_kind="measured", method="thermocouple")
+  quantity="other", label_as_printed="calibration spread", value="5", unit="°C", data_kind="measured", method="process_monitor")
 f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", "run (1): T held at 120 °C",
   quantity="deposition_temperature", value="120", unit="°C", data_kind="chosen input", mentions="T held constant at 120 °C;120 °C")
 f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", "run (2): T held at 160 °C",
@@ -241,7 +241,7 @@ f("s10.p2;tabII.cap;s14.p9", "setting", "resistance taken at 10 V and turned int
 f("s10.p3", "setting", "SEM samples were sectioned, epoxy-mounted, ground, polished and given a conductive coating", method="sem", mentions="Note S2")
 f("s10.p3", "setting", "SEM in a Quattro S ESEM (ThermoFisher) with an EDAX detector for EDS; collection and analysis in APEX software", method="sem_eds")
 f("s10.p3", "setting", "EDS maps and line scans of the cross sections at 30 kV, 63 nA probe current, 50 µm aperture, working distance 10 mm, amp time 0.96 µS", method="sem_eds")
-f("s10.p3;s10.p4", "setting", "EDS maps span the cross-section thickness, about 1.5 × 1 mm, with 200 µS dwell over 32 frames", method="sem_eds_map")
+f("s10.p3;s10.p4", "setting", "EDS maps span the cross-section thickness, about 1.5 × 1 mm, with 200 µS dwell over 32 frames", method="sem_eds")
 f("s10.p4", "setting", "EDS line scans with 100 points across the thickness near the centre line, 100 µm wide, 20 ms per point over 512 frames", method="sem_eds")
 f("s10.p4", "setting", "backscattered-electron imaging was also done", method="sem")
 f("s10.p5", "setting", "XPS on a Thermo Scientific Nexsa with monochromatic Al Kα (1486.7 eV), 125 µm spot and a flood gun for charge compensation",
@@ -281,8 +281,8 @@ for r, lab, v, pm, ev in (("1", "120", "2.37", "0.02", ";s15.p3"), ("2", "160", 
 f("s12.p1", "claim", "2.14 Å/cyc is at the top of the range usually seen for conventional ZnO ALD on flat substrates", mentions="ref. 14;ref. 25")
 f("s12.p2;fig2a;fig2b;fig2c;fig2.cap;s12.p12", "observation", "Fig. 2 plots p(t) for the first five cycles of each run; the other 15 cycles are in the supplement",
   mentions="Fig. 2;Fig. S2;Fig. S1;ref. 44")
-f("s12.p2;fig2a;fig2b;fig2c", "observation", "p jumps sharply to ~9 Torr when a DEZ or H2O pulse admits reactant", method="pressure_log")
-f("s12.p2;s12.p3;fig2a;fig2b;fig2c;s12.p6", "observation", "with the chamber isolated, p shows a net rise over a DEZ hold and a net fall over an H2O hold, partly from the half-reactions", method="pressure_log")
+f("s12.p2;fig2a;fig2b;fig2c", "observation", "p jumps sharply to ~9 Torr when a DEZ or H2O pulse admits reactant", method="process_monitor")
+f("s12.p2;s12.p3;fig2a;fig2b;fig2c;s12.p6", "observation", "with the chamber isolated, p shows a net rise over a DEZ hold and a net fall over an H2O hold, partly from the half-reactions", method="process_monitor")
 f("eq3;s12.p3", "model", "Eq. (3): overall reaction Zn(C2H5)2 + H2O gives ZnO + 2 C2H6")
 f("eq4;s12.p4", "model", "Eq. (4): DEZ half-reaction, surface (OH)x plus Zn(C2H5)2 gives surface Ox-Zn(C2H5)2-x and x C2H6", mentions="ref. 10;ref. 27")
 NK("s12.p5", "connective word between equations")
@@ -295,49 +295,49 @@ f("s12.p6", "cited", "x = 1.37 for ZnO ALD on a QCM at 177 °C",
 f("s12.p6", "cited", "x ~1.4-1.6 for ZnO ALD on a QCM between 80 and 250 °C",
   quantity="other", label_as_printed="x", value_min="1.4", value_max="1.6", data_kind="literature", method="cited", mentions="ref. 27;80-250 °C")
 f("s12.p6;fig2a;fig2b;fig2c", "claim", "the pressure traces imply x > 1 here: p rises in the DEZ half-reaction (more C2H6 out than reactant used) and falls in the H2O half-reaction",
-  quantity="other", label_as_printed="x", value="1", censor=">", data_kind="calculated", method="pressure_log", mentions="Fig. 2;Eq. (4);Eq. (5)")
+  quantity="other", label_as_printed="x", value="1", censor=">", data_kind="calculated", method="process_monitor", mentions="Fig. 2;Eq. (4);Eq. (5)")
 f("s12.p6", "claim", "the analysis uses the DEZ step because H2O likely adsorbs in multilayers, especially on non-sample surfaces at ~90 °C or colder, blurring the pressure change", mentions="Sec. II B")
 f("s12.x1;fig3a;fig3.cap;s12.p16", "observation", "Fig. 3(a): δp, the pressure minus its value at the start of the hold (~9 Torr), versus elapsed time δt (min) in the cycle 15 DEZ hold, one curve per run",
-  method="pressure_log", mentions="cycle 15;Fig. 3(a);Note S3;ref. 44")
+  method="process_monitor", mentions="cycle 15;Fig. 3(a);Note S3;ref. 44")
 f("s12.x1", "model", "the δp change in a DEZ hold is taken to come from the Eq. (4) half-reaction plus a net leak out of the chamber")
 f("s12.x1", "observation", "leak tests showed the main leak usually runs across the pump valve that isolates the chamber in holds")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp climbs for the first ~10 min of the DEZ hold",
-  quantity="other", label_as_printed="time to δp maximum", value="10", unit="min", data_kind="measured", method="pressure_log", mentions="120/160 °C;cycle 15")
+  quantity="other", label_as_printed="time to δp maximum", value="10", unit="min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp levels off at ~450 mTorr",
-  quantity="other", label_as_printed="δp maximum", value="450", unit="mTorr", data_kind="measured", method="pressure_log", mentions="120/160 °C;cycle 15")
+  quantity="other", label_as_printed="δp maximum", value="450", unit="mTorr", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp then falls slowly, at ~2 mTorr/min on average over the last ~10 min (terminal slope ~-2)",
-  quantity="other", label_as_printed="TS", value="-2", unit="mTorr/min", data_kind="measured", method="pressure_log", mentions="120/160 °C;cycle 15")
+  quantity="other", label_as_printed="TS", value="-2", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "claim", "the slope turning from positive to negative is read as a change from reaction-dominated to leak-dominated pressure")
 f("s12.x1", "setting", "recorded pressure data have 10 mTorr resolution, which limits the slope analysis",
-  quantity="other", label_as_printed="pressure resolution", value="10", unit="mTorr", data_kind="measured", method="pressure_log", mentions="Note S3")
+  quantity="other", label_as_printed="pressure resolution", value="10", unit="mTorr", data_kind="measured", method="process_monitor", mentions="Note S3")
 f("s12.x1;fig3a", "claim", "whether diffusion-reaction saturated cannot be told from δp(δt), given unequal DEZ and C2H6 leak rates and varying valve seating, but gas generation clearly slows")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: δp peaks later, after ~15 min versus 10 min for 120/160",
-  quantity="other", label_as_printed="time to δp maximum", value="15", unit="min", data_kind="measured", method="pressure_log", mentions="T = 120 °C;cycle 15")
+  quantity="other", label_as_printed="time to δp maximum", value="15", unit="min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: δp maximum ~500 mTorr versus 450 mTorr for 120/160",
-  quantity="other", label_as_printed="δp maximum", value="500", unit="mTorr", data_kind="measured", method="pressure_log", mentions="T = 120 °C;cycle 15")
+  quantity="other", label_as_printed="δp maximum", value="500", unit="mTorr", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: terminal slope (mean over the last 10 min) about -1 versus -2 mTorr/min for 120/160",
-  quantity="other", label_as_printed="TS", value="-1", unit="mTorr/min", data_kind="measured", method="pressure_log", mentions="T = 120 °C;cycle 15")
+  quantity="other", label_as_printed="TS", value="-1", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp keeps rising for the whole hold, with terminal slope ~80 mTorr/min",
-  quantity="other", label_as_printed="TS", value="80", unit="mTorr/min", data_kind="measured", method="pressure_log", mentions="T = 160 °C;cycle 15")
+  quantity="other", label_as_printed="TS", value="80", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
 f("s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp reaches ~2.7 Torr before the pump step",
-  quantity="other", label_as_printed="δp", value="2.7", unit="Torr", data_kind="measured", method="pressure_log", mentions="T = 160 °C;cycle 15")
-f("fig3a;fig3.cap;s12.p16", "setting", "the noisier part of the 160 °C δp curve comes from the 1000 Torr gauge; the rest of the data from the 10 Torr gauge", method="pressure_log", mentions="T = 160 °C")
+  quantity="other", label_as_printed="δp", value="2.7", unit="Torr", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
+f("fig3a;fig3.cap;s12.p16", "setting", "the noisier part of the 160 °C δp curve comes from the 1000 Torr gauge; the rest of the data from the 10 Torr gauge", method="process_monitor", mentions="T = 160 °C")
 f("fig3a", "observation", "Fig. 3(a) marks Δp as the net rise at the end of each hold, labels the terminal slope, and shades the early 120/160 curve as 'Reaction' leading to 'Saturation?'")
 f("s12.p7", "claim", "higher δp maxima at 120 and 160 °C fit more deposition than in the 120/160 °C process")
 f("s12.p7", "claim", "the higher terminal slopes suggest gas-producing processes still running at the end of the DEZ hold, slight at 120 °C and strong at 160 °C, and absent or weaker for 120/160 °C")
 f("s12.p8;fig3b;fig3c;fig3.cap;s12.p16", "observation", "Fig. 3(b) and 3(c) compare gas generation of the three runs over all 20 cycles", mentions="Fig. 3(b);Fig. 3(c)")
 f("s12.p8;fig3b;fig3.cap;s12.p16;tabI.cap;s13.p5", "model", "Δn_g, the net gas mole change from the DEZ half-reaction, comes from Δp after correcting for the stop-valve leak and for reaction during the pulse",
-  method="pressure_log", mentions="Note S3")
+  method="process_monitor", mentions="Note S3")
 f("s12.p8", "model", "the first five cycles are set aside as complicated by ZnO nucleation and the switch from Al2O3 to ZnO growth surfaces")
 f("s12.p8;fig3b;fig3c", "observation", "over cycles 6 to 20, Δn_g and TS rank 120/160 °C lowest, T = 120 °C a little above it, and T = 160 °C far above both",
-  method="pressure_log", mentions="cycles 6 through 20;120/160 °C;T = 120 °C;T = 160 °C")
+  method="process_monitor", mentions="cycles 6 through 20;120/160 °C;T = 120 °C;T = 160 °C")
 f("s12.p8;fig3b", "claim", "the early rise of Δn_g is tentatively put down to thicker effective growth per cycle in early cycles, and the later fall to shrinking NPC surface area", mentions="ref. 27")
 f("s12.p8;fig3c", "claim", "TS follows Δn_g because the gas generation rate in the last 10 min tracks the total gas generated")
-f("fig3b;fig3.cap;s12.p16", "observation", "Fig. 3(b): net gain of gas moles Δn_g (µmol) per DEZ hold versus cycle number 1-20, one marker series per run", method="pressure_log")
+f("fig3b;fig3.cap;s12.p16", "observation", "Fig. 3(b): net gain of gas moles Δn_g (µmol) per DEZ hold versus cycle number 1-20, one marker series per run", method="process_monitor")
 f("fig3b", "observation", "160 °C series (red up-triangles) in Fig. 3(b): rises steeply from cycle 4, peaks near cycle 10 well above the others, then declines", mentions="160 °C")
 f("fig3b", "observation", "120 °C series (blue down-triangles) in Fig. 3(b): stays low, a little above the 120/160 series in most cycles", mentions="120 °C")
 f("fig3b", "observation", "120/160 °C series (green diamonds) in Fig. 3(b): the lowest series, slowly falling after cycle 6", mentions="120/160 °C")
-f("fig3c;fig3.cap;s12.p16", "observation", "Fig. 3(c): terminal slope TS (mTorr/min), average slope of pressure in the final 10 min of the DEZ hold, versus cycle number", method="pressure_log")
+f("fig3c;fig3.cap;s12.p16", "observation", "Fig. 3(c): terminal slope TS (mTorr/min), average slope of pressure in the final 10 min of the DEZ hold, versus cycle number", method="process_monitor")
 f("fig3c", "observation", "160 °C series in Fig. 3(c): TS climbs from near zero to a maximum around cycle 10 and then decreases", mentions="160 °C")
 f("fig3c", "observation", "120 °C and 120/160 °C series in Fig. 3(c): TS stays close to zero or slightly negative through all cycles", mentions="120 °C;120/160 °C")
 f("s12.p9;tabI.r0c5", "definition", "Δn_g with an overbar: Δn_g averaged over cycles, in µmol/cyc", mentions="Table I")
@@ -351,7 +351,7 @@ for r, lab, s, g in (("1", "120", "150", "59.3"), ("2", "160", "217", "191"), ("
     dns[lab] = f(f"tabI.r{r}c4;tabI.r0c4", "derived", f"Δn_s = {s} µmol/cyc for the {lab} °C run, from the GPC with the solid taken as ZnO",
                  quantity="other", label_as_printed="Δn_s", value=s, unit="µmol/cyc", data_kind="calculated", method="calculation", mentions=lab, inputs=[gpc[lab]])
     dng[lab] = f(f"tabI.r{r}c5;tabI.r0c5", "derived", f"Δn_g = {g} µmol/cyc for the {lab} °C run, averaged over cycles from the DEZ-hold pressure data",
-                 quantity="other", label_as_printed="Δn_g", value=g, unit="µmol/cyc", data_kind="calculated", method="pressure_log", mentions=lab)
+                 quantity="other", label_as_printed="Δn_g", value=g, unit="µmol/cyc", data_kind="calculated", method="process_monitor", mentions=lab)
 f("tabI.cap;s13.p5", "definition", "Table I: GPC ± is the spread within each run's NPC pair; Δn_s and Δn_g are totals for the pair, with ~±0.1 measurement uncertainty, giving ~±0.001 on ȳ", mentions="Note S3;ref. 44")
 for r, lab, v, tlab in (("1", "120", "1.395", "T = 120 °C"), ("2", "160", "1.880", "T = 160 °C"), ("3", "120/160", "1.365", "T cycled between 120 and 160 °C")):
     f(f"s12.p14;tabI.r{r}c6;tabI.r0c6;s12.p15;tabI.cap;s13.p5", "derived", f"ȳ = {v} (±0.001) for the {lab} °C run, from Eq. (6)",
@@ -376,15 +376,15 @@ f("fig1b;fig1.cap;s9.p2", "definition", "Fig. 1(b) tabulates which steps run at 
   mentions='"120 °C";"160 °C";"120/160 °C"')
 f("fig1b", "setting", 'in the "120/160 °C" schedule DEZ dose, DEZ purge and H2O dose are at 120 °C and only the H2O purge at 160 °C', method="schematic", mentions='"120/160 °C"')
 f("fig2a;fig2b;fig2c;fig2.cap;s12.p12", "observation", "the ~1 Torr spikes and dips in purges come from periodic pressure drops in the N2 feed line when the attached glovebox draws N2",
-  method="pressure_log")
+  method="process_monitor")
 f("fig2a;fig2.cap;s12.p12", "observation", "Fig. 2(a), T held at 120 °C: p (Torr) versus time (hr) for the initial H2O half-cycle and cycles 1-5, with pulse and hold steps marked",
-  method="pressure_log", mentions="120 °C;Cyc 1-5")
+  method="process_monitor", mentions="120 °C;Cyc 1-5")
 f("fig2a", "observation", "in Fig. 2(a) the DEZ holds stay nearly flat at the top of the scale while the H2O holds drop after the pulse", mentions="120 °C")
-f("fig2b;fig2.cap;s12.p12", "observation", "Fig. 2(b), T held at 160 °C: p versus time for the first five cycles", method="pressure_log", mentions="160 °C")
+f("fig2b;fig2.cap;s12.p12", "observation", "Fig. 2(b), T held at 160 °C: p versus time for the first five cycles", method="process_monitor", mentions="160 °C")
 f("fig2b", "observation", "in Fig. 2(b) the DEZ-hold pressure climbs during the hold, more steeply in later cycles, and runs off the top of the axis in cycle 5", mentions="160 °C;Cyc 5")
-f("fig2c;fig2.cap;s12.p12", "observation", "Fig. 2(c), T cycled between 120 and 160 °C: p versus time for the first five cycles, each pulse labelled DEZ or H2O", method="pressure_log", mentions="120/160 °C")
-f("fig2d;fig2.cap;s12.p12", "observation", "Fig. 2(d): inner quartz-boat surface temperature T (°C) over time in a test run with the same conditions as (c)", method="thermocouple", mentions="120/160 °C")
-f("fig2d;s15.p4", "observation", "in Fig. 2(d) the boat sits just below 120 °C for most steps and climbs to just below 160 °C during each H2O purge before falling back", method="thermocouple")
+f("fig2c;fig2.cap;s12.p12", "observation", "Fig. 2(c), T cycled between 120 and 160 °C: p versus time for the first five cycles, each pulse labelled DEZ or H2O", method="process_monitor", mentions="120/160 °C")
+f("fig2d;fig2.cap;s12.p12", "observation", "Fig. 2(d): inner quartz-boat surface temperature T (°C) over time in a test run with the same conditions as (c)", method="process_monitor", mentions="120/160 °C")
+f("fig2d;s15.p4", "observation", "in Fig. 2(d) the boat sits just below 120 °C for most steps and climbs to just below 160 °C during each H2O purge before falling back", method="process_monitor")
 
 # ---------------------------------------------------------------- III B. colour, XRD, resistivity
 f("s13.p1;fig4a;fig4b;fig4c;fig4d;fig4.cap;s14.p3", "observation", "Fig. 4 shows photographs of Al2O3 NPC top faces before and after ZnO ALD", method="photograph")
@@ -475,8 +475,8 @@ f("s14.p10", "claim", "desorption from strongly curved surfaces in very long pur
 for p, lab, extra in (("a", "120 °C", ""), ("b", "160 °C", "; the top of this cross section is missing (damage in transport and handling)"),
                       ("c", "120/160 °C", "")):
     f(f"fig6{p};fig6.cap;s15.p6", "observation", f"Fig. 6({p}), {lab}: SE image, Al map and Zn map of the NPC cross section side by side, 0.5 mm scale bar{extra}",
-      method="sem_eds_map", mentions=lab)
-f("fig6a;fig6c", "observation", "for 120 and 120/160 °C the Al and Zn maps look even over the whole section height", method="sem_eds_map", mentions="120 °C;120/160 °C")
+      method="sem_eds", mentions=lab)
+f("fig6a;fig6c", "observation", "for 120 and 120/160 °C the Al and Zn maps look even over the whole section height", method="sem_eds", mentions="120 °C;120/160 °C")
 f("fig6d;fig6e;fig6f;fig6.cap;s15.p6", "observation", "Figs. 6(d)-(f): Al, Zn, O and C Kα line scans, normalized X-ray counts (0-10) against position (mm, 0-1.5), roughly aligned with the images in (a)-(c)",
   method="sem_eds")
 SER = {"d": "Zn K-alpha, T held at 120 C", "e": "Zn K-alpha, T held at 160 C (section incomplete above 0.42 mm)", "f": "Zn K-alpha, T cycled 120/160 C"}
@@ -505,7 +505,7 @@ f("s15.p4", "claim", "whether it lowers OH or H2O coverage, temperature cycling 
 f("s15.p4", "claim", "temperature cycling may shorten purges where residual H2O threatens uniform infiltration, e.g. for complete infilling or very low deposition temperature")
 f("s15.p4", "claim", "other heating methods should be tried to reach practical purge times")
 f("s15.p4;fig2d", "setting", "chamber heating raised T from 120 to 160 °C over a 33.5 min ramp",
-  quantity="other", label_as_printed="temperature ramp time", value="33.5", unit="min", data_kind="measured", method="thermocouple")
+  quantity="other", label_as_printed="temperature ramp time", value="33.5", unit="min", data_kind="measured", method="process_monitor")
 f("s15.p4", "cited", "an ALD reactor with a flash lamp raised Si substrate temperature as much as ~400 °C in 5 s",
   quantity="other", label_as_printed="temperature rise", value="400", unit="°C", data_kind="literature", method="cited", mentions="ref. 42")
 f("s15.p4;s15.p8", "cited", "a high-power resistive heater raised sapphire substrate temperature by up to ~800 °C within 15 s to crystallize films during ZnO ALD",

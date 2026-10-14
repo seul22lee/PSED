@@ -161,7 +161,7 @@ F(K, "s3.p6", "observation", "MoS2 films about 1-5 nm thick are smooth and conti
 F(K, "s3.p6;fig1d;fig1.cap", "setting", "MoS2 is deposited on PET at the lowest temperature, 100 °C, with optimized ratio 0.80.",
   quantity="deposition_temperature", value="100", unit="°C", data_kind="chosen input", mentions="PET;0.80;Figure 1d")
 F(K, "s3.p6", "observation", "About 5 nm MoS2 on PET has a resistivity of 0.3 Ω cm.", quantity="resistivity", value="0.3",
-  unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="PET;5 nm")
+  unit="Ω cm", data_kind="measured", method="electrical", mentions="PET;5 nm")
 F(K, "s3.p6;fig1d", "observation", "The 5 nm MoS2 films on PET are highly transparent and their resistivity does not change after "
   "repeated bending by hand.", method="photograph", mentions="PET")
 
@@ -386,16 +386,16 @@ F(K, "s3.p26", "claim", "Excess surface S at low temperature fits the need for a
 
 # ------------------------------------------------------------------ growth
 F(K, "s3.p27;fig7a;fig7.cap;s3.x6", "observation", "At 150 °C, in situ SE shows amorphous films from ratios 0 to 0.50 thickening "
-  "linearly with cycles.", method="in_situ_ellipsometry", mentions="H2 flow ratio 0;0.50;150 °C;Figure 7a;Figure S10")
+  "linearly with cycles.", method="ellipsometry", mentions="H2 flow ratio 0;0.50;150 °C;Figure 7a;Figure S10")
 F(K, "s3.p27;fig7a", "observation", "Crystalline films just past onset (0.65, 150 °C) also grow roughly linearly but with a "
-  "higher GPC than amorphous ones.", method="in_situ_ellipsometry", mentions="0.65;150 °C")
+  "higher GPC than amorphous ones.", method="ellipsometry", mentions="0.65;150 °C")
 F(K, "s3.p27;s3.p28;fig7a", "observation", "Ratio 0.80 gives clearly non-linear growth with GPC rising as cycles accumulate.",
-  method="in_situ_ellipsometry", mentions="0.80")
-F(K, "s3.p28;fig7a", "observation", "Ratio 0.94 lowers the GPC again.", method="in_situ_ellipsometry", mentions="0.94")
+  method="ellipsometry", mentions="0.80")
+F(K, "s3.p28;fig7a", "observation", "Ratio 0.94 lowers the GPC again.", method="ellipsometry", mentions="0.94")
 F(K, "s3.p28", "claim", "The lower GPC at 0.94 may reflect a mixed MoS2/Mo film whose phases differ in density, mechanism and "
   "morphology.", mentions="MoS2;Mo")
 F(K, "s3.p29;fig7b;fig7.cap;s3.x6", "observation", "GPC averaged over the first 100 cycles increases from ratio 0 to 0.80 at every "
-  "temperature.", quantity="growth_per_cycle", data_kind="measured", method="in_situ_ellipsometry",
+  "temperature.", quantity="growth_per_cycle", data_kind="measured", method="ellipsometry",
   mentions="first 100 cycles;H2 flow ratio 0;0.80;Figure 7b;Figure S11")
 F(K, "s3.p29;s3.p30;s3.p31", "claim", "Two factors explain the GPC trend: more adsorption sites for the Mo precursor at higher "
   "ratio, and more surface area and reactive fin edges at higher ratio and temperature.")
@@ -418,33 +418,33 @@ F(K, "s3.p32", "observation", "The most Mo per cycle, 2.2 at/nm2/cycle, is depos
 F(K, "s3.p32", "claim", "Optical GPC hides density and stoichiometry changes, but SE with RBS and XPS indicates that Mo precursor "
   "adsorption density dominates the GPC trends.", inputs=[MO1, MO2])
 F(K, "s3.p32", "observation", "At 250 °C ratios 0.35 (amorphous) and 0.50 (crystalline) give almost equal GPC.",
-  quantity="growth_per_cycle", data_kind="measured", method="in_situ_ellipsometry", mentions="0.35;0.50;250 °C;Figure S11")
+  quantity="growth_per_cycle", data_kind="measured", method="ellipsometry", mentions="0.35;0.50;250 °C;Figure S11")
 F(K, "s3.p32", "claim", "Crystallization itself changes GPC at most moderately, less than ratio and morphology do.")
 
 # ------------------------------------------------------------------ electrical
 F(K, "s3.p33;fig8;fig8.cap", "claim", "The H2 flow ratio tunes resistivity over several orders of magnitude.", mentions="Figure 8")
 F(K, "s3.p33;fig8", "observation", "At a given temperature and fixed cycle count, higher ratio gives lower resistivity.",
-  quantity="resistivity", data_kind="measured", method="four_point_probe", mentions="Figure 8;Table S2")
-F(K, "s3.p34", "observation", "For amorphous films resistivity follows stoichiometry.", method="four_point_probe")
+  quantity="resistivity", data_kind="measured", method="electrical", mentions="Figure 8;Table S2")
+F(K, "s3.p34", "observation", "For amorphous films resistivity follows stoichiometry.", method="electrical")
 F(K, "s3.p34;fig8", "observation", "The most S-rich films (S/Mo ≥ 3) exceed the four-point probe detection limit, of order 1000 Ω cm "
   "for 10 nm films.", quantity="resistivity", value="1000", censor=">dl", unit="Ω cm", data_kind="measured",
-  method="four_point_probe", mentions="S/Mo ≥ 3;10 nm;>dl")
-F(K, "s3.p34", "observation", "Lower S/Mo, from higher ratio and/or temperature, lowers resistivity.", method="four_point_probe")
+  method="electrical", mentions="S/Mo ≥ 3;10 nm;>dl")
+F(K, "s3.p34", "observation", "Lower S/Mo, from higher ratio and/or temperature, lowers resistivity.", method="electrical")
 F(K, "s3.p34;fig8", "observation", "Lowest amorphous-film resistivity is 2 Ω cm, for MoS2.2 grown at 100 °C with ratio 0.65.",
-  quantity="resistivity", value="2", unit="Ω cm", data_kind="measured", method="four_point_probe",
+  quantity="resistivity", value="2", unit="Ω cm", data_kind="measured", method="electrical",
   mentions="MoS2.2;100 °C;0.65")
 F(K, "s3.p35;fig8", "observation", "For crystalline films, raising the ratio at a given temperature lowers resistivity.",
-  method="four_point_probe")
+  method="electrical")
 F(K, "s3.p35;s4.p1;fig8", "observation", "Lowest c-MoS2 resistivities, about 0.1-1 Ω cm, are reached at ratio 0.80.",
-  quantity="resistivity", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="four_point_probe",
+  quantity="resistivity", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="electrical",
   mentions="0.80;c-MoS2")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 300 °C with ratio 0.20 has 15 Ω cm.", quantity="resistivity",
-  value="15", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="300 °C;0.20")
+  value="15", unit="Ω cm", data_kind="measured", method="electrical", mentions="300 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 450 °C with ratio 0.20 has 220 Ω cm.", quantity="resistivity",
-  value="220", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="450 °C;0.20")
+  value="220", unit="Ω cm", data_kind="measured", method="electrical", mentions="450 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Ratio 0.94 gives resistivities down to 4 mΩ cm, likely owing to a highly conductive Mo phase.",
-  quantity="resistivity", value="4", unit="mΩ cm", data_kind="measured", method="four_point_probe", mentions="0.94")
-F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="four_point_probe",
+  quantity="resistivity", value="4", unit="mΩ cm", data_kind="measured", method="electrical", mentions="0.94")
+F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="electrical",
   mentions="100-150 °C")
 HALL = F(K, "s3.p36;s3.p37;s4.p1;s4.p2", "observation", "c-MoS2 films grown with ratios 0.50-0.80 at 100-250 °C show p-type "
          "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="other",
@@ -532,7 +532,7 @@ F(K, "s3.p46;fig9a;fig9.cap;s3.x7", "observation", "Ratio 0.80 at 150 °C yields
   qualifiers="element=S", label_as_printed="S/W", value="2.1", data_kind="measured", method="xps",
   mentions="WS2.1;0.80;150 °C;Figure 9a;Section S13")
 F(K, "s3.p46", "observation", "The crystalline WS2.1 film has a resistivity of 4 Ω cm.", quantity="resistivity", value="4",
-  unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="WS2.1;0.80;150 °C")
+  unit="Ω cm", data_kind="measured", method="electrical", mentions="WS2.1;0.80;150 °C")
 F(K, "s3.p46;s3.p47", "claim", "MoS2 and WS2 behave alike since Mo and W share a group and both processes use analogous "
   "M(NtBu)2(NMe2)2 precursors.", mentions="M = Mo, W")
 F(K, "s3.p48", "cited", "The only reported TiS2 PEALD process is crystalline from 150 °C, but gives amorphous TiS3 at 100 °C.",
@@ -674,9 +674,9 @@ F(K, "s5.p8;fig9b", "setting", "TiS2 is grown at 100 °C with ratio 0.50.", quan
   unit="°C", data_kind="chosen input", mentions="TiS2;0.50")
 F(K, "s5.p9", "setting", "Thickness is followed in situ by SE with a J.A. Woollam M-2000FI (0.8-5.0 eV; fits over 0.8-4.0 eV)" \
   " or M-2000F (1.2-5.0 eV).", quantity="other", label_as_printed="spectral range", value_min="0.8", value_max="5.0",
-  unit="eV", data_kind="chosen input", method="in_situ_ellipsometry", mentions="M-2000FI;M-2000F")
+  unit="eV", data_kind="chosen input", method="ellipsometry", mentions="M-2000FI;M-2000F")
 F(K, "s5.p9", "setting", "An in situ SE measurement is usually taken every 10 cycles.", quantity="cycle_number", value="10",
-  data_kind="chosen input", method="in_situ_ellipsometry")
+  data_kind="chosen input", method="ellipsometry")
 F(K, "s5.p9", "model", "SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in CompleteEASE 5.1, with software optical constants "
   "for the other layers; roughness of crystalline MoS2 as an effective medium layer with 50% void.",
   quantity="other", label_as_printed="void content", value="50", unit="%", data_kind="assumed", method="ellipsometry",
@@ -697,7 +697,7 @@ F(K, "s5.p11;fig1c", "setting", "Uniformity maps use a J.A. Woollam M-2000 (1.2-
   quantity="other", label_as_printed="spectral range", value_min="1.2", value_max="3.3", unit="eV",
   data_kind="chosen input", method="ellipsometry", mentions="M-2000;5 nm;450 nm SiO2/Si;4\"")
 F(K, "s5.p12", "setting", "Sheet resistance is measured with a four-point probe (Keithley 2400 SourceMeter, Signatone "
-  "SP4-4004STRS head).", method="four_point_probe", mentions="Keithley 2400;SP4-4004STRS")
+  "SP4-4004STRS head).", method="electrical", mentions="Keithley 2400;SP4-4004STRS")
 F(K, "s5.p12", "definition", "Resistivity = sheet resistance × film thickness from in situ SE.", method="calculation")
 F(K, "s5.p13", "setting", "Hall measurements: van der Pauw geometry on about 1 × 1 cm2 samples (Lakeshore 8404 HMS), AC Hall for "
   "low Hall voltages, repeated without removing the sample to estimate uncertainty.", method="electrical",
@@ -867,24 +867,24 @@ F(K, "fig6b;fig6.cap;s3.x5", "observation", "Cross-sectional TEM (smoothed; unfi
 
 # ------------------------------------------------------------------ Fig. 7
 F(K, "fig7a;fig7.cap;s3.x6", "observation", "Panel a: in situ SE thickness (nm, 0-22) against number of ALD cycles (0-140) at "
-  "150 °C for six ratios.", quantity="film_thickness", unit="nm", data_kind="measured", method="in_situ_ellipsometry",
+  "150 °C for six ratios.", quantity="film_thickness", unit="nm", data_kind="measured", method="ellipsometry",
   mentions="Thickness (nm);Number of ALD cycles;150 °C")
 for r in ("0", "0.20", "0.50", "0.65", "0.80", "0.94"):
     s = v1_points(f"{K}:s7a_R{r.replace('.', '').ljust(3, '0')}")
     ref = P(PID, f"fig7a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv",
             "Number of ALD cycles", "Thickness (nm)", note=s.get("note", ""))
     F(K, "fig7a", "observation", f"Thickness against cycles for the ratio {r} film.", quantity="film_thickness", unit="nm",
-      points_ref=ref, data_kind="measured", method="in_situ_ellipsometry", mentions=f"{R}: {r}")
+      points_ref=ref, data_kind="measured", method="ellipsometry", mentions=f"{R}: {r}")
 F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged over the first 100 cycles (colour bar 0.50-1.75 "
   "Å/cycle) against deposition temperature and ratio; cell colours are not read as values.", quantity="growth_per_cycle",
-  unit="Å/cycle", method="in_situ_ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
+  unit="Å/cycle", method="ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
 
 # ------------------------------------------------------------------ Fig. 8
 F(K, "fig8;fig8.cap", "observation", "Fig. 8 maps four-point probe resistivity (log colour bar 10^-3 to 10^3 Ω cm, top band >dl) "
   "over deposition temperature and ratio; cell colours are not read as values.", quantity="resistivity", unit="Ω cm",
-  method="four_point_probe", mentions="Resistivity (Ωcm);>dl")
+  method="electrical", mentions="Resistivity (Ωcm);>dl")
 F(K, "fig8", "observation", "Cells drawn in the black >dl band: 200 and 150 °C at ratio 0; 200, 150, 100 and 50 °C at 0.20; 100 °C "
-  "at 0.50.", quantity="resistivity", censor=">dl", unit="Ω cm", method="four_point_probe",
+  "at 0.50.", quantity="resistivity", censor=">dl", unit="Ω cm", method="electrical",
   mentions=">dl;0;0.20;0.50")
 
 # ------------------------------------------------------------------ Fig. 9

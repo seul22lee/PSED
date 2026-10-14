@@ -30,7 +30,7 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
 
 METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
            "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",
-           "optical_microscopy", "sem_eds_map", "in_situ_ellipsometry", "four_point_probe", "pressure_log", "thermocouple"]
+           "optical_microscopy"]
 CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds

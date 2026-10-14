@@ -387,9 +387,9 @@ F(K, "fig4b", "observation", "Fig. 4b (sample 2, v1b): pillars in sparser rows t
 F(K, "fig4c", "observation", "Fig. 4c (sample 3, v2a): sparse pillars and a wavy edge of the brown coated band; scale bar 100 µm",
   method="optical_microscopy", mentions="Fig. 4c;sample 3;v2a")
 F(K, "s10.x2;fig5a;fig5.cap", "observation", "Fig. 5a: SEM top view of sample 11 with the Al-Kα X-ray count map in red showing where Al lies; Regions I-IV marked; scale bar 100 µm",
-  method="sem_eds_map", mentions="sample 11;Fig. 5a;Table 1")
+  method="sem_eds", mentions="sample 11;Fig. 5a;Table 1")
 F(K, "s10.x2;fig5a", "observation", "the X-ray map shows the Al2O3 film reaching about 125 µm under the top membrane",
-  quantity="penetration_depth", value="125", unit="µm", data_kind="measured", method="sem_eds_map", mentions="sample 11;Fig. S5")
+  quantity="penetration_depth", value="125", unit="µm", data_kind="measured", method="sem_eds", mentions="sample 11;Fig. S5")
 F(K, "s10.x2;fig5b;fig5.cap", "observation", "Fig. 5b: SEM-EDS line scans, intensity (a.u.) of O, Al and Si against distance (µm), same sample 11",
   method="sem_eds", mentions="Fig. 5b;sample 11")
 F(K, "s10.x2", "claim", "at 5 kV the X-ray interaction volume is deeper than the alumina film, so Si from the substrate shows along the whole scan",

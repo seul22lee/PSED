@@ -100,6 +100,8 @@ The columns were kept as they are; these are open decisions for the pipeline sch
 5. **"≤" censor.** "20% or less" was stored as value_max; CENSOR has no "≤" / "≥".
 6. **Species tokens with parentheses.** A precursor such as Mo(NtBu)2(NMe2)2 is not a valid `species=` token, so that fact has no
    qualifier.
+7. **In situ vs ex situ is a qualifier, not a method.** The facts use ellipsometry for both (mat22 in situ SE); the
+   distinction needs a qualifier key, as do map vs line scan (sem_eds) and gauge vs thermocouple (process_monitor).
 Also seen: multi-number table cells (yim20 pulse-purge sequences "0.1-4.0-0.1-4.0") split into one fact per step; text that rounds a
 table value kept as one fact with the table value; conflicts between text and table kept as printed. Channel height H of lateral
 channels is `feature_height` (added to the lists). Twelve yim20 curves have facts but no points (rejected in v1, absent from
