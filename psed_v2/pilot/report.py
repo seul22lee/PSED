@@ -10,7 +10,9 @@
   whose qualifiers or unit differ from the majority is flagged with the differing key). In the tree, qualifiers are grey
   badges, red only on the picked quantity's leaves where the forest flags them; a curve the figure shows but that has no points (a fact citing a panel,
   with no points and no value, not the panel's first fact, whose statement names a curve, series, trace, spectrum or
-  pattern in lowercase) is dimmed.
+  pattern in lowercase) is dimmed. Preset "Fig. 9 from tree" (yim20): the Fig. 9a/9d points of each curve with H, N, S_IIb,
+  PD50 and x~50 inherited from the curve's run, replotted as S/N and S/S_IIb against x/H beside the paper's own 9b/9c and
+  9e/9f crops, Table 1's x~50 (filled) and PD50/H (hollow) as markers (forest.fig9).
 - Cases: the thirteen case studies (cases.py; Case 8 draws on cremers.py).
 - Matrix: quantities per paper and papers x cases (matrix.py).
 
@@ -19,7 +21,7 @@
 Embeds element texts and figure crops from ingest/final (and a page of the review PDF for the cases), so the page stays
 out of git. Each tab is its own document in an iframe, so the three views keep their styles and scripts apart.
 """
-import base64, csv, html, json, re, runpy, sys
+import base64, csv, html, io, json, re, runpy, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -27,7 +29,7 @@ V2 = HERE.parent
 sys.path.insert(0, str(HERE))
 import elements  # noqa: E402
 from check import KEYS, summary  # noqa: E402
-from forest import Forest  # noqa: E402
+from forest import Forest, fig9  # noqa: E402
 
 
 def rd(p):
@@ -69,7 +71,28 @@ def paper(pid, key):
                 and f["type"] in ("observation", "model") and re.search(r"\b(curve|series|traces?|spectrum|pattern)\b", f["statement"])):   # lowercase: "Series C" is a name
             f["nopts"] = True
     s = summary({e["element_id"]: e for e in els}, facts, list(cov.values())) if facts else {}
-    return dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s, quantities=FOREST.quantities())
+    out = dict(pid=pid, key=key, elements=E, facts=facts, tree=tree, imgs=imgs, summary=s, quantities=FOREST.quantities())
+    if key == "yim20":
+        out["demo"] = fig9(FOREST)
+        out["demo"]["crops"] = fig9_crops(pid)
+    return out
+
+
+def fig9_crops(pid):
+    """The 9b, 9c, 9e and 9f panels cut from the Fig. 9 image (a 2 x 3 grid; the cuts are approximate)."""
+    from PIL import Image
+    src = next((c for c in json.loads((V2 / "ingest/final" / pid / "structure.json").read_text(encoding="utf-8"))["captions"]
+                if c["kind"] == "figure" and str(c.get("number")) == "9"), None)
+    if not src:
+        return {}
+    im = Image.open(V2 / "ingest/final" / pid / src["images"][0]).convert("RGB")
+    W, H = im.size
+    x1, x2, ym = int(W * 0.33), int(W * 0.674), H // 2
+    out = {}
+    for k, box in (("b", (x1, 0, x2, ym)), ("c", (x2, 0, W, ym)), ("e", (x1, ym, x2, H)), ("f", (x2, ym, W, H))):
+        buf = io.BytesIO(); im.crop(box).save(buf, "JPEG", quality=85)
+        out[k] = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+    return out
 
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -112,6 +135,8 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 #forest{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:10px}
 svg.sc{width:100%;max-width:820px;height:auto;display:block}svg.sc text{font-size:11px;fill:var(--fg)}svg.sc .tk{fill:var(--mut);font-size:10px}svg.sc .gr{stroke:var(--line)}
 svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
+.demo{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start;margin:6px 0 10px}.demo svg,.demo img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:4px;background:#fff}
+.demo .cap{font-size:11px;color:var(--mut);text-align:center;margin-top:2px}@media(max-width:1100px){.demo{grid-template-columns:repeat(3,minmax(0,1fr))}}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
 </style></head><body>
 <header><h1>Facts layer: pilot papers</h1><span id="papers"></span><span id="views"></span>
@@ -172,19 +197,49 @@ function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
  const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
  return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
-let FQ="",FX="";
+let FQ="",FX="",DEMO=false;
+const COL9={"100 nm":"#3b7fc4","500 nm":"#c0392b","2000 nm":"#2e7d3a","250 cycles":"#e67e22","500 cycles":"#c0392b","1000 cycles":"#3b5fc4"};
+function lchart(ser,xl,yl){const W=300,H=230,L=46,R=10,T=10,B=36;const xs=ser.flatMap(s=>s.pts.map(p=>p[0]).concat(s.marks.map(m=>m.x))),ys=ser.flatMap(s=>s.pts.map(p=>p[1]).concat(s.marks.map(m=>m.y)));
+ let x0=Math.min(0,...xs),x1=Math.max(...xs),y0=Math.min(0,...ys),y1=Math.max(...ys);x1+=(x1-x0)*.05;y1+=(y1-y0)*.08;if(x1===x0)x1=x0+1;if(y1===y0)y1=y0+1;
+ const X=v=>L+(v-x0)/(x1-x0)*(W-L-R),Y=v=>H-B-(v-y0)/(y1-y0)*(H-T-B);
+ const tk=(a,b)=>{const st=10**Math.floor(Math.log10((b-a)/4||1)),s2=(b-a)/st>8?5*st:(b-a)/st>4?2*st:st;const o=[];for(let v=Math.ceil(a/s2)*s2;v<=b+1e-9;v+=s2)o.push(+v.toPrecision(10));return o};
+ let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(yl)} against ${esc(xl)}">`;
+ tk(x0,x1).forEach(v=>g+=`<line class="gr" x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${T}" y2="${H-B}" stroke="#e2dfd8"/><text x="${X(v).toFixed(1)}" y="${H-B+12}" text-anchor="middle" font-size="9" fill="#6b6a66">${v}</text>`);
+ tk(y0,y1).forEach(v=>g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="#e2dfd8"/><text x="${L-4}" y="${(Y(v)+3).toFixed(1)}" text-anchor="end" font-size="9" fill="#6b6a66">${+v.toPrecision(3)}</text>`);
+ g+=`<text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle" font-size="10" fill="#1d1d1b">${esc(xl)}</text><text transform="translate(10 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle" font-size="10" fill="#1d1d1b">${esc(yl)}</text>`;
+ ser.forEach((s,k)=>{if(s.pts.length)g+=`<polyline fill="none" stroke="${s.color}" stroke-width="1.6" points="${s.pts.map(p=>X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ")}"/>`+s.pts.map(p=>`<circle cx="${X(p[0]).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="2" fill="${s.color}"/>`).join("");
+  s.marks.forEach(m=>g+=m.fill?`<path d="M${X(m.x).toFixed(1)} ${(Y(m.y)-6).toFixed(1)} l6 6 l-6 6 l-6 -6 Z" fill="${s.color}"><title>${esc(m.tip)}</title></path>`:`<circle cx="${X(m.x).toFixed(1)}" cy="${Y(m.y).toFixed(1)}" r="5" fill="none" stroke="${s.color}" stroke-width="1.8"><title>${esc(m.tip)}</title></circle>`);
+  g+=`<text x="${W-R-2}" y="${T+12+12*k}" text-anchor="end" font-size="10" fill="${s.color}">${esc(s.label)}${s.pts.length?"":" (no points)"}</text>`});
+ return g+"</svg>"}
+function demoHTML(d){const D=d.demo;if(!D)return"";let h="";const used=[];
+ for(const [ser,blk] of Object.entries(D).filter(([k])=>k!=="crops")){const cs=blk.curves;const col=c=>COL9[c.label]||"#888";
+  const interp=(pts,x)=>{for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];if(a[0]<=x&&x<=b[0])return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0])}return null};
+  const mk=(c,y,ysn)=>[{x:c.xt50_tab,y:y,fill:true,tip:`Table 1 x~50 = ${c.xt50_tab} (${c.run})`},{x:c.xt_pd50,y:y,fill:false,tip:`Table 1 PD50 ${c.PD50} µm / H = ${c.xt_pd50.toFixed(0)}`}];
+  const sn=cs.map(c=>{const y=c.sn?interp(c.sn,c.xt50_tab):(c.SIIb/2)/c.N;return{pts:c.sn||[],color:col(c),label:c.label,marks:mk(c,y??(c.SIIb/2)/c.N)}});
+  const nm=cs.map(c=>({pts:c.norm||[],color:col(c),label:c.label,marks:mk(c,0.5)}));
+  const raw=cs.map(c=>({pts:c.raw||[],color:col(c),label:c.label,marks:[{x:c.PD50,y:c.raw?(interp(c.raw,c.PD50)??c.SIIb/2):c.SIIb/2,fill:true,tip:`Table 1 PD50 = ${c.PD50} µm`}]}));
+  cs.forEach(c=>{used.push(c.fid);c.used.forEach(u=>used.push(u))});
+  const p=blk.panel,p2=String.fromCharCode(p.charCodeAt(0)+1),p3=String.fromCharCode(p.charCodeAt(0)+2);
+  h+=`<div class="demo"><div>${lchart(raw,"x (µm)","S (nm)")}<div class="cap">Series ${ser}: Fig. 9${p} points as digitized</div></div>
+  <div>${lchart(sn,"x̃ = x/H","S/N (nm)")}<div class="cap">computed: S/N against x/H (H, N from the run)</div></div>
+  <div>${lchart(nm,"x̃ = x/H","S/S_IIb")}<div class="cap">computed: S/S_IIb against x/H; ◆ Table 1 x̃50, ○ PD50/H</div></div>
+  <div><img src="${D.crops[p2]}" alt="Fig. 9${p2} crop"><div class="cap">paper's Fig. 9${p2}</div></div><div><img src="${D.crops[p3]}" alt="Fig. 9${p3} crop"><div class="cap">paper's Fig. 9${p3}</div></div></div>`;
+  h+=`<div class="mut" style="font-size:12px;margin:-4px 0 10px">${cs.map(c=>`${c.label}: x̃50 ${c.xt50?c.xt50.toFixed(0)+" computed vs "+c.xt50_tab+" Table 1 ("+((c.xt50-c.xt50_tab)/c.xt50_tab*100).toFixed(0).replace(/^(\d)/,"+$1")+"%)":"no points; Table 1 "+c.xt50_tab}`).join(" · ")}</div>`}
+ return {html:h,used}}
 const PAPERQ=()=>{const c={};DATA.forEach(d=>Object.entries(d.quantities).forEach(([q,n])=>c[q]=n));return c};
 function fleaves(){const out=[];if(!FQ)return out;DATA.forEach((d,i)=>d.facts.forEach(f=>{if(f.quantity===FQ&&f.ctx)out.push({d,i,f})}));return out}
 const fv=f=>{const v=parseFloat(String(f.value).replace("−","-").replace(/\s/g,""));if(!isNaN(v))return v;const lo=parseFloat(f.value_min),hi=parseFloat(f.value_max);
  if(!isNaN(lo)&&!isNaN(hi))return lo>0&&hi>0?Math.sqrt(lo*hi):(lo+hi)/2;return isNaN(lo)?hi:lo};
 function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(l=>Object.entries(l.f.ctx).forEach(([q,c])=>{if(c!=="ambiguous"&&q!==FQ)xs[q]=(xs[q]||0)+1}));
  if(FQ&&!(FX in xs))FX=("deposition_temperature" in xs)?"deposition_temperature":Object.keys(xs)[0]||"";
- return `<div class="fl"><label>quantity <select onchange="FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${q} (${Q[q]})</option>`).join("")}</select></label>
+ return `<div class="fl"><label>quantity <select onchange="DEMO=false;FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${q} (${Q[q]})</option>`).join("")}</select></label>
  <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${q} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
- <button onclick="FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button>
+ <button onclick="DEMO=false;FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="DEMO=false;FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button> <button class="${DEMO?"on":""}" onclick="DEMO=true;FQ='';applyForest()">Fig. 9 from tree</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
 function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".nd.hl").forEach(n=>n.classList.remove("hl"));
  document.querySelectorAll(".q.red").forEach(n=>{n.classList.remove("red");if(n.dataset.k==="unit")n.hidden=true});
+ if(DEMO){const dm=demoHTML(DATA[0]);$("#fn").textContent=`Fig. 9 of yim20 rebuilt from the tree: ${dm.used.length} leaves used`;$("#scat").innerHTML=dm.html;
+  dm.used.forEach(id=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}});return}
  const ls=fleaves();let shown=0;const pts=[];
  ls.forEach(l=>{const el=document.querySelector(`.nd:not(.linked)[data-f="${CSS.escape(l.f.fact_id)}"]`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}
    (l.f.flag||[]).forEach(k=>el.querySelectorAll(`.q[data-k="${k}"]`).forEach(b=>{b.classList.add("red");b.hidden=false}))}

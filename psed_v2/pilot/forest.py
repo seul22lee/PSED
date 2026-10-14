@@ -266,8 +266,50 @@ def case10(F):
             print(f"   forest only {p['l']['fid']}: {REASONS.get(p['l']['fid'], 'no CSV record with this pair')}")
 
 
+def fig9(F):
+    """Fig. 9 of yim20 rebuilt from the tree: for each Fig. 9a (Series C) and 9d (Series D) curve with points, H, N, S_IIb, PD50
+    and x~50 inherited from the curve's run (its children in the tree), then S/N and S/S_IIb against x/H, and the x~ where
+    S/S_IIb crosses 0.5 (linear interpolation on the first descending crossing), against Table 1's x~50."""
+    import json
+    P = F.papers["yim20"]
+    pts = json.loads((HERE / f"{P['pid']}.points.json").read_text(encoding="utf-8"))
+    out = {}
+    for series, panel, cfids in (("C", "a", ("fig9a#2", "fig9a#3", "fig9a#4")), ("D", "d", ("fig9d#2", "fig9d#3", "fig9d#4"))):
+        rows = []
+        for cf in cfids:
+            f = P["byid"]["yim20:" + cf]
+            run = f["parent"]
+            kids = P["kids"][run]
+            get = lambda q, **ql: next((k for k in kids if k["quantity"] == q and all(quals(k["qualifiers"]).get(a) == b for a, b in ql.items())), None)
+            H, N, SIIb, PD = get("feature_height"), get("cycle_number"), get("film_thickness", position="plateau"), get("penetration_depth", level="50%")
+            xt = next((k for k in P["kids"].get(PD["fact_id"], []) if k["quantity"] == "dimensionless_distance"), None) if PD else None
+            r = dict(fid=f["fact_id"], label=f["mentions"].split(";")[0], run=run.split(":")[1], H=num(H["value"]), N=num(N["value"]), SIIb=num(SIIb["value"]),
+                     PD50=num(PD["value"]), xt50_tab=num(xt["value"]) if xt else None,
+                     used=[x["fact_id"] for x in (H, N, SIIb, PD, xt) if x], raw=None, sn=None, norm=None, xt50=None)
+            r["xt_pd50"] = r["PD50"] / (r["H"] / 1000)
+            if f["points_ref"]:
+                raw = pts[f["points_ref"]]["points"]
+                h = r["H"] / 1000
+                r["raw"] = raw
+                r["sn"] = [[x / h, s / r["N"]] for x, s in raw]
+                r["norm"] = [[x / h, s / r["SIIb"]] for x, s in raw]
+                for (x0, y0), (x1, y1) in zip(r["norm"], r["norm"][1:]):
+                    if y0 >= 0.5 > y1:
+                        r["xt50"] = x0 + (y0 - 0.5) / (y0 - y1) * (x1 - x0); break
+            rows.append(r)
+        out[series] = dict(panel=panel, curves=rows)
+    return out
+
+
 if __name__ == "__main__":
     F = Forest()
     print("leaves per quantity:", dict(sorted(F.quantities().items(), key=lambda x: -x[1])))
     case9(F)
     case10(F)
+    print("== Fig. 9 from the tree (yim20): x~50 computed from the Fig. 9a/9d points against Table 1")
+    for series, d in fig9(F).items():
+        for r in d["curves"]:
+            c = f"computed {r['xt50']:.0f}" if r["xt50"] else "no points"
+            dev = f" ({(r['xt50'] - r['xt50_tab']) / r['xt50_tab'] * 100:+.0f}%)" if r["xt50"] else ""
+            print(f"   Series {series} {r['label']:12s} {r['run']:6s} H {r['H']:g} nm, N {r['N']:g}, S_IIb {r['SIIb']:g} nm, PD50 {r['PD50']:g} µm: Table 1 x~50 {r['xt50_tab']:g} (PD50/H {r['xt_pd50']:.0f}); {c}{dev}"
+                  + (f"; {len(r['raw'])} points" if r["raw"] else ""))
