@@ -43,7 +43,7 @@ SC = [  # table, row as in the review, ref, paper_id, verdict, where in the sour
  ("V", "TiCl4 on TiN, continuum model, 110 °C, 0.1", "77", "10.1063_1.5028178", "differ", "Table I", "value agrees (0.10) but the source deposits TiO2; TiN is carried over from the line above in the table"),
 ]
 SC2 = [  # added 2026-10-13 with the 15 PDFs obtained by hand
- ("II", "Al2O3 TMA/H2O, macro lateral, EAR 100, 200 °C, exposure 9, coated 50* (D)", "67", "10.1149_1.3072694", "agree", "experimental section, Fig. 5", "0.3 Pa for 4 s is 1.2 Pa s, i.e. 9.0 × 10^3 L; aspect ratio 100 by the source's perimeter definition; half thickness near 11 of 20 mm (by eye) gives 55"),
+ ("II", "Al2O3 TMA/H2O, macro lateral, EAR 100, 200 °C, exposure 9, coated 50* (D)", "67", "10.1149_1.3072694", "agree", "experimental section, Fig. 5", "0.3 Pa for 4 s is 1.2 Pa s, i.e. 9.0 × 10^3 L; aspect ratio 100 by the source's perimeter definition; half thickness at about 10.7 of 20 mm (by eye) gives 53"),
  ("II", "Al2O3 TMA/H2O, AAO, EAR 770, 177 °C, exposure 4500, coated 770", "65", "10.1021_cm0303080", "agree", "Sec. III A, Fig. 3", "65 nm x 50 um gives 769; 0.15 Torr for 30 s is 4500 × 10^3 L. The source coats the membrane already at 3 s (450) and the pores are open at both ends: the review lists the largest exposure used and the full length"),
  ("II", "ZnO DEZ/H2O, AAO, EAR 700, 177 °C, exposure 2000, coated 700 (D)", "65", "10.1021_cm0303080", "differ", "Sec. III B, Fig. 5", "exposure agrees (0.068 Torr for 30 s); the membrane is the same 65 nm x 50 um one that the Al2O3 row lists as 770"),
  ("II", "ZnO DEZ/H2O, AAO, EAR 5000, 177 °C, exposure 600000, coated 5000 (D)", "65", "10.1021_cm0303080", "agree", "Sec. III B, Fig. 7", "19 nm x 92 um; 5 Torr for 120 s"),
@@ -71,10 +71,10 @@ SC2 = [  # added 2026-10-13 with the 15 PDFs obtained by hand
  ("V", "ZnEt2, Monte Carlo model, 177 °C, 0.007", "65", "10.1021_cm0303080", "not found", "Sec. IV C", "0.007 is the value used in the simulations; how it was obtained was not found"),
  ("V", "SiCl4, Monte Carlo model, 10^-8", "65 and 239", "10.1021_cm0303080", "agree", "Sec. III C, IV D", "quoted there from the second reference"),
  ("V", "H2Si[N(C2H5)2]2, Monte Carlo model, 300 °C, 3 × 10^-5", "128", "10.1116_1.4971196", "agree", "Sec. IV B 3", "fitted; range 3 to 5 × 10^-5"),
- ("VII", "O on alumina, 0.0097 ± 0.0019", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K, ± 20%, on a sintered ceramic in an air plasma at 110 Pa; 0.061 at 773 K"),
- ("VII", "O on titania, 0.014 ± 0.003", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K; 0.031 at 773 K"),
- ("VII", "O on iron(II, III) oxide, 0.015 ± 0.003", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K"),
- ("VII", "O on cobalt oxide, 0.029 ± 0.006", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "CoO at 300 K"),
+ ("VII", "O on alumina, 0.0097 ± 0.0019 (out of scope, cited source)", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K, ± 20%, on a sintered ceramic in an air plasma at 110 Pa; 0.061 at 773 K"),
+ ("VII", "O on titania, 0.014 ± 0.003 (out of scope, cited source)", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K; 0.031 at 773 K"),
+ ("VII", "O on iron(II, III) oxide, 0.015 ± 0.003 (out of scope, cited source)", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "at 300 K"),
+ ("VII", "O on cobalt oxide, 0.029 ± 0.006 (out of scope, cited source)", "251", "10.1016_j.cattod.2003.11.022", "agree", "Table 1", "CoO at 300 K"),
 ]
 SC1, SC = SC, SC + SC2
 wr("source_checks.csv", [dict(table=a, row=b, ref=c, paper_id=d, verdict=e, where=f, remark=g) for a, b, c, d, e, f, g in SC])
@@ -176,9 +176,7 @@ b_ear = [
  ("10.1039_c5ta00205b (ref. 196)", "AAO; dimensions of the coated membrane not found", "L/w", "—", "120", "cannot check"),
  ("10.1116_6.0001094 (not a review row)", "trench, 20 mm deep, 1 mm opening", "L/(2w)", "10", "10 (stated by the source)", "agree"),
  ("10.1021_acs.jpcc.5c06502 (not a review row)", "lateral channel, PD50% 4.4 µm, gap 0.5 µm", "L/(2w)", "4.4", "4.4 (stated by the source)", "agree"),
- ("review's own example, Sec. II D (ref. 62, not in the 44)", "holes 7.3 µm deep, 0.17 µm wide", "L/w", "43", "36 (Table II, 'Holes')", "differ; 36 would follow from the elongated-hole formula with a second width near 0.25 µm"),
 ]
-b_ear = [r for r in b_ear if not r[0].startswith("review's own example")]
 b_ear += [
  ("10.1002_cvde.200390005 (ref. 62)", "elliptical holes 0.17 x 0.30 um, 7.3 um deep", "L(w+z)/(2wz)", "34", "36", "agree (the source computes 36 from the true perimeter)"),
  ("10.1149_1.3072694 (ref. 67)", "rectangular hole 5 x 20 mm, 0.1 mm high (height from the review's Fig. 22)", "L(w+z)/(2wz)", "102", "100", "agree"),
@@ -203,8 +201,8 @@ def gordon_a(L_):
     return lo
 A_SRC = [  # source-side points for TMA/H2O: exposure (10^3 L), coated EAR or bound, kind, label, where
  (9, 33, "lower", "macro hole, aspect ratio 33, fully coated", "10.1149_1.3072694 Fig. 5"),
- (9, 49, "measured", "macro hole, aspect ratio 50, half thickness near the end (by eye)", "10.1149_1.3072694 Fig. 5"),
- (9, 55, "measured", "macro hole, aspect ratio 100, half thickness at 11 mm (by eye)", "10.1149_1.3072694 Fig. 5"),
+ (9, 47, "measured", "macro hole, aspect ratio 50, half thickness at about 19 of 20 mm (by eye)", "10.1149_1.3072694 Fig. 5"),
+ (9, 53, "measured", "macro hole, aspect ratio 100, half thickness at about 10.7 mm (by eye)", "10.1149_1.3072694 Fig. 5"),
  (450, 385, "lower", "AAO 65 nm x 50 um, coated from both ends at 3 s", "10.1021_cm0303080 Fig. 3"),
  (150, 385, "upper", "the same membrane at 1 s: centre not coated", "10.1021_cm0303080 Fig. 3"),
 ]
@@ -232,11 +230,11 @@ LH = [  # r from the parsed papers: surface, r, regime, paper, where
 ]
 LH += [
  ("Silica", (3e-5, 1e-4), "50 mTorr, 100 to 240 °C; falls with temperature", "10.1021_acs.jpcc.1c01505", "Fig. 5A"),
- ("Silica", (2e-5, 2e-4), "180 °C, 12 to 130 mTorr; falls with pressure", "10.1021_acs.jpcc.1c01505", "Fig. 5B"),
+ ("Silica", (2e-5, 2.5e-4), "180 °C, 12 to 130 mTorr; falls with pressure", "10.1021_acs.jpcc.1c01505", "Fig. 5B"),
  ("Titania", (1e-5, 4e-5), "50 mTorr, 100 to 240 °C; upper limit at 240 °C", "10.1021_acs.jpcc.1c01505", "Fig. 5A"),
- ("Alumina", (9.7e-3, 6.1e-2), "sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature", "10.1016_j.cattod.2003.11.022", "Table 1"),
- ("Titania", (1.4e-2, 3.1e-2), "sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature", "10.1016_j.cattod.2003.11.022", "Table 1"),
- ("Silica", (4e-3, 9.3e-3), "oxidized SiC, 110 Pa air plasma, 300 to 773 K", "10.1016_j.cattod.2003.11.022", "Table 1"),
+ ("Alumina", (9.7e-3, 6.1e-2), "out of scope, cited source: sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature", "10.1016_j.cattod.2003.11.022", "Table 1"),
+ ("Titania", (1.4e-2, 3.1e-2), "out of scope, cited source: sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature", "10.1016_j.cattod.2003.11.022", "Table 1"),
+ ("Silica", (4e-3, 9.3e-3), "out of scope, cited source: oxidized SiC, 110 Pa air plasma, 300 to 773 K", "10.1016_j.cattod.2003.11.022", "Table 1"),
  ("Silica", 2e-4, "literature value, cited", "10.1149_1.3491381", "Table II"),
  ("Alumina", 2.1e-3, "literature value, cited (the same as Table VII)", "10.1149_1.3491381", "Table II"),
 ]
@@ -302,7 +300,7 @@ IDEAS = [
   "Needs exposure for each row. Have: 6 of 12 in the review; three of those sources are now read (refs 65, 67, 69) and confirm the printed exposures. With them the square-law of ref. 62 can be tested for TMA: see 3a. The ref. 86 source is read too and gives no partial pressure, so its blank cannot be filled; ref. 77 gives a fitted, not measured, pressure. Missing: refs 134, 93, 96, 138 (no PDF). Joins Case 1, Case 8 and candidate A1."),
  ("2. Automatic EAR conversion", "doable partly",
   [("formulas for hole, trench, elongated hole; pillars from Monte Carlo", "true", "Sec. II G"), ("Werbrouck 2021 states AR 20 and EAR 10", "true", "its Sec. II D")],
-  f"Needs L, w and the structure type from each source. Have: {len(b_ear)} checks; {sum(1 for r in b_ear if r[5].startswith('agree'))} agree. Three things a transform would have caught: one membrane listed as 770 and as 700, one hole type listed as 20 and as 15.3, and pores open at both ends counted at full length. The earlier finding that the review's worked example gives 43 against a table value of 36 is withdrawn: the source's holes are elliptical (0.17 by 0.30 um), 36 is the source's own number, and 43 is its value after coating. Missing: the sources of the other rows. Joins N9 and Case 8."),
+  f"Needs L, w and the structure type from each source. Have: {len(b_ear)} checks; {sum(1 for r in b_ear if r[5].startswith('agree'))} agree. Three things a transform would have caught: one membrane listed as 770 and as 700, one hole type listed as 20 and as 15.3, and pores open at both ends counted at full length. Missing: the sources of the other rows. Joins N9 and Case 8."),
  ("3. Continuing the tables after 2019", "doable now",
   [("Mo trench 100/95/90%", "true", "10.1116_6.0002804 Fig. 9a"), ("WCx step coverage about 80%", "true", "10.1021_acs.chemmater.6c00816 Fig. 4"), ("AlN with Kr, step coverage 1.6", "true", "10.1021_acs.jpclett.4c03545 Fig. 2"), ("PD50% in three plasma LHAR papers", "true", "Fig. 2A; body text; Table 1")],
   f"new_rows.csv holds {len(NR)} draft rows from 16 papers, each with its source (two added from 10.1021_acs.jpcc.1c01505). Exposure is blank in all but one. Three things do not fit the review's columns: a step coverage above 1, a profile thicker at the bottom, and atmospheric plasma. Adds a new case (a living table); uses Case 7 for the values written on images."),
@@ -322,13 +320,70 @@ IDEAS = [
   f"Counts are in 3f. The rule is not applied evenly: {len(unmarked)} rows have a coated value below the structure value without the PD50% mark, and {len(pd_eq)} carry the mark although the two values are equal. One marked row is contradicted by its source (ref. 178: the profile never falls to one half). Supports a basis qualifier on coated_aspect_ratio; joins N3 and Case 8."),
  ("8. The (D) mark as a collection list", "doable partly",
   [("(D) means a thickness profile was reported", "true", "captions"), ("Sec. VI B 3: dense points in the slope region are needed (Fig. 22)", "true", "p. 021302-31")],
-  f"Have: {len(g_rows)} references marked D, {sum(1 for g in g_rows if g[4] == 'have it')} with a PDF after the 15 obtained by hand. The point count now covers {len(PR)} measured profile groups ({len(PR) - PR0} new, profiles.csv). The rest of the list is in wanted_pdfs.csv."),
+  f"Have: {len(g_rows)} references marked D, {sum(1 for g in g_rows if g[4] == 'have it')} with a PDF. The point count now covers {len(PR)} measured profile groups ({len(PR) - PR0} new, profiles.csv). The rest of the list is in wanted_pdfs.csv."),
  ("9. Growth type classification", "doable partly",
   [("three growth types told apart by profile shape", "true", "Sec. II F, Fig. 4")],
   "Shape separates diffusion-limited profiles (plateau and front) well. It cannot separate reaction- from recombination-limited growth, or either from channel closing or reversible adsorption; those need a time or dose series. The new papers add three more cases where shape misleads: a plasma profile with a sharp front (CoOx), plasma profiles shaped by a thermal side reaction (Al2O3), and a precursor-limited plasma profile (TiO2 at the highest temperature). Ref. 66, now read, is where the third type was introduced; its regime diagram needs r and the aspect ratio, not the shape. Joins N7."),
 ]
 fit_yes = sum(1 for r in PR if r[6].startswith("yes")); fit_m = sum(1 for r in PR if r[6] == "marginal")
 gt = collections.Counter(r[7] for r in PR)
+
+# ----------------------------------------------------------------------------- values read from the papers obtained by hand on 2026-10-13
+# Where each value was read, whether the ingest checks now cover that unit, and whether it was compared with the page image.
+V15 = [  # paper, value as used, where read, token in document.md (body) or table number, compared with the page image, correction
+ ("10.1002_cvde.200390005", "holes 0.17 x 0.30 um, 7.3 um deep, aspect ratio 36 (43 after coating)", "body", "7.3", "no", ""),
+ ("10.1002_cvde.200390005", "150 °C; minimum exposure 9 × 10^3 L; 30 × 10^3 L for full coverage", "body", "150", "no", ""),
+ ("10.1021_cm0303080", "pores 65 nm x 50 um and 19 nm x 92 um; 177 °C", "body", "177", "no", ""),
+ ("10.1021_cm0303080", "TMA at 0.15 Torr; exposure times 1, 3, 10, 30 s", "body", "0.15", "no", ""),
+ ("10.1021_cm0303080", "DEZ at 0.068 Torr; 5 Torr for 120 s in the quasi-static run", "body", "0.068", "no", ""),
+ ("10.1021_cm0303080", "both faces directly exposed; pores entered from both ends", "body", "both ends", "no", ""),
+ ("10.1021_cm0303080", "middle of the membrane uncoated at 1 s, coated at 3 s", "figure 3", "", "yes", ""),
+ ("10.1021_cm0303080", "sticking 1e-3 for TMA (quoted) and 7e-3 for DEZ", "body", "10^{-3}", "no", ""),
+ ("10.1149_1.3072694", "TMA about 0.3 Pa, 4 s, 200 °C, 150 cycles; s0 = 0.1 chosen", "body", "0.35", "no", ""),
+ ("10.1149_1.3072694", "half thickness: aspect ratio 50 at about 19 mm, 100 at about 10.7 mm", "figure 5", "", "yes", "corrected from 49 and 55 to 47 and 53"),
+ ("10.1016_j.surfcoat.2012.02.038", "TMA 0.08 Pa, 75 °C, 500 cycles; S0 = 0.01", "body", "0.08", "no", ""),
+ ("10.1016_j.surfcoat.2012.02.038", "Table 2 parameters (0.08 Pa, 8 s, S0 0.01)", "table", "2", "no", ""),
+ ("10.1016_j.surfcoat.2012.02.038", "half values: thermal 2, 8, 30 s at about 15, 18, 27.5 mm; plasma at about 2.8 mm", "figures 5, 10", "", "yes", ""),
+ ("10.1149_1.3301664", "spacers 3.9, 1.3, 0.5 mm; TMA about 0.2 Pa, reactant 0.3 Pa; 9 s; 200 °C", "body", "3.9", "no", ""),
+ ("10.1149_1.3301664", "sticking inputs 0.1 (TMA, at 0.12 Pa) and 5% (water)", "body", "0.12", "no", ""),
+ ("10.1149_1.3301664", "aspect ratio 22: thermal complete, plasma half at about 12.5 mm (about 14)", "figure 2", "", "yes", ""),
+ ("10.1116_1.4903941", "gap 500 nm; film to 65 um; aspect ratio 130 at half the entrance value (TiO2)", "body", "130", "no", ""),
+ ("10.1116_1.4903941", "Al2O3 half thickness near 70 um", "figure 5a", "", "yes", ""),
+ ("10.1116_1.4971196", "TMA 0.02 (0.009 to 0.02); BDEAS 3e-5 (3 to 5e-5); 200 and 300 °C", "body", "0.02", "no", ""),
+ ("10.1016_j.apsusc.2009.02.055", "holes 130 nm x 2 um, written as AR = 20; SC 0.02 ± 0.005; 180 °C", "body", "130", "no", ""),
+ ("10.1016_j.apsusc.2009.02.055", "profile never below 70% of its top value", "figure 3", "", "yes", ""),
+ ("10.1016_j.apsusc.2010.01.025", "SC 0.032, 0.15, 0.56 at 180, 230, 270 °C; Cp*Ti(OMe)3 0.006 to 0.018", "body", "0.56", "no", ""),
+ ("10.1016_j.apsusc.2010.01.025", "HfO2 half thickness near 1250 nm at 180 °C", "figure 1a", "", "yes", ""),
+ ("10.1063_1.2714685", "holes 0.3 um, aspect ratio 10; TMA 0.01 Torr; 225 °C; S(0) = 0.026", "body", "0.026", "no", ""),
+ ("10.1149_1.2789802", "holes 0.15 um, aspect ratio 8.7; step coverage 52% at 500 cycles", "body", "8.7", "yes", "none: compared with the page image (p. H1010 and the conclusion on p. H1013); the same values stand in the abstract and conclusion"),
+ ("10.1149_1.2789802", "S(0) 0.1 and 0.052; flux 3.282e20 m-2 s-1", "table", "II", "yes", ""),
+ ("10.1063_1.4972120", "trench aspect ratio up to 34; conformality 92 ± 8%", "table", "II", "no", ""),
+ ("10.1063_1.4972120", "O2 plasma 7.5 mTorr; r of O on Pt 0.01 (quoted)", "body", "7.5", "no", ""),
+ ("10.1149_1.3491381", "r of O on silica 0.0002, alumina 0.0021 (a literature table)", "table", "II", "yes", ""),
+ ("10.1021_acs.jpcc.1c01505", "r of SiO2 about 1e-4 to 3e-5 (temperature) and 2.5e-4 to 2e-5 (pressure); TiO2 about 4e-5, below 1e-5 at 240 °C", "figure 5", "", "yes", "corrected: upper pressure value from 2e-4 to 2.5e-4"),
+ ("10.1021_acs.jpcc.1c01505", "half-thickness depths over cavity height", "figures 2-4", "", "yes", ""),
+ ("10.1016_j.cattod.2003.11.022", "out of scope, cited source: γ of O on Al2O3 9.7e-3 (300 K) to 61e-3 (773 K), TiO2 14e-3 to 31e-3, SiC/SiO2 4e-3 to 9.3e-3", "table", "1", "yes", ""),
+]
+
+
+def v15_check(pid, where, tok):
+    st = json.load(open(V2 / f"ingest/final/{pid}/structure.json"))
+    if where == "table":
+        t = next((c for c in st["captions"] if c["kind"] == "table" and str(c["number"]) == tok), None)
+        return f"table check: {t.get('check', 'none') if t else 'table not found'}"
+    if where != "body":
+        return "not checked (figure)"
+    doc = (V2 / f"ingest/final/{pid}/document.md").read_text(encoding="utf-8")
+    if tok not in doc:
+        return "body: token not found in document.md"
+    hit = [f for f in st["body_flags"] if tok in (f.get("output_sentence") or "") + (f.get("layer_line") or "")]
+    return "body check: covered, no flag" if not hit else "body check: flagged (" + "; ".join(sorted({f["kind"] for f in hit})) + ")"
+
+
+import json
+v15 = [dict(paper=p, value=v, where_read=w, check=v15_check(p, w, t), compared_with_page_image=c, correction=x) for p, v, w, t, c, x in V15]
+wr("values_hand_obtained.csv", v15)
+v15n = collections.Counter("checked" if r["check"].startswith(("body check: covered", "table check: ok")) else "compared" if r["compared_with_page_image"] == "yes" else "neither" for r in v15)
 
 # ----------------------------------------------------------------------------- CREMERS.md
 sc_cnt = collections.Counter(s[4] for s in SC); sc2 = collections.Counter(s[4] for s in SC2)
@@ -338,11 +393,11 @@ Exploration, 2026-10-13. The review is Cremers, Puurunen and Dendooven, Appl. Ph
 
 Files: `conformality.csv` ({len(CONF)} rows), `parameters.csv` ({len(PAR)} rows), `source_checks.csv`, `new_rows.csv`, `profiles.csv`, `build.py`. Plots: Case 8 of `../reports/cases.html` (not tracked).
 
-Updated the same day after 15 PDFs were obtained by hand (refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505). `in_corpus` (was `in_44`) marks rows whose source has a PDF; `value_from_source` holds what the source gives for cells the review leaves blank, and never replaces a transcribed value. What the new sources changed is said under each result.
+Updated the same day after 15 PDFs were obtained by hand (refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505). `in_corpus` (was `in_44`) marks rows whose source is in scope and has a PDF; `source_scope` says "out of scope, cited source" for rows whose source is excluded (the Table VII sources, refs 250 to 263, and ref. 134), whose values are kept only as cited data; `value_from_source` holds what the source gives for cells the review leaves blank, and never replaces a transcribed value. What the new sources changed is said under each result.
 
 ## Step 1. Transcription
 
-{md(["Table", "Content", "Rows", "Rows whose source is in the corpus"], [[t, c, sum(1 for r in rows if r["table"] == t), sum(1 for r in rows if r["table"] == t and r["in_corpus"] == "yes")] for t, c, rows in (("II", "thermal ALD", CONF), ("III", "ozone-based ALD", CONF), ("IV", "plasma ALD", CONF), ("V", "sticking probabilities", PAR), ("VI", "ozone recombination", PAR), ("VII", "atom recombination", PAR))])}
+{md(["Table", "Content", "Rows", "Rows whose source is in scope with a PDF"], [[t, c, sum(1 for r in rows if r["table"] == t), sum(1 for r in rows if r["table"] == t and r["in_corpus"] == "yes")] for t, c, rows in (("II", "thermal ALD", CONF), ("III", "ozone-based ALD", CONF), ("IV", "plasma ALD", CONF), ("V", "sticking probabilities", PAR), ("VI", "ozone recombination", PAR), ("VII", "atom recombination", PAR))])}
 Things seen while typing that a reader of the tables should know:
 - The PD50% mark is an asterisk. It is lost in the PDF text layer, so it was read from the page images.
 - Five reference numbers, in seven rows, have no DOI in the manifest (150, 168, 176, 201, 213).
@@ -352,7 +407,7 @@ Things seen while typing that a reader of the tables should know:
 
 ## Step 2. Source checks
 
-{len(SC)} rows point to a paper in the corpus: {sc_cnt['agree']} agree, {sc_cnt['differ']} differ, {sc_cnt['not found']} not found. Of these, {len(SC1)} were checked against the first 44 papers and {len(SC2)} against the 15 added ({sc2['agree']} agree, {sc2['differ']} differ, {sc2['not found']} not found). `value_from_source` is filled in {sum(1 for r in CONF if r['value_from_source'])} rows: 5 give a value the review lacks, 6 record that the source does not state the exposure either.
+{len(SC)} rows point to a paper with a PDF (four of them to ref. 251, out of scope and kept as a cited source): {sc_cnt['agree']} agree, {sc_cnt['differ']} differ, {sc_cnt['not found']} not found. Of these, {len(SC1)} were checked against papers parsed before 2026-10-13 and {len(SC2)} against the papers whose PDFs were obtained by hand that day ({sc2['agree']} agree, {sc2['differ']} differ, {sc2['not found']} not found). `value_from_source` is filled in {sum(1 for r in CONF if r['value_from_source'])} rows: 5 give a value the review lacks, 6 record that the source does not state the exposure either.
 
 {md(["Table", "Row in the review", "Ref.", "Paper", "Verdict", "Where", "Remark"], SC)}
 ## Step 3. Computed
@@ -368,13 +423,11 @@ Of the six rows with an exposure, two are measured depths, three are lower bound
 What the new sources add. From the sources, at the same exposures:
 
 {md(["Exposure (10^3 L)", "Coated EAR", "Reading", "Structure", "Where"], [[x, y, {"lower": "lower bound", "measured": "measured, by eye", "upper": "upper bound"}[k], lab, wh] for x, y, k, lab, wh in A_SRC])}
-The kinetic model of ref. 62 gives the exposure for full coverage as a flat-surface exposure times (1 + 19a/4 + 3a²/2). For TMA at 200 °C with {GORDON_S:.1e} molecules per m² per cycle (the saturation value of 10.1063_1.2714685, an assumption here) the flat-surface exposure is {gordon_L(0) :.1f} L, and 9 × 10^3 L should coat an aspect ratio of {gordon_a(9e3):.0f}. Ref. 67 measures 49 to 55 at that exposure. For the 65 nm by 50 µm membrane of ref. 65 the model asks for {gordon_L(385) / 1e3:.0f} × 10^3 L when the pores are entered from both ends (aspect ratio 385) and {gordon_L(769) / 1e3:.0f} × 10^3 L if they were entered from one; the source finds the centre uncoated at 150 and coated at 450. So the square law holds over these two structures, a factor of 50 in exposure, but only when the membrane is counted at half its length; the review's 770 at 4500 is a fully coated structure with ten times the needed exposure. The blanks of refs 86 and 77 cannot be filled from their sources.
+The kinetic model of ref. 62 gives the exposure for full coverage as a flat-surface exposure times (1 + 19a/4 + 3a²/2). For TMA at 200 °C with {GORDON_S:.1e} molecules per m² per cycle (the saturation value of 10.1063_1.2714685, an assumption here) the flat-surface exposure is {gordon_L(0) :.1f} L, and 9 × 10^3 L should coat an aspect ratio of {gordon_a(9e3):.0f}. Ref. 67 measures 47 to 53 at that exposure. For the 65 nm by 50 µm membrane of ref. 65 the model asks for {gordon_L(385) / 1e3:.0f} × 10^3 L when the pores are entered from both ends (aspect ratio 385) and {gordon_L(769) / 1e3:.0f} × 10^3 L if they were entered from one; the source finds the centre uncoated at 150 and coated at 450. So the square law holds over these two structures, a factor of 50 in exposure, but only when the membrane is counted at half its length. The source supports that reading: it states that the top and bottom of the membrane are both directly exposed to the precursors in the flow tube (Sec. III A), and its model has the pores entered from both ends at equal rates, over half their length (Sec. IV A). The review's 770 at 4500 is a fully coated structure with ten times the needed exposure. The blanks of refs 86 and 77 cannot be filled from their sources.
 
 ### b. EAR check and the unit conversion
 
 {md(["Source", "Dimensions", "Formula", "Computed", "Printed", "Result"], b_ear)}
-What the new sources changed: ten checks added. The earlier "inconsistency" between the review's worked example (holes 0.17 µm wide and 7.3 µm deep, which would give 43) and its table value of 36 is withdrawn: ref. 62 describes elliptical holes of 0.17 by 0.30 µm with an aspect ratio of 36, and 43 is their value after coating. The review's text only leaves out the second axis.
-
 The conversion in Sec. II D is printed as "1 L = 10^6 Torr s = 7500 Pa s". Both parts are wrong as printed: 1 L is 10^-6 Torr s, which is 1.33 × 10^-4 Pa s, and it is 1 Pa s that equals 7500 L. The tables use the correct relation: the review's own Fig. 22 gives 0.27 Pa for 4 s, which is 8100 L against the 9 × 10^3 L of the first row of Table II, and the ref. 98 row reproduces from the source's pressure and pulse time.
 
 ### c. Recombination probability against coated EAR (Table IV with Table VII)
@@ -386,7 +439,7 @@ Left out: {"; ".join(f"{a} ({b})" for a, b in NOMAP)}.
 r of O atoms in the parsed papers, beside Table VII:
 
 {md(["Surface", "Table VII", "From the parsed papers", "Conditions", "Paper", "Where"], [[s, "; ".join(p["value_printed"] for p in rv[("O", s)]) or "—", (f"{v[0]:g} to {v[1]:g}" if isinstance(v, tuple) else f"{v:g}"), reg, pid, wh] for s, v, reg, pid, wh in LH])}
-What the new sources changed. The Table VII values of ref. 251 are confirmed, and their conditions are now known: sintered oxide discs at 300 K in an air plasma at 110 Pa, measured by emission actinometry, with r rising with temperature (alumina 0.0097 to 0.061, titania 0.014 to 0.031 between 300 and 773 K). The lateral-channel values of 10.1021_acs.jpcc.1c01505 are for the growing ALD film at 50 mTorr: titania about 4e-5 at 100 to 180 °C and below 1e-5 at 240 °C, falling with temperature. The titania gap is therefore a factor of about 350 at the low end and above 3000 near 500 K, with opposite temperature trends. Ref. 66 is the table that Table VII was updated from; it is a literature table itself. Ref. 228 quotes 0.01 for O on platinum, a surface Table VII lacks. Two of the fifteen matched rows change on the source check: ref. 69 (0.3 instead of 0.75) and ref. 70 (exposure).
+What the new sources changed. The Table VII values of ref. 251 (out of scope as not an ALD paper, kept as a cited source) are confirmed, and their conditions are now known: sintered oxide discs at 300 K in an air plasma at 110 Pa, measured by emission actinometry, with r rising with temperature (alumina 0.0097 to 0.061, titania 0.014 to 0.031 between 300 and 773 K). The lateral-channel values of 10.1021_acs.jpcc.1c01505 are for the growing ALD film at 50 mTorr: titania about 4e-5 at 100 to 180 °C and below 1e-5 at 240 °C, falling with temperature. The titania gap is therefore a factor of about 350 at the low end and above 3000 near 500 K, with opposite temperature trends. Ref. 66 is the table that Table VII was updated from; it is a literature table itself. Ref. 228 quotes 0.01 for O on platinum, a surface Table VII lacks. Two of the fifteen matched rows change on the source check: ref. 69 (0.3 instead of 0.75) and ref. 70 (exposure).
 
 ### d. Same film, different oxidant
 
@@ -406,6 +459,11 @@ In the blank column, {len(unmarked)} rows have a coated value below the structur
 ### g. Profiles: the references marked D
 
 {md(["Ref.", "DOI", "Films (table)", "Year", "PDF", "Open access"], g_rows)}
+## Values read from the papers obtained by hand on 2026-10-13
+
+Every value used above from those papers, with where it was read, whether the ingest checks now cover that unit, and whether it was compared with the page image (`values_hand_obtained.csv`). {v15n['checked']} are covered by the body or table check without a flag, {v15n['compared']} are figure values or values in a flagged table that were compared with the page image, {v15n['neither']} are neither. Two readings changed on that comparison (last column).
+
+{md(["Paper", "Value as used", "Where read", "Check now", "Compared with page image", "Correction"], [[r[k] for k in ("paper", "value", "where_read", "check", "compared_with_page_image", "correction")] for r in v15])}
 ## Ideas
 
 """]
@@ -459,7 +517,7 @@ for x_, y_, k_, lab_, wh_ in A_SRC:
         mark(e, X(x_), Y(y_), 2, k_ == "lower", lab_ + " (" + wh_ + ")")
 gl = " ".join(f"{'M' if i == 0 else 'L'}{X(gordon_L(a_) / 1e3):.1f} {Y(a_):.1f}" for i, a_ in enumerate(a_ for a_ in [30, 50, 100, 200, 500, 1000, 2000] if 3 <= gordon_L(a_) / 1e3 <= 2e4))
 e.append(f'<path d="{gl}" fill="none" stroke="var(--text2)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="{X(9000):.1f}" y="{Y(2000):.1f}" class="warn" text-anchor="end">square law of ref. 62 for TMA (calculated)</text>')
-e.append(f'<text x="{X(11):.1f}" y="{Y(100):.1f}" class="tk" style="font-size:11.5px">ref. 67: 33, 49, 55</text><text x="{X(130):.1f}" y="{Y(560):.1f}" class="tk" style="font-size:11.5px" text-anchor="middle">ref. 65 at half length: between 150 and 450</text>')
+e.append(f'<text x="{X(11):.1f}" y="{Y(100):.1f}" class="tk" style="font-size:11.5px">ref. 67: 33, 47, 53</text><text x="{X(130):.1f}" y="{Y(560):.1f}" class="tk" style="font-size:11.5px" text-anchor="middle">ref. 65 at half length: between 150 and 450</text>')
 e.append(f'<text x="70" y="{Y(1.6):.1f}" class="warn">blue: Table II rows (6 of 12 have no exposure); orange: read in the sources; triangles are bounds</text>')
 pa = "".join(e) + "</svg>"
 # plot c
@@ -493,7 +551,7 @@ for surf, key in (("Alumina", "Alumina"), ("Silica", "Silica"), ("Titania", "Tit
         v = float(p["value_printed"].split("±")[0]); rrows.append((f"{surf}: Table VII, ref. {p['ref']}", v, v, 1, True, f"{v:g} · cited"))
     for s, v, reg, pid, wh in LH:
         if s == surf:
-            lo, hi = v if isinstance(v, tuple) else (v, v); rrows.append((f"{surf}: {pid}, {reg}", lo, hi, 2, True, (f"{lo:g} to {hi:g}" if hi != lo else f"{lo:g}") + (" · cited" if "cited" in reg else " · measured" if "ceramic" in reg or "SiC" in reg else " · fit")))
+            lo, hi = v if isinstance(v, tuple) else (v, v); rrows.append((f"{surf}: {pid}, {reg}", lo, hi, 2, True, (f"{lo:g} to {hi:g}" if hi != lo else f"{lo:g}") + (" · cited" if "cited" in reg and "ceramic" not in reg and "SiC" not in reg else " · measured" if "ceramic" in reg or "SiC" in reg else " · fit")))
 pr = dots("r of O atoms: Table VII against values in the parsed papers", rrows, (5e-6, 0.1), (1e-5, 1e-4, 1e-3, 1e-2, 1e-1), "recombination probability r (log scale)", lab=660, w=1140)
 srows = [(f"{src}", lo, hi, 1 if inr else 2, dk in ("fit", "measured", "calculated"), (f"{lo:g} to {hi:g}" if hi != lo else f"{lo:g}") + f" · {dk}") for sp, lo, hi, m, dk, ss, src, inr in SV if sp == "TMA"]
 ps = dots("Sticking value of TMA: Table V and values in the parsed papers", srows, (3e-4, 1.2), (1e-3, 1e-2, 1e-1, 1), "sticking value (log scale)", lab=660, w=1140)
@@ -546,5 +604,5 @@ for key, why in WANT:
         print("wanted: skipped", key, r["pdf_status"], r["in_scope"]); continue
     want.append(dict(rank=len(want) + 1, ref=r["cremers_ref"] or "citing", doi=r["doi"], first_author=(r["authors"].split(";")[0].strip() or ""), year=r["year"], journal=r["journal"], why=why, pdf_status=r["pdf_status"], oa_status=r["oa_status"]))
 wr("wanted_pdfs.csv", want)
-print("source checks", dict(sc_cnt), "| new rows", len(NR), "| profile groups", len(PR), "fit", fit_yes, "marginal", fit_m, "| matched c rows", len(c_rows), "lower bounds", sum(1 for r in c_rows if r["basis"] != "PD50"))
+print("values hand-obtained", dict(v15n), [ (r["paper"][-10:], r["check"]) for r in v15 if not r["check"].startswith(("body check: covered","table check: ok","not checked"))]); print("source checks", dict(sc_cnt), "| new rows", len(NR), "| profile groups", len(PR), "fit", fit_yes, "marginal", fit_m, "| matched c rows", len(c_rows), "lower bounds", sum(1 for r in c_rows if r["basis"] != "PD50"))
 print("growth types", dict(gt), "| D refs", len(g_rows), "| wanted", len(want), "| unmarked", len(unmarked), "| PD50 equal", len(pd_eq))

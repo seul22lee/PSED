@@ -248,7 +248,7 @@ FILL = {
  ("IV", "204", "TiO2", "Hole", "8.7", "225"): "exposure: about 1.8 (10^3 L) for the 5 s case, computed here from the fitted flux of 3.3e20 m-2 s-1 (Table II), i.e. 0.047 Pa; not printed by the source",
  ("IV", "228", "Pt", "Trench", "17", "300"): "exposure: not stated (3 s precursor pulse without carrier gas, 3 s O2 plasma at 7.5 mTorr; Sec. IV)",
  ("II", "65", "Al2O3", "AAO", "770", "177"): "all cells filled. From the source: coated already at 3 s, i.e. 450 (10^3 L), not at 1 s (150) (Fig. 3); the pores are open at both ends, so the diffusion length is half of 50 um",
- ("II", "67", "Al2O3", "Macro lateral", "100", "200"): "all cells filled. From the source: at the same exposure, aspect ratio 33 fully coated and 50 coated to about 49 (Fig. 5, by eye)",
+ ("II", "67", "Al2O3", "Macro lateral", "100", "200"): "all cells filled. From the source: at the same exposure, aspect ratio 33 fully coated, 50 coated to about 47 and 100 to about 53 (Fig. 5, by eye)",
  ("IV", "69", "Al2O3", "Macro lateral", "5", "75"): "all cells filled. From the source: half of the entrance signal at about 3 mm of a 10 mm wide hole, i.e. about 0.3 (Fig. 10, by eye)",
  ("IV", "70", "Al2O3", "Macro lateral", "10", "200"): "all cells filled. From the source: 0.3 Pa for 9 s is 20 (10^3 L), for 18 s it is 40 (Experimental; Fig. 3 table)",
 }
@@ -263,7 +263,10 @@ def num(s):
 
 def main():
     R = refs()
-    have = {r["paper_id"] for r in R.values() if r["pdf_status"] == "ok"}   # in_corpus = the paper has a PDF in corpus/raw
+    have = {r["paper_id"] for r in R.values() if r["pdf_status"] == "ok" and r["in_scope"] == "yes"}   # in_corpus = in scope with a PDF
+    def scope(ref):
+        rs = [R[n] for n in re.findall(r"\d+", ref) if n in R]
+        return "out of scope, cited source" if rs and all(r["in_scope"] != "yes" for r in rs) else ""
     def link(ref):
         ds, inn = [], "no"
         for n in re.findall(r"\d+", ref):
@@ -286,7 +289,7 @@ def main():
             elif coated.startswith("Ref"): note = (note + "; " if note else "") + "coated EAR cell points to another reference"
         doi, inn = link(ref)
         rows.append(dict(table=t, film=film, precursor=prec, coreactant=co, plasma_config=cfg, structure=struct, EAR=ear, T_C=T, exposure_printed=expo, method=meth, coated_ear_printed=coated,
-                         coated_ear_value=val, coated_ear_basis=basis, profile="D" if "(D)" in coated else "", ref=ref, doi=doi, in_corpus=inn,
+                         coated_ear_value=val, coated_ear_basis=basis, profile="D" if "(D)" in coated else "", ref=ref, doi=doi, in_corpus=inn, source_scope=scope(ref),
                          value_from_source=FILL.get((t, ref, film, struct, ear, T), ""), note=note))
     with (HERE / "conformality.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
@@ -307,7 +310,7 @@ def main():
         except Exception:
             pass
         doi, inn = link(ref)
-        prm.append(dict(table=t, species=sp, surface_or_material=surf, method=meth, T_C=T, value_printed=v, value_low=f"{lo:.3g}" if lo != "" else "", value_high=f"{hi:.3g}" if hi != "" else "", ref=ref, doi=doi, in_corpus=inn, note=note))
+        prm.append(dict(table=t, species=sp, surface_or_material=surf, method=meth, T_C=T, value_printed=v, value_low=f"{lo:.3g}" if lo != "" else "", value_high=f"{hi:.3g}" if hi != "" else "", ref=ref, doi=doi, in_corpus=inn, source_scope=scope(ref), note=note))
     with (HERE / "parameters.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(prm[0])); w.writeheader(); w.writerows(prm)
     import collections

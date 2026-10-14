@@ -4,18 +4,18 @@ Exploration, 2026-10-13. The review is Cremers, Puurunen and Dendooven, Appl. Ph
 
 Files: `conformality.csv` (140 rows), `parameters.csv` (68 rows), `source_checks.csv`, `new_rows.csv`, `profiles.csv`, `build.py`. Plots: Case 8 of `../reports/cases.html` (not tracked).
 
-Updated the same day after 15 PDFs were obtained by hand (refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505). `in_corpus` (was `in_44`) marks rows whose source has a PDF; `value_from_source` holds what the source gives for cells the review leaves blank, and never replaces a transcribed value. What the new sources changed is said under each result.
+Updated the same day after 15 PDFs were obtained by hand (refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505). `in_corpus` (was `in_44`) marks rows whose source is in scope and has a PDF; `source_scope` says "out of scope, cited source" for rows whose source is excluded (the Table VII sources, refs 250 to 263, and ref. 134), whose values are kept only as cited data; `value_from_source` holds what the source gives for cells the review leaves blank, and never replaces a transcribed value. What the new sources changed is said under each result.
 
 ## Step 1. Transcription
 
-| Table | Content | Rows | Rows whose source is in the corpus |
+| Table | Content | Rows | Rows whose source is in scope with a PDF |
 | --- | --- | --- | --- |
 | II | thermal ALD | 71 | 16 |
 | III | ozone-based ALD | 24 | 5 |
 | IV | plasma ALD | 45 | 10 |
 | V | sticking probabilities | 27 | 13 |
 | VI | ozone recombination | 6 | 0 |
-| VII | atom recombination | 35 | 4 |
+| VII | atom recombination | 35 | 0 |
 
 Things seen while typing that a reader of the tables should know:
 - The PD50% mark is an asterisk. It is lost in the PDF text layer, so it was read from the page images.
@@ -26,7 +26,7 @@ Things seen while typing that a reader of the tables should know:
 
 ## Step 2. Source checks
 
-48 rows point to a paper in the corpus: 35 agree, 10 differ, 3 not found. Of these, 16 were checked against the first 44 papers and 32 against the 15 added (25 agree, 6 differ, 1 not found). `value_from_source` is filled in 11 rows: 5 give a value the review lacks, 6 record that the source does not state the exposure either.
+48 rows point to a paper with a PDF (four of them to ref. 251, out of scope and kept as a cited source): 35 agree, 10 differ, 3 not found. Of these, 16 were checked against papers parsed before 2026-10-13 and 32 against the papers whose PDFs were obtained by hand that day (25 agree, 6 differ, 1 not found). `value_from_source` is filled in 11 rows: 5 give a value the review lacks, 6 record that the source does not state the exposure either.
 
 | Table | Row in the review | Ref. | Paper | Verdict | Where | Remark |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ Things seen while typing that a reader of the tables should know:
 | IV | Ir Ir(acac)3/O2*, hole (elongated), 370 °C, I | 226 | 10.1016_j.mee.2018.01.033 | agree | methods | 370 °C, oxygen plasma, inductively coupled |
 | V | Al(CH3)3 on Al2O3, continuum model, 300 °C, 0.00572 | 77 | 10.1063_1.5028178 | agree | Table I, Eq. for the adsorption rate | c = 0.00572; c multiplies (1 − θ), so it is an initial (bare-surface) value, called a lumped sticking coefficient |
 | V | TiCl4 on TiN, continuum model, 110 °C, 0.1 | 77 | 10.1063_1.5028178 | differ | Table I | value agrees (0.10) but the source deposits TiO2; TiN is carried over from the line above in the table |
-| II | Al2O3 TMA/H2O, macro lateral, EAR 100, 200 °C, exposure 9, coated 50* (D) | 67 | 10.1149_1.3072694 | agree | experimental section, Fig. 5 | 0.3 Pa for 4 s is 1.2 Pa s, i.e. 9.0 × 10^3 L; aspect ratio 100 by the source's perimeter definition; half thickness near 11 of 20 mm (by eye) gives 55 |
+| II | Al2O3 TMA/H2O, macro lateral, EAR 100, 200 °C, exposure 9, coated 50* (D) | 67 | 10.1149_1.3072694 | agree | experimental section, Fig. 5 | 0.3 Pa for 4 s is 1.2 Pa s, i.e. 9.0 × 10^3 L; aspect ratio 100 by the source's perimeter definition; half thickness at about 10.7 of 20 mm (by eye) gives 53 |
 | II | Al2O3 TMA/H2O, AAO, EAR 770, 177 °C, exposure 4500, coated 770 | 65 | 10.1021_cm0303080 | agree | Sec. III A, Fig. 3 | 65 nm x 50 um gives 769; 0.15 Torr for 30 s is 4500 × 10^3 L. The source coats the membrane already at 3 s (450) and the pores are open at both ends: the review lists the largest exposure used and the full length |
 | II | ZnO DEZ/H2O, AAO, EAR 700, 177 °C, exposure 2000, coated 700 (D) | 65 | 10.1021_cm0303080 | differ | Sec. III B, Fig. 5 | exposure agrees (0.068 Torr for 30 s); the membrane is the same 65 nm x 50 um one that the Al2O3 row lists as 770 |
 | II | ZnO DEZ/H2O, AAO, EAR 5000, 177 °C, exposure 600000, coated 5000 (D) | 65 | 10.1021_cm0303080 | agree | Sec. III B, Fig. 7 | 19 nm x 92 um; 5 Torr for 120 s |
@@ -74,10 +74,10 @@ Things seen while typing that a reader of the tables should know:
 | V | ZnEt2, Monte Carlo model, 177 °C, 0.007 | 65 | 10.1021_cm0303080 | not found | Sec. IV C | 0.007 is the value used in the simulations; how it was obtained was not found |
 | V | SiCl4, Monte Carlo model, 10^-8 | 65 and 239 | 10.1021_cm0303080 | agree | Sec. III C, IV D | quoted there from the second reference |
 | V | H2Si[N(C2H5)2]2, Monte Carlo model, 300 °C, 3 × 10^-5 | 128 | 10.1116_1.4971196 | agree | Sec. IV B 3 | fitted; range 3 to 5 × 10^-5 |
-| VII | O on alumina, 0.0097 ± 0.0019 | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K, ± 20%, on a sintered ceramic in an air plasma at 110 Pa; 0.061 at 773 K |
-| VII | O on titania, 0.014 ± 0.003 | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K; 0.031 at 773 K |
-| VII | O on iron(II, III) oxide, 0.015 ± 0.003 | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K |
-| VII | O on cobalt oxide, 0.029 ± 0.006 | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | CoO at 300 K |
+| VII | O on alumina, 0.0097 ± 0.0019 (out of scope, cited source) | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K, ± 20%, on a sintered ceramic in an air plasma at 110 Pa; 0.061 at 773 K |
+| VII | O on titania, 0.014 ± 0.003 (out of scope, cited source) | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K; 0.031 at 773 K |
+| VII | O on iron(II, III) oxide, 0.015 ± 0.003 (out of scope, cited source) | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | at 300 K |
+| VII | O on cobalt oxide, 0.029 ± 0.006 (out of scope, cited source) | 251 | 10.1016_j.cattod.2003.11.022 | agree | Table 1 | CoO at 300 K |
 
 ## Step 3. Computed
 
@@ -113,12 +113,12 @@ What the new sources add. From the sources, at the same exposures:
 | Exposure (10^3 L) | Coated EAR | Reading | Structure | Where |
 | --- | --- | --- | --- | --- |
 | 9 | 33 | lower bound | macro hole, aspect ratio 33, fully coated | 10.1149_1.3072694 Fig. 5 |
-| 9 | 49 | measured, by eye | macro hole, aspect ratio 50, half thickness near the end (by eye) | 10.1149_1.3072694 Fig. 5 |
-| 9 | 55 | measured, by eye | macro hole, aspect ratio 100, half thickness at 11 mm (by eye) | 10.1149_1.3072694 Fig. 5 |
+| 9 | 47 | measured, by eye | macro hole, aspect ratio 50, half thickness at about 19 of 20 mm (by eye) | 10.1149_1.3072694 Fig. 5 |
+| 9 | 53 | measured, by eye | macro hole, aspect ratio 100, half thickness at about 10.7 mm (by eye) | 10.1149_1.3072694 Fig. 5 |
 | 450 | 385 | lower bound | AAO 65 nm x 50 um, coated from both ends at 3 s | 10.1021_cm0303080 Fig. 3 |
 | 150 | 385 | upper bound | the same membrane at 1 s: centre not coated | 10.1021_cm0303080 Fig. 3 |
 
-The kinetic model of ref. 62 gives the exposure for full coverage as a flat-surface exposure times (1 + 19a/4 + 3a²/2). For TMA at 200 °C with 4.5e+18 molecules per m² per cycle (the saturation value of 10.1063_1.2714685, an assumption here) the flat-surface exposure is 2.4 L, and 9 × 10^3 L should coat an aspect ratio of 49. Ref. 67 measures 49 to 55 at that exposure. For the 65 nm by 50 µm membrane of ref. 65 the model asks for 530 × 10^3 L when the pores are entered from both ends (aspect ratio 385) and 2106 × 10^3 L if they were entered from one; the source finds the centre uncoated at 150 and coated at 450. So the square law holds over these two structures, a factor of 50 in exposure, but only when the membrane is counted at half its length; the review's 770 at 4500 is a fully coated structure with ten times the needed exposure. The blanks of refs 86 and 77 cannot be filled from their sources.
+The kinetic model of ref. 62 gives the exposure for full coverage as a flat-surface exposure times (1 + 19a/4 + 3a²/2). For TMA at 200 °C with 4.5e+18 molecules per m² per cycle (the saturation value of 10.1063_1.2714685, an assumption here) the flat-surface exposure is 2.4 L, and 9 × 10^3 L should coat an aspect ratio of 49. Ref. 67 measures 47 to 53 at that exposure. For the 65 nm by 50 µm membrane of ref. 65 the model asks for 530 × 10^3 L when the pores are entered from both ends (aspect ratio 385) and 2106 × 10^3 L if they were entered from one; the source finds the centre uncoated at 150 and coated at 450. So the square law holds over these two structures, a factor of 50 in exposure, but only when the membrane is counted at half its length. The source supports that reading: it states that the top and bottom of the membrane are both directly exposed to the precursors in the flow tube (Sec. III A), and its model has the pores entered from both ends at equal rates, over half their length (Sec. IV A). The review's 770 at 4500 is a fully coated structure with ten times the needed exposure. The blanks of refs 86 and 77 cannot be filled from their sources.
 
 ### b. EAR check and the unit conversion
 
@@ -142,8 +142,6 @@ The kinetic model of ref. 62 gives the exposure for full coverage as a flat-surf
 | 10.1063_1.4972120 (ref. 228) | trenches, aspect ratio up to 34 | L/(2w) | 17 | 17 | agree |
 | 10.1116_1.4903941 (ref. 86) | lateral channels, aspect ratio 20 to 25000 (Fig. 1 table) | L/(2w) | 10 to 12500 | 10-12500 | agree |
 | 10.1016_j.surfcoat.2012.02.038 (ref. 69) | hole 1 x 1 x 5 cm filled with fibres | L/w | 5 for the empty hole | 5 | agree as a hole; the fibre filling is not in the number |
-
-What the new sources changed: ten checks added. The earlier "inconsistency" between the review's worked example (holes 0.17 µm wide and 7.3 µm deep, which would give 43) and its table value of 36 is withdrawn: ref. 62 describes elliptical holes of 0.17 by 0.30 µm with an aspect ratio of 36, and 43 is their value after coating. The review's text only leaves out the second axis.
 
 The conversion in Sec. II D is printed as "1 L = 10^6 Torr s = 7500 Pa s". Both parts are wrong as printed: 1 L is 10^-6 Torr s, which is 1.33 × 10^-4 Pa s, and it is 1 Pa s that equals 7500 L. The tables use the correct relation: the review's own Fig. 22 gives 0.27 Pa for 4 s, which is 8100 L against the 9 × 10^3 L of the first row of Table II, and the ref. 98 row reproduces from the source's pressure and pulse time.
 
@@ -182,17 +180,17 @@ r of O atoms in the parsed papers, beside Table VII:
 | Titania | 0.014 ± 0.003 | 6e-05 | atmospheric, 100 °C | 10.1063_5.0168768 | Fig. 3, Table I |
 | Iridium oxide | — | 0.003 | atmospheric | 10.1021_acs.jpcc.5c06502 | body text |
 | Silica | 0.0004 | 3e-05 to 0.0001 | 50 mTorr, 100 to 240 °C; falls with temperature | 10.1021_acs.jpcc.1c01505 | Fig. 5A |
-| Silica | 0.0004 | 2e-05 to 0.0002 | 180 °C, 12 to 130 mTorr; falls with pressure | 10.1021_acs.jpcc.1c01505 | Fig. 5B |
+| Silica | 0.0004 | 2e-05 to 0.00025 | 180 °C, 12 to 130 mTorr; falls with pressure | 10.1021_acs.jpcc.1c01505 | Fig. 5B |
 | Titania | 0.014 ± 0.003 | 1e-05 to 4e-05 | 50 mTorr, 100 to 240 °C; upper limit at 240 °C | 10.1021_acs.jpcc.1c01505 | Fig. 5A |
-| Alumina | 0.0021; 0.0097 ± 0.0019 | 0.0097 to 0.061 | sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature | 10.1016_j.cattod.2003.11.022 | Table 1 |
-| Titania | 0.014 ± 0.003 | 0.014 to 0.031 | sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature | 10.1016_j.cattod.2003.11.022 | Table 1 |
-| Silica | 0.0004 | 0.004 to 0.0093 | oxidized SiC, 110 Pa air plasma, 300 to 773 K | 10.1016_j.cattod.2003.11.022 | Table 1 |
+| Alumina | 0.0021; 0.0097 ± 0.0019 | 0.0097 to 0.061 | out of scope, cited source: sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature | 10.1016_j.cattod.2003.11.022 | Table 1 |
+| Titania | 0.014 ± 0.003 | 0.014 to 0.031 | out of scope, cited source: sintered ceramic, 110 Pa air plasma, 300 to 773 K; rises with temperature | 10.1016_j.cattod.2003.11.022 | Table 1 |
+| Silica | 0.0004 | 0.004 to 0.0093 | out of scope, cited source: oxidized SiC, 110 Pa air plasma, 300 to 773 K | 10.1016_j.cattod.2003.11.022 | Table 1 |
 | Silica | 0.0004 | 0.0002 | literature value, cited | 10.1149_1.3491381 | Table II |
 | Alumina | 0.0021; 0.0097 ± 0.0019 | 0.0021 | literature value, cited (the same as Table VII) | 10.1149_1.3491381 | Table II |
 | Silica | 0.0004 | 9e-05 | low pressure, 100 °C, cited there from 10.1021_acs.jpcc.1c01505 (its Fig. 5A reads about 1e-4) | 10.1063_5.0168768 | Table I |
 | Titania | 0.014 ± 0.003 | 4e-05 | low pressure, 100 °C, cited there from 10.1021_acs.jpcc.1c01505 (its Fig. 5A reads about 4e-5) | 10.1063_5.0168768 | Table I |
 
-What the new sources changed. The Table VII values of ref. 251 are confirmed, and their conditions are now known: sintered oxide discs at 300 K in an air plasma at 110 Pa, measured by emission actinometry, with r rising with temperature (alumina 0.0097 to 0.061, titania 0.014 to 0.031 between 300 and 773 K). The lateral-channel values of 10.1021_acs.jpcc.1c01505 are for the growing ALD film at 50 mTorr: titania about 4e-5 at 100 to 180 °C and below 1e-5 at 240 °C, falling with temperature. The titania gap is therefore a factor of about 350 at the low end and above 3000 near 500 K, with opposite temperature trends. Ref. 66 is the table that Table VII was updated from; it is a literature table itself. Ref. 228 quotes 0.01 for O on platinum, a surface Table VII lacks. Two of the fifteen matched rows change on the source check: ref. 69 (0.3 instead of 0.75) and ref. 70 (exposure).
+What the new sources changed. The Table VII values of ref. 251 (out of scope as not an ALD paper, kept as a cited source) are confirmed, and their conditions are now known: sintered oxide discs at 300 K in an air plasma at 110 Pa, measured by emission actinometry, with r rising with temperature (alumina 0.0097 to 0.061, titania 0.014 to 0.031 between 300 and 773 K). The lateral-channel values of 10.1021_acs.jpcc.1c01505 are for the growing ALD film at 50 mTorr: titania about 4e-5 at 100 to 180 °C and below 1e-5 at 240 °C, falling with temperature. The titania gap is therefore a factor of about 350 at the low end and above 3000 near 500 K, with opposite temperature trends. Ref. 66 is the table that Table VII was updated from; it is a literature table itself. Ref. 228 quotes 0.01 for O on platinum, a surface Table VII lacks. Two of the fifteen matched rows change on the source check: ref. 69 (0.3 instead of 0.75) and ref. 70 (exposure).
 
 ### d. Same film, different oxidant
 
@@ -285,6 +283,45 @@ In the blank column, 9 rows have a coated value below the structure value withou
 | 204 | 10.1149/1.2789802 | TiO2 (IV) | 2007 | have it | bronze |
 | 228 | 10.1063/1.4972120 | Pt (IV) | 2017 | have it | green |
 
+## Values read from the papers obtained by hand on 2026-10-13
+
+Every value used above from those papers, with where it was read, whether the ingest checks now cover that unit, and whether it was compared with the page image (`values_hand_obtained.csv`). 19 are covered by the body or table check without a flag, 13 are figure values or values in a flagged table that were compared with the page image, 0 are neither. Two readings changed on that comparison (last column).
+
+| Paper | Value as used | Where read | Check now | Compared with page image | Correction |
+| --- | --- | --- | --- | --- | --- |
+| 10.1002_cvde.200390005 | holes 0.17 x 0.30 um, 7.3 um deep, aspect ratio 36 (43 after coating) | body | body check: covered, no flag | no |  |
+| 10.1002_cvde.200390005 | 150 °C; minimum exposure 9 × 10^3 L; 30 × 10^3 L for full coverage | body | body check: covered, no flag | no |  |
+| 10.1021_cm0303080 | pores 65 nm x 50 um and 19 nm x 92 um; 177 °C | body | body check: covered, no flag | no |  |
+| 10.1021_cm0303080 | TMA at 0.15 Torr; exposure times 1, 3, 10, 30 s | body | body check: covered, no flag | no |  |
+| 10.1021_cm0303080 | DEZ at 0.068 Torr; 5 Torr for 120 s in the quasi-static run | body | body check: covered, no flag | no |  |
+| 10.1021_cm0303080 | both faces directly exposed; pores entered from both ends | body | body check: covered, no flag | no |  |
+| 10.1021_cm0303080 | middle of the membrane uncoated at 1 s, coated at 3 s | figure 3 | not checked (figure) | yes |  |
+| 10.1021_cm0303080 | sticking 1e-3 for TMA (quoted) and 7e-3 for DEZ | body | body check: covered, no flag | no |  |
+| 10.1149_1.3072694 | TMA about 0.3 Pa, 4 s, 200 °C, 150 cycles; s0 = 0.1 chosen | body | body check: covered, no flag | no |  |
+| 10.1149_1.3072694 | half thickness: aspect ratio 50 at about 19 mm, 100 at about 10.7 mm | figure 5 | not checked (figure) | yes | corrected from 49 and 55 to 47 and 53 |
+| 10.1016_j.surfcoat.2012.02.038 | TMA 0.08 Pa, 75 °C, 500 cycles; S0 = 0.01 | body | body check: covered, no flag | no |  |
+| 10.1016_j.surfcoat.2012.02.038 | Table 2 parameters (0.08 Pa, 8 s, S0 0.01) | table | table check: ok | no |  |
+| 10.1016_j.surfcoat.2012.02.038 | half values: thermal 2, 8, 30 s at about 15, 18, 27.5 mm; plasma at about 2.8 mm | figures 5, 10 | not checked (figure) | yes |  |
+| 10.1149_1.3301664 | spacers 3.9, 1.3, 0.5 mm; TMA about 0.2 Pa, reactant 0.3 Pa; 9 s; 200 °C | body | body check: covered, no flag | no |  |
+| 10.1149_1.3301664 | sticking inputs 0.1 (TMA, at 0.12 Pa) and 5% (water) | body | body check: covered, no flag | no |  |
+| 10.1149_1.3301664 | aspect ratio 22: thermal complete, plasma half at about 12.5 mm (about 14) | figure 2 | not checked (figure) | yes |  |
+| 10.1116_1.4903941 | gap 500 nm; film to 65 um; aspect ratio 130 at half the entrance value (TiO2) | body | body check: covered, no flag | no |  |
+| 10.1116_1.4903941 | Al2O3 half thickness near 70 um | figure 5a | not checked (figure) | yes |  |
+| 10.1116_1.4971196 | TMA 0.02 (0.009 to 0.02); BDEAS 3e-5 (3 to 5e-5); 200 and 300 °C | body | body check: covered, no flag | no |  |
+| 10.1016_j.apsusc.2009.02.055 | holes 130 nm x 2 um, written as AR = 20; SC 0.02 ± 0.005; 180 °C | body | body check: covered, no flag | no |  |
+| 10.1016_j.apsusc.2009.02.055 | profile never below 70% of its top value | figure 3 | not checked (figure) | yes |  |
+| 10.1016_j.apsusc.2010.01.025 | SC 0.032, 0.15, 0.56 at 180, 230, 270 °C; Cp*Ti(OMe)3 0.006 to 0.018 | body | body check: covered, no flag | no |  |
+| 10.1016_j.apsusc.2010.01.025 | HfO2 half thickness near 1250 nm at 180 °C | figure 1a | not checked (figure) | yes |  |
+| 10.1063_1.2714685 | holes 0.3 um, aspect ratio 10; TMA 0.01 Torr; 225 °C; S(0) = 0.026 | body | body check: covered, no flag | no |  |
+| 10.1149_1.2789802 | holes 0.15 um, aspect ratio 8.7; step coverage 52% at 500 cycles | body | body check: flagged (not checkable) | yes | none: compared with the page image (p. H1010 and the conclusion on p. H1013); the same values stand in the abstract and conclusion |
+| 10.1149_1.2789802 | S(0) 0.1 and 0.052; flux 3.282e20 m-2 s-1 | table | table check: flag | yes |  |
+| 10.1063_1.4972120 | trench aspect ratio up to 34; conformality 92 ± 8% | table | table check: ok | no |  |
+| 10.1063_1.4972120 | O2 plasma 7.5 mTorr; r of O on Pt 0.01 (quoted) | body | body check: covered, no flag | no |  |
+| 10.1149_1.3491381 | r of O on silica 0.0002, alumina 0.0021 (a literature table) | table | table check: flag | yes |  |
+| 10.1021_acs.jpcc.1c01505 | r of SiO2 about 1e-4 to 3e-5 (temperature) and 2.5e-4 to 2e-5 (pressure); TiO2 about 4e-5, below 1e-5 at 240 °C | figure 5 | not checked (figure) | yes | corrected: upper pressure value from 2e-4 to 2.5e-4 |
+| 10.1021_acs.jpcc.1c01505 | half-thickness depths over cavity height | figures 2-4 | not checked (figure) | yes |  |
+| 10.1016_j.cattod.2003.11.022 | out of scope, cited source: γ of O on Al2O3 9.7e-3 (300 K) to 61e-3 (773 K), TiO2 14e-3 to 31e-3, SiC/SiO2 4e-3 to 9.3e-3 | table | table check: flag | yes |  |
+
 ## Ideas
 
 ### 1. One process across several test structures
@@ -301,7 +338,7 @@ In the blank column, 9 rows have a coated value below the structure value withou
 - **Verdict: doable partly.**
 - Claim: formulas for hole, trench, elongated hole; pillars from Monte Carlo. **true** (Sec. II G).
 - Claim: Werbrouck 2021 states AR 20 and EAR 10. **true** (its Sec. II D).
-- Needs L, w and the structure type from each source. Have: 18 checks; 16 agree. Three things a transform would have caught: one membrane listed as 770 and as 700, one hole type listed as 20 and as 15.3, and pores open at both ends counted at full length. The earlier finding that the review's worked example gives 43 against a table value of 36 is withdrawn: the source's holes are elliptical (0.17 by 0.30 um), 36 is the source's own number, and 43 is its value after coating. Missing: the sources of the other rows. Joins N9 and Case 8.
+- Needs L, w and the structure type from each source. Have: 18 checks; 16 agree. Three things a transform would have caught: one membrane listed as 770 and as 700, one hole type listed as 20 and as 15.3, and pores open at both ends counted at full length. Missing: the sources of the other rows. Joins N9 and Case 8.
 
 ### 3. Continuing the tables after 2019
 - **Verdict: doable now.**
@@ -341,7 +378,7 @@ In the blank column, 9 rows have a coated value below the structure value withou
 - **Verdict: doable partly.**
 - Claim: (D) means a thickness profile was reported. **true** (captions).
 - Claim: Sec. VI B 3: dense points in the slope region are needed (Fig. 22). **true** (p. 021302-31).
-- Have: 21 references marked D, 11 with a PDF after the 15 obtained by hand. The point count now covers 43 measured profile groups (21 new, profiles.csv). The rest of the list is in wanted_pdfs.csv.
+- Have: 21 references marked D, 11 with a PDF. The point count now covers 43 measured profile groups (21 new, profiles.csv). The rest of the list is in wanted_pdfs.csv.
 
 ### 9. Growth type classification
 - **Verdict: doable partly.**

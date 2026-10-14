@@ -335,7 +335,7 @@ def case4():
         [f"{E(who(Y))} Fig. 6 (alumina, 500 cycles)", f"{E(who(SSE))} Fig. 6", "cited; fit", "yes, by reference"],
         [f"{E(who(M))} Fig. 11a (pulse 0.1 and 0.2 s)", f"{E(who(SSE))} Fig. 6", "cited; fit", "yes, by reference and pulse time"],
         [f"{E(who(M))} Fig. 9a (H 100, 500, 2000 nm)", f"{E(who(SSE))} Fig. 7", "cited; simulation (parameters of Table 2, not re-adjusted; diffusivity formula changed for 2 µm)", "yes, in text and caption"],
-        ["Arts 2019 (10.1116/1.5093620, not among the 44)", f"{E(who(SSE))} Fig. 4 and Fig. 6", "cited; fit", "yes"],
+        ["Arts 2019 (10.1116/1.5093620, no PDF)", f"{E(who(SSE))} Fig. 4 and Fig. 6", "cited; fit", "yes"],
         [f"{E(who(Y))} Fig. 2 and Fig. 3 (model output)", f"{E(who(D1))} Fig. 2a-b", "simulation with the same inputs", "yes, in the caption"],
         [f"{E(who(A21))} Fig. 5A (r at 100 °C: SiO2 about 1e-4, TiO2 about 4e-5)", f"{E(who(PP))} Table I and Fig. 4, low-pressure lines", "cited (9e-5 and 4e-5), then calculated", "yes; the source is now in the corpus and its figure agrees. These are not the values of " + E(who(A9))],
         ["a literature table of sticking and recombination values in " + E(who("10.1149_1.3491381")) + " (Tables I, II)", "Tables V and VII of the 2019 review", "cited, with rows added", "yes, in the table captions"],
@@ -436,7 +436,7 @@ def case5():
 <h3><span class="step">After</span> The table</h3>
 <p>No plot and no points in this case: the comparable view is the mapping itself.</p>{after}
 <p class="take"><b>Takeaway.</b> Matching on the printed label would merge six different quantities under “coverage”, one of them the complement of another; the id has to be assigned from what was counted and when.</p>
-<p class="lim"><b>Limits.</b> The reading of Θ as a free fraction rests on the axis label alone. The 22 nm and the meaning of the hydroxyl coverage are stated only in the body text. The table covers the 44 ingested papers, not the field.</p>
+<p class="lim"><b>Limits.</b> The reading of Θ as a free fraction rests on the axis label alone. The 22 nm and the meaning of the hydroxyl coverage are stated only in the body text. The table covers the papers with a PDF, not the field.</p>
 </section>"""
 
 
@@ -587,7 +587,6 @@ def case8():
     ])
     binc = T(["Point", "What the page says", "After checking"], [
         ["Unit relation, Sec. II D", "1 L = 10^6 Torr s = 7500 Pa s", "wrong as printed (it is 10^-6 Torr s, and 1 Pa s = 7500 L); the tables use the right relation"],
-        ["Worked example, Sec. II D, against Table II", "holes 0.17 µm wide and 7.3 µm deep; table value 36", "no inconsistency: the source's holes are elliptical, 0.17 by 0.30 µm, with an aspect ratio of 36; 43 is the value after coating. An earlier note here that called this an error is withdrawn"],
         ["PD50% mark", f"{len(B['unmarked'])} rows with a coated value below the structure value and no mark; {len(B['pd_eq'])} rows with the mark and equal values", "one marked row is contradicted by its source (ref. 178: the profile never falls to one half)"],
         ["One structure, two values", "a 65 nm by 50 µm membrane as 770 and as 700; holes of 130 nm by 2 µm as 20 and as 15.3", "770 and 15.4 follow from the dimensions"],
         ["Text against tables", "ozone Al2O3 20:1 in the text, a reference in the table; O on Pyrex 0.000094 in the text, 0.000045 in the table", "not resolved here"],
@@ -601,7 +600,7 @@ def case8():
 <h4>a. Coated EAR against exposure, TMA and water</h4><p class="ill">Transcribed from Cremers 2019, cited data; orange marks read by eye in the sources.</p>
 <div class="plots one">{B['pa']}</div>
 {T(["Exposure (10³ L)", "Coated EAR", "Reading", "Structure", "Where"], [[x, y, {"lower": "lower bound", "measured": "measured, by eye", "upper": "upper bound"}[k], lab, wh] for x, y, k, lab, wh in B['A_SRC']])}
-<p class="note">The square law of ref. 62, evaluated for TMA, predicts an aspect ratio of {B['gordon_a'](9e3):.0f} at 9 × 10³ L; ref. 67 measures 49 to 55. For the membrane of ref. 65 it asks for {B['gordon_L'](385) / 1e3:.0f} × 10³ L when the pores are entered from both ends, and the source finds the centre coated between 150 and 450. The review's row for that membrane (770 at 4500) is a fully coated structure at ten times the needed exposure and at twice the diffusion length.</p>
+<p class="note">The square law of ref. 62, evaluated for TMA, predicts an aspect ratio of {B['gordon_a'](9e3):.0f} at 9 × 10³ L; ref. 67 measures 47 to 53. For the membrane of ref. 65 it asks for {B['gordon_L'](385) / 1e3:.0f} × 10³ L when the pores are entered from both ends, and the source finds the centre coated between 150 and 450. The review's row for that membrane (770 at 4500) is a fully coated structure at ten times the needed exposure and at twice the diffusion length. The source states that both faces of the membrane are exposed and models the pores as entered from both ends.</p>
 <h4>c. Recombination probability against coated EAR, plasma ALD</h4><p class="ill">Transcribed from Cremers 2019, cited data.</p>
 <div class="plots one">{B['pc']}</div>
 <p class="note">Only {sum(1 for r in B['c_rows'] if r['basis'] == 'PD50')} of the {len(B['c_rows'])} matched rows are measured depths; the rest are bounds set by the structure. One of the two measured rows does not survive its source check (0.3, not 0.75).</p>
@@ -616,7 +615,7 @@ def case8():
 <h4>b. Internal consistency of the review</h4>{binc}
 <h4>g. Rows with a published profile (marked D)</h4>
 {T(["Ref.", "DOI", "Films (table)", "Year", "PDF", "Open access"], B['g_rows'])}
-<p class="take"><b>Takeaway.</b> Typed in, the tables give counts the review does not state: an exposure in 27 of 140 rows, and a measured depth in 20, against 87 lower bounds. Joined to their sources, they give two results the review could not: the square law holds for TMA and water over a factor of 50 in exposure, and the recombination values listed for oxide surfaces are not those of growing films.</p>
+<p class="take"><b>Takeaway.</b> Typed in, the tables give counts the review does not state: an exposure in 27 of 140 rows, and a measured depth in 20, against 87 lower bounds. Joined to their sources, they give two results the review could not: the square law holds for TMA and water over a factor of 50 in exposure, and the recombination values listed for oxide surfaces are not those of growing films. Values from 10.1016_j.cattod.2003.11.022 (Guyon 2004) are marked: that paper is out of scope as not an ALD paper and is used only as a cited source.</p>
 <p class="lim"><b>Limits.</b> {len(B['SC'])} of 208 table rows were checked against a source ({B['sc_cnt']['agree']} agree, {B['sc_cnt']['differ']} differ, {B['sc_cnt']['not found']} not found); the rest are as printed. Source values marked "by eye" were read from figures. The square-law line assumes a saturation density taken from another paper. The joins in c use a surface match chosen here, and 30 plasma rows have no fair match. Only {sum(1 for g in B['g_rows'] if g[4] == 'have it')} of the {len(B['g_rows'])} profile sources have a PDF.</p>
 </section>"""
 

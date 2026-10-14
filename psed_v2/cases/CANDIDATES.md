@@ -1,6 +1,6 @@
 # Candidate case studies
 
-Built from `figures.csv` (750 rows, 44 papers) on 2026-10-13. Exploration only: nothing here is extracted data.
+Built from `figures.csv` on 2026-10-13, first from the papers then parsed (parts A to C), then from all papers with a PDF (part D). Exploration only: nothing here is extracted data.
 Figures are named `paper_id Fig. N panel`. Ontology ids are those of `ontology/ontology.yaml` v0.
 
 How the list was made. Plot rows were grouped by the pair of axis ids with qualifiers removed, in either axis order (263 pairs, 31 shared by two or more papers), and by y quantity across different x forms. Each group was then judged. Candidate A9 comes from image rows, which the grouping cannot see. Part B is the second kind: one sample seen by several panels or methods inside one paper.
@@ -68,7 +68,7 @@ How the list was made. Plot rows were grouped by the pair of axis ids with quali
 - **Why a naive table is wrong.** The ratio is bottom over top in some, sidewall over top in others, and a set of percentages at three positions in one. Aspect ratios run from 1.5 to 90 and are for trenches, holes and pores, which need different doses at equal aspect ratio. Thermal, plasma and hot-wire processes are mixed. One value above 1 is deliberate. None of the values is on a plot axis.
 - **What makes them comparable.** step_coverage{position=bottom | sidewall} and aspect_ratio; `step_coverage` from film_thickness{position=...} where thicknesses are given. Missing: equivalent_aspect_ratio is not reported by any of them, and no method field ties a number to the image it was read from.
 - **Conditions.** Every value is in a caption or in the body text, none in a table.
-- **Papers still needed.** This one matters: the bulk of such values are in the 283 in-scope papers without a PDF (the papers behind the conformality tables of the 2019 review).
+- **Papers still needed.** This one matters: the bulk of such values are in the in-scope papers without a PDF (the papers behind the conformality tables of the 2019 review).
 
 ### A10. When do mesopores close during ALD, and how does growth inside pores compare with growth on a flat surface?
 - **Figures.** 10.1039_c4nr05049e Fig. 6b, Fig. 7b, Fig. 8; 10.3390_separations11010024 Fig. 7, Fig. 9; 10.1116_6.0001679 Fig. 4; 10.1021_acs.langmuir.6b03119 Fig. 4c; 10.1039_c5ta00205b Fig. 1.
@@ -161,7 +161,7 @@ Each was checked against the named figures and, where needed, the body text and 
 
 ### N1. One experiment through the literature
 - **Question.** How often does one measured profile reappear in later papers, and what does each paper conclude from it?
-- **Figures.** 10.1063_1.5028178 Fig. 6 (the 500-cycle alumina profile) and 10.1039_d0cp03358h Fig. 11a (pulse 0.1 s and 0.2 s) reappear in 10.1016_j.sse.2022.108584 Fig. 6, together with a profile of Arts 2019 (10.1116/1.5093620, not in the 44). 10.1039_d0cp03358h Fig. 9a (heights 100, 500, 2000 nm) reappears in sse Fig. 7. sse Fig. 4 uses three water-limited profiles of Arts 2019. 10.1039_d1cp04758b Fig. 2a-b repeats 10.1063_1.5028178 Fig. 2 and Fig. 3 with the same inputs (stated in its caption). 10.1063_5.0168768 Fig. 4 draws low-pressure lines from published values.
+- **Figures.** 10.1063_1.5028178 Fig. 6 (the 500-cycle alumina profile) and 10.1039_d0cp03358h Fig. 11a (pulse 0.1 s and 0.2 s) reappear in 10.1016_j.sse.2022.108584 Fig. 6, together with a profile of Arts 2019 (10.1116/1.5093620, no PDF). 10.1039_d0cp03358h Fig. 9a (heights 100, 500, 2000 nm) reappears in sse Fig. 7. sse Fig. 4 uses three water-limited profiles of Arts 2019. 10.1039_d1cp04758b Fig. 2a-b repeats 10.1063_1.5028178 Fig. 2 and Fig. 3 with the same inputs (stated in its caption). 10.1063_5.0168768 Fig. 4 draws low-pressure lines from published values.
 - **Sticking coefficient of TMA from the same alumina data.**
 
 | Paper | Value | Model | data_kind | Where |
@@ -173,7 +173,7 @@ Each was checked against the named figures and, where needed, the body text and 
 | 10.1039_d0cp03358h Fig. 10 | 0.012 | ylilammi model, re-implemented | simulation input, not a result | figure caption |
 
 - **What it shows about the pipeline.** Without the cited data kind and a pointer to the original figure, the same three samples would be counted three times, and five different numbers would look like five measurements of one quantity. The spread (0.5e-3 to 12e-3) comes from the model and the operation, not from new experiments.
-- **Verdict: holds partly.** The re-use in sse and d1cp04758b is as described and stated by the authors. The third item is not: the low-pressure values in 10.1063_5.0168768 (Table I: 9e-5 for SiO2, 4e-5 for TiO2, at 100 °C) are taken from a 2021 paper by the same first author that is not among the 44, and they differ from those of 10.1021_acs.jpcc.9b08176 (6e-5 and 7e-5 at 200 °C).
+- **Verdict: holds partly.** The re-use in sse and d1cp04758b is as described and stated by the authors. The third item is not: the low-pressure values in 10.1063_5.0168768 (Table I: 9e-5 for SiO2, 4e-5 for TiO2, at 100 °C) are taken from a 2021 paper by the same first author, then without a PDF, and they differ from those of 10.1021_acs.jpcc.9b08176 (6e-5 and 7e-5 at 200 °C).
 - **Missing in the ontology.** A link from a cited series to the figure it was taken from; a model entry for the sse model; a parameter for the evaporation flux.
 - **Only in text or tables.** Every value above. sse also states which inputs it had to estimate (partial pressures of 325 and 160 mTorr, a pulse time, a film density).
 
@@ -303,7 +303,7 @@ Each was checked against the named figures and, where needed, the body text and 
 
 ## D. Update after 15 more papers (2026-10-13)
 
-Fifteen PDFs were obtained by hand and parsed: Cremers refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505. `figures.csv` now has 919 rows for 59 papers. Parts A to C above are as written for the first 44; this part says what changes.
+Fifteen PDFs were obtained by hand and parsed: Cremers refs 62, 65, 66, 67, 69, 70, 86, 128, 178, 180, 200, 204, 228, 251 and 10.1021/acs.jpcc.1c01505. `figures.csv` now covers every paper with a PDF: the in-scope papers and 10.1016_j.cattod.2003.11.022 (Guyon 2004), which is out of scope as not an ALD paper and kept only as a cited source of recombination values; it counts in no number of corpus papers below. Parts A to C above are as written before that day; this part says what changes.
 
 ### Existing candidates whose evidence or verdict changes
 
@@ -313,7 +313,7 @@ Fifteen PDFs were obtained by hand and parsed: Cremers refs 62, 65, 66, 67, 69, 
 - **A4.** One more macroscopic plasma hole (10.1149_1.3301664 Fig. 2b) and one more low-pressure SiO2 series. The two macroscopic holes both reach half thickness at their end, so the "different structure scale" reading is confirmed for both.
 - **A5.** Three more geometries with thickness or a thickness signal against depth: pores open at both ends (10.1021_cm0303080 Fig. 5a, an X-ray signal), a fibre-filled hole (10.1016_j.surfcoat.2012.02.038 Fig. 5), and a cavity entered through a central hole, where depth is radial (10.1116_1.4971196 Fig. 8). The case for a geometry class on every profile gets stronger; 10.1021/cm0303080 is no longer missing.
 - **A7.** The two older models named as still needed are parsed (10.1149_1.3072694, 10.1002_cvde.200390005), with the Monte Carlo model of 10.1149_1.3491381. The claim that sticking moves the slope and not the depth is stated in all three.
-- **A8.** Verdict moves from open to **holds for TMA and water**: with the exposures of 10.1149_1.3072694 (9 × 10^3 L) and 10.1021_cm0303080 (150 to 450 × 10^3 L) the square law of 10.1002_cvde.200390005 predicts the coated aspect ratio within the scatter (48 against 49 to 55; 538 × 10^3 L needed against a coating that appears between 150 and 450). It holds only if the membrane is counted at half its length. See CREMERS.md 3a.
+- **A8.** Verdict moves from open to **holds for TMA and water**: with the exposures of 10.1149_1.3072694 (9 × 10^3 L) and 10.1021_cm0303080 (150 to 450 × 10^3 L) the square law of 10.1002_cvde.200390005 predicts the coated aspect ratio within the scatter (48 against 47 to 53; 538 × 10^3 L needed against a coating that appears between 150 and 450). It holds only if the membrane is counted at half its length. See CREMERS.md 3a.
 - **A9.** New values with a number: bottom over top of 52% to 100% at aspect ratio 8.7 against pulse time and cycles (10.1149_1.2789802 Fig. 3, 5), and 92% to 104% for Pt in trenches of aspect ratio 3 to 34 defined as mean trench thickness over planar thickness (10.1063_1.4972120 Table II). Two more definitions of the same word.
 - **N1.** The third item is now traced: the low-pressure values in 10.1063_5.0168768 come from 10.1021_acs.jpcc.1c01505, which is in the corpus, and its Fig. 5A agrees with them. A second lineage appears: Tables V and VII of the review are updates of the tables of 10.1149_1.3491381, and one TMA value there goes back through 10.1021_cm0303080 to a still earlier paper, changing its method label on the way. Verdict stays "holds partly"; the part that did not hold is now explained.
 - **N2.** More cases of both kinds. 10.1149_1.3072694 Fig. 6 is a simulation with a chosen sticking value that the review's Table V lists as a derived one. 10.1149_1.2789802 Fig. 6a and 7a and 10.1063_1.2714685 Fig. 9 are real predictions: bottom-of-hole curves computed from parameters fitted elsewhere.
@@ -335,7 +335,7 @@ Fifteen PDFs were obtained by hand and parsed: Cremers refs 62, 65, 66, 67, 69, 
 
 ### N11. A recombination probability belongs to a surface state, not to a material
 - **Question.** Can a literature value of r for "titania" or "alumina" be used for the film during growth?
-- **Figures.** 10.1016_j.cattod.2003.11.022 Table 1, Fig. 5; 10.1021_acs.jpcc.1c01505 Fig. 5; 10.1063_5.0168768 Fig. 3; 10.1021_acs.jpcc.9b08176 Fig. 3; the review's Table VII.
+- **Figures.** 10.1016_j.cattod.2003.11.022 (out of scope, cited source) Table 1, Fig. 5; 10.1021_acs.jpcc.1c01505 Fig. 5; 10.1063_5.0168768 Fig. 3; 10.1021_acs.jpcc.9b08176 Fig. 3; the review's Table VII.
 - **What it shows about the pipeline.** A value without temperature, pressure, method and kind of surface cannot be joined to a process. The same material name carries values 350 times apart with opposite temperature trends.
 - **Verdict: holds.** Sintered ceramic in a 110 Pa air plasma: 0.014 at 300 K, rising. ALD film in a lateral channel: about 4e-5 at 100 to 180 °C, falling.
 - **Missing in the ontology.** Conditions on a recombination probability (temperature, pressure, method); a way to say what the surface is (bulk ceramic, growing film, film covered with ligands).
