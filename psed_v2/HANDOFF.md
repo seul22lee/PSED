@@ -107,6 +107,8 @@ The columns were kept as they are; these are open decisions for the pipeline sch
    qualifier.
 7. **In situ vs ex situ is a qualifier, not a method.** The facts use ellipsometry for both (mat22 in situ SE); the
    distinction needs a qualifier key, as do map vs line scan (sem_eds) and gauge vs thermocouple (process_monitor).
+8. **Run attributes.** A run row's kind, how it was assigned and its key currently live in `qualifiers` (run=, how=, sample=,
+   sim=) because only parent and links were added as columns; decide later whether they get their own columns.
 Also seen: multi-number table cells (yim20 pulse-purge sequences "0.1-4.0-0.1-4.0") split into one fact per step; text that rounds a
 table value kept as one fact with the table value; conflicts between text and table kept as printed. Channel height H of lateral
 channels is `feature_height` (added to the lists). Twelve yim20 curves have facts but no points (rejected in v1, absent from

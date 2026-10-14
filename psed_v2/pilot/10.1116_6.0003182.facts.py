@@ -5,7 +5,9 @@
 """
 import sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
-from facts import F, NK, P, write, cases_points  # noqa: E402
+import re  # noqa: E402
+import facts as C  # noqa: E402
+from facts import F, N, NK, P, write, cases_points  # noqa: E402
 
 K, PID = "gre23", "10.1116_6.0003182"
 
@@ -519,4 +521,149 @@ NK("s15.p13", "conflict statement")
 NK("s15.p15;s15.p16", "author contributions")
 NK("s15.p18", "data availability statement")
 
+# ================================================================== stage 3: one tree (parent, links)
+# Runs: the three stated depositions of Sec. II B (T held at 120 °C, held at 160 °C, cycled 120/160 °C), each coating an NPC pair;
+# the thermocouple test run of Fig. 2(d) (same conditions as the cycled run, so a deposition of its own, linked to it); the uncoated
+# compact of Fig. 4(a); and the Eq. (1)-(2) estimate of hold and purge times, a simulation under the process because it exists only
+# to set the shared hold and purge times. Parent rule: the row without which the fact would not exist; links: a second home (a
+# claim's support, the same data shown twice, the runs a comparison covers).
+PAPER, PROC = K, f"{K}:process"
+R120, R160, RCYC = f"{K}:run120", f"{K}:run160", f"{K}:run120_160"
+RUN = {"120": R120, "160": R160, "120/160": RCYC}
+TEST, BARE, SIM = f"{K}:run_tc", f"{K}:run_bare", f"{K}:sim:eq1_2"
+RUNS = f"{R120};{R160};{RCYC}"
+N(PAPER, "paper", "Greenberg et al. 2023, JVST A: static-dose DEZ/H2O ZnO ALD infiltration of mm-thick Al2O3 nanoparticle compacts "
+  "at 120 °C, 160 °C and with the temperature cycled 120/160 °C", "", evidence="abs.g1", label_as_printed="10.1116/6.0003182")
+N(PROC, "process", "shared process: 20 static-dose DEZ/H2O cycles (~9 Torr, 1920 s holds, 2880 s purges) in an ALD NanoSolutions "
+  "RX-series reactor on pressed Al2O3 NPCs (L = 0.78 mm, φ_i = 50.5%), with gravimetry, pressure logging, XRD, resistivity, SEM-EDS and XPS",
+  PAPER, evidence="s9.p4;s8.p1;s9.p1;abs.g5")
+for r, lab, ev in ((R120, "120 °C", "s9.p6;fig1b"), (R160, "160 °C", "s9.p6;fig1b"), (RCYC, "120/160 °C", "s9.p6;fig1b")):
+    what = {"120 °C": "T held at 120 °C", "160 °C": "T held at 160 °C",
+            "120/160 °C": "T cycled: 120 °C for every step but the H2O purge, 160 °C during it"}[lab]
+    N(r, "run", f"ALD run, {what}, two NPCs coated together", PROC, evidence=ev, label_as_printed=lab,
+      qualifiers=f"run=deposition;how=stated;sample={r.rsplit(':run', 1)[1]}")
+N(TEST, "run", "thermocouple test run of Fig. 2(d): same conditions as the cycled run, boat temperature logged", PROC,
+  evidence="fig2d;fig2.cap", label_as_printed="test run", qualifiers="run=deposition;how=stated;sample=fig2d_test", links=RCYC)
+N(BARE, "run", "uncoated Al2O3 NPC photographed before ALD (Fig. 4a)", PROC, evidence="fig4a;fig4.cap", label_as_printed="Before ALD",
+  qualifiers="run=specimen;how=stated;sample=before_ALD")
+N(SIM, "run", "Eq. (1)-(2) estimate of the hold time and of the H2O purge time needed at 120 and 160 °C", PROC,
+  evidence="eq1;eq2;s9.p9", label_as_printed="Eq. (2)", qualifiers="run=simulation;how=stated;sim=eq1_2")
+
+PARENT, LINKS = {}, {}
+FX = {f["fact_id"]: f for f in C.facts()}
+fid = lambda s_: f"{K}:{s_}"
+
+
+def put(parent, *ids, links=""):
+    for i in ids:
+        assert fid(i) in FX, i
+        assert fid(i) not in PARENT, i
+        PARENT[fid(i)] = parent
+        if links:
+            LINKS[fid(i)] = links
+
+
+def ln(i, *targets):
+    LINKS[fid(i)] = ";".join(t if t.startswith(K + ":") else fid(t) for t in targets)
+
+
+# shared process: reactor, precursors, dosing, NPC preparation, characterization
+put(PROC, "abs.g3#1", "abs.g5#1", "s6.p8#3", "s6.p8#4", "s6.p8#10", "s6.p8#11",
+    *[f"s8.p1#{i}" for i in (1, 2, 4, 5, 6, 7, 8, 9, 10)], "s9.p1#1", "s9.p1#2", "s9.p1#3", "s9.p3#1", "s9.p3#2", "s9.p3#3",
+    *[f"s9.p4#{i}" for i in range(1, 13) if i != 3], "s9.p5#1", "s9.p5#2", "s9.p5#3", "s9.p6#1", "s9.p6#3", "s9.p6#8", "s9.p6#9",
+    "s9.p6#11", *[f"s10.p1#{i}" for i in range(1, 10)], *[f"s10.p2#{i}" for i in range(1, 5)], *[f"s10.p3#{i}" for i in range(1, 5)],
+    "s10.p4#1", "s10.p4#2", *[f"s10.p5#{i}" for i in range(1, 6)], "s12.p1#4", "s12.p1#9", "s12.p2#2", "s12.p2#3",
+    "eq3#1", "eq4#1", "eq5#1", "s12.x1#2", "s12.x1#3", "s12.x1#8", "fig3a#2", "s12.p8#2", "s12.p8#3", "fig3b#1", "fig3c#1",
+    "s12.p9#2", "eq6#1", "eq7#1", "eq8#1", "fig2a#1", "s13.p1#1", "fig5#1", "s13.p2#2", "s13.p4#5", "s13.p4#10",
+    "s14.p1#3", "s14.p2#1", "fig6d#1")
+put(PROC, "fig1a#2", links=fid("s8.p1#8"))                                     # the schematic repeats the measured compact size
+put(PROC, "fig1a#3", links=fid("s8.p1#7"))
+put(PROC, "fig1a#4", links=fid("s8.p1#9"))
+# facts that compare or cover the runs: under the process, linked to the runs
+for i in ("s9.p6#10", "s12.p2#1", "s12.x1#1", "s12.p8#1", "s12.p8#4", "s13.p2#1", "s14.p1#1"):
+    put(PROC, i, links=RUNS)
+put(PROC, "fig3c#3", "fig6a#2", links=f"{R120};{RCYC}")
+put(PROC, "s14.p1#4", links=f"{R120};{RCYC};{fid('fig6d#2')};{fid('fig6f#1')}")
+put(PROC, "s14.p1#5", links=f"{R120};{RCYC};{fid('s12.p1#5')};{fid('s12.p1#7')}")
+put(PROC, "s12.p1#8", links=";".join(fid(f"tabI.r{r}c2#1") for r in (1, 2, 3)))   # the text's porosities, printed in another order
+# the Eq. (1)-(2) estimate: its model, parameters and outputs (definitions of its symbols stay with the paper's terms)
+put(SIM, "eq1#1", "eq2#1", "s9.p9#2", "s9.p9#3", "s9.p9#4", "s9.p9#5", "s9.p9#6")
+# runs: settings and observations of one run
+put(R120, "s9.p6#4", "s12.x1#10", "s12.x1#11", "s12.x1#12", "fig2a#2", "fig2a#3", "s13.p1#2", "fig5#2", "fig6a#1", "fig6d#2",
+    "fig6d#3", "fig6d#4")
+put(R160, "s9.p6#5", "s12.x1#13", "s12.p7#1", "fig3a#1", "fig2b#1", "fig2b#2", "s13.p1#4", "fig5#3", "fig6b#1", "fig6e#1",
+    "fig6e#2", "fig6e#3", "fig6e#4", "fig3c#2")
+put(R160, "s13.p2#3", links=fid("fig5#3"))                                     # the Zn peaks, in the text and in Fig. 5
+put(R160, "s14.p7#1", links=fid("fig6e#1"))                                    # the Zn dip, in the text and in Fig. 6(e)
+put(RCYC, "s9.p6#6", "s9.p6#7", "s12.x1#4", "s12.x1#5", "s12.x1#6", "fig2c#1", "s13.p1#5", "fig5#4", "fig6c#1", "fig6f#1",
+    "fig6f#2", "fig6f#3")
+put(RCYC, "fig1b#2", links=fid("s9.p6#7"))                                     # the cycled schedule, in the text and in Fig. 1(b)
+put(TEST, "fig2d#1", "fig2d#2")
+put(TEST, "s15.p4#4", links=fid("fig2d#2"))                                    # the 33.5 min ramp read from the test-run trace
+put(BARE, "fig4a#1")
+# Table I and Table II cells (and the text values they repeat): measured or fitted values under the run, calculated values under
+# their first input (porosity <- mass gain, GPC <- porosity, Δn_s <- GPC, ȳ <- Δn_g, thickness <- mass gain)
+for lab, r in (("120", "1"), ("160", "2"), ("120/160", "3")):
+    put(RUN[lab], f"tabI.r{r}c5#1", f"tabII.r{r}c1#1", f"tabII.r{r}c2#1")
+put(R120, "s12.p1#5", "s13.p4#1", "tabII.r1c3#1")
+put(R160, "s12.p1#6", "s13.p4#2", "tabII.r2c3#1", "tabII.r2c4#1")
+put(RCYC, "s12.p1#7", "s13.p4#3", "tabII.r3c3#1")
+# Fig. 3(b) plots per cycle the Δn_g that Table I averages: each series under its Table I value
+put(fid("tabI.r1c5#1"), "fig3b#3")
+put(fid("tabI.r2c5#1"), "fig3b#2")
+put(fid("tabI.r3c5#1"), "fig3b#4")
+# cited facts: under the first reference they name
+for f in C.facts():
+    if f["type"] == "cited" and f["fact_id"] not in PARENT:
+        m = re.search(r"ref\. (\d+)", f["mentions"])
+        if m:
+            PARENT[f["fact_id"]] = f"{K}:refs:{m.group(1)}"
+# what the rules above do not place: cited statements with no reference number, an interpretive model assumption
+put(PAPER, "abs.g2#1", "s6.p2#1", "s6.p2#2", "s14.p10#6")
+# claims: under the paper, linked to what supports them
+CLAIM = {"abs.g1#1": ("s6.p4#5", "s6.p8#11"), "abs.g1#2": ("s6.p5#9",), "abs.g2#2": ("s6.p6#3", "s6.p5#13"),
+         "abs.g4#1": ("s14.p1#4", "s12.p1#12", "s13.p4#11"), "abs.g4#2": ("s12.p1#10", "s12.p1#12"), "s6.p1#1": ("s6.p2#3",),
+         "s6.p1#2": ("s6.p1#4",), "s6.p3#1": ("s6.p4#5",), "s6.p6#1": ("s6.p6#2", "s6.p6#3"), "s6.p6#4": ("s6.p6#3",),
+         "s6.p8#1": ("s6.p8#7", "s6.p2#1"), "s6.p8#2": ("s6.p5#9",), "s6.p8#6": ("s8.p1#3", "s8.p1#9"), "s6.p8#9": ("s8.p1#9", "s6.p4#2"),
+         "s6.p8#12": (R120, R160, RCYC), "s9.p3#4": ("s9.p3#3",), "s9.p6#12": ("s9.p6#11",), "s9.p6#13": ("s9.p6#1", "s9.p6#11"),
+         "s9.p7#1": ("eq1#1", "eq2#1"), "s9.p9#7": ("s9.p9#5", "s9.p9#6", "s9.p4#10"),
+         "s12.p1#1": ("s6.p5#9", "s6.p5#13"), "s12.p1#2": ("s9.p9#5",), "s12.p1#3": ("s12.p1#5", "s12.p1#6", "s12.p1#7"),
+         "s12.p1#13": ("s12.p1#12",), "s12.p6#5": ("s12.p2#3", "eq4#1", "eq5#1"), "s12.p6#6": ("s9.p6#12",),
+         "s12.x1#7": ("s12.x1#4", "s12.x1#6"), "s12.x1#9": ("s12.x1#3", "s12.x1#5"), "s12.p7#2": ("s12.x1#5", "s12.x1#11", "s12.p7#1"),
+         "s12.p7#3": ("s12.x1#6", "s12.x1#12", "s12.x1#13"), "s12.p8#5": ("fig3b#2",), "s12.p8#6": ("fig3c#2", "fig3b#2"),
+         "s12.p15#1": ("s12.p14#1", "s12.p14#3"), "s12.p17#1": ("s12.p14#1", "s12.p14#3"), "s12.p17#2": ("s12.p14#1",),
+         "s12.p17#3": ("s12.p14#1", "s12.p14#3"), "s12.p17#4": ("s12.p14#2",), "s12.p17#5": ("eq8#1", "tabI.r2c4#1"),
+         "s13.p3#3": ("tabII.r1c1#1", "tabII.r1c2#1", "tabII.r3c1#1", "tabII.r3c2#1", "s13.p3#1", "s13.p3#2"),
+         "s13.p3#4": ("tabII.r1c1#1", "s12.p1#5"), "s13.p3#5": ("tabII.r2c1#1", "tabII.r2c2#1", "s12.p1#6", "tabII.r2c3#1", "s13.p1#4"),
+         "s13.p3#6": ("s13.p1#5",), "s13.p4#4": ("s13.p4#2", "tabII.r2c3#1"), "s13.p4#6": ("s13.p4#1", "s13.p4#3"),
+         "s13.p4#9": ("s13.p4#7", "s13.p4#8", "tabII.r1c2#1", "s13.p3#1"), "s13.p4#11": ("s13.p4#10",),
+         "s14.p2#2": ("s14.p1#4", "s14.p2#1"), "s14.p6#1": ("s9.p4#7",), "s14.p6#2": ("s14.p1#4",), "s14.p7#2": ("s14.p7#1",),
+         "s14.p7#3": ("s14.p7#1", "fig6e#2"), "s14.p8#1": ("s14.p1#4",), "s14.p10#1": ("s12.p1#10", "s12.p14#1", "s12.x1#12"),
+         "s14.p10#2": ("s9.p9#5",), "s14.p10#5": ("s14.p10#4", "s14.p1#4"), "s14.p10#8": ("s14.p10#7", "s14.p6#2"),
+         "s15.p1#1": ("s14.p1#1", "eq1#1"), "s15.p2#1": ("s13.p4#1", "s13.p4#3", "s13.p4#8"), "s15.p2#2": ("s13.p4#9",),
+         "s15.p3#1": ("tabII.r2c3#1", "s13.p2#3"), "s15.p3#2": ("tabII.r1c3#1", "s14.p1#4", "s13.p4#1"),
+         "s15.p3#3": ("s12.x1#10", "s12.p14#1"), "s15.p3#4": ("s9.p9#5", "s12.p1#10"), "s15.p3#5": ("s14.p10#8", "s12.p1#10"),
+         "s15.p4#1": ("tabII.r3c3#1", "s12.p14#3"), "s15.p4#2": ("s9.p9#5", "s9.p9#6"), "s15.p4#3": ("s15.p4#4",),
+         "s15.p8#1": ("s12.p1#10", "s14.p1#4"), "s15.p8#2": ("s15.p8#1",)}
+for c, sup in CLAIM.items():
+    put(PAPER, c)
+    ln(c, *sup)
+for f in C.facts():                                                            # definitions: terms and symbols of the paper
+    if f["type"] == "definition" and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = PAPER
+for f in C.facts():                                                            # a value computed from others: under its first input
+    if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
+assert not left, left
+assert not [c for c in C.facts() if c["type"] == "claim" and c["fact_id"] not in LINKS], "claim without links"
+for r in sorted({p for p in PARENT.values() if ":refs:" in p}, key=lambda x: int(x.rsplit(":", 1)[1])):
+    kids = [f for f in C.facts() if PARENT.get(f["fact_id"]) == r]
+    ev = list(dict.fromkeys(f["evidence"].split(";")[0] for f in kids))
+    N(r, "cited", f"cited work, reference {r.rsplit(':', 1)[1]} of the paper", PAPER, evidence=";".join(ev),
+      label_as_printed=f"ref. {r.rsplit(':', 1)[1]}")
+for f in C.facts():
+    if f["fact_id"] in PARENT:
+        f["parent"] = PARENT[f["fact_id"]]
+        f["links"] = LINKS.get(f["fact_id"], "")
 write(K, PID)
