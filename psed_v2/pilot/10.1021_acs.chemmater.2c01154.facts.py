@@ -911,4 +911,255 @@ for r, key, what in (("0.50", "s9b_R050", "strong Eg, A1g and Sh features"),
 F(K, "fig9b", "observation", "TiSx spectrum at ratio 0: nearly flat apart from the Si line (not digitized).", method="raman",
   mentions=f"{R}: 0")
 
+# ================================================================== stage 3: one tree (parent, links)
+# A MoS2 run is one (deposition temperature, H2 flow ratio) pair: every film made at that pair (heat-map film, Table 1 film,
+# 4" wafer, PET foil, TEM and FET specimens) hangs under the same run. Runs are grouped by temperature; the heat-map window
+# (Figs. 2, 4, 7b, 8) is a group of its own for facts that span several temperatures. Other samples (Fig. 1b cycle series,
+# extra H2 step, H2S-flow tests, annealed films, WS2 and TiS2 of Fig. 9, thermal TiS2 reference) get their own run rows.
+# Parent rule: the row without which the fact would not exist; links: a claim's support, the same data shown twice.
+import re  # noqa: E402
+import facts as C  # noqa: E402
+from facts import N  # noqa: E402
+
+PAPER, PROC = K, f"{K}:process"
+grp = lambda g: f"{K}:grp:{g}"
+run = lambda t, r: f"{K}:run:T{t}_R{r}"
+xrun = lambda s_: f"{K}:run:{s_}"
+FX = {f["fact_id"]: f for f in C.facts()}
+fid = lambda s_: s_ if s_.startswith(K + ":") else f"{K}:{s_}"
+PARENT, LINKS = {}, {}
+RUNS = {}                       # run id -> (parent, statement, label, qualifiers)
+
+
+def put(parent, *ids, links=""):
+    for i in ids:
+        assert fid(i) in FX, i
+        assert fid(i) not in PARENT, i
+        PARENT[fid(i)] = parent
+        if links:
+            LINKS[fid(i)] = links
+
+
+def ln(i, *targets):
+    LINKS[fid(i)] = ";".join(fid(t) for t in targets)
+
+
+def mrun(t, r, how="stated"):
+    """The run of one MoS2 (temperature, ratio) pair, created on first use."""
+    i = run(t, r)
+    if i not in RUNS:
+        RUNS[i] = (grp(f"T{t}"), f"MoSx deposition at {t} °C with H2 flow ratio {r}", f"{t} °C, {r} H2",
+                   f"run=deposition;how={how};sample=T{t}_R{r}")
+    return i
+
+
+def lk(*ids):
+    return ";".join(fid(i) for i in ids)
+
+
+# heat-map cells (Fig. 2 class, Fig. 4 S/Mo): under the run of their pair
+CELL2, CELL4 = {}, {}
+for f in C.facts():
+    m = re.match(r"Fig\. ([24]) cell at (\d+) °C and ratio ([\d.]+) ", f["statement"])
+    if m:
+        (CELL2 if m.group(1) == "2" else CELL4)[(int(m.group(2)), m.group(3))] = f["fact_id"]
+        put(mrun(int(m.group(2)), m.group(3)), f["fact_id"])
+assert len(CELL2) == len(CELL4) == 32
+TEMPS = sorted({t for t, _ in CELL2}, reverse=True)
+# Fig. 1a Raman curves (150 °C, 140 cycles): under their run; the Fig. 2 cell at that pair repeats the class they show
+for i, r in (("fig1a#3", "0.94"), ("fig1a#4", "0.80"), ("fig1a#5", "0.65"), ("fig1a#6", "0.50"), ("fig1a#7", "0.20"),
+             ("fig1a#8", "0")):
+    put(mrun(150, r), i)
+    ln(CELL2[(150, r)], i)
+# Fig. 5 (150 °C, 140 cycles): spectra and composition labels; a label repeats the Fig. 4 cell of that pair
+for j, r in enumerate(("0.94", "0.80", "0.65", "0.50", "0.20")):
+    put(mrun(150, r), f"fig5a#{2 + 2 * j}")
+    put(mrun(150, r), f"fig5a#{3 + 2 * j}", links=CELL4[(150, r)])
+# Fig. 6a Rq and Fig. 7a growth curves (150 °C): under their run
+for j, r in enumerate(("0", "0.20", "0.50", "0.65", "0.80", "0.94")):
+    put(mrun(150, r), f"fig6a#{2 + j}", f"fig7a#{2 + j}")
+# Table 1 (150 °C films on glassy carbon, ~50 nm): every cell under the run of its row. Fig. 4 cells are a different film
+# (140 cycles on SiO2/Si; 0.20 prints 3.5 against Table 1 XPS 3.4), so they are not placed under the Table 1 values.
+for f in C.facts():
+    m = re.match(rf"{K}:tab1\.r(\d)c\d#", f["fact_id"])
+    if m:
+        put(mrun(150, {"1": "0.20", "2": "0.65", "3": "0.80"}[m.group(1)]), f["fact_id"])
+# Table 2 (flows per ratio, used at every temperature) and the shared recipe, reactor, substrates and methods: the process
+put(PROC, *[f for f in FX if f.startswith(f"{K}:tab2.")])
+put(PROC, "eq1#2", "s3.p1#3", "s3.p6#2", "s3.p50#1", "s3.p51#2", "s3.p51#3", "s4.p1#1",
+    *[f"s5.p1#{i}" for i in (1, 2, 3, 4)], "s5.p2#1", "s5.p2#2", "s5.p2#3", "s5.p3#1", "s5.p3#2", "s5.p3#3",
+    *[f"s5.p4#{i}" for i in range(1, 7)], *[f"s5.p6#{i}" for i in range(2, 15)], "s5.p7#5",
+    "s5.p9#1", "s5.p9#2", "s5.p9#3", "s5.p10#1", "s5.p11#1", "s5.p12#1", "s5.p13#1", "s5.p14#1", "s5.p14#2", "s5.p15#1",
+    "s5.p15#2", "s5.p16#1", "s5.p16#2", "s5.p16#3", "s5.p16#4", "s5.p16#5", "s5.p17#1", "s5.p18#1")
+put(PROC, "s5.p18#2", links=lk(run(150, "0.65"), run(100, "0.80"), run(350, "0.20")))
+# the heat-map window: facts over several temperatures
+put(grp("map"), "fig2#1", "fig2.cap#1", "fig4#1", "fig4#2", "fig7b#1", "fig8#1", "s3.p5#4", "s3.p7#4", "s3.p11#2", "s3.p11#4",
+    "s3.p11#5", "s3.p13#3", "s3.p22#3", "s3.p22#8", "s3.p24#1", "s3.p24#2", "s3.p25#1", "s3.p29#1", "s3.p33#2", "s3.p34#1",
+    "s3.p34#2", "s3.p34#3", "s3.p35#1", "s3.p35#2", "s3.p35#5", "s3.p35#6", "s3.p36#1", "s3.p36#2", "s3.p38#2", "s3.p39#1",
+    "s3.p41#1", "s5.p7#4")
+put(grp("map"), "fig8#2", links=lk(*[run(t, r) for t, r in ((200, "0"), (150, "0"), (200, "0.20"), (150, "0.20"),
+                                                              (100, "0.20"), (50, "0.20"), (100, "0.50"))]))
+put(grp("map"), "s3.p7#2", links=lk(CELL2[(300, "0.20")], CELL2[(350, "0.20")], CELL2[(450, "0.20")]))
+put(grp("map"), "s3.p13#1", links=lk(run(50, "0.80"), run(100, "0.65")))
+put(grp("map"), "s3.p37#1", "s3.p37#2", links=lk(run(350, "0.20"), run(450, "0.20")))
+put(grp("map"), "s5.p7#1", links=grp("T450"))
+put(grp("map"), "s5.p7#2", links=lk(grp("T50"), grp("T300"), grp("T350")))
+put(grp("map"), "s5.p7#3", links=lk(grp("T100"), grp("T150"), grp("T200"), grp("T250")))
+# 450 °C
+put(mrun(450, "0.20"), "s3.p35#4")
+put(grp("T450"), "s3.p38#1", links=lk(run(450, "0.20"), run(450, "0.80")))
+# 350 °C: the Fig. 3b TEM reference and the reference FET (both 0.20)
+put(mrun(350, "0.20"), "s3.p10#3", "fig3b#1", "fig3b#2", "s3.p43#2", "s3.p44#2")
+put(mrun(350, "0.20"), "s3.p10#2", links=fid("fig3b#2"))
+# 300 °C
+put(mrun(300, "0.20"), "s3.p35#3")
+# 250 °C
+put(grp("T250"), "s3.p32#3", links=lk(run(250, "0.35"), run(250, "0.50")))
+# 150 °C: the ratio series of Figs. 1a, 5, 6a, 7a and Table 1
+put(grp("T150"), "fig1a#2", links=lk(*[run(150, r) for r in ("0.94", "0.80", "0.65", "0.50", "0.20", "0")]))
+put(grp("T150"), "fig5a#1", "fig5b#1", "s3.p14#1", "s3.p14#2", "s3.p14#3", "s3.p15#1", "s3.p16#7", "s3.p17#1", "s3.p18#1",
+    "s3.p20#1", "s3.p20#2", "s3.p4#4", "s3.p19#2", "s3.p21#2", "fig6a#1", "s3.p22#2", "fig7a#1")
+put(grp("T150"), "s3.p4#1", "s3.p22#4", "s3.p27#1", links=lk(run(150, "0"), run(150, "0.20"), run(150, "0.50")))
+put(grp("T150"), "s3.p4#2", links=lk(CELL2[(150, "0.65")], "fig1a#5"))
+put(grp("T150"), "s3.p19#1", "s3.p21#1", links=lk(run(150, "0.20"), run(150, "0.65"), run(150, "0.80")))
+put(grp("T150"), "s3.p21#3", links=lk(run(150, "0.20"), run(150, "0.65")))
+put(mrun(150, "0.20"), "s3.p30#1")
+put(mrun(150, "0.50"), "s3.p18#2", "s3.p18#3")
+put(mrun(150, "0.65"), "s3.p22#5", "s3.p27#2", "s3.p30#2", "s3.p26#3", "fig6b#1")
+put(mrun(150, "0.65"), "s3.p26#2", links=fid("fig6b#1"))
+put(mrun(150, "0.80"), "s3.p16#1", "s3.p16#2", "s3.p16#3", "s3.p16#4", "s3.p17#2", "s3.p17#3", "s3.p22#6", "s3.p27#3",
+    "s3.p32#1", "fig1c#1", "fig1c#2", "fig1c#3", "fig1c#4", "fig1c#5", "s5.p11#2")
+put(mrun(150, "0.80"), "s3.p6#1", links=fid("fig1c#4"))
+put(mrun(150, "0.94"), "s3.p16#8", "s3.p22#7", "s3.p28#1")
+# Fig. 1b: cycle-number series at 150 °C and ratio 0.80 (ratio from s3.p5)
+put(grp("cyc"), "fig1b#1", "fig1b#6", "s3.p5#2")
+CYC = {"10": "fig1b#5", "20": "fig1b#4", "30": "fig1b#3", "50": "fig1b#2"}
+for n, i in CYC.items():
+    RUNS[xrun(f"T150_R0.80_N{n}")] = (grp("cyc"), f"MoS2 film of {n} cycles at 150 °C and ratio 0.80 (Fig. 1b)",
+                                      f"{n} cyc", f"run=deposition;how=stated;sample=T150_R0.80_N{n}")
+    put(xrun(f"T150_R0.80_N{n}"), i)
+# extra H2 gas / H2 plasma step after a ratio-0.20 plasma at 150 °C (Table S8)
+RUNS[xrun("T150_R0.20_H2step")] = (grp("T150"), "150 °C, ratio 0.20 films with an extra H2 gas or H2 plasma step (Table S8)",
+                                   "H2 gas or H2 plasma step", "run=deposition;how=stated;sample=T150_R0.20+H2step")
+put(xrun("T150_R0.20_H2step"), "s3.p52#2", "s3.p52#3")
+# 100 °C: TEM film (Fig. 3a), PET foil (Fig. 1d) and FET channel, all at 0.80
+put(grp("T100"), "s3.p7#3", links=lk(CELL2[(100, "0.80")], CELL2[(100, "0.65")]))
+put(mrun(100, "0.65"), "s3.p34#4", links=CELL4[(100, "0.65")])
+put(mrun(100, "0.80"), "s3.p8#1", "s3.p8#2", "s3.p9#1", "s3.p10#1", "fig3a#1", "fig1d#1", "fig1d#2", "fig1d#3", "s3.p6#4",
+    "s3.p6#5", "s5.p2#4", "s5.p2#5", "s3.p43#1", "s3.p44#1")
+put(mrun(100, "0.80"), "s3.p6#3", links=fid("fig1d#1"))
+put(mrun(100, "0.80"), "s3.p43#3", "s3.p43#5", "s3.p43#6", links=run(350, "0.20"))
+# annealed films (Sections S11, S12)
+RUNS[xrun("anneal")] = (PROC, "films annealed after deposition, in vacuum or inert up to 300 °C and in air (Sections S11, S12)",
+                        "annealing", "run=specimen;how=stated;sample=annealed")
+put(xrun("anneal"), "s3.p40#2")
+put(xrun("anneal"), "s3.p44#4", links=grp("T100"))
+# H2S flow tests (Fig. S22)
+put(grp("h2s"), "s3.p53#3")
+RUNS[xrun("T250_R0_lowH2S")] = (grp("h2s"), "250 °C film with lowered H2S flow and no H2 (Fig. S22a)", "Figure S22a",
+                                "run=deposition;how=stated;sample=T250_R0_lowH2S")
+RUNS[xrun("T150_lowH2S")] = (grp("h2s"), "150 °C films with lowered H2S flow (Fig. S22b)", "Figure S22b",
+                             "run=deposition;how=stated;sample=T150_lowH2S")
+put(xrun("T250_R0_lowH2S"), "s3.p53#1")
+put(xrun("T150_lowH2S"), "s3.p53#2")
+# WS2 and TiS2 (Fig. 9)
+put(grp("WS2"), "fig9a#1")
+put(grp("WS2"), "s5.p8#1", links=grp("TiS2"))
+put(grp("TiS2"), "fig9b#1")
+for s_, g, st, lab, how in (("WS2_T150_R0.80", "WS2", "WS2 deposition at 150 °C with ratio 0.80", "WS2 @ 150 °C, 0.80", "stated"),
+                            ("WS2_T150_R0", "WS2", "WSx deposition at 150 °C without H2 (ratio 0)", "WS2 @ 150 °C, 0", "stated"),
+                            ("TiS2_T100_R0.50", "TiS2", "TiS2 deposition at 100 °C with ratio 0.50", "TiS2 @ 100 °C, 0.50", "stated"),
+                            ("TiS2_T100_R0", "TiS2", "TiSx deposition at 100 °C without H2 (ratio 0)", "TiS2 @ 100 °C, 0", "stated"),
+                            ("TiS2_T100_R0.80", "TiS2", "TiSx deposition with ratio 0.80 (not shown; 100 °C assumed from the "
+                             "TiS2 recipe)", "0.80", "inferred"),
+                            ("TiS2_thermal", "TiS2", "thermal ALD TiS2 reference (Fig. 9b)", "Thermal ALD", "stated")):
+    RUNS[xrun(s_)] = (grp(g), st, lab, f"run=deposition;how={how};sample={s_}")
+put(xrun("WS2_T150_R0.80"), "s5.p8#2", "s3.p46#4")
+put(xrun("WS2_T150_R0.80"), "fig9a#2")
+put(xrun("WS2_T150_R0.80"), "s3.p46#3", links=fid("fig9a#2"))
+put(xrun("WS2_T150_R0"), "fig9a#3")
+put(xrun("WS2_T150_R0"), "s3.p46#2", links=fid("fig9a#3"))
+put(xrun("TiS2_T100_R0.50"), "s5.p8#3", "fig9b#3")
+put(xrun("TiS2_T100_R0.50"), "s3.p48#4", links=lk("fig9b#3", "fig9b#4"))
+put(xrun("TiS2_T100_R0"), "fig9b#5")
+put(xrun("TiS2_T100_R0.80"), "s3.p48#5")
+put(xrun("TiS2_thermal"), "fig9b#4")
+# a value computed from others: under its first input
+for f in C.facts():
+    if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+# cited facts: under the first reference they name (a range "refs. a-b" counts as its first number)
+for f in C.facts():
+    if f["type"] == "cited" and f["fact_id"] not in PARENT:
+        m = re.search(r"refs?\. (\d+)", f["mentions"])
+        if m:
+            PARENT[f["fact_id"]] = f"{K}:refs:{m.group(1)}"
+put(PAPER, "s2.p3#1")                                                          # CVD temperature: cited with no number
+# claims: under the paper, linked to what supports them
+CLAIM = {
+    "abs.g1#1": ("s2.p1#1", "s2.p1#4"), "abs.g1#2": ("s2.p2#2", "s2.p3#1", "s2.p4#1"),
+    "abs.g2#1": ("fig2#30", "fig3a#1", "s3.p6#1", "s3.p46#3", "s3.p48#4"), "abs.g2#2": ("s3.p52#3", "s3.p11#4", "s3.p11#2"),
+    "abs.g3#1": (grp("map"),), "abs.g3#2": ("s3.p43#3", "s3.p43#5"), "abs.g4#1": ("s3.p6#3", "s3.p6#4", "s3.p6#5"),
+    "abs.g4#2": ("s3.p46#3", "s3.p48#4"), "s2.p8#5": ("s2.p8#4",), "s2.p10#1": ("s2.p4#2", "s2.p8#3", "fig2#30"),
+    "s2.p11#1": ("s3.p29#1", "s3.p22#6", "s3.p33#2"), "s2.p11#2": ("s3.p46#3", "s3.p48#4"), "s3.p1#2": ("s3.p1#1",),
+    "s3.p2#1": ("fig2#1", "s3.p7#2", "s3.p7#3"), "s3.p3#1": ("s5.p4#2", "tab2.r6c2#1"), "s3.p4#3": ("fig1a#5", "fig1a#4"),
+    "s3.p5#1": ("fig1b#5", "fig1b#2", "s3.p5#2"), "s3.p5#3": ("fig1b#5", "fig1b#4", "fig1b#3", "fig1b#2"),
+    "s3.p7#1": ("s3.p7#2", "s3.p4#2", "s3.p7#3"), "s3.p11#1": ("s3.p11#2", "s3.p11#4", "fig4#2"),
+    "s3.p11#3": (CELL4[(100, "0.80")], CELL2[(100, "0.80")]), "s3.p11#6": ("s3.p11#5",),
+    "s3.p11#7": ("s3.p11#5", "s3.p11#4", "s3.p11#2"), "s3.p13#2": ("s3.p13#1",), "s3.p13#4": ("s3.p13#3", "s3.p16#8"),
+    "s3.p18#6": ("s3.p18#4", "s3.p18#5"), "s3.p21#4": ("tab1.r3c7#1", "tab1.r3c3#1", "s3.p22#6"),
+    "s3.p21#5": ("tab1.r1c4#1", "tab1.r2c4#1", "tab1.r3c4#1"), "s3.p22#1": ("s3.p22#6", "s3.p22#3"),
+    "s3.p22#9": ("s3.p22#8", "s3.p7#2"), "s3.p22#10": ("s3.p22#6", "fig6a#6"), "s3.p25#2": ("s3.p25#3", "s3.p25#1"),
+    "s3.p25#4": ("s3.p25#3",), "s3.p26#1": ("fig6a#6", "s3.p22#6"), "s3.p26#4": ("s3.p26#2", "s3.p22#6"),
+    "s3.p26#5": ("s3.p22#8",), "s3.p26#6": ("s3.p7#3", "s3.p11#5"), "s3.p28#2": ("s3.p28#1", "s3.p16#8"),
+    "s3.p29#2": ("s3.p30#1", "s3.p30#2", "s3.p27#3"), "s3.p30#4": ("s3.p30#3", "s3.p29#1"), "s3.p31#1": ("s3.p27#3", "s3.p31#2"),
+    "s3.p32#2": ("s3.p30#1", "s3.p30#2", "s3.p32#1"), "s3.p32#4": ("s3.p32#3",),
+    "s3.p33#1": ("s3.p33#2", "fig8#1", "s3.p35#5"), "s3.p37#3": ("s3.p36#2", "s3.p37#2"), "s3.p37#5": ("s3.p36#1", "s3.p37#4"),
+    "s3.p39#2": ("s3.p39#3", "tab1.r2c4#1", "s3.p36#1"), "s3.p39#4": ("tab1.r2c6#1", "tab1.r2c7#1", "s3.p21#2"),
+    "s3.p41#2": ("s3.p39#1", "s3.p41#1", "s3.p40#1"), "s3.p44#3": ("s3.p44#1", "s3.p44#2", "s3.p43#6"),
+    "s3.p44#5": ("s3.p44#4", "s3.p44#1"), "s3.p45#1": ("s3.p46#3", "s3.p48#4", "s3.p7#3"), "s3.p46#5": ("s3.p46#2", "s3.p46#3"),
+    "s3.p48#3": ("s3.p48#2", "s3.p48#1", "s3.p48#4"), "s3.p51#1": ("s3.p50#1",), "s3.p51#4": ("s3.p50#1",),
+    "s3.p52#1": ("s3.p51#3",), "s3.p52#4": ("s3.p52#3",), "s3.p53#4": ("s3.p53#1", "s3.p53#3"),
+    "s4.p1#2": (grp("map"), "s4.p1#1")}
+for c, sup in CLAIM.items():
+    put(PAPER, c)
+    ln(c, *sup)
+for f in C.facts():                                                            # definitions: terms and symbols of the paper
+    if f["type"] == "definition" and f["fact_id"] not in PARENT:
+        PARENT[f["fact_id"]] = PAPER
+left = [f["fact_id"] for f in C.facts() if f["fact_id"] not in PARENT]
+assert not left, left
+
+# tree rows: paper, process, groups, runs (evidence = first elements of their children), cited works
+first_ev = lambda i: list(dict.fromkeys(f["evidence"].split(";")[0] for f in C.facts() if PARENT.get(f["fact_id"]) == i))
+N(PAPER, "paper", "Mattinen et al. 2022, Chem. Mater.: crystalline MoS2 (and WS2, TiS2) by PEALD down to 100 °C, steered by the "
+  "H2 flow ratio of the H2S/H2/Ar plasma", "", evidence="abs.g1;abs.g2", label_as_printed="10.1021/acs.chemmater.2c01154")
+N(PROC, "process", "shared process: MoSx PEALD from Mo(NtBu)2(NMe2)2 and H2S/H2/Ar remote ICP plasma in an Oxford FlexAL, Table 2 "
+  "flows per H2 flow ratio, SiO2/Si substrates, and the shared characterization methods", PAPER,
+  evidence="s5.p1;s5.p2;s5.p4;s5.p6;tab2.cap")
+N(grp("map"), "group", "deposition window of the heat maps (Figs. 2, 4, 7b, 8): MoSx films over 50-450 °C and H2 flow ratios "
+  "0-0.94 with 100-140 cycles", PROC, evidence="fig2;fig4;fig7b;fig8;fig2.cap", label_as_printed="Tdeposition (°C); H2 flow ratio",
+  qualifiers="how=stated", links=lk(*[grp(f"T{t}") for t in TEMPS]))
+for t in TEMPS:
+    N(grp(f"T{t}"), "group", f"MoSx depositions at {t} °C (one row of Figs. 2 and 4)", PROC, evidence="fig2;fig4",
+      label_as_printed=f"{t} °C", qualifiers="how=stated")
+N(grp("cyc"), "group", "cycle-number series at 150 °C and ratio 0.80: 10, 20, 30 and 50 cycles (Fig. 1b)", grp("T150"),
+  evidence="fig1b;s3.p5", label_as_printed="10-50 cyc", qualifiers="how=stated", links=run(150, "0.80"))
+N(grp("h2s"), "group", "H2S flow tests: H2S flow varied besides the H2 flow ratio (Fig. S22)", PROC, evidence="s3.p53",
+  label_as_printed="H2S flow rate", qualifiers="how=stated")
+N(grp("WS2"), "group", "WS2 by PEALD from the W analogue of the Mo precursor with H2S/H2/Ar plasma (Fig. 9a)", PROC,
+  evidence="fig9a;s5.p8;s3.p46", label_as_printed="WS2", qualifiers="how=stated")
+N(grp("TiS2"), "group", "TiS2 by PEALD with H2S/H2/Ar plasma, and a thermal ALD reference (Fig. 9b)", PROC,
+  evidence="fig9b;s5.p8;s3.p48", label_as_printed="TiS2", qualifiers="how=stated")
+order = lambda i: (TEMPS.index(int(re.match(r".*:T(\d+)_R", i).group(1))), i) if re.match(r".*:run:T\d+_R[\d.]+$", i) else (99, i)
+for i in sorted(RUNS, key=order):
+    p, st, lab, q = RUNS[i]
+    N(i, "run", st, p, evidence=";".join(first_ev(i)[:8]), label_as_printed=lab, qualifiers=q)
+for r in sorted({p for p in PARENT.values() if ":refs:" in p}, key=lambda x: int(x.rsplit(":", 1)[1])):
+    N(r, "cited", f"cited work, reference {r.rsplit(':', 1)[1]} of the paper", PAPER, evidence=";".join(first_ev(r)),
+      label_as_printed=f"ref. {r.rsplit(':', 1)[1]}")
+for f in C.facts():
+    if f["fact_id"] in PARENT:
+        f["parent"] = PARENT[f["fact_id"]]
+        f["links"] = LINKS.get(f["fact_id"], "")
 write(K, PID)
