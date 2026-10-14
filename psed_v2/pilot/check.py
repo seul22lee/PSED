@@ -10,7 +10,8 @@ quantity, qualifiers, value, range, unit, points and mentions; or the same state
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
-every run has a child; every claim has a link; tree rows (ids without "#") are not counted as facts.
+every run and group has a child; every claim has a link; a setting that varies among sibling runs is never quantity "other";
+tree rows (ids without "#") are not counted as facts.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
 import collections, csv, json, re, sys
@@ -158,8 +159,36 @@ def check_tree(rows, els):
             seen.add(i); i = R[i]["parent"]
     kids = collections.Counter(r.get("parent") for r in rows)
     for r in rows:
-        if r["type"] == "run" and not kids[r["fact_id"]]:
-            err.append(f"{r['fact_id']}: run without children")
+        if r["type"] in ("run", "group") and not kids[r["fact_id"]]:
+            err.append(f"{r['fact_id']}: {r['type']} without children")
+    # what a group varies is never "other": among sibling runs, a setting present in two runs with different values
+    K = collections.defaultdict(list)
+    for r in rows:
+        if r.get("parent"):
+            K[r["parent"]].append(r)
+    def sub(i):
+        out = []
+        for ch in K.get(i, []):
+            if ch["type"] in ("run", "group"):
+                continue
+            if "#" in ch["fact_id"]:
+                out.append(ch)
+            out += sub(ch["fact_id"])
+        return out
+    for r in rows:
+        runs = [ch for ch in K.get(r["fact_id"], []) if ch["type"] == "run"]
+        if len(runs) < 2:
+            continue
+        per = collections.defaultdict(dict)
+        for run in runs:
+            for f in sub(run["fact_id"]):
+                if f["type"] == "setting" and f["quantity"]:
+                    key = (f["quantity"], f["qualifiers"], f["label_as_printed"] if f["quantity"] == "other" else "")
+                    v = f["censor"] + f["value"] + f["unit"] if f["value"] else f["statement"].split(": ", 1)[-1]
+                    per[key][run["fact_id"]] = per[key].get(run["fact_id"], "") + "|" + v
+        for key, m in per.items():
+            if key[0] == "other" and len(set(m.values())) > 1:
+                err.append(f"{r['fact_id']}: varies setting other '{key[2]}' among its runs; give it an id in lists.py")
     return err
 
 

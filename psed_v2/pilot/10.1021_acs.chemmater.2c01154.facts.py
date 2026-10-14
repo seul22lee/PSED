@@ -15,8 +15,8 @@ def hr(r):
 
 
 def ratio(ev, r, what, mentions, dk="chosen input"):
-    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="other", label_as_printed=R, value=r,
-             data_kind=dk, mentions=mentions)
+    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="plasma_gas_ratio", qualifiers="gas=H2",
+             label_as_printed=R, value=r, data_kind=dk, mentions=mentions)
 
 
 def temp(ev, t, what, mentions):
@@ -131,12 +131,12 @@ F(K, "s3.p3", "claim", "Absolute flows and other process parameters are given in
 # s3.p4 / Fig. 1a
 F(K, "s3.p4;fig1a;fig1.cap", "observation",
   "At 150 °C, ratios of 0 to 0.50 give a-MoS2+x with weak, broad Raman bands resembling amorphous MoS3.",
-  quantity="other", label_as_printed=R, value_min="0", value_max="0.50", data_kind="chosen input",
+  quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value_min="0", value_max="0.50", data_kind="chosen input",
   method="raman", mentions="150 °C;a-MoS3;ref. 54;Figure 1a")
 F(K, "s3.p4;fig1a", "observation",
   "At 150 °C polycrystalline MoS2 needs a ratio of at least 0.65, seen from the appearance of the MoS2 E1g (E2g1) and A1g "
-  "Raman modes.", quantity="other", label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.65", data_kind="measured",
-  method="raman", mentions="150 °C;Figure 1a")
+  "Raman modes.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2",
+  value="0.65", data_kind="measured", method="raman", mentions="150 °C;Figure 1a")
 F(K, "s3.p4;fig1a", "claim", "Raman peak intensity rises from ratio 0.65 to 0.80, suggesting better crystallinity.",
   mentions="0.65;0.80")
 F(K, "s3.p4", "observation", "XRD confirms crystalline films for ratios of 0.65 and above.", method="xrd",
@@ -168,14 +168,15 @@ F(K, "s3.p6;fig1d", "observation", "The 5 nm MoS2 films on PET are highly transp
 # s3.p7 / Fig. 2
 F(K, "s3.p7;fig2;fig2.cap", "claim", "The lowest H2 flow ratio giving crystalline films rises as deposition temperature falls.",
   mentions="Figure 2;Figure S5")
-F(K, "s3.p7;fig2", "observation", "At 300 °C and above even ratio 0.20 gives c-MoS2.", quantity="other",
-  label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.20", data_kind="measured", method="raman",
+F(K, "s3.p7;fig2", "observation", "At 300 °C and above even ratio 0.20 gives c-MoS2.", quantity="plasma_gas_ratio",
+  qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.20", data_kind="measured", method="raman",
   mentions="≥300 °C;0.20")
-F(K, "s3.p7;fig2", "observation", "At 100 °C ratio 0.80 is needed for c-MoS2.", quantity="other",
-  label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.80", data_kind="measured", method="raman",
+F(K, "s3.p7;fig2", "observation", "At 100 °C ratio 0.80 is needed for c-MoS2.", quantity="plasma_gas_ratio",
+  qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.80", data_kind="measured", method="raman",
   mentions="100 °C;0.80")
 F(K, "s3.p7;s3.p13", "observation", "There is also an upper limit: XPS shows ratio 0.94 is too high, though Raman does not reveal it.",
-  quantity="other", label_as_printed=R, value="0.94", data_kind="measured", method="xps", mentions="0.94")
+  quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0.94", data_kind="measured", method="xps",
+  mentions="0.94")
 
 # s3.p8 - s3.p10 / Fig. 3
 F(K, "s3.p8;fig3a;fig3.cap;s5.p18", "setting", "TEM specimen: a sub-5 nm c-MoS2 film grown at 100 °C with ratio 0.80 and 50 cycles.",
@@ -183,10 +184,10 @@ F(K, "s3.p8;fig3a;fig3.cap;s5.p18", "setting", "TEM specimen: a sub-5 nm c-MoS2 
 F(K, "s3.p8;s3.p9;fig3a", "observation", "The 100 °C film looks fully crystallized and is built of nanocrystallites 4-5 "
   "monolayers thick.", quantity="other", label_as_printed="monolayer thick", value_min="4", value_max="5",
   data_kind="measured", method="tem", mentions="100 °C;Figure 3a")
-F(K, "s3.p9;fig3a", "observation", "Nanocrystallites of the 100 °C film are about 5-10 nm wide.", quantity="other",
+F(K, "s3.p9;fig3a", "observation", "Nanocrystallites of the 100 °C film are about 5-10 nm wide.", quantity="crystallite_size",
   label_as_printed="nanocrystallite width", value_min="5", value_max="10", unit="nm", data_kind="measured", method="tem",
   mentions="100 °C;Figure 3a")
-F(K, "s3.p10", "observation", "Surface of the 100 °C TEM film is fairly smooth, RMS roughness 0.75 nm by AFM.", quantity="other",
+F(K, "s3.p10", "observation", "Surface of the 100 °C TEM film is fairly smooth, RMS roughness 0.75 nm by AFM.", quantity="roughness",
   label_as_printed="root-mean-square roughness", value="0.75", unit="nm", data_kind="measured", method="afm",
   mentions="100 °C")
 F(K, "s3.p10;fig3b;fig3.cap", "setting", "Reference TEM film grown at 350 °C with ratio 0.20 (60 cycles, reference condition after "
@@ -236,13 +237,13 @@ F(K, "s3.p15;fig5a", "observation", "c-MoS2 films need an extra weak doublet bel
   mentions="Mo(4-δ)+;ref. 60;ref. 61;ref. 62")
 for be, lab in (("228.9", "Mo(4-δ)+"), ("229.6", "Mo4+"), ("231.1", "Mo5+"), ("232.9", "Mo6+")):
     F(K, "s3.p16;fig5a", "observation", f"Mo 3d5/2 binding energy of the {lab} component of the ratio 0.80 c-MoS2 film is {be} eV.",
-      quantity="other", label_as_printed="Mo 3d5/2 BE", value=be, unit="eV", data_kind="fit", method="xps",
-      mentions=f"{lab};0.80")
-F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoS2 is 229.3 ± 0.5 eV.", quantity="other",
-  label_as_printed="Mo 3d5/2 BE", value="229.3", unit="eV", data_kind="literature", method="cited",
+      quantity="binding_energy", qualifiers="element=Mo", label_as_printed="Mo 3d5/2 BE", value=be, unit="eV", data_kind="fit",
+      method="xps", mentions=f"{lab};0.80")
+F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoS2 is 229.3 ± 0.5 eV.", quantity="binding_energy",
+  qualifiers="element=Mo", label_as_printed="Mo 3d5/2 BE", value="229.3", unit="eV", data_kind="literature", method="cited",
   mentions="MoS2;ref. 63")
-F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoO3 is 232.7 ± 0.3 eV.", quantity="other",
-  label_as_printed="Mo 3d5/2 BE", value="232.7", unit="eV", data_kind="literature", method="cited",
+F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoO3 is 232.7 ± 0.3 eV.", quantity="binding_energy",
+  qualifiers="element=Mo", label_as_printed="Mo 3d5/2 BE", value="232.7", unit="eV", data_kind="literature", method="cited",
   mentions="MoO3;ref. 63")
 F(K, "s3.p16", "observation", "Measured binding energies vary slightly with deposition conditions.", method="xps",
   mentions="Section S5")
@@ -251,20 +252,21 @@ F(K, "s3.p16;fig5a", "observation", "At ratio 0.94 an intense doublet below Mo4+
 F(K, "s3.p17;fig5a", "observation", "Two S 2s singlets overlapping Mo 3d are included in the fit.", method="xps",
   mentions="S 2s")
 F(K, "s3.p17;fig5b", "observation", "S 2p of the ratio 0.80 crystalline film fits fairly well with one S2- doublet of MoS2 at "
-  "S 2p3/2 162.4 eV.", quantity="other", label_as_printed="S 2p3/2 BE", value="162.4", unit="eV", data_kind="fit",
-  method="xps", mentions="0.80;S2-;Figure 5b")
+  "S 2p3/2 162.4 eV.", quantity="binding_energy", qualifiers="element=S", label_as_printed="S 2p3/2 BE", value="162.4",
+  unit="eV", data_kind="fit", method="xps", mentions="0.80;S2-;Figure 5b")
 F(K, "s3.p17;fig5b", "observation", "A weak doublet about 0.9 eV below the main one improves the fit; it is assigned to "
-  "electron-rich S2- on metallic edges, in 1T' MoS2 or in MoS2-x subsulfide.", quantity="other",
-  label_as_printed="BE shift below S2-", value="0.9", unit="eV", data_kind="fit", method="xps",
+  "electron-rich S2- on metallic edges, in 1T' MoS2 or in MoS2-x subsulfide.", quantity="binding_energy",
+  qualifiers="element=S", label_as_printed="BE shift below S2-", value="0.9", unit="eV", data_kind="fit", method="xps",
   mentions="S2- (e- rich);ref. 61;ref. 62")
 F(K, "s3.p18;fig5b", "observation", "A doublet above the S2- one is strongest for the low-ratio amorphous films.", method="xps",
   mentions="S2 2- (bridging) & S2- (apical)")
 F(K, "s3.p18;fig5b", "observation", "In the a-MoS3.0 film (ratio 0.50) the two S 2p3/2 components sit at 161.9 eV, with roughly "
-  "equal area to the other.", quantity="other", label_as_printed="S 2p3/2 BE", value="161.9", unit="eV", data_kind="fit",
-  method="xps", mentions="a-MoS3,0;0.50;lower BE doublet")
+  "equal area to the other.", quantity="binding_energy", qualifiers="element=S", label_as_printed="S 2p3/2 BE", value="161.9",
+  unit="eV", data_kind="fit", method="xps", mentions="a-MoS3,0;0.50;lower BE doublet")
 F(K, "s3.p18;fig5b", "observation", "In the ratio 0.50 amorphous film the higher S 2p3/2 component is at 163.1 eV; no "
-  "electron-rich S2- is seen in this or other amorphous samples.", quantity="other", label_as_printed="S 2p3/2 BE",
-  value="163.1", unit="eV", data_kind="fit", method="xps", mentions="a-MoS3,0;0.50;higher BE doublet")
+  "electron-rich S2- is seen in this or other amorphous samples.", quantity="binding_energy", qualifiers="element=S",
+  label_as_printed="S 2p3/2 BE", value="163.1", unit="eV", data_kind="fit", method="xps",
+  mentions="a-MoS3,0;0.50;higher BE doublet")
 F(K, "s3.p18", "cited", "Amorphous MoS3 contains sulfur in at least four chemical environments.", mentions="a-MoS3;ref. 64;ref. 65")
 F(K, "s3.p18;fig5a;fig5b", "definition", "Lower-BE S doublet = MoS2-like S2- plus terminal S2 2-; higher-BE doublet = bridging "
   "S2 2- plus apical S2-.", mentions="S2- & S2 2- (terminal);S2 2- (bridging) & S2- (apical)")
@@ -400,11 +402,12 @@ F(K, "s3.p29;fig7b;fig7.cap;s3.x6", "observation", "GPC averaged over the first 
 F(K, "s3.p29;s3.p30;s3.p31", "claim", "Two factors explain the GPC trend: more adsorption sites for the Mo precursor at higher "
   "ratio, and more surface area and reactive fin edges at higher ratio and temperature.")
 MO1 = F(K, "s3.p30", "observation", "By RBS, Mo atoms deposited per cycle are 0.6 at/nm2/cycle at ratio 0.20 and 150 °C.",
-        quantity="other", label_as_printed="Mo atoms deposited per cycle", value="0.6", unit="at/nm2/cycle",
-        data_kind="measured", method="rbs", mentions="0.20;150 °C")
+        quantity="atoms_per_cycle", qualifiers="element=Mo", label_as_printed="Mo atoms deposited per cycle", value="0.6",
+        unit="at/nm2/cycle", data_kind="measured", method="rbs", mentions="0.20;150 °C")
 MO2 = F(K, "s3.p30", "observation", "By RBS, Mo atoms deposited per cycle rise to 1.6 at/nm2/cycle at ratio 0.65 and 150 °C, more "
-        "than double, with little change in morphology.", quantity="other", label_as_printed="Mo atoms deposited per cycle",
-        value="1.6", unit="at/nm2/cycle", data_kind="measured", method="rbs", mentions="0.65;150 °C")
+        "than double, with little change in morphology.", quantity="atoms_per_cycle", qualifiers="element=Mo",
+        label_as_printed="Mo atoms deposited per cycle", value="1.6", unit="at/nm2/cycle", data_kind="measured", method="rbs",
+        mentions="0.65;150 °C")
 F(K, "s3.p30", "cited", "DFT for WS2 PEALD found that the metal precursor can adsorb on -SH sites.", method="cited",
   mentions="ref. 52;-SH;WS2")
 F(K, "s3.p30;s3.p42", "claim", "The density of -SH (thiol) groups, and with it the GPC and doping, should increase with the H2 "
@@ -412,9 +415,9 @@ F(K, "s3.p30;s3.p42", "claim", "The density of -SH (thiol) groups, and with it t
 F(K, "s3.p31", "claim", "Fin formation and growth make GPC increase with cycle number.")
 F(K, "s3.p31", "cited", "GPC rising with thickness was seen for crystalline MoS2 at ≥300 °C with ratio 0.20 and in other "
   "crystalline TMDC ALD processes.", mentions="≥300 °C;0.20;ref. 36;ref. 52;ref. 53;ref. 68")
-F(K, "s3.p32", "observation", "The most Mo per cycle, 2.2 at/nm2/cycle, is deposited at ratio 0.80.", quantity="other",
-  label_as_printed="Mo atoms deposited per cycle", value="2.2", unit="at/nm2/cycle", data_kind="measured", method="rbs",
-  mentions="0.80")
+F(K, "s3.p32", "observation", "The most Mo per cycle, 2.2 at/nm2/cycle, is deposited at ratio 0.80.", quantity="atoms_per_cycle",
+  qualifiers="element=Mo", label_as_printed="Mo atoms deposited per cycle", value="2.2", unit="at/nm2/cycle",
+  data_kind="measured", method="rbs", mentions="0.80")
 F(K, "s3.p32", "claim", "Optical GPC hides density and stoichiometry changes, but SE with RBS and XPS indicates that Mo precursor "
   "adsorption density dominates the GPC trends.", inputs=[MO1, MO2])
 F(K, "s3.p32", "observation", "At 250 °C ratios 0.35 (amorphous) and 0.50 (crystalline) give almost equal GPC.",
@@ -447,29 +450,29 @@ F(K, "s3.p35;fig8", "observation", "Ratio 0.94 gives resistivities down to 4 mΩ
 F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="electrical",
   mentions="100-150 °C")
 HALL = F(K, "s3.p36;s3.p37;s4.p1;s4.p2", "observation", "c-MoS2 films grown with ratios 0.50-0.80 at 100-250 °C show p-type "
-         "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="other",
+         "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="carrier_concentration",
          label_as_printed="majority carrier (hole) concentration", value="1e21", unit="cm-3", data_kind="measured",
          method="electrical", mentions="0.50-0.80;100-250 °C;Section S10")
 F(K, "s3.p36;s3.p37", "observation", "Hall mobilities of these low-temperature c-MoS2 films are modest, 0.001-0.01 (cm^2/Vs).",
-  quantity="other", label_as_printed="Hall mobility", value_min="0.001", value_max="0.01", unit="cm2 V-1 s-1",
+  quantity="carrier_mobility", label_as_printed="Hall mobility", value_min="0.001", value_max="0.01", unit="cm2 V-1 s-1",
   data_kind="measured", method="electrical", mentions="0.50-0.80;100-250 °C")
 F(K, "s3.p37", "observation", "Reference c-MoS2 films from 350-450 °C with ratio 0.20 have carrier densities of order 10^17 to "
-  "10^18 cm^-3.", quantity="other", label_as_printed="carrier density", value_min="1e17", value_max="1e18", unit="cm-3",
-  data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
+  "10^18 cm^-3.", quantity="carrier_concentration", label_as_printed="carrier density", value_min="1e17", value_max="1e18",
+  unit="cm-3", data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "observation", "Those reference films have similar or slightly higher mobilities, of order 0.01 (cm^2/Vs), "
-  "here and in Vandalon et al.", quantity="other", label_as_printed="mobility", value="0.01", unit="cm2 V-1 s-1",
+  "here and in Vandalon et al.", quantity="carrier_mobility", label_as_printed="mobility", value="0.01", unit="cm2 V-1 s-1",
   data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "claim", "Similar mobilities at 150 and 450 °C indicate comparable electronic quality.", mentions="150 °C;450 °C")
 F(K, "s3.p37", "cited", "MoS2 doped with 10 at.% Al at 450 °C has carrier concentrations and mobilities comparable to the "
   "low-temperature c-MoS2 here.", mentions="10 at. % Al;450 °C;ref. 69")
 F(K, "s3.p37", "claim", "The process offers an easy way to make strongly p-doped MoS2 at low temperature.")
 F(K, "s3.p38", "observation", "At 450 °C, raising the ratio from 0.20 to 0.80 lifts carrier concentration 3 orders of "
-  "magnitude, from 10^17 to 10^20 cm^-3.", quantity="other", label_as_printed="carrier concentration", value_min="1e17",
-  value_max="1e20", unit="cm-3", data_kind="measured", method="electrical", mentions="450 °C;0.20;0.80")
+  "magnitude, from 10^17 to 10^20 cm^-3.", quantity="carrier_concentration", label_as_printed="carrier concentration",
+  value_min="1e17", value_max="1e20", unit="cm-3", data_kind="measured", method="electrical", mentions="450 °C;0.20;0.80")
 F(K, "s3.p38", "observation", "Ratio 0.94 gives extremely high carrier concentrations, of order 10^22 cm^-3, consistent with "
-  "partial Mo content.", quantity="other", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
+  "partial Mo content.", quantity="carrier_concentration", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
   data_kind="measured", method="electrical", mentions="0.94")
-F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="other",
+F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="carrier_concentration",
   label_as_printed="carrier concentration", value_min="5e22", value_max="1e23", unit="cm-3", data_kind="literature",
   method="cited", mentions="Mo;ref. 70;ref. 71")
 F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="composition",
@@ -486,7 +489,7 @@ F(K, "s3.p40", "cited", "Literature (mostly DFT) places H in MoS2 at S vacancies
   "interstitially within the Mo plane (n-type), as neutral intercalated H2, or replacing S to form n-type MoSH.",
   mentions="ref. 72;ref. 73;ref. 74;ref. 75;ref. 76;ref. 77")
 F(K, "s3.p40", "observation", "Annealing up to 300 °C causes no major change in electrical properties.",
-  quantity="other", label_as_printed="annealing temperature", value="300", unit="°C", data_kind="chosen input",
+  quantity="annealing_temperature", label_as_printed="annealing temperature", value="300", unit="°C", data_kind="chosen input",
   method="electrical", mentions="Section S12")
 F(K, "s3.p41", "observation", "Infrared and Raman measurements found no evidence of Mo-H or S-H bonds, which does not prove they "
   "are absent.", method="raman", mentions="Mo-H;S-H")
@@ -505,15 +508,15 @@ F(K, "s3.p43", "observation", "Output current of the 100 °C FET is over ten tim
 F(K, "s3.p43", "observation", "The 100 °C FET contacts show non-linear I-V (a Schottky barrier); the 350 °C contacts are near "
   "Ohmic.", method="electrical", mentions="100 °C;350 °C")
 F(K, "s3.p44", "observation", "Device cross-sections show an amorphous MoS2/Ni interface layer about 2-3 nm thick for the 100 °C "
-  "sample.", quantity="other", label_as_printed="interface layer thickness", value_min="2", value_max="3", unit="nm",
-  data_kind="measured", method="tem", mentions="100 °C;Ni;Figure S14")
-F(K, "s3.p44", "observation", "The 350 °C device has a thinner interface layer, about 1 nm.", quantity="other",
-  label_as_printed="interface layer thickness", value="1", unit="nm", data_kind="measured", method="tem",
-  mentions="350 °C;Figure S14")
+  "sample.", quantity="film_thickness", qualifiers="position=interface", label_as_printed="interface layer thickness",
+  value_min="2", value_max="3", unit="nm", data_kind="measured", method="tem", mentions="100 °C;Ni;Figure S14")
+F(K, "s3.p44", "observation", "The 350 °C device has a thinner interface layer, about 1 nm.", quantity="film_thickness",
+  qualifiers="position=interface", label_as_printed="interface layer thickness", value="1", unit="nm", data_kind="measured",
+  method="tem", mentions="350 °C;Figure S14")
 F(K, "s3.p44", "claim", "The thicker interface of the 100 °C sample may explain its non-linear I-V.", mentions="100 °C")
-F(K, "s3.p44", "observation", "Films made at 100 °C start oxidizing when annealed in air at only 150 °C.", quantity="other",
-  label_as_printed="annealing temperature in air", value="150", unit="°C", data_kind="chosen input",
-  mentions="100 °C;Sections S11;S12")
+F(K, "s3.p44", "observation", "Films made at 100 °C start oxidizing when annealed in air at only 150 °C.",
+  quantity="annealing_temperature", label_as_printed="annealing temperature in air", value="150", unit="°C",
+  data_kind="chosen input", mentions="100 °C;Sections S11;S12")
 F(K, "s3.p44", "claim", "Further work is needed on carrier density control, contact/MoS2 interfaces and MoS2 stability during "
   "processing for low-temperature PEALD MoS2.", mentions="MoS2")
 
@@ -521,8 +524,8 @@ F(K, "s3.p44", "claim", "Further work is needed on carrier density control, cont
 F(K, "s3.p45", "claim", "The H2 flow ratio is a key parameter for low-temperature PEALD of TMDCs generally, allowing crystalline "
   "films at lower temperatures than before.", mentions="H2")
 F(K, "s3.p45;s5.p8", "cited", "The group's published WS2 and TiS2 PEALD processes use H2S/Ar plasma without H2 (ratio 0) and give "
-  "highly S-rich films at low temperature.", quantity="other", label_as_printed=R, value="0", data_kind="literature",
-  method="cited", mentions="ref. 52;ref. 53;H2S/Ar")
+  "highly S-rich films at low temperature.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0",
+  data_kind="literature", method="cited", mentions="ref. 52;ref. 53;H2S/Ar")
 F(K, "s3.p46", "cited", "The tungsten sulfide process gives crystalline WS2 only from 300 °C.", quantity="deposition_temperature",
   value="300", unit="°C", data_kind="literature", method="cited", mentions="ref. 52;ref. 67;ref. 79;WS2")
 F(K, "s3.p46;fig9a", "observation", "Without H2 at 150 °C the W sulfide films are highly S-rich (WS4.0 by XPS), amorphous and "
@@ -558,8 +561,8 @@ F(K, "s3.p51", "observation", "With rising ratio, atomic H emission grows while 
 F(K, "s3.p51", "claim", "H2S itself contains H, so some atomic H forms even with no added H2.")
 F(K, "s3.p52", "claim", "A higher atomic H to reactive S ratio may either keep excess S out or add a reaction that removes S.")
 F(K, "s3.p52", "setting", "Extra step test: a separate H2 gas or H2 plasma step follows the H2S/H2/Ar plasma (ratio 0.20) at "
-  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="other", label_as_printed=R, value="0.20",
-  data_kind="chosen input", mentions="0.20;150 °C;a-MoS3.4")
+  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R,
+  value="0.20", data_kind="chosen input", mentions="0.20;150 °C;a-MoS3.4")
 F(K, "s3.p52", "observation", "The H2 plasma step removes the extra S and yields c-MoS2, whereas H2 gas changes neither "
   "stoichiometry nor crystallinity.", mentions="Table S8")
 F(K, "s3.p52", "claim", "H radicals can convert a-MoS2+x into c-MoS2 under these ALD conditions, though prevention of S uptake by "
@@ -622,8 +625,8 @@ for g, p in (("H2S", "99.5"), ("H2", "99.999"), ("Ar", "99.999")):
     F(K, "s5.p4", "setting", f"{g} gas purity is {p}% (Linde Gas).", quantity="precursor_purity", qualifiers=f"species={g}",
       value=p, unit="%", data_kind="chosen input", mentions=g)
 F(K, "s5.p4", "cited", "In Sharma et al. the H2S and H2 flows were really 8 and 2 sccm (the article had them swapped), i.e. "
-  "ratio 0.20.", quantity="other", label_as_printed=R, value="0.20", data_kind="literature", method="cited",
-  mentions="ref. 36;8 sccm;2 sccm")
+  "ratio 0.20.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0.20", data_kind="literature",
+  method="cited", mentions="ref. 36;8 sccm;2 sccm")
 # Table 2
 T2 = [("0", "10", "0", "40"), ("0.20", "8", "2", "40"), ("0.35", "6.5", "3.5", "40"), ("0.50", "5", "5", "40"),
       ("0.65", "3.5", "6.5", "40"), ("0.80", "2", "8", "40"), ("0.94", "2", "30", "18")]
@@ -745,7 +748,7 @@ F(K, "fig1a;fig1.cap", "definition", "Schematic: high H2 flow ratio plasma holds
   "low ratio plasma holds many S-bearing species (Mo, N, C, S, H, Ar atom legend).", method="schematic",
   mentions="High H2 flow ratio;Low H2 flow ratio")
 F(K, "fig1a;fig1.cap", "observation", "Panel a plots Raman intensity (arb. units) against Raman shift 300-550 cm-1 for 150 °C films "
-  "made with 140 cycles at six ratios, peaks labelled E2g1, A1g, a-MoS3 and Si.", quantity="other",
+  "made with 140 cycles at six ratios, peaks labelled E2g1, A1g, a-MoS3 and Si.", quantity="signal_intensity",
   label_as_printed="Intensity (Arb. units)", data_kind="measured", method="raman",
   mentions="150 °C;140 ALD cycles;Raman shift (cm-1)")
 for r, key in (("0.94", "s1a_R094"), ("0.80", "s1a_R080"), ("0.65", "s1a_R065")):
@@ -754,15 +757,16 @@ for r, key in (("0.94", "s1a_R094"), ("0.80", "s1a_R080"), ("0.65", "s1a_R065"))
     ref = P(PID, f"fig1a_{r}", pts, "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
             "Intensity (Arb. units)", note="offset curve, y in v1's own scale (axis unnumbered); clipped Si point at 518 cm-1 "
             "dropped")
-    F(K, "fig1a;fig1.cap", "observation", f"Raman spectrum of the {r} film: MoS2 E2g1 and A1g peaks present.", quantity="other",
-      label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman", mentions=f"{R}: {r}")
+    F(K, "fig1a;fig1.cap", "observation", f"Raman spectrum of the {r} film: MoS2 E2g1 and A1g peaks present.",
+      quantity="signal_intensity", label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman",
+      mentions=f"{R}: {r}")
 for r, what in (("0.50", "with only weak broad features"),
                 ("0.20", "with the broad a-MoS3 bands marked by arrows"),
                 ("0", "with broad weak bands")):
     F(K, "fig1a;fig1.cap", "observation", f"Raman spectrum of the {r} film, {what}, no MoS2 peaks (not digitized).",
       method="raman", mentions=f"{R}: {r}")
 F(K, "fig1b;fig1.cap", "observation", "Panel b plots Raman intensity normalized to Si against Raman shift 350-430 cm-1 for 150 °C "
-  "films of 10-50 cycles, with dashed lines tracking the E2g1 and A1g peaks.", quantity="other",
+  "films of 10-50 cycles, with dashed lines tracking the E2g1 and A1g peaks.", quantity="signal_intensity",
   label_as_printed="Intensity (Normalized to Si)", data_kind="measured", method="raman", mentions="150 °C;Raman shift (cm-1)")
 for c, th in (("50", "4.8"), ("30", "2.6"), ("20", "1.6"), ("10", "0.9")):
     extra = " (text: about 1 nm; MoS2 modes already visible)" if c == "10" else ""
@@ -772,8 +776,9 @@ for c, th in (("50", "4.8"), ("30", "2.6"), ("20", "1.6"), ("10", "0.9")):
 s = v1_points(f"{K}:s1b_sub")
 ref = P(PID, "fig1b_substrate", s["points"], "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
         "Intensity (Normalized to Si)", note="flat substrate line; y in v1's own scale (axis unnumbered)")
-F(K, "fig1b;fig1.cap", "observation", "Bare SiO2/Si substrate gives a flat line in the 350-430 cm-1 window.", quantity="other",
-  label_as_printed="Intensity (Normalized to Si)", points_ref=ref, data_kind="measured", method="raman", mentions="SiO2/Si")
+F(K, "fig1b;fig1.cap", "observation", "Bare SiO2/Si substrate gives a flat line in the 350-430 cm-1 window.",
+  quantity="signal_intensity", label_as_printed="Intensity (Normalized to Si)", points_ref=ref, data_kind="measured",
+  method="raman", mentions="SiO2/Si")
 temp("fig1c;fig1.cap", "150", "Fig. 1c wafer film", "Figure 1c")
 ratio("fig1c;fig1.cap", "0.80", "Fig. 1c wafer film", "Figure 1c")
 cyc("fig1c;fig1.cap", "50", "Fig. 1c wafer film", "Figure 1c")
@@ -839,27 +844,29 @@ for (t, r), (_, smo) in CELLS.items():
 
 # ------------------------------------------------------------------ Fig. 5
 F(K, "fig5a;fig5.cap;s3.x3", "observation", "Panel a: XPS Mo 3d/S 2s spectra, intensity (arb. units) against binding energy "
-  "238-224 eV, data with fit envelope, background and components, one per ratio at 150 °C.", quantity="other",
-  label_as_printed="Intensity (arb. units)", data_kind="measured", method="xps", mentions="Mo 3d / S 2s;150 °C")
+  "238-224 eV, data with fit envelope, background and components, one per ratio at 150 °C.", quantity="signal_intensity",
+  qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", data_kind="measured", method="xps",
+  mentions="Mo 3d / S 2s;150 °C")
 for r, smo in (("0.94", "1.3"), ("0.80", "1.9"), ("0.65", "2.1"), ("0.50", "3.0"), ("0.20", "3.5")):
     s = v1_points(f"{K}:s5a_R{r.replace('.', '')}_data")
     ref = P(PID, f"fig5a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv", "Binding energy (eV)",
             "Intensity (arb. units)", note="data markers; stacked curves, y in v1's own scale (axis unnumbered)")
-    F(K, "fig5a;fig5.cap", "observation", f"Mo 3d/S 2s spectrum (data) of the ratio {r} film.", quantity="other",
-      label_as_printed="Intensity (arb. units)", points_ref=ref, data_kind="measured", method="xps", mentions=f"{r};MoS{smo}")
+    F(K, "fig5a;fig5.cap", "observation", f"Mo 3d/S 2s spectrum (data) of the ratio {r} film.", quantity="signal_intensity",
+      qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", points_ref=ref, data_kind="measured", method="xps",
+      mentions=f"{r};MoS{smo}")
     F(K, "fig5a;fig5b;fig5.cap;s3.x3", "observation", f"Spectra of the ratio {r} film are labelled with composition MoS{smo}.",
       quantity="composition", qualifiers="element=S", label_as_printed="S/Mo", value=smo, data_kind="measured", method="xps",
       mentions=f"{r};MoS{smo};Figure 5")
 F(K, "fig5b;fig5.cap;s3.x3", "observation", "Panel b: XPS S 2p spectra, binding energy 168-159 eV, with fitted S components; the "
-  "high-BE component grows towards low ratios (not digitized).", quantity="other", label_as_printed="Intensity (arb. units)",
-  data_kind="measured", method="xps", mentions="S 2p;150 °C;0.94;0.80;0.65;0.50;0.20")
+  "high-BE component grows towards low ratios (not digitized).", quantity="signal_intensity", qualifiers="element=S",
+  label_as_printed="Intensity (arb. units)", data_kind="measured", method="xps", mentions="S 2p;150 °C;0.94;0.80;0.65;0.50;0.20")
 
 # ------------------------------------------------------------------ Fig. 6
 F(K, "fig6a;fig6.cap;s3.x5", "observation", "SEM top views of 150 °C films (200 nm scale bar): ratios 0, 0.20 and 0.50 form the "
   "amorphous row, 0.65, 0.80 and 0.94 the crystalline row; fins are dense at 0.80 and sparse at 0.94.", method="sem",
   mentions="150 °C;Amorphous;Crystalline;200 nm")
 for r, rq in (("0", "0.4"), ("0.20", "0.7"), ("0.50", "0.4"), ("0.65", "0.9"), ("0.80", "3.1"), ("0.94", "4.0")):
-    F(K, "fig6a;fig6.cap", "observation", f"AFM roughness printed for the ratio {r} film is Rq = {rq} nm.", quantity="other",
+    F(K, "fig6a;fig6.cap", "observation", f"AFM roughness printed for the ratio {r} film is Rq = {rq} nm.", quantity="roughness",
       label_as_printed="Rq", value=rq, unit="nm", data_kind="measured", method="afm", mentions=f"{r};Rq = {rq} nm")
 F(K, "fig6b;fig6.cap;s3.x5", "observation", "Cross-sectional TEM (smoothed; unfiltered in Figure S9) of the 150 °C, 0.65 H2 film "
   "with a magnified inset of randomly oriented 2D layers (20 nm and 5 nm scale bars).", method="tem",
@@ -895,7 +902,7 @@ for r, key, what in (("0.80", "s9a_R080", "WS2 phonon peaks"), ("0", "s9a_R000",
     s = v1_points(f"{K}:{key}")
     ref = P(PID, f"fig9a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
             "Intensity (Arb. units)", note=s.get("note", ""))
-    F(K, "fig9a", "observation", f"WSx spectrum at ratio {r}: {what}.", quantity="other",
+    F(K, "fig9a", "observation", f"WSx spectrum at ratio {r}: {what}.", quantity="signal_intensity",
       label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman", mentions=f"{R}: {r}")
 F(K, "fig9b;fig9.cap;s3.x7", "observation", "Panel b: Raman spectra of TiSx grown at 100 °C, peaks Eg, A1g, Sh and Si.",
   method="raman", mentions="TiS2 @ 100 °C")
@@ -906,10 +913,50 @@ for r, key, what in (("0.50", "s9b_R050", "strong Eg, A1g and Sh features"),
     s = v1_points(f"{K}:{key}")
     ref = P(PID, f"fig9b_{r.replace(' ', '_')}", s["points"], "v1 points, accepted in v1_points_check.csv",
             "Raman shift (cm-1)", "Intensity (Arb. units)", note=s.get("note", ""))
-    F(K, "fig9b", "observation", f"TiSx spectrum, {r}: {what}.", quantity="other", label_as_printed="Intensity (Arb. units)",
-      points_ref=ref, data_kind="measured", method="raman", mentions=r)
+    F(K, "fig9b", "observation", f"TiSx spectrum, {r}: {what}.", quantity="signal_intensity",
+      label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman", mentions=r)
 F(K, "fig9b", "observation", "TiSx spectrum at ratio 0: nearly flat apart from the Si line (not digitized).", method="raman",
   mentions=f"{R}: 0")
+
+# ------------------------------------------------------------------ the H2 flow ratio of every run as an explicit setting
+# One fact per run whose ratio the paper states, cited from the elements that name the (temperature, ratio) pair: the Fig. 2
+# and Fig. 4 cells plus the text, table-row and panel labels that name the pair. The 150 °C / 0.80 wafer film keeps fig1c#2
+# above; the extra-H2-step run keeps s3.p52#2. Placed under their run in stage 3 (RATIO_RUN: run suffix -> fact id).
+RATIO_EV = {(450, "0.20"): "s3.p35;s3.p37;s3.p38", (450, "0.80"): "s3.p38", (300, "0.20"): "s3.p35;s3.p7",
+            (350, "0.20"): "s3.p10;fig3b;fig3.cap;s3.p43;s3.p37", (250, "0.35"): "s3.p32", (250, "0.50"): "s3.p32",
+            (150, "0"): "s3.p4;fig1a", (150, "0.20"): "s3.p4;fig1a;tab1.r1c0;s3.p19;s3.p30;s3.p52", (150, "0.50"): "s3.p4;fig1a",
+            (150, "0.65"): "s3.p4;fig1a;tab1.r2c0;s3.p19;s3.p26;s3.p30;fig6b", (150, "0.94"): "fig1a", (100, "0.65"): "s3.p34",
+            (100, "0.80"): "s3.p8;fig3a;fig3.cap;fig1.cap;s3.p43;s3.p7"}
+RATIO_RUN = {}
+for (t, r) in CELLS:
+    if (t, r) == (150, "0.80"):
+        continue
+    RATIO_RUN[f"T{t}_R{r}"] = F(K, "fig2;fig4" + (";" + RATIO_EV[(t, r)] if (t, r) in RATIO_EV else ""), "setting",
+                                f"{t} °C, {R} {r}: H2 share of the plasma feed set to {r}", quantity="plasma_gas_ratio",
+                                qualifiers="gas=H2", value=r, data_kind="chosen input", mentions=f"{r};{t} °C")
+for n in ("10", "20", "30", "50"):
+    RATIO_RUN[f"T150_R0.80_N{n}"] = F(K, "fig1b;s3.p5", "setting", f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b: H2 share of the "
+                                      f"plasma feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80",
+                                      data_kind="chosen input", mentions=f"0.80;150 °C;{n} cyc")
+RATIO_RUN["T250_R0_lowH2S"] = F(K, "s3.p53", "setting", f"250 °C, {R} 0 with a lowered H2S flow (no H2 added, Fig. S22a): H2 share "
+                                "of the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                                data_kind="chosen input", mentions="0;250 °C;Figure S22a")
+RATIO_RUN["WS2_T150_R0.80"] = F(K, "s5.p8;s3.p46;fig9a;fig9.cap", "setting", f"WS2 at 150 °C, {R} 0.80: H2 share of the plasma "
+                                "feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80",
+                                data_kind="chosen input", mentions="0.80;150 °C;WS2")
+RATIO_RUN["WS2_T150_R0"] = F(K, "s3.p46;fig9a;fig9.cap", "setting", f"WSx at 150 °C, {R} 0 (no H2 in the plasma feed): H2 share of "
+                             "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                             data_kind="chosen input", mentions="0;150 °C;WS2")
+RATIO_RUN["TiS2_T100_R0.50"] = F(K, "s5.p8;s3.p48;fig9b;fig9.cap", "setting", f"TiS2 at 100 °C, {R} 0.50: H2 share of the plasma "
+                                 "feed set to 0.50", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.50",
+                                 data_kind="chosen input", mentions="0.50;100 °C;TiS2")
+RATIO_RUN["TiS2_T100_R0"] = F(K, "fig9b;fig9.cap", "setting", f"TiSx at 100 °C, {R} 0 (the Fig. 9b curve labelled 0): H2 share of "
+                              "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                              data_kind="chosen input", mentions="0;100 °C;TiS2")
+RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a temperature the paper does not state (100 °C "
+                                 "inferred from the TiS2 recipe): H2 share of the plasma feed set to 0.80",
+                                 quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80", data_kind="chosen input",
+                                 mentions="0.80;TiS2")
 
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 run is one (deposition temperature, H2 flow ratio) pair: every film made at that pair (heat-map film, Table 1 film,
@@ -1084,6 +1131,9 @@ put(xrun("TiS2_T100_R0.50"), "s3.p48#4", links=lk("fig9b#3", "fig9b#4"))
 put(xrun("TiS2_T100_R0"), "fig9b#5")
 put(xrun("TiS2_T100_R0.80"), "s3.p48#5")
 put(xrun("TiS2_thermal"), "fig9b#4")
+# the explicit H2 flow ratio of each run (RATIO_RUN, stage 2): under that run
+for s_, i in RATIO_RUN.items():
+    put(xrun(s_), i)
 # a value computed from others: under its first input
 for f in C.facts():
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:

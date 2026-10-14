@@ -56,7 +56,7 @@ f("s6.p3;s6.p4", "claim", "scaling the substrate up from NP thin films to mm-sca
 f("s6.p4", "cited", "Gayle et al. ran one TMA/H2O Al2O3 cycle through a silica aerogel monolith with AR above 60 000",
   quantity="aspect_ratio", value="60000", censor=">", data_kind="literature", method="cited", mentions="ref. 9;Gayle et al.")
 f("s6.p4", "cited", "porosity of that silica aerogel monolith: φ = 0.95",
-  quantity="other", label_as_printed="φ", value="0.95", data_kind="literature", method="cited", mentions="ref. 9")
+  quantity="porosity", label_as_printed="φ", value="0.95", data_kind="literature", method="cited", mentions="ref. 9")
 f("s6.p4", "cited", "pore diameter of that aerogel monolith ≈ 20 nm",
   quantity="feature_width", label_as_printed="d_pore", value="20", unit="nm", data_kind="literature", method="cited", mentions="ref. 9")
 f("s6.p4", "cited", "L of the aerogel monolith ≈ 1.25 mm, taken as half its thickness since reactants diffused in from top and bottom",
@@ -138,7 +138,7 @@ f(f"s8.p1;abs.g3;{A}", "observation", "final NPC thickness 1.55 ± 0.05 mm by el
 f("s8.p1", "observation", "final NPC diameter 11.43 ± 0.02 mm by electronic calipers",
   quantity="other", label_as_printed="diameter", value="11.43", unit="mm", data_kind="measured")
 phi_i = f(f"s8.p1;abs.g3;{A};s6.p8;s15.p2;s12.p1;tabI.cap;s13.p5", "observation", "initial NPC porosity φ_i = 50.5 ± 0.3% (printed φ_1 in the text and φ_f in the Table I caption)",
-          quantity="other", label_as_printed="φ_i", value="50.5", unit="%", data_kind="measured", mentions="φ_1;φ_f")
+          quantity="porosity", qualifiers="stage=initial", label_as_printed="φ_i", value="50.5", unit="%", data_kind="measured", mentions="φ_1;φ_f")
 f("s8.p1", "observation", "the pressing recipe was tuned for intact compacts, yet some mm-scale cracks appeared", mentions="Fig. S1")
 
 # ---------------------------------------------------------------- II B. ZnO ALD
@@ -191,7 +191,7 @@ f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", 
 f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", "run (2): T held at 160 °C",
   quantity="deposition_temperature", value="160", unit="°C", data_kind="chosen input", mentions="T held constant at 160 °C;160 °C")
 f(f"s9.p6;abs.g3;{A};s6.p8;s15.p2;fig1b;fig2.cap;s12.p12", "setting", "run (3), cycled: T is 120 °C for every step but the H2O purge",
-  quantity="deposition_temperature", value="120", unit="°C", data_kind="chosen input", mentions="T cycled between 120 and 160 °C;120/160 °C")
+  quantity="deposition_temperature", qualifiers="step=reactant_A", value="120", unit="°C", data_kind="chosen input", mentions="T cycled between 120 and 160 °C;120/160 °C")
 f(f"s9.p6;abs.g3;{A};s6.p8;s15.p2;fig1b", "setting", "run (3), cycled: during each H2O purge T is raised to 160 °C and brought back to 120 °C before the next DEZ pulse",
   quantity="deposition_temperature", qualifiers="step=purge_B", value="160", unit="°C", data_kind="chosen input", mentions="T cycled between 120 and 160 °C;120/160 °C")
 f("s9.p6;fig2.cap;s12.p12", "setting", "an H2O half-cycle hydroxylates the Al2O3 before each run's ZnO ALD")
@@ -235,7 +235,7 @@ f("s10.p1;tabII.cap;s14.p9", "setting", "phase fractions and grain sizes by Riet
 f("s10.p1", "setting", "whole-pattern fits were repeated until the residual became stable at 15% (within one percentage point) for all three samples",
   quantity="other", label_as_printed="residual", value="15", unit="%", data_kind="fit", method="xrd")
 f("s10.p1", "observation", "corundum grain size 90-100 nm, agreeing with the BET-based d_NP = 100 nm",
-  quantity="other", label_as_printed="corundum grain size", value_min="90", value_max="100", unit="nm", data_kind="fit", method="xrd")
+  quantity="crystallite_size", qualifiers="species=Al2O3", label_as_printed="corundum grain size", value_min="90", value_max="100", unit="nm", data_kind="fit", method="xrd")
 f("s10.p2;tabII.cap;s14.p9", "setting", "for resistivity, top and bottom faces got blanket e-beam evaporated films at 10^-6 Torr, nominally 20 nm Ti and 200 nm Au", method="electrical")
 f("s10.p2", "setting", "prisms of about 6 × 3 × 1.6 mm were cut from the NPCs after metallization to avoid edge effects", method="electrical")
 f("s10.p2;s13.p4;tabII.cap;s14.p9", "setting", "two-point resistivity through the sample thickness on a probe station, one probe on top and the other via the conductive stage", method="electrical")
@@ -262,7 +262,7 @@ mg = {}
 for r, lab, v, pm, extra in (("1", "120", "28.4", "0.1", ";s13.p3"), ("2", "160", "36.4", "1.6", ";s13.p3"), ("3", "120/160", "26.4", "0.1", ";s13.p3")):
     mg[lab] = f(f"s12.p1;tabI.r{r}c1;tabI.r{r}c0;tabI.r0c1;tabI.r0c0;tabI.cap;s13.p5{extra}", "observation",
                 f"NPC mass gain {v} ± {pm}% for the {lab} °C run (± is sample-to-sample spread)",
-                quantity="other", label_as_printed="Mass gain (%)", value=v, unit="%", data_kind="measured", method="gravimetry",
+                quantity="mass_gain", label_as_printed="Mass gain (%)", value=v, unit="%", data_kind="measured", method="gravimetry",
                 mentions=f"{lab};{lab} °C")
 f("s12.p1", "observation", "the text lists final porosities 36.7 ± 0.1%, 30.6 ± 1.4% and 38.0 ± 0.1% in the order 120/160, 120 and 160 °C, an order that differs from Table I",
   mentions="φ_f;120/160;120;160")
@@ -270,7 +270,7 @@ por = {}
 for r, lab, v, pm in (("1", "120", "36.7", "0.1"), ("2", "160", "30.6", "1.4"), ("3", "120/160", "38.0", "0.1")):
     por[lab] = f(f"tabI.r{r}c2;tabI.r0c2;tabI.cap;s13.p5", "derived",
                  f"final porosity φ_f {v} ± {pm}% for the {lab} °C run, from the mass gain assuming uniform coating",
-                 quantity="other", label_as_printed="Final porosity, φ_f (%)", value=v, unit="%", data_kind="calculated",
+                 quantity="porosity", qualifiers="stage=final", label_as_printed="Final porosity, φ_f (%)", value=v, unit="%", data_kind="calculated",
                  method="calculation", mentions=lab, inputs=[mg[lab], phi_i])
 f("s12.p1", "model", "porosity loss is turned into ZnO thickness as the mean of two geometries, spherical NPs and spherical pores, provisionally assuming uniform coating", mentions="ref. 4;Sec. III C")
 gpc = {}
@@ -291,38 +291,38 @@ NK("s12.p5", "connective word between equations")
 f("eq5;s12.p4", "model", "Eq. (5): H2O half-reaction, surface Ox-Zn(C2H5)2-x plus H2O gives surface OZn-(OH)x and (2-x) C2H6", mentions="ref. 10;ref. 27")
 f("s12.p6;eq4;eq5", "definition", "|- marks a surface species; x may range from 0 to 2")
 f("s12.p6", "cited", "x ~1 for ZnO ALD on silica powder at 80 °C",
-  quantity="other", label_as_printed="x", value="1", data_kind="literature", method="cited", mentions="ref. 10;80 °C")
+  quantity="reaction_stoichiometry", label_as_printed="x", value="1", data_kind="literature", method="cited", mentions="ref. 10;80 °C")
 f("s12.p6", "cited", "x = 1.37 for ZnO ALD on a QCM at 177 °C",
-  quantity="other", label_as_printed="x", value="1.37", data_kind="literature", method="cited", mentions="ref. 28;177 °C")
+  quantity="reaction_stoichiometry", label_as_printed="x", value="1.37", data_kind="literature", method="cited", mentions="ref. 28;177 °C")
 f("s12.p6", "cited", "x ~1.4-1.6 for ZnO ALD on a QCM between 80 and 250 °C",
-  quantity="other", label_as_printed="x", value_min="1.4", value_max="1.6", data_kind="literature", method="cited", mentions="ref. 27;80-250 °C")
+  quantity="reaction_stoichiometry", label_as_printed="x", value_min="1.4", value_max="1.6", data_kind="literature", method="cited", mentions="ref. 27;80-250 °C")
 f("s12.p6;fig2a;fig2b;fig2c", "claim", "the pressure traces imply x > 1 here: p rises in the DEZ half-reaction (more C2H6 out than reactant used) and falls in the H2O half-reaction",
-  quantity="other", label_as_printed="x", value="1", censor=">", data_kind="calculated", method="process_monitor", mentions="Fig. 2;Eq. (4);Eq. (5)")
+  quantity="reaction_stoichiometry", label_as_printed="x", value="1", censor=">", data_kind="calculated", method="process_monitor", mentions="Fig. 2;Eq. (4);Eq. (5)")
 f("s12.p6", "claim", "the analysis uses the DEZ step because H2O likely adsorbs in multilayers, especially on non-sample surfaces at ~90 °C or colder, blurring the pressure change", mentions="Sec. II B")
 f("s12.x1;fig3a;fig3.cap;s12.p16", "observation", "Fig. 3(a): δp, the pressure minus its value at the start of the hold (~9 Torr), versus elapsed time δt (min) in the cycle 15 DEZ hold, one curve per run",
   method="process_monitor", mentions="cycle 15;Fig. 3(a);Note S3;ref. 44")
 f("s12.x1", "model", "the δp change in a DEZ hold is taken to come from the Eq. (4) half-reaction plus a net leak out of the chamber")
 f("s12.x1", "observation", "leak tests showed the main leak usually runs across the pump valve that isolates the chamber in holds")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp climbs for the first ~10 min of the DEZ hold",
-  quantity="other", label_as_printed="time to δp maximum", value="10", unit="min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
+  quantity="time_to_maximum", label_as_printed="time to δp maximum", value="10", unit="min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp levels off at ~450 mTorr",
-  quantity="other", label_as_printed="δp maximum", value="450", unit="mTorr", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
+  quantity="pressure_rise", qualifiers="level=maximum", label_as_printed="δp maximum", value="450", unit="mTorr", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "120/160 °C, cycle 15: δp then falls slowly, at ~2 mTorr/min on average over the last ~10 min (terminal slope ~-2)",
-  quantity="other", label_as_printed="TS", value="-2", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
+  quantity="pressure_rate", label_as_printed="TS", value="-2", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="120/160 °C;cycle 15")
 f("s12.x1;fig3a", "claim", "the slope turning from positive to negative is read as a change from reaction-dominated to leak-dominated pressure")
 f("s12.x1", "setting", "recorded pressure data have 10 mTorr resolution, which limits the slope analysis",
   quantity="other", label_as_printed="pressure resolution", value="10", unit="mTorr", data_kind="measured", method="process_monitor", mentions="Note S3")
 f("s12.x1;fig3a", "claim", "whether diffusion-reaction saturated cannot be told from δp(δt), given unequal DEZ and C2H6 leak rates and varying valve seating, but gas generation clearly slows")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: δp peaks later, after ~15 min versus 10 min for 120/160",
-  quantity="other", label_as_printed="time to δp maximum", value="15", unit="min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
+  quantity="time_to_maximum", label_as_printed="time to δp maximum", value="15", unit="min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: δp maximum ~500 mTorr versus 450 mTorr for 120/160",
-  quantity="other", label_as_printed="δp maximum", value="500", unit="mTorr", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
+  quantity="pressure_rise", qualifiers="level=maximum", label_as_printed="δp maximum", value="500", unit="mTorr", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;fig3a", "observation", "T = 120 °C, cycle 15: terminal slope (mean over the last 10 min) about -1 versus -2 mTorr/min for 120/160",
-  quantity="other", label_as_printed="TS", value="-1", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
+  quantity="pressure_rate", label_as_printed="TS", value="-1", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 120 °C;cycle 15")
 f("s12.x1;s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp keeps rising for the whole hold, with terminal slope ~80 mTorr/min",
-  quantity="other", label_as_printed="TS", value="80", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
+  quantity="pressure_rate", label_as_printed="TS", value="80", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
 f("s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp reaches ~2.7 Torr before the pump step",
-  quantity="other", label_as_printed="δp", value="2.7", unit="Torr", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
+  quantity="pressure_rise", label_as_printed="δp", value="2.7", unit="Torr", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
 f("fig3a;fig3.cap;s12.p16", "setting", "the noisier part of the 160 °C δp curve comes from the 1000 Torr gauge; the rest of the data from the 10 Torr gauge", method="process_monitor", mentions="T = 160 °C")
 f("fig3a", "observation", "Fig. 3(a) marks Δp as the net rise at the end of each hold, labels the terminal slope, and shades the early 120/160 curve as 'Reaction' leading to 'Saturation?'")
 f("s12.p7", "claim", "higher δp maxima at 120 and 160 °C fit more deposition than in the 120/160 °C process")
@@ -351,13 +351,13 @@ f("eq8;s12.p11;s12.p13", "model", "Eq. (8): if other reactions also deposit mate
 dns, dng = {}, {}
 for r, lab, s, g in (("1", "120", "150", "59.3"), ("2", "160", "217", "191"), ("3", "120/160", "139", "50.8")):
     dns[lab] = f(f"tabI.r{r}c4;tabI.r0c4", "derived", f"Δn_s = {s} µmol/cyc for the {lab} °C run, from the GPC with the solid taken as ZnO",
-                 quantity="other", label_as_printed="Δn_s", value=s, unit="µmol/cyc", data_kind="calculated", method="calculation", mentions=lab, inputs=[gpc[lab]])
+                 quantity="deposited_moles_per_cycle", label_as_printed="Δn_s", value=s, unit="µmol/cyc", data_kind="calculated", method="calculation", mentions=lab, inputs=[gpc[lab]])
     dng[lab] = f(f"tabI.r{r}c5;tabI.r0c5", "derived", f"Δn_g = {g} µmol/cyc for the {lab} °C run, averaged over cycles from the DEZ-hold pressure data",
-                 quantity="other", label_as_printed="Δn_g", value=g, unit="µmol/cyc", data_kind="calculated", method="process_monitor", mentions=lab)
+                 quantity="gas_moles_per_cycle", label_as_printed="Δn_g", value=g, unit="µmol/cyc", data_kind="calculated", method="process_monitor", mentions=lab)
 f("tabI.cap;s13.p5", "definition", "Table I: GPC ± is the spread within each run's NPC pair; Δn_s and Δn_g are totals for the pair, with ~±0.1 measurement uncertainty, giving ~±0.001 on ȳ", mentions="Note S3;ref. 44")
 for r, lab, v, tlab in (("1", "120", "1.395", "T = 120 °C"), ("2", "160", "1.880", "T = 160 °C"), ("3", "120/160", "1.365", "T cycled between 120 and 160 °C")):
     f(f"s12.p14;tabI.r{r}c6;tabI.r0c6;s12.p15;tabI.cap;s13.p5", "derived", f"ȳ = {v} (±0.001) for the {lab} °C run, from Eq. (6)",
-      quantity="other", label_as_printed="ȳ (printed ν̄ in the text layer)", value=v, data_kind="calculated", method="calculation",
+      quantity="reaction_stoichiometry", label_as_printed="ȳ (printed ν̄ in the text layer)", value=v, data_kind="calculated", method="calculation",
       mentions=f"{lab};{tlab}", inputs=[dng[lab], dns[lab]])
 f("s12.p15;s12.p17", "claim", "for 120 and 120/160 °C, where pure ZnO is not in doubt, ȳ measures ethane produced in the DEZ exposure by hydrogenation of the ethyl ligands", mentions="120;120/160 °C")
 f("s12.p17", "claim", "the slightly higher ȳ at T = 120 °C fits more residual H2O, which could raise c (reacting with DEZ or MEZ) and/or x̄ (helping DEZ adsorb and react with OH)", mentions="ref. 25;ref. 26;T = 120 °C")
@@ -373,10 +373,25 @@ f("fig1a;fig4a", "setting", "NPC diameter drawn and photographed as ~11.4 mm",
 f("fig1a", "setting", "the schematic labels the compact thickness 2L ≈ 1.6 mm",
   quantity="other", label_as_printed="2L", value="1.6", unit="mm", data_kind="chosen input", method="schematic")
 f("fig1a;fig1.cap;s9.p2", "setting", "the schematic labels the initial porosity φ_i ≈ 51%",
-  quantity="other", label_as_printed="φ_i", value="51", unit="%", data_kind="chosen input", method="schematic")
+  quantity="porosity", qualifiers="stage=initial", label_as_printed="φ_i", value="51", unit="%", data_kind="chosen input", method="schematic")
 f("fig1b;fig1.cap;s9.p2", "definition", "Fig. 1(b) tabulates which steps run at 120 °C and which at 160 °C in the three schedules; a 'dose' means the pulse step plus the hold step", method="schematic",
   mentions='"120 °C";"160 °C";"120/160 °C"')
 f("fig1b", "setting", 'in the "120/160 °C" schedule DEZ dose, DEZ purge and H2O dose are at 120 °C and only the H2O purge at 160 °C', method="schematic", mentions='"120/160 °C"')
+# the per-step temperature schedule of Fig. 1(b) (the text: s9.p6, and s6.p8 for the cycled run), one fact per run and step; a dose is
+# the pulse plus the hold, so step=reactant_A / reactant_B. The cycled run's DEZ dose is s9.p6#6 (step=reactant_A) and its H2O purge
+# s9.p6#7 (step=purge_B); SCHED keeps the ids for the stage-3 parents
+STEPS = (("reactant_A", "DEZ dose", "the DEZ dose (pulse and hold)"), ("purge_A", "DEZ purge", "the DEZ purge"),
+         ("reactant_B", "H2O dose", "the H2O dose (pulse and hold)"), ("purge_B", "H2O purge", "the H2O purge"))
+SCHED = {"120": [], "160": [], "120/160": []}
+for lab in ("120", "160"):
+    for step, printed, what in STEPS:
+        SCHED[lab].append(f("fig1b;s9.p6", "setting", f'Fig. 1(b), "{lab} °C" schedule: {what} runs at T = {lab} °C',
+                            quantity="deposition_temperature", qualifiers=f"step={step}", value=lab, unit="°C", data_kind="chosen input",
+                            method="schematic", mentions=f'"{lab} °C";{printed}'))
+for step, printed, what in STEPS[1:3]:
+    SCHED["120/160"].append(f("fig1b;s9.p6;s6.p8", "setting", f'Fig. 1(b), "120/160 °C" schedule: {what} runs at T = 120 °C, like every step but the H2O purge',
+                              quantity="deposition_temperature", qualifiers=f"step={step}", value="120", unit="°C", data_kind="chosen input",
+                              method="schematic", mentions=f'"120/160 °C";{printed}'))
 f("fig2a;fig2b;fig2c;fig2.cap;s12.p12", "observation", "the ~1 Torr spikes and dips in purges come from periodic pressure drops in the N2 feed line when the attached glovebox draws N2",
   method="process_monitor")
 f("fig2a;fig2.cap;s12.p12", "observation", "Fig. 2(a), T held at 120 °C: p (Torr) versus time (hr) for the initial H2O half-cycle and cycles 1-5, with pulse and hold steps marked",
@@ -409,14 +424,14 @@ for r, lab, v, pm, ev in (("1", "120", "23.3", "0.2", ";s13.p3;s13.p2"), ("2", "
       quantity="composition", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
 for r, lab, v, pm, ev in (("1", "120", "6.0", "1.1", ";s13.p3"), ("2", "160", "6.0", "1.5", ""), ("3", "120/160", "5.1", "1.1", ";s13.p3")):
     f(f"tabII.r{r}c2;tabII.r0c2;tabII.cap;s14.p9{ev}", "derived", f"zincite crystallite size {v} ± {pm} nm for the {lab} °C sample, Halder-Wagner analysis",
-      quantity="other", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
+      quantity="crystallite_size", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
 for r, lab in (("1", "120"), ("3", "120/160")):
     f(f"tabII.r{r}c3;tabII.r{r}c4;tabII.r0c3;tabII.r0c4;tabII.cap", "observation", f"no metallic Zn detected by XRD in the {lab} °C sample, so no Zn crystallite size is given",
       quantity="composition", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", censor="<dl", data_kind="fit", method="xrd", mentions=f"{lab};Not detected")
 f("tabII.r2c3;tabII.r0c3;tabII.cap", "derived", "metallic Zn weight percent 12.5 ± 0.7 in the 160 °C sample",
   quantity="composition", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
 f("tabII.r2c4;tabII.r0c4;tabII.cap", "derived", "metallic Zn crystallite size 57 ± 42 nm in the 160 °C sample",
-  quantity="other", label_as_printed="Zn (metallic) Crystallite size (nm)", value="57", unit="nm", data_kind="fit", method="xrd", mentions="160")
+  quantity="crystallite_size", qualifiers="species=Zn", label_as_printed="Zn (metallic) Crystallite size (nm)", value="57", unit="nm", data_kind="fit", method="xrd", mentions="160")
 f("tabII.cap;s14.p9", "definition", "Table II: ± on wt.% and crystallite size are pattern-fit errors; ± on ρ comes from the uncertain Ti-Au electrode areas after flaking")
 th120 = f("s13.p3", "derived", "coating thickness 4.73 ± 0.03 nm for T = 120 °C, inferred from the mass gain",
           quantity="film_thickness", value="4.73", unit="nm", data_kind="calculated", method="calculation", mentions="T = 120 °C", inputs=[mg["120"]])
@@ -488,10 +503,12 @@ for p in "def":
     ref = P(PID, f"fig6{p}_zn", s["points"], source=f"points.json: figure 6 panel {p}, series '{SER[p]}' ({s['source']})",
             x_label=s["x_label_as_printed"], y_label=s["y_label_as_printed"], note="points are [x, y] = [normalized counts, position mm] (axes swapped); " + s["quality"])
     f(f"fig6{p};fig6.cap;s15.p6", "observation", f"Fig. 6({p}) Zn Kα line scan of the {LAB[p]} sample: normalized counts against position through the thickness",
-      quantity="other", label_as_printed="Normalized X-ray counts (Zn)", points_ref=ref, data_kind="measured", method="sem_eds", mentions=LAB[p])
+      quantity="signal_intensity", qualifiers="element=Zn", label_as_printed="Normalized X-ray counts (Zn)", points_ref=ref, data_kind="measured", method="sem_eds", mentions=LAB[p])
 for p in "def":
-    f(f"fig6{p}", "observation", f"Fig. 6({p}), {LAB[p]}: the Al Kα trace is the highest-count curve and the noisiest, roughly flat across the section", method="sem_eds", mentions=LAB[p])
-    f(f"fig6{p}", "observation", f"Fig. 6({p}), {LAB[p]}: the O and C Kα traces lie low and flat, C below O", method="sem_eds", mentions=LAB[p])
+    f(f"fig6{p}", "observation", f"Fig. 6({p}), {LAB[p]}: the Al Kα trace is the highest-count curve and the noisiest, roughly flat across the section",
+      quantity="signal_intensity", qualifiers="element=Al", method="sem_eds", mentions=LAB[p])
+    f(f"fig6{p}", "observation", f"Fig. 6({p}), {LAB[p]}: the O and C Kα traces lie low and flat, C below O",
+      quantity="signal_intensity", method="sem_eds", mentions=LAB[p])
 f("fig6e", "observation", "Fig. 6(e): the scan starts near 0.4 mm because the upper part of the 160 °C section is missing; the Zn trace bulges outward near the faces and dips at mid-depth", method="sem_eds", mentions="160 °C")
 
 # ---------------------------------------------------------------- IV. conclusions
@@ -598,6 +615,8 @@ put(R160, "s14.p7#1", links=fid("fig6e#1"))                                    #
 put(RCYC, "s9.p6#6", "s9.p6#7", "s12.x1#4", "s12.x1#5", "s12.x1#6", "fig2c#1", "s13.p1#5", "fig5#4", "fig6c#1", "fig6f#1",
     "fig6f#2", "fig6f#3")
 put(RCYC, "fig1b#2", links=fid("s9.p6#7"))                                     # the cycled schedule, in the text and in Fig. 1(b)
+for lab, ids in SCHED.items():                                                 # the per-step temperatures of Fig. 1(b), under their run
+    put(RUN[lab], *[i.split(":", 1)[1] for i in ids])
 put(TEST, "fig2d#1", "fig2d#2")
 put(TEST, "s15.p4#4", links=fid("fig2d#2"))                                    # the 33.5 min ramp read from the test-run trace
 put(BARE, "fig4a#1")

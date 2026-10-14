@@ -327,11 +327,11 @@ def tab1_facts():
               data_kind="chosen input", mentions=men)
         ID[n, 3] = F(K, ev(3), "setting", f"sample {n}: design channel height H {H} nm", quantity="feature_height",
                      label_as_printed="Design channel height H", value=H, unit="nm", data_kind="chosen input", mentions=men)
-        F(K, ev(4), "setting", f"sample {n}: pillar layout {lay}", quantity="other", label_as_printed="Pillar layout",
+        F(K, ev(4), "setting", f"sample {n}: pillar layout {lay}", quantity="pillar_layout", label_as_printed="Pillar layout",
           mentions=f"{men};{lay}")
         ID[n, 5] = F(K, ev(5), "setting", f"sample {n}: {N} ALD cycles", quantity="cycle_number", value=N, data_kind="chosen input",
                      mentions=men)
-        F(K, ev(6), "setting", f"sample {n}: reflectometer magnification ×{mag}", quantity="other",
+        F(K, ev(6), "setting", f"sample {n}: reflectometer magnification ×{mag}", quantity="objective_magnification",
           label_as_printed="Reflectometer magnification", value=mag, unit="×", data_kind="chosen input", method="reflectometry",
           mentions=men)
         if v[0] is None:
@@ -361,7 +361,7 @@ def tab1_facts():
         ID[n, 14] = F(K, ev(14), "derived", f"sample {n}: front slope dθ/dx~ {v[7]}", quantity="front_slope",
                       qualifiers="by=H;reference=entrance", label_as_printed="Slope dθ/dx̃", value=v[7], data_kind="fit",
                       method="calculation", mentions=men)
-        F(K, ev(15), "derived", f"sample {n}: R^2 of the linear front fit {v[8]}", quantity="other",
+        F(K, ev(15), "derived", f"sample {n}: R^2 of the linear front fit {v[8]}", quantity="fit_r2",
           label_as_printed="Linear fitting residual R^2", value=v[8], data_kind="fit", method="calculation", mentions=men)
 
 
@@ -403,7 +403,7 @@ F(K, "s10.p2;fig5b", "observation", "next comes a plateau of slightly larger thi
   method="sem_eds", mentions="Region II b;Region II c;Fig. 3b")
 for el, nm in (("O", "O"), ("Al", "Al"), ("Si", "Si")):
     F(K, "fig5b", "observation", f"Fig. 5b curve {el}: EDS intensity across the coated channels",
-      quantity="other", label_as_printed="Intensity [a.u.]", qualifiers=f"element={el}",
+      quantity="signal_intensity", label_as_printed="Intensity [a.u.]", qualifiers=f"element={el}",
       points_ref=v1(f"yim20:F5b-{nm}", f"fig5b_{el}", "Distance [µm]", "Intensity [a.u.]"), data_kind="measured", method="sem_eds",
       mentions=f"{el};Fig. 5b")
 F(K, "s10.x3;fig6;fig6.cap", "observation", "Fig. 6: AFM image of a coated channel (500 nm design, 500 cycles at 300 °C, Table S4); white are membrane remnants and black are holes from torn-off pillars",
@@ -510,7 +510,7 @@ F(K, "s13.x2;fig9e;fig9f", "observation", "PD50% appears to fall as the cycle nu
 F(K, "s13.x2;s13.p1", "claim", "PD50% falls because the film fills more of the channel, so the process sees a higher AR that limits propagation",
   mentions="PD^50%")
 for fill, n in (("10", "250"), ("20", "500"), ("40", "1000")):
-    F(K, "s13.p1", "derived", f"about {fill}% of the channel is filled after {n} cycles", quantity="other",
+    F(K, "s13.p1", "derived", f"about {fill}% of the channel is filled after {n} cycles", quantity="fill_fraction",
       label_as_printed="channel filled", value=fill, unit="%", data_kind="calculated", method="calculation", mentions=f"{n} ALD cycles")
 F(K, "s13.p1;fig9e;fig9f", "observation", "the front slope gets less steep as cycles increase", method="reflectometry")
 F(K, "s13.p1", "observation", "thickness outside and inside the channel (Regions I and IIb) rises linearly with cycle number (Table 1, ESI Fig. S9)",
@@ -558,7 +558,7 @@ F(K, "fig10.cap;s18.p3", "model", "simulation input film density ρ = 3100 kg m-
 F(K, "s18.p3;tab2.r4c6", "cited", "Ylilammi et al. used an alumina density of 4000 kg m-3, not reported in their paper (Table 2 footnote e)",
   quantity="film_density", value="4000", unit="kg m-3", data_kind="literature", method="cited", mentions="ref. 33;e")
 F(K, "s13.p2;fig10b", "model", "simulated scaled profiles for different heights approach a process-specific fingerprint when the film fills 20% or less of the channel height",
-  quantity="other", label_as_printed="film filling of the channel height", value_max="20", unit="%", data_kind="calculated",
+  quantity="fill_fraction", label_as_printed="film filling of the channel height", value_max="20", unit="%", data_kind="calculated",
   method="simulation", mentions="fingerprint")
 F(K, "s13.p2;fig10e;fig10f", "model", "in the simulations the leading edges coincide and PD50% drops with more cycles", method="simulation")
 F(K, "s13.p2", "claim", "the simulated trends closely resemble the experimental profiles", mentions="Fig. 10;Fig. 9")
@@ -709,7 +709,7 @@ F(K, "s20.p2;fig9a;fig9d", "claim", "as-measured profiles differed with cycle nu
   mentions="250–1000;100, 500, 2000 nm")
 F(K, "s20.p2", "claim", "scaled by cycle number and channel height the profiles converge; the scaled profile is proposed as an informative measure that can become a fingerprint of an ALD process")
 F(K, "s20.p2", "claim", "favourable conditions for the fingerprint: Knudsen diffusion and an open channel, filling preferably below 10%",
-  quantity="other", label_as_printed="channel filling", value="10", censor="<", unit="%", data_kind="assumed")
+  quantity="fill_fraction", label_as_printed="channel filling", value="10", censor="<", unit="%", data_kind="assumed")
 F(K, "s20.p3", "claim", "the Al2O3 profiles had the near-ideal ALD shape: constant thickness, then a steep fall to zero")
 
 # ------------------------------------------------------------------ back matter

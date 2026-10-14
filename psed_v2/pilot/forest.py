@@ -9,7 +9,8 @@ Used by report.py for the quantity picker and scatter of the Facts tab. The rule
 - context(leaf): the nearest-scope settings. Walk up the parent chain; at each ancestor take the ancestor itself and its
   children; the first fact with a value seen for a quantity is that quantity's context. When two siblings at the same
   level carry the same quantity (e.g. three design heights under process), that quantity is "ambiguous" at that level
-  and is not taken from farther up; one exact value beside censored bounds (17000 Torr-s beside ">1e4") wins.
+  and is not taken from farther up; one unqualified value beside qualified ones (a run's T beside its per-step Ts) wins,
+  then one exact value beside censored bounds (17000 Torr-s beside ">1e4").
 - flags(leaves): for the quantity's leaves across all papers, the majority value of every qualifier key (absent counts)
   and the majority unit; a leaf is flagged with each key, or "unit", where it differs from the majority.
 No unit conversion and no merging: values are as printed, so a scatter mixes units unless the flag says otherwise.
@@ -78,15 +79,18 @@ class Forest:
             for c in cands:
                 if "#" in c["fact_id"] and c["fact_id"] != fid and c["quantity"] and c["quantity"] != "other" and value_of(c)[0] is not None:
                     seen[c["quantity"]] += 1
-            exact = collections.Counter(c["quantity"] for c in cands if c["quantity"] in seen and not c["censor"]
-                                        and "#" in c["fact_id"] and c["fact_id"] != fid and value_of(c)[0] is not None)
+            ok = lambda c: "#" in c["fact_id"] and c["fact_id"] != fid and value_of(c)[0] is not None
+            plain = collections.Counter(c["quantity"] for c in cands if c["quantity"] in seen and ok(c) and not c["qualifiers"])
+            exact = collections.Counter(c["quantity"] for c in cands if c["quantity"] in seen and ok(c) and not c["censor"])
             for c in cands:
                 q = c["quantity"]
                 if q in seen and q not in ctx:
                     if seen[q] == 1:
                         ctx[q] = c
+                    elif plain[q] == 1:                       # one unqualified value beside qualified ones (a run's T beside its per-step Ts)
+                        ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["qualifiers"])
                     elif exact[q] == 1:                       # one exact value beside bounds: the value wins
-                        ctx[q] = next(x for x in cands if x["quantity"] == q and not x["censor"] and "#" in x["fact_id"] and x["fact_id"] != fid)
+                        ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["censor"])
                     else:
                         ctx[q] = "ambiguous"
         return ctx
