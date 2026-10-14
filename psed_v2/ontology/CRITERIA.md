@@ -35,7 +35,7 @@ Not used: the schema-miner simulation schema, the ALE schemas, and schema-miner'
 - Ylilammi 2018 (`10.1063_1.5028178`)
 - Werbrouck 2021 (`10.1116_6.0001094`)
 
-Gold PDFs are in `psed_v2/gold/pdf/`.
+Gold PDFs are in `psed_v2/corpus/raw/` (10.1039_d0cp03358h, 10.1063_1.5028178, 10.1116_6.0001094).
 
 **Precedence.**
 - Definitions: Cremers / Popov > gold papers > schema-miner.

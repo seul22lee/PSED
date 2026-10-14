@@ -21,10 +21,13 @@ psed_v2/
   corpus/ald_filter.py      # tracked: the not-ALD rule; lists the rows with no ALD term in title or OpenAlex abstract, writes nothing
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
   corpus/CORPUS.md          # tracked: how the corpus was built: counts, PDF sources, open questions
-  cases/                    # tracked: case-study exploration, by hand: figures.csv and papers.csv (figure inventory of the parsed papers, own words),
-                            #   CANDIDATES.md, make_cases.py; cremers/ = the Cremers 2019 tables typed in (CSVs, CREMERS.md, IDEAS.md, scripts)
-  cases/reports/            # gitignored: cases.html (embeds figure crops); the points read by eye are in cases/points.json (tracked)
-  schema_pilot/              # tracked: five-table schema pilot on three papers (per folder: final CSVs, draft/, checklist.md, notes.md, build.py); lists.py, convert.py, validate.py, checklist.py, make_report.py, SCHEMA.md, v1_points*.{csv,json}; v2/ = re-extraction grounded in element ids (inventory, coverage, validate, compare, kg/ graph exports, make_reports); reports/ gitignored
+  HANDOFF.md                # tracked: state of the work, standing rules, how to run; also the one text file of pilot/ (facts plan, pipeline decisions, case candidates, Cremers notes and ideas)
+  pilot/                    # tracked, flat: pre-pipeline exploration (replaces gold/, cases/, facts/, schema_pilot/); per-paper files named <paper_id>.*
+                            #   lists.py (the one set of controlled lists), check.py (the one check), report.py -> reports/pilot.html (gitignored; tabs Facts / Cases / Matrix)
+                            #   facts layer on three papers: elements.py -> <paper_id>.elements.csv; facts.py (helpers, column spec); <paper_id>.facts.py -> .facts.csv, .coverage.csv, .points.json
+                            #   cases on the 58 in-scope papers: figures.csv, papers.csv, points.json (read by eye), quantity_matrix.py/.csv, paper_case.py/.csv, case_decisions.csv,
+                            #   the Case 9-13 CSVs, recheck.json, cases.py and matrix.py (tab builders); cremers.py -> cremers_*.csv (Cremers 2019 tables typed in and checked)
+                            #   v1_points_check.csv, v1_points.json (v1 curves checked against their figures)
   ingest/parse_docling.py   # tracked: Docling for equations only (--formulas: CodeFormula on R1/R2 crops -> equations.json; conda env psed310) and the OpenAlex abstract fetch
   ingest/docling/<paper_id>/ # gitignored: equations.json (paper-derived)
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images

@@ -1,0 +1,60 @@
+"""The one set of controlled lists of the pilot: quantity ids, qualifier keys and values, method ids, fact types, data kinds,
+censor marks and canonical units (UNITS, for the unit standardization of stage 4). Used by facts.py and check.py."""
+import re
+
+# quantity ids: those used in cases 1 to 13 plus those needed by two or more of the three papers; anything else is "other"
+# (feature_height: the gap of a lateral channel, H)
+QUANTITIES = sorted({
+    "aspect_ratio", "carrier_gas", "coated_aspect_ratio", "composition", "crystallinity", "cycle_number", "cycle_time",
+    "deposition_temperature", "dimensionless_distance", "distance", "equivalent_aspect_ratio", "exposure", "feature_depth",
+    "feature_height", "feature_width", "film_density", "film_thickness", "front_slope", "gas_flow_rate", "growth_per_cycle",
+    "initial_sticking_coefficient", "knudsen_number", "lumped_sticking_coefficient", "mean_free_path", "normalized_exposure",
+    "normalized_thickness", "open_fraction", "partial_pressure", "penetration_depth", "precursor_purity", "probe_resolution",
+    "process_pressure", "pulse_time", "purge_time", "reactor_type", "recombination_probability", "resistivity",
+    "saturation_density", "source_temperature", "step_coverage", "substrate", "surface_coverage", "thickness_nonuniformity",
+    "other",
+})
+
+TOKEN = re.compile(r"^[A-Za-z0-9+_.]+$")
+QUALIFIERS = {          # key: allowed values (None = a chemical or element token)
+    "step": {"reactant_A", "purge_A", "reactant_B", "purge_B", "plasma", "hold_A", "hold_B", "none"},
+    "position": {"planar", "local", "top", "sidewall", "bottom", "entrance", "plateau", "outside"},
+    "kind": {"set_point", "measured"},
+    "reference": {"plateau", "entrance", "maximum", "stated", "planar", "assumed_saturation"},
+    "by": {"H", "2H", "d", "w", "lambda", "none"},
+    "origin": {"entrance", "top_face", "hole_centre", "nearer_face", "opening_centre"},
+    "level": {"50%", "front_start", "front_end"},
+    "basis": {"AR", "EAR"},
+    "species": None, "gas": None, "element": None,
+}
+
+METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
+           "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",
+           "optical_microscopy", "sem_eds_map", "in_situ_ellipsometry", "four_point_probe", "pressure_log", "thermocouple"]
+CENSOR = {"", "<", ">", "<dl", ">dl"}
+
+# facts (stage 2): fact types and data kinds
+TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited"]
+DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
+
+
+def qualifiers_ok(q):
+    """q: 'k=v;k=v' -> list of problems."""
+    bad = []
+    for part in filter(None, q.split(";")):
+        if "=" not in part:
+            bad.append(part); continue
+        k, v = part.split("=", 1)
+        allowed = QUALIFIERS.get(k, "missing")
+        if allowed == "missing" or (allowed is None and not TOKEN.match(v)) or (allowed and v not in allowed):
+            bad.append(part)
+    return bad
+
+# canonical units (for stage 4): a fact with one of these quantities carries exactly this unit
+UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
+         "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
+         "feature_depth": "nm", "feature_height": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
+         "resistivity": "Ω cm", "film_density": "g/cm3", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
+         "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "lumped_sticking_coefficient": "", "initial_sticking_coefficient": "",
+         "recombination_probability": "", "knudsen_number": "", "normalized_thickness": "", "dimensionless_distance": "",
+         "step_coverage": "%", "saturation_density": "nm-2"}
