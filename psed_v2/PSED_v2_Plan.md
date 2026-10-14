@@ -13,7 +13,7 @@ v1 (`psed_v1`, tag `v1-final`, commit `a06a714`) works but is too complex: 13 st
 - v1 code: `psed_v1/`, frozen at tag `v1-final` (`a06a714`).
 - v2 code: `psed_v2/` on branch `v2`.
 
-**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to the in-scope corpus (currently 327 conformality papers), one comparison view, connection to the HAR channel twin.
+**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to the in-scope corpus (currently 261 conformality papers), one comparison view, connection to the HAR channel twin.
 
 **Out of scope for now:** control, agentic orchestration, flat-surface and reactor-scale models, automatic intake of newly published papers. These come after Phase 7.
 
@@ -90,9 +90,9 @@ A corpus stage plus four processing stages replace the 13 in v1.
 
 The comparison view and the twin read the tables that `normalize` writes. They add no new data layer.
 
-**Ingest output.** One folder per paper (`ingest/final/<paper_id>/`): body text, abstract, figures with captions and crops, tables with a rule check (`ok`, `flag` with reasons, or `not checkable`) and a crop, and equations from both tools marked `agree`, `differ`, or found by one tool only. On the 44 papers with a PDF (Oct 13, 2026): 69 tables, 28 of them wrong when judged on the page, 27 flagged and 1 not checkable; 321 equations, 197 agree; body text numbers checked against the decoded PDF text on 99 % of body lines, every unchecked line and every output unit left uncompared carrying a not-checkable flag; 44 real errors found (8 corrected by rule, 1 partly), 238 body flags, all judged: 78 real, 160 not errors. The numbers and their source files are in `ingest/NUMBERS.md`.
+**Ingest output.** One folder per paper (`ingest/final/<paper_id>/`): body text, abstract, figures with captions and crops, tables with a rule check (`ok`, `flag` with reasons, or `not checkable`) and a crop, and equations from both tools marked `agree`, `differ`, or found by one tool only. On the 58 in-scope papers with a PDF (Oct 13, 2026): 90 tables, 33 of them wrong when judged on the page, 31 flagged and 1 not checkable, 1 missed (every token present but placed wrongly); 434 equations, 254 agree; body text numbers checked against the decoded PDF text on 99.5 % of body lines, every unchecked line and every output unit left uncompared carrying a not-checkable flag; 59 distinct real errors found (10 corrected by rule, 2 partly), 344 body flags, all judged: 106 real, 238 not errors. The numbers and their source files are in `ingest/NUMBERS.md`.
 
-**Flag review (start of extract).** A flagged or not-checkable table, an equation that is not `agree`, and a body-text number flag are resolved by an external vision model before extraction. The model is constrained: for an equation it chooses between the two candidates or writes the formula when both are wrong; for a table it corrects only what the check flagged, with the decoded PDF text of the table area as reference; for a body flag it decides between the output sentence and the decoded PDF text line, given the line crop. The original output is kept beside the correction. Before use, the step is scored on the ingest answer set (`ingest/answers/`): the 69 page-judged tables, the 198 equation items (every differ pair and single-tool item judged on the crop, the agree pairs accepted), and the 419 page-judged body flag keys of the 44 papers; the counts are in `ingest/NUMBERS.md`. These judgements are kept as the answer set only; the pipeline does not use them as output. A sample of the model's corrections is checked by the expert.
+**Flag review (start of extract).** A flagged or not-checkable table, an equation that is not `agree`, and a body-text number flag are resolved by an external vision model before extraction. The model is constrained: for an equation it chooses between the two candidates or writes the formula when both are wrong; for a table it corrects only what the check flagged, with the decoded PDF text of the table area as reference; for a body flag it decides between the output sentence and the decoded PDF text line, given the line crop. The original output is kept beside the correction. Before use, the step is scored on the ingest answer set (`ingest/answers/`): the 90 page-judged tables, the 254 equation items (every differ pair and single-tool item judged on the crop, the agree pairs accepted), and the 514 page-judged body flag keys of the 58 papers; the counts are in `ingest/NUMBERS.md`. These judgements are kept as the answer set only; the pipeline does not use them as output. A sample of the model's corrections is checked by the expert.
 
 **VLM review guide (written in the schema stage).** The model must understand the content and judge from context with a stated reason, not copy what it sees. It gets the crop, the text-layer text of the whole paragraph, and the raw output paragraph (not the masked one). For a lookalike-letter flag (v/ν, p/ρ) it gets the text-layer letter as evidence. The flags of one error are grouped and reviewed together. Citation punctuation and typos printed in the source (10.1116_6.0001679 reads "1.2" where "1,2" is meant) are not errors of the output; the guide lists these cases from `ingest/ERRORS.md`.
 
@@ -155,7 +155,7 @@ Papers added by hand are marked `extra`.
 
 **Two axes.** The candidates span two axes. Popov 2025 covers the process-chemistry axis: which precursors and reactants deposit which material, for thermal ALD. Cremers 2019 and the papers citing it cover the geometry axis, which is the current scope: conformality in high-aspect-ratio structures (trenches, holes, AAO, LHAR). Plasma ALD papers entered through the geometry axis and are accepted as they are. Plasma coverage is therefore partial (conformality-related only) and is not claimed as general plasma ALD coverage. The ontology must include geometry concepts (structure type, aspect ratio, feature dimensions, penetration depth, thickness profile) and a minimal process-mode set (thermal, ozone, plasma; plasma configuration; radical recombination).
 
-**Size.** 1,124 candidate rows (Popov 699, Cremers 292, Cremers-citing 143, extra 1; a paper can have several). In scope now: 327 papers, of which 44 have a PDF; the rest are to be acquired by hand or through the library TDM API. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` and `manual_list.csv` (in scope, no PDF) are generated from it.
+**Size.** 1,124 candidate rows (Popov 699, Cremers 292, Cremers-citing 143, extra 1; a paper can have several). In scope now: 261 papers, of which 58 have a PDF; the rest are to be acquired by hand or through the library TDM API. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` and `manual_list.csv` (in scope, no PDF) are generated from it.
 
 **PDF acquisition.**
 
@@ -172,7 +172,7 @@ OA status is a column, not a filter. All in-scope papers are read and extracted.
 | Dev | 5 | Full | Pipeline development |
 | Held-out | 3 | Full | Scored only at milestones |
 | Sample | 50, random from in-scope papers with a PDF | None | Generality check; ontology growth |
-| Full | All in-scope papers (currently 327) | None | Final corpus |
+| Full | All in-scope papers (currently 261) | None | Final corpus |
 
 Dev and Held-out papers may come from outside the two reviews; such papers are added as `extra`. The Sample is not random: it leans toward open-access papers.
 
@@ -192,7 +192,7 @@ Nine phases (0 to 8) run in sequence; each ends when its done criterion is met.
 
 | Phase | Work | Done when |
 | --- | --- | --- |
-| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs; ingest the PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel. Ingest done and closed for the 44 in-scope papers with a PDF (Oct 13, 2026; `ingest/NUMBERS.md`); new PDFs are ingested as they arrive |
+| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs; ingest the PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel. Ingest done and closed for the 58 in-scope papers with a PDF (Oct 13, 2026; `ingest/NUMBERS.md`); new PDFs are ingested as they arrive |
 | 1 | Ontology v0 | The quantities, species, transforms and vocabularies the competency questions need are defined (source: open decision); every quantity named in the competency questions is mapped |
 | 2 | Schema: the six-table format fixed on the Ylilammi pilot; the gold sample (the five Dev papers); the VLM review guide for the ingest flags | Format fixed; all five papers checked by the expert; the review guide written and scored on the ingest answer set |
 | 3 | Convert v1 output to the six tables and score it | Baseline score exists; list of reusable v1 extraction results exists |
