@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Exploration: writes cases/reports/cases.html, six example case studies (three on thickness profiles, three from checked candidates).
+"""Exploration: writes cases/reports/cases.html, eleven example case studies (profiles, checked candidates, the review as data,
+and Cases 9 to 11 on the part E candidates S1, S2, S3 with S6).
 
     python3 psed_v2/cases/make_cases.py
 
 Inputs: cases/figures.csv (row selection), cases/points.json (points read by eye from the crops),
-ingest/final/<paper_id>/ (figure crops), corpus/manifest.csv (first author and year for labels).
+ingest/final/<paper_id>/ (figure crops), corpus/manifest.csv (first author and year for labels);
+for Cases 9 to 11 also quantity_matrix.csv (usable_for), sticking_reported.csv, exposure_ear.csv and recombination.csv
+(values read by hand from the papers, own words).
 The page embeds the crops as JPEG, so it is gitignored with the rest of cases/reports/.
 Nothing here is extracted data: every plotted point was read by eye.
 """
@@ -620,14 +623,319 @@ def case8():
 </section>"""
 
 
+# ----------------------------------------------------------------------------- case 9 (S1)
+
+CM, KR, GD, KIM, SC, FB = "10.1021_cm0303080", "10.1116_1.4971196", "10.1149_1.2789802", "10.1063_1.2714685", "10.1016_j.surfcoat.2012.02.038", "10.1002_cvde.200390005"
+AP9, AP10, CNT, ZR, BJ2, LG, PT = "10.1016_j.apsusc.2009.02.055", "10.1016_j.apsusc.2010.01.025", "10.1021_acs.chemmater.1c03164", "10.1116_1.4892385", "10.3762_bjnano.5.25", "10.1021_acs.langmuir.6b03119", "10.1116_6.0003182"
+with (HERE / "quantity_matrix.csv").open(newline="", encoding="utf-8") as f:
+    QM = {r["paper_id"]: r for r in csv.DictReader(f)}
+USE = lambda tag: [p for p, r in QM.items() if tag in r["usable_for"].split("; ")]
+with (HERE / "sticking_reported.csv").open(newline="", encoding="utf-8") as f:
+    REP = list(csv.DictReader(f))
+
+
+def slope_method(p):
+    """Slope |dθ/dx̃| at the front from the points in 0.2 <= θ <= 0.8 (least squares), x̃ = x / H for channels and cavities,
+    x / (d/2) for holes and pores; θ = y / plateau (the highest point when no plateau was read). Returns slope, band points, x̃ at θ = 0.5."""
+    pl = p["plateau"] or max(y for _, y in p["points"])
+    if p["x_unit_um"] is None:
+        f = 1.0
+    else:
+        f = p["x_unit_um"] / (p["H_um"] if ("channel" in p["geometry"] or "cavity" in p["geometry"]) else p["H_um"] / 2)
+    pts = sorted((x * f, y / pl) for x, y in p["points"])
+    band = [(x, y) for x, y in pts if 0.2 <= y <= 0.8]
+    x50 = next((xa + (ya - 0.5) * (xb - xa) / (ya - yb) for (xa, ya), (xb, yb) in zip(pts, pts[1:]) if ya >= 0.5 > yb), None)
+    if len(band) < 2 or x50 is None:
+        return None, len(band), x50
+    mx = sum(x for x, _ in band) / len(band); my = sum(y for _, y in band) / len(band)
+    sxx = sum((x - mx) ** 2 for x, _ in band)
+    return (abs(sum((x - mx) * (y - my) for x, y in band) / sxx) if sxx else None), len(band), x50
+
+
+def logdots(rows, title, xr=(1e-6, 1), w=860):
+    """Rows: (label, [(value, kind, tip)]) on a log x axis; kind: re (filled circle), fit (open square), input (open diamond), lit (cross)."""
+    L, R, T, B, lab = 300, 20, 34, 46, 290
+    h = T + B + 26 * len(rows)
+    X = lambda v: L + (math.log10(v) - math.log10(xr[0])) / (math.log10(xr[1]) - math.log10(xr[0])) * (w - L - R)
+    e = [f'<svg viewBox="0 0 {w} {h}" role="img" aria-label="{E(title)}"><text x="12" y="18" class="pt">{E(title)}</text>']
+    for k in range(round(math.log10(xr[0])), round(math.log10(xr[1])) + 1):
+        e.append(f'<line x1="{X(10 ** k):.1f}" x2="{X(10 ** k):.1f}" y1="{T}" y2="{h - B}" class="grid"/><text x="{X(10 ** k):.1f}" y="{h - B + 16}" class="tk" text-anchor="middle">1e{k}</text>')
+    e.append(f'<text x="{(L + w - R) / 2}" y="{h - 8}" class="al" text-anchor="middle">sticking value (log scale)</text>')
+    for i, (label, marks) in enumerate(rows):
+        y = T + 13 + 26 * i
+        e.append(f'<line x1="{L}" x2="{w - R}" y1="{y}" y2="{y}" stroke="var(--grid)" stroke-dasharray="2 3"/><text x="{lab}" y="{y + 4}" class="tk" text-anchor="end" style="font-size:12px">{E(label)}</text>')
+        for v, kind, tip in marks:
+            x, t = X(min(max(v, xr[0]), xr[1])), f"<title>{E(tip)}</title>"
+            if kind == "re":
+                e.append(f'<circle cx="{x:.1f}" cy="{y}" r="5.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="1.5">{t}</circle>')
+            elif kind == "fit":
+                e.append(f'<rect x="{x - 5:.1f}" y="{y - 5}" width="10" height="10" fill="var(--surface)" stroke="var(--s2)" stroke-width="2">{t}</rect>')
+            elif kind == "input":
+                e.append(f'<path d="M{x:.1f} {y - 7} L{x + 7:.1f} {y} L{x:.1f} {y + 7} L{x - 7:.1f} {y} Z" fill="var(--surface)" stroke="var(--s4)" stroke-width="2">{t}</path>')
+            else:
+                e.append(f'<path d="M{x - 5:.1f} {y - 5} L{x + 5:.1f} {y + 5} M{x - 5:.1f} {y + 5} L{x + 5:.1f} {y - 5}" stroke="var(--text2)" stroke-width="2">{t}</path>')
+    return "".join(e) + "</svg>"
+
+
+def case9():
+    ser = [p for p in PTS if p["case"] == 9]
+    slope_ok, model = USE("S1 slope"), USE("S1 model")
+    rows, per = [], {}
+    for n, p in enumerate(ser, 1):
+        is_model = p["series"].startswith("model curve")
+        s, nb, x50 = slope_method(p)
+        c = 13.9 * s * s if s else None
+        per.setdefault(p["paper"], []).append((c, p, is_model))
+        rows.append([f'<span class="num">{n}</span>', f"{E(who(p['paper']))}, Fig. {p['figure']}{E(p['panel'])}", E(p["series"]), E(p["geometry"]), f"{p['H_um']:g}", E(p["species_limiting"]),
+                     str(nb), f"{x50:.0f}" if x50 else "—", f"{s:.3g}" if s else "—", f"{c:.2g}" if c else "—", ("model curve, not data; " if is_model else "") + E(p["quality"])])
+    def summary(pids):
+        out, plot = [], []
+        for pid in pids:
+            vals = sorted(c for c, p, m in per.get(pid, []) if c and not m and not p["quality"].startswith("poor"))
+            rep = [r for r in REP if r["paper_id"] == pid and r["quantity"] != "none" and not r["quantity"].startswith("slope")]
+            redo = (f"{vals[len(vals) // 2]:.2g}" + (f" (range {vals[0]:.2g} to {vals[-1]:.2g}, {len(vals)} series)" if len(vals) > 1 else " (1 series)")) if vals else "no usable front"
+            out.append([f"{E(who(pid))}<span class='pid'>{pid}</span>", "<br>".join(E(f"{r['species']}: {r['value']}") for r in rep) or "none",
+                        "<br>".join(E(r["quantity"]) for r in rep) or "—", "<br>".join(E(r["method"]) for r in rep) or "—", "<br>".join(E(r["model"]) for r in rep) or "—",
+                        "<br>".join(E(r["data_kind"]) for r in rep) or "—", E(redo)])
+            marks = [(c, "re", f"re-derived here, Fig. {p['figure']}{p['panel']} {p['series']}") for c, p, m in per.get(pid, []) if c and not m and not p["quality"].startswith("poor")]
+            for r in rep:
+                if "EA =" in r["value"] or ">>" in r["value"]:         # an activation energy or a bound, not a sticking value
+                    continue
+                txt = re.sub(r"\((\d+(?:\.\d+)?) \+- [\d.]+\)(e-?\d+)", r"\1\2", r["value"])
+                txt = re.sub(r"\([^)]*\)", "", txt)
+                txt = re.split(r"recombination|RC ", re.sub(r"Fig\. ?\d+\w*", "", txt))[0]
+                for v in re.findall(r"(?<![\w.^-])(\d+(?:\.\d+)?(?:e-?\d+)?)(?: ?(?:x|×) ?10\^?(-?\d+))?", txt):
+                    val = float(v[0]) * (10 ** int(v[1]) if v[1] else 1)
+                    if 1e-9 < val <= 1:
+                        marks.append((val, {"fit": "fit", "model input": "input", "literature": "lit"}.get(r["data_kind"], "fit"), f"{r['species']}: {r['value']} ({r['method']})"))
+            plot.append((who(pid), marks))
+        return out, plot
+    sa, pa = summary(slope_ok)
+    sb, pb = summary(model)
+    tma = {pid: sorted(c for c, p, m in per.get(pid, []) if c and not m and p["species_limiting"].startswith("TMA") and not p["quality"].startswith("poor")) for pid in slope_ok}
+    med = {k: v[len(v) // 2] for k, v in tma.items() if v}
+    med_w = next(c for c, p, m in per[D10] if c and not m and not p["quality"].startswith("poor"))
+    d0 = [c for c, p, m in per[M] if c and "H 500 nm" in p["series"] and "500 cycles" in p["series"]]
+    hs = {h: next(c for c, p, m in per[M] if c and f"H {h} nm" in p["series"]) for h in (100, 500, 2000)}
+    wid = {h: (h / 1000) / math.sqrt(hs[h] / 13.9) for h in hs}          # 1 / |dθ/dx| in µm
+    cards = [
+        (Y, 6, "", [("structure", "PillarHall, gap 0.5 µm"), ("paper's value", "c = 0.0057 for TMA, fit of a diffusion-adsorption model (Table I)"), ("data kind", "measured points, fitted curve")]),
+        (M, 9, "c, f", [("structure", "PillarHall, H 100, 500, 2000 nm"), ("paper's value", "c = 0.004 for TMA from the slope of the normalized profile (Table 2)"), ("data kind", "measured")]),
+        (D09, 5, "", [("structure", "macroscopic rectangular channel, aspect ratio 33, 50, 100"), ("paper's value", "s0 = 0.1, chosen for a simulation, no fit"), ("data kind", "measured")]),
+        (D10, 2, "a", [("structure", "macroscopic rectangular channel, aspect ratio 22, 50"), ("paper's value", "s0 = 0.1 (TMA), 0.05 (water), chosen for simulations"), ("data kind", "measured")]),
+        (GAO, 5, "a-b", [("structure", "lateral channel, gap 200 to 1000 nm"), ("paper's value", "none"), ("data kind", "measured (reflectometer)")]),
+        (CM, 5, "a", [("structure", "anodic alumina, 65 nm pores, entered from both faces"), ("paper's value", "S = 0.007 for DEZ, chosen for Monte Carlo runs"), ("data kind", "measured (EPMA line scan, 3 to 5 µm resolution)")]),
+        (KR, 8, "", [("structure", "cavity 4.5 µm high entered through one hole (radial)"), ("paper's value", "SC = 0.02 for TMA, Monte Carlo fit"), ("data kind", "measured (micro-spot ellipsometry)")]),
+    ]
+    onto = table(["Printed label or value", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
+        ["Location (µm); Distance; depth (mm); Aspect Ratio; x̃", code("distance") + ", " + code("dimensionless_distance{by=H}"), code("x_over_width") + " with H for slits and cavities, d/2 for holes and pores", "the choice of width per geometry (H, d/2, hydraulic diameter) is a rule, not a stored qualifier"],
+        ["thickness, relative thickness, GPC, Zn signal", code("normalized_thickness{reference=plateau|entrance|maximum}"), code("normalize_thickness"), "“maximum” (the EPMA scans are scaled to their highest value) is not in the reference list"],
+        ["slope of the front at one half (Table 1 of 10.1039_d0cp03358h)", code("front_slope{at=PD50, by=H}") + " (new)", "least-squares slope of θ against x̃ for 0.2 ≤ θ ≤ 0.8", "no entry for a front slope"],
+        ["c (lumped), s0, β0, SC, S, Γ", code("initial_sticking_coefficient") + " for all of them in v0", code("slope_to_sticking") + ": c = 13.9 · slope² (new, valid only for Kn ≫ 1 and a rectangular channel)", "a lumped c is not an initial s0: the ontology needs a quantity per kind, and method, model and the input-or-result status as attributes of the value"],
+    ])
+    return f"""
+<section id="c9"><h2>Case 9. One method for every sticking value</h2>
+<p class="q"><b>Question.</b> Applied to every usable measured profile, does one method (the slope method used by 10.1039_d0cp03358h) bring the sticking values of different papers closer than the values the papers report? Papers: {len(slope_ok)} where the method's geometry holds, {len(model)} that need a geometry model (shown apart).</p>
+<h3><span class="step">Before</span> The crops as published</h3>{before(cards)}
+<h3><span class="step">Ontology step</span> One transform, many quantities</h3>{onto}
+<h3><span class="step">After</span> Re-derived next to reported</h3>{ILL}
+<h4>a. Rectangular channels in the free-molecular regime ({len(slope_ok)} papers): the slope method applies</h4>
+<div class="plots one">{logdots(pa, "Re-derived (filled circles) and reported values (squares: fit, diamonds: chosen input, crosses: literature)")}</div>
+{table(["Paper", "Reported value", "Quantity (s or s0)", "Method", "Model", "data_kind", "Re-derived here: c = 13.9 · slope²"], sa)}
+<h4>b. Other geometries ({len(model)} papers): indicative only, the slope relation is not derived for them</h4>
+<div class="plots one">{logdots(pb, "Holes, pores, radial cavity, forests and porous bodies: indicative re-derivation where a width exists")}</div>
+{table(["Paper", "Reported value", "Quantity (s or s0)", "Method", "Model", "data_kind", "Re-derived here (indicative)"], sb)}
+<details><summary>All {len(ser)} series, with the slope and the value re-derived from each</summary>{table(["#", "Source", "Series", "Geometry", "H or d (µm)", "Limiting species", "Points in 0.2–0.8", "x̃ at one half", "Slope", "c", "Quality"], rows)}</details>
+<p class="note"><b>Check of the eye reading.</b> For the 0.5 µm channel, 500 cycles, of 10.1039_d0cp03358h the points read here give c = {d0[0]:.1e}; the paper's own Table 1 slope (0.019) gives {13.9 * 0.019 ** 2:.1e}. The method reproduces the paper's value from its own data within the reading error.</p>
+<p class="take"><b>Takeaway.</b> Per paper (median of the usable TMA fronts), one method gives {", ".join(f"{v:.1e} ({who(k)})" for k, v in sorted(med.items(), key=lambda kv: kv[1]))}: a factor of {max(med.values()) / min(med.values()):.0f}. The values the same papers report span 0.004 to 0.1 (a factor of 25), and the largest is a value chosen for a simulation; re-derived, that paper's profile gives {med[D09]:.2g}. So one method removes the outlier, but the spread that remains is smaller than the spread inside one paper: the 100, 500 and 2000 nm channels of 10.1039_d0cp03358h give {hs[100]:.1e}, {hs[500]:.1e} and {hs[2000]:.1e}, because the front is {wid[100]:.0f}, {wid[500]:.0f} and {wid[2000]:.0f} µm wide instead of scaling with H. For water, the one thermal macroscopic slot limited by water gives {med_w:.1e}, against 3e-4 from the slope method in 10.1039_d0cp03358h. A sticking value from the slope is comparable across papers only at equal channel height and probe resolution.</p>
+<p class="lim"><b>Limits.</b> Points read by eye; the slope comes from 2 to 15 points per front. The macroscopic channels of 10.1149_1.3072694 have no stated height; it is derived from the paper's aspect-ratio formula. The thermal 10.1149_1.3301664 profile is limited by water, not TMA (stated by the authors). Probe resolution (reflectometer spot, EPMA step) and channel narrowing both widen fronts and lower c. The re-derivations in part b use a width that the slope relation was not derived for; the EPMA scans are scaled to their maximum, not to a plateau. Model curves read from three papers are listed but not used.</p>
+</section>"""
+
+
+# ----------------------------------------------------------------------------- case 10 (S2)
+
+def loglog(w, h, xr, yr, xl, yl, title, xt, yt):
+    """Log-log frame (same layout as cremers/build.py); returns the element list and the two scale functions."""
+    L, R, Tp, B = 62, 20, 32, 46
+    X = lambda v: L + (math.log10(v) - math.log10(xr[0])) / (math.log10(xr[1]) - math.log10(xr[0])) * (w - L - R)
+    Y = lambda v: h - B - (math.log10(v) - math.log10(yr[0])) / (math.log10(yr[1]) - math.log10(yr[0])) * (h - Tp - B)
+    e = [f'<svg viewBox="0 0 {w} {h}" role="img" aria-label="{E(title)}"><text x="{L}" y="16" class="pt">{E(title)}</text>']
+    for v in yt: e.append(f'<line x1="{L}" x2="{w - R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" class="grid"/><text x="{L - 8}" y="{Y(v) + 4:.1f}" class="tk" text-anchor="end">{v:g}</text>')
+    for v in xt: e.append(f'<line x1="{X(v):.1f}" x2="{X(v):.1f}" y1="{Tp}" y2="{h - B}" class="grid"/><text x="{X(v):.1f}" y="{h - B + 16}" class="tk" text-anchor="middle">{v:g}</text>')
+    e.append(f'<text x="{(L + w - R) / 2}" y="{h - 8}" class="al" text-anchor="middle">{E(xl)}</text><text transform="translate(14 {(Tp + h - B) / 2}) rotate(-90)" class="al" text-anchor="middle">{E(yl)}</text>')
+    return e, X, Y
+
+
+def case10():
+    with (HERE / "exposure_ear.csv").open(newline="", encoding="utf-8") as f:
+        V = list(csv.DictReader(f))
+    kB, u = 1.380649e-23, 1.6605e-27
+    need = lambda a: 1 + 4.75 * a + 1.5 * a * a              # Gordon, ref. 62: Pt / (S sqrt(2 pi m k T)) needed to coat aspect ratio a
+    pids = sorted({v["paper_id"] for v in V}, key=lambda p: QM[p]["year"])
+    slot = {p: i % 8 + 1 for i, p in enumerate(pids)}
+    e, X, Y = loglog(860, 480, (1e2, 1e10), (3, 2e4), "exposure of the limiting step / flat-surface exposure  (Pt / (S·√(2πmkT)))", "EAR (coated, or bound)", "Coated EAR against the exposure of the limiting step", [10 ** k for k in range(2, 11)], (3, 10, 30, 100, 300, 1000, 3000, 10000))
+    pts = []
+    for v in V:
+        S = float(v["sat_density_per_nm2"]) * 1e18
+        flat = S * math.sqrt(2 * math.pi * float(v["mass_amu"]) * u * kB * (float(v["T_C"]) + 273.15))
+        x, a = float(v["exposure_pa_s"]) / flat, float(v["ear"])
+        v["x"], v["R"] = x, x / need(a)
+        pts.append(v)
+        c = f"var(--s{slot[v['paper_id']]})"; xx, yy = X(x), Y(a)
+        tip = f"{who(v['paper_id'])}: {v['species']}, {v['structure']}, EAR {a:g} ({v['reading']}), exposure {float(v['exposure_pa_s']):.3g} Pa s; ratio to the square law {v['R']:.2g}"
+        if v["reading"] == "measured":
+            e.append(f'<circle cx="{xx:.1f}" cy="{yy:.1f}" r="5.5" fill="{c}" stroke="var(--surface)" stroke-width="1.5"><title>{E(tip)}</title></circle>')
+        elif v["reading"] == "lower":
+            e.append(f'<path d="M{xx - 6:.1f} {yy + 5:.1f} L{xx + 6:.1f} {yy + 5:.1f} L{xx:.1f} {yy - 7:.1f} Z" fill="var(--surface)" stroke="{c}" stroke-width="2"><title>{E(tip)}</title></path><line x1="{xx:.1f}" x2="{xx:.1f}" y1="{yy - 7:.1f}" y2="{yy - 18:.1f}" stroke="{c}" stroke-width="2"/>')
+        else:
+            e.append(f'<path d="M{xx - 6:.1f} {yy - 5:.1f} L{xx + 6:.1f} {yy - 5:.1f} L{xx:.1f} {yy + 7:.1f} Z" fill="var(--surface)" stroke="{c}" stroke-width="2"><title>{E(tip)}</title></path><line x1="{xx:.1f}" x2="{xx:.1f}" y1="{yy + 7:.1f}" y2="{yy + 18:.1f}" stroke="{c}" stroke-width="2"/>')
+    ga = [a for a in (10 ** (k / 20) for k in range(0, 90)) if 1e2 <= need(a) <= 1e10 and 3 <= a <= 2e4]
+    gl = " ".join(f"{'M' if i == 0 else 'L'}{X(need(a)):.1f} {Y(a):.1f}" for i, a in enumerate(ga))
+    e.append(f'<path d="{gl}" fill="none" stroke="var(--text2)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="{X(8e9):.1f}" y="{Y(400):.1f}" class="warn" text-anchor="end">dashed: square law of ref. 62 (Gordon), 1 + 19a/4 + 3a²/2</text>')
+    e.append(f'<text x="{X(1.3e2):.1f}" y="{Y(14000):.1f}" class="warn">filled circles: measured depth · up triangles: fully coated (lower bound) · down triangles: not reached (upper bound)</text>')
+    leg = table(["", "Paper", "Species, structure", "Records", "Saturation density used"], [
+        [f'<svg class="sw" viewBox="0 0 38 14"><circle cx="19" cy="7" r="5" fill="var(--s{slot[p]})"/></svg>', f"{E(who(p))}<span class='pid'>{p}</span>",
+         E("; ".join(sorted({f"{v['species']}, {v['structure']}" for v in pts if v["paper_id"] == p}))), str(sum(v["paper_id"] == p for v in pts)),
+         E("; ".join(sorted({f"{v['sat_density_per_nm2']} per nm² ({v['sat_density_source']})" for v in pts if v["paper_id"] == p})))] for p in pids])
+    rec = table(["Paper", "Where", "Species", "Structure", "EAR", "Reading", "Exposure (Pa s)", "Kind", "Exposure / need of the square law", "Note"], [
+        [E(who(v["paper_id"])), E(v["where"]), E(v["species"]), E(v["structure"]), v["ear"], E(v["reading"]), f"{float(v['exposure_pa_s']):.3g}", E(v["exposure_kind"]), f"{v['R']:.2g}", E(v["depth_note"])] for v in pts])
+    meas = sorted(v["R"] for v in pts if v["reading"] == "measured")
+    within = sum(1 for r in meas if 0.67 <= r <= 1.5)
+    contra = [v for v in pts if (v["reading"] == "lower" and v["R"] < 1) or (v["reading"] == "upper" and v["R"] > 1)]
+    by = {p: sorted(v["R"] for v in pts if v["paper_id"] == p and v["reading"] == "measured") for p in pids}
+    cards = [
+        (D09, 5, "", [("exposure", "TMA about 0.3 Pa for 4 s (text); the authors set water higher so TMA limits"), ("reading", "AR 33 fully coated; half thickness inside AR 50 and 100")]),
+        (CM, 5, "a", [("exposure", "DEZ 0.068 Torr for 1 to 30 s; pores entered from both faces"), ("reading", "half-thickness depth per exposure, by eye")]),
+        (FB, 2, "", [("exposure", "Hf amide in Langmuir per cycle: 2, 4, 30 × 10³"), ("reading", "coated quarter, three quarters, full")]),
+        (KIM, 7, "", [("exposure", "TMA about 0.01 Torr times injection time"), ("reading", "bottom over flat growth at aspect ratio 10")]),
+        (SC, 5, "", [("exposure", "TMA 0.08 Pa for 2, 8, 30 s"), ("reading", "half-value depths drawn by the authors in a fibre-filled hole")]),
+    ]
+    onto = table(["In the papers", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
+        ["TMA 0.3 Pa, 4 s; 0.068 Torr; 2 × 10³ L; 17,000 Torr s; 6.8e19 cm⁻²", code("exposure{species, step=precursor|co-reactant|plasma}"), "partial pressure × time, or units to Pa s (1 L = 1.33e-4 Pa s)", "the step is not a qualifier in v0; nor is whether the value is measured, calculated, assumed or fitted, nor whether that step limits"],
+        ["“fully coated”, “half thickness at”, “bottom not reached”", code("coated_aspect_ratio{basis=EAR, reading=lower|measured|upper}"), "EAR per structure class: hole L/d, two-sided pore (L/2)/d, slot L·p/(4A)", "the reading qualifier and the one- or two-sided entry (as in Case 8)"],
+        ["growth per cycle, Hf per cycle, Kmax", code("saturation_density{species}") + " (new)", "from growth per cycle and film density when not stated", "no entry; Gordon's law needs it to compare species"],
+        ["Pt / (S√(2πmkT))", code("normalized_exposure") + " (new)", "divide by the flat-surface exposure of that species at that temperature", "a derived quantity that makes TMA, DEZ, water and the Hf amide comparable"],
+    ])
+    return f"""
+<section id="c10"><h2>Case 10. Coated EAR against the exposure of the limiting step</h2>
+<p class="q"><b>Question.</b> When the exposure is that of the step that limits conformality, do holes, pores, slots, fibre plugs and particle compacts fall on Gordon's square law? Papers: {len(pids)} (those with <code>limiting_step_exposure = yes</code> in the matrix), {len(pts)} records.</p>
+<h3><span class="step">Before</span> The crops as published</h3>{before(cards)}
+<h3><span class="step">Ontology step</span> Exposure of which step, and what the depth means</h3>{onto}
+<h3><span class="step">After</span> One dimensionless exposure for every species</h3>{ILL}
+<div class="plots one">{"".join(e)}</svg></div>{leg}
+<details><summary>All {len(pts)} records</summary>{rec}</details>
+<p class="take"><b>Takeaway.</b> Of the {len(meas)} measured depths, {within} lie within a factor of 1.5 of the square law (exposure over need from {meas[0]:.2g} to {meas[-1]:.2g}). By paper: DEZ in alumina pores {min(by[CM]):.2g} to {max(by[CM]):.2g}, TMA in the macroscopic slots of 10.1149_1.3072694 {min(by[D09]):.2g} to {max(by[D09]):.2g}, the Hf amide {min(by[FB]):.2g} to {max(by[FB]):.2g}; the water-limited slot of 10.1149_1.3301664 needs {by[D10][0]:.0f} times the predicted exposure and the fibre plug as little as {min(by[SC]):.2g} times. {len(contra)} bounds disagree with it: the TMA-coated membrane of {who(CM)} is fully coated at {next(v["R"] for v in contra if v["paper_id"] == CM):.2g} of the predicted need (the overestimate found in Case 8), and {who(KIM)}'s shortest injection does not reach the hole bottom at {next(v["R"] for v in contra if v["paper_id"] == KIM):.1f} times the need, where even the flat surface is not yet saturated. So for precursors in holes, pores and slots the square law holds within a factor of 1.5 over normalized exposures from {min(v["x"] for v in pts if v["reading"] == "measured" and 0.67 <= v["R"] <= 1.5):.1e} to {max(v["x"] for v in pts if v["reading"] == "measured" and 0.67 <= v["R"] <= 1.5):.1e}; it fails for water and for a fibre plug, a geometry it does not describe.</p>
+<p class="lim"><b>Limits.</b> Saturation densities are stated in four papers and assumed in the rest (named in the legend); a factor of two there moves a point by a factor of two. The EAR of the fibre plug and of the CNT forest are computed here (area to depth over four times the opening, and depth over the mean flight path) and are not those of Gordon's derivation. The 10.1063_1.2714685 records are plasma ALD with the TMA step limiting at short injection; its 0.2 s point lies where even the flat surface is not saturated. Depths at one half were read by eye; the alumina-pore depths are EPMA signals scaled to their maximum.</p>
+</section>"""
+
+
+# ----------------------------------------------------------------------------- case 11 (S3, S6)
+
+def case11():
+    with (HERE / "recombination.csv").open(newline="", encoding="utf-8") as f:
+        RC = list(csv.DictReader(f))
+    pl = [r for r in RC if r["use"] == "plotted"]
+    mat = lambda r: r["surface"].split(" ")[0]
+    slot = {"SiO2": 1, "TiO2": 2, "Al2O3": 3, "HfO2": 4, "IrOx": 5}
+    fl = lambda v: float(v) if v not in ("", None) else None
+
+    def mark(e, x, y, r, s):
+        c = f"var(--s{slot[mat(r)]})"; atm = r["regime"].startswith("atmospheric")
+        lo, hi = fl(r["r_lo"]), fl(r["r_hi"])
+        tip = E(f"{who(r['paper_id'])}, {r['where']}: {mat(r)}, r {r['r'] or 'range'} ({r['r_lo'] or '?'} to {r['r_hi'] or '?'}), {r['T_C'] or 'T not stated'} °C, {float(r['pressure_Pa']):g} Pa, {r['regime']}; {r['data_kind']}, {r['reading']}")
+        if lo and hi:
+            e.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{s(lo):.1f}" y2="{s(hi):.1f}" stroke="{c}" stroke-width="{2 if fl(r["r"]) else 6}" opacity="{1 if fl(r["r"]) else 0.5}"><title>{tip}</title></line>')
+        v = fl(r["r"])
+        if v is None:
+            return
+        if not lo and hi and abs(hi - v) < 1e-12:      # upper limit
+            e.append(f'<path d="M{x - 6:.1f} {s(v) - 5:.1f} L{x + 6:.1f} {s(v) - 5:.1f} L{x:.1f} {s(v) + 7:.1f} Z" fill="var(--surface)" stroke="{c}" stroke-width="2"><title>{tip}</title></path>')
+        elif atm:
+            e.append(f'<rect x="{x - 5:.1f}" y="{s(v) - 5:.1f}" width="10" height="10" fill="var(--surface)" stroke="{c}" stroke-width="2.5"><title>{tip}</title></rect>')
+        else:
+            e.append(f'<circle cx="{x:.1f}" cy="{s(v):.1f}" r="5.5" fill="{c}" stroke="var(--surface)" stroke-width="1.5"><title>{tip}</title></circle>')
+
+    # r against substrate temperature
+    w, h, L, Rr, Tp, B = 760, 400, 62, 20, 32, 46
+    X = lambda t: L + (t - 80) / (260 - 80) * (w - L - Rr)
+    Yl = lambda v: h - B - (math.log10(v) + 5.3) / (math.log10(0.2) + 5.3) * (h - Tp - B)
+    e = [f'<svg viewBox="0 0 {w} {h}" role="img" aria-label="r against temperature"><text x="{L}" y="16" class="pt">Recombination probability of O against substrate temperature</text>']
+    for v in (1e-5, 1e-4, 1e-3, 1e-2, 1e-1):
+        e.append(f'<line x1="{L}" x2="{w - Rr}" y1="{Yl(v):.1f}" y2="{Yl(v):.1f}" class="grid"/><text x="{L - 8}" y="{Yl(v) + 4:.1f}" class="tk" text-anchor="end">{v:g}</text>')
+    for t in range(100, 261, 40):
+        e.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{Tp}" y2="{h - B}" class="grid"/><text x="{X(t):.1f}" y="{h - B + 16}" class="tk" text-anchor="middle">{t}</text>')
+    e.append(f'<text x="{(L + w - Rr) / 2}" y="{h - 8}" class="al" text-anchor="middle">substrate temperature (°C; real values where the paper separates them from the set point)</text><text transform="translate(14 {(Tp + h - B) / 2}) rotate(-90)" class="al" text-anchor="middle">r (log scale)</text>')
+    off = {}
+    for r in pl:
+        if not r["T_C"] or (fl(r["pressure_Pa"]) or 0) not in (6.67, 100000.0):
+            continue
+        k = (r["T_C"], mat(r)); off[k] = off.get(k, -1) + 1
+        mark(e, X(float(r["T_C"])) + 7 * off[k] + {"SiO2": 0, "TiO2": -6, "Al2O3": 10, "HfO2": 22, "IrOx": 0}[mat(r)], 0, r, Yl)
+    e.append(f'<text x="{X(84):.1f}" y="{Yl(0.12):.1f}" class="warn">filled: 50 mTorr (6.7 Pa) · open squares: atmospheric pressure · bars: range or error · down triangle: upper limit</text>')
+    p1 = "".join(e) + "</svg>"
+    # r against pressure, with the Knudsen number of a 0.5 µm channel on top
+    e, Xp, Yp = loglog(760, 400, (1, 3e5), (1e-5, 1e-2), "total pressure during the plasma step (Pa, log scale)", "r (log scale)", "Recombination probability of O against pressure", (1, 10, 100, 1000, 1e4, 1e5), (1e-5, 1e-4, 1e-3, 1e-2))
+    for r in pl:
+        if mat(r) in ("SiO2", "TiO2") and r["T_C"] in ("100", "180", "100.0", "180.0") and fl(r["r"]):
+            mark(e, Xp(float(r["pressure_Pa"])) + (5 if mat(r) == "TiO2" else 0), 0, r, Yp)
+    e.append(f'<line x1="{Xp(2e4):.1f}" x2="{Xp(2e4):.1f}" y1="34" y2="354" stroke="var(--text2)" stroke-dasharray="3 3"/><text x="{Xp(1.8e4):.1f}" y="48" class="warn" text-anchor="end">Kn of a 0.5 µm channel falls below 1 near here</text>')
+    p2 = "".join(e) + "</svg>"
+    # S6: does depth in channel heights keep the free-molecular scaling?
+    low = {("SiO2", "100"): (119.4, 9.3e-5), ("TiO2", "100"): (189.6, 3.65e-5)}
+    atm = {("SiO2", "100"): (25.0, 4e-4), ("TiO2", "100"): (63.1, 6e-5)}
+    s6 = []
+    for m in ("SiO2", "TiO2"):
+        sl, rl = low[(m, "100")]; sa, ra = atm[(m, "100")]
+        s6.append([m, f"{sl:.0f} (r {rl:.2g})", f"{sa:.0f} (r {ra:.2g})", f"{math.sqrt(4 / (3 * ra)):.0f}", f"{math.sqrt(4 / (3 * ra)) / sa:.1f}", f"{4 / (3 * sa * sa):.1e}", f"{4 / (3 * sa * sa) / rl:.0f}"])
+    kn = table(["Paper", "Channel", "Pressure", "Mean free path (as stated or estimated)", "Kn", "Regime"], [
+        [E(who(A21)), "PillarHall, H 0.5 µm", "1.6 to 17 Pa (12 to 130 mTorr)", "about 0.1 mm (stated)", "about 200", "free molecular"],
+        [E(who(A9)), "PillarHall, H 0.5 µm", "6.7 Pa", "as above (same reactor)", "about 200", "free molecular"],
+        [E(who(PP)), "PillarHall, H 0.5 µm", "1e5 Pa, 2% O2 in N2", "0.2 µm (stated O scattering length)", "0.4", "transition"],
+        [E(who(J5)), "PillarHall, H 0.5 µm", "atmospheric, 1% O2", "as above (relation reused)", "about 0.4", "transition"],
+        [E(who(W)), "macroscopic trench, 1 mm", "0.06 to 1 Pa", "7 to 100 mm (estimated)", "10 to 100", "free molecular (r held fixed in the fit, not plotted)"],
+    ])
+    cards = [
+        (A21, 5, "", [("axes as printed", "temperature (A) and pressure (B) against r"), ("data kind", "fit: r from the slope of PD50/H against ln t, by the low-pressure relation")]),
+        (A9, 3, "", [("axes as printed", "ln(Plasma time (s)) / PD50% / cavity height"), ("data kind", "fit, the relation printed on the plot")]),
+        (PP, 3, "", [("axes as printed", "Ln(Plasma time (s)) / PD50% / cavity height"), ("data kind", "fit, by a relation for atmospheric pressure (constant 4.26)")]),
+        (J5, 10, "b", [("axes as printed", "Depth (µm) / Thickness (nm), inset ln t / PD50% / h"), ("data kind", "fit, relation of the previous paper reused")]),
+    ]
+    onto = table(["In the papers", "Ontology id with qualifiers", "Transform", "Missing in the ontology"], [
+        ["r, recombination probability, loss probability", code("recombination_probability{species=o_atom, surface=<material>}"), "none", "temperature, pressure and the kind of surface (growing film, ceramic) as conditions of the value"],
+        ["table temperature 200 °C, real about 180 °C", code("deposition_temperature{kind=set_point|measured}"), "none", "the set-point and real-temperature distinction"],
+        ["50 mTorr; atmospheric, 2% O2 in N2", code("process_pressure") + ", " + code("reactor_type"), "units to Pa", "a Knudsen number (mean free path over channel height) as a derived quantity"],
+        ["r = (4/3)(Δln t / Δx̃)² and slope = 1/√(4.26 r)", "relation of the value, not a quantity", "slope of PD50/H against ln t to r", "the relation used, and the regime it is valid in, as attributes of the fitted value"],
+    ])
+    rows = table(["Paper", "Where", "Surface", "r", "Range or error", "T (°C)", "Pressure (Pa)", "Regime", "Kind", "Reading"], [
+        [E(who(r["paper_id"])), E(r["where"]), E(r["surface"]), r["r"] or "—", f"{r['r_lo'] or '—'} to {r['r_hi'] or '—'}", r["T_C"] or "not stated", f"{float(r['pressure_Pa']):g}", E(r["regime"]), E(r["data_kind"]), E(r["reading"])] for r in pl])
+    sio = sorted((float(r["T_C"]), float(r["r"])) for r in pl if mat(r) == "SiO2" and r["paper_id"] == A21 and float(r["pressure_Pa"]) == 6.67)
+    sp = sorted((float(r["pressure_Pa"]), float(r["r"])) for r in pl if mat(r) == "SiO2" and r["paper_id"] == A21 and r["where"] == "Fig. 5B")
+    lit = [r for r in RC if r["use"].startswith("not plotted: literature")]
+    papers = sorted({r["paper_id"] for r in pl})
+    return f"""
+<section id="c11"><h2>Case 11. Recombination against temperature and pressure, and where depth in channel heights stops scaling</h2>
+<p class="q"><b>Question.</b> Across the plasma papers, how does the recombination probability of O on growing films change with substrate temperature and pressure (S3)? And does the free-molecular scaling of depth in channel heights still hold outside the Knudsen regime (S6)? Papers: {len(papers)} with values of their own; {len(lit)} literature values are listed in the CSV but not plotted.</p>
+<h3><span class="step">Before</span> The crops as published</h3>{before(cards)}
+<h3><span class="step">Ontology step</span> A value with its conditions and its relation</h3>{onto}
+<h3><span class="step">After</span> One axis for temperature, one for pressure</h3>{ILL}
+<div class="plots">{p1}{p2}</div>
+<p class="note">{" · ".join(f'<span style="color:var(--s{v})">●</span> {k}' for k, v in slot.items())} (growing films). IrOx (atmospheric, no stated temperature) is in the table below, on neither plot.</p>
+<details><summary>The {len(pl)} plotted values</summary>{rows}</details>
+<h4>Does depth in channel heights keep its free-molecular scaling at atmospheric pressure?</h4>{kn}
+{table(["Film, 100 °C", "Slope of PD50/H against ln t at 50 mTorr", "Slope at atmospheric pressure", "Slope the free-molecular relation predicts for the atmospheric r", "Predicted over observed", "r if the free-molecular relation were applied to the atmospheric slope", "That r over the 50 mTorr r"], s6)}
+<p class="take"><b>Takeaway.</b> In one reactor at 50 mTorr, r of O on growing SiO2 falls from {sio[0][1]:.1e} at {sio[0][0]:.0f} °C to {sio[-1][1]:.1e} at {sio[-1][0]:.0f} °C, and at about 180 °C from {sp[0][1]:.1e} at {sp[0][0]:g} Pa to {sp[-1][1]:.1e} at {sp[-1][0]:.0f} Pa, a factor of {sp[0][1] / sp[-1][1]:.0f} with pressure inside the free-molecular regime. TiO2 stays near 4e-5 up to 180 °C and drops below 1e-5 at 240 °C; Al2O3 and HfO2 are one to three orders higher. At atmospheric pressure (Kn about 0.4) the fronts advance per ln t {s6[0][4]} (SiO2) and {s6[1][4]} (TiO2) times less than the free-molecular relation predicts for the r those authors report; read with the free-molecular relation, the atmospheric slopes would give r {s6[0][6]} and {s6[1][6]} times the 50 mTorr values. So depth in channel heights stops scaling the free-molecular way between Kn of about 200 and 0.4, and an r is comparable across papers only with its regime and relation attached.</p>
+<p class="lim"><b>Limits.</b> {len(papers)} papers, two of them from one group and one reactor; the atmospheric papers share one relation, and one of them carries an erratum notice whose content is not in the ingested text. Fig. 5 values and error bars were read by eye. No paper measures the gas temperature, so mean free paths are as stated or estimated from the substrate temperature. The 50 mTorr and atmospheric comparisons are both at 100 °C but differ in O2 fraction, plasma source and flow. No thermal profile in the corpus is outside the Knudsen regime, so the S6 check rests on plasma data; Case 10 shows thermal depths holding Gordon's law from 65 nm pores to 0.3 mm slots, all at Kn well above 1.</p>
+</section>"""
+
+
 # ----------------------------------------------------------------------------- page
 
 CSS = """
 :root{--surface:#fcfcfb;--panel:#f3f2ee;--text:#1f1f1c;--text2:#55544e;--line:#d9d7cf;--grid:#e8e6df;--accent:#184f95;
---s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300}
+--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#7a5195;--s8:#8c6d31}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface:#1a1a19;--panel:#242422;--text:#f0efec;--text2:#c3c2b7;--line:#3a3935;--grid:#2e2d2a;--accent:#9ec5f4;
---s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300}}
-:root[data-theme="dark"]{--surface:#1a1a19;--panel:#242422;--text:#f0efec;--text2:#c3c2b7;--line:#3a3935;--grid:#2e2d2a;--accent:#9ec5f4;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300}
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#a37cc4;--s8:#b8935a}}
+:root[data-theme="dark"]{--surface:#1a1a19;--panel:#242422;--text:#f0efec;--text2:#c3c2b7;--line:#3a3935;--grid:#2e2d2a;--accent:#9ec5f4;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#a37cc4;--s8:#b8935a}
 *{box-sizing:border-box}body{margin:0;background:var(--surface);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:1500px;margin:0 auto;padding:24px 16px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:21px;margin:48px 0 6px;padding-top:20px;border-top:2px solid var(--line)}
 h3{font-size:16px;margin:26px 0 10px}h4{margin:0 0 6px;font-size:15px}.sub{color:var(--text2);margin:0 0 18px;max-width:80ch}p{max-width:95ch}
@@ -663,12 +971,12 @@ def main() -> None:
     ptab = table(["Case", "Source", "Series", "x as printed", "y as printed", "Points (x, y)"], [
         [p["case"], f"{E(who(p['paper']))}, Fig. {p['figure']}{p['panel']}", E(p["series"]), E(p["x_label_as_printed"]), E(p["y_label_as_printed"]), E("; ".join(f"{x:g}, {y:g}" for x, y in p["points"]))] for p in PTS])
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PSED case studies</title><style>{CSS}</style></head><body><main>
-<h1>Eight case studies from the ingested papers</h1>
-<p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
+<h1>Eleven case studies from the ingested papers</h1>
+<p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data; cases 9 to 11 carry the part E candidates S1, S2, and S3 with S6, on the hand-read quantity matrix. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
 <div class="flow"><span>Before: the source crops as published</span><span>→ Ontology step: printed label to id, transform, gaps</span><span>→ After: the comparable view</span></div>
 <h2>Selected profile panels</h2>
 <p>Measured plot rows of the figure inventory whose x is a distance (plain or divided by a length) and whose y is a film thickness, a normalized thickness, a local growth per cycle or a coated aspect ratio: {len(sel)} rows in {len(papers)} papers.</p>{seltab}
-{case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}
+{case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}{case9()}{case10()}{case11()}
 <h2>Points read by eye</h2><p>The same content as <code>points.json</code>, as a table.</p><details><summary>Show the {sum(len(p['points']) for p in PTS)} points of {len(PTS)} series</summary>{ptab}</details>
 </main></body></html>"""
     OUT.write_text(page, encoding="utf-8")
