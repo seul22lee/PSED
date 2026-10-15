@@ -1,4 +1,4 @@
-# Handoff (2026-10-14)
+# Handoff (2026-10-15; the state at commit 85fdb15)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -10,7 +10,9 @@ sections below.
   pipeline (see ingest/INGEST.md) and is not rebuilt casually.
 - **`psed_v2/pilot/`**: all pre-pipeline exploration in one flat folder (it replaces gold/, cases/, facts/ and schema_pilot/).
   Per-paper files carry the paper id in their name. One set of controlled lists (`lists.py`), one check (`check.py`), one
-  report page (`report.py` → `reports/pilot.html`, untracked, tabs Facts / Cases / Matrix).
+  report page (`report.py` → `reports/pilot.html`, untracked, tabs Facts / Cases / Matrix). The Facts tab shows each paper as
+  (a) the paper in reading order, (b) experiment cards (default) or the text tree, (c) figures; above the trees the forest
+  (`forest.py`: the three trees read together, a quantity picker, one scatter, and the Case 9, Case 10 and Fig. 9 presets).
   - Facts layer (three pilot papers): `elements.py` (stage 1 → `<paper_id>.elements.csv`), `facts.py` (stage 2 helpers and the
     column spec), `<paper_id>.facts.py` (the facts of one paper, read by hand) → `<paper_id>.facts.csv`,
     `<paper_id>.coverage.csv`, `<paper_id>.points.json`.
@@ -53,6 +55,7 @@ python3 psed_v2/pilot/elements.py [--text DIR]        # stage 1; --text writes e
 python3 psed_v2/pilot/10.1039_d0cp03358h.facts.py     # stage 2, one per paper (also 10.1021_acs.chemmater.2c01154, 10.1116_6.0003182)
 python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py   # matrix, then the paper × case table
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
+python3 psed_v2/pilot/forest.py                       # Cases 9 and 10 and Fig. 9 rebuilt from the three trees alone, against the hand-made CSVs
 python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, no unresolved case candidate
 python3 psed_v2/pilot/report.py                       # reports/pilot.html (needs corpus/raw review PDF and pdftoppm for Case 8)
 python3 psed_v2/ingest/regression.py                  # ingest output against the answer set
@@ -69,7 +72,8 @@ Stages:
 2. **Facts per element** (`<paper_id>.facts.py` → `.facts.csv`, `.coverage.csv`, `.points.json`): what each element itself states,
    one row per piece of knowledge, typed setting / observation / derived / model / definition / claim / cited. Local only:
    mentions are copied as printed ("sample 8", "H 500 nm"), with no decision on what they refer to. Values and units as printed.
-   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14: yim20 692 facts, mat22 452, gre23 324.
+   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14; at 85fdb15 yim20 698 facts, mat22 493,
+   gre23 334 (the tree pass added explicit settings and purpose claims).
 3. **One tree per paper** (replaces the earlier separate anchors and relations steps): inside `<paper_id>.facts.csv`, two more
    columns, `parent` (one id: the row without which the fact would not exist) and `links` (a second home: a claim's supporting
    facts, series membership, the same data shown in another panel), and tree rows in the same file (ids without "#"): the paper
@@ -78,12 +82,27 @@ Stages:
    observations under their run; runs under the process or a group; a calculated value under its first input; a figure curve
    under the table value it plots, else its run; a model under its simulation run; a cited value under its reference; claims and
    definitions under the paper. `check.py` checks one root, existing parents, no cycles, a child for every run, a link for every
-   claim; tree rows are not counted as facts. Done for yim20 on 2026-10-14 (60 tree rows); mat22 and gre23 next.
+   claim; tree rows are not counted as facts. Done for the three papers on 2026-10-14. Rules settled since: a run is one physical
+   film, specimen or simulation (mat22: a (T, H2-ratio) pair is a group holding its ratio setting, one run per film beneath it,
+   `how=inferred` when two measurements are put on one film without the paper saying so; gre23: under each deposition the
+   specimens its facts are about; yim20: one specimen per Table 1 sample code); what a group varies among its sibling runs or
+   groups is never quantity `other` (`lists.py` gets an id; 21 added 2026-10-14); every group row's first link is its purpose
+   fact, the paper's own sentence on what the group was made to test (`facts.purpose()`); `check.py` checks all of this. Tree
+   rows at 85fdb15 (groups / runs / cited works): yim20 8 / 28 / 22, mat22 45 / 101 / 23, gre23 1 / 21 / 17.
 4. **Standardization**: units converted to `lists.UNITS` and quantity ids standardized, in the facts file.
 5. **Views and demo**, seven views: coverage (nothing lost); facts by type; experiment view (per deposition: conditions,
    measurements, results, link status coloured); figure view (crop next to its facts); evidence trace (a claim → derived →
    observation → crop or table cell); cross-paper comparison (same quantity, comparable only with matching qualifiers and
    data_kind); v1 comparison by fact type. The KG is these files as a graph and serves the trace and cross-paper views.
+   Built at 85fdb15: coverage (a), facts by type (the text tree), the figure view (c) and the experiment view as cards (b): the
+   left pane is the tree collapsed to groups and runs; clicking a run, a fact line in the text tree, a fact in the figures view
+   or a scatter point opens the run's card. A card has five rows: 1 what was varied (the setting differing among the run's
+   siblings, this run's value beside theirs; when siblings differ in nothing, the first level up where they do); 2 other
+   conditions (every setting inherited up the tree as chips, marked where that level's siblings differ); 3 measured (observation,
+   derived and model facts grouped by figure, table or paragraph; an element id opens the evidence box with the crop; curves as
+   sparklines; inferred film membership marked; child specimen runs listed); 4 why and what it showed (the group's purpose fact,
+   then the claims linked to the run or its group); 5 compare (siblings with their varied values; the same varied quantity in
+   the other two papers). The trace (view 5) is row 3 → evidence box; the cross-paper view (6) is the forest scatter and row 5.
 
 Files per paper: `.elements.csv`, `.facts.csv` (facts and the tree), `.coverage.csv`, `.points.json`; no separate anchor or link
 files. They are the source; the KG and the pages are rebuilt from them. Order: stages 1–2 → 3 → 4 → 5, with a
@@ -95,7 +114,8 @@ The columns were kept as they are; these are open decisions for the pipeline sch
    e.g. Table I porosities, Fig. 1c mean thickness, tolerances).
 2. **Non-numeric value column.** Categorical or named results carry their value in the statement only (about 110 facts: mat22 Fig. 2
    crystalline/amorphous per cell (32) and map regions, yim20 pillar layout "v1a", reactor names, LHAR type).
-3. **Promote "other" ids used in two or more papers.** 260 facts use quantity other (yim20 100, mat22 85, gre23 75). Labels seen in
+3. **Promote "other" ids used in two or more papers.** Done 2026-10-14 for 21 ids (`lists.py`); 108 facts still use other (yim20 44,
+   mat22 27, gre23 37) and no label is left that two papers share. Before that pass, 260 facts used other. Labels then seen in
    two or more papers: signal intensity (EDS, Raman, XPS, X-ray counts; all three), accelerating voltage (yim20, mat22),
    crystallite size (mat22, gre23), sample or channel length L (yim20, gre23), reactor part temperatures (wall, window, delivery
    line; mat22, gre23). Frequent single-paper labels to weigh: porosity, mass gain, hold time, binding energy, roughness Rq, carrier
@@ -109,9 +129,8 @@ The columns were kept as they are; these are open decisions for the pipeline sch
    distinction needs a qualifier key, as do map vs line scan (sem_eds) and gauge vs thermocouple (process_monitor).
 8. **Run attributes.** A run row's kind, how it was assigned and its key currently live in `qualifiers` (run=, how=, sample=,
    sim=) because only parent and links were added as columns; decide later whether they get their own columns.
-9. **What a run is.** yim20 uses one physical deposition or specimen per run (Table 1 sample codes); mat22 uses one condition set
-   (films sharing (T, H2 ratio) share a run, whatever their cycles or substrate); gre23 one deposition per temperature schedule.
-   Decide for the pipeline.
+9. **What a run is.** Decided 2026-10-14: one physical film, specimen or simulation per run (stage 3 above); a condition set is a
+   group. The pipeline needs the `how=inferred` mark for facts of two measurements put on one film without the paper saying so.
 Also seen: multi-number table cells (yim20 pulse-purge sequences "0.1-4.0-0.1-4.0") split into one fact per step; text that rounds a
 table value kept as one fact with the table value; conflicts between text and table kept as printed. Channel height H of lateral
 channels is `feature_height` (added to the lists). Twelve yim20 curves have facts but no points (rejected in v1, absent from
