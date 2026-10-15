@@ -715,4 +715,12 @@ for f in C.facts():
     if f["fact_id"] in PARENT:
         f["parent"] = PARENT[f["fact_id"]]
         f["links"] = LINKS.get(f["fact_id"], "")
+# the set the paper names: the three temperature schedules, explored to see whether Zn metal can be avoided (s6.p8)
+from facts import purpose, facts as _facts  # noqa: E402
+N(f"{K}:grp:schedules", "group", "the three temperature schedules of the 20-cycle ZnO runs: T held at 120, held at 160, cycled 120/160 °C",
+  PROC, evidence="s6.p8;fig1b;s9.p6", label_as_printed="120, 160, 120/160 °C", qualifiers="how=stated")
+for r in _facts():
+    if r["fact_id"] in (f"{K}:run120", f"{K}:run160", f"{K}:run120_160"):
+        r["parent"] = f"{K}:grp:schedules"
+purpose(f"{K}:grp:schedules", f"{K}:s6.p8#12")
 write(K, PID)

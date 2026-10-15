@@ -31,7 +31,9 @@ Stage 3 makes each paper one tree inside its facts file. Tree rows have ids with
   <key>:grp:<name>         type=group, a set of runs the paper names (a series, a reproducibility set, the simulations)
   <key>:run<n>, :sim:<k>   type=run, a deposition, a specimen or a simulation; qualifiers run=<kind>;how=stated|inferred;<key>=<v>
   <key>:refs:<n>           type=cited, a cited work (reference number n)
-Tree rows do not count as facts and do not enter coverage.csv.
+Tree rows do not count as facts and do not enter coverage.csv. A group row's first link is its purpose: the fact (the
+paper's own sentence, a claim, observation, setting or model) that says what the group was made to test; purpose(gid, fid)
+sets it.
 """
 import csv, json, re, sys
 from pathlib import Path
@@ -72,6 +74,15 @@ def N(fid, type_, statement, parent, evidence="", **kw):
             raise KeyError(k)
         row[k] = ";".join(v) if isinstance(v, (list, tuple)) else str(v)
     _facts.append(row)
+    return fid
+
+
+def purpose(gid, fid):
+    """Make fact fid the purpose of group row gid (its first link); the row and the fact must already exist."""
+    row = next(r for r in _facts if r["fact_id"] == gid)
+    assert any(r["fact_id"] == fid for r in _facts), fid
+    rest = [l for l in row["links"].split(";") if l and l != fid]
+    row["links"] = ";".join([fid] + rest)
     return fid
 
 

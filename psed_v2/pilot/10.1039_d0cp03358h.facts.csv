@@ -691,15 +691,21 @@ yim20:tabu2.r22c0#1,definition,tabu2.r22c0;tabu2.r22c1,symbol W: opening width o
 yim20:tabu2.r23c0#1,definition,tabu2.r23c0;tabu2.r23c1,symbol x: distance from the channel opening; unit m,,,x,,,,,m,,,,Symbols and abbreviations,,yim20,
 yim20:tabu2.r26c0#1,definition,tabu2.r26c0;tabu2.r26c1,symbol λ_TMA: mean free path of TMA; unit µm,,,λ_TMA,,,,,µm,,,,Symbols and abbreviations,,yim20,
 yim20:tabu2.r27c0#1,definition,tabu2.r27c0;tabu2.r27c1,symbol ρ: film density; unit kg m-3,,,ρ,,,,,kg m-3,,,,Symbols and abbreviations,,yim20,
+yim20:s6.p2#2,claim,s6.p2,Series A exists to test how pillar density affects the saturation profile,,,,,,,,,,,,Series A,,yim20,yim20:s10.p1#2;yim20:s10.p1#3
+yim20:s7.p5#12,claim,s7.p5,the ×10 and ×5 objectives were used to test how the spot size affects the saturation profile,,,,,,,,,,,,×10;×5;Series B,,yim20,yim20:s11.x1#2
+yim20:s13.x1#6,claim,s13.x1,Series C was made to show the effect of channel height on the saturation profile,,,,,,,,,,,,Series C;Fig. 9,,yim20,yim20:s13.x1#2;yim20:s13.x1#3
+yim20:s13.x2#4,claim,s13.x2,Series D was made to show how the cycle count changes the saturation profile at H 500 nm,,,,,,,,,,,,Series D;Fig. 9;500 nm,,yim20,yim20:s13.x2#1;yim20:s13.x2#2
+yim20:s18.p2#1,claim,s18.p2,the purge-time series was made to look further into how purge time changes the saturation profile,,,,,,,,,,,,purge time,,yim20,yim20:s14.x1#2
+yim20:s16.p10#5,claim,s16.p10;fig8.cap,fully independent measurements of one process are compared to show the reproducibility of the saturation profile,,,,,,,,,,,,Fig. 8b,,yim20,yim20:s16.p10#1
 yim20,paper,abs.g1,"Yim et al. 2020, PCCP: PillarHall-3 LHAR test chips and saturation-profile analysis of TMA-water Al2O3 ALD",,,10.1039/d0cp03358h,,,,,,,,,,,,
 yim20:process,process,s6.p1;s5.p1;s7.p1,"shared process: thermal Al2O3 ALD from TMA and water at 300 °C in a Picosun R-150 on PillarHall-3 LHAR chips, with the shared characterization methods",,,,,,,,,,,,,,yim20,
-yim20:grp:A,group,s3.p9;tab1.r1c0,"Series A of Table 1: pillar layout varied over samples 1, 2, 3",,how=stated,Series A,,,,,,,,,,,yim20:process,
-yim20:grp:B,group,s3.p9;tab1.r4c0,"Series B of Table 1: reflectometer magnification varied over samples 4, 5, 6",,how=stated,Series B,,,,,,,,,,,yim20:process,
-yim20:grp:C,group,s3.p9;tab1.r7c0,"Series C of Table 1: design channel height varied over samples 7, 8, 9",,how=stated,Series C,,,,,,,,,,,yim20:process,
-yim20:grp:D,group,s3.p9;tab1.r8c0,"Series D of Table 1: number of ALD cycles varied over samples 8, 10, 11",,how=stated,Series D,,,,,,,,,,,yim20:process,
-yim20:grp:E,group,s3.p9;tab1.r13c0,"Series E of Table 1: TMA pulse time varied over samples 12, 13, 14",,how=stated,Series E,,,,,,,,,,,yim20:process,
-yim20:grp:F,group,s3.p9;tab1.r13c0,"Series F of Table 1: purge time varied over samples 12, 15, 16",,how=stated,Series F,,,,,,,,,,,yim20:process,
-yim20:dep:A,run,s6.p2,"one ALD run that coated samples 1, 2 and 3 (Series A) together, all on one wafer",,run=deposition;how=stated,Series A,,,,,,,,,,,yim20:grp:A,
+yim20:grp:A,group,s3.p9;tab1.r1c0,"Series A of Table 1: pillar layout varied over samples 1, 2, 3",,how=stated,Series A,,,,,,,,,,,yim20:process,yim20:s6.p2#2
+yim20:grp:B,group,s3.p9;tab1.r4c0,"Series B of Table 1: reflectometer magnification varied over samples 4, 5, 6",,how=stated,Series B,,,,,,,,,,,yim20:process,yim20:s7.p5#12
+yim20:grp:C,group,s3.p9;tab1.r7c0,"Series C of Table 1: design channel height varied over samples 7, 8, 9",,how=stated,Series C,,,,,,,,,,,yim20:process,yim20:s13.x1#6
+yim20:grp:D,group,s3.p9;tab1.r8c0,"Series D of Table 1: number of ALD cycles varied over samples 8, 10, 11",,how=stated,Series D,,,,,,,,,,,yim20:process,yim20:s13.x2#4
+yim20:grp:E,group,s3.p9;tab1.r13c0,"Series E of Table 1: TMA pulse time varied over samples 12, 13, 14",,how=stated,Series E,,,,,,,,,,,yim20:process,yim20:abs.g3#2
+yim20:grp:F,group,s3.p9;tab1.r13c0,"Series F of Table 1: purge time varied over samples 12, 15, 16",,how=stated,Series F,,,,,,,,,,,yim20:process,yim20:s18.p2#1
+yim20:dep:A,run,s6.p2,"one ALD run that coated samples 1, 2 and 3 (Series A) together, all on one wafer",,run=deposition;how=stated,Series A,,,,,,,,,,,yim20:grp:A,yim20:s6.p2#2
 yim20:run1,run,tab1.r1c0;tab1.r1c1,specimen sample 1 of Table 1 (Series A),,run=specimen;how=stated;sample=1,sample 1,,,,,,,,,,,yim20:dep:A,
 yim20:run2,run,tab1.r2c0;tab1.r2c1,specimen sample 2 of Table 1 (Series A),,run=specimen;how=stated;sample=2,sample 2,,,,,,,,,,,yim20:dep:A,
 yim20:run3,run,tab1.r3c0;tab1.r3c1,specimen sample 3 of Table 1 (Series A),,run=specimen;how=stated;sample=3,sample 3,,,,,,,,,,,yim20:dep:A,
@@ -717,8 +723,8 @@ yim20:run14,run,tab1.r15c0;tab1.r15c1,specimen sample 14 of Table 1 (Series E),,
 yim20:run15,run,tab1.r16c0;tab1.r16c1,specimen sample 15 of Table 1 (Series F),,run=specimen;how=stated;sample=15,sample 15,,,,,,,,,,,yim20:grp:F,
 yim20:run16,run,tab1.r18c0;tab1.r18c1,specimen sample 16 of Table 1 (Series F),,run=specimen;how=stated;sample=16,sample 16,,,,,,,,,,,yim20:grp:F,
 yim20:runS4,run,fig6.cap;s10.x3,"AFM specimen of Fig. 6: 500 nm design channel, 500 cycles at 300 °C, listed in ESI Table S4",,run=specimen;how=stated;sample=TableS4,Table S4,,,,,,,,,,,yim20:process,
-yim20:grp:repro,group,fig8.cap;s12.x2;s16.p10;tab2.r7c6,"reproducibility set: samples 2, 4, 8 and 12, alike ALD parameters on different chips, runs and times",,how=stated,"sample 2, 4, 8, and 12",,,,,,,,,,,yim20:process,yim20:run2;yim20:run4;yim20:run8;yim20:run12
-yim20:grp:sims,group,s8.p1;s13.p2;fig10.cap,simulations with the MATLAB diffusion-reaction model (Ylilammi et al. 2018) and their shared inputs,,how=stated,,,,,,,,,,,,yim20,
+yim20:grp:repro,group,fig8.cap;s12.x2;s16.p10;tab2.r7c6,"reproducibility set: samples 2, 4, 8 and 12, alike ALD parameters on different chips, runs and times",,how=stated,"sample 2, 4, 8, and 12",,,,,,,,,,,yim20:process,yim20:s16.p10#5;yim20:run2;yim20:run4;yim20:run8;yim20:run12
+yim20:grp:sims,group,s8.p1;s13.p2;fig10.cap,simulations with the MATLAB diffusion-reaction model (Ylilammi et al. 2018) and their shared inputs,,how=stated,,,,,,,,,,,,yim20,yim20:s13.p2#1
 yim20:sim:H100,run,fig10.cap,simulated profile for channel height 100 nm and 500 cycles (Fig. 10),,run=simulation;how=stated;sim=H100_N500,100 nm,,,,,,,,,,,yim20:grp:sims,
 yim20:sim:H200,run,fig10.cap,simulated profile for channel height 200 nm and 500 cycles (Fig. 10),,run=simulation;how=stated;sim=H200_N500,200 nm,,,,,,,,,,,yim20:grp:sims,
 yim20:sim:H500,run,fig10.cap,simulated profile for channel height 500 nm and 500 cycles (Fig. 10),,run=simulation;how=stated;sim=H500_N500,500 nm,,,,,,,,,,,yim20:grp:sims,

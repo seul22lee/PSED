@@ -827,6 +827,18 @@ for (t, r), (sym, what, unit) in SYM.items():
     F(K, f"{t}.r{r}c0;{t}.r{r}c1", "definition", f"symbol {sym}: {what}" + (f"; unit {unit}" if unit else ""),
       label_as_printed=sym, unit=unit, mentions="Symbols and abbreviations")
 
+# ------------------------------------------------------------------ purpose sentences of the series (stage 3 group rows)
+PUR_A = F(K, "s6.p2", "claim", "Series A exists to test how pillar density affects the saturation profile", mentions="Series A")
+PUR_B = F(K, "s7.p5", "claim", "the ×10 and ×5 objectives were used to test how the spot size affects the saturation profile",
+          mentions="×10;×5;Series B")
+PUR_C = F(K, "s13.x1", "claim", "Series C was made to show the effect of channel height on the saturation profile", mentions="Series C;Fig. 9")
+PUR_D = F(K, "s13.x2", "claim", "Series D was made to show how the cycle count changes the saturation profile at H 500 nm",
+          mentions="Series D;Fig. 9;500 nm")
+PUR_F = F(K, "s18.p2", "claim", "the purge-time series was made to look further into how purge time changes the saturation profile",
+          mentions="purge time")
+PUR_R = F(K, "s16.p10;fig8.cap", "claim", "fully independent measurements of one process are compared to show the reproducibility of the saturation profile",
+          mentions="Fig. 8b")
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs come from Table 1 (one specimen per sample code; Series A is also one stated ALD run, s6.p2), the AFM specimen of Fig. 6
 # (Table S4) and the simulations (Fig. 10 curves, ESI sensitivity runs). Parent rule: the row without which the fact would not
@@ -973,6 +985,9 @@ CLAIM = {"abs.g1#1": (PROC, "s5.p1#1"), "abs.g2#2": ("s5.p2#1",), "abs.g3#1": (g
          "s19.p3#7": ("s19.p3#5", "s19.p3#6", "s19.p1#2"), "s19.p4#2": ("tab2.r7c6#1", "tab2.r5c6#1", "tab2.r4c6#1"),
          "s19.p4#3": ("tab2.r7c7#1", "tab2.r5c7#1"), "s20.p1#1": ("s16.p1#1",), "s20.p2#1": (grp("C"), grp("D")),
          "s20.p2#2": ("s13.x1#3", "fig9b#1", "fig9e#1"), "s20.p2#3": ("s19.p3#5", "s13.p1#1"), "s20.p3#1": ("s10.p2#2", "s14.x1#1")}
+short = lambda f: f.split(":", 1)[1]
+CLAIM.update({short(PUR_A): ("s10.p1#2", "s10.p1#3"), short(PUR_B): ("s11.x1#2",), short(PUR_C): ("s13.x1#2", "s13.x1#3"),
+              short(PUR_D): ("s13.x2#1", "s13.x2#2"), short(PUR_F): ("s14.x1#2",), short(PUR_R): ("s16.p10#1",)})
 for c, sup in CLAIM.items():
     put(PAPER, c)
     ln(c, *sup)
@@ -993,4 +1008,10 @@ for f in C.facts():
     if f["fact_id"] in PARENT:
         f["parent"] = PARENT[f["fact_id"]]
         f["links"] = LINKS.get(f["fact_id"], "")
+# the purpose of each series: the paper's own sentence on what it was made to test (Series E has none; the abstract's
+# sentence on what varying the TMA pulse revealed stands in)
+from facts import purpose  # noqa: E402
+for g, p in {grp("A"): PUR_A, f"{K}:dep:A": PUR_A, grp("B"): PUR_B, grp("C"): PUR_C, grp("D"): PUR_D, grp("E"): fid("abs.g3#2"),
+             grp("F"): PUR_F, grp("repro"): PUR_R, grp("sims"): fid("s13.p2#1")}.items():
+    purpose(g, p)
 write(K, PID)

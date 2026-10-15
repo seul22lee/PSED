@@ -10,7 +10,8 @@ quantity, qualifiers, value, range, unit, points and mentions; or the same state
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
-every run and group has a child; every claim has a link; a setting that varies among sibling runs or groups is never "other";
+every run and group has a child; every group's first link is its purpose fact (the paper's sentence on what it was made to test);
+every claim has a link; a setting that varies among sibling runs or groups is never "other";
 tree rows (ids without "#") are not counted as facts.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
@@ -161,6 +162,10 @@ def check_tree(rows, els):
     for r in rows:
         if r["type"] in ("run", "group") and not kids[r["fact_id"]]:
             err.append(f"{r['fact_id']}: {r['type']} without children")
+        if r["type"] == "group":                                        # a group's first link is its purpose, a fact
+            first = r.get("links", "").split(";")[0]
+            if not first or first not in R or "#" not in first or R[first]["type"] not in ("claim", "observation", "setting", "model"):
+                err.append(f"{r['fact_id']}: group without a purpose fact as its first link")
     # what a group varies is never "other": among sibling runs (or sibling groups, each taken with its own facts and its
     # runs' facts), a setting present in two siblings with different values
     K = collections.defaultdict(list)

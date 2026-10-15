@@ -1285,4 +1285,10 @@ for f in C.facts():
     if f["fact_id"] in PARENT:
         f["parent"] = PARENT[f["fact_id"]]
         f["links"] = LINKS.get(f["fact_id"], "")
+# the purpose of each group: the paper's own sentence on what it was made to test. The map, the temperature groups and the
+# (T, ratio) pairs share the one sentence (abs.g3#1): the paper has no per-temperature or per-pair sentence.
+from facts import purpose  # noqa: E402
+PUR = {f"{K}:grp:cyc": f"{K}:s3.p5#1", f"{K}:grp:h2s": f"{K}:s3.p53#4", f"{K}:grp:WS2": f"{K}:s3.p45#1", f"{K}:grp:TiS2": f"{K}:s3.p45#1"}
+for g in [r["fact_id"] for r in C.facts() if r["type"] == "group"]:
+    purpose(g, PUR.get(g, f"{K}:abs.g3#1"))
 write(K, PID)
