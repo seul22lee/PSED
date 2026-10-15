@@ -15,6 +15,7 @@ every claim has a link; a setting that varies among sibling runs or groups is ne
 group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the group or above it, never only in the label;
 every setting under a group carries a value or a value_text;
 tree rows (ids without "#") are not counted as facts.
+Experiments: <paper_id>.experiments.csv (experiments.py) has one row per run of the tree.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
 import collections, csv, json, re, sys
@@ -121,6 +122,10 @@ def check(pid):
         elif c["status"] == "no knowledge" and not c["reason"]:
             err.append(f"{c['element_id']}: no knowledge without a reason")
     err += check_tree(rows, els)
+    if any(r["type"] == "paper" for r in rows):
+        ex, nruns = rd(HERE / f"{pid}.experiments.csv"), sum(r["type"] == "run" for r in rows)
+        if len(ex) != nruns or {r["run"] for r in ex} != {r["fact_id"] for r in rows if r["type"] == "run"}:
+            err.append(f"{pid}.experiments.csv: {len(ex)} rows for {nruns} runs (rerun experiments.py)")
     s = summary(els, facts, cov)
     s["tree"] = tree_summary(rows) if any(r["type"] == "paper" for r in rows) else {}
     return err, s

@@ -25,6 +25,7 @@ psed_v2/
   pilot/                    # tracked, flat: pre-pipeline exploration (replaces gold/, cases/, facts/, schema_pilot/); per-paper files named <paper_id>.*
                             #   lists.py (the one set of controlled lists), check.py (the one check), report.py -> reports/pilot.html (gitignored; tabs Facts / Cases / Matrix)
                             #   facts layer on three papers: elements.py -> <paper_id>.elements.csv; facts.py (helpers, column spec); <paper_id>.facts.py -> .facts.csv, .coverage.csv, .points.json
+                            #   experiments.py -> <paper_id>.experiments.csv and experiments.csv (one row per run: inherited settings, results, group, purpose, claims); forest.py (the three trees together)
                             #   cases on the 58 in-scope papers: figures.csv, papers.csv, points.json (read by eye), quantity_matrix.py/.csv, paper_case.py/.csv, case_decisions.csv,
                             #   the Case 9-13 CSVs, recheck.json, cases.py and matrix.py (tab builders); cremers.py -> cremers_*.csv (Cremers 2019 tables typed in and checked)
                             #   v1_points_check.csv, v1_points.json (v1 curves checked against their figures)
