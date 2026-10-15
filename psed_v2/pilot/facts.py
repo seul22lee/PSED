@@ -17,6 +17,8 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   qualifiers   k=v;k=v from lists.QUALIFIERS
   label_as_printed  the quantity's label or symbol as printed, when quantity is other (else optional)
   value, value_min, value_max, censor, unit   as printed in the element (no unit conversion in stage 2)
+  value_text   a categorical value (pillar layout v2a, a substrate, a crystallinity class, a reactor name, an LHAR type) when the
+               value is a name, not a number; the statement then names the setting without repeating the value
   points_ref   the name of a digitized curve in <pid>.points.json (only from points.json or accepted v1 points)
   data_kind    lists.DATA_KINDS (required with a value or points)
   method       a short id from lists.METHODS
@@ -44,7 +46,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links"]
+          "value_max", "censor", "unit", "value_text", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}

@@ -4,15 +4,16 @@
     python3 psed_v2/pilot/check.py
 
 Facts (per paper, <paper_id>.*): fact ids unique; evidence ids and inputs resolve; vocabularies (type, quantity, qualifiers, data_kind, method,
-censor); a quantity of "other" carries label_as_printed; a value or points_ref has a quantity and a data_kind; values
-are numbers; every points_ref names a curve of <paper_id>.points.json and every curve is used; no two facts state the same thing (same type,
-quantity, qualifiers, value, range, unit, points and mentions; or the same statement); no statement repeats eight or
+censor); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
+also a data_kind; values are numbers; every points_ref names a curve of <paper_id>.points.json and every curve is used; no two facts
+state the same thing (same type, quantity, qualifiers, value, range, unit, value_text, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
 every run and group has a child; every group's first link is its purpose fact (the paper's sentence on what it was made to test);
 every claim has a link; a setting that varies among sibling runs or groups is never "other"; every number with a unit in a
 group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the group or above it, never only in the label;
+every setting under a group carries a value or a value_text;
 tree rows (ids without "#") are not counted as facts.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
@@ -78,20 +79,19 @@ def check(pid):
         for k in ("value", "value_min", "value_max"):
             if f[k] and C.num(f[k]) is None:
                 bad(f"{k} {f[k]!r} is not a number")
-        if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"]:
-            if not f["quantity"]:
-                bad("value without quantity")
-            if not f["data_kind"]:
-                bad("value without data_kind")
+        if (f["value"] or f["value_min"] or f["value_max"] or f["points_ref"] or f["value_text"]) and not f["quantity"]:
+            bad("value without quantity")
+        if (f["value"] or f["value_min"] or f["value_max"] or f["points_ref"]) and not f["data_kind"]:
+            bad("value without data_kind")
         if f["points_ref"]:
             used_points.add(f["points_ref"])
             if f["points_ref"] not in pts:
                 bad(f"points_ref {f['points_ref']} not in {pid}.points.json")
         if not f["statement"].strip() or "\n" in f["statement"]:
             bad("statement empty or not one line")
-        if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"]:
+        if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"] or f["value_text"]:
             key = tuple(f[k] for k in ("type", "quantity", "qualifiers", "label_as_printed", "value", "value_min", "value_max",
-                                       "censor", "unit", "points_ref", "data_kind")) + \
+                                       "censor", "unit", "value_text", "points_ref", "data_kind")) + \
                 (tuple(sorted(m.strip().lower() for m in f["mentions"].split(";"))),)
             if key in seen_key:
                 bad(f"same as {seen_key[key]}")
@@ -129,7 +129,8 @@ def check(pid):
 def check_tree(rows, els):
     """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links
     resolve; no cycles; every run has a child; every claim has a link; tree rows use the node types (cited works: cited);
-    what a group varies is never "other"; a group's label states no value that no setting fact under or above it carries."""
+    what a group varies is never "other"; a group's label states no value that no setting fact under or above it carries;
+    every setting under a group carries a value or a value_text."""
     if not any(r["type"] == "paper" for r in rows):
         return []
     err = []
@@ -194,7 +195,7 @@ def check_tree(rows, els):
             for f in sub(run["fact_id"], run["type"] == "group"):
                 if f["type"] == "setting" and f["quantity"]:
                     key = (f["quantity"], f["qualifiers"], f["label_as_printed"] if f["quantity"] == "other" else "")
-                    v = f["censor"] + f["value"] + f["unit"] if f["value"] else f["statement"].split(": ", 1)[-1]
+                    v = f["censor"] + f["value"] + f["unit"] if f["value"] else f["value_text"] or f["statement"].split(": ", 1)[-1]
                     per[key][run["fact_id"]] = per[key].get(run["fact_id"], "") + "|" + v
         for key, m in per.items():
             if key[0] == "other" and len(set(m.values())) > 1:
@@ -215,6 +216,14 @@ def check_tree(rows, els):
         for v in label_values(r["label_as_printed"]):
             if v not in have:
                 err.append(f"{r['fact_id']}: label '{r['label_as_printed']}' states {v:g} but no setting fact under it or above it carries it")
+    # every setting under a group carries a value or a value_text (a categorical value), so that the group's runs can be compared
+    seen = set()
+    for r in rows:
+        if r["type"] == "group":
+            for f in sub(r["fact_id"], True):
+                if f["type"] == "setting" and f["fact_id"] not in seen and not (f["value"] or f["value_min"] or f["value_max"] or f["value_text"]):
+                    seen.add(f["fact_id"])
+                    err.append(f"{f['fact_id']}: setting under {r['fact_id']} with neither value nor value_text")
     return err
 
 

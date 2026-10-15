@@ -173,7 +173,7 @@ function factsOf(d,id){return d.facts.filter(f=>f.evidence.split(";").includes(i
 function factHTML(f,pi){pi=pi===undefined?SP:pi;const q=[f.quantity&&(f.quantity+(f.label_as_printed?` (${f.label_as_printed})`:"")),f.qualifiers].filter(Boolean).join(" · ");
  const v=[f.censor+f.value,f.value_min&&f.value_max?`${f.value_min}–${f.value_max}`:(f.value_min||f.value_max)].filter(Boolean).join(" ");
  return `<div class="fact" style="cursor:pointer" title="open the run's card" onclick="cardFor('${f.fact_id}',${pi})"><div class="t">${esc(f.type)} <code class="mut">${esc(f.fact_id)}</code></div><div>${esc(f.statement)}</div>
- <div class="m">${q?esc(q):""}${v?` = <b>${esc(v)} ${esc(f.unit)}</b>`:""}${f.data_kind?` · ${esc(f.data_kind)}`:""}${f.method?` · ${esc(f.method)}`:""}${f.points_ref?` · ${f.points?f.points.length:"?"} points`:""}</div>
+ <div class="m">${q?esc(q):""}${v?` = <b>${esc(v)} ${esc(f.unit)}</b>`:f.value_text?` = <b>${esc(f.value_text)}</b>`:""}${f.data_kind?` · ${esc(f.data_kind)}`:""}${f.method?` · ${esc(f.method)}`:""}${f.points_ref?` · ${f.points?f.points.length:"?"} points`:""}</div>
  ${f.mentions?`<div class="m">mentions: ${esc(f.mentions)}</div>`:""}${f.inputs?`<div class="m">inputs: ${esc(f.inputs)}</div>`:""}
  <div class="m">evidence: ${f.evidence.split(";").map(e=>`<span class="lnk" onclick="event.stopPropagation();goto('${e}')">${e}</span>`).join(", ")}</div>${f.points?plot(f.points):""}</div>`}
 function plot(p){if(!p.length)return"";const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
@@ -198,7 +198,7 @@ function readView(d){let h="",tabs={};const els=d.elements;
  for(const t of Object.keys(tabs)){if(h.includes(`@@${t}@@`))h=h.replace(`@@${t}@@`,grid(t));else h+=`<h3>${t} (no caption)</h3>`+grid(t)}
  return `<div class="wrap"><div>${h.replace(/@@[^@]+@@/g,"")}</div><div class="side" id="side"><span class="mut">Click an element to see its facts.</span></div></div>`}
 const ORDER={paper:-1,process:0,group:1,run:2,setting:3,observation:4,derived:5,model:6,definition:7,claim:8,cited:9};
-const valStr=f=>[f.censor+f.value,f.value_min&&f.value_max?`${f.value_min}–${f.value_max}`:(f.value_min||f.value_max)].filter(Boolean).join(" ")+(f.unit?" "+f.unit:"");
+const valStr=f=>{const v=[f.censor+f.value,f.value_min&&f.value_max?`${f.value_min}–${f.value_max}`:(f.value_min||f.value_max)].filter(Boolean).join(" ");return v?v+(f.unit?" "+f.unit:""):(f.value_text||"")};
 const skey=f=>f.quantity+"|"+f.qualifiers+"|"+(f.quantity==="other"?f.label_as_printed:"");
 function buildTree(d){if(d._T)return d._T;const byId={},kids={};[...d.tree,...d.facts].forEach(n=>{byId[n.fact_id]=n;if(n.parent)(kids[n.parent]=kids[n.parent]||[]).push(n)});
  for(const k in kids)kids[k].sort((a,b)=>(ORDER[a.type]??5)-(ORDER[b.type]??5));

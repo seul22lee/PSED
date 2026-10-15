@@ -180,7 +180,7 @@ F(K, "s3.p9;tab1.r0c14", "definition", "Region III front slope = slope of the be
 # ------------------------------------------------------------------ C. experimental
 F(K, "s5.p1", "setting", "the test chips (PillarHall-3, third generation) were made by MEMS processing with a process modified from PillarHall-1 of Gao et al.",
   mentions="PillarHall-3;PillarHall-1;ref. 40;Fig. S1")
-F(K, "s5.p1", "setting", "starting substrates: low-doped 150 mm Si(100) wafers", quantity="substrate", mentions="Si (100)")
+F(K, "s5.p1", "setting", "starting substrates", quantity="substrate", value_text="low-doped 150 mm Si(100) wafers", mentions="Si (100)")
 for h in ("100", "500", "2000"):
     F(K, "s5.p1", "setting", f"one of the targeted channel heights, set by thermal oxide growth, is {h} nm",
       quantity="feature_height", label_as_printed="targeted channel height H", value=h, unit="nm", data_kind="chosen input",
@@ -193,7 +193,7 @@ F(K, "s5.p1", "setting", "tools: Centrotherm E1200 HT 260-4 furnaces, Primaxx ME
 F(K, "s5.p2;fig1.cap;fig1a;tab2.r6c3;tab2.r0c3;s3.p9", "setting", "channel aspect ratios in this work go up to 10 000:1 (L 5000 µm with target H 500 nm); per-channel design AR in ESI Table S1",
   quantity="aspect_ratio", value_max="10000", data_kind="chosen input", mentions="L 5000 µm;H 500 nm;Table S1;This work")
 F(K, "s5.p2", "definition", "chip layout and pillar layout designs are given in the ESI", mentions="ESI")
-F(K, "s6.p1;tab2.r7c5;tab2.r0c5", "setting", "ALD reactor: Picosun R-150", quantity="reactor_type", mentions="This work")
+F(K, "s6.p1;tab2.r7c5;tab2.r0c5", "setting", "ALD reactor", quantity="reactor_type", value_text="Picosun R-150", mentions="This work")
 F(K, "s6.p1", "setting", "the usual target thickness was about 50 nm", quantity="film_thickness", value="50", unit="nm",
   data_kind="chosen input")
 F(K, "s6.p1;tab2.r6c4;tab2.r0c4", "setting", "the usual number of ALD cycles was 500", quantity="cycle_number", value="500",
@@ -209,16 +209,16 @@ for q, st, val, txt in (("pulse_time", "step=reactant_A;species=TMA", "0.1", "TM
 F(K, "s6.p1", "setting", "TMA, being pyrophoric, was handled under inert conditions", mentions="TMA")
 F(K, "tab1.cap;s6.p1", "definition", "Table 1 lists the samples, the parameters used (varied ones in bold) and profile features measured by reflectometer",
   method="tabulated", mentions="Table 1")
-F(K, "s6.p2", "setting", "Series A: films in 500 nm design channels with pillar layouts v1a, v1b and v2a, all on one silicon wafer and grown in one ALD run to avoid run-to-run variation",
-  mentions="Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1")
+F(K, "s6.p2", "setting", "Series A: films with pillar layouts v1a, v1b and v2a in 500 nm design channels, grown together in one ALD run to avoid run-to-run variation",
+  quantity="substrate", value_text="one silicon wafer shared by samples 1, 2 and 3", mentions="Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1")
 F(K, "s7.p1;fig1c;fig6.cap", "setting", "unless noted otherwise the film was characterized after the top membrane was peeled off with adhesive tape",
   mentions="Fig. 1c")
 F(K, "s7.p1", "setting", "coated channels were routinely imaged by optical microscopy before and after membrane removal", method="optical_microscopy")
 F(K, "s7.p2", "setting", "SEM-EDS was done on a Tescan Mira3 SEM with a Thermo Scientific EDS", method="sem_eds")
 F(K, "s7.p2;s10.x2", "setting", "the SEM-EDS line scans used 5 keV accelerating voltage (written 5 kV in the results)",
   quantity="other", label_as_printed="accelerating voltage", value="5", unit="keV", data_kind="chosen input", method="sem_eds")
-F(K, "s7.p2;s7.p3", "setting", "the 500 nm design-height sample, kept in ambient air, needed no preparation against charging",
-  method="sem_eds", mentions="500 nm")
+F(K, "s7.p2;s7.p3", "setting", "SEM-EDS sample preparation of the 500 nm design-height sample, which had been stored in ambient air",
+  quantity="other", label_as_printed="sample preparation", value_text="none, no step against charging", method="sem_eds", mentions="500 nm")
 F(K, "s7.p3", "setting", "an elemental X-ray map was taken first, then elemental line scans", method="sem_eds")
 F(K, "s7.p3", "setting", "SEM-EDS line length 500 µm", quantity="other", label_as_printed="length of the line", value="500", unit="µm",
   data_kind="chosen input", method="sem_eds")
@@ -327,7 +327,7 @@ def tab1_facts():
               data_kind="chosen input", mentions=men)
         ID[n, 3] = F(K, ev(3), "setting", f"sample {n}: design channel height H {H} nm", quantity="feature_height",
                      label_as_printed="Design channel height H", value=H, unit="nm", data_kind="chosen input", mentions=men)
-        F(K, ev(4), "setting", f"sample {n}: pillar layout {lay}", quantity="pillar_layout", label_as_printed="Pillar layout",
+        F(K, ev(4), "setting", f"sample {n}: pillar layout", quantity="pillar_layout", label_as_printed="Pillar layout", value_text=lay,
           mentions=f"{men};{lay}")
         ID[n, 5] = F(K, ev(5), "setting", f"sample {n}: {N} ALD cycles", quantity="cycle_number", value=N, data_kind="chosen input",
                      mentions=men)
@@ -742,26 +742,26 @@ def lit(r, c, stmt, extra="", **kw):
 
 
 lit(1, 0, "Dendooven et al. (2009): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
-lit(1, 1, "Dendooven et al. (2009): macroscopic rectangular LHAR", quantity="other", label_as_printed="LHAR type")
+lit(1, 1, "Dendooven et al. (2009): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="macroscopic rectangular")
 lit(1, 2, "Dendooven et al. (2009): LHAR H 100 µm", quantity="feature_height", label_as_printed="LHAR H", value="100", unit="µm")
 lit(1, 3, "Dendooven et al. (2009): max. AR 200:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="200")
 lit(1, 4, "Dendooven et al. (2009): 150 cycles", quantity="cycle_number", value="150")
-lit(1, 5, "Dendooven et al. (2009): home-built reactor", quantity="reactor_type")
+lit(1, 5, "Dendooven et al. (2009): reactor", quantity="reactor_type", value_text="home-built")
 lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="0.1")
 lit(2, 0, "Schwille et al. (2016): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
-lit(2, 1, "Schwille et al. (2016): microscopic centrosymmetric LHAR", quantity="other", label_as_printed="LHAR type")
+lit(2, 1, "Schwille et al. (2016): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic centrosymmetric")
 lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude estimate (footnote a)", extra="s18.p3",
     quantity="aspect_ratio", label_as_printed="Max. AR", value="100")
 F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter",
   method="cited", mentions="ref. 41;a")
-lit(2, 5, "Schwille et al. (2016): single-wafer cross-flow hot-wall reactor", quantity="reactor_type")
+lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor_type", value_text="single-wafer cross-flow hot-wall")
 lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="2e-2")
 F(K, "s18.p3;tab2.r2c4;tab2.r3c4;tab2.r0c4", "cited", "the number of ALD cycles is not reported for the Schwille and Vandalon works (dash, footnote b)",
   method="cited", mentions="ref. 41;ref. 60;b")
 lit(3, 0, "Vandalon et al. (2016): temperatures 100–300 °C", quantity="deposition_temperature", value_min="100", value_max="300", unit="°C")
 F(K, "s18.p3;tab2.r3c1;tab2.r3c2;tab2.r3c3;tab2.r0c1", "cited", "Vandalon et al. coated a planar Si(100) wafer, not an LHAR feature; their coefficients are listed for reference (footnote c)",
   method="cited", mentions="ref. 60;c")
-lit(3, 5, "Vandalon et al. (2016): home-built reactor", quantity="reactor_type")
+lit(3, 5, "Vandalon et al. (2016): reactor", quantity="reactor_type", value_text="home-built")
 lit(3, 6, "Vandalon et al. (2016): c_TMA of order 10^-3 (footnote d)", extra="s18.p3", quantity="lumped_sticking_coefficient",
     qualifiers="species=TMA", value="1e-3")
 lit(3, 7, "Vandalon et al. (2016): c_H2O of order 10^-4 (footnote d)", extra="s18.p3;tab2.r0c7", quantity="lumped_sticking_coefficient",
@@ -772,26 +772,26 @@ for v, t, extra in (("1e-4", "300", ""), ("1e-6", "100", "")):
 F(K, "s18.p3", "cited", "follow-up Vandalon et al. (2017): c_TMA 2 × 10^-3, independent of temperature", quantity="lumped_sticking_coefficient",
   qualifiers="species=TMA", value="2e-3", data_kind="literature", method="cited", mentions="Vandalon et al. (2017)")
 lit(4, 0, "Ylilammi et al. (2018): deposition at 300 °C", quantity="deposition_temperature", value="300", unit="°C")
-lit(4, 1, "Ylilammi et al. (2018): microscopic rectangular PillarHall-3", quantity="other", label_as_printed="LHAR type")
+lit(4, 1, "Ylilammi et al. (2018): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic rectangular PillarHall-3")
 lit(4, 2, "Ylilammi et al. (2018): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(4, 3, "Ylilammi et al. (2018): max. AR 2000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="2000")
 lit(4, 4, "Ylilammi et al. (2018): 500 cycles", quantity="cycle_number", value="500")
-lit(4, 5, "Ylilammi et al. (2018): Picosun R-150 reactor", quantity="reactor_type")
+lit(4, 5, "Ylilammi et al. (2018): reactor", quantity="reactor_type", value_text="Picosun R-150")
 lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="5.72e-3")
 F(K, "tab2.r1c7;tab2.r2c7;tab2.r4c7;tab2.r0c7", "cited", "Table 2 gives no c_H2O (dash) for Dendooven, Schwille and Ylilammi",
   method="cited", mentions="ref. 31;ref. 41;ref. 33")
 lit(5, 0, "Arts et al. (2019): deposition at 275 °C", quantity="deposition_temperature", value="275", unit="°C")
-lit(5, 1, "Arts et al. (2019): microscopic rectangular PillarHall-3", quantity="other", label_as_printed="LHAR type")
+lit(5, 1, "Arts et al. (2019): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic rectangular PillarHall-3")
 lit(5, 2, "Arts et al. (2019): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(5, 3, "Arts et al. (2019): max. AR 10 000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="10000")
 lit(5, 4, "Arts et al. (2019): 400 cycles", quantity="cycle_number", value="400")
-lit(5, 5, "Arts et al. (2019): Oxford Instruments OpAL reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor_type")
+lit(5, 5, "Arts et al. (2019): reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor_type", value_text="Oxford Instruments OpAL")
 lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=TMA",
     value_min="0.5e-3", value_max="2e-3")
 lit(5, 7, "Arts et al. (2019): c_H2O (0.8-2) × 10^-4 (exponent on the next parsed row)", extra="tab2.r6c6", quantity="lumped_sticking_coefficient",
     qualifiers="species=H2O", value_min="0.8e-4", value_max="2e-4")
-F(K, "tab2.r6c1;tab2.r0c1;tab2.r7c8", "setting", "this work: microscopic rectangular PillarHall-3 LHAR", quantity="other",
-  label_as_printed="LHAR type", mentions="This work;PillarHall-3")
+F(K, "tab2.r6c1;tab2.r0c1;tab2.r7c8", "setting", "this work: LHAR type", quantity="other", label_as_printed="LHAR type",
+  value_text="microscopic rectangular PillarHall-3", mentions="This work;PillarHall-3")
 F(K, "tab2.r6c2;tab2.r0c2;tab2.r7c8", "setting", "this work (Table 2 row): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H",
   value="0.50", unit="µm", data_kind="chosen input", mentions="This work")
 S = (2, 4, 8, 12)

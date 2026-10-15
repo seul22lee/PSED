@@ -142,8 +142,8 @@ phi_i = f(f"s8.p1;abs.g3;{A};s6.p8;s15.p2;s12.p1;tabI.cap;s13.p5", "observation"
 f("s8.p1", "observation", "the pressing recipe was tuned for intact compacts, yet some mm-scale cracks appeared", mentions="Fig. S1")
 
 # ---------------------------------------------------------------- II B. ZnO ALD
-f("s9.p1", "setting", "reactor: ALD NanoSolutions (Forge Nano) custom RX-series with a near-horizontal cylindrical chamber and an MKS LoPro isolation valve to the pump",
-  quantity="reactor_type")
+f("s9.p1", "setting", "reactor, with a near-horizontal cylindrical chamber and an MKS LoPro isolation valve to the pump",
+  quantity="reactor_type", value_text="ALD NanoSolutions (Forge Nano) custom RX-series")
 f("s9.p1", "setting", "deposition chamber about 20 cm long and 10 cm inner diameter",
   quantity="other", label_as_printed="chamber length", value="20", unit="cm", data_kind="chosen input", mentions="10 cm ID")
 f("s9.p1;s9.p3;fig1a", "setting", "the NPCs sit in a round-bottomed rectangular quartz boat touching only at their lower circular edge, leaving at most ~1 mm under the bottom face",
@@ -323,7 +323,8 @@ f("s12.x1;s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp keeps rising
   quantity="pressure_rate", label_as_printed="TS", value="80", unit="mTorr/min", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
 f("s12.p7;fig3a", "observation", "T = 160 °C, cycle 15: δp reaches ~2.7 Torr before the pump step",
   quantity="pressure_rise", label_as_printed="δp", value="2.7", unit="Torr", data_kind="measured", method="process_monitor", mentions="T = 160 °C;cycle 15")
-f("fig3a;fig3.cap;s12.p16", "setting", "the noisier part of the 160 °C δp curve comes from the 1000 Torr gauge; the rest of the data from the 10 Torr gauge", method="process_monitor", mentions="T = 160 °C")
+f("fig3a;fig3.cap;s12.p16", "setting", "pressure gauges behind the 160 °C δp curve", quantity="other", label_as_printed="gauge",
+  value_text="1000 Torr gauge for the noisier part, 10 Torr gauge for the rest", method="process_monitor", mentions="T = 160 °C")
 f("fig3a", "observation", "Fig. 3(a) marks Δp as the net rise at the end of each hold, labels the terminal slope, and shades the early 120/160 curve as 'Reaction' leading to 'Saturation?'")
 f("s12.p7", "claim", "higher δp maxima at 120 and 160 °C fit more deposition than in the 120/160 °C process")
 f("s12.p7", "claim", "the higher terminal slopes suggest gas-producing processes still running at the end of the DEZ hold, slight at 120 °C and strong at 160 °C, and absent or weaker for 120/160 °C")
@@ -376,7 +377,8 @@ f("fig1a;fig1.cap;s9.p2", "setting", "the schematic labels the initial porosity 
   quantity="porosity", qualifiers="stage=initial", label_as_printed="φ_i", value="51", unit="%", data_kind="chosen input", method="schematic")
 f("fig1b;fig1.cap;s9.p2", "definition", "Fig. 1(b) tabulates which steps run at 120 °C and which at 160 °C in the three schedules; a 'dose' means the pulse step plus the hold step", method="schematic",
   mentions='"120 °C";"160 °C";"120/160 °C"')
-f("fig1b", "setting", 'in the "120/160 °C" schedule DEZ dose, DEZ purge and H2O dose are at 120 °C and only the H2O purge at 160 °C', method="schematic", mentions='"120/160 °C"')
+f("fig1b", "setting", 'the "120/160 °C" schedule as drawn in Fig. 1(b)', quantity="deposition_temperature",
+  value_text="120 °C for the DEZ dose, DEZ purge and H2O dose, 160 °C for the H2O purge", method="schematic", mentions='"120/160 °C"')
 # the per-step temperature schedule of Fig. 1(b) (the text: s9.p6, and s6.p8 for the cycled run), one fact per run and step; a dose is
 # the pulse plus the hold, so step=reactant_A / reactant_B. The cycled run's DEZ dose is s9.p6#6 (step=reactant_A) and its H2O purge
 # s9.p6#7 (step=purge_B); SCHED keeps the ids for the stage-3 parents

@@ -586,8 +586,8 @@ F(K, "s4.p1", "claim", "Quantifying temperature and ratio effects opens further 
 
 # ------------------------------------------------------------------ experimental
 NK("s5.h", "heading")
-F(K, "s5.p1", "setting", "Reactor: Oxford Instruments FlexAL PEALD with a remote inductively coupled plasma source at 13.56 MHz.",
-  quantity="reactor_type", data_kind="chosen input", mentions="FlexAL;13.56 MHz;ICP")
+F(K, "s5.p1", "setting", "Reactor, with a remote inductively coupled plasma source at 13.56 MHz.", quantity="reactor_type",
+  value_text="Oxford Instruments FlexAL PEALD", data_kind="chosen input", mentions="FlexAL;13.56 MHz;ICP")
 F(K, "s5.p1", "setting", "A turbomolecular pump gives a base pressure of 10^-6 Torr.", quantity="other",
   label_as_printed="base pressure", value="1e-6", unit="Torr", data_kind="chosen input")
 F(K, "s5.p1", "setting", "Reactor walls heat to at most 150 °C; for 50-150 °C depositions wall and substrate are set equal.",
@@ -598,14 +598,14 @@ F(K, "s5.p1", "setting", "For 200-450 °C the substrate table is heated to the s
   data_kind="chosen input", mentions="200-450 °C;150 °C")
 F(K, "s5.p1", "definition", "Temperatures quoted are table set points; actual substrate temperature is lower at high set points "
   "because of poor thermal contact at low pressure, negligibly so at 150 °C and below.", mentions="ref. 86;150 °C")
-F(K, "s5.p2", "setting", "Most depositions use Si(100) with 450 nm thermal SiO2 (Siegert Wafer) for optical contrast.",
-  quantity="substrate", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
-F(K, "s5.p2;s5.p13", "setting", "Some Hall samples are on fused SiO2, which needs no cutting since leakage to Si via side "
-  "deposits is impossible; others on SiO2/Si.", quantity="substrate", data_kind="chosen input", mentions="fused SiO2")
-F(K, "s5.p2", "setting", "Transistors use Si substrates with 90 nm thermal SiO2.", quantity="substrate", data_kind="chosen input",
-  mentions="90 nm SiO2")
-F(K, "s5.p2", "setting", "Plastic substrate: Melinex ST504 PET foil (DuPont Teijin Films), 125 µm thick.", quantity="substrate",
-  data_kind="chosen input", mentions="PET;125 μm")
+F(K, "s5.p2", "setting", "Substrate of most depositions (Siegert Wafer), chosen for optical contrast.", quantity="substrate",
+  value_text="Si(100) with 450 nm thermal SiO2", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
+F(K, "s5.p2;s5.p13", "setting", "Substrate of some Hall samples, which needs no cutting since leakage to Si via side deposits "
+  "is impossible; others on SiO2/Si.", quantity="substrate", value_text="fused SiO2", data_kind="chosen input", mentions="fused SiO2")
+F(K, "s5.p2", "setting", "Substrate of the transistors.", quantity="substrate", value_text="Si with 90 nm thermal SiO2",
+  data_kind="chosen input", mentions="90 nm SiO2")
+F(K, "s5.p2", "setting", "Plastic substrate (DuPont Teijin Films), 125 µm thick.", quantity="substrate",
+  value_text="Melinex ST504 PET foil", data_kind="chosen input", mentions="PET;125 μm")
 F(K, "s5.p2", "observation", "Uncoated and ALD Al2O3-coated PET (50 cycles of AlMe3/H2O) give similar results.",
   mentions="Al2O3;50 ALD cycles;AlMe3;H2O")
 F(K, "s5.p3", "setting", "Substrates of 1 × 1 to 3 × 3 cm2 are used as received (cut, blown with N2) on an 8\" carrier wafer.",
@@ -669,8 +669,9 @@ F(K, "s5.p7", "setting", "Cycle numbers were chosen to give about 10 nm at ratio
   "50-100 °C).", quantity="film_thickness", value="10", unit="nm", data_kind="chosen input", mentions="0.20;50-100 °C")
 F(K, "s5.p7", "observation", "SE showed the H2S/H2/Ar plasma alone deposits no S, and the Mo precursor does not condense, so the "
   "lowest temperatures stay in the ALD regime.", method="ellipsometry", mentions="ref. 87")
-F(K, "s5.p8", "setting", "WS2 and TiS2 follow the literature recipes, with the plasma feed gas (ratio) as the only change; a "
-  "thermal TiSx recipe serves for comparison.", mentions="ref. 52;ref. 53;ref. 80")
+F(K, "s5.p8", "setting", "WS2 and TiS2 deposition procedures, with the plasma feed gas (ratio) as the only change; a thermal TiSx "
+  "recipe serves for comparison.", quantity="other", label_as_printed="literature procedures",
+  value_text="refs. 52 (WS2) and 53 (TiS2), H2 flow ratio changed; thermal TiSx ref. 80", mentions="ref. 52;ref. 53;ref. 80")
 F(K, "s5.p8;fig9a", "setting", "WS2 is grown at 150 °C with ratio 0.80.", quantity="deposition_temperature", value="150",
   unit="°C", data_kind="chosen input", mentions="WS2;0.80")
 F(K, "s5.p8;fig9b", "setting", "TiS2 is grown at 100 °C with ratio 0.50.", quantity="deposition_temperature", value="100",
@@ -820,8 +821,8 @@ F(K, "fig2;fig2.cap;s3.x1", "observation", "Fig. 2 is a grid of deposition tempe
 F(K, "fig2.cap;s3.x1;fig4.cap;s3.x2;fig8.cap", "setting", "The heat-map films were deposited with 100-140 ALD cycles.",
   quantity="cycle_number", value_min="100", value_max="140", data_kind="chosen input", mentions="Figure 2;Figure 4;Figure 8")
 for (t, r), (cl, _) in CELLS.items():
-    F(K, "fig2", "observation", f"Fig. 2 cell at {t} °C and ratio {r} is coloured {'crystalline' if cl == 'c' else 'amorphous'}.",
-      quantity="crystallinity", method="raman", mentions=f"{r};{t} °C")
+    F(K, "fig2", "observation", f"Fig. 2 cell at {t} °C and ratio {r}, Raman crystallinity class.", quantity="crystallinity",
+      value_text="crystalline" if cl == "c" else "amorphous", method="raman", mentions=f"{r};{t} °C")
 
 # ------------------------------------------------------------------ Fig. 3
 F(K, "fig3a;fig3.cap", "observation", "Cross-sectional TEM of the film labelled 100 °C, 0.80 H2: a few-layer MoS2 band between "
@@ -1069,7 +1070,7 @@ def lk(*ids):
 # heat-map cells: the Fig. 2 class is the pair's Raman film, the Fig. 4 S/Mo its XPS film
 CELL2, CELL4 = {}, {}
 for f in C.facts():
-    m = re.match(r"Fig\. ([24]) cell at (\d+) °C and ratio ([\d.]+) ", f["statement"])
+    m = re.match(r"Fig\. ([24]) cell at (\d+) °C and ratio ([\d.]+)[ ,]", f["statement"])
     if m:
         t, r = int(m.group(2)), m.group(3)
         cells, kind = (CELL2, "raman") if m.group(1) == "2" else (CELL4, "xps")
