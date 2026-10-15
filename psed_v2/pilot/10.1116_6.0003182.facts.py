@@ -540,10 +540,11 @@ NK("s15.p18", "data availability statement")
 
 # ================================================================== stage 3: one tree (parent, links)
 # Runs: the three stated depositions of Sec. II B (T held at 120 °C, held at 160 °C, cycled 120/160 °C), each coating an NPC pair;
-# the thermocouple test run of Fig. 2(d) (same conditions as the cycled run, so a deposition of its own, linked to it); the uncoated
-# compact of Fig. 4(a); and the Eq. (1)-(2) estimate of hold and purge times, a simulation under the process because it exists only
-# to set the shared hold and purge times. Parent rule: the row without which the fact would not exist; links: a second home (a
-# claim's support, the same data shown twice, the runs a comparison covers).
+# under each, one specimen run per physical object the paper's facts are about (the weighed pair, the SEM-EDS section, the XRD
+# NPC, the photographed NPC, the resistivity prism); the thermocouple test run of Fig. 2(d) (same conditions as the cycled run, so
+# a deposition of its own, linked to it); the uncoated compact of Fig. 4(a); and the Eq. (1)-(2) estimate of hold and purge times,
+# a simulation under the process because it exists only to set the shared hold and purge times. Parent rule: the row without which
+# the fact would not exist; links: a second home (a claim's support, the same data shown twice, the runs a comparison covers).
 PAPER, PROC = K, f"{K}:process"
 R120, R160, RCYC = f"{K}:run120", f"{K}:run160", f"{K}:run120_160"
 RUN = {"120": R120, "160": R160, "120/160": RCYC}
@@ -559,6 +560,29 @@ for r, lab, ev in ((R120, "120 °C", "s9.p6;fig1b"), (R160, "160 °C", "s9.p6;fi
             "120/160 °C": "T cycled: 120 °C for every step but the H2O purge, 160 °C during it"}[lab]
     N(r, "run", f"ALD run, {what}, two NPCs coated together", PROC, evidence=ev, label_as_printed=lab,
       qualifiers=f"run=deposition;how=stated;sample={r.rsplit(':run', 1)[1]}")
+# specimens: one row per physical object the facts are about, under the run that coated it. Two NPCs were coated in each run and
+# all were weighed (s12.p1, s9.p3, Table I caption: the pair, stated); a prism was cut from one NPC after Ti/Au metallization for
+# resistivity (s10.p2; s13.p4: one NPC per condition), stated as a prism, though not which NPC. Which NPC of the pair went to XRD
+# (s10.p1: one face scanned, then fractured and rescanned), to SEM-EDS (s10.p3: sectioned and epoxy-mounted) or to the photograph
+# (Fig. 4, s13.p1) is not stated, and nothing in Secs. II C, III B, III C or the captions ties two of these to one NPC: inferred,
+# one specimen each. Table II: columns 1-4 are XRD (Rietveld, Halder-Wagner), under the XRD specimen; column 5 is ρ, under the prism.
+SPEC = {}
+for lab in ("120", "160", "120/160"):
+    r, s = RUN[lab], RUN[lab].rsplit(":run", 1)[1]
+    SPEC[lab] = {}
+    for kind, how, printed, what, ev in (
+            ("pair", "stated", "NPC pair", f"the two NPCs of the {lab} °C run, weighed before and after ALD: the mass gain and what is "
+             "derived from it (porosity, GPC, Δn_s, coating thickness)", "s12.p1;s9.p3;tabI.cap"),
+            ("section", "inferred", "SEM-EDS section", f"the NPC of the {lab} °C run sectioned for cross-sectional SEM-EDS (Fig. 6); "
+             "which NPC of the pair is not stated", "fig6.cap;s10.p3"),
+            ("xrd", "inferred", "XRD", f"the NPC of the {lab} °C run measured by XRD, one face then the fracture surfaces (Fig. 5; Table II "
+             "phase fractions and crystallite sizes); which NPC of the pair is not stated", "fig5.cap;s10.p1;tabII.cap"),
+            ("photo", "inferred", "photograph", f"the NPC of the {lab} °C run photographed after ALD (Fig. 4); which NPC of the pair is not stated",
+             "fig4.cap;s13.p1"),
+            ("prism", "stated", "ρ prism", f"the prism cut from one NPC of the {lab} °C run after Ti/Au metallization, for through-thickness "
+             "resistivity (Table II); which NPC of the pair it was cut from is not stated", "s10.p2;s13.p4;tabII.cap")):
+        SPEC[lab][kind] = N(f"{r}:{kind}", "run", what, r, evidence=ev, label_as_printed=f"{lab} °C {printed}",
+                            qualifiers=f"run=specimen;how={how};sample={s}_{kind}")
 N(TEST, "run", "thermocouple test run of Fig. 2(d): same conditions as the cycled run, boat temperature logged", PROC,
   evidence="fig2d;fig2.cap", label_as_printed="test run", qualifiers="run=deposition;how=stated;sample=fig2d_test", links=RCYC)
 N(BARE, "run", "uncoated Al2O3 NPC photographed before ALD (Fig. 4a)", PROC, evidence="fig4a;fig4.cap", label_as_printed="Before ALD",
@@ -605,28 +629,34 @@ put(PROC, "s14.p1#5", links=f"{R120};{RCYC};{fid('s12.p1#5')};{fid('s12.p1#7')}"
 put(PROC, "s12.p1#8", links=";".join(fid(f"tabI.r{r}c2#1") for r in (1, 2, 3)))   # the text's porosities, printed in another order
 # the Eq. (1)-(2) estimate: its model, parameters and outputs (definitions of its symbols stay with the paper's terms)
 put(SIM, "eq1#1", "eq2#1", "s9.p9#2", "s9.p9#3", "s9.p9#4", "s9.p9#5", "s9.p9#6")
-# runs: settings and observations of one run
-put(R120, "s9.p6#4", "s12.x1#10", "s12.x1#11", "s12.x1#12", "fig2a#2", "fig2a#3", "s13.p1#2", "fig5#2", "fig6a#1", "fig6d#2",
-    "fig6d#3", "fig6d#4")
-put(R160, "s9.p6#5", "s12.x1#13", "s12.p7#1", "fig3a#1", "fig2b#1", "fig2b#2", "s13.p1#4", "fig5#3", "fig6b#1", "fig6e#1",
-    "fig6e#2", "fig6e#3", "fig6e#4", "fig3c#2")
-put(R160, "s13.p2#3", links=fid("fig5#3"))                                     # the Zn peaks, in the text and in Fig. 5
-put(R160, "s14.p7#1", links=fid("fig6e#1"))                                    # the Zn dip, in the text and in Fig. 6(e)
-put(RCYC, "s9.p6#6", "s9.p6#7", "s12.x1#4", "s12.x1#5", "s12.x1#6", "fig2c#1", "s13.p1#5", "fig5#4", "fig6c#1", "fig6f#1",
-    "fig6f#2", "fig6f#3")
+# deposition runs: the chamber during the run (its T and schedule, the Fig. 2 trace, the cycle-15 δp, TS and Δn_g of Fig. 3 and Table I;
+# ȳ, derived from Δn_g and Δn_s, sits under Δn_g by the first-input rule below)
+put(R120, "s9.p6#4", "s12.x1#10", "s12.x1#11", "s12.x1#12", "fig2a#2", "fig2a#3")
+put(R160, "s9.p6#5", "s12.x1#13", "s12.p7#1", "fig3a#1", "fig2b#1", "fig2b#2", "fig3c#2")
+put(RCYC, "s9.p6#6", "s9.p6#7", "s12.x1#4", "s12.x1#5", "s12.x1#6", "fig2c#1")
 put(RCYC, "fig1b#2", links=fid("s9.p6#7"))                                     # the cycled schedule, in the text and in Fig. 1(b)
 for lab, ids in SCHED.items():                                                 # the per-step temperatures of Fig. 1(b), under their run
     put(RUN[lab], *[i.split(":", 1)[1] for i in ids])
+for lab, r in (("120", "1"), ("160", "2"), ("120/160", "3")):
+    put(RUN[lab], f"tabI.r{r}c5#1")                                            # Δn_g, Table I
 put(TEST, "fig2d#1", "fig2d#2")
 put(TEST, "s15.p4#4", links=fid("fig2d#2"))                                    # the 33.5 min ramp read from the test-run trace
 put(BARE, "fig4a#1")
-# Table I and Table II cells (and the text values they repeat): measured or fitted values under the run, calculated values under
-# their first input (porosity <- mass gain, GPC <- porosity, Δn_s <- GPC, ȳ <- Δn_g, thickness <- mass gain)
-for lab, r in (("120", "1"), ("160", "2"), ("120/160", "3")):
-    put(RUN[lab], f"tabI.r{r}c5#1", f"tabII.r{r}c1#1", f"tabII.r{r}c2#1")
-put(R120, "s12.p1#5", "s13.p4#1", "tabII.r1c3#1")
-put(R160, "s12.p1#6", "s13.p4#2", "tabII.r2c3#1", "tabII.r2c4#1")
-put(RCYC, "s12.p1#7", "s13.p4#3", "tabII.r3c3#1")
+# specimens: measured or fitted values under the specimen they were measured on; calculated values under their first input
+# (porosity <- mass gain, GPC <- porosity, Δn_s <- GPC, thickness <- mass gain, excess thickness <- thickness), so the mass gain
+# carries its chain into the pair
+for lab, r, mass, photo, pat in (("120", "1", "s12.p1#5", "s13.p1#2", "fig5#2"), ("160", "2", "s12.p1#6", "s13.p1#4", "fig5#3"),
+                                 ("120/160", "3", "s12.p1#7", "s13.p1#5", "fig5#4")):
+    put(SPEC[lab]["pair"], mass)                                               # mass gain (Table I c1 and the text)
+    put(SPEC[lab]["photo"], photo)                                             # Fig. 4(b)-(d) and the text's colours
+    put(SPEC[lab]["xrd"], pat, f"tabII.r{r}c1#1", f"tabII.r{r}c2#1", f"tabII.r{r}c3#1")   # Fig. 5 pattern, Table II c1-c3
+    put(SPEC[lab]["prism"], f"s13.p4#{r}")                                     # ρ, Table II c5 and the text
+put(SPEC["160"]["xrd"], "tabII.r2c4#1")                                        # Zn crystallite size, only detected at 160 °C
+put(SPEC["160"]["xrd"], "s13.p2#3", links=fid("fig5#3"))                      # the Zn peaks, in the text and in Fig. 5
+put(SPEC["120"]["section"], "fig6a#1", "fig6d#2", "fig6d#3", "fig6d#4")       # Fig. 6 images, maps and line scans
+put(SPEC["160"]["section"], "fig6b#1", "fig6e#1", "fig6e#2", "fig6e#3", "fig6e#4")
+put(SPEC["160"]["section"], "s14.p7#1", links=fid("fig6e#1"))                 # the Zn dip, in the text and in Fig. 6(e)
+put(SPEC["120/160"]["section"], "fig6c#1", "fig6f#1", "fig6f#2", "fig6f#3")
 # Fig. 3(b) plots per cycle the Δn_g that Table I averages: each series under its Table I value
 put(fid("tabI.r1c5#1"), "fig3b#3")
 put(fid("tabI.r2c5#1"), "fig3b#2")
