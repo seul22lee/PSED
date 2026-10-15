@@ -10,7 +10,8 @@ Used by report.py for the quantity picker and scatter of the Facts tab. The rule
   children; the first fact with a value seen for a quantity is that quantity's context. When two siblings at the same
   level carry the same quantity (e.g. three design heights under process), that quantity is "ambiguous" at that level
   and is not taken from farther up; one unqualified value beside qualified ones (a run's T beside its per-step Ts) wins,
-  then one exact value beside censored bounds (17000 Torr-s beside ">1e4").
+  then one exact value beside censored bounds (17000 Torr-s beside ">1e4"), and siblings that all state one value (a group's
+  temperature stated twice) are that value.
 - flags(leaves): for the quantity's leaves across all papers, the majority value of every qualifier key (absent counts)
   and the majority unit; a leaf is flagged with each key, or "unit", where it differs from the majority.
 No unit conversion and no merging: values are as printed, so a scatter mixes units unless the flag says otherwise.
@@ -91,6 +92,8 @@ class Forest:
                         ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["qualifiers"])
                     elif exact[q] == 1:                       # one exact value beside bounds: the value wins
                         ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["censor"])
+                    elif len({(value_of(x), x["censor"]) for x in cands if x["quantity"] == q and ok(x)}) == 1:   # one value, stated twice
+                        ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x))
                     else:
                         ctx[q] = "ambiguous"
         return ctx

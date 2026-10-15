@@ -11,7 +11,8 @@ more words of its element in a row (own words); coverage.csv lists every element
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
 every run and group has a child; every group's first link is its purpose fact (the paper's sentence on what it was made to test);
-every claim has a link; a setting that varies among sibling runs or groups is never "other";
+every claim has a link; a setting that varies among sibling runs or groups is never "other"; every number with a unit in a
+group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the group or above it, never only in the label;
 tree rows (ids without "#") are not counted as facts.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
@@ -127,7 +128,8 @@ def check(pid):
 
 def check_tree(rows, els):
     """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links
-    resolve; no cycles; every run has a child; every claim has a link; tree rows use the node types (cited works: cited)."""
+    resolve; no cycles; every run has a child; every claim has a link; tree rows use the node types (cited works: cited);
+    what a group varies is never "other"; a group's label states no value that no setting fact under or above it carries."""
     if not any(r["type"] == "paper" for r in rows):
         return []
     err = []
@@ -197,7 +199,36 @@ def check_tree(rows, els):
         for key, m in per.items():
             if key[0] == "other" and len(set(m.values())) > 1:
                 err.append(f"{r['fact_id']}: varies setting other '{key[2]}' among its runs; give it an id in lists.py")
+    # a group's label states no value that no setting fact backs: every number with a unit in label_as_printed ("450 °C",
+    # "0.20 H2", "10-50 cyc", "120, 160, 120/160 °C"; "sample 2, 4, 8, and 12" has no unit) is the value, value_min or value_max
+    # of a setting fact in the group's subtree or on an ancestor (what the group inherits)
+    for r in rows:
+        if r["type"] != "group" or not label_values(r["label_as_printed"]):
+            continue
+        have = set()
+        above, i = [], r.get("parent", "")
+        while i in R:
+            above.append(i); i = R[i].get("parent", "")
+        for f in sub(r["fact_id"], True) + [f for a in above for f in sub(a)]:
+            if f["type"] == "setting":
+                have |= {C.num(f[k]) for k in ("value", "value_min", "value_max") if f[k]}
+        for v in label_values(r["label_as_printed"]):
+            if v not in have:
+                err.append(f"{r['fact_id']}: label '{r['label_as_printed']}' states {v:g} but no setting fact under it or above it carries it")
     return err
+
+
+NUMBER_LIST = re.compile(r"(?<![A-Za-z\d.])\d+(?:\.\d+)?(?:\s*(?:[,/–-]|,?\s*and)\s*\d+(?:\.\d+)?)*")
+
+
+def label_values(label):
+    """The numbers a label states as values: each number, or list of numbers (10-50, 120/160, 2, 4 and 8), that a unit follows."""
+    out = []
+    for m in NUMBER_LIST.finditer(label or ""):
+        unit = re.match(r"\s*([^\s\d,;:()]+)", label[m.end():])
+        if unit and unit.group(1).lower() != "and":
+            out += [float(v) for v in re.findall(r"\d+(?:\.\d+)?", m.group())]
+    return out
 
 
 def tree_summary(rows):

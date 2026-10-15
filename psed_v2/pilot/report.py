@@ -5,7 +5,9 @@
   (one line each); clicking a run, or any fact anywhere in the page, opens its card on the right. A card has five rows:
   1 what was varied (the setting that differs among the run's siblings, this run's value beside theirs; when the run's
   siblings differ in nothing, the first level up the tree where they do), 2 other conditions (every setting inherited up
-  the tree as chips, marked where that level's siblings differ), 3 measured (the run's observation, derived and model
+  the tree as chips, the process-defining ones first: reactor, temperature, pressure, precursor purity and source
+  temperature, pulse and purge times, feature height, cycles, substrate; marked where that level's siblings differ; one
+  value stated at two levels is one chip; two lines until "+N more" opens the rest), 3 measured (the run's observation, derived and model
   facts grouped by figure, table or paragraph, element id click = the element and its crop in the evidence box, curves
   as sparklines, inferred film membership marked), 4 why and what it showed (the group's purpose fact, then the claims
   linked to the run or its group), 5 compare (sibling runs, and the same varied quantity in the other two papers).
@@ -151,8 +153,8 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .card{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 14px;font-size:13px}.card h2{margin:0 0 6px;font-size:16px}
 .card section{border-top:1px solid var(--line);padding:7px 0}.card h4{margin:0 0 5px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--acc)}
 .card .mg{margin:3px 0 6px}.card .mg b{font-size:12px}.card .fl2{margin:2px 0 2px 10px;line-height:1.4}
-.chip{display:inline-block;background:var(--nk);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin:1px 3px 1px 0;cursor:pointer;font-size:11.5px}.chip.diff{background:var(--sel);border-color:#d9b94a;font-weight:600}
-.pchips{white-space:nowrap;overflow-x:auto;padding-bottom:3px}.num{display:inline-block;border-radius:3px;padding:0 4px;color:var(--acc);font-weight:600}
+.chip{display:inline-block;background:var(--nk);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin:2px 3px 2px 0;line-height:18px;vertical-align:top;cursor:pointer;font-size:11.5px}.chip.diff{background:var(--sel);border-color:#d9b94a;font-weight:600}
+.pchips{position:relative;overflow:hidden;max-height:48px;line-height:24px}.pchips.open{max-height:none}.num{display:inline-block;border-radius:3px;padding:0 4px;color:var(--acc);font-weight:600}
 .spw{display:inline-block;vertical-align:middle;margin-right:4px}svg.sp{width:70px;height:20px;display:block}.evbox{margin-top:8px;padding:8px;border:1px dashed var(--line);border-radius:6px;max-height:50vh;overflow:auto}
 .card code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.card code.ev:hover{color:var(--acc);text-decoration:underline}.sib{cursor:pointer;color:var(--acc);text-decoration:underline}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
@@ -290,11 +292,16 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
 function jump(fid){if(V==="tree"&&TM==="cards"){const pi=DATA.findIndex(d=>d.facts.some(f=>f.fact_id===fid));if(pi>=0){cardFor(fid,pi);return}}const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]:not(.linked)`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
 let TM="cards";let CARD=null;
 const ckey=f=>`${f.quantity||"—"}|${f.qualifiers}|${f.quantity==="other"?f.label_as_printed:""}`;
+const PRIM=["reactor_type","deposition_temperature","process_pressure","precursor_purity","source_temperature","pulse_time","purge_time","feature_height","cycle_number","substrate"];   // row 2: the process-defining settings, in this order, before the rest
+function fitChips(){const box=document.getElementById("pchips"),t=document.getElementById("pmore");if(!box||!t)return;
+ if(box.classList.contains("open")){t.textContent="show fewer";return}
+ const n=[...box.querySelectorAll(".chip")].filter(c=>c.offsetTop+c.offsetHeight>box.clientHeight).length;t.textContent=n?`+${n} more`:"";t.style.display=n?"":"none"}
+function toggleChips(){const box=document.getElementById("pchips");if(!box)return;box.classList.toggle("open");fitChips()}
 const ctext=f=>valStr(f)||f.statement.replace(/^[^:]*:\s*/,"").slice(0,40);
 const qlab=f=>(f.quantity==="other"?f.label_as_printed:(f.quantity||"").replace(/_/g," "))+(f.qualifiers?` <span class="mut">${esc(f.qualifiers.replace(/;/g," "))}</span>`:"");
 function subtree(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(c.type==="run"||c.type==="group")continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}
 const settingsOf=(T,id)=>subtree(T,id).filter(f=>f.type==="setting"&&f.quantity);
-function variedAmong(T,nodes){const per={};nodes.forEach(n=>settingsOf(T,n.fact_id).forEach(f=>{const k=ckey(f);(per[k]=per[k]||{f,by:{}});per[k].by[n.fact_id]=(per[k].by[n.fact_id]?per[k].by[n.fact_id]+"; ":"")+ctext(f)}));
+function variedAmong(T,nodes){const per={};nodes.forEach(n=>settingsOf(T,n.fact_id).forEach(f=>{const k=ckey(f),v=ctext(f);(per[k]=per[k]||{f,by:{}});const cur=per[k].by[n.fact_id];if(!cur)per[k].by[n.fact_id]=v;else if(!cur.split("; ").includes(v))per[k].by[n.fact_id]=cur+"; "+v}));
  return Object.values(per).filter(c=>new Set(Object.values(c.by)).size>1)}
 const rowOf=(T,id)=>{let x=id;while(x&&T.byId[x]&&!(T.byId[x].type==="run"||T.byId[x].type==="group"))x=T.up[x];return x};
 const nlab=n=>n.label_as_printed||n.fact_id.split(":").slice(1).join(":");
@@ -302,7 +309,7 @@ const spark=p=>{const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]);const x0=Math.min(...x
 const elab=e=>{let m;if(m=e.match(/^fig(\d+)([a-z]*)(\.cap)?$/))return `Fig. ${m[1]}${m[2]}${m[3]?" caption":""}`;if(m=e.match(/^tab(u?)(\w+)\./))return m[1]?"nomenclature":`Table ${m[2]}`;if(m=e.match(/^s(\d+)\./))return `text §${m[1]}`;if(e.startsWith("abs"))return "abstract";if(e.startsWith("eq"))return `Eq. ${e.slice(2)}`;return e};
 function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=(function(){let x=T.up[fid];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x})();
  P=pi;V="tree";TM="cards";CARD=run||null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no run</h2><div class="mut">${esc(fid)} is not under a run (a paper-, process- or group-level fact).</div><div id="side" class="evbox"></div></div>`}}
-function openCard(pi,id){P=pi;CARD=id;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id)}
+function openCard(pi,id){P=pi;CARD=id;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
 function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
  const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="process")return `<div class="mut" style="margin-left:10px">process (conditions in each card, row 2)</div>`+walk(c.fact_id);
   if(c.type==="group")return `<details open><summary><span class="ty group">group</span>${esc(nlab(c))}</summary>${walk(c.fact_id)}</details>`;
@@ -318,12 +325,15 @@ function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=
  if(shown.varied.length){r1+=(shown!==own?`<div class="mut">one level up, ${esc(nlab(T.byId[shown.node]))} against its siblings:</div>`:"")+shown.varied.map(c=>`<div><b>${qlab(c.f)}</b>: <span class="num">${esc(c.by[shown.node]||"not stated")}</span> <span class="mut">· siblings: ${shown.sibs.filter(s=>s.fact_id!==shown.node).map(s=>`${esc(c.by[s.fact_id]||"—")} (${sibLab(s)})`).join(", ")}</span></div>`).join("")}
  else if(shown===own&&own.sibs.length>=2)r1+="";
  if(!shown.varied.length&&own.sibs.length>=2)r1+=`<div class="mut">nor does any level above.</div>`;
- // 2 other conditions
+ // 2 other conditions: the process-defining settings first (PRIM), then the rest; the same value stated at two levels is one chip
+ // (marked if either is); the box shows two lines until "+N more" opens it (fitChips counts the chips the two lines cut off)
  const varKeys=new Set(shown.varied.map(c=>ckey(c.f)));const chips=[];
- settingsOf(T,id).filter(f=>!(shown===own&&varKeys.has(ckey(f)))).forEach(f=>chips.push({f,diff:false,lv:"this run"}));
- levels.forEach((l,k)=>{if(k===0)return;const lvVar=new Set(l.varied.map(c=>ckey(c.f)));settingsOf(T,l.node).forEach(f=>chips.push({f,diff:lvVar.has(ckey(f)),lv:nlab(T.byId[l.node])}))});
- let a=T.up[levels[levels.length-1].node];while(a&&T.byId[a]){settingsOf(T,a).forEach(f=>chips.push({f,diff:false,lv:T.byId[a].type}));a=T.up[a]}
- const r2=chips.length?`<div class="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.lv)}: ${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc((c.f.quantity==="other"?c.f.label_as_printed:c.f.quantity).replace(/_/g," "))} ${esc(ctext(c.f))}</span>`).join(" ")}</div><div class="mut" style="font-size:11px">${chips.filter(c=>c.diff).length} marked: differ from a sibling at their level</div>`:`<div class="mut">none recorded</div>`;
+ const addChip=(f,diff,lv)=>{const k=ckey(f)+"|"+ctext(f);const c=chips.find(x=>x.k===k);if(c){c.diff=c.diff||diff;return}chips.push({f,diff,lv,k})};
+ settingsOf(T,id).filter(f=>!(shown===own&&varKeys.has(ckey(f)))).forEach(f=>addChip(f,false,"this run"));
+ levels.forEach((l,k)=>{if(k===0)return;const lvVar=new Set(l.varied.map(c=>ckey(c.f)));settingsOf(T,l.node).forEach(f=>addChip(f,lvVar.has(ckey(f)),nlab(T.byId[l.node])))});
+ let a=T.up[levels[levels.length-1].node];while(a&&T.byId[a]){settingsOf(T,a).forEach(f=>addChip(f,false,T.byId[a].type));a=T.up[a]}
+ const rank=f=>{const r=PRIM.indexOf(f.quantity);return r<0?PRIM.length:r};chips.sort((x,y)=>rank(x.f)-rank(y.f));
+ const r2=chips.length?`<div class="pchips" id="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.lv)}: ${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc((c.f.quantity==="other"?c.f.label_as_printed:c.f.quantity).replace(/_/g," "))} ${esc(ctext(c.f))}</span>`).join(" ")}</div><div class="mut" style="font-size:11px"><span class="lnk" id="pmore" onclick="toggleChips()"></span> ${chips.filter(c=>c.diff).length} marked: differ from a sibling at their level</div>`:`<div class="mut">none recorded</div>`;
  // 3 measured
  const meas=subtree(T,id).filter(f=>["observation","derived","model"].includes(f.type));const groups={};meas.forEach(f=>{const e=f.evidence.split(";")[0];const g=elab(e);(groups[g]=groups[g]||[]).push(f)});
  const inf=n.qualifiers.includes("how=inferred");
@@ -363,8 +373,8 @@ function render(){const d=DATA[P];
  <div class="tile"><b>${d.tree.filter(n=>n.type==="run").length} / ${d.tree.filter(n=>n.type==="group").length} / ${d.tree.filter(n=>n.type==="cited").length}</b><span>tree: runs / groups / cited works (not facts)</span></div>
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
- $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree")applyForest()}
-window.openCard=openCard;window.cardFor=cardFor;
+ $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree"){applyForest();fitChips()}}
+window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;
 render();
 </script></body></html>"""
 

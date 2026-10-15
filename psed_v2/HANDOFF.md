@@ -1,4 +1,4 @@
-# Handoff (2026-10-15; the state at commit 85fdb15)
+# Handoff (2026-10-15; the state after commit 85fdb15 and the group-label commit that followed it)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -72,8 +72,8 @@ Stages:
 2. **Facts per element** (`<paper_id>.facts.py` → `.facts.csv`, `.coverage.csv`, `.points.json`): what each element itself states,
    one row per piece of knowledge, typed setting / observation / derived / model / definition / claim / cited. Local only:
    mentions are copied as printed ("sample 8", "H 500 nm"), with no decision on what they refer to. Values and units as printed.
-   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14; at 85fdb15 yim20 698 facts, mat22 493,
-   gre23 334 (the tree pass added explicit settings and purpose claims).
+   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14; now yim20 698 facts, mat22 505, gre23 334
+   (the tree pass added explicit settings and purpose claims; 2026-10-15 the temperature of each mat22 temperature group).
 3. **One tree per paper** (replaces the earlier separate anchors and relations steps): inside `<paper_id>.facts.csv`, two more
    columns, `parent` (one id: the row without which the fact would not exist) and `links` (a second home: a claim's supporting
    facts, series membership, the same data shown in another panel), and tree rows in the same file (ids without "#"): the paper
@@ -86,7 +86,9 @@ Stages:
    film, specimen or simulation (mat22: a (T, H2-ratio) pair is a group holding its ratio setting, one run per film beneath it,
    `how=inferred` when two measurements are put on one film without the paper saying so; gre23: under each deposition the
    specimens its facts are about; yim20: one specimen per Table 1 sample code); what a group varies among its sibling runs or
-   groups is never quantity `other` (`lists.py` gets an id; 21 added 2026-10-14); every group row's first link is its purpose
+   groups is a setting fact under the group, never only in its label (every number with a unit in a group's label, "450 °C",
+   "10-50 cyc", is the value of a setting fact under or above the group), and never quantity `other` (`lists.py` gets an id;
+   21 added 2026-10-14); every group row's first link is its purpose
    fact, the paper's own sentence on what the group was made to test (`facts.purpose()`); `check.py` checks all of this. Tree
    rows at 85fdb15 (groups / runs / cited works): yim20 8 / 28 / 22, mat22 45 / 101 / 23, gre23 1 / 21 / 17.
 4. **Standardization**: units converted to `lists.UNITS` and quantity ids standardized, in the facts file.
@@ -98,7 +100,8 @@ Stages:
    left pane is the tree collapsed to groups and runs; clicking a run, a fact line in the text tree, a fact in the figures view
    or a scatter point opens the run's card. A card has five rows: 1 what was varied (the setting differing among the run's
    siblings, this run's value beside theirs; when siblings differ in nothing, the first level up where they do); 2 other
-   conditions (every setting inherited up the tree as chips, marked where that level's siblings differ); 3 measured (observation,
+   conditions (every setting inherited up the tree as chips, the process-defining ones first, two lines until "+N more" opens
+   the rest, marked where that level's siblings differ; one value stated at two levels is one chip); 3 measured (observation,
    derived and model facts grouped by figure, table or paragraph; an element id opens the evidence box with the crop; curves as
    sparklines; inferred film membership marked; child specimen runs listed); 4 why and what it showed (the group's purpose fact,
    then the claims linked to the run or its group); 5 compare (siblings with their varied values; the same varied quantity in

@@ -958,6 +958,17 @@ RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a t
                                  quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80", data_kind="chosen input",
                                  mentions="0.80;TiS2")
 
+# ------------------------------------------------------------------ the deposition temperature of every heat-map row and the cycles of every Fig. 1b film
+# One deposition_temperature fact per temperature group (the setting the group holds, which its label states), cited from the heat
+# maps and the elements that name a pair at that temperature (RATIO_EV); one cycle_number fact per Fig. 1b film (what grp:cyc varies,
+# so far stated only in the curve labels). Placed under the group or run in stage 3 (TEMP_GRP: t -> fact id; CYC_RUN: n -> fact id).
+TEMP_GRP = {}
+for t in sorted({t for t, _ in CELLS}, reverse=True):
+    ev = list(dict.fromkeys(e for (t2, _), evs in RATIO_EV.items() if t2 == t for e in evs.split(";")))
+    TEMP_GRP[t] = temp(";".join(["fig2", "fig4"] + ev), t, f"MoSx depositions at {t} °C, one row of the Fig. 2 and Fig. 4 heat maps",
+                       f"{t} °C")
+CYC_RUN = {n: cyc("fig1b;s3.p5", n, f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b", f"{n} cyc;150 °C;0.80") for n in ("10", "20", "30", "50")}
+
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.
 # The heat-map film of a pair was measured by Raman (Fig. 2), XPS (Fig. 4), SEM/AFM (Fig. 6a), in situ SE (Fig. 7a) and four-point
@@ -1198,6 +1209,11 @@ put(xrun("TiS2_thermal"), "fig9b#4")
 for s_, i in RATIO_RUN.items():
     m = re.fullmatch(r"T(\d+)_R([\d.]+)", s_)
     put(mpair(int(m.group(1)), m.group(2)) if m else xrun(s_), i)
+# the deposition temperature of each temperature group and the cycle number of each Fig. 1b film (TEMP_GRP, CYC_RUN, stage 2)
+for t, i in TEMP_GRP.items():
+    put(grp(f"T{t}"), i)
+for n, i in CYC_RUN.items():
+    put(xrun(f"T150_R0.80_N{n}"), i)
 # a value computed from others: under its first input
 for f in C.facts():
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
