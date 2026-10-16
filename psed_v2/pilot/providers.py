@@ -8,7 +8,7 @@ search or file feature; prompt caching only where it changes nothing but cost: A
 tool list and the newest message; OpenAI's prompt_cache_key and xAI's x-grok-conv-id (one per session, so its turns reach the same
 cache); Google and DeepSeek cache on their own. A rate-limit, quota or overload error is retried with exponential backoff, at most 5 tries in all;
 the retries are counted in Turn.retries. Every model runs with its default settings; Anthropic requires max_tokens,
-set to MAX_TOKENS.
+set to MAX_TOKENS, a cost guard only: the answer length is asked for in the prompt (P37), never cut by a token cap.
 
     s = session("anthropic:claude-opus-5-5", system, tools)    # tools: [dict(name, description, parameters=JSON schema)] or None
     t = s.send("question")                                     # -> Turn(text, calls=[dict(id, name, arguments)], usage)

@@ -38,7 +38,7 @@ SHARED = """You answer questions from atomic layer deposition (ALD) researchers 
 Answer in English. Start with a direct answer in one or two sentences, then give the evidence.
 For every number, give its unit and the conditions it was obtained under (material, process, temperature, structure or substrate, how it was measured), and say whether it was measured, read from a figure, computed by the authors, computed from other values, assumed, or taken from another work.
 If the answer depends on conditions, say so and organize the answer by those conditions.
-Say what your sources do not cover. State every assumption you make. If the question cannot be answered from what you have, say so and why."""
+Keep the answer under 400 words, tables included. Give the values that answer the question, not every related value; put each number's conditions and kind in a table rather than repeating them in sentences. State the assumptions that change the answer, and say briefly what your sources do not cover. If the question cannot be answered from what you have, say so and why."""
 
 ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
@@ -488,8 +488,14 @@ def number_check(text, arm, given):
                 unknown_ids=len(unknown), unknown=unknown, cited=cited, per_number=rows)
 
 
-def check_line(nc):
-    return (f"{nc['numbers']} numbers · {nc['match']} match · {nc['elsewhere']} elsewhere · {nc['not_seen']} not seen · "
+def words(text):
+    """The answer's word count: id markers, table rules and lone punctuation are not words (P37)."""
+    t = MARK.sub(" ", text or "").replace("|", " ")
+    return len(re.findall(r"\S*[^\W_]\S*", t))
+
+
+def check_line(nc, n_words=None):
+    return (("" if n_words is None else f"{n_words} words · ") + f"{nc['numbers']} numbers · {nc['match']} match · {nc['elsewhere']} elsewhere · {nc['not_seen']} not seen · "
             f"{nc['uncited']} uncited · {nc['unknown_ids']} unknown ids")
 
 
@@ -586,7 +592,7 @@ def run_arm(arm, question, model):
     nc = number_check(text, arm, given)
     return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
-                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, check_line=check_line(nc), usage=usage, model_calls=calls, retries=retries,
+                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, words=words(text), check_line=check_line(nc, words(text)), usage=usage, model_calls=calls, retries=retries,
                 cost=cost_of(model, usage), seconds=round(time.time() - t0, 1), error=error)
 
 
