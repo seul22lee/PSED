@@ -286,6 +286,8 @@ F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed fro
   mentions="RBS;SE;density (g/cm^3)")
 F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk", value="5.06", unit="g/cm3",
   data_kind="literature", method="cited", mentions="ref. 66")
+F(K, "s3.p19;tab1.cap", "setting", "The Table 1 films (RBS, ERD) are grown on a glassy carbon substrate.", quantity="substrate", value_text="glassy carbon",
+  data_kind="chosen input", mentions="glassy carbon;Table 1")
 T1 = {"0.20": [("3.7", "0.1"), ("3.4", "0.2"), "3.2", ("6.4", "0.5"), ("0.5", "0.2"), ("0.8", "0.2")],
       "0.65": [("2.1", "0.1"), ("2.1", "0.1"), "4.0", ("11.7", "0.9"), ("1.5", "0.4"), ("0.5", "0.1")],
       "0.80": [("1.8", "0.1"), ("1.9", "0.1"), "3.1", ("22", "2"), ("1.0", "0.3"), ("5", "2")]}
@@ -1258,7 +1260,7 @@ put(grp("T150"), "fig5a#1", "fig5b#1", "s3.p14#1", "s3.p14#2", "s3.p14#3", "s3.p
     "s3.p20#1", "s3.p20#2", "s3.p4#4", "s3.p19#2", "s3.p21#2", "fig6a#1", "s3.p22#2", "fig7a#1")
 put(grp("T150"), "s3.p4#1", "s3.p22#4", "s3.p27#1", links=lk(pair(150, "0"), pair(150, "0.20"), pair(150, "0.50")))
 put(grp("T150"), "s3.p4#2", links=lk(CELL2[(150, "0.65")], "fig1a#5"))
-put(grp("T150"), "s3.p19#1", "s3.p21#1", links=lk(pair(150, "0.20"), pair(150, "0.65"), pair(150, "0.80")))
+put(grp("T150"), "s3.p19#1", "s3.p19#5", "s3.p21#1", links=lk(pair(150, "0.20"), pair(150, "0.65"), pair(150, "0.80")))
 put(grp("T150"), "s3.p21#3", links=lk(pair(150, "0.20"), pair(150, "0.65")))
 put(mfilm(150, "0.20", "gc"), "s3.p30#1")
 put(mfilm(150, "0.50", "xps"), "s3.p18#2", "s3.p18#3")
@@ -1497,15 +1499,12 @@ KIDS = collections.defaultdict(list)
 for r in C.facts():
     KIDS[r["parent"]].append(r)
 for d, spec in DEPS.items():
-    m = re.search(r"T(\d+)_R([\d.]+)", d)
-    if not m:
-        continue
-    t, rt = m.groups()
+    mt, mr = re.search(r"T(\d+)_", d), re.search(r"_R([\d.]+)", d)       # the temperature and ratio the deposition's name states
     have = {f["quantity"] for f in KIDS[d] if f["type"] == "setting"}
-    if "deposition_temperature" not in have:
-        temp(spec["evidence"], t, spec["label"], f"{t} °C;{spec['label']}"); C.facts()[-1]["parent"] = d
-    if "plasma_gas_ratio" not in have:
-        ratio(spec["evidence"], rt, spec["label"], f"{rt};{spec['label']}"); C.facts()[-1]["parent"] = d
+    if mt and "deposition_temperature" not in have:
+        temp(spec["evidence"], mt.group(1), spec["label"], f"{mt.group(1)} °C;{spec['label']}"); C.facts()[-1]["parent"] = d
+    if mr and "plasma_gas_ratio" not in have:
+        ratio(spec["evidence"], mr.group(1), spec["label"], f"{mr.group(1)};{spec['label']}"); C.facts()[-1]["parent"] = d
 # the colour cells of Fig. 7b and Fig. 8: under the cell film's in situ SE and four-point-probe measurement activities (made here if the
 # cell had none)
 for (t, r), fid7 in GPC7B.items():
@@ -1526,6 +1525,7 @@ C.spread(f"{K}:s5.p7#2", cells_at({50, 300, 350}), LAB)
 C.spread(f"{K}:s5.p7#3", cells_at({100, 150, 200, 250}), LAB)
 C.spread(f"{K}:s5.p7#4", [f"{K}:dep:T{t}_R0.20" for (t, r) in sorted(CELLS, key=lambda c: -c[0]) if r == "0.20"], LAB)
 C.spread(f"{K}:s3.p19#1", [d for d in DEPS if ":dep:gc_" in d], LAB)
+C.spread(f"{K}:s3.p19#5", [d for d in DEPS if ":dep:gc_" in d], LAB)                 # their substrate: glassy carbon, not the SiO2/Si of the recipe
 C.spread(f"{K}:s3.p22#2", cells_at({150}), LAB)
 C.spread(f"{K}:s5.p8#1", [d for d in DEPS if ":dep:WS2" in d or ":dep:TiS2" in d], LAB)
 C.spread(f"{K}:s5.p8#6", [d for d in DEPS if ":dep:WS2" in d], LAB)

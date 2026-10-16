@@ -29,6 +29,11 @@ QUANTITIES = sorted({
     "other",
 })
 
+# the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
+# ones (an entity that states no temperature is not the same experiment as one that does)
+PRIMARY = ["reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",
+           "purge_time", "feature_height", "cycle_number", "substrate"]
+
 # quantities that name a chosen input, never what a measurement found: an observation never carries one (check.py); a threshold
 # the authors read off a series (the ratio from which films are crystalline) is an observation of quantity other
 SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing_temperature", "pulse_time", "purge_time", "cycle_time",

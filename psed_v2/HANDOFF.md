@@ -88,6 +88,10 @@ sections below.
   (a tolerance, a calibration spread) stays in the statement. A reproducibility figure is read from it, from a replicate
   comparison's spread facts or from a nonuniformity fact, each named for what it is a reproducibility of, never merged across
   definitions without a bridge.
+- Two entities are the same experiment for a result comparison when their condition vectors agree on every key both state,
+  except keys the comparison tolerates (a substrate, a cycle count, a thickness target); the join (`questions.same_experiment`)
+  reports the tolerated keys that differ and the keys only one states, and the answer names them. A setting the paper states for
+  a set of films (the Table 1 films on glassy carbon) is a setting of their depositions, so that the join can see it.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;

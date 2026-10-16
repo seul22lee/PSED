@@ -9,7 +9,7 @@ when a fact is missing, a fact sits in the wrong place, no join rule, derived qu
 column says which. The library below reads the trees only (condition vectors, results, comparisons, members); every rule the
 questions needed beyond that was added class by class (see HANDOFF, Comparison layer).
 """
-import collections, csv, math, re, sys
+import collections, csv, json, math, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -35,6 +35,8 @@ class Tree:
             if r["parent"]:
                 self.kids[r["parent"]].append(r)
         self.comps = [r for r in self.rows if r["type"] == "comparison"]
+        pj = HERE / f"{KEY[key]}.points.json"
+        self.points = json.loads(pj.read_text(encoding="utf-8")) if pj.exists() else {}
 
     def chain(self, i):
         out = []
@@ -200,6 +202,35 @@ USER = list(csv.DictReader((HERE / "user.facts.csv").open(encoding="utf-8")))
 def one(key, **kw):
     fs = TREES[key].facts(**kw)
     return fs[0] if len(fs) == 1 else None
+
+
+# ------------------------------------------------------------------ the comparison layer: the join
+def vtext(T, e):
+    return {k: "; ".join(dict.fromkeys(fmt(f) for f in fs)) for k, fs in T.vector(e).items()}
+
+
+def same_experiment(T, ent, tolerate=()):
+    """The entities (with observations) that are the same experiment as `ent` for a result comparison: both state the same
+    process-defining settings (lists.PRIMARY), their condition vectors agree on every key both state, except keys whose quantity is
+    tolerated (a substrate, a cycle count, a thickness target). Returns [(entity, {key: (this value, that value)} over the
+    tolerated keys that differ, keys only one of the two states)]."""
+    v0 = vtext(T, ent); out = []
+    for e in T.entities():
+        if e == ent:
+            continue
+        v = vtext(T, e)
+        only = sorted(set(v0) ^ set(v))
+        if any(k.split("{")[0] in L.PRIMARY for k in only):
+            continue
+        diff = {k: (v0[k], v[k]) for k in set(v0) & set(v) if v0[k] != v[k]}
+        if all(k.split("{")[0] in tolerate for k in diff):
+            out.append((e, diff, only))
+    return out
+
+
+def join_text(joins):
+    keys = sorted({k.split("{")[0] for _, d, _ in joins for k in d})
+    return f"joined tolerating {', '.join(keys)}" if keys else "joined on equal condition vectors"
 
 
 # ------------------------------------------------------------------ the comparison layer: derived quantities (lists.DERIVED)
@@ -413,7 +444,28 @@ def q9():
 
 def q10():
     """Thickness against cycles at 150 °C, ratio 0.80, from every source."""
-    return unanswerable("", "no join rule: entities equal in every condition but cycle number are not joined")
+    T = TREES["mat22"]
+    at = [e for e in T.entities() if T.vector(e).get("deposition_temperature") and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"
+          and T.vector(e).get("plasma_gas_ratio{gas=H2}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and T.results(e).get("growth_per_cycle")]
+    if not at:
+        return unanswerable("", "no 150 °C, ratio 0.80 entity with a GPC to start the join from")
+    e0 = at[0]; joins = same_experiment(T, e0, tolerate=("cycle_number", "film_thickness"))
+    rows = []
+    for e in [e0] + [j[0] for j in joins]:
+        v, r = T.vector(e), T.results(e)
+        N = val(v["cycle_number"][0]) if v.get("cycle_number") else None
+        for f in r.get("film_thickness", []):                                   # a stated thickness, or the last point of a thickness-vs-cycles curve
+            if f["value"]:
+                rows.append((N, val(f), f"{T.label(e)}: {fmt(f)} at {g(N)} cycles ({f['fact_id']})"))
+            elif f["points_ref"] and quals(f).get("x") == "cycle_number" and f["points_ref"] in T.points:
+                x, y = T.points[f["points_ref"]]["points"][-1]
+                rows.append((x, y, f"{T.label(e)}: curve {f['points_ref']} ends at {g(y)} nm after {g(x)} cycles"))
+        for f in r.get("growth_per_cycle", []):
+            if f["value"]:
+                rows.append((None, None, f"{T.label(e)}: GPC {fmt(f)} ({f['statement'][:50]}…)"))
+    gpc = [10 * t / n for n, t, _ in rows if n and t]
+    return answered("; ".join(x for _, _, x in rows) + f" · thickness/cycles from {g(min(gpc), 2)} to {g(max(gpc), 2)} Å/cycle · {join_text(joins)} ({len(joins)} entities joined to {T.label(e0)})",
+                    "same_experiment: entities whose condition vectors equal the cell film's except the tolerated keys (cycle_number, film_thickness target); their thickness results, curve end points and GPCs") if rows else unanswerable("", "no thickness on the joined entities")
 
 
 def q11():
@@ -425,7 +477,14 @@ def q11():
     d = derive(T, gc[0], "growth_per_cycle", route=True)
     if "error" in d:
         return unanswerable("", f"derived GPC from atoms per cycle fails: {d['error']}")
-    return unanswerable(f"{T.label(gc[0])}: GPC from RBS {dtext(d)}", "no join rule: the SE GPC sits on the SiO2/Si cell film, the RBS atoms per cycle on the glassy-carbon film; the join must say which setting it tolerated")
+    joins = [(e, diff, only) for e, diff, only in same_experiment(T, gc[0], tolerate=("substrate", "cycle_number", "film_thickness")) if T.results(e).get("growth_per_cycle")]
+    if not joins:
+        return unanswerable(f"{T.label(gc[0])}: GPC from RBS {dtext(d)}", "no entity with an SE GPC joins the glassy-carbon film within the tolerated keys")
+    e, diff, _ = joins[0]; se = T.results(e)["growth_per_cycle"][0]
+    ratio = d["value"] / L.convert(val(se), se["unit"], "nm")
+    return answered(f"{T.label(gc[0])}: GPC from RBS {dtext(d, 2)} vs SE GPC {fmt(se)} on {T.label(e)} ({se['fact_id']}): ratio {g(ratio, 2)} · {join_text(joins)}: " +
+                    "; ".join(f"{k} {a} vs {b}" for k, (a, b) in diff.items()),
+                    "lists.DERIVED growth_per_cycle from atoms per cycle (assumed M, the film's own density) on the RBS film; same_experiment joins the SE cell film tolerating substrate, cycle_number and film_thickness, named in the answer")
 
 
 def q12():
