@@ -29,18 +29,18 @@ feature_width,quantity,direct,feature_width,,,,
 fill_fraction,quantity,new_entry,fill_fraction,,,,conformality
 film_density,quantity,direct,film_density,,,,
 film_thickness,quantity,direct,film_thickness,,,,
-fit_r2,quantity,pending,fit_r2,,R²,fit R²,"attribute (Sec. 18.7), applied in P58"
-front_slope,quantity,pending,front_slope,,front slope,front slope,"attribute (Sec. 18.7), applied in P58"
+fit_r2,quantity,attribute,fit_r2,,,,"attribute: true (Sec. 18.7): fit quality, stored as data, outside the concept vocabulary"
+front_slope,quantity,attribute,front_slope,,,,"attribute: true (Sec. 18.7): a profile's slope, stored as data, outside the concept vocabulary"
 gas_flow_rate,quantity,direct,gas_flow_rate,,,,
 gas_moles_per_cycle,quantity,new_entry,gas_moles_per_cycle,,,,reaction_monitoring
 growth_per_cycle,quantity,direct,growth_per_cycle,,,,
 h_per_metal,quantity,transform,element_ratio,element=H;reference_element=Mo,,,a transform output of the composition family (Sec. 18.3): element_ratio{element=H;reference_element=Mo}; the entry h_per_metal carries replaced_by
 initial_sticking_coefficient,quantity,direct,initial_sticking_coefficient,,,,
-knudsen_number,quantity,pending,knudsen_number,,Kn,Knudsen number,"promoted to an extension entry (Sec. 18.7), applied in P58"
+knudsen_number,quantity,new_entry,knudsen_number,,,,"promoted to an extension entry (Sec. 18.7, decision D2): yim20 and gre23 evidence"
 lumped_sticking_coefficient,quantity,alias,initial_sticking_coefficient,,,,"Sec. 10 note: the lumped coefficient c multiplies (1 - theta), so it is Cremers' s0"
 mass_gain,quantity,new_entry,mass_gain,,,,growth; family growth_amount
 material,quantity,direct,material,,,,
-mean_free_path,quantity,pending,mean_free_path,,λ,mean free path,"promoted to an extension entry (Sec. 18.7), applied in P58"
+mean_free_path,quantity,new_entry,mean_free_path,,,,"promoted to an extension entry (Sec. 18.7, decision D2): yim20 and gre23 evidence"
 moles_deposited,quantity,new_entry,moles_deposited,,,,a transform output; family growth_amount
 moles_from_mass_gain,quantity,new_entry,moles_from_mass_gain,,,,a transform output; family growth_amount
 normalized_exposure,quantity,dropped,,,,,no fact uses it
@@ -71,7 +71,7 @@ roughness,quantity,new_entry,roughness,,,,film_properties
 saturation_density,quantity,attribute,saturation_density,,,,"a model internal (Sec. 4), stored on yim20's model runs"
 sheet_resistance,quantity,new_entry,sheet_resistance,,,,a transform output; another dimension than resistivity (Sec. 4)
 shell_volume_fraction,quantity,new_entry,shell_volume_fraction,,,,a transform output; family growth_amount
-signal_intensity,quantity,pending,signal_intensity,,intensity,signal,"attribute (Sec. 18.7), applied in P58"
+signal_intensity,quantity,attribute,signal_intensity,,,,"attribute: true (Sec. 18.7): a signal without a quantity, stored as data, outside the concept vocabulary"
 source_temperature,quantity,direct,source_temperature,,,,
 step_coverage,quantity,direct,step_coverage,,,,
 structure_type,quantity,alias,structure,,,,the pilot's structure class is the class of the structure entry the value names (P50)

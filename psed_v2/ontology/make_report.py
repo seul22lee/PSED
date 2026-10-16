@@ -84,7 +84,7 @@ def values_from_targets(entry: dict, entries: list[dict]) -> list[str]:
     return []
 
 
-def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
+def run_checks(onto: dict, unmapped_rows=()) -> list[tuple[str, bool, str]]:
     entries = onto["entries"]
     ids = [e["id"] for e in entries]
     quantities = [e for e in entries if e["type"] == "quantity"]
@@ -218,6 +218,14 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad += [e["id"] for e in entries if e.get("attribute") and e["type"] not in ("quantity", "categorical")]
     out.append(("11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals", not bad,
                 f"problems: {bad}" if bad else f"{len(fam)} families: " + "; ".join(f"{f} ({len(m)})" for f, m in fam.items())))
+
+    never = {"knudsen_number", "mean_free_path", "front_slope", "fit_r2", "signal_intensity"}       # the Sec. 4 'never an entry' labels the pilot stores (Sec. 18.7)
+    bad = [e["id"] for e in entries if e["id"] in never and not (e.get("attribute") or (e.get("deviation") or {}).get("type") == "promoted")]
+    attrs = [e["id"] for e in entries if e.get("attribute")]
+    bad += [f"{e['id']}: an attribute with a family" for e in entries if e.get("attribute") and e.get("family")]
+    bad += [r["label"] for r in unmapped_rows if any(r["label"] == a for e in entries for a in e.get("aliases", []) if not e.get("attribute") and (e.get("deviation") or {}).get("type") != "promoted") and not r["reason"].startswith("Sec. 18.7")]
+    out.append(("12. a 'never an entry' label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry's alias", not bad,
+                f"problems: {bad}" if bad else f"attributes: {', '.join(attrs)}"))
     return out
 
 
@@ -335,7 +343,7 @@ def main() -> int:
     with (HERE / "unmapped.csv").open(newline="", encoding="utf-8") as f:
         unmapped = list(csv.DictReader(f))
     entries = onto["entries"]
-    checks = run_checks(onto)
+    checks = run_checks(onto, unmapped)
     ok = all(c[1] for c in checks)
     nodes, _, leaf_ids = tree(onto)
 

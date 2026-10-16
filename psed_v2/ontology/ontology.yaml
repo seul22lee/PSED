@@ -99,6 +99,10 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
     parent: modelling
     definition: "Parameters of the lumped Langmuir description of the surface reaction: sticking and recombination probabilities, adsorption equilibrium constant, saturation growth per cycle, surface coverage."
     citation: "Cremers 2019 Sec. II E 'Reaction mechanisms and sticking probability' (Eqs. 5-9: s0, theta, k_ads and k_des; recombination probability r); Sec. V C 4"
+  - id: transport
+    parent: modelling
+    definition: "The gas transport regime inside the feature: the reactant's mean free path and its ratio to the feature size, the Knudsen number, which decides between free-molecular (Knudsen) and viscous flow."
+    citation: "Cremers 2019 Sec. V C 1 'Transport' (Knudsen diffusion in features whose size is below the mean free path; the Knudsen number); Sec. V A"
   - id: models
     parent: modelling
     definition: "Named transport-reaction models, analytical or computational, whose parameters are the surface_kinetics entries."
@@ -1397,6 +1401,86 @@ entries:
     base: {}
     evidence: ["mat22 Fig. 1a", "mat22 Fig. 9"]
 
+  # ---------------------------------------------------------------- Sec. 18.7 (P58): two promotions and three attribute quantities
+  - id: knudsen_number
+    type: quantity
+    origin: extension
+    role: condition
+    category: transport
+    label: "Kn"
+    name: "Knudsen number"
+    definition: "The mean free path of the reactant over the characteristic size of the feature (the channel height, the pore or particle diameter): Kn >> 1 is Knudsen (free-molecular) flow (Cremers 2019 Sec. V C; yim20 Sec. D). Promoted from 'derived dimensionless groups' (Sec. 4) by decision D2."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [species]
+    aliases: ["Knudsen number", "Kn"]
+    base: {}
+    deviation: {type: promoted, reason: "Sec. 18.7 (decision D2): data in yim20 (Sec. D) and in gre23 (the compact's pore size and the stated pressure give it), a CQ needs the flow regime (Case A7)"}
+    evidence: ["yim20 Sec. D (s19.p3)", "gre23 Sec. II A (d_pore 100 nm, s6.p8) with the stated dose pressure"]
+
+  - id: mean_free_path
+    type: quantity
+    origin: extension
+    role: condition
+    category: transport
+    label: "λ"
+    name: "mean free path"
+    definition: "The mean free path of a reactant molecule in the gas at the deposition temperature and its partial pressure, k_B T / (sqrt(2) pi d^2 p) (yim20 Sec. D). Promoted from 'molecule properties' (Sec. 4) by decision D2."
+    dimension: length
+    unit: "µm"
+    qualifiers: [species]
+    aliases: ["mean free path", "λ"]
+    base: {}
+    deviation: {type: promoted, reason: "Sec. 18.7 (decision D2): stated in yim20 (Sec. D) and computed for gre23 from its stated pressure and temperature; the input of the Knudsen number"}
+    evidence: ["yim20 Sec. D (s19.p3)", "gre23 Sec. II B (the dose pressure, s6.p8) with the deposition temperature"]
+
+  - id: front_slope
+    type: quantity
+    origin: extension
+    role: output
+    category: conformality
+    attribute: true
+    label: "front slope"
+    name: "front slope"
+    definition: "The slope of a saturation profile at its half-thickness point, as thickness per cycle or as normalized thickness per unit of dimensionless distance (yim20 Table 1); an attribute of a profile, stored as data, not a concept (Sec. 18.7)."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [by, reference]
+    aliases: ["Slope dθ/dx̃", "Slope d(S/N)/dx̃", "front slope"]
+    base: {}
+    evidence: ["yim20 Table 1", "yim20 Fig. 9"]
+
+  - id: fit_r2
+    type: quantity
+    origin: extension
+    role: output
+    category: measurement
+    attribute: true
+    label: "R²"
+    name: "fit R²"
+    definition: "The coefficient of determination of a fit (yim20 Table 1, the linear fit of the front); fit quality, an attribute of a value, not a concept (Sec. 18.7)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: ["R2", "R²", "Linear fitting residual R2"]
+    base: {}
+    evidence: ["yim20 Table 1"]
+
+  - id: signal_intensity
+    type: quantity
+    origin: extension
+    role: output
+    category: measurement
+    attribute: true
+    label: "intensity"
+    name: "signal"
+    definition: "A detector signal against position or energy (an EDS, Raman, XPS or X-ray count or an arbitrary-unit intensity); a signal without a quantity (Sec. 4), stored as the trace it is, not a concept (Sec. 18.7)."
+    dimension: signal
+    unit: ""
+    qualifiers: [element, species]
+    aliases: ["Intensity", "a.u.", "counts"]
+    base: {}
+    evidence: ["yim20 Fig. 5b", "mat22 Fig. 1a", "mat22 Fig. 5", "gre23 Fig. 6d-f"]
+
   # ---------------------------------------------------------------- the composition family (decision D1, Sec. 18.3; P52)
   - id: element_fraction
     type: quantity
@@ -2107,6 +2191,8 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: cycle_time,          inputs: [pulse_time, purge_time],     output: cycle_time,             formula: "sum of the pulse, hold and purge times (P51)"}
   - {id: deposition_rate,     inputs: [growth_per_cycle, cycle_time], output: deposition_rate,      formula: "GPC * 3600 / t_cycle (P51)"}
   - {id: h_per_metal,         inputs: ["element_fraction{element=H}", "element_ratio{element=S;reference_element=Mo}"], output: "element_ratio{element=H;reference_element=Mo}", formula: "H at.% / Mo at.%, Mo at.% = (100 - H - N - O at.%) / (1 + S/Mo) (P52)"}
+  - {id: mean_free_path,      inputs: [deposition_temperature, partial_pressure], output: mean_free_path, formula: "k_B T / (sqrt(2) pi d^2 p), d the molecular diameter (an assumed fact) (P58)"}
+  - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: "lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
@@ -2150,6 +2236,7 @@ units:   # canonical unit per dimension, and the accepted units
   power:            {canonical: W,          accepted: [W]}
   gas_flow:         {canonical: sccm,       accepted: [sccm]}
   dimensionless:    {canonical: "1",        accepted: ["1", "%", "at.%"]}
+  signal:           {canonical: "",         accepted: ["", "a.u.", counts, counts/s]}
   density:          {canonical: g/cm3,      accepted: [g/cm3, kg/m3]}
   resistivity:      {canonical: "Ω·m",      accepted: ["Ω·m", "Ω·cm", "µΩ·cm"]}
   inverse_pressure: {canonical: 1/Pa,       accepted: [1/Pa, 1/mbar]}
