@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""One adapter per model vendor, each on an official Python SDK (conda env psed310: anthropic, openai, google-genai); xAI through
-the OpenAI SDK pointed at https://api.x.ai/v1, which xAI's documentation describes as supported.
+"""One adapter per model vendor, each on an official Python SDK (conda env psed310: anthropic, openai, google-genai); xAI and
+DeepSeek through the OpenAI SDK pointed at https://api.x.ai/v1 and https://api.deepseek.com, which their documentation describes
+as their OpenAI-compatible endpoints.
 
 Only what every vendor offers is used: a system prompt, messages, tool (function) calling and token counts. No citation, document,
 search or file feature; prompt caching only where it changes nothing but cost: Anthropic's cache marks on the system prompt, the
 tool list and the newest message; OpenAI's prompt_cache_key and xAI's x-grok-conv-id (one per session, so its turns reach the same
-cache); Google caches implicitly. A rate-limit, quota or overload error is retried with exponential backoff, at most 5 tries in all;
+cache); Google and DeepSeek cache on their own. A rate-limit, quota or overload error is retried with exponential backoff, at most 5 tries in all;
 the retries are counted in Turn.retries. Every model runs with its default settings; Anthropic requires max_tokens,
 set to MAX_TOKENS.
 
@@ -20,8 +21,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 ENV = Path(__file__).resolve().parent.parent / ".env"
-KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY", "xai": "XAI_API_KEY"}
-XAI_URL = "https://api.x.ai/v1"
+KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY", "xai": "XAI_API_KEY", "deepseek": "DEEPSEEK_API_KEY"}
+BASE_URL = {"xai": "https://api.x.ai/v1", "deepseek": "https://api.deepseek.com"}
 TRIES, BACKOFF = 5, 2.0
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
 MAX_TOKENS = 16000
@@ -82,8 +83,8 @@ def session(model, system, tools=None):
     load_env()
     if not os.environ.get(KEYS[vendor]):
         raise RuntimeError(f"{vendor} is unavailable: {KEYS[vendor]} is empty in .env")
-    if vendor == "xai":
-        return OpenAISession(name, system, tools, key=os.environ[KEYS["xai"]], base_url=XAI_URL)
+    if vendor in BASE_URL:
+        return OpenAISession(name, system, tools, key=os.environ[KEYS[vendor]], vendor=vendor)
     return {"anthropic": AnthropicSession, "openai": OpenAISession, "google": GoogleSession}[vendor](name, system, tools)
 
 
@@ -124,13 +125,13 @@ class AnthropicSession:
 
 
 class OpenAISession:
-    """OpenAI, and xAI through the same SDK at its base URL (Chat Completions with function calling)."""
-    def __init__(self, model, system, tools, key=None, base_url=None):
+    """OpenAI, and xAI and DeepSeek through the same SDK at their base URLs (Chat Completions with function calling)."""
+    def __init__(self, model, system, tools, key=None, vendor="openai"):
         import openai
         sid = uuid.uuid4().hex
-        self.xai = bool(base_url)
-        self.client = openai.OpenAI(api_key=key or os.environ[KEYS["openai"]], base_url=base_url, max_retries=0, timeout=900,
-                                    default_headers={"x-grok-conv-id": sid} if self.xai else None)
+        self.vendor = vendor
+        self.client = openai.OpenAI(api_key=key or os.environ[KEYS["openai"]], base_url=BASE_URL.get(vendor), max_retries=0, timeout=900,
+                                    default_headers={"x-grok-conv-id": sid} if vendor == "xai" else None)
         self.model, self.sid, self.messages = model, sid, [dict(role="system", content=system)]
         self.tools = [dict(type="function", function=dict(name=t["name"], description=t["description"], parameters=t["parameters"])) for t in tools or []]
 
@@ -142,13 +143,13 @@ class OpenAISession:
         kw = dict(model=self.model, messages=self.messages)
         if self.tools:
             kw["tools"] = self.tools
-        if not self.xai:
+        if self.vendor == "openai":
             kw["prompt_cache_key"] = self.sid
         r, n = with_retries(lambda: self.client.chat.completions.create(**kw))
         m = r.choices[0].message
         self.messages.append(dict(role="assistant", content=m.content or "", **({"tool_calls": [c.model_dump(exclude_none=True) for c in m.tool_calls]} if m.tool_calls else {})))
         u = r.usage
-        cr = getattr(getattr(u, "prompt_tokens_details", None), "cached_tokens", 0) or 0
+        cr = getattr(getattr(u, "prompt_tokens_details", None), "cached_tokens", 0) or getattr(u, "prompt_cache_hit_tokens", 0) or 0   # DeepSeek names it so
         rt = getattr(getattr(u, "completion_tokens_details", None), "reasoning_tokens", 0) or 0
         out = u.completion_tokens + (rt if rt and (u.total_tokens or 0) >= u.prompt_tokens + u.completion_tokens + rt else 0)   # reasoning counted once
         return Turn(text=m.content or "", calls=[dict(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments or "{}")) for c in m.tool_calls or []],
