@@ -108,7 +108,8 @@ def build():
                         break
         rec = {c["key"].split("{")[0]: c["record"]["text"] for c in details[i]["recipe"] if c.get("record")}
         rows.append(dict(id=i, paper=r["paper"], name=r["name"], inferred=r["inferred"], role=r["role"], distinguish=r["distinguish"], home=r["home"],
-                         groups=r["groups"], material=rec.get("material", ""), structure=rec.get("structure_type", ""), conds=conds, results=res))
+                         groups=r["groups"], material=rec.get("material", ""), structure=L.STRUCTURE_CLASS.get(rec.get("structure_type", ""), rec.get("structure_type", "")),
+                         reactants=[rec[k] for k in ("reactant_A", "reactant_B") if k in rec], conds=conds, results=res))
     by_id = {r["id"]: r for r in rows}
     for q in sorted({x["key"].split("{")[0].split("[")[0] for d in details.values() for x in d.get("results", []) if x.get("record")}):
         for i, r in Q.find(result=q)["rows"].items():                           # the query layer selects the values of each result
@@ -257,7 +258,7 @@ function lim(items,key,n=6){const all=S.open.has(key);const sh=all?items:items.s
 function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`}
 function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what||{};
  const link=i=>`<span class="src" onclick="openDetail('${i}')">${esc((D.details[i]||{name:i}).name)}</span>`;
- const sub=[what.substrate?`substrate: ${esc(what.substrate)}`:"",(what.input_ids||[]).length?`made from: ${what.input_ids.map(link).join(", ")}`:"",what.parent?`part of: ${link(what.parent)}`:"",d.type==="cited"?"a work the paper cites":""].filter(Boolean).join(" · ");
+ const sub=[what.material?`material: ${esc(what.material)}${(what.reactants||[]).length?` from ${esc(what.reactants.join(" / "))}`:""}`:"",what.substrate?`substrate: ${esc(what.substrate)}`:"",(what.input_ids||[]).length?`made from: ${what.input_ids.map(link).join(", ")}`:"",what.parent?`part of: ${link(what.parent)}`:"",d.type==="cited"?"a work the paper cites":""].filter(Boolean).join(" · ");
  const rr=(d.recipe||[]);const unc=k=>{const c=rr.find(c=>c.key===k);return c&&c.record&&c.record.uncertainty?` <span class="mut">${esc(c.record.uncertainty)}</span>`:""};
  const diffs=(d.differs||[]).map(x=>`<div><div class="line">${esc(x.name)} <span class="val">${esc(x.text)}</span>${unc(x.key)}</div>${cav((rr.find(c=>c.key===x.key)||{}).record)}</div>`);
  const full=S.open.has("recipe:"+id)?rr.map(c=>`<div class="line mut">${esc(c.name)} <span class="val">${vtext(c.record)}</span>${c.record.uncertainty?` ${esc(c.record.uncertainty)}`:""} ${srcLink(c.record)}</div>${cav(c.record)}`).join(""):"";

@@ -459,7 +459,7 @@ entries:
     symbol: AR
     dimension: dimensionless
     unit: "1"
-    aliases: [AspectRatio, "aspect ratio", AR, "Max. AR", "structural aspect ratio"]
+    aliases: [AspectRatio, "aspect ratio", "Max. AR", "structural aspect ratio"]
     base: {source: schema_miner, path: MaterialProperties/Conformality/AspectRatio}
     deviation: {type: split, reason: "split into aspect_ratio and coated_aspect_ratio: the AR of the structure is not the AR reached by the coating (Cremers Sec. II G-H)"}
     evidence: ["Yim2020 Table 2", "Yim2020 Fig. 1", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
@@ -928,6 +928,221 @@ entries:
     base: {}
     evidence: ["Ylilammi2018 Fig. 7"]
 
+  # ---------------------------------------------------------------- species of the pilot papers (Sec. 11; Sec. 18.1: yim20, mat22, gre23)
+  - id: mo_ntbu2_nme22
+    type: species
+    origin: extension
+    definition: "Bis(tert-butylimido)bis(dimethylamido)molybdenum(VI), the molybdenum reactant of the MoS2 plasma process of mat22 (Popov 2025 Table I writes it Mo(NtBu)2(NMe2)2; ligand class amides/imides, Popov Fig. 8)."
+    kind: molecule
+    formula: "Mo(NtBu)2(NMe2)2"
+    ligand_class: amide_imide
+    aliases: ["Mo(NtBu)2(NMe2)2", "(NtBu)2(NMe2)2Mo", "bis(tert-butylimido)bis(dimethylamido)molybdenum"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p6)", "mat22 Fig. 1a"]
+
+  - id: w_ntbu2_nme22
+    type: species
+    origin: extension
+    definition: "Bis(tert-butylimido)bis(dimethylamido)tungsten(VI), the tungsten reactant of the WS2 plasma process mat22 reproduces from its ref. 52 (Popov 2025 Table I writes it W(tBuN)2(Me2N)2; ligand class amides/imides, Popov Fig. 8)."
+    kind: molecule
+    formula: "W(NtBu)2(NMe2)2"
+    ligand_class: amide_imide
+    aliases: ["W(tBuN)2(Me2N)2", "(tBuN)2(Me2N)2W", "W(NtBu)2(NMe2)2", "bis(tert-butylimido)bis(dimethylamido)tungsten"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p8)", "mat22 Sec. 3 (s3.p46)"]
+
+  - id: tdmat
+    type: species
+    origin: extension
+    definition: "Tetrakis(dimethylamido)titanium(IV), the titanium reactant of the TiS2 processes mat22 reproduces from its refs. 53 and 80 (ligand class amides/imides, Popov 2025 Fig. 8)."
+    kind: molecule
+    formula: "Ti(NMe2)4"
+    ligand_class: amide_imide
+    aliases: [TDMAT, "Ti(NMe2)4", "tetrakis(dimethylamido)titanium"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p8)", "mat22 Sec. 3 (s3.p47)"]
+
+  - id: dez
+    type: species
+    origin: extension
+    definition: "Diethylzinc, the zinc reactant of the ZnO process of gre23 (Popov 2025 Table I writes it ZnEt2; ligand class alkyls, Popov Fig. 8)."
+    kind: molecule
+    formula: "Zn(C2H5)2"
+    ligand_class: alkyl
+    aliases: [DEZ, diethylzinc, ZnEt2, "Zn(C2H5)2", Et2Zn]
+    base: {}
+    evidence: ["gre23 Sec. II B (s9.p4)", "gre23 Fig. 2"]
+
+  - id: h2s
+    type: species
+    origin: extension
+    definition: "Hydrogen sulfide, the sulfur source of the metal sulfide processes of mat22 (in the H2S/H2/Ar plasma feed, or the thermal co-reactant)."
+    kind: molecule
+    formula: H2S
+    aliases: [H2S, "hydrogen sulfide", "hydrogen sulphide"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p4)", "mat22 Table 2"]
+
+  - id: h2
+    type: species
+    origin: extension
+    definition: "Molecular hydrogen, added to the plasma feed of mat22; its share of the H2S + H2 flow is the H2 flow ratio."
+    kind: molecule
+    formula: H2
+    aliases: [H2, hydrogen, "molecular hydrogen"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p4)", "mat22 Table 2", "mat22 Fig. 2"]
+
+  - id: ar
+    type: species
+    origin: extension
+    definition: "Argon, carrier and purge gas of mat22 and part of its plasma feed."
+    kind: molecule
+    formula: Ar
+    aliases: [argon]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p6)", "mat22 Table 2"]
+
+  - id: air
+    type: species
+    origin: extension
+    definition: "Ambient air, the atmosphere in which mat22 annealed films (a gas mixture, kept as one species for the gas qualifier)."
+    kind: molecule
+    formula: air
+    aliases: [air, "ambient air"]
+    base: {}
+    evidence: ["mat22 Sec. 3 (s3.p40)"]
+
+  - id: mos2
+    type: species
+    origin: extension
+    definition: "Molybdenum disulfide film; the MoSx films of mat22 with their stoichiometry given by element_ratio."
+    kind: material
+    formula: MoS2
+    material_class: chalcogenide
+    n_elements: binary
+    aliases: [MoS2, MoSx, "molybdenum disulfide", "molybdenum sulfide", "molybdenum disulphide"]
+    base: {}
+    evidence: ["mat22 Sec. 1", "mat22 Fig. 2", "mat22 Fig. 4"]
+
+  - id: ws2
+    type: species
+    origin: extension
+    definition: "Tungsten disulfide film."
+    kind: material
+    formula: WS2
+    material_class: chalcogenide
+    n_elements: binary
+    aliases: [WS2, "tungsten disulfide", "tungsten sulfide", "tungsten disulphide"]
+    base: {}
+    evidence: ["mat22 Fig. 9a", "mat22 Sec. 3 (s3.p46)"]
+
+  - id: tis2
+    type: species
+    origin: extension
+    definition: "Titanium disulfide film."
+    kind: material
+    formula: TiS2
+    material_class: chalcogenide
+    n_elements: binary
+    aliases: [TiS2, "titanium disulfide", "titanium sulfide", "titanium disulphide"]
+    base: {}
+    evidence: ["mat22 Fig. 9b", "mat22 Sec. 3 (s3.p47)"]
+
+  - id: zno
+    type: species
+    origin: extension
+    definition: "Zinc oxide film (zincite)."
+    kind: material
+    formula: ZnO
+    material_class: oxide
+    n_elements: binary
+    aliases: [ZnO, zincite, "zinc oxide"]
+    base: {}
+    evidence: ["gre23 Sec. I", "gre23 Fig. 5", "gre23 Table II"]
+
+  - id: mo
+    type: species
+    origin: extension
+    definition: "Metallic molybdenum, a phase found by XPS in the highest-ratio films of mat22."
+    kind: material
+    formula: Mo
+    material_class: element
+    n_elements: element
+    aliases: ["metallic Mo", "Mo metal", "molybdenum metal", "metallic molybdenum"]
+    base: {}
+    evidence: ["mat22 Sec. 3 (s3.p13)", "mat22 Fig. 4"]
+
+  - id: zn
+    type: species
+    origin: extension
+    definition: "Metallic zinc, a phase found by XRD in the 160 °C compact of gre23."
+    kind: material
+    formula: Zn
+    material_class: element
+    n_elements: element
+    aliases: ["metallic Zn", "Zn metal", "zinc metal", "metallic zinc"]
+    base: {}
+    evidence: ["gre23 Fig. 5", "gre23 Table II"]
+
+  - id: moo3
+    type: species
+    origin: extension
+    definition: "Molybdenum trioxide, the Mo6+ oxide seen by XPS on air-exposed MoSx films of mat22."
+    kind: material
+    formula: MoO3
+    material_class: oxide
+    n_elements: binary
+    aliases: [MoO3, "molybdenum trioxide", "molybdenum oxide"]
+    base: {}
+    evidence: ["mat22 Sec. 3 (s3.p14)"]
+
+  - id: si
+    type: species
+    origin: extension
+    definition: "Silicon: the growth surface of native-oxide silicon wafers and of the all-silicon PillarHall chips of yim20."
+    kind: material
+    formula: Si
+    material_class: element
+    n_elements: element
+    aliases: [Si, silicon, "Si(100)", "silicon wafer", polysilicon]
+    base: {}
+    evidence: ["yim20 Sec. C (s5.p1)"]
+
+  - id: sio2
+    type: species
+    origin: extension
+    definition: "Silicon dioxide: thermal oxide on silicon wafers or fused silica, the growth surface of most mat22 films."
+    kind: material
+    formula: SiO2
+    material_class: oxide
+    n_elements: binary
+    aliases: [SiO2, "silicon dioxide", "thermal SiO2", "fused SiO2", silica, "SiO2/Si"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p2)", "mat22 Fig. 6b"]
+
+  - id: glassy_carbon
+    type: species
+    origin: extension
+    definition: "Glassy carbon, the substrate of the mat22 films measured by RBS and ERD (Table 1)."
+    kind: material
+    formula: C
+    material_class: element
+    n_elements: element
+    aliases: ["glassy carbon", "glassy-carbon"]
+    base: {}
+    evidence: ["mat22 Sec. 3 (s3.p19)", "mat22 Table 1"]
+
+  - id: pet
+    type: species
+    origin: extension
+    definition: "Poly(ethylene terephthalate) foil (Melinex ST504), the plastic substrate of the mat22 film of Fig. 1d; a polymer outside Popov's material classes."
+    kind: material
+    formula: PET
+    aliases: [PET, "poly(ethylene terephthalate)", "Melinex ST504", "PET foil", "PET substrate"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p2)", "mat22 Fig. 1d"]
+
   # ---------------------------------------------------------------- structures (gold papers only)
   - id: pillarhall_3
     type: structure
@@ -955,6 +1170,15 @@ entries:
     aliases: ["planar substrate", "planar"]
     base: {}
     evidence: ["Werbrouck2021 Fig. 9"]
+
+  - id: nanoparticle_compact
+    type: structure
+    origin: extension
+    definition: "A pressed compact of Al2O3 nanoparticles (NPC): a macroscopic porous body whose pores the reactants enter from both faces (gre23, Sec. II A, Fig. 1)."
+    class: porous
+    aliases: ["nanoparticle compact", NPC, "Al2O3 nanoparticle compact", "nanoparticle compacts", NPCs]
+    base: {}
+    evidence: ["gre23 Fig. 1", "gre23 Table I", "gre23 Fig. 6"]
 
   # ---------------------------------------------------------------- models
   - id: ylilammi_diffusion_reaction
@@ -1114,6 +1338,9 @@ vocabularies:
     pressure:             [process_pressure, partial_pressure]
     power:                [plasma_power, native]
     sticking probability: [initial_sticking_coefficient, native]
+    AR:                   [aspect_ratio, ar]                             # AR the aspect ratio, Ar the gas: one normalized string
+    Mo:                   [mo, native]                                  # the metallic phase or the element symbol (element qualifier)
+    Zn:                   [zn, native]
 
 proposals:   # Sec. 17: concepts the reviews show to be missing, duplicated or wrongly split/merged. Reviewed in the chat, not applied.
   - what: "Add a categorical characterization_method (values: vocabularies.measurement_method) under deposited_film."

@@ -29,9 +29,15 @@ def load():
     return onto, pmap
 
 
-def qualifier_values(q):
+def qualifier_values(q, species=(), materials=()):
     v = q.get("values")
-    return sorted(str(x) for x in v) if isinstance(v, list) else None          # None: an open value (a species id, a number, a symbol)
+    if isinstance(v, list):
+        return sorted(str(x) for x in v)
+    if v == "species ids":
+        return sorted(species)
+    if v == "material ids":
+        return sorted(materials)
+    return None                                                                 # an open value (a number, an element symbol, a quantity id)
 
 
 def build(onto, pmap):
@@ -54,7 +60,7 @@ def build(onto, pmap):
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
     methods = voc["measurement_method"]
-    quals = {k: qualifier_values(q) for k, q in onto["qualifiers"].items()}
+    quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"]) for k, q in onto["qualifiers"].items()}
     families = {}
     for e in live:
         if e.get("family"):

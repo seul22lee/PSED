@@ -32,10 +32,10 @@ NK("s5.h;s6.h;s7.h;s8.h;s9.h;s10.h;s11.h;s12.h;s13.h;s14.h;s15.h", "heading")
 f(f"abs.g1;{A}", "claim", "conformal ALD in macroscopic nanoporous solids with AR above 10^3 may need reactant exposures of about 10^3 Torr-s or more")
 f(f"abs.g1;{A}", "claim", "with some ALD chemistries, exposures that large make non-self-limiting growth a concern")
 f(f"abs.g2;{A}", "cited", "DEZ/H2O ZnO ALD with exposures between 10 and 10^3 Torr-s has given metallic Zn at temperatures usual for wafers, e.g. ~180 °C",
-  quantity="exposure", value_min="10", value_max="1e3", unit="Torr-s", data_kind="literature", method="cited", mentions="~180 °C")
+  quantity="exposure", qualifiers="species=dez", value_min="10", value_max="1e3", unit="Torr-s", data_kind="literature", method="cited", mentions="~180 °C")
 f(f"abs.g2;{A};s6.p6", "claim", "a lower deposition temperature suppresses the Zn deposition but slows H2O desorption, which can force impractically long purges")
-f(f"abs.g3;{A}", "setting", "the static-dose DEZ and H2O exposures used here exceed 10^4 Torr-s",
-  quantity="exposure", value="1e4", censor=">", unit="Torr-s", data_kind="chosen input")
+f(f"abs.g3;{A}", "setting", "the static-dose DEZ exposures used here exceed 10^4 Torr-s (as do the H2O exposures)",
+  quantity="exposure", qualifiers="species=dez", value="1e4", censor=">", unit="Torr-s", data_kind="chosen input")
 f(f"abs.g4;{A};s15.p2;s15.p3;s14.p8;s14.p10", "claim", "the temperature-cycled process gives apparently self-limiting ZnO growth with a conductive ZnO network uniform through the NPC thickness, apart from some ZnO depletion near the faces")
 f(f"abs.g4;{A};s15.p3", "claim", "the T = 120 °C process gives results like the cycled one but with a slightly higher GPC, pointing to less H2O and/or OH removed during purges",
   mentions="T = 120 °C")
@@ -62,7 +62,7 @@ f("s6.p4", "cited", "pore diameter of that aerogel monolith ≈ 20 nm",
 f("s6.p4", "cited", "L of the aerogel monolith ≈ 1.25 mm, taken as half its thickness since reactants diffused in from top and bottom",
   quantity="feature_depth", label_as_printed="L", value="1.25", unit="mm", data_kind="literature", method="cited", mentions="ref. 9")
 f("s6.p4", "cited", "full infiltration, checked by SEM-EDS, took a series of 12 TMA doses with total exposure above 10^4 Torr-s",
-  quantity="exposure", value="1e4", censor=">", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 9")
+  quantity="exposure", qualifiers="species=tma", value="1e4", censor=">", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 9")
 # Ingale (ref. 10)
 f("s6.p5", "cited", "Ingale et al. deposited up to three ZnO cycles at 80 °C onto ~2 g of mesoporous SiO2 powder",
   quantity="deposition_temperature", value="80", unit="°C", data_kind="literature", method="cited", mentions="ref. 10;Ingale et al.")
@@ -81,21 +81,21 @@ f("s6.p5", "cited", "TEM coating thicknesses of Ferguson et al. gave a GPC of ~2
   quantity="growth_per_cycle", value="2.2", unit="Å/cyc", data_kind="literature", method="cited", mentions="ref. 11")
 f("s6.p5", "cited", "Ferguson et al. saw signs of non-self-limiting growth during the DEZ exposure", mentions="ref. 11")
 f("s6.p5", "cited", "raising the exposure up to 900 Torr-s, Ferguson et al. found by in situ FTIR that background absorbance grew with exposure, which they assigned to conductive Zn from DEZ decomposition",
-  quantity="exposure", value_max="900", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 11")
+  quantity="exposure", qualifiers="species=dez", value_max="900", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 11")
 # Libera (ref. 12)
 f("s6.p5", "cited", "Libera et al. found Zn metal by XRD in ZnO ALD coatings in mesoporous silica gel (1 g batches, s = 100 m2/g)",
   quantity="other", label_as_printed="s", value="100", unit="m2/g", data_kind="literature", method="cited", mentions="ref. 12;Libera et al.")
 f("s6.p5", "cited", "Libera et al. deposited ten ZnO cycles with the DEZ exposure kept at 22.5 Torr-s",
-  quantity="exposure", value="22.5", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12")
+  quantity="exposure", qualifiers="species=dez", value="22.5", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12")
 f("s6.p5", "cited", "Libera et al. ran depositions between 150 and 200 °C",
   quantity="deposition_temperature", value_min="150", value_max="200", unit="°C", data_kind="literature", method="cited", mentions="ref. 12")
 f("s6.p5", "cited", "Zn metal XRD peaks appeared at 155 °C and grew steadily stronger with temperature",
   quantity="deposition_temperature", value="155", unit="°C", data_kind="literature", method="cited", mentions="ref. 12")
 f("s6.p5", "cited", "the coated silica turned gradually from white at 150 °C to black at 200 °C along with the Zn peak growth", mentions="ref. 12")
 f("s6.p5", "cited", "at a fixed 200 °C, DEZ exposures below 10 Torr-s gave no Zn metal in XRD and no colour change",
-  quantity="exposure", value="10", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12;200 °C")
+  quantity="exposure", qualifiers="species=dez", value="10", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12;200 °C")
 f("s6.p5", "cited", "ZnO infiltration of NP thin films at 180 °C with DEZ exposure below 1 Torr-s showed no Zn metal",
-  quantity="exposure", value="1", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 4;ref. 6-8;180 °C")
+  quantity="exposure", qualifiers="species=dez", value="1", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 4;ref. 6-8;180 °C")
 f("s6.p6", "claim", "using a lower temperature to avoid Zn is hard to apply to conductive ZnO coatings on macroscopic NP networks for two reasons")
 f("s6.p6", "cited", "below ~170 °C the resistivity of ALD ZnO often rises with deposition temperature, through the temperature dependence of stoichiometry, grain size and orientation",
   quantity="deposition_temperature", value="170", censor="<", unit="°C", data_kind="literature", method="cited", mentions="ref. 13;ref. 14")
@@ -114,10 +114,10 @@ f(f"s6.p8;abs.g3;{A};s15.p2", "derived", "NPC aspect ratio 7800 ± 200, from the
   quantity="aspect_ratio", value="7800", data_kind="calculated", method="calculation", inputs=[L_, dpore])
 f("s6.p8", "cited", "some aerogel monoliths coated with Al2O3 or ZnO by ALD have higher AR than these NPCs", mentions="ref. 9;ref. 16")
 f("s6.p8", "claim", "the NPC porosity (50.5 ± 0.3%) is far below the 95+% of aerogel monoliths, which lowers reactant diffusivity")
-f("s6.p8;s9.p4;s12.p1", "setting", "reactant partial pressure in each exposure is ~9 Torr for both DEZ and H2O",
-  quantity="partial_pressure", value="9", unit="Torr", data_kind="chosen input", mentions="DEZ;H2O")
-f("s6.p8", "setting", "exposure of ~17 000 Torr-s per reactant, from ~9 Torr held for 1920 s (32 min)",
-  quantity="exposure", value="17000", unit="Torr-s", data_kind="calculated", mentions="DEZ;H2O")
+f("s6.p8;s9.p4;s12.p1", "setting", "reactant partial pressure in each DEZ exposure is ~9 Torr (the same for H2O)",
+  quantity="partial_pressure", qualifiers="species=dez", value="9", unit="Torr", data_kind="chosen input", mentions="DEZ;H2O")
+f("s6.p8", "setting", "DEZ exposure of ~17 000 Torr-s (the same for H2O), from ~9 Torr held for 1920 s (32 min)",
+  quantity="exposure", qualifiers="species=dez", value="17000", unit="Torr-s", data_kind="calculated", mentions="DEZ;H2O")
 f("s6.p8", "claim", "the temperature schedule is explored to see whether Zn metal can be avoided while the total run time stays reasonable")
 
 # ---------------------------------------------------------------- II A. compacts
@@ -155,22 +155,22 @@ f("s9.p3", "setting", "base pressure set to 0 Torr at 120 °C because of gauge d
   quantity="other", label_as_printed="pressure offset", value="0.26", unit="Torr", data_kind="chosen input", method="process_monitor")
 f("s9.p3", "claim", "the offset does not matter for the trace analysis, which uses pressure changes only")
 f("s9.p4", "setting", "precursors: diethylzinc (min. 95%, Strem Chemicals) and de-ionized H2O",
-  quantity="precursor_purity", value="95", unit="%", data_kind="chosen input", qualifiers="species=DEZ")
-f("s9.p4", "setting", "both precursors held at 37 °C in heated stainless steel cylinders, with metering valves for the vapor flow",
-  quantity="source_temperature", value="37", unit="°C", data_kind="chosen input", mentions="DEZ;H2O")
+  quantity="precursor_purity", value="95", unit="%", data_kind="chosen input", qualifiers="species=dez")
+f("s9.p4", "setting", "the DEZ cylinder is held at 37 °C (heated stainless steel, a metering valve for the vapor flow), as is the H2O cylinder",
+  quantity="source_temperature", qualifiers="species=dez", value="37", unit="°C", data_kind="chosen input", mentions="DEZ;H2O")
 f("s9.p4", "definition", "static dosing: vapor kept in the chamber without flow for a long time so it can diffuse into the NPC")
 f("s9.p4", "setting", "one cycle lasts ~160 min",
   quantity="cycle_time", value="160", unit="min", data_kind="chosen input")
 f("s9.p4", "setting", "DEZ pulse 10-14 s",
-  quantity="pulse_time", qualifiers="step=reactant_A;species=DEZ", value_min="10", value_max="14", unit="s", data_kind="chosen input")
+  quantity="pulse_time", qualifiers="step=reactant_A;species=dez", value_min="10", value_max="14", unit="s", data_kind="chosen input")
 f(f"s9.p4;s6.p8;s12.p1;fig1b", "setting", "DEZ hold 1920 s (32 min); a dose is the pulse plus the hold",
-  quantity="other", label_as_printed="DEZ hold", qualifiers="step=hold_A;species=DEZ", value="1920", unit="s", data_kind="chosen input")
+  quantity="other", label_as_printed="DEZ hold", qualifiers="step=hold_A;species=dez", value="1920", unit="s", data_kind="chosen input")
 f("s9.p4;s14.p6;s9.p9", "setting", "purge after DEZ 2880 s (48 min), not optimized and set equal to the H2O purge",
   quantity="purge_time", qualifiers="step=purge_A", value="2880", unit="s", data_kind="chosen input")
 f("s9.p4", "setting", "H2O pulse 8-11 s",
-  quantity="pulse_time", qualifiers="step=reactant_B;species=H2O", value_min="8", value_max="11", unit="s", data_kind="chosen input")
+  quantity="pulse_time", qualifiers="step=reactant_B;species=h2o", value_min="8", value_max="11", unit="s", data_kind="chosen input")
 f("s9.p4;s6.p8", "setting", "H2O hold 1920 s (32 min)",
-  quantity="other", label_as_printed="H2O hold", qualifiers="step=hold_B;species=H2O", value="1920", unit="s", data_kind="chosen input")
+  quantity="other", label_as_printed="H2O hold", qualifiers="step=hold_B;species=h2o", value="1920", unit="s", data_kind="chosen input")
 f("s9.p4;s9.p9;s12.p1;s15.p3", "setting", "purge after H2O 2880 s (48 min)",
   quantity="purge_time", qualifiers="step=purge_B", value="2880", unit="s", data_kind="chosen input")
 f("s9.p4", "observation", "pulse times were adjusted by hand to keep exposure pressures near ~9 Torr, which still fluctuated, perhaps from valve control or unheated line sections",
@@ -179,9 +179,9 @@ f("s9.p4;s9.p5;s12.p2", "setting", "during pulses and holds the pump isolation v
 f("s9.p5", "observation", "the isolated deposition volume is 2.17 l from pressure-versus-flow tests, including small extras such as 1/4 in. and KF25 tubing",
   quantity="other", label_as_printed="isolated deposition volume", value="2.17", unit="l", data_kind="measured")
 f("s9.p5", "setting", "purges open the isolation valve and feed N2: 30 s without flow, 30 s at 10 SCCM through the half of the manifold just used, 2790 s at 10 SCCM through each half, 30 s without flow",
-  quantity="carrier_gas", qualifiers="gas=N2")
+  quantity="carrier_gas", qualifiers="gas=n2")
 f("s9.p5;s9.p6;fig2.cap;s12.p12", "setting", "main purge N2 flow 20 SCCM in total",
-  quantity="gas_flow_rate", qualifiers="gas=N2", value="20", unit="SCCM", data_kind="chosen input")
+  quantity="gas_flow_rate", qualifiers="gas=n2", value="20", unit="SCCM", data_kind="chosen input")
 f("s9.p6", "setting", "chamber heated by an insulating heater jacket controlled by a thermocouple on the chamber outside", method="process_monitor")
 f("s9.p6;fig2.cap;s12.p12;fig1a", "definition", "T: approximate steady-state temperature (to the nearest 10 °C) of the inner quartz-boat surface under 20 SCCM N2, found in calibration with a thermocouple touching the boat", quantity="deposition_temperature")
 f("s9.p6", "observation", "calibration runs at the same outside temperature gave deposition temperatures differing by about ±5 °C, from thermocouple placement and pressure",
@@ -236,7 +236,7 @@ f("s10.p1;tabII.cap;s14.p9", "setting", "phase fractions and grain sizes by Riet
 f("s10.p1", "setting", "whole-pattern fits were repeated until the residual became stable at 15% (within one percentage point) for all three samples",
   quantity="other", label_as_printed="residual", value="15", unit="%", data_kind="fit", method="xrd")
 f("s10.p1", "observation", "corundum grain size 90-100 nm, agreeing with the BET-based d_NP = 100 nm",
-  quantity="crystallite_size", qualifiers="species=Al2O3", label_as_printed="corundum grain size", value_min="90", value_max="100", unit="nm", data_kind="fit", method="xrd")
+  quantity="crystallite_size", qualifiers="species=al2o3", label_as_printed="corundum grain size", value_min="90", value_max="100", unit="nm", data_kind="fit", method="xrd")
 f("s10.p2;tabII.cap;s14.p9", "setting", "for resistivity, top and bottom faces got blanket e-beam evaporated films at 10^-6 Torr, nominally 20 nm Ti and 200 nm Au", method="electrical")
 f("s10.p2", "setting", "prisms of about 6 × 3 × 1.6 mm were cut from the NPCs after metallization to avoid edge effects", method="electrical")
 f("s10.p2;s13.p4;tabII.cap;s14.p9", "setting", "two-point resistivity through the sample thickness on a probe station, one probe on top and the other via the conductive stage", method="electrical")
@@ -421,21 +421,21 @@ f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 top (blue) pattern: T held at 1
 f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 middle (red) pattern: T held at 160 °C, showing extra peaks at Zn positions", method="xrd", mentions="160 °C")
 f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 bottom (green) pattern: T cycled between 120 and 160 °C", method="xrd", mentions="120/160 °C")
 f("s13.p2;fig5", "observation", "all three samples show narrow corundum peaks and broad zincite peaks, as large Al2O3 NPs under thin ZnO coatings should", method="xrd")
-f("s13.p2;fig5;s13.p3", "observation", "the T = 160 °C sample shows clear metallic Zn peaks", quantity="phase", qualifiers="species=Zn", value_text="detected",
+f("s13.p2;fig5;s13.p3", "observation", "the T = 160 °C sample shows clear metallic Zn peaks", quantity="phase", qualifiers="species=zn", value_text="detected",
   data_kind="measured", method="xrd", mentions="T = 160 °C")
 for r, lab, v, pm, ev in (("1", "120", "23.3", "0.2", ";s13.p3;s13.p2"), ("2", "160", "17.1", "0.2", ""), ("3", "120/160", "17.7", "0.1", ";s13.p3;s13.p2")):
     f(f"tabII.r{r}c1;tabII.r0c1;tabII.r{r}c0;tabII.r0c0;tabII.cap;s14.p9{ev}", "derived", f"zincite (ZnO) weight percent {v} ± {pm} for the {lab} °C sample, from Rietveld refinement",
-      quantity="composition", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
+      quantity="composition", qualifiers="species=zno", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
 for r, lab, v, pm, ev in (("1", "120", "6.0", "1.1", ";s13.p3"), ("2", "160", "6.0", "1.5", ""), ("3", "120/160", "5.1", "1.1", ";s13.p3")):
     f(f"tabII.r{r}c2;tabII.r0c2;tabII.cap;s14.p9{ev}", "derived", f"zincite crystallite size {v} ± {pm} nm for the {lab} °C sample, Halder-Wagner analysis",
-      quantity="crystallite_size", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
+      quantity="crystallite_size", qualifiers="species=zno", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
 for r, lab in (("1", "120"), ("3", "120/160")):
     f(f"tabII.r{r}c3;tabII.r{r}c4;tabII.r0c3;tabII.r0c4;tabII.cap", "observation", f"no metallic Zn detected by XRD in the {lab} °C sample, so no Zn crystallite size is given",
-      quantity="phase", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", value_text="not detected", data_kind="measured", method="xrd", mentions=f"{lab};Not detected")
+      quantity="phase", qualifiers="species=zn", label_as_printed="Zn (metallic) Wt. %", value_text="not detected", data_kind="measured", method="xrd", mentions=f"{lab};Not detected")
 f("tabII.r2c3;tabII.r0c3;tabII.cap", "derived", "metallic Zn weight percent 12.5 ± 0.7 in the 160 °C sample",
-  quantity="composition", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
+  quantity="composition", qualifiers="species=zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
 f("tabII.r2c4;tabII.r0c4;tabII.cap", "derived", "metallic Zn crystallite size 57 ± 42 nm in the 160 °C sample",
-  quantity="crystallite_size", qualifiers="species=Zn", label_as_printed="Zn (metallic) Crystallite size (nm)", value="57", unit="nm", data_kind="fit", method="xrd", mentions="160")
+  quantity="crystallite_size", qualifiers="species=zn", label_as_printed="Zn (metallic) Crystallite size (nm)", value="57", unit="nm", data_kind="fit", method="xrd", mentions="160")
 f("tabII.cap;s14.p9", "definition", "Table II: ± on wt.% and crystallite size are pattern-fit errors; ± on ρ comes from the uncertain Ti-Au electrode areas after flaking")
 th120 = f("s13.p3", "derived", "coating thickness 4.73 ± 0.03 nm for T = 120 °C, inferred from the mass gain",
           quantity="film_thickness", value="4.73", unit="nm", data_kind="calculated", method="calculation", mentions="T = 120 °C", inputs=[mg["120"]])
@@ -544,9 +544,22 @@ NK("s15.p15;s15.p16", "author contributions")
 NK("s15.p18", "data availability statement")
 
 # ---------------------------------------------------------------- the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
-MAT = f("abs.g1;s9.p1", "setting", "film material", quantity="material", value_text="ZnO", data_kind="chosen input", mentions="ZnO")
-STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure_type", value_text="porous",
+MAT = f("abs.g1;s9.p1", "setting", "film material", quantity="material", value_text="zno", data_kind="chosen input", mentions="ZnO")
+STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure_type", value_text="nanoparticle_compact",
            data_kind="chosen input", mentions="NPC")
+
+# the H2O copies of the settings the paper states for both reactants at once (one setting names one substance, P50)
+P_H2O = f("s6.p8;s9.p4;s12.p1", "setting", "reactant partial pressure in each H2O exposure is ~9 Torr (the same for DEZ)",
+          quantity="partial_pressure", qualifiers="species=h2o", value="9", unit="Torr", data_kind="chosen input", mentions="DEZ;H2O")
+E_H2O = f("s6.p8", "setting", "H2O exposure of ~17 000 Torr-s (the same for DEZ), from ~9 Torr held for 1920 s (32 min)",
+          quantity="exposure", qualifiers="species=h2o", value="17000", unit="Torr-s", data_kind="calculated", mentions="DEZ;H2O")
+E2_H2O = f(f"abs.g3;{A}", "setting", "the static-dose H2O exposures used here exceed 10^4 Torr-s (as do the DEZ exposures)",
+           quantity="exposure", qualifiers="species=h2o", value="1e4", censor=">", unit="Torr-s", data_kind="chosen input")
+T_H2O = f("s9.p4", "setting", "the H2O cylinder is held at 37 °C (heated stainless steel, a metering valve for the vapor flow), as is the DEZ cylinder",
+          quantity="source_temperature", qualifiers="species=h2o", value="37", unit="°C", data_kind="chosen input", mentions="DEZ;H2O")
+REACT_A = f("s9.p4;abs.g1", "setting", "reactant A of the process: diethylzinc", quantity="reactant_A", value_text="dez", data_kind="chosen input", mentions="DEZ")
+REACT_B = f("s9.p4;abs.g1", "setting", "reactant B of the process: water", quantity="reactant_B", value_text="h2o", data_kind="chosen input", mentions="H2O")
+SUBSTR = f("s8.p1;abs.g1", "setting", "the growth surface is the Al2O3 of the pressed nanoparticle compacts", quantity="substrate", value_text="al2o3", data_kind="chosen input", mentions="Al2O3")
 
 # ---------------------------------------------------------------- the abscissa of the Fig. 6 line scans: the position through the compact (x= qualifier).
 # The paper draws the position vertically and the points are kept as printed (counts, position); the scan's independent variable is the position.
@@ -816,7 +829,9 @@ for f in C.facts():                                                            #
             PARENT[f["fact_id"]] = _res[0]
         elif PARENT.get(f["inputs"].split(";")[0]):
             PARENT[f["fact_id"]] = PARENT[f["inputs"].split(";")[0]]                  # computed from settings only: beside them
-PARENT[MAT] = PARENT[STRUCT] = PROC                                            # material and structure type: shared by every run
+PARENT[MAT] = PARENT[STRUCT] = PARENT[REACT_A] = PARENT[REACT_B] = PARENT[SUBSTR] = PROC   # material, structure, reactants, growth surface: shared by every run
+for x_ in (P_H2O, E_H2O, E2_H2O, T_H2O):
+    PARENT[x_] = PROC
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left
 assert not [c for c in C.facts() if c["type"] == "claim" and c["fact_id"] not in LINKS], "claim without links"

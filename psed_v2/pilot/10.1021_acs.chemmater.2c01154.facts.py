@@ -15,7 +15,7 @@ def hr(r):
 
 
 def ratio(ev, r, what, mentions, dk="chosen input"):
-    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="plasma_gas_ratio", qualifiers="gas=H2",
+    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="plasma_gas_ratio", qualifiers="gas=h2",
              label_as_printed=R, value=r, data_kind=dk, mentions=mentions)
 
 
@@ -123,7 +123,7 @@ F(K, "s3.p2", "claim", "Plasma feed gas composition and deposition temperature t
 F(K, "s3.p2", "definition", "a-MoS2+x denotes amorphous S-rich films and c-MoS2 polycrystalline MoS2 films.",
   mentions="a-MoS2+x;c-MoS2")
 F(K, "eq1;s3.p2;s3.p3;tab2.r0c0", "definition", "The H2 flow ratio is the H2 fraction of the H2 plus H2S flow in the plasma "
-  "feed gas.", quantity="plasma_gas_ratio", qualifiers="gas=H2", mentions="eq 1;H2 flow ratio")
+  "feed gas.", quantity="plasma_gas_ratio", qualifiers="gas=h2", mentions="eq 1;H2 flow ratio")
 F(K, "eq1;s3.p3", "model", "Eq. 1 relates the H2 flow ratio to the H2 and H2S flow rates in sccm: ratio = H2/(H2 + H2S).",
   mentions="eq 1")
 F(K, "s3.p3", "claim", "Absolute flows and other process parameters are given in the Experimental Section.")
@@ -134,7 +134,7 @@ F(K, "s3.p4;fig1a;fig1.cap", "observation",
   method="raman", mentions="150 °C;a-MoS3;ref. 54;Figure 1a")
 F(K, "s3.p4;fig1a", "observation",
   "At 150 °C polycrystalline MoS2 needs a ratio of at least 0.65, seen from the appearance of the MoS2 E1g (E2g1) and A1g "
-  "Raman modes.", quantity="other", qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset",
+  "Raman modes.", quantity="other", qualifiers="gas=h2", label_as_printed="H2 flow ratio at the crystallinity onset",
   value="0.65", data_kind="measured", method="raman", mentions="150 °C;Figure 1a")
 F(K, "s3.p4;fig1a", "claim", "Raman peak intensity rises from ratio 0.65 to 0.80, suggesting better crystallinity.",
   mentions="0.65;0.80")
@@ -168,10 +168,10 @@ F(K, "s3.p6;fig1d", "observation", "The 5 nm MoS2 films on PET are highly transp
 F(K, "s3.p7;fig2;fig2.cap", "claim", "The lowest H2 flow ratio giving crystalline films rises as deposition temperature falls.",
   mentions="Figure 2;Figure S5")
 F(K, "s3.p7;fig2", "observation", "At 300 °C and above even ratio 0.20 gives c-MoS2.", quantity="other",
-  qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset", value_max="0.20", data_kind="measured", method="raman",
+  qualifiers="gas=h2", label_as_printed="H2 flow ratio at the crystallinity onset", value_max="0.20", data_kind="measured", method="raman",
   mentions="≥300 °C;0.20")
 F(K, "s3.p7;fig2", "observation", "At 100 °C ratio 0.80 is needed for c-MoS2.", quantity="other",
-  qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset", value="0.80", data_kind="measured", method="raman",
+  qualifiers="gas=h2", label_as_printed="H2 flow ratio at the crystallinity onset", value="0.80", data_kind="measured", method="raman",
   mentions="100 °C;0.80")
 F(K, "s3.p7;s3.p13", "observation", "There is also an upper limit: XPS shows ratio 0.94 is too high, though Raman does not reveal it.",
   method="xps", mentions="0.94")
@@ -227,7 +227,7 @@ F(K, "s3.p14;fig5a", "observation", "In the Mo 3d region most Mo is Mo4+, assign
   mentions="Mo4+ (MoSx);Figure 5a")
 F(K, "s3.p14;s3.p15;fig5a", "observation", "All samples show two weaker doublets at higher binding energy: the highest is Mo6+ "
   "(MoO3) from oxidation in air after deposition, the middle one Mo5+ (MoOySx), an intermediate oxidation product.",
-  quantity="phase", qualifiers="species=MoO3", value_text="detected", data_kind="measured", method="xps", mentions="Mo6+ (MoO3);Mo5+ (MoOxSy);ref. 57;ref. 58;ref. 59")
+  quantity="phase", qualifiers="species=moo3", value_text="detected", data_kind="measured", method="xps", mentions="Mo6+ (MoO3);Mo5+ (MoOxSy);ref. 57;ref. 58;ref. 59")
 F(K, "s3.p15;fig5a", "observation", "c-MoS2 films need an extra weak doublet below Mo4+, labelled Mo(4-δ)+ and assigned to more "
   "metallic Mo at crystal edges, metastable 1T' MoS2 or MoS2-x subsulfide.", method="xps",
   mentions="Mo(4-δ)+;ref. 60;ref. 61;ref. 62")
@@ -244,7 +244,7 @@ F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoO3 is 2
 F(K, "s3.p16", "observation", "Measured binding energies vary slightly with deposition conditions.", method="xps",
   mentions="Section S5")
 F(K, "s3.p16;fig5a", "observation", "At ratio 0.94 an intense doublet below Mo4+ appears, assigned to metallic Mo.",
-  quantity="phase", qualifiers="species=Mo", value_text="detected", data_kind="measured", method="xps", mentions="0.94;Mo")
+  quantity="phase", qualifiers="species=mo", value_text="detected", data_kind="measured", method="xps", mentions="0.94;Mo")
 F(K, "s3.p17;fig5a", "observation", "Two S 2s singlets overlapping Mo 3d are included in the fit.", method="xps",
   mentions="S 2s")
 F(K, "s3.p17;fig5b", "observation", "S 2p of the ratio 0.80 crystalline film fits fairly well with one S2- doublet of MoS2 at "
@@ -284,9 +284,9 @@ F(K, "s3.p19", "observation", "Detection limit of C in these films is about 7 at
   mentions="dl.;glassy carbon")
 F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed from RBS areal atom densities and SE thicknesses.", quantity="film_density",
   mentions="RBS;SE;density (g/cm^3)")
-F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk;species=MoS2", value="5.06", unit="g/cm3",
+F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk;species=mos2", value="5.06", unit="g/cm3",
   data_kind="literature", method="cited", mentions="ref. 66")
-F(K, "s3.p19;tab1.cap", "setting", "The Table 1 films (RBS, ERD) are grown on a glassy carbon substrate.", quantity="substrate", value_text="glassy carbon",
+F(K, "s3.p19;tab1.cap", "setting", "The Table 1 films (RBS, ERD) are grown on a glassy carbon substrate.", quantity="substrate", value_text="glassy_carbon",
   data_kind="chosen input", mentions="glassy carbon;Table 1")
 T1 = {"0.20": [("3.7", "0.1"), ("3.4", "0.2"), "3.2", ("6.4", "0.5"), ("0.5", "0.2"), ("0.8", "0.2")],
       "0.65": [("2.1", "0.1"), ("2.1", "0.1"), "4.0", ("11.7", "0.9"), ("1.5", "0.4"), ("0.5", "0.1")],
@@ -529,7 +529,7 @@ F(K, "s3.p44", "setting", "Annealing in air at 150 °C, the lowest temperature a
 F(K, "s3.p45", "claim", "The H2 flow ratio is a key parameter for low-temperature PEALD of TMDCs generally, allowing crystalline "
   "films at lower temperatures than before.", mentions="H2")
 F(K, "s3.p45;s5.p8", "cited", "The group's published WS2 and TiS2 PEALD processes use H2S/Ar plasma without H2 (ratio 0) and give "
-  "highly S-rich films at low temperature.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0",
+  "highly S-rich films at low temperature.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R, value="0",
   data_kind="literature", method="cited", mentions="ref. 52;ref. 53;H2S/Ar")
 F(K, "s3.p46", "cited", "The tungsten sulfide process gives crystalline WS2 only from 300 °C.", quantity="deposition_temperature",
   value="300", unit="°C", data_kind="literature", method="cited", mentions="ref. 52;ref. 67;ref. 79;WS2")
@@ -559,14 +559,14 @@ F(K, "s3.p48", "observation", "For TiS2 the ratio 0.80 used for MoS2 and WS2 is 
 F(K, "s3.p50;s3.p51", "observation", "OES of the H2S/H2/Ar plasma suggests S-containing species S, S+, S2, SH+ and H2S+; atomic H "
   "(H radicals) is the main reactive hydrogen species.", mentions="ref. 85;Figure S20")
 F(K, "s3.p51", "claim", "OES can hardly tell sulfur species apart, so changes in plasma species with ratio are hard to infer.")
-F(K, "s3.p51;s5.p4", "setting", "Combined H2S plus H2 flow is held at 10 sccm (except at ratio 0.94).", quantity="gas_flow_rate",
+F(K, "s3.p51;s5.p4", "setting", "Combined H2S plus H2 flow is held at 10 sccm (except at ratio 0.94).", quantity="other", label_as_printed="H2S + H2 flow",
   value="10", unit="sccm", data_kind="chosen input", mentions="H2S;H2;0.94")
 F(K, "s3.p51", "observation", "With rising ratio, atomic H emission grows while reactive S species emission falls, consistent with "
   "the flow changes.", mentions="Figure S21")
 F(K, "s3.p51", "claim", "H2S itself contains H, so some atomic H forms even with no added H2.")
 F(K, "s3.p52", "claim", "A higher atomic H to reactive S ratio may either keep excess S out or add a reaction that removes S.")
 F(K, "s3.p52", "setting", "Extra step test: a separate H2 gas or H2 plasma step follows the H2S/H2/Ar plasma (ratio 0.20) at "
-  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R,
+  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R,
   value="0.20", data_kind="chosen input", mentions="0.20;150 °C;a-MoS3.4")
 F(K, "s3.p52", "observation", "The H2 plasma step removes the extra S and yields c-MoS2, whereas H2 gas changes neither "
   "stoichiometry nor crystallinity.", mentions="Table S8")
@@ -602,14 +602,14 @@ F(K, "s5.p1", "setting", "For 200-450 °C the substrate table is heated to the s
   data_kind="chosen input", mentions="200-450 °C;150 °C")
 F(K, "s5.p1", "definition", "Temperatures quoted are table set points; actual substrate temperature is lower at high set points "
   "because of poor thermal contact at low pressure, negligibly so at 150 °C and below.", mentions="ref. 86;150 °C")
-F(K, "s5.p2", "setting", "Substrate of most depositions (Siegert Wafer), chosen for optical contrast.", quantity="substrate",
-  qualifiers="kind=default", value_text="Si(100) with 450 nm thermal SiO2", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
+F(K, "s5.p2", "setting", "Substrate of most depositions: Si(100) wafer with 450 nm thermal SiO2 (Siegert Wafer), chosen for optical contrast; the growth surface is the oxide.", quantity="substrate",
+  qualifiers="kind=default", value_text="sio2", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
 F(K, "s5.p2;s5.p13", "setting", "Substrate of some Hall samples, which needs no cutting since leakage to Si via side deposits "
-  "is impossible; others on SiO2/Si.", quantity="substrate", qualifiers="kind=option", value_text="fused SiO2", data_kind="chosen input", mentions="fused SiO2")
-F(K, "s5.p2", "setting", "Substrate of the transistors.", quantity="substrate", value_text="Si with 90 nm thermal SiO2",
+  "is impossible; others on SiO2/Si: fused SiO2, the growth surface silica.", quantity="substrate", qualifiers="kind=option", value_text="sio2", data_kind="chosen input", mentions="fused SiO2")
+F(K, "s5.p2", "setting", "Substrate of the transistors: Si with 90 nm thermal SiO2; the growth surface is the oxide.", quantity="substrate", value_text="sio2",
   data_kind="chosen input", mentions="90 nm SiO2")
-F(K, "s5.p2", "setting", "Plastic substrate (DuPont Teijin Films), 125 µm thick.", quantity="substrate",
-  value_text="Melinex ST504 PET foil", data_kind="chosen input", mentions="PET;125 μm")
+F(K, "s5.p2", "setting", "Plastic substrate: Melinex ST504 PET foil (DuPont Teijin Films), 125 µm thick.", quantity="substrate",
+  value_text="pet", data_kind="chosen input", mentions="PET;125 μm")
 F(K, "s5.p2", "observation", "Uncoated and ALD Al2O3-coated PET (50 cycles of AlMe3/H2O) give similar results.",
   mentions="Al2O3;50 ALD cycles;AlMe3;H2O")
 F(K, "s5.p3", "setting", "Substrates of 1 × 1 to 3 × 3 cm2 are used as received (cut, blown with N2) on an 8\" carrier wafer.",
@@ -621,30 +621,30 @@ F(K, "s5.p3", "setting", "Before deposition substrates equilibrate for 10 min at
 F(K, "s5.p4", "setting", "The MoS2 process follows Sharma et al., changing mainly the plasma feed gas composition.",
   mentions="ref. 36")
 F(K, "s5.p4;s5.p5;tab2.cap", "setting", "Total H2S + H2 + Ar flow through the ICP tube during the plasma is 50 sccm in every case.",
-  quantity="gas_flow_rate", value="50", unit="sccm", qualifiers="step=plasma", data_kind="chosen input",
+  quantity="other", label_as_printed="total plasma flow", value="50", unit="sccm", qualifiers="step=plasma", data_kind="chosen input",
   mentions="ICP tube;Table 2")
 F(K, "s5.p4;s5.p6", "setting", "Chamber pressure during the plasma is about 6 mTorr, with the pressure valve open.",
   quantity="process_pressure", qualifiers="step=plasma", value="6", unit="mTorr", data_kind="measured", method="process_monitor")
-for g, p in (("H2S", "99.5"), ("H2", "99.999"), ("Ar", "99.999")):
-    F(K, "s5.p4", "setting", f"{g} gas purity is {p}% (Linde Gas).", quantity="precursor_purity", qualifiers=f"species={g}",
+for g, gid, p in (("H2S", "h2s", "99.5"), ("H2", "h2", "99.999"), ("Ar", "ar", "99.999")):
+    F(K, "s5.p4", "setting", f"{g} gas purity is {p}% (Linde Gas).", quantity="precursor_purity", qualifiers=f"species={gid}",
       value=p, unit="%", data_kind="chosen input", mentions=g)
 F(K, "s5.p4", "cited", "In Sharma et al. the H2S and H2 flows were really 8 and 2 sccm (the article had them swapped), i.e. "
-  "ratio 0.20.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0.20", data_kind="literature",
+  "ratio 0.20.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R, value="0.20", data_kind="literature",
   method="cited", mentions="ref. 36;8 sccm;2 sccm")
 # Table 2
 T2 = [("0", "10", "0", "40"), ("0.20", "8", "2", "40"), ("0.35", "6.5", "3.5", "40"), ("0.50", "5", "5", "40"),
       ("0.65", "3.5", "6.5", "40"), ("0.80", "2", "8", "40"), ("0.94", "2", "30", "18")]
 for i, (r, h2s, h2, ar) in enumerate(T2, start=1):
-    for j, (g, v) in enumerate((("H2S", h2s), ("H2", h2), ("Ar", ar)), start=1):
+    for j, (g, gid, v) in enumerate((("H2S", "h2s", h2s), ("H2", "h2", h2), ("Ar", "ar", ar)), start=1):
         F(K, f"tab2.r{i}c{j};tab2.r{i}c0;tab2.r0c{j};tab2.cap", "setting", f"At {R} {r} the {g} flow through the ICP tube is "
-          f"{v} sccm.", quantity="gas_flow_rate", qualifiers=f"step=plasma;gas={g};ratio={r}", value=v, unit="sccm",
+          f"{v} sccm.", quantity="gas_flow_rate", qualifiers=f"step=plasma;gas={gid};ratio={r}", value=v, unit="sccm",
           data_kind="chosen input", mentions=f"{hr(r)};{g} flow rate (sccm)")
 F(K, "s5.p6", "definition", "Cycle steps: (1) Mo precursor dose, (2) purge, (3) H2S/H2/Ar plasma, (4) purge, i.e. four main steps.")
-F(K, "s5.p6", "setting", "Mo(NtBu)2(NMe2)2 dose lasts 6 s.", quantity="pulse_time", qualifiers="step=reactant_A", value="6",
+F(K, "s5.p6", "setting", "Mo(NtBu)2(NMe2)2 dose lasts 6 s.", quantity="pulse_time", qualifiers="step=reactant_A;species=mo_ntbu2_nme22", value="6",
   unit="s", data_kind="chosen input")
 F(K, "s5.p6", "setting", "First purge is 10 s: 6 s with 300 sccm Ar into the chamber and 4 s of pumping with no flow.",
   quantity="purge_time", qualifiers="step=purge_A", value="10", unit="s", data_kind="chosen input", mentions="6 s;4 s")
-F(K, "s5.p6", "setting", "Purge Ar flow is 300 sccm.", quantity="gas_flow_rate", qualifiers="gas=Ar", value="300", unit="sccm",
+F(K, "s5.p6", "setting", "Purge Ar flow is 300 sccm.", quantity="gas_flow_rate", qualifiers="gas=ar", value="300", unit="sccm",
   data_kind="chosen input", mentions="purge")
 F(K, "s5.p6", "setting", "Plasma step lasts 20 s.", quantity="pulse_time", qualifiers="step=plasma", value="20", unit="s",
   data_kind="chosen input")
@@ -652,12 +652,12 @@ F(K, "s5.p6", "setting", "ICP plasma power is 100 W.", quantity="other", label_a
   data_kind="chosen input")
 F(K, "s5.p6", "setting", "Second purge is 6 s with 300 sccm Ar.", quantity="purge_time", qualifiers="step=purge_B", value="6",
   unit="s", data_kind="chosen input", mentions="300 sccm Ar")
-F(K, "s5.p6", "setting", "Mo precursor purity is 98% (Strem Chemicals).", quantity="precursor_purity",
+F(K, "s5.p6", "setting", "Mo precursor purity is 98% (Strem Chemicals).", quantity="precursor_purity", qualifiers="species=mo_ntbu2_nme22",
   value="98", unit="%", data_kind="chosen input",
   mentions="Mo(NtBu)2(NMe2)2")
-F(K, "s5.p6", "setting", "Precursor canister is heated to 50 °C.", quantity="source_temperature", value="50", unit="°C",
+F(K, "s5.p6", "setting", "Mo precursor canister is heated to 50 °C.", quantity="source_temperature", qualifiers="species=mo_ntbu2_nme22", value="50", unit="°C",
   data_kind="chosen input", mentions="Mo(NtBu)2(NMe2)2")
-F(K, "s5.p6", "setting", "Precursor vapour is carried by 50 sccm Ar.", quantity="gas_flow_rate", qualifiers="gas=Ar;step=reactant_A",
+F(K, "s5.p6", "setting", "Precursor vapour is carried by 50 sccm Ar.", quantity="gas_flow_rate", qualifiers="gas=ar;step=reactant_A",
   value="50", unit="sccm", data_kind="chosen input", mentions="carrier")
 F(K, "s5.p6", "setting", "Delivery lines are held at 70 °C against condensation.", quantity="other",
   label_as_printed="delivery line temperature", value="70", unit="°C", data_kind="chosen input")
@@ -939,29 +939,29 @@ for (t, r) in CELLS:
         continue
     RATIO_RUN[f"T{t}_R{r}"] = F(K, "fig2;fig4" + (";" + RATIO_EV[(t, r)] if (t, r) in RATIO_EV else ""), "setting",
                                 f"{t} °C, {R} {r}: H2 share of the plasma feed set to {r}", quantity="plasma_gas_ratio",
-                                qualifiers="gas=H2", value=r, data_kind="chosen input", mentions=f"{r};{t} °C")
+                                qualifiers="gas=h2", value=r, data_kind="chosen input", mentions=f"{r};{t} °C")
 for n in ("10", "20", "30", "50"):
     RATIO_RUN[f"T150_R0.80_N{n}"] = F(K, "fig1b;s3.p5", "setting", f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b: H2 share of the "
-                                      f"plasma feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80",
+                                      f"plasma feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80",
                                       data_kind="chosen input", mentions=f"0.80;150 °C;{n} cyc")
 RATIO_RUN["T250_R0_lowH2S"] = F(K, "s3.p53", "setting", f"250 °C, {R} 0 with a lowered H2S flow (no H2 added, Fig. S22a): H2 share "
-                                "of the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                                "of the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
                                 data_kind="chosen input", mentions="0;250 °C;Figure S22a")
 RATIO_RUN["WS2_T150_R0.80"] = F(K, "s5.p8;s3.p46;fig9a;fig9.cap", "setting", f"WS2 at 150 °C, {R} 0.80: H2 share of the plasma "
-                                "feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80",
+                                "feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80",
                                 data_kind="chosen input", mentions="0.80;150 °C;WS2")
 RATIO_RUN["WS2_T150_R0"] = F(K, "s3.p46;fig9a;fig9.cap", "setting", f"WSx at 150 °C, {R} 0 (no H2 in the plasma feed): H2 share of "
-                             "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                             "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
                              data_kind="chosen input", mentions="0;150 °C;WS2")
 RATIO_RUN["TiS2_T100_R0.50"] = F(K, "s5.p8;s3.p48;fig9b;fig9.cap", "setting", f"TiS2 at 100 °C, {R} 0.50: H2 share of the plasma "
-                                 "feed set to 0.50", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.50",
+                                 "feed set to 0.50", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.50",
                                  data_kind="chosen input", mentions="0.50;100 °C;TiS2")
 RATIO_RUN["TiS2_T100_R0"] = F(K, "fig9b;fig9.cap", "setting", f"TiSx at 100 °C, {R} 0 (the Fig. 9b curve labelled 0): H2 share of "
-                              "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0",
+                              "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
                               data_kind="chosen input", mentions="0;100 °C;TiS2")
 RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a temperature the paper does not state (100 °C "
                                  "inferred from the TiS2 recipe): H2 share of the plasma feed set to 0.80",
-                                 quantity="plasma_gas_ratio", qualifiers="gas=H2", value="0.80", data_kind="chosen input",
+                                 quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80", data_kind="chosen input",
                                  mentions="0.80;TiS2")
 
 # ------------------------------------------------------------------ the deposition temperature of every heat-map row and the cycles of every Fig. 1b film
@@ -971,13 +971,13 @@ RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a t
 CYC_RUN = {n: cyc("fig1b;s3.p5", n, f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b", f"{n} cyc;150 °C;0.80") for n in ("10", "20", "30", "50")}
 CYC_TEM = cyc("s3.p26;fig6b", "500", f"150 °C, {R} 0.65, the about 50 nm film of Fig. 6b", "500 cycles;0.65;150 °C;Figure 6b")   # the 500-cycle TEM film
 # the film material (lists.MATERIALS) of the process and of the WS2 and TiS2 groups, and the structure type (planar substrates)
-MAT = F(K, "abs.g1;s5.p1", "setting", "film material of the main process", quantity="material", value_text="MoS2", data_kind="chosen input",
+MAT = F(K, "abs.g1;s5.p1", "setting", "film material of the main process", quantity="material", value_text="mos2", data_kind="chosen input",
         mentions="MoS2")
 STRUCT = F(K, "s5.p2;s5.p3", "setting", "substrate form: planar pieces of wafer or foil", quantity="structure_type", value_text="planar",
            data_kind="chosen input")
-MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", quantity="material", value_text="WS2", data_kind="chosen input",
+MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", quantity="material", value_text="ws2", data_kind="chosen input",
           mentions="WS2")
-MAT_T = F(K, "s5.p8;fig9b", "setting", "film material of the TiS2 depositions", quantity="material", value_text="TiS2", data_kind="chosen input",
+MAT_T = F(K, "s5.p8;fig9b", "setting", "film material of the TiS2 depositions", quantity="material", value_text="tis2", data_kind="chosen input",
           mentions="TiS2")
 # the abscissa of every curve with points (x= qualifier, from the printed x label)
 XQ = {"Raman shift (cm-1)": "raman_shift", "Binding energy (eV)": "binding_energy", "Number of ALD cycles": "cycle_number",
@@ -987,6 +987,16 @@ for cf in C.facts():
     if cf["points_ref"] and "x=" not in cf["qualifiers"]:
         cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
 
+
+# the reactants of the four processes (P50): the MoS2 recipe, and the WS2, TiS2 and thermal TiS2 recipes made in the tree pass
+REACT = {"mos2": (F(K, "s5.p6;abs.g1", "setting", "reactant A of the MoS2 process: Mo(NtBu)2(NMe2)2", quantity="reactant_A", value_text="mo_ntbu2_nme22", data_kind="chosen input", mentions="Mo(NtBu)2(NMe2)2"),
+                  F(K, "s5.p6;abs.g1", "setting", "reactant B of the MoS2 process: H2S, in the H2S/H2/Ar plasma", quantity="reactant_B", value_text="h2s", data_kind="chosen input", mentions="H2S")),
+         "WS2": (F(K, "s3.p46;s5.p8", "setting", "reactant A of the WS2 process: the W analogue of the Mo precursor, (tBuN)2(Me2N)2W", quantity="reactant_A", value_text="w_ntbu2_nme22", data_kind="chosen input", mentions="W precursor;ref. 52"),
+                 F(K, "s3.p46;s5.p8", "setting", "reactant B of the WS2 process: H2S, in the H2S/H2/Ar plasma", quantity="reactant_B", value_text="h2s", data_kind="chosen input", mentions="H2S;WS2")),
+         "TiS2": (F(K, "s3.p47;s5.p8", "setting", "reactant A of the TiS2 plasma process: Ti(NMe2)4", quantity="reactant_A", value_text="tdmat", data_kind="chosen input", mentions="Ti(NMe2)4;ref. 53"),
+                  F(K, "s3.p47;s5.p8", "setting", "reactant B of the TiS2 plasma process: H2S, in the H2S/H2/Ar plasma", quantity="reactant_B", value_text="h2s", data_kind="chosen input", mentions="H2S;TiS2")),
+         "TiS2_thermal": (F(K, "s3.p47;s5.p8", "setting", "reactant A of the thermal TiS2 process: Ti(NMe2)4", quantity="reactant_A", value_text="tdmat", data_kind="chosen input", mentions="Ti(NMe2)4;ref. 80"),
+                          F(K, "s3.p47;s5.p8", "setting", "reactant B of the thermal TiS2 process: H2S", quantity="reactant_B", value_text="h2s", data_kind="chosen input", mentions="H2S;thermal TiSx"))}
 
 # ------------------------------------------------------------------ the stance of every claim, from the paper's wording (lists.STANCES)
 STANCE = {"abs.g1#1": "asserted", "abs.g1#2": "asserted", "abs.g2#1": "asserted", "abs.g2#2": "asserted", "abs.g3#1": "asserted",
@@ -1226,6 +1236,8 @@ for f in C.facts():
         put(mfilm(150, {"1": "0.20", "2": "0.65", "3": "0.80"}[m.group(1)], "gc"), f["fact_id"])
 # Table 2 (flows per ratio, used at every temperature) and the shared recipe, reactor, substrates and methods: the process
 put(PROC, *[f for f in FX if f.startswith(f"{K}:tab2.")])
+put(PROC, *REACT["mos2"])
+put(PROC, *REACT["WS2"], *REACT["TiS2"], *REACT["TiS2_thermal"])                 # moved to their own recipes after the tree pass
 put(PROC, "eq1#2", "s3.p50#1", "s3.p51#2", "s3.p51#3",
     *[f"s5.p1#{i}" for i in (1, 2, 3, 4)], "s5.p2#1", "s5.p2#2", "s5.p2#3", "s5.p3#1", "s5.p3#2", "s5.p3#3",
     *[f"s5.p4#{i}" for i in range(1, 7)], *[f"s5.p6#{i}" for i in range(2, 15)],
@@ -1531,7 +1543,7 @@ for (t, r), fid7 in GPC7B.items():
 # figure's region (P15)
 for (t, r) in sorted(c for c in CELLS if c[1] == "0.94"):
     fid_ = F(K, "fig4", "observation", f"Fig. 4 cell at {t} °C and ratio {r} lies in the Mo/c-MoS2 region of the map", quantity="phase",
-             qualifiers="species=Mo", value_text="detected", data_kind="measured", method="xps", mentions=f"{r};{t} °C;Mo/c-MoS2")
+             qualifiers="species=mo", value_text="detected", data_kind="measured", method="xps", mentions=f"{r};{t} °C;Mo/c-MoS2")
     next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:meas:ent:T{t}_R{r}:xps"
 # a comparison holds no setting: the cycle counts of s5.p7 go on every cell deposition of their temperatures (the first gets the
 # fact, the others a copy citing s5.p7), the 10 nm target on every ratio-0.20 cell, the Table 1 thickness on the glassy-carbon
@@ -1591,6 +1603,8 @@ for rid, lab, st in (("WS2", "WS2 PEALD", "WS2 by PEALD from the W analogue of t
                      ("TiS2", "TiS2 PEALD", "TiS2 by PEALD from Ti(NMe2)4 with H2S/H2/Ar plasma, after the group's earlier process (ref. 53)"),
                      ("TiS2_thermal", "TiS2 thermal ALD", "thermal TiS2 ALD from Ti(NMe2)4 and H2S, after the literature process (refs. 80, 81)")):
     N(f"{K}:recipe:{rid}", "activity", st, REACTOR, evidence="s5.p8;s3.p45", kind="recipe", how="stated", label_as_printed=lab)
+    for x_ in REACT[rid]:
+        FXR[x_]["parent"] = f"{K}:recipe:{rid}"
     for d in [d for d in DEPS if d.split(":dep:")[1].startswith(rid + "_") and (rid != "TiS2" or "thermal" not in d)] + ([f"{K}:dep:TiS2_thermal"] if rid == "TiS2_thermal" else []):
         FXR[d]["parent"] = f"{K}:recipe:{rid}"
 # a thickness stated for a set of films is an observation on their comparison that names the films (P18): the ratio comparisons (s3.p5#4,

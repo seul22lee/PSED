@@ -81,6 +81,12 @@ def check(pid):
             bad(f"material {f['value_text']!r} not in lists.MATERIALS")
         if f["quantity"] == "structure_type" and f["value_text"] not in L.STRUCTURES:
             bad(f"structure_type {f['value_text']!r} not in lists.STRUCTURES")
+        if f["quantity"] == "substrate" and f["type"] != "cited" and f["value_text"] not in L.MATERIALS:
+            bad(f"substrate {f['value_text']!r} is not a material species id (the growth surface; P50)")
+        if f["quantity"] in ("reactant_A", "reactant_B") and f["value_text"] not in L.SPECIES:
+            bad(f"{f['quantity']} {f['value_text']!r} is not a species id (P50)")
+        if L.substance_scoped(f) and not ("species=" in f["qualifiers"] or "gas=" in f["qualifiers"]):
+            bad(f"{f['quantity']} setting without species= or gas=: which substance it is about lives only in prose (P50)")
         for q in L.qualifiers_ok(f["qualifiers"]):
             bad(f"qualifier {q}")
         if f["data_kind"] and f["data_kind"] not in L.DATA_KINDS:

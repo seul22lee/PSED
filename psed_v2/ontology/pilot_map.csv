@@ -80,18 +80,18 @@ surface_coverage,quantity,direct,surface_coverage,,,,
 target_growth_per_cycle,quantity,to_absorb,,,GPC target,growth per cycle implied by the thickness target,
 thickness_nonuniformity,quantity,direct,thickness_nonuniformity,,,,
 time_to_maximum,quantity,to_absorb,,,t_max,time to pressure maximum,
-Al2O3,material,to_absorb,,,,,a value text of the material setting; becomes a species id (Sec. 11)
-MoS2,material,to_absorb,,,,,a value text of the material setting; becomes a species id (Sec. 11)
-WS2,material,to_absorb,,,,,a value text of the material setting; becomes a species id (Sec. 11)
-TiS2,material,to_absorb,,,,,a value text of the material setting; becomes a species id (Sec. 11)
-ZnO,material,to_absorb,,,,,a value text of the material setting; becomes a species id (Sec. 11)
+Al2O3,material,alias,al2o3,,,,the formula as a value text becomes the species id (P50)
+MoS2,material,alias,mos2,,,,the formula as a value text becomes the species id (P50)
+WS2,material,alias,ws2,,,,the formula as a value text becomes the species id (P50)
+TiS2,material,alias,tis2,,,,the formula as a value text becomes the species id (P50)
+ZnO,material,alias,zno,,,,the formula as a value text becomes the species id (P50)
 planar,structure,direct,planar,,,,
-lateral_channel,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
-trench,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
-hole,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
-pillar_array,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
-nanotube_array,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
-porous,structure,to_absorb,,,,,a value text of the structure_type setting (a Cremers class); becomes a structure id
+lateral_channel,structure,alias,pillarhall_3,,,,the Cremers class as a value text becomes the structure id whose class it is (P50)
+trench,structure,dropped,,,,,no pilot paper has such a structure; a structure entry is added through Sec. 11 when one does
+hole,structure,dropped,,,,,no pilot paper has such a structure; a structure entry is added through Sec. 11 when one does
+pillar_array,structure,dropped,,,,,no pilot paper has such a structure; a structure entry is added through Sec. 11 when one does
+nanotube_array,structure,dropped,,,,,no pilot paper has such a structure; a structure entry is added through Sec. 11 when one does
+porous,structure,alias,nanoparticle_compact,,,,the Cremers class as a value text becomes the structure id whose class it is (P50)
 reflectometry,method,direct,reflectometry,,,,
 ellipsometry,method,alias,spectroscopic_ellipsometry,,,,the pilot's ellipsometry is spectroscopic ellipsometry (in situ or ex situ by the mode qualifier)
 sem,method,direct,sem,,,,

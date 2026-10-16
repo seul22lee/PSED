@@ -163,7 +163,7 @@ def q9():
 
 def q10():
     """Thickness against cycles at 150 °C, ratio 0.80, from every source."""
-    rows = find(paper="mat22", material="MoS2", result="film_thickness", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
+    rows = find(paper="mat22", material="mos2", result="film_thickness", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
     c = compare(list(rows), result="film_thickness")
     p = c["plot"]
     pts = "; ".join(f"{x['name']}: {g(x['y'])} nm at {g(x['x'])} cycles ({x['kind']}, {x['mode'].replace('_', ' ')})" for x in sorted(p["points"], key=lambda x: x["x"]))
@@ -175,7 +175,7 @@ def q10():
 
 def q11():
     """Mo atoms per cycle from RBS against GPC from SE at 150 °C, ratio 0.80, with the density."""
-    rows = find(paper="mat22", material="MoS2", result="growth_per_cycle", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
+    rows = find(paper="mat22", material="mos2", result="growth_per_cycle", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
     c = compare(list(rows), result="growth_per_cycle")
     lines = [(r["key"], i, cell) for r in c["results"] for i, cell in r["cells"].items() if cell]
     rbs = next(x for x in lines if x[2]["kind"] == "computed here"); se = next(x for x in lines if x[2]["kind"] != "computed here")
@@ -199,7 +199,7 @@ def q12():
 def q13():
     """The H2 fraction of the total plasma feed (Ar included) for each ratio."""
     per = {}
-    for r in find(paper="mat22", material="MoS2", result="plasma_h2_fraction")["rows"].values():
+    for r in find(paper="mat22", material="mos2", result="plasma_h2_fraction")["rows"].values():
         ratio = cond(detail(r["id"]), "plasma_gas_ratio")["record"]["text"]
         per.setdefault(ratio, set()).add(r["result"][0]["record"]["text"])
     return answered("; ".join(f"ratio {k}: {', '.join(sorted(v))}" for k, v in sorted(per.items(), key=lambda x: float(x[0]))),
@@ -229,7 +229,7 @@ def q16():
     out = []
     for i in group("gre23", "120, 160")["members"]:
         d = detail(i)
-        x = res(d, "composition", species="ZnO"); m = res(d, "coating_mass_fraction")
+        x = res(d, "composition", species="zno"); m = res(d, "coating_mass_fraction")
         if x and m:
             out.append(f"{d['name']}: XRD zincite {vt(x[0]['record'])} against the coating's mass fraction {m[0]['record']['text']}")
     return answered(" · ".join(out), "find (the schedules) → detail(each pair).results: the XRD value and the computed mass fraction, one reading per basis since the paper states neither")
@@ -325,7 +325,7 @@ def q24():
             if gr["kind"] == "cited":
                 continue
             ds = [detail(m) for m in gr["all_members"]]
-            metal = [d for d in ds if any(r["key"].startswith("phase") and r["record"]["text"] == "detected" and ("species=Mo" in r["key"] or "species=Zn" in r["key"]) for r in d["results"])]
+            metal = [d for d in ds if any(r["key"].startswith("phase") and r["record"]["text"] == "detected" and ("species=mo" in r["key"] or "species=zn" in r["key"]) for r in d["results"])]
             other = [d for d in ds if d not in metal and res(d, "resistivity")]
             if metal and other and all(res(d, "resistivity") for d in metal):
                 hits.append(f"{gr['label']}: " + ", ".join(f"{d['name']} {vt(res(d, 'resistivity')[0]['record'])}" for d in metal) + " (metal phase detected) against " +

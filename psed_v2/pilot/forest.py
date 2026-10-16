@@ -91,7 +91,7 @@ class Forest:
                         ctx[q] = c
                     elif plain[q] == 1:                       # one unqualified value beside qualified ones (a run's T beside its per-step Ts)
                         ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["qualifiers"])
-                    elif exact[q] == 1:                       # one exact value beside bounds: the value wins
+                    elif len({value_of(x) for x in cands if x["quantity"] == q and ok(x) and not x["censor"]}) == 1:   # one exact value (also when stated per species) beside bounds: the value wins
                         ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x) and not x["censor"])
                     elif len({(value_of(x), x["censor"]) for x in cands if x["quantity"] == q and ok(x)}) == 1:   # one value, stated twice
                         ctx[q] = next(x for x in cands if x["quantity"] == q and ok(x))

@@ -180,7 +180,7 @@ F(K, "s3.p9;tab1.r0c14", "definition", "Region III front slope = slope of the be
 # ------------------------------------------------------------------ C. experimental
 F(K, "s5.p1", "setting", "the test chips (PillarHall-3, third generation) were made by MEMS processing with a process modified from PillarHall-1 of Gao et al.",
   mentions="PillarHall-3;PillarHall-1;ref. 40;Fig. S1")
-F(K, "s5.p1", "setting", "starting substrates", quantity="substrate", value_text="low-doped 150 mm Si(100) wafers", mentions="Si (100)")
+F(K, "s5.p1", "setting", "starting substrates: low-doped 150 mm Si(100) wafers, so the growth surface is silicon (its native oxide)", quantity="substrate", value_text="si", mentions="Si (100)")
 for h in ("100", "500", "2000"):
     F(K, "s5.p1", "setting", f"one of the targeted channel heights, set by thermal oxide growth, is {h} nm",
       quantity="feature_height", label_as_printed="targeted channel height H", value=h, unit="nm", data_kind="chosen input",
@@ -199,11 +199,11 @@ F(K, "s6.p1", "setting", "the usual target thickness was about 50 nm", quantity=
 F(K, "s6.p1;tab2.r6c4;tab2.r0c4", "setting", "the usual number of ALD cycles was 500", quantity="cycle_number", value="500",
   data_kind="chosen input", mentions="This work")
 F(K, "s6.p1", "setting", "process pressure about 3 hPa", quantity="process_pressure", value="3", unit="hPa", data_kind="chosen input")
-F(K, "s6.p1", "setting", "nitrogen of purity 6.0 served as carrier and purge gas", quantity="carrier_gas", qualifiers="gas=N2")
-F(K, "s6.p1", "setting", "constant nitrogen flow of 150 sccm through four reactant lines", quantity="gas_flow_rate", qualifiers="gas=N2",
+F(K, "s6.p1", "setting", "nitrogen of purity 6.0 served as carrier and purge gas", quantity="carrier_gas", qualifiers="gas=n2")
+F(K, "s6.p1", "setting", "constant nitrogen flow of 150 sccm through four reactant lines", quantity="gas_flow_rate", qualifiers="gas=n2",
   value="150", unit="sccm", data_kind="chosen input")
-for q, st, val, txt in (("pulse_time", "step=reactant_A;species=TMA", "0.1", "TMA pulse"), ("purge_time", "step=purge_A", "4.0", "purge after TMA"),
-                        ("pulse_time", "step=reactant_B;species=H2O", "0.1", "water pulse"), ("purge_time", "step=purge_B", "4.0", "purge after water")):
+for q, st, val, txt in (("pulse_time", "step=reactant_A;species=tma", "0.1", "TMA pulse"), ("purge_time", "step=purge_A", "4.0", "purge after TMA"),
+                        ("pulse_time", "step=reactant_B;species=h2o", "0.1", "water pulse"), ("purge_time", "step=purge_B", "4.0", "purge after water")):
     F(K, "s6.p1", "setting", f"typical {txt} {val} s in the usual TMA-purge-water-purge sequence", quantity=q, qualifiers=st, value=val, unit="s",
       data_kind="chosen input", mentions="typical;ref. 33;ref. 40;ref. 51")
 F(K, "s6.p1", "setting", "TMA, being pyrophoric, was handled under inert conditions", mentions="TMA")
@@ -321,8 +321,8 @@ def tab1_facts():
             return ";".join(e)
 
         a, pa, b, pb = seq.split("-")
-        for q, st, val, txt in (("pulse_time", "step=reactant_A;species=TMA", a, "TMA pulse"), ("purge_time", "step=purge_A", pa, "purge after TMA"),
-                                ("pulse_time", "step=reactant_B;species=H2O", b, "water pulse"), ("purge_time", "step=purge_B", pb, "purge after water")):
+        for q, st, val, txt in (("pulse_time", "step=reactant_A;species=tma", a, "TMA pulse"), ("purge_time", "step=purge_A", pa, "purge after TMA"),
+                                ("pulse_time", "step=reactant_B;species=h2o", b, "water pulse"), ("purge_time", "step=purge_B", pb, "purge after water")):
             F(K, ev(2), "setting", f"sample {n}: {txt} {val} s (pulse-purge column)", quantity=q, qualifiers=st, value=val, unit="s",
               data_kind="chosen input", mentions=men)
         ID[n, 3] = F(K, ev(3), "setting", f"sample {n}: design channel height H {H} nm", quantity="feature_height",
@@ -540,9 +540,9 @@ for p in "def":
     F10[p] = [(f"{n} cycles", ("v1", f"yim20:F10{p}-N{n}") if n != "2000" else None) for n in ("100", "250", "500", "1000", "2000")]
 curves(10, F10, "model", "calculated", "simulation")
 PAR = [("T", "deposition_temperature", "", "300", "°C", "temperature"),
-       ("t_p", "pulse_time", "step=reactant_A;species=TMA", "0.10", "s", "TMA pulse length"),
-       ("ρ_A0", "partial_pressure", "species=TMA", "65", "Pa", "input partial pressure of TMA"),
-       ("ρ_B", "partial_pressure", "species=N2", "300", "Pa", "partial pressure of the N2 carrier"),
+       ("t_p", "pulse_time", "step=reactant_A;species=tma", "0.10", "s", "TMA pulse length"),
+       ("ρ_A0", "partial_pressure", "species=tma", "65", "Pa", "input partial pressure of TMA"),
+       ("ρ_B", "partial_pressure", "species=n2", "300", "Pa", "partial pressure of the N2 carrier"),
        ("M_A", "other", "", "0.075", "kg mol-1", "molar mass of TMA"),
        ("M_B", "other", "", "0.028", "kg mol-1", "molar mass of N2"),
        ("d_A", "other", "", "591", "pm", "molecular diameter of TMA (from ref. 33)"),
@@ -552,7 +552,7 @@ PAR = [("T", "deposition_temperature", "", "300", "°C", "temperature"),
        ("gpc_sat", "growth_per_cycle", "", "0.098", "nm", "saturation growth per cycle"),
        ("q", "saturation_density", "", "3.6", "nm-2", "adsorption density at saturation"),
        ("K", "other", "", "1000.0", "Pa-1", "adsorption equilibrium constant"),
-       ("c_TMA", "lumped_sticking_coefficient", "species=TMA", "0.012", "", "lumped sticking coefficient of TMA"),
+       ("c_TMA", "lumped_sticking_coefficient", "species=tma", "0.012", "", "lumped sticking coefficient of TMA"),
        ("P_d", "other", "", "0.043", "1 s-1", "desorption probability per unit time")]
 for sym, q, qual, val, unit, what in PAR:
     F(K, "fig10.cap", "model", f"simulation input {sym} = {val} {unit}: {what}".strip(), quantity=q, qualifiers=qual,
@@ -691,17 +691,17 @@ F(K, "s19.p1;s19.p2", "model", "the Arts method requires the Knudsen flow regime
 F(K, "s19.p2;tabu2.r5c0;tabu2.r5c1", "definition", "Knudsen number K_n = λ/h (unitless); Knudsen regime means K_n ≫ 1", quantity="knudsen_number",
   label_as_printed="K_n", mentions="K_n")
 F(K, "s19.p3;s8.p1", "derived", "TMA mean free path at 300 °C in the process conditions is about 40 µm (eqn (3) of ref. 1); the simulated conditions give the same",
-  quantity="mean_free_path", qualifiers="species=TMA", value="40", unit="µm", data_kind="calculated", method="calculation",
+  quantity="mean_free_path", qualifiers="species=tma", value="40", unit="µm", data_kind="calculated", method="calculation",
   mentions="λ_TMA;ref. 1")
 F(K, "s19.p3", "derived", "water mean free path at 300 °C in the process conditions is 100 µm", quantity="mean_free_path",
-  qualifiers="species=H2O", value="100", unit="µm", data_kind="calculated", method="calculation", mentions="ref. 1")
+  qualifiers="species=h2o", value="100", unit="µm", data_kind="calculated", method="calculation", mentions="ref. 1")
 F(K, "s19.p3;tabu2.r3c0;tabu2.r3c1", "model", "the characteristic size is the hydraulic diameter h = 2/(1/H + 1/W) (µm)",
   label_as_printed="h", unit="µm")
 F(K, "s19.p3", "derived", "hydraulic diameter of a 500 nm channel: 1.0 µm", quantity="other", label_as_printed="hydraulic diameter h",
   value="1.0", unit="µm", data_kind="calculated", method="calculation", mentions="500 nm")
-F(K, "s19.p3", "derived", "Knudsen number for TMA in a 500 nm channel is 40", quantity="knudsen_number", qualifiers="species=TMA",
+F(K, "s19.p3", "derived", "Knudsen number for TMA in a 500 nm channel is 40", quantity="knudsen_number", qualifiers="species=tma",
   value="40", data_kind="calculated", method="calculation", mentions="500 nm")
-F(K, "s19.p3", "derived", "Knudsen number for water in a 500 nm channel is 100", quantity="knudsen_number", qualifiers="species=H2O",
+F(K, "s19.p3", "derived", "Knudsen number for water in a 500 nm channel is 100", quantity="knudsen_number", qualifiers="species=h2o",
   value="100", data_kind="calculated", method="calculation", mentions="500 nm")
 F(K, "s19.p3", "claim", "the Arts et al. method should therefore be valid here", mentions="ref. 36")
 F(K, "s19.p4", "definition", "c_TMA was computed for several samples and averaged; c_H2O came from one sample (Table 2)", mentions="Table 2")
@@ -755,7 +755,7 @@ lit(1, 2, "Dendooven et al. (2009): LHAR H 100 µm", quantity="feature_height", 
 lit(1, 3, "Dendooven et al. (2009): max. AR 200:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="200")
 lit(1, 4, "Dendooven et al. (2009): 150 cycles", quantity="cycle_number", value="150")
 lit(1, 5, "Dendooven et al. (2009): reactor", quantity="reactor_type", value_text="home-built")
-lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="0.1")
+lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="0.1")
 lit(2, 0, "Schwille et al. (2016): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
 lit(2, 1, "Schwille et al. (2016): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic centrosymmetric")
 lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude estimate (footnote a)", extra="s18.p3",
@@ -763,7 +763,7 @@ lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude es
 F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter",
   method="cited", mentions="ref. 41;a")
 lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor_type", value_text="single-wafer cross-flow hot-wall")
-lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="2e-2")
+lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="2e-2")
 F(K, "s18.p3;tab2.r2c4;tab2.r3c4;tab2.r0c4", "cited", "the number of ALD cycles is not reported for the Schwille and Vandalon works (dash, footnote b)",
   method="cited", mentions="ref. 41;ref. 60;b")
 lit(3, 0, "Vandalon et al. (2016): temperatures 100–300 °C", quantity="deposition_temperature", value_min="100", value_max="300", unit="°C")
@@ -771,21 +771,21 @@ F(K, "s18.p3;tab2.r3c1;tab2.r3c2;tab2.r3c3;tab2.r0c1", "cited", "Vandalon et al.
   method="cited", mentions="ref. 60;c")
 lit(3, 5, "Vandalon et al. (2016): reactor", quantity="reactor_type", value_text="home-built")
 lit(3, 6, "Vandalon et al. (2016): c_TMA of order 10^-3 (footnote d)", extra="s18.p3", quantity="lumped_sticking_coefficient",
-    qualifiers="species=TMA", value="1e-3")
+    qualifiers="species=tma", value="1e-3")
 lit(3, 7, "Vandalon et al. (2016): c_H2O of order 10^-4 (footnote d)", extra="s18.p3;tab2.r0c7", quantity="lumped_sticking_coefficient",
-    qualifiers="species=H2O", value="1e-4")
+    qualifiers="species=h2o", value="1e-4")
 for v, t, extra in (("1e-4", "300", ""), ("1e-6", "100", "")):
     F(K, "s18.p3", "cited", f"follow-up Vandalon et al. (2017): c_H2O {v.replace('1e-', '1 × 10^-')} at {t} °C", quantity="lumped_sticking_coefficient",
-      qualifiers="species=H2O", value=v, data_kind="literature", method="cited", mentions=f"Vandalon et al. (2017);{t} °C")
+      qualifiers="species=h2o", value=v, data_kind="literature", method="cited", mentions=f"Vandalon et al. (2017);{t} °C")
 F(K, "s18.p3", "cited", "follow-up Vandalon et al. (2017): c_TMA 2 × 10^-3, independent of temperature", quantity="lumped_sticking_coefficient",
-  qualifiers="species=TMA", value="2e-3", data_kind="literature", method="cited", mentions="Vandalon et al. (2017)")
+  qualifiers="species=tma", value="2e-3", data_kind="literature", method="cited", mentions="Vandalon et al. (2017)")
 lit(4, 0, "Ylilammi et al. (2018): deposition at 300 °C", quantity="deposition_temperature", value="300", unit="°C")
 lit(4, 1, "Ylilammi et al. (2018): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic rectangular PillarHall-3")
 lit(4, 2, "Ylilammi et al. (2018): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(4, 3, "Ylilammi et al. (2018): max. AR 2000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="2000")
 lit(4, 4, "Ylilammi et al. (2018): 500 cycles", quantity="cycle_number", value="500")
 lit(4, 5, "Ylilammi et al. (2018): reactor", quantity="reactor_type", value_text="Picosun R-150")
-lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="5.72e-3")
+lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="5.72e-3")
 F(K, "tab2.r1c7;tab2.r2c7;tab2.r4c7;tab2.r0c7", "cited", "Table 2 gives no c_H2O (dash) for Dendooven, Schwille and Ylilammi",
   method="cited", mentions="ref. 31;ref. 41;ref. 33")
 lit(5, 0, "Arts et al. (2019): deposition at 275 °C", quantity="deposition_temperature", value="275", unit="°C")
@@ -794,20 +794,20 @@ lit(5, 2, "Arts et al. (2019): LHAR H 0.50 µm", quantity="feature_height", labe
 lit(5, 3, "Arts et al. (2019): max. AR 10 000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="10000")
 lit(5, 4, "Arts et al. (2019): 400 cycles", quantity="cycle_number", value="400")
 lit(5, 5, "Arts et al. (2019): reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor_type", value_text="Oxford Instruments OpAL")
-lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=TMA",
+lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=tma",
     value_min="0.5e-3", value_max="2e-3")
 lit(5, 7, "Arts et al. (2019): c_H2O (0.8-2) × 10^-4 (exponent on the next parsed row)", extra="tab2.r6c6", quantity="lumped_sticking_coefficient",
-    qualifiers="species=H2O", value_min="0.8e-4", value_max="2e-4")
+    qualifiers="species=h2o", value_min="0.8e-4", value_max="2e-4")
 F(K, "tab2.r6c1;tab2.r0c1;tab2.r7c8", "setting", "this work: LHAR type", quantity="other", label_as_printed="LHAR type",
   value_text="microscopic rectangular PillarHall-3", mentions="This work;PillarHall-3")
 F(K, "tab2.r6c2;tab2.r0c2;tab2.r7c8", "setting", "this work (Table 2 row): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H",
   value="0.50", unit="µm", data_kind="chosen input", mentions="This work")
 S = (2, 4, 8, 12)
 F(K, "tab2.r7c6;tab2.r0c6;tab2.r7c8;s19.p4;s18.p3", "derived", "this work: c_TMA 4 × 10^-3, from the Arts et al. method on samples 2, 4, 8 and 12, averaged (footnote f)",
-  quantity="lumped_sticking_coefficient", qualifiers="species=TMA", value="4e-3", data_kind="calculated", method="calculation",
+  quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="4e-3", data_kind="calculated", method="calculation",
   mentions="This work;sample 2, 4, 8, and 12;ref. 36;f", inputs=[ID[s, 14] for s in S])
 F(K, "tab2.r7c7;tab2.r0c7;tab2.r7c8;s19.p4;s18.p3", "derived", "this work: c_H2O 3 × 10^-4, from the Arts et al. method on sample 14 (footnote g)",
-  quantity="lumped_sticking_coefficient", qualifiers="species=H2O", value="3e-4", data_kind="calculated", method="calculation",
+  quantity="lumped_sticking_coefficient", qualifiers="species=h2o", value="3e-4", data_kind="calculated", method="calculation",
   mentions="This work;sample 14;ref. 36;g", inputs=[ID[14, 14]])
 NK("tab2.r6c7", "parser artefact: no such cell on the page")
 
@@ -832,10 +832,10 @@ SYM = {("tabu1", 0): ("a", "distance between pillars", "m"), ("tabu1", 1): ("A",
        ("tabu2", 23): ("x", "distance from the channel opening", "m"), ("tabu2", 26): ("λ_TMA", "mean free path of TMA", "µm"),
        ("tabu2", 27): ("ρ", "film density", "kg m-3")}
 # the quantity a symbol defines, where the paper holds values of it (P36); reactant A is TMA in this paper
-SYM_Q = {"c_TMA": ("lumped_sticking_coefficient", "species=TMA"), "c_H2O": ("lumped_sticking_coefficient", "species=H2O"),
+SYM_Q = {"c_TMA": ("lumped_sticking_coefficient", "species=tma"), "c_H2O": ("lumped_sticking_coefficient", "species=h2o"),
          "GPC": ("growth_per_cycle", ""), "gpc_sat": ("growth_per_cycle", "over=saturation"), "N": ("cycle_number", ""),
-         "p_A0": ("partial_pressure", "species=TMA"), "q": ("saturation_density", ""), "S_I": ("film_thickness", "position=outside"),
-         "S_II": ("film_thickness", ""), "t_p": ("pulse_time", ""), "x": ("distance", ""), "λ_TMA": ("mean_free_path", "species=TMA"),
+         "p_A0": ("partial_pressure", "species=tma"), "q": ("saturation_density", ""), "S_I": ("film_thickness", "position=outside"),
+         "S_II": ("film_thickness", ""), "t_p": ("pulse_time", ""), "x": ("distance", ""), "λ_TMA": ("mean_free_path", "species=tma"),
          "ρ": ("film_density", "")}
 for (t, r), (sym, what, unit) in SYM.items():
     q_, ql_ = SYM_Q.get(sym, ("", ""))
@@ -851,14 +851,16 @@ PUR_D = F(K, "s13.x2", "claim", "Series D was made to show how the cycle count c
           mentions="Series D;Fig. 9;500 nm")
 PUR_F = F(K, "s18.p2", "claim", "the purge-time series was made to look further into how purge time changes the saturation profile",
           mentions="purge time")
+REACT_A = F(K, "s6.p1;abs.g3", "setting", "reactant A of the process: TMA", quantity="reactant_A", value_text="tma", data_kind="chosen input", mentions="TMA")
+REACT_B = F(K, "s6.p1;abs.g3", "setting", "reactant B of the process: water", quantity="reactant_B", value_text="h2o", data_kind="chosen input", mentions="water")
 PUR_R = F(K, "s16.p10;fig8.cap", "claim", "fully independent measurements of one process are compared to show the reproducibility of the saturation profile",
           mentions="Fig. 8b")
 
 # ------------------------------------------------------------------ the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
-MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="material", value_text="Al2O3", data_kind="chosen input",
+MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="material", value_text="al2o3", data_kind="chosen input",
         mentions="Al2O3")
 STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure_type",
-           value_text="lateral_channel", data_kind="chosen input", mentions="PillarHall-3;LHAR")
+           value_text="pillarhall_3", data_kind="chosen input", mentions="PillarHall-3;LHAR")
 
 # ------------------------------------------------------------------ the abscissa of every curve with points (x= qualifier, from the printed x label)
 for cf in C.facts():
@@ -1106,7 +1108,7 @@ for f in C.facts():                                                            #
             PARENT[f["fact_id"]] = _res[0]
         elif PARENT.get(f["inputs"].split(";")[0]):
             PARENT[f["fact_id"]] = PARENT[f["inputs"].split(";")[0]]                  # computed from settings only: beside them
-PARENT[MAT] = PARENT[STRUCT] = PROC                                            # material and structure type: shared by every run
+PARENT[MAT] = PARENT[STRUCT] = PARENT[REACT_A] = PARENT[REACT_B] = PROC        # material, structure and reactants: shared by every run
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left
 for r in sorted({p for p in PARENT.values() if ":refs:" in p}, key=lambda x: int(x.rsplit(":", 1)[1])):
@@ -1269,7 +1271,7 @@ CAVEATS = [
     ("s6.p1;tab1.cap", "These pulse, purge and cycle values are the usual defaults; Series D, E and F samples used other cycle counts, TMA pulses or purges",
      ["s6.p1#4", "s6.p1#8", "s6.p1#9", "s6.p1#10", "s6.p1#11"], "", ""),
     ("s14.p1;s16.p9", "Pulse time is not a fixed dose: TMA partial pressure is not strictly constant and can drift with a fresh bottle or falling vapour pressure",
-     ["recipe"], "pulse_time", "species=TMA"),
+     ["recipe"], "pulse_time", "species=tma"),
     ("s6.p1;s16.p9;s12.p1", "Process conditions are nominal: pressure (~3 hPa), flows and temperature fluctuate within and between runs",
      ["s6.p1#1", "s6.p1#5", "s6.p1#7"], "", ""),
     ("s14.p1;s18.p3", "With the 0.4 s TMA pulse the front was likely set by the water dose, so sample 14 front values describe water, not TMA, limitation",

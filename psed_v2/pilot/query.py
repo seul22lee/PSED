@@ -608,7 +608,7 @@ def phases(T, m):
     return out
 
 
-METALS = {"Mo", "W", "Ti", "Zn", "Al"}
+METALS = {i for i, s in L.SPECIES.items() if s["kind"] == "material" and s["material_class"] == "element"}   # the metallic phases (P15, P50)
 
 
 def contrast(T, comp, key, species=METALS):
@@ -835,7 +835,8 @@ def name_of(key, f=None):
         inner = ";".join(sorted(f"{k}={v}" for k, v in qd.items() if k not in ("stat", "between", "n")))
         return f"{STAT_WORDS.get(qd['stat'], qd['stat'])} of {name_of(q + ('{' + inner + '}' if inner else ''), f)}"
     base = L.NAMES.get(q, q.replace("_", " "))
-    vals = [p.split("=")[1].replace("_", " ") for p in qs.split(";") if p and p.split("=")[0] not in DEF_KEYS | {"x"}]
+    vals = [L.species_text(p.split("=", 1)[1]) if p.split("=")[0] in ("species", "gas", "surface") else p.split("=")[1].replace("_", " ")
+            for p in qs.split(";") if p and p.split("=")[0] not in DEF_KEYS | {"x"}]
     return f"{base} ({', '.join(vals)})" if vals else base
 
 
@@ -863,7 +864,7 @@ def text_of(f):
         return f"≥ {f['value_min']}{u}"
     if f["value_max"]:
         return f"≤ {f['value_max']}{u}"
-    return f["value_text"]
+    return L.species_text(f["value_text"])                                      # a species id prints as its formula (P50)
 
 
 def mode_of(T, f):
@@ -1238,7 +1239,8 @@ def detail(any_id):
     ids = [f for f in T.rows if f["type"] == "identity" and ent in f["links"].split(";")]
     return dict(type="entity", id=ent, paper=T.key, name=T.label(ent), inferred=T.byid[ent]["how"] == "inferred", role=role(T, ent),
                 statement=T.byid[ent]["statement"], what=dict(substrate=sub, inputs=ins, input_ids=T.inputs_of(ent), parent=T.byid[ent]["parent"] if T.byid[T.byid[ent]["parent"]]["type"] == "entity" else "",
-                                                               material=cond.get("material", {}).get("record", {}).get("text", "")),
+                                                               material=cond.get("material", {}).get("record", {}).get("text", ""),
+                                                               reactants=[cond[k]["record"]["text"] for k in ("reactant_A", "reactant_B") if k in cond]),   # P50
                 differs=distinguishing(T, ent, peers or [ent], n=6), recipe=[dict(key=k, **v) for k, v in cond.items()],
                 results=[dict(key=k, **v) for k, v in result_records(T, ent).items()],
                 claims=[claim_record(T, c) for c in claims_of(T, [ent] + [c["fact_id"] for c in comps])],
@@ -1468,7 +1470,7 @@ def vocabulary():
 
 
 # ---------------------------------------------------------------------------------------------------------------- values (P42)
-SHOWN_SHARED = ["material", "structure_type", "substrate", "reactor_type"]
+SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure_type", "substrate", "reactor_type"]
 
 
 def result_matches(T, e, result):

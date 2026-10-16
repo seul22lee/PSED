@@ -17,6 +17,20 @@ from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED,
 PRIMARY = ["reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",
            "purge_time", "feature_height", "cycle_number", "substrate"]
 
+# substance-scoped settings (P50): a setting of one of these quantities is about one substance and must say which (species= or gas=);
+# for pulse_time only the reactant and hold steps (a plasma step names its feed through the gas settings of the same recipe)
+SUBSTANCE_SCOPED = {"precursor_purity", "source_temperature", "partial_pressure", "exposure", "gas_flow_rate", "plasma_gas_ratio", "pulse_time"}
+SUBSTANCE_STEPS = {"reactant_A", "reactant_B", "hold_A", "hold_B"}
+
+
+def substance_scoped(f):
+    """Whether a setting fact must carry a species or gas qualifier."""
+    if f["type"] != "setting" or f["quantity"] not in SUBSTANCE_SCOPED:
+        return False
+    q = dict(p.split("=", 1) for p in f["qualifiers"].split(";") if "=" in p)
+    return f["quantity"] != "pulse_time" or q.get("step") in SUBSTANCE_STEPS
+
+
 # quantities that name a chosen input, never what a measurement found: an observation never carries one (check.py); a threshold
 # the authors read off a series (the ratio from which films are crystalline) is an observation of quantity other
 SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing_temperature", "pulse_time", "purge_time", "cycle_time",
@@ -30,8 +44,9 @@ FORMULA_METALS.update({"Al2O3": 2, "MoS2": 1, "WS2": 1, "TiS2": 1, "ZnO": 1})
 
 
 def species_text(v):
-    """A species id as the screen prints it (its formula), any other value as it is."""
-    return SPECIES[v]["formula"] or v if v in SPECIES else v
+    """A species id as the screen prints it (its first alias, the name the papers print: TMA, H2O, MoS2, glassy carbon), any other
+    value as it is."""
+    return SPECIES[v]["name"] or v if v in SPECIES else v
 
 # panels that encode a value as a colour against a bar: a valued fact citing one says "read from colour" in its statement (check.py)
 COLOUR_PANELS = {"mat22": {"fig7b": "GPC 0.50 to 1.75 Å/cycle, linear bar", "fig8": "resistivity 1e-3 to 1e3 Ω cm, log bar; black = above the detection limit"}}
@@ -196,8 +211,8 @@ DERIVED = {
     "target_growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="thickness target / cycles: the growth per cycle the chosen cycle count implies",
                                     inputs=[_in("t", "film_thickness", "kind=target", "nm"), _in("N", "cycle_number", "", "")], fn=lambda t, N: t / N),
     "plasma_h2_fraction": dict(unit="%", formula="H2 flow / (H2S + H2 + Ar flow): the H2 share of the whole plasma feed",
-                               inputs=[_in("h2", "gas_flow_rate", "gas=H2;step=plasma", "sccm"), _in("h2s", "gas_flow_rate", "gas=H2S;step=plasma", "sccm"),
-                                       _in("ar", "gas_flow_rate", "gas=Ar;step=plasma", "sccm")], fn=lambda h2, h2s, ar: 100 * h2 / (h2 + h2s + ar)),
+                               inputs=[_in("h2", "gas_flow_rate", "gas=h2;step=plasma", "sccm"), _in("h2s", "gas_flow_rate", "gas=h2s;step=plasma", "sccm"),
+                                       _in("ar", "gas_flow_rate", "gas=ar;step=plasma", "sccm")], fn=lambda h2, h2s, ar: 100 * h2 / (h2 + h2s + ar)),
     "coating_mass_fraction": dict(unit="%", formula="the coating's share of the coated sample's mass: mass gain / (1 + mass gain), mass gain relative to the initial mass",
                                   inputs=[_in("mg", "mass_gain", "", "", basis="initial_mass")], fn=lambda mg: 100 * mg / (1 + mg)),
     "shell_volume_fraction": dict(unit="%", formula="(1 − φ_i) × ((d_NP + 2 t)³ / d_NP³ − 1): the coating's share of the compact volume, spherical particles",
@@ -220,8 +235,8 @@ assert all(k in QUANTITIES for k in DERIVED), "DERIVED key not a quantity id"
 # (qualifiers written as in the facts, without x=). A combination not listed shows the quantity's label followed by the
 # qualifier values ("composition S", "BE Mo"); a curve shows "<y label> vs <x label>".
 LABELS = {**_LABELS, "other": "other",   # the id labels come from the ontology (vocab.py); the combinations below are display rules of the screen
-    "pulse_time{step=reactant_A;species=TMA}": "TMA pulse", "pulse_time{step=reactant_B;species=H2O}": "H2O pulse",
-    "pulse_time{step=reactant_A;species=DEZ}": "DEZ pulse", "pulse_time{step=reactant_A}": "pulse A", "pulse_time{step=plasma}": "plasma step",
+    "pulse_time{step=reactant_A;species=tma}": "TMA pulse", "pulse_time{step=reactant_B;species=h2o}": "H2O pulse",
+    "pulse_time{step=reactant_A;species=dez}": "DEZ pulse", "pulse_time{step=reactant_A}": "pulse A", "pulse_time{step=plasma}": "plasma step",
     "purge_time{step=purge_A}": "purge A", "purge_time{step=purge_B}": "purge B",
     "deposition_temperature{kind=set_point}": "T set point", "deposition_temperature{step=reactant_A}": "T (A dose)",
     "deposition_temperature{step=purge_A}": "T (purge A)", "deposition_temperature{step=reactant_B}": "T (B dose)",
@@ -230,11 +245,11 @@ LABELS = {**_LABELS, "other": "other",   # the id labels come from the ontology 
     "penetration_depth{origin=entrance}": "PD", "front_slope{by=H}": "slope d(S/N)/dx̃", "front_slope{by=H;reference=entrance}": "slope dθ/dx̃",
     "film_thickness{position=plateau}": "S_plateau", "film_thickness{position=outside}": "S_outside", "film_thickness{position=interface}": "S_interface",
     "growth_per_cycle{position=plateau}": "GPC_plateau", "growth_per_cycle{position=outside}": "GPC_outside",
-    "normalized_thickness{reference=entrance}": "S/S_entry", "plasma_gas_ratio{gas=H2}": "H2 ratio",
-    "gas_flow_rate{step=plasma;gas=H2S}": "H2S flow", "gas_flow_rate{step=plasma;gas=H2}": "H2 flow", "gas_flow_rate{step=plasma;gas=Ar}": "Ar flow (plasma)",
-    "gas_flow_rate{gas=N2}": "N2 flow", "gas_flow_rate{gas=Ar}": "Ar purge flow", "gas_flow_rate{gas=Ar;step=reactant_A}": "Ar carrier flow",
-    "gas_flow_rate{step=plasma}": "plasma flow", "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
-    "lumped_sticking_coefficient{species=TMA}": "c_TMA", "lumped_sticking_coefficient{species=H2O}": "c_H2O",
+    "normalized_thickness{reference=entrance}": "S/S_entry", "plasma_gas_ratio{gas=h2}": "H2 ratio",
+    "gas_flow_rate{step=plasma;gas=h2s}": "H2S flow", "gas_flow_rate{step=plasma;gas=h2}": "H2 flow", "gas_flow_rate{step=plasma;gas=ar}": "Ar flow (plasma)",
+    "gas_flow_rate{gas=n2}": "N2 flow", "gas_flow_rate{gas=ar}": "Ar purge flow", "gas_flow_rate{gas=ar;step=reactant_A}": "Ar carrier flow",
+    "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
+    "lumped_sticking_coefficient{species=tma}": "c_TMA", "lumped_sticking_coefficient{species=h2o}": "c_H2O",
     "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
     }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
@@ -243,8 +258,8 @@ assert all(q in LABELS for q in QUANTITIES), "quantity without a label"
 # plain English names for the screen (no symbol that needs a legend): one per quantity id and per common keyed combination; a key not
 # listed reads "<quantity name> (<qualifier values>)"
 NAMES = {**_NAMES, "other": "other",
-    "pulse_time{species=TMA;step=reactant_A}": "TMA pulse", "pulse_time{species=H2O;step=reactant_B}": "water pulse",
-    "pulse_time{species=DEZ;step=reactant_A}": "DEZ pulse", "pulse_time{step=reactant_A}": "precursor pulse", "pulse_time{step=plasma}": "plasma step",
+    "pulse_time{species=tma;step=reactant_A}": "TMA pulse", "pulse_time{species=h2o;step=reactant_B}": "water pulse",
+    "pulse_time{species=dez;step=reactant_A}": "DEZ pulse", "pulse_time{step=reactant_A}": "precursor pulse", "pulse_time{step=plasma}": "plasma step",
     "purge_time{step=purge_A}": "purge after precursor", "purge_time{step=purge_B}": "purge after co-reactant",
     "deposition_temperature{kind=set_point}": "temperature set point", "deposition_temperature{step=reactant_A}": "temperature in the precursor dose",
     "deposition_temperature{step=purge_A}": "temperature in the precursor purge", "deposition_temperature{step=reactant_B}": "temperature in the water dose",
@@ -254,19 +269,19 @@ NAMES = {**_NAMES, "other": "other",
     "film_thickness{position=plateau}": "thickness in the channel", "film_thickness{position=outside}": "thickness outside the channel",
     "film_thickness{position=interface}": "interface layer thickness", "film_thickness{kind=target}": "thickness target",
     "growth_per_cycle{over=run;position=plateau}": "growth per cycle in the channel", "growth_per_cycle{over=run;position=outside}": "growth per cycle outside the channel",
-    "plasma_gas_ratio{gas=H2}": "H2 flow ratio",
-    "gas_flow_rate{gas=H2S;step=plasma}": "H2S flow", "gas_flow_rate{gas=H2;step=plasma}": "H2 flow", "gas_flow_rate{gas=Ar;step=plasma}": "Ar flow in the plasma",
-    "gas_flow_rate{gas=N2}": "N2 flow", "gas_flow_rate{gas=Ar}": "Ar purge flow", "gas_flow_rate{gas=Ar;step=reactant_A}": "Ar carrier flow",
-    "gas_flow_rate{step=plasma}": "total plasma flow", "lumped_sticking_coefficient{species=TMA}": "TMA sticking coefficient",
-    "lumped_sticking_coefficient{species=H2O}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
+    "plasma_gas_ratio{gas=h2}": "H2 flow ratio",
+    "gas_flow_rate{gas=h2s;step=plasma}": "H2S flow", "gas_flow_rate{gas=h2;step=plasma}": "H2 flow", "gas_flow_rate{gas=ar;step=plasma}": "Ar flow in the plasma",
+    "gas_flow_rate{gas=n2}": "N2 flow", "gas_flow_rate{gas=ar}": "Ar purge flow", "gas_flow_rate{gas=ar;step=reactant_A}": "Ar carrier flow",
+    "lumped_sticking_coefficient{species=tma}": "TMA sticking coefficient",
+    "lumped_sticking_coefficient{species=h2o}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
     "porosity{relative_to=total_volume;stage=final}": "final porosity", "pressure_rise{level=maximum}": "maximum pressure rise",
     "composition{element=S;relative_to=metal_atoms}": "S/Mo", "composition{element=H;relative_to=all_atoms}": "H content",
     "composition{element=N;relative_to=all_atoms}": "N content", "composition{element=O;relative_to=all_atoms}": "O content",
-    "composition{element=C;relative_to=all_atoms}": "C content", "composition{relative_to=not_stated;species=ZnO}": "ZnO content (XRD)",
-    "composition{relative_to=not_stated;species=Zn}": "Zn content (XRD)", "atoms_per_cycle{element=Mo;over=run;relative_to=all_atoms}": "Mo atoms per cycle",
-    "atoms_per_cycle{element=Mo;over=run}": "Mo atoms per cycle", "crystallite_size{species=ZnO}": "ZnO crystallite size", "crystallite_size{species=Zn}": "Zn crystallite size",
-    "precursor_purity{species=H2S}": "H2S purity", "precursor_purity{species=H2}": "H2 purity", "precursor_purity{species=Ar}": "Ar purity",
-    "precursor_purity{species=DEZ}": "DEZ purity", "process_pressure{kind=set_point;step=reactant_A}": "pressure set point in the dose",
+    "composition{element=C;relative_to=all_atoms}": "C content", "composition{relative_to=not_stated;species=zno}": "ZnO content (XRD)",
+    "composition{relative_to=not_stated;species=zn}": "Zn content (XRD)", "atoms_per_cycle{element=Mo;over=run;relative_to=all_atoms}": "Mo atoms per cycle",
+    "atoms_per_cycle{element=Mo;over=run}": "Mo atoms per cycle", "crystallite_size{species=zno}": "ZnO crystallite size", "crystallite_size{species=zn}": "Zn crystallite size",
+    "precursor_purity{species=h2s}": "H2S purity", "precursor_purity{species=h2}": "H2 purity", "precursor_purity{species=ar}": "Ar purity",
+    "precursor_purity{species=dez}": "DEZ purity", "process_pressure{kind=set_point;step=reactant_A}": "pressure set point in the dose",
 }
 # words for a definition that is not the default (P5, P4, P18): shown beside a value only then
 DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles", ("over", "saturation"): "saturation value",

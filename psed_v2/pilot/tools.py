@@ -596,7 +596,8 @@ def _run(name, args):
                 w = d["what"]
                 if "what" in parts:
                     out.append((i, f"{short_name(d['paper'])} · {d['name']}" + (" (inferred: not named by the paper)" if d["inferred"] else "")
-                                + f" · role: {d['role']}" + (f" · material: {w['material']}" if w.get("material") else "") + (f" · substrate: {w['substrate']}" if w.get("substrate") else "")
+                                + f" · role: {d['role']}" + (f" · material: {w['material']}" if w.get("material") else "") + (f" · reactants: {' / '.join(w['reactants'])}" if w.get("reactants") else "")
+                                + (f" · substrate: {w['substrate']}" if w.get("substrate") else "")
                                 + (f" · made from: {', '.join(f'{n} [{x}]' for n, x in zip(w['inputs'], w['input_ids']))}" if w.get("inputs") else "")
                                 + (f" · part of: [{w['parent']}]" if w.get("parent") else "") + (f" · statement: {d['statement']}" if d.get("statement") else "")))
                     meth = list(dict.fromkeys(r["record"]["method"].replace("_", " ") + (f" ({_mode(r['record'].get('mode'))})" if _mode(r["record"].get("mode")) else "")
