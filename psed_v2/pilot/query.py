@@ -1270,3 +1270,111 @@ def source(any_id):
     return dict(paper=key, element=eid, kind=e.get("kind", ""), locator=e.get("locator", ""), text=txt, crop=e.get("crop", ""),
                 coverage=cov.get(eid, {}).get("status", ""), values=[record(T, f) for f in facts if text_of(f)],
                 statements=[f["statement"] for f in facts if not text_of(f) and f["type"] != "claim"])
+
+
+# ---------------------------------------------------------------------------------------------------------------- search (P40)
+# A lexical search over the text of every record: no embeddings, no synonym list. Tokens: lowercase, _ and - as spaces, plurals
+# folded, numbers and units kept. Ranked by BM25. The page ships the same index (report.py) and scores with the same tokens.
+TOKEN = re.compile(r"\d+(?:\.\d+)?|°[cfk]?|[^\W\d_][^\W_]*|[%Ω]")
+
+
+def fold(w):
+    """A word's singular: series and process stay, flows -> flow, properties -> property, passes -> pass."""
+    if w[0].isdigit() or len(w) <= 3:
+        return w
+    if w.endswith("ies"):
+        return w[:-3] + "y"
+    if w.endswith(("sses", "xes", "zes", "ches", "shes")):
+        return w[:-2]
+    if w.endswith("s") and not w.endswith(("ss", "us", "is")):
+        return w[:-1]
+    return w
+
+
+def tokens(text):
+    t = re.sub(r"[_\-‐–—]", " ", str(text or "").lower())
+    return [fold(w) for w in TOKEN.findall(t)]
+
+
+def record_type(T, f):
+    """The kind of record a tree row is, in search results."""
+    t = f["type"]
+    if t == "entity":
+        return {"input": "input", "model run": "model run"}.get(role(T, f["fact_id"]), "experiment")
+    if t == "comparison":
+        return "comparison set"
+    if t == "activity":
+        return "method note" if f["kind"] == "measurement" else "process note"
+    if t == "cited":
+        return "cited value" if "#" in f["fact_id"] else "cited work"
+    if t in ("claim", "definition", "caveat"):
+        return t
+    if t in ("observation", "setting", "derived", "model"):
+        if quals(f).get("stat"):
+            return "uncertainty"
+        if not text_of(f):
+            par = T.byid.get(f["parent"], {})
+            return "method note" if par.get("kind") == "measurement" or f["method"] else "note"
+        return "setting" if t == "setting" else "value"
+    return "note"
+
+
+SEARCH_TYPES = ["experiment", "model run", "input", "comparison set", "claim", "definition", "caveat", "uncertainty", "value", "setting",
+                "method note", "process note", "cited work", "cited value", "note"]
+_SEARCH = {}
+
+
+def search_records():
+    """Every record with its search text and one display line: (id, paper, type, line, tokens)."""
+    if "recs" in _SEARCH:
+        return _SEARCH["recs"]
+    out = []
+    for k, T in TREES.items():
+        for f in T.rows:
+            if f["type"] == "paper" or not (f["statement"] or f["type"] == "entity"):
+                continue
+            typ = record_type(T, f)
+            if f["type"] == "entity":
+                head = T.label(f["fact_id"])
+            elif f["type"] == "comparison":
+                head = comparison_label(T, f)
+            elif f["type"] == "cited" and "#" not in f["fact_id"]:
+                head = cited_name(T, f["fact_id"])
+            elif text_of(f):
+                e = T.ent_of(f["fact_id"])
+                head = (T.label(e) + " · " if e else "") + f"{name_of(ckey(f), f)}: {text_of(f)}"
+            else:
+                head = ""
+            line = " — ".join(x for x in (head, f["statement"]) if x)
+            words = " ".join([line, f["label_as_printed"], L.NAMES.get(f["quantity"], f["quantity"]), f["quantity"], f["qualifiers"], f["method"],
+                              f.get("mentions", ""), f["cause"], f["effect"]])
+            out.append(dict(id=f["fact_id"], paper=k, type=typ, line=line, tokens=collections.Counter(tokens(words))))
+    _SEARCH["recs"] = out
+    n = len(out)
+    df = collections.Counter(t for r in out for t in r["tokens"])
+    _SEARCH["idf"] = {t: math.log(1 + (n - c + 0.5) / (c + 0.5)) for t, c in df.items()}
+    _SEARCH["avg"] = sum(sum(r["tokens"].values()) for r in out) / max(n, 1)
+    return out
+
+
+def search_weight(r, t, k1=1.2, b=0.75):
+    """A record's BM25 weight for one token."""
+    tf = r["tokens"].get(t, 0)
+    if not tf:
+        return 0.0
+    ln = sum(r["tokens"].values())
+    return _SEARCH["idf"][t] * tf * (k1 + 1) / (tf + k1 * (1 - b + b * ln / _SEARCH["avg"]))
+
+
+def search(words, paper=None):
+    """Records ranked by BM25 over the query's tokens (each token counted once); ties keep the papers' order."""
+    recs = search_records()
+    q = list(dict.fromkeys(tokens(words)))
+    scored = []
+    for n, r in enumerate(recs):
+        if paper and r["paper"] != paper:
+            continue
+        s = sum(search_weight(r, t) for t in q)
+        if s > 0:
+            scored.append((-s, n, r))
+    return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3)) for s, n, r in sorted(scored)]

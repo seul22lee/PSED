@@ -26,6 +26,7 @@ sys.path.insert(0, str(HERE))
 import elements  # noqa: E402
 import lists as L  # noqa: E402
 import query as Q  # noqa: E402
+import tools as TL  # noqa: E402
 
 RANGES = [("deposition_temperature", "temperature", "°C"), ("plasma_gas_ratio", "H2 flow ratio", ""), ("cycle_number", "cycles", ""),
           ("feature_height", "channel height", "nm"), ("process_pressure", "pressure", "Pa"), ("exposure", "exposure", "Pa s")]
@@ -154,7 +155,18 @@ def build():
                    results=[dict(q=q, name=L.NAMES.get(q, q.replace("_", " "))) for q in results if q != "other"],
                    ranges=[dict(q=q, name=n, unit=u) for q, n, u in RANGES])
     return dict(papers=names, rows=rows, groups=groups, details=details, claims=claims_, sources=sources, coverage=coverage, filters=filters,
-                kinds=L.KIND_WORDS, primary=L.PRIMARY), imgs
+                kinds=L.KIND_WORDS, primary=L.PRIMARY, search=search_index()), imgs
+
+
+def search_index():
+    """The search records (P40) for the page: each record's id, type, paper, line and page target, and per token the records with
+    their BM25 weight (query.search_weight), so the page only splits the words, adds and sorts."""
+    recs = Q.search_records()
+    post = collections.defaultdict(list)
+    for n, r in enumerate(recs):
+        for t in r["tokens"]:
+            post[t].append([n, round(Q.search_weight(r, t), 3)])
+    return dict(recs=[[r["id"], r["type"], r["paper"], r["line"], TL.open_target(r["id"])] for r in recs], post=post)
 
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -179,7 +191,7 @@ table{border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid var(
 .cov-covered{background:var(--ok)}.cov-no\ knowledge{background:var(--none)}.cov-missed{background:var(--miss)}.passage{padding:8px 10px;border-radius:4px}
 .claim{padding:4px 0;border-bottom:1px solid var(--line)}.st{font-size:14px;color:var(--mut)}img.crop{max-width:100%;border:1px solid var(--line)}
 svg text{font-size:14px;fill:var(--fg)}svg .ax{stroke:var(--mut)}.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--mut)}
-#bar select{max-width:190px}#askbox{margin-left:auto;display:flex;gap:6px;align-items:center}#askbox input{width:300px}.off{color:var(--mut);font-size:14px}
+#bar select{max-width:140px}#sq{width:130px}#askbox{margin-left:auto;display:flex;gap:6px;align-items:center}#askbox input{width:180px}.off{color:var(--mut);font-size:14px}
 #askv{display:none;padding:10px 16px;height:calc(100vh - 48px);overflow:auto}body.asking main{display:none}body.asking #askv{display:block}
 .qhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}.qhead h2{margin:0}
 .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.col{border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
@@ -191,7 +203,7 @@ svg text{font-size:14px;fill:var(--fg)}svg .ax{stroke:var(--mut)}.lg{display:fle
 <div id="bar"></div><div id="more"></div><main><div id="left"></div><div id="right"></div></main><div id="askv"></div>
 <script>
 const D=__DATA__, IM=__IMGS__;
-const S={paper:"",material:"",structure:"",result:"",ranges:{},list:"experiments",checked:new Set(),panel:{type:"none"},x:"",open:new Set()};
+const S={q:"",qn:50,paper:"",material:"",structure:"",result:"",ranges:{},list:"experiments",checked:new Set(),panel:{type:"none"},x:"",open:new Set()};
 const $=s=>document.querySelector(s), esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ROW=Object.fromEntries(D.rows.map(r=>[r.id,r])), GRP=Object.fromEntries(D.groups.map(g=>[g.id,g])), CL=Object.fromEntries(D.claims.map(c=>[c.id,c]));
 const PN=k=>D.papers[k]||k, col=k=>`var(--c${Object.keys(D.papers).indexOf(k)})`;
@@ -199,10 +211,11 @@ const word=r=>r&&D.kinds[r.kind]?D.kinds[r.kind]:"";
 const vtext=(r,skipKind)=>!r?"":`${r.text}${r.definition?` <span class="mut">${esc(r.definition)}</span>`:""}${!skipKind&&word(r)?` <span class="mut">${word(r)}</span>`:""}`;
 const srcLink=r=>r&&r.source?`<span class="src" onclick="openSource('${r.paper}:${r.source}','${r.fact||""}')">${esc(D.sources[r.paper+":"+r.source]?.locator||"source")}</span>`:"";
 const inferredMark=x=>x?` <span class="mark" title="not stated by the paper; inferred">i</span>`:"";
-function bar(){const sel=(k,opts,cur,lab)=>`<label>${lab} <select onchange="setF('${k}',this.value)"><option value="">any</option>${opts.map(o=>`<option value="${esc(o.v)}" ${o.v===cur?"selected":""}>${esc(o.t)}</option>`).join("")}</select></label>`;
+function bar(){const sel=(k,opts,cur,lab)=>`<select name="${lab}" title="${lab}" onchange="setF('${k}',this.value)"><option value="">any ${lab}</option>${opts.map(o=>`<option value="${esc(o.v)}" ${o.v===cur?"selected":""}>${esc(o.t)}</option>`).join("")}</select>`;
  $("#bar").innerHTML=sel("material",D.filters.materials.map(m=>({v:m,t:m})),S.material,"material")+sel("structure",D.filters.structures.map(m=>({v:m,t:m.replace(/_/g," ")})),S.structure,"structure")
   +sel("result",D.filters.results.map(r=>({v:r.q,t:r.name})),S.result,"result")+sel("paper",Object.entries(D.papers).map(([k,n])=>({v:k,t:n})),S.paper,"paper")
-  +`<button onclick="$('#more').classList.toggle('on')">more conditions</button>`+askBox();
+  +`<button onclick="$('#more').classList.toggle('on')">more conditions</button>`
+  +`<input id="sq" placeholder="search words" value="${esc(S.q)}" onkeydown="if(event.key==='Enter'){S.q=this.value.trim();S.qn=50;render()}" onchange="S.q=this.value.trim();S.qn=50;render()">`+askBox();
  $("#more").innerHTML=D.filters.ranges.map(r=>`<label>${r.name}${r.unit?` (${r.unit})`:""} <input type="number" placeholder="min" value="${S.ranges[r.q]?.[0]??""}" onchange="setR('${r.q}',0,this.value)"> – <input type="number" placeholder="max" value="${S.ranges[r.q]?.[1]??""}" onchange="setR('${r.q}',1,this.value)"></label>`).join("")}
 function pass(r){if(S.paper&&r.paper!==S.paper)return false;if(S.material&&r.material!==S.material)return false;if(S.structure&&r.structure!==S.structure)return false;
  if(S.result&&!(r.results[S.result]||[]).length)return false;for(const q in S.ranges){const [a,b]=S.ranges[q];if(a===""&&b==="")continue;const v=r.conds[q];if(v==null)return false;if(a!==""&&v<+a)return false;if(b!==""&&v>+b)return false}return true}
@@ -213,7 +226,18 @@ function autoSelect(){const v=visible();if(v.length&&v.length<=6){S.checked=new 
 function rowLine(r){const res=S.result?(r.results[S.result]||[]).map(x=>`<span class="val">${vtext(x)}</span>`).join("; "):"";
  const dis=r.distinguish.filter(d=>!r.name.includes(d.text.split(" ")[0])).map(d=>`${esc(d.name)} ${esc(d.text)}`).join(", ");
  return `<div class="row"><input type="checkbox" ${S.checked.has(r.id)?"checked":""} onchange="tick('${r.id}',this.checked)"><span class="mut">${esc(PN(r.paper))}</span> · <span class="nm" onclick="openDetail('${r.id}')">${esc(r.name)}</span>${inferredMark(r.inferred)}${dis?` · <span class="mut">${dis}</span>`:""}${res?` · ${res}`:""}</div>`}
-function left(){const tog=`<div class="tog"><button class="${S.list==="experiments"?"on":""}" onclick="S.list='experiments';render()">experiments</button> <button class="${S.list==="claims"?"on":""}" onclick="S.list='claims';render()">claims</button></div>`;
+// search (P40): the same words and weights as the tools' search
+const fold=w=>/^\d/.test(w)||w.length<=3?w:w.endsWith("ies")?w.slice(0,-3)+"y":/(sses|xes|zes|ches|shes)$/.test(w)?w.slice(0,-2):(w.endsWith("s")&&!/(ss|us|is)$/.test(w))?w.slice(0,-1):w;
+const stoks=t=>[...String(t||"").toLowerCase().replace(/[_\-‐–—]/g," ").matchAll(/\d+(?:\.\d+)?|°[cfk]?|\p{L}[\p{L}\p{N}]*|[%Ω]/gu)].map(m=>fold(m[0]));
+function searchHits(q){const sc=new Map();for(const t of new Set(stoks(q)))for(const [n,w] of (D.search.post[t]||[]))sc.set(n,(sc.get(n)||0)+w);
+ return [...sc.entries()].filter(([n])=>!S.paper||D.search.recs[n][2]===S.paper).sort((a,b)=>b[1]-a[1]||a[0]-b[0]).map(([n])=>D.search.recs[n])}
+function openRec(n){const o=D.search.recs[n][4];if(!o||o.type==="none")return;if(o.type==="source"){if(D.sources[o.id])openSource(o.id,o.fact||"")}else if(o.type==="comparison")openComp(o.id);else if(D.details[o.id])openDetail(o.id)}
+function searchList(){const hs=searchHits(S.q),seen=new Set(),rows=[];for(const r of hs){const k=r[1]+"|"+r[3];if(seen.has(k))continue;seen.add(k);rows.push(r)}
+ const idx=new Map(D.search.recs.map((r,n)=>[r,n]));
+ return `<div class="mut" style="margin:6px 0">${rows.length} results for “${esc(S.q)}”${S.paper?` in ${esc(PN(S.paper))}`:""} · <span class="more" onclick="S.q='';render()">clear</span></div>`
+  +rows.slice(0,S.qn).map(r=>`<div class="row" style="padding-left:0;text-indent:0"><span class="mut">${esc(PN(r[2]))} · ${esc(r[1])}</span> · <span class="nm" onclick="openRec(${idx.get(r)})">${esc(r[3])}</span></div>`).join("")
+  +(rows.length>S.qn?`<div class="more" onclick="S.qn+=50;render()">${rows.length-S.qn} more</div>`:"")}
+function left(){if(S.q)return searchList();const tog=`<div class="tog"><button class="${S.list==="experiments"?"on":""}" onclick="S.list='experiments';render()">experiments</button> <button class="${S.list==="claims"?"on":""}" onclick="S.list='claims';render()">claims</button></div>`;
  if(S.list==="claims"){const cs=D.claims.filter(c=>(!S.paper||c.paper===S.paper)&&(!S.result||c.effect.includes((D.filters.results.find(r=>r.q===S.result)||{}).name)));
   return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} → ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span></div>`).join("")}
  const v=visible(), ids=new Set(v.map(r=>r.id));let h=tog+`<div class="mut" style="margin:6px 0">${v.length} experiments${S.checked.size?` · ${S.checked.size} selected <span class="more" onclick="S.checked=new Set();S.panel={type:'none'};render()">clear</span>`:""}</div>`;

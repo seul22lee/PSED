@@ -31,6 +31,16 @@ DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims"]
 DETAIL_DEFAULT = ["what", "differs", "results"]
 
 TOOLS = [
+    dict(name="search",
+         description=("Searches the text of every record of the knowledge base by words (lexical: lowercase, plurals folded, _ and - as "
+                      "spaces, numbers and units kept; no synonyms). Returns the records ranked by how well they match, at most "
+                      f"{PAGE_LINES} lines per call, each '[id] record type · one line'; records with the same line are shown once with "
+                      "their count. Record types: " + ", ".join(Q.SEARCH_TYPES) + ". A last line gives the offset of the next page."),
+         parameters=dict(type="object", properties=dict(
+             words=dict(type="string", description="The words to look for."),
+             paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
+             offset=dict(type="integer", description="Skip this many results (default 0).")),
+             required=["words"])),
     dict(name="find",
          description=("Lists the experiments of the three papers (deposited specimens and model runs), and the works the papers cite that "
                       "give values, that pass the given filters, grouped under the comparisons the authors made (a series, grid or "
@@ -301,8 +311,36 @@ def run_tool(name, args):
     return lines, err
 
 
+SEARCH_LINE = 200
+
+
 def _run(name, args):
     try:
+        if name == "search":
+            if not Q.tokens(args["words"]):
+                return [], "error: search: words has no letters or numbers"
+            hits, items, seen = Q.search(args["words"], args.get("paper")), [], {}
+            for h in hits:            # values and settings: one line per paper and quantity; other records: a line shown once with its count
+                if h["type"] in ("value", "setting"):
+                    T = Q.TREES[h["paper"]]; f = T.byid[h["id"]]
+                    key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
+                    g = seen.setdefault(key, [h, 0, []])
+                    g[1] += 1
+                    if Q.text_of(f) not in g[2]:
+                        g[2].append(Q.text_of(f))
+                    continue
+                g = seen.setdefault((h["type"], h["line"]), [h, 0, None])
+                g[1] += 1
+            for key, (h, n, vals) in seen.items():
+                if vals is not None:
+                    shown = ", ".join(vals[:8]) + (f", … ({len(vals)} distinct)" if len(vals) > 8 else "")
+                    line = f"{h['type']}s of {key[2]} in {short_name(key[0])}: {n} record{'s' if n > 1 else ''}, {shown}"
+                else:
+                    line = f"{h['type']} · {h['line']}" + (f" · {n} records with this line" if n > 1 else "")
+                if len(line) > SEARCH_LINE:
+                    line = line[:SEARCH_LINE - 2].rsplit(" ", 1)[0] + " …"
+                items.append([(h["id"], line)])
+            return page(items, args.get("offset"), "results"), ""
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
         if name == "find":
             conds = {c["quantity"]: (c.get("low"), c.get("high")) for c in args.get("conditions") or []}
