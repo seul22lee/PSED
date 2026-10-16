@@ -1179,4 +1179,6 @@ C.modes(K, {f["fact_id"].split(":", 1)[1]: "ex_situ" for f in C.facts() if f["ty
 # saturation value
 C.qualify(K, {f["fact_id"].split(":", 1)[1]: ("over=saturation" if f["fact_id"] == f"{K}:fig10.cap#11" else "over=run") for f in C.facts()
               if "#" in f["fact_id"] and (f["quantity"] == "growth_per_cycle" or "x=growth_per_cycle" in f["qualifiers"])})
+# identity of entities with equal conditions (P23): Table 1 lists samples 4, 5, 6, 8 and 12 as separate samples
+C.identity(K, "different", [f"{K}:ent:{n}" for n in (4, 5, 6, 8, 12)], "samples 4, 5, 6, 8 and 12 share every stated condition and are separate samples, each a row of Table 1 with its own results", "tab1.r4c0;tab1.r5c0;tab1.r6c0;tab1.r8c0;tab1.r13c0")
 write(K, PID)

@@ -419,6 +419,15 @@ def fill_uncertainty():
                 r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
 
 
+def identity(key, kind, ents, statement, evidence, parent=None):
+    """Whether entities with equal conditions are one physical thing (P23): kind same, different or not_stated; links the entities."""
+    n = sum(1 for r in _facts if r["fact_id"].startswith(f"{key}:identity#")) + 1
+    row = {k: "" for k in FIELDS}
+    row.update(fact_id=f"{key}:identity#{n}", type="identity", kind=kind, statement=statement, evidence=evidence, links=";".join(ents),
+               parent=parent or key, how="stated" if kind != "not_stated" else "")
+    _facts.append(row)
+
+
 def qualify(key, table):
     """Append qualifiers to facts: table {fact suffix: "k=v[;k=v]"} (a definition the paper states, P5)."""
     byid = {r["fact_id"]: r for r in _facts}

@@ -76,6 +76,9 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "mode": {"in_situ", "ex_situ", "not_stated"},
 }
 PHASE_VALUES = {"detected", "not detected"}
+# whether entities with equal conditions are one physical thing (P23): an identity fact (type identity, kind one of these, links the
+# entities) records it; only 'different' makes them repeats
+IDENTITY_KINDS = {"same", "different", "not_stated"}
 
 # the mode a measurement method has unless a paper says otherwise (ellipsometry and generic measurements are set per activity)
 METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "in_situ", "xrd": "ex_situ", "xps": "ex_situ", "raman": "ex_situ",
@@ -99,7 +102,7 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 UNCERTAINTY_KINDS = {"pieces", "runs", "position", "repeat_measurement", "fit", "measurement", "literature", "propagated", "not_stated"}
 
 # facts (stage 2): fact types and data kinds
-TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison"]   # bridge: user facts only;
+TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison", "identity"]   # bridge: user facts only;
 #   comparison: the authors' comparison intent (a series, a grid, a replicate set), a fact with members, not a parent
 STANCES = ["asserted", "hedged", "open", "limitation"]
 # mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids

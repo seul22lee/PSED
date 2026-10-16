@@ -398,6 +398,14 @@ def check_derived():
             for o in Q.same_experiment(T, e):
                 if Q.role(T, o) != Q.role(T, e):
                     err.append(f"{e}: same experiment as {o}, an entity of another role (P21)")
+        ids = [f for f in T.rows if f["type"] == "identity"]
+        for e in T.entities():
+            for o in Q.same_experiment(T, e):
+                if e < o and e not in T.chain(o) and o not in T.chain(e) and not any({e, o} <= set(f["links"].split(";")) for f in ids):
+                    err.append(f"{e} and {o}: equal conditions and no identity fact (same, different or not stated; P23)")
+        for f in ids:
+            if f["kind"] not in L.IDENTITY_KINDS or len(f["links"].split(";")) < 2:
+                err.append(f"{f['fact_id']}: identity kind {f['kind']!r} or fewer than two entities (P23)")
         for c in T.comps:
             if len({Q.role(T, m) for m in T.member_entities(c)}) > 1:
                 err.append(f"{c['fact_id']}: members of different roles (P21)")

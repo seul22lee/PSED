@@ -1596,4 +1596,7 @@ for fid_, ents_ in ((f"{K}:s3.p19#1", [f"{K}:ent:gc_T150_R{r}" for r in ("0.20",
 # a minimum over a set of films names the films (P12): the ratio-0.94 cells (s3.p35#5) and the crystalline ratio-0.80 cells (s3.p35#2)
 for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f"{K}:s3.p35#2", [c for c in CELLS if c[1] == "0.80" and CELLS[c][0] == "c"])):
     next(x for x in C.facts() if x["fact_id"] == fid_)["links"] = ";".join(f"{K}:ent:T{t}_R{r}" for t, r in sorted(cells_))
+# identity of entities with equal conditions (P23): the 50-cycle film of Fig. 1b and the wafer film of Fig. 1c share every stated
+# condition; the paper does not say whether they are one film (if two, they would be mat22's only run-to-run pair)
+C.identity(K, "not_stated", [f"{K}:ent:T150_R0.80_N50", f"{K}:ent:wafer_T150_R0.80"], "the 50-cycle film of Fig. 1b and the wafer-mapped film of Fig. 1c share every stated condition (150 °C, ratio 0.80, 50 cycles); whether they are one film is not stated", "fig1b;fig1c;fig1.cap")
 write(K, PID)
