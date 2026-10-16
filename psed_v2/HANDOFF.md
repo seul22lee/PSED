@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; tag ask-v2: the knowledge base corrected problem by problem (P1–P48), one query layer, one screen, three answers to a question with a number check, and the knowledge base's access layer: search, values, detail, source)
+# Handoff (2026-10-16; tag ask-v2 plus the representation stage P49–P59: the ontology adopted as the pilot's one vocabulary, substances, dispositions, the composition family, comparability as data, structured claims, the sentence-only check, caveats by reference, one kind vocabulary, the attribute tier and the representation metrics)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -26,7 +26,7 @@ questions are a regression test only.
     Now 905 / 1067 / 467 rows (facts and tree rows), 148 of them caveats (45 / 53 / 50); 85 experiments (27 / 54 / 4) and 30 cited works with values, 21 comparisons, 187 claims
     (2 by the user); 18 derived definitions; 14 user facts (2 claims, 10 assumed, a definition and a bridge).
   - `problems.csv`: one row per problem found in the knowledge base (P1–P33: observed, root cause, instances, fix, verified).
-    Every row is verified (P1–P48). Add a row for every new problem, with all its instances in the three papers. 31 of the 96
+    Every row is verified (P1–P59). Add a row for every new problem, with all its instances in the three papers. 31 of the 96
     definition facts name the quantity they define (P36).
   - Case studies on the 58 in-scope papers with a PDF: `figures.csv`, `papers.csv`, `points.json`, `quantity_matrix.py` → `.csv`,
     `paper_case.py` → `paper_case.csv` (exclusions in `case_decisions.csv`), the CSVs behind Cases 9–13 (`sticking_reported`,
@@ -107,8 +107,29 @@ questions are a regression test only.
 - P46. A claim about a mechanism, a limitation or a measurement effect names the facts of its paper that give its size.
 - P47. The model has four tools, one per question shape: search, values, detail, source.
 - P48. A ± says what it is: a spread between named repeats, a fit error, a measurement uncertainty, a literature or a propagated value.
+- P49. The ontology is the one vocabulary source: `ontology/export.py` generates `pilot/vocab.py` from `ontology.yaml` and the disposition table `ontology/pilot_map.csv`, `lists.py` keeps only rules, and `check.py` fails on any id in the data outside the generated vocabulary or on a stale `vocab.py`.
+- P50. Substances are entities: species, gases, materials, substrates (the growth-surface species) and reactants are species ids, every substance-scoped setting carries species= or gas= (checked), and a species prints by its name everywhere.
+- P51. Every pilot quantity id has a recorded disposition (direct, alias, qualifier, transform, new entry, attribute, dropped, reserved); a derived quantity may be an entry plus qualifiers (`lists.derived_key`); the coated aspect ratio is carried by two papers.
+- P52. One entry id keeps one unit dimension and one basis (checked dataset-wide); composition is the family element_fraction, element_ratio, phase_fraction.
+- P53. Comparability is data: one predicate over (entry, definition, method class, specimen class) refuses a joint display with "not comparable: <axes>"; methods have classes, entities a specimen class; every cross-paper pair is judged by the check.
+- P54. A claim's cause and effect are entry ids or mechanism ids (mechanism entries in the ontology, merged across papers) and its relation is one of increases, decreases, limits, causes, no_effect, requires.
+- P55. Nothing lives only in prose: `sentence_only.py` compares every statement's species, numbers and conditions with the structured fields, and what stays prose is allowed one by one with a reason.
+- P56. A caveat is stored once; a computed value reaches its inputs' caveats at query or display time; the page keeps the texts once and a fact-to-caveat map.
+- P57. One kind vocabulary (measured, stated, read_from_figure, computed_by_authors, computed_by_kb, assumed, model_input, cited) stored at write time; every printed provenance word comes from the ontology's phrase table, never "computed here".
+- P58. A quantity the ontology bans as a concept but the data stores is an attribute entry (`attribute: true`, outside the concept vocabulary) or a promoted entry with its deviation (checked).
+- P59. `metrics.py` prints, from the data, coverage per paper with the sentence-only gaps, the compactness of the unique content against the source text, and the absorption counts of the pilot ids.
 
 ## Design principles
+- Why the representation stage (P49–P59) exists: evaluation runs with a cheap model showed four failure classes, and each fix is a
+  general rule enforced by a class-wide check over the whole dataset, never a patch on the observed instance. (1) Silence plus a
+  prior is fabrication: a printed line that does not say what substance, method or specimen it is about gets filled from the model's
+  prior, so every record names its objects and a checker proves nothing lives only in prose (P50, P55). (2) Synonym fission kills
+  cross-paper recall: one concept under two names makes a cross-paper question unanswerable, so there is one vocabulary source,
+  identity is decided by definition (CRITERIA Sec. 4) and related definitions form families (P49, P51, P52). (3) Silent merging
+  fabricates comparability: values that differ in reference, basis, method class or specimen class are never one comparable set, the
+  difference is data and any output refuses the comparison with a reason (P52, P53). (4) Deictic provenance gets re-attributed:
+  "computed here" reads as "computed in this paper" outside our context, so provenance words come from a closed phrase table (P57).
+  The checks are as much the deliverable as the data: they must keep holding when papers 4..58 are added.
 - One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen is a projection computed from
   that file through `query.py`.
 - Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user claims
@@ -305,7 +326,11 @@ Hence the facts layer: facts first, stated locally per element; linking to depos
 python3 psed_v2/pilot/elements.py [--text DIR]        # stage 1; --text writes element texts (for reading) outside the repo
 python3 psed_v2/pilot/10.1039_d0cp03358h.facts.py     # stage 2, one per paper (also 10.1021_acs.chemmater.2c01154, 10.1116_6.0003182)
 python3 psed_v2/pilot/user_facts.py                   # the user's claims and assumed facts -> user.facts.csv
-python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, the problem rules, no unresolved case candidate
+python3 psed_v2/ontology/export.py                    # ontology.yaml + pilot_map.csv -> pilot/vocab.py (the generated vocabularies; --check: is it fresh)
+python3 psed_v2/ontology/make_report.py               # the ontology's 12 checks -> ontology/report.html
+python3 psed_v2/pilot/check.py                        # the one check: vocabulary, claims, sentence-only, kinds, caveats, comparability, bases, the facts and trees, then the metrics
+python3 psed_v2/pilot/sentence_only.py [--all]        # the sentence-only items and the allowed ones with their reasons
+python3 psed_v2/pilot/metrics.py                      # coverage with gaps, compactness, absorption (P59)
 python3 psed_v2/pilot/questions.py                    # the 26 questions through query.py -> questions.csv (status, answer, how)
 python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen with its search box (about 15 s)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/serve.py      # the page with the Ask box on http://127.0.0.1:8787/ (keys in psed_v2/.env)
