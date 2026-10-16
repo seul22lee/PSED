@@ -16,6 +16,8 @@ group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the 
 every setting under a group carries a value or a value_text;
 tree rows (ids without "#") are not counted as facts.
 Experiments: <paper_id>.experiments.csv (experiments.py) has one run row per run of the tree (cited works are extra rows, kind cited).
+User facts (user.facts.csv, user_facts.py): the facts schema; author user; ids user:<name>, unique; types from the lists; vocabularies as
+for a paper's facts; every link resolves to a fact of the three papers or of the user file; a claim has links.
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
 import collections, csv, json, re, sys
@@ -285,6 +287,37 @@ def summary(els, facts, cov):
                 quantity_other=sum(f["quantity"] == "other" for f in facts))
 
 
+def check_user(all_ids):
+    rows = rd(HERE / "user.facts.csv")
+    err = []
+    if not rows:
+        return ["no user.facts.csv (run user_facts.py)"]
+    if list(rows[0].keys()) != C.FIELDS:
+        err.append("user.facts.csv: columns differ from facts.FIELDS")
+    ids = [r["fact_id"] for r in rows]
+    for r in rows:
+        i = r["fact_id"]
+        bad = lambda m: err.append(f"{i}: {m}")
+        if not i.startswith("user:") or ids.count(i) > 1:
+            bad("id not unique or not user:<name>")
+        if r["author"] != "user":
+            bad(f"author {r['author']!r}")
+        if r["type"] not in L.TYPES:
+            bad(f"type {r['type']}")
+        if r["quantity"] and r["quantity"] not in L.QUANTITIES:
+            bad(f"quantity {r['quantity']}")
+        for q in L.qualifiers_ok(r["qualifiers"]):
+            bad(f"qualifier {q}")
+        if not r["statement"].strip() or "\n" in r["statement"]:
+            bad("statement empty or not one line")
+        if r["type"] == "claim" and not r["links"]:
+            bad("claim without links")
+        for l in filter(None, r["links"].split(";")):
+            if l not in all_ids and l not in ids:
+                bad(f"link {l} does not exist")
+    return err
+
+
 def check_cases():
     rows = rd(HERE / "paper_case.csv")
     left = [(k, r["paper_id"]) for r in rows for k in (f"c{i}" for i in range(1, 14)) if r.get(k, "").startswith("candidate")]
@@ -295,6 +328,12 @@ if __name__ == "__main__":
     bad = 0
     err = check_cases()
     print(f"== cases: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    all_ids = {r["fact_id"] for pid in KEYS for r in rd(HERE / f"{pid}.facts.csv")}
+    err = check_user(all_ids)
+    print(f"== user facts: {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

@@ -47,7 +47,9 @@
   tray with the series) and on the group card; a paper group whose runs differ in more than one setting is marked as
   confounded, with the run that deviates (Series E: sample 14 also differs in pillar layout). The tray is the one
   selection: its runs are highlighted in the left tree, the text tree, the figures view (panels with a fact on a tray run)
-  and the forest scatter (points whose scope is a tray run).
+  and the forest scatter (points whose scope is a tray run). User facts (user.facts.csv, author user): a user claim is
+  listed in the claims view under "user" with a scope computed across the papers its links reach; a user claim with a
+  quantity and an x= qualifier is a forest preset button (its label_as_printed), replacing the hard-coded Case 9 and 10.
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -213,7 +215,7 @@ h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{col
 <span class="legend"><span style="background:var(--cov)">covered</span><span style="background:var(--nk)">no knowledge</span><span style="background:var(--miss)">missed</span></span></header>
 <main><div class="sum" id="sum"></div><div id="view"></div></main>
 <script>
-const DATA=__DATA__;const LISTS=__LISTS__;
+const DATA=__DATA__;const LISTS=__LISTS__;const USER=__USER__;
 let P=0,V="tree",SP=0;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -310,7 +312,7 @@ function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(
  if(FQ&&!(FX in xs))FX=("deposition_temperature" in xs)?"deposition_temperature":Object.keys(xs)[0]||"";
  return `<div class="fl"><label>quantity <select onchange="DEMO=false;FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${esc(LISTS.labels[q]||q)} (${Q[q]})</option>`).join("")}</select></label>
  <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${esc(LISTS.labels[q]||q)} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
- <button onclick="DEMO=false;FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="DEMO=false;FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button> <button class="${DEMO?"on":""}" onclick="DEMO=true;FQ='';applyForest()">Fig. 9 from tree</button>
+ ${USER.filter(u=>u.type==="claim"&&u.quantity&&/x=/.test(u.qualifiers)).map(u=>`<button class="${!DEMO&&FQ===u.quantity?"on":""}" title="${esc(u.statement)}" onclick="DEMO=false;FQ='${u.quantity}';FX='${quals(u.qualifiers).x}';applyForest()">${esc(u.label_as_printed||u.fact_id)}</button>`).join(" ")} <button class="${DEMO?"on":""}" onclick="DEMO=true;FQ='';applyForest()">Fig. 9 from tree</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
 function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".hl").forEach(n=>n.classList.remove("hl"));
  document.querySelectorAll(".q.red").forEach(n=>{n.classList.remove("red");if(n.dataset.k==="unit")n.hidden=true});
@@ -552,7 +554,13 @@ function claimScope(d,i,c){const T=buildTree(d);const runs=claimRuns(T,c);if(!ru
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
  return {n:runs.length,runs,text:`${runs.length} run${runs.length>1?"s":""}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
 function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr" data-f="${c.fact_id}"><span class="ty claim">claim</span><span class="st">${esc(c.statement)}</span><span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
-function claimsView(){return `<div class="wrap"><div class="cl">${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
+function userScope(u){const runs=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimRuns(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(r=>runs.push({i,id:r}))});
+ if(!runs.length)return "no run";const rs=RUNS().filter(r=>runs.some(x=>x.i===r.i&&x.id===r.id));const parts=[];
+ SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
+  if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
+ const papers=[...new Set(runs.map(x=>DATA[x.i].key))];return `${runs.length} run${runs.length>1?"s":""} in ${papers.join(", ")}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}
+function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user" data-f="${u.fact_id}"><span class="ty claim">${esc(u.type)}</span><span class="st">${esc(u.statement)}</span><span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
+function claimsView(){return `<div class="wrap"><div class="cl"><h3>user <span class="mut">${USER.length} facts</span></h3>${USER.map(userLine).join("")}${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
  if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;
  if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;if(GCARD&&!buildTree(d).byId[GCARD])GCARD=null;
@@ -598,7 +606,9 @@ tab("facts");
 if __name__ == "__main__":
     data = [paper(pid, k) for pid, k in KEYS.items()]
     lists = dict(materials=L.MATERIALS, structures=L.STRUCTURES, methods=L.METHODS, quantities=L.QUANTITIES, labels=L.LABELS)
-    facts_page = PAGE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")).replace("__LISTS__", json.dumps(lists))
+    user = rd(HERE / "user.facts.csv")
+    facts_page = (PAGE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")).replace("__LISTS__", json.dumps(lists))
+                  .replace("__USER__", json.dumps(user, ensure_ascii=False).replace("</", "<\\/")))
     cases_page = runpy.run_path(str(HERE / "cases.py"))["main"]()
     matrix_page = runpy.run_path(str(HERE / "matrix.py"))["page"]
     tabs = [("facts", "Facts", facts_page), ("cases", "Cases", cases_page), ("matrix", "Matrix", matrix_page)]

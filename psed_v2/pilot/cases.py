@@ -1339,10 +1339,16 @@ def main() -> None:
         [f"{E(who(r['paper_id']))}<span class='pid'>{r['paper_id']}</span>", r["figure"], r["panel"], code(r["x_id"]) + " → " + code(r["y_id"]), E(r["structure"]), E(used_in(r["paper_id"]))] for r in sel])
     ptab = table(["Case", "Source", "Series", "x as printed", "y as printed", "Points (x, y)"], [
         [p["case"], f"{E(who(p['paper']))}, Fig. {p['figure']}{p['panel']}", E(p["series"]), E(p["x_label_as_printed"]), E(p["y_label_as_printed"]), E("; ".join(f"{x:g}, {y:g}" for x, y in p["points"]))] for p in PTS])
+    with (HERE / "user.facts.csv").open(newline="", encoding="utf-8") as f:
+        U = list(csv.DictReader(f))
+    utab = table(["Id", "Type", "Statement", "Forest preset", "Links", "Papers"], [
+        [code(u["fact_id"]), E(u["type"]), E(u["statement"]), E(u["label_as_printed"]), str(len([l for l in u["links"].split(";") if l])),
+         E(", ".join(sorted({l.split(":")[0] for l in u["links"].split(";") if l})))] for u in U])
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PSED case studies</title><style>{CSS}</style></head><body><main>
 <h1>Thirteen case studies from the ingested papers</h1>
 <p class="sub">Examples of what the pipeline is meant to deliver, made by hand. Cases 1 to 3 are built on thickness profiles from {len(papers)} papers; cases 4 to 6 come from the checked candidates N1 and N2, N3 and N5; case 7 follows single samples across figures and methods; case 8 reads the 2019 review's tables as data; cases 9 to 13 carry the part E candidates S1, S2, S3 with S6, S5 and S8, on the hand-read quantity matrix. Fifteen papers were added on 2026-10-13; Cases 1, 2 and 4 use them. Exploration only: every plotted point was read by eye from a published figure crop, and nothing here is extracted data. Each case runs in three steps.</p>
 <div class="flow"><span>Before: the source crops as published</span><span>→ Ontology step: printed label to id, transform, gaps</span><span>→ After: the comparable view</span></div>
+<section id="user"><h2>User claims (user.facts.csv)</h2><p>The case studies as facts in the papers' schema, author user: one sentence each, with links into the papers' facts; the Facts tab lists them with their scope and shows them as forest presets.</p>{utab}</section>
 <h2>Selected profile panels</h2>
 <p>Measured plot rows of the figure inventory whose x is a distance (plain or divided by a length) and whose y is a film thickness, a normalized thickness, a local growth per cycle or a coated aspect ratio, plus the measured depth profiles named in the hand-read matrix whose y is a diameter, counts, a signal or a composition: {len(sel)} rows in {len(papers)} papers.</p>{seltab}
 {case1()}{case2()}{case3()}{case4()}{case5()}{case6()}{case7()}{case8()}{case9()}{case10()}{case11()}{case12()}{case13()}
