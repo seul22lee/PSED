@@ -100,6 +100,135 @@ def facts():
     return _facts
 
 
+# measurement methods: a setting or an observation with one of these sits under a measurement activity, never in a condition vector
+MEAS_METHODS = {"reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs", "gravimetry",
+                "photograph", "optical_microscopy", "process_monitor"}
+
+
+def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups=(), extra=()):
+    """Rebuild a paper's stage-3 tree under the activity/entity model from the old placement (process, runs, groups):
+    paper -> recipe activity (the old process) -> deposition activities -> entities -> measurement activities -> facts.
+      deps:  {dep_id: dict(statement, label, how, evidence[, parent, kind])}: the deposition (or other) activities to create; parent
+             defaults to the recipe.
+      ents:  {old_run_id: dict(dep, ent, parent, statement, label, how, evidence[, via])}: each old run maps to an activity `dep`
+             (its settings go there) and, unless ent is None (the run was itself a deposition), to an entity `ent` under `parent`
+             (a deposition or another entity: a piece); `via` = (activity id, kind) puts the run's measurement activities under a
+             later treatment activity of the entity (an anneal).
+      sims:  {old_run_id: dict(act, ent, parent, statement, label, evidence)}: a simulation activity with its model-run entity.
+      group_facts_to: {group_id: node_id}: facts under that group move to the node (a group's shared inputs to a simulation activity,
+             a cell group's ratio setting to its deposition); drop_groups: group rows deleted (their members merged into one entity).
+      extra: rows to add as (id, type, statement, parent, kw).
+    A setting with a measurement method, or any observation, derived or model fact under a run, goes under the entity's
+    measurement activity of that method (<key>:meas:<entity>:<method>; "measurement" when the fact names none); a setting without
+    one goes to the run's activity. Shared settings and observations under the old process with a measurement method go to
+    <key>:method:<method> (a measurement activity under the paper); the rest stay in the recipe. Group rows survive with
+    parent = paper and links = purpose + members (old member runs mapped to their entities or activities); the old process and run
+    rows are deleted."""
+    sims = sims or {}
+    group_facts_to = group_facts_to or {}
+    byid = {r["fact_id"]: r for r in _facts}
+    old_kids = {}                                        # the old parents, before any row is converted or re-parented
+    for r in _facts:
+        old_kids.setdefault(r["parent"], []).append(r["fact_id"])
+    recipe = f"{key}:recipe"
+    proc = byid[process]
+    N(recipe, "activity", proc["statement"], key, evidence=proc["evidence"], kind="recipe", how="stated", label_as_printed=proc["label_as_printed"] or "recipe")
+    made = set()
+
+    def node(fid, type_, statement, parent, **kw):
+        if fid not in made and fid not in byid:
+            made.add(fid)
+            N(fid, type_, statement, parent, **kw)
+        return fid
+
+    def meas(ent_or_act, suffix, method, under):
+        return node(f"{key}:meas:{suffix}:{method}", "activity", f"{method} on {ent_or_act}", under, kind="measurement", how="stated",
+                    label_as_printed=method.replace("_", " "))
+
+    for d, spec in deps.items():
+        if d in byid:                                        # an old run row that was itself the deposition: converted in place
+            byid[d].update(type="activity", kind=spec.get("kind", "deposition"), how=spec["how"], label_as_printed=spec["label"],
+                           parent=spec.get("parent", recipe), qualifiers=spec.get("qualifiers", ""), order=spec.get("order", ""))
+            made.add(d)
+        else:
+            node(d, "activity", spec["statement"], spec.get("parent", recipe), evidence=spec.get("evidence", ""), kind=spec.get("kind", "deposition"),
+                 how=spec["how"], label_as_printed=spec["label"], qualifiers=spec.get("qualifiers", ""), order=spec.get("order", ""))
+    for r, spec in ents.items():
+        if spec.get("ent"):
+            node(spec["ent"], "entity", spec["statement"], spec["parent"], evidence=spec.get("evidence", ""), how=spec["how"], label_as_printed=spec["label"])
+            if spec.get("via"):
+                node(spec["via"][0], "activity", spec["via"][2], spec["ent"], kind=spec["via"][1], how="stated", label_as_printed=spec["via"][1],
+                     evidence=spec.get("evidence", ""))
+    for r, spec in sims.items():
+        node(spec["act"], "activity", spec["statement"], spec.get("parent", key), evidence=spec.get("evidence", ""), kind="simulation", how="stated",
+             label_as_printed=spec["label"], qualifiers=spec.get("qualifiers", ""))
+        node(spec["ent"], "entity", f"model run of {spec['label']}", spec["act"], evidence=spec.get("evidence", ""), how="inferred", label_as_printed=spec["label"])
+    for fid, type_, statement, parent, kw in extra:
+        node(fid, type_, statement, parent, **kw)
+    # re-parent the facts
+    for f in _facts:
+        if "#" not in f["fact_id"] or f["fact_id"] in made:
+            continue
+        par = f["parent"]
+        if par == process:
+            m = f["method"]
+            if m in MEAS_METHODS and f["type"] in ("setting", "observation", "derived", "model"):
+                f["parent"] = node(f"{key}:method:{m}", "activity", f"{m.replace('_', ' ')}: the shared measurement settings", key, kind="measurement",
+                                   how="stated", label_as_printed=m.replace("_", " ") + " (method)")
+            else:
+                f["parent"] = recipe
+        elif par in ents:
+            spec = ents[par]
+            m = f["method"] if f["method"] in MEAS_METHODS else ""
+            if f["type"] == "setting" and not m:
+                f["parent"] = spec["dep"]
+            else:
+                suffix = (spec["ent"] or spec["dep"]).split(":", 1)[1]
+                under = spec["via"][0] if spec.get("via") else (spec["ent"] or spec["dep"])
+                f["parent"] = meas(spec["label"], suffix, m or "measurement", under)
+        elif par in sims:
+            spec = sims[par]
+            f["parent"] = spec["act"] if f["type"] == "setting" else spec["ent"]
+        elif par in group_facts_to:
+            f["parent"] = group_facts_to[par]
+    # groups: under the paper, members mapped
+    old_runs = set(ents) | set(sims)
+
+    def member(i):
+        """An old member (a run, a group) as a new node: the run's entity or activity; a dropped group's entities; a group itself."""
+        if i in ents:
+            return [ents[i]["ent"] or ents[i]["dep"]]
+        if i in sims:
+            return [sims[i]["ent"]]
+        if i in drop_groups:
+            return [m for c in old_kids.get(i, []) if c in byid and byid[c]["type"] in ("run", "group") for m in member(c)]
+        return [i] if i in byid and byid[i]["type"] == "group" else []
+    for g in [r for r in _facts if r["type"] == "group"]:
+        if g["fact_id"] in drop_groups:
+            continue
+        links = [l for l in g["links"].split(";") if l]
+        purpose_, rest = (links[:1], links[1:]) if links and "#" in links[0] else ([], links)
+        members = [m for c in old_kids.get(g["fact_id"], []) if c in byid and byid[c]["type"] in ("run", "group") for m in member(c)] + [m for l in rest for m in member(l)]
+        members = list(dict.fromkeys(m for m in members if m))
+        g["parent"] = key
+        g["links"] = ";".join(purpose_ + members)
+    # links that named an old node now name its entity (or activity); the old process names the recipe
+    remap = {process: recipe}
+    for r, spec in ents.items():
+        remap[r] = spec["ent"] or spec["dep"]
+    for r, spec in sims.items():
+        remap[r] = spec["ent"]
+    for row in _facts:
+        if row["links"]:
+            row["links"] = ";".join(dict.fromkeys(remap.get(l, l) for l in row["links"].split(";") if l and l not in drop_groups))
+    # delete the old process, run and dropped group rows
+    gone = ({process} | old_runs | set(drop_groups)) - made
+    _facts[:] = [r for r in _facts if r["fact_id"] not in gone]
+    for r in _facts:
+        if r["parent"] in gone:
+            raise ValueError(f"{r['fact_id']} still under {r['parent']}")
+
+
 def points():
     """The curves kept so far (name -> dict with points and the printed axis labels)."""
     return _points

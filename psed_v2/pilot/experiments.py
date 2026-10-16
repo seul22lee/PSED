@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""One flat table of the runs, read off the trees: <paper_id>.experiments.csv per paper and experiments.csv for the three papers
-together, one row per run (a tree row of type run).
+"""One flat table of the experiments, read off the trees: <paper_id>.experiments.csv per paper and experiments.csv for the three
+papers together, one row per entity with observations (an entity whose measurement activities, or later activities, hold an
+observation, derived or model fact).
 
     python3 psed_v2/pilot/experiments.py      # writes the four CSVs; prints rows, columns and the columns the three papers share
 
-Columns: paper, run, label, kind (the run= qualifier), how, parent, group (the nearest group above the run), group_label, purpose
-(that group's purpose fact) and claims (claim ids linked to the run, to a fact of its own subtree or to its group); then one column
-per setting the run inherits, setting:<quantity>[<qualifiers>] (quantity other: setting:other:<label_as_printed>), holding the
-nearest value: the run's own facts first, then each ancestor's own facts up to the paper, where a node's own facts are its subtree
-not crossing another run or group; several distinct values at that level are joined with "; "; a value is censor+value+unit, min–max unit
-or the value_text; then one column per result on the run, result:<quantity>[<qualifiers>]: the observation, derived and model facts
-of its own subtree that carry a value, a range, a value_text or points, each value or, for a curve, its points_ref. Column order:
+Columns: paper, run (the entity id), label, kind (entity), how (stated or inferred), parent, group (the groups or comparisons the entity
+or an activity above it belongs to), group_label, purpose (their purpose facts) and claims (claim ids linked to the entity, to an
+activity above it, to a fact of theirs or to its groups); then one column per setting of its condition vector, setting:<quantity>
+[<qualifiers>] (quantity other: setting:other:<label_as_printed>): the settings of the non-measurement activities above the entity,
+the nearest activity's value first; several distinct values at one activity are joined with "; "; a value is censor+value+unit, min–max
+unit or the value_text; then one column per result, result:<quantity>[<qualifiers>]: the observation, derived and model facts under
+the entity (its measurement and later activities, not a piece cut from it) that carry a value, a range, a value_text or points, each
+value or, for a curve, its points_ref. Column order:
 the fixed columns, then the settings by the number of runs carrying them, then the results likewise. The combined CSV has the union.
 Cited works are rows too (kind cited): one row per cited work of the tree (:refs:N), its cited facts filling the columns (a quantity
 goes to setting: or result: by how the three papers use it in their own facts), and `via` naming the citing paper and the elements
@@ -52,6 +54,9 @@ def quals(s):
     return dict(p.split("=", 1) for p in s.split(";") if "=" in p)
 
 
+MEAS = {"measurement"}
+
+
 def table(pid, paper):
     rows = rd(HERE / f"{pid}.facts.csv")
     R = {r["fact_id"]: r for r in rows}
@@ -59,19 +64,36 @@ def table(pid, paper):
     for r in rows:
         if r["parent"]:
             K[r["parent"]].append(r)
+    NODE = ("activity", "entity", "run", "group", "process")
 
-    def own(i):                                   # a node's own facts: its subtree, not crossing another run or group
+    def own(i):                                   # a node's own facts: its subtree, not crossing another node
         out = []
         for c in K.get(i, []):
-            if c["type"] in ("run", "group"):
+            if c["type"] in NODE:
                 continue
             if "#" in c["fact_id"]:
                 out.append(c)
             out += own(c["fact_id"])
         return out
 
-    def row_of(i):                                # the nearest run or group at or above a row
-        while i in R and R[i]["type"] not in ("run", "group"):
+    def below(i):                                 # an entity's facts: its subtree, not crossing another entity (its measurement activities included)
+        out = []
+        for c in K.get(i, []):
+            if c["type"] == "entity":
+                continue
+            if "#" in c["fact_id"]:
+                out.append(c)
+            out += below(c["fact_id"])
+        return out
+
+    def above(i):
+        out, x = [], R[i]["parent"]
+        while x in R:
+            out.append(x); x = R[x]["parent"]
+        return out
+
+    def node_of(i):                               # the nearest node (activity, entity, group) at or above a row
+        while i in R and R[i]["type"] not in NODE:
             i = R[i]["parent"]
         return i if i in R else ""
 
@@ -79,31 +101,36 @@ def table(pid, paper):
     for c in rows:
         if c["type"] == "claim":
             for l in filter(None, c["links"].split(";")):
-                t = row_of(l)
+                t = node_of(l)
                 if t:
                     claims[t].add(c["fact_id"])
-    out = []
+    groups = [g for g in rows if g["type"] in ("group", "comparison")]
     # how the papers use a quantity in their own facts: a setting or a result (for the cited works' columns)
     use = collections.Counter()
     for f in rows:
         if "#" in f["fact_id"] and f["quantity"] and f["type"] in ("setting",) + RESULT_TYPES:
             use[(f["quantity"], f["type"] == "setting")] += 1
     is_setting = lambda qn: use[(qn, True)] >= use[(qn, False)]
-    for run in rows:
-        if run["type"] != "run":
+    out = []
+    for e in rows:
+        if e["type"] != "entity":
             continue
-        q = quals(run["qualifiers"])
-        grp, x = "", run["parent"]
-        while x in R:
-            if R[x]["type"] == "group":
-                grp = x; break
-            x = R[x]["parent"]
-        rec = dict(paper=paper, run=run["fact_id"], label=run["label_as_printed"], kind=q.get("run", ""), how=q.get("how", ""),
-                   parent=run["parent"], group=grp, group_label=R[grp]["label_as_printed"] if grp else "",
-                   purpose=R[grp]["links"].split(";")[0] if grp and R[grp]["links"] else "",
-                   claims=";".join(sorted(claims[run["fact_id"]] | (claims[grp] if grp else set()))))
-        x = run["fact_id"]
-        while x in R:                             # settings: the nearest level wins
+        res = collections.defaultdict(list)
+        for f in below(e["fact_id"]):
+            if f["type"] in RESULT_TYPES and f["quantity"] and (text(f) or f["points_ref"]):
+                res[key(f)].append(f["points_ref"] or text(f))
+        if not any(f["type"] in RESULT_TYPES for f in below(e["fact_id"])):
+            continue                              # an experiment is an entity with observations (valued or not)
+        chain = above(e["fact_id"])
+        mine = {e["fact_id"]} | set(chain)
+        gs = [g for g in groups if set(g["links"].split(";")[1:]) & mine]
+        rec = dict(paper=paper, run=e["fact_id"], label=e["label_as_printed"], kind="entity", how=e["how"], parent=e["parent"],
+                   group=";".join(g["fact_id"] for g in gs), group_label=";".join(g["label_as_printed"] for g in gs),
+                   purpose=";".join(dict.fromkeys(g["links"].split(";")[0] for g in gs if g["links"] and "#" in g["links"].split(";")[0])),
+                   claims=";".join(sorted(set().union(*(claims[n] for n in mine), *(claims[g["fact_id"]] for g in gs)))), via="")
+        for x in chain:                           # the condition vector: settings of the non-measurement activities above, nearest first
+            if R[x]["type"] != "activity" or R[x]["kind"] in MEAS:
+                continue
             level = collections.defaultdict(list)
             for f in own(x):
                 if f["type"] == "setting" and f["quantity"]:
@@ -111,14 +138,8 @@ def table(pid, paper):
             for k, fs in level.items():
                 if "setting:" + k not in rec:
                     rec["setting:" + k] = "; ".join(dict.fromkeys(t for t in (text(f) for f in fs) if t))
-            x = R[x]["parent"]
-        res = collections.defaultdict(list)
-        for f in own(run["fact_id"]):
-            if f["type"] in RESULT_TYPES and f["quantity"] and (text(f) or f["points_ref"]):
-                res[key(f)].append(f["points_ref"] or text(f))
         for k, vs in res.items():
             rec["result:" + k] = "; ".join(vs)
-        rec["via"] = ""
         out.append(rec)
     for w in rows:                                                              # cited works: their facts, via the citing paper
         if w["type"] != "cited" or "#" in w["fact_id"]:

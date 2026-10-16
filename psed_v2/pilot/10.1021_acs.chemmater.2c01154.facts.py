@@ -963,11 +963,6 @@ RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a t
 # One deposition_temperature fact per temperature group (the setting the group holds, which its label states), cited from the heat
 # maps and the elements that name a pair at that temperature (RATIO_EV); one cycle_number fact per Fig. 1b film (what grp:cyc varies,
 # so far stated only in the curve labels). Placed under the group or run in stage 3 (TEMP_GRP: t -> fact id; CYC_RUN: n -> fact id).
-TEMP_GRP = {}
-for t in sorted({t for t, _ in CELLS}, reverse=True):
-    ev = list(dict.fromkeys(e for (t2, _), evs in RATIO_EV.items() if t2 == t for e in evs.split(";")))
-    TEMP_GRP[t] = temp(";".join(["fig2", "fig4"] + ev), t, f"MoSx depositions at {t} °C, one row of the Fig. 2 and Fig. 4 heat maps",
-                       f"{t} °C")
 CYC_RUN = {n: cyc("fig1b;s3.p5", n, f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b", f"{n} cyc;150 °C;0.80") for n in ("10", "20", "30", "50")}
 CYC_TEM = cyc("s3.p26;fig6b", "500", f"150 °C, {R} 0.65, the about 50 nm film of Fig. 6b", "500 cycles;0.65;150 °C;Figure 6b")   # the 500-cycle TEM film
 # the film material (lists.MATERIALS) of the process and of the WS2 and TiS2 groups, and the structure type (planar substrates)
@@ -1309,9 +1304,7 @@ put(xrun("TiS2_thermal"), "fig9b#4")
 for s_, i in RATIO_RUN.items():
     m = re.fullmatch(r"T(\d+)_R([\d.]+)", s_)
     put(mpair(int(m.group(1)), m.group(2)) if m else xrun(s_), i)
-# the deposition temperature of each temperature group and the cycle number of each Fig. 1b film (TEMP_GRP, CYC_RUN, stage 2)
-for t, i in TEMP_GRP.items():
-    put(grp(f"T{t}"), i)
+# the cycle number of each Fig. 1b film (CYC_RUN, stage 2); each deposition's temperature is set in stage 3b
 for n, i in CYC_RUN.items():
     put(xrun(f"T150_R0.80_N{n}"), i)
 put(mfilm(150, "0.65", "tem"), CYC_TEM)
@@ -1411,4 +1404,58 @@ from facts import purpose  # noqa: E402
 PUR = {f"{K}:grp:cyc": f"{K}:s3.p5#1", f"{K}:grp:h2s": f"{K}:s3.p53#4", f"{K}:grp:WS2": f"{K}:s3.p45#1", f"{K}:grp:TiS2": f"{K}:s3.p45#1"}
 for g in [r["fact_id"] for r in C.facts() if r["type"] == "group"]:
     purpose(g, PUR.get(g, f"{K}:abs.g3#1"))
+
+# ================================================================== stage 3b: the activity/entity tree (facts.retree)
+# recipe = the old process. One inferred deposition per (T, ratio) cell of the heat maps and one inferred film entity per cell, on
+# which Raman, XPS, in situ SE, SEM/AFM and four-point probe are measurement activities (the paper does not say whether one film
+# served all; the measurements share cycle count and substrate). Films whose cycles or substrate differ get their own stated
+# depositions: the 4" wafer (50 cycles), the glassy-carbon films of Table 1, the TEM films, the PET film, the cycle series, the
+# extra-H2-step run, the H2S tests, WS2 and TiS2; the annealed films an inferred deposition with an anneal activity. Every
+# deposition carries its temperature and H2 flow ratio as settings (generated below where stage 2 has none). The (T, ratio) pair
+# groups are dropped (one entity each); the other groups survive with their members (step 3 turns them into comparisons).
+RUNROW = {r["fact_id"]: r for r in C.facts() if r["type"] == "run"}
+DEPS, ENTS, DROP = {}, {}, []
+FX2 = {f["fact_id"]: f for f in C.facts()}
+FX2[f"{K}:fig1c#2"]["parent"] = film(150, "0.80", "wafer")           # the wafer film's ratio belongs to the wafer deposition
+for rid, r in RUNROW.items():
+    s_ = rid.split(":", 2)[2]
+    how_ = re.search(r"how=(\w+)", r["qualifiers"]).group(1)
+    m = re.fullmatch(r"T(\d+)_R([\d.]+):(\w+)", s_)
+    if m:
+        t, rt, kind = m.groups()
+        if kind in ("raman", "xps", "se", "afm", "fpp"):
+            dep, ent = f"{K}:dep:T{t}_R{rt}", f"{K}:ent:T{t}_R{rt}"
+            DEPS[dep] = dict(statement=f"MoSx deposition at {t} °C with {R} {rt}, 100-140 cycles on SiO2/Si; the paper names no run, one per cell is inferred",
+                             label=f"{t} °C, {rt} H2", how="inferred", evidence="fig2;fig4" + (";" + RATIO_EV[(int(t), rt)] if (int(t), rt) in RATIO_EV else ""))
+            ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, how="inferred", label=f"{t} °C, {rt} H2 film", evidence="fig2;fig4",
+                             statement=f"the film of the {t} °C, ratio {rt} cell, measured by Raman, XPS, in situ SE, SEM/AFM and four-point probe; "
+                                       "whether one film served all is not stated, one is inferred (same cycle count and substrate)")
+            DROP.append(pair(int(t), rt))
+        else:
+            dep, ent = f"{K}:dep:{kind}_T{t}_R{rt}", f"{K}:ent:{kind}_T{t}_R{rt}"
+            DEPS[dep] = dict(statement=f"deposition of the {FILM[kind][0]} at {t} °C, {R} {rt} (its own cycles or substrate)", label=f"{t} °C, {rt} H2, {FILM[kind][0]}",
+                             how="stated", evidence=r["evidence"].split(";")[0])
+            ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
+    else:
+        dep, ent = f"{K}:dep:{s_}", f"{K}:ent:{s_}"
+        DEPS[dep] = dict(statement=f"deposition of: {r['statement']}", label=r["label_as_printed"], how=how_, evidence=r["evidence"].split(";")[0])
+        ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
+        if s_ == "anneal":
+            ENTS[rid]["via"] = (f"{K}:act:anneal", "anneal", "annealing after deposition, in vacuum or inert up to 300 °C and in air (Sections S11, S12)")
+C.retree(K, PROC, DEPS, ENTS, group_facts_to={g: f"{K}:dep:{g.split(':')[-1]}" for g in DROP}, drop_groups=DROP)
+# every deposition carries its temperature and H2 flow ratio
+import collections  # noqa: E402
+KIDS = collections.defaultdict(list)
+for r in C.facts():
+    KIDS[r["parent"]].append(r)
+for d, spec in DEPS.items():
+    m = re.search(r"T(\d+)_R([\d.]+)", d)
+    if not m:
+        continue
+    t, rt = m.groups()
+    have = {f["quantity"] for f in KIDS[d] if f["type"] == "setting"}
+    if "deposition_temperature" not in have:
+        temp(spec["evidence"], t, spec["label"], f"{t} °C;{spec['label']}"); C.facts()[-1]["parent"] = d
+    if "plasma_gas_ratio" not in have:
+        ratio(spec["evidence"], rt, spec["label"], f"{rt};{spec['label']}"); C.facts()[-1]["parent"] = d
 write(K, PID)

@@ -829,4 +829,36 @@ for r in _facts():
     if r["fact_id"] in (f"{K}:run120", f"{K}:run160", f"{K}:run120_160"):
         r["parent"] = f"{K}:grp:schedules"
 purpose(f"{K}:grp:schedules", f"{K}:s6.p8#12")
+
+# ================================================================== stage 3b: the activity/entity tree (facts.retree)
+# recipe = the old process; the three stated depositions and the thermocouple test run become deposition activities (converted in
+# place, their chamber observations under a process-monitor measurement); under each deposition the weighed NPC pair is an entity,
+# and the sectioned, XRD, photographed and resistivity specimens are pieces (entities under the pair); a weighing before ALD is a
+# measurement activity of order 0 on the pair; the uncoated NPC of Fig. 4(a) is an entity under the recipe, photographed before any
+# deposition; the Eq. (1)-(2) estimate is a simulation activity with a model-run entity.
+RUNROW = {r["fact_id"]: r for r in C.facts() if r["type"] == "run"}
+DEPS = {d: dict(statement=RUNROW[d]["statement"], label=RUNROW[d]["label_as_printed"], how="stated", evidence=RUNROW[d]["evidence"]) for d in (R120, R160, RCYC, TEST)}
+ENTS = {d: dict(dep=d, ent=None, parent=None, statement="", label=RUNROW[d]["label_as_printed"], how="stated") for d in (R120, R160, RCYC, TEST)}
+EXTRA = []
+for lab, s_ in (("120", "120"), ("160", "160"), ("120/160", "120_160")):
+    pair_ = f"{K}:ent:{s_}:pair"
+    pr = RUNROW[SPEC[lab]["pair"]]
+    ENTS[SPEC[lab]["pair"]] = dict(dep=RUN[lab], ent=pair_, parent=RUN[lab], statement=pr["statement"], label=f"{lab} °C NPC pair", how="stated", evidence=pr["evidence"])
+    for kind in ("section", "xrd", "photo", "prism"):
+        sr = RUNROW[SPEC[lab][kind]]
+        ENTS[SPEC[lab][kind]] = dict(dep=RUN[lab], ent=f"{K}:ent:{s_}:{kind}", parent=pair_, statement=sr["statement"], label=sr["label_as_printed"],
+                                     how=re.search(r"how=(\w+)", sr["qualifiers"]).group(1), evidence=sr["evidence"])
+    EXTRA.append((f"{K}:meas:ent:{s_}:pair:weighing_before", "activity", "the two NPCs weighed before ALD", pair_,
+                  dict(kind="measurement", how="stated", order="0", evidence="s9.p3", label_as_printed="weighing before ALD")))
+ENTS[BARE] = dict(dep=f"{K}:recipe", ent=f"{K}:ent:bare", parent=f"{K}:recipe", statement=RUNROW[BARE]["statement"], label="uncoated NPC", how="stated",
+                  evidence=RUNROW[BARE]["evidence"])
+SIMRUNS = {SIM: dict(act=f"{K}:simact:eq1_2", ent=f"{K}:simact:eq1_2:run", parent=PAPER, statement=RUNROW[SIM]["statement"], label=RUNROW[SIM]["label_as_printed"],
+                     evidence=RUNROW[SIM]["evidence"])}
+C.retree(K, PROC, DEPS, ENTS, SIMRUNS, extra=EXTRA)
+for r in C.facts():                                                             # the schedules group's members: the three depositions
+    if r["fact_id"] == f"{K}:grp:schedules":
+        r["links"] = ";".join([r["links"].split(";")[0], R120, R160, RCYC])
+for r in C.facts():
+    if r["fact_id"] == f"{K}:meas:ent:bare:photograph":
+        r["order"] = "0"                                                        # photographed before any deposition
 write(K, PID)

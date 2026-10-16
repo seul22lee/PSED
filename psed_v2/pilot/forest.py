@@ -29,7 +29,7 @@ sys.path.insert(0, str(HERE))
 from elements import PAPERS  # noqa: E402
 from facts import num  # noqa: E402
 
-SCOPES = ("run", "group", "process", "cited", "paper")
+SCOPES = ("entity", "activity", "run", "group", "process", "cited", "paper")
 
 
 def quals(s):

@@ -137,12 +137,36 @@ def check(pid):
             err.append(f"{c['element_id']}: no knowledge without a reason")
     err += check_tree(rows, els)
     if any(r["type"] == "paper" for r in rows):
-        ex, nruns = [r for r in rd(HERE / f"{pid}.experiments.csv") if r.get("kind") != "cited"], sum(r["type"] == "run" for r in rows)
-        if len(ex) != nruns or {r["run"] for r in ex} != {r["fact_id"] for r in rows if r["type"] == "run"}:
-            err.append(f"{pid}.experiments.csv: {len(ex)} run rows for {nruns} runs (rerun experiments.py)")
+        ex = [r for r in rd(HERE / f"{pid}.experiments.csv") if r.get("kind") != "cited"]
+        want = {r["fact_id"] for r in rows if r["type"] == "run"} | set(experiment_entities(rows))
+        if {r["run"] for r in ex} != want:
+            err.append(f"{pid}.experiments.csv: {len(ex)} rows for {len(want)} experiments (rerun experiments.py)")
     s = summary(els, facts, cov)
     s["tree"] = tree_summary(rows) if any(r["type"] == "paper" for r in rows) else {}
     return err, s
+
+
+def experiment_entities(rows):
+    """Entities with observations: an entity whose subtree, not crossing another entity, holds an observation, derived or model fact."""
+    K = collections.defaultdict(list)
+    for r in rows:
+        if r.get("parent"):
+            K[r["parent"]].append(r)
+    out = []
+    for e in rows:
+        if e["type"] != "entity":
+            continue
+        stack, found = [e["fact_id"]], False
+        while stack and not found:
+            for c in K.get(stack.pop(), []):
+                if c["type"] == "entity":
+                    continue
+                if "#" in c["fact_id"] and c["type"] in ("observation", "derived", "model"):
+                    found = True; break
+                stack.append(c["fact_id"])
+        if found:
+            out.append(e["fact_id"])
+    return out
 
 
 def check_tree(rows, els):
@@ -190,8 +214,10 @@ def check_tree(rows, els):
             seen.add(i); i = R[i]["parent"]
     kids = collections.Counter(r.get("parent") for r in rows)
     for r in rows:
-        if r["type"] in ("run", "group") and not kids[r["fact_id"]]:
-            err.append(f"{r['fact_id']}: {r['type']} without children")
+        if r["type"] == "run" and not kids[r["fact_id"]]:
+            err.append(f"{r['fact_id']}: run without children")
+        if r["type"] == "group" and not kids[r["fact_id"]] and not [l for l in r["links"].split(";")[1:] if l]:
+            err.append(f"{r['fact_id']}: group without children or members")
         if r["type"] == "group":                                        # a group's first link is its purpose, a fact
             first = r.get("links", "").split(";")[0]
             if not first or first not in R or "#" not in first or R[first]["type"] not in ("claim", "observation", "setting", "model"):
@@ -234,10 +260,15 @@ def check_tree(rows, els):
         if r["type"] != "group" or not label_values(r["label_as_printed"]):
             continue
         have = set()
+        members = [l for l in r["links"].split(";")[1:] if l in R and "#" not in l]        # a group's members (entities, activities, groups)
         above, i = [], r.get("parent", "")
         while i in R:
             above.append(i); i = R[i].get("parent", "")
-        for f in sub(r["fact_id"], True) + [f for a in above for f in sub(a)]:
+        for m in members:
+            i = R[m].get("parent", "")
+            while i in R:
+                above.append(i); i = R[i].get("parent", "")
+        for f in sub(r["fact_id"], True) + [f for a in above for f in sub(a)] + [f for m in members for f in sub(m, True)]:
             if f["type"] == "setting":
                 have |= {C.num(f[k]) for k in ("value", "value_min", "value_max") if f[k]}
         for v in label_values(r["label_as_printed"]):

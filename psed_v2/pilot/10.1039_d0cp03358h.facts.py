@@ -1107,4 +1107,31 @@ from facts import purpose  # noqa: E402
 for g, p in {grp("A"): PUR_A, f"{K}:dep:A": PUR_A, grp("B"): PUR_B, grp("C"): PUR_C, grp("D"): PUR_D, grp("E"): fid("abs.g3#2"),
              grp("F"): PUR_F, grp("repro"): PUR_R, grp("sims"): fid("s13.p2#1")}.items():
     purpose(g, p)
+
+# ================================================================== stage 3b: the activity/entity tree (facts.retree)
+# recipe = the old process; one deposition per sample (Series A: one stated run that coated samples 1-3; the others inferred, the
+# paper names no run), the sample as an entity under it; measurement activities by method hold the Table 1 values and curves, the
+# reflectometer magnification and the SEM-EDS preparation; the simulations are activities under the shared model activity, each with
+# a model-run entity. The series groups survive as rows under the paper with their members (step 3 turns them into comparisons).
+RUNROW = {r["fact_id"]: r for r in C.facts() if r["type"] == "run"}
+DEPS = {f"{K}:dep:A": dict(statement=RUNROW[f"{K}:dep:A"]["statement"], label="run of samples 1-3", how="stated", evidence="s6.p2")}
+ENTS = {f"{K}:dep:A": dict(dep=f"{K}:dep:A", ent=None, parent=None, statement="", label="run of samples 1-3", how="stated")}
+for n in ROWS:
+    r = RUNROW[run(n)]
+    dep = f"{K}:dep:A" if n <= 3 else f"{K}:dep:{n}"
+    if n > 3:
+        DEPS[dep] = dict(statement=f"the ALD run that coated sample {n}; the paper names no run, one per sample is inferred", label=f"run of sample {n}",
+                         how="inferred", evidence=r["evidence"].split(";")[0])
+    ENTS[run(n)] = dict(dep=dep, ent=f"{K}:ent:{n}", parent=dep, statement=r["statement"], label=r["label_as_printed"], how="stated", evidence=r["evidence"])
+DEPS[f"{K}:dep:S4"] = dict(statement="the ALD run that coated the AFM specimen of Table S4; inferred", label="run of the AFM specimen", how="inferred", evidence="fig6.cap")
+ENTS[f"{K}:runS4"] = dict(dep=f"{K}:dep:S4", ent=f"{K}:ent:S4", parent=f"{K}:dep:S4", statement=RUNROW[f"{K}:runS4"]["statement"], label="Table S4 specimen",
+                          how="stated", evidence=RUNROW[f"{K}:runS4"]["evidence"])
+SIMACT = f"{K}:sim"
+N(SIMACT, "activity", "the MATLAB diffusion-reaction model (Ylilammi et al. 2018) and its shared inputs", PAPER, evidence="s8.p1;fig10.cap",
+  kind="simulation", how="stated", label_as_printed="model")
+SIMRUNS = {}
+for k in list(SIMS) + ["esi"]:
+    SIMRUNS[sim(k)] = dict(act=f"{K}:simrun:{k}", ent=f"{K}:simrun:{k}:run", parent=SIMACT, statement=RUNROW[sim(k)]["statement"],
+                        label=RUNROW[sim(k)]["label_as_printed"], evidence=RUNROW[sim(k)]["evidence"])
+C.retree(K, PROC, DEPS, ENTS, SIMRUNS, group_facts_to={grp("sims"): SIMACT})
 write(K, PID)
