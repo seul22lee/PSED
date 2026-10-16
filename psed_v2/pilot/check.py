@@ -369,6 +369,24 @@ def summary(els, facts, cov):
                 quantity_other=sum(f["quantity"] == "other" for f in facts))
 
 
+def check_derived():
+    """P7: the query layer never derives a quantity an entity already has as a measured or stated value, and no derivation feeds
+    back into its own inputs (no derived id twice in a chain)."""
+    import query as Q
+    err = []
+    for k, T in Q.TREES.items():
+        for e in T.entities():
+            for did in L.DERIVED:
+                d = Q.derive(T, e, did)
+                if "error" in d:
+                    continue
+                if Q.has_own(T, e, did):
+                    err.append(f"{e}: {did} derived although the entity has it (P7)")
+                if len(d["chain"]) != len(set(d["chain"])):
+                    err.append(f"{e}: {did} derivation feeds back: {' -> '.join(d['chain'])} (P7)")
+    return err
+
+
 def check_user(all_ids):
     rows = rd(HERE / "user.facts.csv")
     err = []
@@ -425,6 +443,11 @@ if __name__ == "__main__":
     all_ids = {r["fact_id"] for pid in KEYS for r in rd(HERE / f"{pid}.facts.csv")}
     err = check_user(all_ids)
     print(f"== user facts: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_derived()
+    print(f"== derived values (query layer): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

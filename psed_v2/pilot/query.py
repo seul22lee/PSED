@@ -477,19 +477,25 @@ def _candidates(T, ent, spec, need):
     return out
 
 
-def derive(T, ent, did, route=False, _depth=0):
+def has_own(T, ent, q):
+    """The entity's own measured or stated facts of a quantity (its results, its run's monitor, its condition vector), spread
+    facts excluded."""
+    fs = [f for fs in list(T.results(ent).values()) + list(T.run_results(ent).values()) + list(T.vector(ent).values()) for f in fs]
+    return [f for f in fs if f["quantity"] == q and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)]
+
+
+def derive(T, ent, did, _stack=()):
     """A derived quantity of an entity: {value, unit, inputs: [(name, fact id, value as used, unit, source)], assumed: [ids],
-    notes: [...]} or {error}. The stated fact wins when the entity or its run carries the quantity (route=True asks for the
-    computed route anyway); an input that is itself a derived quantity is derived in turn."""
+    notes: [...], chain: [derived ids used]} or {error}. Never derived when the entity already has the quantity as a measured or
+    stated value (P7): then {error, stated: the fact}. An input that is itself a derived quantity is derived in turn, unless that
+    quantity is already being derived up the chain: no derivation feeds back into its own inputs (P7)."""
     D = L.DERIVED[did]
-    if not route:
-        stated = [f for fs in list(T.results(ent).values()) + list(T.run_results(ent).values()) for f in fs if f["quantity"] == did and (f["value"] or f["value_min"])]
-        stated += [f for fs in T.vector(ent).values() for f in fs if f["quantity"] == did and (f["value"] or f["value_min"])]
-        if stated:
-            f = stated[0]
-            return dict(value=val(f), unit=f["unit"], stated=f, inputs=[], assumed=[], notes=[f"stated: {f['fact_id']} {fmt(f)}" + (f" (and {len(stated) - 1} more)" if len(stated) > 1 else "")])
+    own = has_own(T, ent, did)
+    if own:
+        return dict(error=f"stated: {own[0]['fact_id']} {fmt(own[0])}", stated=own[0])
+    stack = _stack + (did,)
     subs = {"@material": T.material(ent), "@A": T.reactant_A(ent)}
-    args, used, assumed, notes, readings = {}, [], [], [], {}
+    args, used, assumed, notes, readings, chain = {}, [], [], [], {}, [did]
     for spec in D["inputs"]:
         need = {k: subs.get(v, v) for k, v in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p)}
         cands = _candidates(T, ent, spec, need)
@@ -501,8 +507,9 @@ def derive(T, ent, did, route=False, _depth=0):
                 return dict(error=f"no fact for {spec['name']} ({spec['q']})")
             args[spec["name"]] = vals
             continue
-        if not cands and spec["q"].split("|")[0] in L.DERIVED and spec["q"] != did and _depth < 3:
-            sub = derive(T, ent, spec["q"].split("|")[0], _depth=_depth + 1)
+        if not cands and spec["q"].split("|")[0] in L.DERIVED and spec["q"].split("|")[0] not in stack:
+            sub = derive(T, ent, spec["q"].split("|")[0], _stack=stack)
+            chain += sub.get("chain", [])
             if "error" in sub:
                 return dict(error=f"{spec['name']}: {sub['error']}")
             args[spec["name"]] = L.convert(sub["value"], sub["unit"], spec["unit"])
@@ -534,7 +541,7 @@ def derive(T, ent, did, route=False, _depth=0):
         args[spec["name"]] = v; used.append((spec["name"], f["fact_id"], v, spec["unit"], src))
         if src == "assumed":
             assumed.append(f["fact_id"])
-    out = dict(value=D["fn"](**args), unit=D["unit"], qualifiers=D.get("qualifiers", ""), inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes, readings=[])
+    out = dict(value=D["fn"](**args), unit=D["unit"], qualifiers=D.get("qualifiers", ""), inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes, readings=[], chain=chain)
     for name, (lab, rs) in readings.items():                                    # one value per basis when the paper does not state it
         out["readings"] = [(f"{lab} is relative to the {b.replace('_', ' ')}", D["fn"](**{**args, name: v})) for b, v in rs]
     return out

@@ -159,14 +159,7 @@ def layer(key):
         rows = []
         for did in L.DERIVED:
             d = Q.derive(T, e, did)
-            if "error" in d:
-                continue
-            if "stated" in d:                                                        # a stated quantity: its computed route beside it
-                d2 = Q.derive(T, e, did, route=True)
-                if "error" not in d2:
-                    rows.append(dict(id=did, label=L.LABELS.get(did, did), value=Q.g(d2["value"], 3), unit=d2["unit"], stated=Q.fmt(d["stated"]), stated_id=d["stated"]["fact_id"],
-                                     ratio=Q.g(d2["value"] / L.convert(d["value"], d["unit"], d2["unit"]), 3) if d["value"] else "", inputs=[(n, fid, Q.g(v, 3), u, src) for n, fid, v, u, src in d2["inputs"]],
-                                     assumed=d2["assumed"], notes=d2["notes"], formula=L.DERIVED[did]["formula"]))
+            if "error" in d:                                                         # not derivable, or the entity has it (P7)
                 continue
             rows.append(dict(id=did, label=L.LABELS.get(did, did), value=Q.g(d["value"], 3), unit=d["unit"], inputs=[(n, fid, Q.g(v, 3), u, src) for n, fid, v, u, src in d["inputs"]],
                              assumed=d["assumed"], notes=d["notes"], formula=L.DERIVED[did]["formula"]))

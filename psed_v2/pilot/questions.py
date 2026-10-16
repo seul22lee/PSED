@@ -192,7 +192,7 @@ def q11():
     gc = [e for e in T.entities() if res(T, e, "atoms_per_cycle", element="Mo") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
     if not gc:
         return unanswerable("", "no entity at 150 °C, ratio 0.80 carries Mo atoms per cycle")
-    d = derive(T, gc[0], "growth_per_cycle", route=True)
+    d = derive(T, gc[0], "growth_per_cycle")
     if "error" in d:
         return unanswerable("", f"derived GPC from atoms per cycle fails: {d['error']}")
     joins = [(e, diff, only) for e, diff, only in same_experiment(T, gc[0], tolerate=("substrate", "cycle_number", "film_thickness")) if res(T, e, "growth_per_cycle")]
@@ -338,7 +338,7 @@ def q21():
         if stated:
             out.append(f"{k}: " + "; ".join(f"{fmt(f)} ({L.LABELS[f['quantity']]}, {f['type']} {f['fact_id']}, {f['data_kind']}{', ' + T.label(T.ent_of(f['fact_id'])) if T.ent_of(f['fact_id']) else ''})" for f in stated)); continue
         es = [e for e in T.entities() if T.results(e).get("growth_per_cycle")]
-        d = derive(T, es[0], "atoms_per_cycle", route=True) if es else {"error": "no GPC"}
+        d = derive(T, es[0], "atoms_per_cycle") if es else {"error": "no GPC"}
         out.append(f"{k}: " + (f"{dtext(d, 2)} ({T.label(es[0])})" if "error" not in d else d["error"]))
     return answered(" · ".join(out), "stated atoms per cycle or the model's saturation density where a paper gives one; else lists.DERIVED atoms_per_cycle (GPC × ρ_bulk N_A / M) with assumed ρ and M named")
 
