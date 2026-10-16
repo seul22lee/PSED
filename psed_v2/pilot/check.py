@@ -12,7 +12,7 @@ elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
 an activity has a kind from lists.ACTIVITY_KINDS and how stated or inferred, an entity how; every entity has a deposition above it
 (or sits under the recipe, before any deposition); every observation sits under a measurement activity or under the comparison it
-spans; every setting under an activity, an entity (its own properties) or a comparison; every comparison (the authors' intent: a series, a grid, a replicate set)
+spans; every setting under an activity or an entity (its own properties), never under a comparison; every comparison (the authors' intent: a series, a grid, a replicate set)
 has a purpose fact as its first link, two or more members and a varied quantity id (none for a replicate set); what a comparison
 varies is never "other"; every number with a unit in a comparison's label is in a member's condition vector; every claim has a link;
 tree rows (ids without "#") are not counted as facts.
@@ -290,8 +290,8 @@ def check_tree(rows, els):
             nt, nk = (R[n]["type"], R[n]["kind"]) if n in R else ("", "")
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
-            if r["type"] == "setting" and not (nt in ("activity", "entity") or nt == "comparison"):
-                err.append(f"{i}: setting under {n or 'nothing'} ({nt}), not under an activity, an entity or a comparison")
+            if r["type"] == "setting" and nt not in ("activity", "entity"):
+                err.append(f"{i}: setting under {n or 'nothing'} ({nt}), not under an activity or an entity (a comparison holds no setting)")
     return err
 
 

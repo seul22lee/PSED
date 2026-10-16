@@ -1141,6 +1141,10 @@ for fid_, par in ((f"{K}:fig3b#1", f"{K}:method:reflectometry"), (f"{K}:fig3.cap
                   (f"{K}:s16.p3#2", f"{K}:method:metrology"), (f"{K}:s16.p4#1", f"{K}:method:metrology"), (f"{K}:s16.p4#2", f"{K}:method:metrology"),
                   (f"{K}:s16.p4#3", f"{K}:method:metrology")):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
+# a comparison holds no setting: the channel lengths scanned for Series A (1 mm, Fig. 4) and Series B (5 mm) are measurement settings
+# of those samples' reflectometry
+C.spread(f"{K}:fig4.cap#1", [f"{K}:meas:ent:{n}:reflectometry" for n in (1, 2, 3)], {f"{K}:meas:ent:{n}:reflectometry": f"sample {n}" for n in (1, 2, 3)})
+C.spread(f"{K}:s7.p5#10", [f"{K}:meas:ent:{n}:reflectometry" for n in (4, 5, 6)], {f"{K}:meas:ent:{n}:reflectometry": f"sample {n}" for n in (4, 5, 6)})
 # the authors' comparisons: the Table 1 series (what each varies), the reproducibility set (a replicate set), the simulations
 C.comparisons(K, {grp("A"): ("series", "pillar_layout"), grp("B"): ("series", "objective_magnification"), grp("C"): ("series", "feature_height"),
                   grp("D"): ("series", "cycle_number"), grp("E"): ("series", "pulse_time"), grp("F"): ("series", "purge_time"),

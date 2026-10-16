@@ -62,6 +62,10 @@ sections below.
 - Claims carry stance (asserted, hedged, open, limitation) and variables (cause, effect: `lists.py` ids or `mechanism:<token>`);
   a user claim is a claim with author user and links into several papers; a bridge is a user fact with the transform.
 - One selection: whatever is in the tray is highlighted everywhere.
+- A comparison holds no setting; a setting goes on the activity whose members it governs. A setting the paper states once for several
+  activities (a cycle count per temperature row) goes on the first and is copied to the others, each copy citing the same elements
+  (`facts.spread`). A recipe-level lookup setting that belongs to one value of another setting (the Table 2 flows per H2 ratio)
+  carries that value as a qualifier (`ratio=`), so a join can key on it.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;

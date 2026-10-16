@@ -242,6 +242,22 @@ def points():
     return _points
 
 
+def spread(fid, parents, labels):
+    """A setting that governs several activities (a cycle count stated per temperature row, a thickness target stated for a set of
+    films) goes on the first activity it governs; the others get a copy, a new fact citing the same elements, its statement and
+    mentions prefixed by that activity's label (labels: {activity id: label}). A comparison holds no setting."""
+    byid = {r["fact_id"]: r for r in _facts}
+    src = byid[fid]
+    src["parent"] = parents[0]
+    key, ev0 = fid.split(":", 1)[0], src["evidence"].split(";")[0]
+    for p in parents[1:]:
+        row = dict(src)
+        n = _count[ev0] = _count.get(ev0, 0) + 1
+        row.update(fact_id=f"{key}:{ev0}#{n}", parent=p, statement=f"{labels.get(p, p)}: {src['statement']}",
+                   mentions=";".join(filter(None, [src["mentions"], labels.get(p, p)])), links="")
+        _facts.append(row)
+
+
 def comparisons(key, table, members=None):
     """Turn the surviving group rows into comparison facts: id :grp: -> :cmp:, type comparison, kind and the varied quantity ids
     from table {group id: (kind, varied)}; links stay purpose + members (members={group id: [...]} overrides them); facts under the

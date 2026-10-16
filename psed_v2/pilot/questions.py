@@ -243,8 +243,17 @@ def q8():
 def q9():
     """GPC at ratio 0.20 implied by the cycle numbers chosen to give 10 nm, per temperature, against the Fig. 7b colour-read GPC."""
     T = TREES["mat22"]
-    cyc = [f for f in T.facts(quantity="cycle_number", type="setting") if f["parent"].startswith("mat22:cmp")]
-    return unanswerable("; ".join(f"{fmt(f)} under {f['parent']}" for f in cyc), "facts in the wrong place: the cycle numbers of s5.p7 sit on the grid comparison, not on each cell deposition")
+    out = []
+    for e in T.entities():
+        v = T.vector(e)
+        if v.get("plasma_gas_ratio{gas=H2}") and fmt(v["plasma_gas_ratio{gas=H2}"][0]) == "0.20" and re.fullmatch(r"mat22:ent:T\d+_R0\.20", e) and v.get("cycle_number") and v.get("film_thickness"):
+            n, th = val(v["cycle_number"][0]), val(v["film_thickness"][0])
+            gpc = T.results(e).get("growth_per_cycle")
+            if n and th and gpc:
+                out.append((val(v["deposition_temperature"][0]), f"{fmt(v['deposition_temperature'][0])}: {g(n, 3)} cycles for {fmt(v['film_thickness'][0])} → {g(10 * th / n, 2)} Å implied vs {fmt(gpc[0])} read from colour"))
+    if not out:
+        return unanswerable("", "no cell carries its cycle count, thickness target and a GPC")
+    return answered("; ".join(t for _, t in sorted(out, reverse=True)), "per ratio-0.20 cell: the deposition's cycle count and 10 nm target (settings) against the colour-read GPC on the cell film")
 
 
 def q10():
@@ -265,8 +274,16 @@ def q12():
 def q13():
     """The H2 fraction of the total plasma feed (Ar included) for each ratio."""
     T = TREES["mat22"]
-    flows = T.facts(quantity="gas_flow_rate", type="setting")
-    return unanswerable(f"{len(flows)} flow settings in the recipe", "no join rule: the Table 2 flows carry their ratio only in the statement, not as a key")
+    by = collections.defaultdict(dict)
+    for f in T.facts(quantity="gas_flow_rate", type="setting"):
+        q = quals(f)
+        if q.get("step") == "plasma" and q.get("ratio") and q.get("gas"):
+            by[q["ratio"]][q["gas"]] = val(f)
+    out = []
+    for r, gases in sorted(by.items(), key=lambda x: float(x[0])):
+        tot = sum(gases.values())
+        out.append(f"ratio {r}: H2 {g(gases.get('H2', 0))} of {g(tot)} sccm = {g(100 * gases.get('H2', 0) / tot, 2)} %")
+    return answered("; ".join(out), "the recipe's Table 2 flows keyed by their ratio= qualifier, H2 over the sum of H2S, H2 and Ar") if out else unanswerable("", "no flows keyed by ratio")
 
 
 def q14():

@@ -1,6 +1,6 @@
 """Stage 2 facts for mat22 (10.1021_acs.chemmater.2c01154), read by hand from the element texts, the figure crops and the
 table crops. Heat-map cells: Fig. 2 classes (two-class legend) and Fig. 4 printed S/Mo values are typed in below; Fig. 7b
-and Fig. 8 colours are not read as values (only the regions, the black >dl band of Fig. 8 and the values the text gives).
+and Fig. 8 colours are read cell by cell against the bars (one fact each, "read from colour"; the black >dl band of Fig. 8 and the values the text gives).
 Points only from points.json (Fig. 1c) and accepted v1 curves."""
 import sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
@@ -224,9 +224,8 @@ F(K, "s3.p13", "claim", "The 0.94 films hold both c-MoS2 and metallic Mo, so too
   "etch S away.", mentions="0.94")
 
 # XPS chemistry (s3.p14 - s3.p20, Fig. 5)
-F(K, "s3.p14;fig5a;fig5b;fig5.cap;s3.x3", "setting", "XPS core levels of 150 °C films grown with several ratios and 140 cycles are "
-  "shown as examples; other temperatures are in Table S1.", quantity="deposition_temperature", value="150", unit="°C",
-  data_kind="chosen input", method="xps", mentions="150 °C;140 ALD cycles;Table S1;Figure 5;H2 flow ratios")
+F(K, "s3.p14;fig5a;fig5b;fig5.cap;s3.x3", "observation", "XPS core levels of 150 °C films grown with several ratios and 140 cycles are "
+  "shown as examples; other temperatures are in Table S1.", method="xps", mentions="150 °C;140 ALD cycles;Table S1;Figure 5;H2 flow ratios")
 F(K, "s3.p14;fig5a", "observation", "In the Mo 3d region most Mo is Mo4+, assigned to MoSx.", method="xps",
   mentions="Mo4+ (MoSx);Figure 5a")
 F(K, "s3.p14;s3.p15;fig5a", "observation", "All samples show two weaker doublets at higher binding energy: the highest is Mo6+ "
@@ -430,7 +429,7 @@ F(K, "s3.p33;fig8", "observation", "At a given temperature and fixed cycle count
   quantity="resistivity", data_kind="measured", method="electrical", mentions="Figure 8;Table S2")
 F(K, "s3.p34", "observation", "For amorphous films resistivity follows stoichiometry.", method="electrical")
 F(K, "s3.p34;fig8", "observation", "The most S-rich films (S/Mo ≥ 3) exceed the four-point probe detection limit, of order 1000 Ω cm "
-  "for 10 nm films.", quantity="resistivity", value="1000", censor=">dl", unit="Ω cm", data_kind="measured",
+  "for 10 nm films.", quantity="resistivity", value="1000", censor=">", unit="Ω cm", data_kind="measured",
   method="electrical", mentions="S/Mo ≥ 3;10 nm;>dl")
 F(K, "s3.p34", "observation", "Lower S/Mo, from higher ratio and/or temperature, lowers resistivity.", method="electrical")
 F(K, "s3.p34;fig8", "observation", "Lowest amorphous-film resistivity is 2 Ω cm, for MoS2.2 grown at 100 °C with ratio 0.65.",
@@ -633,7 +632,7 @@ T2 = [("0", "10", "0", "40"), ("0.20", "8", "2", "40"), ("0.35", "6.5", "3.5", "
 for i, (r, h2s, h2, ar) in enumerate(T2, start=1):
     for j, (g, v) in enumerate((("H2S", h2s), ("H2", h2), ("Ar", ar)), start=1):
         F(K, f"tab2.r{i}c{j};tab2.r{i}c0;tab2.r0c{j};tab2.cap", "setting", f"At {R} {r} the {g} flow through the ICP tube is "
-          f"{v} sccm.", quantity="gas_flow_rate", qualifiers=f"step=plasma;gas={g}", value=v, unit="sccm",
+          f"{v} sccm.", quantity="gas_flow_rate", qualifiers=f"step=plasma;gas={g};ratio={r}", value=v, unit="sccm",
           data_kind="chosen input", mentions=f"{hr(r)};{g} flow rate (sccm)")
 F(K, "s5.p6", "definition", "Cycle steps: (1) Mo precursor dose, (2) purge, (3) H2S/H2/Ar plasma, (4) purge, i.e. four main steps.")
 F(K, "s5.p6", "setting", "Mo(NtBu)2(NMe2)2 dose lasts 6 s.", quantity="pulse_time", qualifiers="step=reactant_A", value="6",
@@ -884,12 +883,12 @@ for r in ("0", "0.20", "0.50", "0.65", "0.80", "0.94"):
     F(K, "fig7a", "observation", f"Thickness against cycles for the ratio {r} film.", quantity="film_thickness", unit="nm",
       points_ref=ref, data_kind="measured", method="ellipsometry", mentions=f"{R}: {r}")
 F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged over the first 100 cycles (colour bar 0.50-1.75 "
-  "Å/cycle) against deposition temperature and ratio; cell colours are not read as values.", quantity="growth_per_cycle",
+  "Å/cycle) against deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="growth_per_cycle",
   unit="Å/cycle", method="ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
 
 # ------------------------------------------------------------------ Fig. 8
 F(K, "fig8;fig8.cap", "observation", "Fig. 8 maps four-point probe resistivity (log colour bar 10^-3 to 10^3 Ω cm, top band >dl) "
-  "over deposition temperature and ratio; cell colours are not read as values.", quantity="resistivity", unit="Ω cm",
+  "over deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="resistivity", unit="Ω cm",
   method="electrical", mentions="Resistivity (Ωcm);>dl")
 F(K, "fig8", "observation", "Cells drawn in the black >dl band: 200 and 150 °C at ratio 0; 200, 150, 100 and 50 °C at 0.20; 100 °C "
   "at 0.50.", quantity="resistivity", censor=">dl", unit="Ω cm", method="electrical",
@@ -1074,7 +1073,7 @@ GPC7B_VALUES = {(450, "0.20"): 1.2, (450, "0.80"): 1.65, (350, "0.20"): 0.85, (3
                 (150, "0"): 0.7, (150, "0.20"): 0.75, (150, "0.50"): 0.9, (150, "0.65"): 1.1, (150, "0.80"): 1.3, (150, "0.94"): 0.7,
                 (100, "0.20"): 1.15, (100, "0.50"): 1.15, (100, "0.65"): 1.15, (100, "0.80"): 1.4, (100, "0.94"): 0.7, (50, "0.20"): 1.7, (50, "0.80"): 1.45}
 RHO8_VALUES = {(450, "0.20"): 100, (450, "0.80"): 1, (350, "0.20"): 30, (350, "0.50"): 100, (350, "0.80"): 1, (300, "0.20"): 10,
-               (250, "0"): None, (250, "0.20"): 500, (250, "0.35"): 30, (250, "0.50"): 5, (250, "0.65"): 1, (250, "0.80"): 0.5, (250, "0.94"): 0.02,
+               (250, "0"): 1000, (250, "0.20"): 500, (250, "0.35"): 30, (250, "0.50"): 5, (250, "0.65"): 1, (250, "0.80"): 0.5, (250, "0.94"): 0.02,
                (200, "0"): None, (200, "0.20"): None, (200, "0.50"): 10, (200, "0.65"): 1, (200, "0.80"): 0.5, (200, "0.94"): 0.02,
                (150, "0"): None, (150, "0.20"): None, (150, "0.50"): 100, (150, "0.65"): 3, (150, "0.80"): 0.5, (150, "0.94"): 0.02,
                (100, "0.20"): None, (100, "0.50"): None, (100, "0.65"): 3, (100, "0.80"): 0.5, (100, "0.94"): 0.02, (50, "0.20"): None, (50, "0.80"): 3}
@@ -1085,9 +1084,8 @@ for (t, r) in CELLS:
                       quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å", data_kind="measured", method="ellipsometry", mentions=f"{r};{t} °C")
     v = RHO8_VALUES[(t, r)]
     if v is None:
-        RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the detection limit (black), read from colour",
-                         quantity="resistivity", censor=">dl", value_text="above the detection limit", unit="Ω cm", data_kind="measured", method="electrical",
-                         mentions=f"{r};{t} °C")
+        RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the four-point-probe limit of order 1000 Ω cm (black), read from colour",
+                         quantity="resistivity", censor=">", value="1000", unit="Ω cm", data_kind="measured", method="electrical", mentions=f"{r};{t} °C")
     else:
         RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity read from colour against the log bar (about)",
                          quantity="resistivity", value=f"{v:g}", unit="Ω cm", data_kind="measured", method="electrical", mentions=f"{r};{t} °C")
@@ -1503,6 +1501,23 @@ for (t, r), fid7 in GPC7B.items():
             N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "ellipsometry" else "fig8",
               kind="measurement", how="stated", label_as_printed=meth)
         next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = act
+# a comparison holds no setting: the cycle counts of s5.p7 go on every cell deposition of their temperatures (the first gets the
+# fact, the others a copy citing s5.p7), the 10 nm target on every ratio-0.20 cell, the Table 1 thickness on the glassy-carbon
+# depositions, the morphology films' thickness on the 150 °C cells, the WS2/TiS2 procedure and materials on their depositions;
+# the grid-wide ranges (100-140 cycles, 10-20 nm films) are recipe settings
+LAB = {d: spec["label"] for d, spec in DEPS.items()}
+cells_at = lambda ts: [f"{K}:dep:T{t}_R{r}" for (t, r) in sorted(CELLS, key=lambda c: (-c[0], float(c[1]))) if t in ts]
+C.spread(f"{K}:s5.p7#1", cells_at({450}), LAB)
+C.spread(f"{K}:s5.p7#2", cells_at({50, 300, 350}), LAB)
+C.spread(f"{K}:s5.p7#3", cells_at({100, 150, 200, 250}), LAB)
+C.spread(f"{K}:s5.p7#4", [f"{K}:dep:T{t}_R0.20" for (t, r) in sorted(CELLS, key=lambda c: -c[0]) if r == "0.20"], LAB)
+C.spread(f"{K}:s3.p19#1", [d for d in DEPS if ":dep:gc_" in d], LAB)
+C.spread(f"{K}:s3.p22#2", cells_at({150}), LAB)
+C.spread(f"{K}:s5.p8#1", [d for d in DEPS if ":dep:WS2" in d or ":dep:TiS2" in d], LAB)
+C.spread(f"{K}:s5.p8#6", [d for d in DEPS if ":dep:WS2" in d], LAB)
+C.spread(f"{K}:s5.p8#7", [d for d in DEPS if ":dep:TiS2" in d], LAB)
+for fid_ in (f"{K}:fig2.cap#1", f"{K}:s3.p5#4"):
+    next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:recipe"
 # the authors' comparisons: the T x ratio grid (its members the 32 cell films), one ratio series per temperature row, the cycle
 # series, the H2S tests, the WS2 and TiS2 series
 CELLS_ = [f"{K}:ent:T{t}_R{r}" for (t, r) in CELLS]
