@@ -11,11 +11,12 @@
   lists.py and the paper keys; min and max for deposition temperature, process pressure, cycle number and exposure,
   compared in lists.UNITS after a unit conversion of the value as printed); middle, the runs of the three papers that
   pass every filter by their inherited settings (the nearest scope wins, as in the cards), one line each: paper, run
-  label, the setting the run varies with its value, "why" (its group's purpose, short) and "result" (its first linked
+  label, the setting the run varies with its value, "why" (its comparison memberships: "point of the T x H2 grid (Fig. 2, 4)",
+  "Series E — TMA pulse") and "result" (its first linked
   claim, else its main result value), an add button; right, a tray of at most eight runs or curves, and the compare
   panel for it, which starts with "relations" (one line per tray pair: the differing settings and, for each result both
   have, the direction of change with the two values; "paper's own comparison" when the pair shares a group, "not compared
-  by the authors" otherwise, or the verdict's reason when they share no result) and "what the papers say" (claims linked
+  by the authors" otherwise, replicate sets labelled replicate, or the verdict's reason when they share no result) and "what the papers say" (claims linked
   to two or more tray items first, then per item, with stance and scope; claims of different papers on one effect
   variable side by side), then: (a) an overlay plot of the tray's curves that share a quantity and an abscissa (the x=
   qualifier), with the y and x transforms of "Fig. 9 from tree" (S/N by the run's cycle number, S/S_plateau by its
@@ -501,7 +502,9 @@ function claimsFor(d,T,id){const ids=new Set(chain(T,id));below(T,id).forEach(f=
  return d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)))}   // claims linked to the entity, an activity above it, their facts or its comparisons
 function resultOf(r){const own_=new Set([r.id,...below(r.T,r.id).map(f=>f.fact_id)]);const c=claimsFor(r.d,r.T,r.id).filter(c=>c.links.split(";").some(l=>own_.has(l)))[0];if(c)return {c,text:short(c.statement)};
  const ks=Object.values(r.res).filter(o=>valStr(o.fs[0])).sort((a,b)=>{const ra=RES_PRIM.indexOf(a.f.quantity),rb=RES_PRIM.indexOf(b.f.quantity);return (ra<0?9:ra)-(rb<0?9:rb)});return ks.length?{f:ks[0].fs[0],text:`${qtext(ks[0].f)} ${valStr(ks[0].fs[0])}`}:null}
-const soWhat=r=>{const cs=compsOf(r.T,r.id),x=resultOf(r);return `${cs.length?`<span class="chip why" title="${esc(cs.map(c=>c.statement).join(" · "))}">why: ${esc(cs.map(c=>`${c.label_as_printed||c.fact_id} (${c.kind})`).join(" · "))}</span>`:""}${x?`<span class="chip res" title="${esc(x.c?x.c.statement:x.f.statement)}">result: ${esc(x.text)}</span>`:""}`};   // why: the stated comparisons the entity is in
+const whyOf=(T,c)=>{const v=variedAmong(T,members(T,c)).map(x=>qtext(x.f));const lab=c.label_as_printed||c.fact_id.split(":").pop();const figs=[...new Set((c.evidence||"").split(";").filter(e=>e.startsWith("fig")).map(e=>e.replace(/^fig(\d+).*/,"$1")))];const where=figs.length?` (Fig. ${figs.join(", ")})`:"";
+ return c.kind==="grid"?`point of the ${lab} grid${where}`:c.kind==="replicate"?`replicate set ${lab}`:`${lab} — ${v.join(", ")||qshort(c.quantity.split(";")[0],"")}`};   // "point of the T x H2 grid (Fig. 2, 4)", "Series E — TMA pulse"
+const soWhat=r=>{const cs=compsOf(r.T,r.id),x=resultOf(r);return `${cs.length?`<span class="chip why" title="${esc(cs.map(c=>c.statement).join(" · "))}">why: ${esc(cs.map(c=>whyOf(r.T,c)).join(" · "))}</span>`:""}${x?`<span class="chip res" title="${esc(x.c?x.c.statement:x.f.statement)}">result: ${esc(x.text)}</span>`:""}`};   // why: the stated comparisons the entity is in
 // relations: per tray pair, the differing settings and the direction of each shared result; what the papers say: the claims behind the tray
 function relations(items){const out=[];items.forEach((a,i)=>items.slice(i+1).forEach(b=>{const v=verdict(a,b);const d=diffs(a,b).slice(0,4).map(x=>`${qtext(x.f)} ${x.va} vs ${x.vb}`);
  const shared_c=a.r.i===b.r.i?compsOf(a.r.T,a.r.id).filter(c=>compsOf(b.r.T,b.r.id).includes(c)):[];const same=shared_c.length>0;const repl=shared_c.some(c=>c.kind==="replicate");const shared=Object.keys(a.keys).filter(k=>k in b.keys);
