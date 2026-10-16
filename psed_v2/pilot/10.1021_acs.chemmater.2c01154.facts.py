@@ -1540,5 +1540,9 @@ C.comparisons(K, {grp("map"): ("grid", "deposition_temperature;plasma_gas_ratio"
                   grp("cyc"): ("series", "cycle_number"), grp("h2s"): ("series", "gas_flow_rate"), grp("WS2"): ("series", "plasma_gas_ratio"),
                   grp("TiS2"): ("series", "plasma_gas_ratio")}, members={grp("map"): CELLS_})
 # what each ± is (P2): literature averages, the wafer map's spread over positions; Table 1 does not say
+# what each fraction is a fraction of (P4): at.% of all atoms, an S/Mo (S/W) value per metal atom, by their definitions
+AT_PCT = lambda u: u.replace(" ", "") == "at.%"
+C.relative_to(K, {f["fact_id"].split(":", 1)[1]: ("all_atoms" if AT_PCT(f["unit"]) else "metal_atoms") for f in C.facts()
+                  if "#" in f["fact_id"] and f["type"] != "cited" and (f["quantity"] == "composition" or AT_PCT(f["unit"]))})
 C.uncertainty_kinds(K, {'s3.p16#5': ('literature', ''), 's3.p16#6': ('literature', ''), 'fig1c#4': ('position', 'not_stated'), 'tab1.r1c1#1': ('not_stated', ''), 'tab1.r1c2#1': ('not_stated', ''), 'tab1.r1c4#1': ('not_stated', ''), 'tab1.r1c6#1': ('not_stated', ''), 'tab1.r1c7#1': ('not_stated', ''), 'tab1.r2c1#1': ('not_stated', ''), 'tab1.r2c2#1': ('not_stated', ''), 'tab1.r2c4#1': ('not_stated', ''), 'tab1.r2c6#1': ('not_stated', ''), 'tab1.r2c7#1': ('not_stated', ''), 'tab1.r3c1#1': ('not_stated', ''), 'tab1.r3c2#1': ('not_stated', ''), 'tab1.r3c4#1': ('not_stated', ''), 'tab1.r3c6#1': ('not_stated', ''), 'tab1.r3c7#1': ('not_stated', '')})
 write(K, PID)

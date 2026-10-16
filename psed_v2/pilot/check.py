@@ -300,6 +300,8 @@ def check_tree(rows, els):
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
             qd = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p)
+            if r["quantity"] in ("composition", "mass_gain", "porosity") and r["type"] != "cited" and "relative_to" not in qd:
+                err.append(f"{i}: {r['quantity']} without relative_to= (what it is a fraction of; P4)")
             if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:
                 err.append(f"{i}: uncertainty {r['uncertainty']} without a kind from lists.UNCERTAINTY_KINDS (P2)")
             if r["uncertainty"] and not re.fullmatch(r"\d+(\.\d+)?(e-?\d+)?", r["uncertainty"]):

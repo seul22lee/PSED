@@ -208,7 +208,7 @@ def q11():
 def q12():
     """The full composition of the 150 °C, 0.80 film including H, and its density relative to bulk."""
     T = TREES["mat22"]
-    es = [e for e in T.entities() if T.results(e).get("composition{element=H}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
+    es = [e for e in T.entities() if any(f["quantity"] == "composition" and quals(f).get("element") == "H" for fs in T.results(e).values() for f in fs) and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
     if not es:
         return unanswerable("", "no 150 °C, ratio 0.80 entity carries an H content")
     e = es[0]; h, r = derive(T, e, "h_per_metal"), derive(T, e, "density_relative_to_bulk")
@@ -263,11 +263,13 @@ def q16():
     for m in T.member_entities(T.comp("schedules")):
         if T.byid[T.byid[m]["parent"]]["type"] != "activity":
             continue
-        r = results_deep(T, m); x, gv = r.get("composition{species=ZnO}"), r.get("mass_gain")
-        if x and gv:
-            for a, b, ratio, w in routes([x[0], gv[0]]):
-                out.append(f"{T.label(m)}: XRD zincite {fmt(a)} ({a['fact_id']}) over mass gain {fmt(b)} ({b['fact_id']}) = {g(ratio, 2)} → {g(100 * (1 - ratio), 2)} % of the coating not crystalline; {w}")
-    return answered(" · ".join(out), "routes() over the pair's gravimetric mass gain and its XRD piece's zincite weight percent (results_deep: the pieces' results count for the specimen), the ratio with the definitions that differ named") if out else unanswerable("", "no pair with both an XRD zincite fraction and a mass gain")
+        r = results_deep(T, m); x = [f for k, fs in r.items() for f in fs if f["quantity"] == "composition" and quals(f).get("species") == "ZnO" and f["value"]]
+        d = derive(T, m, "coating_mass_fraction")
+        if x and "error" not in d:
+            xb = quals(x[0]).get("relative_to", "not_stated").replace("_", " ")
+            out.append(f"{T.label(m)}: XRD zincite {fmt(x[0])} ({x[0]['fact_id']}, basis {xb}) against the coating's mass fraction " +
+                       " or ".join(f"{g(v, 3)} % if the {lab}" for lab, v in d["readings"]) if d["readings"] else f"{T.label(m)}: {dtext(d)}")
+    return answered(" · ".join(out), "lists.DERIVED coating_mass_fraction from the pair's mass gain, one reading per basis (the paper states neither), beside the XRD piece's zincite wt% (its basis not stated either)") if out else unanswerable("", "no pair with both an XRD zincite fraction and a mass gain")
 
 
 def q17():
@@ -279,7 +281,8 @@ def q17():
         a, b = derive(T, m, "moles_deposited"), derive(T, m, "moles_from_mass_gain")
         if "error" in a or "error" in b:
             return unanswerable("", f"{T.label(m)}: {a.get('error', '')} {b.get('error', '')}".strip())
-        out.append(f"{T.label(m)}: Δn_s × N = {g(a['value'], 2)} mmol vs mass gain → {g(b['value'], 2)} mmol, {g(100 * (a['value'] / b['value'] - 1), 2)} % apart"); assumed |= set(a["assumed"]) | set(b["assumed"])
+        out.append(f"{T.label(m)}: Δn_s × N = {g(a['value'], 2)} mmol vs mass gain → " + " or ".join(f"{g(v, 2)} mmol ({g(100 * (a['value'] / v - 1), 2)} % apart) if the {lab}" for lab, v in (b["readings"] or [("stated basis", b["value"])])))
+        assumed |= set(a["assumed"]) | set(b["assumed"])
     return answered("; ".join(out) + f" · assumed inputs: {', '.join(sorted(assumed))} (molar mass of ZnO, two NPCs per run); the gap is the paper's own: Δn_s is from GPC via the porosity model, the mass gain is weighed",
                     "lists.DERIVED moles_deposited (Δn_s × cycles) and moles_from_mass_gain (mass gain × powder mass × NPCs per run / M) on each pair entity")
 

@@ -484,7 +484,7 @@ def derive(T, ent, did, route=False, _depth=0):
             f = stated[0]
             return dict(value=val(f), unit=f["unit"], stated=f, inputs=[], assumed=[], notes=[f"stated: {f['fact_id']} {fmt(f)}" + (f" (and {len(stated) - 1} more)" if len(stated) > 1 else "")])
     subs = {"@material": T.material(ent), "@A": T.reactant_A(ent)}
-    args, used, assumed, notes = {}, [], [], []
+    args, used, assumed, notes, readings = {}, [], [], [], {}
     for spec in D["inputs"]:
         need = {k: subs.get(v, v) for k, v in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p)}
         cands = _candidates(T, ent, spec, need)
@@ -518,10 +518,21 @@ def derive(T, ent, did, route=False, _depth=0):
         if others and src != "assumed":
             notes.append(f"{spec['name']}: {f['fact_id']} used, also " + ", ".join(f"{o['fact_id']} {fmt(o)}" for o in others[:3]))
         v = L.convert(val(f), f["unit"], spec["unit"])
+        if spec.get("basis") and f["quantity"] in L.BASIS:                     # a fraction: expressed on the basis the definition needs (P4)
+            fb = quals(f).get("relative_to", "not_stated")
+            conv = L.BASIS[f["quantity"]]
+            if fb == "not_stated":
+                readings[spec["name"]] = (L.LABELS.get(f["quantity"], f["quantity"]), [(b, conv[(b, spec["basis"])](v)) for (b, to) in conv if to == spec["basis"]])
+                v = readings[spec["name"]][1][0][1]
+            elif (fb, spec["basis"]) in conv:
+                v = conv[(fb, spec["basis"])](v)
         args[spec["name"]] = v; used.append((spec["name"], f["fact_id"], v, spec["unit"], src))
         if src == "assumed":
             assumed.append(f["fact_id"])
-    return dict(value=D["fn"](**args), unit=D["unit"], inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes)
+    out = dict(value=D["fn"](**args), unit=D["unit"], inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes, readings=[])
+    for name, (lab, rs) in readings.items():                                    # one value per basis when the paper does not state it
+        out["readings"] = [(f"{lab} is relative to the {b.replace('_', ' ')}", D["fn"](**{**args, name: v})) for b, v in rs]
+    return out
 
 
 def dtext(d, digits=3):
@@ -529,6 +540,9 @@ def dtext(d, digits=3):
     if "error" in d:
         return d["error"]
     ins = ", ".join(f"{n}={g(v, digits)} {u} ({fid}{'' if src in ('result', 'setting') else ', ' + src})".replace(" (", " (") for n, fid, v, u, src in d["inputs"])
+    if d.get("readings"):                                                       # both readings in one line (P4)
+        return " or ".join(f"{g(v, digits)} {d['unit']} if {lab}" for lab, v in d["readings"]) + (f" [{ins}]" if ins else "") + \
+            (f" assumed: {', '.join(d['assumed'])}" if d["assumed"] else "")
     return f"{g(d['value'], digits)} {d['unit']}".rstrip() + (f" [{ins}]" if ins else "") + (f" assumed: {', '.join(d['assumed'])}" if d["assumed"] else "") + \
         ("; " + "; ".join(d["notes"]) if d["notes"] else "")
 

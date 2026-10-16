@@ -390,6 +390,14 @@ def fill_uncertainty():
                 r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
 
 
+def relative_to(key, table):
+    """What a fraction is a fraction of (P4): table {fact suffix: basis}, appended to the fact's qualifiers as relative_to=<basis>."""
+    byid = {r["fact_id"]: r for r in _facts}
+    for sfx, b in table.items():
+        r = byid[f"{key}:{sfx}"]
+        r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], f"relative_to={b}"]))
+
+
 def uncertainty_kinds(key, table):
     """What each ± is (P2): table {fact suffix: (kind, n)}, kind from lists.UNCERTAINTY_KINDS, n the number of repeats or "".
     Applied after fill_uncertainty; check.py requires a kind on every fact with an uncertainty."""
