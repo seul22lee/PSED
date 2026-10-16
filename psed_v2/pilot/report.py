@@ -151,7 +151,7 @@ def layer(key):
     quantities (lists.DERIVED, each with its inputs and the assumed facts it used; a stated quantity's computed route beside it),
     its routes (two facts reaching one quantity by different definitions, as a ratio) and the entities that are the same experiment
     within the tolerated keys; per stated series a power-law fit of each result against the varied setting."""
-    import questions as Q
+    import query as Q
     T = Q.TREES[key]
     tol = ("substrate", "cycle_number", "film_thickness")
     derived, routes, join, fits = {}, {}, {}, {}
