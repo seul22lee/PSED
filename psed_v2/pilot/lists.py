@@ -29,6 +29,9 @@ QUANTITIES = sorted({
 # the film material (material, value_text) and the test structure type (structure_type, value_text; Cremers 2019's taxonomy)
 # of a process or group; the workbench filters list these ids
 MATERIALS = ["Al2O3", "MoS2", "WS2", "TiS2", "ZnO"]
+
+# panels that encode a value as a colour against a bar: a valued fact citing one says "read from colour" in its statement (check.py)
+COLOUR_PANELS = {"mat22": {"fig7b": "GPC 0.50 to 1.75 Å/cycle, linear bar", "fig8": "resistivity 1e-3 to 1e3 Ω cm, log bar; black = above the detection limit"}}
 STRUCTURES = ["planar", "lateral_channel", "trench", "hole", "pillar_array", "nanotube_array", "porous"]
 
 TOKEN = re.compile(r"^[A-Za-z0-9+_.]+$")

@@ -1064,6 +1064,34 @@ for cf in C.facts():
     if cf["type"] == "claim":
         cf["cause"], cf["effect"] = VARS[cf["fact_id"].split(":", 1)[1]]  # KeyError = a claim without variables
 
+# ------------------------------------------------------------------ the colour cells of Fig. 7b (GPC) and Fig. 8 (resistivity), read against their bars
+# One fact per tested cell, read by eye from the colour against the bar (Fig. 7b linear 0.50-1.75 Å/cycle; Fig. 8 log 1e-3-1e3 Ω cm,
+# black = above the detection limit): the statement says "read from colour" (lists.COLOUR_PANELS, check.py). Placed under the cell
+# film's in situ SE and four-point-probe measurement activities in stage 3b (GPC7B, RHO8: (t, r) -> fact id).
+GPC7B_VALUES = {(450, "0.20"): 1.2, (450, "0.80"): 1.65, (350, "0.20"): 0.85, (350, "0.50"): 1.25, (350, "0.80"): 1.45, (300, "0.20"): 0.85,
+                (250, "0"): 0.6, (250, "0.20"): 0.65, (250, "0.35"): 0.8, (250, "0.50"): 0.95, (250, "0.65"): 1.1, (250, "0.80"): 1.3, (250, "0.94"): 0.65,
+                (200, "0"): 0.6, (200, "0.20"): 0.6, (200, "0.50"): 0.85, (200, "0.65"): 1.1, (200, "0.80"): 1.3, (200, "0.94"): 0.7,
+                (150, "0"): 0.7, (150, "0.20"): 0.75, (150, "0.50"): 0.9, (150, "0.65"): 1.1, (150, "0.80"): 1.3, (150, "0.94"): 0.7,
+                (100, "0.20"): 1.15, (100, "0.50"): 1.15, (100, "0.65"): 1.15, (100, "0.80"): 1.4, (100, "0.94"): 0.7, (50, "0.20"): 1.7, (50, "0.80"): 1.45}
+RHO8_VALUES = {(450, "0.20"): 100, (450, "0.80"): 1, (350, "0.20"): 30, (350, "0.50"): 100, (350, "0.80"): 1, (300, "0.20"): 10,
+               (250, "0"): None, (250, "0.20"): 500, (250, "0.35"): 30, (250, "0.50"): 5, (250, "0.65"): 1, (250, "0.80"): 0.5, (250, "0.94"): 0.02,
+               (200, "0"): None, (200, "0.20"): None, (200, "0.50"): 10, (200, "0.65"): 1, (200, "0.80"): 0.5, (200, "0.94"): 0.02,
+               (150, "0"): None, (150, "0.20"): None, (150, "0.50"): 100, (150, "0.65"): 3, (150, "0.80"): 0.5, (150, "0.94"): 0.02,
+               (100, "0.20"): None, (100, "0.50"): None, (100, "0.65"): 3, (100, "0.80"): 0.5, (100, "0.94"): 0.02, (50, "0.20"): None, (50, "0.80"): 3}
+assert set(GPC7B_VALUES) == set(RHO8_VALUES) == set(CELLS)
+GPC7B, RHO8 = {}, {}
+for (t, r) in CELLS:
+    GPC7B[(t, r)] = F(K, "fig7b", "observation", f"Fig. 7b cell at {t} °C and ratio {r}: GPC over the first 100 cycles, read from colour against the bar (about)",
+                      quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å", data_kind="measured", method="ellipsometry", mentions=f"{r};{t} °C")
+    v = RHO8_VALUES[(t, r)]
+    if v is None:
+        RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the detection limit (black), read from colour",
+                         quantity="resistivity", censor=">dl", value_text="above the detection limit", unit="Ω cm", data_kind="measured", method="electrical",
+                         mentions=f"{r};{t} °C")
+    else:
+        RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity read from colour against the log bar (about)",
+                         quantity="resistivity", value=f"{v:g}", unit="Ω cm", data_kind="measured", method="electrical", mentions=f"{r};{t} °C")
+
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.
 # The heat-map film of a pair was measured by Raman (Fig. 2), XPS (Fig. 4), SEM/AFM (Fig. 6a), in situ SE (Fig. 7a) and four-point
@@ -1354,6 +1382,8 @@ for c, sup in CLAIM.items():
 for f in C.facts():                                                            # definitions: terms and symbols of the paper
     if f["type"] == "definition" and f["fact_id"] not in PARENT:
         PARENT[f["fact_id"]] = PAPER
+for f_ in list(GPC7B.values()) + list(RHO8.values()):                           # the colour cells: placed under their cell films in stage 3b
+    PARENT[f_] = PROC
 left = [f["fact_id"] for f in C.facts() if f["fact_id"] not in PARENT]
 assert not left, left
 
@@ -1464,6 +1494,15 @@ for d, spec in DEPS.items():
         temp(spec["evidence"], t, spec["label"], f"{t} °C;{spec['label']}"); C.facts()[-1]["parent"] = d
     if "plasma_gas_ratio" not in have:
         ratio(spec["evidence"], rt, spec["label"], f"{rt};{spec['label']}"); C.facts()[-1]["parent"] = d
+# the colour cells of Fig. 7b and Fig. 8: under the cell film's in situ SE and four-point-probe measurement activities (made here if the
+# cell had none)
+for (t, r), fid7 in GPC7B.items():
+    for fid_, meth, lab in ((fid7, "ellipsometry", "in situ SE"), (RHO8[(t, r)], "electrical", "four-point probe")):
+        act = f"{K}:meas:ent:T{t}_R{r}:{meth}"
+        if not any(x["fact_id"] == act for x in C.facts()):
+            N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "ellipsometry" else "fig8",
+              kind="measurement", how="stated", label_as_printed=meth)
+        next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = act
 # the authors' comparisons: the T x ratio grid (its members the 32 cell films), one ratio series per temperature row, the cycle
 # series, the H2S tests, the WS2 and TiS2 series
 CELLS_ = [f"{K}:ent:T{t}_R{r}" for (t, r) in CELLS]

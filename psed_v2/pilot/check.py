@@ -5,7 +5,7 @@
 
 Facts (per paper, <paper_id>.*): fact ids unique; evidence ids and inputs resolve; vocabularies (type, quantity, qualifiers, data_kind, method,
 censor; material and structure_type value_texts from lists.MATERIALS and STRUCTURES; a claim's stance from lists.STANCES; cause and effect quantity ids or mechanism tokens); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
-also a data_kind; values are numbers; every points_ref names a curve of <paper_id>.points.json, carries x= (its abscissa) and every curve is used; no two facts
+also a data_kind; values are numbers; a value read off a colour-bar panel (lists.COLOUR_PANELS) says "read from colour"; every points_ref names a curve of <paper_id>.points.json, carries x= (its abscissa) and every curve is used; no two facts
 state the same thing (same type, quantity, qualifiers, value, range, unit, value_text, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
@@ -96,6 +96,9 @@ def check(pid):
             bad("value without quantity")
         if (f["value"] or f["value_min"] or f["value_max"] or f["points_ref"]) and not f["data_kind"]:
             bad("value without data_kind")
+        if ev[0] in L.COLOUR_PANELS.get(KEYS[pid], {}) and (f["value"] or f["value_min"] or f["value_max"] or f["value_text"]) \
+                and "read from colour" not in f["statement"]:                      # the fact's own element is a colour-bar panel
+            bad("a value from a colour-bar panel must say 'read from colour'")
         if f["points_ref"]:
             used_points.add(f["points_ref"])
             if f["points_ref"] not in pts:
