@@ -471,7 +471,7 @@ QUESTIONS = [("Q1", "yim20", q1), ("Q2", "yim20", q2), ("Q3", "yim20", q3), ("Q4
 if __name__ == "__main__":
     prev = {r["id"]: r for r in csv.DictReader((HERE / "questions.csv").open(encoding="utf-8"))} if (HERE / "questions.csv").exists() else {}
     rows, counts = [], collections.Counter()
-    for qid, kind, fn in QUESTIONS:
+    for qid, qkind, fn in QUESTIONS:
         try:
             a = fn()
         except Exception as e:                                                  # a failing computation is an unanswerable question, with the error
@@ -480,7 +480,7 @@ if __name__ == "__main__":
         changed = prev.get(qid, {}).get("changed", "")
         if prev.get(qid) and prev[qid]["status"] != a["status"]:
             changed = (changed + "; " if changed else "") + f"{prev[qid]['status']} -> {a['status']}"
-        rows.append(dict(id=qid, question=fn.__doc__.strip(), kind=kind, status=a["status"], answer=a["answer"], how=a["how"], changed=changed))
+        rows.append(dict(id=qid, question=fn.__doc__.strip(), kind=qkind, status=a["status"], answer=a["answer"], how=a["how"], changed=changed))
         print(f"{qid:4s} {a['status']:12s} {a['answer'][:110]}{' | ' + a['how'][:90] if a['how'] else ''}")
     with (HERE / "questions.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["id", "question", "kind", "status", "answer", "how", "changed"]); w.writeheader(); w.writerows(rows)
