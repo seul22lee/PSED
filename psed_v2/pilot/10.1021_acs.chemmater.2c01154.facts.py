@@ -148,13 +148,13 @@ F(K, "s3.p5;fig1b", "observation", "With more cycles the E2g1 peak moves to lowe
   "the panel), confirming thickness control.", method="raman", mentions="E1g;A1g;ref. 55;ref. 56")
 F(K, "s3.p5", "claim", "Thickness can be set by cycle number from about one monolayer to tens of nm.")
 F(K, "s3.p5", "observation", "Most H2-flow-ratio comparisons use films 10-20 nm thick made with 100-140 cycles.",
-  quantity="film_thickness", value_min="10", value_max="20", unit="nm", data_kind="measured", method="ellipsometry",
+  quantity="film_thickness", value_min="10", value_max="20", unit="nm", data_kind="measured", method="spectroscopic_ellipsometry",
   mentions="100-140 ALD cycles")
 
 # s3.p6 / Fig. 1c, 1d
 F(K, "s3.p6;fig1c;fig1.cap;s5.p11", "observation", "Thickness standard deviation over a 4\" wafer is 3.3% (film mean 5.1 ± 0.2 nm "
   "printed on the map).", quantity="film_thickness", qualifiers="stat=relative_sd;between=position;n=not_stated", value="3.3", unit="%", data_kind="measured",
-  method="ellipsometry", mentions="4\";σ = 3.3%;Figure 1c")
+  method="spectroscopic_ellipsometry", mentions="4\";σ = 3.3%;Figure 1c")
 F(K, "s3.p6", "observation", "MoS2 films about 1-5 nm thick are smooth and continuous with no visible holes by AFM.",
   method="afm", mentions="Figures S3;S4")
 F(K, "s3.p6;fig1d;fig1.cap", "setting", "MoS2 is deposited on PET at the lowest temperature, 100 °C, with optimized ratio 0.80.",
@@ -338,7 +338,7 @@ F(K, "s3.p21", "claim", "Hydrogen is the main impurity and clearly increases wit
 F(K, "s3.p22", "claim", "Morphology matters: roughness can raise resistivity by carrier scattering, hinder integration in "
   "nanoscale devices, and tells about growth mechanisms.")
 F(K, "s3.p22;fig6a;fig6.cap;s3.x5", "observation", "Morphology comparisons use relatively thick films, 8-20 nm, grown with 140 cycles.",
-  quantity="film_thickness", value_min="8", value_max="20", unit="nm", data_kind="measured", method="ellipsometry",
+  quantity="film_thickness", value_min="8", value_max="20", unit="nm", data_kind="measured", method="spectroscopic_ellipsometry",
   mentions="140 ALD cycles;Figure 6a")
 F(K, "s3.p22", "observation", "Thinner films are smoother and differ less between conditions.", method="sem")
 F(K, "s3.p22;fig6a", "observation", "At 150 °C, amorphous films from ratios 0-0.50 are very smooth by SEM and AFM.", method="sem",
@@ -386,16 +386,16 @@ F(K, "s3.p26", "claim", "Excess surface S at low temperature fits the need for a
 
 # ------------------------------------------------------------------ growth
 F(K, "s3.p27;fig7a;fig7.cap;s3.x6", "observation", "At 150 °C, in situ SE shows amorphous films from ratios 0 to 0.50 thickening "
-  "linearly with cycles.", method="ellipsometry", mentions="H2 flow ratio 0;0.50;150 °C;Figure 7a;Figure S10")
+  "linearly with cycles.", method="spectroscopic_ellipsometry", mentions="H2 flow ratio 0;0.50;150 °C;Figure 7a;Figure S10")
 F(K, "s3.p27;fig7a", "observation", "Crystalline films just past onset (0.65, 150 °C) also grow roughly linearly but with a "
-  "higher GPC than amorphous ones.", method="ellipsometry", mentions="0.65;150 °C")
+  "higher GPC than amorphous ones.", method="spectroscopic_ellipsometry", mentions="0.65;150 °C")
 F(K, "s3.p27;s3.p28;fig7a", "observation", "Ratio 0.80 gives clearly non-linear growth with GPC rising as cycles accumulate.",
-  method="ellipsometry", mentions="0.80")
-F(K, "s3.p28;fig7a", "observation", "Ratio 0.94 lowers the GPC again.", method="ellipsometry", mentions="0.94")
+  method="spectroscopic_ellipsometry", mentions="0.80")
+F(K, "s3.p28;fig7a", "observation", "Ratio 0.94 lowers the GPC again.", method="spectroscopic_ellipsometry", mentions="0.94")
 F(K, "s3.p28", "claim", "The lower GPC at 0.94 may reflect a mixed MoS2/Mo film whose phases differ in density, mechanism and "
   "morphology.", mentions="MoS2;Mo")
 F(K, "s3.p29;fig7b;fig7.cap;s3.x6", "observation", "GPC averaged over the first 100 cycles increases from ratio 0 to 0.80 at every "
-  "temperature.", quantity="growth_per_cycle", data_kind="measured", method="ellipsometry",
+  "temperature.", quantity="growth_per_cycle", data_kind="measured", method="spectroscopic_ellipsometry",
   mentions="first 100 cycles;H2 flow ratio 0;0.80;Figure 7b;Figure S11")
 F(K, "s3.p29;s3.p30;s3.p31", "claim", "Two factors explain the GPC trend: more adsorption sites for the Mo precursor at higher "
   "ratio, and more surface area and reactive fin edges at higher ratio and temperature.")
@@ -419,7 +419,7 @@ F(K, "s3.p32", "observation", "The most Mo per cycle, 2.2 at/nm2/cycle, is depos
 F(K, "s3.p32", "claim", "Optical GPC hides density and stoichiometry changes, but SE with RBS and XPS indicates that Mo precursor "
   "adsorption density dominates the GPC trends.", inputs=[MO1, MO2])
 F(K, "s3.p32", "observation", "At 250 °C ratios 0.35 (amorphous) and 0.50 (crystalline) give almost equal GPC.",
-  quantity="growth_per_cycle", data_kind="measured", method="ellipsometry", mentions="0.35;0.50;250 °C;Figure S11")
+  quantity="growth_per_cycle", data_kind="measured", method="spectroscopic_ellipsometry", mentions="0.35;0.50;250 °C;Figure S11")
 F(K, "s3.p32", "claim", "Crystallization itself changes GPC at most moderately, less than ratio and morphology do.")
 
 # ------------------------------------------------------------------ electrical
@@ -672,7 +672,7 @@ for n, t in (("100", "450 °C"), ("120", "50 °C, 300 °C and 350 °C"), ("140",
 F(K, "s5.p7", "setting", "Cycle numbers were chosen to give about 10 nm at ratio 0.20 at each temperature (no such data for "
   "50-100 °C).", quantity="film_thickness", qualifiers="kind=target", value="10", unit="nm", data_kind="chosen input", mentions="0.20;50-100 °C")
 F(K, "s5.p7", "observation", "SE showed the H2S/H2/Ar plasma alone deposits no S, and the Mo precursor does not condense, so the "
-  "lowest temperatures stay in the ALD regime.", method="ellipsometry", mentions="ref. 87")
+  "lowest temperatures stay in the ALD regime.", method="spectroscopic_ellipsometry", mentions="ref. 87")
 F(K, "s5.p8", "setting", "WS2 and TiS2 deposition procedures, with the plasma feed gas (ratio) as the only change; a thermal TiSx "
   "recipe serves for comparison.", quantity="other", label_as_printed="literature procedures",
   value_text="refs. 52 (WS2) and 53 (TiS2), H2 flow ratio changed; thermal TiSx ref. 80", mentions="ref. 52;ref. 53;ref. 80")
@@ -682,28 +682,28 @@ F(K, "s5.p8;fig9b", "setting", "TiS2 is grown at 100 °C with ratio 0.50.", quan
   unit="°C", data_kind="chosen input", mentions="TiS2;0.50")
 F(K, "s5.p9", "setting", "Thickness is followed in situ by SE with a J.A. Woollam M-2000FI (0.8-5.0 eV; fits over 0.8-4.0 eV)" \
   " or M-2000F (1.2-5.0 eV).", quantity="other", label_as_printed="spectral range", value_min="0.8", value_max="5.0",
-  unit="eV", data_kind="chosen input", method="ellipsometry", mentions="M-2000FI;M-2000F")
+  unit="eV", data_kind="chosen input", method="spectroscopic_ellipsometry", mentions="M-2000FI;M-2000F")
 F(K, "s5.p9", "setting", "An in situ SE measurement is usually taken every 10 cycles.", quantity="other", label_as_printed="measurement interval", value="10",
-  data_kind="chosen input", method="ellipsometry")
+  data_kind="chosen input", method="spectroscopic_ellipsometry")
 F(K, "s5.p9", "model", "SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in CompleteEASE 5.1, with software optical constants "
   "for the other layers; roughness of crystalline MoS2 as an effective medium layer with 50% void.",
-  quantity="other", label_as_printed="void content", value="50", unit="%", data_kind="assumed", method="ellipsometry",
+  quantity="other", label_as_printed="void content", value="50", unit="%", data_kind="assumed", method="spectroscopic_ellipsometry",
   mentions="CompleteEASE 5.1")
 F(K, "s5.p9", "definition", "Reported SE thickness = dense MoSx layer plus half the roughness layer, approximating the deposited "
   "amount.", quantity="film_thickness")
 F(K, "s5.p10", "model", "Fitting: SiO2 thickness and substrate temperature from the spectrum before cycle 1; MoSx thickness and "
   "optical constants from the last spectrum; only MoSx thickness (and roughness) for spectra in between.",
-  method="ellipsometry")
+  method="spectroscopic_ellipsometry")
 F(K, "s5.p10", "definition", "Reported thicknesses average many grains of slightly different thickness and optics over a few "
   "mm2.", mentions="mm2")
 F(K, "s5.p11", "setting", "Ex situ SE uses a J.A. Woollam M-2000U at 65, 75 and 85° incidence over 1.2-6.5 eV, fitting MoS2 and "
   "SiO2 thickness with fixed optical constants from in situ data.", quantity="other", label_as_printed="spectral range",
-  value_min="1.2", value_max="6.5", unit="eV", data_kind="chosen input", method="ellipsometry",
+  value_min="1.2", value_max="6.5", unit="eV", data_kind="chosen input", method="spectroscopic_ellipsometry",
   mentions="M-2000U;65;75;85°")
 F(K, "s5.p11;fig1c", "setting", "Uniformity maps use a J.A. Woollam M-2000 (1.2-3.3 eV) with a mapping stage, circular pattern "
   "avoiding wafer edges; a 5 nm MoS2 film on a 4\" 450 nm SiO2/Si wafer and a bare substrate were measured.",
   quantity="other", label_as_printed="spectral range", value_min="1.2", value_max="3.3", unit="eV",
-  data_kind="chosen input", method="ellipsometry", mentions="M-2000;5 nm;450 nm SiO2/Si;4\"")
+  data_kind="chosen input", method="spectroscopic_ellipsometry", mentions="M-2000;5 nm;450 nm SiO2/Si;4\"")
 F(K, "s5.p12", "setting", "Sheet resistance is measured with a four-point probe (Keithley 2400 SourceMeter, Signatone "
   "SP4-4004STRS head).", method="electrical", mentions="Keithley 2400;SP4-4004STRS")
 F(K, "s5.p12", "definition", "Resistivity = sheet resistance × film thickness from in situ SE.", quantity="resistivity", method="calculation")
@@ -777,7 +777,7 @@ for c, th in (("50", "4.8"), ("30", "2.6"), ("20", "1.6"), ("10", "0.9")):
     extra = " (text: about 1 nm; MoS2 modes already visible)" if c == "10" else ""
     F(K, "fig1b;fig1.cap" + (";s3.p5" if c == "10" else ""), "observation",
       f"Raman spectrum of the {c}-cycle film, whose ex situ SE thickness is {th} nm{extra}.", quantity="film_thickness",
-      value=th, unit="nm", data_kind="measured", method="ellipsometry", mentions=f"{c} cyc ({th} nm)")
+      value=th, unit="nm", data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{c} cyc ({th} nm)")
 s = v1_points(f"{K}:s1b_sub")
 ref = P(PID, "fig1b_substrate", s["points"], "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
         "Intensity (Normalized to Si)", note="flat substrate line; y in v1's own scale (axis unnumbered)")
@@ -789,13 +789,13 @@ ratio("fig1c;fig1.cap", "0.80", "Fig. 1c wafer film", "Figure 1c")
 cyc("fig1c;fig1.cap", "50", "Fig. 1c wafer film", "Figure 1c")
 F(K, "fig1c;fig1.cap", "observation", "Mean SE thickness over the 4\" SiO2/Si wafer is 5.1 ± 0.2 nm; colour scale runs 4.7-5.3 nm "
   "and dots mark the measured points.", quantity="film_thickness", value="5.1", unit="nm", data_kind="measured",
-  method="ellipsometry", mentions="5.1±0.2 nm;4\" SiO2/Si wafer")
+  method="spectroscopic_ellipsometry", mentions="5.1±0.2 nm;4\" SiO2/Si wafer")
 s = cases_points(PID, "1", "c", "thickness along the vertical diameter of the map")
 ref = P(PID, "fig1c_diameter", s["points"], "points.json (read by eye from the figure image)",
         s["x_label_as_printed"], s["y_label_as_printed"], note=s["quality"])
 F(K, "fig1c", "observation", "Along the vertical diameter the film is thickest (~5.3 nm) in the upper half and thinnest (~4.7-4.8 "
   "nm) at the bottom edge.", quantity="film_thickness", unit="nm", points_ref=ref, data_kind="measured",
-  method="ellipsometry", mentions="Thickness (nm)")
+  method="spectroscopic_ellipsometry", mentions="Thickness (nm)")
 temp("fig1d;fig1.cap", "100", "Fig. 1d PET film", "Figure 1d")
 cyc("fig1d;fig1.cap", "50", "Fig. 1d PET film", "Figure 1d")
 F(K, "fig1d;fig1.cap", "observation", "Photograph: an about 5 nm MoS2 film on a 15 × 15 cm transparent PET foil, bent by a gloved "
@@ -879,17 +879,17 @@ F(K, "fig6b;fig6.cap;s3.x5", "observation", "Cross-sectional TEM (smoothed; unfi
 
 # ------------------------------------------------------------------ Fig. 7
 F(K, "fig7a;fig7.cap;s3.x6", "observation", "Panel a: in situ SE thickness (nm, 0-22) against number of ALD cycles (0-140) at "
-  "150 °C for six ratios.", quantity="film_thickness", unit="nm", data_kind="measured", method="ellipsometry",
+  "150 °C for six ratios.", quantity="film_thickness", unit="nm", data_kind="measured", method="spectroscopic_ellipsometry",
   mentions="Thickness (nm);Number of ALD cycles;150 °C")
 for r in ("0", "0.20", "0.50", "0.65", "0.80", "0.94"):
     s = v1_points(f"{K}:s7a_R{r.replace('.', '').ljust(3, '0')}")
     ref = P(PID, f"fig7a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv",
             "Number of ALD cycles", "Thickness (nm)", note=s.get("note", ""))
     F(K, "fig7a", "observation", f"Thickness against cycles for the ratio {r} film.", quantity="film_thickness", unit="nm",
-      points_ref=ref, data_kind="measured", method="ellipsometry", mentions=f"{R}: {r}")
+      points_ref=ref, data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{R}: {r}")
 F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged over the first 100 cycles (colour bar 0.50-1.75 "
   "Å/cycle) against deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="growth_per_cycle",
-  unit="Å/cycle", method="ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
+  unit="Å/cycle", method="spectroscopic_ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
 
 # ------------------------------------------------------------------ Fig. 8
 F(K, "fig8;fig8.cap", "observation", "Fig. 8 maps four-point probe resistivity (log colour bar 10^-3 to 10^3 Ω cm, top band >dl) "
@@ -1088,7 +1088,7 @@ assert set(GPC7B_VALUES) == set(RHO8_VALUES) == set(CELLS)
 GPC7B, RHO8 = {}, {}
 for (t, r) in CELLS:
     GPC7B[(t, r)] = F(K, "fig7b", "observation", f"Fig. 7b cell at {t} °C and ratio {r}: GPC over the first 100 cycles, read from colour against the bar (about)",
-                      quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å", data_kind="measured", method="ellipsometry", mentions=f"{r};{t} °C")
+                      quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å", data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{r};{t} °C")
     v = RHO8_VALUES[(t, r)]
     if v is None:
         RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the four-point-probe limit of order 1000 Ω cm (black), read from colour",
@@ -1521,10 +1521,10 @@ for d, spec in DEPS.items():
 # the colour cells of Fig. 7b and Fig. 8: under the cell film's in situ SE and four-point-probe measurement activities (made here if the
 # cell had none)
 for (t, r), fid7 in GPC7B.items():
-    for fid_, meth, lab in ((fid7, "ellipsometry", "in situ SE"), (RHO8[(t, r)], "electrical", "four-point probe")):
+    for fid_, meth, lab in ((fid7, "spectroscopic_ellipsometry", "in situ SE"), (RHO8[(t, r)], "electrical", "four-point probe")):
         act = f"{K}:meas:ent:T{t}_R{r}:{meth}"
         if not any(x["fact_id"] == act for x in C.facts()):
-            N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "ellipsometry" else "fig8",
+            N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "spectroscopic_ellipsometry" else "fig8",
               kind="measurement", how="stated", label_as_printed=meth)
         next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = act
 # the Fig. 4 region right of the vertical line at ratio 0.94 is Mo/c-MoS2 (fig4#2): a metallic Mo phase in each 0.94 cell, read from the
@@ -1559,12 +1559,12 @@ C.comparisons(K, {grp("map"): ("grid", "deposition_temperature;plasma_gas_ratio"
 # in situ or ex situ (P6): film thickness was followed by in situ SE during the depositions (s5.p9; Figs. 7a, 7b); Fig. 1b and the
 # Fig. 1c wafer map are ex situ SE (fig1.cap, s5.p11); the Table 1 density's SE thickness and the control check (s5.p7) do not say;
 # the shared SE settings: s5.p9 and s5.p10 describe the in situ instrument, s5.p11 the ex situ one
-C.modes(K, {**{f["fact_id"].split(":", 1)[1]: "in_situ" for f in C.facts() if re.fullmatch(rf"{K}:meas:ent:T\d+_R[\d.]+:ellipsometry", f["fact_id"])},
-            **{f"meas:ent:T150_R0.80_N{n}:ellipsometry": "ex_situ" for n in (10, 20, 30, 50)}, "meas:ent:wafer_T150_R0.80:ellipsometry": "ex_situ",
-            "meas:ent:control:ellipsometry": "not_stated", "method:ellipsometry": "not_stated",
+C.modes(K, {**{f["fact_id"].split(":", 1)[1]: "in_situ" for f in C.facts() if re.fullmatch(rf"{K}:meas:ent:T\d+_R[\d.]+:spectroscopic_ellipsometry", f["fact_id"])},
+            **{f"meas:ent:T150_R0.80_N{n}:spectroscopic_ellipsometry": "ex_situ" for n in (10, 20, 30, 50)}, "meas:ent:wafer_T150_R0.80:spectroscopic_ellipsometry": "ex_situ",
+            "meas:ent:control:spectroscopic_ellipsometry": "not_stated", "method:spectroscopic_ellipsometry": "not_stated",
             **{f["fact_id"].split(":", 1)[1]: ("not_stated" if ":gc_" in f["fact_id"] else "ex_situ") for f in C.facts() if f["type"] == "activity" and f["fact_id"].endswith(":measurement")}})
 C.qualify(K, {f["fact_id"].split(":", 1)[1]: ("mode=ex_situ" if f["evidence"].startswith("s5.p11") else "mode=in_situ") for f in C.facts()
-              if f["parent"] == f"{K}:method:ellipsometry" and "#" in f["fact_id"]})
+              if f["parent"] == f"{K}:method:spectroscopic_ellipsometry" and "#" in f["fact_id"]})
 # what each GPC is averaged over (P5): Fig. 7b and the text on it average the first 100 cycles; s3.p32 points at Fig. S11 without saying;
 # the RBS Mo atoms per cycle are the run's areal density over its cycles
 C.qualify(K, {**{f["fact_id"].split(":", 1)[1]: "over=first_100_cycles" for f in C.facts() if f["fact_id"].startswith(f"{K}:fig7b#")},

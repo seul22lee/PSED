@@ -103,7 +103,7 @@ def facts():
 
 
 # measurement methods: a setting or an observation with one of these sits under a measurement activity, never in a condition vector
-MEAS_METHODS = {"reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs", "gravimetry",
+MEAS_METHODS = {"reflectometry", "spectroscopic_ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs", "gravimetry",
                 "photograph", "optical_microscopy", "process_monitor"}
 
 

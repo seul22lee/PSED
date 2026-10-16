@@ -107,6 +107,8 @@ entries:
   # ---------------------------------------------------------------- categorical conditions (base)
   - id: process_mode
     type: categorical
+    label: "mode"
+    name: "process mode"
     origin: base
     role: condition
     category: ald_process
@@ -120,6 +122,8 @@ entries:
 
   - id: material
     type: categorical
+    label: "material"
+    name: "material"
     origin: base
     role: condition
     category: ald_process
@@ -133,6 +137,8 @@ entries:
 
   - id: reactant_A
     type: categorical
+    label: "A"
+    name: "reactant A"
     origin: base
     role: condition
     category: ald_process
@@ -146,6 +152,8 @@ entries:
 
   - id: reactant_B
     type: categorical
+    label: "B"
+    name: "reactant B"
     origin: base
     role: condition
     category: ald_process
@@ -159,6 +167,8 @@ entries:
 
   - id: carrier_gas
     type: categorical
+    label: "carrier gas"
+    name: "carrier gas"
     origin: base
     role: condition
     category: deposition_run
@@ -171,6 +181,8 @@ entries:
 
   - id: reactor
     type: categorical
+    label: "reactor"
+    name: "reactor"
     origin: base
     role: condition
     category: ald_reactor
@@ -184,6 +196,8 @@ entries:
 
   - id: delivery_method
     type: categorical
+    label: "delivery"
+    name: "delivery method"
     origin: base
     role: condition
     category: ald_reactor
@@ -196,6 +210,8 @@ entries:
 
   - id: crystallinity
     type: categorical
+    label: "crystallinity"
+    name: "crystallinity"
     origin: base
     role: output
     category: film_properties
@@ -208,6 +224,8 @@ entries:
 
   - id: reactor_type
     type: categorical
+    label: "reactor"
+    name: "reactor"
     origin: base
     role: condition
     category: ald_reactor
@@ -220,6 +238,8 @@ entries:
 
   - id: plasma_configuration
     type: categorical
+    label: "plasma"
+    name: "plasma configuration"
     origin: base
     role: condition
     category: ald_reactor
@@ -232,6 +252,8 @@ entries:
 
   - id: structure
     type: categorical
+    label: "structure"
+    name: "structure"
     origin: base
     role: condition
     category: test_structure
@@ -245,6 +267,8 @@ entries:
   # ---------------------------------------------------------------- base quantities from schema-miner
   - id: deposition_temperature
     type: quantity
+    label: "T"
+    name: "temperature"
     origin: base
     role: condition
     category: deposition_run
@@ -259,6 +283,8 @@ entries:
 
   - id: process_pressure
     type: quantity
+    label: "p"
+    name: "pressure"
     origin: base
     role: condition
     category: deposition_run
@@ -273,6 +299,8 @@ entries:
 
   - id: growth_per_cycle
     type: quantity
+    label: "GPC"
+    name: "growth per cycle"
     origin: base
     role: output
     category: growth
@@ -288,6 +316,8 @@ entries:
 
   - id: nucleation_period
     type: quantity
+    label: "nucleation"
+    name: "nucleation period"
     origin: base
     role: output
     category: growth
@@ -301,6 +331,8 @@ entries:
 
   - id: pulse_time
     type: quantity
+    label: "pulse"
+    name: "pulse"
     origin: base
     role: condition
     category: cycle_step
@@ -315,6 +347,8 @@ entries:
 
   - id: purge_time
     type: quantity
+    label: "purge"
+    name: "purge"
     origin: base
     role: condition
     category: cycle_step
@@ -329,6 +363,8 @@ entries:
 
   - id: refractive_index
     type: quantity
+    label: "n"
+    name: "refractive index"
     origin: base
     role: output
     category: film_properties
@@ -341,6 +377,8 @@ entries:
 
   - id: absorption_coefficient
     type: quantity
+    label: "α"
+    name: "absorption coefficient"
     origin: base
     role: output
     category: film_properties
@@ -354,6 +392,8 @@ entries:
 
   - id: resistivity
     type: quantity
+    label: "ρ"
+    name: "resistivity"
     origin: base
     role: output
     category: film_properties
@@ -366,6 +406,8 @@ entries:
 
   - id: carrier_density
     type: quantity
+    label: "carriers"
+    name: "carrier concentration"
     origin: base
     role: output
     category: film_properties
@@ -379,6 +421,8 @@ entries:
 
   - id: mobility
     type: quantity
+    label: "mobility"
+    name: "carrier mobility"
     origin: base
     role: output
     category: film_properties
@@ -391,6 +435,8 @@ entries:
 
   - id: thickness_nonuniformity
     type: quantity
+    label: "nonuniformity"
+    name: "nonuniformity"
     origin: base
     role: output
     category: growth
@@ -404,6 +450,8 @@ entries:
 
   - id: aspect_ratio
     type: quantity
+    label: "AR"
+    name: "aspect ratio"
     origin: base
     role: condition
     category: test_structure
@@ -418,6 +466,8 @@ entries:
 
   - id: coated_aspect_ratio
     type: quantity
+    label: "coated AR"
+    name: "coated aspect ratio"
     origin: base
     role: output
     category: conformality
@@ -432,6 +482,8 @@ entries:
 
   - id: composition
     type: quantity
+    label: "composition"
+    name: "composition"
     origin: base
     role: output
     category: film_properties
@@ -446,6 +498,8 @@ entries:
 
   - id: film_density
     type: quantity
+    label: "density"
+    name: "film density"
     origin: base
     role: output
     category: film_properties
@@ -459,6 +513,8 @@ entries:
   # ---------------------------------------------------------------- base quantities from Cremers / Popov
   - id: partial_pressure
     type: quantity
+    label: "p_partial"
+    name: "partial pressure"
     origin: base
     role: condition
     category: cycle_step
@@ -473,6 +529,8 @@ entries:
 
   - id: exposure
     type: quantity
+    label: "exposure"
+    name: "exposure"
     origin: base
     role: condition
     category: cycle_step
@@ -486,6 +544,8 @@ entries:
 
   - id: source_temperature
     type: quantity
+    label: "T_source"
+    name: "source temperature"
     origin: base
     role: condition
     category: deposition_run
@@ -499,6 +559,8 @@ entries:
 
   - id: film_thickness
     type: quantity
+    label: "S"
+    name: "thickness"
     origin: base
     role: output
     category: growth
@@ -512,6 +574,8 @@ entries:
 
   - id: penetration_depth
     type: quantity
+    label: "PD"
+    name: "penetration depth"
     origin: base
     role: output
     category: conformality
@@ -526,6 +590,8 @@ entries:
 
   - id: equivalent_aspect_ratio
     type: quantity
+    label: "EAR"
+    name: "equivalent aspect ratio"
     origin: base
     role: condition
     category: test_structure
@@ -539,6 +605,8 @@ entries:
 
   - id: step_coverage
     type: quantity
+    label: "step coverage"
+    name: "step coverage"
     origin: base
     role: output
     category: conformality
@@ -553,6 +621,8 @@ entries:
 
   - id: initial_sticking_coefficient
     type: quantity
+    label: "s0"
+    name: "initial sticking coefficient"
     origin: base
     role: model_parameter
     category: surface_kinetics
@@ -567,6 +637,8 @@ entries:
 
   - id: recombination_probability
     type: quantity
+    label: "r"
+    name: "recombination probability"
     origin: base
     role: model_parameter
     category: surface_kinetics
@@ -581,6 +653,8 @@ entries:
 
   - id: surface_coverage
     type: quantity
+    label: "θ"
+    name: "surface coverage"
     origin: base
     role: output
     category: surface_kinetics
@@ -594,6 +668,8 @@ entries:
 
   - id: feature_width
     type: quantity
+    label: "w"
+    name: "feature width"
     origin: base
     role: condition
     category: test_structure
@@ -607,6 +683,8 @@ entries:
 
   - id: feature_depth
     type: quantity
+    label: "depth"
+    name: "feature depth"
     origin: base
     role: condition
     category: test_structure
@@ -620,6 +698,8 @@ entries:
 
   - id: feature_extent
     type: quantity
+    label: "z"
+    name: "feature extent"
     origin: base
     role: condition
     category: test_structure
@@ -634,6 +714,8 @@ entries:
   # ---------------------------------------------------------------- extension quantities (gold)
   - id: cycle_number
     type: quantity
+    label: "N"
+    name: "cycles"
     origin: extension
     role: condition
     category: deposition_run
@@ -646,6 +728,8 @@ entries:
 
   - id: plasma_power
     type: quantity
+    label: "P_plasma"
+    name: "plasma power"
     origin: extension
     role: condition
     category: cycle_step
@@ -658,6 +742,8 @@ entries:
 
   - id: gas_flow_rate
     type: quantity
+    label: "flow"
+    name: "gas flow"
     origin: extension
     role: condition
     category: deposition_run
@@ -671,6 +757,8 @@ entries:
 
   - id: normalized_thickness
     type: quantity
+    label: "normalized S"
+    name: "normalized thickness"
     origin: extension
     role: output
     category: conformality
@@ -684,6 +772,8 @@ entries:
 
   - id: adsorption_equilibrium_constant
     type: quantity
+    label: "K"
+    name: "adsorption equilibrium constant"
     origin: extension
     role: model_parameter
     category: surface_kinetics
@@ -697,6 +787,8 @@ entries:
 
   - id: saturation_growth_per_cycle
     type: quantity
+    label: "GPC_sat"
+    name: "saturation growth per cycle"
     origin: extension
     role: model_parameter
     category: surface_kinetics
@@ -709,6 +801,8 @@ entries:
 
   - id: distance
     type: quantity
+    label: "x"
+    name: "distance from the entrance"
     origin: extension
     role: coordinate
     category: test_structure
@@ -721,6 +815,8 @@ entries:
 
   - id: dimensionless_distance
     type: quantity
+    label: "x̃"
+    name: "depth over height"
     origin: extension
     role: coordinate
     category: test_structure
@@ -733,6 +829,8 @@ entries:
 
   - id: time
     type: quantity
+    label: "t"
+    name: "time in the pulse"
     origin: extension
     role: coordinate
     category: cycle_step
@@ -912,16 +1010,28 @@ transforms:
   - {id: coated_ar,           inputs: [penetration_depth, feature_width], output: "coated_aspect_ratio{basis=AR}", formula: "PD / w"}
   - {id: exposure,            inputs: [partial_pressure, pulse_time], output: exposure,            formula: "p * t  (Cremers Sec. II D)"}
   - {id: step_coverage,       inputs: ["film_thickness{position=bottom}", "film_thickness{position=top}"], output: step_coverage, formula: "d_bottom / d_top"}
-qualifiers:   # closed lists; adding a value is allowed and is logged
-  step:      {values: [reactant_A, purge_A, reactant_B, purge_B], source: "Cremers Sec. I four steps; Popov Reactant A/B"}
+qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
+  step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
   gas:       {values: species ids}
   element:   {values: element symbols}
-  position:  {values: [planar, top, sidewall, bottom], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top"}
-  reference: {values: [top, planar, assumed_saturation]}
-  level:     {values: ["50%", "80%"], source: "Cremers PD50%, PD80%"}
+  position:  {values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top", log: "local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer"}
+  reference: {values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: "plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)"}
+  level:     {values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum"}
   basis:     {values: [AR, EAR], source: "Cremers Sec. II G"}
   surface:   {values: material ids}
+  kind:      {values: [set_point, measured, default, option, target], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value)"}
+  by:        {values: [H, 2H, d, w, lambda, none], log: "pilot: what a dimensionless distance is divided by"}
+  origin:    {values: [entrance, top_face, hole_centre, nearer_face, opening_centre], log: "pilot: where a distance is measured from"}
+  stage:     {values: [initial, final], log: "pilot: before or after the deposition (porosity, channel height)"}
+  stat:      {values: [sd, relative_sd, half_range, tolerance, minimum, maximum], log: "pilot P1: a spread fact's statistic"}
+  between:   {values: [runs, pieces, position, repeat_measurement, items], log: "pilot P1: what varies between the repeats of a spread"}
+  n:         {values: a number or not_stated, log: "pilot P1: the number of repeats"}
+  relative_to: {values: [initial_mass, final_mass, all_atoms, metal_atoms, crystalline_phases, total_volume, not_stated], log: "pilot P4: what a fraction is a fraction of"}
+  over:      {values: [run, first_100_cycles, saturation, not_stated], log: "pilot P5: what a per-cycle value is averaged over"}
+  mode:      {values: [in_situ, ex_situ, not_stated], log: "pilot P6: a measurement during or after the deposition"}
+  x:         {values: quantity ids, log: "pilot: the abscissa of a curve"}
+  ratio:     {values: a number, log: "pilot P17: the plasma_gas_ratio a keyed setting belongs to"}
 
 units:   # canonical unit per dimension, and the accepted units
   temperature:      {canonical: "°C",       accepted: ["°C", K]}
@@ -955,7 +1065,30 @@ vocabularies:
   structure_class:   [lateral, vertical, porous, planar]
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]
-  measurement_method: [reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp]
+  measurement_method:   # id, class (values of one class are mutually comparable, Sec. 18.4), definition; the pilot's method column uses these ids
+    - {id: reflectometry, class: optical_thickness, definition: "Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot."}
+    - {id: spectroscopic_ellipsometry, class: optical_thickness, definition: "Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier)."}
+    - {id: xrr, class: xrr, definition: "X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve."}
+    - {id: optical_microscopy, class: optical_image, definition: "Optical microscope images."}
+    - {id: sem, class: electron_image, definition: "Scanning electron microscopy images."}
+    - {id: sem_eds, class: eds, definition: "Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans."}
+    - {id: tem, class: electron_image, definition: "Transmission electron microscopy images of a cross-section."}
+    - {id: afm, class: afm, definition: "Atomic force microscopy: topography and roughness."}
+    - {id: oes, class: plasma_spectroscopy, definition: "Optical emission spectroscopy of the plasma."}
+    - {id: eqp, class: plasma_spectroscopy, definition: "Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma."}
+    - {id: xps, class: xps, definition: "X-ray photoelectron spectroscopy: surface composition and chemical states."}
+    - {id: raman, class: raman, definition: "Raman spectroscopy: phonon modes, used for crystallinity and phase."}
+    - {id: xrd, class: xrd, definition: "X-ray diffraction: crystalline phases, phase fractions and crystallite sizes."}
+    - {id: rbs, class: ion_beam, definition: "Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition."}
+    - {id: electrical, class: electrical, definition: "An electrical measurement whose geometry the paper does not separate (replaced by four_point_probe, two_point_through_thickness and hall in Sec. 18.4)."}
+    - {id: process_monitor, class: process_monitor, definition: "The reactor's own gauges and thermocouples: pressure and temperature traces during the process."}
+    - {id: gravimetry, class: gravimetry, definition: "Weighing before and after deposition."}
+    - {id: photograph, class: optical_image, definition: "A photograph of the specimen."}
+    - {id: simulation, class: simulation, definition: "A value produced by a model run (not a measurement)."}
+    - {id: calculation, class: calculation, definition: "A value computed from other values (not a measurement)."}
+    - {id: cited, class: cited, definition: "A value taken from another work (not a measurement)."}
+    - {id: schematic, class: schematic, definition: "A drawing: a value or statement read from a schematic (not a measurement)."}
+    - {id: tabulated, class: tabulated, definition: "A value stated in a table without a method (not a measurement)."}
   categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
                            plasma_configuration, reactor_type, reactor, delivery_method]
   value_aliases:       # aliases of categorical values (species and structure aliases live in their entries)

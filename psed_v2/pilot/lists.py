@@ -1,34 +1,16 @@
-"""The one set of controlled lists of the pilot: quantity ids, qualifier keys and values, method ids, fact types, data kinds,
-censor marks and canonical units (UNITS, for the unit standardization of stage 4). Used by facts.py and check.py."""
+"""The controlled lists of the pilot. The vocabularies (quantity ids, qualifier keys and values, method ids, materials, structures,
+species, labels and names) are generated from the ontology into vocab.py (python3 psed_v2/ontology/export.py; P49) and imported
+here, never hand-edited; this file keeps the rules that use them: fact types, data kinds, censor marks, canonical units, derived
+quantities, display names of qualifier combinations. Used by facts.py, check.py and query.py."""
 import re
+import sys
+from pathlib import Path
 
-# quantity ids: those used in cases 1 to 13 plus those needed by two or more of the three papers; anything else is "other"
-# (feature_height: the gap of a lateral channel, H; plasma_gas_ratio: a gas's share of the plasma feed, gas=; mass_gain and
-# porosity in %; gas_moles_per_cycle / deposited_moles_per_cycle: Δn_g / Δn_s; pressure_rise: δp, pressure_rate: its slope;
-# signal_intensity: a detector signal against position or energy, element= or species=; reaction_stoichiometry: ligands
-# released per precursor (x, ȳ); pillar_layout: a named layout, value in the statement; fit_r2: goodness of a fit)
-QUANTITIES = sorted({
-    "aspect_ratio", "carrier_gas", "coated_aspect_ratio", "composition", "crystallinity", "cycle_number", "cycle_time",
-    "deposition_temperature", "dimensionless_distance", "distance", "equivalent_aspect_ratio", "exposure", "feature_depth",
-    "feature_height", "feature_width", "film_density", "film_thickness", "front_slope", "gas_flow_rate", "growth_per_cycle",
-    "initial_sticking_coefficient", "knudsen_number", "lumped_sticking_coefficient", "mean_free_path", "normalized_exposure",
-    "normalized_thickness", "open_fraction", "partial_pressure", "penetration_depth", "precursor_purity", "probe_resolution",
-    "process_pressure", "pulse_time", "purge_time", "reactor_type", "recombination_probability", "resistivity",
-    "saturation_density", "source_temperature", "step_coverage", "substrate", "surface_coverage", "thickness_nonuniformity",
-    # added 2026-10-14 so that what a group varies and what its runs mainly observe are never "other"
-    "plasma_gas_ratio", "mass_gain", "porosity", "crystallite_size", "gas_moles_per_cycle", "deposited_moles_per_cycle",
-    "pressure_rise", "pressure_rate", "time_to_maximum", "roughness", "binding_energy", "atoms_per_cycle",
-    "carrier_concentration", "carrier_mobility", "pillar_layout", "objective_magnification", "fit_r2", "fill_fraction",
-    "signal_intensity", "reaction_stoichiometry", "annealing_temperature",
-    # added 2026-10-15 for the workbench filters: the film deposited and the test structure, as value_text from the lists below
-    "material", "structure_type",
-    "raman_shift",                                     # the abscissa of a Raman spectrum (x= of a curve)
-    # derived quantities (DERIVED below): computed from facts, never stored
-    "phase",                                           # a phase found in a film (value_text detected / not detected; species=), XRD, XPS or a map region (P15)
-    "effective_channel_height", "exposure_per_run", "sheet_resistance", "h_per_metal", "density_relative_to_bulk", "moles_deposited",
-    "moles_from_mass_gain", "shell_volume_fraction", "deposition_rate", "coating_mass_fraction", "target_growth_per_cycle", "plasma_h2_fraction",
-    "other",
-})
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
+                   METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
+                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, LABELS as _LABELS, NAMES as _NAMES)
+
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
 # ones (an entity that states no temperature is not the same experiment as one that does)
@@ -41,42 +23,27 @@ SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing
                       "cycle_number", "plasma_gas_ratio", "gas_flow_rate", "carrier_gas", "precursor_purity", "substrate", "pillar_layout",
                       "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure_type", "material"}
 
-# the film material (material, value_text) and the test structure type (structure_type, value_text; Cremers 2019's taxonomy)
-# of a process or group; the workbench filters list these ids
-MATERIALS = ["Al2O3", "MoS2", "WS2", "TiS2", "ZnO"]
-# metal atoms per formula unit of each film material (its chemical formula)
-FORMULA_METALS = {"Al2O3": 2, "MoS2": 1, "WS2": 1, "TiS2": 1, "ZnO": 1}
+# metal atoms per formula unit of each film material, read from its formula in the ontology (the first element of the formula);
+# a value text not yet a species id (TO_ABSORB_VALUES) keeps its hand count until P50
+FORMULA_METALS = {i: int(re.match(r"[A-Z][a-z]?(\d*)", s["formula"]).group(1) or 1) for i, s in SPECIES.items() if s["kind"] == "material" and s["formula"]}
+FORMULA_METALS.update({"Al2O3": 2, "MoS2": 1, "WS2": 1, "TiS2": 1, "ZnO": 1})
+
+
+def species_text(v):
+    """A species id as the screen prints it (its formula), any other value as it is."""
+    return SPECIES[v]["formula"] or v if v in SPECIES else v
 
 # panels that encode a value as a colour against a bar: a valued fact citing one says "read from colour" in its statement (check.py)
 COLOUR_PANELS = {"mat22": {"fig7b": "GPC 0.50 to 1.75 Å/cycle, linear bar", "fig8": "resistivity 1e-3 to 1e3 Ω cm, log bar; black = above the detection limit"}}
-STRUCTURES = ["planar", "lateral_channel", "trench", "hole", "pillar_array", "nanotube_array", "porous"]
 
 TOKEN = re.compile(r"^[A-Za-z0-9+_.]+$")
-QUALIFIERS = {          # key: allowed values (None = a chemical or element token)
-    "step": {"reactant_A", "purge_A", "reactant_B", "purge_B", "plasma", "hold_A", "hold_B", "none"},
-    "position": {"planar", "local", "top", "sidewall", "bottom", "entrance", "plateau", "outside", "interface"},
-    "kind": {"set_point", "measured", "default", "option", "target"},   # default: what most entities used (inherited); option: used by some, which is not stated (not inherited); target: an aimed value, not a result
-    "reference": {"plateau", "entrance", "maximum", "stated", "planar", "assumed_saturation", "bulk"},
-    "by": {"H", "2H", "d", "w", "lambda", "none"},
-    "origin": {"entrance", "top_face", "hole_centre", "nearer_face", "opening_centre"},
-    "level": {"50%", "front_start", "front_end", "maximum"},
-    "stage": {"initial", "final"},
-    "basis": {"AR", "EAR"},
-    "species": None, "gas": None, "element": None,
-    # a spread fact (P1): a value about the spread of the quantity it names, not a value of it. stat = what the number is; between =
-    # what varies between the repeats (separate runs, pieces of one run, positions in one film, repeated measurement of one spot,
-    # separately made items such as chips); n = the number of repeats, or not_stated. The condition it was measured at is its parent.
-    "stat": {"sd", "relative_sd", "half_range", "tolerance", "minimum", "maximum"},
-    "between": {"runs", "pieces", "position", "repeat_measurement", "items"},
-    "n": None,
-    # what a fraction is a fraction of (P4): every composition, mass gain and porosity carries it; not_stated when the paper does not say
-    "relative_to": {"initial_mass", "final_mass", "all_atoms", "metal_atoms", "crystalline_phases", "total_volume", "not_stated"},
-    # what a per-cycle value is averaged over (P5): the whole run (thickness or amount over the run's cycle count), the first 100
-    # cycles, the saturation value of a model, or not stated
-    "over": {"run", "first_100_cycles", "saturation", "not_stated"},
-    # whether a measurement was made during the deposition or after it (P6; decision 4: in/ex situ is a qualifier, not a method)
-    "mode": {"in_situ", "ex_situ", "not_stated"},
-}
+# QUALIFIERS (vocab.py): key -> the closed set of values, or None for an open value (a species id, an element symbol, a number). The
+# keys and their meaning: step, position, kind (set_point, measured, default: what most entities used (inherited); option: used by
+# some, which is not stated (not inherited); target: an aimed value), reference, by, origin, level, stage, basis, species, gas,
+# element; stat/between/n (a spread fact, P1: the statistic, what varies between the repeats, the number of repeats); relative_to
+# (what a fraction is a fraction of, P4); over (what a per-cycle value is averaged over, P5); mode (in situ or ex situ, P6);
+# x (a curve's abscissa); ratio (the plasma_gas_ratio a keyed setting belongs to, P17).
+QUALIFIERS = {k: (set(v) if v is not None else None) for k, v in QUALIFIERS.items()}
 PHASE_VALUES = {"detected", "not detected"}
 # quantities on which a ratio means nothing (P24): interval scales (°C temperatures, positions, shifts) and signed quantities (slopes,
 # rates that change sign); two values of these are compared by their difference
@@ -94,13 +61,9 @@ METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "i
 # the definition a quantity has when none is named: the screen names a definition only when it differs from this
 DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
-QUALIFIERS["ratio"] = None                            # the plasma_gas_ratio a recipe-level lookup setting belongs to (mat22 Table 2 flows per ratio)
 # a keyed setting (P17): qualifier key -> the setting whose value it names; inherited only by a node whose own value of that setting matches
 KEYED = {"ratio": "plasma_gas_ratio"}
 
-METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
-           "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",
-           "optical_microscopy"]
 CENSOR = {"", "<", ">", "<dl", ">dl"}
 # what a ± is (P2): between pieces of one run, between runs, between positions in one film, a repeated measurement, a fit error, a
 # measurement uncertainty the paper states (electrode area, weighing), the spread of literature values, propagated from inputs, or
@@ -256,24 +219,7 @@ assert all(k in QUANTITIES for k in DERIVED), "DERIVED key not a quantity id"
 # short display labels, used by every screen: one per quantity id, and one per common quantity{qualifiers} combination
 # (qualifiers written as in the facts, without x=). A combination not listed shows the quantity's label followed by the
 # qualifier values ("composition S", "BE Mo"); a curve shows "<y label> vs <x label>".
-LABELS = {
-    "aspect_ratio": "AR", "carrier_gas": "carrier gas", "coated_aspect_ratio": "coated AR", "composition": "composition",
-    "crystallinity": "crystallinity", "cycle_number": "N", "cycle_time": "cycle time", "deposition_temperature": "T",
-    "dimensionless_distance": "x̃", "distance": "x", "equivalent_aspect_ratio": "EAR", "exposure": "exposure", "feature_depth": "depth",
-    "feature_height": "H", "feature_width": "w", "film_density": "density", "film_thickness": "S", "front_slope": "front slope",
-    "gas_flow_rate": "flow", "growth_per_cycle": "GPC", "initial_sticking_coefficient": "s0", "knudsen_number": "Kn",
-    "lumped_sticking_coefficient": "c", "mean_free_path": "λ", "normalized_exposure": "normalized exposure",
-    "normalized_thickness": "normalized S", "open_fraction": "open fraction", "partial_pressure": "p_partial",
-    "penetration_depth": "PD", "precursor_purity": "purity", "probe_resolution": "spot", "process_pressure": "p",
-    "pulse_time": "pulse", "purge_time": "purge", "reactor_type": "reactor", "recombination_probability": "r",
-    "resistivity": "ρ", "saturation_density": "q_sat", "source_temperature": "T_source", "step_coverage": "step coverage",
-    "substrate": "substrate", "surface_coverage": "θ", "thickness_nonuniformity": "nonuniformity", "plasma_gas_ratio": "gas ratio",
-    "mass_gain": "mass gain", "porosity": "porosity", "crystallite_size": "crystallite size", "gas_moles_per_cycle": "Δn_g",
-    "deposited_moles_per_cycle": "Δn_s", "pressure_rise": "δp", "pressure_rate": "TS", "time_to_maximum": "t_max", "roughness": "Rq",
-    "binding_energy": "BE", "atoms_per_cycle": "atoms/cycle", "carrier_concentration": "carriers", "carrier_mobility": "mobility",
-    "pillar_layout": "pillar layout", "objective_magnification": "objective", "fit_r2": "R²", "fill_fraction": "fill",
-    "signal_intensity": "intensity", "reaction_stoichiometry": "ȳ", "annealing_temperature": "T_anneal", "material": "material",
-    "structure_type": "structure", "raman_shift": "Raman shift", "other": "other",
+LABELS = {**_LABELS, "other": "other",   # the id labels come from the ontology (vocab.py); the combinations below are display rules of the screen
     "pulse_time{step=reactant_A;species=TMA}": "TMA pulse", "pulse_time{step=reactant_B;species=H2O}": "H2O pulse",
     "pulse_time{step=reactant_A;species=DEZ}": "DEZ pulse", "pulse_time{step=reactant_A}": "pulse A", "pulse_time{step=plasma}": "plasma step",
     "purge_time{step=purge_A}": "purge A", "purge_time{step=purge_B}": "purge B",
@@ -290,41 +236,13 @@ LABELS = {
     "gas_flow_rate{step=plasma}": "plasma flow", "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
     "lumped_sticking_coefficient{species=TMA}": "c_TMA", "lumped_sticking_coefficient{species=H2O}": "c_H2O",
     "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
-    "phase": "phase", "effective_channel_height": "H_eff", "exposure_per_run": "exposure per run", "sheet_resistance": "R_sheet", "h_per_metal": "H per metal",
-    "density_relative_to_bulk": "ρ/ρ_bulk", "moles_deposited": "moles deposited", "moles_from_mass_gain": "moles from mass gain",
-    "shell_volume_fraction": "coating volume fraction", "deposition_rate": "nm per hour", "coating_mass_fraction": "coating mass fraction",
-    "target_growth_per_cycle": "GPC target", "plasma_h2_fraction": "H2 share of the plasma feed",
-}
+    }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
 assert all(q in LABELS for q in QUANTITIES), "quantity without a label"
 
 # plain English names for the screen (no symbol that needs a legend): one per quantity id and per common keyed combination; a key not
 # listed reads "<quantity name> (<qualifier values>)"
-NAMES = {
-    "aspect_ratio": "aspect ratio", "carrier_gas": "carrier gas", "coated_aspect_ratio": "coated aspect ratio", "composition": "composition",
-    "crystallinity": "crystallinity", "cycle_number": "cycles", "cycle_time": "cycle time", "deposition_temperature": "temperature",
-    "dimensionless_distance": "depth over height", "distance": "distance from the entrance", "equivalent_aspect_ratio": "equivalent aspect ratio",
-    "exposure": "exposure", "feature_depth": "feature depth", "feature_height": "channel height", "feature_width": "feature width",
-    "film_density": "film density", "film_thickness": "thickness", "front_slope": "front slope", "gas_flow_rate": "gas flow",
-    "growth_per_cycle": "growth per cycle", "initial_sticking_coefficient": "initial sticking coefficient", "knudsen_number": "Knudsen number",
-    "lumped_sticking_coefficient": "sticking coefficient", "mean_free_path": "mean free path", "normalized_exposure": "normalized exposure",
-    "normalized_thickness": "normalized thickness", "open_fraction": "open fraction", "partial_pressure": "partial pressure",
-    "penetration_depth": "penetration depth", "precursor_purity": "purity", "probe_resolution": "probe spot", "process_pressure": "pressure",
-    "pulse_time": "pulse", "purge_time": "purge", "reactor_type": "reactor", "recombination_probability": "recombination probability",
-    "resistivity": "resistivity", "saturation_density": "saturation density", "source_temperature": "source temperature",
-    "step_coverage": "step coverage", "substrate": "substrate", "surface_coverage": "surface coverage", "thickness_nonuniformity": "nonuniformity",
-    "plasma_gas_ratio": "H2 flow ratio", "mass_gain": "mass gain", "porosity": "porosity", "crystallite_size": "crystallite size",
-    "gas_moles_per_cycle": "gas released per cycle", "deposited_moles_per_cycle": "solid deposited per cycle", "pressure_rise": "pressure rise",
-    "pressure_rate": "terminal pressure slope", "time_to_maximum": "time to pressure maximum", "roughness": "roughness",
-    "binding_energy": "binding energy", "atoms_per_cycle": "metal atoms per cycle", "carrier_concentration": "carrier concentration",
-    "carrier_mobility": "carrier mobility", "pillar_layout": "pillar layout", "objective_magnification": "objective", "fit_r2": "fit R²",
-    "fill_fraction": "channel filled", "signal_intensity": "signal", "reaction_stoichiometry": "gas-to-solid ratio",
-    "annealing_temperature": "anneal temperature", "material": "material", "structure_type": "structure", "raman_shift": "Raman shift",
-    "phase": "phase", "effective_channel_height": "effective channel height", "exposure_per_run": "exposure per run",
-    "sheet_resistance": "sheet resistance", "h_per_metal": "H per metal atom", "density_relative_to_bulk": "density relative to bulk",
-    "moles_deposited": "moles deposited per run", "moles_from_mass_gain": "moles from mass gain", "shell_volume_fraction": "coating volume fraction",
-    "deposition_rate": "thickness per hour", "coating_mass_fraction": "coating mass fraction", "other": "other",
-    "target_growth_per_cycle": "growth per cycle implied by the thickness target", "plasma_h2_fraction": "H2 share of the plasma feed",
+NAMES = {**_NAMES, "other": "other",
     "pulse_time{species=TMA;step=reactant_A}": "TMA pulse", "pulse_time{species=H2O;step=reactant_B}": "water pulse",
     "pulse_time{species=DEZ;step=reactant_A}": "DEZ pulse", "pulse_time{step=reactant_A}": "precursor pulse", "pulse_time{step=plasma}": "plasma step",
     "purge_time{step=purge_A}": "purge after precursor", "purge_time{step=purge_B}": "purge after co-reactant",

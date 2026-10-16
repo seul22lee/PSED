@@ -469,6 +469,47 @@ def check_user(all_ids):
     return err
 
 
+def check_vocabulary():
+    """P49: the ontology is the one vocabulary source. vocab.py is what export.py generates from it now; every quantity id, method
+    id, material and structure value, qualifier key and curve abscissa used in the facts of the three papers and the user file is in
+    the generated vocabulary (a pilot id still to absorb is in it provisionally and is counted); the hand tables of lists.py key
+    only vocabulary ids."""
+    import subprocess
+    err = []
+    r = subprocess.run([sys.executable, str(HERE.parent / "ontology" / "export.py"), "--check"], capture_output=True, text=True)
+    if r.returncode:
+        err.append(r.stdout.strip() or "vocab.py stale")
+    used = collections.defaultdict(set)
+    for pid in list(KEYS) + ["user"]:
+        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+            for q in filter(None, f["quantity"].split(";")):
+                used["quantity"].add(q)
+            if f["method"]:
+                used["method"].add(f["method"])
+            if f["quantity"] == "material" and f["value_text"]:
+                used["material"].add(f["value_text"])
+            if f["quantity"] == "structure_type" and f["value_text"]:
+                used["structure"].add(f["value_text"])
+            for alt in f["qualifiers"].split("|"):
+                for part in filter(None, alt.split(";")):
+                    k, _, v = part.partition("=")
+                    used["qualifier key"].add(k)
+                    if k == "x":
+                        used["quantity"].add(v)
+            for t_ in (f["cause"] + ";" + f["effect"]).split(";"):
+                if t_ and not t_.startswith("mechanism:"):
+                    used["quantity"].add(t_)
+    voc = {"quantity": set(L.QUANTITIES), "method": set(L.METHODS), "material": set(L.MATERIALS), "structure": set(L.STRUCTURES), "qualifier key": set(L.QUALIFIERS)}
+    for k, vs in used.items():
+        for v in sorted(vs - voc[k]):
+            err.append(f"{k} {v!r} used in the data is not in the generated vocabulary (vocab.py)")
+    absorbed = used["quantity"] & set(L.TO_ABSORB)
+    print(f"== vocabulary: {len(used['quantity'])} quantity ids, {len(used['method'])} methods, {len(used['material'])} materials, {len(used['structure'])} structures, "
+          f"{len(used['qualifier key'])} qualifier keys in use; {len(L.TO_ABSORB)} pilot ids still to absorb ({len(absorbed)} in use); "
+          f"materials to absorb {L.TO_ABSORB_VALUES['material']}, structures {L.TO_ABSORB_VALUES['structure']}")
+    return err
+
+
 def check_cases():
     rows = rd(HERE / "paper_case.csv")
     left = [(k, r["paper_id"]) for r in rows for k in (f"c{i}" for i in range(1, 14)) if r.get(k, "").startswith("candidate")]
@@ -477,6 +518,11 @@ def check_cases():
 
 if __name__ == "__main__":
     bad = 0
+    err = check_vocabulary()
+    print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
     err = check_cases()
     print(f"== cases: {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
