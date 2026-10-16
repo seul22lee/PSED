@@ -25,7 +25,7 @@ sections below.
   - v1 points: `v1_points_check.csv` records which v1 curves were checked against their figure and accepted; `v1_points.json`
     holds those points.
 - **The 26 questions** (`pilot/questions.py` → `questions.csv`): each a function computing its answer from the facts, the test of the
-  schema. Baseline (b8a3b0d) 2 answered, now 26. Eight answers use an assumed fact and say which (Q6, Q11, Q17, Q19, Q20, Q21, and
+  schema. Baseline (b8a3b0d) 2 answered, now 26. Six answers use an assumed fact and say which (Q6, Q11, Q17, Q19, Q20, Q21; so do
   the derived columns of the cards). Run it after any change to the facts or rules; a status change is recorded in `changed`.
 - The five-table schema pilot (first pass at 840674c, the element-grounded v2 at c796617) is superseded by the facts layer and
   was removed on 2026-10-14; read it from git history if needed. Its lessons are below.
