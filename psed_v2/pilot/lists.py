@@ -53,7 +53,7 @@ TOKEN = re.compile(r"^[A-Za-z0-9+_.]+$")
 QUALIFIERS = {          # key: allowed values (None = a chemical or element token)
     "step": {"reactant_A", "purge_A", "reactant_B", "purge_B", "plasma", "hold_A", "hold_B", "none"},
     "position": {"planar", "local", "top", "sidewall", "bottom", "entrance", "plateau", "outside", "interface"},
-    "kind": {"set_point", "measured"},
+    "kind": {"set_point", "measured", "default", "option", "target"},   # default: what most entities used (inherited); option: used by some, which is not stated (not inherited); target: an aimed value, not a result
     "reference": {"plateau", "entrance", "maximum", "stated", "planar", "assumed_saturation", "bulk"},
     "by": {"H", "2H", "d", "w", "lambda", "none"},
     "origin": {"entrance", "top_face", "hole_centre", "nearer_face", "opening_centre"},

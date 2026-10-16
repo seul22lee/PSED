@@ -603,9 +603,9 @@ F(K, "s5.p1", "setting", "For 200-450 °C the substrate table is heated to the s
 F(K, "s5.p1", "definition", "Temperatures quoted are table set points; actual substrate temperature is lower at high set points "
   "because of poor thermal contact at low pressure, negligibly so at 150 °C and below.", mentions="ref. 86;150 °C")
 F(K, "s5.p2", "setting", "Substrate of most depositions (Siegert Wafer), chosen for optical contrast.", quantity="substrate",
-  value_text="Si(100) with 450 nm thermal SiO2", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
+  qualifiers="kind=default", value_text="Si(100) with 450 nm thermal SiO2", data_kind="chosen input", mentions="Si (100);450 nm SiO2")
 F(K, "s5.p2;s5.p13", "setting", "Substrate of some Hall samples, which needs no cutting since leakage to Si via side deposits "
-  "is impossible; others on SiO2/Si.", quantity="substrate", value_text="fused SiO2", data_kind="chosen input", mentions="fused SiO2")
+  "is impossible; others on SiO2/Si.", quantity="substrate", qualifiers="kind=option", value_text="fused SiO2", data_kind="chosen input", mentions="fused SiO2")
 F(K, "s5.p2", "setting", "Substrate of the transistors.", quantity="substrate", value_text="Si with 90 nm thermal SiO2",
   data_kind="chosen input", mentions="90 nm SiO2")
 F(K, "s5.p2", "setting", "Plastic substrate (DuPont Teijin Films), 125 µm thick.", quantity="substrate",
@@ -613,7 +613,7 @@ F(K, "s5.p2", "setting", "Plastic substrate (DuPont Teijin Films), 125 µm thick
 F(K, "s5.p2", "observation", "Uncoated and ALD Al2O3-coated PET (50 cycles of AlMe3/H2O) give similar results.",
   mentions="Al2O3;50 ALD cycles;AlMe3;H2O")
 F(K, "s5.p3", "setting", "Substrates of 1 × 1 to 3 × 3 cm2 are used as received (cut, blown with N2) on an 8\" carrier wafer.",
-  quantity="substrate", data_kind="chosen input", mentions="8\" carrier wafer")
+  quantity="other", label_as_printed="substrate size", value_text="1 × 1 to 3 × 3 cm2", data_kind="chosen input", mentions="8\" carrier wafer")
 F(K, "s5.p3", "setting", "The load lock is pumped below 10^-2 Torr before transfer.", quantity="other",
   label_as_printed="load lock pressure", value="1e-2", censor="<", unit="Torr", data_kind="chosen input")
 F(K, "s5.p3", "setting", "Before deposition substrates equilibrate for 10 min at 200 mTorr with Ar flowing.", quantity="other",
@@ -1537,7 +1537,8 @@ C.spread(f"{K}:s5.p7#2", cells_at({50, 300, 350}), LAB)
 C.spread(f"{K}:s5.p7#3", cells_at({100, 150, 200, 250}), LAB)
 C.spread(f"{K}:s5.p7#4", [f"{K}:dep:T{t}_R0.20" for (t, r) in sorted(CELLS, key=lambda c: -c[0]) if r == "0.20"], LAB)
 C.spread(f"{K}:s3.p19#1", [d for d in DEPS if ":dep:gc_" in d], LAB)
-C.spread(f"{K}:s3.p19#5", [d for d in DEPS if ":dep:gc_" in d], LAB)                 # their substrate: glassy carbon, not the SiO2/Si of the recipe
+C.spread(f"{K}:s3.p19#5", [d for d in DEPS if ":dep:gc_" in d], LAB)
+C.spread(f"{K}:s5.p2#3", [f"{K}:dep:tem_T100_R0.80", f"{K}:dep:tem_T350_R0.20"], LAB)    # the transistor substrate: the two FET films (P16)                 # their substrate: glassy carbon, not the SiO2/Si of the recipe
 C.spread(f"{K}:s3.p22#2", cells_at({150}), LAB)
 C.spread(f"{K}:s5.p8#1", [d for d in DEPS if ":dep:WS2" in d or ":dep:TiS2" in d], LAB)
 C.spread(f"{K}:s5.p8#6", [d for d in DEPS if ":dep:WS2" in d], LAB)

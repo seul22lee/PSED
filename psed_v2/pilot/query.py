@@ -73,7 +73,9 @@ class Tree:
                 if f["type"] == "setting" and f["quantity"]:
                     level[ckey(f)].append(f)
             for k, fs in level.items():
-                out.setdefault(k, ranked(fs))                                   # nearest level first, then ranked (P10)
+                fs = inheritable(fs, own=(x == i))
+                if fs:
+                    out.setdefault(k, ranked(fs))                               # nearest level first, then ranked (P10)
         return out
 
     def results(self, ent):
@@ -205,13 +207,33 @@ def ranked(fs):
     return sorted(fs, key=rank_key)
 
 
+def exact_values(fs):
+    """The distinct exact values among facts of one key (value or value_text); a bound or a range is not exact."""
+    return {f["value"] or f["value_text"] for f in fs if (f["value"] and not f["censor"]) or (f["value_text"] and not f["value_min"])}
+
+
+def inheritable(fs, own=False):
+    """The facts of one key at one level that a node below inherits (P16): a value marked option is never inherited; when the
+    level states several mutually exclusive values (a list of substrates), only one marked default is, or none. A node's own
+    settings are kept whole."""
+    if own:
+        return fs
+    fs = [f for f in fs if quals(f).get("kind") != "option"]
+    if len(exact_values(fs)) > 1:
+        fs = [f for f in fs if quals(f).get("kind") == "default"]
+    return fs
+
+
 def res(T, ent, quantity, **need):
     """An entity's result facts of one quantity whose qualifiers include every one given (a GPC whatever it is averaged over)."""
     return [f for fs in T.results(ent).values() for f in fs if f["quantity"] == quantity and all(quals(f).get(k) == v for k, v in need.items())]
 
 
+KEYLESS = {"x", "mode"}                                   # qualifiers that describe a value's provenance or axis, not the quantity
+
+
 def ckey(f):
-    qs = ";".join(sorted(p for p in f["qualifiers"].split(";") if p and not p.startswith("x=")))
+    qs = ";".join(sorted(p for p in f["qualifiers"].split(";") if p and p.split("=")[0] not in KEYLESS and p not in ("kind=default", "kind=option")))
     return f"{f['quantity']}{'{' + qs + '}' if qs else ''}" + (f"[{f['label_as_printed']}]" if f["quantity"] == "other" else "")
 
 
