@@ -453,6 +453,8 @@ def _matches(f, q, need):
     elif f["quantity"] != q:
         return False
     have = quals(f)
+    if "reference" in have and need.get("reference") != have["reference"]:
+        return False                                                            # a reference value serves only an input that asks for it (P8)
     return all(have.get(k) == v for k, v in need.items())
 
 
