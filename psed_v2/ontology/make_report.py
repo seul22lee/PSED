@@ -348,9 +348,11 @@ def main() -> int:
     nodes, _, leaf_ids = tree(onto)
 
     counts = Counter((e["type"], e["origin"], "with evidence" if e.get("evidence") else "no evidence") for e in entries)
-    n_ext = sum(e["type"] == "quantity" and e["origin"] == "extension" for e in entries)
+    ext_all = [e for e in entries if e["type"] == "quantity" and e["origin"] == "extension"]
+    n_ext = sum(1 for e in ext_all if not e.get("attribute") and not e.get("replaced_by"))      # the count of check 5 (P61)
+    n_attr, n_rep = sum(1 for e in ext_all if e.get("attribute")), sum(1 for e in ext_all if e.get("replaced_by"))
     summary = table(["type", "origin", "evidence", "entries"], [[*k, n] for k, n in sorted(counts.items())])
-    summary += (f"<p>{len(entries)} entries. Extension quantities: {n_ext} of at most {EXTENSION_CAP}. "
+    summary += (f"<p>{len(entries)} entries. Extension quantities: {n_ext} concept extension (+{n_attr} attributes, +{n_rep} superseded) of at most {EXTENSION_CAP}. "
                 f"Hierarchy: {len(nodes)} nodes, {len(leaf_ids)} leaves. Proposals: {len(onto.get('proposals', []))}.</p>")
     summary += table(["check", "result", "detail"], [[c, "pass" if good else "FAIL", d] for c, good, d in checks])
 
