@@ -15,7 +15,9 @@
   difference; (c) one verdict per pair: direct when the two share a result with the same quantity and qualifiers,
   transformable when a transform with the settings both have reaches a common quantity and abscissa, else not
   comparable, with the reason in one line (the first differing qualifier key, or the setting one item lacks), and the
-  settings the pair differs in. A card's compare button fills the tray with the two runs. Cards: on the left the tree collapsed to
+  settings the pair differs in. Run and figure cards carry an add-to-tray button (a figure card adds its curves with
+  points, else the runs it draws on) and a link to the tray; the run card's compare row (a run picker, siblings first,
+  and a compare button) opens the tray with the two runs. Cards: on the left the tree collapsed to
   groups and runs (one line each); clicking a run, or any fact anywhere in the page, opens its card on the right. Clicking a
   figure panel anywhere (the paper view, the figures view, a crop in an evidence box) opens the figure card instead: the
   groups it compares (each group's label carries its varied setting and values), the runs it draws on (chips to their
@@ -28,7 +30,7 @@
   value stated at two levels is one chip; two lines until "+N more" opens the rest), 3 measured (the run's observation, derived and model
   facts grouped by figure, table or paragraph, element id click = the element and its crop in the evidence box, curves
   as sparklines, inferred film membership marked), 4 why and what it showed (the group's purpose fact, then the claims
-  linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens find with the two runs).
+  linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens the tray with the two runs).
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -170,7 +172,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wrap2{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}@media(max-width:900px){.wrap2{grid-template-columns:1fr}}
 .lt{max-height:84vh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--card);font-size:12.5px}.lt details{margin-left:10px}.lt summary{cursor:pointer;padding:1px 0}
 .rl{cursor:pointer;padding:1px 4px;margin-left:10px;border-radius:4px}.rl:hover{background:var(--nk)}.rl.on{background:var(--sel);font-weight:600}
-.card{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 14px;font-size:13px}.card h2{margin:0 0 6px;font-size:16px}
+.card{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 14px;font-size:13px}.card h2{margin:0 0 6px;font-size:16px}.card h2 button{font-size:12px;font-weight:400;padding:1px 8px;margin-left:6px}.card h2 .lnk{font-size:12px;font-weight:400}
 .card section{border-top:1px solid var(--line);padding:7px 0}.card h4{margin:0 0 5px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--acc)}
 .card .mg{margin:3px 0 6px}.card .mg b{font-size:12px}.card .fl2{margin:2px 0 2px 10px;line-height:1.4}
 .chip{display:inline-block;background:var(--nk);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin:2px 3px 2px 0;line-height:18px;vertical-align:top;cursor:pointer;font-size:11.5px}.chip.diff{background:var(--sel);border-color:#d9b94a;font-weight:600}
@@ -382,7 +384,7 @@ function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=
  // 5 compare: a run picker (siblings first, then every run of the three papers) and a button that opens find with the two runs
  const sibs=own.sibs.filter(s=>s.fact_id!==id);const opt=(j,n,sel)=>`<option value="${j}|${n.fact_id}" ${sel?"selected":""}>${esc(nlab(n))}</option>`;
  const r5=`<select id="cmp">${sibs.length?`<optgroup label="siblings">${sibs.map((s,k)=>opt(i,s,k===0)).join("")}</optgroup>`:""}${DATA.map((o,j)=>`<optgroup label="${o.key}">${o.tree.filter(n=>n.type==="run"&&n.fact_id!==id).map(n=>opt(j,n,false)).join("")}</optgroup>`).join("")}</select> <button onclick="compareWith(${i},'${id}')">compare</button>`;
- return `<div class="card"><h2>${esc(nlab(n))} <span class="mut" style="font-size:12px;font-weight:400">${esc(n.fact_id)} · ${esc(n.qualifiers)}</span></h2><div class="mut">${esc(n.statement)}</div>
+ return `<div class="card"><h2>${esc(nlab(n))} <span class="mut" style="font-size:12px;font-weight:400">${esc(n.fact_id)} · ${esc(n.qualifiers)}</span> ${trayBtn(i,id)}</h2><div class="mut">${esc(n.statement)}</div>
  <section><h4>1 · what was varied</h4>${r1}</section><section><h4>2 · other conditions</h4>${r2}</section><section><h4>3 · measured</h4>${r3}</section>
  <section><h4>4 · why and what it showed</h4>${r4}</section><section><h4>5 · compare</h4>${r5}</section>
  <div id="side" class="evbox"><span class="mut">Click an element id for the element, its crop and its facts.</span></div></div>`}
@@ -461,6 +463,13 @@ function wbRange(q,j,v){WB.range[q][j]=v;render()}
 function wbClear(){WB={...WB,material:"",structure:"",method:"",quantity:"",paper:"",range:EMPTY_RANGE()};render()}
 function trayAdd(i,id,fid,label){if(WB.tray.length>=8||WB.tray.some(t=>t.id===id&&t.fid===fid))return;WB.tray.push({i,id,fid,label});render()}
 function trayDrop(j){WB.tray.splice(j,1);render()}
+const runOfF=(T,id)=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x&&T.byId[x]?x:null};
+const trayLink=()=>`<span class="lnk" onclick="TM='find';render()">tray (${WB.tray.length})</span>`;
+const trayBtn=(i,id)=>{const inT=WB.tray.some(t=>t.id===id&&!t.fid);return `<button ${inT||WB.tray.length>=8?"disabled":""} onclick="trayAdd(${i},'${id}')">${inT?"in tray":"add to tray"}</button> ${trayLink()}`};
+function figCurves(i,eid){const d=DATA[i],T=buildTree(d);return d.facts.filter(f=>f.evidence.split(";").includes(eid)&&f.points).map(f=>({f,run:runOfF(T,f.fact_id)})).filter(c=>c.run)}
+function trayAddFig(i,eid){const cs=figCurves(i,eid);if(cs.length)cs.forEach(c=>{if(WB.tray.length<8&&!WB.tray.some(t=>t.fid===c.f.fact_id))WB.tray.push({i,id:c.run,fid:c.f.fact_id,label:`${elab(eid)} ${(c.f.mentions||"").split(";")[0]}`.trim()})});
+ else{const d=DATA[i],T=buildTree(d);[...new Set(d.facts.filter(f=>f.evidence.split(";").includes(eid)).map(f=>runOfF(T,f.fact_id)).filter(Boolean))].forEach(r=>{if(WB.tray.length<8&&!WB.tray.some(t=>t.id===r&&!t.fid))WB.tray.push({i,id:r})})}render()}
+const figTrayBtn=(i,eid)=>{const cs=figCurves(i,eid);const inT=cs.length?cs.every(c=>WB.tray.some(t=>t.fid===c.f.fact_id)):false;return `<button ${inT||WB.tray.length>=8?"disabled":""} onclick="trayAddFig(${i},'${eid}')">${inT?"in tray":`add to tray${cs.length?` (${cs.length} curves)`:""}`}</button> ${trayLink()}`};
 function trayClear(){WB.tray=[];render()}
 function showCard(i,id){P=i;CARD=id;FIGC=null;V="tree";TM="cards";render()}
 function figCard(eid,pi){if(pi!==undefined)P=pi;V="tree";TM="cards";FIGC=eid;render()}
@@ -474,7 +483,7 @@ function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.i
  const r3=Object.entries(other).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).map(([k,o])=>`<span class="chip" onclick="${o.panel?`figCard('${o.x}',${i})`:`side('${o.x}',${i})`}">${esc(k)} <span class="mut">${o.n.size}</span></span>`).join(" ")||'<span class="mut">—</span>';
  const ids=new Set(fs.map(f=>f.fact_id).concat(runs,groups));const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||runs.includes(runOf(l))||groups.includes(grpOf(T,l))));
  const r4=claims.map(c=>`<div class="fl2"><span class="ty claim">claim</span>${esc(c.statement)}<code class="ev" onclick="side('${c.evidence.split(";")[0]}',${i})">${c.evidence.split(";")[0]}</code></div>`).join("")||'<div class="mut">—</div>';
- return `<div class="card"><h2>${esc(elab(eid))} <span class="mut" style="font-size:12px;font-weight:400">${esc(eid)}${e?" · "+esc(e.loc):""} · ${fs.length} facts</span></h2>${e&&e.crop&&d.imgs[e.crop]?`<img class="fig" src="${d.imgs[e.crop]}" onclick="side('${eid}',${i})">`:""}
+ return `<div class="card"><h2>${esc(elab(eid))} <span class="mut" style="font-size:12px;font-weight:400">${esc(eid)}${e?" · "+esc(e.loc):""} · ${fs.length} facts</span> ${figTrayBtn(i,eid)}</h2>${e&&e.crop&&d.imgs[e.crop]?`<img class="fig" src="${d.imgs[e.crop]}" onclick="side('${eid}',${i})">`:""}
  <section><h4>compares</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>also on these runs</h4>${r3}</section><section><h4>claims</h4>${r4}</section>
  <div id="side" class="evbox"></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
@@ -498,7 +507,7 @@ function render(){const d=DATA[P];
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
  $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree"){applyForest();fitChips()}}
-window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayDrop=trayDrop;window.trayClear=trayClear;
+window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
 render();
 </script></body></html>"""
 
