@@ -153,7 +153,6 @@ def layer(key):
     within the tolerated keys; per stated series a power-law fit of each result against the varied setting."""
     import query as Q
     T = Q.TREES[key]
-    tol = ("substrate", "cycle_number", "film_thickness")
     derived, routes, join, fits = {}, {}, {}, {}
     for e in T.entities():
         rows = []
@@ -178,8 +177,7 @@ def layer(key):
                 rs.append(dict(key=k, a=a["fact_id"], b=b["fact_id"], va=Q.fmt(a), vb=Q.fmt(b), ma=a["method"], mb=b["method"], qa=a["qualifiers"], qb=b["qualifiers"], ratio=Q.g(r, 3), why=w))
         if rs:
             routes[e] = rs
-        js = [dict(id=o, label=T.label(o), diff="; ".join(f"{L.LABELS.get(k, k)} {a} vs {b}" for k, (a, b) in d.items()), only=", ".join(only[:4]))
-              for o, d, only in Q.same_experiment(T, e, tol)]
+        js = [dict(id=o, label=T.label(o), diff="", only="") for o in Q.same_experiment(T, e)]
         if js:
             join[e] = js
     for c in T.comps:
@@ -205,7 +203,7 @@ def layer(key):
                 for k in keys for j in [Q.judge(T, c, k)] if j]
         if rows:
             noise[c["fact_id"]] = rows
-    return dict(derived=derived, routes=routes, join=join, fits=fits, tolerated=list(tol), noise=noise)
+    return dict(derived=derived, routes=routes, join=join, fits=fits, tolerated=[], noise=noise)
 
 
 def fig9_crops(pid):
@@ -489,7 +487,7 @@ function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=
  const peers=[...new Set(comps.flatMap(c=>compEntities(T,c.fact_id)))].filter(x=>x!==id);const opt=(j,n_,sel)=>`<option value="${j}|${n_.fact_id}" ${sel?"selected":""}>${esc(nlab(n_))}</option>`;
  const jn=(d.join||{})[id]||[];
  const r5=`<select id="cmp">${peers.length?`<optgroup label="same comparison">${peers.map((x,k)=>opt(i,T.byId[x],k===0)).join("")}</optgroup>`:""}${DATA.map((o,j)=>`<optgroup label="${o.key}">${RUNS().filter(x=>x.i===j&&x.id!==id).map(x=>opt(j,x.n,false)).join("")}</optgroup>`).join("")}</select> <button onclick="compareWith(${i},'${id}')">compare</button>`
-  +`<div class="fl2"><span class="mut">same experiment, tolerating ${(d.tolerated||[]).map(t=>esc(t.replace(/_/g," "))).join(", ")}:</span> ${jn.length?jn.map(j=>`<span class="chip" title="${esc(j.diff||"equal condition vectors")}${j.only?" · only one states: "+esc(j.only):""}" onclick="openCard(${i},'${j.id}')">${esc(j.label)}${j.diff?` <span class="mut">(${esc(j.diff)})</span>`:""}</span>`).join(" "):'<span class="mut">none</span>'}</div>`;
+  +`<div class="fl2"><span class="mut">same experiment (equal conditions):</span> ${jn.length?jn.map(j=>`<span class="chip" title="${esc(j.diff||"equal condition vectors")}${j.only?" · only one states: "+esc(j.only):""}" onclick="openCard(${i},'${j.id}')">${esc(j.label)}${j.diff?` <span class="mut">(${esc(j.diff)})</span>`:""}</span>`).join(" "):'<span class="mut">none</span>'}</div>`;
  return `<div class="card"><h2>${esc(nlab(n))} <span class="mut" style="font-size:12px;font-weight:400">${esc(n.fact_id)} · ${esc(n.how)}${dep?` · ${esc(nlab(T.byId[dep]))}`:""}</span> ${trayBtn(i,id)}</h2><div class="mut">${esc(n.statement)}</div>
  <section><h4>1 · what was varied</h4>${r1}</section><section><h4>2 · conditions</h4>${r2}</section><section><h4>3 · measured</h4>${r3}</section>
  <section><h4>4 · why and what it showed</h4>${r4}</section><section><h4>5 · compare</h4>${r5}</section>

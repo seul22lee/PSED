@@ -280,28 +280,27 @@ def vtext(T, e):
     return {k: "; ".join(dict.fromkeys(t for t in (fmt(f) for f in fs) if t)) for k, fs in T.vector(e).items()}
 
 
-def same_experiment(T, ent, tolerate=()):
-    """The entities (with observations) that are the same experiment as `ent` for a result comparison: both state the same
-    process-defining settings (lists.PRIMARY), their condition vectors agree on every key both state, except keys whose quantity is
-    tolerated (a substrate, a cycle count, a thickness target). Returns [(entity, {key: (this value, that value)} over the
-    tolerated keys that differ, keys only one of the two states)]."""
-    v0 = vtext(T, ent); out = []
+def same_experiment(T, ent):
+    """The entities (with observations) that are the same experiment as `ent`: equal condition vectors, nothing tolerated (P20).
+    Near-equal entities are found by filtering on conditions (matching) and their differences shown side by side (differing)."""
+    v0 = vtext(T, ent)
+    return [e for e in T.entities() if e != ent and vtext(T, e) == v0]
+
+
+def matching(T, **conds):
+    """The entities whose condition vector states every given condition: {quantity: value text} matched on the key's quantity and the
+    value as printed (a filter, P20)."""
+    out = []
     for e in T.entities():
-        if e == ent:
-            continue
         v = vtext(T, e)
-        only = sorted(set(v0) ^ set(v))
-        if any(k.split("{")[0] in L.PRIMARY for k in only):
-            continue
-        diff = {k: (v0[k], v[k]) for k in sorted(set(v0) & set(v)) if v0[k] != v[k]}
-        if all(k.split("{")[0] in tolerate for k in diff):
-            out.append((e, diff, only))
+        if all(any(k.split("{")[0] == q and val_eq(t, want) for k, t in v.items()) for q, want in conds.items()):
+            out.append(e)
     return out
 
 
-def join_text(joins):
-    keys = sorted({k.split("{")[0] for _, d, _ in joins for k in d})
-    return f"joined tolerating {', '.join(keys)}" if keys else "joined on equal condition vectors"
+def val_eq(text, want):
+    a, b = num(re.sub(r"[^\d.eE+-].*$", "", text.strip())), num(str(want))
+    return (a is not None and b is not None and abs(a - b) <= 1e-9 * max(1, abs(b))) or text.strip() == str(want)
 
 
 # ------------------------------------------------------------------ the comparison layer: operations
