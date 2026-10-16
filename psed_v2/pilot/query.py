@@ -362,6 +362,14 @@ def correction(T, key, ykey, frm, to):
     return None, None
 
 
+def relate(q, a, b):
+    """Two values of one quantity set side by side (P24): ('ratio', a/b) on a ratio-scale quantity with both values positive,
+    else ('difference', a - b)."""
+    if q not in L.NOT_RATIO_SCALE and a is not None and b and a > 0 and b > 0:
+        return "ratio", a / b
+    return "difference", (a - b) if a is not None and b is not None else None
+
+
 def routes(facts):
     """Several facts reaching one (entity, quantity): each pair as a ratio with a warning when their definitions (qualifiers,
     method, quantity) differ: [(fa, fb, ratio, warning)]."""
@@ -373,9 +381,12 @@ def routes(facts):
             why = [w for w, ok in (("quantities", a["quantity"] == b["quantity"] and (a["quantity"] != "other" or a["label_as_printed"] == b["label_as_printed"])), ("qualifiers", a["qualifiers"] == b["qualifiers"]),
                                    ("methods", a["method"] == b["method"])) if not ok]
             try:
-                ra = L.convert(val(a), a["unit"], b["unit"]) / val(b) if a["unit"] != b["unit"] and a["quantity"] == b["quantity"] else val(a) / val(b)
+                va = L.convert(val(a), a["unit"], b["unit"]) if a["unit"] != b["unit"] and a["quantity"] == b["quantity"] else val(a)
             except (ValueError, KeyError):
                 continue                                                        # units of different dimensions (a count and a length): not two routes to one value
+            how, ra = relate(a["quantity"], va, val(b))
+            if how != "ratio":
+                continue                                                        # routes are reported as ratios; a signed or interval value is not
             out.append((a, b, ra,
                         ("different " + " and ".join(why) + ": a ratio of two routes, not a contradiction") if why else "same definition: a replicate pair"))
     return out
@@ -474,13 +485,15 @@ def scale(ref_x, ref_y, x, exponent):
 
 
 def ratios_between(T, a, b):
-    """Every result both entities (with their pieces and runs) carry: [(key, fa, fb, ratio)]."""
+    """Every result both entities (with their pieces and runs) carry, related by relate(): [(key, fa, fb, 'ratio'|'difference', x)]."""
     ra, rb = results_deep(T, a), results_deep(T, b); out = []
     for k in ra:
-        if k in rb:
+        if k in rb and "stat=" not in k:
             fa, fb = ra[k][0], rb[k][0]
-            if val(fa) is not None and val(fb):
-                out.append((k, fa, fb, L.convert(val(fa), fa["unit"], fb["unit"]) / val(fb) if fa["unit"] != fb["unit"] else val(fa) / val(fb)))
+            if val(fa) is not None and val(fb) is not None:
+                va = L.convert(val(fa), fa["unit"], fb["unit"]) if fa["unit"] != fb["unit"] else val(fa)
+                how, x = relate(fa["quantity"], va, val(fb))
+                out.append((k, fa, fb, how, x))
     return out
 
 

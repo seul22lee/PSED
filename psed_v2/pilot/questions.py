@@ -249,7 +249,7 @@ def q15():
     if not (a and b):
         return unanswerable("", "the 120 °C and 120/160 °C pair entities are not both members of the schedules comparison")
     rs = ratios_between(T, a, b)
-    text = "; ".join(f"{L.LABELS.get(k, k)} {fmt(fa)} / {fmt(fb)} = {g(r, 3)}" for k, fa, fb, r in rs)
+    text = "; ".join(f"{L.LABELS.get(k, k)} {fmt(fa)} / {fmt(fb)} = {g(x, 3)}" if how == "ratio" else f"{L.LABELS.get(k, k)} {fmt(fa)} − {fmt(fb)} = {g(x, 3)} {fb['unit']}" for k, fa, fb, how, x in rs)
     rel = [f for k, fs in results_deep(T, a).items() for f in fs if "relative to" in f["label_as_printed"] and f["value"]]
     text += " · stated relative: " + "; ".join(f"{f['label_as_printed']} {fmt(f)} → {g(1 + val(f) / 100, 3)}" for f in rel)
     return answered(text, "ratios_between(): every result both pairs carry, their pieces' and their runs' monitors included; a stated relative count on one section reported as the third route")

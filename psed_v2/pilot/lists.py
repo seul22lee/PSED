@@ -76,6 +76,10 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "mode": {"in_situ", "ex_situ", "not_stated"},
 }
 PHASE_VALUES = {"detected", "not detected"}
+# quantities on which a ratio means nothing (P24): interval scales (°C temperatures, positions, shifts) and signed quantities (slopes,
+# rates that change sign); two values of these are compared by their difference
+NOT_RATIO_SCALE = {"deposition_temperature", "source_temperature", "annealing_temperature", "distance", "pressure_rate", "front_slope",
+                   "binding_energy", "raman_shift"}
 # whether entities with equal conditions are one physical thing (P23): an identity fact (type identity, kind one of these, links the
 # entities) records it; only 'different' makes them repeats
 IDENTITY_KINDS = {"same", "different", "not_stated"}
