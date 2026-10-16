@@ -139,16 +139,16 @@ yim20:s10.x2#4,claim,s10.x2,"at 5 kV the X-ray interaction volume is deeper than
 yim20:s10.x2#5,observation,s10.x2;s10.p2;fig5b,"the Al, O and Si intensities change with distance and so trace the film thickness profile",,,,,,,,,,,,sem_eds,,,yim20:run11,
 yim20:s10.p2#1,observation,s10.p2;fig5b,"in front of the channel (Region I), between about -40 and 40 µm, the film thickness is constant",distance,,,,-40,40,,µm,,,measured,sem_eds,Region I;Fig. 3b;Fig. 5b,,yim20:run11,
 yim20:s10.p2#2,observation,s10.p2;fig5b,"next comes a plateau of slightly larger thickness (Regions IIb, IIc), then after a knee the thickness drops sharply to zero",,,,,,,,,,,,sem_eds,Region II b;Region II c;Fig. 3b,,yim20:run11,
-yim20:fig5b#1,observation,fig5b,Fig. 5b curve O: EDS intensity across the coated channels,signal_intensity,element=O,Intensity [a.u.],,,,,,,fig5b_O,measured,sem_eds,O;Fig. 5b,,yim20:run11,
-yim20:fig5b#2,observation,fig5b,Fig. 5b curve Al: EDS intensity across the coated channels,signal_intensity,element=Al,Intensity [a.u.],,,,,,,fig5b_Al,measured,sem_eds,Al;Fig. 5b,,yim20:run11,
-yim20:fig5b#3,observation,fig5b,Fig. 5b curve Si: EDS intensity across the coated channels,signal_intensity,element=Si,Intensity [a.u.],,,,,,,fig5b_Si,measured,sem_eds,Si;Fig. 5b,,yim20:run11,
+yim20:fig5b#1,observation,fig5b,Fig. 5b curve O: EDS intensity across the coated channels,signal_intensity,element=O;x=distance,Intensity [a.u.],,,,,,,fig5b_O,measured,sem_eds,O;Fig. 5b,,yim20:run11,
+yim20:fig5b#2,observation,fig5b,Fig. 5b curve Al: EDS intensity across the coated channels,signal_intensity,element=Al;x=distance,Intensity [a.u.],,,,,,,fig5b_Al,measured,sem_eds,Al;Fig. 5b,,yim20:run11,
+yim20:fig5b#3,observation,fig5b,Fig. 5b curve Si: EDS intensity across the coated channels,signal_intensity,element=Si;x=distance,Intensity [a.u.],,,,,,,fig5b_Si,measured,sem_eds,Si;Fig. 5b,,yim20:run11,
 yim20:s10.x3#1,observation,s10.x3;fig6;fig6.cap,"Fig. 6: AFM image of a coated channel (500 nm design, 500 cycles at 300 °C, Table S4); white are membrane remnants and black are holes from torn-off pillars",,,,,,,,,,,,afm,Fig. 6;Table S4,,yim20:runS4,
 yim20:fig6#1,observation,fig6,"Fig. 6 AFM scan covers 90 µm × 90 µm with a Z range of 3.081 µm; Regions I, IIa and IIb are marked",other,,Z Range,3.081,,,,µm,,,measured,afm,Fig. 6,,yim20:runS4,
 yim20:s10.x3#2,observation,s10.x3;fig6,"a nanostep can be seen close to the entry, marking where the surface turns rough (Region IIa); curtain-like waviness extends from IIa toward IIb",,,,,,,,,,,,afm,Region IIa;Region IIb;Fig. 3b,,yim20:runS4,
 yim20:s10.x3#3,observation,s10.x3,the nanostep also appears in the AFM line scan of ESI Fig. S6,,,,,,,,,,,,afm,Fig. S6,,yim20:runS4,
 yim20:fig7#1,observation,fig7;fig7.cap;s11.x1,"Fig. 7: as-measured profiles, film thickness S (nm) against distance x (µm), for three reflectometer spot sizes; samples 4, 5, 6 of Series B",,,,,,,,,,,,reflectometry,"Fig. 7;Samples 4, 5, and 6;Series B",,yim20:grp:B,
-yim20:fig7#2,observation,fig7,Fig. 7 curve X5 (50 µm spot),film_thickness,,,,,,,,,fig7_X5,measured,reflectometry,X5 (50 µm);Fig. 7,,yim20:run6,
-yim20:fig7#3,observation,fig7,Fig. 7 curve X10 (25 µm spot),film_thickness,,,,,,,,,fig7_X10,measured,reflectometry,X10 (25 µm);Fig. 7,,yim20:run5,
+yim20:fig7#2,observation,fig7,Fig. 7 curve X5 (50 µm spot),film_thickness,x=distance,,,,,,,,fig7_X5,measured,reflectometry,X5 (50 µm);Fig. 7,,yim20:run6,
+yim20:fig7#3,observation,fig7,Fig. 7 curve X10 (25 µm spot),film_thickness,x=distance,,,,,,,,fig7_X10,measured,reflectometry,X10 (25 µm);Fig. 7,,yim20:run5,
 yim20:fig7#4,observation,fig7,Fig. 7 curve X50 (5 µm spot); no accepted points,film_thickness,,,,,,,,,,,reflectometry,X50 (5 µm);Fig. 7,,yim20:run4,
 yim20:s11.x1#1,observation,s11.x1;fig7,larger spots broadened the entrance bump caused by membrane remnants and widened the adsorption front,,,,,,,,,,,,reflectometry,,,yim20:grp:B,
 yim20:s11.x1#2,claim,s11.x1,the measured profile shape depends on spot size whenever the spot is wider than the adsorption front,,,,,,,,,,,,reflectometry,,,yim20,yim20:s11.x1#1;yim20:fig7#1
@@ -160,18 +160,18 @@ yim20:fig8a#2,observation,fig8a,"Fig. 8a curve L 0.1 mm, legend entry 2 of that 
 yim20:fig8a#3,observation,fig8a,"Fig. 8a curve L 0.1 mm, legend entry 3 of that length; no accepted points",film_thickness,,,,,,,,,,,reflectometry,L (mm): 0.1;Fig. 8a,,yim20:run8,
 yim20:fig8a#4,observation,fig8a,"Fig. 8a curve L 0.5 mm, legend entry 1 of that length; no accepted points",film_thickness,,,,,,,,,,,reflectometry,L (mm): 0.5;Fig. 8a,,yim20:run8,
 yim20:fig8a#5,observation,fig8a,"Fig. 8a curve L 0.5 mm, legend entry 2 of that length; no accepted points",film_thickness,,,,,,,,,,,reflectometry,L (mm): 0.5;Fig. 8a,,yim20:run8,
-yim20:fig8a#6,observation,fig8a,"Fig. 8a curve L 0.5 mm, legend entry 3 of that length",film_thickness,,,,,,,,,fig8a_L0.5mm_scan3,measured,reflectometry,L (mm): 0.5;Fig. 8a,,yim20:run8,
-yim20:fig8a#7,observation,fig8a,"Fig. 8a curve L 1 mm, legend entry 1 of that length",film_thickness,,,,,,,,,fig8a_L1mm_scan1,measured,reflectometry,L (mm): 1;Fig. 8a,,yim20:run8,
+yim20:fig8a#6,observation,fig8a,"Fig. 8a curve L 0.5 mm, legend entry 3 of that length",film_thickness,x=distance,,,,,,,,fig8a_L0.5mm_scan3,measured,reflectometry,L (mm): 0.5;Fig. 8a,,yim20:run8,
+yim20:fig8a#7,observation,fig8a,"Fig. 8a curve L 1 mm, legend entry 1 of that length",film_thickness,x=distance,,,,,,,,fig8a_L1mm_scan1,measured,reflectometry,L (mm): 1;Fig. 8a,,yim20:run8,
 yim20:fig8a#8,observation,fig8a,"Fig. 8a curve L 1 mm, legend entry 2 of that length; no accepted points",film_thickness,,,,,,,,,,,reflectometry,L (mm): 1;Fig. 8a,,yim20:run8,
-yim20:fig8a#9,observation,fig8a,"Fig. 8a curve L 5 mm, legend entry 1 of that length",film_thickness,,,,,,,,,fig8a_L5mm_scan1,measured,reflectometry,L (mm): 5;Fig. 8a,,yim20:run8,
+yim20:fig8a#9,observation,fig8a,"Fig. 8a curve L 5 mm, legend entry 1 of that length",film_thickness,x=distance,,,,,,,,fig8a_L5mm_scan1,measured,reflectometry,L (mm): 5;Fig. 8a,,yim20:run8,
 yim20:s12.x1#2,claim,s12.x1;fig8a,the overlapping repeated profiles show good measurement repeatability,,,,,,,,,,,,reflectometry,,,yim20,yim20:s12.x1#1
 yim20:s12.x1#3,claim,s12.x1;fig8a;s20.p3,"profiles from lateral lengths of 100 µm to 5 mm overlap, so L has no significant effect on the measured profile, at least for Al2O3 ALD",,,,,,,,,,,,reflectometry,L,,yim20,yim20:s12.x1#1;yim20:fig8a#9
 yim20:s12.x1#4,observation,s12.x1,matching results for design heights 100 and 2000 nm are in ESI Fig. S7,,,,,,,,,,,,reflectometry,Fig. S7;100 nm;2000 nm,,yim20:process,
 yim20:s12.x2#1,observation,s12.x2;fig8b;fig8.cap;s16.p10,"Fig. 8b: profiles of different chips, ALD runs and times at fixed ALD parameters (500 cycles, H 500 nm, layout v1b)",,,,,,,,,,,,reflectometry,Fig. 8b,,yim20:grp:repro,
-yim20:fig8b#1,observation,fig8b,Fig. 8b curve Sample 2,film_thickness,,,,,,,,,fig8b_sample2,measured,reflectometry,Sample 2;Fig. 8b,,yim20:run2,
-yim20:fig8b#2,observation,fig8b,Fig. 8b curve Sample 4,film_thickness,,,,,,,,,fig8b_sample4,measured,reflectometry,Sample 4;Fig. 8b,,yim20:run4,
-yim20:fig8b#3,observation,fig8b,Fig. 8b curve Sample 8,film_thickness,,,,,,,,,fig8b_sample8,measured,reflectometry,Sample 8;Fig. 8b,,yim20:run8,
-yim20:fig8b#4,observation,fig8b,Fig. 8b curve Sample 12,film_thickness,,,,,,,,,fig8b_sample12,measured,reflectometry,Sample 12;Fig. 8b,,yim20:run12,
+yim20:fig8b#1,observation,fig8b,Fig. 8b curve Sample 2,film_thickness,x=distance,,,,,,,,fig8b_sample2,measured,reflectometry,Sample 2;Fig. 8b,,yim20:run2,
+yim20:fig8b#2,observation,fig8b,Fig. 8b curve Sample 4,film_thickness,x=distance,,,,,,,,fig8b_sample4,measured,reflectometry,Sample 4;Fig. 8b,,yim20:run4,
+yim20:fig8b#3,observation,fig8b,Fig. 8b curve Sample 8,film_thickness,x=distance,,,,,,,,fig8b_sample8,measured,reflectometry,Sample 8;Fig. 8b,,yim20:run8,
+yim20:fig8b#4,observation,fig8b,Fig. 8b curve Sample 12,film_thickness,x=distance,,,,,,,,fig8b_sample12,measured,reflectometry,Sample 12;Fig. 8b,,yim20:run12,
 yim20:s12.x2#2,observation,s12.x2;fig8b,different chips gave somewhat different thickness and penetration depth with the same ALD sequence,,,,,,,,,,,,reflectometry,,,yim20:grp:repro,
 yim20:s12.p1#1,claim,s12.p1,"uncertainty sources include small pressure differences between runs, the reflectometer measurement and the real channel height differing from design",,,,,,,,,,,,,Section E,,yim20,yim20:s12.x2#2
 yim20:fig9a#1,observation,fig9a;fig9.cap,"Fig. 9a: as-measured profile of Al2O3 at 300 °C, Film thickness S (nm) against Distance inside the channel x (µm); H varied (100, 500, 2000 nm) at N 500, samples 7, 8, 9 (Series C)",,,,,,,,,,,,reflectometry,"Fig. 9a;Sample 7, 8, and 9;Series C",,yim20:grp:C,
@@ -180,24 +180,24 @@ yim20:fig9c#1,observation,fig9c;fig9.cap,"Fig. 9c: Type 1 normalized profile of 
 yim20:fig9d#1,observation,fig9d;fig9.cap,"Fig. 9d: as-measured profile of Al2O3 at 300 °C, Film thickness S (nm) against Distance inside the channel x (µm); N varied (250, 500, 1000 cycles) at H 500 nm, samples 8, 10, 11 (Series D)",,,,,,,,,,,,reflectometry,"Fig. 9d;Sample 8, 10 and 11;Series D",,yim20:grp:D,
 yim20:fig9e#1,observation,fig9e;fig9.cap,"Fig. 9e: scaled profile of Al2O3 at 300 °C, Thickness/cycles S/N (nm) against Dimensionless distance x̃; N varied (250, 500, 1000 cycles) at H 500 nm, samples 8, 10, 11 (Series D)",,,,,,,,,,,,reflectometry,"Fig. 9e;Sample 8, 10 and 11;Series D",,yim20:grp:D,
 yim20:fig9f#1,observation,fig9f;fig9.cap,"Fig. 9f: Type 1 normalized profile of Al2O3 at 300 °C, Normalized thickness (-) against Dimensionless distance x̃; N varied (250, 500, 1000 cycles) at H 500 nm, samples 8, 10, 11 (Series D)",,,,,,,,,,,,reflectometry,"Fig. 9f;Sample 8, 10 and 11;Series D",,yim20:grp:D,
-yim20:fig9a#2,observation,fig9a,Fig. 9a curve 100 nm,film_thickness,,,,,,,,,fig9a_100nm,measured,reflectometry,100 nm;Fig. 9a,,yim20:run7,
-yim20:fig9a#3,observation,fig9a,Fig. 9a curve 500 nm,film_thickness,,,,,,,,,fig9a_500nm,measured,reflectometry,500 nm;Fig. 9a,,yim20:run8,
-yim20:fig9a#4,observation,fig9a,Fig. 9a curve 2000 nm,film_thickness,,,,,,,,,fig9a_2000nm,measured,reflectometry,2000 nm;Fig. 9a,,yim20:run9,
-yim20:fig9b#2,observation,fig9b,Fig. 9b curve 100 nm,growth_per_cycle,,,,,,,,,fig9b_100nm,measured,reflectometry,100 nm;Fig. 9b,,yim20:run7,yim20:fig9a#2
-yim20:fig9b#3,observation,fig9b,Fig. 9b curve 500 nm,growth_per_cycle,,,,,,,,,fig9b_500nm,measured,reflectometry,500 nm;Fig. 9b,,yim20:run8,yim20:fig9a#3
-yim20:fig9b#4,observation,fig9b,Fig. 9b curve 2000 nm,growth_per_cycle,,,,,,,,,fig9b_2000nm,measured,reflectometry,2000 nm;Fig. 9b,,yim20:run9,yim20:fig9a#4
-yim20:fig9c#2,observation,fig9c,Fig. 9c curve 100 nm,normalized_thickness,reference=entrance,,,,,,,,fig9c_100nm,measured,reflectometry,100 nm;Fig. 9c,,yim20:run7,yim20:fig9a#2
-yim20:fig9c#3,observation,fig9c,Fig. 9c curve 500 nm,normalized_thickness,reference=entrance,,,,,,,,fig9c_500nm,measured,reflectometry,500 nm;Fig. 9c,,yim20:run8,yim20:fig9a#3
-yim20:fig9c#4,observation,fig9c,Fig. 9c curve 2000 nm,normalized_thickness,reference=entrance,,,,,,,,fig9c_2000nm,measured,reflectometry,2000 nm;Fig. 9c,,yim20:run9,yim20:fig9a#4
-yim20:fig9d#2,observation,fig9d,Fig. 9d curve 250 cycles,film_thickness,,,,,,,,,fig9d_250cycles,measured,reflectometry,250 cycles;Fig. 9d,,yim20:run10,
-yim20:fig9d#3,observation,fig9d,Fig. 9d curve 500 cycles,film_thickness,,,,,,,,,fig9d_500cycles,measured,reflectometry,500 cycles;Fig. 9d,,yim20:run8,yim20:fig9a#3
-yim20:fig9d#4,observation,fig9d,Fig. 9d curve 1000 cycles; no accepted points,film_thickness,,,,,,,,,,,reflectometry,1000 cycles;Fig. 9d,,yim20:run11,
-yim20:fig9e#2,observation,fig9e,Fig. 9e curve 250 cycles; no accepted points,growth_per_cycle,,,,,,,,,,,reflectometry,250 cycles;Fig. 9e,,yim20:run10,yim20:fig9d#2
-yim20:fig9e#3,observation,fig9e,Fig. 9e curve 500 cycles,growth_per_cycle,,,,,,,,,fig9e_500cycles,measured,reflectometry,500 cycles;Fig. 9e,,yim20:run8,yim20:fig9a#3
-yim20:fig9e#4,observation,fig9e,Fig. 9e curve 1000 cycles; no accepted points,growth_per_cycle,,,,,,,,,,,reflectometry,1000 cycles;Fig. 9e,,yim20:run11,yim20:fig9d#4
-yim20:fig9f#2,observation,fig9f,Fig. 9f curve 250 cycles,normalized_thickness,reference=entrance,,,,,,,,fig9f_250cycles,measured,reflectometry,250 cycles;Fig. 9f,,yim20:run10,yim20:fig9d#2
-yim20:fig9f#3,observation,fig9f,Fig. 9f curve 500 cycles,normalized_thickness,reference=entrance,,,,,,,,fig9f_500cycles,measured,reflectometry,500 cycles;Fig. 9f,,yim20:run8,yim20:fig9a#3
-yim20:fig9f#4,observation,fig9f,Fig. 9f curve 1000 cycles,normalized_thickness,reference=entrance,,,,,,,,fig9f_1000cycles,measured,reflectometry,1000 cycles;Fig. 9f,,yim20:run11,yim20:fig9d#4
+yim20:fig9a#2,observation,fig9a,Fig. 9a curve 100 nm,film_thickness,x=distance,,,,,,,,fig9a_100nm,measured,reflectometry,100 nm;Fig. 9a,,yim20:run7,
+yim20:fig9a#3,observation,fig9a,Fig. 9a curve 500 nm,film_thickness,x=distance,,,,,,,,fig9a_500nm,measured,reflectometry,500 nm;Fig. 9a,,yim20:run8,
+yim20:fig9a#4,observation,fig9a,Fig. 9a curve 2000 nm,film_thickness,x=distance,,,,,,,,fig9a_2000nm,measured,reflectometry,2000 nm;Fig. 9a,,yim20:run9,
+yim20:fig9b#2,observation,fig9b,Fig. 9b curve 100 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig9b_100nm,measured,reflectometry,100 nm;Fig. 9b,,yim20:run7,yim20:fig9a#2
+yim20:fig9b#3,observation,fig9b,Fig. 9b curve 500 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig9b_500nm,measured,reflectometry,500 nm;Fig. 9b,,yim20:run8,yim20:fig9a#3
+yim20:fig9b#4,observation,fig9b,Fig. 9b curve 2000 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig9b_2000nm,measured,reflectometry,2000 nm;Fig. 9b,,yim20:run9,yim20:fig9a#4
+yim20:fig9c#2,observation,fig9c,Fig. 9c curve 100 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9c_100nm,measured,reflectometry,100 nm;Fig. 9c,,yim20:run7,yim20:fig9a#2
+yim20:fig9c#3,observation,fig9c,Fig. 9c curve 500 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9c_500nm,measured,reflectometry,500 nm;Fig. 9c,,yim20:run8,yim20:fig9a#3
+yim20:fig9c#4,observation,fig9c,Fig. 9c curve 2000 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9c_2000nm,measured,reflectometry,2000 nm;Fig. 9c,,yim20:run9,yim20:fig9a#4
+yim20:fig9d#2,observation,fig9d,Fig. 9d curve 250 cycles,film_thickness,x=distance,,,,,,,,fig9d_250cycles,measured,reflectometry,250 cycles;Fig. 9d,,yim20:run10,
+yim20:fig9d#3,observation,fig9d,Fig. 9d curve 500 cycles,film_thickness,x=distance,,,,,,,,fig9d_500cycles,measured,reflectometry,500 cycles;Fig. 9d,,yim20:run8,yim20:fig9a#3
+yim20:fig9d#4,observation,fig9d,Fig. 9d curve 1000 cycles; no accepted points,film_thickness,x=distance,,,,,,,,,,reflectometry,1000 cycles;Fig. 9d,,yim20:run11,
+yim20:fig9e#2,observation,fig9e,Fig. 9e curve 250 cycles; no accepted points,growth_per_cycle,x=dimensionless_distance,,,,,,,,,,reflectometry,250 cycles;Fig. 9e,,yim20:run10,yim20:fig9d#2
+yim20:fig9e#3,observation,fig9e,Fig. 9e curve 500 cycles,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig9e_500cycles,measured,reflectometry,500 cycles;Fig. 9e,,yim20:run8,yim20:fig9a#3
+yim20:fig9e#4,observation,fig9e,Fig. 9e curve 1000 cycles; no accepted points,growth_per_cycle,x=dimensionless_distance,,,,,,,,,,reflectometry,1000 cycles;Fig. 9e,,yim20:run11,yim20:fig9d#4
+yim20:fig9f#2,observation,fig9f,Fig. 9f curve 250 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9f_250cycles,measured,reflectometry,250 cycles;Fig. 9f,,yim20:run10,yim20:fig9d#2
+yim20:fig9f#3,observation,fig9f,Fig. 9f curve 500 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9f_500cycles,measured,reflectometry,500 cycles;Fig. 9f,,yim20:run8,yim20:fig9a#3
+yim20:fig9f#4,observation,fig9f,Fig. 9f curve 1000 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig9f_1000cycles,measured,reflectometry,1000 cycles;Fig. 9f,,yim20:run11,yim20:fig9d#4
 yim20:s13.x1#1,observation,s13.x1;fig9a,a constant-thickness Region II appears for design heights 500 and 2000 nm,,,,,,,,,,,,reflectometry,500 nm;2000 nm;Region II;Series C,,yim20:grp:C,yim20:run8;yim20:run9
 yim20:s13.x1#2,observation,s13.x1;fig9a,"the taller the channel, the deeper the film penetrated",,,,,,,,,,,,reflectometry,Fig. 9a,,yim20:grp:C,
 yim20:s13.x1#3,observation,s13.x1;fig9b;fig9c,scaled and normalized profiles of the 500 and 2000 nm channels nearly coincide,,,,,,,,,,,,reflectometry,500 nm;2000 nm,,yim20:grp:C,
@@ -219,36 +219,36 @@ yim20:fig10c#1,model,fig10c;fig10.cap,"Fig. 10c: simulated Type 1 normalized pro
 yim20:fig10d#1,model,fig10d;fig10.cap,"Fig. 10d: simulated as-measured profile, Film thickness S (nm) against Distance inside the channel x (µm); N 100, 250, 500, 1000, 2000 cycles at H 500 nm",,,,,,,,,,,,simulation,Fig. 10d,,yim20:grp:sims,
 yim20:fig10e#1,model,fig10e;fig10.cap,"Fig. 10e: simulated scaled profile, Thickness/cycles S/N (nm) against Dimensionless distance x̃; N 100, 250, 500, 1000, 2000 cycles at H 500 nm",,,,,,,,,,,,simulation,Fig. 10e,,yim20:grp:sims,
 yim20:fig10f#1,model,fig10f;fig10.cap,"Fig. 10f: simulated Type 1 normalized profile, Normalized thickness (-) against Dimensionless distance x̃; N 100, 250, 500, 1000, 2000 cycles at H 500 nm",,,,,,,,,,,,simulation,Fig. 10f,,yim20:grp:sims,
-yim20:fig10a#2,model,fig10a,Fig. 10a curve 100 nm,film_thickness,,,,,,,,,fig10a_100nm,calculated,simulation,100 nm;Fig. 10a,,yim20:sim:H100,
-yim20:fig10a#3,model,fig10a,Fig. 10a curve 200 nm,film_thickness,,,,,,,,,fig10a_200nm,calculated,simulation,200 nm;Fig. 10a,,yim20:sim:H200,
-yim20:fig10a#4,model,fig10a,Fig. 10a curve 500 nm,film_thickness,,,,,,,,,fig10a_500nm,calculated,simulation,500 nm;Fig. 10a,,yim20:sim:H500,
-yim20:fig10a#5,model,fig10a,Fig. 10a curve 1000 nm; no accepted points,film_thickness,,,,,,,,,,,simulation,1000 nm;Fig. 10a,,yim20:sim:H1000,
-yim20:fig10a#6,model,fig10a,Fig. 10a curve 2000 nm,film_thickness,,,,,,,,,fig10a_2000nm,calculated,simulation,2000 nm;Fig. 10a,,yim20:sim:H2000,
-yim20:fig10b#2,model,fig10b,Fig. 10b curve 100 nm,growth_per_cycle,,,,,,,,,fig10b_100nm,calculated,simulation,100 nm;Fig. 10b,,yim20:sim:H100,yim20:fig10a#2
-yim20:fig10b#3,model,fig10b,Fig. 10b curve 200 nm,growth_per_cycle,,,,,,,,,fig10b_200nm,calculated,simulation,200 nm;Fig. 10b,,yim20:sim:H200,yim20:fig10a#3
-yim20:fig10b#4,model,fig10b,Fig. 10b curve 500 nm,growth_per_cycle,,,,,,,,,fig10b_500nm,calculated,simulation,500 nm;Fig. 10b,,yim20:sim:H500,yim20:fig10a#4
-yim20:fig10b#5,model,fig10b,Fig. 10b curve 1000 nm,growth_per_cycle,,,,,,,,,fig10b_1000nm,calculated,simulation,1000 nm;Fig. 10b,,yim20:sim:H1000,yim20:fig10a#5
-yim20:fig10b#6,model,fig10b,Fig. 10b curve 2000 nm,growth_per_cycle,,,,,,,,,fig10b_2000nm,calculated,simulation,2000 nm;Fig. 10b,,yim20:sim:H2000,yim20:fig10a#6
-yim20:fig10c#2,model,fig10c,Fig. 10c curve 100 nm,normalized_thickness,reference=entrance,,,,,,,,fig10c_100nm,calculated,simulation,100 nm;Fig. 10c,,yim20:sim:H100,yim20:fig10a#2
-yim20:fig10c#3,model,fig10c,Fig. 10c curve 200 nm,normalized_thickness,reference=entrance,,,,,,,,fig10c_200nm,calculated,simulation,200 nm;Fig. 10c,,yim20:sim:H200,yim20:fig10a#3
-yim20:fig10c#4,model,fig10c,Fig. 10c curve 500 nm,normalized_thickness,reference=entrance,,,,,,,,fig10c_500nm,calculated,simulation,500 nm;Fig. 10c,,yim20:sim:H500,yim20:fig10a#4
-yim20:fig10c#5,model,fig10c,Fig. 10c curve 1000 nm,normalized_thickness,reference=entrance,,,,,,,,fig10c_1000nm,calculated,simulation,1000 nm;Fig. 10c,,yim20:sim:H1000,yim20:fig10a#5
-yim20:fig10c#6,model,fig10c,Fig. 10c curve 2000 nm,normalized_thickness,reference=entrance,,,,,,,,fig10c_2000nm,calculated,simulation,2000 nm;Fig. 10c,,yim20:sim:H2000,yim20:fig10a#6
-yim20:fig10d#2,model,fig10d,Fig. 10d curve 100 cycles,film_thickness,,,,,,,,,fig10d_100cycles,calculated,simulation,100 cycles;Fig. 10d,,yim20:sim:N100,
-yim20:fig10d#3,model,fig10d,Fig. 10d curve 250 cycles,film_thickness,,,,,,,,,fig10d_250cycles,calculated,simulation,250 cycles;Fig. 10d,,yim20:sim:N250,
-yim20:fig10d#4,model,fig10d,Fig. 10d curve 500 cycles,film_thickness,,,,,,,,,fig10d_500cycles,calculated,simulation,500 cycles;Fig. 10d,,yim20:sim:H500,yim20:fig10a#4
-yim20:fig10d#5,model,fig10d,Fig. 10d curve 1000 cycles,film_thickness,,,,,,,,,fig10d_1000cycles,calculated,simulation,1000 cycles;Fig. 10d,,yim20:sim:N1000,
-yim20:fig10d#6,model,fig10d,Fig. 10d curve 2000 cycles; no accepted points,film_thickness,,,,,,,,,,,simulation,2000 cycles;Fig. 10d,,yim20:sim:N2000,
-yim20:fig10e#2,model,fig10e,Fig. 10e curve 100 cycles,growth_per_cycle,,,,,,,,,fig10e_100cycles,calculated,simulation,100 cycles;Fig. 10e,,yim20:sim:N100,yim20:fig10d#2
-yim20:fig10e#3,model,fig10e,Fig. 10e curve 250 cycles,growth_per_cycle,,,,,,,,,fig10e_250cycles,calculated,simulation,250 cycles;Fig. 10e,,yim20:sim:N250,yim20:fig10d#3
-yim20:fig10e#4,model,fig10e,Fig. 10e curve 500 cycles,growth_per_cycle,,,,,,,,,fig10e_500cycles,calculated,simulation,500 cycles;Fig. 10e,,yim20:sim:H500,yim20:fig10a#4
-yim20:fig10e#5,model,fig10e,Fig. 10e curve 1000 cycles,growth_per_cycle,,,,,,,,,fig10e_1000cycles,calculated,simulation,1000 cycles;Fig. 10e,,yim20:sim:N1000,yim20:fig10d#5
-yim20:fig10e#6,model,fig10e,Fig. 10e curve 2000 cycles; no accepted points,growth_per_cycle,,,,,,,,,,,simulation,2000 cycles;Fig. 10e,,yim20:sim:N2000,yim20:fig10d#6
-yim20:fig10f#2,model,fig10f,Fig. 10f curve 100 cycles,normalized_thickness,reference=entrance,,,,,,,,fig10f_100cycles,calculated,simulation,100 cycles;Fig. 10f,,yim20:sim:N100,yim20:fig10d#2
-yim20:fig10f#3,model,fig10f,Fig. 10f curve 250 cycles,normalized_thickness,reference=entrance,,,,,,,,fig10f_250cycles,calculated,simulation,250 cycles;Fig. 10f,,yim20:sim:N250,yim20:fig10d#3
-yim20:fig10f#4,model,fig10f,Fig. 10f curve 500 cycles,normalized_thickness,reference=entrance,,,,,,,,fig10f_500cycles,calculated,simulation,500 cycles;Fig. 10f,,yim20:sim:H500,yim20:fig10a#4
-yim20:fig10f#5,model,fig10f,Fig. 10f curve 1000 cycles,normalized_thickness,reference=entrance,,,,,,,,fig10f_1000cycles,calculated,simulation,1000 cycles;Fig. 10f,,yim20:sim:N1000,yim20:fig10d#5
-yim20:fig10f#6,model,fig10f,Fig. 10f curve 2000 cycles; no accepted points,normalized_thickness,reference=entrance,,,,,,,,,,simulation,2000 cycles;Fig. 10f,,yim20:sim:N2000,yim20:fig10d#6
+yim20:fig10a#2,model,fig10a,Fig. 10a curve 100 nm,film_thickness,x=distance,,,,,,,,fig10a_100nm,calculated,simulation,100 nm;Fig. 10a,,yim20:sim:H100,
+yim20:fig10a#3,model,fig10a,Fig. 10a curve 200 nm,film_thickness,x=distance,,,,,,,,fig10a_200nm,calculated,simulation,200 nm;Fig. 10a,,yim20:sim:H200,
+yim20:fig10a#4,model,fig10a,Fig. 10a curve 500 nm,film_thickness,x=distance,,,,,,,,fig10a_500nm,calculated,simulation,500 nm;Fig. 10a,,yim20:sim:H500,
+yim20:fig10a#5,model,fig10a,Fig. 10a curve 1000 nm; no accepted points,film_thickness,x=distance,,,,,,,,,,simulation,1000 nm;Fig. 10a,,yim20:sim:H1000,
+yim20:fig10a#6,model,fig10a,Fig. 10a curve 2000 nm,film_thickness,x=distance,,,,,,,,fig10a_2000nm,calculated,simulation,2000 nm;Fig. 10a,,yim20:sim:H2000,
+yim20:fig10b#2,model,fig10b,Fig. 10b curve 100 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10b_100nm,calculated,simulation,100 nm;Fig. 10b,,yim20:sim:H100,yim20:fig10a#2
+yim20:fig10b#3,model,fig10b,Fig. 10b curve 200 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10b_200nm,calculated,simulation,200 nm;Fig. 10b,,yim20:sim:H200,yim20:fig10a#3
+yim20:fig10b#4,model,fig10b,Fig. 10b curve 500 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10b_500nm,calculated,simulation,500 nm;Fig. 10b,,yim20:sim:H500,yim20:fig10a#4
+yim20:fig10b#5,model,fig10b,Fig. 10b curve 1000 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10b_1000nm,calculated,simulation,1000 nm;Fig. 10b,,yim20:sim:H1000,yim20:fig10a#5
+yim20:fig10b#6,model,fig10b,Fig. 10b curve 2000 nm,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10b_2000nm,calculated,simulation,2000 nm;Fig. 10b,,yim20:sim:H2000,yim20:fig10a#6
+yim20:fig10c#2,model,fig10c,Fig. 10c curve 100 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10c_100nm,calculated,simulation,100 nm;Fig. 10c,,yim20:sim:H100,yim20:fig10a#2
+yim20:fig10c#3,model,fig10c,Fig. 10c curve 200 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10c_200nm,calculated,simulation,200 nm;Fig. 10c,,yim20:sim:H200,yim20:fig10a#3
+yim20:fig10c#4,model,fig10c,Fig. 10c curve 500 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10c_500nm,calculated,simulation,500 nm;Fig. 10c,,yim20:sim:H500,yim20:fig10a#4
+yim20:fig10c#5,model,fig10c,Fig. 10c curve 1000 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10c_1000nm,calculated,simulation,1000 nm;Fig. 10c,,yim20:sim:H1000,yim20:fig10a#5
+yim20:fig10c#6,model,fig10c,Fig. 10c curve 2000 nm,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10c_2000nm,calculated,simulation,2000 nm;Fig. 10c,,yim20:sim:H2000,yim20:fig10a#6
+yim20:fig10d#2,model,fig10d,Fig. 10d curve 100 cycles,film_thickness,x=distance,,,,,,,,fig10d_100cycles,calculated,simulation,100 cycles;Fig. 10d,,yim20:sim:N100,
+yim20:fig10d#3,model,fig10d,Fig. 10d curve 250 cycles,film_thickness,x=distance,,,,,,,,fig10d_250cycles,calculated,simulation,250 cycles;Fig. 10d,,yim20:sim:N250,
+yim20:fig10d#4,model,fig10d,Fig. 10d curve 500 cycles,film_thickness,x=distance,,,,,,,,fig10d_500cycles,calculated,simulation,500 cycles;Fig. 10d,,yim20:sim:H500,yim20:fig10a#4
+yim20:fig10d#5,model,fig10d,Fig. 10d curve 1000 cycles,film_thickness,x=distance,,,,,,,,fig10d_1000cycles,calculated,simulation,1000 cycles;Fig. 10d,,yim20:sim:N1000,
+yim20:fig10d#6,model,fig10d,Fig. 10d curve 2000 cycles; no accepted points,film_thickness,x=distance,,,,,,,,,,simulation,2000 cycles;Fig. 10d,,yim20:sim:N2000,
+yim20:fig10e#2,model,fig10e,Fig. 10e curve 100 cycles,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10e_100cycles,calculated,simulation,100 cycles;Fig. 10e,,yim20:sim:N100,yim20:fig10d#2
+yim20:fig10e#3,model,fig10e,Fig. 10e curve 250 cycles,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10e_250cycles,calculated,simulation,250 cycles;Fig. 10e,,yim20:sim:N250,yim20:fig10d#3
+yim20:fig10e#4,model,fig10e,Fig. 10e curve 500 cycles,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10e_500cycles,calculated,simulation,500 cycles;Fig. 10e,,yim20:sim:H500,yim20:fig10a#4
+yim20:fig10e#5,model,fig10e,Fig. 10e curve 1000 cycles,growth_per_cycle,x=dimensionless_distance,,,,,,,,fig10e_1000cycles,calculated,simulation,1000 cycles;Fig. 10e,,yim20:sim:N1000,yim20:fig10d#5
+yim20:fig10e#6,model,fig10e,Fig. 10e curve 2000 cycles; no accepted points,growth_per_cycle,x=dimensionless_distance,,,,,,,,,,simulation,2000 cycles;Fig. 10e,,yim20:sim:N2000,yim20:fig10d#6
+yim20:fig10f#2,model,fig10f,Fig. 10f curve 100 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10f_100cycles,calculated,simulation,100 cycles;Fig. 10f,,yim20:sim:N100,yim20:fig10d#2
+yim20:fig10f#3,model,fig10f,Fig. 10f curve 250 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10f_250cycles,calculated,simulation,250 cycles;Fig. 10f,,yim20:sim:N250,yim20:fig10d#3
+yim20:fig10f#4,model,fig10f,Fig. 10f curve 500 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10f_500cycles,calculated,simulation,500 cycles;Fig. 10f,,yim20:sim:H500,yim20:fig10a#4
+yim20:fig10f#5,model,fig10f,Fig. 10f curve 1000 cycles,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,fig10f_1000cycles,calculated,simulation,1000 cycles;Fig. 10f,,yim20:sim:N1000,yim20:fig10d#5
+yim20:fig10f#6,model,fig10f,Fig. 10f curve 2000 cycles; no accepted points,normalized_thickness,reference=entrance;x=dimensionless_distance,,,,,,,,,,simulation,2000 cycles;Fig. 10f,,yim20:sim:N2000,yim20:fig10d#6
 yim20:fig10.cap#1,model,fig10.cap,simulation input T = 300 °C: temperature,deposition_temperature,,T,300,,,,°C,,,chosen input,simulation,Fig. 10,,yim20:grp:sims,
 yim20:fig10.cap#2,model,fig10.cap,simulation input t_p = 0.10 s: TMA pulse length,pulse_time,step=reactant_A;species=TMA,t_p,0.10,,,,s,,,chosen input,simulation,Fig. 10,,yim20:grp:sims,
 yim20:fig10.cap#3,model,fig10.cap,simulation input ρ_A0 = 65 Pa: input partial pressure of TMA,partial_pressure,species=TMA,ρ_A0,65,,,,Pa,,,chosen input,simulation,Fig. 10,,yim20:grp:sims,
@@ -270,17 +270,17 @@ yim20:s13.p2#2,model,s13.p2;fig10b,simulated scaled profiles for different heigh
 yim20:s13.p2#3,model,s13.p2;fig10e;fig10f,in the simulations the leading edges coincide and PD50% drops with more cycles,,,,,,,,,,,,simulation,,,yim20:grp:sims,
 yim20:s13.p2#4,claim,s13.p2,the simulated trends closely resemble the experimental profiles,,,,,,,,,,,,,Fig. 10;Fig. 9,,yim20,yim20:grp:sims;yim20:grp:C;yim20:grp:D
 yim20:fig11a#1,observation,fig11a;fig11.cap,"Fig. 11a: film thickness S (nm) against distance inside the channel x (µm) for TMA pulses 0.1, 0.2 and 0.4 s (samples 12, 13, 14, Series E); x axis to 400 µm",,,,,,,,,,,,reflectometry,"Fig. 11a;sample 12, 13, and 14;Series E",,yim20:grp:E,
-yim20:fig11a#2,observation,fig11a,Fig. 11a curve TMA pulse 0.1 s,film_thickness,,,,,,,,,fig11a_TMA0.1s,measured,reflectometry,TMA pulse: 0.1 s;Fig. 11a,,yim20:run12,
-yim20:fig11a#3,observation,fig11a,Fig. 11a curve TMA pulse 0.2 s,film_thickness,,,,,,,,,fig11a_TMA0.2s,measured,reflectometry,TMA pulse: 0.2 s;Fig. 11a,,yim20:run13,
-yim20:fig11a#4,observation,fig11a,Fig. 11a curve TMA pulse 0.4 s,film_thickness,,,,,,,,,fig11a_TMA0.4s,measured,reflectometry,TMA pulse: 0.4 s;Fig. 11a,,yim20:run14,
+yim20:fig11a#2,observation,fig11a,Fig. 11a curve TMA pulse 0.1 s,film_thickness,x=distance,,,,,,,,fig11a_TMA0.1s,measured,reflectometry,TMA pulse: 0.1 s;Fig. 11a,,yim20:run12,
+yim20:fig11a#3,observation,fig11a,Fig. 11a curve TMA pulse 0.2 s,film_thickness,x=distance,,,,,,,,fig11a_TMA0.2s,measured,reflectometry,TMA pulse: 0.2 s;Fig. 11a,,yim20:run13,
+yim20:fig11a#4,observation,fig11a,Fig. 11a curve TMA pulse 0.4 s,film_thickness,x=distance,,,,,,,,fig11a_TMA0.4s,measured,reflectometry,TMA pulse: 0.4 s;Fig. 11a,,yim20:run14,
 yim20:s14.p1#1,observation,s14.p1;fig11a,"penetration depth grew with TMA pulse time, i.e. it depends on the precursor dose",,,,,,,,,,,,reflectometry,,,yim20:grp:E,
 yim20:s14.p1#2,observation,s14.p1;fig11a,with a 0.4 s TMA pulse the front was much broader than with 0.1 or 0.2 s pulses while GPC stayed alike,,,,,,,,,,,,reflectometry,0.4 s;0.1 s;0.2 s,,yim20:grp:E,yim20:run14
 yim20:s14.p1#3,claim,s14.p1;s20.p3,"as the TMA dose increases, growth changes from being limited by TMA dose to being limited by water dose, which then defines the profile; the governing regime depends on exposure",,,,,,,,,,,,,,,yim20,yim20:s14.p1#1;yim20:s14.p1#2
 yim20:s14.p1#4,claim,s14.p1;s18.p1,"TMA-limited and water-limited growth give profiles of different characteristic shape at 300 °C, in line with Arts et al.",,,,,,,,,,,,,ref. 36;Fig. 11a,,yim20,yim20:s14.p1#2;yim20:refs:36
 yim20:fig11b#1,observation,fig11b;fig11.cap;s14.x1,"Fig. 11b: film thickness S (nm) against x (µm) for purge times 1, 4 and 10 s (samples 12, 15, 16, Series F) in 500 nm design channels; purges after TMA and water lengthened equally; x axis to 200 µm",,,,,,,,,,,,reflectometry,"Fig. 11b;sample 12, 15, and 16;Series F",,yim20:grp:F,
-yim20:fig11b#2,observation,fig11b,Fig. 11b curve purge 1 s,film_thickness,,,,,,,,,fig11b_purge1s,measured,reflectometry,Purge: 1 s;Fig. 11b,,yim20:run15,
-yim20:fig11b#3,observation,fig11b,Fig. 11b curve purge 4 s,film_thickness,,,,,,,,,fig11b_purge4s,measured,reflectometry,Purge: 4 s;Fig. 11b,,yim20:run12,yim20:fig11a#2
-yim20:fig11b#4,observation,fig11b,Fig. 11b curve purge 10 s,film_thickness,,,,,,,,,fig11b_purge10s,measured,reflectometry,Purge: 10 s;Fig. 11b,,yim20:run16,
+yim20:fig11b#2,observation,fig11b,Fig. 11b curve purge 1 s,film_thickness,x=distance,,,,,,,,fig11b_purge1s,measured,reflectometry,Purge: 1 s;Fig. 11b,,yim20:run15,
+yim20:fig11b#3,observation,fig11b,Fig. 11b curve purge 4 s,film_thickness,x=distance,,,,,,,,fig11b_purge4s,measured,reflectometry,Purge: 4 s;Fig. 11b,,yim20:run12,yim20:fig11a#2
+yim20:fig11b#4,observation,fig11b,Fig. 11b curve purge 10 s,film_thickness,x=distance,,,,,,,,fig11b_purge10s,measured,reflectometry,Purge: 10 s;Fig. 11b,,yim20:run16,
 yim20:s14.x1#1,observation,s14.x1;fig11b,for every purge time the as-measured profile has a constant region and then a sharp fall,,,,,,,,,,,,reflectometry,,,yim20:grp:F,
 yim20:s14.x1#2,observation,s14.x1;s18.p2;s18.p4;fig11b,"going from 1 to 10 s purge, GPC dropped slightly and PD50% rose slightly (inverse GPC-purge dependence)",,,,,,,,,,,,reflectometry,Series F;Table 1;Fig. S14,,yim20:grp:F,
 yim20:s14.x1#3,observation,s14.x1;s18.p5,"the purge-time decrease of GPC was a little larger outside the channel (Region I, GPC_I) than inside (Region II, GPC_IIb)",,,,,,,,,,,,reflectometry,Region I;Region II;GPC_I;GPC_IIb;Fig. S14,,yim20:grp:F,

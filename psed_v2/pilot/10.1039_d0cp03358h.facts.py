@@ -481,9 +481,14 @@ F9 = {"a": [("100 nm", ("v1", "yim20:F9a-H100")), ("500 nm", ("v1", "yim20:F9a-H
             ("1000 cycles", ("cp", "H 500 nm, 1000 cycles (sample 11)"))]}
 
 
+XQ = {"Distance inside the channel x (µm)": "distance", "Distance x (µm)": "distance", "Distance [µm]": "distance",
+      "Dimensionless distance x̃": "dimensionless_distance"}            # the abscissa of a curve (x= qualifier) from its printed x label
+
+
 def curves(fig, F_, typ, dk, method):
     for p, lst in F_.items():
         xl, yl, q, qual = LAB[p]
+        qual = ";".join(filter(None, [qual, "x=" + XQ[xl]]))
         for lab, src in lst:
             name = f"fig{fig}{p}_{lab.replace(' ', '')}"
             kw = {}
@@ -844,6 +849,11 @@ MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="ma
         mentions="Al2O3")
 STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure_type",
            value_text="lateral_channel", data_kind="chosen input", mentions="PillarHall-3;LHAR")
+
+# ------------------------------------------------------------------ the abscissa of every curve with points (x= qualifier, from the printed x label)
+for cf in C.facts():
+    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
+        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
 
 # ================================================================== stage 3: one tree (parent, links)
 # Runs come from Table 1 (one specimen per sample code; Series A is also one stated ALD run, s6.p2), the AFM specimen of Fig. 6

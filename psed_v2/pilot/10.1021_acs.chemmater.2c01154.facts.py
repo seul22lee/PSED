@@ -979,6 +979,13 @@ MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", q
           mentions="WS2")
 MAT_T = F(K, "s5.p8;fig9b", "setting", "film material of the TiS2 depositions", quantity="material", value_text="TiS2", data_kind="chosen input",
           mentions="TiS2")
+# the abscissa of every curve with points (x= qualifier, from the printed x label)
+XQ = {"Raman shift (cm-1)": "raman_shift", "Binding energy (eV)": "binding_energy", "Number of ALD cycles": "cycle_number",
+      "(wafer position, read off the map, mm)": "distance"}
+import facts as C  # noqa: E402
+for cf in C.facts():
+    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
+        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
 
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.

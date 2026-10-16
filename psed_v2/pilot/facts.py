@@ -14,7 +14,7 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   evidence     element ids, ";"-separated (the first one names the fact)
   statement    one line, own words
   quantity     an id of lists.QUANTITIES, or "other" with label_as_printed; blank for a claim without one
-  qualifiers   k=v;k=v from lists.QUALIFIERS
+  qualifiers   k=v;k=v from lists.QUALIFIERS; a curve (points_ref) carries x=<quantity id>, its abscissa
   label_as_printed  the quantity's label or symbol as printed, when quantity is other (else optional)
   value, value_min, value_max, censor, unit   as printed in the element (no unit conversion in stage 2)
   value_text   a categorical value (pillar layout v2a, a substrate, a crystallinity class, a reactor name, an LHAR type) when the
@@ -91,6 +91,11 @@ def purpose(gid, fid):
 def facts():
     """The rows added so far (for a paper script's stage-3 pass)."""
     return _facts
+
+
+def points():
+    """The curves kept so far (name -> dict with points and the printed axis labels)."""
+    return _points
 
 
 def NK(element_ids, reason):

@@ -22,6 +22,7 @@ QUANTITIES = sorted({
     "signal_intensity", "reaction_stoichiometry", "annealing_temperature",
     # added 2026-10-15 for the workbench filters: the film deposited and the test structure, as value_text from the lists below
     "material", "structure_type",
+    "raman_shift",                                     # the abscissa of a Raman spectrum (x= of a curve)
     "other",
 })
 
@@ -45,6 +46,7 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "run": {"deposition", "specimen", "simulation"}, "how": {"stated", "inferred"},   # tree rows (stage 3)
     "sample": None, "sim": None,
 }
+QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 
 METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
            "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",
@@ -80,4 +82,4 @@ UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_ti
          "crystallite_size": "nm", "gas_moles_per_cycle": "µmol", "deposited_moles_per_cycle": "µmol", "pressure_rise": "Torr",
          "pressure_rate": "mTorr/min", "time_to_maximum": "min", "roughness": "nm", "binding_energy": "eV", "atoms_per_cycle": "nm-2",
          "carrier_concentration": "cm-3", "carrier_mobility": "cm2/Vs", "objective_magnification": "", "fit_r2": "", "fill_fraction": "%",
-         "signal_intensity": "", "reaction_stoichiometry": "", "annealing_temperature": "°C"}
+         "signal_intensity": "", "reaction_stoichiometry": "", "annealing_temperature": "°C", "raman_shift": "cm-1"}

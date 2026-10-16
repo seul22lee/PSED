@@ -545,6 +545,12 @@ MAT = f("abs.g1;s9.p1", "setting", "film material", quantity="material", value_t
 STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure_type", value_text="porous",
            data_kind="chosen input", mentions="NPC")
 
+# ---------------------------------------------------------------- the abscissa of the Fig. 6 line scans: the position through the compact (x= qualifier).
+# The paper draws the position vertically and the points are kept as printed (counts, position); the scan's independent variable is the position.
+for cf in C.facts():
+    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
+        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=distance"]))
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs: the three stated depositions of Sec. II B (T held at 120 °C, held at 160 °C, cycled 120/160 °C), each coating an NPC pair;
 # under each, one specimen run per physical object the paper's facts are about (the weighed pair, the SEM-EDS section, the XRD
