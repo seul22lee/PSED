@@ -288,3 +288,64 @@ LABELS = {
 }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
 assert all(q in LABELS for q in QUANTITIES), "quantity without a label"
+
+# plain English names for the screen (no symbol that needs a legend): one per quantity id and per common keyed combination; a key not
+# listed reads "<quantity name> (<qualifier values>)"
+NAMES = {
+    "aspect_ratio": "aspect ratio", "carrier_gas": "carrier gas", "coated_aspect_ratio": "coated aspect ratio", "composition": "composition",
+    "crystallinity": "crystallinity", "cycle_number": "cycles", "cycle_time": "cycle time", "deposition_temperature": "temperature",
+    "dimensionless_distance": "depth over height", "distance": "distance from the entrance", "equivalent_aspect_ratio": "equivalent aspect ratio",
+    "exposure": "exposure", "feature_depth": "feature depth", "feature_height": "channel height", "feature_width": "feature width",
+    "film_density": "film density", "film_thickness": "thickness", "front_slope": "front slope", "gas_flow_rate": "gas flow",
+    "growth_per_cycle": "growth per cycle", "initial_sticking_coefficient": "initial sticking coefficient", "knudsen_number": "Knudsen number",
+    "lumped_sticking_coefficient": "sticking coefficient", "mean_free_path": "mean free path", "normalized_exposure": "normalized exposure",
+    "normalized_thickness": "normalized thickness", "open_fraction": "open fraction", "partial_pressure": "partial pressure",
+    "penetration_depth": "penetration depth", "precursor_purity": "purity", "probe_resolution": "probe spot", "process_pressure": "pressure",
+    "pulse_time": "pulse", "purge_time": "purge", "reactor_type": "reactor", "recombination_probability": "recombination probability",
+    "resistivity": "resistivity", "saturation_density": "saturation density", "source_temperature": "source temperature",
+    "step_coverage": "step coverage", "substrate": "substrate", "surface_coverage": "surface coverage", "thickness_nonuniformity": "nonuniformity",
+    "plasma_gas_ratio": "H2 flow ratio", "mass_gain": "mass gain", "porosity": "porosity", "crystallite_size": "crystallite size",
+    "gas_moles_per_cycle": "gas released per cycle", "deposited_moles_per_cycle": "solid deposited per cycle", "pressure_rise": "pressure rise",
+    "pressure_rate": "terminal pressure slope", "time_to_maximum": "time to pressure maximum", "roughness": "roughness",
+    "binding_energy": "binding energy", "atoms_per_cycle": "metal atoms per cycle", "carrier_concentration": "carrier concentration",
+    "carrier_mobility": "carrier mobility", "pillar_layout": "pillar layout", "objective_magnification": "objective", "fit_r2": "fit R²",
+    "fill_fraction": "channel filled", "signal_intensity": "signal", "reaction_stoichiometry": "gas-to-solid ratio",
+    "annealing_temperature": "anneal temperature", "material": "material", "structure_type": "structure", "raman_shift": "Raman shift",
+    "phase": "phase", "effective_channel_height": "effective channel height", "exposure_per_run": "exposure per run",
+    "sheet_resistance": "sheet resistance", "h_per_metal": "H per metal atom", "density_relative_to_bulk": "density relative to bulk",
+    "moles_deposited": "moles deposited per run", "moles_from_mass_gain": "moles from mass gain", "shell_volume_fraction": "coating volume fraction",
+    "deposition_rate": "thickness per hour", "coating_mass_fraction": "coating mass fraction", "other": "other",
+    "pulse_time{species=TMA;step=reactant_A}": "TMA pulse", "pulse_time{species=H2O;step=reactant_B}": "water pulse",
+    "pulse_time{species=DEZ;step=reactant_A}": "DEZ pulse", "pulse_time{step=reactant_A}": "precursor pulse", "pulse_time{step=plasma}": "plasma step",
+    "purge_time{step=purge_A}": "purge after precursor", "purge_time{step=purge_B}": "purge after co-reactant",
+    "deposition_temperature{kind=set_point}": "temperature set point", "deposition_temperature{step=reactant_A}": "temperature in the precursor dose",
+    "deposition_temperature{step=purge_A}": "temperature in the precursor purge", "deposition_temperature{step=reactant_B}": "temperature in the water dose",
+    "deposition_temperature{step=purge_B}": "temperature in the water purge",
+    "dimensionless_distance{by=H;level=50%}": "half-thickness depth over height", "penetration_depth{level=50%;origin=entrance}": "penetration depth at 50 %",
+    "penetration_depth{origin=entrance}": "penetration depth", "front_slope{by=H}": "front slope of S/N", "front_slope{by=H;reference=entrance}": "front slope, normalized",
+    "film_thickness{position=plateau}": "thickness in the channel", "film_thickness{position=outside}": "thickness outside the channel",
+    "film_thickness{position=interface}": "interface layer thickness", "film_thickness{kind=target}": "thickness target",
+    "growth_per_cycle{over=run;position=plateau}": "growth per cycle in the channel", "growth_per_cycle{over=run;position=outside}": "growth per cycle outside the channel",
+    "plasma_gas_ratio{gas=H2}": "H2 flow ratio",
+    "gas_flow_rate{gas=H2S;step=plasma}": "H2S flow", "gas_flow_rate{gas=H2;step=plasma}": "H2 flow", "gas_flow_rate{gas=Ar;step=plasma}": "Ar flow in the plasma",
+    "gas_flow_rate{gas=N2}": "N2 flow", "gas_flow_rate{gas=Ar}": "Ar purge flow", "gas_flow_rate{gas=Ar;step=reactant_A}": "Ar carrier flow",
+    "gas_flow_rate{step=plasma}": "total plasma flow", "lumped_sticking_coefficient{species=TMA}": "TMA sticking coefficient",
+    "lumped_sticking_coefficient{species=H2O}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
+    "porosity{relative_to=total_volume;stage=final}": "final porosity", "pressure_rise{level=maximum}": "maximum pressure rise",
+    "composition{element=S;relative_to=metal_atoms}": "S/Mo", "composition{element=H;relative_to=all_atoms}": "H content",
+    "composition{element=N;relative_to=all_atoms}": "N content", "composition{element=O;relative_to=all_atoms}": "O content",
+    "composition{element=C;relative_to=all_atoms}": "C content", "composition{relative_to=not_stated;species=ZnO}": "ZnO content (XRD)",
+    "composition{relative_to=not_stated;species=Zn}": "Zn content (XRD)", "atoms_per_cycle{element=Mo;over=run;relative_to=all_atoms}": "Mo atoms per cycle",
+    "atoms_per_cycle{element=Mo;over=run}": "Mo atoms per cycle", "crystallite_size{species=ZnO}": "ZnO crystallite size", "crystallite_size{species=Zn}": "Zn crystallite size",
+    "precursor_purity{species=H2S}": "H2S purity", "precursor_purity{species=H2}": "H2 purity", "precursor_purity{species=Ar}": "Ar purity",
+    "precursor_purity{species=DEZ}": "DEZ purity", "process_pressure{kind=set_point;step=reactant_A}": "pressure set point in the dose",
+}
+# words for a definition that is not the default (P5, P4, P18): shown beside a value only then
+DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles", ("over", "saturation"): "saturation value",
+             ("over", "not_stated"): "averaging not stated", ("relative_to", "not_stated"): "basis not stated",
+             ("relative_to", "initial_mass"): "relative to the initial mass", ("relative_to", "final_mass"): "relative to the final mass",
+             ("relative_to", "crystalline_phases"): "of the crystalline phases", ("kind", "target"): "target", ("kind", "set_point"): "set point",
+             ("reference", "bulk"): "bulk value", ("mode", "in_situ"): "in situ", ("mode", "ex_situ"): "ex situ"}
+# the value kinds a screen marks with one plain word; measured and stated values carry none
+KIND_WORDS = {"read from figure": "read from figure", "computed": "computed", "assumed": "assumed", "model": "model", "cited": "cited"}
+

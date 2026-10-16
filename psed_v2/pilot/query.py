@@ -28,11 +28,14 @@ class Tree:
             if r["parent"]:
                 self.kids[r["parent"]].append(r)
         self.comps = [r for r in self.rows if r["type"] == "comparison"]
+        self._cache = {}
         pj = HERE / f"{KEY[key]}.points.json"
         self.points = json.loads(pj.read_text(encoding="utf-8")) if pj.exists() else {}
 
     def chain(self, i):
-        out = []
+        if ("chain", i) in self._cache:
+            return self._cache[("chain", i)]
+        out = self._cache[("chain", i)] = []
         while i in self.byid:
             out.append(i); i = self.byid[i]["parent"]
         return out
@@ -48,7 +51,9 @@ class Tree:
         return out
 
     def below(self, i):                     # an entity's facts, its activities included, not a piece cut from it
-        out = []
+        if ("below", i) in self._cache:
+            return self._cache[("below", i)]
+        out = self._cache[("below", i)] = []
         for c in self.kids.get(i, []):
             if c["type"] in ("entity", "comparison", "cited"):
                 continue
@@ -65,7 +70,10 @@ class Tree:
         """The condition vector of a node: {ckey: [facts]} from the entity's own settings and the non-measurement activities above,
         nearest first (a key already seen is not overridden). A keyed setting (lists.KEYED: a Table 2 flow for one H2 ratio) is
         inherited only when the node's own value of the setting it names matches (P17)."""
+        if ("vector", i, _keyed) in self._cache:
+            return self._cache[("vector", i, _keyed)]
         out, plain = {}, (self.vector(i, _keyed=False) if _keyed else {})
+        self._cache[("vector", i, _keyed)] = out
         def matches(f):
             for qk, qv in quals(f).items():
                 if qk in L.KEYED:
@@ -89,14 +97,20 @@ class Tree:
         return out
 
     def results(self, ent):
+        if ("results", ent) in self._cache:
+            return self._cache[("results", ent)]
         out = collections.defaultdict(list)
         for f in self.below(ent):
             if f["type"] in RESULT_TYPES and f["quantity"]:
                 out[ckey(f)].append(f)
-        return {k: ranked(fs) for k, fs in out.items()}
+        self._cache[("results", ent)] = {k: ranked(fs) for k, fs in out.items()}
+        return self._cache[("results", ent)]
 
     def entities(self):
-        return [r["fact_id"] for r in self.rows if r["type"] == "entity" and any(f["type"] in RESULT_TYPES for f in self.below(r["fact_id"]))]
+        if "entities" in self._cache:
+            return self._cache["entities"]
+        self._cache["entities"] = [r["fact_id"] for r in self.rows if r["type"] == "entity" and any(f["type"] in RESULT_TYPES for f in self.below(r["fact_id"]))]
+        return self._cache["entities"]
 
     def ent_of(self, i):
         return next((x for x in self.chain(i) if self.byid[x]["type"] == "entity"), None)
@@ -197,7 +211,7 @@ def kind(f):
         return "cited"
     if f["type"] == "model":
         return "model"
-    if f["type"] == "derived" or f.get("data_kind") in ("calculated", "fit"):
+    if f["type"] == "derived" or (f.get("data_kind") == "calculated" and f["type"] != "observation"):
         return "computed"
     key = f["fact_id"].split(":")[0]
     if element_kind(key, f["evidence"].split(";")[0]) == "panel":
@@ -488,7 +502,7 @@ def judge(T, comp, key):
     exp = D2[len(vals)] * sd
     word = "smaller than" if eff < exp else "larger than"
     out["expected"] = exp
-    out["sentence"] = f"{word} the scatter between {noun} at the base condition ({n_} {noun.split()[0]}, sd {g(sd, 2)} {unit})"
+    out["sentence"] = f"{word} the scatter between {noun} at the base condition ({n_} {noun.split()[0]}, sd {g(sd, 2)}{' ' + unit if unit else ''})"
     return out
 
 
@@ -646,7 +660,19 @@ def has_own(T, ent, q):
     return [f for f in fs if f["quantity"] == q and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)]
 
 
+_DERIVE_CACHE = {}
+
+
 def derive(T, ent, did, _stack=()):
+    if not _stack and (T.key, ent, did) in _DERIVE_CACHE:
+        return _DERIVE_CACHE[(T.key, ent, did)]
+    out = _derive(T, ent, did, _stack)
+    if not _stack:
+        _DERIVE_CACHE[(T.key, ent, did)] = out
+    return out
+
+
+def _derive(T, ent, did, _stack=()):
     """A derived quantity of an entity: {value, unit, inputs: [(name, fact id, value as used, unit, source)], assumed: [ids],
     notes: [...], chain: [derived ids used]} or {error}. Never derived when the entity already has the quantity as a measured or
     stated value (P7): then {error, stated: the fact}. An input that is itself a derived quantity is derived in turn, unless that
@@ -764,3 +790,375 @@ def differing(T, ents, exclude=()):
             continue
         out.append(f"{k}: " + ", ".join(f"{T.label(e)} {v}" for e, v in m.items()))
     return " | ".join(out)
+
+
+# ================================================================== the five operations (Part B): find, detail, compare, claims, source
+# Every value returned is a value record (record()): value, low, high, censor, unit, text, kind, definition (only when not the
+# default), source (element id), fact (id), alternatives (the records it was chosen over), uncertainty, mode, method.
+DEF_KEYS = {"over", "relative_to", "kind", "reference", "mode"}
+
+
+def tree_of(any_id):
+    return TREES[any_id.split(":")[0]]
+
+
+def name_of(key, f=None):
+    """The plain English name of a result or condition key (lists.NAMES), else the quantity's name with its qualifier values."""
+    if key in L.NAMES:
+        return L.NAMES[key]
+    q, qs = key.split("{")[0].split("[")[0], key.split("{")[1].split("}")[0] if "{" in key else ""
+    if q == "other":
+        return (f or {}).get("label_as_printed") or (key.split("[")[1].rstrip("]") if "[" in key else "other")
+    base = L.NAMES.get(q, q.replace("_", " "))
+    vals = [p.split("=")[1].replace("_", " ") for p in qs.split(";") if p and p.split("=")[0] not in DEF_KEYS | {"x"}]
+    return f"{base} ({', '.join(vals)})" if vals else base
+
+
+def definition_of(f):
+    """Words for the qualifiers that define a value differently from the default (lists.DEF_WORDS, lists.DEFAULT_DEFINITION)."""
+    out = []
+    for k, v in quals(f).items():
+        if k in DEF_KEYS and k != "mode" and L.DEFAULT_DEFINITION.get(f["quantity"], {}).get(k) != v and (k, v) in L.DEF_WORDS:
+            out.append(L.DEF_WORDS[(k, v)])
+    return "; ".join(out)
+
+
+def text_of(f):
+    """A fact's value as written on the screen: censor and value, a range, or the value text, with the unit."""
+    u = f" {f['unit']}" if f["unit"] and f["unit"] not in ("",) else ""
+    if f["value"]:
+        return f"{f['censor'].replace('dl', '')}{f['value']}{u}".strip()
+    if f["value_min"] and f["value_max"]:
+        return f"{f['value_min']}–{f['value_max']}{u}"
+    if f["value_min"]:
+        return f"≥ {f['value_min']}{u}"
+    if f["value_max"]:
+        return f"≤ {f['value_max']}{u}"
+    return f["value_text"]
+
+
+def mode_of(T, f):
+    """In situ or ex situ: the mode of the measurement activity above a fact, or the fact's own mode qualifier."""
+    m = quals(f).get("mode")
+    if m:
+        return m
+    for x in T.chain(f["fact_id"])[1:]:
+        n = T.byid[x]
+        if n["type"] == "activity" and n["kind"] == "measurement":
+            return quals(n).get("mode", "")
+    return ""
+
+
+def record(T, f, alternatives=()):
+    """The value record of a fact."""
+    q = quals(f)
+    lo, hi = num(f["value_min"]), num(f["value_max"])
+    return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text_of(f), kind=kind(f), definition=definition_of(f),
+                source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
+                uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"]) if f["uncertainty"] else None),
+                stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives])
+
+
+def derived_record(T, ent, did, d):
+    """The value record of a derived value (lists.DERIVED): kind computed, its formula as definition, its inputs and assumed facts."""
+    rs = d.get("readings") or []
+    text = " or ".join(f"{g(v, 3)} {d['unit']} if {lab}" for lab, v in rs) if rs else f"{g(d['value'], 3)} {d['unit']}".strip()
+    return dict(value=d["value"], low=None, high=None, censor="", unit=d["unit"], text=text, kind="computed", definition=L.DERIVED[did]["formula"],
+                source="", paper=T.key, fact="", method="calculation", mode="", uncertainty=None, stat="", statement="",
+                inputs=[dict(name=n, fact=fid, value=g(v, 3), unit=u, source=src) for n, fid, v, u, src in d["inputs"]],
+                assumed=d["assumed"], readings=[dict(label=lab, value=g(v, 3)) for lab, v in rs], alternatives=[])
+
+
+def condition_records(T, ent):
+    """The condition vector as {key: dict(name, record)}: the chosen fact (ranked) with the others as alternatives."""
+    return {k: dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:])) for k, fs in T.vector(ent).items() if text_of(fs[0])}
+
+
+def result_records(T, ent):
+    """An entity's results as {key: dict(name, record, settings)}: its own, its pieces' and its run's (results_deep), the chosen
+    fact first (ranked: P9-P13) with the others as alternatives; spread facts become the record's uncertainty; then its derived
+    values (lists.DERIVED; never one it has, P7)."""
+    out = {}
+    deep = results_deep(T, ent)
+    for k, fs in deep.items():
+        fs = ranked([f for f in fs if text_of(f) or f["points_ref"]])
+        if not fs or "stat=" in k:
+            continue
+        r = record(T, fs[0], fs[1:])
+        sp = [f for kk, gs in deep.items() if "stat=" in kk for f in gs if spread_key(f) == k]
+        if sp and not r["uncertainty"]:
+            q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""))
+        r["curve"] = dict(ref=fs[0]["points_ref"], x=quals(fs[0]).get("x", ""), points=T.points.get(fs[0]["points_ref"], {}).get("points", [])) if fs[0]["points_ref"] else None
+        act = T.byid.get(fs[0]["parent"], {})
+        r["settings"] = [dict(name=name_of(ckey(s), s), text=text_of(s)) for s in T.own(act["fact_id"]) if s["type"] == "setting" and text_of(s)] if act.get("kind") == "measurement" else []
+        out[k] = dict(name=name_of(k, fs[0]), record=r)
+    for did, D in L.DERIVED.items():
+        d = derive(T, ent, did)
+        if "error" in d:
+            continue
+        k = did + ("{" + D["qualifiers"] + "}" if D.get("qualifiers") else "")
+        if k not in out:
+            out[k] = dict(name=name_of(k), record=derived_record(T, ent, did, d))
+    return out
+
+
+def experiments(T):
+    """The rows of find: specimens without their pieces, and model runs."""
+    return [e for e in T.entities() if (role(T, e) == "specimen" and T.byid[T.byid[e]["parent"]]["type"] == "activity") or role(T, e) == "model run"]
+
+
+def distinguishing(T, ent, peers, n=2):
+    """The 1-2 conditions that tell an entity from its peers: the condition keys whose values differ among them, process-defining
+    first (lists.PRIMARY), then the rest."""
+    vt = {e: vtext(T, e) for e in peers}
+    keys = [k for k in vt.get(ent, {}) if len({vt[e].get(k) for e in peers}) > 1]
+    keys.sort(key=lambda k: (L.PRIMARY.index(k.split("{")[0]) if k.split("{")[0] in L.PRIMARY else len(L.PRIMARY), k))
+    cr = condition_records(T, ent)
+    return [dict(key=k, name=cr[k]["name"], text=cr[k]["record"]["text"]) for k in keys if k in cr][:n]
+
+
+def comparison_label(T, c):
+    """'Series F — purge time': the comparison's label and what it varies, in words."""
+    varies = [L.NAMES.get(q, q.replace("_", " ")) for q in c["quantity"].split(";") if q]
+    return f"{c['label_as_printed']} — {', '.join(varies)}" if varies else c["label_as_printed"]
+
+
+def find(paper=None, material=None, structure=None, result=None, conditions=None):
+    """Experiments that pass the filters, grouped by the authors' comparisons. conditions = {quantity: (low, high)} in lists.UNITS.
+    Returns dict(groups=[dict(id, paper, label, members)], rows={id: row}, other=[ids]); a row: id, paper, name, inferred, role,
+    distinguish (1-2 conditions), result (every record of the requested result quantity), groups (the comparisons it is in)."""
+    rows, groups, other = {}, [], []
+    for k, T in TREES.items():
+        if paper and k != paper:
+            continue
+        exps = experiments(T)
+        keep = []
+        for e in exps:
+            v = T.vector(e)
+            if material and not any(fmt(f) == material or f["value_text"] == material for f in v.get("material", [])):
+                continue
+            if structure and not any(f["value_text"] == structure for f in v.get("structure_type", [])):
+                continue
+            ok = True
+            for q, (lo, hi) in (conditions or {}).items():
+                vals = [L.convert(val(f), f["unit"], L.UNITS.get(q, f["unit"])) for kk, fs in v.items() if kk.split("{")[0] == q for f in fs[:1] if val(f) is not None]
+                if not any((lo is None or x >= lo) and (hi is None or x <= hi) for x in vals):
+                    ok = False
+            res = []
+            if result:
+                rr = result_records(T, e)
+                res = [dict(key=kk, name=x["name"], record=x["record"]) for kk, x in rr.items() if kk.split("{")[0].split("[")[0] == result]
+                if not res:
+                    ok = False
+            if ok:
+                keep.append((e, res))
+        comps = [c for c in T.comps]
+        size = {c["fact_id"]: len(T.member_entities(c)) for c in comps}
+        kept = {e for e, _ in keep}
+        for e, res in keep:
+            mine = sorted([c for c in comps if e in T.member_entities(c)], key=lambda c: size[c["fact_id"]])
+            peers = T.member_entities(mine[0]) if mine else [x for x in exps if role(T, x) == role(T, e)]
+            rows[e] = dict(id=e, paper=k, name=T.label(e), inferred=T.byid[e]["how"] == "inferred", role=role(T, e),
+                           distinguish=distinguishing(T, e, [p for p in peers if p in exps] or [e]), result=res, groups=[c["fact_id"] for c in mine],
+                           home=mine[0]["fact_id"] if mine else "")
+            if not mine:
+                other.append(e)
+        for c in comps:
+            ms = [m for m in T.member_entities(c) if m in kept and rows[m]["home"] == c["fact_id"]]
+            if ms or any(m in kept for m in T.member_entities(c)):
+                groups.append(dict(id=c["fact_id"], paper=k, label=comparison_label(T, c), kind=c["kind"], members=ms,
+                                   all_members=[m for m in T.member_entities(c) if m in kept]))
+    return dict(groups=groups, rows=rows, other=other)
+
+
+def claims_of(T, ids):
+    """The claims pointing directly at any of the ids (an entity, a comparison, or a fact under them)."""
+    ids = set(ids)
+    out = []
+    for c in T.rows:
+        if c["type"] != "claim":
+            continue
+        hit = False
+        for l in filter(None, c["links"].split(";")):
+            if l in ids or (l in T.byid and (set(T.chain(l)) & ids)):
+                hit = True
+        if hit or set(scope_comparisons(T, c)) & ids:
+            out.append(c)
+    return out
+
+
+def claim_record(T, c):
+    """A claim as returned by claims(): statement, stance, cause and effect in words, the entities and comparisons it reaches, the
+    results it rests on (records) and its scope in words."""
+    ents = list(dict.fromkeys([e for f, e in rests_on(T, c) if e] + [l for l in c["links"].split(";") if l in T.byid and T.byid[l]["type"] == "entity"]))
+    var = lambda s: [L.NAMES.get(t, t.replace("mechanism:", "").replace("_", " ")) for t in s.split(";") if t]
+    return dict(id=c["fact_id"], paper=T.key if T else "", author=c.get("author", ""), statement=c["statement"], stance=c["stance"],
+                cause=var(c["cause"]), effect=var(c["effect"]), comparisons=scope_comparisons(T, c) if T else [], entities=ents,
+                rests_on=[record(T, f) for f, e in rests_on(T, c) if text_of(f)][:12], scope=scope_text(T, ents),
+                source=c["evidence"].split(";")[0])
+
+
+def scope_text(T, ents):
+    """The range a claim covers in words: the number of experiments and the ranges of the process-defining conditions they span."""
+    if not ents:
+        return "no condition"
+    parts = []
+    for q in L.PRIMARY:
+        vals = [val(fs[0]) for e in ents for k, fs in T.vector(e).items() if k == q and val(fs[0]) is not None]
+        texts = {fmt(fs[0]) for e in ents for k, fs in T.vector(e).items() if k == q}
+        if vals:
+            lo, hi = min(vals), max(vals); u = next(fs[0]["unit"] for e in ents for k, fs in T.vector(e).items() if k == q)
+            parts.append(f"{L.NAMES[q]} {g(lo)}{'–' + g(hi) if hi != lo else ''}{' ' + u if u else ''}")
+        elif len(texts) == 1:
+            parts.append(f"{L.NAMES[q]} {texts.pop()}")
+    return f"{len(ents)} experiment{'s' if len(ents) > 1 else ''}" + (" · " + " · ".join(parts[:3]) if parts else "")
+
+
+def claims(paper=None, variable=None, linked=None, author=None):
+    """Claims with stance, cause → effect, scope and the results they rest on. variable: a quantity id or mechanism token in cause or
+    effect; linked: an entity or comparison id the claim points at; author 'user' for the user's claims (user.facts.csv)."""
+    out = []
+    for k, T in TREES.items():
+        if paper and k != paper or author == "user":
+            continue
+        pool = claims_of(T, [linked]) if linked and linked.split(":")[0] == k else ([] if linked else [c for c in T.rows if c["type"] == "claim"])
+        for c in pool:
+            if variable and variable not in c["cause"].split(";") + c["effect"].split(";"):
+                continue
+            out.append(claim_record(T, c))
+    if author in (None, "user") and not paper and not linked:
+        for u in USER:
+            if u["type"] == "claim" and (not variable or variable in u["cause"].split(";") + u["effect"].split(";")):
+                out.append(dict(id=u["fact_id"], paper="user", author="user", statement=u["statement"], stance=u["stance"],
+                                cause=[L.NAMES.get(t, t) for t in u["cause"].split(";") if t], effect=[L.NAMES.get(t, t) for t in u["effect"].split(";") if t],
+                                comparisons=[], entities=[], rests_on=[], scope=f"{len(u['links'].split(';'))} facts across papers", source=""))
+    return out
+
+
+def detail(any_id):
+    """An experiment, an input or a comparison. For an entity: what (name, role, substrate, inputs), differs (its distinguishing
+    conditions), recipe (the full condition vector), results (one record per result key, derived included), claims (pointing at it
+    or its comparisons directly), comparisons, identity. For a comparison: varies, members, main results with their effect and the
+    noise sentence (judge), fits (fittable series), confounders, claims."""
+    T = tree_of(any_id); n = T.byid[any_id]
+    if n["type"] == "comparison":
+        ms = T.member_entities(n)
+        specs = [m for m in ms if role(T, m) != "specimen" or T.byid[T.byid[m]["parent"]]["type"] == "activity"]
+        cl = claims_of(T, [any_id])
+        mains = [q for c in cl for q in c["effect"].split(";") if q and not q.startswith("mechanism:")]
+        keys = sorted({k for m in specs for k in results_deep(T, m) if "stat=" not in k})
+        shared = [k for k in keys if all(k in results_deep(T, m) for m in specs)]
+        main = [k for k in keys if k.split("{")[0] in mains] or shared
+        effects = [dict(key=k, name=name_of(k), **{x: (g(v, 3) if isinstance(v, float) else v) for x, v in (judge(T, n, k) or {}).items()}) for k in main]
+        xkey = next((k for m in ms for k in T.vector(m) if k.split("{")[0] == n["quantity"].split(";")[0]), None)
+        fits = []
+        if xkey and n["kind"] == "series":
+            for k in main:
+                pts = [(x, y) for _, x, y in series_xy(T, n, xkey, k) if x and y and x > 0 and y > 0]
+                if fittable(T, n, xkey, k) and len(pts) >= 3 and len({x for x, _ in pts}) >= 3:
+                    b, a, r = power_fit(pts)
+                    fits.append(dict(key=k, name=name_of(k), x=name_of(xkey), exponent=g(b, 2), residual=g(r, 2), n=len(pts)))
+        conf = differing(T, specs, exclude={k for m in specs for k in T.vector(m) if k.split("{")[0] in n["quantity"].split(";")})
+        return dict(type="comparison", id=any_id, paper=T.key, label=comparison_label(T, n), kind=n["kind"], statement=n["statement"],
+                    varies=[L.NAMES.get(q, q) for q in n["quantity"].split(";") if q], members=specs, main=main, more=max(0, len(main) - 3),
+                    effects=effects, fits=fits, confounders=conf, claims=[claim_record(T, c) for c in cl],
+                    purpose=T.byid[n["links"].split(";")[0]]["statement"] if n["links"].split(";")[0] in T.byid else "")
+    ent = any_id
+    comps = T.comps_of(ent)
+    size = {c["fact_id"]: len(T.member_entities(c)) for c in comps}
+    home = sorted(comps, key=lambda c: size[c["fact_id"]])
+    peers = T.member_entities(home[0]) if home else [x for x in experiments(T) if role(T, x) == role(T, ent)]
+    cond = condition_records(T, ent)
+    sub = cond.get("substrate", {}).get("record", {}).get("text", "")
+    ins = [T.label(i) for i in T.inputs_of(ent)]
+    ids = [f for f in T.rows if f["type"] == "identity" and ent in f["links"].split(";")]
+    return dict(type="entity", id=ent, paper=T.key, name=T.label(ent), inferred=T.byid[ent]["how"] == "inferred", role=role(T, ent),
+                statement=T.byid[ent]["statement"], what=dict(substrate=sub, inputs=ins, material=cond.get("material", {}).get("record", {}).get("text", "")),
+                differs=distinguishing(T, ent, peers or [ent], n=6), recipe=[dict(key=k, **v) for k, v in cond.items()],
+                results=[dict(key=k, **v) for k, v in result_records(T, ent).items()],
+                claims=[claim_record(T, c) for c in claims_of(T, [ent] + [c["fact_id"] for c in comps])],
+                comparisons=[dict(id=c["fact_id"], label=comparison_label(T, c)) for c in home],
+                identity=[dict(kind=f["kind"], statement=f["statement"], others=[o for o in f["links"].split(";") if o != ent]) for f in ids])
+
+
+def compare(ids, result=None, x=None):
+    """Several experiments side by side: shared conditions (one line), differing conditions, results (records; a cell that cannot be
+    set beside the others says why), a plot spec (x = the condition that varies among them, or a curve's abscissa; points and curves
+    of the result), the claims linked to two or more of them."""
+    by = {i: tree_of(i) for i in ids}
+    conds = {i: condition_records(by[i], i) for i in ids}
+    keys = list(dict.fromkeys(k for i in ids for k in conds[i]))
+    shared, differ = [], []
+    for k in keys:
+        texts = {i: conds[i][k]["record"]["text"] if k in conds[i] else None for i in ids}
+        name = next(conds[i][k]["name"] for i in ids if k in conds[i])
+        if len(set(texts.values())) == 1:
+            shared.append(dict(key=k, name=name, text=next(iter(texts.values()))))
+        else:
+            differ.append(dict(key=k, name=name, values=texts))
+    differ.sort(key=lambda d: (L.PRIMARY.index(d["key"].split("{")[0]) if d["key"].split("{")[0] in L.PRIMARY else len(L.PRIMARY), d["key"]))
+    res = {i: result_records(by[i], i) for i in ids}
+    rkeys = list(dict.fromkeys(k for i in ids for k in res[i] if not result or k.split("{")[0] == result))
+    results = []
+    for k in rkeys:
+        cells = {i: res[i][k]["record"] if k in res[i] else None for i in ids}
+        same_q = [r for r in cells.values() if r]
+        defs = {r["definition"] for r in same_q if r["kind"] != "computed"}
+        note = f"different definitions: {'; '.join(sorted(d or 'the default' for d in defs))}" if len(defs) > 1 else ""
+        results.append(dict(key=k, name=next(res[i][k]["name"] for i in ids if k in res[i]), cells=cells, note=note))
+    # results of one quantity under different keys (definitions) say why they are not one column
+    by_q = collections.defaultdict(list)
+    for r in results:
+        by_q[r["key"].split("{")[0]].append(r)
+    for q, rs in by_q.items():
+        if len(rs) > 1:
+            for r in rs:
+                others = [o for o in rs if o is not r]
+                r["note"] = r["note"] or f"not set beside {', '.join(o['name'] for o in others)}: a different definition"
+    xs = [d["key"] for d in differ if all(d["values"][i] and num(re.sub(r"[^\d.eE+-].*$", "", d["values"][i])) is not None for i in ids)]
+    xkey = x or (xs[0] if xs else None)
+    plot = None
+    ykey = next((r["key"] for r in results if result and r["key"].split("{")[0] == result), results[0]["key"] if results else None)
+    if ykey:
+        pts, curves = [], []
+        for i in ids:
+            for r in results:
+                c = r["cells"].get(i)
+                if not c or r["key"].split("{")[0] != ykey.split("{")[0]:
+                    continue
+                if c.get("curve") and c["curve"]["points"]:
+                    curves.append(dict(id=i, paper=c["paper"], mode=c["mode"], x=c["curve"]["x"], points=c["curve"]["points"], name=by[i].label(i)))
+                elif c["value"] is not None and xkey and conds[i].get(xkey):
+                    xv = conds[i][xkey]["record"]["value"]
+                    if xv is not None:
+                        pts.append(dict(id=i, paper=c["paper"], mode=c["mode"], x=xv, y=c["value"], kind=c["kind"], name=by[i].label(i)))
+        plot = dict(x=xkey, x_name=name_of(xkey) if xkey else "", x_options=xs, y=ykey, y_name=name_of(ykey), points=pts, curves=curves)
+    cl = []
+    for i in ids:
+        for c in claims_of(by[i], [i] + [c["fact_id"] for c in by[i].comps_of(i)]):
+            cl.append((c["fact_id"], i))
+    cnt = collections.Counter(c for c, _ in cl)
+    linked = [claim_record(tree_of(c), tree_of(c).byid[c]) for c, n_ in cnt.items() if n_ >= 2]
+    return dict(items=[dict(id=i, paper=by[i].key, name=by[i].label(i)) for i in ids], shared=shared, differing=differ, results=results,
+                plot=plot, claims=linked)
+
+
+def source(any_id):
+    """A fact's or an element's source: the element, its kind, its text (paper-derived, read from ingest/final, never stored in a
+    tracked file), its crop, its coverage, and the values the facts of that element carry."""
+    import elements as E
+    key = any_id.split(":")[0] if ":" in any_id else None
+    if key and "#" in any_id:
+        T = TREES[key]; eid = T.byid[any_id]["evidence"].split(";")[0]
+    else:
+        key, eid = (any_id.split(":", 1) if ":" in any_id else (None, any_id))
+        T = TREES[key]
+    pid = KEY[key]
+    els = {r["element_id"]: r for r in csv.DictReader((HERE / f"{pid}.elements.csv").open(encoding="utf-8"))}
+    cov = {r["element_id"]: r for r in csv.DictReader((HERE / f"{pid}.coverage.csv").open(encoding="utf-8"))}
+    e = els.get(eid, {})
+    txt = E.texts(pid).get(eid, "") if e.get("kind") != "panel" else ""
+    facts = [f for f in T.rows if "#" in f["fact_id"] and eid in f["evidence"].split(";")]
+    return dict(paper=key, element=eid, kind=e.get("kind", ""), locator=e.get("locator", ""), text=txt, crop=e.get("crop", ""),
+                coverage=cov.get(eid, {}).get("status", ""), values=[record(T, f) for f in facts if text_of(f)],
+                statements=[f["statement"] for f in facts if not text_of(f) and f["type"] != "claim"])
