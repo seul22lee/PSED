@@ -1167,9 +1167,9 @@ def claim_record(T, c):
     """A claim as returned by claims(): statement, stance, cause and effect in words, the entities and comparisons it reaches, the
     results it rests on (records) and its scope in words."""
     ents = list(dict.fromkeys([e for f, e in rests_on(T, c) if e] + [l for l in c["links"].split(";") if l in T.byid and T.byid[l]["type"] == "entity"]))
-    var = lambda s: [L.NAMES.get(t, t.replace("mechanism:", "").replace("_", " ")) for t in s.split(";") if t]
+    var = lambda s: [L.MECHANISMS[t]["name"] if t in L.MECHANISMS else L.NAMES.get(t, t.replace("_", " ")) for t in s.split(";") if t]
     return dict(id=c["fact_id"], paper=T.key if T else "", author=c.get("author", ""), statement=c["statement"], stance=c["stance"],
-                cause=var(c["cause"]), effect=var(c["effect"]), comparisons=scope_comparisons(T, c) if T else [], entities=ents,
+                cause=var(c["cause"]), effect=var(c["effect"]), relation=c.get("relation", "").replace("_", " "), cause_ids=[t for t in c["cause"].split(";") if t], effect_ids=[t for t in c["effect"].split(";") if t], comparisons=scope_comparisons(T, c) if T else [], entities=ents,
                 rests_on=[record(T, f) for f, e in rests_on(T, c) if text_of(f)][:12], scope=scope_text(T, ents),
                 caveats=cav_list(caveats_for(T, c)) if T else [],
                 sized_by=[record(T, T.byid[i]) for i in c.get("sized_by", "").split(";") if T and i in T.byid],     # P46
@@ -1209,7 +1209,7 @@ def claims(paper=None, variable=None, linked=None, author=None):
         for u in USER:
             if u["type"] == "claim" and (not variable or variable in u["cause"].split(";") + u["effect"].split(";")):
                 out.append(dict(id=u["fact_id"], paper="user", author="user", statement=u["statement"], stance=u["stance"],
-                                cause=[L.NAMES.get(t, t) for t in u["cause"].split(";") if t], effect=[L.NAMES.get(t, t) for t in u["effect"].split(";") if t],
+                                cause=[L.NAMES.get(t, t) for t in u["cause"].split(";") if t], effect=[L.NAMES.get(t, t) for t in u["effect"].split(";") if t], relation=u.get("relation", "").replace("_", " "),
                                 comparisons=[], entities=[], rests_on=[], scope=f"{len(u['links'].split(';'))} facts across papers", source=""))
     return out
 
@@ -1228,7 +1228,7 @@ def detail(any_id):
         ms = T.member_entities(n)
         specs = [m for m in ms if role(T, m) != "specimen" or T.byid[T.byid[m]["parent"]]["type"] == "activity"]
         cl = claims_of(T, [any_id])
-        mains = [q for c in cl for q in c["effect"].split(";") if q and not q.startswith("mechanism:")]
+        mains = [q for c in cl for q in c["effect"].split(";") if q and q not in L.MECHANISMS]
         keys = sorted({k for m in specs for k in results_deep(T, m) if "stat=" not in k})
         shared = [k for k in keys if all(k in results_deep(T, m) for m in specs)]
         main = [k for k in keys if k.split("{")[0] in mains] or shared

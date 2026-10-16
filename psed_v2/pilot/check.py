@@ -72,7 +72,11 @@ def check(pid):
         if f["type"] == "claim" and f["stance"] not in L.STANCES:
             bad(f"claim stance {f['stance']!r} (lists.STANCES)")
         for t in L.variables_ok(f["cause"]) + L.variables_ok(f["effect"]):
-            bad(f"variable {t} (a quantity id or mechanism:<token> of lists.MECHANISMS)")
+            bad(f"variable {t!r} is not an entry id or a mechanism id (P54)")
+        if f["type"] == "claim" and f["cause"] and f["effect"] and f["relation"] not in L.RELATIONS:
+            bad(f"claim with a cause and an effect without a relation from lists.RELATIONS (P54)")
+        if f["type"] == "claim" and f["relation"] and f["relation"] not in L.RELATIONS:
+            bad(f"relation {f['relation']!r} not in lists.RELATIONS (P54)")
         if f["quantity"] and any(q not in L.QUANTITIES for q in (f["quantity"].split(";") if f["type"] == "caveat" else [f["quantity"]])):
             bad(f"quantity {f['quantity']}")
         if f["quantity"] == "other" and not f["label_as_printed"]:
@@ -455,7 +459,9 @@ def check_user(all_ids):
         if r["type"] == "claim" and r["stance"] not in L.STANCES:
             bad(f"claim stance {r['stance']!r}")
         for t in L.variables_ok(r["cause"]) + L.variables_ok(r["effect"]):
-            bad(f"variable {t}")
+            bad(f"variable {t!r} is not an entry id or a mechanism id (P54)")
+        if r["type"] == "claim" and r["cause"] and r["effect"] and r["relation"] not in L.RELATIONS:
+            bad("claim with a cause and an effect without a relation from lists.RELATIONS (P54)")
         for l in filter(None, r["links"].split(";")):
             if l not in all_ids and l not in ids:
                 bad(f"link {l} does not exist")
@@ -508,7 +514,7 @@ def check_vocabulary():
                     if k == "x":
                         used["quantity"].add(v)
             for t_ in (f["cause"] + ";" + f["effect"]).split(";"):
-                if t_ and not t_.startswith("mechanism:"):
+                if t_ and t_ not in L.MECHANISMS:
                     used["quantity"].add(t_)
     voc = {"quantity": set(L.QUANTITIES), "method": set(L.METHODS), "material": set(L.MATERIALS), "structure": set(L.STRUCTURES), "qualifier key": set(L.QUALIFIERS)}
     for k, vs in used.items():
@@ -519,6 +525,23 @@ def check_vocabulary():
           f"{len(used['qualifier key'])} qualifier keys in use; {len(L.TO_ABSORB)} pilot ids still to absorb ({len(absorbed)} in use); "
           f"materials to absorb {L.TO_ABSORB_VALUES['material']}, structures {L.TO_ABSORB_VALUES['structure']}")
     return err
+
+
+def check_claims():
+    """P54: every claim's cause and effect are entry ids or mechanism ids (variables_ok, above); here the counts: claims, free
+    strings (always 0 once variables_ok holds), mechanisms named, and mechanisms named by claims of two or more papers."""
+    used = collections.defaultdict(set)
+    n = 0
+    for pid in KEYS:
+        for f in rd(HERE / f"{pid}.facts.csv"):
+            if f["type"] == "claim":
+                n += 1
+                for t in (f["cause"] + ";" + f["effect"]).split(";"):
+                    if t in L.MECHANISMS:
+                        used[t].add(KEYS[pid])
+    shared = sorted(m for m, ps in used.items() if len(ps) >= 2)
+    print(f"== claims (P54): {n} claims; {len(used)} mechanisms named; {len(shared)} named by two or more papers: {', '.join(shared)}")
+    return []
 
 
 def check_bases():
@@ -594,6 +617,7 @@ if __name__ == "__main__":
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
+    check_claims()
     err = check_comparability()
     print(f"== comparability (P53): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:

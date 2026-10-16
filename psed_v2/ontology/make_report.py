@@ -204,7 +204,8 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     qualifier_keys = {k for k, q in onto["qualifiers"].items() if "species" in str(q.get("values")) or "material" in str(q.get("values"))}
     via_qualifier = [e["id"] for e in entries if e["type"] == "species" and not deg[e["id"]]
                      and any(k in q.get("qualifiers", []) for q in entries for k in qualifier_keys)]
-    bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier]
+    via_claim = [e["id"] for e in entries if e["type"] == "mechanism" and e.get("evidence")]     # Sec. 18.6: a mechanism's edges are the claims that name it
+    bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier and i not in via_claim]
     out.append(("10. no orphan: every entry and hierarchy node has at least one edge", not bad,
                 f"problems: {bad}" if bad else "all connected" + (f"; only as a qualifier value: {via_qualifier}" if via_qualifier else "")))
 
@@ -357,7 +358,7 @@ def main() -> int:
     def path(n):
         return (path(nodes[n]["parent"]) + " / " if nodes[n].get("parent") else "") + n
     groups = {path(c): [entry_row(e) for e in entries if e.get("category") == c] for c in leaf_ids}
-    for t in ("species", "structure"):
+    for t in ("species", "structure", "mechanism"):
         groups[t] = [entry_row(e) for e in entries if e["type"] == t]
     entries_html = table(["id", "type", "role", "unit", "origin", "family", "qualifiers", "evidence", "deviation"], [], groups)
 

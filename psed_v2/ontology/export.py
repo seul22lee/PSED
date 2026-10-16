@@ -66,7 +66,7 @@ def build(onto, pmap):
     for e in live:
         if e.get("family"):
             families.setdefault(e["family"], []).append(e["id"])
-    mechanisms = {e["id"]: dict(definition=e.get("definition", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "mechanism"}
+    mechanisms = {e["id"]: dict(name=e.get("name", e["id"].replace("_", " ")), definition=e.get("definition", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "mechanism"}
     kinds = voc.get("kind", {})
     return dict(
         CONCEPTS=concepts, ATTRIBUTES=attributes, TO_ABSORB=absorb, TRANSFORM_OUTPUTS=transforms, REPLACED=replaced,

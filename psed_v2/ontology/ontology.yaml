@@ -1712,6 +1712,331 @@ entries:
     base: {}
     evidence: ["gre23 Fig. 1", "gre23 Table I", "gre23 Fig. 6"]
 
+  # ---------------------------------------------------------------- mechanisms (Sec. 18.6; P54): the causes and effects of claims that are not quantities
+  - id: residual_water
+    type: mechanism
+    origin: extension
+    name: "residual water"
+    definition: "Water left in the reactor or adsorbed on surfaces after the purge, which re-adsorbs on the walls or reacts in the following step."
+    aliases: ["residual H2O", "re-adsorbed water", "water re-adsorption"]
+    base: {}
+    evidence: ["gre23 claims abs.g4#2, s12.p1#2, s12.p17#1", "yim20 claim s18.p5#1"]
+
+  - id: surface_hydroxyl
+    type: mechanism
+    origin: extension
+    name: "surface OH"
+    definition: "The density of hydroxyl groups on the growth surface, which sets the uptake of the metal precursor."
+    aliases: ["surface OH", "OH coverage", "chemisorbed OH"]
+    base: {}
+    evidence: ["yim20 claims s18.p4#1, s18.p6#1", "gre23 claims s12.p17#2, s14.p10#5, s15.p4#1"]
+
+  - id: desorption
+    type: mechanism
+    origin: extension
+    name: "desorption"
+    definition: "Loss of adsorbed species (water, metal-containing species) from the surface during a long purge."
+    aliases: ["desorption", "desorbs"]
+    base: {}
+    evidence: ["gre23 claims s14.p2#2, s14.p6#1, s14.p6#2", "yim20 claim s18.p4#1"]
+
+  - id: self_limiting_growth
+    type: mechanism
+    origin: extension
+    name: "self-limiting growth"
+    definition: "Saturation of each half-reaction once the surface sites are used up, the defining feature of ALD."
+    aliases: ["self-limiting", "saturation"]
+    base: {}
+    evidence: ["mat22 claim s3.p1#3", "gre23 claims abs.g4#1, s6.p1#2, s14.p8#1"]
+
+  - id: surface_chemistry
+    type: mechanism
+    origin: extension
+    name: "surface chemistry"
+    definition: "The surface reactions of the precursor and the co-reactant, which set uptake and composition."
+    aliases: ["surface chemistry"]
+    base: {}
+    evidence: ["yim20 claim abs.g3#2", "mat22 claim s3.p11#7"]
+
+  - id: excess_sulfur
+    type: mechanism
+    origin: extension
+    name: "excess sulfur"
+    definition: "Sulfur taken up beyond the MoS2 stoichiometry from an H2S-based plasma, which blocks crystallization."
+    aliases: ["excess S", "S-rich"]
+    base: {}
+    evidence: ["mat22 claims abs.g2#2, s3.p13#2, s3.p26#6, s3.p48#3, s3.p52#1"]
+
+  - id: fin_growth
+    type: mechanism
+    origin: extension
+    name: "fin growth"
+    definition: "Growth of vertical fins (out-of-plane flakes) on a crystalline film, which raises roughness and surface area."
+    aliases: ["fin formation", "fins"]
+    base: {}
+    evidence: ["mat22 claims s3.p22#10, s3.p25#4, s3.p26#1, s3.p26#4, s3.p26#5, s3.p29#2, s3.p31#1"]
+
+  - id: metallic_zinc
+    type: mechanism
+    origin: extension
+    name: "metallic Zn deposition"
+    definition: "Deposition of metallic zinc alongside ZnO from diethylzinc decomposition at large exposures or high temperature."
+    aliases: ["Zn deposition", "metallic Zn deposition"]
+    base: {}
+    evidence: ["gre23 claims abs.g2#2, s6.p6#1, s12.p1#1, s12.p17#4, s13.p3#5, s13.p4#4, s15.p3#1"]
+
+  - id: plasma_chemistry
+    type: mechanism
+    origin: extension
+    name: "plasma chemistry"
+    definition: "The species of the H2S/H2/Ar plasma (atomic H, sulfur species, ions), set by its feed, which strip ligands and deliver sulfur."
+    aliases: ["plasma chemistry", "plasma species"]
+    base: {}
+    evidence: ["mat22 claims abs.g4#2, s3.p1#2, s3.p11#3, s3.p51#4, s3.p52#1, s3.p52#4"]
+
+  - id: hydrogen_incorporation
+    type: mechanism
+    origin: extension
+    name: "hydrogen incorporation"
+    definition: "Hydrogen from the plasma built into the film, at sulfur vacancies or as thiol groups, acting as a dopant."
+    aliases: ["H incorporation", "incorporated H"]
+    base: {}
+    evidence: ["mat22 claims s3.p39#2, s3.p41#2"]
+
+  - id: sulfur_vacancy
+    type: mechanism
+    origin: extension
+    name: "sulfur vacancies"
+    definition: "Missing sulfur atoms in the MoS2 lattice, a source of carriers."
+    aliases: ["S vacancies", "S vacancy"]
+    base: {}
+    evidence: ["mat22 claim s3.p39#4"]
+
+  - id: thiol_groups
+    type: mechanism
+    origin: extension
+    name: "thiol groups"
+    definition: "S-H groups on the film's surface and edges, whose density follows the H2 flow ratio."
+    aliases: ["-SH groups", "thiol"]
+    base: {}
+    evidence: ["mat22 claim s3.p30#4"]
+
+  - id: edge_reactivity
+    type: mechanism
+    origin: extension
+    name: "edge reactivity"
+    definition: "The reactivity of crystallite edges, tuned by their S and S-H coverage."
+    aliases: ["edge reactivity", "reactive edges"]
+    base: {}
+    evidence: ["mat22 claim s3.p25#2"]
+
+  - id: surface_oxidation
+    type: mechanism
+    origin: extension
+    name: "surface oxidation"
+    definition: "Oxidation of the film surface in air after deposition, strongest on rough, edge-rich films."
+    aliases: ["surface oxidation", "oxidation in air"]
+    base: {}
+    evidence: ["mat22 claim s3.p21#4"]
+
+  - id: precursor_adsorption
+    type: mechanism
+    origin: extension
+    name: "precursor adsorption"
+    definition: "The density of adsorbed metal precursor per cycle, which governs the growth per cycle."
+    aliases: ["adsorption density", "adsorption sites"]
+    base: {}
+    evidence: ["mat22 claims s3.p29#2, s3.p32#2"]
+
+  - id: membrane_sagging
+    type: mechanism
+    origin: extension
+    name: "membrane sagging"
+    definition: "Bending of the channel's roof membrane between the pillars, which narrows the channel locally."
+    aliases: ["membrane bending", "roof sag"]
+    base: {}
+    evidence: ["yim20 claims s10.p1#4, s16.p3#1"]
+
+  - id: channel_plugging
+    type: mechanism
+    origin: extension
+    name: "channel plugging"
+    definition: "Closure of a channel entrance by the growing film, which stops further penetration."
+    aliases: ["plugged entry", "plugging"]
+    base: {}
+    evidence: ["yim20 claim s13.x1#5"]
+
+  - id: feature_narrowing
+    type: mechanism
+    origin: extension
+    name: "feature narrowing"
+    definition: "The growing film narrows the feature (a channel or a pore), raising the aspect ratio the process sees and shrinking the surface area."
+    aliases: ["channel narrowing", "pore narrowing", "shrinking surface area"]
+    base: {}
+    evidence: ["yim20 claim s13.x2#3", "gre23 claim s12.p8#5"]
+
+  - id: pillar_effect
+    type: mechanism
+    origin: extension
+    name: "pillar effect"
+    definition: "Growth and transport disturbed by the pillars that hold up the channel roof."
+    aliases: ["pillars affect growth"]
+    base: {}
+    evidence: ["yim20 claim s16.p3#1"]
+
+  - id: entrance_nanostep
+    type: mechanism
+    origin: extension
+    name: "entrance nanostep"
+    definition: "A step at the channel entrance that lowers the local channel height."
+    aliases: ["nanostep"]
+    base: {}
+    evidence: ["yim20 claim s16.p5#7"]
+
+  - id: native_oxide
+    type: mechanism
+    origin: extension
+    name: "native oxide"
+    definition: "The native silicon oxide under the film, included in an optical thickness."
+    aliases: ["native silicon oxide", "native oxide"]
+    base: {}
+    evidence: ["yim20 claim s3.p9#4"]
+
+  - id: optical_model
+    type: mechanism
+    origin: extension
+    name: "optical model"
+    definition: "The optical model of the reflectometer fit, whose mismatch with the real stack gives a systematic thickness error."
+    aliases: ["optical model"]
+    base: {}
+    evidence: ["yim20 claims s16.p7#1, s16.p8#1"]
+
+  - id: scan_angle
+    type: mechanism
+    origin: extension
+    name: "scan angle"
+    definition: "Deviation of the scan line from the normal to the channel entrance, which stretches the measured profile."
+    aliases: ["cosine error"]
+    base: {}
+    evidence: ["yim20 claim s16.p7#3"]
+
+  - id: interaction_volume
+    type: mechanism
+    origin: extension
+    name: "interaction volume"
+    definition: "The depth of the electron-beam interaction volume in EDS, deeper than a thin film."
+    aliases: ["X-ray interaction volume"]
+    base: {}
+    evidence: ["yim20 claim s10.x2#4"]
+
+  - id: scan_averaging
+    type: mechanism
+    origin: extension
+    name: "scan averaging"
+    definition: "Averaging repeated line scans to suppress noise."
+    aliases: ["averaging repeated scans"]
+    base: {}
+    evidence: ["yim20 claim s7.p5#11"]
+
+  - id: channel_length
+    type: mechanism
+    origin: extension
+    name: "channel length"
+    definition: "The lateral length of the channel, which does not change the saturation profile."
+    aliases: ["lateral length"]
+    base: {}
+    evidence: ["yim20 claim s12.x1#3"]
+
+  - id: run_variation
+    type: mechanism
+    origin: extension
+    name: "run-to-run variation"
+    definition: "Differences between independent runs of the same process."
+    aliases: ["run-to-run variation", "reproducibility"]
+    base: {}
+    evidence: ["yim20 claims s16.p10#1, s16.p10#5"]
+
+  - id: gas_diffusion
+    type: mechanism
+    origin: extension
+    name: "gas diffusion"
+    definition: "Transport of the reactant through the pores or the channel by gas-phase diffusion (Knudsen diffusion in narrow features)."
+    aliases: ["Knudsen diffusion", "reactant diffusivity"]
+    base: {}
+    evidence: ["gre23 claim s6.p8#9", "yim20 claim s20.p2#3"]
+
+  - id: gas_generation
+    type: mechanism
+    origin: extension
+    name: "gas generation"
+    definition: "Release of gaseous by-products (ethane) by the surface reaction, which raises the chamber pressure."
+    aliases: ["gas-producing processes", "ethane release"]
+    base: {}
+    evidence: ["gre23 claims s12.p6#5, s12.p7#3"]
+
+  - id: leak
+    type: mechanism
+    origin: extension
+    name: "leak"
+    definition: "A leak or valve seating effect that lowers the chamber pressure during a hold."
+    aliases: ["leak-dominated", "leak rates"]
+    base: {}
+    evidence: ["gre23 claims s12.x1#7, s12.x1#9"]
+
+  - id: reaction_diffusion
+    type: mechanism
+    origin: extension
+    name: "reaction-diffusion"
+    definition: "The coupled reaction and diffusion of the reactant into a porous body, which sets how far and how evenly it coats."
+    aliases: ["reaction-diffusion", "diffusion-reaction"]
+    base: {}
+    evidence: ["gre23 claims s14.p7#2, s14.p8#1"]
+
+  - id: percolation
+    type: mechanism
+    origin: extension
+    name: "percolation"
+    definition: "A coating that forms a connected network through the compact, so that current can cross it."
+    aliases: ["percolating network"]
+    base: {}
+    evidence: ["gre23 claim s13.p4#11"]
+
+  - id: cracks
+    type: mechanism
+    origin: extension
+    name: "cracks"
+    definition: "Cracks in the compact, which change its measured resistivity."
+    aliases: ["cracking"]
+    base: {}
+    evidence: ["gre23 claim s13.p4#6"]
+
+  - id: side_reaction
+    type: mechanism
+    origin: extension
+    name: "non-self-limiting reaction"
+    definition: "Non-self-limiting reactions at large exposures, such as precursor decomposition."
+    aliases: ["non-self-limiting growth"]
+    base: {}
+    evidence: ["gre23 claim abs.g1#2"]
+
+  - id: cvd_growth
+    type: mechanism
+    origin: extension
+    name: "CVD-like growth"
+    definition: "Gas-phase reaction of the two reactants (CVD-like growth) when the purge leaves one of them behind."
+    aliases: ["CVD", "gas-phase reaction"]
+    base: {}
+    evidence: ["gre23 claims s14.p10#2, s15.p3#5"]
+
+  - id: xray_reabsorption
+    type: mechanism
+    origin: extension
+    name: "X-ray reabsorption"
+    definition: "Absorption of one element's X-ray emission by another in EDS, which distorts normalized signals."
+    aliases: ["reabsorption"]
+    base: {}
+    evidence: ["gre23 claim s14.p7#3"]
+
   # ---------------------------------------------------------------- models
   - id: ylilammi_diffusion_reaction
     type: model
@@ -1845,6 +2170,7 @@ vocabularies:
   crystallinity:     [amorphous, crystalline]
   phase:             [detected, "not detected"]                              # the values of the phase categorical (P15)
   specimen_class:    [film, porous_composite]                               # Sec. 18.4: the class of specimen a value was measured on
+  relations:         [increases, decreases, limits, causes, no_effect, requires]   # Sec. 18.6: the relation of a claim's cause to its effect
   structure_class:   [lateral, vertical, porous, planar]
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]

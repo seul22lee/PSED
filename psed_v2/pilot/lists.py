@@ -91,17 +91,14 @@ UNCERTAINTY_KINDS = {"pieces", "runs", "position", "repeat_measurement", "fit", 
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison", "identity", "caveat"]   # bridge: user facts only;
 #   comparison: the authors' comparison intent (a series, a grid, a replicate set), a fact with members, not a parent
 STANCES = ["asserted", "hedged", "open", "limitation"]
-# mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids
-MECHANISMS = ["surface_OH", "excess_S", "fin_growth", "Zn_metal", "residual_H2O", "membrane_sagging", "channel_plugging", "channel_narrowing",
-              "water_readsorption", "H_incorporation", "precursor_adsorption", "pillar_effect", "nanostep", "native_oxide", "optical_model",
-              "scan_angle", "interaction_volume", "averaging", "channel_length", "run_variation", "surface_chemistry", "plasma_chemistry",
-              "edge_reactivity", "thiol_groups", "S_vacancy", "surface_oxidation", "self_limiting", "side_reaction", "gas_diffusion",
-              "gas_generation", "leak", "reaction_diffusion", "desorption", "percolation", "cracks", "reabsorption", "CVD_growth"]
+# the mechanisms a claim's cause or effect may name (vocab.MECHANISMS, from the ontology's mechanism entries: id -> name, definition,
+# aliases; P54) and the closed relation vocabulary (vocab.RELATIONS)
+MECHANISMS = _MECH
 
 
 def variables_ok(s):
-    """'a;b' of quantity ids or mechanism:<token> -> list of problems."""
-    return [t for t in s.split(";") if t and not (t in QUANTITIES and t != "other") and not (t.startswith("mechanism:") and t[10:] in MECHANISMS)]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
+    """'a;b' of entry ids (quantities) or mechanism ids -> list of problems."""
+    return [t for t in s.split(";") if t and not (t in QUANTITIES and t != "other") and t not in MECHANISMS]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
 #   "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation)
 # tree rows (stage 3): the paper, activities (something done, with settings: kind from ACTIVITY_KINDS, order when several apply to one
 # entity, how stated or inferred) and entities (a physical thing or its state: a specimen, a piece cut from it, a position, a model

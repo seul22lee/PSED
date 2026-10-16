@@ -31,7 +31,9 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   parent       (stage 3) one id: the row without which this fact would not exist; blank only for the paper row
   links        (stage 3) ids of a second home, ";"-separated: a claim's supporting facts, the same data shown twice
   stance       a claim's stance, lists.STANCES (asserted, hedged, open, limitation), from the paper's own wording
-  cause, effect  a claim's variables, ";"-separated quantity ids or mechanism:<token> (lists.MECHANISMS); blank when the claim has none
+  cause, effect  a claim's variables, ";"-separated entry ids (quantities) or mechanism ids (lists.MECHANISMS); blank when the claim has none
+  relation     how the cause acts on the effect, one of lists.RELATIONS (increases, decreases, limits, causes, no_effect, requires; P54);
+               required when a claim has both a cause and an effect
   author       who wrote the fact down: the paper id for a paper's facts (write() fills it), "user" in user.facts.csv
   sized_by     a claim about a mechanism, a limitation or a measurement effect: the ids of the facts of the same paper that give its
                size (an uncertainty, a tolerance, a measured size, a bound; P46)
@@ -55,7 +57,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author", "sized_by"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -453,6 +455,15 @@ def caveat(key, evidence, statement, links, quantity="", qualifiers=""):
     links: the facts it qualifies, or nodes (paper, activity, entity, comparison) with quantity (';'-separated ids) and qualifiers
     meaning every value or setting of those quantities at or below the nodes; an entity without quantity: the entity's results."""
     return F(key, evidence, "caveat", statement, links=links, quantity=quantity, qualifiers=qualifiers, parent=key)
+
+
+def relations(key, table):
+    """P54: table {claim suffix: relation}; every claim with a cause and an effect must be in it (lists.RELATIONS)."""
+    for r in _facts:
+        if r["type"] == "claim":
+            sfx = r["fact_id"].split(":", 1)[1]
+            r["relation"] = table.get(sfx, "")
+            assert not (r["cause"] and r["effect"]) or r["relation"] in L.RELATIONS, f"{r['fact_id']}: a claim with a cause and an effect needs a relation (lists.RELATIONS)"
 
 
 def sized(key, table):

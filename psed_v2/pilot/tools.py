@@ -185,7 +185,7 @@ def claim_line(c):
     """A claim as one line; the results it rests on as ids (source returns each in full)."""
     who = "by the user" if c.get("author") == "user" else short_name(c["paper"]) if c.get("paper") in Q.KEY else c.get("paper", "")
     return (c["id"], f"claim ({who}), {c['stance']}: {c['statement']}" + (f" · cause: {', '.join(c['cause'])}" if c.get("cause") else "")
-            + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: computed here): {c['scope']}" if c.get("scope") else "")
+            + (f" · relation: {c['relation']}" if c.get("relation") else "") + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: computed here): {c['scope']}" if c.get("scope") else "")
             + (f" · comparisons: {', '.join(c['comparisons'])}" if c.get("comparisons") else "")
             + (f" · source element: {c['paper']}:{c['source']}" if c.get("source") and c.get("paper") else "")
             + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else "")

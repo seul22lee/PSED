@@ -317,7 +317,7 @@ def q22():
 def q23():
     """Every claim that puts water desorption or surface OH as a cause, with the quantified effect behind each."""
     out = []
-    for tok in ("mechanism:surface_OH", "mechanism:residual_H2O", "mechanism:desorption", "mechanism:water_readsorption"):
+    for tok in ("surface_hydroxyl", "residual_water", "desorption"):
         for c in claims(variable=tok):
             effs = [f"{e['name']} range {e['effect']} {e['unit']} ({detail(cid)['label']}; {e['sentence']})" for cid in c["comparisons"] for e in detail(cid)["effects"]
                     if any(n in e["name"] for n in c["effect"])]
