@@ -395,6 +395,12 @@ def check_derived():
                     err.append(f"{e}: {did} derived although the entity has it (P7)")
                 if len(d["chain"]) != len(set(d["chain"])):
                     err.append(f"{e}: {did} derivation feeds back: {' -> '.join(d['chain'])} (P7)")
+            for o in Q.same_experiment(T, e):
+                if Q.role(T, o) != Q.role(T, e):
+                    err.append(f"{e}: same experiment as {o}, an entity of another role (P21)")
+        for c in T.comps:
+            if len({Q.role(T, m) for m in T.member_entities(c)}) > 1:
+                err.append(f"{c['fact_id']}: members of different roles (P21)")
     return err
 
 

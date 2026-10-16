@@ -280,18 +280,30 @@ def vtext(T, e):
     return {k: "; ".join(dict.fromkeys(t for t in (fmt(f) for f in fs) if t)) for k, fs in T.vector(e).items()}
 
 
+def role(T, ent):
+    """What an entity is (P21): 'specimen' (made by a deposition: a film, a sample, a piece cut from one), 'input' (a thing that ends
+    up in or under a film, measured before any deposition: chips, compacts) or 'model run' (a simulation's output)."""
+    d = T.dep_of(ent)
+    if d is None:
+        return "input"
+    return "model run" if T.byid[d]["kind"] == "simulation" else "specimen"
+
+
 def same_experiment(T, ent):
-    """The entities (with observations) that are the same experiment as `ent`: equal condition vectors, nothing tolerated (P20).
-    Near-equal entities are found by filtering on conditions (matching) and their differences shown side by side (differing)."""
-    v0 = vtext(T, ent)
-    return [e for e in T.entities() if e != ent and vtext(T, e) == v0]
+    """The entities (with observations) of the same role that are the same experiment as `ent`: equal condition vectors, nothing
+    tolerated (P20). Near-equal entities are found by filtering on conditions (matching) and their differences shown side by side
+    (differing). Entities of different roles are never compared as experiments (P21)."""
+    v0, r0 = vtext(T, ent), role(T, ent)
+    return [e for e in T.entities() if e != ent and role(T, e) == r0 and vtext(T, e) == v0]
 
 
-def matching(T, **conds):
-    """The entities whose condition vector states every given condition: {quantity: value text} matched on the key's quantity and the
-    value as printed (a filter, P20)."""
+def matching(T, roles=("specimen",), **conds):
+    """The entities of the given roles whose condition vector states every given condition: {quantity: value text} matched on the
+    key's quantity and the value as printed (a filter, P20)."""
     out = []
     for e in T.entities():
+        if role(T, e) not in roles:
+            continue
         v = vtext(T, e)
         if all(any(k.split("{")[0] == q and val_eq(t, want) for k, t in v.items()) for q, want in conds.items()):
             out.append(e)
