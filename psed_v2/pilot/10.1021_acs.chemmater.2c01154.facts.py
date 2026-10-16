@@ -679,7 +679,7 @@ F(K, "s5.p8;fig9b", "setting", "TiS2 is grown at 100 °C with ratio 0.50.", quan
 F(K, "s5.p9", "setting", "Thickness is followed in situ by SE with a J.A. Woollam M-2000FI (0.8-5.0 eV; fits over 0.8-4.0 eV)" \
   " or M-2000F (1.2-5.0 eV).", quantity="other", label_as_printed="spectral range", value_min="0.8", value_max="5.0",
   unit="eV", data_kind="chosen input", method="ellipsometry", mentions="M-2000FI;M-2000F")
-F(K, "s5.p9", "setting", "An in situ SE measurement is usually taken every 10 cycles.", quantity="cycle_number", value="10",
+F(K, "s5.p9", "setting", "An in situ SE measurement is usually taken every 10 cycles.", quantity="other", label_as_printed="measurement interval", value="10",
   data_kind="chosen input", method="ellipsometry")
 F(K, "s5.p9", "model", "SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in CompleteEASE 5.1, with software optical constants "
   "for the other layers; roughness of crystalline MoS2 as an effective medium layer with 50% void.",

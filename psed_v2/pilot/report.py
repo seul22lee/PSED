@@ -36,6 +36,11 @@
   view): the claim's links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
   inherited settings give the ranges: "3 runs · T 300 °C · H 100–2000 nm · N 500"; "no run" when the links reach none.
   Claims view (toggle beside find, cards and text tree): one line per claim of each paper, with its scope and evidence.
+  Group card (a group's label in the left tree): what the group varies, its runs, and effect ÷ sd per result quantity:
+  the effect is max − min of the quantity over the group's runs; sd comes from the paper's reproducibility set, computed
+  as the largest set of runs with the same conditions (the process-defining settings stated by both and equal, any other
+  setting equal when both state it) that share numeric results
+  (yim20: samples 2, 4, 8 and 12); a ratio below 1 is flagged "within reproducibility"; no set, no sd.
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -190,6 +195,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wbf{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12px}.wbf label{display:block;margin:4px 0}.wbf select{width:100%;margin-top:2px}.wbf input[type=number]{width:44%;margin-top:2px}
 .wbm{max-height:84vh;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:6px 8px;font-size:12.5px}.wbr{display:flex;gap:6px;align-items:center;padding:2px 0;border-bottom:1px solid var(--line)}.wbr .mut{flex:1}.wbr button{padding:0 7px;font-size:11px}
 .wbt{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12.5px;margin-bottom:10px}
+.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
 .cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
@@ -331,7 +337,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
 function jump(fid){if(V==="tree"&&TM!=="text"){const pi=DATA.findIndex(d=>d.facts.some(f=>f.fact_id===fid));if(pi>=0){cardFor(fid,pi);return}}const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]:not(.linked)`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
-let TM="find";let CARD=null;let FIGC=null;
+let TM="find";let CARD=null;let FIGC=null;let GCARD=null;
 const ckey=f=>`${f.quantity||"—"}|${f.qualifiers}|${f.quantity==="other"?f.label_as_printed:""}`;
 const PRIM=["reactor_type","deposition_temperature","process_pressure","precursor_purity","source_temperature","pulse_time","purge_time","feature_height","cycle_number","substrate"];   // row 2 and find: the process-defining settings, in this order, before the rest
 const rank=f=>{const r=PRIM.indexOf(f.quantity);return r<0?PRIM.length:r};
@@ -350,11 +356,11 @@ const nlab=n=>n.glab||n.label_as_printed||n.fact_id.split(":").slice(1).join(":"
 const spark=p=>{const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);return `<svg class="sp" viewBox="0 0 70 20"><polyline fill="none" stroke="var(--acc)" stroke-width="1.2" points="${p.map(a=>(2+66*(a[0]-x0)/((x1-x0)||1)).toFixed(1)+","+(18-16*(a[1]-y0)/((y1-y0)||1)).toFixed(1)).join(" ")}"/></svg>`};
 const elab=e=>{let m;if(m=e.match(/^fig(\d+)([a-z]*)(\.cap)?$/))return `Fig. ${m[1]}${m[2]}${m[3]?" caption":""}`;if(m=e.match(/^tab(u?)(\w+)\./))return m[1]?"nomenclature":`Table ${m[2]}`;if(m=e.match(/^s(\d+)\./))return `text §${m[1]}`;if(e.startsWith("abs"))return "abstract";if(e.startsWith("eq"))return `Eq. ${e.slice(2)}`;return e};
 function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=(function(){let x=T.up[fid];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x})();
- P=pi;V="tree";TM="cards";CARD=run||null;FIGC=null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no run</h2><div class="mut">${esc(fid)} is not under a run (a paper-, process- or group-level fact).</div><div id="side" class="evbox"></div></div>`}}
-function openCard(pi,id){P=pi;CARD=id;FIGC=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
+ P=pi;V="tree";TM="cards";CARD=run||null;FIGC=null;GCARD=null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no run</h2><div class="mut">${esc(fid)} is not under a run (a paper-, process- or group-level fact).</div><div id="side" class="evbox"></div></div>`}}
+function openCard(pi,id){P=pi;CARD=id;FIGC=null;GCARD=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
 function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
  const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="process")return `<div class="mut" style="margin-left:10px">process (conditions in each card, row 2)</div>`+walk(c.fact_id);
-  if(c.type==="group")return `<details open><summary><span class="ty group">group</span>${esc(nlab(c))}</summary>${walk(c.fact_id)}</details>`;
+  if(c.type==="group")return `<details open><summary><span class="ty group">group</span><span class="gl ${GCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="event.preventDefault();event.stopPropagation();openGroup(${i},'${c.fact_id}')">${esc(nlab(c))}</span></summary>${walk(c.fact_id)}</details>`;
   if(c.type==="run"){const ch=(T.kids[c.fact_id]||[]).some(k=>k.type==="run");return ch?`<details open><summary>${line(c)}</summary>${walk(c.fact_id)}</details>`:line(c)}return""}).join("");
  return `<div class="lt"><b>${d.key}</b> <span class="mut">${d.tree.filter(n=>n.type==="run").length} runs</span>${walk(T.root.fact_id)}</div>`}
 function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=f=>`<code class="ev" title="${esc(f.fact_id)}" onclick="side('${f.evidence.split(";")[0]}',${i})">${f.evidence.split(";")[0]}</code>`;
@@ -478,8 +484,28 @@ function trayAddFig(i,eid){const cs=figCurves(i,eid);if(cs.length)cs.forEach(c=>
  else{const d=DATA[i],T=buildTree(d);[...new Set(d.facts.filter(f=>f.evidence.split(";").includes(eid)).map(f=>runOfF(T,f.fact_id)).filter(Boolean))].forEach(r=>{if(WB.tray.length<8&&!WB.tray.some(t=>t.id===r&&!t.fid))WB.tray.push({i,id:r})})}render()}
 const figTrayBtn=(i,eid)=>{const cs=figCurves(i,eid);const inT=cs.length?cs.every(c=>WB.tray.some(t=>t.fid===c.f.fact_id)):false;return `<button ${inT||WB.tray.length>=8?"disabled":""} onclick="trayAddFig(${i},'${eid}')">${inT?"in tray":`add to tray${cs.length?` (${cs.length} curves)`:""}`}</button> ${trayLink()}`};
 function trayClear(){WB.tray=[];render()}
-function showCard(i,id){P=i;CARD=id;FIGC=null;V="tree";TM="cards";render()}
-function figCard(eid,pi){if(pi!==undefined)P=pi;V="tree";TM="cards";FIGC=eid;render()}
+function showCard(i,id){P=i;CARD=id;FIGC=null;GCARD=null;V="tree";TM="cards";render()}
+function figCard(eid,pi){if(pi!==undefined)P=pi;V="tree";TM="cards";FIGC=eid;GCARD=null;render()}
+function openGroup(i,gid){P=i;GCARD=gid;FIGC=null;V="tree";TM="cards";render()}
+// reproducibility (computed): the largest set of a paper's runs with the same conditions (every setting stated by both equal) that
+// share numeric results; sd (n-1) per result key over that set
+const core=k=>PRIM.includes(k.split("|")[0]);   // the process-defining settings: both runs must state them, equal; any other setting counts only when both state it
+const sameCond=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].every(k=>core(k)?(k in a.inh)===(k in b.inh)&&(!(k in a.inh)||a.inh[k].text===b.inh[k].text):!(k in a.inh)||!(k in b.inh)||a.inh[k].text===b.inh[k].text);
+const firstNum=o=>{const f=o.fs[0];const a=fv(f);return a!=null&&!isNaN(a)?a:null};
+function reproOf(i){const d=DATA[i];if(d._REP!==undefined)return d._REP;const rs=RUNS().filter(r=>r.i===i&&Object.values(r.res).some(o=>firstNum(o)!=null));let best=null;
+ rs.forEach(seed=>{const set=[seed];rs.forEach(r=>{if(r!==seed&&set.every(s=>sameCond(s,r)&&sameCond(r,s)))set.push(r)});if(set.length<2)return;
+  const sd={};[...new Set(set.flatMap(r=>Object.keys(r.res)))].forEach(k=>{const vals=set.filter(r=>r.res[k]).map(r=>firstNum(r.res[k])).filter(v=>v!=null);if(vals.length>=2){const m=vals.reduce((a,b)=>a+b,0)/vals.length;sd[k]={sd:Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/(vals.length-1)),n:vals.length,f:set.find(r=>r.res[k]).res[k].f}}});
+  const nk=Object.keys(sd).length;if(nk&&(!best||set.length>best.set.length||(set.length===best.set.length&&nk>Object.keys(best.sd).length)))best={set,sd}});
+ return d._REP=best?{runs:best.set,sd:best.sd}:null}
+function groupRuns(T,gid){const out=[];(function w(x){(T.kids[x]||[]).forEach(k=>{if(k.type==="run")out.push(k.fact_id);if(k.type==="run"||k.type==="group")w(k.fact_id)})})(gid);return out}
+function groupCard(d,i,gid){const T=buildTree(d),g=T.byId[gid];const ids=groupRuns(T,gid);const rs=RUNS().filter(r=>r.i===i&&ids.includes(r.id));const sib=(T.kids[gid]||[]).filter(k=>k.type==="run"||k.type==="group");const v=variedAmong(T,sib);
+ const r1=v.map(c=>`<span class="chip diff">${qlab(c.f)}: ${[...new Set(Object.values(c.by))].map(esc).join(" / ")}</span>`).join(" ")||'<span class="mut">none</span>';
+ const r2=rs.map(r=>`<span class="chip" onclick="openCard(${i},'${r.id}')">${esc(nlab(r.n))}</span>`).join(" ")||'<span class="mut">none</span>';
+ const rep=reproOf(i);const keys={};rs.forEach(r=>Object.entries(r.res).forEach(([k,o])=>{const a=firstNum(o);if(a!=null){(keys[k]=keys[k]||{f:o.f,vals:[]});keys[k].vals.push(a)}}));
+ const lines=Object.entries(keys).filter(([k,o])=>o.vals.length>=2).map(([k,o])=>{const eff=Math.max(...o.vals)-Math.min(...o.vals);const u=o.f.unit?" "+o.f.unit:"";const sd=rep&&rep.sd[k]?rep.sd[k].sd:null;const ratio=sd?eff/sd:null;
+  return `<div class="fl2 ${ratio!=null&&ratio<1?"within":""}">${qlab(o.f)}: <span class="num">${fmtv(eff)}${esc(u)}</span> <span class="mut">(${o.vals.length} runs)</span>${sd!=null?` = <b>${ratio.toFixed(1)} × sd</b>${ratio<1?' <span class="inf">within reproducibility</span>':""}`:' <span class="mut">no sd</span>'}</div>`}).join("");
+ const r3=(rep?`<div class="mut">sd from ${rep.runs.map(r=>esc(nlab(r.n))).join(" · ")}, ${Object.keys(rep.sd).length} quantities</div>`:'<div class="mut">no reproducibility set in this paper</div>')+(lines||'<div class="mut">no result on two or more runs</div>');
+ return `<div class="card"><h2>${esc(nlab(g))} <span class="mut" style="font-size:12px;font-weight:400">${esc(gid)}</span></h2><div class="mut">${esc(g.statement)}</div><section><h4>varied</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><div id="side" class="evbox"></div></div>`}
 function compareWith(i,id){const v=document.getElementById("cmp").value;if(!v)return;const [j,rid]=v.split("|");WB.tray=[{i,id},{i:+j,id:rid}];TM="find";render()}
 function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.id===eid);const fs=d.facts.filter(f=>f.evidence.split(";").includes(eid));
  const runOf=id=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x&&T.byId[x]?x:null};
@@ -505,8 +531,8 @@ function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";
 function claimsView(){return `<div class="wrap"><div class="cl">${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
  if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;
- if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;
-  return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):CARD?card(d,P,CARD):'<div class="card mut">no runs</div>'}</div></div>`}
+ if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;if(GCARD&&!buildTree(d).byId[GCARD])GCARD=null;
+  return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):GCARD?groupCard(d,P,GCARD):CARD?card(d,P,CARD):'<div class="card mut">no runs</div>'}</div></div>`}
  const body=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
  return `<div id="forest"></div>${tog}<div class="wrap"><div>${body}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
 function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");return ps.map(e=>{const fs=factsOf(d,e.id);
@@ -524,7 +550,7 @@ function render(){const d=DATA[P];
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
  $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree"){applyForest();fitChips()}}
-window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
+window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.openGroup=openGroup;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
 render();
 </script></body></html>"""
 
