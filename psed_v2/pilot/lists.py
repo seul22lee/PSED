@@ -86,6 +86,8 @@ METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "i
 DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 QUALIFIERS["ratio"] = None                            # the plasma_gas_ratio a recipe-level lookup setting belongs to (mat22 Table 2 flows per ratio)
+# a keyed setting (P17): qualifier key -> the setting whose value it names; inherited only by a node whose own value of that setting matches
+KEYED = {"ratio": "plasma_gas_ratio"}
 
 METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs",
            "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",

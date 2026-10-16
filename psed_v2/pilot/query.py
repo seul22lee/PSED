@@ -61,16 +61,26 @@ class Tree:
         n = self.byid.get(i)
         return bool(n) and ((n["type"] == "activity" and n["kind"] != "measurement") or n["type"] == "entity")
 
-    def vector(self, i):
+    def vector(self, i, _keyed=True):
         """The condition vector of a node: {ckey: [facts]} from the entity's own settings and the non-measurement activities above,
-        nearest first (a key already seen is not overridden)."""
-        out = {}
+        nearest first (a key already seen is not overridden). A keyed setting (lists.KEYED: a Table 2 flow for one H2 ratio) is
+        inherited only when the node's own value of the setting it names matches (P17)."""
+        out, plain = {}, (self.vector(i, _keyed=False) if _keyed else {})
+        def matches(f):
+            for qk, qv in quals(f).items():
+                if qk in L.KEYED:
+                    if not _keyed:
+                        return False
+                    own = [g for k, gs in plain.items() if k.split("{")[0] == L.KEYED[qk] for g in gs]
+                    if not any(num(g["value"]) is not None and num(qv) is not None and abs(num(g["value"]) - num(qv)) < 1e-9 for g in own):
+                        return False
+            return True
         for x in self.chain(i):
             if not self.is_cond(x):
                 continue
             level = collections.defaultdict(list)
             for f in self.own(x):
-                if f["type"] == "setting" and f["quantity"]:
+                if f["type"] == "setting" and f["quantity"] and matches(f):
                     level[ckey(f)].append(f)
             for k, fs in level.items():
                 fs = inheritable(fs, own=(x == i))
@@ -229,7 +239,7 @@ def res(T, ent, quantity, **need):
     return [f for fs in T.results(ent).values() for f in fs if f["quantity"] == quantity and all(quals(f).get(k) == v for k, v in need.items())]
 
 
-KEYLESS = {"x", "mode"}                                   # qualifiers that describe a value's provenance or axis, not the quantity
+KEYLESS = {"x", "mode"} | set(L.KEYED)                   # qualifiers that describe a value's provenance, axis or key setting, not the quantity
 
 
 def ckey(f):
