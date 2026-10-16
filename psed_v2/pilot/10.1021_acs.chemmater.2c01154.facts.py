@@ -1539,4 +1539,6 @@ CELLS_ = [f"{K}:ent:T{t}_R{r}" for (t, r) in CELLS]
 C.comparisons(K, {grp("map"): ("grid", "deposition_temperature;plasma_gas_ratio"), **{grp(f"T{t}"): ("series", "plasma_gas_ratio") for t in TEMPS if t != 300},
                   grp("cyc"): ("series", "cycle_number"), grp("h2s"): ("series", "gas_flow_rate"), grp("WS2"): ("series", "plasma_gas_ratio"),
                   grp("TiS2"): ("series", "plasma_gas_ratio")}, members={grp("map"): CELLS_})
+# what each ± is (P2): literature averages, the wafer map's spread over positions; Table 1 does not say
+C.uncertainty_kinds(K, {'s3.p16#5': ('literature', ''), 's3.p16#6': ('literature', ''), 'fig1c#4': ('position', 'not_stated'), 'tab1.r1c1#1': ('not_stated', ''), 'tab1.r1c2#1': ('not_stated', ''), 'tab1.r1c4#1': ('not_stated', ''), 'tab1.r1c6#1': ('not_stated', ''), 'tab1.r1c7#1': ('not_stated', ''), 'tab1.r2c1#1': ('not_stated', ''), 'tab1.r2c2#1': ('not_stated', ''), 'tab1.r2c4#1': ('not_stated', ''), 'tab1.r2c6#1': ('not_stated', ''), 'tab1.r2c7#1': ('not_stated', ''), 'tab1.r3c1#1': ('not_stated', ''), 'tab1.r3c2#1': ('not_stated', ''), 'tab1.r3c4#1': ('not_stated', ''), 'tab1.r3c6#1': ('not_stated', ''), 'tab1.r3c7#1': ('not_stated', '')})
 write(K, PID)

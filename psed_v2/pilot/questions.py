@@ -431,7 +431,7 @@ def q25():
                     continue
                 for key, fs in T.results(e).items():
                     f = fs[0]
-                    if f["uncertainty"] and "spread" in f["statement"]:
+                    if f["uncertainty"] and f["uncertainty_kind"] in ("pieces", "runs"):
                         parts.append(f"{L.LABELS.get(key, key)} {fmt(f)} ± {f['uncertainty']} {f['unit']} = {g(100 * num(f['uncertainty']) / val(f), 2) if val(f) else '?'} % ({T.label(e)}: {f['statement'].split('(')[-1].rstrip(')')})")
             if parts:
                 kinds.append(f"{k}: between the pieces of one run")

@@ -74,6 +74,10 @@ METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "ram
            "process_monitor", "gravimetry", "photograph", "simulation", "calculation", "cited", "schematic", "tabulated",
            "optical_microscopy"]
 CENSOR = {"", "<", ">", "<dl", ">dl"}
+# what a ± is (P2): between pieces of one run, between runs, between positions in one film, a repeated measurement, a fit error, a
+# measurement uncertainty the paper states (electrode area, weighing), the spread of literature values, propagated from inputs, or
+# not stated by the paper
+UNCERTAINTY_KINDS = {"pieces", "runs", "position", "repeat_measurement", "fit", "measurement", "literature", "propagated", "not_stated"}
 
 # facts (stage 2): fact types and data kinds
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison"]   # bridge: user facts only;

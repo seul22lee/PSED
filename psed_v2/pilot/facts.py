@@ -53,7 +53,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "uncertainty", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -380,14 +380,25 @@ def fill_uncertainty():
     for r in _facts:
         if r["uncertainty"] or not r["value"] or "±" not in r["statement"]:
             continue
-        m = re.search(r"(?<![\d.])" + re.escape(r["value"]) + r"\s*\(?±\s*([\d.]+)", r["statement"])
+        m = re.search(r"(?<![\d.])" + re.escape(r["value"]) + r"\s*\(?±\s*(\d+(?:\.\d+)?)", r["statement"])
         if m:
             r["uncertainty"] = m.group(1); continue
         e = re.fullmatch(r"([\d.]+)e(-?\d+)", r["value"])
         if e:
-            m = re.search(r"(?<![\d.])" + re.escape(e.group(1)) + r"\s*±\s*([\d.]+)\s*×\s*10\^(-?\d+)", r["statement"])
+            m = re.search(r"(?<![\d.])" + re.escape(e.group(1)) + r"\s*±\s*(\d+(?:\.\d+)?)\s*×\s*10\^(-?\d+)", r["statement"])
             if m and m.group(2) == e.group(2):
                 r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
+
+
+def uncertainty_kinds(key, table):
+    """What each ± is (P2): table {fact suffix: (kind, n)}, kind from lists.UNCERTAINTY_KINDS, n the number of repeats or "".
+    Applied after fill_uncertainty; check.py requires a kind on every fact with an uncertainty."""
+    fill_uncertainty()
+    byid = {r["fact_id"]: r for r in _facts}
+    for sfx, (kind, n) in table.items():
+        r = byid[f"{key}:{sfx}"]
+        assert r["uncertainty"], f"{key}:{sfx} has no uncertainty"
+        r["uncertainty_kind"], r["uncertainty_n"] = kind, n
 
 
 def write(key, pid):

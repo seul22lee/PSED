@@ -300,6 +300,10 @@ def check_tree(rows, els):
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
             qd = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p)
+            if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:
+                err.append(f"{i}: uncertainty {r['uncertainty']} without a kind from lists.UNCERTAINTY_KINDS (P2)")
+            if r["uncertainty"] and not re.fullmatch(r"\d+(\.\d+)?(e-?\d+)?", r["uncertainty"]):
+                err.append(f"{i}: uncertainty {r['uncertainty']!r} is not a number (P2)")
             if "stat" in qd and not ("between" in qd and "n" in qd):
                 err.append(f"{i}: a spread fact (stat=) without between= and n= (P1)")
             if r["type"] == "observation" and r["quantity"] in L.SETTING_QUANTITIES and "stat" not in qd:
