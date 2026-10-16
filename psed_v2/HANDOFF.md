@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; tag ask-v1: the knowledge base corrected problem by problem (P1–P36), one query layer, one screen, and three answers to a question side by side with a number check)
+# Handoff (2026-10-16; tag ask-v2: the knowledge base corrected problem by problem (P1–P48), one query layer, one screen, three answers to a question with a number check, and the knowledge base's access layer: search, values, detail, source)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -23,10 +23,10 @@ questions are a regression test only.
   - Facts layer (three pilot papers; yim20 = 10.1039_d0cp03358h, mat22 = 10.1021_acs.chemmater.2c01154, gre23 = 10.1116_6.0003182):
     `elements.py` (stage 1 → `<paper_id>.elements.csv`), `facts.py` (stage 2 helpers and the column spec), `<paper_id>.facts.py`
     (the facts of one paper, read by hand) → `<paper_id>.facts.csv`, `<paper_id>.coverage.csv`, `<paper_id>.points.json`.
-    Now 860 / 1014 / 417 facts; 85 experiments (27 / 54 / 4) and 30 cited works with values, 21 comparisons, 187 claims
+    Now 905 / 1067 / 467 rows (facts and tree rows), 148 of them caveats (45 / 53 / 50); 85 experiments (27 / 54 / 4) and 30 cited works with values, 21 comparisons, 187 claims
     (2 by the user); 18 derived definitions; 14 user facts (2 claims, 10 assumed, a definition and a bridge).
   - `problems.csv`: one row per problem found in the knowledge base (P1–P33: observed, root cause, instances, fix, verified).
-    Every row is verified (P1–P36). Add a row for every new problem, with all its instances in the three papers. 31 of the 96
+    Every row is verified (P1–P48). Add a row for every new problem, with all its instances in the three papers. 31 of the 96
     definition facts name the quantity they define (P36).
   - Case studies on the 58 in-scope papers with a PDF: `figures.csv`, `papers.csv`, `points.json`, `quantity_matrix.py` → `.csv`,
     `paper_case.py` → `paper_case.csv` (exclusions in `case_decisions.csv`), the CSVs behind Cases 9–13 (`sticking_reported`,
@@ -95,6 +95,18 @@ questions are a regression test only.
 - P35. What query.py computes beyond values (effects against noise, fits, confounder corrections, ratios or differences, claim
   scopes) says "computed here" wherever a model or a reader sees it.
 - P36. A definition fact names the quantity it defines, when the paper holds values of it, so a result can show the paper's definition.
+- P37. An answer is asked to stay under 400 words with conditions and kinds in a table; no token cap enforces it; its word count is recorded.
+- P38. Every tool call's full output is stored in its record, so a wrong answer can be traced to retrieval or to reasoning.
+- P39. A tool call is validated against its schema and the data: an unknown argument, type, name or id returns an error naming what is valid, never a silent or unfiltered result.
+- P40. There is a way in by words: a lexical search over the text of every record (no embeddings, no synonym list), also on the page.
+- P41. The names the knowledge base uses (results, settings, record types) are generated from the data into the tool descriptions.
+- P42. Every value of one result is returned, grouped by comparison set with what the set varies and what its members share.
+- P43. A set-level effect or range names its minimum and maximum members, their values and the settings that differ between them.
+- P44. A tool output stays within about 2,000 tokens and 300-character lines, shows a text once, and counts computed-here lines unless asked for.
+- P45. A caveat (a value or setting that does not mean what its label says, or holds only narrower) is linked to what it qualifies and printed once wherever that appears.
+- P46. A claim about a mechanism, a limitation or a measurement effect names the facts of its paper that give its size.
+- P47. The model has four tools, one per question shape: search, values, detail, source.
+- P48. A ± says what it is: a spread between named repeats, a fit error, a measurement uncertainty, a literature or a propagated value.
 
 ## Design principles
 - One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen is a projection computed from
@@ -167,11 +179,12 @@ Text is 14 px or more, grey only for secondary text, no internal ids or terms in
 not stated by the paper; inferred). Cases 9 and 10 appear as claims by the user. The old tabs (Facts, Cases, Matrix), stat boxes,
 forest bar, view buttons, tray and the relations / verdicts / result-against-result sections are gone.
 
-## Three answers to one question (`pilot/ask.py`, `providers.py`, `serve.py`; frozen at tag ask-v1)
+## Three answers to one question (`pilot/ask.py`, `tools.py`, `providers.py`, `serve.py`; tags ask-v1, ask-v1.1, ask-v2)
 The pilot shows what structuring the papers buys a researcher who asks questions: one model answers each question three ways, side
 by side, and every number is checked against the sources the model cited. The held-out questions are written by someone else and
-run by the user against tag ask-v1; nothing in ask.py, providers.py, query.py, the prompts, the tool descriptions or the data
-changes until that run is done. The 26 questions of questions.csv were for building and are not run through the arms.
+run by the user against tags, each frozen once tagged: ask-v1 (the first frame), ask-v1.1 (ask-v1 with P37 and P38 only: the
+same tools, the answer-length prompt and the stored tool outputs) and ask-v2 (the access layer, P39-P48). The 26 questions of
+questions.csv were for building and are not run through the arms; nothing in this turn was designed or tested with them.
 - **LLM calls.** Allowed only in `ask.py`, `providers.py` and `serve.py`; extraction stays free of them.
 - **Vendor neutrality.** Only what every vendor offers: a system prompt, messages, tool (function) calling, token counts. No
   citation, document, search-result, web-search or file feature; citations are ids the model writes in square brackets. All vendor
@@ -190,7 +203,7 @@ changes until that run is done. The 26 questions of questions.csv were for build
 Answer in English. Start with a direct answer in one or two sentences, then give the evidence.
 For every number, give its unit and the conditions it was obtained under (material, process, temperature, structure or substrate, how it was measured), and say whether it was measured, read from a figure, computed by the authors, computed from other values, assumed, or taken from another work.
 If the answer depends on conditions, say so and organize the answer by those conditions.
-Say what your sources do not cover. State every assumption you make. If the question cannot be answered from what you have, say so and why."
+Keep the answer under 400 words, tables included. Give the values that answer the question, not every related value; put each number's conditions and kind in a table rather than repeating them in sentences. State the assumptions that change the answer, and say briefly what your sources do not cover. If the question cannot be answered from what you have, say so and why."
   - Model only: the question alone. ARM, verbatim: "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids."
   - Paper text: every element of the three papers in elements.py order as "[id] text", after the ARM text in the system prompt; a
     table is one piece `<paper>:tabN` (or `tabuK`) holding its caption and its markdown, its cells no pieces of their own;
@@ -201,19 +214,35 @@ Say what your sources do not cover. State every assumption you make. If the ques
   Knowledge base: fact ids, entity, comparison and cited-work ids, or element ids returned by the tools. The page resolves both
   through the detail and source panels (`ask.open_target`: a fact opens the source panel of its first element, <paper>:tabN the
   panel of tabN.cap).
-- **Tools** (`ask.TOOLS`, `ask.run_tool`; format and paging only, nothing computed in the tool layer): find, detail, compare,
-  claims, source, exactly the query.py operations, each with a JSON schema and a neutral description of what it returns. Each
-  returns plain text, one line per returned value or row, starting with its id in square brackets: the value with unit, kind
-  (measured, stated, read from figure, computed by the authors, computed here, model, cited, assumed), non-default definition,
-  method and mode, uncertainty, source element, the ids of other candidates, and the paper's own definition of the quantity when
-  it has one (P36: ' · defined as: "…" [id]', at most 90 characters; source gives it in full). Effects, fits, confounder
-  corrections, two-item ratios or differences and claim scopes say "kind: computed here" (P35). A claim is one line; the results it
-  rests on are ids. Tool errors return as error text.
-- **Output budget** (the arm's cost scales with the question, not the corpus): find and claims return at most 25 lines and a last
-  line "N more …: call again with offset=K"; detail takes parts (what, differs, results, recipe, claims; default what, differs,
-  results; claims also through claims(linked=id)); no line over 300 characters (a longer item continues on lines with the same
-  id); at most 10 tool calls per question. The token count of every tool result is recorded: the growth of the vendor's input
-  count over the previous call, shared among that turn's results by length.
+- **Tools** (`tools.py`, ask-v2; format and paging only: query.py selects, the tool layer computes nothing). Four tools, one per
+  question shape, each description stating its arguments, what it returns and in one line when to use it:
+  - `search(words, paper?, offset?)`: a lexical search (query.search: BM25 over the text of every record; tokens lowercased, _ and
+    - as spaces, plurals folded, numbers and units kept; no embeddings, no synonym list) over 2,436 records of 15 types; ranked
+    lines '[id] record type · line' (200 characters), values and settings of one quantity on one line with their distinct values.
+  - `values(result, paper?, where?, offset?)`: every value of one result or stated setting (query.values), never a representative,
+    grouped by the smallest comparison set its experiment belongs to (one more group per paper outside any set): a header once
+    (set, what it varies, shared conditions, the result's definitions), rows (varying settings, value ± uncertainty, kind, id,
+    caveat ids), the caveats and claim ids under the group, a last line on what differs between groups (material, structure,
+    reactor, process, measurement); where = {setting: value or [min, max]}; a quantity's base name covers all its keys.
+  - `detail(id, parts?, offset?)`: any record: an experiment or input (what with inputs, methods, comparison sets, identity and its
+    caveats; differs; results; recipe; claims; computed), a comparison set (what; members as one table of the settings that
+    vary; values stated for the set; claims; computed: effects with both endpoints, fits), a claim (statement, scope, rests on,
+    sized-by facts in full, caveats), a caveat (what it qualifies), any value, setting, definition or note (with what it belongs
+    to and its caveats).
+  - `source(id, offset?)`: the element's text and every value and statement its facts carry, with caveats.
+  The vocabulary (every result and setting name with its papers and counts, and the record types; tools.vocabulary_text,
+  generated at startup, names only above about 3,000 tokens) is in the descriptions of search and values. Every call is
+  validated (P39). find, compare and claims stay in query.py for the page and questions.py.
+- **Output budget** (P44): every call at most 2,000 tokens (chars/4), then 'more: offset=N'; lines at most 300 characters (a
+  longer item continues on lines with the same id); a text once per page and a paper definition at its first use; a page that
+  starts inside a group repeats its short header and its paper's shared conditions; computed-here lines only when asked for
+  (parts computed, the asked result, or nothing else exists), otherwise counted in one line; at most 10 tool calls per question.
+  Probes over every result and setting name, 40 random words, one id of every record type in every paper and 14 invalid
+  patterns: values max 1,954 tokens (median 1,032), search 944 (654), detail 1,689 (106), source 1,504 (411); none over budget; no effect line without its endpoints; no caveat missing where its target appears.
+- **Caveats and sizes** (P45, P46): 148 caveats (yim20 45, mat22 53, gre23 50) reach 1,783 values, settings, observations, cited
+  values and claims, and whole entities; every one is shown wherever its target appears in the tools (a value line carries
+  'caveat [id]', the text once per page) and on the page (one short line once per panel, the word caveat in a list row). 86
+  claims about a mechanism, a limitation or a measurement effect carry sized_by facts; 43 such claims have no size in their paper.
 - **Number check** (`ask.number_check`, the same for every model): the answer is split into sentences, and markers right after a
   sentence's end belong to it. Every number counts (a × 10^b, aEb and 10^b read as one number; digits attached to a letter, as
   in formulas, units and labels like PD50, are not numbers), except years and numbers right after Fig./Figure, Table, Eq./Equation,
@@ -222,8 +251,9 @@ Say what your sources do not cover. State every assumption you make. If the ques
   given), uncited (the sentence cites no id; every number of Model only). Cited ids the model was not given count as unknown ids.
   An id's text: the piece (Paper text), or every tool line that starts with or names the id (Knowledge base). The page shows one
   line, e.g. "70 numbers · 65 match · 4 elsewhere · 1 not seen · 0 uncited · 0 unknown ids".
-- **Records.** One JSON line per answer: time, question, arm, vendor:model, answer text, cited ids with their texts and page
-  targets, unknown ids, tool calls (name, arguments, results, characters, tokens, error), the number check per number, usage
+- **Records.** One JSON line per answer: time, question, arm, vendor:model, answer text and its word count (P37; check_line starts
+  with it), cited ids with their texts and page targets, unknown ids, tool calls (name, arguments, results, characters, tokens,
+  error, and the full output text, P38), the number check per number, usage
   (input, output, cache read and write, reasoning tokens), model calls, retries, cost from `pilot/prices.csv` (vendor, model, input
   and output price per million tokens, filled by the user; "cost not set" without a row), seconds, error. Interactive runs and the
   page write `pilot/runs/asks.jsonl` (gitignored); a batch writes `--out` and `<out>.summary.csv` (one row per question and arm)
@@ -240,6 +270,21 @@ Say what your sources do not cover. State every assumption you make. If the ques
   Paper text 70 numbers, 65 match, 4 elsewhere, 1 not seen; Knowledge base 63 numbers, 62 match, 1 elsewhere; 4 tool calls, the
   largest result about 6,350 tokens; $0.055 in all. Rechecked in the four classes without a model call. The planned dev batch of
   the 26 and the plumbing check were cancelled: those questions use the papers' internal names and were only for building.
+
+### Running a question file on ask-v1.1 and on ask-v2 (commands for the user; nothing here was run)
+```
+cd /home/ftk3187/github/PSED
+git worktree add ../PSED-ask-v1.1 ask-v1.1          # a separate checkout of each tag
+git worktree add ../PSED-ask-v2 ask-v2
+for w in ../PSED-ask-v1.1 ../PSED-ask-v2; do
+  cp psed_v2/.env $w/psed_v2/.env                   # the keys (gitignored); never commit it
+  ln -s /home/ftk3187/github/PSED/psed_v2/ingest/final $w/psed_v2/ingest/final   # the papers' text (untracked) for the Paper text arm and source
+done
+cd ../PSED-ask-v1.1 && ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions /path/to/questions.txt --out /path/to/v1.1.jsonl --max-cost 20
+cd ../PSED-ask-v2   && ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions /path/to/questions.txt --out /path/to/v2.jsonl --max-cost 20
+```
+Each run writes its records and `<out>.summary.csv`; the model is PSED_MODEL from the copied .env (or --model vendor:model). The
+question file and the outputs may live outside the repository. `git worktree remove ../PSED-ask-v1.1` (and v2) cleans up.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
@@ -262,7 +307,7 @@ python3 psed_v2/pilot/10.1039_d0cp03358h.facts.py     # stage 2, one per paper (
 python3 psed_v2/pilot/user_facts.py                   # the user's claims and assumed facts -> user.facts.csv
 python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, the problem rules, no unresolved case candidate
 python3 psed_v2/pilot/questions.py                    # the 26 questions through query.py -> questions.csv (status, answer, how)
-python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen (about 9 s)
+python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen with its search box (about 15 s)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/serve.py      # the page with the Ask box on http://127.0.0.1:8787/ (keys in psed_v2/.env)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py "question"   # three answers -> pilot/runs/asks.jsonl
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions Q.txt --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb] [--max-cost 20]
