@@ -229,7 +229,8 @@ def claim_line(c):
             + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: computed here): {c['scope']}" if c.get("scope") else "")
             + (f" · comparisons: {', '.join(c['comparisons'])}" if c.get("comparisons") else "")
             + (f" · source element: {c['paper']}:{c['source']}" if c.get("source") and c.get("paper") else "")
-            + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else "") + cmark(c))
+            + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else "")
+            + (" · sized by: " + ", ".join(f"[{r['fact']}]" for r in c["sized_by"]) if c.get("sized_by") else "") + cmark(c))
 
 
 def wrap(i, text):

@@ -1729,4 +1729,29 @@ CAVEATS = [
 ]
 for ev_, st_, links_, q_, qq_ in CAVEATS:
     C.caveat(K, ev_, st_, [f"{K}:{x}" if x != K and not x.startswith(K + ":") else x for x in links_], q_, qq_)
+# claim sizes (P46): a claim about a mechanism, a limitation or a measurement effect, and the facts of this paper that give its size
+C.sized(K, {
+    "abs.g2#2": ["s3.p11#2", "s3.p11#4", "tab1.r1c1#1", "tab1.r2c1#1", "tab1.r3c1#1"],
+    "s3.p1#2": ["s3.p21#2", "tab1.r1c6#1", "tab1.r2c6#1", "tab1.r3c6#1"],
+    "s3.p11#3": ["s3.p11#2", "s3.p39#1", "s3.p11#4"],
+    "s3.p11#6": ["fig4#33", "fig4#28", "fig4#23", "fig4#17", "fig4#10"],
+    "s3.p13#2": ["fig4#30", "fig4#34"],
+    "s3.p13#4": ["fig4#15", "fig4#21", "fig4#27", "fig4#32", "fig5a#3"],
+    "s3.p21#4": ["tab1.r3c7#1", "tab1.r1c7#1", "tab1.r2c7#1", "fig6a#6", "tab1.r3c3#1"],
+    "s3.p21#5": ["tab1.r1c4#1", "tab1.r2c4#1", "tab1.r3c4#1"],
+    "s3.p22#10": ["fig6a#5", "fig6a#6"],
+    "s3.p26#1": ["fig6a#6"],
+    "s3.p26#4": ["fig6a#5", "fig6a#6"],
+    "s3.p26#6": ["s3.p7#2", "s3.p7#3"],
+    "s3.p28#2": ["fig7b#26", "fig7b#25", "fig7b#31", "fig7b#30"],
+    "s3.p29#2": ["s3.p30#1", "s3.p30#2", "s3.p32#1"],
+    "s3.p30#4": ["s3.p30#1", "s3.p30#2", "s3.p32#1", "s3.p38#4", "s3.p38#5"],
+    "s3.p32#2": ["tab1.r1c3#1", "tab1.r2c3#1", "tab1.r3c3#1", "s3.p30#1", "s3.p30#2", "s3.p32#1"],
+    "s3.p32#4": ["fig7b#10", "fig7b#11"],
+    "s3.p37#3": ["s3.p36#2", "s3.p37#2"],
+    "s3.p39#2": ["s3.p39#3", "s3.p36#1", "tab1.r2c4#1"],
+    "s3.p39#4": ["tab1.r1c6#1", "tab1.r2c6#1", "tab1.r3c6#1", "tab1.r1c7#1", "tab1.r2c7#1", "tab1.r3c7#1", "s3.p21#2", "s3.p21#3"],
+    "s3.p41#2": ["tab1.r3c1#1", "tab1.r3c2#1", "s3.p39#1"],
+    "s3.p44#3": ["s3.p44#1", "s3.p44#2"],
+})
 write(K, PID)

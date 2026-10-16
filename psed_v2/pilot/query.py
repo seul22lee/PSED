@@ -1132,6 +1132,7 @@ def claim_record(T, c):
                 cause=var(c["cause"]), effect=var(c["effect"]), comparisons=scope_comparisons(T, c) if T else [], entities=ents,
                 rests_on=[record(T, f) for f, e in rests_on(T, c) if text_of(f)][:12], scope=scope_text(T, ents),
                 caveats=cav_list(caveats_for(T, c)) if T else [],
+                sized_by=[record(T, T.byid[i]) for i in c.get("sized_by", "").split(";") if T and i in T.byid],     # P46
                 source=c["evidence"].split(";")[0])
 
 

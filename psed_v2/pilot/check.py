@@ -448,6 +448,12 @@ def check_user(all_ids):
         for l in filter(None, r["links"].split(";")):
             if l not in all_ids and l not in ids:
                 bad(f"link {l} does not exist")
+        if r.get("sized_by"):                                                    # P46: a claim sized by facts with a value
+            if r["type"] != "claim":
+                bad("sized_by on a row that is not a claim")
+            for l in r["sized_by"].split(";"):
+                if l not in ids:
+                    bad(f"sized_by {l} does not exist")
         if r["type"] == "caveat":                                                # P45
             if not r["links"]:
                 bad("caveat without links")

@@ -119,7 +119,7 @@ def build():
         own = sorted({v["fact"].split(":")[0] and Q.TREES[gr["paper"]].byid[v["fact"]]["quantity"] for v in details.get(gr["id"], {}).get("values", []) if v.get("fact")})
         groups.append(dict(id=gr["id"], paper=gr["paper"], label=gr["label"], kind=gr["kind"], members=gr["members"], all=gr["all_members"], own=own))
     cl = Q.claims()
-    claims_ = [dict(c, rests_on=[lite(x) for x in c["rests_on"]], user=c["author"] == "user") for c in cl]
+    claims_ = [dict(c, rests_on=[lite(x) for x in c["rests_on"]], sized_by=[lite(x) for x in c.get("sized_by", [])], user=c["author"] == "user") for c in cl]
     # sources: every element with a fact, the figure's values for a panel
     sources, imgs = {}, {}
     for k, T in Q.TREES.items():
@@ -243,7 +243,7 @@ function searchList(){const hs=searchHits(S.q),seen=new Set(),rows=[];for(const 
   +(rows.length>S.qn?`<div class="more" onclick="S.qn+=50;render()">${rows.length-S.qn} more</div>`:"")}
 function left(){if(S.q)return searchList();const tog=`<div class="tog"><button class="${S.list==="experiments"?"on":""}" onclick="S.list='experiments';render()">experiments</button> <button class="${S.list==="claims"?"on":""}" onclick="S.list='claims';render()">claims</button></div>`;
  if(S.list==="claims"){const cs=D.claims.filter(c=>(!S.paper||c.paper===S.paper)&&(!S.result||c.effect.includes((D.filters.results.find(r=>r.q===S.result)||{}).name)));
-  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} → ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span>${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`).join("")}
+  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} → ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`).join("")}
  const v=visible(), ids=new Set(v.map(r=>r.id));let h=tog+`<div class="mut" style="margin:6px 0">${v.length} experiments${S.checked.size?` · ${S.checked.size} selected <span class="more" onclick="S.checked=new Set();S.panel={type:'none'};render()">clear</span>`:""}</div>`;
  if(S.paper){const c=D.coverage[S.paper];h+=`<div class="mut">coverage of ${esc(PN(S.paper))}: ${c.covered} of ${c.total} elements covered, ${c.missed} missed</div>`}
  for(const k of Object.keys(D.papers)){if(S.paper&&k!==S.paper)continue;const gs=D.groups.filter(g=>g.paper===k&&g.kind!=="cited").concat(D.groups.filter(g=>g.paper===k&&g.kind==="cited"));const rs=v.filter(r=>r.paper===k);if(!rs.length)continue;
@@ -255,7 +255,7 @@ function tickGroup(g,on){const ids=new Set(visible().map(r=>r.id));GRP[g].all.fi
 function tick(i,on){on?S.checked.add(i):S.checked.delete(i);S.panel=S.checked.size?{type:"selected"}:{type:"none"};render()}
 function openDetail(i){S.panel={type:"detail",id:i};renderRight()}function openComp(i){S.panel={type:"comparison",id:i};renderRight()}function openSource(i,f){S.panel={type:"source",id:i,fact:f||""};renderRight()}
 function lim(items,key,n=6){const all=S.open.has(key);const sh=all?items:items.slice(0,n);return sh.join("")+(items.length>n?`<div class="more" onclick="S.open.${all?"delete":"add"}('${key}');renderRight()">${all?"show fewer":`+${items.length-n} more`}</div>`:"")}
-function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`}
+function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`}
 function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what||{};
  const link=i=>`<span class="src" onclick="openDetail('${i}')">${esc((D.details[i]||{name:i}).name)}</span>`;
  const sub=[what.substrate?`substrate: ${esc(what.substrate)}`:"",(what.input_ids||[]).length?`made from: ${what.input_ids.map(link).join(", ")}`:"",what.parent?`part of: ${link(what.parent)}`:"",d.type==="cited"?"a work the paper cites":""].filter(Boolean).join(" · ");
