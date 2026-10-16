@@ -565,7 +565,38 @@ def q24():
 
 def q25():
     """The reproducibility figure of each paper and what it is a reproducibility of."""
-    return unanswerable("", "missing data: the ± spreads live in statements (no uncertainty column); no operation: spread over the replicate set")
+    out, kinds = [], []
+    for k, T in TREES.items():
+        parts = []
+        for c in [c for c in T.comps if c["kind"] == "replicate"]:                 # a replicate comparison: its standard deviations against the members' means
+            ms = T.member_entities(c)
+            for f in T.own(c["fact_id"]):
+                if f["quantity"] == "other" and "standard deviation" in f["label_as_printed"] and f["value"]:
+                    words = set(re.findall(r"[a-z]+", f["label_as_printed"].lower()))
+                    for key in T.results(ms[0]):
+                        names = {L.LABELS.get(key, ""), L.LABELS.get(key.split("{")[0], ""), key.split("{")[0].replace("_", " ")}
+                        vals = [val(T.results(m)[key][0]) for m in ms if key in T.results(m) and T.results(m)[key][0]["unit"] == f["unit"]]
+                        if len(vals) == len(ms) and any(w in n.lower().split() for n in names for w in words):
+                            mean = abs(sum(vals) / len(vals))
+                            parts.append(f"{L.LABELS.get(key, key)}: sd {fmt(f)} = {g(100 * val(f) / mean, 2)} % of the mean over {len(ms)} ({c['statement'].split(':')[-1].strip()})")
+            if parts:
+                kinds.append(f"{k}: between samples ({c['label_as_printed']})")
+        for f in [f for f in T.rows if f["quantity"] == "thickness_nonuniformity" and f["value"]]:   # a nonuniformity: within one film
+            e = T.ent_of(f["fact_id"]); parts.append(f"thickness nonuniformity {fmt(f)} within one film ({T.label(e)}: {f['statement'][:60]}…)"); kinds.append(f"{k}: within one film")
+        if not parts:                                                               # the ± between the pieces of one run (the uncertainty column)
+            for e in T.entities():
+                if T.byid[T.byid[e]["parent"]]["type"] != "activity":
+                    continue
+                for key, fs in T.results(e).items():
+                    f = fs[0]
+                    if f["uncertainty"] and "spread" in f["statement"]:
+                        parts.append(f"{L.LABELS.get(key, key)} {fmt(f)} ± {f['uncertainty']} {f['unit']} = {g(100 * num(f['uncertainty']) / val(f), 2) if val(f) else '?'} % ({T.label(e)}: {f['statement'].split('(')[-1].rstrip(')')})")
+            if parts:
+                kinds.append(f"{k}: between the pieces of one run")
+        out.append(f"{k}: " + ("; ".join(parts) if parts else "no reproducibility figure"))
+    bridged = [u for u in USER if u["type"] == "bridge" and u["quantity"] in ("thickness_nonuniformity", "film_thickness", "mass_gain")]
+    out.append("not merged: " + "; ".join(kinds) + " are three definitions" + ("" if bridged else " and no bridge in user.facts.csv relates them"))
+    return answered(" · ".join(out), "the replicate comparison's standard deviations against the members' means (yim20), a nonuniformity fact (mat22), the ± of one run's pair values from the uncertainty column (gre23); merged only through a bridge, of which there is none")
 
 
 def q26():

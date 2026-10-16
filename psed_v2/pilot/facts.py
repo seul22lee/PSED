@@ -53,7 +53,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -372,8 +372,25 @@ def reached(element_text, facts):
     return len(ns), hit
 
 
+def fill_uncertainty():
+    """The ± the statement prints after a fact's value (as "v ± u", or "m ± u × 10^e" for a value written m e e) becomes its
+    `uncertainty`, the half-width in the fact's unit; a fact that states none keeps an empty column."""
+    for r in _facts:
+        if r["uncertainty"] or not r["value"] or "±" not in r["statement"]:
+            continue
+        m = re.search(r"(?<![\d.])" + re.escape(r["value"]) + r"\s*\(?±\s*([\d.]+)", r["statement"])
+        if m:
+            r["uncertainty"] = m.group(1); continue
+        e = re.fullmatch(r"([\d.]+)e(-?\d+)", r["value"])
+        if e:
+            m = re.search(r"(?<![\d.])" + re.escape(e.group(1)) + r"\s*±\s*([\d.]+)\s*×\s*10\^(-?\d+)", r["statement"])
+            if m and m.group(2) == e.group(2):
+                r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
+
+
 def write(key, pid):
     """<pid>.facts.csv, <pid>.coverage.csv and <pid>.points.json; elements without facts and without an NK reason are 'missed'."""
+    fill_uncertainty()
     for r in _facts:
         r["author"] = r["author"] or pid
     with (HERE / f"{pid}.facts.csv").open("w", newline="", encoding="utf-8") as f:

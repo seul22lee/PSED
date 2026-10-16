@@ -83,6 +83,11 @@ sections below.
   and Boltzmann's constants, the model input standing in for the TMA pressure, the number of compacts per run, a molecular
   diameter taken from an analogue) is an assumed fact: a setting with `data_kind` assumed and author user in `user.facts.csv`,
   linked to what it stands in for; it serves an input only when no paper fact does, and every value computed from one says so.
+- The ± a paper prints after a value is data: the `uncertainty` column holds the half-width in the fact's unit, filled from the
+  statement when the facts file is written (`facts.fill_uncertainty`: "v ± u", or "m ± u × 10^e"); a ± that is not the value's own
+  (a tolerance, a calibration spread) stays in the statement. A reproducibility figure is read from it, from a replicate
+  comparison's spread facts or from a nonuniformity fact, each named for what it is a reproducibility of, never merged across
+  definitions without a bridge.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
