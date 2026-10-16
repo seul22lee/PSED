@@ -35,6 +35,28 @@ sections below.
 - `corpus/raw/`, `ingest/final/` (and marker/, docling/) and every `reports/` folder stay untracked.
 - Simple is best; one goal per commit; report briefly; commit lines end with the Co-Authored-By line given in the session.
 
+## Design principles
+- One tree per paper, inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen (run card, figure card,
+  find workbench, forest, claim list, `experiments.csv`) is a projection computed from that one file. Screens never link to
+  each other; they read the same facts. Keep it that way.
+- Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user
+  claims across papers; how the user bridges two definitions. What can be derived from facts is never stored: which runs
+  form a series, what range a claim covers, whether an effect exceeds reproducibility, which runs are selected. Rule: if it
+  can be computed from facts, compute it; if a person has to judge it, store it as a fact with an author.
+- A claim is only as good as the runs behind it: its run count and condition range stand next to it, so a broad sentence
+  over one data point shows as such.
+- A paper's own reproducibility data (yim20 samples 2, 4, 8 and 12) is the yardstick for every effect in that paper:
+  effect divided by the reproducibility sd says whether a series shows anything.
+- The paper's stated groups are the authors' intent; series computed from the data (runs that differ in exactly one
+  inherited setting) are the truth. Where they disagree (Series E, sample 14's pillar layout) there is a confounder.
+- The perspective paper's case studies are user claims: a sentence by the user with links into several papers, in the same
+  schema as a paper's claim (`user.facts.csv`, author user). Cases 9 and 10 are data, not code.
+- Two papers' definitions are never merged silently. A bridge is a fact written by the user (type bridge) with the
+  transform as its statement and a justifying element as evidence; the forest and the compare panel read bridges.
+- A claim carries its stance (asserted, hedged, open, limitation) and its variables (cause, effect, as `lists.py` ids or
+  `mechanism:<token>`); this is the input of the causal graph that comes after the pilot.
+- One selection: whatever is in the tray is highlighted everywhere.
+
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
 do not check it out over v2). Useful for its digitized points (`extracted/figure_data.json`, mapped by `canonical/curves.json`): they
