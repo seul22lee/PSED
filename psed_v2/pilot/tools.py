@@ -178,7 +178,7 @@ def cmark(rec):
 
 def clines(rec):
     """The caveat lines of a value: (id, 'caveat: text'), printed once per page (paginate)."""
-    return [(c["id"], f"caveat: {c['text']}") for c in (rec or {}).get("caveats") or []]
+    return [(c["id"], f"caveat · {c['text']}") for c in (rec or {}).get("caveats") or []]
 
 
 def claim_line(c):
@@ -524,17 +524,18 @@ def record_detail(T, f):
         return [claim_line(c)] + clines(c) + [y for r in c.get("sized_by", []) for y in [(r["fact"], "size · " + value_line(r) + cmark(r))] + clines(r)]
     if f["type"] == "caveat":
         tg = Q.caveat_targets(T, f)
-        return [(i, f"caveat: {f['statement']}{src}"), (i, f"qualifies {len(tg)} record{'s' if len(tg) != 1 else ''}: " + ", ".join(f"[{x}]" for x in tg[:40]) + (" …" if len(tg) > 40 else ""))]
+        return [(i, f"caveat · {f['statement']}{src}"), (i, f"qualifies {len(tg)} record{'s' if len(tg) != 1 else ''}: " + ", ".join(f"[{x}]" for x in tg[:40]) + (" …" if len(tg) > 40 else ""))]
     if f["type"] == "activity":
         own = [x for x in T.own(i) if x["type"] == "setting" and Q.text_of(x)]
         return [(i, f"{typ} ({f['kind']}): {f['statement']}" + (f" · under [{f['parent']}]" if f.get("parent") else ""))] + \
                [y for x in own for y in [(x["fact_id"], "setting · " + value_line(Q.record(T, x), Q.name_of(Q.ckey(x), x)) + cmark(Q.record(T, x)))] + clines(Q.record(T, x))]
-    if Q.text_of(f) and f["type"] in ("observation", "setting", "derived", "model", "cited"):
+    if (Q.text_of(f) or f["points_ref"]) and f["type"] in ("observation", "setting", "derived", "model", "cited"):
         e = T.ent_of(i); r = Q.record(T, f, ent=e)
         return [(i, f"{typ} · " + value_line(r, Q.name_of(Q.ckey(f), f), full=True) + cmark(r))] + clines(r) + \
                [(e or f["parent"], f"belongs to: {T.label(e)} [{e}]" if e else f"under: [{f['parent']}]")]
     q = f" · defines: {Q.name_of(Q.ckey(f), f)}" if f["type"] == "definition" and f["quantity"] else ""
-    return [(i, f"{typ}: {f['statement']}{q}{src}")] + [(f["parent"], f"under: [{f['parent']}]")] if f.get("parent") else [(i, f"{typ}: {f['statement']}{q}{src}")]
+    r = dict(caveats=Q.cav_list(Q.caveats_for(T, f, T.ent_of(i)))) if f["type"] in ("observation", "setting", "derived", "model", "cited") else {}
+    return [(i, f"{typ}: {f['statement']}{q}{src}{cmark(r)}")] + clines(r) + ([(f["parent"], f"under: [{f['parent']}]")] if f.get("parent") else [])
 
 
 def _run(name, args):
@@ -569,6 +570,9 @@ def _run(name, args):
                     continue
                 g = seen.setdefault((h["type"], h["line"]), [h, 0, None, {}])
                 g[1] += 1
+                f = Q.TREES[h["paper"]].byid[h["id"]]
+                if "#" in h["id"] and f["type"] in ("observation", "setting", "derived", "model", "cited"):             # a note's caveats
+                    g[3].update({c["id"]: c for c in Q.cav_list(Q.caveats_for(Q.TREES[h["paper"]], f, Q.TREES[h["paper"]].ent_of(h["id"])))})
             for key, (h, n, vals, cav) in seen.items():
                 if vals is not None:
                     shown = ", ".join(vals[:8]) + (f", … ({len(vals)} distinct)" if len(vals) > 8 else "")
@@ -648,7 +652,10 @@ def _run(name, args):
             eid = f"{s['paper']}:{s['element']}"
             out = [(eid, f"element {eid} ({s['kind']}, {s['locator']})" + (f" · covered: {s['coverage']}" if s.get("coverage") else "") + (f" · text: {s['text']}" if s.get("text") else " · no text (a figure panel)"))]
             out += [y for v in s["values"] for y in [(v.get("fact") or eid, value_line(v, full=True) + cmark(v))] + clines(v)]
-            out += [(eid, f"statement without a value: {t}") for t in s["statements"]]
+            T_ = Q.TREES[s["paper"]]
+            for f in [f for f in T_.rows if "#" in f["fact_id"] and s["element"] in f["evidence"].split(";") and not Q.text_of(f) and f["type"] != "claim"]:
+                r = dict(caveats=Q.cav_list(Q.caveats_for(T_, f, T_.ent_of(f["fact_id"])))) if f["type"] in ("observation", "setting", "derived", "model", "cited") else {}
+                out += [(f["fact_id"], f"statement without a value: {f['statement']}{cmark(r)}")] + clines(r)
             return [block([wrap(*x) for x in out])], ""
         return [], f"error: unknown tool {name}"
     except Exception as e:
