@@ -711,6 +711,8 @@ if __name__ == "__main__":
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
+    import metrics
+    metrics.report()                                                             # P59: the representation metrics, from the data
     for pid, k in KEYS.items():
         err, s = check(pid)
         print(f"== {k} {pid}: {'OK' if not err else f'{len(err)} problems'}")
