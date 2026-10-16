@@ -1575,3 +1575,20 @@ def values(result, paper=None, where=None):
                                process=sorted({recipe_of(T, e) for e in ents} - {""}),
                                measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows})))
     return groups
+
+
+# ---------------------------------------------------------------------------------------------------------------- uncertainty words (P48)
+BETWEEN = ("pieces", "runs", "position", "repeat_measurement", "items")
+UNC_WORDS = {"fit": "fit error", "measurement": "measurement uncertainty", "literature": "from the literature", "propagated": "propagated"}
+
+
+def unc_note(u):
+    """The words after a ±: ' (sd between runs, n 4)' for a spread between repeats, ' (fit error)' and the like for the other kinds,
+    nothing when the kind is not stated."""
+    kind = (u or {}).get("kind")
+    if not kind or kind == "not_stated":
+        return ""
+    n = f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else ""
+    if kind in BETWEEN:
+        return f" ({u.get('stat') or 'spread'} between {kind.replace('_', ' ')}{n})"
+    return f" ({UNC_WORDS.get(kind, kind.replace('_', ' '))}{n})"

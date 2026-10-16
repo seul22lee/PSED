@@ -55,8 +55,7 @@ def lite(rec):
     u = rec.get("uncertainty")
     out = dict(text=rec["text"], kind=rec["kind"], fact=rec.get("fact", ""), statement=rec.get("statement", ""), definition=rec["definition"] if rec["kind"] != "computed here" else "", source=rec.get("source", ""),
                paper=rec.get("paper", ""), value=rec.get("value"), unit=rec.get("unit", ""), mode=rec.get("mode", ""), method=rec.get("method", ""),
-               uncertainty=(f"± {u['value']}" + (f" ({u.get('stat') or 'spread'} between {u['kind'].replace('_', ' ')}{', ' + str(u['n']) if u.get('n') and u.get('n') != 'not_stated' else ''})"
-                                                if u.get("kind") and u["kind"] not in ("not_stated",) else "")) if u else "",
+               uncertainty=(f"± {u['value']}" + Q.unc_note(u)) if u else "",
                alternatives=[a["text"] + (f" ({a['kind']})" if a["kind"] in L.KIND_WORDS else "") for a in rec.get("alternatives", [])],
                formula=rec["definition"] if rec["kind"] == "computed here" else "", assumed=rec.get("assumed", []),
                inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []),

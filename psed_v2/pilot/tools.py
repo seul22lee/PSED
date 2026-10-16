@@ -131,7 +131,7 @@ def value_line(r, name="", full=False):
         bits.append("method: " + r["method"] + (f", {_mode(r.get('mode'))}" if _mode(r.get("mode")) else ""))
     u = r.get("uncertainty")
     if u:
-        bits.append("uncertainty: " + (u if isinstance(u, str) else f"± {u.get('value')}" + (f" ({u.get('stat') or 'spread'} between {u['kind'].replace('_', ' ')}" + (f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else "") + ")" if u.get("kind") and u["kind"] != "not_stated" else "")))
+        bits.append("uncertainty: " + (u if isinstance(u, str) else f"± {u.get('value')}" + Q.unc_note(u)))
     if r.get("inputs"):
         bits.append("inputs: " + "; ".join(f"{i['name']} = {i['value']} {i['unit']}".strip() + (f" [{i['fact']}]" if i.get("fact") else "") for i in r["inputs"]))
     if r.get("assumed"):
@@ -371,7 +371,7 @@ def _unc(r):
         return ""
     if isinstance(u, str):
         return " " + u
-    return f" ± {u.get('value')}" + (f" ({u.get('stat') or 'spread'} between {u['kind'].replace('_', ' ')}" + (f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else "") + ")" if u.get("kind") and u["kind"] != "not_stated" else "")
+    return f" ± {u.get('value')}" + Q.unc_note(u)
 
 
 def _span(nums):
