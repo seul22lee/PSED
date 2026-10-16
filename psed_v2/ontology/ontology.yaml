@@ -2348,10 +2348,10 @@ proposals:   # Sec. 17: concepts the reviews show to be missing, duplicated or w
   - what: "Add a mass-based growth per cycle (or a basis qualifier on growth_per_cycle) for QCM and gravimetric data."
     why: "growth_per_cycle is fixed to thickness per cycle; Cremers allows mass gain and areal density, and in-situ QCM studies report mass per cycle."
     citation: "Cremers 2019 Sec. I ('The GPC can be expressed in various units such as those of the thickness, mass gain, and an increase in the areal density'); Sec. III A (in-situ QCM on TiO2 nanotube layers)"
-    decision: rejected
-    decision_reason: "No gold evidence; add through CRITERIA Sec. 11 when a gold paper needs it."
+    decision: accepted
+    decision_reason: "Sec. 18.9 (2026-10-16): gold evidence now exists (gre23 mass-based growth: mass_gain, deposited_moles_per_cycle, atoms_per_cycle); realized as the family growth_amount, not as a qualifier on growth_per_cycle"
   - what: "Add substrate_material (the surface the film grows on; a species id) under test_structure."
     why: "The surface sets recombination and nucleation; the gold papers state it (native-oxide Si, polysilicon membrane), and the surface qualifier already needs material ids."
     citation: "Cremers 2019 Table VII column 'Surface'; Sec. IV C ('the type of material on which it collides')"
-    decision: rejected
-    decision_reason: "No competency question needs it; the recombination surface is already the surface qualifier."
+    decision: accepted
+    decision_reason: "Sec. 18.9 (2026-10-16): gold evidence now exists (mat22 substrates incl. PET, glassy carbon, SiO2; yim20 Si; gre23 Al2O3 compacts); realized as the substrate categorical (the growth-surface species id; the stack stays on the entity)"
