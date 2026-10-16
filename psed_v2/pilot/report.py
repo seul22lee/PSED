@@ -32,7 +32,10 @@
   as sparklines, inferred film membership marked), 4 why and what it showed (the group's purpose fact, then the claims
   linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens the tray with the two runs).
   Every screen names a quantity by its short label from lists.LABELS ("TMA pulse", "PD50"; a curve "S vs x"); simulation
-  runs are labelled "sim · H 100 nm" in the tree.
+  runs are labelled "sim · H 100 nm" in the tree. Claim scope (computed, next to every claim on cards and in the claims
+  view): the claim's links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
+  inherited settings give the ranges: "3 runs · T 300 °C · H 100–2000 nm · N 500"; "no run" when the links reach none.
+  Claims view (toggle beside find, cards and text tree): one line per claim of each paper, with its scope and evidence.
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -187,6 +190,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wbf{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12px}.wbf label{display:block;margin:4px 0}.wbf select{width:100%;margin-top:2px}.wbf input[type=number]{width:44%;margin-top:2px}
 .wbm{max-height:84vh;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:6px 8px;font-size:12.5px}.wbr{display:flex;gap:6px;align-items:center;padding:2px 0;border-bottom:1px solid var(--line)}.wbr .mut{flex:1}.wbr button{padding:0 7px;font-size:11px}
 .wbt{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12.5px;margin-bottom:10px}
+.cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
@@ -382,7 +386,7 @@ function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=
  const grpId=levels.map(l=>l.par).find(p=>T.byId[p].type==="group"||(T.byId[p].type==="run"&&T.byId[p].links));const grp=grpId?T.byId[grpId]:null;const pur=grp&&grp.links?T.byId[grp.links.split(";")[0]]:null;
  const inRun=new Set(subtree(T,id).map(f=>f.fact_id).concat([id]));const inGrp=grpId?new Set(subtree(T,grpId).map(f=>f.fact_id).concat([grpId])):new Set();
  const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>inRun.has(l)||inGrp.has(l)||rowOf(T,l)===id||rowOf(T,l)===grpId)&&(!pur||c.fact_id!==pur.fact_id));
- const r4=(pur?`<div><b>purpose of ${esc(nlab(grp))}</b> <span class="mut">(${esc(pur.type)})</span>: ${esc(pur.statement)}${ev(pur)}</div>`:`<div class="mut">no group with a purpose above this run</div>`)+(claims.length?claims.map(c=>`<div class="fl2"><span class="ty claim">claim</span>${esc(c.statement)}${ev(c)}</div>`).join(""):`<div class="mut fl2">no claim links to this run or its group</div>`);
+ const r4=(pur?`<div><b>purpose of ${esc(nlab(grp))}</b> <span class="mut">(${esc(pur.type)})</span>: ${esc(pur.statement)}${pur.type==="claim"?` <span class="chip scope">${esc(claimScope(d,i,pur).text)}</span>`:""}${ev(pur)}</div>`:`<div class="mut">no group with a purpose above this run</div>`)+(claims.length?claims.map(c=>claimLine(d,i,c)).join(""):`<div class="mut fl2">no claim links to this run or its group</div>`);
  // 5 compare: a run picker (siblings first, then every run of the three papers) and a button that opens find with the two runs
  const sibs=own.sibs.filter(s=>s.fact_id!==id);const opt=(j,n,sel)=>`<option value="${j}|${n.fact_id}" ${sel?"selected":""}>${esc(nlab(n))}</option>`;
  const r5=`<select id="cmp">${sibs.length?`<optgroup label="siblings">${sibs.map((s,k)=>opt(i,s,k===0)).join("")}</optgroup>`:""}${DATA.map((o,j)=>`<optgroup label="${o.key}">${o.tree.filter(n=>n.type==="run"&&n.fact_id!==id).map(n=>opt(j,n,false)).join("")}</optgroup>`).join("")}</select> <button onclick="compareWith(${i},'${id}')">compare</button>`;
@@ -485,12 +489,22 @@ function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.i
  const other={};runs.forEach(r=>subtree(T,r).forEach(f=>f.evidence.split(";").forEach(x=>{if(x===eid||x.endsWith(".cap")||!/^(fig|tab)/.test(x))return;const k=elab(x);(other[k]=other[k]||{x,panel:d.elements.some(z=>z.id===x&&z.kind==="panel"),n:new Set()}).n.add(f.fact_id)})));
  const r3=Object.entries(other).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).map(([k,o])=>`<span class="chip" onclick="${o.panel?`figCard('${o.x}',${i})`:`side('${o.x}',${i})`}">${esc(k)} <span class="mut">${o.n.size}</span></span>`).join(" ")||'<span class="mut">—</span>';
  const ids=new Set(fs.map(f=>f.fact_id).concat(runs,groups));const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||runs.includes(runOf(l))||groups.includes(grpOf(T,l))));
- const r4=claims.map(c=>`<div class="fl2"><span class="ty claim">claim</span>${esc(c.statement)}<code class="ev" onclick="side('${c.evidence.split(";")[0]}',${i})">${c.evidence.split(";")[0]}</code></div>`).join("")||'<div class="mut">—</div>';
+ const r4=claims.map(c=>claimLine(d,i,c)).join("")||'<div class="mut">—</div>';
  return `<div class="card"><h2>${esc(elab(eid))} <span class="mut" style="font-size:12px;font-weight:400">${esc(eid)}${e?" · "+esc(e.loc):""} · ${fs.length} facts</span> ${figTrayBtn(i,eid)}</h2>${e&&e.crop&&d.imgs[e.crop]?`<img class="fig" src="${d.imgs[e.crop]}" onclick="side('${eid}',${i})">`:""}
  <section><h4>compares</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>also on these runs</h4>${r3}</section><section><h4>claims</h4>${r4}</section>
  <div id="side" class="evbox"></div></div>`}
-function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
- if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;
+// claim scope (computed): links -> runs (a linked run, the runs of a linked group, the run above a linked fact) -> inherited settings -> ranges
+function claimRuns(T,c){const runs=new Set();(c.links||"").split(";").filter(Boolean).forEach(l=>{let x=l;while(x&&T.byId[x]&&!["run","group"].includes(T.byId[x].type))x=T.up[x];if(!x||!T.byId[x])return;
+ if(T.byId[x].type==="run")runs.add(x);else (function w(g){(T.kids[g]||[]).forEach(k=>{if(k.type==="run")runs.add(k.fact_id);if(k.type==="run"||k.type==="group")w(k.fact_id)})})(x)});return [...runs]}
+const SCOPEQ=["deposition_temperature","feature_height","cycle_number","process_pressure","plasma_gas_ratio","exposure"];const fmtv=v=>String(+v.toPrecision(4));
+function claimScope(d,i,c){const T=buildTree(d);const runs=claimRuns(T,c);if(!runs.length)return {n:0,runs,text:"no run"};const rs=RUNS().filter(r=>r.i===i&&runs.includes(r.id));const parts=[];
+ SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
+  if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
+ return {n:runs.length,runs,text:`${runs.length} run${runs.length>1?"s":""}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
+function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr" data-f="${c.fact_id}"><span class="ty claim">claim</span><span class="st">${esc(c.statement)}</span><span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
+function claimsView(){return `<div class="wrap"><div class="cl">${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
+function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
+ if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;
  if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;
   return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):CARD?card(d,P,CARD):'<div class="card mut">no runs</div>'}</div></div>`}
  const body=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
