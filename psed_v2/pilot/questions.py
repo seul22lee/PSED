@@ -306,8 +306,8 @@ def q19():
         stated = [f for f in T.rows if f["quantity"] == "knudsen_number" and f["value"]]
         if stated:
             out.append(f"{k}: " + "; ".join(f"Kn {fmt(f)} ({f['qualifiers'] or 'no qualifier'}, {f['type']} fact {f['fact_id']})" for f in stated)); continue
-        d = derive(T, es[0], "knudsen_number")
-        out.append(f"{k}: " + (f"Kn ≈ {dtext(d, 2)}" if "error" not in d else d["error"]))
+        c = collect(T, specimens(T), "knudsen_number")
+        out.append(f"{k}: Kn {ctext(T, c)}" + (f" (assumed: {', '.join(sorted({a for *_, a_ in c['values'] for a in a_}))})" if c["values"] else ""))
     return answered(" · ".join(out), "stated Kn where the paper gives it; else lists.DERIVED mean_free_path (k_B T / √2 π d² p, the diameter assumed by analogy with TMA) and knudsen_number (λ over d_NP from the compacts input entity); planar structures excluded")
 
 
@@ -335,9 +335,8 @@ def q21():
         stated = [f for f in T.rows if f["quantity"] in ("atoms_per_cycle", "saturation_density") and f["value"] and f["type"] != "cited"]
         if stated:
             out.append(f"{k}: " + "; ".join(f"{fmt(f)} ({L.LABELS[f['quantity']]}, {f['type']} {f['fact_id']}, {f['data_kind']}{', ' + T.label(T.ent_of(f['fact_id'])) if T.ent_of(f['fact_id']) else ''})" for f in stated)); continue
-        es = [e for e in T.entities() if res(T, e, "growth_per_cycle")]
-        d = derive(T, es[0], "atoms_per_cycle") if es else {"error": "no GPC"}
-        out.append(f"{k}: " + (f"{dtext(d, 2)} ({T.label(es[0])})" if "error" not in d else d["error"]))
+        c = collect(T, specimens(T), "atoms_per_cycle")
+        out.append(f"{k}: {ctext(T, c)}" + (f" (assumed: {', '.join(sorted({a for *_, a_ in c['values'] for a in a_}))})" if c["values"] else ""))
     return answered(" · ".join(out), "stated atoms per cycle or the model's saturation density where a paper gives one; else lists.DERIVED atoms_per_cycle (GPC × ρ_bulk N_A / M) with assumed ρ and M named")
 
 
@@ -345,17 +344,9 @@ def q22():
     """Deposited thickness per hour of reactor time in all three."""
     out = []
     for k, T in TREES.items():
-        vals = {}
-        for e in T.entities():
-            d = derive(T, e, "deposition_rate")
-            if "error" not in d:
-                vals.setdefault(g(d["value"], 2), []).append((T.label(e), d))
-        if not vals:
-            out.append(f"{k}: no entity with a GPC and a cycle time"); continue
-        lo, hi, common = min(vals, key=float), max(vals, key=float), max(vals, key=lambda v: len(vals[v]))
-        out.append(f"{k}: {common} nm/h for {len(vals[common])} of {sum(len(v) for v in vals.values())} entities ({vals[common][0][0]}: {dtext(vals[common][0][1], 2)})" +
-                   (f", {lo}–{hi} nm/h over all (purge and pulse times vary)" if lo != hi else ""))
-    return answered(" · ".join(out), "lists.DERIVED deposition_rate (GPC × 3600 / cycle time) per entity; the cycle time stated (mat22, gre23) or derived as the sum of pulse and purge times (yim20)")
+        c = collect(T, specimens(T), "deposition_rate")
+        out.append(f"{k}: {ctext(T, c)}")
+    return answered(" · ".join(out), "collect(): lists.DERIVED deposition_rate (GPC × 3600 / cycle time) for every specimen, all values with their range, no representative")
 
 
 def q23():

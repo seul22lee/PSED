@@ -289,6 +289,11 @@ def role(T, ent):
     return "model run" if T.byid[d]["kind"] == "simulation" else "specimen"
 
 
+def specimens(T):
+    """The specimens of a paper without the pieces cut from them (a piece counts through its specimen)."""
+    return [e for e in T.entities() if role(T, e) == "specimen" and T.byid[T.byid[e]["parent"]]["type"] == "activity"]
+
+
 def same_experiment(T, ent):
     """The entities (with observations) of the same role that are the same experiment as `ent`: equal condition vectors, nothing
     tolerated (P20). Near-equal entities are found by filtering on conditions (matching) and their differences shown side by side
@@ -702,6 +707,36 @@ def derive(T, ent, did, _stack=()):
     for name, (lab, rs) in readings.items():                                    # one value per basis when the paper does not state it
         out["readings"] = [(f"{lab} is relative to the {b.replace('_', ' ')}", D["fn"](**{**args, name: v})) for b, v in rs]
     return out
+
+
+def collect(T, ents, qid):
+    """Every value of a quantity over a set of entities (P27): the entity's own fact, else a derived value (lists.DERIVED); never a
+    representative. Returns dict(values=[(entity, value, unit, source: fact id or 'computed', assumed ids)], low, high, unit,
+    missing=[entities without a value])."""
+    vals, missing = [], []
+    for e in ents:
+        own = has_own(T, e, qid)
+        if own:
+            f = own[0]
+            v = val(f)
+            if v is not None:
+                vals.append((e, v, f["unit"], f["fact_id"], [])); continue
+        if qid in L.DERIVED:
+            d = derive(T, e, qid)
+            if "error" not in d:
+                vals.append((e, d["value"], d["unit"], "computed", d["assumed"])); continue
+        missing.append(e)
+    unit = vals[0][2] if vals else ""
+    conv = [L.convert(v, u, unit) if u != unit else v for _, v, u, _, _ in vals] if vals else []
+    return dict(values=vals, low=min(conv) if conv else None, high=max(conv) if conv else None, unit=unit, missing=missing)
+
+
+def ctext(T, c, digits=2):
+    """collect() as text: the range, then every value with its entity."""
+    if not c["values"]:
+        return "no value"
+    rng = f"{g(c['low'], digits)}–{g(c['high'], digits)} {c['unit']}" if c["low"] != c["high"] else f"{g(c['low'], digits)} {c['unit']}"
+    return f"{rng} over {len(c['values'])}: " + "; ".join(f"{T.label(e)} {g(v, digits)}{' (computed)' if src == 'computed' else ''}" for e, v, u, src, _ in c["values"])
 
 
 def dtext(d, digits=3):
