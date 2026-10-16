@@ -544,6 +544,26 @@ def check_claims():
     return []
 
 
+def check_caveats():
+    """P56: a caveat's text is stored once in the dataset (no two caveat facts with one statement); no caveat is attached to a fact
+    that already inherits it through its inputs; the counts: unique caveats, direct attachments (links and node targets), the
+    facts and entities reached, the stored text volume."""
+    import query as Q
+    err, texts, links, reached, vol = [], collections.Counter(), 0, 0, 0
+    for k, T in Q.TREES.items():
+        for c in Q.caveats_of(T):
+            texts[" ".join(c["f"]["statement"].lower().split())] += 1
+            links += len(c["facts"]) + len(c["nodes"]); vol += len(c["f"]["statement"])
+            reached += len(Q.caveat_targets(T, c["f"]))
+            for l in c["facts"]:
+                f = T.byid.get(l)
+                if f and f.get("inputs") and any(c["f"] in Q.caveats_for(T, T.byid[i], T.ent_of(i)) for i in f["inputs"].split(";") if i in T.byid):
+                    err.append(f"{c['f']['fact_id']}: attached to {l}, which inherits it through its inputs (P56)")
+    err += [f"caveat text stored {n} times: {t[:60]!r} (P56)" for t, n in texts.items() if n > 1]
+    print(f"== caveats (P56): {sum(texts.values())} caveats, {len(texts)} unique texts ({vol:,} characters stored once), {links} direct attachments, {reached} facts and entities reached")
+    return err
+
+
 def check_bases():
     """P52: the stored values of one entry id carry at most one unit dimension (plus unitless) and at most one stated basis
     (relative_to; not_stated beside one stated basis is allowed), over the whole dataset; spread facts (stat=) and quantity other
@@ -621,6 +641,11 @@ if __name__ == "__main__":
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_caveats()
+    print(f"== caveats (P56): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

@@ -901,10 +901,11 @@ def caveats_of(T):
     return T._cache["cavs"]
 
 
-def caveats_for(T, f, ent=None):
+def caveats_for(T, f, ent=None, _seen=()):
     """The caveats that apply to a value or setting f, seen on entity ent (P45): those linking f, those whose quantity and qualifiers
     f carries and that link a node at or above f or ent; for a result, also those linking its entity (or the entity it is cut from)
-    without a quantity."""
+    without a quantity; and, for a fact computed from other facts (its inputs column), the caveats of its inputs, reached at query
+    time and never copied (P56)."""
     anc = set(T.chain(f["fact_id"])) | (set(T.chain(ent)) if ent else set()) | {T.key}
     out = []
     for c in caveats_of(T):
@@ -913,7 +914,16 @@ def caveats_for(T, f, ent=None):
             out.append(c["f"])
         elif not c["quantities"] and f["type"] in RESULT_TYPES and ent and c["nodes"] & {x for x in T.chain(ent) if T.byid[x]["type"] == "entity"}:
             out.append(c["f"])
+    for i in filter(None, f.get("inputs", "").split(";")):
+        if i in T.byid and i not in _seen:
+            out += [c for c in caveats_for(T, T.byid[i], T.ent_of(i), _seen + (f["fact_id"],)) if c not in out]
     return out
+
+
+def direct_caveats(T, f, ent=None):
+    """The caveats a fact carries without its inputs (for the P56 check)."""
+    g = dict(f, inputs="")
+    return caveats_for(T, g, ent)
 
 
 def entity_caveats(T, ent):

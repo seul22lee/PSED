@@ -59,7 +59,8 @@ def lite(rec):
                alternatives=[a["text"] + (f" ({a['kind']})" if a["kind"] in L.KIND_WORDS else "") for a in rec.get("alternatives", [])],
                formula=rec["definition"] if rec["kind"] == "computed here" else "", assumed=rec.get("assumed", []),
                inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []),
-               caveats=rec.get("caveats", []), method_class=rec.get("method_class", ""), specimen_class=rec.get("specimen_class", ""))
+               input_ids=[i["fact"] for i in rec.get("inputs", []) if i.get("fact")] if rec["kind"] == "computed here" else [],   # a value's caveats come from D.fact_caveats by its fact id, a computed value's from its inputs' (P56)
+               method_class=rec.get("method_class", ""), specimen_class=rec.get("specimen_class", ""))
     if rec.get("curve") and rec["curve"].get("points"):
         out["curve"] = dict(x=rec["curve"]["x"], points=rec["curve"]["points"])
     if rec.get("settings"):
@@ -119,7 +120,18 @@ def build():
         own = sorted({v["fact"].split(":")[0] and Q.TREES[gr["paper"]].byid[v["fact"]]["quantity"] for v in details.get(gr["id"], {}).get("values", []) if v.get("fact")})
         groups.append(dict(id=gr["id"], paper=gr["paper"], label=gr["label"], kind=gr["kind"], members=gr["members"], all=gr["all_members"], own=own))
     cl = Q.claims()
-    claims_ = [dict(c, rests_on=[lite(x) for x in c["rests_on"]], sized_by=[lite(x) for x in c.get("sized_by", [])], user=c["author"] == "user") for c in cl]
+    claims_ = [dict(c, rests_on=[lite(x) for x in c["rests_on"]], sized_by=[lite(x) for x in c.get("sized_by", [])], user=c["author"] == "user",
+                    caveats=[x["id"] for x in c.get("caveats", [])]) for c in cl]
+    caveat_texts, fact_caveats = {}, {}                                          # every caveat text once; fact id -> the caveats it carries (P56)
+    for k, T in Q.TREES.items():
+        for c in Q.caveats_of(T):
+            caveat_texts[c["f"]["fact_id"]] = c["f"]["statement"]
+            for tgt in Q.caveat_targets(T, c["f"]):
+                if "#" in tgt:
+                    fact_caveats.setdefault(tgt, []).append(c["f"]["fact_id"])
+    for d in details.values():
+        if d.get("caveats"):
+            d["caveats"] = [x["id"] for x in d["caveats"]]
     # sources: every element with a fact, the figure's values for a panel
     sources, imgs = {}, {}
     for k, T in Q.TREES.items():
@@ -156,7 +168,7 @@ def build():
                    results=[dict(q=q, name=L.NAMES.get(q, q.replace("_", " "))) for q in results if q != "other"],
                    ranges=[dict(q=q, name=n, unit=u) for q, n, u in RANGES])
     return dict(papers=names, rows=rows, groups=groups, details=details, claims=claims_, sources=sources, coverage=coverage, filters=filters,
-                kinds=L.KIND_WORDS, primary=L.PRIMARY, search=search_index()), imgs
+                kinds=L.KIND_WORDS, primary=L.PRIMARY, search=search_index(), caveats=caveat_texts, fact_caveats=fact_caveats), imgs
 
 
 def search_index():
@@ -212,8 +224,10 @@ const word=r=>r&&D.kinds[r.kind]?D.kinds[r.kind]:"";
 const vtext=(r,skipKind)=>!r?"":`${r.text}${r.definition?` <span class="mut">${esc(r.definition)}</span>`:""}${!skipKind&&word(r)?` <span class="mut">${word(r)}</span>`:""}`;
 const srcLink=r=>r&&r.source?`<span class="src" onclick="openSource('${r.paper}:${r.source}','${r.fact||""}')">${esc(D.sources[r.paper+":"+r.source]?.locator||"source")}</span>`:"";
 const CAV=new Set();      // a caveat once per panel (P45)
-const cav=r=>(r&&r.caveats||[]).filter(c=>!CAV.has(c.id)&&CAV.add(c.id)).map(c=>`<div class="cav mut" style="margin-left:14px">caveat: ${esc(c.text)}</div>`).join("");
-const cavWord=rs=>{const cs=rs.flatMap(r=>(r&&r.caveats)||[]);return cs.length?` <span class="mark" title="${esc([...new Set(cs.map(c=>c.text))].join(" | "))}">caveat</span>`:""};
+const CT=D.caveats, FC=D.fact_caveats;   // every caveat text once; a record carries ids, a computed value reaches its inputs' caveats here (P56)
+const cids=r=>{if(!r)return[];const s=new Set(FC[r.fact]||[]);(r.input_ids||[]).forEach(i=>(FC[i]||[]).forEach(c=>s.add(c)));return[...s]};
+const cav=r=>cids(r).filter(c=>!CAV.has(c)&&CAV.add(c)).map(c=>`<div class="cav mut" style="margin-left:14px">caveat: ${esc(CT[c])}</div>`).join("");
+const cavWord=rs=>{const cs=rs.flatMap(cids);return cs.length?` <span class="mark" title="${esc([...new Set(cs.map(c=>CT[c]))].join(" | "))}">caveat</span>`:""};
 const inferredMark=x=>x?` <span class="mark" title="not stated by the paper; inferred">i</span>`:"";
 function bar(){const sel=(k,opts,cur,lab)=>`<select name="${lab}" title="${lab}" onchange="setF('${k}',this.value)"><option value="">any ${lab}</option>${opts.map(o=>`<option value="${esc(o.v)}" ${o.v===cur?"selected":""}>${esc(o.t)}</option>`).join("")}</select>`;
  $("#bar").innerHTML=sel("material",D.filters.materials.map(m=>({v:m,t:m})),S.material,"material")+sel("structure",D.filters.structures.map(m=>({v:m,t:m.replace(/_/g," ")})),S.structure,"structure")
@@ -243,7 +257,7 @@ function searchList(){const hs=searchHits(S.q),seen=new Set(),rows=[];for(const 
   +(rows.length>S.qn?`<div class="more" onclick="S.qn+=50;render()">${rows.length-S.qn} more</div>`:"")}
 function left(){if(S.q)return searchList();const tog=`<div class="tog"><button class="${S.list==="experiments"?"on":""}" onclick="S.list='experiments';render()">experiments</button> <button class="${S.list==="claims"?"on":""}" onclick="S.list='claims';render()">claims</button></div>`;
  if(S.list==="claims"){const cs=D.claims.filter(c=>(!S.paper||c.paper===S.paper)&&(!S.result||c.effect.includes((D.filters.results.find(r=>r.q===S.result)||{}).name)));
-  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} ${esc(c.relation||"→")} ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`).join("")}
+  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} ${esc(c.relation||"→")} ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(CT[x])}</div>`).join("")}</div>`).join("")}
  const v=visible(), ids=new Set(v.map(r=>r.id));let h=tog+`<div class="mut" style="margin:6px 0">${v.length} experiments${S.checked.size?` · ${S.checked.size} selected <span class="more" onclick="S.checked=new Set();S.panel={type:'none'};render()">clear</span>`:""}</div>`;
  if(S.paper){const c=D.coverage[S.paper];h+=`<div class="mut">coverage of ${esc(PN(S.paper))}: ${c.covered} of ${c.total} elements covered, ${c.missed} missed</div>`}
  for(const k of Object.keys(D.papers)){if(S.paper&&k!==S.paper)continue;const gs=D.groups.filter(g=>g.paper===k&&g.kind!=="cited").concat(D.groups.filter(g=>g.paper===k&&g.kind==="cited"));const rs=v.filter(r=>r.paper===k);if(!rs.length)continue;
@@ -255,7 +269,7 @@ function tickGroup(g,on){const ids=new Set(visible().map(r=>r.id));GRP[g].all.fi
 function tick(i,on){on?S.checked.add(i):S.checked.delete(i);S.panel=S.checked.size?{type:"selected"}:{type:"none"};render()}
 function openDetail(i){S.panel={type:"detail",id:i};renderRight()}function openComp(i){S.panel={type:"comparison",id:i};renderRight()}function openSource(i,f){S.panel={type:"source",id:i,fact:f||""};renderRight()}
 function lim(items,key,n=6){const all=S.open.has(key);const sh=all?items:items.slice(0,n);return sh.join("")+(items.length>n?`<div class="more" onclick="S.open.${all?"delete":"add"}('${key}');renderRight()">${all?"show fewer":`+${items.length-n} more`}</div>`:"")}
-function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`}
+function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(CT[x])}</div>`).join("")}</div>`}
 function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what||{};
  const link=i=>`<span class="src" onclick="openDetail('${i}')">${esc((D.details[i]||{name:i}).name)}</span>`;
  const sub=[what.material?`material: ${esc(what.material)}${(what.reactants||[]).length?` from ${esc(what.reactants.join(" / "))}`:""}`:"",what.substrate?`substrate: ${esc(what.substrate)}`:"",(what.input_ids||[]).length?`made from: ${what.input_ids.map(link).join(", ")}`:"",what.parent?`part of: ${link(what.parent)}`:"",d.type==="cited"?"a work the paper cites":""].filter(Boolean).join(" · ");
@@ -269,7 +283,7 @@ function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what|
    +(o?`<div class="mut" style="margin-left:14px">${(r.settings||[]).map(esc).join(" · ")||""}${r.alternatives.length?` chosen over ${esc(r.alternatives.join(", "))}`:""}${r.formula?` ${esc(r.formula)}`:""}${r.inputs.length?` from ${esc(r.inputs.join(", "))}`:""}${r.assumed.length?` · assumed: ${esc(r.assumed.map(a=>a.replace("user:assume_","").replace(/_/g," ")).join(", "))}`:""}</div>`:"")+`</div>`+cav(r)}).map(x=>`<div>${x}</div>`);
  const cls=(d.claims||[]).map(claimLine);
  return `<h2>${esc(d.name)}${inferredMark(d.inferred)} <span class="mut" style="font-size:14px;font-weight:400">${esc(PN(d.paper))}</span></h2>
- <div class="part"><h3>What</h3>${(d.caveats||[]).map(c=>`<div class="cav mut">caveat: ${esc(c.text)}</div>`).join("")}<div class="line">${esc(d.role==="model run"?"a model run":d.role==="input"?"measured before any deposition":d.type==="cited"?"cited work":"a deposited specimen")}${(d.comparisons||[]).length?` in ${d.comparisons.map(c=>`<span class="src" onclick="openComp('${c.id}')">${esc(c.label)}</span>`).join(", ")}`:""}</div>${sub?`<div class="line mut">${sub}</div>`:""}</div>
+ <div class="part"><h3>What</h3>${(d.caveats||[]).map(c=>`<div class="cav mut">caveat: ${esc(CT[c])}</div>`).join("")}<div class="line">${esc(d.role==="model run"?"a model run":d.role==="input"?"measured before any deposition":d.type==="cited"?"cited work":"a deposited specimen")}${(d.comparisons||[]).length?` in ${d.comparisons.map(c=>`<span class="src" onclick="openComp('${c.id}')">${esc(c.label)}</span>`).join(", ")}`:""}</div>${sub?`<div class="line mut">${sub}</div>`:""}</div>
  <div class="part"><h3>What differs</h3>${diffs.slice(0,6).join("")||'<div class="mut">nothing beyond its group</div>'}<div class="more" onclick="S.open.${S.open.has("recipe:"+id)?"delete":"add"}('recipe:${id}');renderRight()">${S.open.has("recipe:"+id)?"hide the full recipe":"full recipe"}</div>${full}</div>
  <div class="part"><h3>Results</h3>${lim(res,"r:"+id)||'<div class="mut">none</div>'}</div>
  <div class="part"><h3>Claims</h3>${lim(cls,"c:"+id,3)||'<div class="mut">none</div>'}</div>`}
