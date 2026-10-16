@@ -194,7 +194,7 @@ F(K, "s5.p2;fig1.cap;fig1a;tab2.r6c3;tab2.r0c3;s3.p9", "setting", "channel aspec
   quantity="aspect_ratio", value_max="10000", data_kind="chosen input", mentions="L 5000 µm;H 500 nm;Table S1;This work")
 F(K, "s5.p2", "definition", "chip layout and pillar layout designs are given in the ESI", mentions="ESI")
 F(K, "s6.p1;tab2.r7c5;tab2.r0c5", "setting", "ALD reactor", quantity="reactor_type", value_text="Picosun R-150", mentions="This work")
-F(K, "s6.p1", "setting", "the usual target thickness was about 50 nm", quantity="film_thickness", value="50", unit="nm",
+F(K, "s6.p1", "setting", "the usual target thickness was about 50 nm", quantity="film_thickness", qualifiers="kind=target", value="50", unit="nm",
   data_kind="chosen input")
 F(K, "s6.p1;tab2.r6c4;tab2.r0c4", "setting", "the usual number of ALD cycles was 500", quantity="cycle_number", value="500",
   data_kind="chosen input", mentions="This work")

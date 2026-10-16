@@ -313,6 +313,8 @@ def check_tree(rows, els):
                 lo, hi = C.num(r["value_min"]), C.num(r["value_max"])
                 if not any(abs(a - lo) <= 0.01 * abs(lo or 1) and abs(b - hi) <= 0.01 * abs(hi or 1) for a, b in C.parse_ranges(r["statement"] + " " + r["label_as_printed"])):
                     err.append(f"{i}: range {r['value_min']}–{r['value_max']} is not a range its statement prints (P14)")
+            if r["type"] == "setting" and r["quantity"] == "film_thickness" and qd.get("kind") != "target":
+                err.append(f"{i}: a film thickness setting that is not a target (thickness is a result; P18)")
             if r["quantity"] == "phase" and (r["value_text"] not in L.PHASE_VALUES or "species" not in qd):
                 err.append(f"{i}: phase without species= or with value_text not in lists.PHASE_VALUES (P15)")
             if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:

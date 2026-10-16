@@ -147,7 +147,7 @@ F(K, "s3.p5;fig1b;fig1.cap", "claim", "With the optimized ratio 0.80, crystallin
 F(K, "s3.p5;fig1b", "observation", "With more cycles the E2g1 peak moves to lower and A1g to higher wavenumber (dashed lines in "
   "the panel), confirming thickness control.", method="raman", mentions="E1g;A1g;ref. 55;ref. 56")
 F(K, "s3.p5", "claim", "Thickness can be set by cycle number from about one monolayer to tens of nm.")
-F(K, "s3.p5", "setting", "Most H2-flow-ratio comparisons use films 10-20 nm thick made with 100-140 cycles.",
+F(K, "s3.p5", "observation", "Most H2-flow-ratio comparisons use films 10-20 nm thick made with 100-140 cycles.",
   quantity="film_thickness", value_min="10", value_max="20", unit="nm", data_kind="measured", method="ellipsometry",
   mentions="100-140 ALD cycles")
 
@@ -275,7 +275,7 @@ F(K, "s3.p20", "model", "With Mo as Mo4+ in both MoS2 and MoS3, charge neutralit
 
 # Table 1 (and s3.p19, s3.p21)
 T1EV = "tab1.cap;s3.x4"
-F(K, "s3.p19;tab1.cap;s3.p21", "setting", "Table 1 films are about 50 nm thick, grown at 150 °C on glassy carbon with ratios "
+F(K, "s3.p19;tab1.cap;s3.p21", "observation", "Table 1 films are about 50 nm thick, grown at 150 °C on glassy carbon with ratios "
   "0.20 (amorphous), 0.65 and 0.80 (crystalline), analysed for H by ERD and for Mo, S, C, N, O by RBS.",
   quantity="film_thickness", value="50", unit="nm", data_kind="measured", method="rbs",
   mentions="~50 nm;150 °C;0.20;0.65;0.80;glassy carbon;Table 1")
@@ -337,7 +337,7 @@ F(K, "s3.p21", "claim", "Hydrogen is the main impurity and clearly increases wit
 # ------------------------------------------------------------------ morphology
 F(K, "s3.p22", "claim", "Morphology matters: roughness can raise resistivity by carrier scattering, hinder integration in "
   "nanoscale devices, and tells about growth mechanisms.")
-F(K, "s3.p22;fig6a;fig6.cap;s3.x5", "setting", "Morphology comparisons use relatively thick films, 8-20 nm, grown with 140 cycles.",
+F(K, "s3.p22;fig6a;fig6.cap;s3.x5", "observation", "Morphology comparisons use relatively thick films, 8-20 nm, grown with 140 cycles.",
   quantity="film_thickness", value_min="8", value_max="20", unit="nm", data_kind="measured", method="ellipsometry",
   mentions="140 ALD cycles;Figure 6a")
 F(K, "s3.p22", "observation", "Thinner films are smoother and differ less between conditions.", method="sem")
@@ -498,7 +498,7 @@ F(K, "s3.p41", "observation", "Infrared and Raman measurements found no evidence
   "are absent.", method="raman", mentions="Mo-H;S-H")
 F(K, "s3.p41;s3.p42", "claim", "Given the process and the S deficiency of crystalline high-ratio films, H most likely sits at S "
   "vacancies or in thiol groups.")
-F(K, "s3.p43", "setting", "FET channel: about 5 nm film grown at 100 °C with ratio 0.80.", quantity="film_thickness",
+F(K, "s3.p43", "observation", "FET channel: about 5 nm film grown at 100 °C with ratio 0.80.", quantity="film_thickness",
   value="5", unit="nm", data_kind="measured", mentions="100 °C;0.80;FET")
 F(K, "s3.p43", "setting", "Reference FET film of similar thickness grown at 350 °C with ratio 0.20.",
   quantity="deposition_temperature", value="350", unit="°C", data_kind="chosen input", mentions="350 °C;0.20;FET")
@@ -670,7 +670,7 @@ for n, t in (("100", "450 °C"), ("120", "50 °C, 300 °C and 350 °C"), ("140",
     F(K, "s5.p7", "setting", f"Unless noted, depositions at {t} use {n} ALD cycles.", quantity="cycle_number", value=n,
       data_kind="chosen input", mentions=t)
 F(K, "s5.p7", "setting", "Cycle numbers were chosen to give about 10 nm at ratio 0.20 at each temperature (no such data for "
-  "50-100 °C).", quantity="film_thickness", value="10", unit="nm", data_kind="chosen input", mentions="0.20;50-100 °C")
+  "50-100 °C).", quantity="film_thickness", qualifiers="kind=target", value="10", unit="nm", data_kind="chosen input", mentions="0.20;50-100 °C")
 F(K, "s5.p7", "observation", "SE showed the H2S/H2/Ar plasma alone deposits no S, and the Mo precursor does not condense, so the "
   "lowest temperatures stay in the ALD regime.", method="ellipsometry", mentions="ref. 87")
 F(K, "s5.p8", "setting", "WS2 and TiS2 deposition procedures, with the plasma feed gas (ratio) as the only change; a thermal TiSx "
@@ -1536,14 +1536,12 @@ C.spread(f"{K}:s5.p7#1", cells_at({450}), LAB)
 C.spread(f"{K}:s5.p7#2", cells_at({50, 300, 350}), LAB)
 C.spread(f"{K}:s5.p7#3", cells_at({100, 150, 200, 250}), LAB)
 C.spread(f"{K}:s5.p7#4", [f"{K}:dep:T{t}_R0.20" for (t, r) in sorted(CELLS, key=lambda c: -c[0]) if r == "0.20"], LAB)
-C.spread(f"{K}:s3.p19#1", [d for d in DEPS if ":dep:gc_" in d], LAB)
 C.spread(f"{K}:s3.p19#5", [d for d in DEPS if ":dep:gc_" in d], LAB)
 C.spread(f"{K}:s5.p2#3", [f"{K}:dep:tem_T100_R0.80", f"{K}:dep:tem_T350_R0.20"], LAB)    # the transistor substrate: the two FET films (P16)                 # their substrate: glassy carbon, not the SiO2/Si of the recipe
-C.spread(f"{K}:s3.p22#2", cells_at({150}), LAB)
 C.spread(f"{K}:s5.p8#1", [d for d in DEPS if ":dep:WS2" in d or ":dep:TiS2" in d], LAB)
 C.spread(f"{K}:s5.p8#6", [d for d in DEPS if ":dep:WS2" in d], LAB)
 C.spread(f"{K}:s5.p8#7", [d for d in DEPS if ":dep:TiS2" in d], LAB)
-for fid_ in (f"{K}:fig2.cap#1", f"{K}:s3.p5#4"):
+for fid_ in (f"{K}:fig2.cap#1",):
     next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:recipe"
 # the authors' comparisons: the T x ratio grid (its members the 32 cell films), one ratio series per temperature row, the cycle
 # series, the H2S tests, the WS2 and TiS2 series
@@ -1588,6 +1586,11 @@ for rid, lab, st in (("WS2", "WS2 PEALD", "WS2 by PEALD from the W analogue of t
     N(f"{K}:recipe:{rid}", "activity", st, REACTOR, evidence="s5.p8;s3.p45", kind="recipe", how="stated", label_as_printed=lab)
     for d in [d for d in DEPS if d.split(":dep:")[1].startswith(rid + "_") and (rid != "TiS2" or "thermal" not in d)] + ([f"{K}:dep:TiS2_thermal"] if rid == "TiS2_thermal" else []):
         FXR[d]["parent"] = f"{K}:recipe:{rid}"
+# a thickness stated for a set of films is an observation on their comparison that names the films (P18): the ratio comparisons (s3.p5#4,
+# on the grid), the Table 1 films (s3.p19#1), the 150 °C morphology films (s3.p22#2)
+for fid_, ents_ in ((f"{K}:s3.p19#1", [f"{K}:ent:gc_T150_R{r}" for r in ("0.20", "0.65", "0.80")]),
+                    (f"{K}:s3.p22#2", [f"{K}:ent:T150_R{r}" for (t, r) in sorted(CELLS) if t == 150])):
+    next(x for x in C.facts() if x["fact_id"] == fid_)["links"] = ";".join(ents_)
 # a minimum over a set of films names the films (P12): the ratio-0.94 cells (s3.p35#5) and the crystalline ratio-0.80 cells (s3.p35#2)
 for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f"{K}:s3.p35#2", [c for c in CELLS if c[1] == "0.80" and CELLS[c][0] == "c"])):
     next(x for x in C.facts() if x["fact_id"] == fid_)["links"] = ";".join(f"{K}:ent:T{t}_R{r}" for t, r in sorted(cells_))

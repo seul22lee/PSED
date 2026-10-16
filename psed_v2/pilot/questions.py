@@ -150,11 +150,11 @@ def q9():
     out = []
     for e in T.entities():
         v = T.vector(e)
-        if v.get("plasma_gas_ratio{gas=H2}") and fmt(v["plasma_gas_ratio{gas=H2}"][0]) == "0.20" and re.fullmatch(r"mat22:ent:T\d+_R0\.20", e) and v.get("cycle_number") and v.get("film_thickness"):
-            n, th = val(v["cycle_number"][0]), val(v["film_thickness"][0])
+        if v.get("plasma_gas_ratio{gas=H2}") and fmt(v["plasma_gas_ratio{gas=H2}"][0]) == "0.20" and re.fullmatch(r"mat22:ent:T\d+_R0\.20", e) and v.get("cycle_number") and v.get("film_thickness{kind=target}"):
+            n, th = val(v["cycle_number"][0]), val(v["film_thickness{kind=target}"][0])
             gpc = res(T, e, "growth_per_cycle")
             if n and th and gpc:
-                out.append((val(v["deposition_temperature"][0]), f"{fmt(v['deposition_temperature'][0])}: {g(n, 3)} cycles for {fmt(v['film_thickness'][0])} → {g(10 * th / n, 2)} Å implied vs {fmt(gpc[0])} read from colour"))
+                out.append((val(v["deposition_temperature"][0]), f"{fmt(v['deposition_temperature'][0])}: {g(n, 3)} cycles for {fmt(v['film_thickness{kind=target}'][0])} target → {g(10 * th / n, 2)} Å implied vs {fmt(gpc[0])} read from colour"))
     if not out:
         return unanswerable("", "no cell carries its cycle count, thickness target and a GPC")
     return answered("; ".join(t for _, t in sorted(out, reverse=True)), "per ratio-0.20 cell: the deposition's cycle count and 10 nm target (settings) against the colour-read GPC on the cell film")
