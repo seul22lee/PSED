@@ -688,6 +688,10 @@ def _derive(T, ent, did, _stack=()):
     subs = {"@material": T.material(ent), "@A": T.reactant_A(ent)}
     args, used, assumed, notes, readings, chain = {}, [], [], [], {}, [did]
     for spec in D["inputs"]:
+        if spec["q"] == "@formula_metals":                                      # from the film's chemical formula (lists.FORMULA_METALS)
+            if subs["@material"] not in L.FORMULA_METALS:
+                return dict(error=f"no formula for {subs['@material'] or 'the material'}")
+            args[spec["name"]] = L.FORMULA_METALS[subs["@material"]]; continue
         need = {k: subs.get(v, v) for k, v in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p)}
         cands = _candidates(T, ent, spec, need)
         if spec["all"]:

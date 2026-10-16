@@ -44,6 +44,8 @@ SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing
 # the film material (material, value_text) and the test structure type (structure_type, value_text; Cremers 2019's taxonomy)
 # of a process or group; the workbench filters list these ids
 MATERIALS = ["Al2O3", "MoS2", "WS2", "TiS2", "ZnO"]
+# metal atoms per formula unit of each film material (its chemical formula)
+FORMULA_METALS = {"Al2O3": 2, "MoS2": 1, "WS2": 1, "TiS2": 1, "ZnO": 1}
 
 # panels that encode a value as a colour against a bar: a valued fact citing one says "read from colour" in its statement (check.py)
 COLOUR_PANELS = {"mat22": {"fig7b": "GPC 0.50 to 1.75 Å/cycle, linear bar", "fig8": "resistivity 1e-3 to 1e3 Ω cm, log bar; black = above the detection limit"}}
@@ -213,10 +215,11 @@ DERIVED = {
     "growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density",
                              inputs=[_in("n", "atoms_per_cycle", "", "nm-2"), _in("M", "other:molar mass", "species=@material", "g/mol"), _in("rho", "film_density", "", "g/cm3"),
                                      _in("NA", "other:Avogadro constant", "", "1/mol")], fn=lambda n, M, rho, NA: n * M / (NA * rho * 1e-21)),
-    "atoms_per_cycle": dict(unit="nm-2", qualifiers="over=run", formula="GPC × ρ N_A / M: metal atoms per nm² per cycle at the film's own density",
+    "atoms_per_cycle": dict(unit="nm-2", qualifiers="over=run", formula="GPC × ρ N_A / M × metal atoms per formula unit: metal atoms per nm² per cycle at the film's own density",
                             inputs=[_in("gpc", "growth_per_cycle", "", "nm", pick=["", "position=plateau"]), _in("rho", "film_density", "", "g/cm3"),
-                                    _in("M", "other:molar mass", "species=@material", "g/mol"), _in("NA", "other:Avogadro constant", "", "1/mol")],
-                            fn=lambda gpc, rho, M, NA: gpc * rho * 1e-21 * NA / M),
+                                    _in("M", "other:molar mass", "species=@material", "g/mol"), _in("NA", "other:Avogadro constant", "", "1/mol"),
+                                    _in("b", "@formula_metals")],
+                            fn=lambda gpc, rho, M, NA, b: gpc * rho * 1e-21 * NA / M * b),
     "h_per_metal": dict(unit="", formula="H at.% / Mo at.%, with Mo at.% = (100 − H − N − O at.%) / (1 + S/Mo)",
                         inputs=[_in("H", "composition", "element=H", "%"), _in("SMo", "composition", "element=S", ""), _in("N", "composition", "element=N", "%", default=0),
                                 _in("O", "composition", "element=O", "%", default=0)], fn=lambda H, SMo, N, O: H / ((100 - H - N - O) / (1 + SMo))),
