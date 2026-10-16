@@ -978,6 +978,9 @@ def find(paper=None, material=None, structure=None, result=None, conditions=None
             if result:
                 rr = result_records(T, e)
                 res = [dict(key=kk, name=x["name"], record=x["record"]) for kk, x in rr.items() if kk.split("{")[0].split("[")[0] == result]
+                if not res:                                                     # a setting quantity the entity states (gre23's exposure), where another derives it as a result
+                    res = [dict(key=kk, name=x["name"], record=x["record"]) for kk, x in condition_records(T, e).items() if kk.split("{")[0].split("[")[0] == result
+                           and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]      # a target is not a result (P18)
                 if not res:
                     ok = False
             if ok:

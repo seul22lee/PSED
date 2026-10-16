@@ -365,8 +365,7 @@ def q26():
                 out.append(f"{r['name']} {vt(x['record'])}" + (f" at {t['record']['text']}" if t else ""))
     rep = detail(group("yim20", "sample 2, 4, 8")["id"])
     out += [f"this work {vt(v)} (replicate set)" for v in rep["values"] if not v["stat"]]
-    out += [f"this work {vt(c['record'])} (the simulation's input)" for c in detail(group("yim20", "model simulations")["members"][0])["recipe"] if c["key"].startswith("lumped_sticking_coefficient")]
-    return answered("; ".join(dict.fromkeys(out)), "find(sticking coefficient) with the cited rows → detail(each).recipe temperature · detail(replicate set).values · detail(model run).recipe")
+    return answered("; ".join(dict.fromkeys(out)), "find(sticking coefficient): the cited rows and the model runs' input → detail(each).recipe temperature · detail(replicate set).values")
 
 
 QUESTIONS = [("Q1", "yim20", q1), ("Q2", "yim20", q2), ("Q3", "yim20", q3), ("Q4", "yim20", q4), ("Q5", "yim20", q5), ("Q6", "yim20", q6), ("Q7", "yim20", q7),
