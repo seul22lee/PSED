@@ -390,6 +390,14 @@ def fill_uncertainty():
                 r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
 
 
+def qualify(key, table):
+    """Append qualifiers to facts: table {fact suffix: "k=v[;k=v]"} (a definition the paper states, P5)."""
+    byid = {r["fact_id"]: r for r in _facts}
+    for sfx, q in table.items():
+        r = byid[f"{key}:{sfx}"]
+        r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], q]))
+
+
 def relative_to(key, table):
     """What a fraction is a fraction of (P4): table {fact suffix: basis}, appended to the fact's qualifiers as relative_to=<basis>."""
     byid = {r["fact_id"]: r for r in _facts}

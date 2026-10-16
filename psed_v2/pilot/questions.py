@@ -78,7 +78,7 @@ def q3():
 def q4():
     """Over Series F, the ratio GPC_I / GPC_IIb against purge time."""
     T = TREES["yim20"]; c = T.comp("F")
-    rows = sorted(((val(T.vector(m)["purge_time{step=purge_A}"][0]), T.label(m), T.results(m)["growth_per_cycle{position=outside}"][0], T.results(m)["growth_per_cycle{position=plateau}"][0])
+    rows = sorted(((val(T.vector(m)["purge_time{step=purge_A}"][0]), T.label(m), res(T, m, "growth_per_cycle", position="outside")[0], res(T, m, "growth_per_cycle", position="plateau")[0])
                    for m in T.member_entities(c)), key=lambda r: r[0])
     text = "; ".join(f"{lab}: purge {g(p)} s, GPC_I/GPC_IIb = {fmt(a)} / {fmt(b)} = {g(val(a) / val(b), 3)}" for p, lab, a, b in rows)
     return answered(text, "the members of Series F ordered by purge time (vector), the ratio of two results on each (routes on one entity)")
@@ -152,7 +152,7 @@ def q9():
         v = T.vector(e)
         if v.get("plasma_gas_ratio{gas=H2}") and fmt(v["plasma_gas_ratio{gas=H2}"][0]) == "0.20" and re.fullmatch(r"mat22:ent:T\d+_R0\.20", e) and v.get("cycle_number") and v.get("film_thickness"):
             n, th = val(v["cycle_number"][0]), val(v["film_thickness"][0])
-            gpc = T.results(e).get("growth_per_cycle")
+            gpc = res(T, e, "growth_per_cycle")
             if n and th and gpc:
                 out.append((val(v["deposition_temperature"][0]), f"{fmt(v['deposition_temperature'][0])}: {g(n, 3)} cycles for {fmt(v['film_thickness'][0])} → {g(10 * th / n, 2)} Å implied vs {fmt(gpc[0])} read from colour"))
     if not out:
@@ -164,7 +164,7 @@ def q10():
     """Thickness against cycles at 150 °C, ratio 0.80, from every source."""
     T = TREES["mat22"]
     at = [e for e in T.entities() if T.vector(e).get("deposition_temperature") and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"
-          and T.vector(e).get("plasma_gas_ratio{gas=H2}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and T.results(e).get("growth_per_cycle")]
+          and T.vector(e).get("plasma_gas_ratio{gas=H2}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and res(T, e, "growth_per_cycle")]
     if not at:
         return unanswerable("", "no 150 °C, ratio 0.80 entity with a GPC to start the join from")
     e0 = at[0]; joins = same_experiment(T, e0, tolerate=("cycle_number", "film_thickness"))
@@ -178,7 +178,7 @@ def q10():
             elif f["points_ref"] and quals(f).get("x") == "cycle_number" and f["points_ref"] in T.points:
                 x, y = T.points[f["points_ref"]]["points"][-1]
                 rows.append((x, y, f"{T.label(e)}: curve {f['points_ref']} ends at {g(y)} nm after {g(x)} cycles"))
-        for f in r.get("growth_per_cycle", []):
+        for f in res(T, e, "growth_per_cycle"):
             if f["value"]:
                 rows.append((None, None, f"{T.label(e)}: GPC {fmt(f)} ({f['statement'][:50]}…)"))
     gpc = [10 * t / n for n, t, _ in rows if n and t]
@@ -189,16 +189,16 @@ def q10():
 def q11():
     """Mo atoms per cycle from RBS against GPC from SE at 150 °C, ratio 0.80, with the density."""
     T = TREES["mat22"]
-    gc = [e for e in T.entities() if T.results(e).get("atoms_per_cycle{element=Mo}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
+    gc = [e for e in T.entities() if res(T, e, "atoms_per_cycle", element="Mo") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
     if not gc:
         return unanswerable("", "no entity at 150 °C, ratio 0.80 carries Mo atoms per cycle")
     d = derive(T, gc[0], "growth_per_cycle", route=True)
     if "error" in d:
         return unanswerable("", f"derived GPC from atoms per cycle fails: {d['error']}")
-    joins = [(e, diff, only) for e, diff, only in same_experiment(T, gc[0], tolerate=("substrate", "cycle_number", "film_thickness")) if T.results(e).get("growth_per_cycle")]
+    joins = [(e, diff, only) for e, diff, only in same_experiment(T, gc[0], tolerate=("substrate", "cycle_number", "film_thickness")) if res(T, e, "growth_per_cycle")]
     if not joins:
         return unanswerable(f"{T.label(gc[0])}: GPC from RBS {dtext(d)}", "no entity with an SE GPC joins the glassy-carbon film within the tolerated keys")
-    e, diff, _ = joins[0]; se = T.results(e)["growth_per_cycle"][0]
+    e, diff, _ = joins[0]; se = res(T, e, "growth_per_cycle")[0]
     ratio = d["value"] / L.convert(val(se), se["unit"], "nm")
     return answered(f"{T.label(gc[0])}: GPC from RBS {dtext(d, 2)} vs SE GPC {fmt(se)} on {T.label(e)} ({se['fact_id']}): ratio {g(ratio, 2)} · {join_text(joins)}: " +
                     "; ".join(f"{k} {a} vs {b}" for k, (a, b) in diff.items()),

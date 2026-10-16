@@ -68,7 +68,12 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "n": None,
     # what a fraction is a fraction of (P4): every composition, mass gain and porosity carries it; not_stated when the paper does not say
     "relative_to": {"initial_mass", "final_mass", "all_atoms", "metal_atoms", "crystalline_phases", "total_volume", "not_stated"},
+    # what a per-cycle value is averaged over (P5): the whole run (thickness or amount over the run's cycle count), the first 100
+    # cycles, the saturation value of a model, or not stated
+    "over": {"run", "first_100_cycles", "saturation", "not_stated"},
 }
+# the definition a quantity has when none is named: the screen names a definition only when it differs from this
+DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 QUALIFIERS["ratio"] = None                            # the plasma_gas_ratio a recipe-level lookup setting belongs to (mat22 Table 2 flows per ratio)
 
@@ -186,7 +191,7 @@ DERIVED = {
                              inputs=[_in("E", "exposure", "", "Torr s"), _in("N", "cycle_number", "", "")], fn=lambda E, N: E * N),
     "sheet_resistance": dict(unit="Ω/sq", formula="resistivity / film thickness",
                              inputs=[_in("rho", "resistivity", "", "Ω cm"), _in("t", "film_thickness", "", "cm")], fn=lambda rho, t: rho / t),
-    "growth_per_cycle": dict(unit="nm", formula="atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density",
+    "growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density",
                              inputs=[_in("n", "atoms_per_cycle", "", "nm-2"), _in("M", "other:molar mass", "species=@material", "g/mol"), _in("rho", "film_density", "", "g/cm3"),
                                      _in("NA", "other:Avogadro constant", "", "1/mol")], fn=lambda n, M, rho, NA: n * M / (NA * rho * 1e-21)),
     "atoms_per_cycle": dict(unit="nm-2", formula="GPC × ρ_bulk N_A / M: metal atoms per nm² per cycle at the bulk density",

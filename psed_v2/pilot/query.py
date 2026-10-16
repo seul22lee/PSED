@@ -164,6 +164,11 @@ class Tree:
         return out
 
 
+def res(T, ent, quantity, **need):
+    """An entity's result facts of one quantity whose qualifiers include every one given (a GPC whatever it is averaged over)."""
+    return [f for fs in T.results(ent).values() for f in fs if f["quantity"] == quantity and all(quals(f).get(k) == v for k, v in need.items())]
+
+
 def ckey(f):
     qs = ";".join(sorted(p for p in f["qualifiers"].split(";") if p and not p.startswith("x=")))
     return f"{f['quantity']}{'{' + qs + '}' if qs else ''}" + (f"[{f['label_as_printed']}]" if f["quantity"] == "other" else "")
@@ -529,7 +534,7 @@ def derive(T, ent, did, route=False, _depth=0):
         args[spec["name"]] = v; used.append((spec["name"], f["fact_id"], v, spec["unit"], src))
         if src == "assumed":
             assumed.append(f["fact_id"])
-    out = dict(value=D["fn"](**args), unit=D["unit"], inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes, readings=[])
+    out = dict(value=D["fn"](**args), unit=D["unit"], qualifiers=D.get("qualifiers", ""), inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes, readings=[])
     for name, (lab, rs) in readings.items():                                    # one value per basis when the paper does not state it
         out["readings"] = [(f"{lab} is relative to the {b.replace('_', ' ')}", D["fn"](**{**args, name: v})) for b, v in rs]
     return out

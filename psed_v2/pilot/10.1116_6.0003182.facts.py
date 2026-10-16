@@ -887,6 +887,8 @@ for fid_ in ("s12.p1#8", "s10.p1#5", "s10.p1#9", "s13.p2#1", "s13.p2#2", "fig5#1
 # what each ± is (P2): the paper says mass gain and GPC ± are the spread within each run's NPC pair, Table II's are
 # pattern-fit errors, ρ's the electrode-area uncertainty, ȳ's a measurement uncertainty; AR's is propagated from L; the rest is not stated
 # what each fraction is a fraction of (P4): porosity of the compact volume (its definition); the paper does not say whether the mass
+# what each GPC is averaged over (P5): the run's porosity drop over its 20 cycles; the cited GPCs are coating thickness or mass over cycles
+C.qualify(K, {s: "over=run" for s in ("s12.p1#10", "s12.p1#11", "s12.p1#12", "s6.p5#3", "s6.p5#7")})
 # gain is relative to the initial or the final mass, nor whether the Rietveld wt% are of all phases or of the crystalline ones
 C.relative_to(K, {**{s: "total_volume" for s in ("s8.p1#9", "fig1a#4", "tabI.r1c2#1", "tabI.r2c2#1", "tabI.r3c2#1")},
                   **{f"s12.p1#{i}": "not_stated" for i in (5, 6, 7)}, **{s: "not_stated" for s in ("tabII.r1c1#1", "tabII.r2c1#1", "tabII.r3c1#1", "tabII.r1c3#1", "tabII.r2c3#1", "tabII.r3c3#1")}})
