@@ -544,6 +544,28 @@ def check_claims():
     return []
 
 
+def check_bases_sec19():
+    """P60 (Sec. 19): every nonempty uncertainty and every spread fact carries a basis from the closed list, or the paper does not say
+    (uncertainty_kind not_stated) and the fact is listed here; counts per basis."""
+    err, counts, empty = [], collections.Counter(), []
+    for pid in list(KEYS) + ["user"]:
+        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+            q = dict(p.split("=", 1) for p in f["qualifiers"].split(";") if "=" in p)
+            if "#" not in f["fact_id"] or not (f["uncertainty"] or "stat" in q):
+                continue
+            b = f.get("basis", "")
+            if b and b not in L.BASES:
+                err.append(f"{f['fact_id']}: basis {b!r} outside the Sec. 19 list (P60)")
+            elif b:
+                counts[b] += 1
+            elif f["uncertainty_kind"] == "not_stated" or (not f["uncertainty_kind"] and "stat" in q):
+                empty.append(f"{f['fact_id']} ({f['evidence'].split(';')[0]})")
+            else:
+                err.append(f"{f['fact_id']}: uncertainty without a basis although its kind is {f['uncertainty_kind']!r} (P60)")
+    print(f"== uncertainty bases (P60): " + ", ".join(f"{b} {n}" for b, n in sorted(counts.items())) + f"; no basis (the paper does not say) {len(empty)}: " + ", ".join(empty))
+    return err
+
+
 def check_kinds():
     """P57: every stored kind is in the vocabulary (per fact, above); every provenance phrase a tool prints ('kind: ...') is in the
     phrase table, and the deictic 'computed here' appears in no tool description, tool output or page text."""
@@ -672,6 +694,11 @@ if __name__ == "__main__":
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_bases_sec19()
+    print(f"== uncertainty bases (P60): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

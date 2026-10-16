@@ -912,6 +912,16 @@ SPECIMEN_CLASSES = ['film', 'porous_composite']
 
 AMBIGUOUS = ['AR', 'Mo', 'Zn', 'coverage', 'depth', 'power', 'pressure', 'sticking probability', 'temperature']
 
+BASES = {'fit': 'the residual of a fit, not a measured spread',
+ 'instrument': "the measurement's own precision or calibration, not a spread between specimens or runs",
+ 'literature': 'the spread of values reported in the literature, not a spread of this work (added to the Sec. 19 list, 2026-10-16: the pilot stores '
+               'such ± on cited averages)',
+ 'propagated': 'propagated from the uncertainties of its inputs, not measured (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on '
+               'computed values)',
+ 'run_to_run': 'spread between repeated runs, not within one run',
+ 'tolerance': 'a manufacturing or design tolerance, not a measured spread',
+ 'within_run': 'spread within one run (between its specimens, pieces or positions), not run-to-run'}
+
 PILOT_MAP = {'Al2O3': {'disposition': 'alias', 'entry_id': 'al2o3', 'kind': 'material', 'qualifiers': ''},
  'MoS2': {'disposition': 'alias', 'entry_id': 'mos2', 'kind': 'material', 'qualifiers': ''},
  'TiS2': {'disposition': 'alias', 'entry_id': 'tis2', 'kind': 'material', 'qualifiers': ''},

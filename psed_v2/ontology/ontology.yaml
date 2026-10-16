@@ -2268,6 +2268,14 @@ vocabularies:
   phase:             [detected, "not detected"]                              # the values of the phase categorical (P15)
   specimen_class:    [film, porous_composite]                               # Sec. 18.4: the class of specimen a value was measured on
   relations:         [increases, decreases, limits, causes, no_effect, requires]   # Sec. 18.6: the relation of a claim's cause to its effect
+  uncertainty_basis:   # Sec. 19 (P60): what a ± or a spread spans, closed; the phrases cannot be paraphrased into another basis
+    instrument:  "the measurement's own precision or calibration, not a spread between specimens or runs"
+    within_run:  "spread within one run (between its specimens, pieces or positions), not run-to-run"
+    run_to_run:  "spread between repeated runs, not within one run"
+    tolerance:   "a manufacturing or design tolerance, not a measured spread"
+    fit:         "the residual of a fit, not a measured spread"
+    literature:  "the spread of values reported in the literature, not a spread of this work (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on cited averages)"
+    propagated:  "propagated from the uncertainties of its inputs, not measured (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on computed values)"
   structure_class:   [lateral, vertical, porous, planar]
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]

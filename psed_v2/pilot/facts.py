@@ -34,6 +34,8 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   links        (stage 3) ids of a second home, ";"-separated: a claim's supporting facts, the same data shown twice
   stance       a claim's stance, lists.STANCES (asserted, hedged, open, limitation), from the paper's own wording
   cause, effect  a claim's variables, ";"-separated entry ids (quantities) or mechanism ids (lists.MECHANISMS); blank when the claim has none
+  basis        what a ± or a spread spans (Sec. 19, P60): instrument, within_run, run_to_run, tolerance, fit, literature, propagated; set by
+               write() from uncertainty_kind or from a spread fact's between= and stat= (lists.basis_of); empty when the paper does not say
   relation     how the cause acts on the effect, one of lists.RELATIONS (increases, decreases, limits, causes, no_effect, requires; P54);
                required when a claim has both a cause and an effect
   author       who wrote the fact down: the paper id for a paper's facts (write() fills it), "user" in user.facts.csv
@@ -59,7 +61,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "basis", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -533,10 +535,21 @@ def kinds(pid):
         r["data_kind"] = k
 
 
+def bases():
+    """P60: the Sec. 19 basis of every ± and spread fact, from the stored kind or the spread's between= and stat= (lists.basis_of)."""
+    for r in _facts:
+        if "#" not in r["fact_id"]:
+            continue
+        q = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p)
+        if r["uncertainty"] or "stat" in q:
+            r["basis"] = L.basis_of(r["uncertainty_kind"], q.get("between", ""), q.get("stat", ""))
+
+
 def write(key, pid):
     """<pid>.facts.csv, <pid>.coverage.csv and <pid>.points.json; elements without facts and without an NK reason are 'missed'."""
     fill_uncertainty()
     kinds(pid)
+    bases()
     for r in _facts:
         r["author"] = r["author"] or pid
     with (HERE / f"{pid}.facts.csv").open("w", newline="", encoding="utf-8") as f:

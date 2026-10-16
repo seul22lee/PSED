@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
-                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, LABELS as _LABELS, NAMES as _NAMES)
+                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, BASES, LABELS as _LABELS, NAMES as _NAMES)
 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
@@ -86,6 +86,23 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 # measurement uncertainty the paper states (electrode area, weighing), the spread of literature values, propagated from inputs, or
 # not stated by the paper
 UNCERTAINTY_KINDS = {"pieces", "runs", "position", "repeat_measurement", "fit", "measurement", "literature", "propagated", "not_stated"}
+# the basis of an uncertainty (Sec. 19, P60; vocab.BASES holds the closed list and its phrases): from what the ± spans (P2's kind)
+# or, for a spread fact, from what varies between its repeats and its statistic; not_stated gives no basis
+BASIS_OF_KIND = {"pieces": "within_run", "position": "within_run", "repeat_measurement": "instrument", "measurement": "instrument", "runs": "run_to_run",
+                 "fit": "fit", "literature": "literature", "propagated": "propagated", "not_stated": ""}
+BASIS_OF_SPREAD = {"items": "tolerance", "runs": "run_to_run", "pieces": "within_run", "position": "within_run", "repeat_measurement": "instrument"}
+
+
+def basis_of(kind="", between="", stat=""):
+    """The Sec. 19 basis of a ± (kind, P2) or of a spread fact (between and stat, P1); '' when the paper does not say."""
+    if stat == "tolerance":
+        return "tolerance"
+    if between:
+        return BASIS_OF_SPREAD.get(between, "")
+    return BASIS_OF_KIND.get(kind, "")
+
+
+assert all(b in BASES for b in set(BASIS_OF_KIND.values()) | set(BASIS_OF_SPREAD.values()) if b), "a basis outside the Sec. 19 list"
 
 # facts (stage 2): fact types and data kinds
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison", "identity", "caveat"]   # bridge: user facts only;

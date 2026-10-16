@@ -85,6 +85,7 @@ def build(onto, pmap):
         KINDS=list(kinds) if isinstance(kinds, dict) else list(kinds), PHRASES=dict(kinds) if isinstance(kinds, dict) else {},
         SPECIMEN_CLASSES=list(voc.get("specimen_class", [])),
         AMBIGUOUS=sorted(voc.get("ambiguous_aliases", {})),
+        BASES=dict(voc.get("uncertainty_basis", {})),
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
     )
 

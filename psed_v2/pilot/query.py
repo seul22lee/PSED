@@ -975,7 +975,7 @@ def record(T, f, alternatives=(), ent=None):
     return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text_of(f), kind=kind(f), definition=definition_of(f),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
-                uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"]) if f["uncertainty"] else None),
+                uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"], basis=f.get("basis") or L.basis_of(f["uncertainty_kind"])) if f["uncertainty"] else None),
                 stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives],
                 caveats=cav_list(caveats_for(T, f, ent or T.ent_of(f["fact_id"]))))
 
@@ -999,7 +999,7 @@ def condition_records(T, ent):
     for fs in T.results(ent).values():
         for f in fs:
             if quals(f).get("stat") and spread_key(f) in out and not out[spread_key(f)]["record"]["uncertainty"]:
-                q = quals(f); out[spread_key(f)]["record"]["uncertainty"] = dict(value=f["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""))
+                q = quals(f); out[spread_key(f)]["record"]["uncertainty"] = dict(value=f["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=f.get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")))
     return out
 
 
@@ -1016,7 +1016,7 @@ def result_records(T, ent):
         r = record(T, fs[0], fs[1:], ent=ent)
         sp = [f for kk, gs in deep.items() if "stat=" in kk for f in gs if spread_key(f) == k]
         if sp and not r["uncertainty"]:
-            q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""))
+            q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=sp[0].get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")))
         r["curve"] = dict(ref=fs[0]["points_ref"], x=quals(fs[0]).get("x", ""), points=T.points.get(fs[0]["points_ref"], {}).get("points", [])) if fs[0]["points_ref"] else None
         act = T.byid.get(fs[0]["parent"], {})
         r["settings"] = [dict(name=name_of(ckey(s), s), text=text_of(s)) for s in T.own(act["fact_id"]) if s["type"] == "setting" and text_of(s)] if act.get("kind") == "measurement" else []
@@ -1315,6 +1315,9 @@ def compare(ids, result=None, x=None):
         have = [(i, cells[i]) for i in ids if cells[i]]
         axes = sorted({x for n_, (i, r) in enumerate(have) for j, s in have[n_ + 1:] for x in incomparable(k, r, k, s)})
         note = f"not comparable: {'; '.join(axes)}" if axes else ""                   # Sec. 18.4, one rule for every quantity
+        bases_ = sorted({(r.get("uncertainty") or {}).get("basis") or "" for i, r in have if r.get("uncertainty")})
+        if len(bases_) > 1:                                                         # Sec. 19.4: spreads of different bases are not alike
+            note = (note + " · " if note else "") + "different basis: " + " vs ".join(b or "not stated" for b in bases_)
         rel = None
         if not axes and len(ids) == 2 and all(cells[i] and cells[i]["value"] is not None for i in ids):
             a, b = (cells[i] for i in ids)
@@ -1643,12 +1646,15 @@ UNC_WORDS = {"fit": "fit error", "measurement": "measurement uncertainty", "lite
 
 
 def unc_note(u):
-    """The words after a ±: ' (sd between runs, n 4)' for a spread between repeats, ' (fit error)' and the like for the other kinds,
-    nothing when the kind is not stated."""
+    """The words after a ± (P48, P60): the basis phrase of the ontology (Sec. 19; lists.BASES) first, then what the number is: 'sd
+    between runs, n 4' for a spread between repeats, 'fit error' and the like for the other kinds; 'basis not stated by the paper'
+    when the kind is not stated."""
     kind = (u or {}).get("kind")
+    basis = (u or {}).get("basis") or L.basis_of(kind or "", kind if kind in BETWEEN else "", (u or {}).get("stat", ""))
+    head = L.BASES[basis] if basis in L.BASES else "basis not stated by the paper"
     if not kind or kind == "not_stated":
-        return ""
+        return f" ({head})"
     n = f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else ""
     if kind in BETWEEN:
-        return f" ({u.get('stat') or 'spread'} between {kind.replace('_', ' ')}{n})"
-    return f" ({UNC_WORDS.get(kind, kind.replace('_', ' '))}{n})"
+        return f" ({head}; {u.get('stat') or 'spread'} between {kind.replace('_', ' ')}{n})"
+    return f" ({head}; {UNC_WORDS.get(kind, kind.replace('_', ' '))}{n})"
