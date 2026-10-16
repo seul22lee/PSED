@@ -68,8 +68,9 @@ class Forest:
         return P["byid"][fid]["type"] == "cited" or any(":refs:" in a for a in self.ancestors(key, fid))
 
     def scope(self, key, fid):
-        P = self.papers[key]
-        return next((a for a in self.ancestors(key, fid) if P["byid"][a]["type"] in SCOPES), "")
+        """The nearest entity above the leaf; else the nearest activity, cited work or the paper."""
+        P, anc = self.papers[key], self.ancestors(key, fid)
+        return next((a for a in anc if P["byid"][a]["type"] == "entity"), next((a for a in anc if P["byid"][a]["type"] in SCOPES), ""))
 
     def context(self, key, fid):
         """quantity -> row (nearest scope first) or "ambiguous"."""
@@ -285,12 +286,21 @@ def fig9(F):
         rows = []
         for cf in cfids:
             f = P["byid"]["yim20:" + cf]
-            run = f["parent"]
-            kids = P["kids"][run]
-            get = lambda q, **ql: next((k for k in kids if k["quantity"] == q and all(quals(k["qualifiers"]).get(a) == b for a, b in ql.items())), None)
+            anc = F.ancestors("yim20", f["fact_id"])
+            ent = next(a for a in anc if P["byid"][a]["type"] == "entity")                 # the curve's entity (the sample)
+
+            def under(x):                                                                 # its facts, not crossing another entity
+                out = []
+                for c in P["kids"].get(x, []):
+                    if c["type"] == "entity":
+                        continue
+                    out.append(c); out += under(c["fact_id"])
+                return out
+            pool = under(ent) + [c for a in anc if P["byid"][a]["type"] == "activity" for c in P["kids"].get(a, [])]   # + the activities above (H, N)
+            get = lambda q, **ql: next((k for k in pool if k["quantity"] == q and all(quals(k["qualifiers"]).get(a) == b for a, b in ql.items())), None)
             H, N, SIIb, PD = get("feature_height"), get("cycle_number"), get("film_thickness", position="plateau"), get("penetration_depth", level="50%")
             xt = next((k for k in P["kids"].get(PD["fact_id"], []) if k["quantity"] == "dimensionless_distance"), None) if PD else None
-            r = dict(fid=f["fact_id"], label=f["mentions"].split(";")[0], run=run.split(":")[1], H=num(H["value"]), N=num(N["value"]), SIIb=num(SIIb["value"]),
+            r = dict(fid=f["fact_id"], label=f["mentions"].split(";")[0], run=P["byid"][ent]["label_as_printed"], H=num(H["value"]), N=num(N["value"]), SIIb=num(SIIb["value"]),
                      PD50=num(PD["value"]), xt50_tab=num(xt["value"]) if xt else None,
                      used=[x["fact_id"] for x in (H, N, SIIb, PD, xt) if x], raw=None, sn=None, norm=None, xt50=None)
             r["xt_pd50"] = r["PD50"] / (r["H"] / 1000)

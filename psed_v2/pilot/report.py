@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Writes reports/pilot.html, the one report page of the pilot (untracked; self-contained, works offline), with three tabs:
 - Facts, per paper: (a) the paper in reading order, each element coloured covered / no knowledge / missed, click for its
-  facts; (b) the tree as find (default), as experiment cards or as text. Find is the workbench, laid out after the v1
+  facts; (b) the tree as find (default), as cards or as text. The tree is physical provenance (paper -> recipe -> deposition
+  -> entity -> measurement activities -> facts); an experiment is an entity with observations; its conditions are the settings
+  of the non-measurement activities above it and its own (its condition vector), its measurement settings a separate "how
+  measured" line;
+  the authors' comparisons are facts (series, grid, replicate set) with members, listed in the left tree with a card each
+  (varied, members, effect ÷ sd, natural series, confounders). Find is the workbench, laid out after the v1
   scientific comparison workbench: left, filters (material, structure type, method, result quantity, paper, from
   lists.py and the paper keys; min and max for deposition temperature, process pressure, cycle number and exposure,
   compared in lists.UNITS after a unit conversion of the value as printed); middle, the runs of the three papers that
@@ -188,7 +193,7 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 .legend span{display:inline-block;padding:1px 8px;border-radius:4px;margin-right:6px;font-size:12px}
 .nd{margin-left:16px;padding:1px 0;line-height:1.35}.nd.leaf{padding-left:14px}summary{cursor:pointer;list-style-position:outside}
 .nd .ty{display:inline-block;min-width:34px;font:600 10px/1.5 ui-monospace,monospace;text-transform:uppercase;color:var(--mut);text-align:center;border:1px solid var(--line);border-radius:3px;padding:0 3px;margin-right:4px}
-.nd .ty.run,.nd .ty.paper,.nd .ty.process,.nd .ty.group{color:var(--acc);border-color:var(--acc)}.nd .ty.claim{color:var(--covb);border-color:var(--covb)}
+.nd .ty.paper,.nd .ty.activity{color:var(--mut)}.ty.entity,.nd .ty.entity{color:var(--acc);border-color:var(--acc)}.ty.comparison{color:#b7791f;border-color:#b7791f}.nd .ty.claim{color:var(--covb);border-color:var(--covb)}.hm{margin-top:5px;font-size:12px}
 .ty.claim.asserted{color:var(--covb);border-color:var(--covb)}.ty.claim.hedged{color:#b7791f;border-color:#b7791f}.ty.claim.open{color:var(--acc);border-color:var(--acc)}.ty.claim.limitation{color:var(--missb);border-color:var(--missb)}
 .nd .v{color:var(--acc)}.nd.vary>summary,.nd.vary{font-weight:650}.nd.linked{opacity:.85;border-left:2px dashed var(--line);margin-left:30px;padding-left:6px}
 .nd code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.nd code.ev:hover{color:var(--acc);text-decoration:underline}
@@ -261,32 +266,36 @@ function readView(d){let h="",tabs={};const els=d.elements;
    return c?`<td class="${c.st==="covered"?"covered":c.st==="missed"?"missed":"nk"}" data-id="${c.id}" onclick="side('${c.id}')">${clean(c.text)}</td>`:"<td></td>"}).join("")+"</tr>").join("")}</table></div>`};
  for(const t of Object.keys(tabs)){if(h.includes(`@@${t}@@`))h=h.replace(`@@${t}@@`,grid(t));else h+=`<h3>${t} (no caption)</h3>`+grid(t)}
  return `<div class="wrap"><div>${h.replace(/@@[^@]+@@/g,"")}</div><div class="side" id="side"><span class="mut">Click an element to see its facts.</span></div></div>`}
-const ORDER={paper:-1,process:0,group:1,run:2,setting:3,observation:4,derived:5,model:6,definition:7,claim:8,cited:9};
+const ORDER={paper:-1,activity:0,entity:1,comparison:2,setting:3,observation:4,derived:5,model:6,definition:7,claim:8,cited:9};
 const valStr=f=>{const v=[f.censor+f.value,f.value_min&&f.value_max?`${f.value_min}–${f.value_max}`:(f.value_min||f.value_max)].filter(Boolean).join(" ");return v?v+(f.unit?" "+f.unit:""):(f.value_text||"")};
 const skey=f=>f.quantity+"|"+f.qualifiers+"|"+(f.quantity==="other"?f.label_as_printed:"");
 function buildTree(d){if(d._T)return d._T;const byId={},kids={};[...d.tree,...d.facts].forEach(n=>{byId[n.fact_id]=n;if(n.parent)(kids[n.parent]=kids[n.parent]||[]).push(n)});
  for(const k in kids)kids[k].sort((a,b)=>(ORDER[a.type]??5)-(ORDER[b.type]??5));
- const vary=new Set();                                   // among sibling runs, the settings whose value differs or is missing in a sibling
- for(const k in kids){const runs=kids[k].filter(n=>n.type==="run");if(runs.length<2)continue;
-  const per=runs.map(r=>{const m={};(kids[r.fact_id]||[]).filter(f=>f.type==="setting").forEach(f=>{m[skey(f)]=(m[skey(f)]?m[skey(f)]+"; ":"")+valStr(f)});return m});
-  const keys=new Set(per.flatMap(m=>Object.keys(m)));
-  for(const key of keys){if(new Set(per.map(m=>m[key]??"∅")).size>1)runs.forEach(r=>(kids[r.fact_id]||[]).forEach(f=>{if(f.type==="setting"&&skey(f)===key)vary.add(f.fact_id)}))}}
  const root=d.tree.find(n=>n.type==="paper");const up={};[...d.tree,...d.facts].forEach(n=>up[n.fact_id]=n.parent);
- const T=d._T={byId,kids,vary,root,up};
- d.tree.filter(n=>n.type==="group").forEach(g=>{let sib=(kids[g.fact_id]||[]).filter(k=>k.type==="run"||k.type==="group");   // "<label> — <varied setting> <values>, <runs>"
-  if(sib.length===1&&sib[0].type==="run"){const ch=(kids[sib[0].fact_id]||[]).filter(k=>k.type==="run");if(ch.length)sib=ch}   // one deposition run with its specimens: the specimens
-  const v=variedAmong(T,sib);
-  const who=sib.length<=4?sib.map(k=>k.label_as_printed||k.fact_id.split(":").slice(1).join(":")).join(" · "):`${sib.length} ${sib.every(k=>k.type==="group")?"groups":"runs"}`;
-  g.glab=`${g.label_as_printed||g.fact_id.split(":").slice(1).join(":")} — ${v.map(c=>qtext(c.f)+" "+[...new Set(Object.values(c.by))].join(" / ")).join("; ")}${v.length?", ":""}${who}`});
+ const T=d._T={byId,kids,vary:new Set(),root,up,comps:d.tree.filter(n=>n.type==="comparison")};
+ T.comps.forEach(c=>{const ms=members(T,c);const v=variedAmong(T,ms);v.forEach(x=>Object.values(x.fids).forEach(fs=>fs.forEach(f=>T.vary.add(f))));   // the settings a stated comparison varies
+  const who=ms.length<=4?ms.map(m=>mlab(T,m)).join(" · "):`${ms.length} members`;   // "<label> — <varied> <values>, <members>"
+  c.glab=`${c.label_as_printed||c.fact_id.split(":").slice(2).join(":")} — ${v.map(x=>qtext(x.f)+" "+[...new Set(Object.values(x.by))].join(" / ")).join("; ")}${v.length?", ":""}${who}`});
  return T}
+const members=(T,c)=>(c.links||"").split(";").slice(1).filter(l=>l&&T.byId[l]&&!l.includes("#"));
+const mlab=(T,m)=>T.byId[m]?nlab(T.byId[m]):m;
+const NODE=new Set(["activity","entity","comparison","paper","cited"]);
+function own(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(NODE.has(c.type))continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}   // a node's own facts
+function below(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(["entity","comparison","cited"].includes(c.type))continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}   // an entity's facts, its activities included, not a piece cut from it
+const isCond=n=>!!n&&n.type==="activity"&&n.kind!=="measurement";
+function chain(T,id){const out=[];let x=id;while(x&&T.byId[x]){out.push(x);x=T.up[x]}return out}
+const entOf=(T,id)=>chain(T,id).find(x=>T.byId[x].type==="entity")||null;
+const depOf=(T,id)=>chain(T,id).find(x=>T.byId[x].type==="activity"&&["deposition","simulation"].includes(T.byId[x].kind))||null;
+const compsOf=(T,id)=>{const ch=new Set(chain(T,id));return T.comps.filter(c=>members(T,c).some(m=>ch.has(m)))};
+const hasObs=(T,id)=>below(T,id).some(f=>["observation","derived","model"].includes(f.type));
 function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(n);const ev=(n.evidence||"").split(";")[0];const fl=n.flag||[];
  const q=(n.qualifiers||"").split(";").filter(Boolean).map(p=>`<span class="q" data-k="${esc(p.split("=")[0])}">${esc(p)}</span>`).join("")+(n.unit&&!node?`<span class="q" data-k="unit" hidden>unit</span>`:"");
  const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
  return `<span class="ty ${n.type} ${n.stance||""}">${node?n.type:n.type.slice(0,3)}</span><span ${node?"":`class="stm" onclick="event.preventDefault();event.stopPropagation();cardFor('${n.fact_id}',${i})"`}>${esc(n.statement)}</span>${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
 function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="claim"&&n.links?n.links.split(";").map(l=>T.byId[l]).filter(Boolean):[];
- const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}${n.type==="run"&&trayHas(i,n.fact_id)?" tray":""}`;
+ const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}${n.type==="entity"&&trayHas(i,n.fact_id)?" tray":""}`;
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
- const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
+ const op=open||(n.type==="activity"&&["recipe","deposition"].includes(n.kind))||(n.type==="paper"&&i===P);
  return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
 let FQ="",FX="",DEMO=false;
 const COL9={"100 nm":"#3b7fc4","500 nm":"#c0392b","2000 nm":"#2e7d3a","250 cycles":"#e67e22","500 cycles":"#c0392b","1000 cycles":"#3b5fc4"};
@@ -362,7 +371,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
 function jump(fid){if(V==="tree"&&TM!=="text"){const pi=DATA.findIndex(d=>d.facts.some(f=>f.fact_id===fid));if(pi>=0){cardFor(fid,pi);return}}const el=document.querySelector(`[data-f="${CSS.escape(fid)}"]:not(.linked)`);if(!el)return;let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}el.scrollIntoView({block:"center"});el.classList.add("sel");setTimeout(()=>el.classList.remove("sel"),1500)}
-let TM="find";let CARD=null;let FIGC=null;let GCARD=null;
+let TM="find";let CARD=null;let FIGC=null;let CCARD=null;
 const ckey=f=>`${f.quantity||"—"}|${f.qualifiers}|${f.quantity==="other"?f.label_as_printed:""}`;
 const PRIM=["reactor_type","deposition_temperature","process_pressure","precursor_purity","source_temperature","pulse_time","purge_time","feature_height","cycle_number","substrate"];   // row 2 and find: the process-defining settings, in this order, before the rest
 const rank=f=>{const r=PRIM.indexOf(f.quantity);return r<0?PRIM.length:r};
@@ -372,71 +381,60 @@ function fitChips(){const box=document.getElementById("pchips"),t=document.getEl
 function toggleChips(){const box=document.getElementById("pchips");if(!box)return;box.classList.toggle("open");fitChips()}
 const ctext=f=>valStr(f)||f.statement.replace(/^[^:]*:\s*/,"").slice(0,40);
 const qlab=f=>esc(qtext(f));   // the short label (lists.LABELS), as every screen shows it
-function subtree(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(c.type==="run"||c.type==="group")continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}
-const settingsOf=(T,id)=>subtree(T,id).filter(f=>f.type==="setting"&&f.quantity);
-function variedAmong(T,nodes){const per={};nodes.forEach(n=>settingsOf(T,n.fact_id).forEach(f=>{const k=ckey(f),v=ctext(f);(per[k]=per[k]||{f,by:{}});const cur=per[k].by[n.fact_id];if(!cur)per[k].by[n.fact_id]=v;else if(!cur.split("; ").includes(v))per[k].by[n.fact_id]=cur+"; "+v}));
- return Object.values(per).filter(c=>new Set(Object.values(c.by)).size>1)}
-const rowOf=(T,id)=>{let x=id;while(x&&T.byId[x]&&!(T.byId[x].type==="run"||T.byId[x].type==="group"))x=T.up[x];return x};
+const subtree=below;const settingsOf=(T,id)=>own(T,id).filter(f=>f.type==="setting"&&f.quantity);
+function variedAmong(T,nodes){const per={};nodes.forEach(n=>{const id=typeof n==="string"?n:n.fact_id;Object.entries(inherited(T,id)).forEach(([k,e])=>{(per[k]=per[k]||{f:e.f,by:{},fids:{}});per[k].by[id]=e.text;per[k].fids[id]=e.fs.map(f=>f.fact_id)})});
+ return Object.values(per).filter(c=>new Set(Object.values(c.by)).size>1)}   // among nodes (ids), the settings of their condition vectors that differ
+const rowOf=(T,id)=>{let x=id;while(x&&T.byId[x]&&!NODE.has(T.byId[x].type))x=T.up[x];return x};
 const nlab=n=>n.glab||n.label_as_printed||n.fact_id.split(":").slice(1).join(":");
 const spark=p=>{const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);return `<svg class="sp" viewBox="0 0 70 20"><polyline fill="none" stroke="var(--acc)" stroke-width="1.2" points="${p.map(a=>(2+66*(a[0]-x0)/((x1-x0)||1)).toFixed(1)+","+(18-16*(a[1]-y0)/((y1-y0)||1)).toFixed(1)).join(" ")}"/></svg>`};
 const elab=e=>{let m;if(m=e.match(/^fig(\d+)([a-z]*)(\.cap)?$/))return `Fig. ${m[1]}${m[2]}${m[3]?" caption":""}`;if(m=e.match(/^tab(u?)(\w+)\./))return m[1]?"nomenclature":`Table ${m[2]}`;if(m=e.match(/^s(\d+)\./))return `text §${m[1]}`;if(e.startsWith("abs"))return "abstract";if(e.startsWith("eq"))return `Eq. ${e.slice(2)}`;return e};
-function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=(function(){let x=T.up[fid];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x})();
- P=pi;V="tree";TM="cards";CARD=run||null;FIGC=null;GCARD=null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no run</h2><div class="mut">${esc(fid)} is not under a run (a paper-, process- or group-level fact).</div><div id="side" class="evbox"></div></div>`}}
-function openCard(pi,id){P=pi;CARD=id;FIGC=null;GCARD=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
+function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=entOf(T,fid);
+ P=pi;V="tree";TM="cards";CARD=run||null;FIGC=null;CCARD=null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no entity</h2><div class="mut">${esc(fid)} is not under an entity (a paper-, recipe- or comparison-level fact).</div><div id="side" class="evbox"></div></div>`}}
+function openCard(pi,id){P=pi;CARD=id;FIGC=null;CCARD=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
 const trayHas=(i,id)=>WB.tray.some(t=>t.i===i&&t.id===id);
-function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""} ${trayHas(i,n.fact_id)?"tray":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
- const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="process")return `<div class="mut" style="margin-left:10px">process (conditions in each card, row 2)</div>`+walk(c.fact_id);
-  if(c.type==="group"){const cf=confound(T,c.fact_id);return `<details open><summary><span class="ty group">group</span><span class="gl ${GCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="event.preventDefault();event.stopPropagation();openGroup(${i},'${c.fact_id}')">${esc(nlab(c))}</span>${cf?` <span class="inf" title="runs differ in ${cf.length} settings">${cf.length} settings</span>`:""}</summary>${walk(c.fact_id)}</details>`}
-  if(c.type==="run"){const ch=(T.kids[c.fact_id]||[]).some(k=>k.type==="run");return ch?`<details open><summary>${line(c)}</summary>${walk(c.fact_id)}</details>`:line(c)}return""}).join("");
- const ns=naturalSeries(i);return `<div class="lt"><b>${d.key}</b> <span class="mut">${d.tree.filter(n=>n.type==="run").length} runs</span>${walk(T.root.fact_id)}<details open class="ns"><summary><span class="ty group">series</span>natural series, computed <span class="mut">(${ns.length})</span></summary>${ns.map((sr,j)=>seriesLine(i,sr,j)).join("")||'<div class="mut" style="margin-left:10px">none</div>'}</details></div>`}
+function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""} ${trayHas(i,n.fact_id)?"tray":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty entity">${n.how==="inferred"?"inferred":"entity"}</span>${esc(nlab(n))}</div>`;
+ const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="activity"&&c.kind==="recipe")return `<div class="mut" style="margin-left:10px">recipe (conditions in each card, row 2)</div>`+walk(c.fact_id);
+  if(c.type==="activity"&&["deposition","simulation"].includes(c.kind)){const inner=walk(c.fact_id);return inner?`<details open><summary><span class="ty activity">${esc(c.kind)}</span>${esc(nlab(c))}${c.how==="inferred"?' <span class="mut">inferred</span>':""}</summary>${inner}</details>`:""}
+  if(c.type==="activity")return walk(c.fact_id);
+  if(c.type==="entity"){const inner=walk(c.fact_id);return inner?`<details open><summary>${line(c)}</summary>${inner}</details>`:line(c)}return""}).join("");
+ const ns=naturalSeries(i);
+ return `<div class="lt"><b>${d.key}</b> <span class="mut">${RUNS().filter(r=>r.i===i).length} experiments</span>${walk(T.root.fact_id)}<details open><summary><span class="ty comparison">stated</span>comparisons <span class="mut">(${T.comps.length})</span></summary>${T.comps.map(c=>{const cf=confound(T,c.fact_id);return `<div class="rl gl ${CCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="openComp(${i},'${c.fact_id}')"><span class="ty comparison">${esc(c.kind)}</span>${esc(nlab(c))}${cf?` <span class="inf" title="members differ in ${cf.length} settings">${cf.length} settings</span>`:""}</div>`}).join("")||'<div class="mut" style="margin-left:10px">none</div>'}</details><details open class="ns"><summary><span class="ty group">series</span>natural series, computed <span class="mut">(${ns.length})</span></summary>${ns.map((sr,j)=>seriesLine(i,sr,j)).join("")||'<div class="mut" style="margin-left:10px">none</div>'}</details></div>`}
 function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=f=>`<code class="ev" title="${esc(f.fact_id)}" onclick="side('${f.evidence.split(";")[0]}',${i})">${f.evidence.split(";")[0]}</code>`;
- const levels=levelsOf(T,id);
- const own=levels[0];const shown=levels.find(l=>l.varied.length)||own;
- // 1 what was varied
- let r1="";const sibLab=s=>`<span class="sib" onclick="openCard(${i},'${s.fact_id}')">${esc(nlab(s))}</span>`;
- if(own.sibs.length<2)r1=`<div class="mut">no sibling runs under ${esc(nlab(T.byId[own.par]))}.</div>`;
- else if(!own.varied.length)r1=`<div class="mut">the ${own.sibs.length} siblings under ${esc(nlab(T.byId[own.par]))} differ in no recorded setting (${own.sibs.filter(s=>s.fact_id!==id).map(sibLab).join(", ")}).</div>`;
- if(shown.varied.length){r1+=(shown!==own?`<div class="mut">one level up, ${esc(nlab(T.byId[shown.node]))} against its siblings:</div>`:"")+shown.varied.map(c=>`<div><b>${qlab(c.f)}</b>: <span class="num">${esc(c.by[shown.node]||"not stated")}</span> <span class="mut">· siblings: ${shown.sibs.filter(s=>s.fact_id!==shown.node).map(s=>`${esc(c.by[s.fact_id]||"—")} (${sibLab(s)})`).join(", ")}</span></div>`).join("")}
- else if(shown===own&&own.sibs.length>=2)r1+="";
- if(!shown.varied.length&&own.sibs.length>=2)r1+=`<div class="mut">nor does any level above.</div>`;
- // 2 other conditions: the process-defining settings first (PRIM), then the rest; the same value stated at two levels is one chip
- // (marked if either is); the box shows two lines until "+N more" opens it (fitChips counts the chips the two lines cut off)
- const varKeys=new Set(shown.varied.map(c=>ckey(c.f)));const chips=[];
- const addChip=(f,diff,lv)=>{const k=ckey(f)+"|"+ctext(f);const c=chips.find(x=>x.k===k);if(c){c.diff=c.diff||diff;return}chips.push({f,diff,lv,k})};
- settingsOf(T,id).filter(f=>!(shown===own&&varKeys.has(ckey(f)))).forEach(f=>addChip(f,false,"this run"));
- levels.forEach((l,k)=>{if(k===0)return;const lvVar=new Set(l.varied.map(c=>ckey(c.f)));settingsOf(T,l.node).forEach(f=>addChip(f,lvVar.has(ckey(f)),nlab(T.byId[l.node])))});
- let a=T.up[levels[levels.length-1].node];while(a&&T.byId[a]){settingsOf(T,a).forEach(f=>addChip(f,false,T.byId[a].type));a=T.up[a]}
- chips.sort((x,y)=>rank(x.f)-rank(y.f));
- const r2=chips.length?`<div class="pchips" id="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.lv)}: ${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc(qtext(c.f))} ${esc(ctext(c.f))}</span>`).join(" ")}</div><div class="mut" style="font-size:11px"><span class="lnk" id="pmore" onclick="toggleChips()"></span> ${chips.filter(c=>c.diff).length} marked: differ from a sibling at their level</div>`:`<div class="mut">none recorded</div>`;
- // 3 measured
- const meas=subtree(T,id).filter(f=>["observation","derived","model"].includes(f.type));const groups={};meas.forEach(f=>{const e=f.evidence.split(";")[0];const g=elab(e);(groups[g]=groups[g]||[]).push(f)});
- const inf=n.qualifiers.includes("how=inferred");
+ const r=RUNS().find(x=>x.id===id)||{inh:inherited(T,id),res:results(T,id),how:howMeasured(T,id)};const comps=compsOf(T,id);const ch=new Set(chain(T,id));const dep=depOf(T,id);
+ // 1 what was varied: for each stated comparison the entity is in, its varied settings, this entity's value beside the other members'
+ const r1=comps.length?comps.map(c=>{const ms=members(T,c);const v=variedAmong(T,ms);const mine=ms.find(m=>ch.has(m));return `<div><b>${esc(c.label_as_printed||c.fact_id)}</b> <span class="mut">(${esc(c.kind)})</span>${v.length?v.map(x=>`<div class="fl2">${qlab(x.f)}: <span class="num">${esc(x.by[mine]||"not stated")}</span> <span class="mut">· others: ${ms.filter(m=>m!==mine).map(m=>`${esc(x.by[m]||"—")} (<span class="sib" onclick="openNode(${i},'${m}')">${esc(mlab(T,m))}</span>)`).join(", ")}</span></div>`).join(""):' <span class="mut">members differ in no recorded setting</span>'}</div>`}).join(""):`<div class="mut">in no stated comparison</div>`;
+ // 2 conditions: the condition vector, process-defining settings first, those a stated comparison varies marked; then how measured
+ const chips=Object.values(r.inh).map(e=>({f:e.f,text:e.text,diff:e.fs.some(f=>T.vary.has(f.fact_id))}));chips.sort((x,y)=>rank(x.f)-rank(y.f));
+ const r2=(chips.length?`<div class="pchips" id="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc(qtext(c.f))} ${esc(c.text)}</span>`).join(" ")}</div><div class="mut" style="font-size:11px"><span class="lnk" id="pmore" onclick="toggleChips()"></span> ${chips.filter(c=>c.diff).length} marked: varied in a stated comparison</div>`:`<div class="mut">none recorded</div>`)
+  +`<div class="hm"><span class="mut">how measured:</span> ${r.how.map(h=>`<span class="chip" title="${esc(h.lv)}: ${esc(h.f.statement)}" onclick="side('${h.f.evidence.split(";")[0]}',${i})">${esc(qtext(h.f))} ${esc(valStr(h.f))}</span>`).join(" ")||'<span class="mut">none recorded</span>'}</div>`;
+ // 3 measured: the facts under the entity (its measurement and later activities), by figure, table or paragraph
+ const meas=below(T,id).filter(f=>["observation","derived","model"].includes(f.type));const groups={};meas.forEach(f=>{const e=f.evidence.split(";")[0];const g=elab(e);(groups[g]=groups[g]||[]).push(f)});
+ const inf=n.how==="inferred";
  const fline=f=>`<div class="fl2"><span class="cv" data-f="${f.fact_id}">${f.points?`<span class="spw">${spark(f.points)}</span>`:""}<span class="ty ${f.type}">${f.type.slice(0,3)}</span>${esc(f.statement)}${valStr(f)?` <span class="num">${esc(valStr(f))}</span>`:""}${f.nopts?' <span class="mut">(no points)</span>':""}${ev(f)}</span></div>`;
- const childRuns=(T.kids[id]||[]).filter(k=>k.type==="run");
- const r3=(inf?`<div><span class="inf">membership inferred</span> <span class="mut">${esc(n.statement)}</span></div>`:"")+(childRuns.length?`<div class="mut">measured on its specimens: ${childRuns.map(sibLab).join(", ")}</div>`:"")+(meas.length?Object.entries(groups).map(([g,fs])=>`<div class="mg"><b>${esc(g)}</b> <span class="mut">(${fs.length})</span>${fs.map(fline).join("")}</div>`).join(""):`<div class="mut">no measured facts on this run</div>`);
- // 4 why and what it showed
- const grpId=levels.map(l=>l.par).find(p=>T.byId[p].type==="group"||(T.byId[p].type==="run"&&T.byId[p].links));const grp=grpId?T.byId[grpId]:null;const pur=grp&&grp.links?T.byId[grp.links.split(";")[0]]:null;
- const inRun=new Set(subtree(T,id).map(f=>f.fact_id).concat([id]));const inGrp=grpId?new Set(subtree(T,grpId).map(f=>f.fact_id).concat([grpId])):new Set();
- const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>inRun.has(l)||inGrp.has(l)||rowOf(T,l)===id||rowOf(T,l)===grpId)&&(!pur||c.fact_id!==pur.fact_id));
- const r4=(pur?`<div><b>purpose of ${esc(nlab(grp))}</b> <span class="mut">(${esc(pur.type)})</span>: ${esc(pur.statement)}${pur.type==="claim"?` <span class="chip scope">${esc(claimScope(d,i,pur).text)}</span>`:""}${ev(pur)}</div>`:`<div class="mut">no group with a purpose above this run</div>`)+(claims.length?claims.map(c=>claimLine(d,i,c)).join(""):`<div class="mut fl2">no claim links to this run or its group</div>`);
- // 5 compare: a run picker (siblings first, then every run of the three papers) and a button that opens find with the two runs
- const sibs=own.sibs.filter(s=>s.fact_id!==id);const opt=(j,n,sel)=>`<option value="${j}|${n.fact_id}" ${sel?"selected":""}>${esc(nlab(n))}</option>`;
- const r5=`<select id="cmp">${sibs.length?`<optgroup label="siblings">${sibs.map((s,k)=>opt(i,s,k===0)).join("")}</optgroup>`:""}${DATA.map((o,j)=>`<optgroup label="${o.key}">${o.tree.filter(n=>n.type==="run"&&n.fact_id!==id).map(n=>opt(j,n,false)).join("")}</optgroup>`).join("")}</select> <button onclick="compareWith(${i},'${id}')">compare</button>`;
- return `<div class="card"><h2>${esc(nlab(n))} <span class="mut" style="font-size:12px;font-weight:400">${esc(n.fact_id)} · ${esc(n.qualifiers)}</span> ${trayBtn(i,id)}</h2><div class="mut">${esc(n.statement)}</div>
- <section><h4>1 · what was varied</h4>${r1}</section><section><h4>2 · other conditions</h4>${r2}</section><section><h4>3 · measured</h4>${r3}</section>
+ const pieces=(T.kids[id]||[]).filter(k=>k.type==="entity");const sibLab=s_=>`<span class="sib" onclick="openCard(${i},'${s_.fact_id}')">${esc(nlab(s_))}</span>`;
+ const r3=(inf?`<div><span class="inf">entity inferred</span> <span class="mut">${esc(n.statement)}</span></div>`:"")+(pieces.length?`<div class="mut">pieces with their own measurements: ${pieces.map(sibLab).join(", ")}</div>`:"")+(meas.length?Object.entries(groups).map(([g,fs])=>`<div class="mg"><b>${esc(g)}</b> <span class="mut">(${fs.length})</span>${fs.map(fline).join("")}</div>`).join(""):`<div class="mut">no measured facts on this entity</div>`);
+ // 4 why and what it showed: the comparisons' purposes, then the claims behind the entity
+ const purs=comps.map(c=>{const p=(c.links||"").split(";")[0];return p&&T.byId[p]&&p.includes("#")?{c,p:T.byId[p]}:null}).filter(Boolean);const pids=new Set(purs.map(x=>x.p.fact_id));
+ const claims=claimsFor(d,T,id).filter(c=>!pids.has(c.fact_id));
+ const r4=(purs.length?purs.map(({c,p})=>`<div><b>purpose of ${esc(c.label_as_printed||c.fact_id)}</b> <span class="mut">(${esc(p.type)})</span>: ${esc(p.statement)}${p.type==="claim"?` <span class="chip scope">${esc(claimScope(d,i,p).text)}</span>`:""}${ev(p)}</div>`).join(""):`<div class="mut">no stated comparison with a purpose</div>`)+(claims.length?claims.map(c=>claimLine(d,i,c)).join(""):`<div class="mut fl2">no claim links to this entity</div>`);
+ // 5 compare: an entity picker (the members of its comparisons first, then every experiment of the three papers) and the tray
+ const peers=[...new Set(comps.flatMap(c=>compEntities(T,c.fact_id)))].filter(x=>x!==id);const opt=(j,n_,sel)=>`<option value="${j}|${n_.fact_id}" ${sel?"selected":""}>${esc(nlab(n_))}</option>`;
+ const r5=`<select id="cmp">${peers.length?`<optgroup label="same comparison">${peers.map((x,k)=>opt(i,T.byId[x],k===0)).join("")}</optgroup>`:""}${DATA.map((o,j)=>`<optgroup label="${o.key}">${RUNS().filter(x=>x.i===j&&x.id!==id).map(x=>opt(j,x.n,false)).join("")}</optgroup>`).join("")}</select> <button onclick="compareWith(${i},'${id}')">compare</button>`;
+ return `<div class="card"><h2>${esc(nlab(n))} <span class="mut" style="font-size:12px;font-weight:400">${esc(n.fact_id)} · ${esc(n.how)}${dep?` · ${esc(nlab(T.byId[dep]))}`:""}</span> ${trayBtn(i,id)}</h2><div class="mut">${esc(n.statement)}</div>
+ <section><h4>1 · what was varied</h4>${r1}</section><section><h4>2 · conditions</h4>${r2}</section><section><h4>3 · measured</h4>${r3}</section>
  <section><h4>4 · why and what it showed</h4>${r4}</section><section><h4>5 · compare</h4>${r5}</section>
  <div id="side" class="evbox"><span class="mut">Click an element id for the element, its crop and its facts.</span></div></div>`}
 // workbench (the find view): left filters, middle the matching runs, right the tray and the compare panel
-function inherited(T,id){const m={};let x=id;while(x&&T.byId[x]){const lv={};settingsOf(T,x).forEach(f=>{const k=ckey(f);(lv[k]=lv[k]||{f,fs:[],t:[]});lv[k].fs.push(f);const t=valStr(f);if(t&&!lv[k].t.includes(t))lv[k].t.push(t)});for(const k in lv)if(!(k in m))m[k]={f:lv[k].f,fs:lv[k].fs,text:lv[k].t.join("; ")};x=T.up[x]}return m}
-function results(T,id){const m={};subtree(T,id).filter(f=>["observation","derived","model"].includes(f.type)&&f.quantity&&(valStr(f)||f.points_ref)).forEach(f=>{const k=ckey(f);(m[k]=m[k]||{f,fs:[]}).fs.push(f)});return m}
-const grpOf=(T,id)=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="group")x=T.up[x];return x&&T.byId[x]?x:null};
-let _RUNS=null;const RUNS=()=>_RUNS||(_RUNS=DATA.flatMap((d,i)=>{const T=buildTree(d);return d.tree.filter(n=>n.type==="run").map(n=>({d,i,T,n,id:n.fact_id,inh:inherited(T,n.fact_id),res:results(T,n.fact_id)}))}));
+function inherited(T,id){const m={};chain(T,id).forEach(x=>{if(!isCond(T.byId[x])&&T.byId[x].type!=="entity")return;const lv={};settingsOf(T,x).forEach(f=>{const k=ckey(f);(lv[k]=lv[k]||{f,fs:[],t:[]});lv[k].fs.push(f);const t=valStr(f);if(t&&!lv[k].t.includes(t))lv[k].t.push(t)});for(const k in lv)if(!(k in m))m[k]={f:lv[k].f,fs:lv[k].fs,text:lv[k].t.join("; ")}});return m}   // the condition vector: settings of the non-measurement activities at or above the node, nearest first
+function howMeasured(T,id){const out=[],seen=new Set();(function w(x){for(const c of T.kids[x]||[]){if(["entity","comparison","cited"].includes(c.type))continue;if(c.type==="activity"&&c.kind==="measurement"){settingsOf(T,c.fact_id).forEach(f=>out.push({f,lv:nlab(c)}));const meth=T.byId[`${T.root.fact_id}:method:${c.fact_id.split(":").pop()}`];if(meth&&!seen.has(meth.fact_id)){seen.add(meth.fact_id);settingsOf(T,meth.fact_id).forEach(f=>out.push({f,lv:nlab(meth)}))}}w(c.fact_id)}})(id);return out}   // the measurement settings of an entity: its measurement activities and the paper's shared method activities
+function results(T,id){const m={};below(T,id).filter(f=>["observation","derived","model"].includes(f.type)&&f.quantity&&(valStr(f)||f.points_ref)).forEach(f=>{const k=ckey(f);(m[k]=m[k]||{f,fs:[]}).fs.push(f)});return m}
+const grpOf=(T,id)=>{const c=compsOf(T,id)[0];return c?c.fact_id:null};   // the first stated comparison the node belongs to
+let _RUNS=null;const RUNS=()=>_RUNS||(_RUNS=DATA.flatMap((d,i)=>{const T=buildTree(d);return d.tree.filter(n=>n.type==="entity"&&hasObs(T,n.fact_id)).map(n=>({d,i,T,n,id:n.fact_id,inh:inherited(T,n.fact_id),res:results(T,n.fact_id),how:howMeasured(T,n.fact_id)}))}));   // the experiments: entities with observations
 const qshort=(q,qs)=>{const k=q+"{"+qs+"}";if(LISTS.labels[k])return LISTS.labels[k];const base=LISTS.labels[q]||(q||"").replace(/_/g," ");const vals=qs.split(";").filter(Boolean).map(p=>p.split("=")[1]);return vals.length?base+" "+vals.join(" "):base};
 const qtext=f=>{const qs=(f.qualifiers||"").split(";").filter(Boolean);const x=qs.find(p=>p.startsWith("x="));const rest=qs.filter(p=>!p.startsWith("x=")).join(";");const base=f.quantity==="other"?(f.label_as_printed||"other")+(rest?" "+rest.split(";").map(p=>p.split("=")[1]).join(" "):""):qshort(f.quantity||"",rest);return x?`${base} vs ${qshort(x.slice(2),"")}`:base};
 const shadeOf=fs=>{const nums=fs.map(fv).filter(v=>v!=null&&!isNaN(v));const min=Math.min(...nums),max=Math.max(...nums),log=nums.length>1&&nums.every(v=>v>0)&&Math.log10(max/min)>2;return v=>{if(v==null||isNaN(v)||!(max>min))return"";const t=log?(Math.log10(v)-Math.log10(min))/(Math.log10(max)-Math.log10(min)):(v-min)/(max-min);return `background:color-mix(in srgb,var(--acc) ${Math.round(8+42*t)}%,transparent)`}};
 const evc=(f,i)=>`onclick="event.stopPropagation();side('${f.evidence.split(";")[0]}',${i})"`;
-function levelsOf(T,id){const levels=[];let x=id;while(T.up[x]&&T.byId[T.up[x]]){const par=T.up[x];const sibs=(T.kids[par]||[]).filter(k=>(k.type==="run"||k.type==="group"));levels.push({node:x,par,sibs,varied:variedAmong(T,sibs)});if(["process","paper"].includes(T.byId[par].type))break;x=par}return levels}
-const variedText=(T,id)=>{const s=levelsOf(T,id).find(l=>l.varied.length);return s?s.varied.filter(c=>c.by[s.node]).sort((a,b)=>rank(a.f)-rank(b.f)).map(c=>`${qtext(c.f)} ${c.by[s.node]}`).join("; "):""};
+const variedText=(T,id)=>{const ch=new Set(chain(T,id));return [...new Set(compsOf(T,id).flatMap(c=>{const ms=members(T,c);const mine=ms.find(m=>ch.has(m));return variedAmong(T,ms).filter(x=>x.by[mine]).sort((a,b)=>rank(a.f)-rank(b.f)).map(x=>`${qtext(x.f)} ${x.by[mine]}`)}))].join("; ")};   // what the stated comparisons vary, this entity's values
 const EMPTY_RANGE=()=>({deposition_temperature:["",""],process_pressure:["",""],cycle_number:["",""],exposure:["",""]});
 let WB={material:"",structure:"",method:"",quantity:"",paper:"",range:EMPTY_RANGE(),tray:[]};
 const RANGE={deposition_temperature:"°C",process_pressure:"Pa",cycle_number:"",exposure:"Pa s"};   // the filter's units (lists.UNITS)
@@ -498,17 +496,17 @@ function condTable(items){const ks=[...new Set(items.flatMap(it=>Object.keys(it.
 // so what: a run's why (its group's purpose) and result (its first linked claim, else its main result value)
 const RES_PRIM=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","crystallinity","mass_gain"];
 const short=(t,n=72)=>t.length>n?t.slice(0,n-1)+"…":t;
-function purposeOf(T,id){let g=grpOf(T,id);while(g){const n=T.byId[g];const p=(n.links||"").split(";")[0];if(p&&T.byId[p]&&p.includes("#"))return T.byId[p];g=grpOf(T,g)}return null}
-function claimsFor(d,T,id){const g=grpOf(T,id);const ids=new Set(subtree(T,id).map(f=>f.fact_id).concat([id]));const ig=g?new Set(subtree(T,g).map(f=>f.fact_id).concat([g])):new Set();
- return d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||ig.has(l)))}
-function resultOf(r){const c=claimsFor(r.d,r.T,r.id).filter(c=>c.links.split(";").some(l=>l===r.id||subtree(r.T,r.id).some(f=>f.fact_id===l)))[0];if(c)return {c,text:short(c.statement)};
+function purposeOf(T,id){const c=compsOf(T,id)[0];if(!c)return null;const p=(c.links||"").split(";")[0];return p&&T.byId[p]&&p.includes("#")?T.byId[p]:null}
+function claimsFor(d,T,id){const ids=new Set(chain(T,id));below(T,id).forEach(f=>ids.add(f.fact_id));chain(T,id).forEach(x=>own(T,x).forEach(f=>ids.add(f.fact_id)));compsOf(T,id).forEach(c=>{ids.add(c.fact_id);own(T,c.fact_id).forEach(f=>ids.add(f.fact_id))});
+ return d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)))}   // claims linked to the entity, an activity above it, their facts or its comparisons
+function resultOf(r){const own_=new Set([r.id,...below(r.T,r.id).map(f=>f.fact_id)]);const c=claimsFor(r.d,r.T,r.id).filter(c=>c.links.split(";").some(l=>own_.has(l)))[0];if(c)return {c,text:short(c.statement)};
  const ks=Object.values(r.res).filter(o=>valStr(o.fs[0])).sort((a,b)=>{const ra=RES_PRIM.indexOf(a.f.quantity),rb=RES_PRIM.indexOf(b.f.quantity);return (ra<0?9:ra)-(rb<0?9:rb)});return ks.length?{f:ks[0].fs[0],text:`${qtext(ks[0].f)} ${valStr(ks[0].fs[0])}`}:null}
-const soWhat=r=>{const p=purposeOf(r.T,r.id),x=resultOf(r);return `${p?`<span class="chip why" title="${esc(p.statement)}">why: ${esc(short(p.statement))}</span>`:""}${x?`<span class="chip res" title="${esc(x.c?x.c.statement:x.f.statement)}">result: ${esc(x.text)}</span>`:""}`};
+const soWhat=r=>{const cs=compsOf(r.T,r.id),x=resultOf(r);return `${cs.length?`<span class="chip why" title="${esc(cs.map(c=>c.statement).join(" · "))}">why: ${esc(cs.map(c=>`${c.label_as_printed||c.fact_id} (${c.kind})`).join(" · "))}</span>`:""}${x?`<span class="chip res" title="${esc(x.c?x.c.statement:x.f.statement)}">result: ${esc(x.text)}</span>`:""}`};   // why: the stated comparisons the entity is in
 // relations: per tray pair, the differing settings and the direction of each shared result; what the papers say: the claims behind the tray
 function relations(items){const out=[];items.forEach((a,i)=>items.slice(i+1).forEach(b=>{const v=verdict(a,b);const d=diffs(a,b).slice(0,4).map(x=>`${qtext(x.f)} ${x.va} vs ${x.vb}`);
- const same=a.r.i===b.r.i&&grpOf(a.r.T,a.r.id)&&grpOf(a.r.T,a.r.id)===grpOf(b.r.T,b.r.id);const shared=Object.keys(a.keys).filter(k=>k in b.keys);
+ const shared_c=a.r.i===b.r.i?compsOf(a.r.T,a.r.id).filter(c=>compsOf(b.r.T,b.r.id).includes(c)):[];const same=shared_c.length>0;const repl=shared_c.some(c=>c.kind==="replicate");const shared=Object.keys(a.keys).filter(k=>k in b.keys);
  let body;if(v.v==="direct"){const dirs=shared.map(k=>{const fa=a.r.res[k]?a.r.res[k].fs[0]:a.keys[k],fb=b.r.res[k]?b.r.res[k].fs[0]:b.keys[k];const x=fv(fa),y=fv(fb);const arrow=x!=null&&y!=null&&!isNaN(x)&&!isNaN(y)?(y>x?"↑":y<x?"↓":"="):"·";return `<span class="chip">${qlab(a.keys[k])} ${esc(valStr(fa)||"∿")} ${arrow} ${esc(valStr(fb)||"∿")}</span>`});
-  body=`<span class="chip ${same?"diff":""}">${same?"paper's own comparison":"not compared by the authors"}</span> ${dirs.join(" ")}`}else body=`<span class="chip"><b class="${v.c}">${esc(v.v)}</b>: ${esc(v.why.split(" · differs")[0])}</span>`;
+  body=`<span class="chip ${same?"diff":""}">${repl?"replicate":same?"paper's own comparison":"not compared by the authors"}</span>${same?` <span class="mut">${esc(shared_c.map(c=>c.label_as_printed||c.fact_id).join(", "))}</span>`:""} ${dirs.join(" ")}`}else body=`<span class="chip"><b class="${v.c}">${esc(v.v)}</b>: ${esc(v.why.split(" · differs")[0])}</span>`;
  out.push(`<div class="rel"><b>${esc(a.label)}</b> vs <b>${esc(b.label)}</b> · ${d.length?`<span class="mut">differs: ${d.map(esc).join("; ")}</span> · `:""}${body}</div>`)}));return out.join("")||'<div class="mut">one item</div>'}
 function papersSay(items){const per=items.map(it=>({it,cs:claimsFor(it.r.d,it.r.T,it.r.id)}));const count={};per.forEach(({it,cs})=>cs.forEach(c=>{(count[c.fact_id]=count[c.fact_id]||{c,i:it.r.i,items:new Set()}).items.add(it.label)}));
  const shared=Object.values(count).filter(o=>o.items.size>=2);const line=o=>claimLine(DATA[o.i],o.i,o.c);
@@ -525,7 +523,7 @@ function wbRange(q,j,v){WB.range[q][j]=v;render()}
 function wbClear(){WB={...WB,material:"",structure:"",method:"",quantity:"",paper:"",range:EMPTY_RANGE()};render()}
 function trayAdd(i,id,fid,label){if(WB.tray.length>=8||WB.tray.some(t=>t.id===id&&t.fid===fid))return;WB.tray.push({i,id,fid,label});render()}
 function trayDrop(j){WB.tray.splice(j,1);render()}
-const runOfF=(T,id)=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x&&T.byId[x]?x:null};
+const runOfF=(T,id)=>entOf(T,T.up[id]);
 const trayLink=()=>`<span class="lnk" onclick="TM='find';render()">tray (${WB.tray.length})</span>`;
 const trayBtn=(i,id)=>{const inT=WB.tray.some(t=>t.id===id&&!t.fid);return `<button ${inT||WB.tray.length>=8?"disabled":""} onclick="trayAdd(${i},'${id}')">${inT?"in tray":"add to tray"}</button> ${trayLink()}`};
 function figCurves(i,eid){const d=DATA[i],T=buildTree(d);return d.facts.filter(f=>f.evidence.split(";").includes(eid)&&f.points).map(f=>({f,run:runOfF(T,f.fact_id)})).filter(c=>c.run)}
@@ -533,20 +531,22 @@ function trayAddFig(i,eid){const cs=figCurves(i,eid);if(cs.length)cs.forEach(c=>
  else{const d=DATA[i],T=buildTree(d);[...new Set(d.facts.filter(f=>f.evidence.split(";").includes(eid)).map(f=>runOfF(T,f.fact_id)).filter(Boolean))].forEach(r=>{if(WB.tray.length<8&&!WB.tray.some(t=>t.id===r&&!t.fid))WB.tray.push({i,id:r})})}render()}
 const figTrayBtn=(i,eid)=>{const cs=figCurves(i,eid);const inT=cs.length?cs.every(c=>WB.tray.some(t=>t.fid===c.f.fact_id)):false;return `<button ${inT||WB.tray.length>=8?"disabled":""} onclick="trayAddFig(${i},'${eid}')">${inT?"in tray":`add to tray${cs.length?` (${cs.length} curves)`:""}`}</button> ${trayLink()}`};
 function trayClear(){WB.tray=[];render()}
-function showCard(i,id){P=i;CARD=id;FIGC=null;GCARD=null;V="tree";TM="cards";render()}
-function figCard(eid,pi){if(pi!==undefined)P=pi;V="tree";TM="cards";FIGC=eid;GCARD=null;render()}
-function openGroup(i,gid){P=i;GCARD=gid;FIGC=null;V="tree";TM="cards";render()}
+function showCard(i,id){P=i;CARD=id;FIGC=null;CCARD=null;V="tree";TM="cards";render()}
+function figCard(eid,pi){if(pi!==undefined)P=pi;V="tree";TM="cards";FIGC=eid;CCARD=null;render()}
+function openComp(i,cid){P=i;CCARD=cid;FIGC=null;V="tree";TM="cards";render()}
+function openNode(i,id){const T=buildTree(DATA[i]),n=T.byId[id];if(!n)return;if(n.type==="comparison")return openComp(i,id);if(n.type==="entity")return openCard(i,id);const e=(T.kids[id]||[]).find(k=>k.type==="entity");if(e)openCard(i,e.fact_id)}
 // reproducibility (computed): the largest set of a paper's runs with the same conditions (every setting stated by both equal) that
 // share numeric results; sd (n-1) per result key over that set
 const core=k=>PRIM.includes(k.split("|")[0]);   // the process-defining settings: both runs must state them, equal; any other setting counts only when both state it
 const stated=(r,k)=>(k in r.inh)&&r.inh[k].text!==""&&!r.inh[k].text.includes("; ");   // one value; several values at a level (the process's three heights) are not a run's stated value
 const sameCond=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].every(k=>core(k)?stated(a,k)===stated(b,k)&&(!stated(a,k)||a.inh[k].text===b.inh[k].text):!stated(a,k)||!stated(b,k)||a.inh[k].text===b.inh[k].text);
 const firstNum=o=>{const f=o.fs[0];const a=fv(f);return a!=null&&!isNaN(a)?a:null};
-function reproOf(i){const d=DATA[i];if(d._REP!==undefined)return d._REP;const rs=RUNS().filter(r=>r.i===i&&Object.values(r.res).some(o=>firstNum(o)!=null));let best=null;
- rs.forEach(seed=>{const set=[seed];rs.forEach(r=>{if(r!==seed&&set.every(s=>sameCond(s,r)&&sameCond(r,s)))set.push(r)});if(set.length<2)return;
-  const sd={};[...new Set(set.flatMap(r=>Object.keys(r.res)))].forEach(k=>{const vals=set.filter(r=>r.res[k]).map(r=>firstNum(r.res[k])).filter(v=>v!=null);if(vals.length>=2){const m=vals.reduce((a,b)=>a+b,0)/vals.length;sd[k]={sd:Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/(vals.length-1)),n:vals.length,f:set.find(r=>r.res[k]).res[k].f}}});
-  const nk=Object.keys(sd).length;if(nk&&(!best||set.length>best.set.length||(set.length===best.set.length&&nk>Object.keys(best.sd).length)))best={set,sd}});
- return d._REP=best?{runs:best.set,sd:best.sd}:null}
+function reproOf(i){const d=DATA[i];if(d._REP!==undefined)return d._REP;const T=buildTree(d);const rs=RUNS().filter(r=>r.i===i&&Object.values(r.res).some(o=>firstNum(o)!=null));
+ const sdOf=set=>{const sd={};[...new Set(set.flatMap(r=>Object.keys(r.res)))].forEach(k=>{const vals=set.filter(r=>r.res[k]).map(r=>firstNum(r.res[k])).filter(v=>v!=null);if(vals.length>=2){const m=vals.reduce((a,b)=>a+b,0)/vals.length;sd[k]={sd:Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/(vals.length-1)),n:vals.length,f:set.find(r=>r.res[k]).res[k].f}}});return sd};
+ const rep=T.comps.find(c=>c.kind==="replicate");if(rep){const ms=new Set(members(T,rep));const set=rs.filter(r=>chain(T,r.id).some(x=>ms.has(x)));const sd=sdOf(set);if(Object.keys(sd).length)return d._REP={runs:set,sd,stated:rep}}
+ let best=null;rs.forEach(seed=>{const set=[seed];rs.forEach(r=>{if(r!==seed&&depOf(r.T,r.id)!==depOf(seed.T,seed.id)&&set.every(s=>sameCond(s,r)&&sameCond(r,s)))set.push(r)});if(set.length<2)return;
+  const sd=sdOf(set);const nk=Object.keys(sd).length;if(nk&&(!best||set.length>best.set.length||(set.length===best.set.length&&nk>Object.keys(best.sd).length)))best={set,sd}});
+ return d._REP=best?{runs:best.set,sd:best.sd,stated:null}:null}
 // natural series (computed): runs that differ in exactly one inherited setting, joined through that setting
 const diffKeys=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].filter(k=>stated(a,k)&&stated(b,k)&&a.inh[k].text!==b.inh[k].text);
 function naturalSeries(i){const d=DATA[i];if(d._NS)return d._NS;const rs=RUNS().filter(r=>r.i===i);const byKey={};
@@ -557,40 +557,41 @@ function naturalSeries(i){const d=DATA[i];if(d._NS)return d._NS;const rs=RUNS().
  out.sort((a,b)=>rank(a.f)-rank(b.f)||b.runs.length-a.runs.length);return d._NS=out}
 const seriesLine=(i,sr,j)=>`<div class="rl" onclick="seriesTray(${i},${j})" title="open the tray with this series"><span class="ty group">series</span>${esc(qtext(sr.f))} ${esc(sr.vals.slice(0,6).join(" / "))}${sr.vals.length>6?" …":""} · <span class="mut">${sr.runs.slice(0,8).map(r=>esc(nlab(r.n))).join(" · ")}${sr.runs.length>8?` +${sr.runs.length-8}`:""}</span></div>`;
 function seriesTray(i,j){const sr=naturalSeries(i)[j];WB.tray=sr.runs.slice(0,8).map(r=>({i,id:r.id}));TM="find";render()}
-function confound(T,gid){const sib=(T.kids[gid]||[]).filter(k=>k.type==="run"||k.type==="group");const v=variedAmong(T,sib);if(v.length<2)return null;
- return v.map(c=>{const cnt={};Object.values(c.by).forEach(t=>cnt[t]=(cnt[t]||0)+1);const mode=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];const odd=sib.filter(n=>c.by[n.fact_id]&&c.by[n.fact_id]!==mode);return {f:c.f,mode,odd:odd.map(n=>({n,v:c.by[n.fact_id]}))}})}
-function groupRuns(T,gid){const out=[];(function w(x){(T.kids[x]||[]).forEach(k=>{if(k.type==="run")out.push(k.fact_id);if(k.type==="run"||k.type==="group")w(k.fact_id)})})(gid);return out}
-function groupCard(d,i,gid){const T=buildTree(d),g=T.byId[gid];const ids=groupRuns(T,gid);const rs=RUNS().filter(r=>r.i===i&&ids.includes(r.id));const sib=(T.kids[gid]||[]).filter(k=>k.type==="run"||k.type==="group");const v=variedAmong(T,sib);
- const r1=v.map(c=>`<span class="chip diff">${qlab(c.f)}: ${[...new Set(Object.values(c.by))].map(esc).join(" / ")}</span>`).join(" ")||'<span class="mut">none</span>';
- const r2=rs.map(r=>`<span class="chip" onclick="openCard(${i},'${r.id}')">${esc(nlab(r.n))}</span>`).join(" ")||'<span class="mut">none</span>';
+function confound(T,cid){const ms=members(T,T.byId[cid]);const v=variedAmong(T,ms);if(v.length<2)return null;
+ return v.map(c=>{const cnt={};Object.values(c.by).forEach(t=>cnt[t]=(cnt[t]||0)+1);const mode=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];const odd=ms.filter(m=>c.by[m]&&c.by[m]!==mode);return {f:c.f,mode,odd:odd.map(m=>({n:T.byId[m],v:c.by[m]}))}})}   // a stated comparison whose members differ in more than one setting
+function compEntities(T,cid){const c=T.byId[cid];const out=[];members(T,c).forEach(m=>{const n=T.byId[m];if(n.type==="entity")out.push(m);else if(n.type==="activity")(function w(x){(T.kids[x]||[]).forEach(k=>{if(k.type==="entity"&&hasObs(T,k.fact_id))out.push(k.fact_id);if(k.type!=="comparison")w(k.fact_id)})})(m);else if(n.type==="comparison")out.push(...compEntities(T,m))});return [...new Set(out)]}   // a comparison's experiments
+function compCard(d,i,cid){const T=buildTree(d),c=T.byId[cid];const ms=members(T,c);const ids=compEntities(T,cid);const rs=RUNS().filter(r=>r.i===i&&ids.includes(r.id));const v=variedAmong(T,ms);
+ const r1=v.map(x=>`<span class="chip diff">${qlab(x.f)}: ${[...new Set(Object.values(x.by))].map(esc).join(" / ")}</span>`).join(" ")||'<span class="mut">none</span>';
+ const r2=ms.map(m=>`<span class="chip" onclick="openNode(${i},'${m}')">${esc(mlab(T,m))}</span>`).join(" ")||'<span class="mut">none</span>';
  const rep=reproOf(i);const keys={};rs.forEach(r=>Object.entries(r.res).forEach(([k,o])=>{const a=firstNum(o);if(a!=null){(keys[k]=keys[k]||{f:o.f,vals:[]});keys[k].vals.push(a)}}));
  const lines=Object.entries(keys).filter(([k,o])=>o.vals.length>=2).map(([k,o])=>{const eff=Math.max(...o.vals)-Math.min(...o.vals);const u=o.f.unit?" "+o.f.unit:"";const sd=rep&&rep.sd[k]?rep.sd[k].sd:null;const ratio=sd?eff/sd:null;
-  return `<div class="fl2 ${ratio!=null&&ratio<1?"within":""}">${qlab(o.f)}: <span class="num">${fmtv(eff)}${esc(u)}</span> <span class="mut">(${o.vals.length} runs)</span>${sd!=null?` = <b>${ratio.toFixed(1)} × sd</b>${ratio<1?' <span class="inf">within reproducibility</span>':""}`:' <span class="mut">no sd</span>'}</div>`}).join("");
- const r3=(rep?`<div class="mut">sd from ${rep.runs.map(r=>esc(nlab(r.n))).join(" · ")}, ${Object.keys(rep.sd).length} quantities</div>`:'<div class="mut">no reproducibility set in this paper</div>')+(lines||'<div class="mut">no result on two or more runs</div>');
- const cf=confound(T,gid);const ns=naturalSeries(i).map((sr,j)=>[sr,j]).filter(([sr])=>sr.runs.some(r=>ids.includes(r.id)));
- const r4=(cf?`<div class="fl2"><span class="inf">confounded</span> ${cf.length} settings differ: ${cf.map(c=>`<span class="chip diff">${qlab(c.f)}: ${c.odd.map(o=>`${esc(nlab(o.n))} ${esc(o.v)}`).join(", ")} <span class="mut">(others ${esc(c.mode)})</span></span>`).join(" ")}</div>`:'<div class="fl2 mut">one setting varies, as the group states</div>')+(ns.map(([sr,j])=>seriesLine(i,sr,j)).join("")||'<div class="fl2 mut">no natural series through these runs</div>');
- return `<div class="card"><h2>${esc(nlab(g))} <span class="mut" style="font-size:12px;font-weight:400">${esc(gid)}</span></h2><div class="mut">${esc(g.statement)}</div><section><h4>varied</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><section><h4>natural series</h4>${r4}</section><div id="side" class="evbox"></div></div>`}
+  return `<div class="fl2 ${ratio!=null&&ratio<1?"within":""}">${qlab(o.f)}: <span class="num">${fmtv(eff)}${esc(u)}</span> <span class="mut">(${o.vals.length} experiments)</span>${sd!=null?` = <b>${ratio.toFixed(1)} × sd</b>${ratio<1?' <span class="inf">within reproducibility</span>':""}`:' <span class="mut">no sd</span>'}</div>`}).join("");
+ const r3=(rep?`<div class="mut">sd from ${rep.runs.map(r=>esc(nlab(r.n))).join(" · ")}, ${Object.keys(rep.sd).length} quantities${rep.stated?` (the paper's replicate set ${esc(rep.stated.label_as_printed)})`:" (computed replicates)"}</div>`:'<div class="mut">no reproducibility set in this paper</div>')+(lines||'<div class="mut">no result on two or more experiments</div>');
+ const cf=confound(T,cid);const ns=naturalSeries(i).map((sr,j)=>[sr,j]).filter(([sr])=>sr.runs.some(r=>ids.includes(r.id)));
+ const r4=(cf?`<div class="fl2"><span class="inf">confounded</span> ${cf.length} settings differ: ${cf.map(x=>`<span class="chip diff">${qlab(x.f)}: ${x.odd.map(o=>`${esc(nlab(o.n))} ${esc(o.v)}`).join(", ")} <span class="mut">(others ${esc(x.mode)})</span></span>`).join(" ")}</div>`:`<div class="fl2 mut">${v.length?"one setting varies, as stated":"no setting varies"}</div>`)+(ns.map(([sr,j])=>seriesLine(i,sr,j)).join("")||'<div class="fl2 mut">no natural series through these experiments</div>');
+ const p=(c.links||"").split(";")[0];const pur=p&&T.byId[p]&&p.includes("#")?T.byId[p]:null;
+ return `<div class="card"><h2>${esc(nlab(c))} <span class="mut" style="font-size:12px;font-weight:400">${esc(cid)} · ${esc(c.kind)}</span></h2><div class="mut">${esc(c.statement)}</div>${pur?`<div><b>purpose</b>: ${esc(pur.statement)}<code class="ev" onclick="side('${pur.evidence.split(";")[0]}',${i})">${pur.evidence.split(";")[0]}</code></div>`:""}<section><h4>varied</h4>${r1}</section><section><h4>members</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><section><h4>natural series</h4>${r4}</section><div id="side" class="evbox"></div></div>`}
 function compareWith(i,id){const v=document.getElementById("cmp").value;if(!v)return;const [j,rid]=v.split("|");WB.tray=[{i,id},{i:+j,id:rid}];TM="find";render()}
 function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.id===eid);const fs=d.facts.filter(f=>f.evidence.split(";").includes(eid));
- const runOf=id=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x&&T.byId[x]?x:null};
- const runs=[...new Set(fs.map(f=>runOf(f.fact_id)).filter(Boolean))];const groups=[...new Set(runs.map(r=>grpOf(T,r)).concat(fs.map(f=>grpOf(T,f.fact_id))).filter(Boolean))];
+ const runOf=id=>entOf(T,id);
+ const runs=[...new Set(fs.map(f=>entOf(T,f.fact_id)).filter(Boolean))];const groups=[...new Set(runs.flatMap(r=>compsOf(T,r).map(c=>c.fact_id)).concat(fs.map(f=>rowOf(T,f.fact_id)).filter(x=>x&&T.byId[x].type==="comparison")))];
  const r1=groups.map(g=>`<span class="chip">${esc(nlab(T.byId[g]))}</span>`).join(" ")||'<span class="mut">—</span>';
  const r2=runs.map(r=>`<span class="chip" onclick="openCard(${i},'${r}')">${esc(nlab(T.byId[r]))}</span>`).join(" ")||'<span class="mut">—</span>';
  const other={};runs.forEach(r=>subtree(T,r).forEach(f=>f.evidence.split(";").forEach(x=>{if(x===eid||x.endsWith(".cap")||!/^(fig|tab)/.test(x))return;const k=elab(x);(other[k]=other[k]||{x,panel:d.elements.some(z=>z.id===x&&z.kind==="panel"),n:new Set()}).n.add(f.fact_id)})));
  const r3=Object.entries(other).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).map(([k,o])=>`<span class="chip" onclick="${o.panel?`figCard('${o.x}',${i})`:`side('${o.x}',${i})`}">${esc(k)} <span class="mut">${o.n.size}</span></span>`).join(" ")||'<span class="mut">—</span>';
- const ids=new Set(fs.map(f=>f.fact_id).concat(runs,groups));const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||runs.includes(runOf(l))||groups.includes(grpOf(T,l))));
+ const ids=new Set(fs.map(f=>f.fact_id).concat(runs,groups));const claims=d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||runs.includes(runOf(l))||compsOf(T,l).some(c2=>groups.includes(c2.fact_id))));
  const r4=claims.map(c=>claimLine(d,i,c)).join("")||'<div class="mut">—</div>';
  return `<div class="card"><h2>${esc(elab(eid))} <span class="mut" style="font-size:12px;font-weight:400">${esc(eid)}${e?" · "+esc(e.loc):""} · ${fs.length} facts</span> ${figTrayBtn(i,eid)}</h2>${e&&e.crop&&d.imgs[e.crop]?`<img class="fig" src="${d.imgs[e.crop]}" onclick="side('${eid}',${i})">`:""}
- <section><h4>compares</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>also on these runs</h4>${r3}</section><section><h4>claims</h4>${r4}</section>
+ <section><h4>compares</h4>${r1}</section><section><h4>entities</h4>${r2}</section><section><h4>also on these entities</h4>${r3}</section><section><h4>claims</h4>${r4}</section>
  <div id="side" class="evbox"></div></div>`}
 // claim scope (computed): links -> runs (a linked run, the runs of a linked group, the run above a linked fact) -> inherited settings -> ranges
-function claimRuns(T,c){const runs=new Set();(c.links||"").split(";").filter(Boolean).forEach(l=>{let x=l;while(x&&T.byId[x]&&!["run","group"].includes(T.byId[x].type))x=T.up[x];if(!x||!T.byId[x])return;
- if(T.byId[x].type==="run")runs.add(x);else (function w(g){(T.kids[g]||[]).forEach(k=>{if(k.type==="run")runs.add(k.fact_id);if(k.type==="run"||k.type==="group")w(k.fact_id)})})(x)});return [...runs]}
+function claimNodes(T,c){const out=new Set();(c.links||"").split(";").filter(Boolean).forEach(l=>{let x=l;while(x&&T.byId[x]&&x.includes("#"))x=T.up[x];if(!x||!T.byId[x])return;const n=T.byId[x];if(n.type==="comparison")members(T,n).forEach(m=>out.add(m));else if(n.type==="entity"||n.type==="activity")out.add(x)});return [...out]}   // the nodes a claim's links reach: entities, activities, a comparison's members
 const SCOPEQ=["deposition_temperature","feature_height","cycle_number","process_pressure","plasma_gas_ratio","exposure"];const fmtv=v=>String(+v.toPrecision(4));
-function claimScope(d,i,c){const T=buildTree(d);const runs=claimRuns(T,c);if(!runs.length)return {n:0,runs,text:"no run"};const rs=RUNS().filter(r=>r.i===i&&runs.includes(r.id));const parts=[];
- SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
+function claimScope(d,i,c){const T=buildTree(d);const nodes=claimNodes(T,c).filter(x=>isCond(T.byId[x])||T.byId[x].type==="entity"||chain(T,x).some(y=>isCond(T.byId[y])));if(!nodes.length)return {n:0,runs:[],text:"no condition"};
+ const vecs=nodes.map(x=>inherited(T,x));const ents=new Set(nodes.map(x=>entOf(T,x)||x));const parts=[];
+ SCOPEQ.forEach(q=>{const vals=[],units=new Set();vecs.forEach(v=>{const es=Object.values(v).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
- return {n:runs.length,runs,text:`${runs.length} run${runs.length>1?"s":""}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
+ return {n:ents.size,runs:[...ents],text:`${ents.size} ${ents.size>1?"entities":"entity"}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
 const stBadge=c=>`<span class="ty claim ${c.stance||""}" title="stance">${c.stance||"claim"}</span>`;
 const vlab=t=>t.startsWith("mechanism:")?t.slice(10).replace(/_/g," "):(LISTS.labels[t]||t.replace(/_/g," "));
 const varChips=c=>(c.cause||c.effect)?`<span class="chip vars" title="cause → effect">${(c.cause||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"} → ${(c.effect||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"}</span>`:"";
@@ -605,11 +606,11 @@ const bridgeFor=(fa,fb)=>{if(!fa.quantity||fa.quantity!==fb.quantity)return null
   const A=b.keys.map(k=>qa[k]||"").join(),B=b.keys.map(k=>qb[k]||"").join();return (A===b.va.join()&&B===b.vb.join())||(A===b.vb.join()&&B===b.va.join())})||null};
 const second=(b,f)=>{const q=quals(f.qualifiers);return b.keys.every((k,j)=>(q[k]||"")===b.vb[j])};   // a fact of the bridge's second definition
 function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr ${c.stance||""}" data-f="${c.fact_id}"><span class="sw" style="background:var(--c${i})"></span>${stBadge(c)}<span class="st">${esc(c.statement)}</span>${varChips(c)}<span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
-function userScope(u){const runs=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimRuns(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(r=>runs.push({i,id:r}))});
- if(!runs.length)return "no run";const rs=RUNS().filter(r=>runs.some(x=>x.i===r.i&&x.id===r.id));const parts=[];
- SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
+function userScope(u){const nodes=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimNodes(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(x=>nodes.push({T,x,key:d.key}))});
+ const ok=nodes.filter(({T,x})=>isCond(T.byId[x])||T.byId[x].type==="entity"||chain(T,x).some(y=>isCond(T.byId[y])));if(!ok.length)return "no condition";const parts=[];
+ SCOPEQ.forEach(q=>{const vals=[],units=new Set();ok.forEach(({T,x})=>{const es=Object.values(inherited(T,x)).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
- const papers=[...new Set(runs.map(x=>DATA[x.i].key))];return `${runs.length} run${runs.length>1?"s":""} in ${papers.join(", ")}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}
+ const ents=new Set(ok.map(({T,x})=>entOf(T,x)||x)),papers=[...new Set(ok.map(o=>o.key))];return `${ents.size} ${ents.size>1?"entities":"entity"} in ${papers.join(", ")}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}
 function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user ${u.stance||""}" data-f="${u.fact_id}">${u.type==="claim"?stBadge(u):`<span class="ty ${esc(u.type)}">${esc(u.type)}</span>`}<span class="st">${esc(u.statement)}</span>${varChips(u)}<span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
 function claimsView(){const tog=`<div class="fl"><button class="${CLV==="paper"?"on":""}" onclick="CLV='paper';render()">by paper</button><button class="${CLV==="effect"?"on":""}" onclick="CLV='effect';render()">same variable</button></div>`;
  let body;if(CLV==="paper")body=`<h3>user <span class="mut">${USER.length} facts</span></h3>${USER.map(userLine).join("")}${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}`;
@@ -621,8 +622,8 @@ function claimsView(){const tog=`<div class="fl"><button class="${CLV==="paper"?
  return `${tog}<div class="wrap"><div class="cl">${body}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
  if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;
- if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;if(GCARD&&!buildTree(d).byId[GCARD])GCARD=null;
-  return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):GCARD?groupCard(d,P,GCARD):CARD?card(d,P,CARD):'<div class="card mut">no runs</div>'}</div></div>`}
+ if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=RUNS().find(r=>r.i===P);CARD=first?first.id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;if(CCARD&&!buildTree(d).byId[CCARD])CCARD=null;
+  return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):CCARD?compCard(d,P,CCARD):CARD?card(d,P,CARD):'<div class="card mut">no experiments</div>'}</div></div>`}
  const body=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
  return `<div id="forest"></div>${tog}<div class="wrap"><div>${body}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
 function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");const T=buildTree(d);return ps.map(e=>{const fs=factsOf(d,e.id);const tr=fs.some(f=>{const r=runOfF(T,f.fact_id);return r&&trayHas(P,r)});
@@ -636,11 +637,11 @@ function render(){const d=DATA[P];
  $("#sum").innerHTML=`<div class="tile"><b>${d.elements.length}</b><span>${esc(d.pid)}<br>elements</span></div>
  <div class="tile"><b>${st.covered||0} / ${st["no knowledge"]||0} / ${st.missed||0}</b><span>covered / no knowledge / missed</span></div>
  <div class="tile"><b>${d.facts.length}</b><span>facts</span></div>
- <div class="tile"><b>${d.tree.filter(n=>n.type==="run").length} / ${d.tree.filter(n=>n.type==="group").length} / ${d.tree.filter(n=>n.type==="cited").length}</b><span>tree: runs / groups / cited works (not facts)</span></div>
+ <div class="tile"><b>${d.tree.filter(n=>n.type==="entity").length} / ${d.tree.filter(n=>n.type==="activity").length} / ${d.tree.filter(n=>n.type==="comparison").length} / ${d.tree.filter(n=>n.type==="cited").length}</b><span>tree: entities / activities / comparisons / cited works (not facts)</span></div>
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
  $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree"){applyForest();fitChips()}}
-window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.openGroup=openGroup;window.seriesTray=seriesTray;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
+window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.openComp=openComp;window.openNode=openNode;window.seriesTray=seriesTray;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
 render();
 </script></body></html>"""
 

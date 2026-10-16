@@ -120,7 +120,8 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
       extra: rows to add as (id, type, statement, parent, kw).
     A setting with a measurement method, or any observation, derived or model fact under a run, goes under the entity's
     measurement activity of that method (<key>:meas:<entity>:<method>; "measurement" when the fact names none); a setting without
-    one goes to the run's activity. Shared settings and observations under the old process with a measurement method go to
+    one goes to the run's activity, or to the entity itself when several entities share that activity (the per-sample settings of
+    one run that coated three samples: an entity's own settings are its properties and count in its condition vector). Shared settings and observations under the old process with a measurement method go to
     <key>:method:<method> (a measurement activity under the paper); the rest stay in the recipe. Group rows survive with
     parent = paper and links = purpose + members (old member runs mapped to their entities or activities); the old process and run
     rows are deleted."""
@@ -166,6 +167,10 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
         node(spec["ent"], "entity", f"model run of {spec['label']}", spec["act"], evidence=spec.get("evidence", ""), how="inferred", label_as_printed=spec["label"])
     for fid, type_, statement, parent, kw in extra:
         node(fid, type_, statement, parent, **kw)
+    shared = {}
+    for spec in ents.values():
+        if spec.get("ent"):
+            shared[spec["dep"]] = shared.get(spec["dep"], 0) + 1
     # re-parent the facts
     for f in _facts:
         if "#" not in f["fact_id"] or f["fact_id"] in made:
@@ -181,8 +186,8 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
         elif par in ents:
             spec = ents[par]
             m = f["method"] if f["method"] in MEAS_METHODS else ""
-            if f["type"] == "setting" and not m:
-                f["parent"] = spec["dep"]
+            if f["type"] == "setting" and not m:                     # a setting of the run: its deposition, or the entity itself when several entities share the deposition
+                f["parent"] = spec["ent"] if spec.get("ent") and shared.get(spec["dep"], 0) > 1 else spec["dep"]
             else:
                 suffix = (spec["ent"] or spec["dep"]).split(":", 1)[1]
                 under = spec["via"][0] if spec.get("via") else (spec["ent"] or spec["dep"])

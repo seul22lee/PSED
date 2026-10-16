@@ -128,8 +128,8 @@ def table(pid, paper):
                    group=";".join(g["fact_id"] for g in gs), group_label=";".join(g["label_as_printed"] for g in gs),
                    purpose=";".join(dict.fromkeys(g["links"].split(";")[0] for g in gs if g["links"] and "#" in g["links"].split(";")[0])),
                    claims=";".join(sorted(set().union(*(claims[n] for n in mine), *(claims[g["fact_id"]] for g in gs)))), via="")
-        for x in chain:                           # the condition vector: settings of the non-measurement activities above, nearest first
-            if R[x]["type"] != "activity" or R[x]["kind"] in MEAS:
+        for x in [e["fact_id"]] + chain:          # the condition vector: the entity's own settings, then the non-measurement activities above, nearest first
+            if R[x]["type"] not in ("activity", "entity") or (R[x]["type"] == "activity" and R[x]["kind"] in MEAS):
                 continue
             level = collections.defaultdict(list)
             for f in own(x):
