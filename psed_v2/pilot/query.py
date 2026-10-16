@@ -1378,3 +1378,25 @@ def search(words, paper=None):
         if s > 0:
             scored.append((-s, n, r))
     return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3)) for s, n, r in sorted(scored)]
+
+
+# ---------------------------------------------------------------------------------------------------------------- vocabulary (P41)
+_VOCAB = {}
+
+
+def vocabulary():
+    """Every result name and every setting name in the data, generated from the experiments: {kind: {name: {paper: count}}} with
+    kind result or setting (a count is the number of experiments with a value of it), and the keys each name stands for."""
+    if _VOCAB:
+        return _VOCAB
+    out = {"result": collections.defaultdict(collections.Counter), "setting": collections.defaultdict(collections.Counter)}
+    keys = collections.defaultdict(set)
+    for k, T in TREES.items():
+        for e in experiments(T):
+            for kk, x in result_records(T, e).items():
+                if x["record"].get("text") or x["record"].get("curve"):
+                    out["result"][x["name"]][k] += 1; keys[x["name"]].add(kk)
+            for kk, x in condition_records(T, e).items():
+                out["setting"][x["name"]][k] += 1; keys[x["name"]].add(kk)
+    _VOCAB.update(result=dict(out["result"]), setting=dict(out["setting"]), keys={n: sorted(v) for n, v in keys.items()})
+    return _VOCAB

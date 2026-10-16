@@ -3,6 +3,7 @@
 as plain text, one line per returned value or row, starting with its id in square brackets (format and paging only; the tool
 layer computes nothing). Also the page targets of ids (open_target). Used by ask.py; no model call here."""
 import csv, difflib, json, re, sys
+from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -25,6 +26,23 @@ NUMERIC_UNITS = "; ".join(f"{q} in {u}" for q, u in sorted(L.UNITS.items()) if u
 PAPER_KEYS = list(Q.KEY)
 PAPER_WORDS = ", ".join(f"{k} = {short_name(k)}" for k in PAPER_KEYS)
 
+VOCAB_BUDGET = 3000                 # tokens (chars/4); above it the vocabulary lists the names only (P41)
+
+
+def vocabulary_text():
+    """The vocabulary generated from the data (P41): every result and setting name with the papers it occurs in and how many
+    experiments have it, and the record types search returns with their counts; names only when it would exceed VOCAB_BUDGET."""
+    v = Q.vocabulary()
+    types = Counter(r["type"] for r in Q.search_records())
+    full = lambda kind: "; ".join(f"{n} ({', '.join(f'{p} {c}' for p, c in ps.items())})" for n, ps in sorted(v[kind].items(), key=lambda x: x[0].lower()))
+    bare = lambda kind: "; ".join(sorted(v[kind], key=str.lower))
+    text = lambda f: (f"Result names: {f('result')}. Setting names: {f('setting')}. Record types: "
+                      + ", ".join(f"{t} ({types[t]})" for t in Q.SEARCH_TYPES if types[t]) + ".")
+    t = text(full)
+    return t if len(t) / 4 <= VOCAB_BUDGET else text(bare)
+
+
+VOCAB = vocabulary_text()
 PAGE_LINES = 25
 MAX_LINE = 300
 DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims"]
@@ -35,7 +53,7 @@ TOOLS = [
          description=("Searches the text of every record of the knowledge base by words (lexical: lowercase, plurals folded, _ and - as "
                       "spaces, numbers and units kept; no synonyms). Returns the records ranked by how well they match, at most "
                       f"{PAGE_LINES} lines per call, each '[id] record type · one line'; records with the same line are shown once with "
-                      "their count. Record types: " + ", ".join(Q.SEARCH_TYPES) + ". A last line gives the offset of the next page."),
+                      "their count. A last line gives the offset of the next page. The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              words=dict(type="string", description="The words to look for."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
