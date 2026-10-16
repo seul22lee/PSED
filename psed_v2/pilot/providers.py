@@ -156,13 +156,23 @@ class OpenAISession:
                     usage=dict(input=u.prompt_tokens, output=out, cache_read=cr, cache_write=0, reasoning=rt), retries=n)
 
 
+def _open(schema):
+    """A copy of a schema without additionalProperties, which Gemini's function declarations do not take (the tool layer still
+    rejects unknown arguments)."""
+    if isinstance(schema, dict):
+        return {k: _open(v) for k, v in schema.items() if k != "additionalProperties"}
+    if isinstance(schema, list):
+        return [_open(v) for v in schema]
+    return schema
+
+
 class GoogleSession:
     def __init__(self, model, system, tools):
         from google import genai
         from google.genai import types
         self.types, self.client = types, genai.Client(api_key=os.environ[KEYS["google"]])
         self.model, self.contents = model, []
-        decl = [types.FunctionDeclaration(name=t["name"], description=t["description"], parameters_json_schema=t["parameters"]) for t in tools or []]
+        decl = [types.FunctionDeclaration(name=t["name"], description=t["description"], parameters_json_schema=_open(t["parameters"])) for t in tools or []]
         self.config = types.GenerateContentConfig(system_instruction=system, tools=[types.Tool(function_declarations=decl)] if decl else None,
                                                   automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True) if decl else None)
 

@@ -2,7 +2,7 @@
 """The Knowledge base arm's access layer: the tool schemas and descriptions, and run_tool, which answers a tool call from query.py
 as plain text, one line per returned value or row, starting with its id in square brackets (format and paging only; the tool
 layer computes nothing). Also the page targets of ids (open_target). Used by ask.py; no model call here."""
-import csv, json, re, sys
+import csv, difflib, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -74,8 +74,7 @@ TOOLS = [
                       "measured curves as their points; and the ids of the claims linked to two or more of the items."),
          parameters=dict(type="object", properties=dict(
              ids=dict(type="array", items=dict(type="string"), description="Two or more experiment ids."),
-             result=dict(type="string", enum=QUANT, description="Only this result quantity."),
-             x=dict(type="string", description="The condition key to use as the abscissa of the plot specification (a key from the differing conditions).")),
+             result=dict(type="string", enum=QUANT, description="Only this result quantity.")),
              required=["ids"])),
     dict(name="claims",
          description=("Returns the claims of the papers (and the user's claims across papers), one line each: its stance (asserted, "
@@ -200,8 +199,109 @@ def name_of_id(i):
         return i
 
 
+def _closed(schema):
+    """additionalProperties false on every object of a schema (P39)."""
+    if schema.get("type") == "object":
+        schema["additionalProperties"] = False
+        for v in schema.get("properties", {}).values():
+            _closed(v)
+    if schema.get("type") == "array" and isinstance(schema.get("items"), dict):
+        _closed(schema["items"])
+    return schema
+
+
+for _t in TOOLS:
+    _closed(_t["parameters"])
+SCHEMA = {t["name"]: t["parameters"] for t in TOOLS}
+TYPES = {"string": (str,), "integer": (int,), "number": (int, float), "boolean": (bool,), "array": (list,), "object": (dict,)}
+
+
+def _check(where, v, sch):
+    """The first error of a value against its schema: type, enum, the properties of an object, the items of an array."""
+    t = sch.get("type")
+    if t and (not isinstance(v, TYPES[t]) or (t in ("integer", "number") and isinstance(v, bool))):
+        return f"{where} must be {'an' if t[0] in 'aeiou' else 'a'} {t}, not {type(v).__name__}"
+    if "enum" in sch and v not in sch["enum"]:
+        near = difflib.get_close_matches(str(v), [str(x) for x in sch["enum"]], n=5, cutoff=0.4)
+        listed = ", ".join(map(str, sch["enum"])) if len(sch["enum"]) <= 12 else f"{len(sch['enum'])} names (see the description)"
+        return f"{where}: unknown value {v!r}" + (f"; nearest: {', '.join(near)}" if near else "") + f"; valid: {listed}"
+    if t == "object":
+        props = sch.get("properties", {})
+        bad = [k for k in v if k not in props]
+        if bad:
+            return f"{where}: unknown argument{'s' if len(bad) > 1 else ''} {', '.join(bad)}; valid arguments: {', '.join(props)}"
+        miss = [k for k in sch.get("required", []) if v.get(k) is None]
+        if miss:
+            return f"{where}: missing {', '.join(miss)}"
+        for k, x in v.items():
+            if x is not None:
+                e = _check(f"{where}.{k}" if where else k, x, props[k])
+                if e:
+                    return e
+    if t == "array":
+        for n, x in enumerate(v):
+            e = _check(f"{where}[{n}]", x, sch.get("items", {}))
+            if e:
+                return e
+    return ""
+
+
+def _item(i):
+    """Whether an id names an experiment, input, comparison or cited work."""
+    T = Q.TREES.get(i.split(":")[0])
+    return bool(T and i in T.byid and T.byid[i]["type"] in ("entity", "comparison", "cited") and "#" not in i)
+
+
+def _source(i):
+    """Whether an id names a fact or a paper element (<paper>:<element>)."""
+    k, _, rest = i.partition(":")
+    if k not in Q.TREES or not rest:
+        return False
+    if i in Q.TREES[k].byid:
+        return True
+    return any(r["element_id"] == rest for r in csv.DictReader((HERE / f"{Q.KEY[k]}.elements.csv").open(encoding="utf-8")))
+
+
+IDS = {("detail", "id"): (_item, "no experiment, input, comparison or cited work has this id"),
+       ("source", "id"): (_source, "no fact or paper element has this id"),
+       ("compare", "ids"): (lambda i: _item(i) and Q.TREES[i.split(":")[0]].byid[i]["type"] == "entity", "no experiment has this id"),
+       ("claims", "linked"): (_item, "no experiment or comparison has this id"),
+       ("claims", "variable"): (lambda v: v in QUANT or (v.startswith("mechanism:") and v.split(":", 1)[1] in L.MECHANISMS), "not a quantity id or mechanism token")}
+
+
+def validate(name, args):
+    """An error text for a call the tool cannot answer as asked, else "" (P39): an unknown tool or argument, a wrong type, a value
+    outside the vocabulary, an id that names nothing. An argument given as null counts as not given."""
+    if name not in SCHEMA:
+        return f"unknown tool {name}; tools: {', '.join(SCHEMA)}"
+    if not isinstance(args, dict):
+        return f"{name}: the arguments must be an object"
+    e = _check("", args, SCHEMA[name])
+    if e:
+        return f"{name}: {e.lstrip('.')}" if not e.startswith(":") else f"{name}{e}"
+    for (tool, arg), (ok, why) in IDS.items():
+        if tool == name and args.get(arg) is not None:
+            for v in (args[arg] if isinstance(args[arg], list) else [args[arg]]):
+                if not ok(v):
+                    return f"{name}: {arg} {v!r}: {why}"
+    return ""
+
+
 def run_tool(name, args):
-    """(lines, error): lines = [(id, text)] formatted from what query.py returns; nothing computed here; no line over MAX_LINE."""
+    """(lines, error): lines = [(id, text)] formatted from what query.py returns; nothing computed here; no line over MAX_LINE.
+    A call that fails validation, or whose filters match nothing, returns an error text, never an unfiltered or empty result."""
+    err = validate(name, args)
+    if err:
+        return [], "error: " + err
+    args = {k: v for k, v in args.items() if v is not None}
+    lines, err = _run(name, args)
+    if not err and not [x for x in lines if x[0] != "more"]:
+        err = f"error: {name}: nothing matches " + ", ".join(f"{k}={json.dumps(v, ensure_ascii=False)}" for k, v in args.items()) \
+              + ("" if name != "find" or "offset" not in args else " (or the offset is past the last item)")
+    return lines, err
+
+
+def _run(name, args):
     try:
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
         if name == "find":
@@ -266,7 +366,7 @@ def run_tool(name, args):
                 out += [claim_line(c) for c in d.get("claims", [])]
             return W(out), ""
         if name == "compare":
-            c = Q.compare(args["ids"], result=args.get("result"), x=args.get("x"))
+            c = Q.compare(args["ids"], result=args.get("result"))
             nm = {it["id"]: it["name"] for it in c["items"]}
             out = [(it["id"], f"item: {short_name(it['paper'])} · {it['name']}") for it in c["items"]]
             out += [(c["items"][0]["id"], f"shared condition: {s['name']} {s['text']}") for s in c["shared"]]
@@ -292,7 +392,7 @@ def run_tool(name, args):
             out += [(v.get("fact") or eid, value_line(v, full=True)) for v in s["values"]]
             out += [(eid, f"statement without a value: {t}") for t in s["statements"]]
             return W(out), ""
-        return [], f"unknown tool {name}"
+        return [], f"error: unknown tool {name}"
     except Exception as e:
         return [], f"error: {type(e).__name__}: {e}"
 
