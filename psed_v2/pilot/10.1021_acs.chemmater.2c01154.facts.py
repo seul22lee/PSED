@@ -1355,7 +1355,12 @@ put(grp("TiS2"), MAT_T)
 # a value computed from others: under its first input
 for f in C.facts():
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
-        PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+        _ins = {x["fact_id"]: x["type"] for x in C.facts()}
+        _res = [i for i in f["inputs"].split(";") if i and _ins.get(i) != "setting"]   # its first input that is a result (a setting is no home, P25)
+        if _res:
+            PARENT[f["fact_id"]] = _res[0]
+        elif PARENT.get(f["inputs"].split(";")[0]):
+            PARENT[f["fact_id"]] = PARENT[f["inputs"].split(";")[0]]                  # computed from settings only: beside them
 # cited facts: under the first reference they name (a range "refs. a-b" counts as its first number)
 for f in C.facts():
     if f["type"] == "cited" and f["fact_id"] not in PARENT:

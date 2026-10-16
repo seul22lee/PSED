@@ -357,10 +357,11 @@ def tab1_facts():
           qualifiers="level=50%;by=H", label_as_printed="x̃_50%", value=v[5], data_kind="calculated", method="calculation",
           mentions=men, inputs=[ID[n, 11], ID[n, 3]])
         ID[n, 13] = F(K, ev(13), "derived", f"sample {n}: front slope d(S/N)/dx~ {v[6]} nm", quantity="front_slope", qualifiers="by=H",
-                      label_as_printed="Slope d(S/N)/dx̃", value=v[6], unit="nm", data_kind="fit", method="calculation", mentions=men)
+                      label_as_printed="Slope d(S/N)/dx̃", value=v[6], unit="nm", data_kind="fit", method="calculation", mentions=men,
+                      inputs=[ID[n, 5], ID[n, 3]])                     # a slope of S/N against x/H: defined with N and H (P25)
         ID[n, 14] = F(K, ev(14), "derived", f"sample {n}: front slope dθ/dx~ {v[7]}", quantity="front_slope",
                       qualifiers="by=H;reference=entrance", label_as_printed="Slope dθ/dx̃", value=v[7], data_kind="fit",
-                      method="calculation", mentions=men)
+                      method="calculation", mentions=men, inputs=[ID[n, 3]])   # against x/H (P25)
         F(K, ev(15), "derived", f"sample {n}: R^2 of the linear front fit {v[8]}", quantity="fit_r2",
           label_as_printed="Linear fitting residual R^2", value=v[8], data_kind="fit", method="calculation", mentions=men)
 
@@ -514,7 +515,7 @@ F(K, "s13.x2;fig9d;fig9e;fig9f", "observation", "with cycles varied at H 500 nm 
 F(K, "s13.x2;fig9e;fig9f", "observation", "PD50% appears to fall as the cycle number rises", method="reflectometry", mentions="PD^50%")
 F(K, "s13.x2;s13.p1", "claim", "PD50% falls because the film fills more of the channel, so the process sees a higher AR that limits propagation",
   mentions="PD^50%")
-for fill, n in (("10", "250"), ("20", "500"), ("40", "1000")):
+for fill, n, smp in (("10", "250", 10), ("20", "500", 8), ("40", "1000", 11)):      # the estimate names its cycle count; the formula is not stated (P25)
     F(K, "s13.p1", "derived", f"about {fill}% of the channel is filled after {n} cycles", quantity="fill_fraction",
       label_as_printed="channel filled", value=fill, unit="%", data_kind="calculated", method="calculation", mentions=f"{n} ALD cycles")
 F(K, "s13.p1;fig9e;fig9f", "observation", "the front slope gets less steep as cycles increase", method="reflectometry")
@@ -725,6 +726,8 @@ NK("s24.p1;s24.p2", "acknowledgement")
 
 # ------------------------------------------------------------------ Table 1 cells
 tab1_facts()
+for sfx_, smp_ in (("s13.p1#1", 10), ("s13.p1#2", 8), ("s13.p1#3", 11)):        # the fill estimates' inputs: the sample's cycle count and height (P25)
+    next(x for x in C.facts() if x["fact_id"] == f"{K}:{sfx_}")["inputs"] = f"{ID[smp_, 5]};{ID[smp_, 3]}"
 std_facts()
 
 # ------------------------------------------------------------------ Table 2
@@ -995,11 +998,13 @@ def ln(i, *targets):
 
 
 # Table 1 cells: under the sample's run; a value computed from others goes under its first input
+FXTYPE = {x["fact_id"]: x["type"] for x in C.facts()}
 for f in C.facts():
     m = re.match(rf"{K}:tab1\.r(\d+)c\d+#", f["fact_id"])
     if m and int(m.group(1)) > 0:
         n = int(re.search(r"sample (\d+)", f["mentions"]).group(1))
-        PARENT[f["fact_id"]] = f["inputs"].split(";")[0] if f["type"] == "derived" and f["inputs"] else run(n)
+        res_in = [i for i in f["inputs"].split(";") if i and FXTYPE.get(i) != "setting"]   # under its first input that is a result, else its run
+        PARENT[f["fact_id"]] = res_in[0] if f["type"] == "derived" and res_in else run(n)
 # figure curves of measured runs
 CURVE = {"fig4a#1": 1, "fig4b#1": 2, "fig4c#1": 3, "fig5b#1": 11, "fig5b#2": 11, "fig5b#3": 11,
          "fig7#2": 6, "fig7#3": 5, "fig7#4": 4, "fig8b#1": 2, "fig8b#2": 4, "fig8b#3": 8, "fig8b#4": 12,
@@ -1088,7 +1093,12 @@ for f in C.facts():                                                            #
         PARENT[f["fact_id"]] = PAPER
 for f in C.facts():                                                            # a value computed from others: under its first input
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
-        PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+        _ins = {x["fact_id"]: x["type"] for x in C.facts()}
+        _res = [i for i in f["inputs"].split(";") if i and _ins.get(i) != "setting"]   # its first input that is a result (a setting is no home, P25)
+        if _res:
+            PARENT[f["fact_id"]] = _res[0]
+        elif PARENT.get(f["inputs"].split(";")[0]):
+            PARENT[f["fact_id"]] = PARENT[f["inputs"].split(";")[0]]                  # computed from settings only: beside them
 PARENT[MAT] = PARENT[STRUCT] = PROC                                            # material and structure type: shared by every run
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left

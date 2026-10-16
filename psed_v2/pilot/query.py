@@ -327,6 +327,23 @@ def results_deep(T, ent):
     return out
 
 
+def input_quantities(T, f, _seen=None):
+    """The quantities a fact is computed from, followed through the inputs column (P25)."""
+    _seen = _seen if _seen is not None else set()
+    out = set()
+    for i in filter(None, f["inputs"].split(";")):
+        if i in T.byid and i not in _seen:
+            _seen.add(i); g_ = T.byid[i]
+            out.add(g_["quantity"]); out |= input_quantities(T, g_, _seen)
+    return out
+
+
+def fittable(T, comp, xkey, ykey):
+    """A result may be fitted against the comparison's varied setting unless one of its facts is computed from that setting (P25)."""
+    xq = xkey.split("{")[0]
+    return not any(xq in input_quantities(T, f) for m in T.member_entities(comp) for f in T.results(m).get(ykey, []))
+
+
 def power_fit(pairs):
     """y = a x^b by least squares in log-log: (b, a, rms residual of log10 y)."""
     pts = [(math.log10(x), math.log10(y)) for x, y in pairs if x > 0 and y > 0]

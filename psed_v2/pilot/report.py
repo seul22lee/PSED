@@ -189,6 +189,8 @@ def layer(key):
             continue
         rows = []
         for ykey in sorted({k for m in ms for k in T.results(m)}):
+            if not Q.fittable(T, c, xkey, ykey):
+                continue                                                        # defined from the varied setting: no fit (P25)
             pts = [(x, y) for _, x, y in Q.series_xy(T, c, xkey, ykey) if x and y and x > 0 and y > 0]
             if len(pts) >= 3 and len({x for x, _ in pts}) >= 3:
                 b, a, res = Q.power_fit(pts)
