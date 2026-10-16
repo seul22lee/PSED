@@ -55,6 +55,8 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited"]
+STANCES = ["asserted", "hedged", "open", "limitation"]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
+#   "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation)
 NODE_TYPES = ["paper", "process", "group", "run"]     # tree rows of stage 3 (cited works use type cited)
 DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
 

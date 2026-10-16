@@ -33,7 +33,8 @@
   linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens the tray with the two runs).
   Every screen names a quantity by its short label from lists.LABELS ("TMA pulse", "PD50"; a curve "S vs x"); simulation
   runs are labelled "sim · H 100 nm" in the tree. Claim scope (computed, next to every claim on cards and in the claims
-  view): the claim's links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
+  view; the badge of a claim shows its stance, coloured: asserted green, hedged amber, open blue, limitation red): the claim's
+  links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
   inherited settings give the ranges: "3 runs · T 300 °C · H 100–2000 nm · N 500"; "no run" when the links reach none.
   Claims view (toggle beside find, cards and text tree): one line per claim of each paper, with its scope and evidence.
   Group card (a group's label in the left tree): what the group varies, its runs, and effect ÷ sd per result quantity:
@@ -178,6 +179,7 @@ table.ft th,table.ft td{border-bottom:1px solid var(--line);padding:4px 6px;text
 .nd{margin-left:16px;padding:1px 0;line-height:1.35}.nd.leaf{padding-left:14px}summary{cursor:pointer;list-style-position:outside}
 .nd .ty{display:inline-block;min-width:34px;font:600 10px/1.5 ui-monospace,monospace;text-transform:uppercase;color:var(--mut);text-align:center;border:1px solid var(--line);border-radius:3px;padding:0 3px;margin-right:4px}
 .nd .ty.run,.nd .ty.paper,.nd .ty.process,.nd .ty.group{color:var(--acc);border-color:var(--acc)}.nd .ty.claim{color:var(--covb);border-color:var(--covb)}
+.ty.claim.asserted{color:var(--covb);border-color:var(--covb)}.ty.claim.hedged{color:#b7791f;border-color:#b7791f}.ty.claim.open{color:var(--acc);border-color:var(--acc)}.ty.claim.limitation{color:var(--missb);border-color:var(--missb)}
 .nd .v{color:var(--acc)}.nd.vary>summary,.nd.vary{font-weight:650}.nd.linked{opacity:.85;border-left:2px dashed var(--line);margin-left:30px;padding-left:6px}
 .nd code.ev{font-size:11px;color:var(--mut);cursor:pointer;margin-left:4px}.nd code.ev:hover{color:var(--acc);text-decoration:underline}
 .nd.hl>summary,.nd.hl{background:var(--sel);border-radius:3px}.tree{margin-bottom:10px}.tree>details>summary{font-size:15px;font-weight:600}
@@ -269,7 +271,7 @@ function buildTree(d){if(d._T)return d._T;const byId={},kids={};[...d.tree,...d.
 function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(n);const ev=(n.evidence||"").split(";")[0];const fl=n.flag||[];
  const q=(n.qualifiers||"").split(";").filter(Boolean).map(p=>`<span class="q" data-k="${esc(p.split("=")[0])}">${esc(p)}</span>`).join("")+(n.unit&&!node?`<span class="q" data-k="unit" hidden>unit</span>`:"");
  const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
- return `<span class="ty ${n.type}">${node?n.type:n.type.slice(0,3)}</span><span ${node?"":`class="stm" onclick="event.preventDefault();event.stopPropagation();cardFor('${n.fact_id}',${i})"`}>${esc(n.statement)}</span>${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
+ return `<span class="ty ${n.type} ${n.stance||""}">${node?n.type:n.type.slice(0,3)}</span><span ${node?"":`class="stm" onclick="event.preventDefault();event.stopPropagation();cardFor('${n.fact_id}',${i})"`}>${esc(n.statement)}</span>${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
 function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="claim"&&n.links?n.links.split(";").map(l=>T.byId[l]).filter(Boolean):[];
  const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}${n.type==="run"&&trayHas(i,n.fact_id)?" tray":""}`;
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
@@ -553,13 +555,14 @@ function claimScope(d,i,c){const T=buildTree(d);const runs=claimRuns(T,c);if(!ru
  SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
  return {n:runs.length,runs,text:`${runs.length} run${runs.length>1?"s":""}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
-function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr" data-f="${c.fact_id}"><span class="ty claim">claim</span><span class="st">${esc(c.statement)}</span><span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
+const stBadge=c=>`<span class="ty claim ${c.stance||""}" title="stance">${c.stance||"claim"}</span>`;
+function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr ${c.stance||""}" data-f="${c.fact_id}">${stBadge(c)}<span class="st">${esc(c.statement)}</span><span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
 function userScope(u){const runs=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimRuns(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(r=>runs.push({i,id:r}))});
  if(!runs.length)return "no run";const rs=RUNS().filter(r=>runs.some(x=>x.i===r.i&&x.id===r.id));const parts=[];
  SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
  const papers=[...new Set(runs.map(x=>DATA[x.i].key))];return `${runs.length} run${runs.length>1?"s":""} in ${papers.join(", ")}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}
-function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user" data-f="${u.fact_id}"><span class="ty claim">${esc(u.type)}</span><span class="st">${esc(u.statement)}</span><span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
+function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user ${u.stance||""}" data-f="${u.fact_id}">${u.type==="claim"?stBadge(u):`<span class="ty ${esc(u.type)}">${esc(u.type)}</span>`}<span class="st">${esc(u.statement)}</span><span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
 function claimsView(){return `<div class="wrap"><div class="cl"><h3>user <span class="mut">${USER.length} facts</span></h3>${USER.map(userLine).join("")}${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
  if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;

@@ -987,6 +987,23 @@ for cf in C.facts():
     if cf["points_ref"] and "x=" not in cf["qualifiers"]:
         cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
 
+
+# ------------------------------------------------------------------ the stance of every claim, from the paper's wording (lists.STANCES)
+STANCE = {"abs.g1#1": "asserted", "abs.g1#2": "asserted", "abs.g2#1": "asserted", "abs.g2#2": "asserted", "abs.g3#1": "asserted",
+          "abs.g3#2": "asserted", "abs.g4#1": "hedged", "abs.g4#2": "hedged", "s2.p8#5": "asserted", "s2.p10#1": "hedged", "s2.p11#1": "asserted",
+          "s2.p11#2": "asserted", "s3.p1#2": "asserted", "s3.p2#1": "asserted", "s3.p3#1": "asserted", "s3.p4#3": "hedged", "s3.p5#1": "asserted",
+          "s3.p5#3": "asserted", "s3.p7#1": "asserted", "s3.p11#1": "asserted", "s3.p11#3": "asserted", "s3.p11#6": "hedged", "s3.p11#7": "asserted",
+          "s3.p13#2": "hedged", "s3.p13#4": "hedged", "s3.p18#6": "limitation", "s3.p21#4": "hedged", "s3.p21#5": "asserted", "s3.p22#1": "asserted",
+          "s3.p22#9": "asserted", "s3.p22#10": "hedged", "s3.p25#2": "hedged", "s3.p25#4": "hedged", "s3.p26#1": "asserted", "s3.p26#4": "hedged",
+          "s3.p26#5": "hedged", "s3.p26#6": "hedged", "s3.p28#2": "hedged", "s3.p29#2": "asserted", "s3.p30#4": "hedged", "s3.p31#1": "asserted",
+          "s3.p32#2": "asserted", "s3.p32#4": "asserted", "s3.p33#1": "asserted", "s3.p37#3": "asserted", "s3.p37#5": "asserted",
+          "s3.p39#2": "hedged", "s3.p39#4": "hedged", "s3.p41#2": "hedged", "s3.p44#3": "hedged", "s3.p44#5": "open", "s3.p45#1": "asserted",
+          "s3.p46#5": "asserted", "s3.p48#3": "asserted", "s3.p51#1": "limitation", "s3.p51#4": "asserted", "s3.p52#1": "hedged",
+          "s3.p52#4": "open", "s3.p53#4": "asserted", "s4.p1#2": "asserted"}
+for cf in C.facts():
+    if cf["type"] == "claim":
+        cf["stance"] = STANCE[cf["fact_id"].split(":", 1)[1]]          # KeyError = a claim without a stance
+
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.
 # The heat-map film of a pair was measured by Raman (Fig. 2), XPS (Fig. 4), SEM/AFM (Fig. 6a), in situ SE (Fig. 7a) and four-point

@@ -26,6 +26,7 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   inputs       fact_ids this fact is computed or fitted from, when the element says so
   parent       (stage 3) one id: the row without which this fact would not exist; blank only for the paper row
   links        (stage 3) ids of a second home, ";"-separated: a claim's supporting facts, the same data shown twice
+  stance       a claim's stance, lists.STANCES (asserted, hedged, open, limitation), from the paper's own wording
   author       who wrote the fact down: the paper id for a paper's facts (write() fills it), "user" in user.facts.csv
 
 Stage 3 makes each paper one tree inside its facts file. Tree rows have ids without "#" and are added with N():
@@ -47,7 +48,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "author"]
+          "value_max", "censor", "unit", "value_text", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "author"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}

@@ -33,12 +33,12 @@ ROWS = [
     row("user:case9", "claim", "lumped sticking coefficients of TMA fitted in the pilot papers and the works they cite lie between 1e-3 and 2e-2 "
         "over 100-300 °C, a factor of about 4 like with like; the 0.1 of Dendooven et al. and the 0.012 simulation input are chosen "
         "values, not fits; the fitted c_H2O of 3e-4 sits an order of magnitude below c_TMA",
-        quantity="lumped_sticking_coefficient", qualifiers="x=deposition_temperature", label_as_printed="Case 9: c vs T",
+        quantity="lumped_sticking_coefficient", qualifiers="x=deposition_temperature", label_as_printed="Case 9: c vs T", stance="asserted",
         links=[l["fid"] for l in c9], mentions="Case 9"),
     row("user:case10", "claim", "of the aspect ratios the pilot papers report with the exposure that reached them, the compacts of Greenberg "
         "et al. (7800 at 17 000 Torr s) and the aerogel they cite both lie at or above the exposure Gordon's square law asks; the "
         "10 000 channels of Yim et al. come without an exposure and cannot be placed",
-        quantity="aspect_ratio", qualifiers="x=exposure", label_as_printed="Case 10: AR vs exposure",
+        quantity="aspect_ratio", qualifiers="x=exposure", label_as_printed="Case 10: AR vs exposure", stance="asserted",
         links=[l["fid"] for l in c10] + [l["ctx"]["exposure"]["fact_id"] for l in c10], mentions="Case 10"),
 ]
 

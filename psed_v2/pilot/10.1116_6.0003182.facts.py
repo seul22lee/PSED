@@ -551,6 +551,24 @@ for cf in C.facts():
     if cf["points_ref"] and "x=" not in cf["qualifiers"]:
         cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=distance"]))
 
+
+# ---------------------------------------------------------------- the stance of every claim, from the paper's wording (lists.STANCES)
+STANCE = {"abs.g1#1": "hedged", "abs.g1#2": "asserted", "abs.g2#2": "asserted", "abs.g4#1": "asserted", "abs.g4#2": "hedged", "s6.p1#1": "asserted",
+          "s6.p1#2": "asserted", "s6.p3#1": "hedged", "s6.p6#1": "asserted", "s6.p6#4": "asserted", "s6.p8#1": "asserted", "s6.p8#2": "asserted",
+          "s6.p8#6": "hedged", "s6.p8#9": "asserted", "s6.p8#12": "asserted", "s9.p3#4": "asserted", "s9.p6#12": "hedged", "s9.p6#13": "hedged",
+          "s9.p7#1": "asserted", "s9.p9#7": "asserted", "s12.p1#1": "hedged", "s12.p1#2": "hedged", "s12.p1#3": "asserted", "s12.p1#13": "asserted",
+          "s12.p6#5": "asserted", "s12.p6#6": "hedged", "s12.x1#7": "asserted", "s12.x1#9": "open", "s12.p7#2": "asserted", "s12.p7#3": "hedged",
+          "s12.p8#5": "hedged", "s12.p8#6": "asserted", "s12.p15#1": "asserted", "s12.p17#1": "hedged", "s12.p17#2": "hedged", "s12.p17#3": "open",
+          "s12.p17#4": "asserted", "s12.p17#5": "hedged", "s13.p3#3": "asserted", "s13.p3#4": "hedged", "s13.p3#5": "asserted", "s13.p3#6": "open",
+          "s13.p4#4": "asserted", "s13.p4#6": "limitation", "s13.p4#9": "hedged", "s13.p4#11": "asserted", "s14.p2#2": "hedged", "s14.p6#1": "asserted",
+          "s14.p6#2": "hedged", "s14.p7#2": "hedged", "s14.p7#3": "hedged", "s14.p8#1": "asserted", "s14.p10#1": "asserted", "s14.p10#2": "hedged",
+          "s14.p10#5": "hedged", "s14.p10#8": "open", "s15.p1#1": "asserted", "s15.p2#1": "asserted", "s15.p2#2": "hedged", "s15.p3#1": "asserted",
+          "s15.p3#2": "asserted", "s15.p3#3": "hedged", "s15.p3#4": "asserted", "s15.p3#5": "open", "s15.p4#1": "asserted", "s15.p4#2": "hedged",
+          "s15.p4#3": "open", "s15.p8#1": "hedged", "s15.p8#2": "open"}
+for cf in C.facts():
+    if cf["type"] == "claim":
+        cf["stance"] = STANCE[cf["fact_id"].split(":", 1)[1]]          # KeyError = a claim without a stance
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs: the three stated depositions of Sec. II B (T held at 120 °C, held at 160 °C, cycled 120/160 °C), each coating an NPC pair;
 # under each, one specimen run per physical object the paper's facts are about (the weighed pair, the SEM-EDS section, the XRD

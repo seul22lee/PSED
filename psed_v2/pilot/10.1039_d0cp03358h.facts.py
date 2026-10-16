@@ -855,6 +855,23 @@ for cf in C.facts():
     if cf["points_ref"] and "x=" not in cf["qualifiers"]:
         cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
 
+
+# ------------------------------------------------------------------ the stance of every claim, from the paper's wording (lists.STANCES)
+STANCE = {"abs.g1#1": "asserted", "abs.g2#2": "asserted", "abs.g3#1": "asserted", "abs.g3#2": "asserted", "abs.g4#1": "asserted",
+          "s2.p13#1": "asserted", "s2.p13#2": "open", "s3.p2#1": "asserted", "s3.p4#1": "asserted", "s3.p6#3": "hedged", "s3.p9#4": "limitation",
+          "s7.p5#11": "asserted", "s8.p1#7": "asserted", "fig1.cap#3": "asserted", "s10.p1#4": "hedged", "s10.x2#4": "asserted",
+          "s11.x1#2": "asserted", "s12.x1#2": "asserted", "s12.x1#3": "asserted", "s12.p1#1": "limitation", "s13.x1#5": "asserted",
+          "s13.x2#3": "asserted", "s13.p2#4": "asserted", "s14.p1#3": "asserted", "s14.p1#4": "asserted", "s16.p1#1": "limitation",
+          "s16.p3#1": "limitation", "s16.p4#4": "limitation", "s16.p5#7": "hedged", "s16.p5#8": "hedged", "s16.p6#1": "hedged",
+          "s16.p7#1": "limitation", "s16.p7#3": "limitation", "s16.p8#1": "limitation", "s16.p9#1": "limitation", "s16.p10#1": "asserted",
+          "s17.p2#3": "open", "s18.p4#1": "hedged", "s18.p5#1": "hedged", "s18.p6#1": "hedged", "s19.p3#7": "hedged", "s19.p4#2": "asserted",
+          "s19.p4#3": "asserted", "s20.p1#1": "asserted", "s20.p2#1": "asserted", "s20.p2#2": "asserted", "s20.p2#3": "asserted",
+          "s20.p3#1": "asserted", "s6.p2#2": "asserted", "s7.p5#12": "asserted", "s13.x1#6": "asserted", "s13.x2#4": "asserted",
+          "s18.p2#1": "asserted", "s16.p10#5": "asserted"}
+for cf in C.facts():
+    if cf["type"] == "claim":
+        cf["stance"] = STANCE[cf["fact_id"].split(":", 1)[1]]          # KeyError = a claim without a stance
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs come from Table 1 (one specimen per sample code; Series A is also one stated ALD run, s6.p2), the AFM specimen of Fig. 6
 # (Table S4) and the simulations (Fig. 10 curves, ESI sensitivity runs). Parent rule: the row without which the fact would not
