@@ -14,7 +14,7 @@ page's JavaScript only filters, sorts and draws. The screen:
   detail (what, what differs with the full recipe behind one line, results one line each with method and source, claims), a
   comparison (what it varies, its members, its main results with their effect and one sentence on noise), or a source (the passage
   coloured by coverage, or the figure crop with the figure's values).
-Values: a measured or stated value carries no mark; anything else one plain word (read from figure, computed, assumed, model,
+Values: a measured or stated value carries no mark; anything else one plain word (read from figure, computed by the authors, computed here, assumed, model,
 cited), written once in a column header when the whole column shares it; a definition only when it is not the default.
 """
 import base64, collections, csv, html, json, re, sys
@@ -52,12 +52,12 @@ def lite(rec):
     if not rec:
         return None
     u = rec.get("uncertainty")
-    out = dict(text=rec["text"], kind=rec["kind"], fact=rec.get("fact", ""), statement=rec.get("statement", ""), definition=rec["definition"] if rec["kind"] != "computed" else "", source=rec.get("source", ""),
+    out = dict(text=rec["text"], kind=rec["kind"], fact=rec.get("fact", ""), statement=rec.get("statement", ""), definition=rec["definition"] if rec["kind"] != "computed here" else "", source=rec.get("source", ""),
                paper=rec.get("paper", ""), value=rec.get("value"), unit=rec.get("unit", ""), mode=rec.get("mode", ""), method=rec.get("method", ""),
                uncertainty=(f"± {u['value']}" + (f" ({u.get('stat') or 'spread'} between {u['kind'].replace('_', ' ')}{', ' + str(u['n']) if u.get('n') and u.get('n') != 'not_stated' else ''})"
                                                 if u.get("kind") and u["kind"] not in ("not_stated",) else "")) if u else "",
                alternatives=[a["text"] + (f" ({a['kind']})" if a["kind"] in L.KIND_WORDS else "") for a in rec.get("alternatives", [])],
-               formula=rec["definition"] if rec["kind"] == "computed" else "", assumed=rec.get("assumed", []),
+               formula=rec["definition"] if rec["kind"] == "computed here" else "", assumed=rec.get("assumed", []),
                inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []))
     if rec.get("curve") and rec["curve"].get("points"):
         out["curve"] = dict(x=rec["curve"]["x"], points=rec["curve"]["points"])
@@ -260,7 +260,7 @@ function selPanel(){const ids=[...S.checked].filter(i=>D.details[i]);if(!ids.len
  const rank=k=>{const r=D.primary.indexOf(k.split("{")[0]);return r<0?99:r};diff.sort((a,b)=>rank(a[0])-rank(b[0]));
  const baseKey=k=>k.replace(/(over|relative_to|kind)=[^;}]*;?/g,"").replace(/;}/,"}").replace(/{}/,"");
  const rk={};ds.forEach((d,j)=>(d.results||[]).forEach(x=>{if(!x.record||(!x.record.text&&!x.record.curve))return;if(S.result&&x.key.split("{")[0].split("[")[0]!==S.result)return;const bk=baseKey(x.key);
-  const o=(rk[bk]=rk[bk]||{name:x.name,v:{}});if(!o.v[ids[j]]||(x.record.kind!=="computed"&&o.v[ids[j]].kind==="computed"))o.v[ids[j]]=x.record;if(x.name.length<o.name.length)o.name=x.name}));
+  const o=(rk[bk]=rk[bk]||{name:x.name,v:{}});if(!o.v[ids[j]]||(x.record.kind!=="computed here"&&o.v[ids[j]].kind==="computed here"))o.v[ids[j]]=x.record;if(x.name.length<o.name.length)o.name=x.name}));
  const PR=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","mass_gain","crystallinity","phase"],pr=k=>{const i=PR.indexOf(k.split("{")[0]);return i<0?50:i};
  let rcols=Object.entries(rk).filter(([k,o])=>S.result||Object.keys(o.v).length===ids.length).sort((a,b)=>pr(a[0])-pr(b[0])||a[1].name.localeCompare(b[1].name));
  const rmore=rcols.length>6&&!S.open.has("rcols");if(rmore)rcols=rcols.slice(0,6);const nAll=Object.entries(rk).filter(([k,o])=>S.result||Object.keys(o.v).length===ids.length).length;

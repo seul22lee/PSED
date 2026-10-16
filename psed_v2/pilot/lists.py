@@ -357,5 +357,5 @@ DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles",
              ("relative_to", "crystalline_phases"): "of the crystalline phases", ("kind", "target"): "target", ("kind", "set_point"): "set point",
              ("reference", "bulk"): "bulk value", ("mode", "in_situ"): "in situ", ("mode", "ex_situ"): "ex situ"}
 # the value kinds a screen marks with one plain word; measured and stated values carry none
-KIND_WORDS = {"read from figure": "read from figure", "computed": "computed", "assumed": "assumed", "model": "model", "cited": "cited"}
+KIND_WORDS = {"read from figure": "read from figure", "computed by the authors": "computed by the authors", "computed here": "computed here", "assumed": "assumed", "model": "model", "cited": "cited"}
 

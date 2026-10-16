@@ -204,8 +204,9 @@ def element_kind(key, eid):
 
 def kind(f):
     """What a value is (the value record's kind): assumed (a user's assumption), cited (from another work), model (a model input or
-    output), computed (calculated from other values), read from figure (a value whose first element is a figure panel), measured
-    (an observation stated in text or a table), stated (a setting the paper states)."""
+    output), computed by the authors (a value the paper prints, calculated by its authors from other values; P34), read from figure
+    (a value whose first element is a figure panel), measured (an observation stated in text or a table), stated (a setting the paper
+    states). A value this layer derives (lists.DERIVED) is 'computed here' (derived_record)."""
     if f.get("data_kind") == "assumed" or f.get("author") == "user":
         return "assumed"
     if f["type"] == "cited" or f.get("data_kind") == "literature":
@@ -213,7 +214,7 @@ def kind(f):
     if f["type"] == "model":
         return "model"
     if f["type"] == "derived" or (f.get("data_kind") == "calculated" and f["type"] != "observation"):
-        return "computed"
+        return "computed by the authors"
     key = f["fact_id"].split(":")[0]
     if element_kind(key, f["evidence"].split(";")[0]) == "panel":
         return "read from figure"
@@ -769,7 +770,7 @@ def ctext(T, c, digits=2):
     if not c["values"]:
         return "no value"
     rng = f"{g(c['low'], digits)}–{g(c['high'], digits)} {c['unit']}" if c["low"] != c["high"] else f"{g(c['low'], digits)} {c['unit']}"
-    return f"{rng} over {len(c['values'])}: " + "; ".join(f"{T.label(e)} {g(v, digits)}{' (computed)' if src == 'computed' else ''}" for e, v, u, src, _ in c["values"])
+    return f"{rng} over {len(c['values'])}: " + "; ".join(f"{T.label(e)} {g(v, digits)}{' (computed here)' if src == 'computed' else ''}" for e, v, u, src, _ in c["values"])
 
 
 def dtext(d, digits=3):
@@ -875,10 +876,10 @@ def record(T, f, alternatives=()):
 
 
 def derived_record(T, ent, did, d):
-    """The value record of a derived value (lists.DERIVED): kind computed, its formula as definition, its inputs and assumed facts."""
+    """The value record of a derived value (lists.DERIVED): kind computed here (P34), its formula as definition, its inputs and assumed facts."""
     rs = d.get("readings") or []
     text = " or ".join(f"{g(v, 3)} {d['unit']} if {lab}" for lab, v in rs) if rs else f"{g(d['value'], 3)} {d['unit']}".strip()
-    return dict(value=d["value"], low=None, high=None, censor="", unit=d["unit"], text=text, kind="computed", definition=L.DERIVED[did]["formula"],
+    return dict(value=d["value"], low=None, high=None, censor="", unit=d["unit"], text=text, kind="computed here", definition=L.DERIVED[did]["formula"],
                 source="", paper=T.key, fact="", method="calculation", mode="", uncertainty=None, stat="", statement="",
                 inputs=[dict(name=n, fact=fid, value=g(v, 3), unit=u, source=src) for n, fid, v, u, src in d["inputs"]],
                 assumed=d["assumed"], readings=[dict(label=lab, value=g(v, 3)) for lab, v in rs], alternatives=[])
@@ -1202,7 +1203,7 @@ def compare(ids, result=None, x=None):
     for k in rkeys:
         cells = {i: res[i][k]["record"] if k in res[i] else None for i in ids}
         same_q = [r for r in cells.values() if r]
-        defs = {r["definition"] for r in same_q if r["kind"] != "computed"}
+        defs = {r["definition"] for r in same_q if r["kind"] != "computed here"}      # a derived value's definition is its formula
         note = f"different definitions: {'; '.join(sorted(d or 'the default' for d in defs))}" if len(defs) > 1 else ""
         rel = None
         if len(ids) == 2 and all(cells[i] and cells[i]["value"] is not None for i in ids):
