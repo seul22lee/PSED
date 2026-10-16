@@ -897,9 +897,9 @@ N(grp("sims"), "group", "simulations with the MATLAB diffusion-reaction model (Y
   PAPER, evidence="s8.p1;s13.p2;fig10.cap", qualifiers="how=stated")
 for k, (h, n) in SIMS.items():
     N(sim(k), "run", f"simulated profile for channel height {h} nm and {n} cycles (Fig. 10)", grp("sims"), evidence="fig10.cap",
-      label_as_printed=f"{h} nm" if k.startswith("H") else f"{n} cycles", qualifiers=f"run=simulation;how=stated;sim=H{h}_N{n}")
+      label_as_printed=f"sim · H {h} nm" if k.startswith("H") else f"sim · N {n}", qualifiers=f"run=simulation;how=stated;sim=H{h}_N{n}")
 N(sim("esi"), "run", "sensitivity simulations of the ESI: channel-height error and pillar effect on penetration depth", grp("sims"),
-  evidence="s16.p4;s16.p5", label_as_printed="ESI Fig. S10-S12", qualifiers="run=simulation;how=stated;sim=ESI")
+  evidence="s16.p4;s16.p5", label_as_printed="sim · ESI Fig. S10-S12", qualifiers="run=simulation;how=stated;sim=ESI")
 
 PARENT, LINKS = {}, {}
 FX = {f["fact_id"]: f for f in C.facts()}

@@ -31,6 +31,8 @@
   facts grouped by figure, table or paragraph, element id click = the element and its crop in the evidence box, curves
   as sparklines, inferred film membership marked), 4 why and what it showed (the group's purpose fact, then the claims
   linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens the tray with the two runs).
+  Every screen names a quantity by its short label from lists.LABELS ("TMA pulse", "PD50"; a curve "S vs x"); simulation
+  runs are labelled "sim · H 100 nm" in the tree.
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -288,8 +290,8 @@ const fv=f=>{const v=parseFloat(String(f.value).replace("−","-").replace(/\s/g
  if(!isNaN(lo)&&!isNaN(hi))return lo>0&&hi>0?Math.sqrt(lo*hi):(lo+hi)/2;return isNaN(lo)?hi:lo};
 function forestBar(){const Q=PAPERQ();const ls=fleaves();const xs={};ls.forEach(l=>Object.entries(l.f.ctx).forEach(([q,c])=>{if(c!=="ambiguous"&&q!==FQ)xs[q]=(xs[q]||0)+1}));
  if(FQ&&!(FX in xs))FX=("deposition_temperature" in xs)?"deposition_temperature":Object.keys(xs)[0]||"";
- return `<div class="fl"><label>quantity <select onchange="DEMO=false;FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${q} (${Q[q]})</option>`).join("")}</select></label>
- <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${q} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
+ return `<div class="fl"><label>quantity <select onchange="DEMO=false;FQ=this.value;FX='';applyForest()"><option value="">none</option>${Object.keys(Q).sort().map(q=>`<option value="${q}" ${q===FQ?"selected":""}>${esc(LISTS.labels[q]||q)} (${Q[q]})</option>`).join("")}</select></label>
+ <label>x = <select onchange="FX=this.value;applyForest()" ${FQ?"":"disabled"}>${Object.keys(xs).sort().map(q=>`<option value="${q}" ${q===FX?"selected":""}>${esc(LISTS.labels[q]||q)} (${xs[q]})</option>`).join("")||"<option>—</option>"}</select></label>
  <button onclick="DEMO=false;FQ='lumped_sticking_coefficient';FX='deposition_temperature';applyForest()">Case 9: c vs T</button> <button onclick="DEMO=false;FQ='aspect_ratio';FX='exposure';applyForest()">Case 10: AR vs exposure</button> <button class="${DEMO?"on":""}" onclick="DEMO=true;FQ='';applyForest()">Fig. 9 from tree</button>
  <span class="mut" id="fn"></span>${DATA.map((d,i)=>`<span class="sw" style="background:var(--c${i})"></span>${d.key}`).join("")} <span class="mut">· hollow = cited · red key = differs from the majority</span></div><div id="scat"></div>`}
 function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=forestBar();document.querySelectorAll(".hl").forEach(n=>n.classList.remove("hl"));
@@ -315,7 +317,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
  let g=`<svg class="sc" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(FQ)} against ${esc(FX)}">`;
  ticks(x0,x1,lx).forEach(v=>{const vv=lx?v:v;const x=L+(( lx?Math.log10(v):v)-x0)/(x1-x0)*(W-L-R);g+=`<line class="gr" x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${T}" y2="${H-B}"/><text class="tk" x="${x.toFixed(1)}" y="${H-B+14}" text-anchor="middle">${fmt(vv)}</text>`});
  ticks(y0,y1,ly).forEach(v=>{const y=H-B-((ly?Math.log10(v):v)-y0)/(y1-y0)*(H-T-B);g+=`<line class="gr" x1="${L}" x2="${W-R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/><text class="tk" x="${L-6}" y="${(y+3).toFixed(1)}" text-anchor="end">${fmt(v)}</text>`});
- g+=`<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle">${esc(FX)}${xunits?` (${esc(xunits)})`:""}${lx?", log":""}</text><text transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">${esc(FQ)}${units?` (${esc(units)})`:""}${ly?", log":""}</text>`;
+ g+=`<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle">${esc(LISTS.labels[FX]||FX)}${xunits?` (${esc(xunits)})`:""}${lx?", log":""}</text><text transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">${esc(LISTS.labels[FQ]||FQ)}${units?` (${esc(units)})`:""}${ly?", log":""}</text>`;
  pts.forEach(p=>{const f=p.l.f,c=`var(--c${p.l.i})`,x=X(p.x),y=Y(p.y);const lo=parseFloat(f.value_min),hi=parseFloat(f.value_max);
   if(!isNaN(lo)&&!isNaN(hi)&&(!ly||(lo>0&&hi>0)))g+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(lo).toFixed(1)}" y2="${Y(hi).toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
   const cx=f.ctx[FX];if(cx[3]!=null&&cx[4]!=null&&(!lx||(cx[3]>0&&cx[4]>0)))g+=`<line x1="${X(cx[3]).toFixed(1)}" x2="${X(cx[4]).toFixed(1)}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
@@ -334,7 +336,7 @@ function fitChips(){const box=document.getElementById("pchips"),t=document.getEl
  const n=[...box.querySelectorAll(".chip")].filter(c=>c.offsetTop+c.offsetHeight>box.clientHeight).length;t.textContent=n?`+${n} more`:"";t.style.display=n?"":"none"}
 function toggleChips(){const box=document.getElementById("pchips");if(!box)return;box.classList.toggle("open");fitChips()}
 const ctext=f=>valStr(f)||f.statement.replace(/^[^:]*:\s*/,"").slice(0,40);
-const qlab=f=>(f.quantity==="other"?f.label_as_printed:(f.quantity||"").replace(/_/g," "))+(f.qualifiers?` <span class="mut">${esc(f.qualifiers.replace(/;/g," "))}</span>`:"");
+const qlab=f=>esc(qtext(f));   // the short label (lists.LABELS), as every screen shows it
 function subtree(T,id){const out=[];(function w(x){for(const c of T.kids[x]||[]){if(c.type==="run"||c.type==="group")continue;if(c.fact_id.includes("#"))out.push(c);w(c.fact_id)}})(id);return out}
 const settingsOf=(T,id)=>subtree(T,id).filter(f=>f.type==="setting"&&f.quantity);
 function variedAmong(T,nodes){const per={};nodes.forEach(n=>settingsOf(T,n.fact_id).forEach(f=>{const k=ckey(f),v=ctext(f);(per[k]=per[k]||{f,by:{}});const cur=per[k].by[n.fact_id];if(!cur)per[k].by[n.fact_id]=v;else if(!cur.split("; ").includes(v))per[k].by[n.fact_id]=cur+"; "+v}));
@@ -369,7 +371,7 @@ function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=
  levels.forEach((l,k)=>{if(k===0)return;const lvVar=new Set(l.varied.map(c=>ckey(c.f)));settingsOf(T,l.node).forEach(f=>addChip(f,lvVar.has(ckey(f)),nlab(T.byId[l.node])))});
  let a=T.up[levels[levels.length-1].node];while(a&&T.byId[a]){settingsOf(T,a).forEach(f=>addChip(f,false,T.byId[a].type));a=T.up[a]}
  chips.sort((x,y)=>rank(x.f)-rank(y.f));
- const r2=chips.length?`<div class="pchips" id="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.lv)}: ${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc((c.f.quantity==="other"?c.f.label_as_printed:c.f.quantity).replace(/_/g," "))} ${esc(ctext(c.f))}</span>`).join(" ")}</div><div class="mut" style="font-size:11px"><span class="lnk" id="pmore" onclick="toggleChips()"></span> ${chips.filter(c=>c.diff).length} marked: differ from a sibling at their level</div>`:`<div class="mut">none recorded</div>`;
+ const r2=chips.length?`<div class="pchips" id="pchips">${chips.map(c=>`<span class="chip ${c.diff?"diff":""}" data-f="${c.f.fact_id}" title="${esc(c.lv)}: ${esc(c.f.statement)}" onclick="side('${c.f.evidence.split(";")[0]}',${i})">${esc(qtext(c.f))} ${esc(ctext(c.f))}</span>`).join(" ")}</div><div class="mut" style="font-size:11px"><span class="lnk" id="pmore" onclick="toggleChips()"></span> ${chips.filter(c=>c.diff).length} marked: differ from a sibling at their level</div>`:`<div class="mut">none recorded</div>`;
  // 3 measured
  const meas=subtree(T,id).filter(f=>["observation","derived","model"].includes(f.type));const groups={};meas.forEach(f=>{const e=f.evidence.split(";")[0];const g=elab(e);(groups[g]=groups[g]||[]).push(f)});
  const inf=n.qualifiers.includes("how=inferred");
@@ -393,7 +395,8 @@ function inherited(T,id){const m={};let x=id;while(x&&T.byId[x]){const lv={};set
 function results(T,id){const m={};subtree(T,id).filter(f=>["observation","derived","model"].includes(f.type)&&f.quantity&&(valStr(f)||f.points_ref)).forEach(f=>{const k=ckey(f);(m[k]=m[k]||{f,fs:[]}).fs.push(f)});return m}
 const grpOf=(T,id)=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="group")x=T.up[x];return x&&T.byId[x]?x:null};
 let _RUNS=null;const RUNS=()=>_RUNS||(_RUNS=DATA.flatMap((d,i)=>{const T=buildTree(d);return d.tree.filter(n=>n.type==="run").map(n=>({d,i,T,n,id:n.fact_id,inh:inherited(T,n.fact_id),res:results(T,n.fact_id)}))}));
-const qtext=f=>(f.quantity==="other"?f.label_as_printed:(f.quantity||"").replace(/_/g," "))+(f.qualifiers?" "+f.qualifiers.replace(/;/g," "):"");
+const qshort=(q,qs)=>{const k=q+"{"+qs+"}";if(LISTS.labels[k])return LISTS.labels[k];const base=LISTS.labels[q]||(q||"").replace(/_/g," ");const vals=qs.split(";").filter(Boolean).map(p=>p.split("=")[1]);return vals.length?base+" "+vals.join(" "):base};
+const qtext=f=>{const qs=(f.qualifiers||"").split(";").filter(Boolean);const x=qs.find(p=>p.startsWith("x="));const rest=qs.filter(p=>!p.startsWith("x=")).join(";");const base=f.quantity==="other"?(f.label_as_printed||"other")+(rest?" "+rest.split(";").map(p=>p.split("=")[1]).join(" "):""):qshort(f.quantity||"",rest);return x?`${base} vs ${qshort(x.slice(2),"")}`:base};
 const shadeOf=fs=>{const nums=fs.map(fv).filter(v=>v!=null&&!isNaN(v));const min=Math.min(...nums),max=Math.max(...nums),log=nums.length>1&&nums.every(v=>v>0)&&Math.log10(max/min)>2;return v=>{if(v==null||isNaN(v)||!(max>min))return"";const t=log?(Math.log10(v)-Math.log10(min))/(Math.log10(max)-Math.log10(min)):(v-min)/(max-min);return `background:color-mix(in srgb,var(--acc) ${Math.round(8+42*t)}%,transparent)`}};
 const evc=(f,i)=>`onclick="event.stopPropagation();side('${f.evidence.split(";")[0]}',${i})"`;
 function levelsOf(T,id){const levels=[];let x=id;while(T.up[x]&&T.byId[T.up[x]]){const par=T.up[x];const sibs=(T.kids[par]||[]).filter(k=>(k.type==="run"||k.type==="group"));levels.push({node:x,par,sibs,varied:variedAmong(T,sibs)});if(["process","paper"].includes(T.byId[par].type))break;x=par}return levels}
@@ -407,7 +410,7 @@ function nums(r,q){let es=Object.values(r.inh).filter(v=>v.f.quantity===q);const
 function wbMatch(r){if(WB.paper&&r.d.key!==WB.paper)return false;if(WB.material&&(r.inh["material||"]||{}).text!==WB.material)return false;if(WB.structure&&(r.inh["structure_type||"]||{}).text!==WB.structure)return false;
  if(WB.quantity&&!Object.values(r.res).some(o=>o.f.quantity===WB.quantity))return false;if(WB.method&&!subtree(r.T,r.id).some(f=>f.method===WB.method))return false;
  for(const q in WB.range){const [a,b]=WB.range[q];if(a===""&&b==="")continue;const lo=a===""?-Infinity:+a,hi=b===""?Infinity:+b;if(!nums(r,q).some(([x,y])=>y>=lo&&x<=hi))return false}return true}
-function wbView(){const rs=RUNS();const m=rs.filter(wbMatch);const sel=(k,opts,cur)=>`<select onchange="wbSet('${k}',this.value)"><option value="">any</option>${opts.map(o=>`<option value="${esc(o)}" ${o===cur?"selected":""}>${esc(o.replace(/_/g," "))}</option>`).join("")}</select>`;
+function wbView(){const rs=RUNS();const m=rs.filter(wbMatch);const sel=(k,opts,cur)=>`<select onchange="wbSet('${k}',this.value)"><option value="">any</option>${opts.map(o=>`<option value="${esc(o)}" ${o===cur?"selected":""}>${esc(k==="quantity"?LISTS.labels[o]||o:o.replace(/_/g," "))}</option>`).join("")}</select>`;
  const left=`<div class="wbf"><label>material${sel("material",LISTS.materials,WB.material)}</label><label>structure type${sel("structure",LISTS.structures,WB.structure)}</label><label>method${sel("method",LISTS.methods,WB.method)}</label><label>result quantity${sel("quantity",LISTS.quantities.filter(q=>q!=="other"),WB.quantity)}</label><label>paper${sel("paper",DATA.map(d=>d.key),WB.paper)}</label>
  ${Object.entries(RANGE).map(([q,u])=>`<label>${q.replace(/_/g," ")}${u?` (${u})`:""}<div><input type="number" placeholder="min" value="${WB.range[q][0]}" onchange="wbRange('${q}',0,this.value)"> – <input type="number" placeholder="max" value="${WB.range[q][1]}" onchange="wbRange('${q}',1,this.value)"></div></label>`).join("")}<button onclick="wbClear()">clear filters</button></div>`;
  const inTray=new Set(WB.tray.filter(t=>!t.fid).map(t=>t.id));
@@ -452,7 +455,7 @@ function overlay(items){const cs=items.flatMap(it=>it.curves.map(f=>({it,f,q:f.q
  return `<div class="fl"><label>y ${sel("y",yopts)}</label><label>x ${sel("x",xopts)}</label><span class="mut">${on.length} curves: ${esc(q.replace(/_/g," "))} against ${esc(x.replace(/_/g," "))}</span></div>${ser.length?lchart(ser,xl,yl).replace('<svg ','<svg class="ov" '):'<div class="mut">no curve has the setting</div>'}
  ${skipped.map(t=>`<div class="mut">not drawn · ${esc(t)}</div>`).join("")}${off.map(c=>`<div class="mut">other axis · ${esc(c.it.label)}: ${esc(c.q.replace(/_/g," "))} against ${esc(c.x.replace(/_/g," "))}</div>`).join("")}`}
 function condTable(items){const ks=[...new Set(items.flatMap(it=>Object.keys(it.r.inh)))];const rows=[],common=[];
- ks.forEach(k=>{const vals=items.map(it=>it.r.inh[k]?it.r.inh[k].text:null);const stated=[...new Set(vals.filter(v=>v!==null))];const f=items.find(it=>it.r.inh[k]).r.inh[k].f;if(stated.length<=1)common.push({f,k,text:stated[0]||""});else rows.push({f,k,vals})});
+ ks.forEach(k=>{const vals=items.map(it=>it.r.inh[k]?it.r.inh[k].text:null);const stated=[...new Set(vals.filter(v=>v!==null))];const f=items.find(it=>it.r.inh[k]).r.inh[k].f;if(stated.length===1&&vals.every(v=>v!==null))common.push({f,k,text:stated[0]});else rows.push({f,k,vals})});   // common only when every item states the same value
  const byRank=(a,b)=>rank(a.f)-rank(b.f)||a.k.localeCompare(b.k);common.sort(byRank);rows.sort(byRank);
  return `<div class="pchips open">${common.map(c=>`<span class="chip" title="${esc(c.k)}">${esc(qtext(c.f))} ${esc(c.text)}</span>`).join(" ")||'<span class="mut">none</span>'}</div><div style="overflow-x:auto"><table class="ft cmp"><thead><tr><th>${rows.length} differ</th>${items.map(it=>`<th>${esc(it.label)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${qlab(r.f)}</th>${r.vals.map((v,j)=>`<td>${v===null?'<span class="mut">not stated</span>':`<span class="chip diff" ${evc(items[j].r.inh[r.k].f,items[j].r.i)}>${esc(v)}</span>`}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`}
 function cmpPanel(){const items=trayItems();if(items.length<1)return"";const vs=[];items.forEach((a,i)=>items.slice(i+1).forEach(b=>{const v=verdict(a,b);vs.push(`<div class="fl2 vd"><b class="${v.c}">${v.v}</b> · ${esc(a.label)} vs ${esc(b.label)} · ${esc(v.why)}</div>`)}));
@@ -530,7 +533,7 @@ tab("facts");
 
 if __name__ == "__main__":
     data = [paper(pid, k) for pid, k in KEYS.items()]
-    lists = dict(materials=L.MATERIALS, structures=L.STRUCTURES, methods=L.METHODS, quantities=L.QUANTITIES)
+    lists = dict(materials=L.MATERIALS, structures=L.STRUCTURES, methods=L.METHODS, quantities=L.QUANTITIES, labels=L.LABELS)
     facts_page = PAGE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")).replace("__LISTS__", json.dumps(lists))
     cases_page = runpy.run_path(str(HERE / "cases.py"))["main"]()
     matrix_page = runpy.run_path(str(HERE / "matrix.py"))["page"]

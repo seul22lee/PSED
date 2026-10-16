@@ -83,3 +83,44 @@ UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_ti
          "pressure_rate": "mTorr/min", "time_to_maximum": "min", "roughness": "nm", "binding_energy": "eV", "atoms_per_cycle": "nm-2",
          "carrier_concentration": "cm-3", "carrier_mobility": "cm2/Vs", "objective_magnification": "", "fit_r2": "", "fill_fraction": "%",
          "signal_intensity": "", "reaction_stoichiometry": "", "annealing_temperature": "°C", "raman_shift": "cm-1"}
+
+# short display labels, used by every screen: one per quantity id, and one per common quantity{qualifiers} combination
+# (qualifiers written as in the facts, without x=). A combination not listed shows the quantity's label followed by the
+# qualifier values ("composition S", "BE Mo"); a curve shows "<y label> vs <x label>".
+LABELS = {
+    "aspect_ratio": "AR", "carrier_gas": "carrier gas", "coated_aspect_ratio": "coated AR", "composition": "composition",
+    "crystallinity": "crystallinity", "cycle_number": "N", "cycle_time": "cycle time", "deposition_temperature": "T",
+    "dimensionless_distance": "x̃", "distance": "x", "equivalent_aspect_ratio": "EAR", "exposure": "exposure", "feature_depth": "depth",
+    "feature_height": "H", "feature_width": "w", "film_density": "density", "film_thickness": "S", "front_slope": "front slope",
+    "gas_flow_rate": "flow", "growth_per_cycle": "GPC", "initial_sticking_coefficient": "s0", "knudsen_number": "Kn",
+    "lumped_sticking_coefficient": "c", "mean_free_path": "λ", "normalized_exposure": "normalized exposure",
+    "normalized_thickness": "normalized S", "open_fraction": "open fraction", "partial_pressure": "p_partial",
+    "penetration_depth": "PD", "precursor_purity": "purity", "probe_resolution": "spot", "process_pressure": "p",
+    "pulse_time": "pulse", "purge_time": "purge", "reactor_type": "reactor", "recombination_probability": "r",
+    "resistivity": "ρ", "saturation_density": "q_sat", "source_temperature": "T_source", "step_coverage": "step coverage",
+    "substrate": "substrate", "surface_coverage": "θ", "thickness_nonuniformity": "nonuniformity", "plasma_gas_ratio": "gas ratio",
+    "mass_gain": "mass gain", "porosity": "porosity", "crystallite_size": "crystallite size", "gas_moles_per_cycle": "Δn_g",
+    "deposited_moles_per_cycle": "Δn_s", "pressure_rise": "δp", "pressure_rate": "TS", "time_to_maximum": "t_max", "roughness": "Rq",
+    "binding_energy": "BE", "atoms_per_cycle": "atoms/cycle", "carrier_concentration": "carriers", "carrier_mobility": "mobility",
+    "pillar_layout": "pillar layout", "objective_magnification": "objective", "fit_r2": "R²", "fill_fraction": "fill",
+    "signal_intensity": "intensity", "reaction_stoichiometry": "ȳ", "annealing_temperature": "T_anneal", "material": "material",
+    "structure_type": "structure", "raman_shift": "Raman shift", "other": "other",
+    "pulse_time{step=reactant_A;species=TMA}": "TMA pulse", "pulse_time{step=reactant_B;species=H2O}": "H2O pulse",
+    "pulse_time{step=reactant_A;species=DEZ}": "DEZ pulse", "pulse_time{step=reactant_A}": "pulse A", "pulse_time{step=plasma}": "plasma step",
+    "purge_time{step=purge_A}": "purge A", "purge_time{step=purge_B}": "purge B",
+    "deposition_temperature{kind=set_point}": "T set point", "deposition_temperature{step=reactant_A}": "T (A dose)",
+    "deposition_temperature{step=purge_A}": "T (purge A)", "deposition_temperature{step=reactant_B}": "T (B dose)",
+    "deposition_temperature{step=purge_B}": "T (purge B)",
+    "dimensionless_distance{level=50%;by=H}": "x̃50", "penetration_depth{level=50%;origin=entrance}": "PD50",
+    "penetration_depth{origin=entrance}": "PD", "front_slope{by=H}": "slope d(S/N)/dx̃", "front_slope{by=H;reference=entrance}": "slope dθ/dx̃",
+    "film_thickness{position=plateau}": "S_plateau", "film_thickness{position=outside}": "S_outside", "film_thickness{position=interface}": "S_interface",
+    "growth_per_cycle{position=plateau}": "GPC_plateau", "growth_per_cycle{position=outside}": "GPC_outside",
+    "normalized_thickness{reference=entrance}": "S/S_entry", "plasma_gas_ratio{gas=H2}": "H2 ratio",
+    "gas_flow_rate{step=plasma;gas=H2S}": "H2S flow", "gas_flow_rate{step=plasma;gas=H2}": "H2 flow", "gas_flow_rate{step=plasma;gas=Ar}": "Ar flow (plasma)",
+    "gas_flow_rate{gas=N2}": "N2 flow", "gas_flow_rate{gas=Ar}": "Ar purge flow", "gas_flow_rate{gas=Ar;step=reactant_A}": "Ar carrier flow",
+    "gas_flow_rate{step=plasma}": "plasma flow", "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
+    "lumped_sticking_coefficient{species=TMA}": "c_TMA", "lumped_sticking_coefficient{species=H2O}": "c_H2O",
+    "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
+}
+assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
+assert all(q in LABELS for q in QUANTITIES), "quantity without a label"

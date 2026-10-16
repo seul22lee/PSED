@@ -601,7 +601,7 @@ N(TEST, "run", "thermocouple test run of Fig. 2(d): same conditions as the cycle
 N(BARE, "run", "uncoated Al2O3 NPC photographed before ALD (Fig. 4a)", PROC, evidence="fig4a;fig4.cap", label_as_printed="Before ALD",
   qualifiers="run=specimen;how=stated;sample=before_ALD")
 N(SIM, "run", "Eq. (1)-(2) estimate of the hold time and of the H2O purge time needed at 120 and 160 °C", PROC,
-  evidence="eq1;eq2;s9.p9", label_as_printed="Eq. (2)", qualifiers="run=simulation;how=stated;sim=eq1_2")
+  evidence="eq1;eq2;s9.p9", label_as_printed="sim · Eq. (2)", qualifiers="run=simulation;how=stated;sim=eq1_2")
 
 PARENT, LINKS = {}, {}
 FX = {f["fact_id"]: f for f in C.facts()}
