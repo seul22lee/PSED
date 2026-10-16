@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; the state at commit 7d9470b, the tree foundation change)
+# Handoff (2026-10-16; the state at commit f7e503e, the question-driven revision: 26 of 26 questions answered)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -24,6 +24,9 @@ sections below.
   - Cremers 2019 typed in: `cremers.py` (part 1 transcribes Tables II–VII, part 2 checks and plots) → `cremers_*.csv`.
   - v1 points: `v1_points_check.csv` records which v1 curves were checked against their figure and accepted; `v1_points.json`
     holds those points.
+- **The 26 questions** (`pilot/questions.py` → `questions.csv`): each a function computing its answer from the facts, the test of the
+  schema. Baseline (b8a3b0d) 2 answered, now 26. Eight answers use an assumed fact and say which (Q6, Q11, Q17, Q19, Q20, Q21, and
+  the derived columns of the cards). Run it after any change to the facts or rules; a status change is recorded in `changed`.
 - The five-table schema pilot (first pass at 840674c, the element-grounded v2 at c796617) is superseded by the facts layer and
   was removed on 2026-10-14; read it from git history if needed. Its lessons are below.
 
@@ -93,6 +96,34 @@ sections below.
   reports the tolerated keys that differ and the keys only one states, and the answer names them. A setting the paper states for
   a set of films (the Table 1 films on glassy carbon) is a setting of their depositions, so that the join can see it.
 
+## Comparison layer
+What turns the trees into answers: computed, never stored, defined once (`lists.py` for definitions, `questions.py` for the
+operations; `report.py` shows them on the cards and in Find).
+- **Join rules.** The condition vector of an entity is its own settings plus those of the non-measurement activities above it,
+  nearest first. Two entities are the same experiment when both state the same process-defining settings (`lists.PRIMARY`:
+  reactor, temperature, H2 ratio, pressure, purity, source temperature, pulse and purge times, feature height, cycles, substrate)
+  and agree on every key both state except the tolerated keys the question names (`same_experiment`; the cards tolerate
+  substrate, cycle_number and film_thickness). The answer names the tolerated keys that differed (Q10: cycle number and target
+  thickness; Q11: substrate, glassy carbon against SiO2/Si). A recipe-level lookup setting keyed by another setting carries that
+  value as a qualifier (`ratio=` on the Table 2 flows). Input entities join through the `inputs` column of the activities.
+- **Derived quantities.** `lists.DERIVED`: 15 definitions, each with its inputs (quantity ids with the qualifiers a fact must carry,
+  `@material` and `@A` for the entity's film and reactant A, the unit each is read in), the formula in words and as a function, the
+  unit. `questions.derive` takes an input from the entity's results and its run's monitor, its vector, its input entities, the
+  paper when the definition says so, then the assumed facts; units pass through `lists.convert` (`UNIT_ALIAS`, `UNIT_BASE`). A
+  derived id that is also a stated quantity is a second route: the stated fact wins unless the route is asked for, and the card
+  shows both with their ratio.
+- **Assumed facts.** In `user.facts.csv`, type setting, `data_kind` assumed, author user, linked to what they stand in for: M of ZnO
+  and MoS2, bulk ZnO density, N_A, k_B, the Fig. 10 model TMA pressure for yim20, two NPCs per gre23 run, DEZ taken TMA-sized. One
+  serves only when no paper fact does, only the papers its links name (a constant without links serves all), and every value
+  computed from one names it.
+- **Operations** (`questions.py`): `power_fit` (log-log least squares: exponent, residual) over `series_xy` with the co-varying
+  settings named; `correction` of a confounder from the stated comparison that varies only it (Series A for sample 14's layout);
+  `routes` (two facts reaching one entity and quantity as a ratio, the differing definitions named, never a contradiction);
+  `effect` and `spread` (max − min over a series against the replicate comparison's standard deviation); `scale` by a power law
+  from a reference member; `ratios_between` over every result two specimens share, pieces and run monitors included
+  (`results_deep`); `scope_comparisons` from a claim's links; `contrast` of the specimens whose observations state a phase against
+  the rest of their row. Find puts any result or derived quantity of the tray on either axis ("result against result").
+
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
 do not check it out over v2). Useful for its digitized points (`extracted/figure_data.json`, mapped by `canonical/curves.json`): they
@@ -116,6 +147,7 @@ python3 psed_v2/pilot/cremers.py                      # Cremers tables and check
 python3 psed_v2/pilot/forest.py                       # Cases 9 and 10 and Fig. 9 rebuilt from the three trees alone, against the hand-made CSVs
 python3 psed_v2/pilot/user_facts.py && python3 psed_v2/pilot/experiments.py   # the user's facts; one row per experiment (entity with observations) and per cited work
 python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, no unresolved case candidate
+python3 psed_v2/pilot/questions.py                    # the 26 questions against the facts -> questions.csv (status, answer, how)
 python3 psed_v2/pilot/report.py                       # reports/pilot.html (needs corpus/raw review PDF and pdftoppm for Case 8)
 python3 psed_v2/ingest/regression.py                  # ingest output against the answer set
 ```
@@ -146,10 +178,14 @@ Stages:
    measurement activity or the comparison it spans, never with a setting quantity, and never with a measured quantity on the
    paper's method activity; every setting under an activity or an entity, never a comparison; a comparison has a purpose fact first, two or more members and a varied quantity id (none
    for a replicate set), varies nothing of quantity other, and its label's values are in a member's condition vector; a value read
-   off a colour-bar panel says so. Done 2026-10-16 (commit 7d9470b): yim20 27 entities (17 stated, 10 model runs), 15 depositions,
-   42 measurement activities, 8 comparisons; mat22 54 entities (36 inferred), 54 depositions, 128 measurement activities, 12
-   comparisons, 620 facts (64 colour cells); gre23 17 entities, 4 depositions, 34 measurement activities, 1 comparison; 98
-   experiments in `experiments.csv`; 50 of 187 claims reach no condition (links to definitions, cited works or claims only).
+   off a colour-bar panel says so. Done 2026-10-16 (commit 7d9470b), revised by the questions (f7e503e): yim20 704 facts, 31 entities
+   (10 inferred: the model runs; the chips and their three design pieces are input entities), 15 depositions, 11 simulations, 48
+   measurement activities, 8 comparisons; mat22 678 facts (64 colour cells), 55 entities (37 inferred; the plasma an input entity),
+   54 depositions, 1 anneal, 185 measurement activities, 12 comparisons; gre23 336 facts, 18 entities (the compacts an input
+   entity), 4 depositions, 34 measurement activities, 1 comparison; 49 facts with an `uncertainty`; 104 experiments and 62 cited
+   works in `experiments.csv`; 12 user facts (8 assumed); the claims view shows 41 of 197 claim lines with "no condition".
+   The in situ SE films of Fig. 7a are the 140-cycle cell films (s5.p7), so each cell has one inferred film; the earlier
+   instruction to give in situ SE its own separate deposition was withdrawn.
 4. **Standardization**: units converted to `lists.UNITS` and quantity ids standardized, in the facts file.
 5. **Views and demo**, seven views: coverage (nothing lost); facts by type; experiment view (per deposition: conditions,
    measurements, results, link status coloured); figure view (crop next to its facts); evidence trace (a claim → derived →
