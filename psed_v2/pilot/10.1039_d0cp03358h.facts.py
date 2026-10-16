@@ -1134,6 +1134,12 @@ for k in list(SIMS) + ["esi"]:
     SIMRUNS[sim(k)] = dict(act=f"{K}:simrun:{k}", ent=f"{K}:simrun:{k}:run", parent=SIMACT, statement=RUNROW[sim(k)]["statement"],
                         label=RUNROW[sim(k)]["label_as_printed"], evidence=RUNROW[sim(k)]["evidence"])
 C.retree(K, PROC, DEPS, ENTS, SIMRUNS, group_facts_to={grp("sims"): SIMACT})
+# each model run's own inputs (P29): the channel height and cycle number the Fig. 10 caption gives each simulated profile
+for k_, (h_, n_) in SIMS.items():
+    for q_, v_, u_ in (("feature_height", h_, "nm"), ("cycle_number", n_, "")):
+        fid_ = F(K, "fig10.cap", "setting", f"simulation run {k_}: {'channel height' if q_ == 'feature_height' else 'cycle number'} {v_}{' ' + u_ if u_ else ''}",
+                 quantity=q_, value=v_, unit=u_, data_kind="chosen input", mentions=f"{v_}{' ' + u_ if u_ else ''};sim {k_}")
+        next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:simrun:{k_}"
 # observations about the reflectometry method itself (the regions it shows, the spikes) stay on the paper's method activity; the
 # ESI comparison of Series C with the model spans that series
 for fid_, par in ((f"{K}:fig3b#1", f"{K}:method:reflectometry"), (f"{K}:fig3.cap#3", f"{K}:method:reflectometry"), (f"{K}:s17.p1#2", f"{K}:method:reflectometry"),
