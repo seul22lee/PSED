@@ -582,7 +582,7 @@ def _run(name, args):
                 if len(line) > SEARCH_LINE:
                     line = line[:SEARCH_LINE - 2].rsplit(" ", 1)[0] + " …"
                 rec = dict(caveats=list(cav.values()))
-                items.append([(h["id"], line + cmark(rec))] + clines(rec))
+                items.append([x for y in [(h["id"], line + cmark(rec))] + clines(rec) for x in wrap(*y)])
             return [block(items)], ""
         if name == "detail":
             parts = [p for p in (args.get("parts") or DETAIL_DEFAULT) if p in DETAIL_PARTS] or DETAIL_DEFAULT
