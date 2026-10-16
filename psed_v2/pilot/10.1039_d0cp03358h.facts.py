@@ -72,7 +72,7 @@ F(K, "s2.p2", "cited", "even ALD does not guarantee conformal coating at a given
   method="cited", mentions="ref. 1;ref. 8;ref. 28-31")
 F(K, "s2.p2", "cited", "in ideal ALD, how deep the coating reaches grows as the square root of reactant dose",
   method="cited", mentions="ref. 29;ref. 32-34")
-F(K, "s2.p2;s14.p1", "definition", "dose = reactant partial pressure times exposure time; in this work the partial pressure is not strictly constant, so dose need not grow linearly with pulse time",
+F(K, "s2.p2;s14.p1", "definition", "dose = reactant partial pressure times exposure time; in this work the partial pressure is not strictly constant, so dose need not grow linearly with pulse time", quantity="exposure",
   mentions="dose")
 F(K, "s2.p2", "cited", "reactivity, often given as a lumped sticking coefficient c_A, sets how fast uniform thickness is reached; CVD from decomposition or pulse mixing, or unsaturated reactions, harm conformality",
   method="cited", mentions="c_A;ref. 1;ref. 31;ref. 35-37")
@@ -131,7 +131,7 @@ F(K, "s3.p3;fig2.cap;tabu2.r25c0;tabu2.r25c1", "definition", "dimensionless dist
 F(K, "s3.p3;s3.p4", "cited", "earlier works often used the aspect ratio as horizontal axis where this work uses the dimensionless distance",
   method="cited", mentions="AR;ref. 1;ref. 2;ref. 40;ref. 47")
 F(K, "s3.p4", "claim", "x~ stays fixed however much film grows, while the aspect ratio felt by the process rises as the film narrows the channel")
-F(K, "s3.p5;fig2c;fig2.cap", "definition", "Type 1 normalized profile: growth with its channel-entrance value set to 1 against x~",
+F(K, "s3.p5;fig2c;fig2.cap", "definition", "Type 1 normalized profile: growth with its channel-entrance value set to 1 against x~", quantity="normalized_thickness",
   method="schematic", mentions="Fig. 2c")
 F(K, "s3.p5;tabu2.r28c0;tabu2.r28c1", "definition", "the normalized growth may be read as surface coverage θ, with 0 ≤ θ ≤ 1",
   label_as_printed="θ", mentions="ref. 32;ref. 36")
@@ -157,7 +157,7 @@ F(K, "s3.p8;fig3.cap;fig3b", "definition", "Region II has subregions a, b, c; a 
 F(K, "s3.p8;fig3.cap", "definition", "Region IIb is the early part after the nanostep where growth per cycle is at its saturated maximum (useful for modelling); IIc is the rest before the knee, and the IIb/IIc border may be arbitrary",
   mentions="Region IIb;Region IIc")
 F(K, "fig3.cap;fig3a;fig3b;tabu2.r13c0;tabu2.r13c1;tabu2.r24c0;tabu2.r24c1", "definition",
-  "PD50% (x50%): the penetration depth at which thickness is 50% (µm)", label_as_printed="PD^50% (x_50%)", mentions="(2)")
+  "PD50% (x50%): the penetration depth at which thickness is 50% (µm)", quantity="penetration_depth", qualifiers="level=50%", label_as_printed="PD^50% (x_50%)", mentions="(2)")
 F(K, "fig3.cap;fig3a;fig3b", "definition", "also marked on the profiles: the front slope at PD50% (3) and the leading edge of the front (4)",
   mentions="(3);(4)")
 F(K, "fig3a;fig3.cap", "model", "Fig. 3a: ideal simulated scaled profile, growth/cycles against x~ with no axis numbers, annotated with Regions I-IV and marks 1-4",
@@ -170,11 +170,11 @@ F(K, "fig3.cap;fig3b;s17.p1", "observation", "spikes (6) were occasionally obser
 F(K, "s3.p9;tab1.r0c0", "definition", "each Table 1 series varies one parameter: A pillar layout, B reflectometer magnification, C design channel height, D ALD cycles, E TMA pulse time, F purge time",
   mentions="Series A;Series B;Series C;Series D;Series E;Series F")
 F(K, "s3.p9;tab1.r0c1", "definition", "original traceable sample codes are listed in ESI Table S3", mentions="Table S3")
-F(K, "s3.p9;tab1.r0c8", "definition", "initial thickness S_IIb is the mean of the first five points of the constant Region IIb; for H 100 nm it is the first point of the constant region",
+F(K, "s3.p9;tab1.r0c8", "definition", "initial thickness S_IIb is the mean of the first five points of the constant Region IIb; for H 100 nm it is the first point of the constant region", quantity="film_thickness", qualifiers="position=plateau",
   method="calculation", mentions="S_IIb;Region IIb;Fig. 3;100 nm")
 F(K, "s3.p9;s16.p7;s16.p8", "claim", "the optically measured thickness includes native silicon oxide, which may have raised the measured values somewhat",
   method="reflectometry")
-F(K, "s3.p9;tab1.r0c14", "definition", "Region III front slope = slope of the best-fitting straight line through the scaled profile",
+F(K, "s3.p9;tab1.r0c14", "definition", "Region III front slope = slope of the best-fitting straight line through the scaled profile", quantity="front_slope",
   method="calculation", mentions="Region III;Fig. 3")
 
 # ------------------------------------------------------------------ C. experimental
@@ -268,7 +268,7 @@ F(K, "s8.p1", "claim", "eqn (1) of ref. 33 has an error: both right-hand terms s
   mentions="ref. 33;eqn (1)")
 
 # ------------------------------------------------------------------ Fig. 1
-F(K, "fig1.cap;fig1a;tabu2.r2c0;tabu2.r2c1", "definition", "H: height of the LHAR channel (nm)", label_as_printed="H", unit="nm",
+F(K, "fig1.cap;fig1a;tabu2.r2c0;tabu2.r2c1", "definition", "H: height of the LHAR channel (nm)", quantity="feature_height", label_as_printed="H", unit="nm",
   mentions="Fig. 1a")
 F(K, "fig1.cap;fig1a;tabu2.r6c0;tabu2.r6c1", "definition", "L: lateral length of the LHAR channel (µm)", label_as_printed="L", unit="µm",
   mentions="Fig. 1a")
@@ -688,7 +688,7 @@ F(K, "s19.p1", "model", "Arts et al. eqn (3): |dθ/dx~| ≈ sqrt(c_A/13.9) gives
   method="calculation", mentions="ref. 36;eqn (3)")
 F(K, "s19.p1;s19.p2", "model", "the Arts method requires the Knudsen flow regime, i.e. mean free path much larger than the characteristic size h",
   mentions="ref. 36")
-F(K, "s19.p2;tabu2.r5c0;tabu2.r5c1", "definition", "Knudsen number K_n = λ/h (unitless); Knudsen regime means K_n ≫ 1",
+F(K, "s19.p2;tabu2.r5c0;tabu2.r5c1", "definition", "Knudsen number K_n = λ/h (unitless); Knudsen regime means K_n ≫ 1", quantity="knudsen_number",
   label_as_printed="K_n", mentions="K_n")
 F(K, "s19.p3;s8.p1", "derived", "TMA mean free path at 300 °C in the process conditions is about 40 µm (eqn (3) of ref. 1); the simulated conditions give the same",
   quantity="mean_free_path", qualifiers="species=TMA", value="40", unit="µm", data_kind="calculated", method="calculation",
@@ -831,9 +831,16 @@ SYM = {("tabu1", 0): ("a", "distance between pillars", "m"), ("tabu1", 1): ("A",
        ("tabu2", 21): ("t_p", "pulse length", "s"), ("tabu2", 22): ("W", "opening width of the channel", "m"),
        ("tabu2", 23): ("x", "distance from the channel opening", "m"), ("tabu2", 26): ("λ_TMA", "mean free path of TMA", "µm"),
        ("tabu2", 27): ("ρ", "film density", "kg m-3")}
+# the quantity a symbol defines, where the paper holds values of it (P36); reactant A is TMA in this paper
+SYM_Q = {"c_TMA": ("lumped_sticking_coefficient", "species=TMA"), "c_H2O": ("lumped_sticking_coefficient", "species=H2O"),
+         "GPC": ("growth_per_cycle", ""), "gpc_sat": ("growth_per_cycle", "over=saturation"), "N": ("cycle_number", ""),
+         "p_A0": ("partial_pressure", "species=TMA"), "q": ("saturation_density", ""), "S_I": ("film_thickness", "position=outside"),
+         "S_II": ("film_thickness", ""), "t_p": ("pulse_time", ""), "x": ("distance", ""), "λ_TMA": ("mean_free_path", "species=TMA"),
+         "ρ": ("film_density", "")}
 for (t, r), (sym, what, unit) in SYM.items():
+    q_, ql_ = SYM_Q.get(sym, ("", ""))
     F(K, f"{t}.r{r}c0;{t}.r{r}c1", "definition", f"symbol {sym}: {what}" + (f"; unit {unit}" if unit else ""),
-      label_as_printed=sym, unit=unit, mentions="Symbols and abbreviations")
+      label_as_printed=sym, unit=unit, mentions="Symbols and abbreviations", quantity=q_, qualifiers=ql_)
 
 # ------------------------------------------------------------------ purpose sentences of the series (stage 3 group rows)
 PUR_A = F(K, "s6.p2", "claim", "Series A exists to test how pillar density affects the saturation profile", mentions="Series A")
@@ -1188,7 +1195,7 @@ C.modes(K, {f["fact_id"].split(":", 1)[1]: "ex_situ" for f in C.facts() if f["ty
 # what each GPC is averaged over (P5): Table 1's S/N and the S/N profiles are thickness over the run's cycles; gpc_sat is the model's
 # saturation value
 C.qualify(K, {f["fact_id"].split(":", 1)[1]: ("over=saturation" if f["fact_id"] == f"{K}:fig10.cap#11" else "over=run") for f in C.facts()
-              if "#" in f["fact_id"] and (f["quantity"] == "growth_per_cycle" or "x=growth_per_cycle" in f["qualifiers"])})
+              if "#" in f["fact_id"] and (f["quantity"] == "growth_per_cycle" or "x=growth_per_cycle" in f["qualifiers"]) and "over=" not in f["qualifiers"]})
 # identity of entities with equal conditions (P23): Table 1 lists samples 4, 5, 6, 8 and 12 as separate samples
 C.identity(K, "different", [f"{K}:ent:{n}" for n in (4, 5, 6, 8, 12)], "samples 4, 5, 6, 8 and 12 share every stated condition and are separate samples, each a row of Table 1 with its own results", "tab1.r4c0;tab1.r5c0;tab1.r6c0;tab1.r8c0;tab1.r13c0")
 write(K, PID)

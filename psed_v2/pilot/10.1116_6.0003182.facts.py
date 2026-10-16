@@ -44,7 +44,7 @@ f(f"abs.g5;{A}", "setting", "the three processes are compared with SEM-EDS, XRD,
 # ---------------------------------------------------------------- I. introduction
 f("s6.p1", "claim", "ALD can coat the inner surfaces of porous nanoparticle networks and so change their optical, electronic or structural properties")
 f("s6.p1", "claim", "self-limiting half-reactions can in principle coat the whole inner surface of an NP network uniformly if the pores are open and the whole surface sees enough reactant")
-f("s6.p1", "definition", "aspect ratio AR of an NP network: its thickness L divided by the mean pore diameter d_pore", mentions="ref. 1")
+f("s6.p1", "definition", "aspect ratio AR of an NP network: its thickness L divided by the mean pore diameter d_pore", quantity="aspect_ratio", mentions="ref. 1")
 f("s6.p1", "cited", "the minimum exposure needed depends on the network porosity φ and on the AR", mentions="ref. 1")
 f("s6.p2", "cited", "for NP thin films with porosity ~0.3 to ~0.5 and AR ~100 or less (L ~100 nm to ~1 µm, d_pore ~5 to ~20 nm) about 1 Torr or less of reactant suffices",
   quantity="partial_pressure", value="1", unit="Torr", data_kind="literature", method="cited")
@@ -107,7 +107,7 @@ cyc20 = f("s6.p8;s9.p4;s9.p6;s15.p1", "setting", "each ZnO ALD run on the NPCs h
           quantity="cycle_number", value="20", data_kind="chosen input")
 L_ = f("s6.p8;s15.p2", "setting", "NPC half-thickness L = 0.78 ± 0.02 mm",
        quantity="feature_depth", label_as_printed="L", value="0.78", unit="mm", data_kind="calculated")
-f("s6.p8;fig1.cap;s9.p2", "definition", "L is taken as half the NPC thickness since precursors get in through both the top face and the bottom face")
+f("s6.p8;fig1.cap;s9.p2", "definition", "L is taken as half the NPC thickness since precursors get in through both the top face and the bottom face", quantity="feature_depth")
 dpore = f("s6.p8;s8.p1", "claim", "pore diameter roughly equals the NP diameter, 100 nm, given the initial porosity",
           quantity="feature_width", label_as_printed="d_pore", value="100", unit="nm", data_kind="assumed")
 f(f"s6.p8;abs.g3;{A};s15.p2", "derived", "NPC aspect ratio 7800 ± 200, from the half-thickness L and d_pore",
@@ -183,7 +183,7 @@ f("s9.p5", "setting", "purges open the isolation valve and feed N2: 30 s without
 f("s9.p5;s9.p6;fig2.cap;s12.p12", "setting", "main purge N2 flow 20 SCCM in total",
   quantity="gas_flow_rate", qualifiers="gas=N2", value="20", unit="SCCM", data_kind="chosen input")
 f("s9.p6", "setting", "chamber heated by an insulating heater jacket controlled by a thermocouple on the chamber outside", method="process_monitor")
-f("s9.p6;fig2.cap;s12.p12;fig1a", "definition", "T: approximate steady-state temperature (to the nearest 10 °C) of the inner quartz-boat surface under 20 SCCM N2, found in calibration with a thermocouple touching the boat")
+f("s9.p6;fig2.cap;s12.p12;fig1a", "definition", "T: approximate steady-state temperature (to the nearest 10 °C) of the inner quartz-boat surface under 20 SCCM N2, found in calibration with a thermocouple touching the boat", quantity="deposition_temperature")
 f("s9.p6", "observation", "calibration runs at the same outside temperature gave deposition temperatures differing by about ±5 °C, from thermocouple placement and pressure",
   quantity="deposition_temperature", qualifiers="stat=half_range;between=runs;n=not_stated", label_as_printed="calibration spread", value="5", unit="°C",
   data_kind="measured", method="process_monitor")
@@ -344,9 +344,9 @@ f("fig3b", "observation", "120/160 °C series (green diamonds) in Fig. 3(b): the
 f("fig3c;fig3.cap;s12.p16", "observation", "Fig. 3(c): terminal slope TS (mTorr/min), average slope of pressure in the final 10 min of the DEZ hold, versus cycle number", method="process_monitor")
 f("fig3c", "observation", "160 °C series in Fig. 3(c): TS climbs from near zero to a maximum around cycle 10 and then decreases", mentions="160 °C")
 f("fig3c", "observation", "120 °C and 120/160 °C series in Fig. 3(c): TS stays close to zero or slightly negative through all cycles", mentions="120 °C;120/160 °C")
-f("s12.p9;tabI.r0c5", "definition", "Δn_g with an overbar: Δn_g averaged over cycles, in µmol/cyc", mentions="Table I")
+f("s12.p9;tabI.r0c5", "definition", "Δn_g with an overbar: Δn_g averaged over cycles, in µmol/cyc", quantity="gas_moles_per_cycle", mentions="Table I")
 f("s12.p9;tabI.r0c4;tabI.cap;s13.p5", "model", "assuming only ZnO is deposited, the GPC is converted into the cycle-averaged moles of solid Δn_s (µmol/cyc)")
-f("s12.p9;eq6", "definition", "ȳ: moles of gas gained per mole of solid gained, introduced to compare the runs")
+f("s12.p9;eq6", "definition", "ȳ: moles of gas gained per mole of solid gained, introduced to compare the runs", quantity="reaction_stoichiometry")
 f("eq6;s12.p9;tabI.r0c6", "model", "Eq. (6): ȳ = 1 + Δn_g/Δn_s (cycle averages)")
 f("eq7;s12.p10", "model", "Eq. (7): if Eqs. (4) and (5) alone govern growth, ȳ = 1 + (x̄ - 1) Δn_DEZ / Δn_DEZ = x̄, the mean of x over the 20 cycles")
 f("eq8;s12.p11;s12.p13", "model", "Eq. (8): if other reactions also deposit material, ȳ = x̄ + c with c a correction from those reactions")

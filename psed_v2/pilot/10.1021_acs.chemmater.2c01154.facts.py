@@ -123,7 +123,7 @@ F(K, "s3.p2", "claim", "Plasma feed gas composition and deposition temperature t
 F(K, "s3.p2", "definition", "a-MoS2+x denotes amorphous S-rich films and c-MoS2 polycrystalline MoS2 films.",
   mentions="a-MoS2+x;c-MoS2")
 F(K, "eq1;s3.p2;s3.p3;tab2.r0c0", "definition", "The H2 flow ratio is the H2 fraction of the H2 plus H2S flow in the plasma "
-  "feed gas.", mentions="eq 1;H2 flow ratio")
+  "feed gas.", quantity="plasma_gas_ratio", qualifiers="gas=H2", mentions="eq 1;H2 flow ratio")
 F(K, "eq1;s3.p3", "model", "Eq. 1 relates the H2 flow ratio to the H2 and H2S flow rates in sccm: ratio = H2/(H2 + H2S).",
   mentions="eq 1")
 F(K, "s3.p3", "claim", "Absolute flows and other process parameters are given in the Experimental Section.")
@@ -282,7 +282,7 @@ F(K, "s3.p19;tab1.cap;s3.p21", "observation", "Table 1 films are about 50 nm thi
 F(K, "s3.p19", "observation", "Detection limit of C in these films is about 7 at.%.", quantity="other",
   label_as_printed="detection limit (dl.) for C", value="7", unit="at. %", data_kind="measured", method="rbs",
   mentions="dl.;glassy carbon")
-F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed from RBS areal atom densities and SE thicknesses.",
+F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed from RBS areal atom densities and SE thicknesses.", quantity="film_density",
   mentions="RBS;SE;density (g/cm^3)")
 F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk;species=MoS2", value="5.06", unit="g/cm3",
   data_kind="literature", method="cited", mentions="ref. 66")
@@ -690,7 +690,7 @@ F(K, "s5.p9", "model", "SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in 
   quantity="other", label_as_printed="void content", value="50", unit="%", data_kind="assumed", method="ellipsometry",
   mentions="CompleteEASE 5.1")
 F(K, "s5.p9", "definition", "Reported SE thickness = dense MoSx layer plus half the roughness layer, approximating the deposited "
-  "amount.")
+  "amount.", quantity="film_thickness")
 F(K, "s5.p10", "model", "Fitting: SiO2 thickness and substrate temperature from the spectrum before cycle 1; MoSx thickness and "
   "optical constants from the last spectrum; only MoSx thickness (and roughness) for spectra in between.",
   method="ellipsometry")
@@ -706,7 +706,7 @@ F(K, "s5.p11;fig1c", "setting", "Uniformity maps use a J.A. Woollam M-2000 (1.2-
   data_kind="chosen input", method="ellipsometry", mentions="M-2000;5 nm;450 nm SiO2/Si;4\"")
 F(K, "s5.p12", "setting", "Sheet resistance is measured with a four-point probe (Keithley 2400 SourceMeter, Signatone "
   "SP4-4004STRS head).", method="electrical", mentions="Keithley 2400;SP4-4004STRS")
-F(K, "s5.p12", "definition", "Resistivity = sheet resistance × film thickness from in situ SE.", method="calculation")
+F(K, "s5.p12", "definition", "Resistivity = sheet resistance × film thickness from in situ SE.", quantity="resistivity", method="calculation")
 F(K, "s5.p13", "setting", "Hall measurements: van der Pauw geometry on about 1 × 1 cm2 samples (Lakeshore 8404 HMS), AC Hall for "
   "low Hall voltages, repeated without removing the sample to estimate uncertainty.", method="electrical",
   mentions="Lakeshore 8404;1 × 1 cm2")
@@ -716,7 +716,7 @@ F(K, "s5.p14", "setting", "AFM: Bruker Dimension Icon, PeakForce Tapping ScanAsy
   "constant and 2 nm tip radius.", quantity="probe_resolution", value="2", unit="nm", data_kind="chosen input", method="afm",
   mentions="ScanAsyst-air;0.4 N/m")
 F(K, "s5.p14;fig6a", "definition", "Rq is the root-mean-square roughness of a 500 × 500 nm2 image after first-order flattening in "
-  "Nanoscope 2.0.", method="afm", mentions="Rq;500 × 500 nm2;1st order;Nanoscope 2.0")
+  "Nanoscope 2.0.", quantity="roughness", method="afm", mentions="Rq;500 × 500 nm2;1st order;Nanoscope 2.0")
 F(K, "s5.p15", "setting", "Raman: Renishaw inVia confocal microscope, 514 nm laser, NA 0.75 50× objective, 1800 lines/mm "
   "grating; six 10 s spectra accumulated.", quantity="other", label_as_printed="laser wavelength", value="514", unit="nm",
   data_kind="chosen input", method="raman", mentions="50×;NA 0.75;1800 lines/mm;10 s")
