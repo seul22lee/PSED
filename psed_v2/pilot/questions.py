@@ -86,20 +86,12 @@ def q4():
 
 def q5():
     """Which stated comparisons in yim20 have an effect smaller than the reproducibility sd, per result quantity."""
-    T = TREES["yim20"]; rep_ = next((c for c in T.comps if c["kind"] == "replicate"), None)
-    if not rep_:
-        return unanswerable("", "no replicate comparison in yim20")
-    out = []
-    for c in [c for c in T.comps if c["kind"] == "series" and all(T.byid[m]["type"] == "entity" and T.dep_of(m) and T.byid[T.dep_of(m)]["kind"] == "deposition" for m in T.member_entities(c))]:
-        keys = [k for k in T.results(T.member_entities(c)[0]) if k.split("{")[0] in ("penetration_depth", "film_thickness", "growth_per_cycle")]
-        parts = []
-        for k in keys:
-            eff, vs = effect(T, c, k); sd, src = spread(T, rep_, k)
-            if eff is None or not sd:
-                continue
-            parts.append(f"{L.LABELS.get(k, k)} effect {g(eff, 2)} {vs[0][1] and T.results(vs[0][0])[k][0]['unit']} = {g(eff / sd, 2)} sd ({'within' if eff < sd else 'beyond'} sd {g(sd, 2)}, {src})")
+    T = TREES["yim20"]; out = []
+    for c in [c for c in T.comps if c["kind"] == "series"]:
+        keys = sorted({k for m in T.member_entities(c) for k in T.results(m) if k.split("{")[0] in ("penetration_depth", "film_thickness", "growth_per_cycle") and "stat=" not in k})
+        parts = [f"{L.LABELS.get(k, k)} range {g(j['effect'], 2)} {j['unit']}: {j['sentence']}" for k in keys for j in [judge(T, c, k)] if j]
         out.append(f"{c['label_as_printed']}: " + ("; ".join(parts) if parts else "no shared result"))
-    return answered(" · ".join(out), "effect() = max − min over each series' members per result; spread() = the replicate comparison's stated standard deviation for that result, else computed over its members; the ratio")
+    return answered(" · ".join(out), "judge(): the range over each series' members against the range expected from run-to-run scatter of the same kind (d2 × sd) at the base condition")
 
 
 def q6():

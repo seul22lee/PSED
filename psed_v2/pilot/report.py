@@ -205,7 +205,14 @@ def layer(key):
                                  covary=Q.differing(T, ms, exclude={xkey})))
         if rows:
             fits[c["fact_id"]] = rows
-    return dict(derived=derived, routes=routes, join=join, fits=fits, tolerated=list(tol))
+    noise = {}
+    for c in T.comps:
+        keys = sorted({k for m in T.member_entities(c) for k in T.results(m) if "stat=" not in k})
+        rows = [dict(key=k, q=k.split("{")[0], qs=k.split("{")[1].rstrip("}") if "{" in k else "", **{x: (Q.g(v, 3) if isinstance(v, float) else v) for x, v in j.items()})
+                for k in keys for j in [Q.judge(T, c, k)] if j]
+        if rows:
+            noise[c["fact_id"]] = rows
+    return dict(derived=derived, routes=routes, join=join, fits=fits, tolerated=list(tol), noise=noise)
 
 
 def fig9_crops(pid):
@@ -649,14 +656,12 @@ function compCard(d,i,cid){const T=buildTree(d),c=T.byId[cid];const ms=members(T
  const r1=v.map(x=>`<span class="chip diff">${qlab(x.f)}: ${[...new Set(Object.values(x.by))].map(esc).join(" / ")}</span>`).join(" ")||`<span class="mut">${measVaried(T,c)}</span>`;
  const fits=(d.fits||{})[cid]||[];const rf=fits.length?fits.map(x=>`<div class="fl2">${esc(qshort(x.q,x.qs))} ∝ ${esc(qshort(x.xq,""))}<sup>${esc(x.exponent)}</sup> <span class="mut">(${x.n} members, rms residual ${esc(x.residual)} in log10${x.covary?`; also varies: ${esc(x.covary)}`:""})</span></div>`).join(""):'<div class="mut">no result with three or more numeric members against a numeric varied setting</div>';
  const r2=ms.map(m=>`<span class="chip" onclick="openNode(${i},'${m}')">${esc(mlab(T,m))}</span>`).join(" ")||'<span class="mut">none</span>';
- const rep=reproOf(i);const keys={};rs.forEach(r=>Object.entries(r.res).forEach(([k,o])=>{const a=firstNum(o);if(a!=null){(keys[k]=keys[k]||{f:o.f,vals:[]});keys[k].vals.push(a)}}));
- const lines=Object.entries(keys).filter(([k,o])=>o.vals.length>=2).map(([k,o])=>{const eff=Math.max(...o.vals)-Math.min(...o.vals);const u=o.f.unit?" "+o.f.unit:"";const sd=rep&&rep.sd[k]?rep.sd[k].sd:null;const ratio=sd?eff/sd:null;
-  return `<div class="fl2 ${ratio!=null&&ratio<1?"within":""}">${qlab(o.f)}: <span class="num">${fmtv(eff)}${esc(u)}</span> <span class="mut">(${o.vals.length} experiments)</span>${sd!=null?` = <b>${ratio.toFixed(1)} × sd</b>${ratio<1?' <span class="inf">within reproducibility</span>':""}`:' <span class="mut">no sd</span>'}</div>`}).join("");
- const r3=(rep?`<div class="mut">sd from ${rep.runs.map(r=>esc(nlab(r.n))).join(" · ")}, ${Object.keys(rep.sd).length} quantities${rep.stated?` (the paper's replicate set ${esc(rep.stated.label_as_printed)})`:" (computed replicates)"}</div>`:'<div class="mut">no reproducibility set in this paper</div>')+(lines||'<div class="mut">no result on two or more experiments</div>');
+ const lines=((d.noise||{})[cid]||[]).map(x=>`<div class="fl2">${esc(qshort(x.q,x.qs))}: <span class="num">${esc(x.effect)} ${esc(x.unit)}</span> <span class="mut">(range over ${x.n})</span> ${esc(x.sentence)}</div>`).join("");
+ const r3=lines||'<div class="mut">no result on two or more experiments</div>';
  const cf=confound(T,cid);const ns=naturalSeries(i).map((sr,j)=>[sr,j]).filter(([sr])=>sr.runs.some(r=>ids.includes(r.id)));
  const r4=(cf?`<div class="fl2"><span class="inf">confounded</span> ${cf.length} settings differ: ${cf.map(x=>`<span class="chip diff">${qlab(x.f)}: ${x.odd.map(o=>`${esc(nlab(o.n))} ${esc(o.v)}`).join(", ")} <span class="mut">(others ${esc(x.mode)})</span></span>`).join(" ")}</div>`:`<div class="fl2 mut">${v.length?"one setting varies, as stated":"no setting varies"}</div>`)+(ns.map(([sr,j])=>seriesLine(i,sr,j)).join("")||'<div class="fl2 mut">no natural series through these experiments</div>');
  const p=(c.links||"").split(";")[0];const pur=p&&T.byId[p]&&p.includes("#")?T.byId[p]:null;
- return `<div class="card"><h2>${esc(nlab(c))} <span class="mut" style="font-size:12px;font-weight:400">${esc(cid)} · ${esc(c.kind)}</span></h2><div class="mut">${esc(c.statement)}</div>${pur?`<div><b>purpose</b>: ${esc(pur.statement)}<code class="ev" onclick="side('${pur.evidence.split(";")[0]}',${i})">${pur.evidence.split(";")[0]}</code></div>`:""}<section><h4>varied</h4>${r1}</section><section><h4>members</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><section><h4>fit</h4>${rf}</section><section><h4>natural series</h4>${r4}</section><div id="side" class="evbox"></div></div>`}
+ return `<div class="card"><h2>${esc(nlab(c))} <span class="mut" style="font-size:12px;font-weight:400">${esc(cid)} · ${esc(c.kind)}</span></h2><div class="mut">${esc(c.statement)}</div>${pur?`<div><b>purpose</b>: ${esc(pur.statement)}<code class="ev" onclick="side('${pur.evidence.split(";")[0]}',${i})">${pur.evidence.split(";")[0]}</code></div>`:""}<section><h4>varied</h4>${r1}</section><section><h4>members</h4>${r2}</section><section><h4>effect and noise</h4>${r3}</section><section><h4>fit</h4>${rf}</section><section><h4>natural series</h4>${r4}</section><div id="side" class="evbox"></div></div>`}
 function compareWith(i,id){const v=document.getElementById("cmp").value;if(!v)return;const [j,rid]=v.split("|");WB.tray=[{i,id},{i:+j,id:rid}];TM="find";render()}
 function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.id===eid);const fs=d.facts.filter(f=>f.evidence.split(";").includes(eid));
  const runOf=id=>entOf(T,id);

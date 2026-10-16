@@ -313,6 +313,63 @@ def spread(T, comp, key):
     return None, None
 
 
+D2 = {2: 1.128, 3: 1.693, 4: 2.059, 5: 2.326, 6: 2.534, 7: 2.704, 8: 2.847, 9: 2.970, 10: 3.078}   # expected range of n normal draws, in sd
+
+
+def member_kind(T, ents):
+    """What varies between a comparison's members: 'runs' when each was made in its own deposition, 'pieces' when they share
+    one, 'model runs' for simulations."""
+    deps = [T.dep_of(e) for e in ents]
+    if any(d and T.byid[d]["kind"] == "simulation" for d in deps):
+        return "model runs"
+    return "pieces" if len(set(deps)) < len(deps) else "runs"
+
+
+def judge(T, comp, key):
+    """Can the effect of a stated comparison on one result be told from noise (P3)? Noise counts only when it is of the same kind
+    as what varies between the members (runs against runs, pieces against pieces): a spread fact of that kind for the same result
+    key (stat=sd), else the sd over a stated replicate comparison of that kind. The noise's condition is the replicate set's, and
+    the sentence says so. The range of the n member values is set against the range expected from n draws of that noise
+    (d2 × sd). Returns dict(effect, n, unit, sd, sd_n, sd_source, kind, sentence) or None when fewer than two members carry the
+    result."""
+    ents = [m for m in T.member_entities(comp) if key in T.results(m) and val(T.results(m)[key][0]) is not None]
+    if len(ents) < 2:
+        return None
+    vals = [val(T.results(m)[key][0]) for m in ents]
+    unit = T.results(ents[0])[key][0]["unit"]
+    eff, kind = max(vals) - min(vals), member_kind(T, ents)
+    out = dict(effect=eff, n=len(vals), unit=unit, kind=kind, sd=None, sd_n=None, sd_source=None)
+    if kind == "model runs":
+        out["sentence"] = "model runs: no scatter to compare with"
+        return out
+    sd = None
+    for f in T.rows:                                                            # a stated spread of the same result between the same kind
+        q = quals(f)
+        if "#" in f["fact_id"] and q.get("stat") == "sd" and q.get("between") == kind and spread_key(f) == key and f["value"]:
+            sd, n_, src = val(f), q.get("n", "not_stated"), f["fact_id"]
+            break
+    if sd is None:                                                              # else the sd over a stated replicate set of that kind
+        for r in [c for c in T.comps if c["kind"] == "replicate"]:
+            rm = [m for m in T.member_entities(r) if key in T.results(m) and val(T.results(m)[key][0]) is not None]
+            if len(rm) >= 2 and member_kind(T, rm) == kind:
+                rv = [val(T.results(m)[key][0]) for m in rm]; mean = sum(rv) / len(rv)
+                sd, n_, src = (sum((v - mean) ** 2 for v in rv) / (len(rv) - 1)) ** 0.5, str(len(rv)), f"computed over {r['label_as_printed']}"
+                break
+    noun = {"runs": "runs", "pieces": "pieces of one run"}[kind]
+    if sd is None or not sd:
+        out["sentence"] = f"no repeated {noun}; the size of the difference cannot be judged"
+        return out
+    out.update(sd=sd, sd_n=n_, sd_source=src)
+    if len(vals) not in D2:
+        out["sentence"] = f"{len(vals)} members: no expected range tabulated"
+        return out
+    exp = D2[len(vals)] * sd
+    word = "smaller than" if eff < exp else "larger than"
+    out["expected"] = exp
+    out["sentence"] = f"{word} the scatter between {noun} at the base condition ({n_} {noun.split()[0]}, sd {g(sd, 2)} {unit})"
+    return out
+
+
 SPREAD_KEYS = ("stat", "between", "n")
 
 
