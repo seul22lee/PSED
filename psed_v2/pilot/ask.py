@@ -562,8 +562,9 @@ def run_arm(arm, question, model):
             results, batch_ = [], []
             for c in t.calls:
                 if len(tool_calls) >= TOOL_CAP:
-                    results.append(dict(id=c["id"], name=c["name"], content=f"error: the limit of {TOOL_CAP} tool calls is reached", error=True))
-                    tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=0, error="cap", chars=0, tokens=0)); continue
+                    msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
+                    results.append(dict(id=c["id"], name=c["name"], content=msg, error=True))
+                    tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=0, error="cap", chars=0, tokens=0, output=msg)); continue
                 lines, err = run_tool(c["name"], c["arguments"])
                 for i, ln in lines:                                       # an id's text: every returned line that starts with it or names it
                     if i == "more":
@@ -572,7 +573,8 @@ def run_arm(arm, question, model):
                         given[j] = (given.get(j, "") + "\n" + ln).strip()
                 content = err or "\n".join(ln if i == "more" else f"[{i}] {ln}" for i, ln in lines) or "no results"
                 results.append(dict(id=c["id"], name=c["name"], content=content, error=bool(err)))
-                tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=sum(i != "more" for i, _ in lines), error=err, chars=len(content), tokens=None))
+                tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=sum(i != "more" for i, _ in lines), error=err, chars=len(content), tokens=None,
+                                       output=content))                  # the full text the model received (P38)
                 batch_.append(tool_calls[-1])
             prev = t.usage
             t = s.send(results=results); calls += 1; retries += t.retries
