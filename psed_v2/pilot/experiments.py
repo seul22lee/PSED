@@ -12,6 +12,9 @@ not crossing another run or group; several distinct values at that level are joi
 or the value_text; then one column per result on the run, result:<quantity>[<qualifiers>]: the observation, derived and model facts
 of its own subtree that carry a value, a range, a value_text or points, each value or, for a curve, its points_ref. Column order:
 the fixed columns, then the settings by the number of runs carrying them, then the results likewise. The combined CSV has the union.
+Cited works are rows too (kind cited): one row per cited work of the tree (:refs:N), its cited facts filling the columns (a quantity
+goes to setting: or result: by how the three papers use it in their own facts), and `via` naming the citing paper and the elements
+that cite it; a run's `via` is empty.
 """
 import collections, csv, sys
 from pathlib import Path
@@ -20,7 +23,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from elements import PAPERS  # noqa: E402
 
-FIXED = ["paper", "run", "label", "kind", "how", "parent", "group", "group_label", "purpose", "claims"]
+FIXED = ["paper", "run", "label", "kind", "how", "parent", "group", "group_label", "purpose", "claims", "via"]
 RESULT_TYPES = ("observation", "derived", "model")
 
 
@@ -80,6 +83,12 @@ def table(pid, paper):
                 if t:
                     claims[t].add(c["fact_id"])
     out = []
+    # how the papers use a quantity in their own facts: a setting or a result (for the cited works' columns)
+    use = collections.Counter()
+    for f in rows:
+        if "#" in f["fact_id"] and f["quantity"] and f["type"] in ("setting",) + RESULT_TYPES:
+            use[(f["quantity"], f["type"] == "setting")] += 1
+    is_setting = lambda qn: use[(qn, True)] >= use[(qn, False)]
     for run in rows:
         if run["type"] != "run":
             continue
@@ -109,6 +118,21 @@ def table(pid, paper):
                 res[key(f)].append(f["points_ref"] or text(f))
         for k, vs in res.items():
             rec["result:" + k] = "; ".join(vs)
+        rec["via"] = ""
+        out.append(rec)
+    for w in rows:                                                              # cited works: their facts, via the citing paper
+        if w["type"] != "cited" or "#" in w["fact_id"]:
+            continue
+        fs = [f for f in K.get(w["fact_id"], []) if "#" in f["fact_id"]]
+        rec = dict(paper=paper, run=w["fact_id"], label=w["label_as_printed"], kind="cited", how="", parent=w["parent"], group="", group_label="",
+                   purpose="", claims=";".join(sorted(claims[w["fact_id"]])),
+                   via=paper + " " + ";".join(dict.fromkeys(e for f in fs for e in f["evidence"].split(";"))))
+        cells = collections.defaultdict(list)
+        for f in fs:
+            if f["quantity"] and (text(f) or f["points_ref"]):
+                cells[("setting:" if is_setting(f["quantity"]) else "result:") + key(f)].append(f["points_ref"] or text(f))
+        for k, vs in cells.items():
+            rec[k] = "; ".join(dict.fromkeys(vs))
         out.append(rec)
     return out
 
@@ -133,10 +157,10 @@ if __name__ == "__main__":
         cols = write(HERE / f"{pid}.experiments.csv", recs)
         per[paper] = set(cols)
         every += recs
-        print(f"{paper}: {len(recs)} runs, {len(cols)} columns ({sum(c.startswith('setting:') for c in cols)} settings, "
-              f"{sum(c.startswith('result:') for c in cols)} results)")
+        print(f"{paper}: {sum(r['kind'] != 'cited' for r in recs)} runs + {sum(r['kind'] == 'cited' for r in recs)} cited works, {len(cols)} columns "
+              f"({sum(c.startswith('setting:') for c in cols)} settings, {sum(c.startswith('result:') for c in cols)} results)")
     cols = write(HERE / "experiments.csv", every)
-    print(f"experiments.csv: {len(every)} runs, {len(cols)} columns ({sum(c.startswith('setting:') for c in cols)} settings, "
-          f"{sum(c.startswith('result:') for c in cols)} results)")
+    print(f"experiments.csv: {sum(r['kind'] != 'cited' for r in every)} runs + {sum(r['kind'] == 'cited' for r in every)} cited works, {len(cols)} columns "
+          f"({sum(c.startswith('setting:') for c in cols)} settings, {sum(c.startswith('result:') for c in cols)} results)")
     shared = sorted(set.intersection(*per.values()) - set(FIXED))
     print(f"columns all three papers share ({len(shared)}):", ", ".join(shared))
