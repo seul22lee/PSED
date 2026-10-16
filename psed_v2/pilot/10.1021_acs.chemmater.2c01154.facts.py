@@ -466,13 +466,17 @@ F(K, "s3.p37", "cited", "MoS2 doped with 10 at.% Al at 450 °C has carrier conce
 F(K, "s3.p37", "claim", "The process offers an easy way to make strongly p-doped MoS2 at low temperature.")
 F(K, "s3.p38", "observation", "At 450 °C, raising the ratio from 0.20 to 0.80 lifts carrier concentration 3 orders of "
   "magnitude, from 10^17 to 10^20 cm^-3.", quantity="carrier_concentration", label_as_printed="carrier concentration",
-  value_min="1e17", value_max="1e20", unit="cm-3", data_kind="measured", method="electrical", mentions="450 °C;0.20;0.80")
+  method="electrical", mentions="450 °C;0.20;0.80")
 F(K, "s3.p38", "observation", "Ratio 0.94 gives extremely high carrier concentrations, of order 10^22 cm^-3, consistent with "
   "partial Mo content.", quantity="carrier_concentration", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
   data_kind="measured", method="electrical", mentions="0.94")
 F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="carrier_concentration",
   label_as_printed="carrier concentration", value_min="5e22", value_max="1e23", unit="cm-3", data_kind="literature",
   method="cited", mentions="Mo;ref. 70;ref. 71")
+for r_, v_ in (("0.20", "1e17"), ("0.80", "1e20")):                      # the two ends of s3.p38's change are two films' values (P14)
+    F(K, "s3.p38", "observation", f"At 450 °C and ratio {r_} the carrier concentration is of order {v_.replace('1e', '10^')} cm^-3.",
+      quantity="carrier_concentration", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="electrical",
+      mentions=f"450 °C;{r_}")
 F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="composition",
   qualifiers="element=S", label_as_printed="S/Mo", value_min="1.8", value_max="2.2", data_kind="measured", method="xps",
   mentions="c-MoS2")
@@ -658,7 +662,7 @@ F(K, "s5.p6", "setting", "Precursor vapour is carried by 50 sccm Ar.", quantity=
 F(K, "s5.p6", "setting", "Delivery lines are held at 70 °C against condensation.", quantity="other",
   label_as_printed="delivery line temperature", value="70", unit="°C", data_kind="chosen input")
 F(K, "s5.p6", "setting", "Pressure and gas-flow stabilization steps of 4 s and 5 s precede the precursor and plasma pulses.",
-  quantity="other", label_as_printed="stabilization step", value_min="4", value_max="5", unit="s", data_kind="chosen input")
+  quantity="other", label_as_printed="stabilization steps", value_text="4 s and 5 s", unit="s", data_kind="chosen input")
 F(K, "s5.p6", "setting", "One full ALD cycle takes 51 s.", quantity="cycle_time", value="51", unit="s", data_kind="chosen input")
 F(K, "s5.p6", "setting", "Chamber pressure is controlled at 200 mTorr during the precursor pulse.", quantity="process_pressure",
   qualifiers="step=reactant_A;kind=set_point", value="200", unit="mTorr", data_kind="chosen input")
@@ -724,7 +728,7 @@ F(K, "s5.p16", "setting", "XPS: Thermo Scientific K-Alpha with monochromatic Al 
 F(K, "s5.p16", "setting", "Spectra are referenced to adventitious C 1s at 284.8 eV.", quantity="other",
   label_as_printed="C 1s reference BE", value="284.8", unit="eV", data_kind="chosen input", method="xps", mentions="C 1s")
 F(K, "s5.p16", "setting", "Pass energies: 50 eV for survey and 20 eV for high-resolution spectra.", quantity="other",
-  label_as_printed="pass energy", value_min="20", value_max="50", unit="eV", data_kind="chosen input", method="xps")
+  label_as_printed="pass energy", value_text="50 eV survey, 20 eV high resolution", unit="eV", data_kind="chosen input", method="xps")
 F(K, "s5.p16", "model", "Peaks are fitted in Avantage with Gaussian-Lorentzian sum components and a Shirley background.",
   method="xps")
 F(K, "s5.p16", "observation", "XPS depth profiles (Ar+ at 500 eV, spectrum every 30 s) on selected samples showed no major carbon "
@@ -1246,7 +1250,8 @@ put(grp("map"), "s5.p7#1", links=grp("T450"))
 put(grp("map"), "s5.p7#2", links=lk(grp("T50"), grp("T300"), grp("T350")))
 put(grp("map"), "s5.p7#3", links=lk(grp("T100"), grp("T150"), grp("T200"), grp("T250")))
 # 450 °C
-put(mfilm(450, "0.20", "fpp"), "s3.p35#4")
+put(mfilm(450, "0.20", "fpp"), "s3.p35#4", "s3.p38#4")
+put(mfilm(450, "0.80", "fpp"), "s3.p38#5")
 put(grp("T450"), "s3.p38#1", links=lk(pair(450, "0.20"), pair(450, "0.80")))
 # 350 °C: the Fig. 3b TEM reference film, patterned into the reference FET (s5.p18), at 0.20
 put(mfilm(350, "0.20", "tem"), "s3.p10#3", "fig3b#1", "fig3b#2", "s3.p43#2", "s3.p44#2")

@@ -341,6 +341,35 @@ def v1_points(series_id):
     return json.loads((HERE / "v1_points.json").read_text(encoding="utf-8"))["series"][series_id]
 
 
+_NE = r"(?:~\s*)?(?:Mo|W|Ti)?S?-?(?:\d+(?:\.\d+)?\s*(?:×|x)\s*10\^?\s*-?\d+|10\^\s*-?\d+|\d+(?:\.\d+)?)"
+
+
+def _ne(t):
+    t = re.sub(r"^~\s*|^(?:Mo|W|Ti)?S", "", t.strip()).replace(" ", "")
+    m = re.fullmatch(r"(\d+(?:\.\d+)?)(?:×|x)10\^?(-?\d+)", t)
+    if m:
+        return float(m.group(1)) * 10 ** int(m.group(2))
+    m = re.fullmatch(r"10\^(-?\d+)", t)
+    return 10.0 ** int(m.group(1)) if m else float(t)
+
+
+def parse_ranges(text):
+    """Every numeric range a sentence prints (P14), as (low, high): "a–b", "a to b", "between a and b", "(a–b) × 10^e" and
+    "a–b × 10^e" (a shared exponent), "a × 10^e to b × 10^f", "10^a to 10^b", "MoS1.8 to MoS2.3", "~90 to ~120"."""
+    t = text.replace("−", "-")
+    out = []
+    for m in re.finditer(r"\(\s*(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)\s*\)\s*(?:×|x)\s*10\^?\s*(-?\d+)", t):
+        e = int(m.group(3)); out.append((float(m.group(1)) * 10 ** e, float(m.group(2)) * 10 ** e))
+    for m in re.finditer(r"(?<![\d.^])(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)\s*(?:×|x)\s*10\^?\s*(-?\d+)", t):
+        e = int(m.group(3)); out.append((float(m.group(1)) * 10 ** e, float(m.group(2)) * 10 ** e))
+    for m in re.finditer(rf"(?<![\d.^])({_NE})\s*(?:–|-|\bto\b|\band\b)\s*({_NE})", t):
+        try:
+            out.append((_ne(m.group(1)), _ne(m.group(2))))
+        except ValueError:
+            pass
+    return out
+
+
 def num(x):
     try:
         return float(str(x).replace("−", "-").replace(" ", "").replace(",", ""))

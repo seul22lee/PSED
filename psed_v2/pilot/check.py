@@ -309,6 +309,10 @@ def check_tree(rows, els):
             if (r["type"] != "claim" and r["value"] and not r["censor"] and "stat" not in qd
                     and re.search(r"\b(down to|up to|at most|as low as|as high as)\b", r["statement"])):
                 err.append(f"{i}: '{re.search(r'(down to|up to|at most|as low as|as high as)', r['statement']).group(1)}' stored as a plain value (a bound or a stat=minimum/maximum; P12)")
+            if r["value_min"] and r["value_max"]:                                # a stored range is a range the statement prints (P14)
+                lo, hi = C.num(r["value_min"]), C.num(r["value_max"])
+                if not any(abs(a - lo) <= 0.01 * abs(lo or 1) and abs(b - hi) <= 0.01 * abs(hi or 1) for a, b in C.parse_ranges(r["statement"] + " " + r["label_as_printed"])):
+                    err.append(f"{i}: range {r['value_min']}–{r['value_max']} is not a range its statement prints (P14)")
             if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:
                 err.append(f"{i}: uncertainty {r['uncertainty']} without a kind from lists.UNCERTAINTY_KINDS (P2)")
             if r["uncertainty"] and not re.fullmatch(r"\d+(\.\d+)?(e-?\d+)?", r["uncertainty"]):
