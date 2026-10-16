@@ -103,7 +103,7 @@ F(K, "s2.p9", "cited", "The group's earlier PEALD processes for MoS2 and WS2 wor
   "amorphous, S-rich, highly resistive films.", quantity="deposition_temperature", value="300", censor="", unit="°C",
   data_kind="literature", method="cited", mentions="ref. 36;ref. 52;MoS2;WS2")
 F(K, "s2.p9", "cited", "Highly conductive TiS2 has been grown by PEALD down to 150 °C.", quantity="deposition_temperature",
-  value="150", unit="°C", data_kind="literature", method="cited", mentions="ref. 53;TiS2")
+  value_min="150", unit="°C", data_kind="literature", method="cited", mentions="ref. 53;TiS2")
 F(K, "s2.p10;s2.p11", "claim", "As far as the authors know, 100 °C is the lowest temperature reported for MoS2 from any chemical "
   "vapour-phase method.", mentions="100 °C;MoS2")
 C_H = F(K, "s2.p11;s3.p49;s4.p1", "claim",
@@ -437,14 +437,14 @@ F(K, "s3.p34;fig8", "observation", "Lowest amorphous-film resistivity is 2 Ω cm
 F(K, "s3.p35;fig8", "observation", "For crystalline films, raising the ratio at a given temperature lowers resistivity.",
   method="electrical")
 F(K, "s3.p35;s4.p1;fig8", "observation", "Lowest c-MoS2 resistivities, about 0.1-1 Ω cm, are reached at ratio 0.80.",
-  quantity="resistivity", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="electrical",
+  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="electrical",
   mentions="0.80;c-MoS2")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 300 °C with ratio 0.20 has 15 Ω cm.", quantity="resistivity",
   value="15", unit="Ω cm", data_kind="measured", method="electrical", mentions="300 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 450 °C with ratio 0.20 has 220 Ω cm.", quantity="resistivity",
   value="220", unit="Ω cm", data_kind="measured", method="electrical", mentions="450 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Ratio 0.94 gives resistivities down to 4 mΩ cm, likely owing to a highly conductive Mo phase.",
-  quantity="resistivity", value="4", unit="mΩ cm", data_kind="measured", method="electrical", mentions="0.94")
+  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value="4", unit="mΩ cm", data_kind="measured", method="electrical", mentions="0.94")
 F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="electrical",
   mentions="100-150 °C")
 HALL = F(K, "s3.p36;s3.p37;s4.p1;s4.p2", "observation", "c-MoS2 films grown with ratios 0.50-0.80 at 100-250 °C show p-type "
@@ -543,7 +543,7 @@ F(K, "s3.p48", "cited", "The only reported TiS2 PEALD process is crystalline fro
   quantity="deposition_temperature", value="150", unit="°C", data_kind="literature", method="cited",
   mentions="ref. 53;TiS3;100 °C")
 F(K, "s3.p48", "cited", "A thermal TiS2 ALD process with the same Ti(NMe2)4 precursor grows crystalline films down to 100 °C.",
-  quantity="deposition_temperature", value="100", unit="°C", data_kind="literature", method="cited",
+  quantity="deposition_temperature", value_min="100", unit="°C", data_kind="literature", method="cited",
   mentions="ref. 80;ref. 81;Ti(NMe2)4")
 F(K, "s3.p48", "claim", "So the PEALD failure at 100 °C stems from excess S rather than lack of energy for crystallization.")
 F(K, "s3.p48;fig9b;fig9.cap;s3.x7", "observation", "With ratio 0.50 at 100 °C, TiS2 has better crystallinity and stoichiometry than "
@@ -591,7 +591,7 @@ F(K, "s5.p1", "setting", "Reactor, with a remote inductively coupled plasma sour
 F(K, "s5.p1", "setting", "A turbomolecular pump gives a base pressure of 10^-6 Torr.", quantity="other",
   label_as_printed="base pressure", value="1e-6", unit="Torr", data_kind="chosen input")
 F(K, "s5.p1", "setting", "Reactor walls heat to at most 150 °C; for 50-150 °C depositions wall and substrate are set equal.",
-  quantity="other", label_as_printed="wall temperature", value="150", unit="°C", data_kind="chosen input",
+  quantity="other", label_as_printed="wall temperature", value_max="150", unit="°C", data_kind="chosen input",
   mentions="50-150 °C")
 F(K, "s5.p1", "setting", "For 200-450 °C the substrate table is heated to the set value with walls kept at 150 °C.",
   quantity="deposition_temperature", value_min="200", value_max="450", unit="°C", qualifiers="kind=set_point",
@@ -1559,4 +1559,7 @@ C.relative_to(K, {f["fact_id"].split(":", 1)[1]: ("all_atoms" if AT_PCT(f["unit"
                   if "#" in f["fact_id"] and f["type"] != "cited" and (f["quantity"] == "composition" or AT_PCT(f["unit"]))})
 # what each ± is (P2): literature averages, the wafer map's spread over positions; Table 1 does not say
 C.uncertainty_kinds(K, {'s3.p16#5': ('literature', ''), 's3.p16#6': ('literature', ''), 'fig1c#4': ('position', 'not_stated'), 'tab1.r1c1#1': ('not_stated', ''), 'tab1.r1c2#1': ('not_stated', ''), 'tab1.r1c4#1': ('not_stated', ''), 'tab1.r1c6#1': ('not_stated', ''), 'tab1.r1c7#1': ('not_stated', ''), 'tab1.r2c1#1': ('not_stated', ''), 'tab1.r2c2#1': ('not_stated', ''), 'tab1.r2c4#1': ('not_stated', ''), 'tab1.r2c6#1': ('not_stated', ''), 'tab1.r2c7#1': ('not_stated', ''), 'tab1.r3c1#1': ('not_stated', ''), 'tab1.r3c2#1': ('not_stated', ''), 'tab1.r3c4#1': ('not_stated', ''), 'tab1.r3c6#1': ('not_stated', ''), 'tab1.r3c7#1': ('not_stated', '')})
+# a minimum over a set of films names the films (P12): the ratio-0.94 cells (s3.p35#5) and the crystalline ratio-0.80 cells (s3.p35#2)
+for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f"{K}:s3.p35#2", [c for c in CELLS if c[1] == "0.80" and CELLS[c][0] == "c"])):
+    next(x for x in C.facts() if x["fact_id"] == fid_)["links"] = ";".join(f"{K}:ent:T{t}_R{r}" for t, r in sorted(cells_))
 write(K, PID)

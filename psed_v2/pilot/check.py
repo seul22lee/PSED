@@ -306,6 +306,9 @@ def check_tree(rows, els):
                 err.append(f"{i}: {r['quantity']} without over= (what it is averaged over; P5)")
             if r["quantity"] in ("composition", "mass_gain", "porosity") and r["type"] != "cited" and "relative_to" not in qd:
                 err.append(f"{i}: {r['quantity']} without relative_to= (what it is a fraction of; P4)")
+            if (r["type"] != "claim" and r["value"] and not r["censor"] and "stat" not in qd
+                    and re.search(r"\b(down to|up to|at most|as low as|as high as)\b", r["statement"])):
+                err.append(f"{i}: '{re.search(r'(down to|up to|at most|as low as|as high as)', r['statement']).group(1)}' stored as a plain value (a bound or a stat=minimum/maximum; P12)")
             if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:
                 err.append(f"{i}: uncertainty {r['uncertainty']} without a kind from lists.UNCERTAINTY_KINDS (P2)")
             if r["uncertainty"] and not re.fullmatch(r"\d+(\.\d+)?(e-?\d+)?", r["uncertainty"]):

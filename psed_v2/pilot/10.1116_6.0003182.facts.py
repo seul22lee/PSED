@@ -81,7 +81,7 @@ f("s6.p5", "cited", "TEM coating thicknesses of Ferguson et al. gave a GPC of ~2
   quantity="growth_per_cycle", value="2.2", unit="Å/cyc", data_kind="literature", method="cited", mentions="ref. 11")
 f("s6.p5", "cited", "Ferguson et al. saw signs of non-self-limiting growth during the DEZ exposure", mentions="ref. 11")
 f("s6.p5", "cited", "raising the exposure up to 900 Torr-s, Ferguson et al. found by in situ FTIR that background absorbance grew with exposure, which they assigned to conductive Zn from DEZ decomposition",
-  quantity="exposure", value="900", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 11")
+  quantity="exposure", value_max="900", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 11")
 # Libera (ref. 12)
 f("s6.p5", "cited", "Libera et al. found Zn metal by XRD in ZnO ALD coatings in mesoporous silica gel (1 g batches, s = 100 m2/g)",
   quantity="other", label_as_printed="s", value="100", unit="m2/g", data_kind="literature", method="cited", mentions="ref. 12;Libera et al.")
@@ -147,7 +147,7 @@ f("s9.p1", "setting", "reactor, with a near-horizontal cylindrical chamber and a
 f("s9.p1", "setting", "deposition chamber about 20 cm long and 10 cm inner diameter",
   quantity="other", label_as_printed="chamber length", value="20", unit="cm", data_kind="chosen input", mentions="10 cm ID")
 f("s9.p1;s9.p3;fig1a", "setting", "the NPCs sit in a round-bottomed rectangular quartz boat touching only at their lower circular edge, leaving at most ~1 mm under the bottom face",
-  quantity="other", label_as_printed="gap height", value="1", unit="mm", data_kind="chosen input", mentions="Fig. 1")
+  quantity="other", label_as_printed="gap height", value_max="1", unit="mm", data_kind="chosen input", mentions="Fig. 1")
 f("s9.p3;s12.p1", "setting", "every NPC was weighed before and after ALD to get the deposited ZnO mass", method="gravimetry")
 f("s9.p3", "setting", "chamber pressure read by two Baratron 728A manometers (MKS) heated to 100 °C, with 10 and 1000 Torr full scale",
   quantity="other", label_as_printed="gauge temperature", value="100", unit="°C", data_kind="chosen input", method="process_monitor")
@@ -532,7 +532,7 @@ f("s15.p4;fig2d", "setting", "chamber heating raised T from 120 to 160 °C over 
 f("s15.p4", "cited", "an ALD reactor with a flash lamp raised Si substrate temperature as much as ~400 °C in 5 s",
   quantity="other", label_as_printed="temperature rise", value="400", unit="°C", data_kind="literature", method="cited", mentions="ref. 42")
 f("s15.p4;s15.p8", "cited", "a high-power resistive heater raised sapphire substrate temperature by up to ~800 °C within 15 s to crystallize films during ZnO ALD",
-  quantity="other", label_as_printed="temperature rise", value="800", unit="°C", data_kind="literature", method="cited", mentions="ref. 43")
+  quantity="other", label_as_printed="temperature rise", value_max="800", unit="°C", data_kind="literature", method="cited", mentions="ref. 43")
 f("s15.p8", "claim", "uniform infiltration plus higher GPC at 120 °C suggest that a lower purge temperature can sometimes reduce the cycles, and so the time, needed for a target thickness", mentions="120 °C")
 f("s15.p8", "claim", "the 120 °C results justify further study of how H2O purge time and temperature relate to coating thickness and infiltration uniformity", mentions="120 °C")
 
