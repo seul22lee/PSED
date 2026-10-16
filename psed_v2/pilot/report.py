@@ -40,7 +40,12 @@
   the effect is max − min of the quantity over the group's runs; sd comes from the paper's reproducibility set, computed
   as the largest set of runs with the same conditions (the process-defining settings stated by both and equal, any other
   setting equal when both state it) that share numeric results
-  (yim20: samples 2, 4, 8 and 12); a ratio below 1 is flagged "within reproducibility"; no set, no sd.
+  (yim20: samples 2, 8 and 12); a ratio below 1 is flagged "within reproducibility"; no set, no sd. Natural series
+  (computed): two runs of a paper that differ in exactly one inherited setting (stated by both, different; both stating the
+  same process-defining settings) are joined; the
+  runs so connected through one setting form a series, listed in the left tree beside the paper's groups (a line opens the
+  tray with the series) and on the group card; a paper group whose runs differ in more than one setting is marked as
+  confounded, with the run that deviates (Series E: sample 14 also differs in pillar layout).
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -195,7 +200,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wbf{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12px}.wbf label{display:block;margin:4px 0}.wbf select{width:100%;margin-top:2px}.wbf input[type=number]{width:44%;margin-top:2px}
 .wbm{max-height:84vh;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:6px 8px;font-size:12.5px}.wbr{display:flex;gap:6px;align-items:center;padding:2px 0;border-bottom:1px solid var(--line)}.wbr .mut{flex:1}.wbr button{padding:0 7px;font-size:11px}
 .wbt{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12.5px;margin-bottom:10px}
-.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
+.ns .rl{cursor:pointer}.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
 .cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
@@ -360,9 +365,9 @@ function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=(function(){l
 function openCard(pi,id){P=pi;CARD=id;FIGC=null;GCARD=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
 function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
  const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="process")return `<div class="mut" style="margin-left:10px">process (conditions in each card, row 2)</div>`+walk(c.fact_id);
-  if(c.type==="group")return `<details open><summary><span class="ty group">group</span><span class="gl ${GCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="event.preventDefault();event.stopPropagation();openGroup(${i},'${c.fact_id}')">${esc(nlab(c))}</span></summary>${walk(c.fact_id)}</details>`;
+  if(c.type==="group"){const cf=confound(T,c.fact_id);return `<details open><summary><span class="ty group">group</span><span class="gl ${GCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="event.preventDefault();event.stopPropagation();openGroup(${i},'${c.fact_id}')">${esc(nlab(c))}</span>${cf?` <span class="inf" title="runs differ in ${cf.length} settings">${cf.length} settings</span>`:""}</summary>${walk(c.fact_id)}</details>`}
   if(c.type==="run"){const ch=(T.kids[c.fact_id]||[]).some(k=>k.type==="run");return ch?`<details open><summary>${line(c)}</summary>${walk(c.fact_id)}</details>`:line(c)}return""}).join("");
- return `<div class="lt"><b>${d.key}</b> <span class="mut">${d.tree.filter(n=>n.type==="run").length} runs</span>${walk(T.root.fact_id)}</div>`}
+ const ns=naturalSeries(i);return `<div class="lt"><b>${d.key}</b> <span class="mut">${d.tree.filter(n=>n.type==="run").length} runs</span>${walk(T.root.fact_id)}<details open class="ns"><summary><span class="ty group">series</span>natural series, computed <span class="mut">(${ns.length})</span></summary>${ns.map((sr,j)=>seriesLine(i,sr,j)).join("")||'<div class="mut" style="margin-left:10px">none</div>'}</details></div>`}
 function card(d,i,id){const T=buildTree(d),n=T.byId[id];if(!n)return"";const ev=f=>`<code class="ev" title="${esc(f.fact_id)}" onclick="side('${f.evidence.split(";")[0]}',${i})">${f.evidence.split(";")[0]}</code>`;
  const levels=levelsOf(T,id);
  const own=levels[0];const shown=levels.find(l=>l.varied.length)||own;
@@ -490,13 +495,26 @@ function openGroup(i,gid){P=i;GCARD=gid;FIGC=null;V="tree";TM="cards";render()}
 // reproducibility (computed): the largest set of a paper's runs with the same conditions (every setting stated by both equal) that
 // share numeric results; sd (n-1) per result key over that set
 const core=k=>PRIM.includes(k.split("|")[0]);   // the process-defining settings: both runs must state them, equal; any other setting counts only when both state it
-const sameCond=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].every(k=>core(k)?(k in a.inh)===(k in b.inh)&&(!(k in a.inh)||a.inh[k].text===b.inh[k].text):!(k in a.inh)||!(k in b.inh)||a.inh[k].text===b.inh[k].text);
+const stated=(r,k)=>(k in r.inh)&&r.inh[k].text!==""&&!r.inh[k].text.includes("; ");   // one value; several values at a level (the process's three heights) are not a run's stated value
+const sameCond=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].every(k=>core(k)?stated(a,k)===stated(b,k)&&(!stated(a,k)||a.inh[k].text===b.inh[k].text):!stated(a,k)||!stated(b,k)||a.inh[k].text===b.inh[k].text);
 const firstNum=o=>{const f=o.fs[0];const a=fv(f);return a!=null&&!isNaN(a)?a:null};
 function reproOf(i){const d=DATA[i];if(d._REP!==undefined)return d._REP;const rs=RUNS().filter(r=>r.i===i&&Object.values(r.res).some(o=>firstNum(o)!=null));let best=null;
  rs.forEach(seed=>{const set=[seed];rs.forEach(r=>{if(r!==seed&&set.every(s=>sameCond(s,r)&&sameCond(r,s)))set.push(r)});if(set.length<2)return;
   const sd={};[...new Set(set.flatMap(r=>Object.keys(r.res)))].forEach(k=>{const vals=set.filter(r=>r.res[k]).map(r=>firstNum(r.res[k])).filter(v=>v!=null);if(vals.length>=2){const m=vals.reduce((a,b)=>a+b,0)/vals.length;sd[k]={sd:Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/(vals.length-1)),n:vals.length,f:set.find(r=>r.res[k]).res[k].f}}});
   const nk=Object.keys(sd).length;if(nk&&(!best||set.length>best.set.length||(set.length===best.set.length&&nk>Object.keys(best.sd).length)))best={set,sd}});
  return d._REP=best?{runs:best.set,sd:best.sd}:null}
+// natural series (computed): runs that differ in exactly one inherited setting, joined through that setting
+const diffKeys=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].filter(k=>stated(a,k)&&stated(b,k)&&a.inh[k].text!==b.inh[k].text);
+function naturalSeries(i){const d=DATA[i];if(d._NS)return d._NS;const rs=RUNS().filter(r=>r.i===i);const byKey={};
+ const coreMatch=(a,b)=>[...new Set([...Object.keys(a.inh),...Object.keys(b.inh)])].every(k=>!core(k)||stated(a,k)===stated(b,k));   // both state the same core settings
+ for(let a=0;a<rs.length;a++)for(let b=a+1;b<rs.length;b++){const dk=diffKeys(rs[a],rs[b]);if(dk.length===1&&coreMatch(rs[a],rs[b]))(byKey[dk[0]]=byKey[dk[0]]||[]).push([rs[a].id,rs[b].id])}
+ const out=[];Object.entries(byKey).forEach(([k,edges])=>{const par={};const find=x=>par[x]===undefined?x:(par[x]=find(par[x]));edges.forEach(([a,b])=>{const ra=find(a),rb=find(b);if(ra!==rb)par[ra]=rb});const comp={};edges.flat().forEach(x=>(comp[find(x)]=comp[find(x)]||new Set()).add(x));
+  Object.values(comp).forEach(set=>{const runs=rs.filter(r=>set.has(r.id));out.push({k,f:runs[0].inh[k].f,runs,vals:[...new Set(runs.map(r=>r.inh[k].text))]})})});
+ out.sort((a,b)=>rank(a.f)-rank(b.f)||b.runs.length-a.runs.length);return d._NS=out}
+const seriesLine=(i,sr,j)=>`<div class="rl" onclick="seriesTray(${i},${j})" title="open the tray with this series"><span class="ty group">series</span>${esc(qtext(sr.f))} ${esc(sr.vals.slice(0,6).join(" / "))}${sr.vals.length>6?" …":""} · <span class="mut">${sr.runs.slice(0,8).map(r=>esc(nlab(r.n))).join(" · ")}${sr.runs.length>8?` +${sr.runs.length-8}`:""}</span></div>`;
+function seriesTray(i,j){const sr=naturalSeries(i)[j];WB.tray=sr.runs.slice(0,8).map(r=>({i,id:r.id}));TM="find";render()}
+function confound(T,gid){const sib=(T.kids[gid]||[]).filter(k=>k.type==="run"||k.type==="group");const v=variedAmong(T,sib);if(v.length<2)return null;
+ return v.map(c=>{const cnt={};Object.values(c.by).forEach(t=>cnt[t]=(cnt[t]||0)+1);const mode=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];const odd=sib.filter(n=>c.by[n.fact_id]&&c.by[n.fact_id]!==mode);return {f:c.f,mode,odd:odd.map(n=>({n,v:c.by[n.fact_id]}))}})}
 function groupRuns(T,gid){const out=[];(function w(x){(T.kids[x]||[]).forEach(k=>{if(k.type==="run")out.push(k.fact_id);if(k.type==="run"||k.type==="group")w(k.fact_id)})})(gid);return out}
 function groupCard(d,i,gid){const T=buildTree(d),g=T.byId[gid];const ids=groupRuns(T,gid);const rs=RUNS().filter(r=>r.i===i&&ids.includes(r.id));const sib=(T.kids[gid]||[]).filter(k=>k.type==="run"||k.type==="group");const v=variedAmong(T,sib);
  const r1=v.map(c=>`<span class="chip diff">${qlab(c.f)}: ${[...new Set(Object.values(c.by))].map(esc).join(" / ")}</span>`).join(" ")||'<span class="mut">none</span>';
@@ -505,7 +523,9 @@ function groupCard(d,i,gid){const T=buildTree(d),g=T.byId[gid];const ids=groupRu
  const lines=Object.entries(keys).filter(([k,o])=>o.vals.length>=2).map(([k,o])=>{const eff=Math.max(...o.vals)-Math.min(...o.vals);const u=o.f.unit?" "+o.f.unit:"";const sd=rep&&rep.sd[k]?rep.sd[k].sd:null;const ratio=sd?eff/sd:null;
   return `<div class="fl2 ${ratio!=null&&ratio<1?"within":""}">${qlab(o.f)}: <span class="num">${fmtv(eff)}${esc(u)}</span> <span class="mut">(${o.vals.length} runs)</span>${sd!=null?` = <b>${ratio.toFixed(1)} × sd</b>${ratio<1?' <span class="inf">within reproducibility</span>':""}`:' <span class="mut">no sd</span>'}</div>`}).join("");
  const r3=(rep?`<div class="mut">sd from ${rep.runs.map(r=>esc(nlab(r.n))).join(" · ")}, ${Object.keys(rep.sd).length} quantities</div>`:'<div class="mut">no reproducibility set in this paper</div>')+(lines||'<div class="mut">no result on two or more runs</div>');
- return `<div class="card"><h2>${esc(nlab(g))} <span class="mut" style="font-size:12px;font-weight:400">${esc(gid)}</span></h2><div class="mut">${esc(g.statement)}</div><section><h4>varied</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><div id="side" class="evbox"></div></div>`}
+ const cf=confound(T,gid);const ns=naturalSeries(i).map((sr,j)=>[sr,j]).filter(([sr])=>sr.runs.some(r=>ids.includes(r.id)));
+ const r4=(cf?`<div class="fl2"><span class="inf">confounded</span> ${cf.length} settings differ: ${cf.map(c=>`<span class="chip diff">${qlab(c.f)}: ${c.odd.map(o=>`${esc(nlab(o.n))} ${esc(o.v)}`).join(", ")} <span class="mut">(others ${esc(c.mode)})</span></span>`).join(" ")}</div>`:'<div class="fl2 mut">one setting varies, as the group states</div>')+(ns.map(([sr,j])=>seriesLine(i,sr,j)).join("")||'<div class="fl2 mut">no natural series through these runs</div>');
+ return `<div class="card"><h2>${esc(nlab(g))} <span class="mut" style="font-size:12px;font-weight:400">${esc(gid)}</span></h2><div class="mut">${esc(g.statement)}</div><section><h4>varied</h4>${r1}</section><section><h4>runs</h4>${r2}</section><section><h4>effect ÷ sd</h4>${r3}</section><section><h4>natural series</h4>${r4}</section><div id="side" class="evbox"></div></div>`}
 function compareWith(i,id){const v=document.getElementById("cmp").value;if(!v)return;const [j,rid]=v.split("|");WB.tray=[{i,id},{i:+j,id:rid}];TM="find";render()}
 function figureCard(d,i,eid){const T=buildTree(d);const e=d.elements.find(x=>x.id===eid);const fs=d.facts.filter(f=>f.evidence.split(";").includes(eid));
  const runOf=id=>{let x=T.up[id];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x&&T.byId[x]?x:null};
@@ -550,7 +570,7 @@ function render(){const d=DATA[P];
  <div class="tile"><b>${tn[1]?Math.round(100*tn[0]/tn[1]):0}%</b><span>numbers in text reaching a fact (${tn[0]}/${tn[1]})</span></div>
  <div class="tile"><b>${Object.entries(s.panels||{}).map(([k,v])=>v).join(" / ")}</b><span>panels: ${Object.keys(s.panels||{}).join(" / ")}</span></div>`;
  $("#view").innerHTML=V==="read"?readView(d):V==="tree"?treeView():figView(d);if(V==="tree"){applyForest();fitChips()}}
-window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.openGroup=openGroup;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
+window.openCard=openCard;window.cardFor=cardFor;window.toggleChips=toggleChips;window.showCard=showCard;window.compareWith=compareWith;window.figCard=figCard;window.openGroup=openGroup;window.seriesTray=seriesTray;window.wbSet=wbSet;window.wbT=wbT;window.wbRange=wbRange;window.wbClear=wbClear;window.trayAdd=trayAdd;window.trayAddFig=trayAddFig;window.trayDrop=trayDrop;window.trayClear=trayClear;
 render();
 </script></body></html>"""
 
