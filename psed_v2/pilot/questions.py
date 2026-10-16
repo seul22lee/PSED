@@ -206,7 +206,7 @@ def one(key, **kw):
 
 # ------------------------------------------------------------------ the comparison layer: the join
 def vtext(T, e):
-    return {k: "; ".join(dict.fromkeys(fmt(f) for f in fs)) for k, fs in T.vector(e).items()}
+    return {k: "; ".join(dict.fromkeys(t for t in (fmt(f) for f in fs) if t)) for k, fs in T.vector(e).items()}
 
 
 def same_experiment(T, ent, tolerate=()):
@@ -290,7 +290,11 @@ def routes(facts):
                 continue
             why = [w for w, ok in (("quantities", a["quantity"] == b["quantity"] and (a["quantity"] != "other" or a["label_as_printed"] == b["label_as_printed"])), ("qualifiers", a["qualifiers"] == b["qualifiers"]),
                                    ("methods", a["method"] == b["method"])) if not ok]
-            out.append((a, b, L.convert(val(a), a["unit"], b["unit"]) / val(b) if a["unit"] != b["unit"] and a["quantity"] == b["quantity"] else val(a) / val(b),
+            try:
+                ra = L.convert(val(a), a["unit"], b["unit"]) / val(b) if a["unit"] != b["unit"] and a["quantity"] == b["quantity"] else val(a) / val(b)
+            except (ValueError, KeyError):
+                continue                                                        # units of different dimensions (a count and a length): not two routes to one value
+            out.append((a, b, ra,
                         ("different " + " and ".join(why) + ": a ratio of two routes, not a contradiction") if why else "same definition: a replicate pair"))
     return out
 
@@ -399,7 +403,7 @@ def _candidates(T, ent, spec, need):
         pools.append((f"input {T.label(i)}", [f for fs in T.results(i).values() for f in fs] + [f for f in T.own(i) if f["type"] == "setting"]))
     if spec["scope"] == "paper":
         pools.append(("paper", [f for f in T.rows if "#" in f["fact_id"] and f["type"] in ("setting", "observation", "derived", "model", "cited")]))
-    pools.append(("assumed", ASSUMED))
+    pools.append(("assumed", [u for u in ASSUMED if not u["links"] or any(l.split(":")[0] == T.key for l in u["links"].split(";"))]))   # an assumed fact serves the papers its links name; a constant without links serves all
     out = []
     for src, pool in pools:
         for q in spec["q"].split("|"):

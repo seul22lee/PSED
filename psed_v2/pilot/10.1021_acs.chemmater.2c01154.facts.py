@@ -284,7 +284,7 @@ F(K, "s3.p19", "observation", "Detection limit of C in these films is about 7 at
   mentions="dl.;glassy carbon")
 F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed from RBS areal atom densities and SE thicknesses.",
   mentions="RBS;SE;density (g/cm^3)")
-F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk", value="5.06", unit="g/cm3",
+F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk;species=MoS2", value="5.06", unit="g/cm3",
   data_kind="literature", method="cited", mentions="ref. 66")
 F(K, "s3.p19;tab1.cap", "setting", "The Table 1 films (RBS, ERD) are grown on a glassy carbon substrate.", quantity="substrate", value_text="glassy carbon",
   data_kind="chosen input", mentions="glassy carbon;Table 1")
@@ -1410,7 +1410,7 @@ for t in TEMPS:
     N(grp(f"T{t}"), "group", f"MoSx depositions at {t} °C (one row of Figs. 2 and 4)", PROC, evidence="fig2;fig4",
       label_as_printed=f"{t} °C", qualifiers="how=stated")
 N(grp("cyc"), "group", "cycle-number series at 150 °C and ratio 0.80: 10, 20, 30 and 50 cycles (Fig. 1b)", grp("T150"),
-  evidence="fig1b;s3.p5", label_as_printed="10-50 cyc", qualifiers="how=stated", links=pair(150, "0.80"))
+  evidence="fig1b;s3.p5", label_as_printed="10-50 cyc", qualifiers="how=stated")
 N(grp("h2s"), "group", "H2S flow tests: H2S flow varied besides the H2 flow ratio (Fig. S22)", PROC, evidence="s3.p53",
   label_as_printed="H2S flow rate", qualifiers="how=stated")
 N(grp("WS2"), "group", "WS2 by PEALD from the W analogue of the Mo precursor with H2S/H2/Ar plasma (Fig. 9a)", PROC,

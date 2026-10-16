@@ -11,7 +11,8 @@ Cases 9 and 10 take the forest's leaves at writing time (forest.py), so the link
 Assumed facts (type setting, data_kind assumed): constants and model values a derived quantity needs that no paper states as a
 setting (a molar mass, a bulk density, Avogadro's and Boltzmann's constants, a model input standing in for a pressure, the number of
 compacts per run, a molecular diameter taken from an analogue); links name the paper fact or entities they stand in for, and
-every derived value computed from one says so (questions.derive).
+every derived value computed from one says so (questions.derive). An assumed fact serves only the papers its links name; a
+constant without links (N_A, k_B) serves all.
 """
 import csv, sys
 from pathlib import Path
@@ -61,7 +62,7 @@ ROWS = [
     row("user:assume_npc_per_run", "setting", "two NPCs per ALD run in gre23, the pair weighed together, assumed for the mass balance",
         quantity="other", label_as_printed="NPCs per run", value="2", data_kind="assumed", links=["gre23:ent:120:pair", "gre23:ent:160:pair", "gre23:ent:120_160:pair"]),
     row("user:assume_d_DEZ", "setting", "the molecular diameter of DEZ is taken as that of TMA, 591 pm (yim20's model input from its ref. 33), for a mean free path in gre23",
-        quantity="other", qualifiers="species=DEZ", label_as_printed="molecular diameter", value="0.591", unit="nm", data_kind="assumed", links=["yim20:fig10.cap#7"]),
+        quantity="other", qualifiers="species=DEZ", label_as_printed="molecular diameter", value="0.591", unit="nm", data_kind="assumed", links=["yim20:fig10.cap#7", "gre23:abs.g1#3"]),
     row("user:def_xd", "definition", "dimensionless depth of a pore: the depth over the pore diameter d, the rule Cremers 2019 applies to pores",
         quantity="dimensionless_distance", qualifiers="by=d", mentions="Cremers 2019"),
     row("user:bridge_xH_xd", "bridge", "x~ by H (a channel's height, yim20) and x~ by d (a pore's diameter) measure the same depth: "
