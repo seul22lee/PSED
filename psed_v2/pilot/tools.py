@@ -45,7 +45,7 @@ def vocabulary_text():
 VOCAB = vocabulary_text()
 PAGE_LINES = 25
 MAX_LINE = 300
-DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims"]
+DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims", "computed"]
 DETAIL_DEFAULT = ["what", "differs", "results"]
 
 TOOLS = [
@@ -53,7 +53,7 @@ TOOLS = [
          description=("Searches the text of every record of the knowledge base by words (lexical: lowercase, plurals folded, _ and - as "
                       "spaces, numbers and units kept; no synonyms). Returns the records ranked by how well they match, at most "
                       f"{PAGE_LINES} lines per call, each '[id] record type · one line'; records with the same line are shown once with "
-                      "their count. A last line gives the offset of the next page. The knowledge base's names, generated from its data: " + VOCAB),
+                      "their count; at most about 2,000 tokens per call, then 'more: offset=N'. The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              words=dict(type="string", description="The words to look for."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
@@ -67,8 +67,9 @@ TOOLS = [
                       "settings that vary within the set, the value with uncertainty and unit, its kind (measured, stated, read from "
                       "figure, computed by the authors, computed here, model, cited, assumed) and its id. A group footer gives the ids of "
                       "the claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
-                      "measurement). A quantity's base name covers all its definitions; a specific name only its own. "
-                      f"At most {PAGE_LINES} lines per call; a last line gives the offset of the next page. "
+                      "measurement). Conditions every group of a paper shares are given once. A quantity's base name covers all its "
+                      "definitions; a specific name only its own. A call returns at most about 2,000 tokens; a last line 'more: offset=N' "
+                      "gives the next page. "
                       "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
@@ -107,27 +108,32 @@ TOOLS = [
                       "differ among the members), results (main results with the size of the effect against the scatter between repeats, "
                       "power-law fits with any confounder correction, these three computed here, not by the authors; values stated for "
                       "the whole set), claims. For a cited work: "
-                      "what, recipe (its conditions), results (its values), claims. Claims are not in the default parts; claims with "
-                      "linked=<id> also returns them."),
+                      "what, recipe (its conditions), results (its values), claims. For a comparison the members appear as one table of the "
+                      "settings that vary among them. Values computed here, and a set's effect and fit lines, are listed only with the "
+                      "part computed, or when nothing else exists; otherwise one line counts them. Claims are not in the default parts; "
+                      "claims with linked=<id> also returns them. A call returns at most about 2,000 tokens, then 'more: offset=N'."),
          parameters=dict(type="object", properties=dict(
              id=dict(type="string", description="An experiment, input, comparison or cited-work id as returned by find, detail, compare or claims."),
-             parts=dict(type="array", items=dict(type="string", enum=DETAIL_PARTS), description="Any of what, differs, results, recipe, claims (default what, differs, results).")),
+             parts=dict(type="array", items=dict(type="string", enum=DETAIL_PARTS), description="Any of what, differs, results, recipe, claims, computed (default what, differs, results)."),
+             offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
              required=["id"])),
     dict(name="compare",
          description=("Sets several experiments side by side: the conditions they share, the conditions that differ with each item's "
                       "value, and every result with each item's value (unit, kind, definition, source, the paper's definition of the "
                       "quantity when it has one); for two items, the ratio or difference of each shared result (computed here); a note where values cannot be set beside each other (different definitions); "
-                      "measured curves as their points; and the ids of the claims linked to two or more of the items."),
+                      "measured curves as their points; and the ids of the claims linked to two or more of the items. Results computed here "
+                      "for every item are counted, not listed, unless result names one. At most about 2,000 tokens per call, then "
+                      "'more: offset=N'."),
          parameters=dict(type="object", properties=dict(
              ids=dict(type="array", items=dict(type="string"), description="Two or more experiment ids."),
-             result=dict(type="string", enum=QUANT, description="Only this result quantity.")),
+             result=dict(type="string", enum=QUANT, description="Only this result quantity."),
+             offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
              required=["ids"])),
     dict(name="claims",
          description=("Returns the claims of the papers (and the user's claims across papers), one line each: its stance (asserted, "
                       "hedged, open, limitation), the statement, cause and effect in words, the range of conditions it covers (computed here), the "
                       "comparisons it reaches, its source element, and the ids of the stated results it rests on (source returns each "
-                      f"in full). At most {PAGE_LINES} lines per call; a last line gives the number of further claims and the offset that "
-                      "returns them."),
+                      f"in full). At most {PAGE_LINES} lines and about 2,000 tokens per call, then 'more: offset=N'."),
          parameters=dict(type="object", properties=dict(
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              variable=dict(type="string", description="Only claims whose cause or effect is this quantity id (" + ", ".join(QUANT) + ") or mechanism token (" + ", ".join("mechanism:" + m for m in L.MECHANISMS) + ")."),
@@ -137,8 +143,10 @@ TOOLS = [
     dict(name="source",
          description=("Returns the source of a fact or an element: the paper element (a paragraph, table cell, caption, equation or figure "
                       "panel), its locator, its text (figure panels have none), whether the knowledge base covers it, and every value the "
-                      "facts of that element carry, each with the statement of the fact."),
-         parameters=dict(type="object", properties=dict(id=dict(type="string", description="A fact id (as in the result lines) or an element id written <paper>:<element>.")),
+                      "facts of that element carry, each with the statement of the fact. At most about 2,000 tokens per call, then "
+                      "'more: offset=N'."),
+         parameters=dict(type="object", properties=dict(id=dict(type="string", description="A fact id (as in the result lines) or an element id written <paper>:<element>."),
+                                                        offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
                          required=["id"])),
 ]
 
@@ -224,17 +232,6 @@ def wrap(i, text):
         t = "… " + t[cut:].lstrip(" ·;,")
     out.append((i, t))
     return out
-
-
-def page(items, offset, what):
-    """Items (each a list of lines) from offset, at most PAGE_LINES lines, then a line naming how many items are left."""
-    offset = max(0, int(offset or 0))
-    lines, n = [], offset
-    while n < len(items) and len(lines) + len(items[n]) <= PAGE_LINES - 1:
-        lines += items[n]; n += 1
-    if n < len(items):
-        lines.append(("more", f"{len(items) - n} more {what}: call again with offset={n}"))
-    return lines
 
 
 def name_of_id(i):
@@ -362,20 +359,21 @@ def validate(name, args):
 
 
 def run_tool(name, args):
-    """(lines, error): lines = [(id, text)] formatted from what query.py returns; nothing computed here; no line over MAX_LINE.
-    A call that fails validation, or whose filters match nothing, returns an error text, never an unfiltered or empty result."""
+    """(lines, error): lines = [(id, text)] formatted from what query.py returns; nothing computed here; no line over MAX_LINE; at
+    most BUDGET_TOKENS (chars/4) per call, then 'more: offset=N' (P44). A call that fails validation, or whose filters match
+    nothing, returns an error text, never an unfiltered or empty result."""
     err = validate(name, args)
     if err:
         return [], "error: " + err
     args = {k: v for k, v in args.items() if v is not None}
-    lines, err = _run(name, args)
+    blocks, err = _run(name, args)
+    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name in ("search", "find", "claims") else None)
     if not err and not [x for x in lines if x[0] != "more"]:
         err = f"error: {name}: nothing matches " + ", ".join(f"{k}={json.dumps(v, ensure_ascii=False)}" for k, v in args.items()) \
-              + ("" if name != "find" or "offset" not in args else " (or the offset is past the last item)")
+              + (" (or the offset is past the end)" if args.get("offset") else "")
     return lines, err
 
 
-SEARCH_LINE = 200
 
 
 def endpoints(e):
@@ -420,8 +418,21 @@ def _span(nums):
 def values_blocks(groups, asked):
     """The values output as blocks: per group a header (once), its rows, its footer; then the line on what differs between groups."""
     blocks = []
+    common = {}                                                                 # conditions every group of a paper shares: once, per paper (P44)
+    for k in dict.fromkeys(g["paper"] for g in groups):
+        gs = [g for g in groups if g["paper"] == k]
+        sets = [{(x["key"], x["record"]["text"]) for x in g["shared"]} for g in gs]
+        common[k] = set.intersection(*sets) if len(gs) > 1 else set()
     for n, g in enumerate(groups, 1):
         T = Q.TREES[g["paper"]]
+        ctx = []
+        if common[g["paper"]]:
+            cs = [x for x in g["shared"] if (x["key"], x["record"]["text"]) in common[g["paper"]]]
+            ctx = [(g["id"] or f"{g['paper']}:outside", f"{short_name(g['paper'])} · every group of this paper shares: "
+                    + "; ".join(f"{x['name']} {x['record']['text']}" for x in cs))]
+            if n == 1 or groups[n - 2]["paper"] != g["paper"]:
+                blocks.append(block([], head=ctx))
+        own_shared = [x for x in g["shared"] if (x["key"], x["record"]["text"]) not in common[g["paper"]]]
         names = list(dict.fromkeys(r["result_name"] for r in g["rows"]))
         bydef = {}                                                              # one line per distinct definition, naming its results
         for key in dict.fromkeys(r["key"] for r in g["rows"]):
@@ -435,7 +446,7 @@ def values_blocks(groups, asked):
         sid = g["id"] or f"{g['paper']}:outside"
         head = (f"group {n} · {short_name(g['paper'])} · " + (f"set [{g['id']}] ({g['kind']}): {g['label']}" if g["id"] else g["label"])
                 + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
-                + (" · shared: " + "; ".join(f"{x['name']} {x['record']['text']}" for x in g["shared"]) if g["shared"] else "")
+                + (" · shared: " + "; ".join(f"{x['name']} {x['record']['text']}" for x in own_shared) if own_shared else "")
                 + (f" (+{g['more_shared']} more shared conditions: detail of the set)" if g["more_shared"] and g["id"] else ""))
         hl = [(sid, head)] + [(sid, "definition · " + d) for d in defs]
         rows = []
@@ -448,7 +459,7 @@ def values_blocks(groups, asked):
             rows.append([(rec.get("fact") or r["entity"], f"{r['name']}" + (f" · {st}" if st else "") + f" · {val} · {rec.get('kind')}"
                           + (f" · {r['result_name']}" if len(names) > 1 or r["result_name"] != asked else "") + (f" · experiment [{r['entity']}]" if rec.get("fact") else ""))])
         foot = [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"]))] if g["claims"] else []
-        blocks.append(dict(head=hl, rows=rows, foot=foot, short=(sid, f"group {n} continued · {short_name(g['paper'])} · {g['label']}")))
+        blocks.append(block(rows, head=hl, foot=foot, short=(sid, f"group {n} continued · {short_name(g['paper'])} · {g['label']}"), context=ctx))
     if len(groups) > 1:
         diff = []
         for aspect in ("material", "structure", "reactor", "process", "measurement"):
@@ -459,28 +470,77 @@ def values_blocks(groups, asked):
             if len(by) > 1:
                 diff.append(f"{aspect}: " + "; ".join(f"{v} (group{'s' if len(ns) > 1 else ''} {_span(ns)})" for v, ns in by.items()))
         last = ("between groups, not one series: " + " · ".join(diff)) if diff else "the groups share material, structure, reactor, process and measurement"
-        blocks.append(dict(head=[("between", last)], rows=[], foot=[], short=None))
+        blocks.append(block([], head=[("between", last)]))
     return blocks
 
 
-def page_blocks(blocks, offset, budget_lines=PAGE_LINES):
-    """Lines from offset (counted over all lines), at most budget_lines with a header repeated short when a page starts inside a
-    group, then a line with the offset of the next page."""
-    flat = []
+SEARCH_LINE = 200
+BUDGET_TOKENS = 2000
+BUDGET_CHARS = BUDGET_TOKENS * 4
+DEF_FRAG = re.compile(r' · defined as: "[^"]*" \[([^\]]+)\]')
+
+
+def block(rows, head=(), foot=(), short=None, context=()):
+    """A part of an output: a header shown once, rows (each a list of lines kept together), a footer; short is the header repeated
+    when a page starts inside it; context are lines repeated at the top of any later page that starts in it."""
+    return dict(head=list(head), rows=[list(r) for r in rows], foot=list(foot), short=short, context=list(context))
+
+
+def paginate(blocks, offset, max_lines=None):
+    """The units (a header, a row, a footer) from offset, within BUDGET_CHARS and max_lines, then 'more: offset=N'. Within a page a
+    line is never printed twice and a paper definition only at its first use (P44)."""
+    units = []
     for b in blocks:
-        flat += [(b, x) for x in b["head"]] + [(b, x) for r in b["rows"] for x in r] + [(b, x) for x in b["foot"]]
+        for kind, u in [("head", b["head"])] + [("row", r) for r in b["rows"]] + [("foot", b["foot"])]:
+            if not u:
+                continue
+            if sum(len(t) + len(i) + 4 for i, t in u) > BUDGET_CHARS - 400:          # a unit larger than a page goes line by line
+                units += [(b, kind, [x]) for x in u]
+            else:
+                units.append((b, kind, u))
     offset = max(0, int(offset or 0))
-    out, n = [], offset
-    if 0 < offset < len(flat) and flat[offset][1] not in flat[offset][0]["head"] and flat[offset][0]["short"]:
-        out.append(flat[offset][0]["short"])
-    while n < len(flat) and len(out) < budget_lines - 1:
-        out.append(flat[n][1]); n += 1
-    if n < len(flat):
-        out.append(("more", f"more: offset={n} ({len(flat) - n} lines left)"))
-    return out
+    out, n, size = [], offset, 0
+    if 0 < offset < len(units):
+        b0 = units[offset][0]
+        out += b0["context"] + ([b0["short"]] if units[offset][1] != "head" and b0["short"] else [])
+        size += sum(len(t) + len(i) + 4 for i, t in out)
+    while n < len(units):
+        u = units[n][2]
+        cost = sum(len(t) + len(i) + 4 for i, t in u)
+        if (out and size + cost > BUDGET_CHARS - 60) or (max_lines and out and len(out) + len(u) > max_lines - 1):
+            break
+        out += u; size += cost; n += 1
+    seen_lines, seen_defs, page = set(), set(), []
+    for i, t in out:
+        for m in DEF_FRAG.finditer(t):                                          # a paper definition once per page
+            if m.group(1) in seen_defs:
+                t = t.replace(m.group(0), "")
+            seen_defs.add(m.group(1))
+        if t not in seen_lines:                                                # a text once per page, whatever its id
+            page.append((i, t)); seen_lines.add(t)
+    if n < len(units):
+        page.append(("more", f"more: offset={n}"))
+    return page
+
+
+def members_table(T, ms, cols=5):
+    """A set's members as one table of the settings that vary among them (P44): process-defining first, keyed settings left out."""
+    vt = {m: Q.vtext(T, m) for m in ms}
+    keyed = {k for m in ms for k, fs in T.vector(m).items() if any(set(Q.quals(f)) & set(L.KEYED) for f in fs)}
+    keys = [k for k in dict.fromkeys(k for m in ms for k in vt[m]) if k not in keyed and len({vt[m].get(k) for m in ms}) > 1]
+    keys.sort(key=lambda k: (L.PRIMARY.index(k.split("{")[0]) if k.split("{")[0] in L.PRIMARY else len(L.PRIMARY), k))
+    shown = keys[:cols]
+    names = [Q.name_of(k, next(T.vector(m)[k][0] for m in ms if k in T.vector(m))) for k in shown]
+    head = "members, by the settings that vary among them: member | " + " | ".join(names) + (f" (+{len(keys) - cols} more vary)" if len(keys) > cols else "")
+    return head, [[(m, f"{T.label(m)} | " + " | ".join(vt[m].get(k) or "not stated" for k in shown))] for m in ms]
+
+
+def _hidden(n, what="values"):
+    return f"{n} computed-here {what} hidden: parts [\"computed\"] shows them"
 
 
 def _run(name, args):
+    """(blocks, error) of one call."""
     try:
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
         if name == "values":
@@ -491,7 +551,10 @@ def _run(name, args):
             for b in blocks:
                 b["head"], b["foot"] = W(b["head"]), W(b["foot"])
                 b["rows"] = [W(r) for r in b["rows"]]
-            return page_blocks(blocks, args.get("offset")), ""
+                if b["short"]:
+                    b["short"] = W([b["short"]])[0]
+                b["context"] = W(b["context"])
+            return blocks, ""
         if name == "search":
             if not Q.tokens(args["words"]):
                 return [], "error: search: words has no letters or numbers"
@@ -516,8 +579,7 @@ def _run(name, args):
                 if len(line) > SEARCH_LINE:
                     line = line[:SEARCH_LINE - 2].rsplit(" ", 1)[0] + " …"
                 items.append([(h["id"], line)])
-            return page(items, args.get("offset"), "results"), ""
-        W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
+            return [block(items)], ""
         if name == "find":
             conds = {c["quantity"]: (c.get("low"), c.get("high")) for c in args.get("conditions") or []}
             f = Q.find(paper=args.get("paper"), material=args.get("material"), structure=args.get("structure"), result=args.get("result"),
@@ -533,7 +595,7 @@ def _run(name, args):
                     items.append(W([(x["record"].get("fact") or i, f"{head} · experiment [{i}] · {value_line(x['record'], x['name'])}{defined_as(r['paper'], x['key'])}") for x in r["result"]]))
                 else:
                     items.append(W([(i, head)]))
-            return page(items, args.get("offset"), "items"), ""
+            return [block(items)], ""
         if name == "detail":
             parts = [p for p in (args.get("parts") or DETAIL_DEFAULT) if p in DETAIL_PARTS] or DETAIL_DEFAULT
             d = Q.detail(args["id"])
@@ -550,25 +612,35 @@ def _run(name, args):
                     out += [(i, f"identity ({x['kind']}): {x['statement']} · others: {', '.join(x['others'])}") for x in d["identity"]]
                 if "differs" in parts and d["differs"]:
                     out.append((i, "distinguished by: " + "; ".join(f"{x['name']} {x['text']}" for x in d["differs"])))
+                comp = [r for r in d["results"] if r["record"].get("kind") == "computed here"]
+                own = [r for r in d["results"] if r["record"].get("kind") != "computed here"]
+                show = "computed" in parts or not own                                     # computed here only when asked or nothing else exists
                 if "results" in parts:
-                    out += [(r["record"].get("fact") or i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"])) for r in d["results"]]
+                    out += [(r["record"].get("fact") or i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"])) for r in own]
+                    if comp and not show:
+                        out.append((i, _hidden(len(comp))))
+                if show:
+                    out += [(i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"])) for r in comp]
                 if "recipe" in parts:
                     out += [(c["record"].get("fact") or i, "condition · " + value_line(c["record"], c["name"])) for c in d["recipe"]]
             elif d["type"] == "comparison":
+                T = Q.tree_of(i)
                 if "what" in parts:
                     out.append((i, f"comparison ({short_name(d['paper'])}): {d['label']} · kind: {d['kind']} · varies: {', '.join(d['varies']) or 'nothing stated'}"
                                 + (f" · statement: {d['statement']}" if d.get("statement") else "") + (f" · purpose: {d['purpose']}" if d.get("purpose") else "")))
-                    out += [(m, f"member: {name_of_id(m)}") for m in d["members"]]
-                if "differs" in parts and d["confounders"]:
-                    out.append((i, "also differs among the members: " + json.dumps(d["confounders"], ensure_ascii=False, default=str)))
+                if "differs" in parts or "what" in parts:
+                    head, rows = members_table(T, d["members"])
+                    out.append((i, head)); out += [x for r in rows for x in r]
                 if "results" in parts:
-                    for e in d["effects"]:
-                        out.append((i, effect_line(e)))
+                    out += [(v.get("fact") or i, "stated for the set · " + value_line(v)) for v in d["values"]]
+                    if (d["effects"] or d["fits"]) and "computed" not in parts:
+                        out.append((i, _hidden(len(d["effects"]) + len(d["fits"]), "effect and fit lines")))
+                if "computed" in parts:
+                    out += [(i, effect_line(e)) for e in d["effects"]]
                     for f_ in d["fits"]:
                         out.append((i, f"fit (kind: computed here): {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
                                     + "".join(f" · correction (kind: computed here) for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "
                                               + "; ".join(f"{name_of_id(x['id'])} {x['frm']} × {x['factor']} = {x['value']} from {x['by']}" for x in c["changes"]) for c in f_["corrected"])))
-                    out += [(v.get("fact") or i, "stated for the set · " + value_line(v)) for v in d["values"]]
             else:
                 if "what" in parts:
                     out.append((i, f"cited work ({short_name(d['paper'])}): {d['name']} · statement: {d['statement']}"))
@@ -578,7 +650,7 @@ def _run(name, args):
                     out += [(r["record"].get("fact") or i, "value · " + value_line(r["record"], r["name"])) for r in d["results"]]
             if "claims" in parts:
                 out += [claim_line(c) for c in d.get("claims", [])]
-            return W(out), ""
+            return [block([wrap(*x) for x in out])], ""
         if name == "compare":
             c = Q.compare(args["ids"], result=args.get("result"))
             nm = {it["id"]: it["name"] for it in c["items"]}
@@ -586,29 +658,36 @@ def _run(name, args):
             out += [(c["items"][0]["id"], f"shared condition: {s['name']} {s['text']}") for s in c["shared"]]
             for dff in c["differing"]:
                 out += [(i, f"differing condition: {dff['name']}: {nm[i]} {v if v is not None else 'not stated'}") for i, v in dff["values"].items()]
+            hidden = 0
             for r in c["results"]:
+                cells = {i: cell for i, cell in r["cells"].items() if cell}
+                if not args.get("result") and cells and all(x.get("kind") == "computed here" for x in cells.values()):
+                    hidden += 1; continue
                 for i, cell in r["cells"].items():
                     out.append(((cell or {}).get("fact") or i, f"result · {nm[i]} · " + (value_line(cell, r["name"]) + defined_as(cell.get("paper", ""), r["key"]) if cell else f"{r['name']}: no value")
                                 + (f" · note: {r['note']}" if r.get("note") else "")))
                 if r.get("relation"):
                     rel = r["relation"]
                     out.append((c["items"][0]["id"], f"{r['name']}: {rel['how']} {nm[c['items'][0]['id']]} to {nm[c['items'][1]['id']]} = {rel['value']} {rel['unit']}".strip() + " (kind: computed here)"))
+            if hidden:
+                out.append((c["items"][0]["id"], f"{hidden} results computed here for every item hidden: give result to see one"))
             if c["claims"]:
                 out.append((c["items"][0]["id"], "claims linked to two or more items: " + ", ".join(f"[{cl['id']}]" for cl in c["claims"])))
-            return W(out), ""
+            return [block([wrap(*x) for x in out])], ""
         if name == "claims":
             cs = Q.claims(paper=args.get("paper"), variable=args.get("variable"), linked=args.get("linked"), author=args.get("author"))
-            return page([wrap(*claim_line(c)) for c in cs], args.get("offset"), "claims"), ""
+            return [block([wrap(*claim_line(c)) for c in cs])], ""
         if name == "source":
             s = Q.source(args["id"])
             eid = f"{s['paper']}:{s['element']}"
             out = [(eid, f"element {eid} ({s['kind']}, {s['locator']})" + (f" · covered: {s['coverage']}" if s.get("coverage") else "") + (f" · text: {s['text']}" if s.get("text") else " · no text (a figure panel)"))]
             out += [(v.get("fact") or eid, value_line(v, full=True)) for v in s["values"]]
             out += [(eid, f"statement without a value: {t}") for t in s["statements"]]
-            return W(out), ""
+            return [block([wrap(*x) for x in out])], ""
         return [], f"error: unknown tool {name}"
     except Exception as e:
         return [], f"error: {type(e).__name__}: {e}"
+
 
 
 # ---------------------------------------------------------------------------------------------------------------- page targets
