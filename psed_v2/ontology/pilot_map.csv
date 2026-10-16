@@ -8,7 +8,7 @@ carrier_gas,quantity,direct,carrier_gas,,,,
 carrier_mobility,quantity,alias,mobility,,,,"Sec. 4: same definition, different wording"
 coated_aspect_ratio,quantity,direct,coated_aspect_ratio,,,,
 coating_mass_fraction,quantity,new_entry,coating_mass_fraction,,,,a transform output (lists.DERIVED); family growth_amount; not a phase fraction
-composition,quantity,direct,composition,,,,
+composition,quantity,alias,element_fraction,,,,"Sec. 18.3: composition is replaced by element_fraction (at.%), element_ratio (S/Mo, H per metal) and phase_fraction (XRD wt%); its values re-keyed by basis"
 crystallinity,quantity,direct,crystallinity,,,,
 crystallite_size,quantity,new_entry,crystallite_size,,,,film_properties
 cycle_number,quantity,direct,cycle_number,,,,
@@ -34,7 +34,7 @@ front_slope,quantity,pending,front_slope,,front slope,front slope,"attribute (Se
 gas_flow_rate,quantity,direct,gas_flow_rate,,,,
 gas_moles_per_cycle,quantity,new_entry,gas_moles_per_cycle,,,,reaction_monitoring
 growth_per_cycle,quantity,direct,growth_per_cycle,,,,
-h_per_metal,quantity,pending,element_ratio,element=H;reference_element=Mo,H per metal,H per metal atom,"a transform output of the composition family (Sec. 18.3), applied in P52"
+h_per_metal,quantity,transform,element_ratio,element=H;reference_element=Mo,,,a transform output of the composition family (Sec. 18.3): element_ratio{element=H;reference_element=Mo}; the entry h_per_metal carries replaced_by
 initial_sticking_coefficient,quantity,direct,initial_sticking_coefficient,,,,
 knudsen_number,quantity,pending,knudsen_number,,Kn,Knudsen number,"promoted to an extension entry (Sec. 18.7), applied in P58"
 lumped_sticking_coefficient,quantity,alias,initial_sticking_coefficient,,,,"Sec. 10 note: the lumped coefficient c multiplies (1 - theta), so it is Cremers' s0"

@@ -494,13 +494,14 @@ entries:
     origin: base
     role: output
     category: film_properties
+    replaced_by: element_fraction
     definition: "Atomic fraction of an element in the deposited film."
     dimension: dimensionless
     unit: "1"
     qualifiers: [element]
     aliases: [ChemicalComposition]
     base: {source: schema_miner, path: MaterialProperties/ChemicalComposition}
-    deviation: {type: redefined, reason: "a quantity in at.% per element, not free text"}
+    deviation: {type: split, reason: "schema-miner's ChemicalComposition became composition (at.% per element) in v0; Sec. 18.3 supersedes it by element_fraction (at.%), element_ratio (atoms per reference atom) and phase_fraction (wt% of a phase): three references that one key mixed; composition keeps the path and is replaced_by element_fraction"}
     evidence: []
 
   - id: film_density
@@ -1395,6 +1396,70 @@ entries:
     base: {}
     evidence: ["mat22 Fig. 1a", "mat22 Fig. 9"]
 
+  # ---------------------------------------------------------------- the composition family (decision D1, Sec. 18.3; P52)
+  - id: element_fraction
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    family: composition
+    label: "at.%"
+    name: "element fraction"
+    definition: "The atomic fraction of an element among all atoms of the film counted by the stated method, in at.% (the former composition entry, Sec. 18.3)."
+    dimension: dimensionless
+    unit: "at.%"
+    qualifiers: [element]
+    aliases: ["at.%", "at. %", "atomic percent", "H content", "O content", "N content", "C content"]
+    base: {}
+    evidence: ["mat22 Table 1", "mat22 Sec. 3 (s3.p21)"]
+
+  - id: element_ratio
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    family: composition
+    label: "ratio"
+    name: "element ratio"
+    definition: "Atoms of an element per atom of a reference element in the film, as the stated method sees it (mat22's S/Mo stoichiometry x in MoSx; H per metal atom), a unitless ratio (Sec. 18.3; absorbs h_per_metal)."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [element, reference_element]
+    aliases: ["S/Mo", "S/W", "S/Mo ratio", "stoichiometry"]
+    base: {}
+    evidence: ["mat22 Fig. 4", "mat22 Table 1", "mat22 Fig. 5", "mat22 Sec. 3 (s3.p46)"]
+
+  - id: phase_fraction
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    family: composition
+    label: "wt%"
+    name: "phase fraction"
+    definition: "The weight fraction of a named phase (the phase qualifier) among the phases the stated method sees, in wt%; by XRD Rietveld refinement only the crystalline part is counted (relative_to crystalline_phases), which gre23 does not state (not_stated) (Sec. 18.3)."
+    dimension: dimensionless
+    unit: "wt%"
+    qualifiers: [phase, relative_to]
+    aliases: ["wt%", "Wt. %", "weight percent"]
+    base: {}
+    evidence: ["gre23 Table II", "gre23 Fig. 5"]
+
+  - id: h_per_metal
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    replaced_by: element_ratio
+    label: "H per metal"
+    name: "H per metal atom"
+    definition: "Hydrogen atoms per metal atom of the film, computed from the H at.% and the S/Mo ratio (the pilot's derived quantity); absorbed into element_ratio{element=H, reference_element=the metal} (Sec. 18.3)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: []
+    base: {}
+    evidence: ["mat22 Table 1"]
+
   # ---------------------------------------------------------------- species of the pilot papers (Sec. 11; Sec. 18.1: yim20, mat22, gre23)
   - id: mo_ntbu2_nme22
     type: species
@@ -1715,11 +1780,14 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: shell_volume_fraction, inputs: ["porosity{stage=initial}", film_thickness], output: shell_volume_fraction, formula: "100 (1 - phi) ((d_NP + 2 t)^3 / d_NP^3 - 1) (P51; d_NP an assumed fact)"}
   - {id: cycle_time,          inputs: [pulse_time, purge_time],     output: cycle_time,             formula: "sum of the pulse, hold and purge times (P51)"}
   - {id: deposition_rate,     inputs: [growth_per_cycle, cycle_time], output: deposition_rate,      formula: "GPC * 3600 / t_cycle (P51)"}
+  - {id: h_per_metal,         inputs: ["element_fraction{element=H}", "element_ratio{element=S;reference_element=Mo}"], output: "element_ratio{element=H;reference_element=Mo}", formula: "H at.% / Mo at.%, Mo at.% = (100 - H - N - O at.%) / (1 + S/Mo) (P52)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
   gas:       {values: species ids}
   element:   {values: element symbols}
+  reference_element: {values: element symbols, log: "Sec. 18.3: the denominator atom of an element_ratio"}
+  phase:     {values: species ids, log: "Sec. 18.3: the phase a phase_fraction is of"}
   position:  {values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top", log: "local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer"}
   reference: {values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: "plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)"}
   level:     {values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum"}

@@ -311,8 +311,12 @@ def check_tree(rows, els):
             for dk in (set(L.DEFAULT_DEFINITION.get(r["quantity"], {})) | ({"over"} if "x=growth_per_cycle" in r["qualifiers"] else set())):
                 if dk not in qd and "stat" not in qd:                             # a quantity with a default definition states its definition key (P5, P4)
                     err.append(f"{i}: {r['quantity']} without {dk}= (its definition key; P5)")
-            if r["quantity"] in ("composition", "mass_gain", "porosity", "plasma_gas_ratio") and r["type"] != "cited" and "relative_to" not in qd:
+            if r["quantity"] in ("phase_fraction", "mass_gain", "porosity", "plasma_gas_ratio") and r["type"] != "cited" and "relative_to" not in qd:
                 err.append(f"{i}: {r['quantity']} without relative_to= (what it is a fraction of; P4)")
+            if r["quantity"] == "element_ratio" and not ("element" in qd and "reference_element" in qd):
+                err.append(f"{i}: element_ratio without element= and reference_element= (atoms of what per atom of what; P52)")
+            if r["quantity"] == "element_fraction" and "element" not in qd:
+                err.append(f"{i}: element_fraction without element= (P52)")
             if (r["type"] != "claim" and r["value"] and not r["censor"] and "stat" not in qd
                     and re.search(r"\b(down to|up to|at most|as low as|as high as)\b", r["statement"])):
                 err.append(f"{i}: '{re.search(r'(down to|up to|at most|as low as|as high as)', r['statement']).group(1)}' stored as a plain value (a bound or a stat=minimum/maximum; P12)")
@@ -517,6 +521,36 @@ def check_vocabulary():
     return err
 
 
+def check_bases():
+    """P52: the stored values of one entry id carry at most one unit dimension (plus unitless) and at most one stated basis
+    (relative_to; not_stated beside one stated basis is allowed), over the whole dataset; spread facts (stat=) and quantity other
+    are outside. Returns the problems and prints the counts."""
+    err, units, bases = [], collections.defaultdict(collections.Counter), collections.defaultdict(collections.Counter)
+    for pid in list(KEYS) + ["user"]:
+        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+            q = f["quantity"]
+            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or "stat=" in f["qualifiers"]:
+                continue
+            if f["value"] or f["value_min"] or f["value_max"]:
+                u = L.UNIT_ALIAS.get(f["unit"], f["unit"])
+                if u and u not in L.UNIT_BASE:
+                    err.append(f"{f['fact_id']}: unit {f['unit']!r} is not in lists.UNIT_BASE, so its dimension cannot be checked (P52)")
+                    continue
+                units[q][L.UNIT_BASE[u][0] if u else ""] += 1
+                qd = dict(p.split("=", 1) for p in f["qualifiers"].split(";") if "=" in p)
+                if "relative_to" in qd:
+                    bases[q][qd["relative_to"]] += 1
+    for q, c in units.items():
+        dims = [d for d in c if d and d != "fraction"] + (["fraction"] if "fraction" in c else [])
+        if len([d for d in c if d]) > 1:
+            err.append(f"{q}: values in more than one unit dimension: {dict(c)} (P52)")
+    for q, c in bases.items():
+        if len([b for b in c if b != "not_stated"]) > 1:
+            err.append(f"{q}: values on more than one basis: {dict(c)} (P52)")
+    print(f"== bases: {len(units)} quantity ids with values; bases stated on {len(bases)} ({', '.join(f'{q} {dict(c)}' for q, c in sorted(bases.items()))})")
+    return err
+
+
 def check_cases():
     rows = rd(HERE / "paper_case.csv")
     left = [(k, r["paper_id"]) for r in rows for k in (f"c{i}" for i in range(1, 14)) if r.get(k, "").startswith("candidate")]
@@ -527,6 +561,11 @@ if __name__ == "__main__":
     bad = 0
     err = check_vocabulary()
     print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_bases()
+    print(f"== bases (P52): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

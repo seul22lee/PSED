@@ -425,7 +425,7 @@ f("s13.p2;fig5;s13.p3", "observation", "the T = 160 °C sample shows clear metal
   data_kind="measured", method="xrd", mentions="T = 160 °C")
 for r, lab, v, pm, ev in (("1", "120", "23.3", "0.2", ";s13.p3;s13.p2"), ("2", "160", "17.1", "0.2", ""), ("3", "120/160", "17.7", "0.1", ";s13.p3;s13.p2")):
     f(f"tabII.r{r}c1;tabII.r0c1;tabII.r{r}c0;tabII.r0c0;tabII.cap;s14.p9{ev}", "derived", f"zincite (ZnO) weight percent {v} ± {pm} for the {lab} °C sample, from Rietveld refinement",
-      quantity="composition", qualifiers="species=zno", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
+      quantity="phase_fraction", qualifiers="phase=zno", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
 for r, lab, v, pm, ev in (("1", "120", "6.0", "1.1", ";s13.p3"), ("2", "160", "6.0", "1.5", ""), ("3", "120/160", "5.1", "1.1", ";s13.p3")):
     f(f"tabII.r{r}c2;tabII.r0c2;tabII.cap;s14.p9{ev}", "derived", f"zincite crystallite size {v} ± {pm} nm for the {lab} °C sample, Halder-Wagner analysis",
       quantity="crystallite_size", qualifiers="species=zno", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
@@ -433,7 +433,7 @@ for r, lab in (("1", "120"), ("3", "120/160")):
     f(f"tabII.r{r}c3;tabII.r{r}c4;tabII.r0c3;tabII.r0c4;tabII.cap", "observation", f"no metallic Zn detected by XRD in the {lab} °C sample, so no Zn crystallite size is given",
       quantity="phase", qualifiers="species=zn", label_as_printed="Zn (metallic) Wt. %", value_text="not detected", data_kind="measured", method="xrd", mentions=f"{lab};Not detected")
 f("tabII.r2c3;tabII.r0c3;tabII.cap", "derived", "metallic Zn weight percent 12.5 ± 0.7 in the 160 °C sample",
-  quantity="composition", qualifiers="species=zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
+  quantity="phase_fraction", qualifiers="phase=zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
 f("tabII.r2c4;tabII.r0c4;tabII.cap", "derived", "metallic Zn crystallite size 57 ± 42 nm in the 160 °C sample",
   quantity="crystallite_size", qualifiers="species=zn", label_as_printed="Zn (metallic) Crystallite size (nm)", value="57", unit="nm", data_kind="fit", method="xrd", mentions="160")
 f("tabII.cap;s14.p9", "definition", "Table II: ± on wt.% and crystallite size are pattern-fit errors; ± on ρ comes from the uncertain Ti-Au electrode areas after flaking")
@@ -635,12 +635,12 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's13.p4#6': ('mechanism:cracks', 'resistivity'),
     's13.p4#9': ('film_thickness;crystallite_size', 'resistivity'),
     's13.p4#11': ('mechanism:percolation', 'resistivity'),
-    's14.p2#2': ('mechanism:desorption;purge_time', 'composition'),
+    's14.p2#2': ('mechanism:desorption;purge_time', 'phase_fraction'),
     's14.p6#1': ('purge_time', 'mechanism:desorption'),
     's14.p6#2': ('feature_width', 'mechanism:desorption'),
-    's14.p7#2': ('deposition_temperature;mechanism:reaction_diffusion', 'composition'),
+    's14.p7#2': ('deposition_temperature;mechanism:reaction_diffusion', 'phase_fraction'),
     's14.p7#3': ('mechanism:reabsorption', 'signal_intensity'),
-    's14.p8#1': ('mechanism:self_limiting;mechanism:reaction_diffusion', 'composition'),
+    's14.p8#1': ('mechanism:self_limiting;mechanism:reaction_diffusion', 'phase_fraction'),
     's14.p10#1': ('deposition_temperature', 'growth_per_cycle'),
     's14.p10#2': ('mechanism:residual_H2O', 'mechanism:CVD_growth'),
     's14.p10#5': ('mechanism:surface_OH', 'growth_per_cycle'),
@@ -649,7 +649,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's15.p2#1': ('', 'resistivity'),
     's15.p2#2': ('film_thickness;crystallinity;annealing_temperature', 'resistivity'),
     's15.p3#1': ('deposition_temperature', 'mechanism:Zn_metal'),
-    's15.p3#2': ('deposition_temperature', 'composition;resistivity;coated_aspect_ratio'),
+    's15.p3#2': ('deposition_temperature', 'phase_fraction;resistivity;coated_aspect_ratio'),
     's15.p3#3': ('deposition_temperature', 'reaction_stoichiometry'),
     's15.p3#4': ('deposition_temperature;purge_time', 'mechanism:residual_H2O'),
     's15.p3#5': ('mechanism:CVD_growth;mechanism:surface_OH', 'growth_per_cycle'),

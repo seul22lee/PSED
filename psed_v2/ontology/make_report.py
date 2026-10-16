@@ -295,6 +295,16 @@ def table(header: list[str], rows: list[list], groups: dict[str, list[list]] | N
     return f"<table>{head}{body}</table>"
 
 
+def family_rows(onto: dict) -> list[list]:
+    """Sec. 18.2: each family with its members (id, unit, qualifiers) and the one definition line each."""
+    fam = defaultdict(list)
+    for e in onto["entries"]:
+        if e.get("family") and not e.get("replaced_by"):
+            fam[e["family"]].append(e)
+    return [[f, "; ".join(f'{e["id"]} ({e.get("unit", "")}; {", ".join(e.get("qualifiers", []))})' for e in ms),
+             " | ".join(f'{e["id"]}: {e["definition"].split(".")[0]}' for e in ms)] for f, ms in sorted(fam.items())]
+
+
 def values_rows(onto: dict) -> list[list]:
     entries, voc = onto["entries"], onto["vocabularies"]
     by_id = {e["id"]: e for e in entries}
@@ -401,7 +411,8 @@ Hover a node for its definition.</p>
 <h2>2b. Hierarchy</h2>{hierarchy_html(onto)}
 <h2>3. Entries (grouped by category)</h2><div class="wide">{entries_html}</div>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
-<h2>3c. Proposals</h2>{table(["what", "why", "citation", "decision", "decision reason"], proposal_rows)}
+<h2>3c. Families</h2>{table(["family", "members", "what they answer"], family_rows(onto))}
+<h2>3d. Proposals</h2>{table(["what", "why", "citation", "decision", "decision reason"], proposal_rows)}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}
 <h2>6. Unmapped</h2>{unmapped_html}

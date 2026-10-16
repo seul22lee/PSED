@@ -262,7 +262,7 @@ function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what|
  const rr=(d.recipe||[]);const unc=k=>{const c=rr.find(c=>c.key===k);return c&&c.record&&c.record.uncertainty?` <span class="mut">${esc(c.record.uncertainty)}</span>`:""};
  const diffs=(d.differs||[]).map(x=>`<div><div class="line">${esc(x.name)} <span class="val">${esc(x.text)}</span>${unc(x.key)}</div>${cav((rr.find(c=>c.key===x.key)||{}).record)}</div>`);
  const full=S.open.has("recipe:"+id)?rr.map(c=>`<div class="line mut">${esc(c.name)} <span class="val">${vtext(c.record)}</span>${c.record.uncertainty?` ${esc(c.record.uncertainty)}`:""} ${srcLink(c.record)}</div>${cav(c.record)}`).join(""):"";
- const ORD=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","h_per_metal","film_density","density_relative_to_bulk","mass_gain","phase","crystallinity","shell_volume_fraction","coating_mass_fraction","moles_deposited","moles_from_mass_gain"];
+ const ORD=["penetration_depth","film_thickness","growth_per_cycle","resistivity","element_ratio","element_fraction","phase_fraction","film_density","density_relative_to_bulk","mass_gain","phase","crystallinity","shell_volume_fraction","coating_mass_fraction","moles_deposited","moles_from_mass_gain"];
  const ordk=k=>{const i=ORD.indexOf(k.split("{")[0]);return i<0?ORD.length:i};
  const res=(d.results||[]).filter(x=>x.record&&(x.record.text||x.record.curve)).sort((a,b)=>ordk(a.key)-ordk(b.key)).map(x=>{const r=x.record,k="res:"+id+":"+x.key,o=S.open.has(k);
   return `<div class="line"><span class="more" style="color:inherit" onclick="S.open.${o?"delete":"add"}('${k}');renderRight()">${esc(x.name)}</span> <span class="val">${r.curve&&!r.text?"curve of "+r.curve.points.length+" points":vtext(r)}</span>${r.uncertainty?` <span class="mut">${esc(r.uncertainty)}</span>`:""}${r.method&&r.method!=="calculation"?` <span class="mut">${esc(r.method.replace(/_/g," "))}${r.mode&&r.mode!=="not_stated"?", "+r.mode.replace("_"," "):""}</span>`:""} ${srcLink(r)}`
@@ -297,7 +297,7 @@ function selPanel(){const ids=[...S.checked].filter(i=>D.details[i]);if(!ids.len
  const baseKey=k=>k.replace(/(over|relative_to|kind)=[^;}]*;?/g,"").replace(/;}/,"}").replace(/{}/,"");
  const rk={};ds.forEach((d,j)=>(d.results||[]).forEach(x=>{if(!x.record||(!x.record.text&&!x.record.curve))return;if(S.result&&x.key.split("{")[0].split("[")[0]!==S.result)return;const bk=baseKey(x.key);
   const o=(rk[bk]=rk[bk]||{name:x.name,v:{}});if(!o.v[ids[j]]||(x.record.kind!=="computed here"&&o.v[ids[j]].kind==="computed here"))o.v[ids[j]]=x.record;if(x.name.length<o.name.length)o.name=x.name}));
- const PR=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","mass_gain","crystallinity","phase"],pr=k=>{const i=PR.indexOf(k.split("{")[0]);return i<0?50:i};
+ const PR=["penetration_depth","film_thickness","growth_per_cycle","resistivity","element_ratio","element_fraction","phase_fraction","mass_gain","crystallinity","phase"],pr=k=>{const i=PR.indexOf(k.split("{")[0]);return i<0?50:i};
  let rcols=Object.entries(rk).filter(([k,o])=>S.result||Object.keys(o.v).length===ids.length).sort((a,b)=>pr(a[0])-pr(b[0])||a[1].name.localeCompare(b[1].name));
  const rmore=rcols.length>6&&!S.open.has("rcols");if(rmore)rcols=rcols.slice(0,6);const nAll=Object.entries(rk).filter(([k,o])=>S.result||Object.keys(o.v).length===ids.length).length;
  const xs=diff.filter(([k,o])=>ids.every(i=>o.v[i]&&o.v[i].value!=null)).map(([k,o])=>({k,name:o.name}));

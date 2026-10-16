@@ -198,12 +198,12 @@ F(K, "s3.p10;fig3b", "observation", "The 5-6 monolayer film made at 350 °C has 
 # ------------------------------------------------------------------ composition
 F(K, "s3.p11;fig4;fig4.cap;s3.x2", "claim", "S/Mo atomic ratio and crystallinity are strongly correlated.", mentions="Figure 4")
 F(K, "s3.p11;fig4", "observation", "Most crystalline films have XPS compositions between MoS1.8 and MoS2.3, close to MoS2.",
-  quantity="composition", qualifiers="element=S", label_as_printed="S/Mo", value_min="1.8", value_max="2.3",
+  quantity="element_ratio", qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value_min="1.8", value_max="2.3",
   data_kind="measured", method="xps", mentions="c-MoS2")
 F(K, "s3.p11", "claim", "Right stoichiometry and chemical environment from plasma chemistry control let MoS2 crystallize at "
   "temperatures down to 100 °C.", mentions="100 °C")
 F(K, "s3.p11;fig4", "observation", "Amorphous films grown at 150 °C or more hold excess S, MoS2.5 to MoS3.6.",
-  quantity="composition", qualifiers="element=S", label_as_printed="S/Mo", value_min="2.5", value_max="3.6",
+  quantity="element_ratio", qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value_min="2.5", value_max="3.6",
   data_kind="measured", method="xps", mentions="≥150 °C;a-MoS2+x")
 F(K, "s3.p11;fig4", "observation", "Within the amorphous region, raising temperature at fixed ratio lowers S/Mo.",
   method="xps")
@@ -298,10 +298,10 @@ for i, (r, row) in enumerate(T1.items(), start=1):
     (a, ua), (b, ub), dens, (h, uh), (n, un), (o, uo) = row
     ev0 = ";".join(x for x in [T1EV] if x)
     F(K, f"tab1.r{i}c1;{rc};tab1.r0c1;tab1.r0c0;{ev0};s3.p21", "observation",
-      f"RBS S/Mo ratio of the ratio {r} film is {a} ± {ua}.", quantity="composition", qualifiers="element=S",
+      f"RBS S/Mo ratio of the ratio {r} film is {a} ± {ua}.", quantity="element_ratio", qualifiers="element=S;reference_element=Mo",
       label_as_printed="S/Mo ratio (RBS)", value=a, data_kind="measured", method="rbs", mentions=f"{hr(r)};S/Mo ratio (RBS)")
     F(K, f"tab1.r{i}c2;{rc};tab1.r0c2;{ev0}", "observation", f"XPS S/Mo ratio of the ratio {r} Table 1 film is {b} ± {ub}.",
-      quantity="composition", qualifiers="element=S", label_as_printed="S/Mo ratio (XPS)", value=b, data_kind="measured",
+      quantity="element_ratio", qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo ratio (XPS)", value=b, data_kind="measured",
       method="xps", mentions=f"{hr(r)};S/Mo ratio (XPS)")
     TAB1[(r, "dens")] = F(K, f"tab1.r{i}c3;{rc};tab1.r0c3;{ev0}", "derived", f"Mass density of the ratio {r} film is {dens} g/cm^3.",
                           quantity="film_density", value=dens, unit="g/cm^3", data_kind="calculated", method="calculation",
@@ -309,24 +309,24 @@ for i, (r, row) in enumerate(T1.items(), start=1):
     hev = f"tab1.r{i}c4;{rc};tab1.r0c4;{ev0};s3.p21"
     TAB1[(r, "H")] = F(K, hev, "observation",
                        f"H content of the ratio {r} film is {h} ± {uh} at.% by ERD (text: {H_TXT[r]} at.%).",
-                       quantity="composition", qualifiers="element=H", label_as_printed="H (at. %)", value=h, unit="at. %",
+                       quantity="element_fraction", qualifiers="element=H", label_as_printed="H (at. %)", value=h, unit="at. %",
                        data_kind="measured", method="rbs", mentions=f"{hr(r)};H (at. %);ERD")
     F(K, f"tab1.r{i}c5;{rc};tab1.r0c5;{ev0};s3.p19", "observation", f"C content of the ratio {r} film is below the detection limit.",
-      quantity="composition", qualifiers="element=C", label_as_printed="C (at. %)", censor="<dl", unit="at. %",
+      quantity="element_fraction", qualifiers="element=C", label_as_printed="C (at. %)", censor="<dl", unit="at. %",
       data_kind="measured", method="rbs", mentions=f"{hr(r)};C (at. %);<dl.")
     F(K, f"tab1.r{i}c6;{rc};tab1.r0c6;{ev0}", "observation", f"N content of the ratio {r} film is {n} ± {un} at.%.",
-      quantity="composition", qualifiers="element=N", label_as_printed="N (at. %)", value=n, unit="at. %",
+      quantity="element_fraction", qualifiers="element=N", label_as_printed="N (at. %)", value=n, unit="at. %",
       data_kind="measured", method="rbs", mentions=f"{hr(r)};N (at. %)")
     F(K, f"tab1.r{i}c7;{rc};tab1.r0c7;{ev0}" + (";s3.p21" if r == "0.80" else ""), "observation",
-      f"O content of the ratio {r} film is {o} ± {uo} at.%.", quantity="composition", qualifiers="element=O",
+      f"O content of the ratio {r} film is {o} ± {uo} at.%.", quantity="element_fraction", qualifiers="element=O",
       label_as_printed="O (at. %)", value=o, unit="at. %", data_kind="measured", method="rbs",
       mentions=f"{hr(r)};O (at. %)")
 F(K, "s3.p21", "observation", "RBS S/Mo ratios agree closely with XPS for the three 150 °C films.", method="rbs",
   mentions="150 °C;0.20;0.65;0.80;Table 1")
-F(K, "s3.p21", "observation", "Nitrogen left from precursor ligands is low, 0.5-1.5 at.%.", quantity="composition",
+F(K, "s3.p21", "observation", "Nitrogen left from precursor ligands is low, 0.5-1.5 at.%.", quantity="element_fraction",
   qualifiers="element=N", label_as_printed="N content", value_min="0.5", value_max="1.5", unit="at. %",
   data_kind="measured", method="rbs")
-F(K, "s3.p21", "observation", "Oxygen is under 1 at.% in the ratio 0.20 and 0.65 films.", quantity="composition",
+F(K, "s3.p21", "observation", "Oxygen is under 1 at.% in the ratio 0.20 and 0.65 films.", quantity="element_fraction",
   qualifiers="element=O", label_as_printed="O content", value="1", censor="<", unit="at. %", data_kind="measured",
   method="rbs", mentions="0.20;0.65")
 F(K, "s3.p21", "claim", "Higher O at ratio 0.80 is likely surface oxidation helped by a rough morphology with many easily "
@@ -477,8 +477,8 @@ for r_, v_ in (("0.20", "1e17"), ("0.80", "1e20")):                      # the t
     F(K, "s3.p38", "observation", f"At 450 °C and ratio {r_} the carrier concentration is of order {v_.replace('1e', '10^')} cm^-3.",
       quantity="carrier_density", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="electrical",
       mentions=f"450 °C;{r_}")
-F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="composition",
-  qualifiers="element=S", label_as_printed="S/Mo", value_min="1.8", value_max="2.2", data_kind="measured", method="xps",
+F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="element_ratio",
+  qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value_min="1.8", value_max="2.2", data_kind="measured", method="xps",
   mentions="c-MoS2")
 F(K, "s3.p39;s4.p2", "claim", "The high hole concentrations are attributed mainly to H incorporated from the plasma, H being the "
   "main impurity by RBS.", inputs=[HALL])
@@ -534,10 +534,10 @@ F(K, "s3.p45;s5.p8", "cited", "The group's published WS2 and TiS2 PEALD processe
 F(K, "s3.p46", "cited", "The tungsten sulfide process gives crystalline WS2 only from 300 °C.", quantity="deposition_temperature",
   value="300", unit="°C", data_kind="literature", method="cited", mentions="ref. 52;ref. 67;ref. 79;WS2")
 F(K, "s3.p46;fig9a", "observation", "Without H2 at 150 °C the W sulfide films are highly S-rich (WS4.0 by XPS), amorphous and "
-  "highly resistive, like the analogous MoS2 films.", quantity="composition", qualifiers="element=S",
+  "highly resistive, like the analogous MoS2 films.", quantity="element_ratio", qualifiers="element=S;reference_element=Mo",
   label_as_printed="S/W", value="4.0", data_kind="measured", method="xps", mentions="WS4.0;150 °C;0")
-F(K, "s3.p46;fig9a;fig9.cap;s3.x7", "observation", "Ratio 0.80 at 150 °C yields crystalline WS2.1.", quantity="composition",
-  qualifiers="element=S", label_as_printed="S/W", value="2.1", data_kind="measured", method="xps",
+F(K, "s3.p46;fig9a;fig9.cap;s3.x7", "observation", "Ratio 0.80 at 150 °C yields crystalline WS2.1.", quantity="element_ratio",
+  qualifiers="element=S;reference_element=W", label_as_printed="S/W", value="2.1", data_kind="measured", method="xps",
   mentions="WS2.1;0.80;150 °C;Figure 9a;Section S13")
 F(K, "s3.p46", "observation", "The crystalline WS2.1 film has a resistivity of 4 Ω cm.", quantity="resistivity", value="4",
   unit="Ω cm", data_kind="measured", method="electrical", mentions="WS2.1;0.80;150 °C")
@@ -837,14 +837,14 @@ cyc("fig3b;fig3.cap", "60", "Fig. 3b reference film", "Figure 3b;350 °C")
 
 # ------------------------------------------------------------------ Fig. 4 (printed S/Mo per cell)
 F(K, "fig4;fig4.cap;s3.x2", "observation", "Fig. 4 maps the XPS S/Mo ratio (colour bar 0-4.0, value printed in each cell) over "
-  "deposition temperature and H2 flow ratio.", quantity="composition", qualifiers="element=S",
+  "deposition temperature and H2 flow ratio.", quantity="element_ratio", qualifiers="element=S;reference_element=Mo",
   label_as_printed="XPS S/Mo ratio", data_kind="measured", method="xps", mentions="Tdeposition (°C);H2 flow ratio")
 F(K, "fig4;fig4.cap;fig7b;fig8;s3.x2", "observation", "Dotted lines split the maps into three regions: a-MoS2+x at low ratio and "
   "temperature, c-MoS2 above/right of a stepped boundary, and Mo/c-MoS2 at ratio 0.94 right of a vertical line.",
   mentions="a-MoS2+x;c-MoS2;Mo/c-MoS2;0.94")
 for (t, r), (_, smo) in CELLS.items():
-    F(K, "fig4", "observation", f"Fig. 4 cell at {t} °C and ratio {r} prints S/Mo = {smo}.", quantity="composition",
-      qualifiers="element=S", label_as_printed="XPS S/Mo ratio", value=smo, data_kind="measured", method="xps",
+    F(K, "fig4", "observation", f"Fig. 4 cell at {t} °C and ratio {r} prints S/Mo = {smo}.", quantity="element_ratio",
+      qualifiers="element=S;reference_element=Mo", label_as_printed="XPS S/Mo ratio", value=smo, data_kind="measured", method="xps",
       mentions=f"{r};{t} °C")
 
 # ------------------------------------------------------------------ Fig. 5
@@ -860,7 +860,7 @@ for r, smo in (("0.94", "1.3"), ("0.80", "1.9"), ("0.65", "2.1"), ("0.50", "3.0"
       qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", points_ref=ref, data_kind="measured", method="xps",
       mentions=f"{r};MoS{smo}")
     F(K, "fig5a;fig5b;fig5.cap;s3.x3", "observation", f"Spectra of the ratio {r} film are labelled with composition MoS{smo}.",
-      quantity="composition", qualifiers="element=S", label_as_printed="S/Mo", value=smo, data_kind="measured", method="xps",
+      quantity="element_ratio", qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value=smo, data_kind="measured", method="xps",
       mentions=f"{r};MoS{smo};Figure 5")
 F(K, "fig5b;fig5.cap;s3.x3", "observation", "Panel b: XPS S 2p spectra, binding energy 168-159 eV, with fitted S components; the "
   "high-BE component grows towards low ratios (not digitized).", quantity="signal_intensity", qualifiers="element=S",
@@ -1018,30 +1018,30 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     'abs.g1#2': ('', ''),
     'abs.g2#1': ('deposition_temperature', 'crystallinity'),
     'abs.g2#2': ('plasma_gas_ratio;mechanism:excess_S', 'crystallinity'),
-    'abs.g3#1': ('deposition_temperature;plasma_gas_ratio', 'composition;crystallinity'),
+    'abs.g3#1': ('deposition_temperature;plasma_gas_ratio', 'element_ratio;crystallinity'),
     'abs.g3#2': ('', 'carrier_density'),
     'abs.g4#1': ('', ''),
-    'abs.g4#2': ('mechanism:plasma_chemistry', 'composition'),
+    'abs.g4#2': ('mechanism:plasma_chemistry', 'element_ratio'),
     's2.p8#5': ('', ''),
     's2.p10#1': ('deposition_temperature', 'crystallinity'),
     's2.p11#1': ('plasma_gas_ratio', 'growth_per_cycle;roughness;resistivity'),
     's2.p11#2': ('', ''),
-    's3.p1#2': ('mechanism:plasma_chemistry', 'composition'),
+    's3.p1#2': ('mechanism:plasma_chemistry', 'element_ratio'),
     's3.p2#1': ('plasma_gas_ratio;deposition_temperature', 'crystallinity'),
     's3.p3#1': ('', ''),
     's3.p4#3': ('plasma_gas_ratio', 'crystallinity'),
     's3.p5#1': ('plasma_gas_ratio', 'crystallinity;film_thickness'),
     's3.p5#3': ('cycle_number', 'film_thickness'),
     's3.p7#1': ('deposition_temperature', 'plasma_gas_ratio'),
-    's3.p11#1': ('composition', 'crystallinity'),
-    's3.p11#3': ('composition;mechanism:plasma_chemistry', 'crystallinity'),
-    's3.p11#6': ('deposition_temperature', 'composition'),
-    's3.p11#7': ('plasma_gas_ratio;deposition_temperature;mechanism:surface_chemistry', 'composition;crystallinity'),
+    's3.p11#1': ('element_ratio', 'crystallinity'),
+    's3.p11#3': ('element_ratio;mechanism:plasma_chemistry', 'crystallinity'),
+    's3.p11#6': ('deposition_temperature', 'element_ratio'),
+    's3.p11#7': ('plasma_gas_ratio;deposition_temperature;mechanism:surface_chemistry', 'element_ratio;crystallinity'),
     's3.p13#2': ('deposition_temperature;mechanism:excess_S', 'crystallinity'),
-    's3.p13#4': ('plasma_gas_ratio', 'composition'),
+    's3.p13#4': ('plasma_gas_ratio', 'element_ratio'),
     's3.p18#6': ('', ''),
-    's3.p21#4': ('roughness;mechanism:surface_oxidation', 'composition'),
-    's3.p21#5': ('plasma_gas_ratio', 'composition'),
+    's3.p21#4': ('roughness;mechanism:surface_oxidation', 'element_fraction'),
+    's3.p21#5': ('plasma_gas_ratio', 'element_fraction'),
     's3.p22#1': ('roughness', 'resistivity'),
     's3.p22#9': ('deposition_temperature', 'plasma_gas_ratio'),
     's3.p22#10': ('plasma_gas_ratio', 'mechanism:fin_growth'),
@@ -1050,7 +1050,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's3.p26#1': ('plasma_gas_ratio;film_thickness', 'mechanism:fin_growth;roughness'),
     's3.p26#4': ('plasma_gas_ratio', 'mechanism:fin_growth'),
     's3.p26#5': ('deposition_temperature;plasma_gas_ratio', 'mechanism:fin_growth'),
-    's3.p26#6': ('deposition_temperature;mechanism:excess_S', 'composition'),
+    's3.p26#6': ('deposition_temperature;mechanism:excess_S', 'element_ratio'),
     's3.p28#2': ('plasma_gas_ratio', 'growth_per_cycle'),
     's3.p29#2': ('plasma_gas_ratio;mechanism:precursor_adsorption;mechanism:fin_growth', 'growth_per_cycle'),
     's3.p30#4': ('plasma_gas_ratio;mechanism:thiol_groups', 'growth_per_cycle;carrier_density'),
@@ -1072,9 +1072,9 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's3.p51#4': ('', 'mechanism:plasma_chemistry'),
     's3.p52#1': ('plasma_gas_ratio;mechanism:plasma_chemistry', 'mechanism:excess_S'),
     's3.p52#4': ('mechanism:plasma_chemistry', 'crystallinity'),
-    's3.p53#4': ('plasma_gas_ratio;gas_flow_rate;deposition_temperature', 'composition;crystallinity'),
+    's3.p53#4': ('plasma_gas_ratio;gas_flow_rate;deposition_temperature', 'element_ratio;crystallinity'),
     's4.p1#2': ('', ''),
-    's3.p1#3': ('', ''), 's4.p1#1': ('plasma_gas_ratio', 'composition'),
+    's3.p1#3': ('', ''), 's4.p1#1': ('plasma_gas_ratio', 'element_ratio'),
 }
 for cf in C.facts():
     if cf["type"] == "claim":
@@ -1584,8 +1584,8 @@ C.qualify(K, {**{f["fact_id"].split(":", 1)[1]: "over=first_100_cycles" for f in
               **{f["fact_id"].split(":", 1)[1]: "over=run" for f in C.facts() if "#" in f["fact_id"] and f["quantity"] == "atoms_per_cycle"}})
 # what each fraction is a fraction of (P4): at.% of all atoms, an S/Mo (S/W) value per metal atom, by their definitions
 AT_PCT = lambda u: u.replace(" ", "") == "at.%"
-C.relative_to(K, {f["fact_id"].split(":", 1)[1]: ("all_atoms" if AT_PCT(f["unit"]) else "metal_atoms") for f in C.facts()
-                  if "#" in f["fact_id"] and f["type"] != "cited" and (f["quantity"] == "composition" or AT_PCT(f["unit"]))})
+C.relative_to(K, {f["fact_id"].split(":", 1)[1]: "all_atoms" for f in C.facts()                 # an at.% value that is not an element_fraction (a detection limit)
+                  if "#" in f["fact_id"] and f["type"] != "cited" and AT_PCT(f["unit"]) and f["quantity"] != "element_fraction"})
 # what each ± is (P2): literature averages, the wafer map's spread over positions; Table 1 does not say
 C.uncertainty_kinds(K, {'s3.p16#5': ('literature', ''), 's3.p16#6': ('literature', ''), 'fig1c#4': ('position', 'not_stated'), 'tab1.r1c1#1': ('not_stated', ''), 'tab1.r1c2#1': ('not_stated', ''), 'tab1.r1c4#1': ('not_stated', ''), 'tab1.r1c6#1': ('not_stated', ''), 'tab1.r1c7#1': ('not_stated', ''), 'tab1.r2c1#1': ('not_stated', ''), 'tab1.r2c2#1': ('not_stated', ''), 'tab1.r2c4#1': ('not_stated', ''), 'tab1.r2c6#1': ('not_stated', ''), 'tab1.r2c7#1': ('not_stated', ''), 'tab1.r3c1#1': ('not_stated', ''), 'tab1.r3c2#1': ('not_stated', ''), 'tab1.r3c4#1': ('not_stated', ''), 'tab1.r3c6#1': ('not_stated', ''), 'tab1.r3c7#1': ('not_stated', '')})
 # the WS2, TiS2 and thermal TiS2 films come from other processes (refs. 52, 53, 80; s5.p8, s3.p45-48): they share the reactor, the

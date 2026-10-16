@@ -193,11 +193,12 @@ def q11():
 
 def q12():
     """The full composition of the 150 °C, 0.80 film including H, and its density relative to bulk."""
-    rows = find(paper="mat22", result="h_per_metal", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
+    rows = find(paper="mat22", result="element_ratio", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
+    rows = {i: r for i, r in rows.items() if any(x["key"] == "element_ratio{element=H;reference_element=Mo}" for x in r["result"])}
     if not rows:
         return unanswerable("", "no 150 °C, 0.80 film with H per metal")
     d = detail(next(iter(rows)))
-    smo = res(d, "composition", element="S")[0]["record"]; hm = res(d, "h_per_metal")[0]["record"]; rr = res(d, "density_relative_to_bulk")[0]["record"]
+    smo = res(d, "element_ratio", element="S")[0]["record"]; hm = res(d, "element_ratio", element="H")[0]["record"]; rr = res(d, "density_relative_to_bulk")[0]["record"]
     return answered(f"{d['name']}: MoS{smo['text']}H{g(hm['value'], 2)} (H per Mo computed from at.%), density {vt(rr)} of bulk", "find(mat22, H per metal, 150 °C, 0.80) → detail(film).results")
 
 
@@ -237,7 +238,7 @@ def q16():
     out = []
     for i in group("gre23", "120, 160")["members"]:
         d = detail(i)
-        x = res(d, "composition", species="zno"); m = res(d, "coating_mass_fraction")
+        x = res(d, "phase_fraction", phase="zno"); m = res(d, "coating_mass_fraction")
         if x and m:
             out.append(f"{d['name']}: XRD zincite {vt(x[0]['record'])} against the coating's mass fraction {m[0]['record']['text']}")
     return answered(" · ".join(out), "find (the schedules) → detail(each pair).results: the XRD value and the computed mass fraction, one reading per basis since the paper states neither")

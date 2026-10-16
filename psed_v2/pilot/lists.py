@@ -74,7 +74,8 @@ METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "i
                "reflectometry": "ex_situ", "gravimetry": "ex_situ", "weighing_before": "ex_situ", "photograph": "ex_situ",
                "optical_microscopy": "ex_situ", "metrology": "ex_situ"}
 # the definition a quantity has when none is named: the screen names a definition only when it differs from this
-DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}, "plasma_gas_ratio": {"relative_to": "reactive_gases"}}
+DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}, "plasma_gas_ratio": {"relative_to": "reactive_gases"},
+                      "phase_fraction": {"relative_to": "crystalline_phases"}, "mass_gain": {"relative_to": "initial_mass"}, "porosity": {"relative_to": "total_volume"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 # a keyed setting (P17): qualifier key -> the setting whose value it names; inherited only by a node whose own value of that setting matches
 KEYED = {"ratio": "plasma_gas_ratio"}
@@ -128,7 +129,7 @@ def qualifiers_ok(q):
 UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
          "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
          "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
-         "resistivity": "Ω cm", "film_density": "g/cm3", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
+         "resistivity": "Ω cm", "film_density": "g/cm3", "element_fraction": "at. %", "element_ratio": "", "phase_fraction": "wt%", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
          "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "initial_sticking_coefficient": "",
          "recombination_probability": "", "knudsen_number": "", "normalized_thickness": "", "dimensionless_distance": "",
          "step_coverage": "%", "saturation_density": "nm-2", "plasma_gas_ratio": "", "mass_gain": "%", "porosity": "%",
@@ -141,15 +142,16 @@ UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_ti
 
 # unit normalisation: spellings the facts use for one unit, and every unit's dimension and factor to that dimension's base unit;
 # convert() turns a value from one unit into another of the same dimension (°C and K by offset)
-UNIT_ALIAS = {"g/cm^3": "g/cm3", "Å/cyc": "Å", "Å/cycle": "Å", "nm/cycle": "nm", "nm/cyc": "nm", "µmol/cyc": "µmol", "Torr-s": "Torr s", "Ω-cm": "Ω cm",
+UNIT_ALIAS = {"g/cm^3": "g/cm3", "mΩ cm": "mOhm cm", "cm2 V-1 s-1": "cm2/Vs", "×": "", "Å/cyc": "Å", "Å/cycle": "Å", "nm/cycle": "nm", "nm/cyc": "nm", "µmol/cyc": "µmol", "Torr-s": "Torr s", "Ω-cm": "Ω cm",
               "at. %": "%", "at.%": "%", "wt%": "%", "SCCM": "sccm", "at/nm2/cycle": "nm-2", "kg m-3": "kg/m3", "mol-1": "1/mol", "nm^-2": "nm-2"}
 UNIT_BASE = {"pm": ("length", 1e-3), "Å": ("length", 0.1), "nm": ("length", 1.0), "µm": ("length", 1e3), "mm": ("length", 1e6), "cm": ("length", 1e7),
              "m": ("length", 1e9), "s": ("time", 1.0), "min": ("time", 60.0), "h": ("time", 3600.0), "Pa": ("pressure", 1.0), "hPa": ("pressure", 100.0), "mTorr": ("pressure", 0.133322),
              "Torr": ("pressure", 133.322), "Pa s": ("exposure", 1.0), "Torr s": ("exposure", 133.322), "g/cm3": ("density", 1.0), "kg/m3": ("density", 1e-3),
              "mol": ("amount", 1.0), "mmol": ("amount", 1e-3), "µmol": ("amount", 1e-6), "%": ("fraction", 0.01), "": ("fraction", 1.0),
              "°C": ("temperature", 1.0), "K": ("temperature", 1.0), "g/mol": ("molar mass", 1.0), "g": ("mass", 1.0), "nm-2": ("areal density", 1.0),
-             "Ω cm": ("resistivity", 1.0), "Ω m": ("resistivity", 100.0), "Ω/sq": ("sheet resistance", 1.0), "nm/h": ("rate", 1.0), "1/mol": ("per mole", 1.0),
-             "J/K": ("energy per kelvin", 1.0), "sccm": ("flow", 1.0), "W": ("power", 1.0), "eV": ("energy", 1.0)}
+             "Ω cm": ("resistivity", 1.0), "mOhm cm": ("resistivity", 1e-3), "Ω m": ("resistivity", 100.0), "Ω/sq": ("sheet resistance", 1.0), "nm/h": ("rate", 1.0), "1/mol": ("per mole", 1.0),
+             "J/K": ("energy per kelvin", 1.0), "sccm": ("flow", 1.0), "W": ("power", 1.0), "eV": ("energy", 1.0), "cm-3": ("number density", 1.0),
+             "cm2/Vs": ("mobility", 1.0), "mTorr/min": ("pressure rate", 1.0)}
 
 
 def convert(v, from_unit, to_unit):
@@ -198,9 +200,9 @@ DERIVED = {
                                     _in("M", "other:molar mass", "species=@material", "g/mol"), _in("NA", "other:Avogadro constant", "", "1/mol"),
                                     _in("b", "@formula_metals")],
                             fn=lambda gpc, rho, M, NA, b: gpc * rho * 1e-21 * NA / M * b),
-    "h_per_metal": dict(unit="", formula="H at.% / Mo at.%, with Mo at.% = (100 − H − N − O at.%) / (1 + S/Mo)",
-                        inputs=[_in("H", "composition", "element=H", "%"), _in("SMo", "composition", "element=S", ""), _in("N", "composition", "element=N", "%", default=0),
-                                _in("O", "composition", "element=O", "%", default=0)], fn=lambda H, SMo, N, O: H / ((100 - H - N - O) / (1 + SMo))),
+    "element_ratio{element=H;reference_element=Mo}": dict(unit="", qualifiers="element=H;reference_element=Mo", formula="H at.% / Mo at.%, with Mo at.% = (100 − H − N − O at.%) / (1 + S/Mo)",
+                        inputs=[_in("H", "element_fraction", "element=H", "%"), _in("SMo", "element_ratio", "element=S;reference_element=Mo", ""), _in("N", "element_fraction", "element=N", "%", default=0),
+                                _in("O", "element_fraction", "element=O", "%", default=0)], fn=lambda H, SMo, N, O: H / ((100 - H - N - O) / (1 + SMo))),
     "density_relative_to_bulk": dict(unit="%", formula="film density / bulk density",
                                      inputs=[_in("rho", "film_density", "", "g/cm3"), _in("rb", "film_density", "reference=bulk;species=@material", "g/cm3", scope="paper")], fn=lambda rho, rb: 100 * rho / rb),
     "moles_deposited": dict(unit="mmol", formula="Δn_s per cycle × cycle number",
@@ -261,7 +263,8 @@ LABELS = {**_LABELS, "other": "other",   # the id labels come from the ontology 
     "gas_flow_rate{gas=n2}": "N2 flow", "gas_flow_rate{gas=ar}": "Ar purge flow", "gas_flow_rate{gas=ar;step=reactant_A}": "Ar carrier flow",
     "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
     "initial_sticking_coefficient{species=tma}": "c_TMA", "initial_sticking_coefficient{species=h2o}": "c_H2O",
-    "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
+    "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "element_ratio{element=S;reference_element=Mo}": "S/Mo", "element_ratio{element=S;reference_element=W}": "S/W",
+    "element_ratio{element=H;reference_element=Mo}": "H per Mo",
     }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
 assert all(q in LABELS for q in QUANTITIES), "quantity without a label"
@@ -287,10 +290,10 @@ NAMES = {**_NAMES, "other": "other",
     "initial_sticking_coefficient{species=tma}": "TMA sticking coefficient",
     "initial_sticking_coefficient{species=h2o}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
     "porosity{relative_to=total_volume;stage=final}": "final porosity", "pressure_rise{level=maximum}": "maximum pressure rise",
-    "composition{element=S;relative_to=metal_atoms}": "S/Mo", "composition{element=H;relative_to=all_atoms}": "H content",
-    "composition{element=N;relative_to=all_atoms}": "N content", "composition{element=O;relative_to=all_atoms}": "O content",
-    "composition{element=C;relative_to=all_atoms}": "C content", "composition{relative_to=not_stated;species=zno}": "ZnO content (XRD)",
-    "composition{relative_to=not_stated;species=zn}": "Zn content (XRD)", "atoms_per_cycle{element=Mo;over=run;relative_to=all_atoms}": "Mo atoms per cycle",
+    "element_ratio{element=S;reference_element=Mo}": "S/Mo", "element_ratio{element=S;reference_element=W}": "S/W", "element_ratio{element=H;reference_element=Mo}": "H per Mo atom",
+    "element_fraction{element=H}": "H content", "element_fraction{element=N}": "N content", "element_fraction{element=O}": "O content",
+    "element_fraction{element=C}": "C content", "phase_fraction{phase=zno;relative_to=not_stated}": "ZnO content (XRD)",
+    "phase_fraction{phase=zn;relative_to=not_stated}": "Zn content (XRD)", "atoms_per_cycle{element=Mo;over=run;relative_to=all_atoms}": "Mo atoms per cycle",
     "atoms_per_cycle{element=Mo;over=run}": "Mo atoms per cycle", "crystallite_size{species=zno}": "ZnO crystallite size", "crystallite_size{species=zn}": "Zn crystallite size",
     "precursor_purity{species=h2s}": "H2S purity", "precursor_purity{species=h2}": "H2 purity", "precursor_purity{species=ar}": "Ar purity",
     "precursor_purity{species=dez}": "DEZ purity", "process_pressure{kind=set_point;step=reactant_A}": "pressure set point in the dose",
