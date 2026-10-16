@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; the state at commit 470603c: the knowledge base corrected problem by problem (P1–P33), one query layer, one screen; 26 of 26 questions answered)
+# Handoff (2026-10-16; tag ask-v1: the knowledge base corrected problem by problem (P1–P36), one query layer, one screen, and three answers to a question side by side with a number check)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -26,7 +26,8 @@ questions are a regression test only.
     Now 860 / 1014 / 417 facts; 85 experiments (27 / 54 / 4) and 30 cited works with values, 21 comparisons, 187 claims
     (2 by the user); 18 derived definitions; 14 user facts (2 claims, 10 assumed, a definition and a bridge).
   - `problems.csv`: one row per problem found in the knowledge base (P1–P33: observed, root cause, instances, fix, verified).
-    Every row is verified. Add a row for every new problem, with all its instances in the three papers.
+    Every row is verified (P1–P36). Add a row for every new problem, with all its instances in the three papers. 31 of the 96
+    definition facts name the quantity they define (P36).
   - Case studies on the 58 in-scope papers with a PDF: `figures.csv`, `papers.csv`, `points.json`, `quantity_matrix.py` → `.csv`,
     `paper_case.py` → `paper_case.csv` (exclusions in `case_decisions.csv`), the CSVs behind Cases 9–13 (`sticking_reported`,
     `exposure_ear`, `recombination`, `narrowing`, `gpc_temperature`), `recheck.json`, and `cases.py` and `matrix.py` (the old
@@ -39,7 +40,8 @@ questions are a regression test only.
   they live only in `cases.py` and their CSVs and are not on the page.
 
 ## Standing rules
-- No LLM API calls; read papers yourself (subagents are fine).
+- No LLM API calls, except in `pilot/ask.py`, `pilot/providers.py` and `pilot/serve.py` (the three answers to a question); extraction
+  stays free of them; read papers yourself (subagents are fine). API keys only in `psed_v2/.env` (gitignored); never print or commit one.
 - Own words only. Tracked files hold no copied text; evidence is an element id (abs.gN, sN.pM, sN.xK, figN.cap, figN<panel>,
   tabN.rIcJ, tabuK.rIcJ, eqN) plus a short locator. `check.py` rejects a statement that repeats eight words of its element.
 - No changes to `corpus/` or `ingest/` unless asked. Never edit `PSED_v2_Plan.md`. Touch nothing outside `psed_v2/`.
@@ -88,6 +90,11 @@ questions are a regression test only.
 - P31. Metal atoms per cycle count metal atoms (`lists.FORMULA_METALS`), not formula units.
 - P32. A quantity is found wherever the entity holds it: a stated setting of one paper sits beside the derived result of another.
 - P33. A range over several entities is in the quantity's one unit.
+- P34. A value the authors computed and printed is "computed by the authors"; a value query.py derives is "computed here", with its
+  inputs and assumed facts.
+- P35. What query.py computes beyond values (effects against noise, fits, confounder corrections, ratios or differences, claim
+  scopes) says "computed here" wherever a model or a reader sees it.
+- P36. A definition fact names the quantity it defines, when the paper holds values of it, so a result can show the paper's definition.
 
 ## Design principles
 - One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen is a projection computed from
@@ -137,7 +144,8 @@ filters, sorts and draws. Five operations:
   user claims.
 - `source(element)`: the element's text, crop, coverage and its values.
 
-Every value is a record: value, range, censor, unit, text, kind (measured | read from figure | computed | assumed | model | cited;
+Every value is a record: value, range, censor, unit, text, kind (measured | read from figure | computed by the authors | computed here |
+assumed | model | cited;
 stated settings are stated), definition when not the default (P5, P4), source element, fact id, alternatives (the other candidates,
 ranked: P9–P13), uncertainty (value, kind, n), mode (P6). `lists.NAMES`, `DEF_WORDS` and `KIND_WORDS` give the plain English.
 
@@ -158,6 +166,80 @@ A measured value carries no mark; any other kind one plain word, written once in
 Text is 14 px or more, grey only for secondary text, no internal ids or terms in body text; "i" marks an inferred entity (tooltip:
 not stated by the paper; inferred). Cases 9 and 10 appear as claims by the user. The old tabs (Facts, Cases, Matrix), stat boxes,
 forest bar, view buttons, tray and the relations / verdicts / result-against-result sections are gone.
+
+## Three answers to one question (`pilot/ask.py`, `providers.py`, `serve.py`; frozen at tag ask-v1)
+The pilot shows what structuring the papers buys a researcher who asks questions: one model answers each question three ways, side
+by side, and every number is checked against the sources the model cited. The held-out questions are written by someone else and
+run by the user against tag ask-v1; nothing in ask.py, providers.py, query.py, the prompts, the tool descriptions or the data
+changes until that run is done. The 26 questions of questions.csv were for building and are not run through the arms.
+- **LLM calls.** Allowed only in `ask.py`, `providers.py` and `serve.py`; extraction stays free of them.
+- **Vendor neutrality.** Only what every vendor offers: a system prompt, messages, tool (function) calling, token counts. No
+  citation, document, search-result, web-search or file feature; citations are ids the model writes in square brackets. All vendor
+  code is in `providers.py`, one session per vendor: anthropic (anthropic SDK), openai (openai SDK), google (google-genai SDK),
+  xai and deepseek (the openai SDK at https://api.x.ai/v1 and https://api.deepseek.com, their documented OpenAI-compatible
+  endpoints). Every model runs with its default settings (Anthropic requires max_tokens: 16000). Prompt caching only where it
+  changes nothing but cost: Anthropic cache marks on system, tools and the newest message; OpenAI prompt_cache_key; xAI
+  x-grok-conv-id; Google and DeepSeek cache on their own. A rate-limit, quota or overload error is retried with exponential
+  backoff, at most 5 tries, and the retries are recorded. Output tokens count reasoning tokens once.
+- **Model.** `PSED_MODEL` in `.env` (vendor:model; now deepseek:deepseek-flash) or `--model`; the same model for all three arms.
+- **The arms** (system prompt = SHARED + ARM; the three arms of a question run in parallel):
+  - SHARED, verbatim, with one line per paper from corpus/manifest.csv (first author et al., year, title, journal, DOI) in place
+    of {papers}:
+    "You answer questions from atomic layer deposition (ALD) researchers about three papers:
+{papers}
+Answer in English. Start with a direct answer in one or two sentences, then give the evidence.
+For every number, give its unit and the conditions it was obtained under (material, process, temperature, structure or substrate, how it was measured), and say whether it was measured, read from a figure, computed by the authors, computed from other values, assumed, or taken from another work.
+If the answer depends on conditions, say so and organize the answer by those conditions.
+Say what your sources do not cover. State every assumption you make. If the question cannot be answered from what you have, say so and why."
+  - Model only: the question alone. ARM, verbatim: "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids."
+  - Paper text: every element of the three papers in elements.py order as "[id] text", after the ARM text in the system prompt; a
+    table is one piece `<paper>:tabN` (or `tabuK`) holding its caption and its markdown, its cells no pieces of their own;
+    headings are pieces; figure panels have no text and are left out, their captions are pieces. ARM, verbatim:
+    "The full text of the three papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below."
+  - Knowledge base: the five query.py operations as tools. ARM, verbatim: "You have tools that query a structured knowledge base built from the three papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool."
+- **Source ids.** Paper text: element ids of elements.py prefixed with the paper key (yim20:s7.p5; yim20:tab1 for a whole table).
+  Knowledge base: fact ids, entity, comparison and cited-work ids, or element ids returned by the tools. The page resolves both
+  through the detail and source panels (`ask.open_target`: a fact opens the source panel of its first element, <paper>:tabN the
+  panel of tabN.cap).
+- **Tools** (`ask.TOOLS`, `ask.run_tool`; format and paging only, nothing computed in the tool layer): find, detail, compare,
+  claims, source, exactly the query.py operations, each with a JSON schema and a neutral description of what it returns. Each
+  returns plain text, one line per returned value or row, starting with its id in square brackets: the value with unit, kind
+  (measured, stated, read from figure, computed by the authors, computed here, model, cited, assumed), non-default definition,
+  method and mode, uncertainty, source element, the ids of other candidates, and the paper's own definition of the quantity when
+  it has one (P36: ' · defined as: "…" [id]', at most 90 characters; source gives it in full). Effects, fits, confounder
+  corrections, two-item ratios or differences and claim scopes say "kind: computed here" (P35). A claim is one line; the results it
+  rests on are ids. Tool errors return as error text.
+- **Output budget** (the arm's cost scales with the question, not the corpus): find and claims return at most 25 lines and a last
+  line "N more …: call again with offset=K"; detail takes parts (what, differs, results, recipe, claims; default what, differs,
+  results; claims also through claims(linked=id)); no line over 300 characters (a longer item continues on lines with the same
+  id); at most 10 tool calls per question. The token count of every tool result is recorded: the growth of the vendor's input
+  count over the previous call, shared among that turn's results by length.
+- **Number check** (`ask.number_check`, the same for every model): the answer is split into sentences, and markers right after a
+  sentence's end belong to it. Every number counts (a × 10^b, aEb and 10^b read as one number; digits attached to a letter, as
+  in formulas, units and labels like PD50, are not numbers), except years and numbers right after Fig./Figure, Table, Eq./Equation,
+  ref./reference, sample, Series, column, row or section. Classes: matches (in the text of an id cited in the same sentence, to
+  the rounding of its last digit), elsewhere (not there, but in another text the model was given), not seen (in no text it was
+  given), uncited (the sentence cites no id; every number of Model only). Cited ids the model was not given count as unknown ids.
+  An id's text: the piece (Paper text), or every tool line that starts with or names the id (Knowledge base). The page shows one
+  line, e.g. "70 numbers · 65 match · 4 elsewhere · 1 not seen · 0 uncited · 0 unknown ids".
+- **Records.** One JSON line per answer: time, question, arm, vendor:model, answer text, cited ids with their texts and page
+  targets, unknown ids, tool calls (name, arguments, results, characters, tokens, error), the number check per number, usage
+  (input, output, cache read and write, reasoning tokens), model calls, retries, cost from `pilot/prices.csv` (vendor, model, input
+  and output price per million tokens, filled by the user; "cost not set" without a row), seconds, error. Interactive runs and the
+  page write `pilot/runs/asks.jsonl` (gitignored); a batch writes `--out` and `<out>.summary.csv` (one row per question and arm)
+  and stops at `--max-cost` dollars, or after `--max-calls` model calls when no price is set.
+- **Security.** Keys live only in `psed_v2/.env` (from `.env.example`: ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY,
+  XAI_API_KEY, DEEPSEEK_API_KEY, PSED_MODEL), ignored by git; a vendor with an empty key is unavailable. Never open, print, log or
+  commit a key. serve.py binds 127.0.0.1 only (port 8787), logs request lines only, and keeps the keys; the page never sees them.
+- **The page.** An Ask box at the right end of the filter line (opened as a file: disabled, "start: python pilot/serve.py"; a model
+  choice only when more than one model is available: PSED_MODEL and the prices.csv rows of vendors with a key). Asking replaces the
+  list and the panel with three columns (Model only, Paper text, Knowledge base): the answer with [id] markers as numbered links
+  that open the detail or source panel ("Back to the answers" returns), the number-check line, and a line with model, tokens,
+  cost and seconds. A question asked before with the same model shows its last records, with "Run again".
+- **Run so far.** One smoke test (Q1 of questions.csv) on deepseek:deepseek-flash, 2026-10-16: Model only 4 numbers, 4 uncited;
+  Paper text 70 numbers, 65 match, 4 elsewhere, 1 not seen; Knowledge base 63 numbers, 62 match, 1 elsewhere; 4 tool calls, the
+  largest result about 6,350 tokens; $0.055 in all. Rechecked in the four classes without a model call. The planned dev batch of
+  the 26 and the plumbing check were cancelled: those questions use the papers' internal names and were only for building.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
@@ -181,6 +263,9 @@ python3 psed_v2/pilot/user_facts.py                   # the user's claims and as
 python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, the problem rules, no unresolved case candidate
 python3 psed_v2/pilot/questions.py                    # the 26 questions through query.py -> questions.csv (status, answer, how)
 python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen (about 9 s)
+~/miniconda3/envs/psed310/bin/python psed_v2/pilot/serve.py      # the page with the Ask box on http://127.0.0.1:8787/ (keys in psed_v2/.env)
+~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py "question"   # three answers -> pilot/runs/asks.jsonl
+~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions Q.txt --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb] [--max-cost 20]
 python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py   # matrix, then the paper × case table
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
 python3 psed_v2/pilot/forest.py; python3 psed_v2/pilot/experiments.py   # older projections, still run
