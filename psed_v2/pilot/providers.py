@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""One adapter per model vendor, each on the vendor's official Python SDK (conda env psed310: anthropic, openai, google-genai).
+"""One adapter per model vendor, each on an official Python SDK (conda env psed310: anthropic, openai, google-genai); xAI through
+the OpenAI SDK pointed at https://api.x.ai/v1, which xAI's documentation describes as supported.
 
 Only what every vendor offers is used: a system prompt, messages, tool (function) calling and token counts. No citation, document,
-search or file feature; prompt caching only where it changes nothing but cost (Anthropic's cache marks on the system prompt and
-the tool list; OpenAI and Google cache on their own). Every model runs with its default settings; Anthropic requires max_tokens,
+search or file feature; prompt caching only where it changes nothing but cost: Anthropic's cache marks on the system prompt, the
+tool list and the newest message; OpenAI's prompt_cache_key and xAI's x-grok-conv-id (one per session, so its turns reach the same
+cache); Google caches implicitly. A rate-limit, quota or overload error is retried with exponential backoff, at most 5 tries in all;
+the retries are counted in Turn.retries. Every model runs with its default settings; Anthropic requires max_tokens,
 set to MAX_TOKENS.
 
     s = session("anthropic:claude-opus-5-5", system, tools)    # tools: [dict(name, description, parameters=JSON schema)] or None
@@ -12,12 +15,14 @@ set to MAX_TOKENS.
 
 LLM API calls are allowed only here, in ask.py and in serve.py; extraction stays free of them.
 """
-import json, os
+import json, os, time, uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
 ENV = Path(__file__).resolve().parent.parent / ".env"
-KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY"}
+KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY", "xai": "XAI_API_KEY"}
+XAI_URL = "https://api.x.ai/v1"
+TRIES, BACKOFF = 5, 2.0
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
 MAX_TOKENS = 16000
 
@@ -48,6 +53,26 @@ class Turn:
     text: str = ""
     calls: list = field(default_factory=list)
     usage: dict = field(default_factory=dict)
+    retries: int = 0
+
+
+def retryable(e):
+    """A rate-limit, quota or overload error (HTTP 429, 503, 529 or the SDK's class for it)."""
+    code = getattr(e, "status_code", None) or getattr(e, "code", None) or getattr(getattr(e, "response", None), "status_code", None)
+    name = type(e).__name__
+    return code in (429, 503, 529) or name in ("RateLimitError", "OverloadedError", "ResourceExhausted", "InternalServerError") and code in (None, 429, 503, 529) \
+        or "RESOURCE_EXHAUSTED" in str(e)
+
+
+def with_retries(fn):
+    """fn() with exponential backoff on retryable errors: (result, retries)."""
+    for k in range(TRIES):
+        try:
+            return fn(), k
+        except Exception as e:
+            if k == TRIES - 1 or not retryable(e):
+                raise
+            time.sleep(BACKOFF * 2 ** k)
 
 
 def session(model, system, tools=None):
@@ -57,13 +82,15 @@ def session(model, system, tools=None):
     load_env()
     if not os.environ.get(KEYS[vendor]):
         raise RuntimeError(f"{vendor} is unavailable: {KEYS[vendor]} is empty in .env")
+    if vendor == "xai":
+        return OpenAISession(name, system, tools, key=os.environ[KEYS["xai"]], base_url=XAI_URL)
     return {"anthropic": AnthropicSession, "openai": OpenAISession, "google": GoogleSession}[vendor](name, system, tools)
 
 
 class AnthropicSession:
     def __init__(self, model, system, tools):
         import anthropic
-        self.client = anthropic.Anthropic(api_key=os.environ[KEYS["anthropic"]], max_retries=4)
+        self.client = anthropic.Anthropic(api_key=os.environ[KEYS["anthropic"]], max_retries=0)
         self.model, self.messages = model, []
         self.system = [dict(type="text", text=system, cache_control=dict(type="ephemeral"))]
         self.tools = [dict(name=t["name"], description=t["description"], input_schema=t["parameters"]) for t in tools or []]
@@ -87,20 +114,24 @@ class AnthropicSession:
         kw = dict(model=self.model, max_tokens=MAX_TOKENS, system=self.system, messages=self.messages)
         if self.tools:
             kw["tools"] = self.tools
-        r = self.client.messages.create(**kw)
+        r, n = with_retries(lambda: self.client.messages.create(**kw))
         self.messages.append(dict(role="assistant", content=[b.model_dump(exclude_none=True) for b in r.content]))
         u = r.usage
         cr, cw = getattr(u, "cache_read_input_tokens", 0) or 0, getattr(u, "cache_creation_input_tokens", 0) or 0
         return Turn(text="".join(b.text for b in r.content if b.type == "text"),
                     calls=[dict(id=b.id, name=b.name, arguments=b.input) for b in r.content if b.type == "tool_use"],
-                    usage=dict(input=u.input_tokens + cr + cw, output=u.output_tokens, cache_read=cr, cache_write=cw))
+                    usage=dict(input=u.input_tokens + cr + cw, output=u.output_tokens, cache_read=cr, cache_write=cw), retries=n)
 
 
 class OpenAISession:
-    def __init__(self, model, system, tools):
+    """OpenAI, and xAI through the same SDK at its base URL (Chat Completions with function calling)."""
+    def __init__(self, model, system, tools, key=None, base_url=None):
         import openai
-        self.client = openai.OpenAI(api_key=os.environ[KEYS["openai"]], max_retries=4)
-        self.model, self.messages = model, [dict(role="system", content=system)]
+        sid = uuid.uuid4().hex
+        self.xai = bool(base_url)
+        self.client = openai.OpenAI(api_key=key or os.environ[KEYS["openai"]], base_url=base_url, max_retries=0, timeout=900,
+                                    default_headers={"x-grok-conv-id": sid} if self.xai else None)
+        self.model, self.sid, self.messages = model, sid, [dict(role="system", content=system)]
         self.tools = [dict(type="function", function=dict(name=t["name"], description=t["description"], parameters=t["parameters"])) for t in tools or []]
 
     def send(self, text=None, results=None):
@@ -111,13 +142,17 @@ class OpenAISession:
         kw = dict(model=self.model, messages=self.messages)
         if self.tools:
             kw["tools"] = self.tools
-        r = self.client.chat.completions.create(**kw)
+        if not self.xai:
+            kw["prompt_cache_key"] = self.sid
+        r, n = with_retries(lambda: self.client.chat.completions.create(**kw))
         m = r.choices[0].message
-        self.messages.append(m.model_dump(exclude_none=True))
+        self.messages.append(dict(role="assistant", content=m.content or "", **({"tool_calls": [c.model_dump(exclude_none=True) for c in m.tool_calls]} if m.tool_calls else {})))
         u = r.usage
         cr = getattr(getattr(u, "prompt_tokens_details", None), "cached_tokens", 0) or 0
+        rt = getattr(getattr(u, "completion_tokens_details", None), "reasoning_tokens", 0) or 0
+        out = u.completion_tokens + (rt if rt and (u.total_tokens or 0) >= u.prompt_tokens + u.completion_tokens + rt else 0)   # reasoning counted once
         return Turn(text=m.content or "", calls=[dict(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments or "{}")) for c in m.tool_calls or []],
-                    usage=dict(input=u.prompt_tokens, output=u.completion_tokens, cache_read=cr, cache_write=0))
+                    usage=dict(input=u.prompt_tokens, output=out, cache_read=cr, cache_write=0, reasoning=rt), retries=n)
 
 
 class GoogleSession:
@@ -137,7 +172,7 @@ class GoogleSession:
         else:
             self.contents.append(T.Content(role="user", parts=[T.Part.from_function_response(name=r["name"], response={"error" if r.get("error") else "result": r["content"]})
                                                                for r in results]))
-        r = self.client.models.generate_content(model=self.model, contents=self.contents, config=self.config)
+        r, n_ = with_retries(lambda: self.client.models.generate_content(model=self.model, contents=self.contents, config=self.config))
         c = r.candidates[0].content if r.candidates and r.candidates[0].content else T.Content(role="model", parts=[])
         self.contents.append(c)
         parts = c.parts or []
@@ -147,4 +182,4 @@ class GoogleSession:
                     calls=[dict(id=p.function_call.id or f"call{i}", name=p.function_call.name, arguments=dict(p.function_call.args or {}))
                            for i, p in enumerate(parts) if p.function_call],
                     usage=dict(input=n("prompt_token_count"), output=n("candidates_token_count") + n("thoughts_token_count"),
-                               cache_read=n("cached_content_token_count"), cache_write=0))
+                               cache_read=n("cached_content_token_count"), cache_write=0), retries=n_)
