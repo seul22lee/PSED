@@ -964,7 +964,7 @@ CAVEATS = [
      ["tabI.r2c2#1", "s12.p1#11", "tabI.r2c4#1", "s12.p14#2"], "", ""),
     ("tabI.cap;s13.p5", "Solid and gas moles per cycle are totals for the two compacts coated together, not per compact, with about ±0.1 µmol/cyc measurement uncertainty.",
      ["tabI.r1c4#1", "tabI.r2c4#1", "tabI.r3c4#1", "tabI.r1c5#1", "tabI.r2c5#1", "tabI.r3c5#1"], "", ""),
-    ("s12.p8;fig3.cap", "Gas moles per cycle are inferred from the hold pressure rise after correcting for the stop-valve leak and for reaction already under way in the pulse.",
+    ("s12.p8;fig3.cap", "Gas moles per cycle are worked out from the hold pressure rise after correcting for the stop-valve leak and for reaction already under way in the pulse.",
      ["tabI.r1c5#1", "tabI.r2c5#1", "tabI.r3c5#1", "s12.p14#1", "s12.p14#2", "s12.p14#3"], "", ""),
     ("s12.p10;s12.p13;s12.p15", "The gas-to-solid ratio equals the mean reaction parameter x only if Eqs. (4)-(5) alone act; other reactions (Zn growth, residual H2O) add a term c.",
      ["s12.p14#1", "s12.p14#2", "s12.p14#3"], "", ""),
