@@ -1,34 +1,42 @@
-# Handoff (2026-10-16; the state at commit f7e503e, the question-driven revision: 26 of 26 questions answered)
+# Handoff (2026-10-16; the state at commit HASH: the knowledge base corrected problem by problem (P1–P33), one query layer, one screen; 26 of 26 questions answered)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
 sections below.
 
+## Two principles
+- **Data rich, screen minimal.** Definitions, value kinds, uncertainty kinds and bases are stored in the data; the screen shows
+  one only where leaving it out would mislead the reader at that point.
+- **Simple is best.** Simple does not mean fewer characters: missing information makes a screen harder to use, and so does too
+  much. Show everything needed and nothing else.
+
+Why: the next turn puts an LLM on this knowledge base with held-out questions, so nothing may be shaped to a question. The 26
+questions are a regression test only.
+
 ## What matters now
 - **`psed_v2/ingest/final/<paper_id>/`** (untracked, absolute path `/home/ftk3187/github/PSED/psed_v2/ingest/final/`, 59 folders):
   document.md, structure.json, figures/. Every pilot script reads it, so it must exist. It is produced by the ingest
   pipeline (see ingest/INGEST.md) and is not rebuilt casually.
-- **`psed_v2/pilot/`**: all pre-pipeline exploration in one flat folder (it replaces gold/, cases/, facts/ and schema_pilot/).
-  Per-paper files carry the paper id in their name. One set of controlled lists (`lists.py`), one check (`check.py`), one
-  report page (`report.py` → `reports/pilot.html`, untracked, tabs Facts / Cases / Matrix). The Facts tab shows each paper as
-  (a) the paper in reading order, (b) experiment cards (default) or the text tree, (c) figures; above the trees the forest
-  (`forest.py`: the three trees read together, a quantity picker, one scatter, and the Case 9, Case 10 and Fig. 9 presets).
-  - Facts layer (three pilot papers): `elements.py` (stage 1 → `<paper_id>.elements.csv`), `facts.py` (stage 2 helpers and the
-    column spec), `<paper_id>.facts.py` (the facts of one paper, read by hand) → `<paper_id>.facts.csv`,
-    `<paper_id>.coverage.csv`, `<paper_id>.points.json`.
-  - Case studies on the 58 in-scope papers with a PDF: `figures.csv` (figure inventory), `papers.csv` (one line per paper),
-    `points.json` (points read by eye, illustrative), `quantity_matrix.py` → `.csv` (41 papers read by hand),
-    `paper_case.py` → `paper_case.csv` (paper × case, exclusions with reasons in `case_decisions.csv`), the CSVs behind Cases
-    9–13 (`sticking_reported`, `exposure_ear`, `recombination`, `narrowing`, `gpc_temperature`), `recheck.json` (reading check),
-    `cases.py` (the Cases tab) and `matrix.py` (the Matrix tab).
-  - Cremers 2019 typed in: `cremers.py` (part 1 transcribes Tables II–VII, part 2 checks and plots) → `cremers_*.csv`.
-  - v1 points: `v1_points_check.csv` records which v1 curves were checked against their figure and accepted; `v1_points.json`
-    holds those points.
-- **The 26 questions** (`pilot/questions.py` → `questions.csv`): each a function computing its answer from the facts, the test of the
-  schema. Baseline (b8a3b0d) 2 answered, now 26. Six answers use an assumed fact and say which (Q6, Q11, Q17, Q19, Q20, Q21; so do
-  the derived columns of the cards). Run it after any change to the facts or rules; a status change is recorded in `changed`.
-- The five-table schema pilot (first pass at 840674c, the element-grounded v2 at c796617) is superseded by the facts layer and
-  was removed on 2026-10-14; read it from git history if needed. Its lessons are below.
+- **`psed_v2/pilot/`**: all pre-pipeline exploration in one flat folder. Per-paper files carry the paper id in their name. One set
+  of controlled lists (`lists.py`), one check (`check.py`), one query layer (`query.py`), one page (`report.py` →
+  `reports/pilot.html`, untracked, English only).
+  - Facts layer (three pilot papers; yim20 = 10.1039_d0cp03358h, mat22 = 10.1021_acs.chemmater.2c01154, gre23 = 10.1116_6.0003182):
+    `elements.py` (stage 1 → `<paper_id>.elements.csv`), `facts.py` (stage 2 helpers and the column spec), `<paper_id>.facts.py`
+    (the facts of one paper, read by hand) → `<paper_id>.facts.csv`, `<paper_id>.coverage.csv`, `<paper_id>.points.json`.
+    Now 860 / 1014 / 417 facts; 85 experiments (27 / 54 / 4) and 30 cited works with values, 21 comparisons, 187 claims
+    (2 by the user); 18 derived definitions; 14 user facts (2 claims, 10 assumed, a definition and a bridge).
+  - `problems.csv`: one row per problem found in the knowledge base (P1–P33: observed, root cause, instances, fix, verified).
+    Every row is verified. Add a row for every new problem, with all its instances in the three papers.
+  - Case studies on the 58 in-scope papers with a PDF: `figures.csv`, `papers.csv`, `points.json`, `quantity_matrix.py` → `.csv`,
+    `paper_case.py` → `paper_case.csv` (exclusions in `case_decisions.csv`), the CSVs behind Cases 9–13 (`sticking_reported`,
+    `exposure_ear`, `recombination`, `narrowing`, `gpc_temperature`), `recheck.json`, and `cases.py` and `matrix.py` (the old
+    Cases and Matrix tabs, kept as code, no longer on the page).
+  - Cremers 2019 typed in: `cremers.py` → `cremers_*.csv`. v1 points: `v1_points_check.csv`, `v1_points.json`.
+- **The 26 questions** (`pilot/questions.py` → `questions.csv`): each a short composition of the five query operations, no
+  question-specific function; a regression test of the layer, not its design target. Run it after any change to the facts, lists
+  or query layer; a status change is recorded in `changed`.
+- **Pending.** Cases 1–8 and 11–13 still have to be moved into user claims (`user.facts.csv`), as cases 9 and 10 were; until then
+  they live only in `cases.py` and their CSVs and are not on the page.
 
 ## Standing rules
 - No LLM API calls; read papers yourself (subagents are fine).
@@ -37,92 +45,119 @@ sections below.
 - No changes to `corpus/` or `ingest/` unless asked. Never edit `PSED_v2_Plan.md`. Touch nothing outside `psed_v2/`.
 - `corpus/raw/`, `ingest/final/` (and marker/, docling/) and every `reports/` folder stay untracked.
 - Simple is best; one goal per commit; report briefly; commit lines end with the Co-Authored-By line given in the session.
+- A problem in the knowledge base is fixed problem by problem: reproduce it, find the root cause, search all three papers for
+  the same pattern, fix it at the source (facts scripts, `lists.py`, tree rules, `query.py`), never in an answer; check the original
+  and every instance; one commit per problem (two only when they share a root); a row in `problems.csv`.
+
+## Rules from the problems (one sentence each; the row in `problems.csv` has the instances)
+- P1. A spread (sd, relative sd, half range, tolerance, minimum, maximum) is its own observation with `stat`, `between` (runs,
+  pieces, position, repeat measurement, items) and `n`, naming the quantity it spreads.
+- P2. Every ± carries its kind (`uncertainty_kind`: pieces, runs, position, repeat measurement, fit, measurement, literature,
+  propagated, not stated) and `uncertainty_n`; a range parses whatever its printed form.
+- P3. An effect is judged against noise of the same kind only (runs against runs, pieces against pieces); otherwise the screen says
+  it cannot be judged.
+- P4. A percentage or ratio names its basis (`relative_to`); an unstated basis gives every reading, each named.
+- P5. GPC and atoms per cycle name what they average over (`over`); the default (the run) is not shown, any other definition is.
+- P6. Every measurement activity has `mode` in situ or ex situ (method default in `lists.METHOD_MODE`).
+- P7. A quantity the entity has as a measured or stated value is never derived; derivation refuses feedback; `check.py` enforces it.
+- P8. A reference value (a bulk density) serves only an input that asks for that reference; a film's own density is its own.
+- P9. Every value has a kind (measured, stated, read from figure, computed, model, cited, assumed); candidates are ranked by
+  distance, then kind, printed before read from a figure.
+- P10. An exact value ranks before a range, a range before a censored value.
+- P11. A stated cycle time wins over the computed one (P7).
+- P12. "Down to", "up to" and "at most" are bounds or spread facts, never a plain value; `check.py` fails such a value.
+- P13. A model input is marked model and ranks after a measured value of the same key.
+- P14. A range with a shared exponent (`(a–b) × 10^e`) is read as a range; two values are never stored as a range.
+- P15. A phase is a measured quantity (`phase`, value detected or not detected, `species=` the phase).
+- P16. A recipe list is a default (inherited), an option (never inherited) or a target, never several values on one key.
+- P17. A setting keyed to another setting (the Table 2 flows, `ratio=`) is inherited only where that setting matches.
+- P18. Thickness is a result; as a setting it is only a target, and a target is never shown as a result.
+- P19. Input entities are things that end up in or under the film; a plasma is a measured state of the recipe, not an input.
+- P20. Same experiment means equal condition vectors; nothing is tolerated. Near-equal entities are found by filtering on conditions
+  and their differences shown side by side.
+- P21. Each entity has a role (specimen, input, model run); joins and filters keep to one role.
+- P22. A series stays with its comparison; a filter shows it beside a near-equal film with the difference named.
+- P23. Two same-role entities with equal conditions carry an `identity` fact (same, different, not stated).
+- P24. A comparison gives a ratio only on a ratio-scale quantity with both values positive, else a difference.
+- P25. A derived quantity whose inputs include the x of a fit is not fitted against that x.
+- P26. A claim reaches the results it rests on through the comparisons its links lie in; a claim with no stated result says so.
+- P27. No representatives: every value of a set is returned with its range; nothing picks a first or a most common value.
+- P28. What every deposition of a paper shares sits on one reactor activity; each process is its own recipe.
+- P29. A model run carries the inputs it simulates as settings.
+- P30. A confounder is corrected only from a stated comparison that varies only it, and the corrected fit is named as such.
+- P31. Metal atoms per cycle count metal atoms (`lists.FORMULA_METALS`), not formula units.
+- P32. A quantity is found wherever the entity holds it: a stated setting of one paper sits beside the derived result of another.
+- P33. A range over several entities is in the quantity's one unit.
 
 ## Design principles
-- One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen (entity card, figure card,
-  comparison card, find workbench, forest, claims view, `experiments.csv`) is a projection computed from that file. Screens never
-  link to each other; they read the same facts.
+- One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen is a projection computed from
+  that file through `query.py`.
 - Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user claims
   across papers; how the user bridges two definitions. What can be derived is never stored: which entities form a series, what
-  range a claim covers, whether an effect exceeds reproducibility, which entities are selected. If it can be computed, compute it;
-  if a person must judge it, store it as a fact with an author.
-- The old tree mixed three things in one parent chain: physical containment, the authors' comparison intent and measurement
-  settings. The symptoms: one mat22 experiment as three "films", sample 4 out of the reproducibility set because a scan position
-  counted as a condition, 79 claims without a range, every grid cell with the same purpose sentence, replicates in natural series.
+  range a claim covers, whether an effect exceeds reproducibility. If it can be computed, compute it; if a person must judge it,
+  store it as a fact with an author.
 - Tree nodes are of two kinds: an activity (something done, with settings: kind recipe, deposition, anneal, plasma_treatment,
   measurement or simulation; order when several apply to one entity; stated or inferred) and an entity (a physical thing or its
   state: a specimen, a piece cut from it, a position, a model run; stated or inferred). The tree is physical provenance only:
-  paper -> recipe -> deposition -> entity -> later activities (measurement, anneal) -> facts; pieces are entities under entities.
+  paper -> reactor -> recipe -> deposition -> entity -> later activities (measurement, anneal) -> facts; pieces are entities under
+  entities.
 - Observations sit under the measurement activity of an entity. Settings sit on the activity they belong to, or on the entity as
   its own properties; measurement settings never enter a condition vector. The condition vector of any node is the union of the
-  settings of the non-measurement activities above it and the entity's own, computed for every node, so every claim gets a scope.
-- An experiment is any entity with observations (the find rows). When one deposition made one entity they coincide.
+  settings of the non-measurement activities above it and the entity's own, nearest first, keyed settings only where their key
+  matches (P17), options never inherited (P16).
 - The authors' comparison intent is a fact, not a parent: type comparison, kind series, grid or replicate, the varied quantity,
-  links = purpose fact + members. Natural series and replicates are computed from condition vectors and shown beside the stated
-  comparisons; disagreement is a confounder (Series E: sample 14 also differs in pillar layout).
+  links = purpose fact + members.
 - Where a paper names no deposition or specimen, one inferred deposition per condition set and one inferred entity per deposition
-  cover the measurements sharing cycle count and substrate; a different count or substrate is a separate, stated deposition.
+  cover the measurements sharing cycle count and substrate; equal-condition twins carry an identity fact (P23).
 - Claims carry stance (asserted, hedged, open, limitation) and variables (cause, effect: `lists.py` ids or `mechanism:<token>`);
   a user claim is a claim with author user and links into several papers; a bridge is a user fact with the transform.
-- One selection: whatever is in the tray is highlighted everywhere.
-- A comparison holds no setting; a setting goes on the activity whose members it governs. A setting the paper states once for several
-  activities (a cycle count per temperature row) goes on the first and is copied to the others, each copy citing the same elements
-  (`facts.spread`). A recipe-level lookup setting that belongs to one value of another setting (the Table 2 flows per H2 ratio)
-  carries that value as a qualifier (`ratio=`), so a join can key on it.
-- An observation's subject is an entity: it sits under a measurement activity of that entity, of the deposition that made it (a
-  process monitor), or under the stated comparison whose members it spans. Its quantity is a measured one, never a setting
-  quantity (`lists.SETTING_QUANTITIES`); a threshold the authors read off a series (the ratio from which films are crystalline) is
-  an observation of quantity other on that comparison; a stated anneal is an activity under the film it treated, inferred when the
-  paper does not name the film. A thing measured before deposition (the chips as fabricated, the compacts as pressed, the plasma) is
-  an input entity under the recipe, or a piece of one, its measurements of order 0, named in the `inputs` column of every activity
-  that used it (`facts.input_entity`). Only an observation about the measurement method itself (its model, its positioning error,
-  its artefacts) stays on the paper's method activity, and it carries no measured quantity.
-- A derived quantity is defined once, in `lists.DERIVED` (its inputs as quantity ids with the qualifiers a fact must carry, the
-  unit each is read in, the formula), and computed, never stored (`questions.derive`): an input comes from the entity's results
-  and its run's monitor, its condition vector, its input entities, then the paper (when the definition says so), each value
-  converted by `lists.convert` through one unit table. A derived id that is also a stated quantity is a second route to it; the
-  stated fact wins unless the route is asked for. The result names every input fact and what it used when several matched.
-- A constant or model value a derived quantity needs and no paper states as a setting (a molar mass, a bulk density, Avogadro's
-  and Boltzmann's constants, the model input standing in for the TMA pressure, the number of compacts per run, a molecular
-  diameter taken from an analogue) is an assumed fact: a setting with `data_kind` assumed and author user in `user.facts.csv`,
-  linked to what it stands in for; it serves an input only when no paper fact does, and every value computed from one says so.
-- The ± a paper prints after a value is data: the `uncertainty` column holds the half-width in the fact's unit, filled from the
-  statement when the facts file is written (`facts.fill_uncertainty`: "v ± u", or "m ± u × 10^e"); a ± that is not the value's own
-  (a tolerance, a calibration spread) stays in the statement. A reproducibility figure is read from it, from a replicate
-  comparison's spread facts or from a nonuniformity fact, each named for what it is a reproducibility of, never merged across
-  definitions without a bridge.
-- Two entities are the same experiment for a result comparison when their condition vectors agree on every key both state,
-  except keys the comparison tolerates (a substrate, a cycle count, a thickness target); the join (`questions.same_experiment`)
-  reports the tolerated keys that differ and the keys only one states, and the answer names them. A setting the paper states for
-  a set of films (the Table 1 films on glassy carbon) is a setting of their depositions, so that the join can see it.
-
-## Comparison layer
-What turns the trees into answers: computed, never stored, defined once (`lists.py` for definitions, `questions.py` for the
-operations; `report.py` shows them on the cards and in Find).
-- **Join rules.** The condition vector of an entity is its own settings plus those of the non-measurement activities above it,
-  nearest first. Two entities are the same experiment when both state the same process-defining settings (`lists.PRIMARY`:
-  reactor, temperature, H2 ratio, pressure, purity, source temperature, pulse and purge times, feature height, cycles, substrate)
-  and agree on every key both state except the tolerated keys the question names (`same_experiment`; the cards tolerate
-  substrate, cycle_number and film_thickness). The answer names the tolerated keys that differed (Q10: cycle number and target
-  thickness; Q11: substrate, glassy carbon against SiO2/Si). A recipe-level lookup setting keyed by another setting carries that
-  value as a qualifier (`ratio=` on the Table 2 flows). Input entities join through the `inputs` column of the activities.
-- **Derived quantities.** `lists.DERIVED`: 15 definitions, each with its inputs (quantity ids with the qualifiers a fact must carry,
-  `@material` and `@A` for the entity's film and reactant A, the unit each is read in), the formula in words and as a function, the
-  unit. `questions.derive` takes an input from the entity's results and its run's monitor, its vector, its input entities, the
-  paper when the definition says so, then the assumed facts; units pass through `lists.convert` (`UNIT_ALIAS`, `UNIT_BASE`). A
-  derived id that is also a stated quantity is a second route: the stated fact wins unless the route is asked for, and the card
-  shows both with their ratio.
-- **Assumed facts.** In `user.facts.csv`, type setting, `data_kind` assumed, author user, linked to what they stand in for: M of ZnO
-  and MoS2, bulk ZnO density, N_A, k_B, the Fig. 10 model TMA pressure for yim20, two NPCs per gre23 run, DEZ taken TMA-sized. One
-  serves only when no paper fact does, only the papers its links name (a constant without links serves all), and every value
+- A setting the paper states once for several activities goes on the first and is copied to the others, each copy citing the same
+  elements (`facts.spread`).
+- A thing measured before deposition (the chips as fabricated, the compacts as pressed) is an input entity under the recipe, named
+  in the `inputs` column of every activity that used it (`facts.input_entity`).
+- A derived quantity is defined once, in `lists.DERIVED` (18 definitions: inputs as quantity ids with the qualifiers a fact must
+  carry, the unit each is read in, the formula), and computed, never stored (`query.derive`). A constant or model value no paper
+  states is an assumed fact in `user.facts.csv` (data_kind assumed, author user), linked to the papers it serves; every value
   computed from one names it.
-- **Operations** (`questions.py`): `power_fit` (log-log least squares: exponent, residual) over `series_xy` with the co-varying
-  settings named; `correction` of a confounder from the stated comparison that varies only it (Series A for sample 14's layout);
-  `routes` (two facts reaching one entity and quantity as a ratio, the differing definitions named, never a contradiction);
-  `effect` and `spread` (max − min over a series against the replicate comparison's standard deviation); `scale` by a power law
-  from a reference member; `ratios_between` over every result two specimens share, pieces and run monitors included
-  (`results_deep`); `scope_comparisons` from a claim's links; `contrast` of the specimens whose observations state a phase against
-  the rest of their row. Find puts any result or derived quantity of the tray on either axis ("result against result").
+- The global list of tolerated keys is removed (P20): two entities are the same experiment only when their condition vectors are
+  equal.
+
+## Query layer (`pilot/query.py`)
+The only place that selects, derives or compares values; `questions.py` and `report.py` call it, and the page's script only
+filters, sorts and draws. Five operations:
+- `find(paper, material, structure, result, conditions)`: the experiments (and the cited works with values) that pass the filters,
+  grouped by the authors' comparisons; a row is paper, name, 1–2 distinguishing conditions and every value of the requested
+  result (P27), from its results or, for a setting quantity, its stated conditions (P32).
+- `detail(id)`: an entity (what, what differs, the full recipe, results with derived values, claims, identity, input and parent
+  ids) or a comparison (what it varies, members, main results with effect and the noise sentence (P3), fits with any correction
+  (P30), confounders, the values stated for the set).
+- `compare(ids, x)`: shared and differing conditions, results with definition notes, a plot spec with points and curves, claims
+  linked to two or more; two items are related by a ratio or a difference (P24).
+- `claims(paper, variable, linked, author)`: stance, cause and effect in words, scope (P33), the results each rests on (P26),
+  user claims.
+- `source(element)`: the element's text, crop, coverage and its values.
+
+Every value is a record: value, range, censor, unit, text, kind (measured | read from figure | computed | assumed | model | cited;
+stated settings are stated), definition when not the default (P5, P4), source element, fact id, alternatives (the other candidates,
+ranked: P9–P13), uncertainty (value, kind, n), mode (P6). `lists.NAMES`, `DEF_WORDS` and `KIND_WORDS` give the plain English.
+
+## The screen (`reports/pilot.html`)
+One line of controls on top: material, structure, result, paper, more conditions. Left: an experiments | claims toggle; rows read
+paper · name · 1–2 distinguishing conditions · the selected result's values; comparisons are group headers that open on the right;
+each row has a tick, and a filter that leaves six rows or fewer selects them. A coverage line appears when a paper is chosen.
+Right, one of four states:
+- Selected: one plot (x chosen automatically and changeable; points and curves on the same axes; legend for paper and in situ /
+  ex situ), one table (rows the items, columns the differing settings and the results; shared settings in one line; a cell that
+  cannot be compared says why), and the claims linked to two or more of them.
+- Detail: What; What differs and a "full recipe" line; Results with value, method and source (measurement settings on expand);
+  Claims (3, then +N); each part at most 6 lines.
+- Comparison: what it varies, members, the main results (the effects its claims name, else the shared results; 3, then +N) with
+  the effect and one plain noise sentence.
+- Source: the passage with coverage colouring, or the figure crop with the figure's other values.
+A measured value carries no mark; any other kind one plain word, written once in a column header when the whole column shares it.
+Text is 14 px or more, grey only for secondary text, no internal ids or terms in body text; "i" marks an inferred entity (tooltip:
+not stated by the paper; inferred). Cases 9 and 10 appear as claims by the user. The old tabs (Facts, Cases, Matrix), stat boxes,
+forest bar, view buttons, tray and the relations / verdicts / result-against-result sections are gone.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
@@ -142,15 +177,16 @@ Hence the facts layer: facts first, stated locally per element; linking to depos
 ```
 python3 psed_v2/pilot/elements.py [--text DIR]        # stage 1; --text writes element texts (for reading) outside the repo
 python3 psed_v2/pilot/10.1039_d0cp03358h.facts.py     # stage 2, one per paper (also 10.1021_acs.chemmater.2c01154, 10.1116_6.0003182)
+python3 psed_v2/pilot/user_facts.py                   # the user's claims and assumed facts -> user.facts.csv
+python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, the problem rules, no unresolved case candidate
+python3 psed_v2/pilot/questions.py                    # the 26 questions through query.py -> questions.csv (status, answer, how)
+python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen (about 9 s)
 python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py   # matrix, then the paper × case table
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
-python3 psed_v2/pilot/forest.py                       # Cases 9 and 10 and Fig. 9 rebuilt from the three trees alone, against the hand-made CSVs
-python3 psed_v2/pilot/user_facts.py && python3 psed_v2/pilot/experiments.py   # the user's facts; one row per experiment (entity with observations) and per cited work
-python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, no unresolved case candidate
-python3 psed_v2/pilot/questions.py                    # the 26 questions against the facts -> questions.csv (status, answer, how)
-python3 psed_v2/pilot/report.py                       # reports/pilot.html (needs corpus/raw review PDF and pdftoppm for Case 8)
+python3 psed_v2/pilot/forest.py; python3 psed_v2/pilot/experiments.py   # older projections, still run
 python3 psed_v2/ingest/regression.py                  # ingest output against the answer set
 ```
+Playwright (Python) is in conda env psed310 for driving the page.
 
 ## Facts layer: plan
 Goal: a knowledge layer built from facts, each tied to the paper elements that state it, shown on three pilot papers (yim20 =
@@ -234,7 +270,7 @@ table value kept as one fact with the table value; conflicts between text and ta
 channels is `feature_height` (added to the lists). Twelve yim20 curves have facts but no points (rejected in v1, absent from
 points.json) and stay so.
 
-## Case candidates (the cases behind the Cases tab)
+## Case candidates (the cases behind cases.py)
 
 Built from `figures.csv` on 2026-10-13, first from the papers then parsed (parts A to C), then from all papers with a PDF (part D). Exploration only: nothing here is extracted data.
 Figures are named `paper_id Fig. N panel`. Ontology ids are those of `ontology/ontology.yaml` v0.
