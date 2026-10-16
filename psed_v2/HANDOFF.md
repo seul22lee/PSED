@@ -1,4 +1,4 @@
-# Handoff (2026-10-15; the state after commit 85fdb15 and the group-label commit that followed it)
+# Handoff (2026-10-16; the state at commit 7d9470b, the tree foundation change)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -36,25 +36,31 @@ sections below.
 - Simple is best; one goal per commit; report briefly; commit lines end with the Co-Authored-By line given in the session.
 
 ## Design principles
-- One tree per paper, inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen (run card, figure card,
-  find workbench, forest, claim list, `experiments.csv`) is a projection computed from that one file. Screens never link to
-  each other; they read the same facts. Keep it that way.
-- Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user
-  claims across papers; how the user bridges two definitions. What can be derived from facts is never stored: which runs
-  form a series, what range a claim covers, whether an effect exceeds reproducibility, which runs are selected. Rule: if it
-  can be computed from facts, compute it; if a person has to judge it, store it as a fact with an author.
-- A claim is only as good as the runs behind it: its run count and condition range stand next to it, so a broad sentence
-  over one data point shows as such.
-- A paper's own reproducibility data (yim20 samples 2, 4, 8 and 12) is the yardstick for every effect in that paper:
-  effect divided by the reproducibility sd says whether a series shows anything.
-- The paper's stated groups are the authors' intent; series computed from the data (runs that differ in exactly one
-  inherited setting) are the truth. Where they disagree (Series E, sample 14's pillar layout) there is a confounder.
-- The perspective paper's case studies are user claims: a sentence by the user with links into several papers, in the same
-  schema as a paper's claim (`user.facts.csv`, author user). Cases 9 and 10 are data, not code.
-- Two papers' definitions are never merged silently. A bridge is a fact written by the user (type bridge) with the
-  transform as its statement and a justifying element as evidence; the forest and the compare panel read bridges.
-- A claim carries its stance (asserted, hedged, open, limitation) and its variables (cause, effect, as `lists.py` ids or
-  `mechanism:<token>`); this is the input of the causal graph that comes after the pilot.
+- One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen (entity card, figure card,
+  comparison card, find workbench, forest, claims view, `experiments.csv`) is a projection computed from that file. Screens never
+  link to each other; they read the same facts.
+- Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user claims
+  across papers; how the user bridges two definitions. What can be derived is never stored: which entities form a series, what
+  range a claim covers, whether an effect exceeds reproducibility, which entities are selected. If it can be computed, compute it;
+  if a person must judge it, store it as a fact with an author.
+- The old tree mixed three things in one parent chain: physical containment, the authors' comparison intent and measurement
+  settings. The symptoms: one mat22 experiment as three "films", sample 4 out of the reproducibility set because a scan position
+  counted as a condition, 79 claims without a range, every grid cell with the same purpose sentence, replicates in natural series.
+- Tree nodes are of two kinds: an activity (something done, with settings: kind recipe, deposition, anneal, plasma_treatment,
+  measurement or simulation; order when several apply to one entity; stated or inferred) and an entity (a physical thing or its
+  state: a specimen, a piece cut from it, a position, a model run; stated or inferred). The tree is physical provenance only:
+  paper -> recipe -> deposition -> entity -> later activities (measurement, anneal) -> facts; pieces are entities under entities.
+- Observations sit under the measurement activity of an entity. Settings sit on the activity they belong to, or on the entity as
+  its own properties; measurement settings never enter a condition vector. The condition vector of any node is the union of the
+  settings of the non-measurement activities above it and the entity's own, computed for every node, so every claim gets a scope.
+- An experiment is any entity with observations (the find rows). When one deposition made one entity they coincide.
+- The authors' comparison intent is a fact, not a parent: type comparison, kind series, grid or replicate, the varied quantity,
+  links = purpose fact + members. Natural series and replicates are computed from condition vectors and shown beside the stated
+  comparisons; disagreement is a confounder (Series E: sample 14 also differs in pillar layout).
+- Where a paper names no deposition or specimen, one inferred deposition per condition set and one inferred entity per deposition
+  cover the measurements sharing cycle count and substrate; a different count or substrate is a separate, stated deposition.
+- Claims carry stance (asserted, hedged, open, limitation) and variables (cause, effect: `lists.py` ids or `mechanism:<token>`);
+  a user claim is a claim with author user and links into several papers; a bridge is a user fact with the transform.
 - One selection: whatever is in the tray is highlighted everywhere.
 
 ## v1
@@ -78,6 +84,7 @@ python3 psed_v2/pilot/10.1039_d0cp03358h.facts.py     # stage 2, one per paper (
 python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py   # matrix, then the paper × case table
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
 python3 psed_v2/pilot/forest.py                       # Cases 9 and 10 and Fig. 9 rebuilt from the three trees alone, against the hand-made CSVs
+python3 psed_v2/pilot/user_facts.py && python3 psed_v2/pilot/experiments.py   # the user's facts; one row per experiment (entity with observations) and per cited work
 python3 psed_v2/pilot/check.py                        # the one check: facts of the three papers, no unresolved case candidate
 python3 psed_v2/pilot/report.py                       # reports/pilot.html (needs corpus/raw review PDF and pdftoppm for Case 8)
 python3 psed_v2/ingest/regression.py                  # ingest output against the answer set
@@ -94,25 +101,24 @@ Stages:
 2. **Facts per element** (`<paper_id>.facts.py` → `.facts.csv`, `.coverage.csv`, `.points.json`): what each element itself states,
    one row per piece of knowledge, typed setting / observation / derived / model / definition / claim / cited. Local only:
    mentions are copied as printed ("sample 8", "H 500 nm"), with no decision on what they refer to. Values and units as printed.
-   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14; now yim20 698 facts, mat22 505, gre23 334
-   (the tree pass added explicit settings and purpose claims; 2026-10-15 the temperature of each mat22 temperature group).
-3. **One tree per paper** (replaces the earlier separate anchors and relations steps): inside `<paper_id>.facts.csv`, two more
-   columns, `parent` (one id: the row without which the fact would not exist) and `links` (a second home: a claim's supporting
-   facts, series membership, the same data shown in another panel), and tree rows in the same file (ids without "#"): the paper
-   (root), `:process` (conditions shared by every run), groups the paper names (series, sets), runs (a deposition, specimen or
-   simulation; qualifiers run=<kind>;how=stated|inferred;<key>=<v>) and cited works (`:refs:N`). Parent rule: settings and
-   observations under their run; runs under the process or a group; a calculated value under its first input; a figure curve
-   under the table value it plots, else its run; a model under its simulation run; a cited value under its reference; claims and
-   definitions under the paper. `check.py` checks one root, existing parents, no cycles, a child for every run, a link for every
-   claim; tree rows are not counted as facts. Done for the three papers on 2026-10-14. Rules settled since: a run is one physical
-   film, specimen or simulation (mat22: a (T, H2-ratio) pair is a group holding its ratio setting, one run per film beneath it,
-   `how=inferred` when two measurements are put on one film without the paper saying so; gre23: under each deposition the
-   specimens its facts are about; yim20: one specimen per Table 1 sample code); what a group varies among its sibling runs or
-   groups is a setting fact under the group, never only in its label (every number with a unit in a group's label, "450 °C",
-   "10-50 cyc", is the value of a setting fact under or above the group), and never quantity `other` (`lists.py` gets an id;
-   21 added 2026-10-14); every group row's first link is its purpose
-   fact, the paper's own sentence on what the group was made to test (`facts.purpose()`); `check.py` checks all of this. Tree
-   rows at 85fdb15 (groups / runs / cited works): yim20 8 / 28 / 22, mat22 45 / 101 / 23, gre23 1 / 21 / 17.
+   Every element is covered or marked "no knowledge" with a reason. Done 2026-10-14; now yim20 700 facts, mat22 620, gre23 336
+   (the tree passes added explicit settings, purpose claims, each deposition's temperature and ratio, the colour cells of Figs. 7b and 8).
+3. **One tree per paper** (replaces the earlier separate anchors and relations steps): inside `<paper_id>.facts.csv`, the columns
+   `parent` (one id: the row without which the fact would not exist), `links` (a second home: a claim's supporting facts, a
+   comparison's members, the same data in another panel), `kind`, `order`, `how`, `stance`, `cause`, `effect`, `author`, and tree
+   rows (ids without "#"): the paper (root), activities (`<key>:recipe`, `<key>:dep:<name>`, `<key>:meas:<entity>:<method>`,
+   `<key>:method:<method>` for shared measurement settings, `<key>:simrun:<k>`), entities (`<key>:ent:<name>`), comparisons
+   (`<key>:cmp:<name>`, a fact with members) and cited works (`<key>:refs:N`). Each script's stage 3 still places facts under
+   the old process, runs and groups; `facts.retree()` and `facts.comparisons()` then build the activity/entity tree from that
+   placement (stage 3b; the per-paper tables say which runs are depositions, entities, pieces, simulations, which groups are
+   dropped). Rules checked by `check.py`: an entity has a deposition (a model run its simulation) above it or sits under the recipe
+   before any deposition; every observation under a measurement activity or the comparison it spans; every setting under an
+   activity, an entity or a comparison; a comparison has a purpose fact first, two or more members and a varied quantity id (none
+   for a replicate set), varies nothing of quantity other, and its label's values are in a member's condition vector; a value read
+   off a colour-bar panel says so. Done 2026-10-16 (commit 7d9470b): yim20 27 entities (17 stated, 10 model runs), 15 depositions,
+   42 measurement activities, 8 comparisons; mat22 54 entities (36 inferred), 54 depositions, 128 measurement activities, 12
+   comparisons, 620 facts (64 colour cells); gre23 17 entities, 4 depositions, 34 measurement activities, 1 comparison; 98
+   experiments in `experiments.csv`; 50 of 187 claims reach no condition (links to definitions, cited works or claims only).
 4. **Standardization**: units converted to `lists.UNITS` and quantity ids standardized, in the facts file.
 5. **Views and demo**, seven views: coverage (nothing lost); facts by type; experiment view (per deposition: conditions,
    measurements, results, link status coloured); figure view (crop next to its facts); evidence trace (a claim → derived →
@@ -152,8 +158,8 @@ The columns were kept as they are; these are open decisions for the pipeline sch
    qualifier.
 7. **In situ vs ex situ is a qualifier, not a method.** The facts use ellipsometry for both (mat22 in situ SE); the
    distinction needs a qualifier key, as do map vs line scan (sem_eds) and gauge vs thermocouple (process_monitor).
-8. **Run attributes.** A run row's kind, how it was assigned and its key currently live in `qualifiers` (run=, how=, sample=,
-   sim=) because only parent and links were added as columns; decide later whether they get their own columns.
+8. **Node attributes.** Activities and entities carry `kind`, `order` and `how` as columns (2026-10-16); the old run=, how=, sample= and
+   sim= qualifiers are gone.
 9. **What a run is.** Decided 2026-10-14: one physical film, specimen or simulation per run (stage 3 above); a condition set is a
    group. The pipeline needs the `how=inferred` mark for facts of two measurements put on one film without the paper saying so.
 Also seen: multi-number table cells (yim20 pulse-purge sequences "0.1-4.0-0.1-4.0") split into one fact per step; text that rounds a
