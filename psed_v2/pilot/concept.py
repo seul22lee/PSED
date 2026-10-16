@@ -155,7 +155,7 @@ def footer(ids, paper=None):
         d = pc.get(k, {})
         n = d.get("values", 0) + d.get("mentions", 0)
         if n or d.get("claims"):
-            parts.append(f"also in {k}: {n} values · {d.get('claims', 0)} claims" + (f" (with the family {family_of(ids[0])[0]})" if any(family_of(i)[0] for i in ids) and len(fam_ids) > len(ids) else ""))
+            parts.append(f"{'also in' if paper else 'in'} {k}: {n} values · {d.get('claims', 0)} claims" + (f" (with the family {family_of(ids[0])[0]})" if any(family_of(i)[0] for i in ids) and len(fam_ids) > len(ids) else ""))
         else:
             absent.append(k)
     if not parts and not absent:
