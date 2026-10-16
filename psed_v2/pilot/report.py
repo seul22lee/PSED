@@ -179,9 +179,16 @@ table{border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid var(
 .cov-covered{background:var(--ok)}.cov-no\ knowledge{background:var(--none)}.cov-missed{background:var(--miss)}.passage{padding:8px 10px;border-radius:4px}
 .claim{padding:4px 0;border-bottom:1px solid var(--line)}.st{font-size:14px;color:var(--mut)}img.crop{max-width:100%;border:1px solid var(--line)}
 svg text{font-size:14px;fill:var(--fg)}svg .ax{stroke:var(--mut)}.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--mut)}
-@media (max-width:760px){main{grid-template-columns:1fr;height:auto}#left{border-right:0}}
+#askbox{margin-left:auto;display:flex;gap:6px;align-items:center}#askbox input{width:340px}.off{color:var(--mut);font-size:14px}
+#askv{display:none;padding:10px 16px;height:calc(100vh - 48px);overflow:auto}body.asking main{display:none}body.asking #askv{display:block}
+.qhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}.qhead h2{margin:0}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.col{border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.col h3{margin:0 0 6px}.ans{overflow-wrap:anywhere}.ans p{margin:6px 0}.ans ul{margin:4px 0;padding-left:20px}.ans table{margin:6px 0;display:block;overflow-x:auto}
+.cite{color:var(--acc);cursor:pointer;font-size:14px;padding:0 1px}.cite:hover{text-decoration:underline}.chk{margin-top:10px;padding-top:6px;border-top:1px solid var(--line)}
+.back{margin-bottom:8px}
+@media (max-width:760px){main{grid-template-columns:1fr;height:auto}#left{border-right:0}.cols{grid-template-columns:1fr}#askbox input{width:200px}}
 </style></head><body>
-<div id="bar"></div><div id="more"></div><main><div id="left"></div><div id="right"></div></main>
+<div id="bar"></div><div id="more"></div><main><div id="left"></div><div id="right"></div></main><div id="askv"></div>
 <script>
 const D=__DATA__, IM=__IMGS__;
 const S={paper:"",material:"",structure:"",result:"",ranges:{},list:"experiments",checked:new Set(),panel:{type:"none"},x:"",open:new Set()};
@@ -195,7 +202,7 @@ const inferredMark=x=>x?` <span class="mark" title="not stated by the paper; inf
 function bar(){const sel=(k,opts,cur,lab)=>`<label>${lab} <select onchange="setF('${k}',this.value)"><option value="">any</option>${opts.map(o=>`<option value="${esc(o.v)}" ${o.v===cur?"selected":""}>${esc(o.t)}</option>`).join("")}</select></label>`;
  $("#bar").innerHTML=sel("material",D.filters.materials.map(m=>({v:m,t:m})),S.material,"material")+sel("structure",D.filters.structures.map(m=>({v:m,t:m.replace(/_/g," ")})),S.structure,"structure")
   +sel("result",D.filters.results.map(r=>({v:r.q,t:r.name})),S.result,"result")+sel("paper",Object.entries(D.papers).map(([k,n])=>({v:k,t:n})),S.paper,"paper")
-  +`<button onclick="$('#more').classList.toggle('on')">more conditions</button>`;
+  +`<button onclick="$('#more').classList.toggle('on')">more conditions</button>`+askBox();
  $("#more").innerHTML=D.filters.ranges.map(r=>`<label>${r.name}${r.unit?` (${r.unit})`:""} <input type="number" placeholder="min" value="${S.ranges[r.q]?.[0]??""}" onchange="setR('${r.q}',0,this.value)"> – <input type="number" placeholder="max" value="${S.ranges[r.q]?.[1]??""}" onchange="setR('${r.q}',1,this.value)"></label>`).join("")}
 function pass(r){if(S.paper&&r.paper!==S.paper)return false;if(S.material&&r.material!==S.material)return false;if(S.structure&&r.structure!==S.structure)return false;
  if(S.result&&!(r.results[S.result]||[]).length)return false;for(const q in S.ranges){const [a,b]=S.ranges[q];if(a===""&&b==="")continue;const v=r.conds[q];if(v==null)return false;if(a!==""&&v<+a)return false;if(b!==""&&v>+b)return false}return true}
@@ -298,10 +305,42 @@ function plotSvg(pts,curves,xn,yn){if(!pts.length&&!curves.length)return '<div c
  ${pts.map(p=>mk(p,sx(p.x),sy(p.y))).join("")}</svg>`;
  const lg=`<div class="lg">${papers.map(k=>`<span><span style="color:${col(k)}">●</span> ${esc(PN(k))}</span>`).join("")}${modes.includes("ex_situ")?"<span>● filled, solid line: ex situ</span>":""}${modes.includes("in_situ")?"<span>○ open, dashed line: in situ</span>":""}</div>`;
  return svg+lg}
-function renderRight(){const p=S.panel;$("#right").innerHTML=p.type==="detail"?detailPanel(p.id):p.type==="comparison"?compPanel(p.id):p.type==="source"?sourcePanel(p.id):p.type==="selected"?selPanel():
- `<h2>PSED pilot</h2><div class="line mut">Three papers on conformal ALD read into one knowledge base. Filter at the top, tick experiments to set them side by side, click a name for its detail, a group header for the authors' comparison, a source for the passage or figure.</div>`}
+function renderRight(){const p=S.panel;$("#right").innerHTML=(A.from?`<div class="back"><button onclick="A.from=false;showAsk()">Back to the answers</button></div>`:"")+(p.type==="detail"?detailPanel(p.id):p.type==="comparison"?compPanel(p.id):p.type==="source"?sourcePanel(p.id):p.type==="selected"?selPanel():
+ `<h2>PSED pilot</h2><div class="line mut">Three papers on conformal ALD read into one knowledge base. Filter at the top, tick experiments to set them side by side, click a name for its detail, a group header for the authors' comparison, a source for the passage or figure. Ask a question at the right end of the top line to see it answered three ways.</div>`)}
+// ---- Ask: three answers side by side (served by serve.py on 127.0.0.1; the page never sees a key)
+const A={ok:false,models:[],model:"",q:"",recs:null,busy:false,from:false,before:false,err:""};
+const ARMN={model:"Model only",text:"Paper text",kb:"Knowledge base"};
+function askBox(){if(!A.ok)return `<span id="askbox"><input disabled placeholder="Ask a question"><span class="off">${A.served?"no model available: fill a key in psed_v2/.env and restart the server":"start: python pilot/serve.py"}</span></span>`;
+ return `<span id="askbox"><input id="askq" placeholder="Ask a question" value="${esc(A.q)}" oninput="A.q=this.value" onkeydown="if(event.key==='Enter')askNow(false)">${A.models.length>1?`<select onchange="A.model=this.value">${A.models.map(m=>`<option ${m===A.model?"selected":""}>${esc(m)}</option>`).join("")}</select>`:""}<button onclick="askNow(false)">Ask</button></span>`}
+async function askNow(run){if(!A.q.trim()||A.busy)return;A.busy=true;A.err="";A.recs=A.recs&&!run?null:A.recs;showAsk();
+ try{const r=await fetch("/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:A.q.trim(),model:A.model,run})});const j=await r.json();
+  if(j.error)A.err=j.error;else{A.recs=j.records;A.before=j.asked_before}}catch(e){A.err=String(e)}A.busy=false;showAsk()}
+function targetName(o){if(!o)return"";if(o.type==="source")return D.sources[o.id]?.locator||"";const d=D.details[o.id];return d?(d.name||d.label||""):""}
+function citeOpen(arm,id){const r=(A.recs||[]).find(x=>x.arm===arm);const o=r&&r.cited[id]&&r.cited[id].open;if(!o||o.type==="none")return;
+ if(o.type==="source"){if(!D.sources[o.id])return;S.panel={type:"source",id:o.id,fact:o.fact||""}}else if(o.type==="comparison"){S.panel={type:"comparison",id:o.id}}else{if(!D.details[o.id])return;S.panel={type:"detail",id:o.id}}
+ A.from=true;document.body.classList.remove("asking");render()}
+function md(text,arm,num){const ids=[];const cite=raw=>{const toks=raw.split(/[,;]\s*|\s+/).filter(Boolean);if(!toks.length||!toks.every(t=>/^[A-Za-z0-9_]+:\S+$/.test(t)))return null;
+  return toks.map(t=>{t=t.replace(/[.,;]$/,"");if(!(t in num))num[t]=Object.keys(num).length+1;const r=(A.recs||[]).find(x=>x.arm===arm);const o=r&&r.cited[t]?r.cited[t].open:null;
+   return `<span class="cite" title="${esc(targetName(o)||"not on this page")}" onclick="citeOpen('${arm}','${esc(t)}')">[${num[t]}]</span>`}).join("")};
+ const inline=l=>esc(l).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\[([^\[\]]+)\]/g,(m,g)=>cite(g.replace(/&amp;/g,"&"))??m);
+ const out=[];let list=false,tab=[];const flush=()=>{if(list){out.push("</ul>");list=false}if(tab.length){out.push("<table>"+tab.map((r,i)=>`<tr>${r.map(c=>i?`<td>${inline(c)}</td>`:`<th>${inline(c)}</th>`).join("")}</tr>`).join("")+"</table>");tab=[]}};
+ for(const line of String(text||"").split("\n")){const t=line.trim();
+  if(/^\|.*\|$/.test(t)){if(list){out.push("</ul>");list=false}if(!/^\|[\s:|-]+\|$/.test(t))tab.push(t.slice(1,-1).split("|").map(c=>c.trim()));continue}
+  if(tab.length)flush();
+  if(/^[-*•]\s+/.test(t)||/^\d+[.)]\s+/.test(t)){if(!list){out.push("<ul>");list=true}out.push(`<li>${inline(t.replace(/^([-*•]|\d+[.)])\s+/,""))}</li>`);continue}
+  flush();if(!t)continue;const h=t.match(/^(#+)\s+(.*)$/);out.push(h?`<h3>${inline(h[2])}</h3>`:`<p>${inline(t)}</p>`)}
+ flush();return out.join("")}
+function money(c){return c==null?"cost not set":"$"+c.toFixed(c<0.1?4:2)}
+function showAsk(){document.body.classList.add("asking");const cols=["model","text","kb"].map(arm=>{const r=(A.recs||[]).find(x=>x.arm===arm);
+  const body=A.busy&&!r?`<div class="mut">answering…</div>`:!r?`<div class="mut">no answer</div>`:r.error?`<div>This answer failed: ${esc(r.error)}</div>`:md(r.answer,arm,{});
+  const u=r?r.usage:null;
+  return `<div class="col"><h3>${ARMN[arm]}</h3><div class="ans">${body}</div>${r?`<div class="chk">${esc(r.check_line)}</div><div class="mut">${esc(r.model)} · ${u.input.toLocaleString()} in / ${u.output.toLocaleString()} out tokens${u.cache_read?` (${u.cache_read.toLocaleString()} cached)`:""} · ${money(r.cost)} · ${r.seconds} s${r.tool_calls.length?` · ${r.tool_calls.length} tool calls`:""}</div>`:""}</div>`}).join("");
+ const when=A.recs&&A.recs[0]?A.recs[0].time.replace("T"," "):"";
+ $("#askv").innerHTML=`<div class="qhead"><button onclick="A.from=false;document.body.classList.remove('asking');render()">Back</button><h2>${esc(A.q)}</h2>${A.recs&&!A.busy?`<span class="mut">${A.before?"asked before, ":""}${esc(when)}</span><button onclick="askNow(true)">Run again</button>`:""}</div>${A.err?`<div>${esc(A.err)}</div>`:""}<div class="cols">${cols}</div>`;
+ bar()}
 function render(){bar();$("#left").innerHTML=left();renderRight()}
 render();
+if(location.protocol.startsWith("http"))fetch("/status").then(r=>r.json()).then(j=>{A.served=true;A.ok=j.models.length>0;A.models=j.models;A.model=j.default;bar()}).catch(()=>{});
 </script></body></html>"""
 
 
