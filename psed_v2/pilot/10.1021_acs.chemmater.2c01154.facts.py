@@ -15,7 +15,7 @@ def hr(r):
 
 
 def ratio(ev, r, what, mentions, dk="chosen input"):
-    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="plasma_gas_ratio", qualifiers="gas=h2",
+    return F(K, ev, "setting", f"{what}: {R} set to {r}", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases",
              label_as_printed=R, value=r, data_kind=dk, mentions=mentions)
 
 
@@ -123,7 +123,7 @@ F(K, "s3.p2", "claim", "Plasma feed gas composition and deposition temperature t
 F(K, "s3.p2", "definition", "a-MoS2+x denotes amorphous S-rich films and c-MoS2 polycrystalline MoS2 films.",
   mentions="a-MoS2+x;c-MoS2")
 F(K, "eq1;s3.p2;s3.p3;tab2.r0c0", "definition", "The H2 flow ratio is the H2 fraction of the H2 plus H2S flow in the plasma "
-  "feed gas.", quantity="plasma_gas_ratio", qualifiers="gas=h2", mentions="eq 1;H2 flow ratio")
+  "feed gas.", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", mentions="eq 1;H2 flow ratio")
 F(K, "eq1;s3.p3", "model", "Eq. 1 relates the H2 flow ratio to the H2 and H2S flow rates in sccm: ratio = H2/(H2 + H2S).",
   mentions="eq 1")
 F(K, "s3.p3", "claim", "Absolute flows and other process parameters are given in the Experimental Section.")
@@ -448,34 +448,34 @@ F(K, "s3.p35;fig8", "observation", "Ratio 0.94 gives resistivities down to 4 mΩ
 F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="electrical",
   mentions="100-150 °C")
 HALL = F(K, "s3.p36;s3.p37;s4.p1;s4.p2", "observation", "c-MoS2 films grown with ratios 0.50-0.80 at 100-250 °C show p-type "
-         "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="carrier_concentration",
+         "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="carrier_density",
          label_as_printed="majority carrier (hole) concentration", value="1e21", unit="cm-3", data_kind="measured",
          method="electrical", mentions="0.50-0.80;100-250 °C;Section S10")
 F(K, "s3.p36;s3.p37", "observation", "Hall mobilities of these low-temperature c-MoS2 films are modest, 0.001-0.01 (cm^2/Vs).",
-  quantity="carrier_mobility", label_as_printed="Hall mobility", value_min="0.001", value_max="0.01", unit="cm2 V-1 s-1",
+  quantity="mobility", label_as_printed="Hall mobility", value_min="0.001", value_max="0.01", unit="cm2 V-1 s-1",
   data_kind="measured", method="electrical", mentions="0.50-0.80;100-250 °C")
 F(K, "s3.p37", "observation", "Reference c-MoS2 films from 350-450 °C with ratio 0.20 have carrier densities of order 10^17 to "
-  "10^18 cm^-3.", quantity="carrier_concentration", label_as_printed="carrier density", value_min="1e17", value_max="1e18",
+  "10^18 cm^-3.", quantity="carrier_density", label_as_printed="carrier density", value_min="1e17", value_max="1e18",
   unit="cm-3", data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "observation", "Those reference films have similar or slightly higher mobilities, of order 0.01 (cm^2/Vs), "
-  "here and in Vandalon et al.", quantity="carrier_mobility", label_as_printed="mobility", value="0.01", unit="cm2 V-1 s-1",
+  "here and in Vandalon et al.", quantity="mobility", label_as_printed="mobility", value="0.01", unit="cm2 V-1 s-1",
   data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "claim", "Similar mobilities at 150 and 450 °C indicate comparable electronic quality.", mentions="150 °C;450 °C")
 F(K, "s3.p37", "cited", "MoS2 doped with 10 at.% Al at 450 °C has carrier concentrations and mobilities comparable to the "
   "low-temperature c-MoS2 here.", mentions="10 at. % Al;450 °C;ref. 69")
 F(K, "s3.p37", "claim", "The process offers an easy way to make strongly p-doped MoS2 at low temperature.")
 F(K, "s3.p38", "observation", "At 450 °C, raising the ratio from 0.20 to 0.80 lifts carrier concentration 3 orders of "
-  "magnitude, from 10^17 to 10^20 cm^-3.", quantity="carrier_concentration", label_as_printed="carrier concentration",
+  "magnitude, from 10^17 to 10^20 cm^-3.", quantity="carrier_density", label_as_printed="carrier concentration",
   method="electrical", mentions="450 °C;0.20;0.80")
 F(K, "s3.p38", "observation", "Ratio 0.94 gives extremely high carrier concentrations, of order 10^22 cm^-3, consistent with "
-  "partial Mo content.", quantity="carrier_concentration", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
+  "partial Mo content.", quantity="carrier_density", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
   data_kind="measured", method="electrical", mentions="0.94")
-F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="carrier_concentration",
+F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="carrier_density",
   label_as_printed="carrier concentration", value_min="5e22", value_max="1e23", unit="cm-3", data_kind="literature",
   method="cited", mentions="Mo;ref. 70;ref. 71")
 for r_, v_ in (("0.20", "1e17"), ("0.80", "1e20")):                      # the two ends of s3.p38's change are two films' values (P14)
     F(K, "s3.p38", "observation", f"At 450 °C and ratio {r_} the carrier concentration is of order {v_.replace('1e', '10^')} cm^-3.",
-      quantity="carrier_concentration", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="electrical",
+      quantity="carrier_density", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="electrical",
       mentions=f"450 °C;{r_}")
 F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="composition",
   qualifiers="element=S", label_as_printed="S/Mo", value_min="1.8", value_max="2.2", data_kind="measured", method="xps",
@@ -529,7 +529,7 @@ F(K, "s3.p44", "setting", "Annealing in air at 150 °C, the lowest temperature a
 F(K, "s3.p45", "claim", "The H2 flow ratio is a key parameter for low-temperature PEALD of TMDCs generally, allowing crystalline "
   "films at lower temperatures than before.", mentions="H2")
 F(K, "s3.p45;s5.p8", "cited", "The group's published WS2 and TiS2 PEALD processes use H2S/Ar plasma without H2 (ratio 0) and give "
-  "highly S-rich films at low temperature.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R, value="0",
+  "highly S-rich films at low temperature.", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", label_as_printed=R, value="0",
   data_kind="literature", method="cited", mentions="ref. 52;ref. 53;H2S/Ar")
 F(K, "s3.p46", "cited", "The tungsten sulfide process gives crystalline WS2 only from 300 °C.", quantity="deposition_temperature",
   value="300", unit="°C", data_kind="literature", method="cited", mentions="ref. 52;ref. 67;ref. 79;WS2")
@@ -566,7 +566,7 @@ F(K, "s3.p51", "observation", "With rising ratio, atomic H emission grows while 
 F(K, "s3.p51", "claim", "H2S itself contains H, so some atomic H forms even with no added H2.")
 F(K, "s3.p52", "claim", "A higher atomic H to reactive S ratio may either keep excess S out or add a reaction that removes S.")
 F(K, "s3.p52", "setting", "Extra step test: a separate H2 gas or H2 plasma step follows the H2S/H2/Ar plasma (ratio 0.20) at "
-  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R,
+  "150 °C, conditions that otherwise give a-MoS3.4.", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", label_as_printed=R,
   value="0.20", data_kind="chosen input", mentions="0.20;150 °C;a-MoS3.4")
 F(K, "s3.p52", "observation", "The H2 plasma step removes the extra S and yields c-MoS2, whereas H2 gas changes neither "
   "stoichiometry nor crystallinity.", mentions="Table S8")
@@ -629,7 +629,7 @@ for g, gid, p in (("H2S", "h2s", "99.5"), ("H2", "h2", "99.999"), ("Ar", "ar", "
     F(K, "s5.p4", "setting", f"{g} gas purity is {p}% (Linde Gas).", quantity="precursor_purity", qualifiers=f"species={gid}",
       value=p, unit="%", data_kind="chosen input", mentions=g)
 F(K, "s5.p4", "cited", "In Sharma et al. the H2S and H2 flows were really 8 and 2 sccm (the article had them swapped), i.e. "
-  "ratio 0.20.", quantity="plasma_gas_ratio", qualifiers="gas=h2", label_as_printed=R, value="0.20", data_kind="literature",
+  "ratio 0.20.", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", label_as_printed=R, value="0.20", data_kind="literature",
   method="cited", mentions="ref. 36;8 sccm;2 sccm")
 # Table 2
 T2 = [("0", "10", "0", "40"), ("0.20", "8", "2", "40"), ("0.35", "6.5", "3.5", "40"), ("0.50", "5", "5", "40"),
@@ -939,29 +939,29 @@ for (t, r) in CELLS:
         continue
     RATIO_RUN[f"T{t}_R{r}"] = F(K, "fig2;fig4" + (";" + RATIO_EV[(t, r)] if (t, r) in RATIO_EV else ""), "setting",
                                 f"{t} °C, {R} {r}: H2 share of the plasma feed set to {r}", quantity="plasma_gas_ratio",
-                                qualifiers="gas=h2", value=r, data_kind="chosen input", mentions=f"{r};{t} °C")
+                                qualifiers="gas=h2;relative_to=reactive_gases", value=r, data_kind="chosen input", mentions=f"{r};{t} °C")
 for n in ("10", "20", "30", "50"):
     RATIO_RUN[f"T150_R0.80_N{n}"] = F(K, "fig1b;s3.p5", "setting", f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b: H2 share of the "
-                                      f"plasma feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80",
+                                      f"plasma feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0.80",
                                       data_kind="chosen input", mentions=f"0.80;150 °C;{n} cyc")
 RATIO_RUN["T250_R0_lowH2S"] = F(K, "s3.p53", "setting", f"250 °C, {R} 0 with a lowered H2S flow (no H2 added, Fig. S22a): H2 share "
-                                "of the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
+                                "of the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0",
                                 data_kind="chosen input", mentions="0;250 °C;Figure S22a")
 RATIO_RUN["WS2_T150_R0.80"] = F(K, "s5.p8;s3.p46;fig9a;fig9.cap", "setting", f"WS2 at 150 °C, {R} 0.80: H2 share of the plasma "
-                                "feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80",
+                                "feed set to 0.80", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0.80",
                                 data_kind="chosen input", mentions="0.80;150 °C;WS2")
 RATIO_RUN["WS2_T150_R0"] = F(K, "s3.p46;fig9a;fig9.cap", "setting", f"WSx at 150 °C, {R} 0 (no H2 in the plasma feed): H2 share of "
-                             "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
+                             "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0",
                              data_kind="chosen input", mentions="0;150 °C;WS2")
 RATIO_RUN["TiS2_T100_R0.50"] = F(K, "s5.p8;s3.p48;fig9b;fig9.cap", "setting", f"TiS2 at 100 °C, {R} 0.50: H2 share of the plasma "
-                                 "feed set to 0.50", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.50",
+                                 "feed set to 0.50", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0.50",
                                  data_kind="chosen input", mentions="0.50;100 °C;TiS2")
 RATIO_RUN["TiS2_T100_R0"] = F(K, "fig9b;fig9.cap", "setting", f"TiSx at 100 °C, {R} 0 (the Fig. 9b curve labelled 0): H2 share of "
-                              "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0",
+                              "the plasma feed set to 0", quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0",
                               data_kind="chosen input", mentions="0;100 °C;TiS2")
 RATIO_RUN["TiS2_T100_R0.80"] = F(K, "s3.p48", "setting", f"TiSx, {R} 0.80 at a temperature the paper does not state (100 °C "
                                  "inferred from the TiS2 recipe): H2 share of the plasma feed set to 0.80",
-                                 quantity="plasma_gas_ratio", qualifiers="gas=h2", value="0.80", data_kind="chosen input",
+                                 quantity="plasma_gas_ratio", qualifiers="gas=h2;relative_to=reactive_gases", value="0.80", data_kind="chosen input",
                                  mentions="0.80;TiS2")
 
 # ------------------------------------------------------------------ the deposition temperature of every heat-map row and the cycles of every Fig. 1b film
@@ -973,7 +973,7 @@ CYC_TEM = cyc("s3.p26;fig6b", "500", f"150 °C, {R} 0.65, the about 50 nm film o
 # the film material (lists.MATERIALS) of the process and of the WS2 and TiS2 groups, and the structure type (planar substrates)
 MAT = F(K, "abs.g1;s5.p1", "setting", "film material of the main process", quantity="material", value_text="mos2", data_kind="chosen input",
         mentions="MoS2")
-STRUCT = F(K, "s5.p2;s5.p3", "setting", "substrate form: planar pieces of wafer or foil", quantity="structure_type", value_text="planar",
+STRUCT = F(K, "s5.p2;s5.p3", "setting", "substrate form: planar pieces of wafer or foil", quantity="structure", value_text="planar",
            data_kind="chosen input")
 MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", quantity="material", value_text="ws2", data_kind="chosen input",
           mentions="WS2")
@@ -1019,7 +1019,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     'abs.g2#1': ('deposition_temperature', 'crystallinity'),
     'abs.g2#2': ('plasma_gas_ratio;mechanism:excess_S', 'crystallinity'),
     'abs.g3#1': ('deposition_temperature;plasma_gas_ratio', 'composition;crystallinity'),
-    'abs.g3#2': ('', 'carrier_concentration'),
+    'abs.g3#2': ('', 'carrier_density'),
     'abs.g4#1': ('', ''),
     'abs.g4#2': ('mechanism:plasma_chemistry', 'composition'),
     's2.p8#5': ('', ''),
@@ -1053,15 +1053,15 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's3.p26#6': ('deposition_temperature;mechanism:excess_S', 'composition'),
     's3.p28#2': ('plasma_gas_ratio', 'growth_per_cycle'),
     's3.p29#2': ('plasma_gas_ratio;mechanism:precursor_adsorption;mechanism:fin_growth', 'growth_per_cycle'),
-    's3.p30#4': ('plasma_gas_ratio;mechanism:thiol_groups', 'growth_per_cycle;carrier_concentration'),
+    's3.p30#4': ('plasma_gas_ratio;mechanism:thiol_groups', 'growth_per_cycle;carrier_density'),
     's3.p31#1': ('mechanism:fin_growth;cycle_number', 'growth_per_cycle'),
     's3.p32#2': ('mechanism:precursor_adsorption', 'growth_per_cycle'),
     's3.p32#4': ('crystallinity', 'growth_per_cycle'),
     's3.p33#1': ('plasma_gas_ratio', 'resistivity'),
-    's3.p37#3': ('deposition_temperature', 'carrier_mobility'),
-    's3.p37#5': ('', 'carrier_concentration'),
-    's3.p39#2': ('mechanism:H_incorporation', 'carrier_concentration'),
-    's3.p39#4': ('mechanism:S_vacancy', 'carrier_concentration'),
+    's3.p37#3': ('deposition_temperature', 'mobility'),
+    's3.p37#5': ('', 'carrier_density'),
+    's3.p39#2': ('mechanism:H_incorporation', 'carrier_density'),
+    's3.p39#4': ('mechanism:S_vacancy', 'carrier_density'),
     's3.p41#2': ('', 'mechanism:H_incorporation'),
     's3.p44#3': ('film_thickness', 'resistivity'),
     's3.p44#5': ('', ''),

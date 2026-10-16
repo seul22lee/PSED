@@ -68,7 +68,7 @@ def q2():
     rows = []
     for m in D["members"]:
         d = detail(m)
-        h = res(d, "effective_channel_height"); pd = res(d, "penetration_depth", level="50%")
+        h = res(d, "feature_width", stage="final"); pd = res(d, "penetration_depth", level="50%")
         if h and pd:
             rows.append((d["name"], h[0]["record"]["value"], pd[0]["record"]["value"]))
     if len(rows) < 2:
@@ -113,8 +113,10 @@ def q5():
 
 def q6():
     """TMA exposure per pulse and per run, in Torr·s."""
-    a = {i: r for i, r in find(paper="yim20", result="exposure")["rows"].items() if r["role"] == "specimen"}
-    b = {i: r for i, r in find(paper="yim20", result="exposure_per_run")["rows"].items() if r["role"] == "specimen"}
+    rows = {i: r for i, r in find(paper="yim20", result="exposure")["rows"].items() if r["role"] == "specimen"}
+    pick = lambda r, key: dict(r, result=[x for x in r["result"] if x["key"] == key])
+    a = {i: pick(r, "exposure") for i, r in rows.items() if any(x["key"] == "exposure" for x in r["result"])}
+    b = {i: pick(r, "exposure{over=run}") for i, r in rows.items() if any(x["key"] == "exposure{over=run}" for x in r["result"])}
     if not a:
         return unanswerable("", "no yim20 experiment has an exposure")
     per = sorted({r["result"][0]["record"]["text"] for r in a.values()}); run = sorted({r["result"][0]["record"]["text"] for r in b.values()})
@@ -127,7 +129,7 @@ def q7():
     """c_TMA of this work against Ylilammi 2018 in Table 2, with the film density each assumed."""
     rep = detail(group("yim20", "sample 2, 4, 8")["id"])
     own = next(v for v in rep["values"] if "sticking" in v["statement"] or v["fact"].startswith("yim20:tab2"))
-    yli = next(r for r in find(paper="yim20", result="lumped_sticking_coefficient")["rows"].values() if r["name"].startswith("Ylilammi"))
+    yli = next(r for r in find(paper="yim20", result="initial_sticking_coefficient")["rows"].values() if r["name"].startswith("Ylilammi"))
     y_c = next(x["record"] for x in yli["result"] if "TMA" in x["name"])
     y_d = next(x["record"] for x in detail(yli["id"])["results"] if x["key"].startswith("film_density"))
     dens = next(c["record"] for c in detail(group("yim20", "model simulations")["members"][0])["recipe"] if c["key"].startswith("film_density"))
@@ -140,7 +142,7 @@ def q8():
     """The effective channel height of the 500 nm design from the fabrication tolerances."""
     s8 = next(r for r in find(paper="yim20")["rows"].values() if r["name"] == "sample 8")
     piece = detail(detail(s8["id"])["what"]["input_ids"][0]); parent = detail(piece["what"]["parent"])
-    h = cond(piece, "feature_height")["record"]
+    h = cond(piece, "feature_width")["record"]
     bend = next(r["record"] for r in piece["results"] if "bending" in r["name"])
     step = next(r["record"] for r in parent["results"] if "nanostep" in r["name"])
     return answered(f"design {h['text']} ± {h['uncertainty']['value']} nm ({h['uncertainty']['stat']} between {h['uncertainty']['kind']}), membrane bending {bend['text']}, entrance nanostep {step['text']} → "
@@ -151,10 +153,13 @@ def q8():
 # ------------------------------------------------------------------ within mat22
 def q9():
     """GPC at ratio 0.20 implied by the cycle numbers chosen to give 10 nm, per temperature, against the Fig. 7b colour-read GPC."""
-    rows = find(paper="mat22", result="target_growth_per_cycle", conditions={"plasma_gas_ratio": (0.2, 0.2)})["rows"]
+    rows = find(paper="mat22", result="growth_per_cycle", conditions={"plasma_gas_ratio": (0.2, 0.2)})["rows"]
     out = []
     for r in rows.values():
-        d = detail(r["id"]); imp = r["result"][0]["record"]; read = res(d, "growth_per_cycle")
+        d = detail(r["id"]); tg = [x for x in r["result"] if x["key"] == "growth_per_cycle{kind=target;over=run}"]
+        if not tg:
+            continue
+        imp = tg[0]["record"]; read = [x for x in res(d, "growth_per_cycle") if "kind=target" not in x["key"]]
         t = cond(d, "deposition_temperature")["record"]["value"]
         out.append((t, f"{g(t)} °C: {cond(d, 'cycle_number')['record']['text']} cycles → {g(imp['value'] * 10, 2)} Å implied" + (f" vs {vt(read[0]['record'])}" if read else "")))
     return answered("; ".join(x for _, x in sorted(out, reverse=True)), "find(mat22, GPC implied by the thickness target, ratio 0.20) → detail(each).recipe and results") if out \
@@ -199,9 +204,12 @@ def q12():
 def q13():
     """The H2 fraction of the total plasma feed (Ar included) for each ratio."""
     per = {}
-    for r in find(paper="mat22", material="mos2", result="plasma_h2_fraction")["rows"].values():
+    for r in find(paper="mat22", material="mos2", result="plasma_gas_ratio")["rows"].values():
+        share = [x for x in r["result"] if x["key"] == "plasma_gas_ratio{gas=h2;relative_to=all_gases}"]
+        if not share:
+            continue
         ratio = cond(detail(r["id"]), "plasma_gas_ratio")["record"]["text"]
-        per.setdefault(ratio, set()).add(r["result"][0]["record"]["text"])
+        per.setdefault(ratio, set()).add(share[0]["record"]["text"])
     return answered("; ".join(f"ratio {k}: {', '.join(sorted(v))}" for k, v in sorted(per.items(), key=lambda x: float(x[0]))),
                     "find(mat22, H2 share of the plasma feed): every film's computed share, listed by its ratio")
 
@@ -260,7 +268,7 @@ def q19():
     yim = [r for c in claims(paper="yim20", variable="knudsen_number") for r in c["rests_on"] if "Knudsen" in r["statement"]]
     yim += [r for c in claims(paper="yim20") if c["id"] == "yim20:s19.p3#7" for r in c["rests_on"] if "Knudsen" in r["statement"]]
     gre = find(paper="gre23", result="knudsen_number")["rows"]
-    mat = {cond(detail(r["id"]), "structure_type")["record"]["text"] for r in find(paper="mat22")["rows"].values() if r["role"] == "specimen"}
+    mat = {cond(detail(r["id"]), "structure")["record"]["text"] for r in find(paper="mat22")["rows"].values() if r["role"] == "specimen"}
     ass = sorted({a for r in gre.values() for a in r["result"][0]["record"].get("assumed", [])})
     return answered(f"yim20: {'; '.join(dict.fromkeys(vt(r) + ' (' + r['statement'][:40] + ')' for r in yim))} · mat22: {', '.join(sorted(mat))} films, no Knudsen number applies · gre23: " +
                     "; ".join(f"{r['name']} {vt(r['result'][0]['record'])}" for r in gre.values()) + f" (assumed: {', '.join(ass)})",
@@ -271,7 +279,7 @@ def q20():
     """Exposure per dose, yim20 against gre23, and what AR² scaling from yim20's x̃50 would predict for gre23's AR."""
     rep = detail(group("yim20", "sample 2, 4, 8")["id"])
     ex = find(paper="yim20", result="exposure")["rows"][rep["members"][0]]["result"][0]["record"]
-    x50 = [res(detail(m), "dimensionless_distance", level="50%")[0]["record"]["value"] for m in rep["members"]]
+    x50 = [res(detail(m), "coated_aspect_ratio", basis="AR")[0]["record"]["value"] for m in rep["members"]]
     pair = detail(group("gre23", "120, 160")["members"][0])
     eg = cond(pair, "exposure")["record"]; ar = res(detail(pair["what"]["input_ids"][0]), "aspect_ratio")[0]["record"]
     pred = ex["value"] * (ar["value"] / (sum(x50) / len(x50))) ** 2
@@ -358,7 +366,7 @@ def q25():
 def q26():
     """All lumped sticking coefficients of TMA with temperature and source."""
     out = []
-    for r in find(result="lumped_sticking_coefficient")["rows"].values():
+    for r in find(result="initial_sticking_coefficient")["rows"].values():
         t = cond(detail(r["id"]), "deposition_temperature")
         for x in r["result"]:
             if "TMA" in x["name"]:

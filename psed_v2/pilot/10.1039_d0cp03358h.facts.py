@@ -87,10 +87,10 @@ F(K, "s2.p9", "definition", "LHAR features are usually made so deep that the fil
 F(K, "s2.p10", "cited", "Dendooven et al. assembled macroscopic rectangular LHAR channels with heights in the hundreds of micrometres",
   method="cited", mentions="ref. 31;ref. 39")
 F(K, "s2.p10", "cited", "Gao et al. microfabricated LHAR cavities (Si bottom, polysilicon roof, SiO2 pillars) with design heights of 200, 500 or 1000 nm and ARs above 10 000:1; called PillarHall-1 here",
-  quantity="feature_height", label_as_printed="design cavity height", value_min="200", value_max="1000", unit="nm",
+  quantity="feature_width", label_as_printed="design cavity height", value_min="200", value_max="1000", unit="nm",
   data_kind="literature", method="cited", mentions="ref. 40;PillarHall-1")
 F(K, "s2.p10;tab2.r2c2;tab2.r0c2", "cited", "Schwille et al. built centrosymmetric MEMS-like LHAR cavities with a limiting gap height of 4.5 µm",
-  quantity="feature_height", label_as_printed="LHAR H", value="4.5", unit="µm", data_kind="literature", method="cited",
+  quantity="feature_width", label_as_printed="LHAR H", value="4.5", unit="µm", data_kind="literature", method="cited",
   mentions="ref. 30;ref. 41;Schwille et al. (2016)")
 F(K, "s2.p10", "cited", "improved microscopic rectangular LHAR channels derived from the Gao process were used before but not described in detail",
   method="cited", mentions="ref. 33;ref. 36;ref. 42-44")
@@ -183,7 +183,7 @@ F(K, "s5.p1", "setting", "the test chips (PillarHall-3, third generation) were m
 F(K, "s5.p1", "setting", "starting substrates: low-doped 150 mm Si(100) wafers, so the growth surface is silicon (its native oxide)", quantity="substrate", value_text="si", mentions="Si (100)")
 for h in ("100", "500", "2000"):
     F(K, "s5.p1", "setting", f"one of the targeted channel heights, set by thermal oxide growth, is {h} nm",
-      quantity="feature_height", label_as_printed="targeted channel height H", value=h, unit="nm", data_kind="chosen input",
+      quantity="feature_width", label_as_printed="targeted channel height H", value=h, unit="nm", data_kind="chosen input",
       mentions=f"H {h} nm")
 F(K, "s5.p1", "setting", "fabrication steps: multi-step polysilicon membrane from SiH4, several photolithography steps, a plug-up step, and HF vapour etching last",
   mentions="ref. 40")
@@ -268,7 +268,7 @@ F(K, "s8.p1", "claim", "eqn (1) of ref. 33 has an error: both right-hand terms s
   mentions="ref. 33;eqn (1)")
 
 # ------------------------------------------------------------------ Fig. 1
-F(K, "fig1.cap;fig1a;tabu2.r2c0;tabu2.r2c1", "definition", "H: height of the LHAR channel (nm)", quantity="feature_height", label_as_printed="H", unit="nm",
+F(K, "fig1.cap;fig1a;tabu2.r2c0;tabu2.r2c1", "definition", "H: height of the LHAR channel (nm)", quantity="feature_width", label_as_printed="H", unit="nm",
   mentions="Fig. 1a")
 F(K, "fig1.cap;fig1a;tabu2.r6c0;tabu2.r6c1", "definition", "L: lateral length of the LHAR channel (µm)", label_as_printed="L", unit="µm",
   mentions="Fig. 1a")
@@ -325,7 +325,7 @@ def tab1_facts():
                                 ("pulse_time", "step=reactant_B;species=h2o", b, "water pulse"), ("purge_time", "step=purge_B", pb, "purge after water")):
             F(K, ev(2), "setting", f"sample {n}: {txt} {val} s (pulse-purge column)", quantity=q, qualifiers=st, value=val, unit="s",
               data_kind="chosen input", mentions=men)
-        ID[n, 3] = F(K, ev(3), "setting", f"sample {n}: design channel height H {H} nm", quantity="feature_height",
+        ID[n, 3] = F(K, ev(3), "setting", f"sample {n}: design channel height H {H} nm", quantity="feature_width",
                      label_as_printed="Design channel height H", value=H, unit="nm", data_kind="chosen input", mentions=men)
         F(K, ev(4), "setting", f"sample {n}: pillar layout", quantity="pillar_layout", label_as_printed="Pillar layout", value_text=lay,
           mentions=f"{men};{lay}")
@@ -353,8 +353,8 @@ def tab1_facts():
         ID[n, 11] = F(K, ev(11), "observation", f"sample {n}: x50% (PD50%) {v[4]} µm", quantity="penetration_depth",
                       qualifiers="level=50%;origin=entrance", label_as_printed="x_50% (PD^50%)", value=v[4], unit="µm",
                       data_kind="measured", method="reflectometry", mentions=men)
-        F(K, ev(12), "derived", f"sample {n}: dimensionless x~50% {v[5]}", quantity="dimensionless_distance",
-          qualifiers="level=50%;by=H", label_as_printed="x̃_50%", value=v[5], data_kind="calculated", method="calculation",
+        F(K, ev(12), "derived", f"sample {n}: dimensionless x~50% {v[5]}, the half-thickness depth over the channel height, i.e. the aspect ratio the coating reached", quantity="coated_aspect_ratio",
+          qualifiers="basis=AR", label_as_printed="x̃_50%", value=v[5], data_kind="calculated", method="calculation",
           mentions=men, inputs=[ID[n, 11], ID[n, 3]])
         ID[n, 13] = F(K, ev(13), "derived", f"sample {n}: front slope d(S/N)/dx~ {v[6]} nm", quantity="front_slope", qualifiers="by=H",
                       label_as_printed="Slope d(S/N)/dx̃", value=v[6], unit="nm", data_kind="fit", method="calculation", mentions=men,
@@ -552,7 +552,7 @@ PAR = [("T", "deposition_temperature", "", "300", "°C", "temperature"),
        ("gpc_sat", "growth_per_cycle", "", "0.098", "nm", "saturation growth per cycle"),
        ("q", "saturation_density", "", "3.6", "nm-2", "adsorption density at saturation"),
        ("K", "other", "", "1000.0", "Pa-1", "adsorption equilibrium constant"),
-       ("c_TMA", "lumped_sticking_coefficient", "species=tma", "0.012", "", "lumped sticking coefficient of TMA"),
+       ("c_TMA", "initial_sticking_coefficient", "species=tma", "0.012", "", "lumped sticking coefficient of TMA"),
        ("P_d", "other", "", "0.043", "1 s-1", "desorption probability per unit time")]
 for sym, q, qual, val, unit, what in PAR:
     F(K, "fig10.cap", "model", f"simulation input {sym} = {val} {unit}: {what}".strip(), quantity=q, qualifiers=qual,
@@ -603,7 +603,7 @@ F(K, "s16.p3", "observation", "the PillarHall-3 channel entrance has a nanostep 
   label_as_printed="nanostep height", value_min="2", value_max="5", unit="nm", data_kind="measured", mentions="PillarHall-3")
 for tol, h in (("10", "100"), ("20", "500"), ("30", "2000")):
     F(K, "s16.p4", "observation", f"tolerance of the oxide thickness defining the channel height: ± {tol} nm for the {h} nm design (from oxide measured in fabrication, ESI Table S5)",
-      quantity="feature_height", qualifiers="stat=tolerance;between=items;n=not_stated", label_as_printed="tolerance for the oxide thickness", value=tol, unit="nm", data_kind="measured",
+      quantity="feature_width", qualifiers="stat=tolerance;between=items;n=not_stated", label_as_printed="tolerance for the oxide thickness", value=tol, unit="nm", data_kind="measured",
       mentions=f"{h} nm;Table S5")
 F(K, "s16.p4", "claim", "the smaller the design height the larger the relative height uncertainty; unknown factors may add deviation, so measuring the real height is advised")
 F(K, "s16.p4;s16.p5", "model", "for a 500 nm channel a 1% height error causes roughly a 1.5% error in penetration depth (ESI Fig. S10)",
@@ -751,11 +751,11 @@ def lit(r, c, stmt, extra="", **kw):
 
 lit(1, 0, "Dendooven et al. (2009): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
 lit(1, 1, "Dendooven et al. (2009): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="macroscopic rectangular")
-lit(1, 2, "Dendooven et al. (2009): LHAR H 100 µm", quantity="feature_height", label_as_printed="LHAR H", value="100", unit="µm")
+lit(1, 2, "Dendooven et al. (2009): LHAR H 100 µm", quantity="feature_width", label_as_printed="LHAR H", value="100", unit="µm")
 lit(1, 3, "Dendooven et al. (2009): max. AR 200:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="200")
 lit(1, 4, "Dendooven et al. (2009): 150 cycles", quantity="cycle_number", value="150")
 lit(1, 5, "Dendooven et al. (2009): reactor", quantity="reactor_type", value_text="home-built")
-lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="0.1")
+lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="0.1")
 lit(2, 0, "Schwille et al. (2016): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
 lit(2, 1, "Schwille et al. (2016): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic centrosymmetric")
 lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude estimate (footnote a)", extra="s18.p3",
@@ -763,51 +763,51 @@ lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude es
 F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter",
   method="cited", mentions="ref. 41;a")
 lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor_type", value_text="single-wafer cross-flow hot-wall")
-lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="2e-2")
+lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="2e-2")
 F(K, "s18.p3;tab2.r2c4;tab2.r3c4;tab2.r0c4", "cited", "the number of ALD cycles is not reported for the Schwille and Vandalon works (dash, footnote b)",
   method="cited", mentions="ref. 41;ref. 60;b")
 lit(3, 0, "Vandalon et al. (2016): temperatures 100–300 °C", quantity="deposition_temperature", value_min="100", value_max="300", unit="°C")
 F(K, "s18.p3;tab2.r3c1;tab2.r3c2;tab2.r3c3;tab2.r0c1", "cited", "Vandalon et al. coated a planar Si(100) wafer, not an LHAR feature; their coefficients are listed for reference (footnote c)",
   method="cited", mentions="ref. 60;c")
 lit(3, 5, "Vandalon et al. (2016): reactor", quantity="reactor_type", value_text="home-built")
-lit(3, 6, "Vandalon et al. (2016): c_TMA of order 10^-3 (footnote d)", extra="s18.p3", quantity="lumped_sticking_coefficient",
+lit(3, 6, "Vandalon et al. (2016): c_TMA of order 10^-3 (footnote d)", extra="s18.p3", quantity="initial_sticking_coefficient",
     qualifiers="species=tma", value="1e-3")
-lit(3, 7, "Vandalon et al. (2016): c_H2O of order 10^-4 (footnote d)", extra="s18.p3;tab2.r0c7", quantity="lumped_sticking_coefficient",
+lit(3, 7, "Vandalon et al. (2016): c_H2O of order 10^-4 (footnote d)", extra="s18.p3;tab2.r0c7", quantity="initial_sticking_coefficient",
     qualifiers="species=h2o", value="1e-4")
 for v, t, extra in (("1e-4", "300", ""), ("1e-6", "100", "")):
-    F(K, "s18.p3", "cited", f"follow-up Vandalon et al. (2017): c_H2O {v.replace('1e-', '1 × 10^-')} at {t} °C", quantity="lumped_sticking_coefficient",
+    F(K, "s18.p3", "cited", f"follow-up Vandalon et al. (2017): c_H2O {v.replace('1e-', '1 × 10^-')} at {t} °C", quantity="initial_sticking_coefficient",
       qualifiers="species=h2o", value=v, data_kind="literature", method="cited", mentions=f"Vandalon et al. (2017);{t} °C")
-F(K, "s18.p3", "cited", "follow-up Vandalon et al. (2017): c_TMA 2 × 10^-3, independent of temperature", quantity="lumped_sticking_coefficient",
+F(K, "s18.p3", "cited", "follow-up Vandalon et al. (2017): c_TMA 2 × 10^-3, independent of temperature", quantity="initial_sticking_coefficient",
   qualifiers="species=tma", value="2e-3", data_kind="literature", method="cited", mentions="Vandalon et al. (2017)")
 lit(4, 0, "Ylilammi et al. (2018): deposition at 300 °C", quantity="deposition_temperature", value="300", unit="°C")
 lit(4, 1, "Ylilammi et al. (2018): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic rectangular PillarHall-3")
-lit(4, 2, "Ylilammi et al. (2018): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H", value="0.50", unit="µm")
+lit(4, 2, "Ylilammi et al. (2018): LHAR H 0.50 µm", quantity="feature_width", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(4, 3, "Ylilammi et al. (2018): max. AR 2000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="2000")
 lit(4, 4, "Ylilammi et al. (2018): 500 cycles", quantity="cycle_number", value="500")
 lit(4, 5, "Ylilammi et al. (2018): reactor", quantity="reactor_type", value_text="Picosun R-150")
-lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="5.72e-3")
+lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="5.72e-3")
 F(K, "tab2.r1c7;tab2.r2c7;tab2.r4c7;tab2.r0c7", "cited", "Table 2 gives no c_H2O (dash) for Dendooven, Schwille and Ylilammi",
   method="cited", mentions="ref. 31;ref. 41;ref. 33")
 lit(5, 0, "Arts et al. (2019): deposition at 275 °C", quantity="deposition_temperature", value="275", unit="°C")
 lit(5, 1, "Arts et al. (2019): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic rectangular PillarHall-3")
-lit(5, 2, "Arts et al. (2019): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H", value="0.50", unit="µm")
+lit(5, 2, "Arts et al. (2019): LHAR H 0.50 µm", quantity="feature_width", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(5, 3, "Arts et al. (2019): max. AR 10 000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="10000")
 lit(5, 4, "Arts et al. (2019): 400 cycles", quantity="cycle_number", value="400")
 lit(5, 5, "Arts et al. (2019): reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor_type", value_text="Oxford Instruments OpAL")
-lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="lumped_sticking_coefficient", qualifiers="species=tma",
+lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="initial_sticking_coefficient", qualifiers="species=tma",
     value_min="0.5e-3", value_max="2e-3")
-lit(5, 7, "Arts et al. (2019): c_H2O (0.8-2) × 10^-4 (exponent on the next parsed row)", extra="tab2.r6c6", quantity="lumped_sticking_coefficient",
+lit(5, 7, "Arts et al. (2019): c_H2O (0.8-2) × 10^-4 (exponent on the next parsed row)", extra="tab2.r6c6", quantity="initial_sticking_coefficient",
     qualifiers="species=h2o", value_min="0.8e-4", value_max="2e-4")
 F(K, "tab2.r6c1;tab2.r0c1;tab2.r7c8", "setting", "this work: LHAR type", quantity="other", label_as_printed="LHAR type",
   value_text="microscopic rectangular PillarHall-3", mentions="This work;PillarHall-3")
-F(K, "tab2.r6c2;tab2.r0c2;tab2.r7c8", "setting", "this work (Table 2 row): LHAR H 0.50 µm", quantity="feature_height", label_as_printed="LHAR H",
+F(K, "tab2.r6c2;tab2.r0c2;tab2.r7c8", "setting", "this work (Table 2 row): LHAR H 0.50 µm", quantity="feature_width", label_as_printed="LHAR H",
   value="0.50", unit="µm", data_kind="chosen input", mentions="This work")
 S = (2, 4, 8, 12)
 F(K, "tab2.r7c6;tab2.r0c6;tab2.r7c8;s19.p4;s18.p3", "derived", "this work: c_TMA 4 × 10^-3, from the Arts et al. method on samples 2, 4, 8 and 12, averaged (footnote f)",
-  quantity="lumped_sticking_coefficient", qualifiers="species=tma", value="4e-3", data_kind="calculated", method="calculation",
+  quantity="initial_sticking_coefficient", qualifiers="species=tma", value="4e-3", data_kind="calculated", method="calculation",
   mentions="This work;sample 2, 4, 8, and 12;ref. 36;f", inputs=[ID[s, 14] for s in S])
 F(K, "tab2.r7c7;tab2.r0c7;tab2.r7c8;s19.p4;s18.p3", "derived", "this work: c_H2O 3 × 10^-4, from the Arts et al. method on sample 14 (footnote g)",
-  quantity="lumped_sticking_coefficient", qualifiers="species=h2o", value="3e-4", data_kind="calculated", method="calculation",
+  quantity="initial_sticking_coefficient", qualifiers="species=h2o", value="3e-4", data_kind="calculated", method="calculation",
   mentions="This work;sample 14;ref. 36;g", inputs=[ID[14, 14]])
 NK("tab2.r6c7", "parser artefact: no such cell on the page")
 
@@ -832,7 +832,7 @@ SYM = {("tabu1", 0): ("a", "distance between pillars", "m"), ("tabu1", 1): ("A",
        ("tabu2", 23): ("x", "distance from the channel opening", "m"), ("tabu2", 26): ("λ_TMA", "mean free path of TMA", "µm"),
        ("tabu2", 27): ("ρ", "film density", "kg m-3")}
 # the quantity a symbol defines, where the paper holds values of it (P36); reactant A is TMA in this paper
-SYM_Q = {"c_TMA": ("lumped_sticking_coefficient", "species=tma"), "c_H2O": ("lumped_sticking_coefficient", "species=h2o"),
+SYM_Q = {"c_TMA": ("initial_sticking_coefficient", "species=tma"), "c_H2O": ("initial_sticking_coefficient", "species=h2o"),
          "GPC": ("growth_per_cycle", ""), "gpc_sat": ("growth_per_cycle", "over=saturation"), "N": ("cycle_number", ""),
          "p_A0": ("partial_pressure", "species=tma"), "q": ("saturation_density", ""), "S_I": ("film_thickness", "position=outside"),
          "S_II": ("film_thickness", ""), "t_p": ("pulse_time", ""), "x": ("distance", ""), "λ_TMA": ("mean_free_path", "species=tma"),
@@ -859,7 +859,7 @@ PUR_R = F(K, "s16.p10;fig8.cap", "claim", "fully independent measurements of one
 # ------------------------------------------------------------------ the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
 MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="material", value_text="al2o3", data_kind="chosen input",
         mentions="Al2O3")
-STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure_type",
+STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure",
            value_text="pillarhall_3", data_kind="chosen input", mentions="PillarHall-3;LHAR")
 
 # ------------------------------------------------------------------ the abscissa of every curve with points (x= qualifier, from the printed x label)
@@ -903,18 +903,18 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's11.x1#2': ('probe_resolution', 'front_slope'),
     's12.x1#2': ('', 'film_thickness'),
     's12.x1#3': ('mechanism:channel_length', 'penetration_depth'),
-    's12.p1#1': ('process_pressure;probe_resolution;feature_height', 'film_thickness'),
+    's12.p1#1': ('process_pressure;probe_resolution;feature_width', 'film_thickness'),
     's13.x1#5': ('mechanism:channel_plugging', 'penetration_depth'),
     's13.x2#3': ('cycle_number;mechanism:channel_narrowing', 'penetration_depth'),
     's13.p2#4': ('', ''),
     's14.p1#3': ('pulse_time', 'front_slope'),
     's14.p1#4': ('pulse_time', 'front_slope'),
-    's16.p1#1': ('feature_height;probe_resolution;process_pressure', 'film_thickness'),
-    's16.p3#1': ('mechanism:membrane_sagging;mechanism:pillar_effect', 'feature_height'),
-    's16.p4#4': ('feature_height', 'feature_height'),
+    's16.p1#1': ('feature_width;probe_resolution;process_pressure', 'film_thickness'),
+    's16.p3#1': ('mechanism:membrane_sagging;mechanism:pillar_effect', 'feature_width'),
+    's16.p4#4': ('feature_width', 'feature_width'),
     's16.p5#7': ('roughness;mechanism:nanostep', 'growth_per_cycle'),
     's16.p5#8': ('roughness', 'penetration_depth;front_slope'),
-    's16.p6#1': ('pillar_layout;feature_height', 'film_thickness'),
+    's16.p6#1': ('pillar_layout;feature_width', 'film_thickness'),
     's16.p7#1': ('mechanism:optical_model;probe_resolution', 'film_thickness'),
     's16.p7#3': ('mechanism:scan_angle', 'penetration_depth'),
     's16.p8#1': ('mechanism:optical_model', 'film_thickness'),
@@ -924,17 +924,17 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's18.p4#1': ('purge_time', 'mechanism:surface_OH'),
     's18.p5#1': ('mechanism:water_readsorption', 'growth_per_cycle'),
     's18.p6#1': ('mechanism:surface_OH', 'penetration_depth'),
-    's19.p3#7': ('', 'lumped_sticking_coefficient'),
-    's19.p4#2': ('', 'lumped_sticking_coefficient'),
-    's19.p4#3': ('', 'lumped_sticking_coefficient'),
+    's19.p3#7': ('', 'initial_sticking_coefficient'),
+    's19.p4#2': ('', 'initial_sticking_coefficient'),
+    's19.p4#3': ('', 'initial_sticking_coefficient'),
     's20.p1#1': ('', ''),
-    's20.p2#1': ('cycle_number;feature_height', 'film_thickness'),
-    's20.p2#2': ('cycle_number;feature_height', 'growth_per_cycle'),
+    's20.p2#1': ('cycle_number;feature_width', 'film_thickness'),
+    's20.p2#2': ('cycle_number;feature_width', 'growth_per_cycle'),
     's20.p2#3': ('knudsen_number;fill_fraction', 'growth_per_cycle'),
     's20.p3#1': ('', 'front_slope'),
     's6.p2#2': ('pillar_layout', 'penetration_depth'),
     's7.p5#12': ('objective_magnification', 'penetration_depth'),
-    's13.x1#6': ('feature_height', 'penetration_depth'),
+    's13.x1#6': ('feature_width', 'penetration_depth'),
     's13.x2#4': ('cycle_number', 'penetration_depth'),
     's18.p2#1': ('purge_time', 'penetration_depth'),
     's16.p10#5': ('mechanism:run_variation', 'penetration_depth'),
@@ -1155,8 +1155,8 @@ for k in list(SIMS) + ["esi"]:
 C.retree(K, PROC, DEPS, ENTS, SIMRUNS, group_facts_to={grp("sims"): SIMACT})
 # each model run's own inputs (P29): the channel height and cycle number the Fig. 10 caption gives each simulated profile
 for k_, (h_, n_) in SIMS.items():
-    for q_, v_, u_ in (("feature_height", h_, "nm"), ("cycle_number", n_, "")):
-        fid_ = F(K, "fig10.cap", "setting", f"simulation run {k_}: {'channel height' if q_ == 'feature_height' else 'cycle number'} {v_}{' ' + u_ if u_ else ''}",
+    for q_, v_, u_ in (("feature_width", h_, "nm"), ("cycle_number", n_, "")):
+        fid_ = F(K, "fig10.cap", "setting", f"simulation run {k_}: {'channel height' if q_ == 'feature_width' else 'cycle number'} {v_}{' ' + u_ if u_ else ''}",
                  quantity=q_, value=v_, unit=u_, data_kind="chosen input", mentions=f"{v_}{' ' + u_ if u_ else ''};sim {k_}")
         next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:simrun:{k_}"
 # observations about the reflectometry method itself (the regions it shows, the spikes) stay on the paper's method activity; the
@@ -1173,7 +1173,7 @@ C.input_entity(K, CHIPS, "PillarHall-3 LHAR chips as fabricated, the input of ev
                "PillarHall-3 chips", "s5.p1;s16.p3", measured=[("metrology", [f"{K}:s16.p3#2"])], inputs_of=[f"{K}:dep:S4"])
 H_DEP = {}
 for f_ in C.facts():
-    if f_["type"] == "setting" and f_["quantity"] == "feature_height" and f_["parent"].startswith((f"{K}:ent:", f"{K}:dep:")):
+    if f_["type"] == "setting" and f_["quantity"] == "feature_width" and f_["parent"].startswith((f"{K}:ent:", f"{K}:dep:")):
         dep_ = f_["parent"] if ":dep:" in f_["parent"] else next(r["parent"] for r in C.facts() if r["fact_id"] == f_["parent"])
         H_DEP.setdefault(int(float(f_["value"])), set()).add(dep_)
 HFACT = {100: f"{K}:s5.p1#3", 500: f"{K}:s5.p1#4", 2000: f"{K}:s5.p1#5"}
@@ -1189,9 +1189,9 @@ for h in (100, 500, 2000):
 C.spread(f"{K}:fig4.cap#1", [f"{K}:meas:ent:{n}:reflectometry" for n in (1, 2, 3)], {f"{K}:meas:ent:{n}:reflectometry": f"sample {n}" for n in (1, 2, 3)})
 C.spread(f"{K}:s7.p5#10", [f"{K}:meas:ent:{n}:reflectometry" for n in (4, 5, 6)], {f"{K}:meas:ent:{n}:reflectometry": f"sample {n}" for n in (4, 5, 6)})
 # the authors' comparisons: the Table 1 series (what each varies), the reproducibility set (a replicate set), the simulations
-C.comparisons(K, {grp("A"): ("series", "pillar_layout"), grp("B"): ("series", "objective_magnification"), grp("C"): ("series", "feature_height"),
+C.comparisons(K, {grp("A"): ("series", "pillar_layout"), grp("B"): ("series", "objective_magnification"), grp("C"): ("series", "feature_width"),
                   grp("D"): ("series", "cycle_number"), grp("E"): ("series", "pulse_time"), grp("F"): ("series", "purge_time"),
-                  grp("repro"): ("replicate", ""), grp("sims"): ("series", "feature_height;cycle_number")})
+                  grp("repro"): ("replicate", ""), grp("sims"): ("series", "feature_width;cycle_number")})
 # in situ or ex situ (P6): the generic measurement activities hold calculations from the ex situ reflectometer profiles
 C.modes(K, {f["fact_id"].split(":", 1)[1]: "ex_situ" for f in C.facts() if f["type"] == "activity" and f["fact_id"].endswith(":measurement")})
 # what each GPC is averaged over (P5): Table 1's S/N and the S/N profiles are thickness over the run's cycles; gpc_sat is the model's
@@ -1221,7 +1221,7 @@ CAVEATS = [
     ("s16.p8", "Reflectometer reference was hard to repeat at ×50 and sometimes needed manual focus; a new reference could shift a ~50 nm reading by a few nm",
      ["recipe"], "film_thickness;growth_per_cycle", ""),
     ("s3.p9;s7.p5", "Table 1 values average several scans on channels of L 0.1-5 mm with outliers dropped (Series B: L 5 mm only), not a single scan",
-     ["recipe"], "penetration_depth;film_thickness;growth_per_cycle;dimensionless_distance;front_slope;fit_r2", ""),
+     ["recipe"], "penetration_depth;film_thickness;growth_per_cycle;coated_aspect_ratio;front_slope;fit_r2", ""),
     ("s7.p5;s3.p9", "Series B samples were evaluated on the 5 mm long channel only, without averaging over channel lengths",
      ["ent:4", "ent:5", "ent:6"], "", ""),
     ("s3.p5", "dθ/dx~ treats thickness normalised to its entrance value as surface coverage θ, an optional reading rather than measured coverage",
@@ -1237,11 +1237,11 @@ CAVEATS = [
     ("s16.p10;s12.x2", "Each Table 1 value is from one chip; repeats on other chips and runs scatter by ~19 µm in PD50% and 2.8 nm in plateau thickness (sd, n=4)",
      ["recipe"], "penetration_depth;film_thickness;front_slope", ""),
     ("s13.p1;s13.x2;s20.p2", "PD50% and front slope shift with channel filling (about 10, 20, 40% at 250, 500, 1000 cycles); the usual 500 cycles exceed the <10% fill advised",
-     ["recipe"], "penetration_depth;dimensionless_distance;front_slope", ""),
+     ["recipe"], "penetration_depth;coated_aspect_ratio;front_slope", ""),
     ("s16.p5;s16.p3;s10.x3", "Inside-channel growth is an apparent vertical value: the rough floor binds more per distance than a flat surface, raising GPC in Region II",
      ["recipe"], "growth_per_cycle;film_thickness", "position=plateau"),
     ("s16.p5", "Owing to channel roughness, PD50% should read slightly smaller and its slope somewhat steeper than on the flat surface assumed in design and models",
-     ["recipe"], "penetration_depth;dimensionless_distance;front_slope", ""),
+     ["recipe"], "penetration_depth;coated_aspect_ratio;front_slope", ""),
     ("s13.x1;s16.p5", "In the 100 nm channel a ~50 nm film plugged the entry during growth and the roof sags ~40 nm, so sample 7 values reflect a closing channel",
      ["tab1.r7c8#1", "tab1.r7c10#1", "tab1.r7c11#1", "tab1.r7c12#1", "tab1.r7c13#1", "tab1.r7c14#1", "tab1.r7c15#1", "fig9a#2", "fig9b#2", "fig9c#2"], "", ""),
     ("s10.p1;s16.p6", "Sample 3 (layout v2a) likely had a channel narrower than the 500 nm design, as the roof hangs lower between its sparse pillars; its front is wavy",

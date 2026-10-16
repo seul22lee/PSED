@@ -15,7 +15,7 @@ from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED,
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
 # ones (an entity that states no temperature is not the same experiment as one that does)
 PRIMARY = ["reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",
-           "purge_time", "feature_height", "cycle_number", "substrate"]
+           "purge_time", "feature_width", "cycle_number", "substrate"]
 
 # substance-scoped settings (P50): a setting of one of these quantities is about one substance and must say which (species= or gas=);
 # for pulse_time only the reactant and hold steps (a plasma step names its feed through the gas settings of the same recipe)
@@ -35,7 +35,7 @@ def substance_scoped(f):
 # the authors read off a series (the ratio from which films are crystalline) is an observation of quantity other
 SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing_temperature", "pulse_time", "purge_time", "cycle_time",
                       "cycle_number", "plasma_gas_ratio", "gas_flow_rate", "carrier_gas", "precursor_purity", "substrate", "pillar_layout",
-                      "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure_type", "material"}
+                      "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure", "material"}
 
 # metal atoms per formula unit of each film material, read from its formula in the ontology (the first element of the formula);
 # a value text not yet a species id (TO_ABSORB_VALUES) keeps its hand count until P50
@@ -74,7 +74,7 @@ METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "i
                "reflectometry": "ex_situ", "gravimetry": "ex_situ", "weighing_before": "ex_situ", "photograph": "ex_situ",
                "optical_microscopy": "ex_situ", "metrology": "ex_situ"}
 # the definition a quantity has when none is named: the screen names a definition only when it differs from this
-DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}}
+DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}, "plasma_gas_ratio": {"relative_to": "reactive_gases"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 # a keyed setting (P17): qualifier key -> the setting whose value it names; inherited only by a node whose own value of that setting matches
 KEYED = {"ratio": "plasma_gas_ratio"}
@@ -127,17 +127,17 @@ def qualifiers_ok(q):
 # canonical units (for stage 4): a fact with one of these quantities carries exactly this unit
 UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
          "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
-         "feature_depth": "nm", "feature_height": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
+         "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
          "resistivity": "Ω cm", "film_density": "g/cm3", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
-         "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "lumped_sticking_coefficient": "", "initial_sticking_coefficient": "",
+         "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "initial_sticking_coefficient": "",
          "recombination_probability": "", "knudsen_number": "", "normalized_thickness": "", "dimensionless_distance": "",
          "step_coverage": "%", "saturation_density": "nm-2", "plasma_gas_ratio": "", "mass_gain": "%", "porosity": "%",
          "crystallite_size": "nm", "gas_moles_per_cycle": "µmol", "deposited_moles_per_cycle": "µmol", "pressure_rise": "Torr",
          "pressure_rate": "mTorr/min", "time_to_maximum": "min", "roughness": "nm", "binding_energy": "eV", "atoms_per_cycle": "nm-2",
-         "carrier_concentration": "cm-3", "carrier_mobility": "cm2/Vs", "objective_magnification": "", "fit_r2": "", "fill_fraction": "%",
+         "carrier_density": "cm-3", "mobility": "cm2/Vs", "objective_magnification": "", "fit_r2": "", "fill_fraction": "%",
          "signal_intensity": "", "reaction_stoichiometry": "", "annealing_temperature": "°C", "raman_shift": "cm-1",
-         "effective_channel_height": "nm", "exposure_per_run": "Torr s", "sheet_resistance": "Ω/sq", "h_per_metal": "", "density_relative_to_bulk": "%",
-         "moles_deposited": "mmol", "moles_from_mass_gain": "mmol", "shell_volume_fraction": "%", "deposition_rate": "nm/h", "coating_mass_fraction": "%", "target_growth_per_cycle": "nm", "plasma_h2_fraction": "%"}
+         "sheet_resistance": "Ω/sq", "h_per_metal": "", "density_relative_to_bulk": "%",
+         "moles_deposited": "mmol", "moles_from_mass_gain": "mmol", "shell_volume_fraction": "%", "deposition_rate": "nm/h", "coating_mass_fraction": "%"}
 
 # unit normalisation: spellings the facts use for one unit, and every unit's dimension and factor to that dimension's base unit;
 # convert() turns a value from one unit into another of the same dimension (°C and K by offset)
@@ -182,11 +182,11 @@ BASIS = {"mass_gain": {("initial_mass", "initial_mass"): lambda x: x, ("final_ma
 
 
 DERIVED = {
-    "effective_channel_height": dict(unit="nm", formula="H − 2·S_IIb: the design height minus twice the plateau thickness",
-                                     inputs=[_in("H", "feature_height", "", "nm"), _in("S", "film_thickness", "position=plateau", "nm")], fn=lambda H, S: H - 2 * S),
+    "feature_width{stage=final}": dict(unit="nm", qualifiers="stage=final", formula="H − 2·S_IIb: the design height minus twice the plateau thickness, the channel height at the end of the run",
+                                     inputs=[_in("H", "feature_width", "", "nm"), _in("S", "film_thickness", "position=plateau", "nm")], fn=lambda H, S: H - 2 * S),
     "exposure": dict(unit="Torr s", formula="partial pressure of reactant A × its pulse time",
                      inputs=[_in("p", "partial_pressure", "step=reactant_A", "Torr"), _in("t", "pulse_time", "step=reactant_A", "s")], fn=lambda p, t: p * t),
-    "exposure_per_run": dict(unit="Torr s", formula="exposure per pulse × cycle number",
+    "exposure{over=run}": dict(unit="Torr s", qualifiers="over=run", formula="exposure per pulse × cycle number",
                              inputs=[_in("E", "exposure", "", "Torr s"), _in("N", "cycle_number", "", "")], fn=lambda E, N: E * N),
     "sheet_resistance": dict(unit="Ω/sq", formula="resistivity / film thickness",
                              inputs=[_in("rho", "resistivity", "", "Ω cm"), _in("t", "film_thickness", "", "cm")], fn=lambda rho, t: rho / t),
@@ -208,9 +208,9 @@ DERIVED = {
     "moles_from_mass_gain": dict(unit="mmol", formula="mass gain × powder mass per compact × compacts per run / M",
                                  inputs=[_in("mg", "mass_gain", "", "", basis="initial_mass"), _in("m0", "other:powder mass", "", "g"), _in("k", "other:NPCs per run", "", ""),
                                          _in("M", "other:molar mass", "species=@material", "g/mol")], fn=lambda mg, m0, k, M: 1000 * mg * m0 * k / M),
-    "target_growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="thickness target / cycles: the growth per cycle the chosen cycle count implies",
+    "growth_per_cycle{kind=target;over=run}": dict(unit="nm", qualifiers="kind=target;over=run", formula="thickness target / cycles: the growth per cycle the chosen cycle count implies",
                                     inputs=[_in("t", "film_thickness", "kind=target", "nm"), _in("N", "cycle_number", "", "")], fn=lambda t, N: t / N),
-    "plasma_h2_fraction": dict(unit="%", formula="H2 flow / (H2S + H2 + Ar flow): the H2 share of the whole plasma feed",
+    "plasma_gas_ratio{gas=h2;relative_to=all_gases}": dict(unit="%", qualifiers="gas=h2;relative_to=all_gases", formula="H2 flow / (H2S + H2 + Ar flow): the H2 share of the whole plasma feed",
                                inputs=[_in("h2", "gas_flow_rate", "gas=h2;step=plasma", "sccm"), _in("h2s", "gas_flow_rate", "gas=h2s;step=plasma", "sccm"),
                                        _in("ar", "gas_flow_rate", "gas=ar;step=plasma", "sccm")], fn=lambda h2, h2s, ar: 100 * h2 / (h2 + h2s + ar)),
     "coating_mass_fraction": dict(unit="%", formula="the coating's share of the coated sample's mass: mass gain / (1 + mass gain), mass gain relative to the initial mass",
@@ -229,7 +229,17 @@ DERIVED = {
     "deposition_rate": dict(unit="nm/h", formula="GPC × 3600 / cycle time",
                             inputs=[_in("gpc", "growth_per_cycle", "", "nm", pick=["", "position=plateau"]), _in("tc", "cycle_time", "", "s")], fn=lambda gpc, tc: gpc * 3600 / tc),
 }
-assert all(k in QUANTITIES for k in DERIVED), "DERIVED key not a quantity id"
+
+
+def derived_key(k):
+    """A DERIVED key split into (quantity id, {qualifier: value}): 'exposure{over=run}' -> ('exposure', {'over': 'run'})."""
+    q, _, rest = k.partition("{")
+    return q, dict(p.split("=", 1) for p in rest.rstrip("}").split(";") if "=" in p)
+
+
+assert all(derived_key(k)[0] in QUANTITIES for k in DERIVED), "DERIVED key not a quantity id"
+assert all(derived_key(k)[1].items() <= dict(p.split("=", 1) for p in D.get("qualifiers", "").split(";") if "=" in p).items() for k, D in DERIVED.items()), \
+    "a DERIVED key's qualifiers are not among its definition's"
 
 # short display labels, used by every screen: one per quantity id, and one per common quantity{qualifiers} combination
 # (qualifiers written as in the facts, without x=). A combination not listed shows the quantity's label followed by the
@@ -241,15 +251,16 @@ LABELS = {**_LABELS, "other": "other",   # the id labels come from the ontology 
     "deposition_temperature{kind=set_point}": "T set point", "deposition_temperature{step=reactant_A}": "T (A dose)",
     "deposition_temperature{step=purge_A}": "T (purge A)", "deposition_temperature{step=reactant_B}": "T (B dose)",
     "deposition_temperature{step=purge_B}": "T (purge B)",
-    "dimensionless_distance{level=50%;by=H}": "x̃50", "penetration_depth{level=50%;origin=entrance}": "PD50",
+    "coated_aspect_ratio{basis=AR}": "x̃50", "penetration_depth{level=50%;origin=entrance}": "PD50",
     "penetration_depth{origin=entrance}": "PD", "front_slope{by=H}": "slope d(S/N)/dx̃", "front_slope{by=H;reference=entrance}": "slope dθ/dx̃",
     "film_thickness{position=plateau}": "S_plateau", "film_thickness{position=outside}": "S_outside", "film_thickness{position=interface}": "S_interface",
     "growth_per_cycle{position=plateau}": "GPC_plateau", "growth_per_cycle{position=outside}": "GPC_outside",
-    "normalized_thickness{reference=entrance}": "S/S_entry", "plasma_gas_ratio{gas=h2}": "H2 ratio",
+    "normalized_thickness{reference=entrance}": "S/S_entry", "plasma_gas_ratio{gas=h2;relative_to=reactive_gases}": "H2 ratio", "plasma_gas_ratio{gas=h2;relative_to=all_gases}": "H2 share of feed",
+    "feature_width{stage=final}": "H_eff", "exposure{over=run}": "exposure per run", "growth_per_cycle{kind=target;over=run}": "GPC target",
     "gas_flow_rate{step=plasma;gas=h2s}": "H2S flow", "gas_flow_rate{step=plasma;gas=h2}": "H2 flow", "gas_flow_rate{step=plasma;gas=ar}": "Ar flow (plasma)",
     "gas_flow_rate{gas=n2}": "N2 flow", "gas_flow_rate{gas=ar}": "Ar purge flow", "gas_flow_rate{gas=ar;step=reactant_A}": "Ar carrier flow",
     "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
-    "lumped_sticking_coefficient{species=tma}": "c_TMA", "lumped_sticking_coefficient{species=h2o}": "c_H2O",
+    "initial_sticking_coefficient{species=tma}": "c_TMA", "initial_sticking_coefficient{species=h2o}": "c_H2O",
     "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
     }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
@@ -264,16 +275,17 @@ NAMES = {**_NAMES, "other": "other",
     "deposition_temperature{kind=set_point}": "temperature set point", "deposition_temperature{step=reactant_A}": "temperature in the precursor dose",
     "deposition_temperature{step=purge_A}": "temperature in the precursor purge", "deposition_temperature{step=reactant_B}": "temperature in the water dose",
     "deposition_temperature{step=purge_B}": "temperature in the water purge",
-    "dimensionless_distance{by=H;level=50%}": "half-thickness depth over height", "penetration_depth{level=50%;origin=entrance}": "penetration depth at 50 %",
+    "coated_aspect_ratio{basis=AR}": "coated aspect ratio (half-thickness depth over height)", "penetration_depth{level=50%;origin=entrance}": "penetration depth at 50 %",
     "penetration_depth{origin=entrance}": "penetration depth", "front_slope{by=H}": "front slope of S/N", "front_slope{by=H;reference=entrance}": "front slope, normalized",
     "film_thickness{position=plateau}": "thickness in the channel", "film_thickness{position=outside}": "thickness outside the channel",
     "film_thickness{position=interface}": "interface layer thickness", "film_thickness{kind=target}": "thickness target",
     "growth_per_cycle{over=run;position=plateau}": "growth per cycle in the channel", "growth_per_cycle{over=run;position=outside}": "growth per cycle outside the channel",
-    "plasma_gas_ratio{gas=h2}": "H2 flow ratio",
+    "plasma_gas_ratio{gas=h2;relative_to=reactive_gases}": "H2 flow ratio", "plasma_gas_ratio{gas=h2;relative_to=all_gases}": "H2 share of the plasma feed",
+    "feature_width{stage=final}": "effective channel height", "exposure{over=run}": "exposure per run", "growth_per_cycle{kind=target;over=run}": "growth per cycle implied by the thickness target",
     "gas_flow_rate{gas=h2s;step=plasma}": "H2S flow", "gas_flow_rate{gas=h2;step=plasma}": "H2 flow", "gas_flow_rate{gas=ar;step=plasma}": "Ar flow in the plasma",
     "gas_flow_rate{gas=n2}": "N2 flow", "gas_flow_rate{gas=ar}": "Ar purge flow", "gas_flow_rate{gas=ar;step=reactant_A}": "Ar carrier flow",
-    "lumped_sticking_coefficient{species=tma}": "TMA sticking coefficient",
-    "lumped_sticking_coefficient{species=h2o}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
+    "initial_sticking_coefficient{species=tma}": "TMA sticking coefficient",
+    "initial_sticking_coefficient{species=h2o}": "water sticking coefficient", "porosity{relative_to=total_volume;stage=initial}": "initial porosity",
     "porosity{relative_to=total_volume;stage=final}": "final porosity", "pressure_rise{level=maximum}": "maximum pressure rise",
     "composition{element=S;relative_to=metal_atoms}": "S/Mo", "composition{element=H;relative_to=all_atoms}": "H content",
     "composition{element=N;relative_to=all_atoms}": "N content", "composition{element=O;relative_to=all_atoms}": "O content",
@@ -287,7 +299,7 @@ NAMES = {**_NAMES, "other": "other",
 DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles", ("over", "saturation"): "saturation value",
              ("over", "not_stated"): "averaging not stated", ("relative_to", "not_stated"): "basis not stated",
              ("relative_to", "initial_mass"): "relative to the initial mass", ("relative_to", "final_mass"): "relative to the final mass",
-             ("relative_to", "crystalline_phases"): "of the crystalline phases", ("kind", "target"): "target", ("kind", "set_point"): "set point",
+             ("relative_to", "crystalline_phases"): "of the crystalline phases", ("relative_to", "reactive_gases"): "of the reactive feed gases", ("relative_to", "all_gases"): "of the whole plasma feed", ("kind", "target"): "target", ("kind", "set_point"): "set point",
              ("reference", "bulk"): "bulk value", ("mode", "in_situ"): "in situ", ("mode", "ex_situ"): "ex situ"}
 # the value kinds a screen marks with one plain word; measured and stated values carry none
 KIND_WORDS = {"read from figure": "read from figure", "computed by the authors": "computed by the authors", "computed here": "computed here", "assumed": "assumed", "model": "model", "cited": "cited"}

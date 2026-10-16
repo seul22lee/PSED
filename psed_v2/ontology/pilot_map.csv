@@ -1,85 +1,85 @@
 pilot_id,kind,disposition,entry_id,qualifiers,label,name,note
-annealing_temperature,quantity,to_absorb,,,T_anneal,anneal temperature,
+annealing_temperature,quantity,attribute,annealing_temperature,,,,one paper anneals (Sec. 7: native); stored as an attribute entry
 aspect_ratio,quantity,direct,aspect_ratio,,,,
-atoms_per_cycle,quantity,to_absorb,,,atoms/cycle,metal atoms per cycle,
-binding_energy,quantity,to_absorb,,,BE,binding energy,
-carrier_concentration,quantity,to_absorb,,,carriers,carrier concentration,
+atoms_per_cycle,quantity,new_entry,atoms_per_cycle,,,,"amount-based growth per cycle (proposal accepted, Sec. 18.9); family growth_amount"
+binding_energy,quantity,new_entry,binding_energy,,,,film_properties
+carrier_concentration,quantity,alias,carrier_density,,,,"Sec. 4: same definition, different wording"
 carrier_gas,quantity,direct,carrier_gas,,,,
-carrier_mobility,quantity,to_absorb,,,mobility,carrier mobility,
+carrier_mobility,quantity,alias,mobility,,,,"Sec. 4: same definition, different wording"
 coated_aspect_ratio,quantity,direct,coated_aspect_ratio,,,,
-coating_mass_fraction,quantity,to_absorb,,,coating mass fraction,coating mass fraction,
+coating_mass_fraction,quantity,new_entry,coating_mass_fraction,,,,a transform output (lists.DERIVED); family growth_amount; not a phase fraction
 composition,quantity,direct,composition,,,,
 crystallinity,quantity,direct,crystallinity,,,,
-crystallite_size,quantity,to_absorb,,,crystallite size,crystallite size,
+crystallite_size,quantity,new_entry,crystallite_size,,,,film_properties
 cycle_number,quantity,direct,cycle_number,,,,
-cycle_time,quantity,to_absorb,,,cycle time,cycle time,
-density_relative_to_bulk,quantity,to_absorb,,,ρ/ρ_bulk,density relative to bulk,
-deposited_moles_per_cycle,quantity,to_absorb,,,Δn_s,solid deposited per cycle,
-deposition_rate,quantity,to_absorb,,,nm per hour,thickness per hour,
+cycle_time,quantity,new_entry,cycle_time,,,,stated by mat22 and gre23; also a transform output
+density_relative_to_bulk,quantity,new_entry,density_relative_to_bulk,,,,"a transform output; a dimensionless ratio, so not film_density (Sec. 4)"
+deposited_moles_per_cycle,quantity,new_entry,deposited_moles_per_cycle,,,,reaction_monitoring; family growth_amount
+deposition_rate,quantity,new_entry,deposition_rate,,,,a transform output
 deposition_temperature,quantity,direct,deposition_temperature,,,,
 dimensionless_distance,quantity,direct,dimensionless_distance,,,,
 distance,quantity,direct,distance,,,,
-effective_channel_height,quantity,to_absorb,,,H_eff,effective channel height,
+effective_channel_height,quantity,qualifier,feature_width,stage=final,,,the channel height after the film grew on both walls: the feature width at the final stage (a transform output)
 equivalent_aspect_ratio,quantity,direct,equivalent_aspect_ratio,,,,
 exposure,quantity,direct,exposure,,,,
-exposure_per_run,quantity,to_absorb,,,exposure per run,exposure per run,
+exposure_per_run,quantity,qualifier,exposure,over=run,,,the exposure summed over the run's cycles (a transform output)
 feature_depth,quantity,direct,feature_depth,,,,
-feature_height,quantity,to_absorb,,,H,channel height,
+feature_height,quantity,alias,feature_width,,,,Cremers Sec. II G: the channel height of a lateral structure is its width w
 feature_width,quantity,direct,feature_width,,,,
-fill_fraction,quantity,to_absorb,,,fill,channel filled,
+fill_fraction,quantity,new_entry,fill_fraction,,,,conformality
 film_density,quantity,direct,film_density,,,,
 film_thickness,quantity,direct,film_thickness,,,,
-fit_r2,quantity,to_absorb,,,R²,fit R²,
-front_slope,quantity,to_absorb,,,front slope,front slope,
+fit_r2,quantity,pending,fit_r2,,R²,fit R²,"attribute (Sec. 18.7), applied in P58"
+front_slope,quantity,pending,front_slope,,front slope,front slope,"attribute (Sec. 18.7), applied in P58"
 gas_flow_rate,quantity,direct,gas_flow_rate,,,,
-gas_moles_per_cycle,quantity,to_absorb,,,Δn_g,gas released per cycle,
+gas_moles_per_cycle,quantity,new_entry,gas_moles_per_cycle,,,,reaction_monitoring
 growth_per_cycle,quantity,direct,growth_per_cycle,,,,
-h_per_metal,quantity,to_absorb,,,H per metal,H per metal atom,
+h_per_metal,quantity,pending,element_ratio,element=H;reference_element=Mo,H per metal,H per metal atom,"a transform output of the composition family (Sec. 18.3), applied in P52"
 initial_sticking_coefficient,quantity,direct,initial_sticking_coefficient,,,,
-knudsen_number,quantity,to_absorb,,,Kn,Knudsen number,
-lumped_sticking_coefficient,quantity,to_absorb,,,c,sticking coefficient,
-mass_gain,quantity,to_absorb,,,mass gain,mass gain,
+knudsen_number,quantity,pending,knudsen_number,,Kn,Knudsen number,"promoted to an extension entry (Sec. 18.7), applied in P58"
+lumped_sticking_coefficient,quantity,alias,initial_sticking_coefficient,,,,"Sec. 10 note: the lumped coefficient c multiplies (1 - theta), so it is Cremers' s0"
+mass_gain,quantity,new_entry,mass_gain,,,,growth; family growth_amount
 material,quantity,direct,material,,,,
-mean_free_path,quantity,to_absorb,,,λ,mean free path,
-moles_deposited,quantity,to_absorb,,,moles deposited,moles deposited per run,
-moles_from_mass_gain,quantity,to_absorb,,,moles from mass gain,moles from mass gain,
-normalized_exposure,quantity,to_absorb,,,normalized exposure,normalized exposure,
+mean_free_path,quantity,pending,mean_free_path,,λ,mean free path,"promoted to an extension entry (Sec. 18.7), applied in P58"
+moles_deposited,quantity,new_entry,moles_deposited,,,,a transform output; family growth_amount
+moles_from_mass_gain,quantity,new_entry,moles_from_mass_gain,,,,a transform output; family growth_amount
+normalized_exposure,quantity,dropped,,,,,no fact uses it
 normalized_thickness,quantity,direct,normalized_thickness,,,,
-objective_magnification,quantity,to_absorb,,,objective,objective,
-open_fraction,quantity,to_absorb,,,open fraction,open fraction,
+objective_magnification,quantity,attribute,objective_magnification,,,,an instrument setting (Sec. 4)
+open_fraction,quantity,dropped,,,,,no fact uses it
 other,quantity,reserved,,,,,"the escape id: a quantity with label_as_printed, never an entry"
 partial_pressure,quantity,direct,partial_pressure,,,,
 penetration_depth,quantity,direct,penetration_depth,,,,
-phase,quantity,to_absorb,,,phase,phase,
-pillar_layout,quantity,to_absorb,,,pillar layout,pillar layout,
-plasma_gas_ratio,quantity,to_absorb,,,gas ratio,H2 flow ratio,
-plasma_h2_fraction,quantity,to_absorb,,,H2 share of the plasma feed,H2 share of the plasma feed,
-porosity,quantity,to_absorb,,,porosity,porosity,
-precursor_purity,quantity,to_absorb,,,purity,purity,
-pressure_rate,quantity,to_absorb,,,TS,terminal pressure slope,
-pressure_rise,quantity,to_absorb,,,δp,pressure rise,
-probe_resolution,quantity,to_absorb,,,spot,probe spot,
+phase,quantity,new_entry,phase,,,,a categorical output: a named phase detected or not (P15)
+pillar_layout,quantity,attribute,pillar_layout,,,,an equipment detail (Sec. 4)
+plasma_gas_ratio,quantity,new_entry,plasma_gas_ratio,,,,mat22's H2 flow ratio; stored values carry relative_to=reactive_gases
+plasma_h2_fraction,quantity,qualifier,plasma_gas_ratio,gas=h2;relative_to=all_gases,,,the same ratio over the whole feed (a transform output)
+porosity,quantity,new_entry,porosity,,,,test_structure; stage initial or final
+precursor_purity,quantity,new_entry,precursor_purity,,,,stated by mat22 and gre23
+pressure_rate,quantity,new_entry,pressure_rate,,,,reaction_monitoring
+pressure_rise,quantity,new_entry,pressure_rise,,,,reaction_monitoring
+probe_resolution,quantity,attribute,probe_resolution,,,,an instrument setting (Sec. 4)
 process_pressure,quantity,direct,process_pressure,,,,
 pulse_time,quantity,direct,pulse_time,,,,
 purge_time,quantity,direct,purge_time,,,,
-raman_shift,quantity,to_absorb,,,Raman shift,Raman shift,
-reaction_stoichiometry,quantity,to_absorb,,,ȳ,gas-to-solid ratio,
+raman_shift,quantity,attribute,raman_shift,,,,a signal axis (Sec. 4)
+reaction_stoichiometry,quantity,new_entry,reaction_stoichiometry,,,,reaction_monitoring
 reactor_type,quantity,direct,reactor_type,,,,
 recombination_probability,quantity,direct,recombination_probability,,,,
 resistivity,quantity,direct,resistivity,,,,
-roughness,quantity,to_absorb,,,Rq,roughness,
-saturation_density,quantity,to_absorb,,,q_sat,saturation density,
-sheet_resistance,quantity,to_absorb,,,R_sheet,sheet resistance,
-shell_volume_fraction,quantity,to_absorb,,,coating volume fraction,coating volume fraction,
-signal_intensity,quantity,to_absorb,,,intensity,signal,
+roughness,quantity,new_entry,roughness,,,,film_properties
+saturation_density,quantity,attribute,saturation_density,,,,"a model internal (Sec. 4), stored on yim20's model runs"
+sheet_resistance,quantity,new_entry,sheet_resistance,,,,a transform output; another dimension than resistivity (Sec. 4)
+shell_volume_fraction,quantity,new_entry,shell_volume_fraction,,,,a transform output; family growth_amount
+signal_intensity,quantity,pending,signal_intensity,,intensity,signal,"attribute (Sec. 18.7), applied in P58"
 source_temperature,quantity,direct,source_temperature,,,,
 step_coverage,quantity,direct,step_coverage,,,,
-structure_type,quantity,to_absorb,,,structure,structure,
-substrate,quantity,to_absorb,,,substrate,substrate,
+structure_type,quantity,alias,structure,,,,the pilot's structure class is the class of the structure entry the value names (P50)
+substrate,quantity,new_entry,substrate,,,,proposal substrate_material accepted (Sec. 18.9): the growth-surface species
 surface_coverage,quantity,direct,surface_coverage,,,,
-target_growth_per_cycle,quantity,to_absorb,,,GPC target,growth per cycle implied by the thickness target,
+target_growth_per_cycle,quantity,qualifier,growth_per_cycle,kind=target,,,the growth per cycle a thickness target implies (a transform output)
 thickness_nonuniformity,quantity,direct,thickness_nonuniformity,,,,
-time_to_maximum,quantity,to_absorb,,,t_max,time to pressure maximum,
+time_to_maximum,quantity,new_entry,time_to_maximum,,,,reaction_monitoring
 Al2O3,material,alias,al2o3,,,,the formula as a value text becomes the species id (P50)
 MoS2,material,alias,mos2,,,,the formula as a value text becomes the species id (P50)
 WS2,material,alias,ws2,,,,the formula as a value text becomes the species id (P50)

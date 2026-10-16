@@ -210,7 +210,7 @@ def close(leaf, lo, hi):
 
 def case9(F):
     print("== Case 9, sticking values: the forest against sticking_reported.csv")
-    ls = F.leaves({"lumped_sticking_coefficient", "initial_sticking_coefficient"})
+    ls = F.leaves({"initial_sticking_coefficient", "initial_sticking_coefficient"})
     for l in ls:
         T = l["ctx"].get("deposition_temperature")
         T = "T ambiguous" if T == "ambiguous" else (f"T {T['value'] or T['value_min'] + '–' + T['value_max']} {T['unit']}" if T else "no T in scope")
@@ -298,8 +298,8 @@ def fig9(F):
                 return out
             pool = under(ent) + [c for a in anc if P["byid"][a]["type"] == "activity" for c in P["kids"].get(a, [])]   # + the activities above (H, N)
             get = lambda q, **ql: next((k for k in pool if k["quantity"] == q and all(quals(k["qualifiers"]).get(a) == b for a, b in ql.items())), None)
-            H, N, SIIb, PD = get("feature_height"), get("cycle_number"), get("film_thickness", position="plateau"), get("penetration_depth", level="50%")
-            xt = next((k for k in P["kids"].get(PD["fact_id"], []) if k["quantity"] == "dimensionless_distance"), None) if PD else None
+            H, N, SIIb, PD = get("feature_width"), get("cycle_number"), get("film_thickness", position="plateau"), get("penetration_depth", level="50%")
+            xt = next((k for k in P["kids"].get(PD["fact_id"], []) if k["quantity"] == "coated_aspect_ratio"), None) if PD else None
             r = dict(fid=f["fact_id"], label=f["mentions"].split(";")[0], run=P["byid"][ent]["label_as_printed"], H=num(H["value"]), N=num(N["value"]), SIIb=num(SIIb["value"]),
                      PD50=num(PD["value"]), xt50_tab=num(xt["value"]) if xt else None,
                      used=[x["fact_id"] for x in (H, N, SIIb, PD, xt) if x], raw=None, sn=None, norm=None, xt50=None)

@@ -17,7 +17,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 SCHEMA = HERE / "sources" / "experimental-ideal-schema.json"
-EXTENSION_CAP = 15
+EXTENSION_CAP = 40          # Sec. 18.8: 40 for the three-paper pilot; the Sec. 11 gate is the control, the cap a tripwire
 ROLES = ["condition", "coordinate", "output", "model_parameter"]
 CATEGORIZED = ("quantity", "categorical", "model")
 SPECIES_KINDS = ("molecule", "material", "atom")
@@ -118,12 +118,12 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad = [a for a, n in seen.items() if n > 1] + [a for a in seen if a in ambiguous]
     out.append(("4. no alias in two entries; ambiguous words only in ambiguous_aliases", not bad, f"problems: {bad}" if bad else ""))
 
-    ext = [e["id"] for e in quantities if e["origin"] == "extension"]
+    ext = [e["id"] for e in quantities if e["origin"] == "extension" and not e.get("attribute") and not e.get("replaced_by")]   # concepts only (Sec. 18.7)
     base = {e["id"] for e in quantities if e["origin"] == "base"}
     diff = sorted(base ^ EXPECTED_BASE)
     cats = {e["id"] for e in entries if e["type"] == "categorical"}
-    cat_diff = sorted(cats ^ (set(voc["categorical_conditions"]) | {"crystallinity"}))
-    out.append((f"5. extension quantities <= {EXTENSION_CAP}; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + crystallinity",
+    cat_diff = sorted(cats ^ (set(voc["categorical_conditions"]) | set(voc.get("categorical_outputs", ["crystallinity"])) | {e["id"] for e in entries if e["type"] == "categorical" and e.get("attribute")}))
+    out.append((f"5. extension quantities (concepts) <= {EXTENSION_CAP}; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes",
                 len(ext) <= EXTENSION_CAP and not diff and not cat_diff,
                 f"{len(ext)} extension quantities" + (f"; base differs: {diff}" if diff else "")
                 + (f"; categoricals differ: {cat_diff}" if cat_diff else "")))
@@ -144,7 +144,7 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad = [e["id"] for e in entries if e["type"] in CATEGORIZED and e.get("category") not in leaf_ids]
     bad += [e["id"] for e in entries if e["type"] not in CATEGORIZED and e.get("category")]
     bad += [n for n, d in nodes.items() if not (d.get("definition") or "").strip()
-            or not re.search(r"Cremers|Popov", d.get("citation") or "")]
+            or not (re.search(r"Cremers|Popov", d.get("citation") or "") or (d.get("deviation") and d.get("citation")))]   # Sec. 18.10: a pilot-paper citation with a deviation
     bad += [n for n in leaf_ids if not members[n]]                      # empty leaf
     bad += [n for n, d in nodes.items() if d.get("parent") and d["parent"] not in nodes]
     bad += [n for n in nodes if n in ids]                               # node id clashes with an entry id
@@ -207,6 +207,16 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier]
     out.append(("10. no orphan: every entry and hierarchy node has at least one edge", not bad,
                 f"problems: {bad}" if bad else "all connected" + (f"; only as a qualifier value: {via_qualifier}" if via_qualifier else "")))
+
+    fam = defaultdict(list)                                                     # Sec. 18.2: a family is a flat label on two or more live entries
+    for e in entries:
+        if e.get("family"):
+            fam[e["family"]].append(e["id"])
+    bad = [f"{f}: {m}" for f, m in fam.items() if len(m) < 2] + [e["id"] for e in entries if e.get("family") and e.get("replaced_by")]
+    bad += [e["id"] for e in entries if e.get("replaced_by") and e["replaced_by"] not in ids]
+    bad += [e["id"] for e in entries if e.get("attribute") and e["type"] not in ("quantity", "categorical")]
+    out.append(("11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals", not bad,
+                f"problems: {bad}" if bad else f"{len(fam)} families: " + "; ".join(f"{f} ({len(m)})" for f, m in fam.items())))
     return out
 
 
@@ -330,7 +340,8 @@ def main() -> int:
         return f'{d["type"]}: {d["reason"]}' if d else ""
 
     def entry_row(e):
-        return [e["id"], e["type"], e.get("role", ""), e.get("unit", ""), e["origin"],
+        tier = "attribute" if e.get("attribute") else (f"replaced by {e['replaced_by']}" if e.get("replaced_by") else "")
+        return [e["id"], e["type"], e.get("role", ""), e.get("unit", ""), e["origin"] + (f" ({tier})" if tier else ""), e.get("family", ""),
                 ", ".join(e.get("qualifiers", [])), "; ".join(e.get("evidence", [])), dev(e)]
 
     def path(n):
@@ -338,7 +349,7 @@ def main() -> int:
     groups = {path(c): [entry_row(e) for e in entries if e.get("category") == c] for c in leaf_ids}
     for t in ("species", "structure"):
         groups[t] = [entry_row(e) for e in entries if e["type"] == t]
-    entries_html = table(["id", "type", "role", "unit", "origin", "qualifiers", "evidence", "deviation"], [], groups)
+    entries_html = table(["id", "type", "role", "unit", "origin", "family", "qualifiers", "evidence", "deviation"], [], groups)
 
     by_path = {p: e for e in entries for p in base_paths(e)}
     excluded = {x["path"]: x for x in onto["excluded_base"]}

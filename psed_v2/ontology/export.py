@@ -7,8 +7,9 @@
 pilot_map.csv is the disposition table of every pilot id (quantity, material, structure or method): direct (the id is an entry),
 alias (another entry's id), qualifier (an entry plus qualifiers), transform (the output of a transform), new_entry (an entry made
 for it, under its own id), attribute (an entry with attribute: true), reserved (the escape id other), dropped (no data) or
-to_absorb (no disposition yet: P51 consumes the list). Every to_absorb id is emitted into the vocabulary provisionally so that the
-data keeps passing the vocabulary check until it is absorbed. Needs PyYAML.
+to_absorb (no disposition yet: P51 consumes the list) or pending (a disposition recorded, applied in a later step). Every to_absorb or
+pending id is emitted into the vocabulary provisionally so that the data keeps passing the vocabulary check until it is absorbed.
+Needs PyYAML.
 """
 import csv
 import pprint
@@ -48,12 +49,12 @@ def build(onto, pmap):
     attributes = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and e.get("attribute"))
     replaced = {e["id"]: e["replaced_by"] for e in entries if e.get("replaced_by")}
     transforms = sorted({t["output"] for t in onto.get("transforms", []) if t["output"] not in ("same",)})
-    absorb = sorted(r["pilot_id"] for r in pmap if r["kind"] == "quantity" and r["disposition"] == "to_absorb")
+    absorb = sorted(r["pilot_id"] for r in pmap if r["kind"] == "quantity" and r["disposition"] in ("to_absorb", "pending"))   # pending: a disposition recorded, applied in a later step
     absorb_values = {k: sorted(r["pilot_id"] for r in pmap if r["kind"] == k and r["disposition"] == "to_absorb") for k in ("material", "structure", "method")}
     labels = {e["id"]: e.get("label", e["id"]) for e in live if e["type"] in ("quantity", "categorical")}
     names = {e["id"]: e.get("name", e["id"].replace("_", " ")) for e in live if e["type"] in ("quantity", "categorical")}
-    for r in pmap:                                                              # provisional labels of the ids still to absorb (P51 moves them into entries)
-        if r["kind"] == "quantity" and r["disposition"] == "to_absorb":
+    for r in pmap:                                                              # provisional labels of the ids still to absorb or pending
+        if r["kind"] == "quantity" and r["disposition"] in ("to_absorb", "pending"):
             labels.setdefault(r["pilot_id"], r.get("label") or r["pilot_id"]); names.setdefault(r["pilot_id"], r.get("name") or r["pilot_id"].replace("_", " "))
     species = {e["id"]: dict(formula=e.get("formula", ""), name=e.get("aliases", [e["id"]])[0] if e.get("aliases") else e["id"], kind=e.get("kind", ""),
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
@@ -106,7 +107,7 @@ def main():
           f"{len(v['METHODS'])} methods, {len(v['MATERIALS'])} materials, {len(v['STRUCTURES'])} structures, {len(v['SPECIES'])} species, "
           f"{len(v['MECHANISMS'])} mechanisms, {len(v['QUALIFIERS'])} qualifier keys")
     if v["TO_ABSORB"]:
-        print("to absorb:", ", ".join(v["TO_ABSORB"]))
+        print("to absorb or pending:", ", ".join(f"{a} ({v['PILOT_MAP'][a]['disposition']})" for a in v["TO_ABSORB"]))
     for k, vals in v["TO_ABSORB_VALUES"].items():
         if vals:
             print(f"{k} values to absorb:", ", ".join(vals))

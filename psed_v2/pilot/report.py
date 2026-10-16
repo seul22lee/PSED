@@ -29,7 +29,7 @@ import query as Q  # noqa: E402
 import tools as TL  # noqa: E402
 
 RANGES = [("deposition_temperature", "temperature", "°C"), ("plasma_gas_ratio", "H2 flow ratio", ""), ("cycle_number", "cycles", ""),
-          ("feature_height", "channel height", "nm"), ("process_pressure", "pressure", "Pa"), ("exposure", "exposure", "Pa s")]
+          ("feature_width", "channel height", "nm"), ("process_pressure", "pressure", "Pa"), ("exposure", "exposure", "Pa s")]
 
 
 def rd(p):
@@ -108,7 +108,7 @@ def build():
                         break
         rec = {c["key"].split("{")[0]: c["record"]["text"] for c in details[i]["recipe"] if c.get("record")}
         rows.append(dict(id=i, paper=r["paper"], name=r["name"], inferred=r["inferred"], role=r["role"], distinguish=r["distinguish"], home=r["home"],
-                         groups=r["groups"], material=rec.get("material", ""), structure=L.STRUCTURE_CLASS.get(rec.get("structure_type", ""), rec.get("structure_type", "")),
+                         groups=r["groups"], material=rec.get("material", ""), structure=L.STRUCTURE_CLASS.get(rec.get("structure", ""), rec.get("structure", "")),
                          reactants=[rec[k] for k in ("reactant_A", "reactant_B") if k in rec], conds=conds, results=res))
     by_id = {r["id"]: r for r in rows}
     for q in sorted({x["key"].split("{")[0].split("[")[0] for d in details.values() for x in d.get("results", []) if x.get("record")}):

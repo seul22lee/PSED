@@ -34,13 +34,13 @@ def row(fid, type_, statement, **kw):
 
 
 F = Forest()
-c9 = F.leaves({"lumped_sticking_coefficient", "initial_sticking_coefficient"})
+c9 = F.leaves({"initial_sticking_coefficient", "initial_sticking_coefficient"})
 c10 = [l for l in F.leaves({"aspect_ratio", "coated_aspect_ratio", "equivalent_aspect_ratio"}) if l["ctx"].get("exposure") not in (None, "ambiguous")]
 ROWS = [
     row("user:case9", "claim", "lumped sticking coefficients of TMA fitted in the pilot papers and the works they cite lie between 1e-3 and 2e-2 "
         "over 100-300 °C, a factor of about 4 like with like; the 0.1 of Dendooven et al. and the 0.012 simulation input are chosen "
         "values, not fits; the fitted c_H2O of 3e-4 sits an order of magnitude below c_TMA",
-        quantity="lumped_sticking_coefficient", qualifiers="x=deposition_temperature", label_as_printed="Case 9: c vs T", stance="asserted", cause="deposition_temperature", effect="lumped_sticking_coefficient",
+        quantity="initial_sticking_coefficient", qualifiers="x=deposition_temperature", label_as_printed="Case 9: c vs T", stance="asserted", cause="deposition_temperature", effect="initial_sticking_coefficient",
         links=[l["fid"] for l in c9], mentions="Case 9"),
     row("user:case10", "claim", "of the aspect ratios the pilot papers report with the exposure that reached them, the compacts of Greenberg "
         "et al. (7800 at 17 000 Torr s) and the aerogel they cite both lie at or above the exposure Gordon's square law asks; the "
@@ -70,8 +70,8 @@ ROWS = [
     row("user:def_xd", "definition", "dimensionless depth of a pore: the depth over the pore diameter d, the rule Cremers 2019 applies to pores",
         quantity="dimensionless_distance", qualifiers="by=d", mentions="Cremers 2019"),
     row("user:bridge_xH_xd", "bridge", "x~ by H (a channel's height, yim20) and x~ by d (a pore's diameter) measure the same depth: "
-        "x~_H = x~_d * d / H, so a pore value times d over H compares with a channel value", quantity="dimensionless_distance",
-        links=["yim20:s3.p3#2", "user:def_xd"], value_text="feature_width/feature_height", evidence="yim20:s3.p3", mentions="x~"),
+        "x~_H = x~_d * d / H, so a pore value times d over H compares with a channel value (d and H are the feature_width of a pore and of a channel)", quantity="dimensionless_distance",
+        links=["yim20:s3.p3#2", "user:def_xd"], value_text="feature_width/feature_width", evidence="yim20:s3.p3", mentions="x~"),
 ]
 
 if __name__ == "__main__":

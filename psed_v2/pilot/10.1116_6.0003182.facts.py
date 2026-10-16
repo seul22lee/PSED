@@ -545,7 +545,7 @@ NK("s15.p18", "data availability statement")
 
 # ---------------------------------------------------------------- the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
 MAT = f("abs.g1;s9.p1", "setting", "film material", quantity="material", value_text="zno", data_kind="chosen input", mentions="ZnO")
-STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure_type", value_text="nanoparticle_compact",
+STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure", value_text="nanoparticle_compact",
            data_kind="chosen input", mentions="NPC")
 
 # the H2O copies of the settings the paper states for both reactants at once (one setting names one substance, P50)
@@ -559,6 +559,10 @@ T_H2O = f("s9.p4", "setting", "the H2O cylinder is held at 37 °C (heated stainl
           quantity="source_temperature", qualifiers="species=h2o", value="37", unit="°C", data_kind="chosen input", mentions="DEZ;H2O")
 REACT_A = f("s9.p4;abs.g1", "setting", "reactant A of the process: diethylzinc", quantity="reactant_A", value_text="dez", data_kind="chosen input", mentions="DEZ")
 REACT_B = f("s9.p4;abs.g1", "setting", "reactant B of the process: water", quantity="reactant_B", value_text="h2o", data_kind="chosen input", mentions="H2O")
+AR7800 = next(x["fact_id"] for x in C.facts() if x["quantity"] == "aspect_ratio" and x["value"] == "7800")
+COATED = f("s14.p1;abs.g4;s6.p8;fig6d;fig6f", "derived", "the Zn signal is level through the 120 and 120/160 °C sections except within ~0.2 mm of the faces, so the coating reached the compact's "
+           "full half-thickness: the aspect ratio coated equals the structure's, 7800 (the near-face depletion aside)",
+           quantity="coated_aspect_ratio", qualifiers="basis=AR", value="7800", data_kind="calculated", method="sem_eds", inputs=[AR7800, f"{K}:s14.p1#4"], mentions="AR;Zn Kα")
 SUBSTR = f("s8.p1;abs.g1", "setting", "the growth surface is the Al2O3 of the pressed nanoparticle compacts", quantity="substrate", value_text="al2o3", data_kind="chosen input", mentions="Al2O3")
 
 # ---------------------------------------------------------------- the abscissa of the Fig. 6 line scans: the position through the compact (x= qualifier).
@@ -588,7 +592,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     'abs.g1#1': ('aspect_ratio', 'exposure'),
     'abs.g1#2': ('exposure', 'mechanism:side_reaction'),
     'abs.g2#2': ('deposition_temperature', 'mechanism:Zn_metal;purge_time'),
-    'abs.g4#1': ('deposition_temperature', 'mechanism:self_limiting;resistivity'),
+    'abs.g4#1': ('deposition_temperature', 'mechanism:self_limiting;resistivity;coated_aspect_ratio'),
     'abs.g4#2': ('deposition_temperature;mechanism:residual_H2O', 'growth_per_cycle'),
     's6.p1#1': ('', ''),
     's6.p1#2': ('mechanism:self_limiting', 'film_thickness'),
@@ -645,7 +649,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's15.p2#1': ('', 'resistivity'),
     's15.p2#2': ('film_thickness;crystallinity;annealing_temperature', 'resistivity'),
     's15.p3#1': ('deposition_temperature', 'mechanism:Zn_metal'),
-    's15.p3#2': ('deposition_temperature', 'composition;resistivity'),
+    's15.p3#2': ('deposition_temperature', 'composition;resistivity;coated_aspect_ratio'),
     's15.p3#3': ('deposition_temperature', 'reaction_stoichiometry'),
     's15.p3#4': ('deposition_temperature;purge_time', 'mechanism:residual_H2O'),
     's15.p3#5': ('mechanism:CVD_growth;mechanism:surface_OH', 'growth_per_cycle'),
@@ -832,6 +836,7 @@ for f in C.facts():                                                            #
 PARENT[MAT] = PARENT[STRUCT] = PARENT[REACT_A] = PARENT[REACT_B] = PARENT[SUBSTR] = PROC   # material, structure, reactants, growth surface: shared by every run
 for x_ in (P_H2O, E_H2O, E2_H2O, T_H2O):
     PARENT[x_] = PROC
+PARENT[COATED] = f"{K}:grp:schedules"; LINKS[COATED] = f"{R120};{RCYC}"           # spans the two uniformly coated runs
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left
 assert not [c for c in C.facts() if c["type"] == "claim" and c["fact_id"] not in LINKS], "claim without links"

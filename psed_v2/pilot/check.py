@@ -4,7 +4,7 @@
     python3 psed_v2/pilot/check.py
 
 Facts (per paper, <paper_id>.*): fact ids unique; evidence ids and inputs resolve; vocabularies (type, quantity, qualifiers, data_kind, method,
-censor; material and structure_type value_texts from lists.MATERIALS and STRUCTURES; a claim's stance from lists.STANCES; cause and effect quantity ids or mechanism tokens); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
+censor; material and structure value_texts from lists.MATERIALS and STRUCTURES; a claim's stance from lists.STANCES; cause and effect quantity ids or mechanism tokens); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
 also a data_kind; values are numbers; a value read off a colour-bar panel (lists.COLOUR_PANELS) says "read from colour"; every points_ref names a curve of <paper_id>.points.json, carries x= (its abscissa) and every curve is used; no two facts
 state the same thing (same type, quantity, qualifiers, value, range, unit, value_text, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
@@ -79,8 +79,8 @@ def check(pid):
             bad("quantity other without label_as_printed")
         if f["quantity"] == "material" and f["value_text"] not in L.MATERIALS:
             bad(f"material {f['value_text']!r} not in lists.MATERIALS")
-        if f["quantity"] == "structure_type" and f["value_text"] not in L.STRUCTURES:
-            bad(f"structure_type {f['value_text']!r} not in lists.STRUCTURES")
+        if f["quantity"] == "structure" and f["value_text"] not in L.STRUCTURES:
+            bad(f"structure {f['value_text']!r} not in lists.STRUCTURES")
         if f["quantity"] == "substrate" and f["type"] != "cited" and f["value_text"] not in L.MATERIALS:
             bad(f"substrate {f['value_text']!r} is not a material species id (the growth surface; P50)")
         if f["quantity"] in ("reactant_A", "reactant_B") and f["value_text"] not in L.SPECIES:
@@ -308,9 +308,10 @@ def check_tree(rows, els):
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
             qd = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p)
-            if (r["quantity"] in L.DEFAULT_DEFINITION or "x=growth_per_cycle" in r["qualifiers"]) and "over" not in qd and "stat" not in qd:
-                err.append(f"{i}: {r['quantity']} without over= (what it is averaged over; P5)")
-            if r["quantity"] in ("composition", "mass_gain", "porosity") and r["type"] != "cited" and "relative_to" not in qd:
+            for dk in (set(L.DEFAULT_DEFINITION.get(r["quantity"], {})) | ({"over"} if "x=growth_per_cycle" in r["qualifiers"] else set())):
+                if dk not in qd and "stat" not in qd:                             # a quantity with a default definition states its definition key (P5, P4)
+                    err.append(f"{i}: {r['quantity']} without {dk}= (its definition key; P5)")
+            if r["quantity"] in ("composition", "mass_gain", "porosity", "plasma_gas_ratio") and r["type"] != "cited" and "relative_to" not in qd:
                 err.append(f"{i}: {r['quantity']} without relative_to= (what it is a fraction of; P4)")
             if (r["type"] != "claim" and r["value"] and not r["censor"] and "stat" not in qd
                     and re.search(r"\b(down to|up to|at most|as low as|as high as)\b", r["statement"])):
@@ -494,7 +495,7 @@ def check_vocabulary():
                 used["method"].add(f["method"])
             if f["quantity"] == "material" and f["value_text"]:
                 used["material"].add(f["value_text"])
-            if f["quantity"] == "structure_type" and f["value_text"]:
+            if f["quantity"] == "structure" and f["value_text"]:
                 used["structure"].add(f["value_text"])
             for alt in f["qualifiers"].split("|"):
                 for part in filter(None, alt.split(";")):

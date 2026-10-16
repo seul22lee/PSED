@@ -672,9 +672,19 @@ def _candidates(T, ent, spec, need):
 
 def has_own(T, ent, q):
     """The entity's own measured or stated facts of a quantity (its results, its run's monitor, its condition vector), spread
-    facts excluded."""
+    facts excluded; q may be a DERIVED key with qualifiers ('exposure{over=run}'), which the fact must then carry."""
+    qid, need = L.derived_key(q)
     fs = [f for fs in list(T.results(ent).values()) + list(T.run_results(ent).values()) + list(T.vector(ent).values()) for f in fs]
-    return [f for f in fs if f["quantity"] == q and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)]
+    return [f for f in fs if f["quantity"] == qid and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)
+            and all(quals(f).get(k) == v for k, v in need.items())]
+
+
+def derived_keys(q, need=None):
+    """The DERIVED keys that give a quantity id, most specific first, whose qualifiers the requirement `need` carries (a plain
+    'exposure' is not served by 'exposure{over=run}')."""
+    need = need or {}
+    ks = [k for k in L.DERIVED if L.derived_key(k)[0] == q and all(need.get(a) == b for a, b in L.derived_key(k)[1].items())]
+    return sorted(ks, key=lambda k: -len(L.derived_key(k)[1]))
 
 
 _DERIVE_CACHE = {}
@@ -716,8 +726,9 @@ def _derive(T, ent, did, _stack=()):
                 return dict(error=f"no fact for {spec['name']} ({spec['q']})")
             args[spec["name"]] = vals
             continue
-        if not cands and spec["q"].split("|")[0] in L.DERIVED and spec["q"].split("|")[0] not in stack:
-            sub = derive(T, ent, spec["q"].split("|")[0], _stack=stack)
+        dk = next((k for k in derived_keys(spec["q"].split("|")[0], need) if k not in stack), None)
+        if not cands and dk:
+            sub = derive(T, ent, dk, _stack=stack)
             chain += sub.get("chain", [])
             if "error" in sub:
                 return dict(error=f"{spec['name']}: {sub['error']}")
@@ -768,11 +779,12 @@ def collect(T, ents, qid):
             v = val(f)
             if v is not None:
                 vals.append((e, v, f["unit"], f["fact_id"], [])); continue
-        if qid in L.DERIVED:
-            d = derive(T, e, qid)
+        for dk in derived_keys(qid):
+            d = derive(T, e, dk)
             if "error" not in d:
-                vals.append((e, d["value"], d["unit"], "computed", d["assumed"])); continue
-        missing.append(e)
+                vals.append((e, d["value"], d["unit"], "computed", d["assumed"])); break
+        else:
+            missing.append(e)
     unit = vals[0][2] if vals else ""
     conv = [L.convert(v, u, unit) if u != unit else v for _, v, u, _, _ in vals] if vals else []
     return dict(values=vals, low=min(conv) if conv else None, high=max(conv) if conv else None, unit=unit, missing=missing)
@@ -982,7 +994,7 @@ def result_records(T, ent):
         d = derive(T, ent, did)
         if "error" in d:
             continue
-        k = did + ("{" + D["qualifiers"] + "}" if D.get("qualifiers") else "")
+        k = L.derived_key(did)[0] + ("{" + ";".join(sorted(D["qualifiers"].split(";"))) + "}" if D.get("qualifiers") else "")
         if k not in out:
             out[k] = dict(name=name_of(k), record=derived_record(T, ent, did, d))
     return out
@@ -1041,7 +1053,7 @@ def cited_name(T, w):
 def cited_records(T, w):
     """A cited work's facts split into conditions (quantities the papers use as settings) and results, as records."""
     fs = [f for f in T.kids.get(w, []) if "#" in f["fact_id"] and f["quantity"] and text_of(f)]
-    cond = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if f["quantity"] in L.SETTING_QUANTITIES or f["quantity"] in ("feature_height", "aspect_ratio")}
+    cond = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if f["quantity"] in L.SETTING_QUANTITIES or f["quantity"] in ("feature_width", "aspect_ratio")}
     res = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if ckey(f) not in cond}
     return cond, res
 
@@ -1060,7 +1072,7 @@ def find(paper=None, material=None, structure=None, result=None, conditions=None
             v = T.vector(e)
             if material and not any(fmt(f) == material or f["value_text"] == material for f in v.get("material", [])):
                 continue
-            if structure and not any(f["value_text"] == structure for f in v.get("structure_type", [])):
+            if structure and not any(f["value_text"] == structure for f in v.get("structure", [])):
                 continue
             ok = True
             for q, (lo, hi) in (conditions or {}).items():
@@ -1470,14 +1482,14 @@ def vocabulary():
 
 
 # ---------------------------------------------------------------------------------------------------------------- values (P42)
-SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure_type", "substrate", "reactor_type"]
+SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure", "substrate", "reactor_type"]
 
 
 def result_matches(T, e, result):
     """[(key, name, record)] of an entity for a result given by its name (query.vocabulary) or its quantity id: its results, or,
     for a setting quantity it states (P32), its stated conditions (a target excluded)."""
     qs = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q}      # a quantity's base name stands for all its keys
-    hit = lambda kk, name: name == result or kk.split("{")[0].split("[")[0] in qs
+    hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] in qs
     out = [(kk, x["name"], x["record"]) for kk, x in result_records(T, e).items() if hit(kk, x["name"]) and (x["record"].get("text") or x["record"].get("curve"))]
     if not out:
         out = [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
@@ -1572,7 +1584,7 @@ def values(result, paper=None, where=None):
                                more_shared=len(same) - len(shown), rows=out_rows,
                                claims=[x["fact_id"] for x in claims_of(T, [cid])] if cid else [],
                                material=sorted({crs[e]["material"]["record"]["text"] for e in ents if "material" in crs[e]}),
-                               structure=sorted({crs[e]["structure_type"]["record"]["text"] for e in ents if "structure_type" in crs[e]}),
+                               structure=sorted({crs[e]["structure"]["record"]["text"] for e in ents if "structure" in crs[e]}),
                                reactor=sorted({crs[e]["reactor_type"]["record"]["text"] for e in ents if "reactor_type" in crs[e]}),
                                process=sorted({recipe_of(T, e) for e in ents} - {""}),
                                measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows})))

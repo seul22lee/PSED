@@ -102,6 +102,13 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
     parent: modelling
     definition: "Named transport-reaction models, analytical or computational, whose parameters are the surface_kinetics entries."
     citation: "Cremers 2019 Sec. V A 'Overview' (1. Analytical models, 2. Computational models), Table VIII"
+  - id: reaction_monitoring
+    definition: "In-situ gas-phase observations during the process: the pressure rise and its terminal slope in a closed chamber, the time to the pressure maximum, the moles of gas released and of solid deposited per cycle, and their ratio (the gas-to-solid stoichiometry)."
+    citation: "gre23 (10.1116_6.0003182) Sec. III A, Eqs. 1-2, Table II: the pressure-trace analysis of static-dose ALD; no review passage groups these (Sec. 18.10)"
+    deviation: {type: added, reason: "Sec. 18.10: no review passage grounds the node; it cites the pilot paper that defines it"}
+  - id: measurement
+    definition: "Settings of the characterization and the signal axes it records: probe spot, objective magnification, a spectrum's abscissa; attributes of a measurement, not properties of the film or the process."
+    citation: "Cremers 2019 Table I column 'Characterization method' and Tables II-IV (the technique recorded per experiment); Sec. IV ('film thickness as a function of the depth')"
 entries:
 
   # ---------------------------------------------------------------- categorical conditions (base)
@@ -308,7 +315,7 @@ entries:
     symbol: GPC
     dimension: length_per_cycle
     unit: nm/cycle
-    qualifiers: [position]
+    qualifiers: [position, over, kind]
     aliases: [GrowthPerCycle, "growth per cycle", GPC, "Thickness/cycles S/N (nm)", "SI/N (GPCI)", "SIIb/N (GPCIIb)", "Film growth per cycle"]
     base: {source: schema_miner, path: ProcessParameters/ThicknessControl/GrowthPerCycle}
     deviation: {type: role_changed, reason: "an outcome of the process, not a process parameter"}
@@ -478,7 +485,7 @@ entries:
     qualifiers: [basis]
     aliases: ["coated EAR", "coated (E)AR", "x̃50%"]
     base: {source: cremers_2019, section: "Sec. II H; second half of the split of schema_miner MaterialProperties/Conformality/AspectRatio (path recorded on aspect_ratio)"}
-    evidence: ["Yim2020 Table 1"]
+    evidence: ["Yim2020 Table 1", "gre23 Fig. 6 (the Zn profile through the compact: the coating reaches the full half-thickness, AR 7800)", "gre23 Sec. III C (s14.p1)"]
 
   - id: composition
     type: quantity
@@ -928,6 +935,466 @@ entries:
     base: {}
     evidence: ["Ylilammi2018 Fig. 7"]
 
+  # ---------------------------------------------------------------- extension quantities of the pilot papers (Sec. 11 and Sec. 18; P51)
+  - id: precursor_purity
+    type: quantity
+    origin: extension
+    role: condition
+    category: deposition_run
+    label: "purity"
+    name: "purity"
+    definition: "Purity of a reagent as supplied, as a percentage (gre23: DEZ min. 95%; mat22: the Mo precursor and the plasma gases)."
+    dimension: dimensionless
+    unit: "%"
+    qualifiers: [species]
+    aliases: ["purity", "min. 95%", "99.5%"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p4, s5.p6)", "gre23 Sec. II B (s9.p4)"]
+
+  - id: plasma_gas_ratio
+    type: quantity
+    origin: extension
+    role: condition
+    category: cycle_step
+    label: "gas ratio"
+    name: "H2 flow ratio"
+    definition: "The flow of one feed gas of the plasma step over the summed flows of the reactive feed gases (mat22 Eq. 1: the H2 flow ratio H2/(H2 + H2S)); relative_to all_gases divides by the whole feed including the carrier (a transform)."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [gas, relative_to]
+    aliases: ["H2 flow ratio", "H2 ratio"]
+    base: {}
+    evidence: ["mat22 Eq. 1", "mat22 Table 2", "mat22 Fig. 2", "mat22 Fig. 4", "mat22 Fig. 7b", "mat22 Fig. 8"]
+
+  - id: cycle_time
+    type: quantity
+    origin: extension
+    role: condition
+    category: cycle_step
+    label: "cycle time"
+    name: "cycle time"
+    definition: "The duration of one ALD cycle: the sum of its pulse, hold and purge times."
+    dimension: time
+    unit: "s"
+    aliases: ["cycle time", "one full ALD cycle takes"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p6)", "gre23 Sec. II B (s9.p4)"]
+
+  - id: substrate
+    type: categorical
+    origin: extension
+    role: condition
+    category: test_structure
+    values_from: "species with kind = material"
+    label: "substrate"
+    name: "substrate"
+    definition: "The material of the growth surface, a species id (Cremers 2019 Table VII column 'Surface'; proposal substrate_material accepted in Sec. 18.9); the stack behind it (an oxide on silicon, a foil) stays in the setting's statement."
+    dimension: categorical
+    aliases: ["growth surface"]
+    base: {}
+    evidence: ["yim20 Sec. C (s5.p1)", "mat22 Sec. 5 (s5.p2)", "mat22 Sec. 3 (s3.p19)", "gre23 Sec. II A (s8.p1)"]
+
+  - id: mass_gain
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "mass gain"
+    name: "mass gain"
+    definition: "Mass gained by a specimen in a deposition, relative to its initial or final mass (the relative_to qualifier), as a percentage."
+    dimension: dimensionless
+    unit: "%"
+    qualifiers: [relative_to]
+    aliases: ["mass gain", "Mass gain (%)"]
+    base: {}
+    evidence: ["gre23 Table I", "gre23 Sec. III A (s12.p1)"]
+
+  - id: moles_deposited
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "moles deposited"
+    name: "moles deposited per run"
+    definition: "Moles of film material deposited in one run, from the deposited moles per cycle times the cycle number (a transform; gre23 mass balance)."
+    dimension: amount
+    unit: "mmol"
+    aliases: ["moles deposited"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)"]
+
+  - id: moles_from_mass_gain
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "moles from mass gain"
+    name: "moles from mass gain"
+    definition: "Moles of film material deposited in one run from the gravimetric mass gain and the material's molar mass (a transform; the second route of gre23's mass balance)."
+    dimension: amount
+    unit: "mmol"
+    aliases: ["moles from mass gain"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table I"]
+
+  - id: deposited_moles_per_cycle
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    family: growth_amount
+    label: "Δn_s"
+    name: "solid deposited per cycle"
+    definition: "Moles of solid deposited per ALD cycle, from the pressure trace of the reactant half-reaction (gre23 Δn_s, Eq. 2)."
+    dimension: amount
+    unit: "µmol"
+    aliases: ["Δn_s", "solid deposited per cycle"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table II"]
+
+  - id: atoms_per_cycle
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "atoms/cycle"
+    name: "metal atoms per cycle"
+    definition: "Metal atoms deposited per unit area per cycle, the amount-based growth per cycle (Cremers 2019 Sec. I allows the GPC as an areal density; proposal mass-based growth per cycle accepted in Sec. 18.9); from the thickness GPC and the film density, or from a pressure trace."
+    dimension: areal_density
+    unit: "nm-2"
+    qualifiers: [element, over]
+    aliases: ["atoms per cycle", "metal atoms per cycle"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)", "yim20 Fig. 10 (model input q)"]
+
+  - id: coating_mass_fraction
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "coating mass fraction"
+    name: "coating mass fraction"
+    definition: "The coating's share of the coated specimen's mass: mass gain / (1 + mass gain) with the gain relative to the initial mass (a transform; not a phase fraction)."
+    dimension: dimensionless
+    unit: "%"
+    aliases: ["coating mass fraction"]
+    base: {}
+    evidence: ["gre23 Table I"]
+
+  - id: shell_volume_fraction
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    family: growth_amount
+    label: "coating volume fraction"
+    name: "coating volume fraction"
+    definition: "The coating's share of a porous compact's volume for spherical particles of the stated diameter and coating thickness (a transform)."
+    dimension: dimensionless
+    unit: "%"
+    aliases: ["coating volume fraction"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table I"]
+
+  - id: deposition_rate
+    type: quantity
+    origin: extension
+    role: output
+    category: growth
+    label: "nm per hour"
+    name: "thickness per hour"
+    definition: "Film thickness grown per hour: the growth per cycle over the cycle time (a transform)."
+    dimension: length_per_time
+    unit: "nm/h"
+    aliases: ["deposition rate", "thickness per hour"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p6)", "gre23 Sec. II B (s9.p4)"]
+
+  - id: gas_moles_per_cycle
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    label: "Δn_g"
+    name: "gas released per cycle"
+    definition: "Moles of gas released per ALD cycle in a half-reaction, from the pressure rise in a closed chamber (gre23 Δn_g, Eq. 1)."
+    dimension: amount
+    unit: "µmol"
+    aliases: ["Δn_g", "gas released per cycle"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table II"]
+
+  - id: reaction_stoichiometry
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    label: "ȳ"
+    name: "gas-to-solid ratio"
+    definition: "Moles of gas released per mole of solid deposited in a half-reaction: the gas-to-solid ratio ȳ of gre23 (x ligands released per precursor)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: ["ȳ", "gas-to-solid ratio", "x"]
+    base: {}
+    evidence: ["gre23 Sec. III A (s12.p6)", "gre23 Table II"]
+
+  - id: pressure_rise
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    label: "δp"
+    name: "pressure rise"
+    definition: "The rise of chamber pressure during a reactant hold in a closed chamber, δp of gre23; with level maximum its peak value."
+    dimension: pressure
+    unit: "Torr"
+    qualifiers: [level, step]
+    aliases: ["δp", "pressure rise", "δp_max"]
+    base: {}
+    evidence: ["gre23 Fig. 2", "gre23 Sec. III A (s12.p1)"]
+
+  - id: pressure_rate
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    label: "TS"
+    name: "terminal pressure slope"
+    definition: "The slope of the chamber pressure at the end of a reactant hold, the terminal slope TS of gre23: positive for gas-producing processes, negative when leaks dominate."
+    dimension: pressure_per_time
+    unit: "mTorr/min"
+    qualifiers: [step]
+    aliases: ["TS", "terminal slope", "terminal pressure slope"]
+    base: {}
+    evidence: ["gre23 Fig. 3", "gre23 Sec. III A (s12.p7)"]
+
+  - id: time_to_maximum
+    type: quantity
+    origin: extension
+    role: output
+    category: reaction_monitoring
+    label: "t_max"
+    name: "time to pressure maximum"
+    definition: "The time from the start of a reactant hold to the pressure maximum, t_max of gre23."
+    dimension: time
+    unit: "min"
+    qualifiers: [step]
+    aliases: ["t_max", "time to pressure maximum"]
+    base: {}
+    evidence: ["gre23 Fig. 2", "gre23 Sec. III A (s12.p7)"]
+
+  - id: porosity
+    type: quantity
+    origin: extension
+    role: output
+    category: test_structure
+    label: "porosity"
+    name: "porosity"
+    definition: "The pore volume fraction of a porous body, before (stage initial) or after (stage final) the deposition, relative to the total volume."
+    dimension: dimensionless
+    unit: "%"
+    qualifiers: [stage, relative_to]
+    aliases: ["porosity", "φ_i", "φ_f"]
+    base: {}
+    evidence: ["gre23 Table I", "gre23 Sec. II A (s8.p1)"]
+
+  - id: fill_fraction
+    type: quantity
+    origin: extension
+    role: output
+    category: conformality
+    label: "fill"
+    name: "channel filled"
+    definition: "The share of a channel's height filled by the film on its two walls at the end of a run (yim20: 2 S_IIb / H)."
+    dimension: dimensionless
+    unit: "%"
+    aliases: ["channel filled"]
+    base: {}
+    evidence: ["yim20 Table 1", "yim20 Sec. D (s13.x1)"]
+
+  - id: roughness
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    label: "Rq"
+    name: "roughness"
+    definition: "Root-mean-square surface roughness of the film from AFM (mat22 Rq)."
+    dimension: length
+    unit: "nm"
+    aliases: ["Rq", "roughness", "RMS roughness"]
+    base: {}
+    evidence: ["mat22 Fig. 6a", "mat22 Sec. 3 (s3.p22)"]
+
+  - id: binding_energy
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    label: "BE"
+    name: "binding energy"
+    definition: "The binding energy of an XPS core-level component of the film, which names its chemical state."
+    dimension: energy
+    unit: "eV"
+    qualifiers: [element]
+    aliases: ["BE", "binding energy"]
+    base: {}
+    evidence: ["mat22 Fig. 5", "mat22 Sec. 3 (s3.p16, s3.p17)"]
+
+  - id: crystallite_size
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    label: "crystallite size"
+    name: "crystallite size"
+    definition: "The coherent crystallite size of a phase from the width of its diffraction peaks (gre23, Rietveld) or from microscopy (mat22)."
+    dimension: length
+    unit: "nm"
+    qualifiers: [species]
+    aliases: ["crystallite size", "grain size"]
+    base: {}
+    evidence: ["gre23 Table II", "mat22 Sec. 3 (s3.p26)"]
+
+  - id: sheet_resistance
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    label: "R_sheet"
+    name: "sheet resistance"
+    definition: "Resistivity over film thickness, the resistance of a square of the film (a transform; mat22 measures it by four-point probe and reports resistivity)."
+    dimension: resistance
+    unit: "Ω/sq"
+    aliases: ["sheet resistance", "R_sheet"]
+    base: {}
+    evidence: ["mat22 Sec. 5 (s5.p12)"]
+
+  - id: density_relative_to_bulk
+    type: quantity
+    origin: extension
+    role: output
+    category: film_properties
+    label: "ρ/ρ_bulk"
+    name: "density relative to bulk"
+    definition: "The film's mass density over the bulk density of the same material, as a percentage (a transform)."
+    dimension: dimensionless
+    unit: "%"
+    aliases: ["ρ/ρ_bulk", "density relative to bulk"]
+    base: {}
+    evidence: ["mat22 Table 1", "mat22 Sec. 3 (s3.p19)"]
+
+  - id: phase
+    type: categorical
+    origin: extension
+    role: output
+    category: film_properties
+    values_from: "fixed list + value_aliases"
+    label: "phase"
+    name: "phase"
+    definition: "Whether a named phase (the species qualifier) was detected in the film by the stated method: detected or not detected (P15)."
+    dimension: categorical
+    qualifiers: [species]
+    aliases: ["phase"]
+    base: {}
+    evidence: ["mat22 Fig. 4 (XPS)", "mat22 Sec. 3 (s3.p13)", "gre23 Fig. 5 (XRD)", "gre23 Table II"]
+
+  - id: annealing_temperature
+    type: quantity
+    origin: extension
+    role: condition
+    category: deposition_run
+    attribute: true
+    label: "T_anneal"
+    name: "anneal temperature"
+    definition: "The temperature of a post-deposition anneal (one pilot paper; Sec. 7 keeps it native, so stored as an attribute until a second paper needs it)."
+    dimension: temperature
+    unit: "°C"
+    qualifiers: [gas]
+    aliases: ["annealing temperature", "T_anneal"]
+    base: {}
+    evidence: ["mat22 Sec. 3 (s3.p40)"]
+
+  - id: saturation_density
+    type: quantity
+    origin: extension
+    role: model_parameter
+    category: surface_kinetics
+    attribute: true
+    label: "q_sat"
+    name: "saturation density"
+    definition: "Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs)."
+    dimension: areal_density
+    unit: "nm-2"
+    aliases: ["q", "saturation density", "q_sat"]
+    base: {}
+    evidence: ["yim20 Fig. 10", "yim20 Table 2"]
+
+  - id: probe_resolution
+    type: quantity
+    origin: extension
+    role: condition
+    category: measurement
+    attribute: true
+    label: "spot"
+    name: "probe spot"
+    definition: "The lateral size of a measurement probe: the reflectometer spot (yim20) or the EDS line width (gre23) (an instrument setting, Sec. 4)."
+    dimension: length
+    unit: "µm"
+    aliases: ["spot size", "spot"]
+    base: {}
+    evidence: ["yim20 Fig. 7", "yim20 Table 1", "gre23 Sec. II C (s10.p4)"]
+
+  - id: objective_magnification
+    type: quantity
+    origin: extension
+    role: condition
+    category: measurement
+    attribute: true
+    label: "objective"
+    name: "objective"
+    definition: "The magnification of the reflectometer objective (yim20 ×5, ×10, ×50) (an instrument setting, Sec. 4)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: ["objective", "magnification"]
+    base: {}
+    evidence: ["yim20 Table 1", "yim20 Fig. 7"]
+
+  - id: pillar_layout
+    type: categorical
+    origin: extension
+    role: condition
+    category: test_structure
+    attribute: true
+    values_from: "free text, the layout name as printed"
+    label: "pillar layout"
+    name: "pillar layout"
+    definition: "The named pillar layout of a PillarHall chip design (yim20 v1a, v1b, v2a) (an equipment detail, Sec. 4)."
+    dimension: categorical
+    aliases: ["pillar layout"]
+    base: {}
+    evidence: ["yim20 Table 1", "yim20 Sec. C (s6.p2)"]
+
+  - id: raman_shift
+    type: quantity
+    origin: extension
+    role: coordinate
+    category: measurement
+    attribute: true
+    label: "Raman shift"
+    name: "Raman shift"
+    definition: "The abscissa of a Raman spectrum (a signal axis, Sec. 4)."
+    dimension: wavenumber
+    unit: "cm-1"
+    aliases: ["Raman shift", "Raman shift (cm-1)"]
+    base: {}
+    evidence: ["mat22 Fig. 1a", "mat22 Fig. 9"]
+
   # ---------------------------------------------------------------- species of the pilot papers (Sec. 11; Sec. 18.1: yim20, mat22, gre23)
   - id: mo_ntbu2_nme22
     type: species
@@ -1225,7 +1692,7 @@ entries:
     base: {}
     evidence: ["Yim2020 Table 2"]
 
-transforms:
+transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes them, never stored) are the transforms marked P51
   - {id: unit_conversion,     inputs: [any],                       output: same,                   formula: "unit table below"}
   - {id: thickness_to_gpc,    inputs: [film_thickness, cycle_number], output: growth_per_cycle,    formula: "d / N"}
   - {id: x_over_width,        inputs: [distance, feature_width],   output: dimensionless_distance, formula: "x / w"}
@@ -1234,6 +1701,20 @@ transforms:
   - {id: coated_ar,           inputs: [penetration_depth, feature_width], output: "coated_aspect_ratio{basis=AR}", formula: "PD / w"}
   - {id: exposure,            inputs: [partial_pressure, pulse_time], output: exposure,            formula: "p * t  (Cremers Sec. II D)"}
   - {id: step_coverage,       inputs: ["film_thickness{position=bottom}", "film_thickness{position=top}"], output: step_coverage, formula: "d_bottom / d_top"}
+  - {id: final_channel_height, inputs: [feature_width, "film_thickness{position=plateau}"], output: "feature_width{stage=final}", formula: "H - 2 S_IIb (P51)"}
+  - {id: exposure_per_run,    inputs: [exposure, cycle_number],     output: "exposure{over=run}",   formula: "E * N (P51)"}
+  - {id: sheet_resistance,    inputs: [resistivity, film_thickness], output: sheet_resistance,      formula: "rho / d (P51)"}
+  - {id: gpc_from_atoms,      inputs: [atoms_per_cycle, film_density], output: growth_per_cycle,    formula: "n M / (rho N_A) (P51; M and N_A assumed facts)"}
+  - {id: atoms_from_gpc,      inputs: [growth_per_cycle, film_density], output: atoms_per_cycle,    formula: "GPC rho N_A / M * metal atoms per formula unit (P51)"}
+  - {id: density_to_bulk,     inputs: [film_density, "film_density{reference=bulk}"], output: density_relative_to_bulk, formula: "100 rho / rho_bulk (P51)"}
+  - {id: moles_deposited,     inputs: [deposited_moles_per_cycle, cycle_number], output: moles_deposited, formula: "dn_s * N (P51)"}
+  - {id: moles_from_mass_gain, inputs: [mass_gain],                 output: moles_from_mass_gain,   formula: "mass gain * specimen mass * specimens per run / M (P51; assumed facts)"}
+  - {id: target_gpc,          inputs: ["film_thickness{kind=target}", cycle_number], output: "growth_per_cycle{kind=target}", formula: "d_target / N (P51)"}
+  - {id: plasma_h2_fraction,  inputs: ["gas_flow_rate{gas=h2}", "gas_flow_rate{gas=h2s}", "gas_flow_rate{gas=ar}"], output: "plasma_gas_ratio{gas=h2;relative_to=all_gases}", formula: "100 H2 / (H2 + H2S + Ar) (P51)"}
+  - {id: coating_mass_fraction, inputs: [mass_gain],                output: coating_mass_fraction,  formula: "100 mg / (1 + mg), mg relative to the initial mass (P51)"}
+  - {id: shell_volume_fraction, inputs: ["porosity{stage=initial}", film_thickness], output: shell_volume_fraction, formula: "100 (1 - phi) ((d_NP + 2 t)^3 / d_NP^3 - 1) (P51; d_NP an assumed fact)"}
+  - {id: cycle_time,          inputs: [pulse_time, purge_time],     output: cycle_time,             formula: "sum of the pulse, hold and purge times (P51)"}
+  - {id: deposition_rate,     inputs: [growth_per_cycle, cycle_time], output: deposition_rate,      formula: "GPC * 3600 / t_cycle (P51)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
@@ -1251,7 +1732,7 @@ qualifiers:   # closed lists; adding a value is allowed and is logged (log: valu
   stat:      {values: [sd, relative_sd, half_range, tolerance, minimum, maximum], log: "pilot P1: a spread fact's statistic"}
   between:   {values: [runs, pieces, position, repeat_measurement, items], log: "pilot P1: what varies between the repeats of a spread"}
   n:         {values: a number or not_stated, log: "pilot P1: the number of repeats"}
-  relative_to: {values: [initial_mass, final_mass, all_atoms, metal_atoms, crystalline_phases, total_volume, not_stated], log: "pilot P4: what a fraction is a fraction of"}
+  relative_to: {values: [initial_mass, final_mass, all_atoms, metal_atoms, crystalline_phases, total_volume, reactive_gases, all_gases, not_stated], log: "pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)"}
   over:      {values: [run, first_100_cycles, saturation, not_stated], log: "pilot P5: what a per-cycle value is averaged over"}
   mode:      {values: [in_situ, ex_situ, not_stated], log: "pilot P6: a measurement during or after the deposition"}
   x:         {values: quantity ids, log: "pilot: the abscissa of a curve"}
@@ -1261,7 +1742,14 @@ units:   # canonical unit per dimension, and the accepted units
   temperature:      {canonical: "°C",       accepted: ["°C", K]}
   time:             {canonical: s,          accepted: [ms, s, min]}
   pressure:         {canonical: Pa,         accepted: [Pa, hPa, mbar, Torr, mTorr]}
-  exposure:         {canonical: "Pa·s",     accepted: ["Pa·s", "Torr·s", L]}
+  exposure:         {canonical: "Pa·s",     accepted: ["Pa·s", "Torr·s", "Torr-s", L]}
+  amount:           {canonical: mol,        accepted: [mol, mmol, "µmol"]}
+  areal_density:    {canonical: nm-2,       accepted: [nm-2, "at/nm2"]}
+  pressure_per_time: {canonical: Pa/s,      accepted: [Pa/s, mTorr/min]}
+  length_per_time:  {canonical: nm/h,       accepted: [nm/h]}
+  resistance:       {canonical: "Ω/sq",     accepted: ["Ω/sq"]}
+  energy:           {canonical: eV,         accepted: [eV]}
+  wavenumber:       {canonical: cm-1,       accepted: [cm-1]}
   length:           {canonical: "nm (film thickness) / µm (position, geometry)", accepted: [pm, "Å", nm, "µm", mm, cm, m]}
   length_per_cycle: {canonical: nm/cycle,   accepted: [pm/cycle, "Å/cycle", nm/cycle]}
   power:            {canonical: W,          accepted: [W]}
@@ -1286,6 +1774,7 @@ vocabularies:
   plasma_configuration: [capacitive, inductive, remote, radical_enhanced]
   reactor_type:      [pump_type, flow_type, atmospheric]
   crystallinity:     [amorphous, crystalline]
+  phase:             [detected, "not detected"]                              # the values of the phase categorical (P15)
   structure_class:   [lateral, vertical, porous, planar]
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]
@@ -1314,7 +1803,8 @@ vocabularies:
     - {id: schematic, class: schematic, definition: "A drawing: a value or statement read from a schematic (not a measurement)."}
     - {id: tabulated, class: tabulated, definition: "A value stated in a table without a method (not a measurement)."}
   categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
-                           plasma_configuration, reactor_type, reactor, delivery_method]
+                           plasma_configuration, reactor_type, reactor, delivery_method, substrate]
+  categorical_outputs:    [crystallinity, phase]
   value_aliases:       # aliases of categorical values (species and structure aliases live in their entries)
     process_mode:
       thermal: [thermal ALD, thermal]
