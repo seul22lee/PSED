@@ -609,8 +609,8 @@ def check_kinds():
     import tools, query as Q
     err = []
     texts = [t["description"] for t in tools.TOOLS]
-    for name, args in (("values", {"result": "growth_per_cycle"}), ("values", {"result": "resistivity"}), ("detail", {"id": "yim20:ent:8", "parts": ["what", "results", "computed", "recipe", "claims"]}),
-                       ("detail", {"id": "gre23:ent:120:pair", "parts": ["what", "results", "computed", "claims"]}), ("detail", {"id": "mat22:cmp:map", "parts": ["what", "computed", "claims"]}),
+    for name, args in (("values", {"result": "growth_per_cycle"}), ("values", {"result": "resistivity"}), ("detail", {"ids": ["yim20:ent:8"], "parts": ["what", "results", "computed", "recipe", "claims"]}),
+                       ("detail", {"ids": ["gre23:ent:120:pair", "mat22:cmp:map"], "parts": ["what", "results", "computed", "claims"]}), ("concept", {"words": "resistivity"}),
                        ("search", {"words": "resistivity"}), ("source", {"id": "mat22:s3.p34"})):
         lines, e = tools.run_tool(name, args)
         joined = []
