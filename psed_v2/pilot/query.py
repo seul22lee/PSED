@@ -1542,7 +1542,7 @@ SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure", "substrate"
 def result_matches(T, e, result):
     """[(key, name, record)] of an entity for a result given by its name (query.vocabulary) or its quantity id: its results, or,
     for a setting quantity it states (P32), its stated conditions (a target excluded)."""
-    qs = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q}      # a quantity's base name stands for all its keys
+    qs = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q} | set(concept_ids(result))   # a quantity's base name, or any name or alias the ontology knows, stands for all its keys
     hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] in qs
     out = [(kk, x["name"], x["record"]) for kk, x in result_records(T, e).items() if hit(kk, x["name"]) and (x["record"].get("text") or x["record"].get("curve"))]
     if not out:
@@ -1581,6 +1581,13 @@ def _where_ok(T, e, where):
 def recipe_of(T, e):
     """The recipe activity above an entity (its process)."""
     return next((a for a in T.chain(e) if T.byid.get(a, {}).get("type") == "activity" and T.byid[a]["kind"] == "recipe" and not a.endswith(":reactor")), "")
+
+
+def concept_ids(words):
+    """The quantity ids the words name by the ontology's rules (concept.resolve), for a result argument given as a name or alias."""
+    import concept as CN
+    ids, _ = CN.resolve(words)
+    return [i for i in ids if i in L.ENTRIES and L.ENTRIES[i]["type"] in ("quantity", "categorical")]
 
 
 def values(result, paper=None, where=None):
@@ -1642,7 +1649,8 @@ def values(result, paper=None, where=None):
                                reactor=sorted({crs[e]["reactor_type"]["record"]["text"] for e in ents if "reactor_type" in crs[e]}),
                                process=sorted({recipe_of(T, e) for e in ents} - {""}),
                                measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows}),
-                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in out_rows}))          # one entry per result key (Sec. 18.4)
+                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in out_rows},          # one entry per result key (Sec. 18.4)
+                               roles=sorted({role(T, e) for e in ents})))
     return groups
 
 
@@ -1653,9 +1661,8 @@ def group_verdicts(groups):
     for n, ga in enumerate(groups, 1):
         for m, gb in enumerate(groups[n:], n + 1):
             for k in ga["axes"]:
-                kb = k if k in gb["axes"] else next((x for x in gb["axes"] if x.split("{")[0] == k.split("{")[0]), None)
-                if kb:
-                    a, b = ga["axes"][k], gb["axes"][kb]
+                if k in gb["axes"]:                                             # the same result key in both sets (same definition by construction)
+                    a, b = ga["axes"][k], gb["axes"][k]
                     out.append((k, n, m, [f"{x} ({a[x]} vs {b[x]})" for x in AXES if a[x] != b[x]]))
     return out
 

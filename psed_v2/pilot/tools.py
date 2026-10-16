@@ -2,7 +2,7 @@
 """The Knowledge base arm's access layer: the tool schemas and descriptions, and run_tool, which answers a tool call from query.py
 as plain text, one line per returned value or row, starting with its id in square brackets (format and paging only; the tool
 layer computes nothing). Also the page targets of ids (open_target). Used by ask.py; no model call here."""
-import csv, difflib, json, re, sys
+import collections, csv, difflib, json, re, sys
 from collections import Counter
 from pathlib import Path
 
@@ -73,25 +73,26 @@ TOOLS = [
              offset=dict(type="integer", description="Skip this many results (default 0).")),
              required=["words"])),
     dict(name="values",
-         description=("Arguments: result (required), paper, where, offset. Returns every value of one result or stated setting, never a "
-                      "representative, grouped by the comparison set its experiment belongs to (a series, grid or replicate set; one more "
-                      "group per paper for values outside any set). A group header gives once the paper, the set id, what the set varies, "
-                      "the conditions its members share (those every group of a paper shares are given once) and the result's definition "
-                      "when it is not the default or the paper defines it; a row gives the settings that vary within the set, the value "
-                      "with uncertainty and unit, its kind (" + KIND_LIST + "), its id and the id of any caveat; under the group come the caveats' texts and the ids of the "
-                      "claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
-                      "measurement). A quantity's base name covers all its definitions, a specific name only its own. About 2,000 tokens "
-                      "per call, then 'more: offset=N'. Use it to see how one result or setting varies across experiments and conditions. "
+         description=("Arguments: result (required), paper, where. Returns every value of one result or stated setting as comparison-set "
+                      "summaries, never a representative: per set one header line (set id · what it varies · the conditions its members share · "
+                      "n rows · the columns), then one row per specimen with the result's values side by side across its qualifier variants "
+                      "(inside and outside a channel on one row), each value with its kind (" + KIND_LIST + "), its ± with the basis of the "
+                      "uncertainty, its fact id and the id of any caveat. Sets whose comparability axes differ are separated by a 'not comparable: "
+                      "<axes>' divider; sets whose uncertainty bases differ are flagged. Values computed by this knowledge base are counted, not "
+                      "listed (detail with parts computed shows them). Conditions every set of a paper shares, and the usual ones, are printed once "
+                      "above its sets; the caveats on every row once at the end. When the full listing would exceed about 2,000 tokens the "
+                      "output gives way in steps: model-run sets collapse to their range and count, then the caveat texts go (their ids stay "
+                      "on the rows), then specimen sets collapse, the largest first; a line says how many sets collapsed and that detail(ids) "
+                      "opens them. Narrow with paper or where to see more rows. The last line says where else the concept lives. Use it to see how one result or setting varies across experiments and conditions. "
                       "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              where=dict(type="object", description="Only experiments whose stated settings match: {setting name: a value (number or text), or [min, max] (either may be null)}; numbers in the setting's unit as the values lines show it.",
-                        additionalProperties={}),
-             offset=dict(type="integer", description="Skip this many output units (default 0).")),
+                        additionalProperties={})),
              required=["result"])),
     dict(name="detail",
-         description=("Arguments: id (required), parts, offset. Returns what the knowledge base holds about one id. An experiment or input: "
+         description=("Arguments: ids (required, up to 8), parts, offset. Returns what the knowledge base holds about each id, under one budget. An experiment or input: "
                       "what (role, material, substrate, inputs, the methods its results were measured by, its comparison sets, identity "
                       "statements, its caveats), differs (the conditions that set it apart in its set), results (value, unit, kind, "
                       "definition, method, in situ or ex situ, uncertainty, source element, caveats), recipe (every condition), claims, "
@@ -104,10 +105,10 @@ TOOLS = [
                       "(default what, differs, results) applies to experiments, inputs, sets and cited works. About 2,000 tokens per call, "
                       "then 'more: offset=N'. Use it for more about one id that search or values returned."),
          parameters=dict(type="object", properties=dict(
-             id=dict(type="string", description="An id as search, values or detail returned it."),
+             ids=dict(type="array", items=dict(type="string"), minItems=1, maxItems=8, description="One to eight ids as search, values or detail returned them; one output budget for all of them, nothing printed twice."),
              parts=dict(type="array", items=dict(type="string", enum=DETAIL_PARTS), description="Any of what, differs, results, recipe, claims, computed (default what, differs, results)."),
              offset=dict(type="integer", description="Skip this many output units (default 0).")),
-             required=["id"])),
+             required=["ids"])),
     dict(name="source",
          description=("Arguments: id (required), offset. Returns the paper element behind a fact or element id: its locator, its text "
                       "(figure panels have none), whether the knowledge base covers it, and every value the facts of that element carry, "
@@ -263,6 +264,10 @@ def _check(where, v, sch):
                 if e:
                     return e
     if t == "array":
+        if "maxItems" in sch and len(v) > sch["maxItems"]:
+            return f"{where}: at most {sch['maxItems']} items, got {len(v)}"
+        if "minItems" in sch and len(v) < sch["minItems"]:
+            return f"{where}: at least {sch['minItems']} item"
         for n, x in enumerate(v):
             e = _check(f"{where}[{n}]", x, sch.get("items", {}))
             if e:
@@ -292,7 +297,7 @@ def _names(kind=None):
 
 
 def _result_ok(r):
-    return r in _names() or r in QUANT
+    return r in _names() or r in QUANT or bool(Q.concept_ids(r))
 
 
 def _where_err(where):
@@ -313,7 +318,7 @@ def _record(i):
 
 
 IDS = {("values", "result"): (_result_ok, "not a result or setting name of the knowledge base, nor a quantity id (names are listed in the description)"),
-       ("detail", "id"): (_record, "no record of the knowledge base has this id"),
+       ("detail", "ids"): (_record, "no record of the knowledge base has this id"),
        ("source", "id"): (_source, "no fact or paper element has this id")}
 
 
@@ -407,71 +412,126 @@ def _span(nums):
     return ", ".join(out)
 
 
+KIND_MARK = {k: f"k{n}" for n, k in enumerate([k for k in L.KINDS if k in L.KIND_WORDS], 1)}     # a mark per marked kind; the legend binds it to the phrase
+
+
+def _cell(rec, marks):
+    """One value as a cell: text, the kind's mark (the legend gives its phrase; measured and stated unmarked, P57), ± with its basis id
+    (the basis legend gives the phrase), the fact id; the caveat ids go on the row, once (values_blocks)."""
+    u = rec.get("uncertainty")
+    unc = (f" ± {u['value']} ({u.get('basis') or 'basis not stated'})" if u and not isinstance(u, str) else "")
+    k = rec.get("kind", "")
+    mark = ""
+    if k in KIND_MARK:
+        marks.add(k); mark = f" ({KIND_MARK[k]})"
+    return f"{rec.get('text') or 'curve'}{mark}{unc}" + (f" [{rec['fact']}]" if rec.get("fact") else "")
+
+
+def _usual_names(groups, paper, usual):
+    """(key, name) of the usual conditions of a paper (values_blocks)."""
+    return {(x["key"], x["name"]) for g in groups if g["paper"] == paper for x in g["shared"] if (x["key"], x["record"]["text"]) in usual}
+
+
 def values_blocks(groups, asked):
-    """The values output as blocks: per group a header (once), its rows, its footer; then the line on what differs between groups."""
-    blocks = []
-    common = {}                                                                 # conditions every group of a paper shares: once, per paper (P44)
-    for k in dict.fromkeys(g["paper"] for g in groups):
-        gs = [g for g in groups if g["paper"] == k]
+    """P65: comparison-set summaries. Per set a header (id, kind, label, what it varies, the shared conditions, n rows, the columns),
+    then one row per specimen with the result's values across its qualifier variants as columns; a 'not comparable: <axes>' divider
+    between consecutive sets whose axes differ (P53), a 'different basis' flag where the uncertainty bases differ (Sec. 19.4); values
+    computed by the knowledge base counted, not listed, unless the set has nothing else; the caveats' texts and the basis phrases
+    once at the end, then the cross-paper footer (P67). Returns (full blocks, collapsed blocks)."""
+    legend_cav, legend_basis, marks, full, collapsed = {}, set(), set(), [], []
+    verdict = {(a, b): ax for k, a, b, ax in Q.group_verdicts(groups) for _ in [0]} if len(groups) > 1 else {}
+    pair_axes = {}
+    for k, a, b, ax in Q.group_verdicts(groups):
+        pair_axes.setdefault((a, b), set()).update(ax)
+    qids = sorted({r["key"].split("{")[0].split("[")[0] for g in groups for r in g["rows"]})
+    prev_bases = None
+    def ent_cav(g):                                                             # the caveats of each row (entity) of a set: the union over its cells
+        d = {}
+        for r in g["rows"]:
+            d.setdefault(r["entity"], set()).update(c["id"] for c in r["record"].get("caveats") or [])
+        return d
+    spec = [g for g in groups if g.get("roles", ["specimen"]) == ["specimen"]]     # the caveats on every specimen row of the output: once, at the end
+    common_cav = set.intersection(*[s for g in spec for s in ent_cav(g).values()]) if spec and any(g["rows"] for g in spec) else set()
+    all_spec = len(spec) == len(groups)
+    one_paper = len({g["paper"] for g in groups}) == 1
+    cols_all = []                                                               # the column list once at the top when every set has the same columns
+    for g in groups:
+        rows_ = [r for r in g["rows"] if r["record"].get("kind") != "computed_by_kb"] or g["rows"]
+        cols_all.append(tuple(dict.fromkeys(r["result_name"] for r in rows_)))
+    same_cols = len(set(cols_all)) == 1
+    n_kb = sum(1 for g in groups for r in g["rows"] if r["record"].get("kind") == "computed_by_kb")
+    common, usual = {}, {}                                                      # conditions every specimen set of a paper shares: once, at the top (P44);
+    for k in dict.fromkeys(g["paper"] for g in groups):                         # the usual ones (shared by most sets) once too, a set says when it varies or lacks one
+        gs = [g for g in groups if g["paper"] == k and g.get("roles", ["specimen"]) == ["specimen"]]
         sets = [{(x["key"], x["record"]["text"]) for x in g["shared"]} for g in gs]
         common[k] = set.intersection(*sets) if len(gs) > 1 else set()
+        cnt = collections.Counter(c for s in sets for c in s)
+        usual[k] = {c for c, n in cnt.items() if n * 2 > len(gs) and c not in common[k]} if len(gs) > 2 else set()
+        if len({x[0] for x in usual[k]}) < len(usual[k]):                       # two values of one key both usual: lift neither
+            usual[k] = set()
     for n, g in enumerate(groups, 1):
         T = Q.TREES[g["paper"]]
-        ctx = []
-        if common[g["paper"]]:
-            cs = [x for x in g["shared"] if (x["key"], x["record"]["text"]) in common[g["paper"]]]
-            ctx = [(g["id"] or f"{g['paper']}:outside", f"{short_name(g['paper'])} · every group of this paper shares: "
-                    + "; ".join(f"{x['name']} {x['record']['text']}{cmark(x['record'])}" for x in cs))] + [y for x in cs for y in clines(x["record"])]
-            if n == 1 or groups[n - 2]["paper"] != g["paper"]:
-                blocks.append(block([], head=ctx))
-        own_shared = [x for x in g["shared"] if (x["key"], x["record"]["text"]) not in common[g["paper"]]]
-        names = list(dict.fromkeys(r["result_name"] for r in g["rows"]))
-        bydef = {}                                                              # one line per distinct definition, naming its results
-        for key in dict.fromkeys(r["key"] for r in g["rows"]):
-            rec = next(r["record"] for r in g["rows"] if r["key"] == key)
-            nm = next(r["result_name"] for r in g["rows"] if r["key"] == key)
-            d = (rec.get("definition") if rec.get("kind") != "computed_by_kb" else f"formula {rec.get('definition')}") or ""
-            pdef = defined_as(g["paper"], key)
-            if d or pdef:
-                bydef.setdefault("; ".join(x for x in (d, pdef.replace(' · defined as: ', 'the paper: ')) if x), []).append(nm)
-        defs = [f"{', '.join(ns)}: {d}" for d, ns in bydef.items()]
         sid = g["id"] or f"{g['paper']}:outside"
-        head = (f"group {n} · {short_name(g['paper'])} · " + (f"set [{g['id']}] ({g['kind']}): {g['label']}" if g["id"] else g["label"])
-                + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
-                + (" · shared: " + "; ".join(f"{x['name']} {x['record']['text']}{cmark(x['record'])}" for x in own_shared) if own_shared else "")
-                + (f" (+{g['more_shared']} more shared conditions: detail of the set)" if g["more_shared"] and g["id"] else ""))
-        hl = [(sid, head)] + [(sid, "definition · " + d) for d in defs] + [x for s_ in own_shared for x in clines(s_["record"])]
-        rows = []
-        for r in g["rows"]:
-            rec = r["record"]
-            st = ", ".join(f"{x['name']} {x['text']}" for x in r["settings"])
-            val = (rec.get("text") or "curve") + _unc(rec)
-            if rec.get("curve") and rec["curve"].get("points"):
-                val = f"curve against {rec['curve'].get('x') or 'x'}: " + ", ".join(f"({x}, {y})" for x, y in rec["curve"]["points"])
-            rows.append([(rec.get("fact") or r["entity"], f"{r['name']}" + (f" · {st}" if st else "") + f" · {val} · {rec.get('kind')}{cmark(rec)}"
-                          + (f" · {r['result_name']}" if len(names) > 1 or r["result_name"] != asked else "") + (f" · experiment [{r['entity']}]" if rec.get("fact") else ""))])
-        foot = list(dict.fromkeys(x for r in g["rows"] for x in clines(r["record"])))                    # each caveat once, under its group
-        foot += [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"]))] if g["claims"] else []
-        blocks.append(block(rows, head=hl, foot=foot, short=(sid, f"group {n} continued · {short_name(g['paper'])} · {g['label']}"), context=ctx))
-    if len(groups) > 1:
-        diff = []
-        for aspect in ("material", "structure", "reactor", "process", "measurement"):
-            by = {}
-            for n, g in enumerate(groups, 1):
-                for v in g[aspect] or ["not stated"]:
-                    by.setdefault(v, []).append(n)
-            if len(by) > 1:
-                diff.append(f"{aspect}: " + "; ".join(f"{v} (group{'s' if len(ns) > 1 else ''} {_span(ns)})" for v, ns in by.items()))
-        last = ("between groups, not one series: " + " · ".join(diff)) if diff else "the groups share material, structure, reactor, process and measurement"
-        verdicts = {}                                                           # (result, axes) -> the group pairs, printed once
-        for k, a, b, ax in Q.group_verdicts(groups):
+        own = [r for r in g["rows"] if r["record"].get("kind") != "computed_by_kb"]
+        kb = [r for r in g["rows"] if r["record"].get("kind") == "computed_by_kb"]
+        rows = own or kb
+        keys = list(dict.fromkeys(r["key"] for r in rows))
+        names = {k: next(r["result_name"] for r in rows if r["key"] == k) for k in keys}
+        by_ent = {}
+        for r in rows:
+            by_ent.setdefault(r["entity"], {})[r["key"]] = r
+        is_spec = g.get("roles", ["specimen"]) == ["specimen"]
+        lifted = (common[g["paper"]] | usual[g["paper"]]) if is_spec else set()
+        shared = "; ".join(f"{x['name']} {x['record']['text']}" for x in g["shared"] if (x["key"], x["record"]["text"]) not in lifted)
+        present = {x["key"] for x in g["shared"]} | {x["key"] for r in rows for x in r["settings"]}
+        missing = [name for key, name in sorted(_usual_names(groups, g["paper"], usual[g["paper"]])) if is_spec and key not in present]
+        head = []
+        if (common[g["paper"]] or usual[g["paper"]]) and (n == 1 or groups[n - 2]["paper"] != g["paper"]):
+            every = [g2 for g2 in groups if g2["paper"] == g["paper"]]
+            txt = {(x["key"], x["record"]["text"]): f"{x['name']} {x['record']['text']}" for g2 in every for x in g2["shared"]}
+            head.append((f"{g['paper']}:shared", f"{short_name(g['paper'])}" + (" · every specimen set of this paper shares: " + "; ".join(txt[c] for c in sorted(common[g["paper"]], key=txt.get)) if common[g["paper"]] else "")
+                         + (" · usual, unless a set varies it or lacks it: " + "; ".join(txt[c] for c in sorted(usual[g["paper"]], key=txt.get)) if usual[g["paper"]] else "")))
+        head += [(sid, f"set [{sid}] ({g['kind'] or 'outside any set'})" + ("" if one_paper else f" · {short_name(g['paper'])}") + f" · {g['label']}" + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
+                 + (f" · shared: {shared}" if shared else "") + (f" · lacks: {', '.join(missing)}" if missing else "") + f" · {len(by_ent)} rows" + ("" if same_cols else " · columns: " + " | ".join(names[k] for k in keys)))]
+        if n == 1 and same_cols:
+            head.insert(0, ("columns", "columns of every row: " + " | ".join(names[k] for k in keys) + (f" · {n_kb} values {KB} are not listed here (detail, parts computed)" if n_kb else "")))
+        if n > 1:
+            ax = pair_axes.get((n - 1, n), set())
             if ax:
-                verdicts.setdefault((Q.name_of(k), "; ".join(ax)), []).append((a, b))
-        head = [("between", last)] + [("between", f"not comparable on {name}: " + ", ".join(f"group{'s' if '–' in a or ',' in a else ''} {a} with group {b}" for a, b in _pairs(ps)) + f": {ax}") for (name, ax), ps in verdicts.items()]
-        if not verdicts and len(groups) > 1:
-            head.append(("between", "the groups' values are comparable: same entry, definition, method class and specimen class"))
-        blocks.append(block([], head=head))
-    return blocks
+                head.insert(0, ("between", f"— not comparable with set {n - 1}: " + "; ".join(sorted(ax)) + " —"))
+        own_cav = (set.intersection(*ent_cav(g).values()) - (common_cav if is_spec else set())) if rows else set()
+        if own_cav:
+            head.append((sid, "caveats on every row of this set: " + ", ".join(f"[{c}]" for c in sorted(own_cav))))
+        bases = {(r["record"].get("uncertainty") or {}).get("basis") or "not stated" for r in rows if r["record"].get("uncertainty")}
+        if len(bases) > 1:
+            head.append((sid, "different basis within this set: " + " vs ".join(sorted(bases))))
+        if prev_bases and bases and bases != prev_bases:
+            head.append((sid, f"different basis from set {n - 1}: " + " vs ".join(sorted(bases)) + f" vs {' / '.join(sorted(prev_bases))}"))
+        prev_bases = bases or prev_bases
+        legend_basis |= {b for b in bases if b in L.BASES}
+        out_rows, ranges = [], {}
+        for e, cells in by_ent.items():
+            r0 = next(iter(cells.values()))
+            st = ", ".join(f"{x['name']} {x['text']}" for x in r0["settings"])
+            row_cav = {c["id"] for r in cells.values() for c in r["record"].get("caveats") or []} - (common_cav if is_spec else set()) - own_cav
+            line = f"{r0['name']}" + (f" · {st}" if st else "") + " · " + " | ".join(_cell(cells[k]["record"], marks) if k in cells else "—" for k in keys) \
+                + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(row_cav)) if row_cav else "")
+            out_rows.append([(e, line)])
+            for k, r in cells.items():
+                legend_cav.update({c["id"]: c["text"] for c in r["record"].get("caveats") or []})
+                v = r["record"].get("value")
+                if v is not None:
+                    ranges.setdefault(k, []).append((v, r["record"].get("unit", "")))
+        foot = [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"][:8]) + (f" · and {len(g['claims']) - 8} more (detail(ids=[{sid!r}], parts=claims))" if len(g["claims"]) > 8 else ""))] if g["claims"] else []
+        full.append(block(out_rows, head=head, foot=foot))
+        rng = "; ".join(f"{names[k]} {Q.g(min(v for v, _ in vs), 3)}–{Q.g(max(v for v, _ in vs), 3)} {vs[0][1]}".strip() + f" ({len(vs)})" for k, vs in ranges.items())
+        collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"set [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · open with detail(ids=[{sid!r}]) or narrow with where")]))
+    tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {L.PHRASES[k]}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
+        + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
+        + ([("legend", ("caveats on every row above: " if all_spec else "caveats on every specimen row above: ") + ", ".join(f"[{c}]" for c in sorted(common_cav)))] if common_cav else [])
+    tail.append(("between", CN.footer(qids, paper=groups[0]["paper"] if len({g["paper"] for g in groups}) == 1 and len(Q.TREES) > 1 and all(g["paper"] == groups[0]["paper"] for g in groups) else None)))
+    full.append(block([], head=tail)); collapsed.append(block([], head=[tail[-1]]))
+    return full, collapsed, legend_cav
 
 
 SEARCH_LINE = 200
@@ -518,6 +578,8 @@ def paginate(blocks, offset, max_lines=None):
             seen_defs.add(m.group(1))
         if t not in seen_lines:                                                # a text once per page, whatever its id
             page.append((i, t)); seen_lines.add(t)
+    for b in blocks:                                                            # a block's tail closes every page (the cross-paper footer, P67)
+        page += [x for x in b.get("tail", []) if x not in page]
     if n < len(units):
         page.append(("more", f"more: offset={n}"))
     return page
@@ -571,14 +633,34 @@ def _run(name, args):
             groups = Q.values(args["result"], args.get("paper"), args.get("where"))
             if not groups:
                 return [], ""
-            blocks = values_blocks(groups, args["result"])
-            for b in blocks:
-                b["head"], b["foot"] = W(b["head"]), W(b["foot"])
-                b["rows"] = [W(r) for r in b["rows"]]
-                if b["short"]:
-                    b["short"] = W([b["short"]])[0]
-                b["context"] = W(b["context"])
-            return blocks, ""
+            full, collapsed, legend_cav = values_blocks(groups, args["result"])
+            for blocks in (full, collapsed):
+                for b in blocks:
+                    b["head"], b["foot"] = W(b["head"]), W(b["foot"])
+                    b["rows"] = [W(r) for r in b["rows"]]
+            # over the budget, the output gives way in steps (P65): the model-run sets collapse to their range and count, then the caveat
+            # texts go (the ids stay on the rows: caveats are by reference), then the specimen sets collapse, the largest first;
+            # the caveat texts, when shown, are only those cited on the lines shown, once, at the end (P68)
+            size = lambda b: sum(len(t) + len(i) + 4 for u in [b["head"]] + b["rows"] + [b["foot"]] for i, t in u)
+            spec = [n for n in range(len(groups)) if groups[n].get("roles", ["specimen"]) == ["specimen"]]
+            order = sorted(set(range(len(groups))) - set(spec), key=lambda n: -size(full[n])) + ["texts"] + sorted(spec, key=lambda n: -size(full[n]))
+
+            def with_legend(out, k):
+                text = "\n".join(t for b in out for u in [b["head"]] + b["rows"] + [b["foot"]] for _, t in u)
+                cited = [i for i in legend_cav if f"[{i}]" in text]
+                texts = "texts" not in order[:k]
+                cav = [(i, f"caveat · {legend_cav[i]}") for i in cited] if texts else \
+                    ([("legend", f"the texts of the {len(cited)} caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])")] if cited else [])
+                n_sets = k - (0 if texts else 1)
+                note = [("between", f"{n_sets} of {len(groups)} sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where")] if n_sets else []
+                return out[:-1] + [block([], head=note + out[-1]["head"][:-1] + W(cav) + out[-1]["head"][-1:])]
+            out = list(full)
+            k = 0
+            while k < len(order) and paginate(with_legend(out, k), 0)[-1][0] == "more":
+                if order[k] != "texts":
+                    out[order[k]] = collapsed[order[k]]
+                k += 1
+            return with_legend(out, k), ""
         if name == "concept":
             if not Q.tokens(args["words"]):
                 return [], "error: concept: words has no letters or numbers"
@@ -617,9 +699,18 @@ def _run(name, args):
                     line = line[:SEARCH_LINE - 2].rsplit(" ", 1)[0] + " …"
                 rec = dict(caveats=list(cav.values()))
                 items.append([x for y in [(h["id"], line + cmark(rec))] + clines(rec) for x in wrap(*y)])
-            return [block(items)], ""
+            cids = [h["id"] for h in hits if h["type"] == "concept"][:3] or CN.resolve(args["words"])[0][:3]
+            foot = CN.footer([c for c in cids if c in L.ENTRIES], args.get("paper")) if cids else ""
+            b = block(items); b["tail"] = W([("between", foot)]) if foot else []     # on every page (P67)
+            return [b], ""
         if name == "detail":
             parts = [p for p in (args.get("parts") or DETAIL_DEFAULT) if p in DETAIL_PARTS] or DETAIL_DEFAULT
+            if "ids" in args:                                                   # P66: several ids, one budget; the page dedupes lines across them
+                out, errs = [], []
+                for i in dict.fromkeys(args["ids"]):
+                    b, e = _run("detail", {"id": i, "parts": parts})
+                    out += b; errs += [e] if e else []
+                return out, "; ".join(errs)
             T0 = Q.tree_of(args["id"]); n0 = T0.byid[args["id"]]
             if n0["type"] not in ("entity", "comparison", "cited") or "#" in args["id"]:
                 return [block([wrap(*x) for x in record_detail(T0, n0)])], ""
