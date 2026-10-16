@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; the state at commit HASH: the knowledge base corrected problem by problem (P1–P33), one query layer, one screen; 26 of 26 questions answered)
+# Handoff (2026-10-16; the state at commit 470603c: the knowledge base corrected problem by problem (P1–P33), one query layer, one screen; 26 of 26 questions answered)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
