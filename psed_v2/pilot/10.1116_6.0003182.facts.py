@@ -185,7 +185,8 @@ f("s9.p5;s9.p6;fig2.cap;s12.p12", "setting", "main purge N2 flow 20 SCCM in tota
 f("s9.p6", "setting", "chamber heated by an insulating heater jacket controlled by a thermocouple on the chamber outside", method="process_monitor")
 f("s9.p6;fig2.cap;s12.p12;fig1a", "definition", "T: approximate steady-state temperature (to the nearest 10 °C) of the inner quartz-boat surface under 20 SCCM N2, found in calibration with a thermocouple touching the boat")
 f("s9.p6", "observation", "calibration runs at the same outside temperature gave deposition temperatures differing by about ±5 °C, from thermocouple placement and pressure",
-  quantity="other", label_as_printed="calibration spread", value="5", unit="°C", data_kind="measured", method="process_monitor")
+  quantity="deposition_temperature", qualifiers="stat=half_range;between=runs;n=not_stated", label_as_printed="calibration spread", value="5", unit="°C",
+  data_kind="measured", method="process_monitor")
 f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", "run (1): T held at 120 °C",
   quantity="deposition_temperature", value="120", unit="°C", data_kind="chosen input", mentions="T held constant at 120 °C;120 °C")
 f(f"s9.p6;abs.g3;{A};s6.p8;fig1b;fig2.cap;s12.p12;fig3.cap;s12.p16", "setting", "run (2): T held at 160 °C",
@@ -871,7 +872,11 @@ for r in C.facts():
 C.input_entity(K, f"{K}:ent:compacts", "the pressed Al2O3 NPCs as made, the input of every ALD run: thickness and diameter by calipers, initial porosity, cracks; "
                "d_NP from the powder's BET area and the aspect ratio from L and d_pore", "NPCs as pressed", "s8.p1;s6.p8",
                measured=[("measurement", [f"{K}:s8.p1#7", f"{K}:s8.p1#8", f"{K}:s8.p1#9", f"{K}:s8.p1#10"])], inputs_of=[R120, R160, RCYC])
-for fid_, par in ((f"{K}:s8.p1#3", f"{K}:ent:compacts"), (f"{K}:s6.p8#7", f"{K}:ent:compacts"), (f"{K}:s9.p4#11", f"{K}:method:process_monitor"),
+# the temperature calibration runs (s9.p6) measured the reactor, not a sample: a measurement activity of the recipe
+N(f"{K}:meas:recipe:calibration", "activity", "temperature calibration runs with an extra thermocouple on the boat, at the same outside temperature",
+  f"{K}:recipe", evidence="s9.p6", kind="measurement", how="stated", label_as_printed="temperature calibration")
+for fid_, par in ((f"{K}:s9.p6#3", f"{K}:meas:recipe:calibration"),
+                  (f"{K}:s8.p1#3", f"{K}:ent:compacts"), (f"{K}:s6.p8#7", f"{K}:ent:compacts"), (f"{K}:s9.p4#11", f"{K}:method:process_monitor"),
                   (f"{K}:s9.p5#1", f"{K}:method:process_monitor"), (f"{K}:s12.x1#3", f"{K}:method:process_monitor"), (f"{K}:fig3a#2", f"{K}:method:process_monitor"),
                   (f"{K}:s14.p1#5", f"{K}:meas:ent:120:section:sem_eds")):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par

@@ -299,7 +299,10 @@ def check_tree(rows, els):
             nt, nk = (R[n]["type"], R[n]["kind"]) if n in R else ("", "")
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
-            if r["type"] == "observation" and r["quantity"] in L.SETTING_QUANTITIES:
+            qd = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p)
+            if "stat" in qd and not ("between" in qd and "n" in qd):
+                err.append(f"{i}: a spread fact (stat=) without between= and n= (P1)")
+            if r["type"] == "observation" and r["quantity"] in L.SETTING_QUANTITIES and "stat" not in qd:
                 err.append(f"{i}: observation with the setting quantity {r['quantity']} (lists.SETTING_QUANTITIES)")
             if (r["type"] == "observation" and nt == "activity" and nk == "measurement" and R[R[n]["parent"]]["type"] == "paper"
                     and r["quantity"] not in ("", "other")):

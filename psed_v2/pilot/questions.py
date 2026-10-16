@@ -142,7 +142,8 @@ def q8():
     if not chip:
         return unanswerable("", "no input entity (a piece of the chips as fabricated) carries the 500 nm design height as its own setting")
     H, r = T.vector(chip)["feature_height"][0], T.results(chip)
-    tol, bend = r.get("other[tolerance for the oxide thickness]"), r.get("other[membrane bending displacement]")
+    tol = [f for fs in r.values() for f in fs if quals(f).get("stat") == "tolerance" and f["quantity"] == "feature_height"] or None
+    bend = r.get("other[membrane bending displacement]")
     step = T.results(T.byid[chip]["parent"]).get("other[nanostep height]")                 # the chip type's observation, above the piece
     if not (tol and bend and step):
         return unanswerable("", "the tolerance, the bending or the nanostep is not an observation on the chip entities")
@@ -414,17 +415,15 @@ def q25():
         for c in [c for c in T.comps if c["kind"] == "replicate"]:                 # a replicate comparison: its standard deviations against the members' means
             ms = T.member_entities(c)
             for f in T.own(c["fact_id"]):
-                if f["quantity"] == "other" and "standard deviation" in f["label_as_printed"] and f["value"]:
-                    words = set(re.findall(r"[a-z]+", f["label_as_printed"].lower()))
-                    for key in T.results(ms[0]):
-                        names = {L.LABELS.get(key, ""), L.LABELS.get(key.split("{")[0], ""), key.split("{")[0].replace("_", " ")}
-                        vals = [val(T.results(m)[key][0]) for m in ms if key in T.results(m) and T.results(m)[key][0]["unit"] == f["unit"]]
-                        if len(vals) == len(ms) and any(w in n.lower().split() for n in names for w in words):
+                if quals(f).get("stat") == "sd" and f["value"]:
+                    for key in [spread_key(f)]:
+                        vals = [val(T.results(m)[key][0]) for m in ms if key in T.results(m)]
+                        if len(vals) == len(ms):
                             mean = abs(sum(vals) / len(vals))
                             parts.append(f"{L.LABELS.get(key, key)}: sd {fmt(f)} = {g(100 * val(f) / mean, 2)} % of the mean over {len(ms)} ({c['statement'].split(':')[-1].strip()})")
             if parts:
                 kinds.append(f"{k}: between samples ({c['label_as_printed']})")
-        for f in [f for f in T.rows if f["quantity"] == "thickness_nonuniformity" and f["value"]]:   # a nonuniformity: within one film
+        for f in [f for f in T.rows if quals(f).get("between") == "position" and f["value"]]:   # a spread over positions: within one film
             e = T.ent_of(f["fact_id"]); parts.append(f"thickness nonuniformity {fmt(f)} within one film ({T.label(e)}: {f['statement'][:60]}…)"); kinds.append(f"{k}: within one film")
         if not parts:                                                               # the ± between the pieces of one run (the uncertainty column)
             for e in T.entities():

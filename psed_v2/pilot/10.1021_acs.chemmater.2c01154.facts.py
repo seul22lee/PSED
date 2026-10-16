@@ -153,7 +153,7 @@ F(K, "s3.p5", "setting", "Most H2-flow-ratio comparisons use films 10-20 nm thic
 
 # s3.p6 / Fig. 1c, 1d
 F(K, "s3.p6;fig1c;fig1.cap;s5.p11", "observation", "Thickness standard deviation over a 4\" wafer is 3.3% (film mean 5.1 ± 0.2 nm "
-  "printed on the map).", quantity="thickness_nonuniformity", value="3.3", unit="%", data_kind="measured",
+  "printed on the map).", quantity="film_thickness", qualifiers="stat=relative_sd;between=position;n=not_stated", value="3.3", unit="%", data_kind="measured",
   method="ellipsometry", mentions="4\";σ = 3.3%;Figure 1c")
 F(K, "s3.p6", "observation", "MoS2 films about 1-5 nm thick are smooth and continuous with no visible holes by AFM.",
   method="afm", mentions="Figures S3;S4")

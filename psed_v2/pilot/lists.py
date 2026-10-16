@@ -60,6 +60,12 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "stage": {"initial", "final"},
     "basis": {"AR", "EAR"},
     "species": None, "gas": None, "element": None,
+    # a spread fact (P1): a value about the spread of the quantity it names, not a value of it. stat = what the number is; between =
+    # what varies between the repeats (separate runs, pieces of one run, positions in one film, repeated measurement of one spot,
+    # separately made items such as chips); n = the number of repeats, or not_stated. The condition it was measured at is its parent.
+    "stat": {"sd", "relative_sd", "half_range", "tolerance", "minimum", "maximum"},
+    "between": {"runs", "pieces", "position", "repeat_measurement", "items"},
+    "n": None,
 }
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 QUALIFIERS["ratio"] = None                            # the plasma_gas_ratio a recipe-level lookup setting belongs to (mat22 Table 2 flows per ratio)

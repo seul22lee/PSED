@@ -602,7 +602,7 @@ F(K, "s16.p3", "observation", "the PillarHall-3 channel entrance has a nanostep 
   label_as_printed="nanostep height", value_min="2", value_max="5", unit="nm", data_kind="measured", mentions="PillarHall-3")
 for tol, h in (("10", "100"), ("20", "500"), ("30", "2000")):
     F(K, "s16.p4", "observation", f"tolerance of the oxide thickness defining the channel height: ± {tol} nm for the {h} nm design (from oxide measured in fabrication, ESI Table S5)",
-      quantity="other", label_as_printed="tolerance for the oxide thickness", value=tol, unit="nm", data_kind="measured",
+      quantity="feature_height", qualifiers="stat=tolerance;between=items;n=not_stated", label_as_printed="tolerance for the oxide thickness", value=tol, unit="nm", data_kind="measured",
       mentions=f"{h} nm;Table S5")
 F(K, "s16.p4", "claim", "the smaller the design height the larger the relative height uncertainty; unknown factors may add deviation, so measuring the real height is advised")
 F(K, "s16.p4;s16.p5", "model", "for a 500 nm channel a 1% height error causes roughly a 1.5% error in penetration depth (ESI Fig. S10)",
@@ -649,14 +649,14 @@ F(K, "s16.p10;fig8b", "claim", "fully independent TMA-water measurements at 300 
 def std_facts():
     S = ("2", "4", "8", "12")
     men = "samples 2, 4, 8, and 12;Table 1"
-    F(K, "s16.p10", "derived", "standard deviation of PD50% over samples 2, 4, 8 and 12 is 19.4 µm", quantity="other",
-      label_as_printed="standard deviation of PD50%", value="19.4", unit="µm", data_kind="calculated", method="calculation",
+    F(K, "s16.p10", "derived", "standard deviation of PD50% over samples 2, 4, 8 and 12 is 19.4 µm", quantity="penetration_depth",
+      qualifiers="level=50%;origin=entrance;stat=sd;between=runs;n=4", label_as_printed="standard deviation of PD50%", value="19.4", unit="µm", data_kind="calculated", method="calculation",
       mentions=men, inputs=[ID[int(s), 11] for s in S])
-    F(K, "s16.p10", "derived", "standard deviation of the slope at PD50% over those samples is 0.0003 nm", quantity="other",
-      label_as_printed="standard deviation of the slope at PD50%", value="0.0003", unit="nm", data_kind="calculated",
+    F(K, "s16.p10", "derived", "standard deviation of the slope at PD50% over those samples is 0.0003 nm", quantity="front_slope",
+      qualifiers="by=H;stat=sd;between=runs;n=4", label_as_printed="standard deviation of the slope at PD50%", value="0.0003", unit="nm", data_kind="calculated",
       method="calculation", mentions=men, inputs=[ID[int(s), 13] for s in S])
-    F(K, "s16.p10", "derived", "standard deviation of the initial Region IIb thickness over those samples is 2.8 nm", quantity="other",
-      label_as_printed="standard deviation of the initial film thickness in Region IIb", value="2.8", unit="nm",
+    F(K, "s16.p10", "derived", "standard deviation of the initial Region IIb thickness over those samples is 2.8 nm", quantity="film_thickness",
+      qualifiers="position=plateau;stat=sd;between=runs;n=4", label_as_printed="standard deviation of the initial film thickness in Region IIb", value="2.8", unit="nm",
       data_kind="calculated", method="calculation", mentions=men + ";Region IIb", inputs=[ID[int(s), 8] for s in S])
 
 

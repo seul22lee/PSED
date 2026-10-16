@@ -303,16 +303,23 @@ def spread(T, comp, key):
     standard deviation computed over its members' values; (sd, source)."""
     ms = T.member_entities(comp)
     for f in T.own(comp["fact_id"]):
-        if f["quantity"] == "other" and "standard deviation" in f["label_as_printed"] and f["value"]:
-            words = set(re.findall(r"[a-z]+", f["label_as_printed"].lower()))
-            names = {L.LABELS.get(key, ""), L.LABELS.get(key.split("{")[0], ""), key.split("{")[0].replace("_", " ")}
-            if T.results(ms[0]).get(key, [{"unit": None}])[0]["unit"] == f["unit"] and any(w in n.lower().split() for n in names for w in words):
-                return val(f), f["fact_id"]
+        q = quals(f)
+        if q.get("stat") == "sd" and f["value"] and spread_key(f) == key:
+            return val(f), f["fact_id"]
     vs = [val(T.results(m)[key][0]) for m in ms if key in T.results(m) and val(T.results(m)[key][0]) is not None]
     if len(vs) >= 2:
         mean = sum(vs) / len(vs)
         return (sum((v - mean) ** 2 for v in vs) / (len(vs) - 1)) ** 0.5, f"computed over {len(vs)} members"
     return None, None
+
+
+SPREAD_KEYS = ("stat", "between", "n")
+
+
+def spread_key(f):
+    """The result key a spread fact is about: its quantity and qualifiers without stat, between and n."""
+    qs = ";".join(sorted(p for p in f["qualifiers"].split(";") if p and p.split("=")[0] not in SPREAD_KEYS + ("x",)))
+    return f"{f['quantity']}{'{' + qs + '}' if qs else ''}"
 
 
 def scale(ref_x, ref_y, x, exponent):
