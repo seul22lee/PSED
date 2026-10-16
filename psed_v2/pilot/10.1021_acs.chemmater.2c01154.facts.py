@@ -891,8 +891,9 @@ F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged o
 F(K, "fig8;fig8.cap", "observation", "Fig. 8 maps four-point probe resistivity (log colour bar 10^-3 to 10^3 Ω cm, top band >dl) "
   "over deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="resistivity", unit="Ω cm",
   method="electrical", mentions="Resistivity (Ωcm);>dl")
-F(K, "fig8", "observation", "Cells drawn in the black >dl band: 200 and 150 °C at ratio 0; 200, 150, 100 and 50 °C at 0.20; 100 °C "
-  "at 0.50.", quantity="resistivity", censor=">dl", unit="Ω cm", method="electrical",
+F(K, "fig8", "observation", "Cells drawn in the black band, above the four-point-probe limit of order 1000 Ω cm (s3.p34): 200 and 150 °C at "
+  "ratio 0; 200, 150, 100 and 50 °C at 0.20; 100 °C at 0.50 (7 cells, read from colour).", quantity="resistivity", censor=">", value="1000", unit="Ω cm",
+  data_kind="measured", method="electrical",
   mentions=">dl;0;0.20;0.50")
 
 # ------------------------------------------------------------------ Fig. 9
@@ -1475,7 +1476,7 @@ for rid, r in RUNROW.items():
             ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
     else:
         dep, ent = f"{K}:dep:{s_}", f"{K}:ent:{s_}"
-        DEPS[dep] = dict(statement=f"deposition of: {r['statement']}", label=r["label_as_printed"], how=how_, evidence=r["evidence"].split(";")[0])
+        DEPS[dep] = dict(statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"].split(";")[0])
         ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
 DROP.append(grp("T300"))                                                   # one cell at 300 °C: no series to compare
 C.retree(K, PROC, DEPS, ENTS, group_facts_to={g: f"{K}:dep:{g.split(':')[-1]}" for g in DROP}, drop_groups=DROP)
