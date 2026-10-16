@@ -1485,9 +1485,11 @@ for rid, r in RUNROW.items():
         ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
 DROP.append(grp("T300"))                                                   # one cell at 300 °C: no series to compare
 C.retree(K, PROC, DEPS, ENTS, group_facts_to={g: f"{K}:dep:{g.split(':')[-1]}" for g in DROP}, drop_groups=DROP)
-# the plasma is an input entity: what OES found about it sits on its own order-0 measurement, and every plasma deposition names it
-C.input_entity(K, f"{K}:ent:plasma", "the H2S/H2/Ar plasma fed to every plasma-enhanced deposition, characterized by OES (Section S9)", "H2S/H2/Ar plasma",
-               "s3.p50;s3.p51", measured=[("oes", [f"{K}:s3.p50#1", f"{K}:s3.p51#3"])], inputs_of=[d for d in DEPS if "thermal" not in d])
+# OES of the H2S/H2/Ar plasma measured the process, not a thing that ends up in the film (P19): a measurement activity of the recipe
+N(f"{K}:meas:recipe:oes", "activity", "optical emission spectroscopy of the H2S/H2/Ar plasma (Section S9)", f"{K}:recipe", evidence="s3.p50;s3.p51",
+  kind="measurement", how="stated", label_as_printed="OES")
+for fid_ in (f"{K}:s3.p50#1", f"{K}:s3.p51#3"):
+    next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:meas:recipe:oes"
 # the anneal (Sections S11, S12) is an activity of the 100 °C device film: the paper does not name the annealed films, the device
 # film (patterned and contacted) is inferred; its settings under the activity, what it showed under measurements after it
 ANN, DEV = f"{K}:act:anneal", f"{K}:ent:tem_T100_R0.80"
