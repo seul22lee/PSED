@@ -485,7 +485,7 @@ f("s14.p10", "claim", "this is expected for the cycled process but not obviously
 f("s14.p10", "claim", "with incomplete H2O removal, H2O likely still desorbs when DEZ arrives, so part of the extra growth may be gas-phase, CVD-like")
 f("s14.p10", "cited", "in attempts to fully infill NP thin films, CVD from residual H2O caused pore clogging and left porosity", mentions="ref. 8")
 f("s14.p10", "derived", "the excess deposition at T = 120 °C is 0.4-0.5 nm, small next to the ~100 nm pores, so uniform infiltration may survive far from complete infilling",
-  quantity="film_thickness", value_min="0.4", value_max="0.5", unit="nm", data_kind="calculated", method="calculation", mentions="T = 120 °C", inputs=[th120, th12])
+  quantity="other", label_as_printed="excess deposition", value_min="0.4", value_max="0.5", unit="nm", data_kind="calculated", method="calculation", mentions="T = 120 °C", inputs=[th120, th12])
 f("s14.p10", "claim", "if the excess comes from higher OH density instead, uniformity may simply reflect no CVD, the extra growth being surface reactions")
 f("s14.p10", "model", "assumption: on a 10^3 s scale OH desorption self-limits at a final OH density that falls with temperature, so a cooler purge mainly leaves more surface OH rather than more H2O vapour", mentions="ref. 40")
 f("s14.p10", "cited", "the change of ZnO OH coverage between 120 and 160 °C may often be too small to account for a 10% GPC difference", mentions="ref. 23;ref. 41")

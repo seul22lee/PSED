@@ -74,6 +74,15 @@ sections below.
   an input entity under the recipe, or a piece of one, its measurements of order 0, named in the `inputs` column of every activity
   that used it (`facts.input_entity`). Only an observation about the measurement method itself (its model, its positioning error,
   its artefacts) stays on the paper's method activity, and it carries no measured quantity.
+- A derived quantity is defined once, in `lists.DERIVED` (its inputs as quantity ids with the qualifiers a fact must carry, the
+  unit each is read in, the formula), and computed, never stored (`questions.derive`): an input comes from the entity's results
+  and its run's monitor, its condition vector, its input entities, then the paper (when the definition says so), each value
+  converted by `lists.convert` through one unit table. A derived id that is also a stated quantity is a second route to it; the
+  stated fact wins unless the route is asked for. The result names every input fact and what it used when several matched.
+- A constant or model value a derived quantity needs and no paper states as a setting (a molar mass, a bulk density, Avogadro's
+  and Boltzmann's constants, the model input standing in for the TMA pressure, the number of compacts per run, a molecular
+  diameter taken from an analogue) is an assumed fact: a setting with `data_kind` assumed and author user in `user.facts.csv`,
+  linked to what it stands in for; it serves an input only when no paper fact does, and every value computed from one says so.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;

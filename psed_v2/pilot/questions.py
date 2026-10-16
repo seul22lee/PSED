@@ -110,6 +110,37 @@ class Tree:
                 out += [e for e in self.entities() if m in self.chain(e)]
         return list(dict.fromkeys(out))
 
+    def run_results(self, ent):
+        """What was measured on the deposition that made the entity (its process monitor): the deposition's measurement activities."""
+        dep = self.dep_of(ent)
+        out = collections.defaultdict(list)
+        if dep:
+            for a in self.kids.get(dep, []):
+                if a["type"] == "activity" and a["kind"] == "measurement":
+                    for f in self.own(a["fact_id"]):
+                        if f["type"] in RESULT_TYPES and f["quantity"]:
+                            out[ckey(f)].append(f)
+        return out
+
+    def inputs_of(self, ent):
+        """The input entities named by the activities above the entity (the chips it was cut from, the compacts, the plasma)."""
+        out = []
+        for x in self.chain(ent):
+            n = self.byid[x]
+            if n["type"] == "activity":
+                out += [i for i in n["inputs"].split(";") if i in self.byid]
+        return list(dict.fromkeys(out))
+
+    def material(self, ent):
+        m = self.vector(ent).get("material")
+        return m[0]["value_text"] if m else ""
+
+    def reactant_A(self, ent):
+        for k, fs in self.vector(ent).items():
+            if k.startswith("pulse_time") and quals(fs[0]).get("step") == "reactant_A" and quals(fs[0]).get("species"):
+                return quals(fs[0])["species"]
+        return ""
+
     def comp(self, name):
         return self.byid[f"{self.key}:cmp:{name}"]
 
@@ -171,6 +202,103 @@ def one(key, **kw):
     return fs[0] if len(fs) == 1 else None
 
 
+# ------------------------------------------------------------------ the comparison layer: derived quantities (lists.DERIVED)
+ASSUMED = [u for u in USER if u["data_kind"] == "assumed"]
+
+
+def _matches(f, q, need):
+    """A fact serves an input when its quantity is q (other:<label> by label) and its qualifiers carry every required one."""
+    if q.startswith("other:"):
+        if f["quantity"] != "other" or f["label_as_printed"] != q[6:]:
+            return False
+    elif f["quantity"] != q:
+        return False
+    have = quals(f)
+    return all(have.get(k) == v for k, v in need.items())
+
+
+def _candidates(T, ent, spec, need):
+    """The facts that can serve an input, nearest first: the entity's results and its run's, its condition vector, its input
+    entities' results and settings, then (scope paper) every fact of the paper, then the assumed facts; each as (fact, source)."""
+    pools = [("result", [f for fs in T.results(ent).values() for f in fs] + [f for fs in T.run_results(ent).values() for f in fs]),
+             ("setting", [f for fs in T.vector(ent).values() for f in fs])]
+    for i in T.inputs_of(ent):
+        pools.append((f"input {T.label(i)}", [f for fs in T.results(i).values() for f in fs] + [f for f in T.own(i) if f["type"] == "setting"]))
+    if spec["scope"] == "paper":
+        pools.append(("paper", [f for f in T.rows if "#" in f["fact_id"] and f["type"] in ("setting", "observation", "derived", "model", "cited")]))
+    pools.append(("assumed", ASSUMED))
+    out = []
+    for src, pool in pools:
+        for q in spec["q"].split("|"):
+            hits = [f for f in pool if _matches(f, q, need) and (f["value"] or f["value_min"] or f["value_max"])]
+            exact = [f for f in hits if set(quals(f).items()) == set(need.items())]
+            out += [(f, src) for f in exact] + [(f, src) for f in hits if f not in exact]
+        if out and not spec["all"]:
+            return out
+    return out
+
+
+def derive(T, ent, did, route=False, _depth=0):
+    """A derived quantity of an entity: {value, unit, inputs: [(name, fact id, value as used, unit, source)], assumed: [ids],
+    notes: [...]} or {error}. The stated fact wins when the entity or its run carries the quantity (route=True asks for the
+    computed route anyway); an input that is itself a derived quantity is derived in turn."""
+    D = L.DERIVED[did]
+    if not route:
+        stated = [f for fs in list(T.results(ent).values()) + list(T.run_results(ent).values()) for f in fs if f["quantity"] == did and (f["value"] or f["value_min"])]
+        stated += [f for fs in T.vector(ent).values() for f in fs if f["quantity"] == did and (f["value"] or f["value_min"])]
+        if stated:
+            f = stated[0]
+            return dict(value=val(f), unit=f["unit"], stated=f, inputs=[], assumed=[], notes=[f"stated: {f['fact_id']} {fmt(f)}" + (f" (and {len(stated) - 1} more)" if len(stated) > 1 else "")])
+    subs = {"@material": T.material(ent), "@A": T.reactant_A(ent)}
+    args, used, assumed, notes = {}, [], [], []
+    for spec in D["inputs"]:
+        need = {k: subs.get(v, v) for k, v in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p)}
+        cands = _candidates(T, ent, spec, need)
+        if spec["all"]:
+            vals = []
+            for f, src in cands:
+                vals.append(L.convert(val(f), f["unit"], spec["unit"])); used.append((spec["name"], f["fact_id"], vals[-1], spec["unit"], src))
+            if not vals:
+                return dict(error=f"no fact for {spec['name']} ({spec['q']})")
+            args[spec["name"]] = vals
+            continue
+        if not cands and spec["q"].split("|")[0] in L.DERIVED and spec["q"] != did and _depth < 3:
+            sub = derive(T, ent, spec["q"].split("|")[0], _depth=_depth + 1)
+            if "error" in sub:
+                return dict(error=f"{spec['name']}: {sub['error']}")
+            args[spec["name"]] = L.convert(sub["value"], sub["unit"], spec["unit"])
+            used += [(f"{spec['name']}.{n}",) + tuple(rest) for n, *rest in sub["inputs"]]; assumed += sub["assumed"]; notes += [f"{spec['name']} derived: " + "; ".join(sub["notes"])]
+            continue
+        if not cands:
+            if spec["default"] is not None:
+                args[spec["name"]] = spec["default"]; notes.append(f"{spec['name']} not stated, taken as {spec['default']}"); continue
+            return dict(error=f"no fact for {spec['name']} ({spec['q']}{' ' + spec['quals'] if spec['quals'] else ''}); an assumed fact would serve")
+        f, src = cands[0]
+        if spec["pick"] and len({x[0]["fact_id"] for x in cands}) > 1:
+            for want in spec["pick"]:
+                w = {k: v for k, v in (p.split("=", 1) for p in want.split(";") if "=" in p)}
+                hit = [c for c in cands if set(quals(c[0]).items()) == set(w.items()) | set(need.items())]
+                if hit:
+                    f, src = hit[0]; break
+        others = [c[0] for c in cands if c[0]["fact_id"] != f["fact_id"]]
+        if others and src != "assumed":
+            notes.append(f"{spec['name']}: {f['fact_id']} used, also " + ", ".join(f"{o['fact_id']} {fmt(o)}" for o in others[:3]))
+        v = L.convert(val(f), f["unit"], spec["unit"])
+        args[spec["name"]] = v; used.append((spec["name"], f["fact_id"], v, spec["unit"], src))
+        if src == "assumed":
+            assumed.append(f["fact_id"])
+    return dict(value=D["fn"](**args), unit=D["unit"], inputs=used, assumed=list(dict.fromkeys(assumed)), notes=notes)
+
+
+def dtext(d, digits=3):
+    """A derived result as text: the value, its unit, the inputs with their sources, the assumed facts named."""
+    if "error" in d:
+        return d["error"]
+    ins = ", ".join(f"{n}={g(v, digits)} {u} ({fid}{'' if src in ('result', 'setting') else ', ' + src})".replace(" (", " (") for n, fid, v, u, src in d["inputs"])
+    return f"{g(d['value'], digits)} {d['unit']}".rstrip() + (f" [{ins}]" if ins else "") + (f" assumed: {', '.join(d['assumed'])}" if d["assumed"] else "") + \
+        ("; " + "; ".join(d["notes"]) if d["notes"] else "")
+
+
 # ------------------------------------------------------------------ the questions
 def q1():
     """PD50 against TMA pulse time over Series E, with every other setting that differs listed."""
@@ -187,7 +315,14 @@ def q1():
 
 def q2():
     """Over Series D, PD50 against the effective channel height H − 2·S_IIb."""
-    return unanswerable("", "no derived quantity: effective channel height (H minus twice the plateau thickness) is not defined in lists.py")
+    T = TREES["yim20"]; rows = []
+    for m in T.member_entities(T.comp("D")):
+        h = derive(T, m, "effective_channel_height"); pd = T.results(m).get("penetration_depth{level=50%;origin=entrance}")
+        if "error" in h or not pd:
+            return unanswerable("", f"{T.label(m)}: {h.get('error', 'no PD50')}")
+        rows.append((T.label(m), h["value"], val(pd[0]), pd[0]))
+    text = "; ".join(f"{lab}: H_eff {g(h)} nm, PD50 {fmt(pd)}" for lab, h, _, pd in rows)
+    return unanswerable(text, "no operation: a power-law scaling (PD ∝ √H_eff) from a reference member against the measured values")
 
 
 def q3():
@@ -213,10 +348,21 @@ def q5():
 
 def q6():
     """TMA exposure per pulse and per run, in Torr·s."""
-    T = TREES["yim20"]
-    p = T.facts(quantity="partial_pressure", qualifiers="species=TMA")
-    text = f"TMA partial pressure: {fmt(p[0])} ({p[0]['type']} fact {p[0]['fact_id']})" if p else "no TMA partial pressure fact"
-    return unanswerable(text, "no derived quantity (exposure = partial pressure × pulse time) and the pressure is a model value: needs an assumed fact")
+    T = TREES["yim20"]; per_pulse, per_run, assumed = {}, {}, set()
+    for e in T.entities():
+        if T.dep_of(e) is None or T.byid[T.dep_of(e)]["kind"] != "deposition":
+            continue
+        a, b = derive(T, e, "exposure"), derive(T, e, "exposure_per_run")
+        if "error" in a or "error" in b:
+            continue
+        per_pulse.setdefault(g(a["value"], 2), []).append(T.label(e)); per_run.setdefault(g(b["value"], 2), []).append(T.label(e)); assumed |= set(a["assumed"]) | set(b["assumed"])
+    if not per_pulse:
+        return unanswerable("", "no entity yields an exposure: the TMA partial pressure or the pulse time is missing")
+    ex = derive(T, T.entities()[0], "exposure")
+    text = "per pulse: " + "; ".join(f"{v} Torr s ({', '.join(ls[:4])}{'…' if len(ls) > 4 else ''})" for v, ls in per_pulse.items()) + " · per run: " + \
+        "; ".join(f"{v} Torr s ({', '.join(ls[:4])}{'…' if len(ls) > 4 else ''})" for v, ls in per_run.items()) + \
+        f" · from an assumed fact: {', '.join(sorted(assumed))} (the model input 65 Pa stands in for the TMA pressure, which the paper does not state)"
+    return answered(text, "lists.DERIVED exposure (p_A × pulse time) and exposure_per_run (× cycles) per entity; the pressure from user.facts.csv (data_kind assumed), named in the answer")
 
 
 def q7():
@@ -272,12 +418,27 @@ def q10():
 
 def q11():
     """Mo atoms per cycle from RBS against GPC from SE at 150 °C, ratio 0.80, with the density."""
-    return unanswerable("", "no join rule (glassy-carbon film vs SiO2/Si film), no derived quantity (atoms per cycle × M / ρ), no assumed constants (M of MoS2, Avogadro)")
+    T = TREES["mat22"]
+    gc = [e for e in T.entities() if T.results(e).get("atoms_per_cycle{element=Mo}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
+    if not gc:
+        return unanswerable("", "no entity at 150 °C, ratio 0.80 carries Mo atoms per cycle")
+    d = derive(T, gc[0], "growth_per_cycle", route=True)
+    if "error" in d:
+        return unanswerable("", f"derived GPC from atoms per cycle fails: {d['error']}")
+    return unanswerable(f"{T.label(gc[0])}: GPC from RBS {dtext(d)}", "no join rule: the SE GPC sits on the SiO2/Si cell film, the RBS atoms per cycle on the glassy-carbon film; the join must say which setting it tolerated")
 
 
 def q12():
     """The full composition of the 150 °C, 0.80 film including H, and its density relative to bulk."""
-    return unanswerable("", "no derived quantity (H per Mo from at.% and S/Mo), no assumed constant (bulk MoS2 density)")
+    T = TREES["mat22"]
+    es = [e for e in T.entities() if T.results(e).get("composition{element=H}") and fmt(T.vector(e)["plasma_gas_ratio{gas=H2}"][0]) == "0.80" and fmt(T.vector(e)["deposition_temperature"][0]) == "150 °C"]
+    if not es:
+        return unanswerable("", "no 150 °C, ratio 0.80 entity carries an H content")
+    e = es[0]; h, r = derive(T, e, "h_per_metal"), derive(T, e, "density_relative_to_bulk")
+    if "error" in h or "error" in r:
+        return unanswerable("", f"{h.get('error', '')} {r.get('error', '')}".strip())
+    smo = next(v for n, _, v, _, _ in h["inputs"] if n == "SMo")
+    return answered(f"{T.label(e)}: MoS{g(smo, 2)}H{g(h['value'], 2)} [{dtext(h)}]; density {dtext(r, 2)} of bulk", "lists.DERIVED h_per_metal (H at.% over Mo at.% from S/Mo and the other at.%) and density_relative_to_bulk (the paper's cited bulk density, reference=bulk)")
 
 
 def q13():
@@ -297,7 +458,12 @@ def q13():
 
 def q14():
     """Sheet resistance of the PET film."""
-    return unanswerable("", "no derived quantity: sheet resistance = resistivity / thickness")
+    T = TREES["mat22"]
+    es = [e for e in T.entities() if "PET" in T.vector(e).get("substrate", [{"value_text": ""}])[0]["value_text"] and T.results(e).get("resistivity")]
+    if not es:
+        return unanswerable("", "no entity on a PET substrate with a resistivity")
+    d = derive(T, es[0], "sheet_resistance")
+    return answered(f"{T.label(es[0])}: {dtext(d, 2)}", "lists.DERIVED sheet_resistance (resistivity / film thickness, units normalised)") if "error" not in d else unanswerable("", d["error"])
 
 
 def q15():
@@ -312,20 +478,42 @@ def q16():
 
 def q17():
     """Does the mass balance close: Δn_s per cycle × 20 against the ZnO mass gained by the two NPCs."""
-    return unanswerable("", "no derived quantity; no assumed constants (molar mass of ZnO, the number of NPCs per run)")
+    T = TREES["gre23"]; out, assumed = [], set()
+    for m in T.member_entities(T.comp("schedules")):
+        if T.byid[T.byid[m]["parent"]]["type"] != "activity":
+            continue                                                            # the pairs, not the pieces cut from them
+        a, b = derive(T, m, "moles_deposited"), derive(T, m, "moles_from_mass_gain")
+        if "error" in a or "error" in b:
+            return unanswerable("", f"{T.label(m)}: {a.get('error', '')} {b.get('error', '')}".strip())
+        out.append(f"{T.label(m)}: Δn_s × N = {g(a['value'], 2)} mmol vs mass gain → {g(b['value'], 2)} mmol, {g(100 * (a['value'] / b['value'] - 1), 2)} % apart"); assumed |= set(a["assumed"]) | set(b["assumed"])
+    return answered("; ".join(out) + f" · assumed inputs: {', '.join(sorted(assumed))} (molar mass of ZnO, two NPCs per run); the gap is the paper's own: Δn_s is from GPC via the porosity model, the mass gain is weighed",
+                    "lists.DERIVED moles_deposited (Δn_s × cycles) and moles_from_mass_gain (mass gain × powder mass × NPCs per run / M) on each pair entity")
 
 
 def q18():
     """ZnO volume fraction in the 120 °C NPC from coating thickness and particle size."""
-    return unanswerable("", "no derived quantity (shell volume fraction); the particle size is a hedged claim, not a setting")
+    T = TREES["gre23"]
+    es = [e for e in T.member_entities(T.comp("schedules")) if fmt(T.vector(e)["deposition_temperature"][0]) == "120 °C"]
+    if not es:
+        return unanswerable("", "no 120 °C pair entity")
+    d = derive(T, es[0], "shell_volume_fraction")
+    return answered(f"{T.label(es[0])}: {dtext(d, 2)}", "lists.DERIVED shell_volume_fraction on the pair: φ_i from its vector, d_NP from the compacts input entity, the coating thickness from its results") if "error" not in d else unanswerable("", d["error"])
 
 
 def q19():
     """Knudsen number of each paper's structure under its own conditions."""
-    T = TREES["yim20"]
-    kn = T.facts(quantity="knudsen_number", qualifiers="species=TMA")
-    st = {k: (one(k, quantity="structure_type") or {}).get("value_text") for k in TREES}
-    return unanswerable(f"yim20 stated: Kn {fmt(kn[0])} ({kn[0]['statement'][:40]}); structures {st}", "no derived quantity (mean free path from pressure) and no assumed constant (molecular diameter) for gre23")
+    out = []
+    for k, T in TREES.items():
+        st = (one(k, quantity="structure_type") or {}).get("value_text", "")
+        if st == "planar":
+            out.append(f"{k}: planar, no Knudsen number applies"); continue
+        es = [e for e in T.entities() if T.dep_of(e) and T.byid[T.dep_of(e)]["kind"] == "deposition"]
+        stated = [f for f in T.rows if f["quantity"] == "knudsen_number" and f["value"]]
+        if stated:
+            out.append(f"{k}: " + "; ".join(f"Kn {fmt(f)} ({f['qualifiers'] or 'no qualifier'}, {f['type']} fact {f['fact_id']})" for f in stated)); continue
+        d = derive(T, es[0], "knudsen_number")
+        out.append(f"{k}: " + (f"Kn ≈ {dtext(d, 2)}" if "error" not in d else d["error"]))
+    return answered(" · ".join(out), "stated Kn where the paper gives it; else lists.DERIVED mean_free_path (k_B T / √2 π d² p, the diameter assumed by analogy with TMA) and knudsen_number (λ over d_NP from the compacts input entity); planar structures excluded")
 
 
 def q20():
@@ -335,12 +523,32 @@ def q20():
 
 def q21():
     """Metal atoms per nm² per cycle in all three papers."""
-    return unanswerable("", "no derived quantity (atoms per cycle from GPC, density and molar mass) and no assumed constants")
+    out = []
+    for k, T in TREES.items():
+        stated = [f for f in T.rows if f["quantity"] in ("atoms_per_cycle", "saturation_density") and f["value"] and f["type"] != "cited"]
+        if stated:
+            out.append(f"{k}: " + "; ".join(f"{fmt(f)} ({L.LABELS[f['quantity']]}, {f['type']} {f['fact_id']}, {f['data_kind']}{', ' + T.label(T.ent_of(f['fact_id'])) if T.ent_of(f['fact_id']) else ''})" for f in stated)); continue
+        es = [e for e in T.entities() if T.results(e).get("growth_per_cycle")]
+        d = derive(T, es[0], "atoms_per_cycle", route=True) if es else {"error": "no GPC"}
+        out.append(f"{k}: " + (f"{dtext(d, 2)} ({T.label(es[0])})" if "error" not in d else d["error"]))
+    return answered(" · ".join(out), "stated atoms per cycle or the model's saturation density where a paper gives one; else lists.DERIVED atoms_per_cycle (GPC × ρ_bulk N_A / M) with assumed ρ and M named")
 
 
 def q22():
     """Deposited thickness per hour of reactor time in all three."""
-    return unanswerable("", "no derived quantity (thickness over cycles × cycle time; yim20's cycle time from its pulses and purges)")
+    out = []
+    for k, T in TREES.items():
+        vals = {}
+        for e in T.entities():
+            d = derive(T, e, "deposition_rate")
+            if "error" not in d:
+                vals.setdefault(g(d["value"], 2), []).append((T.label(e), d))
+        if not vals:
+            out.append(f"{k}: no entity with a GPC and a cycle time"); continue
+        lo, hi, common = min(vals, key=float), max(vals, key=float), max(vals, key=lambda v: len(vals[v]))
+        out.append(f"{k}: {common} nm/h for {len(vals[common])} of {sum(len(v) for v in vals.values())} entities ({vals[common][0][0]}: {dtext(vals[common][0][1], 2)})" +
+                   (f", {lo}–{hi} nm/h over all (purge and pulse times vary)" if lo != hi else ""))
+    return answered(" · ".join(out), "lists.DERIVED deposition_rate (GPC × 3600 / cycle time) per entity; the cycle time stated (mat22, gre23) or derived as the sum of pulse and purge times (yim20)")
 
 
 def q23():

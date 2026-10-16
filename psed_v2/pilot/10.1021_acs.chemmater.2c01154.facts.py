@@ -284,7 +284,7 @@ F(K, "s3.p19", "observation", "Detection limit of C in these films is about 7 at
   mentions="dl.;glassy carbon")
 F(K, "s3.p19;s5.p17;tab1.r0c3", "definition", "Film mass density is computed from RBS areal atom densities and SE thicknesses.",
   mentions="RBS;SE;density (g/cm^3)")
-F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", value="5.06", unit="g/cm3",
+F(K, "s3.p19", "cited", "Bulk MoS2 density is 5.06 g/cm3.", quantity="film_density", qualifiers="reference=bulk", value="5.06", unit="g/cm3",
   data_kind="literature", method="cited", mentions="ref. 66")
 T1 = {"0.20": [("3.7", "0.1"), ("3.4", "0.2"), "3.2", ("6.4", "0.5"), ("0.5", "0.2"), ("0.8", "0.2")],
       "0.65": [("2.1", "0.1"), ("2.1", "0.1"), "4.0", ("11.7", "0.9"), ("1.5", "0.4"), ("0.5", "0.1")],
