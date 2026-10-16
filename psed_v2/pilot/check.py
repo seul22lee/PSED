@@ -4,7 +4,7 @@
     python3 psed_v2/pilot/check.py
 
 Facts (per paper, <paper_id>.*): fact ids unique; evidence ids and inputs resolve; vocabularies (type, quantity, qualifiers, data_kind, method,
-censor); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
+censor; material and structure_type value_texts from lists.MATERIALS and STRUCTURES); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
 also a data_kind; values are numbers; every points_ref names a curve of <paper_id>.points.json and every curve is used; no two facts
 state the same thing (same type, quantity, qualifiers, value, range, unit, value_text, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
@@ -69,6 +69,10 @@ def check(pid):
             bad(f"quantity {f['quantity']}")
         if f["quantity"] == "other" and not f["label_as_printed"]:
             bad("quantity other without label_as_printed")
+        if f["quantity"] == "material" and f["value_text"] not in L.MATERIALS:
+            bad(f"material {f['value_text']!r} not in lists.MATERIALS")
+        if f["quantity"] == "structure_type" and f["value_text"] not in L.STRUCTURES:
+            bad(f"structure_type {f['value_text']!r} not in lists.STRUCTURES")
         for q in L.qualifiers_ok(f["qualifiers"]):
             bad(f"qualifier {q}")
         if f["data_kind"] and f["data_kind"] not in L.DATA_KINDS:

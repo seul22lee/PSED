@@ -540,6 +540,11 @@ NK("s15.p13", "conflict statement")
 NK("s15.p15;s15.p16", "author contributions")
 NK("s15.p18", "data availability statement")
 
+# ---------------------------------------------------------------- the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
+MAT = f("abs.g1;s9.p1", "setting", "film material", quantity="material", value_text="ZnO", data_kind="chosen input", mentions="ZnO")
+STRUCT = f("abs.g1;s8.p1", "setting", "test structure type: pressed Al2O3 nanoparticle compacts", quantity="structure_type", value_text="porous",
+           data_kind="chosen input", mentions="NPC")
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs: the three stated depositions of Sec. II B (T held at 120 °C, held at 160 °C, cycled 120/160 °C), each coating an NPC pair;
 # under each, one specimen run per physical object the paper's facts are about (the weighed pair, the SEM-EDS section, the XRD
@@ -705,6 +710,7 @@ for f in C.facts():                                                            #
 for f in C.facts():                                                            # a value computed from others: under its first input
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
         PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+PARENT[MAT] = PARENT[STRUCT] = PROC                                            # material and structure type: shared by every run
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left
 assert not [c for c in C.facts() if c["type"] == "claim" and c["fact_id"] not in LINKS], "claim without links"

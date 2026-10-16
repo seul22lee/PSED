@@ -20,8 +20,15 @@ QUANTITIES = sorted({
     "pressure_rise", "pressure_rate", "time_to_maximum", "roughness", "binding_energy", "atoms_per_cycle",
     "carrier_concentration", "carrier_mobility", "pillar_layout", "objective_magnification", "fit_r2", "fill_fraction",
     "signal_intensity", "reaction_stoichiometry", "annealing_temperature",
+    # added 2026-10-15 for the workbench filters: the film deposited and the test structure, as value_text from the lists below
+    "material", "structure_type",
     "other",
 })
+
+# the film material (material, value_text) and the test structure type (structure_type, value_text; Cremers 2019's taxonomy)
+# of a process or group; the workbench filters list these ids
+MATERIALS = ["Al2O3", "MoS2", "WS2", "TiS2", "ZnO"]
+STRUCTURES = ["planar", "lateral_channel", "trench", "hole", "pillar_array", "nanotube_array", "porous"]
 
 TOKEN = re.compile(r"^[A-Za-z0-9+_.]+$")
 QUALIFIERS = {          # key: allowed values (None = a chemical or element token)

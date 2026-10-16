@@ -970,6 +970,15 @@ for t in sorted({t for t, _ in CELLS}, reverse=True):
                        f"{t} °C")
 CYC_RUN = {n: cyc("fig1b;s3.p5", n, f"150 °C, {R} 0.80, {n}-cycle film of Fig. 1b", f"{n} cyc;150 °C;0.80") for n in ("10", "20", "30", "50")}
 CYC_TEM = cyc("s3.p26;fig6b", "500", f"150 °C, {R} 0.65, the about 50 nm film of Fig. 6b", "500 cycles;0.65;150 °C;Figure 6b")   # the 500-cycle TEM film
+# the film material (lists.MATERIALS) of the process and of the WS2 and TiS2 groups, and the structure type (planar substrates)
+MAT = F(K, "abs.g1;s5.p1", "setting", "film material of the main process", quantity="material", value_text="MoS2", data_kind="chosen input",
+        mentions="MoS2")
+STRUCT = F(K, "s5.p2;s5.p3", "setting", "substrate form: planar pieces of wafer or foil", quantity="structure_type", value_text="planar",
+           data_kind="chosen input")
+MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", quantity="material", value_text="WS2", data_kind="chosen input",
+          mentions="WS2")
+MAT_T = F(K, "s5.p8;fig9b", "setting", "film material of the TiS2 depositions", quantity="material", value_text="TiS2", data_kind="chosen input",
+          mentions="TiS2")
 
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.
@@ -1217,6 +1226,9 @@ for t, i in TEMP_GRP.items():
 for n, i in CYC_RUN.items():
     put(xrun(f"T150_R0.80_N{n}"), i)
 put(mfilm(150, "0.65", "tem"), CYC_TEM)
+put(PROC, MAT, STRUCT)
+put(grp("WS2"), MAT_W)
+put(grp("TiS2"), MAT_T)
 # a value computed from others: under its first input
 for f in C.facts():
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:

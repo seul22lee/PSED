@@ -209,8 +209,8 @@ for q, st, val, txt in (("pulse_time", "step=reactant_A;species=TMA", "0.1", "TM
 F(K, "s6.p1", "setting", "TMA, being pyrophoric, was handled under inert conditions", mentions="TMA")
 F(K, "tab1.cap;s6.p1", "definition", "Table 1 lists the samples, the parameters used (varied ones in bold) and profile features measured by reflectometer",
   method="tabulated", mentions="Table 1")
-F(K, "s6.p2", "setting", "Series A: films with pillar layouts v1a, v1b and v2a in 500 nm design channels, grown together in one ALD run to avoid run-to-run variation",
-  quantity="substrate", value_text="one silicon wafer shared by samples 1, 2 and 3", mentions="Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1")
+F(K, "s6.p2", "setting", "Series A: films with pillar layouts v1a, v1b and v2a in 500 nm design channels, grown together to avoid run-to-run variation",
+  quantity="other", label_as_printed="ALD run", value_text="one run and one wafer for samples 1, 2 and 3", mentions="Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1")
 F(K, "s7.p1;fig1c;fig6.cap", "setting", "unless noted otherwise the film was characterized after the top membrane was peeled off with adhesive tape",
   mentions="Fig. 1c")
 F(K, "s7.p1", "setting", "coated channels were routinely imaged by optical microscopy before and after membrane removal", method="optical_microscopy")
@@ -839,6 +839,12 @@ PUR_F = F(K, "s18.p2", "claim", "the purge-time series was made to look further 
 PUR_R = F(K, "s16.p10;fig8.cap", "claim", "fully independent measurements of one process are compared to show the reproducibility of the saturation profile",
           mentions="Fig. 8b")
 
+# ------------------------------------------------------------------ the film material and the test structure type (lists.MATERIALS, lists.STRUCTURES)
+MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="material", value_text="Al2O3", data_kind="chosen input",
+        mentions="Al2O3")
+STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure_type",
+           value_text="lateral_channel", data_kind="chosen input", mentions="PillarHall-3;LHAR")
+
 # ================================================================== stage 3: one tree (parent, links)
 # Runs come from Table 1 (one specimen per sample code; Series A is also one stated ALD run, s6.p2), the AFM specimen of Fig. 6
 # (Table S4) and the simulations (Fig. 10 curves, ESI sensitivity runs). Parent rule: the row without which the fact would not
@@ -997,6 +1003,7 @@ for f in C.facts():                                                            #
 for f in C.facts():                                                            # a value computed from others: under its first input
     if f["type"] == "derived" and f["inputs"] and f["fact_id"] not in PARENT:
         PARENT[f["fact_id"]] = f["inputs"].split(";")[0]
+PARENT[MAT] = PARENT[STRUCT] = PROC                                            # material and structure type: shared by every run
 left = [f["fact_id"] for f in C.facts() if "#" in f["fact_id"] and f["fact_id"] not in PARENT]
 assert not left, left
 for r in sorted({p for p in PARENT.values() if ":refs:" in p}, key=lambda x: int(x.rsplit(":", 1)[1])):

@@ -86,7 +86,7 @@ yim20:s6.p1#10,setting,s6.p1,typical water pulse 0.1 s in the usual TMA-purge-wa
 yim20:s6.p1#11,setting,s6.p1,typical purge after water 4.0 s in the usual TMA-purge-water-purge sequence,purge_time,step=purge_B,,4.0,,,,s,,,chosen input,,typical;ref. 33;ref. 40;ref. 51,,yim20:process,
 yim20:s6.p1#12,setting,s6.p1,"TMA, being pyrophoric, was handled under inert conditions",,,,,,,,,,,,,TMA,,yim20:process,
 yim20:tab1.cap#1,definition,tab1.cap;s6.p1,"Table 1 lists the samples, the parameters used (varied ones in bold) and profile features measured by reflectometer",,,,,,,,,,,,tabulated,Table 1,,yim20,
-yim20:s6.p2#1,setting,s6.p2,"Series A: films with pillar layouts v1a, v1b and v2a in 500 nm design channels, grown together in one ALD run to avoid run-to-run variation",substrate,,,,,,,,"one silicon wafer shared by samples 1, 2 and 3",,,,Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1,,yim20:dep:A,
+yim20:s6.p2#1,setting,s6.p2,"Series A: films with pillar layouts v1a, v1b and v2a in 500 nm design channels, grown together to avoid run-to-run variation",other,,ALD run,,,,,,"one run and one wafer for samples 1, 2 and 3",,,,Series A;v1a;v1b;v2a;Table S2;Fig. S3;Table 1,,yim20:dep:A,
 yim20:s7.p1#1,setting,s7.p1;fig1c;fig6.cap,unless noted otherwise the film was characterized after the top membrane was peeled off with adhesive tape,,,,,,,,,,,,,Fig. 1c,,yim20:process,
 yim20:s7.p1#2,setting,s7.p1,coated channels were routinely imaged by optical microscopy before and after membrane removal,,,,,,,,,,,,optical_microscopy,,,yim20:process,
 yim20:s7.p2#1,setting,s7.p2,SEM-EDS was done on a Tescan Mira3 SEM with a Thermo Scientific EDS,,,,,,,,,,,,sem_eds,,,yim20:process,
@@ -697,6 +697,8 @@ yim20:s13.x1#6,claim,s13.x1,Series C was made to show the effect of channel heig
 yim20:s13.x2#4,claim,s13.x2,Series D was made to show how the cycle count changes the saturation profile at H 500 nm,,,,,,,,,,,,,Series D;Fig. 9;500 nm,,yim20,yim20:s13.x2#1;yim20:s13.x2#2
 yim20:s18.p2#1,claim,s18.p2,the purge-time series was made to look further into how purge time changes the saturation profile,,,,,,,,,,,,,purge time,,yim20,yim20:s14.x1#2
 yim20:s16.p10#5,claim,s16.p10;fig8.cap,fully independent measurements of one process are compared to show the reproducibility of the saturation profile,,,,,,,,,,,,,Fig. 8b,,yim20,yim20:s16.p10#1
+yim20:s6.p1#13,setting,s6.p1;abs.g1,film material of this work,material,,,,,,,,Al2O3,,chosen input,,Al2O3,,yim20:process,
+yim20:s5.p1#10,setting,s5.p1;abs.g1,test structure type of this work: PillarHall-3 LHAR chips,structure_type,,,,,,,,lateral_channel,,chosen input,,PillarHall-3;LHAR,,yim20:process,
 yim20,paper,abs.g1,"Yim et al. 2020, PCCP: PillarHall-3 LHAR test chips and saturation-profile analysis of TMA-water Al2O3 ALD",,,10.1039/d0cp03358h,,,,,,,,,,,,,
 yim20:process,process,s6.p1;s5.p1;s7.p1,"shared process: thermal Al2O3 ALD from TMA and water at 300 °C in a Picosun R-150 on PillarHall-3 LHAR chips, with the shared characterization methods",,,,,,,,,,,,,,,yim20,
 yim20:grp:A,group,s3.p9;tab1.r1c0,"Series A of Table 1: pillar layout varied over samples 1, 2, 3",,how=stated,Series A,,,,,,,,,,,,yim20:process,yim20:s6.p2#2
