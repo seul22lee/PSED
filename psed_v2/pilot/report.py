@@ -33,7 +33,9 @@
   linked to the run or its group), 5 compare (a run picker, siblings first, and a button that opens the tray with the two runs).
   Every screen names a quantity by its short label from lists.LABELS ("TMA pulse", "PD50"; a curve "S vs x"); simulation
   runs are labelled "sim · H 100 nm" in the tree. Claim scope (computed, next to every claim on cards and in the claims
-  view; the badge of a claim shows its stance, coloured: asserted green, hedged amber, open blue, limitation red): the claim's
+  view; the badge of a claim shows its stance, coloured: asserted green, hedged amber, open blue, limitation red; its
+  variables, cause -> effect, as chips; the claims view's "same variable" toggle groups the claims of all papers and the
+  user by effect variable): the claim's
   links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
   inherited settings give the ranges: "3 runs · T 300 °C · H 100–2000 nm · N 500"; "no run" when the links reach none.
   Claims view (toggle beside find, cards and text tree): one line per claim of each paper, with its scope and evidence.
@@ -208,7 +210,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wbt{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12.5px;margin-bottom:10px}
 .rl.tray,.nd.tray{box-shadow:inset 3px 0 0 var(--acc)}.panel.tray{background:var(--sel);border-radius:6px}circle.pt.tray{stroke-width:4}
 .ns .rl{cursor:pointer}.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
-.cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}
+.cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}.vars{font-size:11px}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
@@ -556,14 +558,24 @@ function claimScope(d,i,c){const T=buildTree(d);const runs=claimRuns(T,c);if(!ru
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
  return {n:runs.length,runs,text:`${runs.length} run${runs.length>1?"s":""}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}}
 const stBadge=c=>`<span class="ty claim ${c.stance||""}" title="stance">${c.stance||"claim"}</span>`;
-function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr ${c.stance||""}" data-f="${c.fact_id}">${stBadge(c)}<span class="st">${esc(c.statement)}</span><span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
+const vlab=t=>t.startsWith("mechanism:")?t.slice(10).replace(/_/g," "):(LISTS.labels[t]||t.replace(/_/g," "));
+const varChips=c=>(c.cause||c.effect)?`<span class="chip vars" title="cause → effect">${(c.cause||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"} → ${(c.effect||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"}</span>`:"";
+let CLV="paper";
+function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr ${c.stance||""}" data-f="${c.fact_id}"><span class="sw" style="background:var(--c${i})"></span>${stBadge(c)}<span class="st">${esc(c.statement)}</span>${varChips(c)}<span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
 function userScope(u){const runs=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimRuns(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(r=>runs.push({i,id:r}))});
  if(!runs.length)return "no run";const rs=RUNS().filter(r=>runs.some(x=>x.i===r.i&&x.id===r.id));const parts=[];
  SCOPEQ.forEach(q=>{const vals=[],units=new Set();rs.forEach(r=>{const es=Object.values(r.inh).filter(e=>e.f.quantity===q);const plain=es.filter(e=>!e.f.qualifiers);(plain.length?plain:es).forEach(e=>e.fs.forEach(f=>{const a=fv(f);if(a!=null&&!isNaN(a)){vals.push(a);units.add(f.unit||"")}}))});
   if(vals.length&&units.size===1){const lo=Math.min(...vals),hi=Math.max(...vals),u=[...units][0];parts.push(`${LISTS.labels[q]||q} ${lo===hi?fmtv(lo):fmtv(lo)+"–"+fmtv(hi)}${u?" "+u:""}`)}});
  const papers=[...new Set(runs.map(x=>DATA[x.i].key))];return `${runs.length} run${runs.length>1?"s":""} in ${papers.join(", ")}${parts.length?" · "+parts.slice(0,3).join(" · "):""}`}
-function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user ${u.stance||""}" data-f="${u.fact_id}">${u.type==="claim"?stBadge(u):`<span class="ty ${esc(u.type)}">${esc(u.type)}</span>`}<span class="st">${esc(u.statement)}</span><span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
-function claimsView(){return `<div class="wrap"><div class="cl"><h3>user <span class="mut">${USER.length} facts</span></h3>${USER.map(userLine).join("")}${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
+function userLine(u){const n=(u.links||"").split(";").filter(Boolean).length;return `<div class="clr user ${u.stance||""}" data-f="${u.fact_id}">${u.type==="claim"?stBadge(u):`<span class="ty ${esc(u.type)}">${esc(u.type)}</span>`}<span class="st">${esc(u.statement)}</span>${varChips(u)}<span class="chip scope">${esc(userScope(u))}</span><span class="mut">${n} links</span>${u.label_as_printed?`<span class="chip">${esc(u.label_as_printed)}</span>`:""}</div>`}
+function claimsView(){const tog=`<div class="fl"><button class="${CLV==="paper"?"on":""}" onclick="CLV='paper';render()">by paper</button><button class="${CLV==="effect"?"on":""}" onclick="CLV='effect';render()">same variable</button></div>`;
+ let body;if(CLV==="paper")body=`<h3>user <span class="mut">${USER.length} facts</span></h3>${USER.map(userLine).join("")}${DATA.map((d,i)=>`<h3><span class="sw" style="background:var(--c${i})"></span>${d.key} <span class="mut">${d.facts.filter(f=>f.type==="claim").length} claims</span></h3>`+d.facts.filter(f=>f.type==="claim").map(c=>claimLine(d,i,c)).join("")).join("")}`;
+ else{const by={};const add=(t,html,key)=>{(by[t]=by[t]||{n:0,papers:new Set(),html:[]});by[t].n++;by[t].papers.add(key);by[t].html.push(html)};
+  USER.filter(u=>u.type==="claim").forEach(u=>(u.effect||"").split(";").filter(Boolean).forEach(t=>add(t,userLine(u),"user")));
+  DATA.forEach((d,i)=>d.facts.filter(f=>f.type==="claim").forEach(c=>(c.effect||"").split(";").filter(Boolean).forEach(t=>add(t,claimLine(d,i,c),d.key))));
+  const none=[];DATA.forEach((d,i)=>d.facts.filter(f=>f.type==="claim"&&!f.effect).forEach(c=>none.push(claimLine(d,i,c))));
+  body=Object.entries(by).sort((a,b)=>b[1].papers.size-a[1].papers.size||b[1].n-a[1].n).map(([t,o])=>`<h3>${esc(vlab(t))} <span class="mut">${o.n} claims · ${[...o.papers].join(", ")}</span></h3>${o.html.join("")}`).join("")+`<h3>no effect variable <span class="mut">${none.length}</span></h3>${none.join("")}`}
+ return `${tog}<div class="wrap"><div class="cl">${body}</div><div class="side" id="side"><span class="mut">Click an element id for the element and its facts.</span></div></div>`}
 function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","cards"],["text","text tree"],["claims","claims"]].map(([k,l])=>`<button class="${TM===k?"on":""}" onclick="TM='${k}';render()">${l}</button>`).join("")}</div>`;
  if(TM==="find")return `<div id="forest"></div>${tog}${wbView()}`;if(TM==="claims")return `<div id="forest"></div>${tog}${claimsView()}`;
  if(TM==="cards"){const d=DATA[P];if(CARD&&!buildTree(d).byId[CARD])CARD=null;if(!CARD){const first=d.tree.find(n=>n.type==="run");CARD=first?first.fact_id:null}if(FIGC&&!d.elements.some(x=>x.id===FIGC))FIGC=null;if(GCARD&&!buildTree(d).byId[GCARD])GCARD=null;

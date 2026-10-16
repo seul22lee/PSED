@@ -4,7 +4,7 @@
     python3 psed_v2/pilot/check.py
 
 Facts (per paper, <paper_id>.*): fact ids unique; evidence ids and inputs resolve; vocabularies (type, quantity, qualifiers, data_kind, method,
-censor; material and structure_type value_texts from lists.MATERIALS and STRUCTURES; a claim's stance from lists.STANCES); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
+censor; material and structure_type value_texts from lists.MATERIALS and STRUCTURES; a claim's stance from lists.STANCES; cause and effect quantity ids or mechanism tokens); a quantity of "other" carries label_as_printed; a value, value_text or points_ref has a quantity, a value or points_ref
 also a data_kind; values are numbers; every points_ref names a curve of <paper_id>.points.json, carries x= (its abscissa) and every curve is used; no two facts
 state the same thing (same type, quantity, qualifiers, value, range, unit, value_text, points and mentions; or the same statement); no statement repeats eight or
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
@@ -69,6 +69,8 @@ def check(pid):
             bad(f"type {f['type']}")
         if f["type"] == "claim" and f["stance"] not in L.STANCES:
             bad(f"claim stance {f['stance']!r} (lists.STANCES)")
+        for t in L.variables_ok(f["cause"]) + L.variables_ok(f["effect"]):
+            bad(f"variable {t} (a quantity id or mechanism:<token> of lists.MECHANISMS)")
         if f["quantity"] and f["quantity"] not in L.QUANTITIES:
             bad(f"quantity {f['quantity']}")
         if f["quantity"] == "other" and not f["label_as_printed"]:
@@ -316,6 +318,8 @@ def check_user(all_ids):
             bad("claim without links")
         if r["type"] == "claim" and r["stance"] not in L.STANCES:
             bad(f"claim stance {r['stance']!r}")
+        for t in L.variables_ok(r["cause"]) + L.variables_ok(r["effect"]):
+            bad(f"variable {t}")
         for l in filter(None, r["links"].split(";")):
             if l not in all_ids and l not in ids:
                 bad(f"link {l} does not exist")

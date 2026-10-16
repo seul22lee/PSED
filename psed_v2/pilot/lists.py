@@ -55,7 +55,18 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds
 TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited"]
-STANCES = ["asserted", "hedged", "open", "limitation"]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
+STANCES = ["asserted", "hedged", "open", "limitation"]
+# mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids
+MECHANISMS = ["surface_OH", "excess_S", "fin_growth", "Zn_metal", "residual_H2O", "membrane_sagging", "channel_plugging", "channel_narrowing",
+              "water_readsorption", "H_incorporation", "precursor_adsorption", "pillar_effect", "nanostep", "native_oxide", "optical_model",
+              "scan_angle", "interaction_volume", "averaging", "channel_length", "run_variation", "surface_chemistry", "plasma_chemistry",
+              "edge_reactivity", "thiol_groups", "S_vacancy", "surface_oxidation", "self_limiting", "side_reaction", "gas_diffusion",
+              "gas_generation", "leak", "reaction_diffusion", "desorption", "percolation", "cracks", "reabsorption", "CVD_growth"]
+
+
+def variables_ok(s):
+    """'a;b' of quantity ids or mechanism:<token> -> list of problems."""
+    return [t for t in s.split(";") if t and not (t in QUANTITIES and t != "other") and not (t.startswith("mechanism:") and t[10:] in MECHANISMS)]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
 #   "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation)
 NODE_TYPES = ["paper", "process", "group", "run"]     # tree rows of stage 3 (cited works use type cited)
 DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
