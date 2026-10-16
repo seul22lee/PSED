@@ -71,7 +71,14 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     # what a per-cycle value is averaged over (P5): the whole run (thickness or amount over the run's cycle count), the first 100
     # cycles, the saturation value of a model, or not stated
     "over": {"run", "first_100_cycles", "saturation", "not_stated"},
+    # whether a measurement was made during the deposition or after it (P6; decision 4: in/ex situ is a qualifier, not a method)
+    "mode": {"in_situ", "ex_situ", "not_stated"},
 }
+# the mode a measurement method has unless a paper says otherwise (ellipsometry and generic measurements are set per activity)
+METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "in_situ", "xrd": "ex_situ", "xps": "ex_situ", "raman": "ex_situ",
+               "sem": "ex_situ", "sem_eds": "ex_situ", "tem": "ex_situ", "afm": "ex_situ", "electrical": "ex_situ", "rbs": "ex_situ",
+               "reflectometry": "ex_situ", "gravimetry": "ex_situ", "weighing_before": "ex_situ", "photograph": "ex_situ",
+               "optical_microscopy": "ex_situ", "metrology": "ex_situ"}
 # the definition a quantity has when none is named: the screen names a definition only when it differs from this
 DEFAULT_DEFINITION = {"growth_per_cycle": {"over": "run"}, "atoms_per_cycle": {"over": "run"}}
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id

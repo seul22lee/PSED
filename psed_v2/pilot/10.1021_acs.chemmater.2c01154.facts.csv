@@ -298,13 +298,13 @@ mat22:s5.p7#5,observation,,,,s5.p7,"SE showed the H2S/H2/Ar plasma alone deposit
 mat22:s5.p8#1,setting,,,,s5.p8,"WS2 and TiS2 deposition procedures, with the plasma feed gas (ratio) as the only change; a thermal TiSx recipe serves for comparison.",other,,literature procedures,,,,,,"refs. 52 (WS2) and 53 (TiS2), H2 flow ratio changed; thermal TiSx ref. 80",,,,,,,ref. 52;ref. 53;ref. 80,,mat22:dep:TiS2_T100_R0,mat22:cmp:TiS2,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p8#2,setting,,,,s5.p8;fig9a,WS2 is grown at 150 °C with ratio 0.80.,deposition_temperature,,,150,,,,°C,,,,,,chosen input,,WS2;0.80,,mat22:dep:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p8#3,setting,,,,s5.p8;fig9b,TiS2 is grown at 100 °C with ratio 0.50.,deposition_temperature,,,100,,,,°C,,,,,,chosen input,,TiS2;0.50,,mat22:dep:TiS2_T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:s5.p9#1,setting,,,,s5.p9,Thickness is followed in situ by SE with a J.A. Woollam M-2000FI (0.8-5.0 eV; fits over 0.8-4.0 eV) or M-2000F (1.2-5.0 eV).,other,,spectral range,,0.8,5.0,,eV,,,,,,chosen input,ellipsometry,M-2000FI;M-2000F,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
-mat22:s5.p9#2,setting,,,,s5.p9,An in situ SE measurement is usually taken every 10 cycles.,other,,measurement interval,10,,,,,,,,,,chosen input,ellipsometry,,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
-mat22:s5.p9#3,model,,,,s5.p9,"SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in CompleteEASE 5.1, with software optical constants for the other layers; roughness of crystalline MoS2 as an effective medium layer with 50% void.",other,,void content,50,,,,%,,,,,,assumed,ellipsometry,CompleteEASE 5.1,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
+mat22:s5.p9#1,setting,,,,s5.p9,Thickness is followed in situ by SE with a J.A. Woollam M-2000FI (0.8-5.0 eV; fits over 0.8-4.0 eV) or M-2000F (1.2-5.0 eV).,other,mode=in_situ,spectral range,,0.8,5.0,,eV,,,,,,chosen input,ellipsometry,M-2000FI;M-2000F,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
+mat22:s5.p9#2,setting,,,,s5.p9,An in situ SE measurement is usually taken every 10 cycles.,other,mode=in_situ,measurement interval,10,,,,,,,,,,chosen input,ellipsometry,,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
+mat22:s5.p9#3,model,,,,s5.p9,"SE optical model: MoSx (B-spline)/SiO2/interlayer/Si in CompleteEASE 5.1, with software optical constants for the other layers; roughness of crystalline MoS2 as an effective medium layer with 50% void.",other,mode=in_situ,void content,50,,,,%,,,,,,assumed,ellipsometry,CompleteEASE 5.1,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p9#4,definition,,,,s5.p9,"Reported SE thickness = dense MoSx layer plus half the roughness layer, approximating the deposited amount.",,,,,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:s5.p10#1,model,,,,s5.p10,Fitting: SiO2 thickness and substrate temperature from the spectrum before cycle 1; MoSx thickness and optical constants from the last spectrum; only MoSx thickness (and roughness) for spectra in between.,,,,,,,,,,,,,,,ellipsometry,,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
+mat22:s5.p10#1,model,,,,s5.p10,Fitting: SiO2 thickness and substrate temperature from the spectrum before cycle 1; MoSx thickness and optical constants from the last spectrum; only MoSx thickness (and roughness) for spectra in between.,,mode=in_situ,,,,,,,,,,,,,ellipsometry,,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p10#2,definition,,,,s5.p10,Reported thicknesses average many grains of slightly different thickness and optics over a few mm2.,,,,,,,,,,,,,,,,mm2,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:s5.p11#1,setting,,,,s5.p11,"Ex situ SE uses a J.A. Woollam M-2000U at 65, 75 and 85° incidence over 1.2-6.5 eV, fitting MoS2 and SiO2 thickness with fixed optical constants from in situ data.",other,,spectral range,,1.2,6.5,,eV,,,,,,chosen input,ellipsometry,M-2000U;65;75;85°,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
+mat22:s5.p11#1,setting,,,,s5.p11,"Ex situ SE uses a J.A. Woollam M-2000U at 65, 75 and 85° incidence over 1.2-6.5 eV, fitting MoS2 and SiO2 thickness with fixed optical constants from in situ data.",other,mode=ex_situ,spectral range,,1.2,6.5,,eV,,,,,,chosen input,ellipsometry,M-2000U;65;75;85°,,mat22:method:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p11#2,setting,,,,s5.p11;fig1c,"Uniformity maps use a J.A. Woollam M-2000 (1.2-3.3 eV) with a mapping stage, circular pattern avoiding wafer edges; a 5 nm MoS2 film on a 4"" 450 nm SiO2/Si wafer and a bare substrate were measured.",other,,spectral range,,1.2,3.3,,eV,,,,,,chosen input,ellipsometry,"M-2000;5 nm;450 nm SiO2/Si;4""",,mat22:meas:ent:wafer_T150_R0.80:ellipsometry,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p12#1,setting,,,,s5.p12,"Sheet resistance is measured with a four-point probe (Keithley 2400 SourceMeter, Signatone SP4-4004STRS head).",,,,,,,,,,,,,,,electrical,Keithley 2400;SP4-4004STRS,,mat22:method:electrical,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p12#2,definition,,,,s5.p12,Resistivity = sheet resistance × film thickness from in situ SE.,,,,,,,,,,,,,,,calculation,,,mat22,,,,,10.1021_acs.chemmater.2c01154
@@ -713,138 +713,138 @@ mat22:ent:TiS2_thermal,entity,,,stated,fig9b,thermal ALD TiS2 reference (Fig. 9b
 mat22:ent:WS2_T150_R0,entity,,,stated,s3.p46;fig9a,WSx deposition at 150 °C without H2 (ratio 0),,,"WS2 @ 150 °C, 0",,,,,,,,,,,,,,,mat22:dep:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
 mat22:ent:WS2_T150_R0.80,entity,,,stated,s3.p46;s5.p8;fig9a,WS2 deposition at 150 °C with ratio 0.80,,,"WS2 @ 150 °C, 0.80",,,,,,,,,,,,,,,mat22:dep:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:ent:control,entity,,,inferred,s5.p7,"control exposures at the lowest temperatures: the H2S/H2/Ar plasma alone and the Mo precursor alone, followed by in situ SE; the paper names no run",,,control exposures,,,,,,,,,,,,,,,mat22:dep:control,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:wafer_T150_R0.80:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.80 H2, wafer film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:wafer_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:pet_T100_R0.80:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.80 H2, PET film",,,electrical,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:pet_T100_R0.80:photograph,activity,measurement,,stated,,"photograph on 100 °C, 0.80 H2, PET film",,,photograph,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:tem,activity,measurement,,stated,,"tem on 100 °C, 0.80 H2, TEM/FET film",,,tem,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:afm,activity,measurement,,stated,,"afm on 100 °C, 0.80 H2, TEM/FET film",,,afm,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T350_R0.20:tem,activity,measurement,,stated,,"tem on 350 °C, 0.20 H2, TEM/FET film",,,tem,,,,,,,,,,,,,,,mat22:ent:tem_T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:xps,activity,measurement,,stated,,"xps on 150 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:xps,activity,measurement,,stated,,"xps on 150 °C, 0.94 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.50:xps,activity,measurement,,stated,,"xps on 150 °C, 0.50 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.20:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.20 H2, glassy-carbon film",,,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.20:xps,activity,measurement,,stated,,"xps on 150 °C, 0.20 H2, glassy-carbon film",,,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.20:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.20 H2, glassy-carbon film",,,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.65:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.65 H2, glassy-carbon film",,,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.65:xps,activity,measurement,,stated,,"xps on 150 °C, 0.65 H2, glassy-carbon film",,,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.65:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.65 H2, glassy-carbon film",,,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.80:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.80 H2, glassy-carbon film",,,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.80:xps,activity,measurement,,stated,,"xps on 150 °C, 0.80 H2, glassy-carbon film",,,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:gc_T150_R0.80:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.80 H2, glassy-carbon film",,,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:sem,activity,measurement,,stated,,"sem on 150 °C, 0.65 H2 film",,,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:sem,activity,measurement,,stated,,"sem on 150 °C, 0.80 H2 film",,,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:sem,activity,measurement,,stated,,"sem on 150 °C, 0.94 H2 film",,,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T150_R0.65:tem,activity,measurement,,stated,,"tem on 150 °C, 0.65 H2, TEM film",,,tem,,,,,,,,,,,,,,,mat22:ent:tem_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.65 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.94 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.65:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.65 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T300_R0.20:electrical,activity,measurement,,stated,,"electrical on 300 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.20:electrical,activity,measurement,,stated,,"electrical on 450 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.80 H2, TEM/FET film",,,electrical,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:measurement,activity,measurement,,stated,,"measurement on 100 °C, 0.80 H2, TEM/FET film",,,measurement,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:WS2_T150_R0:xps,activity,measurement,,stated,,"xps on WS2 @ 150 °C, 0",,,xps,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:WS2_T150_R0.80:xps,activity,measurement,,stated,,"xps on WS2 @ 150 °C, 0.80",,,xps,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:WS2_T150_R0.80:electrical,activity,measurement,,stated,,"electrical on WS2 @ 150 °C, 0.80",,,electrical,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:TiS2_T100_R0.50:raman,activity,measurement,,stated,,"raman on TiS2 @ 100 °C, 0.50",,,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:TiS2_T100_R0.80:xps,activity,measurement,,stated,,xps on 0.80,,,xps,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20_H2step:measurement,activity,measurement,,stated,,measurement on H2 gas or H2 plasma step,,,measurement,,,,,,,,,,,,,,,mat22:ent:T150_R0.20_H2step,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0_lowH2S:measurement,activity,measurement,,stated,,measurement on Figure S22a,,,measurement,,,,,,,,,,,,,,,mat22:ent:T250_R0_lowH2S,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_lowH2S:measurement,activity,measurement,,stated,,measurement on Figure S22b,,,measurement,,,,,,,,,,,,,,,mat22:ent:T150_lowH2S,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:pet_T100_R0.80:measurement,activity,measurement,,stated,,"measurement on 100 °C, 0.80 H2, PET film",,,measurement,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:process_monitor,activity,measurement,,stated,,process monitor: the shared measurement settings,,,process monitor (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:control:ellipsometry,activity,measurement,,stated,,ellipsometry on control exposures,,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:control,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:ellipsometry,activity,measurement,,stated,,ellipsometry: the shared measurement settings,,,ellipsometry (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:electrical,activity,measurement,,stated,,electrical: the shared measurement settings,,,electrical (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:sem,activity,measurement,,stated,,sem: the shared measurement settings,,,sem (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:afm,activity,measurement,,stated,,afm: the shared measurement settings,,,afm (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:raman,activity,measurement,,stated,,raman: the shared measurement settings,,,raman (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:xps,activity,measurement,,stated,,xps: the shared measurement settings,,,xps (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:rbs,activity,measurement,,stated,,rbs: the shared measurement settings,,,rbs (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:method:tem,activity,measurement,,stated,,tem: the shared measurement settings,,,tem (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:raman,activity,measurement,,stated,,"raman on 150 °C, 0.94 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:raman,activity,measurement,,stated,,"raman on 150 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:raman,activity,measurement,,stated,,"raman on 150 °C, 0.65 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.50:raman,activity,measurement,,stated,,"raman on 150 °C, 0.50 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20:raman,activity,measurement,,stated,,"raman on 150 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0:raman,activity,measurement,,stated,,"raman on 150 °C, 0 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80_N50:ellipsometry,activity,measurement,,stated,,ellipsometry on 50 cyc,,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80_N30:ellipsometry,activity,measurement,,stated,,ellipsometry on 30 cyc,,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N30,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80_N20:ellipsometry,activity,measurement,,stated,,ellipsometry on 20 cyc,,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80_N10:ellipsometry,activity,measurement,,stated,,ellipsometry on 10 cyc,,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N10,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.20:raman,activity,measurement,,stated,,"raman on 450 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.80:raman,activity,measurement,,stated,,"raman on 450 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.20:raman,activity,measurement,,stated,,"raman on 350 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.50:raman,activity,measurement,,stated,,"raman on 350 °C, 0.50 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.80:raman,activity,measurement,,stated,,"raman on 350 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T300_R0.20:raman,activity,measurement,,stated,,"raman on 300 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0:raman,activity,measurement,,stated,,"raman on 250 °C, 0 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.20:raman,activity,measurement,,stated,,"raman on 250 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.35:raman,activity,measurement,,stated,,"raman on 250 °C, 0.35 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.50:raman,activity,measurement,,stated,,"raman on 250 °C, 0.50 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.65:raman,activity,measurement,,stated,,"raman on 250 °C, 0.65 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.80:raman,activity,measurement,,stated,,"raman on 250 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.94:raman,activity,measurement,,stated,,"raman on 250 °C, 0.94 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0:raman,activity,measurement,,stated,,"raman on 200 °C, 0 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.20:raman,activity,measurement,,stated,,"raman on 200 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.50:raman,activity,measurement,,stated,,"raman on 200 °C, 0.50 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.65:raman,activity,measurement,,stated,,"raman on 200 °C, 0.65 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.80:raman,activity,measurement,,stated,,"raman on 200 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.94:raman,activity,measurement,,stated,,"raman on 200 °C, 0.94 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.20:raman,activity,measurement,,stated,,"raman on 100 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.50:raman,activity,measurement,,stated,,"raman on 100 °C, 0.50 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.65:raman,activity,measurement,,stated,,"raman on 100 °C, 0.65 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.80:raman,activity,measurement,,stated,,"raman on 100 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.94:raman,activity,measurement,,stated,,"raman on 100 °C, 0.94 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.20:raman,activity,measurement,,stated,,"raman on 50 °C, 0.20 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.80:raman,activity,measurement,,stated,,"raman on 50 °C, 0.80 H2 film",,,raman,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.20:xps,activity,measurement,,stated,,"xps on 450 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.80:xps,activity,measurement,,stated,,"xps on 450 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.20:xps,activity,measurement,,stated,,"xps on 350 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.50:xps,activity,measurement,,stated,,"xps on 350 °C, 0.50 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.80:xps,activity,measurement,,stated,,"xps on 350 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T300_R0.20:xps,activity,measurement,,stated,,"xps on 300 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0:xps,activity,measurement,,stated,,"xps on 250 °C, 0 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.20:xps,activity,measurement,,stated,,"xps on 250 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.35:xps,activity,measurement,,stated,,"xps on 250 °C, 0.35 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.50:xps,activity,measurement,,stated,,"xps on 250 °C, 0.50 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.65:xps,activity,measurement,,stated,,"xps on 250 °C, 0.65 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.80:xps,activity,measurement,,stated,,"xps on 250 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.94:xps,activity,measurement,,stated,,"xps on 250 °C, 0.94 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0:xps,activity,measurement,,stated,,"xps on 200 °C, 0 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.20:xps,activity,measurement,,stated,,"xps on 200 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.50:xps,activity,measurement,,stated,,"xps on 200 °C, 0.50 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.65:xps,activity,measurement,,stated,,"xps on 200 °C, 0.65 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.80:xps,activity,measurement,,stated,,"xps on 200 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.94:xps,activity,measurement,,stated,,"xps on 200 °C, 0.94 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0:xps,activity,measurement,,stated,,"xps on 150 °C, 0 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20:xps,activity,measurement,,stated,,"xps on 150 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:xps,activity,measurement,,stated,,"xps on 150 °C, 0.65 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.20:xps,activity,measurement,,stated,,"xps on 100 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.50:xps,activity,measurement,,stated,,"xps on 100 °C, 0.50 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.65:xps,activity,measurement,,stated,,"xps on 100 °C, 0.65 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.80:xps,activity,measurement,,stated,,"xps on 100 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.94:xps,activity,measurement,,stated,,"xps on 100 °C, 0.94 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.20:xps,activity,measurement,,stated,,"xps on 50 °C, 0.20 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.80:xps,activity,measurement,,stated,,"xps on 50 °C, 0.80 H2 film",,,xps,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0:afm,activity,measurement,,stated,,"afm on 150 °C, 0 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20:afm,activity,measurement,,stated,,"afm on 150 °C, 0.20 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.50:afm,activity,measurement,,stated,,"afm on 150 °C, 0.50 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:afm,activity,measurement,,stated,,"afm on 150 °C, 0.65 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:afm,activity,measurement,,stated,,"afm on 150 °C, 0.80 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:afm,activity,measurement,,stated,,"afm on 150 °C, 0.94 H2 film",,,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.50:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.50 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:WS2_T150_R0.80:raman,activity,measurement,,stated,,"raman on WS2 @ 150 °C, 0.80",,,raman,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:WS2_T150_R0:raman,activity,measurement,,stated,,"raman on WS2 @ 150 °C, 0",,,raman,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:TiS2_thermal:raman,activity,measurement,,stated,,raman on Thermal ALD,,,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_thermal,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:TiS2_T100_R0:raman,activity,measurement,,stated,,"raman on TiS2 @ 100 °C, 0",,,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:wafer_T150_R0.80:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.80 H2, wafer film",,mode=ex_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:wafer_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:pet_T100_R0.80:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.80 H2, PET film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:pet_T100_R0.80:photograph,activity,measurement,,stated,,"photograph on 100 °C, 0.80 H2, PET film",,mode=ex_situ,photograph,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:tem,activity,measurement,,stated,,"tem on 100 °C, 0.80 H2, TEM/FET film",,mode=ex_situ,tem,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:afm,activity,measurement,,stated,,"afm on 100 °C, 0.80 H2, TEM/FET film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T350_R0.20:tem,activity,measurement,,stated,,"tem on 350 °C, 0.20 H2, TEM/FET film",,mode=ex_situ,tem,,,,,,,,,,,,,,,mat22:ent:tem_T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:xps,activity,measurement,,stated,,"xps on 150 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:xps,activity,measurement,,stated,,"xps on 150 °C, 0.94 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.50:xps,activity,measurement,,stated,,"xps on 150 °C, 0.50 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.20:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.20 H2, glassy-carbon film",,mode=ex_situ,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.20:xps,activity,measurement,,stated,,"xps on 150 °C, 0.20 H2, glassy-carbon film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.20:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.20 H2, glassy-carbon film",,mode=not_stated,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.65:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.65 H2, glassy-carbon film",,mode=ex_situ,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.65:xps,activity,measurement,,stated,,"xps on 150 °C, 0.65 H2, glassy-carbon film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.65:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.65 H2, glassy-carbon film",,mode=not_stated,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.80:rbs,activity,measurement,,stated,,"rbs on 150 °C, 0.80 H2, glassy-carbon film",,mode=ex_situ,rbs,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.80:xps,activity,measurement,,stated,,"xps on 150 °C, 0.80 H2, glassy-carbon film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:gc_T150_R0.80:measurement,activity,measurement,,stated,,"measurement on 150 °C, 0.80 H2, glassy-carbon film",,mode=not_stated,measurement,,,,,,,,,,,,,,,mat22:ent:gc_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:sem,activity,measurement,,stated,,"sem on 150 °C, 0.65 H2 film",,mode=ex_situ,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:sem,activity,measurement,,stated,,"sem on 150 °C, 0.80 H2 film",,mode=ex_situ,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:sem,activity,measurement,,stated,,"sem on 150 °C, 0.94 H2 film",,mode=ex_situ,sem,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T150_R0.65:tem,activity,measurement,,stated,,"tem on 150 °C, 0.65 H2, TEM film",,mode=ex_situ,tem,,,,,,,,,,,,,,,mat22:ent:tem_T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.65 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.94 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.65:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.65 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T300_R0.20:electrical,activity,measurement,,stated,,"electrical on 300 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.20:electrical,activity,measurement,,stated,,"electrical on 450 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:electrical,activity,measurement,,stated,,"electrical on 100 °C, 0.80 H2, TEM/FET film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:measurement,activity,measurement,,stated,,"measurement on 100 °C, 0.80 H2, TEM/FET film",,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:WS2_T150_R0:xps,activity,measurement,,stated,,"xps on WS2 @ 150 °C, 0",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:WS2_T150_R0.80:xps,activity,measurement,,stated,,"xps on WS2 @ 150 °C, 0.80",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:WS2_T150_R0.80:electrical,activity,measurement,,stated,,"electrical on WS2 @ 150 °C, 0.80",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:TiS2_T100_R0.50:raman,activity,measurement,,stated,,"raman on TiS2 @ 100 °C, 0.50",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:TiS2_T100_R0.80:xps,activity,measurement,,stated,,xps on 0.80,,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20_H2step:measurement,activity,measurement,,stated,,measurement on H2 gas or H2 plasma step,,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:ent:T150_R0.20_H2step,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0_lowH2S:measurement,activity,measurement,,stated,,measurement on Figure S22a,,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:ent:T250_R0_lowH2S,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_lowH2S:measurement,activity,measurement,,stated,,measurement on Figure S22b,,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:ent:T150_lowH2S,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:pet_T100_R0.80:measurement,activity,measurement,,stated,,"measurement on 100 °C, 0.80 H2, PET film",,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:ent:pet_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:process_monitor,activity,measurement,,stated,,process monitor: the shared measurement settings,,mode=in_situ,process monitor (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:control:ellipsometry,activity,measurement,,stated,,ellipsometry on control exposures,,mode=not_stated,ellipsometry,,,,,,,,,,,,,,,mat22:ent:control,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:ellipsometry,activity,measurement,,stated,,ellipsometry: the shared measurement settings,,mode=not_stated,ellipsometry (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:electrical,activity,measurement,,stated,,electrical: the shared measurement settings,,mode=ex_situ,electrical (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:sem,activity,measurement,,stated,,sem: the shared measurement settings,,mode=ex_situ,sem (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:afm,activity,measurement,,stated,,afm: the shared measurement settings,,mode=ex_situ,afm (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:raman,activity,measurement,,stated,,raman: the shared measurement settings,,mode=ex_situ,raman (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:xps,activity,measurement,,stated,,xps: the shared measurement settings,,mode=ex_situ,xps (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:rbs,activity,measurement,,stated,,rbs: the shared measurement settings,,mode=ex_situ,rbs (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:method:tem,activity,measurement,,stated,,tem: the shared measurement settings,,mode=ex_situ,tem (method),,,,,,,,,,,,,,,mat22,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:raman,activity,measurement,,stated,,"raman on 150 °C, 0.94 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:raman,activity,measurement,,stated,,"raman on 150 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:raman,activity,measurement,,stated,,"raman on 150 °C, 0.65 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.50:raman,activity,measurement,,stated,,"raman on 150 °C, 0.50 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20:raman,activity,measurement,,stated,,"raman on 150 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0:raman,activity,measurement,,stated,,"raman on 150 °C, 0 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80_N50:ellipsometry,activity,measurement,,stated,,ellipsometry on 50 cyc,,mode=ex_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80_N30:ellipsometry,activity,measurement,,stated,,ellipsometry on 30 cyc,,mode=ex_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N30,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80_N20:ellipsometry,activity,measurement,,stated,,ellipsometry on 20 cyc,,mode=ex_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80_N10:ellipsometry,activity,measurement,,stated,,ellipsometry on 10 cyc,,mode=ex_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.80_N10,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.20:raman,activity,measurement,,stated,,"raman on 450 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.80:raman,activity,measurement,,stated,,"raman on 450 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.20:raman,activity,measurement,,stated,,"raman on 350 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.50:raman,activity,measurement,,stated,,"raman on 350 °C, 0.50 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.80:raman,activity,measurement,,stated,,"raman on 350 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T300_R0.20:raman,activity,measurement,,stated,,"raman on 300 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0:raman,activity,measurement,,stated,,"raman on 250 °C, 0 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.20:raman,activity,measurement,,stated,,"raman on 250 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.35:raman,activity,measurement,,stated,,"raman on 250 °C, 0.35 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.50:raman,activity,measurement,,stated,,"raman on 250 °C, 0.50 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.65:raman,activity,measurement,,stated,,"raman on 250 °C, 0.65 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.80:raman,activity,measurement,,stated,,"raman on 250 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.94:raman,activity,measurement,,stated,,"raman on 250 °C, 0.94 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0:raman,activity,measurement,,stated,,"raman on 200 °C, 0 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.20:raman,activity,measurement,,stated,,"raman on 200 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.50:raman,activity,measurement,,stated,,"raman on 200 °C, 0.50 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.65:raman,activity,measurement,,stated,,"raman on 200 °C, 0.65 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.80:raman,activity,measurement,,stated,,"raman on 200 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.94:raman,activity,measurement,,stated,,"raman on 200 °C, 0.94 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.20:raman,activity,measurement,,stated,,"raman on 100 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.50:raman,activity,measurement,,stated,,"raman on 100 °C, 0.50 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.65:raman,activity,measurement,,stated,,"raman on 100 °C, 0.65 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.80:raman,activity,measurement,,stated,,"raman on 100 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.94:raman,activity,measurement,,stated,,"raman on 100 °C, 0.94 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.20:raman,activity,measurement,,stated,,"raman on 50 °C, 0.20 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.80:raman,activity,measurement,,stated,,"raman on 50 °C, 0.80 H2 film",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.20:xps,activity,measurement,,stated,,"xps on 450 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.80:xps,activity,measurement,,stated,,"xps on 450 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.20:xps,activity,measurement,,stated,,"xps on 350 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.50:xps,activity,measurement,,stated,,"xps on 350 °C, 0.50 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.80:xps,activity,measurement,,stated,,"xps on 350 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T300_R0.20:xps,activity,measurement,,stated,,"xps on 300 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0:xps,activity,measurement,,stated,,"xps on 250 °C, 0 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.20:xps,activity,measurement,,stated,,"xps on 250 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.35:xps,activity,measurement,,stated,,"xps on 250 °C, 0.35 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.50:xps,activity,measurement,,stated,,"xps on 250 °C, 0.50 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.65:xps,activity,measurement,,stated,,"xps on 250 °C, 0.65 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.80:xps,activity,measurement,,stated,,"xps on 250 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.94:xps,activity,measurement,,stated,,"xps on 250 °C, 0.94 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0:xps,activity,measurement,,stated,,"xps on 200 °C, 0 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.20:xps,activity,measurement,,stated,,"xps on 200 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.50:xps,activity,measurement,,stated,,"xps on 200 °C, 0.50 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.65:xps,activity,measurement,,stated,,"xps on 200 °C, 0.65 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.80:xps,activity,measurement,,stated,,"xps on 200 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.94:xps,activity,measurement,,stated,,"xps on 200 °C, 0.94 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0:xps,activity,measurement,,stated,,"xps on 150 °C, 0 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20:xps,activity,measurement,,stated,,"xps on 150 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:xps,activity,measurement,,stated,,"xps on 150 °C, 0.65 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.20:xps,activity,measurement,,stated,,"xps on 100 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.50:xps,activity,measurement,,stated,,"xps on 100 °C, 0.50 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.65:xps,activity,measurement,,stated,,"xps on 100 °C, 0.65 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.80:xps,activity,measurement,,stated,,"xps on 100 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.94:xps,activity,measurement,,stated,,"xps on 100 °C, 0.94 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.20:xps,activity,measurement,,stated,,"xps on 50 °C, 0.20 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.80:xps,activity,measurement,,stated,,"xps on 50 °C, 0.80 H2 film",,mode=ex_situ,xps,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0:afm,activity,measurement,,stated,,"afm on 150 °C, 0 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20:afm,activity,measurement,,stated,,"afm on 150 °C, 0.20 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.50:afm,activity,measurement,,stated,,"afm on 150 °C, 0.50 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:afm,activity,measurement,,stated,,"afm on 150 °C, 0.65 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:afm,activity,measurement,,stated,,"afm on 150 °C, 0.80 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:afm,activity,measurement,,stated,,"afm on 150 °C, 0.94 H2 film",,mode=ex_situ,afm,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.50:ellipsometry,activity,measurement,,stated,,"ellipsometry on 150 °C, 0.50 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:WS2_T150_R0.80:raman,activity,measurement,,stated,,"raman on WS2 @ 150 °C, 0.80",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:WS2_T150_R0:raman,activity,measurement,,stated,,"raman on WS2 @ 150 °C, 0",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:TiS2_thermal:raman,activity,measurement,,stated,,raman on Thermal ALD,,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_thermal,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:TiS2_T100_R0:raman,activity,measurement,,stated,,"raman on TiS2 @ 100 °C, 0",,mode=ex_situ,raman,,,,,,,,,,,,,,,mat22:ent:TiS2_T100_R0,,,,,10.1021_acs.chemmater.2c01154
 mat22:ent:plasma,entity,,,stated,s3.p50;s3.p51,"the H2S/H2/Ar plasma fed to every plasma-enhanced deposition, characterized by OES (Section S9)",,,H2S/H2/Ar plasma,,,,,,,,,,,,,,,mat22:recipe,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:plasma:oes,activity,measurement,0,stated,s3.p50;s3.p51,"oes on H2S/H2/Ar plasma, before deposition",,,oes,,,,,,,,,,,,,,,mat22:ent:plasma,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:plasma:oes,activity,measurement,0,stated,s3.p50;s3.p51,"oes on H2S/H2/Ar plasma, before deposition",,mode=in_situ,oes,,,,,,,,,,,,,,,mat22:ent:plasma,,,,,10.1021_acs.chemmater.2c01154
 mat22:act:anneal,activity,anneal,,inferred,s3.p40;s3.p44,"annealing of the 100 °C film up to 300 °C and in air at 150 °C (Sections S11, S12); which film was annealed is not stated, the device film is inferred",,,anneal,,,,,,,,,,,,,,,mat22:ent:tem_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:anneal:electrical,activity,measurement,,stated,s3.p40;s3.p44,electrical after the anneal,,,electrical,,,,,,,,,,,,,,,mat22:act:anneal,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:tem_T100_R0.80:anneal:measurement,activity,measurement,,stated,s3.p40;s3.p44,measurement after the anneal,,,measurement,,,,,,,,,,,,,,,mat22:act:anneal,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:anneal:electrical,activity,measurement,,stated,s3.p40;s3.p44,electrical after the anneal,,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:act:anneal,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:tem_T100_R0.80:anneal:measurement,activity,measurement,,stated,s3.p40;s3.p44,measurement after the anneal,,mode=ex_situ,measurement,,,,,,,,,,,,,,,mat22:act:anneal,,,,,10.1021_acs.chemmater.2c01154
 mat22:fig2#65,setting,,,,fig2;fig4;s3.p35;s3.p37;s3.p38,"450 °C, 0.20 H2: deposition temperature 450 °C",deposition_temperature,,,450,,,,°C,,,,,,chosen input,,"450 °C;450 °C, 0.20 H2",,mat22:dep:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
 mat22:fig2#66,setting,,,,fig2;fig4;s3.p38,"450 °C, 0.80 H2: deposition temperature 450 °C",deposition_temperature,,,450,,,,°C,,,,,,chosen input,,"450 °C;450 °C, 0.80 H2",,mat22:dep:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:fig2#67,setting,,,,fig2;fig4;s3.p10;fig3b;fig3.cap;s3.p43;s3.p37,"350 °C, 0.20 H2: deposition temperature 350 °C",deposition_temperature,,,350,,,,°C,,,,,,chosen input,,"350 °C;350 °C, 0.20 H2",,mat22:dep:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
@@ -900,61 +900,61 @@ mat22:s3.p53#7,setting,,,,s3.p53,Figure S22a: deposition temperature 250 °C,dep
 mat22:fig9b#7,setting,,,,fig9b,"TiS2 @ 100 °C, 0: deposition temperature 100 °C",deposition_temperature,,,100,,,,°C,,,,,,chosen input,,"100 °C;TiS2 @ 100 °C, 0",,mat22:dep:TiS2_T100_R0,,,,,10.1021_acs.chemmater.2c01154
 mat22:s3.p48#7,setting,,,,s3.p48,0.80: deposition temperature 100 °C,deposition_temperature,,,100,,,,°C,,,,,,chosen input,,100 °C;0.80,,mat22:dep:TiS2_T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:s3.p46#7,setting,,,,s3.p46,"WS2 @ 150 °C, 0: deposition temperature 150 °C",deposition_temperature,,,150,,,,°C,,,,,,chosen input,,"150 °C;WS2 @ 150 °C, 0",,mat22:dep:WS2_T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 450 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 450 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T450_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 450 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.50 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.50 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T350_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T300_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 300 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.35:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.35 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.35:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.35 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.50 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.50 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.65 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.65 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.94 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T250_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.94 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.50 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.50 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.65 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.65 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.94 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T200_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.94 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.50 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.65 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T150_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.94 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.50 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.50 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.65 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.94 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T100_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.94 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 50 °C, 0.20 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 50 °C, 0.20 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 50 °C, 0.80 H2 film",,,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
-mat22:meas:ent:T50_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 50 °C, 0.80 H2 film",,,electrical,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 450 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T450_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 450 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T450_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 450 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.50 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.50 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 350 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T350_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 350 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T300_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 300 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T300_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.35:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.35 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.35:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.35 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.35,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.50 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.50 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.65 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.65 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 250 °C, 0.94 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T250_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 250 °C, 0.94 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T250_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.50 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.50 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.65 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.65 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 200 °C, 0.94 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T200_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 200 °C, 0.94 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T200_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.50 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.65:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.65 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T150_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 150 °C, 0.94 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T150_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.50:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.50 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.50:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.50 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.50,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.65:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.65 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.65,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.94:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 100 °C, 0.94 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T100_R0.94:electrical,activity,measurement,,stated,fig8,"electrical on the 100 °C, 0.94 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T100_R0.94,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.20:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 50 °C, 0.20 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.20:electrical,activity,measurement,,stated,fig8,"electrical on the 50 °C, 0.20 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T50_R0.20,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.80:ellipsometry,activity,measurement,,stated,fig7b,"ellipsometry on the 50 °C, 0.80 H2 film",,mode=in_situ,ellipsometry,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
+mat22:meas:ent:T50_R0.80:electrical,activity,measurement,,stated,fig8,"electrical on the 50 °C, 0.80 H2 film",,mode=ex_situ,electrical,,,,,,,,,,,,,,,mat22:ent:T50_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p7#6,setting,,,,s5.p7,"450 °C, 0.80 H2: Unless noted, depositions at 450 °C use 100 ALD cycles.",cycle_number,,,100,,,,,,,,,,chosen input,,"450 °C;450 °C, 0.80 H2",,mat22:dep:T450_R0.80,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p7#7,setting,,,,s5.p7,"350 °C, 0.50 H2: Unless noted, depositions at 50 °C, 300 °C and 350 °C use 120 ALD cycles.",cycle_number,,,120,,,,,,,,,,chosen input,,"50 °C, 300 °C and 350 °C;350 °C, 0.50 H2",,mat22:dep:T350_R0.50,,,,,10.1021_acs.chemmater.2c01154
 mat22:s5.p7#8,setting,,,,s5.p7,"350 °C, 0.80 H2: Unless noted, depositions at 50 °C, 300 °C and 350 °C use 120 ALD cycles.",cycle_number,,,120,,,,,,,,,,chosen input,,"50 °C, 300 °C and 350 °C;350 °C, 0.80 H2",,mat22:dep:T350_R0.80,,,,,10.1021_acs.chemmater.2c01154

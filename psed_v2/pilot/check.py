@@ -204,6 +204,8 @@ def check_tree(rows, els):
                     err.append(f"{i}: evidence {e} not an element")
             for q in L.qualifiers_ok(r["qualifiers"]):
                 err.append(f"{i}: qualifier {q}")
+        if r["type"] == "activity" and r["kind"] == "measurement" and "mode=" not in r["qualifiers"]:
+            err.append(f"{i}: measurement activity without mode= (in situ or ex situ; P6)")
         if r["type"] == "activity" and r["kind"] not in L.ACTIVITY_KINDS:
             err.append(f"{i}: activity kind {r['kind']!r} (lists.ACTIVITY_KINDS)")
         if r["type"] in ("activity", "entity") and r["how"] not in L.HOW:

@@ -398,6 +398,18 @@ def qualify(key, table):
         r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], q]))
 
 
+def modes(key, overrides=None):
+    """In situ or ex situ (P6): every measurement activity gets mode=<lists.METHOD_MODE of its method>, or the paper's override
+    {activity suffix: mode}; an activity whose method has no default and no override is an error."""
+    overrides = overrides or {}
+    for r in _facts:
+        if r["type"] == "activity" and r["kind"] == "measurement" and "#" not in r["fact_id"]:
+            sfx = r["fact_id"].split(":", 1)[1]
+            m = overrides.get(sfx) or L.METHOD_MODE.get(r["fact_id"].split(":")[-1])
+            assert m, f"{r['fact_id']}: no mode (lists.METHOD_MODE or an override)"
+            r["qualifiers"] = ";".join(filter(None, [p for p in r["qualifiers"].split(";") if not p.startswith("mode=")] + [f"mode={m}"]))
+
+
 def relative_to(key, table):
     """What a fraction is a fraction of (P4): table {fact suffix: basis}, appended to the fact's qualifiers as relative_to=<basis>."""
     byid = {r["fact_id"]: r for r in _facts}

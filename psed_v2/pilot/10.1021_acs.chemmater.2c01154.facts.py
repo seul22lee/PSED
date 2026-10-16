@@ -1539,6 +1539,15 @@ CELLS_ = [f"{K}:ent:T{t}_R{r}" for (t, r) in CELLS]
 C.comparisons(K, {grp("map"): ("grid", "deposition_temperature;plasma_gas_ratio"), **{grp(f"T{t}"): ("series", "plasma_gas_ratio") for t in TEMPS if t != 300},
                   grp("cyc"): ("series", "cycle_number"), grp("h2s"): ("series", "gas_flow_rate"), grp("WS2"): ("series", "plasma_gas_ratio"),
                   grp("TiS2"): ("series", "plasma_gas_ratio")}, members={grp("map"): CELLS_})
+# in situ or ex situ (P6): film thickness was followed by in situ SE during the depositions (s5.p9; Figs. 7a, 7b); Fig. 1b and the
+# Fig. 1c wafer map are ex situ SE (fig1.cap, s5.p11); the Table 1 density's SE thickness and the control check (s5.p7) do not say;
+# the shared SE settings: s5.p9 and s5.p10 describe the in situ instrument, s5.p11 the ex situ one
+C.modes(K, {**{f["fact_id"].split(":", 1)[1]: "in_situ" for f in C.facts() if re.fullmatch(rf"{K}:meas:ent:T\d+_R[\d.]+:ellipsometry", f["fact_id"])},
+            **{f"meas:ent:T150_R0.80_N{n}:ellipsometry": "ex_situ" for n in (10, 20, 30, 50)}, "meas:ent:wafer_T150_R0.80:ellipsometry": "ex_situ",
+            "meas:ent:control:ellipsometry": "not_stated", "method:ellipsometry": "not_stated",
+            **{f["fact_id"].split(":", 1)[1]: ("not_stated" if ":gc_" in f["fact_id"] else "ex_situ") for f in C.facts() if f["type"] == "activity" and f["fact_id"].endswith(":measurement")}})
+C.qualify(K, {f["fact_id"].split(":", 1)[1]: ("mode=ex_situ" if f["evidence"].startswith("s5.p11") else "mode=in_situ") for f in C.facts()
+              if f["parent"] == f"{K}:method:ellipsometry" and "#" in f["fact_id"]})
 # what each GPC is averaged over (P5): Fig. 7b and the text on it average the first 100 cycles; s3.p32 points at Fig. S11 without saying;
 # the RBS Mo atoms per cycle are the run's areal density over its cycles
 C.qualify(K, {**{f["fact_id"].split(":", 1)[1]: "over=first_100_cycles" for f in C.facts() if f["fact_id"].startswith(f"{K}:fig7b#")},

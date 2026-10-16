@@ -1167,6 +1167,8 @@ C.spread(f"{K}:s7.p5#10", [f"{K}:meas:ent:{n}:reflectometry" for n in (4, 5, 6)]
 C.comparisons(K, {grp("A"): ("series", "pillar_layout"), grp("B"): ("series", "objective_magnification"), grp("C"): ("series", "feature_height"),
                   grp("D"): ("series", "cycle_number"), grp("E"): ("series", "pulse_time"), grp("F"): ("series", "purge_time"),
                   grp("repro"): ("replicate", ""), grp("sims"): ("series", "feature_height;cycle_number")})
+# in situ or ex situ (P6): the generic measurement activities hold calculations from the ex situ reflectometer profiles
+C.modes(K, {f["fact_id"].split(":", 1)[1]: "ex_situ" for f in C.facts() if f["type"] == "activity" and f["fact_id"].endswith(":measurement")})
 # what each GPC is averaged over (P5): Table 1's S/N and the S/N profiles are thickness over the run's cycles; gpc_sat is the model's
 # saturation value
 C.qualify(K, {f["fact_id"].split(":", 1)[1]: ("over=saturation" if f["fact_id"] == f"{K}:fig10.cap#11" else "over=run") for f in C.facts()
