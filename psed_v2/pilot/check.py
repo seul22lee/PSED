@@ -10,6 +10,7 @@ state the same thing (same type, quantity, qualifiers, value, range, unit, value
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
+an activity has a kind from lists.ACTIVITY_KINDS and how stated or inferred, an entity how, a comparison a kind from lists.COMPARISON_KINDS;
 every run and group has a child; every group's first link is its purpose fact (the paper's sentence on what it was made to test);
 every claim has a link; a setting that varies among sibling runs or groups is never "other"; every number with a unit in a
 group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the group or above it, never only in the label;
@@ -164,8 +165,16 @@ def check_tree(rows, els):
             if l not in R:
                 err.append(f"{i}: link {l} does not exist")
         if "#" not in i:
-            if r["type"] not in L.NODE_TYPES + ["cited"]:
+            if r["type"] not in L.NODE_TYPES + ["cited", "comparison"]:
                 err.append(f"{i}: tree row type {r['type']}")
+        if r["type"] == "activity" and r["kind"] not in L.ACTIVITY_KINDS:
+            err.append(f"{i}: activity kind {r['kind']!r} (lists.ACTIVITY_KINDS)")
+        if r["type"] in ("activity", "entity") and r["how"] not in L.HOW:
+            err.append(f"{i}: {r['type']} how {r['how']!r} (stated or inferred)")
+        if r["type"] == "comparison" and r["kind"] not in L.COMPARISON_KINDS:
+            err.append(f"{i}: comparison kind {r['kind']!r} (lists.COMPARISON_KINDS)")
+        if r["order"] and not r["order"].isdigit():
+            err.append(f"{i}: order {r['order']!r} is not a whole number")
             for e in filter(None, r["evidence"].split(";")):
                 if e not in els:
                     err.append(f"{i}: evidence {e} not an element")

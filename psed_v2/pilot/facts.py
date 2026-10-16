@@ -10,7 +10,11 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
 
 <pid>.facts.csv columns (one row per piece of knowledge; a fact stated in several elements is one row citing all of them):
   fact_id      <key>:<first evidence id>#<n>, stable while the element's facts keep their order
-  type         lists.TYPES: setting | observation | derived | model | definition | claim | cited
+  type         lists.TYPES: setting | observation | derived | model | definition | claim | cited | comparison (tree rows: paper, activity, entity)
+  kind         an activity's kind (lists.ACTIVITY_KINDS: recipe, deposition, anneal, plasma_treatment, measurement, simulation) or a
+               comparison's kind (lists.COMPARISON_KINDS: series, grid, replicate)
+  order        an activity's order among the activities applied to one entity (0 = before the deposition above it)
+  how          stated | inferred, for an activity or an entity: whether the paper names it or the reader inferred it
   evidence     element ids, ";"-separated (the first one names the fact)
   statement    one line, own words
   quantity     an id of lists.QUANTITIES, or "other" with label_as_printed; blank for a claim without one
@@ -48,7 +52,7 @@ sys.path.insert(0, str(HERE))
 import lists as L  # noqa: E402
 import elements  # noqa: E402
 
-FIELDS = ["fact_id", "type", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
+FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
           "value_max", "censor", "unit", "value_text", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "author"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 

@@ -54,7 +54,8 @@ METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "ram
 CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds
-TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge"]   # bridge: user facts only
+TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison"]   # bridge: user facts only;
+#   comparison: the authors' comparison intent (a series, a grid, a replicate set), a fact with members, not a parent
 STANCES = ["asserted", "hedged", "open", "limitation"]
 # mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids
 MECHANISMS = ["surface_OH", "excess_S", "fin_growth", "Zn_metal", "residual_H2O", "membrane_sagging", "channel_plugging", "channel_narrowing",
@@ -68,7 +69,14 @@ def variables_ok(s):
     """'a;b' of quantity ids or mechanism:<token> -> list of problems."""
     return [t for t in s.split(";") if t and not (t in QUANTITIES and t != "other") and not (t.startswith("mechanism:") and t[10:] in MECHANISMS)]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
 #   "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation)
-NODE_TYPES = ["paper", "process", "group", "run"]     # tree rows of stage 3 (cited works use type cited)
+# tree rows (stage 3): the paper, activities (something done, with settings: kind from ACTIVITY_KINDS, order when several apply to one
+# entity, how stated or inferred) and entities (a physical thing or its state: a specimen, a piece cut from it, a position, a model
+# run; how stated or inferred). The tree is physical provenance only: paper -> recipe -> deposition -> entity -> later activities ->
+# facts. process, group and run are the old node types, accepted until the trees are rebuilt (steps 2 and 3 of the 2026-10-16 change).
+NODE_TYPES = ["paper", "activity", "entity", "process", "group", "run"]
+ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
+COMPARISON_KINDS = ["series", "grid", "replicate"]
+HOW = ["stated", "inferred"]
 DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
 
 
