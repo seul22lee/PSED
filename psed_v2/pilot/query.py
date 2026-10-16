@@ -457,27 +457,37 @@ def scope_comparisons(T, claim):
     return list(dict.fromkeys(out))
 
 
-def names_phase(T, m, marker):
-    """Whether an observation on the specimen or a piece of it states the phase (the marker word, not negated), as a phase or
-    composition statement rather than a peak position."""
+def phases(T, m):
+    """The phases found in a specimen or the pieces cut from it (P15): {species: 'detected' | 'not detected'}, the detected one winning."""
     pieces = [m] + [x["fact_id"] for x in T.rows if x["type"] == "entity" and m in T.chain(x["fact_id"])[1:]]
-    return any(re.search(r"(?<!no )" + marker, f["statement"]) and f["quantity"] in ("", "composition", "crystallinity") and (f["value"] or f["value_text"] or not f["quantity"])
-               for e in pieces for f in T.below(e) if f["type"] == "observation")
+    out = {}
+    for e in pieces:
+        for f in T.below(e):
+            if f["quantity"] == "phase" and f["value_text"]:
+                sp = quals(f).get("species", "")
+                if out.get(sp) != "detected":
+                    out[sp] = f["value_text"]
+    return out
 
 
-def contrast(T, comp, key, marker):
-    """Within a stated comparison, the specimens whose observations (their pieces' included) state the phase against the others,
-    on one result, the others in the order of the comparison's varied setting: (marked [(entity, value, fact)], others [...])."""
+METALS = {"Mo", "W", "Ti", "Zn", "Al"}
+
+
+def contrast(T, comp, key, species=METALS):
+    """Within a stated comparison, the specimens in which a phase of the given species was detected (a measured quantity, P15)
+    against the others, on one result, the others in the order of the comparison's varied setting:
+    (marked [(entity, value, fact, x)], others [...])."""
     marked, others = [], []
     xkey = comp["quantity"].split(";")[0]
     for m in T.member_entities(comp):
         if T.byid[T.byid[m]["parent"]]["type"] != "activity":
-            continue                                                            # the specimens, not the pieces (their facts count below)
+            continue                                                            # the specimens, not the pieces (their facts count through phases())
         r = results_deep(T, m)
         if key not in r or val(r[key][0]) is None:
             continue
         x = next((val(fs[0]) for k, fs in T.vector(m).items() if k.split("{")[0] == xkey), None)
-        (marked if names_phase(T, m, marker) else others).append((m, val(r[key][0]), r[key][0], x))
+        hit = any(sp in species and v == "detected" for sp, v in phases(T, m).items())
+        (marked if hit else others).append((m, val(r[key][0]), r[key][0], x))
     others.sort(key=lambda t: (t[3] is None, t[3]))
     return marked, others
 

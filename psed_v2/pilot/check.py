@@ -313,6 +313,8 @@ def check_tree(rows, els):
                 lo, hi = C.num(r["value_min"]), C.num(r["value_max"])
                 if not any(abs(a - lo) <= 0.01 * abs(lo or 1) and abs(b - hi) <= 0.01 * abs(hi or 1) for a, b in C.parse_ranges(r["statement"] + " " + r["label_as_printed"])):
                     err.append(f"{i}: range {r['value_min']}–{r['value_max']} is not a range its statement prints (P14)")
+            if r["quantity"] == "phase" and (r["value_text"] not in L.PHASE_VALUES or "species" not in qd):
+                err.append(f"{i}: phase without species= or with value_text not in lists.PHASE_VALUES (P15)")
             if r["uncertainty"] and r["uncertainty_kind"] not in L.UNCERTAINTY_KINDS:
                 err.append(f"{i}: uncertainty {r['uncertainty']} without a kind from lists.UNCERTAINTY_KINDS (P2)")
             if r["uncertainty"] and not re.fullmatch(r"\d+(\.\d+)?(e-?\d+)?", r["uncertainty"]):

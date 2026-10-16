@@ -24,6 +24,7 @@ QUANTITIES = sorted({
     "material", "structure_type",
     "raman_shift",                                     # the abscissa of a Raman spectrum (x= of a curve)
     # derived quantities (DERIVED below): computed from facts, never stored
+    "phase",                                           # a phase found in a film (value_text detected / not detected; species=), XRD, XPS or a map region (P15)
     "effective_channel_height", "exposure_per_run", "sheet_resistance", "h_per_metal", "density_relative_to_bulk", "moles_deposited",
     "moles_from_mass_gain", "shell_volume_fraction", "deposition_rate", "coating_mass_fraction",
     "other",
@@ -74,6 +75,8 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     # whether a measurement was made during the deposition or after it (P6; decision 4: in/ex situ is a qualifier, not a method)
     "mode": {"in_situ", "ex_situ", "not_stated"},
 }
+PHASE_VALUES = {"detected", "not detected"}
+
 # the mode a measurement method has unless a paper says otherwise (ellipsometry and generic measurements are set per activity)
 METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "in_situ", "xrd": "ex_situ", "xps": "ex_situ", "raman": "ex_situ",
                "sem": "ex_situ", "sem_eds": "ex_situ", "tem": "ex_situ", "afm": "ex_situ", "electrical": "ex_situ", "rbs": "ex_situ",
@@ -270,7 +273,7 @@ LABELS = {
     "gas_flow_rate{step=plasma}": "plasma flow", "process_pressure{step=plasma}": "p (plasma)", "process_pressure{step=reactant_A;kind=set_point}": "p set point (A)",
     "lumped_sticking_coefficient{species=TMA}": "c_TMA", "lumped_sticking_coefficient{species=H2O}": "c_H2O",
     "porosity{stage=initial}": "φ_i", "porosity{stage=final}": "φ_f", "pressure_rise{level=maximum}": "δp_max", "composition{element=S}": "S/Mo",
-    "effective_channel_height": "H_eff", "exposure_per_run": "exposure per run", "sheet_resistance": "R_sheet", "h_per_metal": "H per metal",
+    "phase": "phase", "effective_channel_height": "H_eff", "exposure_per_run": "exposure per run", "sheet_resistance": "R_sheet", "h_per_metal": "H per metal",
     "density_relative_to_bulk": "ρ/ρ_bulk", "moles_deposited": "moles deposited", "moles_from_mass_gain": "moles from mass gain",
     "shell_volume_fraction": "coating volume fraction", "deposition_rate": "nm per hour", "coating_mass_fraction": "coating mass fraction",
 }

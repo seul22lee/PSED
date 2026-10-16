@@ -227,7 +227,7 @@ F(K, "s3.p14;fig5a", "observation", "In the Mo 3d region most Mo is Mo4+, assign
   mentions="Mo4+ (MoSx);Figure 5a")
 F(K, "s3.p14;s3.p15;fig5a", "observation", "All samples show two weaker doublets at higher binding energy: the highest is Mo6+ "
   "(MoO3) from oxidation in air after deposition, the middle one Mo5+ (MoOySx), an intermediate oxidation product.",
-  method="xps", mentions="Mo6+ (MoO3);Mo5+ (MoOxSy);ref. 57;ref. 58;ref. 59")
+  quantity="phase", qualifiers="species=MoO3", value_text="detected", data_kind="measured", method="xps", mentions="Mo6+ (MoO3);Mo5+ (MoOxSy);ref. 57;ref. 58;ref. 59")
 F(K, "s3.p15;fig5a", "observation", "c-MoS2 films need an extra weak doublet below Mo4+, labelled Mo(4-δ)+ and assigned to more "
   "metallic Mo at crystal edges, metastable 1T' MoS2 or MoS2-x subsulfide.", method="xps",
   mentions="Mo(4-δ)+;ref. 60;ref. 61;ref. 62")
@@ -244,7 +244,7 @@ F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoO3 is 2
 F(K, "s3.p16", "observation", "Measured binding energies vary slightly with deposition conditions.", method="xps",
   mentions="Section S5")
 F(K, "s3.p16;fig5a", "observation", "At ratio 0.94 an intense doublet below Mo4+ appears, assigned to metallic Mo.",
-  method="xps", mentions="0.94;Mo")
+  quantity="phase", qualifiers="species=Mo", value_text="detected", data_kind="measured", method="xps", mentions="0.94;Mo")
 F(K, "s3.p17;fig5a", "observation", "Two S 2s singlets overlapping Mo 3d are included in the fit.", method="xps",
   mentions="S 2s")
 F(K, "s3.p17;fig5b", "observation", "S 2p of the ratio 0.80 crystalline film fits fairly well with one S2- doublet of MoS2 at "
@@ -1520,6 +1520,12 @@ for (t, r), fid7 in GPC7B.items():
             N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "ellipsometry" else "fig8",
               kind="measurement", how="stated", label_as_printed=meth)
         next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = act
+# the Fig. 4 region right of the vertical line at ratio 0.94 is Mo/c-MoS2 (fig4#2): a metallic Mo phase in each 0.94 cell, read from the
+# figure's region (P15)
+for (t, r) in sorted(c for c in CELLS if c[1] == "0.94"):
+    fid_ = F(K, "fig4", "observation", f"Fig. 4 cell at {t} °C and ratio {r} lies in the Mo/c-MoS2 region of the map", quantity="phase",
+             qualifiers="species=Mo", value_text="detected", data_kind="measured", method="xps", mentions=f"{r};{t} °C;Mo/c-MoS2")
+    next(x for x in C.facts() if x["fact_id"] == fid_)["parent"] = f"{K}:meas:ent:T{t}_R{r}:xps"
 # a comparison holds no setting: the cycle counts of s5.p7 go on every cell deposition of their temperatures (the first gets the
 # fact, the others a copy citing s5.p7), the 10 nm target on every ratio-0.20 cell, the Table 1 thickness on the glassy-carbon
 # depositions, the morphology films' thickness on the 150 °C cells, the WS2/TiS2 procedure and materials on their depositions;

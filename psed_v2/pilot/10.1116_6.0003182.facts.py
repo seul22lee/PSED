@@ -421,7 +421,8 @@ f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 top (blue) pattern: T held at 1
 f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 middle (red) pattern: T held at 160 °C, showing extra peaks at Zn positions", method="xrd", mentions="160 °C")
 f("fig5;fig5.cap;s14.p4", "observation", "Fig. 5 bottom (green) pattern: T cycled between 120 and 160 °C", method="xrd", mentions="120/160 °C")
 f("s13.p2;fig5", "observation", "all three samples show narrow corundum peaks and broad zincite peaks, as large Al2O3 NPs under thin ZnO coatings should", method="xrd")
-f("s13.p2;fig5;s13.p3", "observation", "the T = 160 °C sample shows clear metallic Zn peaks", method="xrd", mentions="T = 160 °C")
+f("s13.p2;fig5;s13.p3", "observation", "the T = 160 °C sample shows clear metallic Zn peaks", quantity="phase", qualifiers="species=Zn", value_text="detected",
+  data_kind="measured", method="xrd", mentions="T = 160 °C")
 for r, lab, v, pm, ev in (("1", "120", "23.3", "0.2", ";s13.p3;s13.p2"), ("2", "160", "17.1", "0.2", ""), ("3", "120/160", "17.7", "0.1", ";s13.p3;s13.p2")):
     f(f"tabII.r{r}c1;tabII.r0c1;tabII.r{r}c0;tabII.r0c0;tabII.cap;s14.p9{ev}", "derived", f"zincite (ZnO) weight percent {v} ± {pm} for the {lab} °C sample, from Rietveld refinement",
       quantity="composition", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Wt. %", value=v, unit="wt%", data_kind="fit", method="xrd", mentions=lab)
@@ -430,7 +431,7 @@ for r, lab, v, pm, ev in (("1", "120", "6.0", "1.1", ";s13.p3"), ("2", "160", "6
       quantity="crystallite_size", qualifiers="species=ZnO", label_as_printed="ZnO (zincite) Crystallite size (nm)", value=v, unit="nm", data_kind="fit", method="xrd", mentions=lab)
 for r, lab in (("1", "120"), ("3", "120/160")):
     f(f"tabII.r{r}c3;tabII.r{r}c4;tabII.r0c3;tabII.r0c4;tabII.cap", "observation", f"no metallic Zn detected by XRD in the {lab} °C sample, so no Zn crystallite size is given",
-      quantity="composition", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", censor="<dl", data_kind="fit", method="xrd", mentions=f"{lab};Not detected")
+      quantity="phase", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", value_text="not detected", data_kind="measured", method="xrd", mentions=f"{lab};Not detected")
 f("tabII.r2c3;tabII.r0c3;tabII.cap", "derived", "metallic Zn weight percent 12.5 ± 0.7 in the 160 °C sample",
   quantity="composition", qualifiers="species=Zn", label_as_printed="Zn (metallic) Wt. %", value="12.5", unit="wt%", data_kind="fit", method="xrd", mentions="160")
 f("tabII.r2c4;tabII.r0c4;tabII.cap", "derived", "metallic Zn crystallite size 57 ± 42 nm in the 160 °C sample",
@@ -894,6 +895,6 @@ C.modes(K, {"meas:run120:measurement": "in_situ", "meas:run160:measurement": "in
 C.qualify(K, {s: "over=run" for s in ("s12.p1#10", "s12.p1#11", "s12.p1#12", "s6.p5#3", "s6.p5#7")})
 # gain is relative to the initial or the final mass, nor whether the Rietveld wt% are of all phases or of the crystalline ones
 C.relative_to(K, {**{s: "total_volume" for s in ("s8.p1#9", "fig1a#4", "tabI.r1c2#1", "tabI.r2c2#1", "tabI.r3c2#1")},
-                  **{f"s12.p1#{i}": "not_stated" for i in (5, 6, 7)}, **{s: "not_stated" for s in ("tabII.r1c1#1", "tabII.r2c1#1", "tabII.r3c1#1", "tabII.r1c3#1", "tabII.r2c3#1", "tabII.r3c3#1")}})
+                  **{f"s12.p1#{i}": "not_stated" for i in (5, 6, 7)}, **{s: "not_stated" for s in ("tabII.r1c1#1", "tabII.r2c1#1", "tabII.r3c1#1", "tabII.r2c3#1")}})
 C.uncertainty_kinds(K, {'s6.p8#4': ('not_stated', ''), 's6.p8#7': ('propagated', ''), 's8.p1#4': ('not_stated', ''), 's8.p1#7': ('not_stated', ''), 's8.p1#8': ('not_stated', ''), 's8.p1#9': ('not_stated', ''), 's12.p1#5': ('pieces', '2'), 's12.p1#6': ('pieces', '2'), 's12.p1#7': ('pieces', '2'), 's12.p1#10': ('pieces', '2'), 's12.p1#11': ('pieces', '2'), 's12.p1#12': ('pieces', '2'), 'tabI.r1c2#1': ('not_stated', ''), 'tabI.r2c2#1': ('not_stated', ''), 'tabI.r3c2#1': ('not_stated', ''), 's12.p14#1': ('measurement', ''), 's12.p14#2': ('measurement', ''), 's12.p14#3': ('measurement', ''), 'tabII.r1c1#1': ('fit', ''), 'tabII.r1c2#1': ('fit', ''), 'tabII.r2c1#1': ('fit', ''), 'tabII.r2c2#1': ('fit', ''), 'tabII.r3c1#1': ('fit', ''), 'tabII.r3c2#1': ('fit', ''), 'tabII.r2c3#1': ('fit', ''), 'tabII.r2c4#1': ('fit', ''), 's13.p3#1': ('not_stated', ''), 's13.p3#2': ('not_stated', ''), 's13.p4#1': ('measurement', ''), 's13.p4#2': ('measurement', ''), 's13.p4#3': ('measurement', '')})
 write(K, PID)

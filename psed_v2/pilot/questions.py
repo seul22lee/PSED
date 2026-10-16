@@ -390,14 +390,15 @@ def q24():
         parts = []
         done = set()
         for c in sorted(T.comps, key=lambda c: len(T.member_entities(c))):          # the smallest comparison holding a marked specimen: its row
-            marked, others = contrast(T, c, "resistivity", "metallic")
+            marked, others = contrast(T, c, "resistivity")
             marked = [t for t in marked if t[0] not in done]
             if marked and others:
                 done |= {t[0] for t in marked}
                 near = min(others, key=lambda t: abs((t[3] or 0) - (marked[0][3] or 0)))
-                parts.append(f"{c['label_as_printed']}: {', '.join(f'{T.label(m)} {fmt(f)}' for m, _, f, _ in marked)} (an observation names a metallic phase) vs "
+                parts.append(f"{c['label_as_printed']}: {', '.join(f'{T.label(m)} {fmt(f)}' for m, _, f, _ in marked)} (a metallic phase detected) vs "
                              + ", ".join(f"{T.label(m)} {fmt(f)}" for m, _, f, _ in others) + f": {g(near[1] / marked[0][1], 2)}× lower than its neighbour {T.label(near[0])}")
-        text_ = [f"{f['statement'][:90]}" for f in T.rows if f["type"] == "observation" and "metallic" in f["statement"] and f["quantity"] == "resistivity" or (f["type"] == "observation" and "conductive" in f["statement"] and f["quantity"] == "resistivity")]
+        marked_all = {m for c in T.comps for m, *_ in contrast(T, c, "resistivity")[0]}
+        text_ = [f"{quals(f)['stat']} {fmt(f)} over {len(f['links'].split(';'))} films ({f['fact_id']})" for f in T.rows if f["quantity"] == "resistivity" and quals(f).get("stat") and set(f["links"].split(";")) & marked_all]
         out.append(f"{k}: " + ("; ".join(parts) if parts else "no comparison with a member naming a metallic phase") + (f" · the text: {'; '.join(text_)}" if text_ else ""))
     return answered(" · ".join(out), "contrast() within each stated comparison: the specimens whose observations (pieces included) name a metallic phase against the others, on resistivity; the paper's own resistivity statements naming a metal beside it")
 
