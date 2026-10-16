@@ -1571,6 +1571,23 @@ C.relative_to(K, {f["fact_id"].split(":", 1)[1]: ("all_atoms" if AT_PCT(f["unit"
                   if "#" in f["fact_id"] and f["type"] != "cited" and (f["quantity"] == "composition" or AT_PCT(f["unit"]))})
 # what each ± is (P2): literature averages, the wafer map's spread over positions; Table 1 does not say
 C.uncertainty_kinds(K, {'s3.p16#5': ('literature', ''), 's3.p16#6': ('literature', ''), 'fig1c#4': ('position', 'not_stated'), 'tab1.r1c1#1': ('not_stated', ''), 'tab1.r1c2#1': ('not_stated', ''), 'tab1.r1c4#1': ('not_stated', ''), 'tab1.r1c6#1': ('not_stated', ''), 'tab1.r1c7#1': ('not_stated', ''), 'tab1.r2c1#1': ('not_stated', ''), 'tab1.r2c2#1': ('not_stated', ''), 'tab1.r2c4#1': ('not_stated', ''), 'tab1.r2c6#1': ('not_stated', ''), 'tab1.r2c7#1': ('not_stated', ''), 'tab1.r3c1#1': ('not_stated', ''), 'tab1.r3c2#1': ('not_stated', ''), 'tab1.r3c4#1': ('not_stated', ''), 'tab1.r3c6#1': ('not_stated', ''), 'tab1.r3c7#1': ('not_stated', '')})
+# the WS2, TiS2 and thermal TiS2 films come from other processes (refs. 52, 53, 80; s5.p8, s3.p45-48): they share the reactor, the
+# substrates and the gas supply with the MoS2 process, not its Mo precursor, cycle or flows (P28). A reactor activity holds what all
+# share; the MoS2 recipe and three recipes for the other processes sit under it
+REACTOR = f"{K}:reactor"
+N(REACTOR, "activity", "the Oxford Instruments FlexAL reactor with its substrates and gas supply, shared by every deposition of the paper", PAPER,
+  evidence="s5.p1;s5.p2;s5.p3;s5.p4", kind="recipe", how="stated", label_as_printed="reactor and substrates")
+FXR = {x["fact_id"]: x for x in C.facts()}
+FXR[f"{K}:recipe"]["parent"] = REACTOR
+FXR[f"{K}:recipe"]["label_as_printed"] = "MoS2 PEALD"
+for sfx in ("s5.p1#1", "s5.p1#2", "s5.p1#3", "s5.p1#4", "s5.p2#1", "s5.p2#2", "s5.p2#6", "s5.p3#1", "s5.p3#2", "s5.p3#3", "s5.p4#4", "s5.p4#5", "s5.p4#6"):
+    FXR[f"{K}:{sfx}"]["parent"] = REACTOR
+for rid, lab, st in (("WS2", "WS2 PEALD", "WS2 by PEALD from the W analogue of the Mo precursor with H2S/H2/Ar plasma, after the group's earlier process (ref. 52)"),
+                     ("TiS2", "TiS2 PEALD", "TiS2 by PEALD from Ti(NMe2)4 with H2S/H2/Ar plasma, after the group's earlier process (ref. 53)"),
+                     ("TiS2_thermal", "TiS2 thermal ALD", "thermal TiS2 ALD from Ti(NMe2)4 and H2S, after the literature process (refs. 80, 81)")):
+    N(f"{K}:recipe:{rid}", "activity", st, REACTOR, evidence="s5.p8;s3.p45", kind="recipe", how="stated", label_as_printed=lab)
+    for d in [d for d in DEPS if d.split(":dep:")[1].startswith(rid + "_") and (rid != "TiS2" or "thermal" not in d)] + ([f"{K}:dep:TiS2_thermal"] if rid == "TiS2_thermal" else []):
+        FXR[d]["parent"] = f"{K}:recipe:{rid}"
 # a minimum over a set of films names the films (P12): the ratio-0.94 cells (s3.p35#5) and the crystalline ratio-0.80 cells (s3.p35#2)
 for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f"{K}:s3.p35#2", [c for c in CELLS if c[1] == "0.80" and CELLS[c][0] == "c"])):
     next(x for x in C.facts() if x["fact_id"] == fid_)["links"] = ";".join(f"{K}:ent:T{t}_R{r}" for t, r in sorted(cells_))
