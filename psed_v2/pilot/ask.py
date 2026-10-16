@@ -10,9 +10,10 @@ Arms (one model, its default settings, the same for all three; the three arms of
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
   kb     Knowledge base: the five query.py operations as tools; each returns plain text, one line per returned value or row,
-         starting with its id in square brackets (format only, nothing computed here). At most 10 tool calls; find and claims page by 25 lines, detail by parts, no line over 300 characters.
+         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls; find and claims page by 25 lines, detail by parts, no line over 300 characters.
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
-Number check: every number of the answer, sentence by sentence, against the texts of the ids cited in that sentence.
+Number check: every number of the answer, sentence by sentence: matches (in a text cited in that sentence), elsewhere (in another
+text the model was given), not seen (in no text it was given), uncited (the sentence cites no id); and unknown ids.
 LLM API calls are allowed only in this file, providers.py and serve.py. Runs with conda env psed310 (the vendor SDKs).
 """
 import argparse, concurrent.futures as cf, csv, datetime, json, math, re, sys, threading, time
@@ -132,7 +133,7 @@ TOOLS = [
                       "name and id, one or two conditions that tell it apart from the other members of its comparison, and, when a result "
                       "quantity is given, each value of that quantity the experiment has: value and unit, kind (measured, stated, read from "
                       f"figure, computed by the authors, computed here from other values, model, cited, assumed), any non-default "
-                      f"definition and the source element. At most {PAGE_LINES} lines per call; a last line gives the number of further "
+                      f"definition, the source element, and the paper's definition of the quantity when it has one (shortened; source gives it in full). At most {PAGE_LINES} lines per call; a last line gives the number of further "
                       "items and the offset that returns them."),
          parameters=dict(type="object", properties=dict(
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
@@ -149,11 +150,12 @@ TOOLS = [
                       "input (a thing measured before deposition): what (role, material, substrate, inputs, the comparisons it belongs to, "
                       "identity statements), differs (the conditions that distinguish it from the other members of its comparison), "
                       "results (every result: value and unit, kind, definition when not the default, method, in situ or ex situ, "
-                      "uncertainty, source element, the ids of other candidate values, and for a value computed here its formula, inputs "
-                      "and assumed facts), recipe (every condition with value, unit, kind and source), claims (the claims that point at it "
+                      "uncertainty, source element, the ids of other candidate values, the paper's definition of the quantity when it has "
+                      "one, and for a value computed here its formula, inputs and assumed facts), recipe (every condition with value, unit, kind and source), claims (the claims that point at it "
                       "or its comparisons). For a comparison: what (purpose, what it varies, members), differs (the conditions that also "
                       "differ among the members), results (main results with the size of the effect against the scatter between repeats, "
-                      "power-law fits with any stated confounder correction, values stated for the whole set), claims. For a cited work: "
+                      "power-law fits with any confounder correction, these three computed here, not by the authors; values stated for "
+                      "the whole set), claims. For a cited work: "
                       "what, recipe (its conditions), results (its values), claims. Claims are not in the default parts; claims with "
                       "linked=<id> also returns them."),
          parameters=dict(type="object", properties=dict(
@@ -162,8 +164,8 @@ TOOLS = [
              required=["id"])),
     dict(name="compare",
          description=("Sets several experiments side by side: the conditions they share, the conditions that differ with each item's "
-                      "value, and every result with each item's value (unit, kind, definition, source); for two items, the ratio or "
-                      "difference of each shared result; a note where values cannot be set beside each other (different definitions); "
+                      "value, and every result with each item's value (unit, kind, definition, source, the paper's definition of the "
+                      "quantity when it has one); for two items, the ratio or difference of each shared result (computed here); a note where values cannot be set beside each other (different definitions); "
                       "measured curves as their points; and the ids of the claims linked to two or more of the items."),
          parameters=dict(type="object", properties=dict(
              ids=dict(type="array", items=dict(type="string"), description="Two or more experiment ids."),
@@ -172,7 +174,7 @@ TOOLS = [
              required=["ids"])),
     dict(name="claims",
          description=("Returns the claims of the papers (and the user's claims across papers), one line each: its stance (asserted, "
-                      "hedged, open, limitation), the statement, cause and effect in words, the range of conditions it covers, the "
+                      "hedged, open, limitation), the statement, cause and effect in words, the range of conditions it covers (computed here), the "
                       "comparisons it reaches, its source element, and the ids of the stated results it rests on (source returns each "
                       f"in full). At most {PAGE_LINES} lines per call; a last line gives the number of further claims and the offset that "
                       "returns them."),
@@ -230,11 +232,32 @@ def value_line(r, name="", full=False):
     return " · ".join(b for b in bits if b)
 
 
+_DEFS = {}
+
+
+def defined_as(paper, key):
+    """The paper's definition of a result key's quantity (a definition fact with that quantity whose qualifiers the key carries;
+    the most specific one), as ' · defined as: "<short>" [id]'; source(id) gives it in full (P36)."""
+    if paper not in Q.TREES:
+        return ""
+    if paper not in _DEFS:
+        _DEFS[paper] = [(f["quantity"], set(filter(None, f["qualifiers"].split(";"))), f) for f in Q.TREES[paper].rows if f["type"] == "definition" and f["quantity"]]
+    q = key.split("{")[0].split("[")[0]
+    kq = set(filter(None, key.split("{", 1)[1].split("}")[0].split(";"))) if "{" in key else set()
+    hits = sorted([(len(dq), f) for qq, dq, f in _DEFS[paper] if qq == q and dq <= kq], key=lambda x: -x[0])
+    if not hits:
+        return ""
+    f = hits[0][1]
+    st = f["statement"]
+    short = st if len(st) <= 90 else st[:90].rsplit(" ", 1)[0] + " …"
+    return f' · defined as: "{short}" [{f["fact_id"]}]'
+
+
 def claim_line(c):
     """A claim as one line; the results it rests on as ids (source returns each in full)."""
     who = "by the user" if c.get("author") == "user" else short_name(c["paper"]) if c.get("paper") in Q.KEY else c.get("paper", "")
     return (c["id"], f"claim ({who}), {c['stance']}: {c['statement']}" + (f" · cause: {', '.join(c['cause'])}" if c.get("cause") else "")
-            + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope: {c['scope']}" if c.get("scope") else "")
+            + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: computed here): {c['scope']}" if c.get("scope") else "")
             + (f" · comparisons: {', '.join(c['comparisons'])}" if c.get("comparisons") else "")
             + (f" · source element: {c['paper']}:{c['source']}" if c.get("source") and c.get("paper") else "")
             + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else ""))
@@ -288,7 +311,7 @@ def run_tool(name, args):
                 d = "; ".join(f"{x['name']} {x['text']}" for x in r["distinguish"])
                 head = f"{short_name(r['paper'])} · {r['name']}" + (" (inferred: not named by the paper)" if r["inferred"] else "") + f" · {r['role']}" + (f" · {d}" if d else "")
                 if r["result"]:
-                    items.append(W([(x["record"].get("fact") or i, f"{head} · experiment [{i}] · {value_line(x['record'], x['name'])}") for x in r["result"]]))
+                    items.append(W([(x["record"].get("fact") or i, f"{head} · experiment [{i}] · {value_line(x['record'], x['name'])}{defined_as(r['paper'], x['key'])}") for x in r["result"]]))
                 else:
                     items.append(W([(i, head)]))
             return page(items, args.get("offset"), "items"), ""
@@ -309,7 +332,7 @@ def run_tool(name, args):
                 if "differs" in parts and d["differs"]:
                     out.append((i, "distinguished by: " + "; ".join(f"{x['name']} {x['text']}" for x in d["differs"])))
                 if "results" in parts:
-                    out += [(r["record"].get("fact") or i, "result · " + value_line(r["record"], r["name"])) for r in d["results"]]
+                    out += [(r["record"].get("fact") or i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"])) for r in d["results"]]
                 if "recipe" in parts:
                     out += [(c["record"].get("fact") or i, "condition · " + value_line(c["record"], c["name"])) for c in d["recipe"]]
             elif d["type"] == "comparison":
@@ -321,10 +344,10 @@ def run_tool(name, args):
                     out.append((i, "also differs among the members: " + json.dumps(d["confounders"], ensure_ascii=False, default=str)))
                 if "results" in parts:
                     for e in d["effects"]:
-                        out.append((i, f"effect on {e['name']}{' (main result)' if e.get('main') else ''}: " + "; ".join(f"{k} {v}" for k, v in e.items() if k not in ("key", "name", "main") and v not in ("", None, []))))
+                        out.append((i, f"effect on {e['name']}{' (main result)' if e.get('main') else ''} (kind: computed here): " + "; ".join(f"{k} {v}" for k, v in e.items() if k not in ("key", "name", "main") and v not in ("", None, []))))
                     for f_ in d["fits"]:
-                        out.append((i, f"fit: {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
-                                    + "".join(f" · corrected for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "
+                        out.append((i, f"fit (kind: computed here): {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
+                                    + "".join(f" · correction (kind: computed here) for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "
                                               + "; ".join(f"{name_of_id(x['id'])} {x['frm']} × {x['factor']} = {x['value']} from {x['by']}" for x in c["changes"]) for c in f_["corrected"])))
                     out += [(v.get("fact") or i, "stated for the set · " + value_line(v)) for v in d["values"]]
             else:
@@ -346,11 +369,11 @@ def run_tool(name, args):
                 out += [(i, f"differing condition: {dff['name']}: {nm[i]} {v if v is not None else 'not stated'}") for i, v in dff["values"].items()]
             for r in c["results"]:
                 for i, cell in r["cells"].items():
-                    out.append(((cell or {}).get("fact") or i, f"result · {nm[i]} · " + (value_line(cell, r["name"]) if cell else f"{r['name']}: no value")
+                    out.append(((cell or {}).get("fact") or i, f"result · {nm[i]} · " + (value_line(cell, r["name"]) + defined_as(cell.get("paper", ""), r["key"]) if cell else f"{r['name']}: no value")
                                 + (f" · note: {r['note']}" if r.get("note") else "")))
                 if r.get("relation"):
                     rel = r["relation"]
-                    out.append((c["items"][0]["id"], f"{r['name']}: {rel['how']} {nm[c['items'][0]['id']]} to {nm[c['items'][1]['id']]} = {rel['value']} {rel['unit']}".strip()))
+                    out.append((c["items"][0]["id"], f"{r['name']}: {rel['how']} {nm[c['items'][0]['id']]} to {nm[c['items'][1]['id']]} = {rel['value']} {rel['unit']}".strip() + " (kind: computed here)"))
             if c["claims"]:
                 out.append((c["items"][0]["id"], "claims linked to two or more items: " + ", ".join(f"[{cl['id']}]" for cl in c["claims"])))
             return W(out), ""
@@ -376,7 +399,7 @@ MARK = re.compile(r"\[([^\[\]\n]+)\]")
 ID = re.compile(r"^[A-Za-z0-9_]+:\S+$")
 SCI = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)\s*[×x·*]\s*10\s*\^\s*\(?\s*([-+]?\d+)\s*\)?|(?<![\w.^])10\s*\^\s*\(?\s*([-+]?\d+)\s*\)?|(?<![\w.])(\d+(?:\.\d+)?)[eE]([-+]?\d+)(?![\w])")
 PLAIN = re.compile(r"(?<![\w.^\u0300-\u036f])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?")
-SKIP = re.compile(r"\b(?:Fig(?:ure)?s?\.?|Tables?|Eq(?:uation)?s?\.?|[Rr]efs?\.?|[Rr]eferences?|[Ss]amples?|Series)\s*\(?\d+[a-z]?", re.I)
+SKIP = re.compile(r"\b(?:Fig(?:ure)?s?\.?|Tables?|Eq(?:uation)?s?\.?|[Rr]efs?\.?|[Rr]eferences?|[Ss]amples?|Series|columns?|rows?|sections?|Sec\.)\s*\(?\d+[a-z]?", re.I)
 
 
 def normalize(t):
@@ -442,31 +465,32 @@ def sentences(text):
     return out
 
 
+def _hit(v, half, pool):
+    return any(abs(abs(v) - abs(c)) <= max(half, 1e-12 * abs(v)) * (1 + 1e-9) or abs(v) == abs(c) for c, _, _ in pool)
+
+
 def number_check(text, arm, given):
-    """Per number: matches (in the text of an id cited in its sentence, allowing for rounding of the last digit), mismatch (the
-    sentence cites ids, none holds it), not in any source (no id cited); and the cited ids not given to the model."""
+    """Per number: matches (in the text of an id cited in its sentence, allowing for rounding of the last digit), elsewhere (not
+    there, but in the text of another id the model was given), not seen (in no text the model was given: a value it computed or
+    invented), uncited (its sentence cites no id); and the cited ids not given to the model."""
     rows, unknown, cited = [], [], []
+    everything = [n for t in given.values() for n in nums(t)]
     for sent, ids in sentences(text):
         known = [i for i in ids if i in given]
         unknown += [i for i in ids if i not in given and i not in unknown]
         cited += [i for i in known if i not in cited]
         pool = [n for i in known for n in nums(given[i])]
         for v, half, raw in nums(sent, skip=True):
-            if arm == "model" or not ids:
-                st = "not in any source"
-            elif any(abs(abs(v) - abs(c)) <= max(half, 1e-12 * abs(v)) * (1 + 1e-9) or abs(v) == abs(c) for c, _, _ in pool):
-                st = "matches"
-            else:
-                st = "mismatch"
+            st = "uncited" if not ids else "matches" if _hit(v, half, pool) else "elsewhere" if _hit(v, half, everything) else "not seen"
             rows.append(dict(number=raw.strip(), value=v, status=st, sentence=sent.strip()[:300], ids=ids))
-    c = {k: sum(r["status"] == k for r in rows) for k in ("matches", "mismatch", "not in any source")}
-    return dict(numbers=len(rows), match=c["matches"], mismatch=c["mismatch"], not_in_source=c["not in any source"],
+    c = {k: sum(r["status"] == k for r in rows) for k in ("matches", "elsewhere", "not seen", "uncited")}
+    return dict(numbers=len(rows), match=c["matches"], elsewhere=c["elsewhere"], not_seen=c["not seen"], uncited=c["uncited"],
                 unknown_ids=len(unknown), unknown=unknown, cited=cited, per_number=rows)
 
 
 def check_line(nc):
-    parts = [f"{nc['numbers']} numbers"] + [f"{nc[k]} {w}" for k, w in (("match", "match"), ("mismatch", "mismatch"), ("not_in_source", "not in any source")) if nc[k]]
-    return " · ".join(parts + [f"{nc['unknown_ids']} unknown ids"])
+    return (f"{nc['numbers']} numbers · {nc['match']} match · {nc['elsewhere']} elsewhere · {nc['not_seen']} not seen · "
+            f"{nc['uncited']} uncited · {nc['unknown_ids']} unknown ids")
 
 
 # ---------------------------------------------------------------------------------------------------------------- page targets
@@ -589,14 +613,14 @@ def last_records(question, model, path=None):
     return [last[a] for a in ARMS if a in last]
 
 
-SUMMARY = ["question", "arm", "model", "numbers", "match", "mismatch", "not_in_source", "unknown_ids", "tool_calls", "input_tokens", "output_tokens",
+SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "tool_calls", "input_tokens", "output_tokens",
            "cache_read_tokens", "cost", "seconds", "error"]
 
 
 def summary_row(r):
     nc = r["number_check"]
-    return dict(question=r["question"], arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], mismatch=nc["mismatch"],
-                not_in_source=nc["not_in_source"], unknown_ids=nc["unknown_ids"], tool_calls=len(r["tool_calls"]), input_tokens=r["usage"]["input"],
+    return dict(question=r["question"], arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
+                not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], tool_calls=len(r["tool_calls"]), input_tokens=r["usage"]["input"],
                 output_tokens=r["usage"]["output"], cache_read_tokens=r["usage"]["cache_read"], cost="" if r["cost"] is None else round(r["cost"], 4),
                 seconds=r["seconds"], error=r["error"])
 
@@ -618,7 +642,7 @@ def batch(qfile, out, model, arms, max_cost, max_calls):
     print("totals per arm:")
     for a in arms:
         rs = [r for r in rows if r["arm"] == a]
-        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "mismatch", "not_in_source", "unknown_ids", "tool_calls", "input_tokens", "output_tokens")}
+        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "tool_calls", "input_tokens", "output_tokens")}
         cost = sum(r["cost"] for r in rs if r["cost"] != "") if priced else "cost not set"
         print(f"  {ARM_NAMES[a]:15s} {tot} cost {cost} · failed: {sum(1 for r in rs if r['error'])}")
     print(f"records {out}; summary {summ}")
