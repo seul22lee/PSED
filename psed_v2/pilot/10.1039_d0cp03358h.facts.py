@@ -126,7 +126,7 @@ F(K, "s3.p2", "cited", "Dendooven et al. and Ylilammi et al. showed process-para
   method="cited", mentions="ref. 39;ref. 33")
 F(K, "s3.p3;fig2b;fig2.cap", "definition", "scaled saturation profile: growth per cycle (nm, ng, nm-2, ...) against the dimensionless distance",
   method="schematic", mentions="Fig. 2b")
-F(K, "s3.p3;fig2.cap;tabu2.r25c0;tabu2.r25c1", "definition", "dimensionless distance x~ = x/H, measurement distance over channel height (unitless)",
+F(K, "s3.p3;fig2.cap;tabu2.r25c0;tabu2.r25c1", "definition", "dimensionless distance x~ = x/H, measurement distance over channel height (unitless)", quantity="dimensionless_distance", qualifiers="by=H",
   label_as_printed="x̃", mentions="Fig. 2")
 F(K, "s3.p3;s3.p4", "cited", "earlier works often used the aspect ratio as horizontal axis where this work uses the dimensionless distance",
   method="cited", mentions="AR;ref. 1;ref. 2;ref. 40;ref. 47")

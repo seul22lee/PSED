@@ -17,7 +17,8 @@ every setting under a group carries a value or a value_text;
 tree rows (ids without "#") are not counted as facts.
 Experiments: <paper_id>.experiments.csv (experiments.py) has one run row per run of the tree (cited works are extra rows, kind cited).
 User facts (user.facts.csv, user_facts.py): the facts schema; author user; ids user:<name>, unique; types from the lists; vocabularies as
-for a paper's facts; every link resolves to a fact of the three papers or of the user file; a claim has links.
+for a paper's facts; every link resolves to a fact of the three papers or of the user file; a claim has links; a bridge links exactly
+two facts and carries its factor in value_text (a quotient of quantity ids).
 Cases: paper_case.csv has no "candidate, not used" cell in Cases 1 to 13 (every candidate is used or excluded with a reason).
 """
 import collections, csv, json, re, sys
@@ -323,6 +324,11 @@ def check_user(all_ids):
         for l in filter(None, r["links"].split(";")):
             if l not in all_ids and l not in ids:
                 bad(f"link {l} does not exist")
+        if r["type"] == "bridge":
+            if len([l for l in r["links"].split(";") if l]) != 2:
+                bad("bridge without exactly two links")
+            if not r["value_text"] or any(t not in L.QUANTITIES or t == "other" for t in re.split(r"[*/]", r["value_text"])):
+                bad(f"bridge factor {r['value_text']!r} is not a quotient of quantity ids")
     return err
 
 

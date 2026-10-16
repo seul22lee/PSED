@@ -35,7 +35,10 @@
   runs are labelled "sim · H 100 nm" in the tree. Claim scope (computed, next to every claim on cards and in the claims
   view; the badge of a claim shows its stance, coloured: asserted green, hedged amber, open blue, limitation red; its
   variables, cause -> effect, as chips; the claims view's "same variable" toggle groups the claims of all papers and the
-  user by effect variable): the claim's
+  user by effect variable; a bridge, type bridge in the user file, links two definitions: the compare panel's verdict on two
+  results of one quantity whose qualifiers are the bridged definitions is "transformable (user bridge)", and the forest
+  lists the bridge for its quantity and plots a leaf of the second definition through the factor in the bridge's value_text,
+  a quotient of quantity ids taken from the leaf's context): the claim's
   links lead to runs (a linked run, the runs of a linked group, the run above a linked fact), the runs'
   inherited settings give the ranges: "3 runs · T 300 °C · H 100–2000 nm · N 500"; "no run" when the links reach none.
   Claims view (toggle beside find, cards and text tree): one line per claim of each paper, with its scope and evidence.
@@ -322,12 +325,14 @@ function applyForest(){const bar=$("#forest");if(!bar)return;bar.innerHTML=fores
  document.querySelectorAll(".q.red").forEach(n=>{n.classList.remove("red");if(n.dataset.k==="unit")n.hidden=true});
  if(DEMO){const dm=demoHTML(DATA[0]);$("#fn").textContent=`Fig. 9 of yim20 rebuilt from the tree: ${dm.used.length} leaves used`;$("#scat").innerHTML=dm.html;
   dm.used.forEach(id=>{const el=document.querySelector(`[data-f="${CSS.escape(id)}"]:not(.linked)`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}}});return}
- const ls=fleaves();let shown=0;const pts=[];
+ const ls=fleaves();let shown=0,bridged=0;const pts=[];const brs=BRIDGES().filter(b=>b.q===FQ);
  ls.forEach(l=>{const el=document.querySelector(`[data-f="${CSS.escape(l.f.fact_id)}"]:not(.linked)`);if(el){el.classList.add("hl");let p=el.parentElement;while(p){if(p.tagName==="DETAILS")p.open=true;p=p.parentElement}
    (l.f.flag||[]).forEach(k=>el.querySelectorAll(`.q[data-k="${k}"]`).forEach(b=>{b.classList.add("red");b.hidden=false}))}
-  const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y:fv(l.f)});shown++}});
+  let y=fv(l.f),via=null;const br=brs.find(b=>second(b,l.f));   // a leaf of the second definition: through the factor, from its context
+  if(br){const val=q=>{const c=l.f.ctx[q];return c&&c!=="ambiguous"&&c[1]!=null?c[1]:null};const n=br.num.map(val),d=br.den.map(val);if(n.every(v=>v!=null)&&d.every(v=>v!=null)){y=y*n.reduce((p,v)=>p*v,1)/d.reduce((p,v)=>p*v,1);via=br.u;bridged++}}
+  const c=l.f.ctx[FX];if(c&&c!=="ambiguous"&&c[1]!=null){pts.push({l,x:c[1],xs:c[0],y,via});shown++}});
  const amb=ls.filter(l=>l.f.ctx[FX]==="ambiguous").length,nox=ls.length-shown-amb;
- $("#fn").textContent=FQ?`${ls.length} leaves highlighted; ${shown} in the scatter${amb?`, ${amb} with an ambiguous ${FX}`:""}${nox?`, ${nox} with no ${FX} in scope`:""}`:"";
+ $("#fn").innerHTML=FQ?esc(`${ls.length} leaves highlighted; ${shown} in the scatter${amb?`, ${amb} with an ambiguous ${LISTS.labels[FX]||FX}`:""}${nox?`, ${nox} with no ${LISTS.labels[FX]||FX} in scope`:""}`)+brs.map(b=>` <span class="bridge chip" title="${esc(b.u.statement)}">bridge (user): ${esc(qshort(b.q,b.keys.map((k,j)=>k+"="+b.va[j]).join(";")))} ↔ ${esc(qshort(b.q,b.keys.map((k,j)=>k+"="+b.vb[j]).join(";")))}, × ${esc(b.u.value_text.replace(/_/g," "))}${bridged?`, ${bridged} leaves through it`:""}</span>`).join(""):"";
  $("#scat").innerHTML=pts.length?scatter(pts):""}
 function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
  const xs=pts.flatMap(p=>[p.x,p.l.f.ctx[FX][3],p.l.f.ctx[FX][4]]).filter(v=>v!=null&&!isNaN(v)),ys=pts.flatMap(p=>[p.y,parseFloat(p.l.f.value_min),parseFloat(p.l.f.value_max)]).filter(v=>!isNaN(v));
@@ -346,7 +351,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if(!isNaN(lo)&&!isNaN(hi)&&(!ly||(lo>0&&hi>0)))g+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(lo).toFixed(1)}" y2="${Y(hi).toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
   const cx=f.ctx[FX];if(cx[3]!=null&&cx[4]!=null&&(!lx||(cx[3]>0&&cx[4]>0)))g+=`<line x1="${X(cx[3]).toFixed(1)}" x2="${X(cx[4]).toFixed(1)}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
   const tip=`${p.l.d.key} ${f.fact_id.split(":")[1]}: ${esc(f.statement)}\n${esc(FQ)} = ${esc(valStr(f))}${f.qualifiers?" ["+esc(f.qualifiers)+"]":""} · ${esc(f.data_kind)}${f.cited?" · cited":""}\n${esc(FX)} = ${esc(p.xs)} (${esc(f.ctx[FX][2].split(":")[1])})${(f.flag||[]).length?"\nflag: "+f.flag.join(", "):""}`;
-  const tr=f.scope&&trayHas(p.l.i,f.scope);g+=`<circle class="pt ${tr?"tray":""}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tr?8:5.5}" fill="${f.cited?"var(--card)":c}" stroke="${c}" stroke-width="2" onclick="jump('${f.fact_id}')"><title>${tip}</title></circle>`;
+  const tr=f.scope&&trayHas(p.l.i,f.scope);g+=`<circle class="pt ${tr?"tray":""}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tr?8:5.5}" fill="${f.cited?"var(--card)":c}" stroke="${c}" stroke-width="2" ${p.via?'stroke-dasharray="3 2"':""} onclick="jump('${f.fact_id}')"><title>${tip}${p.via?"\nthrough the user bridge "+esc(p.via.fact_id):""}</title></circle>`;
   if(f.censor)g+=`<text x="${(x+7).toFixed(1)}" y="${(y+4).toFixed(1)}" class="tk">${esc(f.censor)}</text>`;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
@@ -461,6 +466,7 @@ function reach(it){const out={};const put=(q,x,via,missing)=>{const k=q+"|"+x;if
 function diffs(a,b){const ks=[...new Set([...Object.keys(a.r.inh),...Object.keys(b.r.inh)])];return ks.filter(k=>a.r.inh[k]&&b.r.inh[k]&&a.r.inh[k].text!==b.r.inh[k].text).map(k=>({f:a.r.inh[k].f,k,va:a.r.inh[k].text,vb:b.r.inh[k].text})).sort((x,y)=>rank(x.f)-rank(y.f))}
 function verdict(a,b){const direct=Object.keys(a.keys).filter(k=>k in b.keys);const d=diffs(a,b).map(x=>`${qtext(x.f)} ${x.va||"—"} vs ${x.vb||"—"}`);const tail=d.length?` · differs: ${d.slice(0,4).join("; ")}${d.length>4?` +${d.length-4}`:""}`:" · no differing setting";
  if(direct.length)return {v:"direct",c:"ok",why:direct.slice(0,5).map(k=>qtext(a.keys[k])).join(", ")+(direct.length>5?` +${direct.length-5}`:"")+tail};
+ for(const fa of Object.values(a.keys))for(const fb of Object.values(b.keys)){const br=bridgeFor(fa,fb);if(br)return {v:"transformable (user bridge)",c:"tr",why:`${qtext(fa)} ↔ ${qtext(fb)}: ${br.u.statement}`+tail}}
  const A=reach(a),B=reach(b),common=Object.keys(A).filter(k=>k in B);const ok=common.find(k=>!A[k].missing&&!B[k].missing);
  if(ok)return {v:"transformable",c:"tr",why:`${ok.split("|")[0].replace(/_/g," ")} against ${ok.split("|")[1].replace(/_/g," ")} via ${[...new Set([...A[ok].via,...B[ok].via])].join(", ").replace(/_/g," ")}`+tail};
  const bl=common.find(k=>A[k].missing||B[k].missing);if(bl){const m=A[bl].missing?[A[bl].missing,a.label]:[B[bl].missing,b.label];return {v:"not comparable",c:"no",why:`${m[0].replace(/_/g," ")} not stated for ${m[1]}`}}
@@ -561,6 +567,15 @@ const stBadge=c=>`<span class="ty claim ${c.stance||""}" title="stance">${c.stan
 const vlab=t=>t.startsWith("mechanism:")?t.slice(10).replace(/_/g," "):(LISTS.labels[t]||t.replace(/_/g," "));
 const varChips=c=>(c.cause||c.effect)?`<span class="chip vars" title="cause → effect">${(c.cause||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"} → ${(c.effect||"").split(";").filter(Boolean).map(vlab).map(esc).join(", ")||"—"}</span>`:"";
 let CLV="paper";
+// bridges (user facts, type bridge): two definitions of one quantity, the second converted into the first by value_text's factor
+const factId=id=>{for(const d of DATA){const f=d.facts.find(x=>x.fact_id===id);if(f)return f}return USER.find(u=>u.fact_id===id)};
+// a bridge applies to the qualifier keys that differ between its two definitions (by: H against d); the other qualifiers must agree
+const BRIDGES=()=>USER.filter(u=>u.type==="bridge").map(u=>{const [fa,fb]=(u.links||"").split(";").map(factId);if(!fa||!fb)return null;const qa=quals(fa.qualifiers),qb=quals(fb.qualifiers);
+ const keys=[...new Set([...Object.keys(qa),...Object.keys(qb)])].filter(k=>k!=="x"&&qa[k]!==qb[k]);return {u,q:fa.quantity,keys,va:keys.map(k=>qa[k]||""),vb:keys.map(k=>qb[k]||""),num:u.value_text.split("/")[0].split("*").filter(Boolean),den:(u.value_text.split("/")[1]||"").split("*").filter(Boolean)}}).filter(Boolean);
+const bridgeFor=(fa,fb)=>{if(!fa.quantity||fa.quantity!==fb.quantity)return null;const qa=quals(fa.qualifiers),qb=quals(fb.qualifiers);
+ return BRIDGES().find(b=>{if(b.q!==fa.quantity)return false;const other=[...new Set([...Object.keys(qa),...Object.keys(qb)])].filter(k=>k!=="x"&&!b.keys.includes(k));if(!other.every(k=>qa[k]===qb[k]))return false;
+  const A=b.keys.map(k=>qa[k]||"").join(),B=b.keys.map(k=>qb[k]||"").join();return (A===b.va.join()&&B===b.vb.join())||(A===b.vb.join()&&B===b.va.join())})||null};
+const second=(b,f)=>{const q=quals(f.qualifiers);return b.keys.every((k,j)=>(q[k]||"")===b.vb[j])};   // a fact of the bridge's second definition
 function claimLine(d,i,c){const sc=claimScope(d,i,c);const e=c.evidence.split(";")[0];return `<div class="clr ${c.stance||""}" data-f="${c.fact_id}"><span class="sw" style="background:var(--c${i})"></span>${stBadge(c)}<span class="st">${esc(c.statement)}</span>${varChips(c)}<span class="chip scope ${sc.n?"":"mut"}" title="runs behind the claim">${esc(sc.text)}</span><code class="ev" onclick="side('${e}',${i})">${e}</code></div>`}
 function userScope(u){const runs=[];DATA.forEach((d,i)=>{const T=buildTree(d);claimRuns(T,{links:(u.links||"").split(";").filter(l=>l.startsWith(d.key+":")).join(";")}).forEach(r=>runs.push({i,id:r}))});
  if(!runs.length)return "no run";const rs=RUNS().filter(r=>runs.some(x=>x.i===r.i&&x.id===r.id));const parts=[];

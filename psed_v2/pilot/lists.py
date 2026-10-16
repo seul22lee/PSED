@@ -54,7 +54,7 @@ METHODS = ["reflectometry", "ellipsometry", "sem", "sem_eds", "tem", "xps", "ram
 CENSOR = {"", "<", ">", "<dl", ">dl"}
 
 # facts (stage 2): fact types and data kinds
-TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited"]
+TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge"]   # bridge: user facts only
 STANCES = ["asserted", "hedged", "open", "limitation"]
 # mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids
 MECHANISMS = ["surface_OH", "excess_S", "fin_growth", "Zn_metal", "residual_H2O", "membrane_sagging", "channel_plugging", "channel_narrowing",

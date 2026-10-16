@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """The user's facts, in the facts schema with author user: claims the user makes across papers (the perspective paper's case
-studies, one sentence each with links into several papers) and, later, bridges between two papers' definitions.
+studies, one sentence each with links into several papers), the user's own definitions, and bridges between two definitions
+(type bridge: links = the two definition facts, statement = the transform in words, value_text = the factor that turns a value of
+the second definition into the first as a quotient of quantity ids, evidence = the justifying element, paper-qualified).
 
     python3 psed_v2/pilot/user_facts.py      # writes user.facts.csv
 
@@ -40,6 +42,11 @@ ROWS = [
         "10 000 channels of Yim et al. come without an exposure and cannot be placed",
         quantity="aspect_ratio", qualifiers="x=exposure", label_as_printed="Case 10: AR vs exposure", stance="asserted", cause="exposure", effect="aspect_ratio",
         links=[l["fid"] for l in c10] + [l["ctx"]["exposure"]["fact_id"] for l in c10], mentions="Case 10"),
+    row("user:def_xd", "definition", "dimensionless depth of a pore: the depth over the pore diameter d, the rule Cremers 2019 applies to pores",
+        quantity="dimensionless_distance", qualifiers="by=d", mentions="Cremers 2019"),
+    row("user:bridge_xH_xd", "bridge", "x~ by H (a channel's height, yim20) and x~ by d (a pore's diameter) measure the same depth: "
+        "x~_H = x~_d * d / H, so a pore value times d over H compares with a channel value", quantity="dimensionless_distance",
+        links=["yim20:s3.p3#2", "user:def_xd"], value_text="feature_width/feature_height", evidence="yim20:s3.p3", mentions="x~"),
 ]
 
 if __name__ == "__main__":
