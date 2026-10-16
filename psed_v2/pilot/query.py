@@ -1048,10 +1048,11 @@ def scope_text(T, ents):
         return "no condition"
     parts = []
     for q in L.PRIMARY:
-        vals = [val(fs[0]) for e in ents for k, fs in T.vector(e).items() if k == q and val(fs[0]) is not None]
+        u = L.UNITS.get(q, "")                                                 # every value in the quantity's one unit
+        vals = [L.convert(val(fs[0]), fs[0]["unit"], u) if fs[0]["unit"] and u else val(fs[0]) for e in ents for k, fs in T.vector(e).items() if k == q and val(fs[0]) is not None]
         texts = {fmt(fs[0]) for e in ents for k, fs in T.vector(e).items() if k == q}
         if vals:
-            lo, hi = min(vals), max(vals); u = next(fs[0]["unit"] for e in ents for k, fs in T.vector(e).items() if k == q)
+            lo, hi = min(vals), max(vals)
             parts.append(f"{L.NAMES[q]} {g(lo)}{'–' + g(hi) if hi != lo else ''}{' ' + u if u else ''}")
         elif len(texts) == 1:
             parts.append(f"{L.NAMES[q]} {texts.pop()}")
