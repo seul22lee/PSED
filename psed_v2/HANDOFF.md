@@ -1481,3 +1481,13 @@ Notes from reading Cremers et al., Appl. Phys. Rev. 6, 021302 (2019). The factua
 
 #### 9. Growth type classification (Fig. 4)
 - The concept of telling diffusion-, reaction- and recombination-limited growth apart by profile shape (Sec. II F). Together with case N7 (parameter sensitivity), it gives a case that classifies "which type is this process" across the literature.
+
+## Resume state (2026-10-16)
+
+Directive 2 (the v2 pilot access layer, P60–P74) is in progress; one problem = one row in pilot/problems.csv = one commit.
+
+- Committed: P60 6bca84b, P61 1a330e1, P62 c728894, P63 7f66ba1, P64 1a323a6, P65 224af63, P66 34f0683, P67 1071261 (the P66 and P67 code shares tools.py with P65 and landed in 224af63; their commits carry the check probes, concept.py's wording and the rows). Generated ontology report: 4f5764c.
+- Next: P68 (one renderer; a check that scans a probe battery of tool outputs for provenance or basis wording outside the phrase and basis tables; a caveat cited twice appears once). Then P69–P74, CRITERIA.md Sec. 19 appended verbatim (own commit), HANDOFF's Why gist and the P60–P74 rules, the final report.
+- No stash. Working tree clean.
+- Checks: pilot/check.py all sections OK (search, records, uncertainty bases, kinds, caveats, comparability, bases, cases, user facts, derived, three papers); questions.py 26 answered; ontology/make_report.py 12 checks pass. Nothing red.
+- Note for P74: the directive's reference numbers for A10_v2 are re-delivery 30–56 % and utilization 7–18 % per question; the definitions tried so far in the chat gave 26–54 % and 11–32 %, so the definitions must be fixed to reproduce the reference before the reporter is written.
