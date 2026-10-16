@@ -378,6 +378,21 @@ def run_tool(name, args):
 SEARCH_LINE = 200
 
 
+def endpoints(e):
+    """The minimum and maximum members of a set-level range, with their values and the settings that differ between them (P43)."""
+    lo, hi = e["low"], e["high"]
+    btw = "; ".join(f"{x['name']} {x['low']} vs {x['high']}" for x in e.get("between") or [])
+    return (f"min {lo['name']} {lo['text']} [{lo['fact']}], max {hi['name']} {hi['text']} [{hi['fact']}]"
+            + (f" (differ in: {btw})" if btw else " (no stated setting differs between them)"))
+
+
+def effect_line(e):
+    """An effect of a comparison on one result: its range with both endpoints, and the judgement against noise (computed here)."""
+    unit = f" {e['unit']}" if e.get("unit") else ""
+    return (f"effect on {e['name']}{' (main result)' if e.get('main') else ''} (kind: computed here): range {e['effect']}{unit} over {e['n']}: "
+            + endpoints(e) + f" · {e['sentence']}")
+
+
 def _unc(r):
     u = r.get("uncertainty")
     if not u:
@@ -548,7 +563,7 @@ def _run(name, args):
                     out.append((i, "also differs among the members: " + json.dumps(d["confounders"], ensure_ascii=False, default=str)))
                 if "results" in parts:
                     for e in d["effects"]:
-                        out.append((i, f"effect on {e['name']}{' (main result)' if e.get('main') else ''} (kind: computed here): " + "; ".join(f"{k} {v}" for k, v in e.items() if k not in ("key", "name", "main") and v not in ("", None, []))))
+                        out.append((i, effect_line(e)))
                     for f_ in d["fits"]:
                         out.append((i, f"fit (kind: computed here): {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
                                     + "".join(f" · correction (kind: computed here) for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "

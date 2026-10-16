@@ -478,7 +478,10 @@ def judge(T, comp, key):
     vals = [val(rd[m][key][0]) for m in ents]
     unit = rd[ents[0]][key][0]["unit"]
     eff, kind = max(vals) - min(vals), member_kind(T, ents)
-    out = dict(effect=eff, n=len(vals), unit=unit, kind=kind, sd=None, sd_n=None, sd_source=None)
+    lo, hi = ents[vals.index(min(vals))], ents[vals.index(max(vals))]
+    end = lambda m: dict(id=m, name=T.label(m), value=val(rd[m][key][0]), text=text_of(rd[m][key][0]), fact=rd[m][key][0]["fact_id"])
+    out = dict(effect=eff, n=len(vals), unit=unit, kind=kind, sd=None, sd_n=None, sd_source=None, low=end(lo), high=end(hi),
+               between=endpoint_settings(T, lo, hi))
     if kind == "model runs":
         out["sentence"] = "model runs: no scatter to compare with"
         return out
@@ -508,6 +511,16 @@ def judge(T, comp, key):
     out["expected"] = exp
     out["sentence"] = f"{word} the scatter between {noun} at the base condition ({n_} {noun.split()[0]}, sd {g(sd, 2)}{' ' + unit if unit else ''})"
     return out
+
+
+def endpoint_settings(T, a, b, n=4):
+    """The settings that differ between two entities (P43), both values each: process-defining first, at most n; a setting keyed to
+    another (P17) follows that one and is left out."""
+    va, vb = vtext(T, a), vtext(T, b)
+    keyed = {k for e in (a, b) for k, fs in T.vector(e).items() if any(set(quals(f)) & set(L.KEYED) for f in fs)}
+    keys = [k for k in va if k in vb and va[k] != vb[k] and k not in keyed]
+    keys.sort(key=lambda k: (L.PRIMARY.index(k.split("{")[0]) if k.split("{")[0] in L.PRIMARY else len(L.PRIMARY), k))
+    return [dict(key=k, name=name_of(k, T.vector(a)[k][0]), low=va[k], high=vb[k]) for k in keys[:n]]
 
 
 SPREAD_KEYS = ("stat", "between", "n")
