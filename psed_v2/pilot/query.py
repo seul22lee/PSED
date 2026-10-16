@@ -1400,3 +1400,113 @@ def vocabulary():
                 out["setting"][x["name"]][k] += 1; keys[x["name"]].add(kk)
     _VOCAB.update(result=dict(out["result"]), setting=dict(out["setting"]), keys={n: sorted(v) for n, v in keys.items()})
     return _VOCAB
+
+
+# ---------------------------------------------------------------------------------------------------------------- values (P42)
+SHOWN_SHARED = ["material", "structure_type", "substrate", "reactor_type"]
+
+
+def result_matches(T, e, result):
+    """[(key, name, record)] of an entity for a result given by its name (query.vocabulary) or its quantity id: its results, or,
+    for a setting quantity it states (P32), its stated conditions (a target excluded)."""
+    qs = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q}      # a quantity's base name stands for all its keys
+    hit = lambda kk, name: name == result or kk.split("{")[0].split("[")[0] in qs
+    out = [(kk, x["name"], x["record"]) for kk, x in result_records(T, e).items() if hit(kk, x["name"]) and (x["record"].get("text") or x["record"].get("curve"))]
+    if not out:
+        out = [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
+               and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
+    return out
+
+
+def _where_ok(T, e, where):
+    """Whether an entity's stated conditions pass where = {setting name or quantity id: value, or [min, max] in the quantity's unit}."""
+    cr = condition_records(T, e)
+    for s, want in (where or {}).items():
+        recs = [x["record"] for kk, x in cr.items() if x["name"] == s or kk.split("{")[0].split("[")[0] == s]
+        if not recs:
+            return False
+        ok = False
+        for r in recs:
+            q = ckey(T.byid[r["fact"]]).split("{")[0].split("[")[0] if r.get("fact") in T.byid else ""
+            v = r["value"]
+            if isinstance(want, list):
+                if v is not None:
+                    try:
+                        v = L.convert(v, r["unit"], L.UNITS.get(q, r["unit"])) if r["unit"] else v
+                    except (ValueError, KeyError):
+                        pass
+                    ok |= (want[0] is None or v >= want[0]) and (want[1] is None or v <= want[1])
+            elif isinstance(want, (int, float)):
+                ok |= v is not None and abs(v - want) <= 1e-9 * max(1, abs(want))
+            else:
+                ok |= str(want).strip().lower() in (str(r["text"]).lower(), str(fmt(T.byid[r["fact"]]) if r.get("fact") in T.byid else "").lower())
+        if not ok:
+            return False
+    return True
+
+
+def recipe_of(T, e):
+    """The recipe activity above an entity (its process)."""
+    return next((a for a in T.chain(e) if T.byid.get(a, {}).get("type") == "activity" and T.byid[a]["kind"] == "recipe" and not a.endswith(":reactor")), "")
+
+
+def values(result, paper=None, where=None):
+    """Every value of a result (P42), never a representative, grouped by comparison set: each experiment under the smallest set it is
+    a member of, the others in one group per paper. A group: paper, set id, label, kind, what the set varies, the conditions its
+    members share (material, structure, substrate, reactor, and the process-defining ones), the number of other shared conditions,
+    rows (entity, the settings that vary within the set, the value record, its key and name), the claims about the set, its
+    material, structure, reactor, process (recipe) and measurement methods for the comparison between groups."""
+    groups = []
+    for k, T in TREES.items():
+        if paper and k != paper:
+            continue
+        rows = {}
+        for e in experiments(T):
+            if where and not _where_ok(T, e, where):
+                continue
+            m = result_matches(T, e, result)
+            if m:
+                rows[e] = m
+        if not rows:
+            continue
+        size = {c["fact_id"]: len(T.member_entities(c)) for c in T.comps}
+        home = {}
+        for e in rows:
+            mine = sorted([c for c in T.comps if e in T.member_entities(c)], key=lambda c: size[c["fact_id"]])
+            home.setdefault(mine[0]["fact_id"] if mine else "", []).append(e)
+        for cid in [c["fact_id"] for c in T.comps] + [""]:
+            ents = home.get(cid)
+            if not ents:
+                continue
+            crs = {e: condition_records(T, e) for e in ents}
+            keys = list(dict.fromkeys(kk for e in ents for kk in crs[e]))
+            same = [kk for kk in keys if all(kk in crs[e] for e in ents) and len({crs[e][kk]["record"]["text"] for e in ents}) == 1]
+            shown = [kk for kk in same if kk.split("{")[0] in SHOWN_SHARED or kk.split("{")[0] in L.PRIMARY]
+            shown.sort(key=lambda kk: (L.PRIMARY.index(kk.split("{")[0]) if kk.split("{")[0] in L.PRIMARY else -1, kk))
+            vary = []
+            out_rows = []
+            for e in ents:
+                d = distinguishing(T, e, ents, n=3) if len(ents) > 1 else []
+                vary += [x["key"] for x in d if x["key"] not in vary]
+                for kk, name, rec in rows[e]:
+                    out_rows.append(dict(entity=e, name=T.label(e), settings=d, key=kk, result_name=name, record=rec))
+            def order(r):
+                vs = []
+                for kk in vary:
+                    x = crs[r["entity"]].get(kk)
+                    v = x["record"]["value"] if x else None
+                    vs.append((0, v, "") if isinstance(v, (int, float)) else (1, 0, x["record"]["text"] if x else ""))
+                return vs
+            out_rows.sort(key=order)
+            c = T.byid.get(cid, {})
+            groups.append(dict(paper=k, id=cid, label=comparison_label(T, c) if c else "values outside any comparison set", kind=c.get("kind", ""),
+                               varies=[L.NAMES.get(q, q) for q in c.get("quantity", "").split(";") if q] if c else [],
+                               shared=[dict(key=kk, name=crs[ents[0]][kk]["name"], record=crs[ents[0]][kk]["record"]) for kk in shown],
+                               more_shared=len(same) - len(shown), rows=out_rows,
+                               claims=[x["fact_id"] for x in claims_of(T, [cid])] if cid else [],
+                               material=sorted({crs[e]["material"]["record"]["text"] for e in ents if "material" in crs[e]}),
+                               structure=sorted({crs[e]["structure_type"]["record"]["text"] for e in ents if "structure_type" in crs[e]}),
+                               reactor=sorted({crs[e]["reactor_type"]["record"]["text"] for e in ents if "reactor_type" in crs[e]}),
+                               process=sorted({recipe_of(T, e) for e in ents} - {""}),
+                               measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows})))
+    return groups

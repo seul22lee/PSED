@@ -59,6 +59,24 @@ TOOLS = [
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              offset=dict(type="integer", description="Skip this many results (default 0).")),
              required=["words"])),
+    dict(name="values",
+         description=("Returns every value of one result (or stated setting) in the three papers, never a representative, grouped by the "
+                      "comparison set its experiment belongs to (a series, grid or replicate set; one more group per paper for values "
+                      "outside any set). A group header gives once: the paper, the set id, what the set varies, the conditions its "
+                      "members share, and the result's definition when it is not the default or the paper defines it. A row gives the "
+                      "settings that vary within the set, the value with uncertainty and unit, its kind (measured, stated, read from "
+                      "figure, computed by the authors, computed here, model, cited, assumed) and its id. A group footer gives the ids of "
+                      "the claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
+                      "measurement). A quantity's base name covers all its definitions; a specific name only its own. "
+                      f"At most {PAGE_LINES} lines per call; a last line gives the offset of the next page. "
+                      "The knowledge base's names, generated from its data: " + VOCAB),
+         parameters=dict(type="object", properties=dict(
+             result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
+             paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
+             where=dict(type="object", description="Only experiments whose stated settings match: {setting name: a value (number or text), or [min, max] (either may be null)}; numbers in the setting's unit as the values lines show it.",
+                        additionalProperties={}),
+             offset=dict(type="integer", description="Skip this many lines (default 0).")),
+             required=["result"])),
     dict(name="find",
          description=("Lists the experiments of the three papers (deposited specimens and model runs), and the works the papers cite that "
                       "give values, that pass the given filters, grouped under the comparisons the authors made (a series, grid or "
@@ -230,7 +248,7 @@ def name_of_id(i):
 def _closed(schema):
     """additionalProperties false on every object of a schema (P39)."""
     if schema.get("type") == "object":
-        schema["additionalProperties"] = False
+        schema.setdefault("additionalProperties", False)
         for v in schema.get("properties", {}).values():
             _closed(v)
     if schema.get("type") == "array" and isinstance(schema.get("items"), dict):
@@ -255,14 +273,14 @@ def _check(where, v, sch):
         return f"{where}: unknown value {v!r}" + (f"; nearest: {', '.join(near)}" if near else "") + f"; valid: {listed}"
     if t == "object":
         props = sch.get("properties", {})
-        bad = [k for k in v if k not in props]
+        bad = [k for k in v if k not in props] if sch.get("additionalProperties") is False else []
         if bad:
             return f"{where}: unknown argument{'s' if len(bad) > 1 else ''} {', '.join(bad)}; valid arguments: {', '.join(props)}"
         miss = [k for k in sch.get("required", []) if v.get(k) is None]
         if miss:
             return f"{where}: missing {', '.join(miss)}"
         for k, x in v.items():
-            if x is not None:
+            if x is not None and k in props:
                 e = _check(f"{where}.{k}" if where else k, x, props[k])
                 if e:
                     return e
@@ -290,7 +308,28 @@ def _source(i):
     return any(r["element_id"] == rest for r in csv.DictReader((HERE / f"{Q.KEY[k]}.elements.csv").open(encoding="utf-8")))
 
 
-IDS = {("detail", "id"): (_item, "no experiment, input, comparison or cited work has this id"),
+def _names(kind=None):
+    v = Q.vocabulary()
+    return set(v["result"]) | set(v["setting"]) if kind is None else set(v[kind])
+
+
+def _result_ok(r):
+    return r in _names() or r in QUANT
+
+
+def _where_err(where):
+    for k, x in where.items():
+        if k not in _names("setting") and k not in QUANT:
+            near = difflib.get_close_matches(k, sorted(_names("setting")), n=5, cutoff=0.4)
+            return f"where: unknown setting {k!r}" + (f"; nearest: {', '.join(near)}" if near else "") + "; setting names are listed in the description"
+        ok = isinstance(x, (str, int, float)) and not isinstance(x, bool) or (isinstance(x, list) and len(x) == 2 and all(v is None or (isinstance(v, (int, float)) and not isinstance(v, bool)) for v in x))
+        if not ok:
+            return f"where.{k}: give a number, a text, or [min, max] (numbers or null)"
+    return ""
+
+
+IDS = {("values", "result"): (_result_ok, "not a result or setting name of the knowledge base, nor a quantity id (names are listed in the description)"),
+       ("detail", "id"): (_item, "no experiment, input, comparison or cited work has this id"),
        ("source", "id"): (_source, "no fact or paper element has this id"),
        ("compare", "ids"): (lambda i: _item(i) and Q.TREES[i.split(":")[0]].byid[i]["type"] == "entity", "no experiment has this id"),
        ("claims", "linked"): (_item, "no experiment or comparison has this id"),
@@ -307,6 +346,13 @@ def validate(name, args):
     e = _check("", args, SCHEMA[name])
     if e:
         return f"{name}: {e.lstrip('.')}" if not e.startswith(":") else f"{name}{e}"
+    if name == "values" and isinstance(args.get("where"), dict):
+        e = _where_err(args["where"])
+        if e:
+            return f"values: {e}"
+    if name == "values" and args.get("result") is not None and not _result_ok(args["result"]):
+        near = difflib.get_close_matches(args["result"], sorted(_names()), n=5, cutoff=0.4)
+        return f"values: result {args['result']!r}: not a result or setting name of the knowledge base, nor a quantity id" + (f"; nearest: {', '.join(near)}" if near else "")
     for (tool, arg), (ok, why) in IDS.items():
         if tool == name and args.get(arg) is not None:
             for v in (args[arg] if isinstance(args[arg], list) else [args[arg]]):
@@ -332,8 +378,105 @@ def run_tool(name, args):
 SEARCH_LINE = 200
 
 
+def _unc(r):
+    u = r.get("uncertainty")
+    if not u:
+        return ""
+    if isinstance(u, str):
+        return " " + u
+    return f" ± {u.get('value')}" + (f" ({u.get('stat') or 'spread'} between {u['kind'].replace('_', ' ')}" + (f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else "") + ")" if u.get("kind") and u["kind"] != "not_stated" else "")
+
+
+def _span(nums):
+    """Group numbers 1, 2, 3, 5 as '1–3, 5'."""
+    out, run = [], []
+    for n in sorted(nums):
+        if run and n == run[-1] + 1:
+            run.append(n)
+        else:
+            if run:
+                out.append(f"{run[0]}–{run[-1]}" if len(run) > 2 else ", ".join(map(str, run)))
+            run = [n]
+    if run:
+        out.append(f"{run[0]}–{run[-1]}" if len(run) > 2 else ", ".join(map(str, run)))
+    return ", ".join(out)
+
+
+def values_blocks(groups, asked):
+    """The values output as blocks: per group a header (once), its rows, its footer; then the line on what differs between groups."""
+    blocks = []
+    for n, g in enumerate(groups, 1):
+        T = Q.TREES[g["paper"]]
+        names = list(dict.fromkeys(r["result_name"] for r in g["rows"]))
+        bydef = {}                                                              # one line per distinct definition, naming its results
+        for key in dict.fromkeys(r["key"] for r in g["rows"]):
+            rec = next(r["record"] for r in g["rows"] if r["key"] == key)
+            nm = next(r["result_name"] for r in g["rows"] if r["key"] == key)
+            d = (rec.get("definition") if rec.get("kind") != "computed here" else f"formula {rec.get('definition')}") or ""
+            pdef = defined_as(g["paper"], key)
+            if d or pdef:
+                bydef.setdefault("; ".join(x for x in (d, pdef.replace(' · defined as: ', 'the paper: ')) if x), []).append(nm)
+        defs = [f"{', '.join(ns)}: {d}" for d, ns in bydef.items()]
+        sid = g["id"] or f"{g['paper']}:outside"
+        head = (f"group {n} · {short_name(g['paper'])} · " + (f"set [{g['id']}] ({g['kind']}): {g['label']}" if g["id"] else g["label"])
+                + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
+                + (" · shared: " + "; ".join(f"{x['name']} {x['record']['text']}" for x in g["shared"]) if g["shared"] else "")
+                + (f" (+{g['more_shared']} more shared conditions: detail of the set)" if g["more_shared"] and g["id"] else ""))
+        hl = [(sid, head)] + [(sid, "definition · " + d) for d in defs]
+        rows = []
+        for r in g["rows"]:
+            rec = r["record"]
+            st = ", ".join(f"{x['name']} {x['text']}" for x in r["settings"])
+            val = (rec.get("text") or "curve") + _unc(rec)
+            if rec.get("curve") and rec["curve"].get("points"):
+                val = f"curve against {rec['curve'].get('x') or 'x'}: " + ", ".join(f"({x}, {y})" for x, y in rec["curve"]["points"])
+            rows.append([(rec.get("fact") or r["entity"], f"{r['name']}" + (f" · {st}" if st else "") + f" · {val} · {rec.get('kind')}"
+                          + (f" · {r['result_name']}" if len(names) > 1 or r["result_name"] != asked else "") + (f" · experiment [{r['entity']}]" if rec.get("fact") else ""))])
+        foot = [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"]))] if g["claims"] else []
+        blocks.append(dict(head=hl, rows=rows, foot=foot, short=(sid, f"group {n} continued · {short_name(g['paper'])} · {g['label']}")))
+    if len(groups) > 1:
+        diff = []
+        for aspect in ("material", "structure", "reactor", "process", "measurement"):
+            by = {}
+            for n, g in enumerate(groups, 1):
+                for v in g[aspect] or ["not stated"]:
+                    by.setdefault(v, []).append(n)
+            if len(by) > 1:
+                diff.append(f"{aspect}: " + "; ".join(f"{v} (group{'s' if len(ns) > 1 else ''} {_span(ns)})" for v, ns in by.items()))
+        last = ("between groups, not one series: " + " · ".join(diff)) if diff else "the groups share material, structure, reactor, process and measurement"
+        blocks.append(dict(head=[("between", last)], rows=[], foot=[], short=None))
+    return blocks
+
+
+def page_blocks(blocks, offset, budget_lines=PAGE_LINES):
+    """Lines from offset (counted over all lines), at most budget_lines with a header repeated short when a page starts inside a
+    group, then a line with the offset of the next page."""
+    flat = []
+    for b in blocks:
+        flat += [(b, x) for x in b["head"]] + [(b, x) for r in b["rows"] for x in r] + [(b, x) for x in b["foot"]]
+    offset = max(0, int(offset or 0))
+    out, n = [], offset
+    if 0 < offset < len(flat) and flat[offset][1] not in flat[offset][0]["head"] and flat[offset][0]["short"]:
+        out.append(flat[offset][0]["short"])
+    while n < len(flat) and len(out) < budget_lines - 1:
+        out.append(flat[n][1]); n += 1
+    if n < len(flat):
+        out.append(("more", f"more: offset={n} ({len(flat) - n} lines left)"))
+    return out
+
+
 def _run(name, args):
     try:
+        W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
+        if name == "values":
+            groups = Q.values(args["result"], args.get("paper"), args.get("where"))
+            if not groups:
+                return [], ""
+            blocks = values_blocks(groups, args["result"])
+            for b in blocks:
+                b["head"], b["foot"] = W(b["head"]), W(b["foot"])
+                b["rows"] = [W(r) for r in b["rows"]]
+            return page_blocks(blocks, args.get("offset")), ""
         if name == "search":
             if not Q.tokens(args["words"]):
                 return [], "error: search: words has no letters or numbers"
