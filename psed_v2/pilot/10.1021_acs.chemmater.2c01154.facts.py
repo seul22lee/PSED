@@ -1604,4 +1604,6 @@ for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f
 # identity of entities with equal conditions (P23): the 50-cycle film of Fig. 1b and the wafer film of Fig. 1c share every stated
 # condition; the paper does not say whether they are one film (if two, they would be mat22's only run-to-run pair)
 C.identity(K, "not_stated", [f"{K}:ent:T150_R0.80_N50", f"{K}:ent:wafer_T150_R0.80"], "the 50-cycle film of Fig. 1b and the wafer-mapped film of Fig. 1c share every stated condition (150 °C, ratio 0.80, 50 cycles); whether they are one film is not stated", "fig1b;fig1c;fig1.cap")
+# a claim rests on the results it compares (P26): s3.p39 sets the N and O contents against the carrier concentration of s3.p36
+next(x for x in C.facts() if x["fact_id"] == f"{K}:s3.p39#4")["links"] += f";{K}:s3.p36#1"
 write(K, PID)

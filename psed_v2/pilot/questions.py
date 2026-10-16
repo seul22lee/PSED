@@ -369,8 +369,9 @@ def q23():
             comp = T.byid[c]
             for q in [q for q in f["effect"].split(";") if q and not q.startswith("mechanism:")]:
                 linked = [e for e in (T.ent_of(l) for l in f["links"].split(";") if l in T.byid) if e]
-                for key in sorted({kk for m in T.member_entities(comp) for kk in T.results(m) if kk.split("{")[0] == q}):
-                    pts = series_xy(T, comp, next((vk for vk in T.vector(T.member_entities(comp)[0]) if vk.split("{")[0] == comp["quantity"].split(";")[0]), ""), key)
+                for key in sorted({kk for m in T.member_entities(comp) for kk in results_deep(T, m) if kk.split("{")[0] == q}):
+                    pts = [p_ for p_ in series_xy(T, comp, next((vk for vk in T.vector(T.member_entities(comp)[0]) if vk.split("{")[0] == comp["quantity"].split(";")[0]), ""), key)
+                           if T.byid[T.byid[p_[0]]["parent"]]["type"] == "activity"]     # specimens, not the pieces cut from them
                     if len([p for p in pts if p[0] in linked]) >= 2:
                         pts = [p for p in pts if p[0] in linked]                     # the members the claim's links reach
                     if len(pts) >= 2:

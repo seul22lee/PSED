@@ -358,7 +358,7 @@ def series_xy(T, comp, xkey, ykey):
     None when the member states that setting without a number (a cycled temperature)."""
     out = []
     for m in T.member_entities(comp):
-        x, y = T.vector(m).get(xkey), T.results(m).get(ykey)
+        x, y = T.vector(m).get(xkey), results_deep(T, m).get(ykey)            # the member's results, its pieces' and its run's monitor (P26)
         if x and y and val(y[0]) is not None:
             out.append((m, val(x[0]), val(y[0])))
     return out
@@ -515,19 +515,48 @@ def ratios_between(T, a, b):
 
 
 def scope_comparisons(T, claim):
-    """The stated comparisons a claim's links reach: a link under a comparison names it; a link under an entity names the
-    comparisons that entity is in."""
+    """The stated comparisons a claim's links reach (P26): a link at or under a comparison names it; a link at or under a node that
+    is a member of a comparison (an entity, or a deposition when the comparison's members are runs) names that comparison."""
     out = []
+    members = {c["fact_id"]: set(T.members(c)) for c in T.comps}
+    out += [c["fact_id"] for c in T.comps if c["links"].split(";")[0] == claim["fact_id"]]    # the claim is the comparison's purpose
     for l in filter(None, claim["links"].split(";")):
         if l not in T.byid:
+            continue
+        if T.byid[l]["type"] == "claim" and l not in _seen_claims(claim):
+            out += scope_comparisons(T, dict(T.byid[l], _seen=_seen_claims(claim) | {claim["fact_id"]}))   # a claim resting on a claim
             continue
         for x in T.chain(l):
             if T.byid[x]["type"] == "comparison":
                 out.append(x)
-            if T.byid[x]["type"] == "entity":
-                out += [c["fact_id"] for c in T.comps_of(x)]
-                break
+            out += [c for c, ms in members.items() if x in ms]
     return list(dict.fromkeys(out))
+
+
+def _seen_claims(claim):
+    return claim.get("_seen", set()) | {claim["fact_id"]}
+
+
+def rests_on(T, claim):
+    """The results a claim rests on (P26): the linked facts that carry a value, and the results of the entities and comparison members
+    its links reach; [(fact, entity or '')]."""
+    out = []
+    for l in filter(None, claim["links"].split(";")):
+        f = T.byid.get(l)
+        if not f:
+            continue
+        if "#" in l and f["type"] in RESULT_TYPES and (f["value"] or f["value_min"] or f["value_max"] or f["value_text"] or f["points_ref"]):
+            out.append((f, T.ent_of(l) or ""))
+        elif f["type"] == "entity":
+            out += [(g, l) for fs in T.results(l).values() for g in fs]
+    for c in scope_comparisons(T, claim):
+        for m in T.member_entities(T.byid[c]):
+            out += [(g, m) for fs in T.results(m).values() for g in fs] + [(g, m) for fs in T.run_results(m).values() for g in fs]
+    seen, uniq = set(), []
+    for f, e in out:
+        if f["fact_id"] not in seen:
+            seen.add(f["fact_id"]); uniq.append((f, e))
+    return uniq
 
 
 def phases(T, m):
