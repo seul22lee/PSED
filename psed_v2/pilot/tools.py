@@ -50,104 +50,63 @@ DETAIL_DEFAULT = ["what", "differs", "results"]
 
 TOOLS = [
     dict(name="search",
-         description=("Searches the text of every record of the knowledge base by words (lexical: lowercase, plurals folded, _ and - as "
-                      "spaces, numbers and units kept; no synonyms). Returns the records ranked by how well they match, at most "
-                      f"{PAGE_LINES} lines per call, each '[id] record type · one line'; records with the same line are shown once with "
-                      "their count; at most about 2,000 tokens per call, then 'more: offset=N'. The knowledge base's names, generated from its data: " + VOCAB),
+         description=("Arguments: words (required), paper, offset. Returns the records whose text matches the words, best first, one line "
+                      "each: '[id] record type · line' (lexical: lowercase, plurals folded, _ and - as spaces, numbers and units kept; no "
+                      "synonyms). The values and settings of one quantity come as one line with their distinct values; a line whose value "
+                      "has a caveat carries the caveat's id, and the caveat's text follows once. At most 25 lines and about 2,000 tokens "
+                      "per call, then 'more: offset=N'. Use it to find where something is discussed and what the knowledge base calls it. "
+                      "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              words=dict(type="string", description="The words to look for."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              offset=dict(type="integer", description="Skip this many results (default 0).")),
              required=["words"])),
     dict(name="values",
-         description=("Returns every value of one result (or stated setting) in the three papers, never a representative, grouped by the "
-                      "comparison set its experiment belongs to (a series, grid or replicate set; one more group per paper for values "
-                      "outside any set). A group header gives once: the paper, the set id, what the set varies, the conditions its "
-                      "members share, and the result's definition when it is not the default or the paper defines it. A row gives the "
-                      "settings that vary within the set, the value with uncertainty and unit, its kind (measured, stated, read from "
-                      "figure, computed by the authors, computed here, model, cited, assumed) and its id. A group footer gives the ids of "
-                      "the claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
-                      "measurement). Conditions every group of a paper shares are given once. A quantity's base name covers all its "
-                      "definitions; a specific name only its own. A call returns at most about 2,000 tokens; a last line 'more: offset=N' "
-                      "gives the next page. "
+         description=("Arguments: result (required), paper, where, offset. Returns every value of one result or stated setting, never a "
+                      "representative, grouped by the comparison set its experiment belongs to (a series, grid or replicate set; one more "
+                      "group per paper for values outside any set). A group header gives once the paper, the set id, what the set varies, "
+                      "the conditions its members share (those every group of a paper shares are given once) and the result's definition "
+                      "when it is not the default or the paper defines it; a row gives the settings that vary within the set, the value "
+                      "with uncertainty and unit, its kind (measured, stated, read from figure, computed by the authors, computed here, "
+                      "model, cited, assumed), its id and the id of any caveat; under the group come the caveats' texts and the ids of the "
+                      "claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
+                      "measurement). A quantity's base name covers all its definitions, a specific name only its own. About 2,000 tokens "
+                      "per call, then 'more: offset=N'. Use it to see how one result or setting varies across experiments and conditions. "
                       "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              where=dict(type="object", description="Only experiments whose stated settings match: {setting name: a value (number or text), or [min, max] (either may be null)}; numbers in the setting's unit as the values lines show it.",
                         additionalProperties={}),
-             offset=dict(type="integer", description="Skip this many lines (default 0).")),
+             offset=dict(type="integer", description="Skip this many output units (default 0).")),
              required=["result"])),
-    dict(name="find",
-         description=("Lists the experiments of the three papers (deposited specimens and model runs), and the works the papers cite that "
-                      "give values, that pass the given filters, grouped under the comparisons the authors made (a series, grid or "
-                      "replicate set). A group line gives a comparison's id, label and members. A row gives the paper, the experiment's "
-                      "name and id, one or two conditions that tell it apart from the other members of its comparison, and, when a result "
-                      "quantity is given, each value of that quantity the experiment has: value and unit, kind (measured, stated, read from "
-                      f"figure, computed by the authors, computed here from other values, model, cited, assumed), any non-default "
-                      f"definition, the source element, and the paper's definition of the quantity when it has one (shortened; source gives it in full). At most {PAGE_LINES} lines per call; a last line gives the number of further "
-                      "items and the offset that returns them."),
-         parameters=dict(type="object", properties=dict(
-             paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
-             material=dict(type="string", enum=list(L.MATERIALS), description="Only experiments whose film material is this."),
-             structure=dict(type="string", enum=list(L.STRUCTURES), description="Only experiments on this kind of structure."),
-             result=dict(type="string", enum=QUANT, description="Only experiments that have a value of this quantity, and list those values. Quantity ids with plain names: " + QUANT_WORDS + "."),
-             conditions=dict(type="array", description="Only experiments whose stated condition lies in the range; numbers in the quantity's unit: " + NUMERIC_UNITS + ".",
-                             items=dict(type="object", properties=dict(quantity=dict(type="string", enum=QUANT), low=dict(type="number"), high=dict(type="number")),
-                                        required=["quantity"])),
-             cited=dict(type="boolean", description="Include the cited works that give values (default true)."),
-             offset=dict(type="integer", description="Skip this many items (default 0).")))),
     dict(name="detail",
-         description=("Returns what the knowledge base holds about one item, given its id, in the parts asked for. For an experiment or an "
-                      "input (a thing measured before deposition): what (role, material, substrate, inputs, the comparisons it belongs to, "
-                      "identity statements), differs (the conditions that distinguish it from the other members of its comparison), "
-                      "results (every result: value and unit, kind, definition when not the default, method, in situ or ex situ, "
-                      "uncertainty, source element, the ids of other candidate values, the paper's definition of the quantity when it has "
-                      "one, and for a value computed here its formula, inputs and assumed facts), recipe (every condition with value, unit, kind and source), claims (the claims that point at it "
-                      "or its comparisons). For a comparison: what (purpose, what it varies, members), differs (the conditions that also "
-                      "differ among the members), results (main results with the size of the effect against the scatter between repeats, "
-                      "power-law fits with any confounder correction, these three computed here, not by the authors; values stated for "
-                      "the whole set), claims. For a cited work: "
-                      "what, recipe (its conditions), results (its values), claims. For a comparison the members appear as one table of the "
-                      "settings that vary among them. Values computed here, and a set's effect and fit lines, are listed only with the "
-                      "part computed, or when nothing else exists; otherwise one line counts them. Claims are not in the default parts; "
-                      "claims with linked=<id> also returns them. A call returns at most about 2,000 tokens, then 'more: offset=N'."),
+         description=("Arguments: id (required), parts, offset. Returns what the knowledge base holds about one id. An experiment or input: "
+                      "what (role, material, substrate, inputs, the methods its results were measured by, its comparison sets, identity "
+                      "statements, its caveats), differs (the conditions that set it apart in its set), results (value, unit, kind, "
+                      "definition, method, in situ or ex situ, uncertainty, source element, caveats), recipe (every condition), claims, "
+                      "computed (values computed here, with formula, inputs and assumed facts). A comparison set: what, its members as one "
+                      "table of the settings that vary, results (values stated for the set), claims, computed (each effect with its "
+                      "minimum and maximum members and the scatter between repeats, and power-law fits). A claim: the statement, stance, "
+                      "cause and effect, its scope (computed here), the results it rests on, the facts that give its size, its caveats. A "
+                      "cited work: what, recipe, results, claims. Any other id (a value, setting, definition, caveat, note, process step): "
+                      "the record, what it belongs to, its source element and caveats; a caveat also lists what it qualifies. parts "
+                      "(default what, differs, results) applies to experiments, inputs, sets and cited works. About 2,000 tokens per call, "
+                      "then 'more: offset=N'. Use it for more about one id that search or values returned."),
          parameters=dict(type="object", properties=dict(
-             id=dict(type="string", description="An experiment, input, comparison or cited-work id as returned by find, detail, compare or claims."),
+             id=dict(type="string", description="An id as search, values or detail returned it."),
              parts=dict(type="array", items=dict(type="string", enum=DETAIL_PARTS), description="Any of what, differs, results, recipe, claims, computed (default what, differs, results)."),
-             offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
+             offset=dict(type="integer", description="Skip this many output units (default 0).")),
              required=["id"])),
-    dict(name="compare",
-         description=("Sets several experiments side by side: the conditions they share, the conditions that differ with each item's "
-                      "value, and every result with each item's value (unit, kind, definition, source, the paper's definition of the "
-                      "quantity when it has one); for two items, the ratio or difference of each shared result (computed here); a note where values cannot be set beside each other (different definitions); "
-                      "measured curves as their points; and the ids of the claims linked to two or more of the items. Results computed here "
-                      "for every item are counted, not listed, unless result names one. At most about 2,000 tokens per call, then "
-                      "'more: offset=N'."),
-         parameters=dict(type="object", properties=dict(
-             ids=dict(type="array", items=dict(type="string"), description="Two or more experiment ids."),
-             result=dict(type="string", enum=QUANT, description="Only this result quantity."),
-             offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
-             required=["ids"])),
-    dict(name="claims",
-         description=("Returns the claims of the papers (and the user's claims across papers), one line each: its stance (asserted, "
-                      "hedged, open, limitation), the statement, cause and effect in words, the range of conditions it covers (computed here), the "
-                      "comparisons it reaches, its source element, and the ids of the stated results it rests on (source returns each "
-                      f"in full). At most {PAGE_LINES} lines and about 2,000 tokens per call, then 'more: offset=N'."),
-         parameters=dict(type="object", properties=dict(
-             paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
-             variable=dict(type="string", description="Only claims whose cause or effect is this quantity id (" + ", ".join(QUANT) + ") or mechanism token (" + ", ".join("mechanism:" + m for m in L.MECHANISMS) + ")."),
-             linked=dict(type="string", description="Only claims that point at this experiment or comparison id."),
-             author=dict(type="string", enum=["user"], description="Only the user's claims across papers."),
-             offset=dict(type="integer", description="Skip this many claims (default 0).")))),
     dict(name="source",
-         description=("Returns the source of a fact or an element: the paper element (a paragraph, table cell, caption, equation or figure "
-                      "panel), its locator, its text (figure panels have none), whether the knowledge base covers it, and every value the "
-                      "facts of that element carry, each with the statement of the fact. At most about 2,000 tokens per call, then "
-                      "'more: offset=N'."),
-         parameters=dict(type="object", properties=dict(id=dict(type="string", description="A fact id (as in the result lines) or an element id written <paper>:<element>."),
-                                                        offset=dict(type="integer", description="Skip this many output units (default 0); a call returns at most about 2,000 tokens, then a line 'more: offset=N'."),),
-                         required=["id"])),
+         description=("Arguments: id (required), offset. Returns the paper element behind a fact or element id: its locator, its text "
+                      "(figure panels have none), whether the knowledge base covers it, and every value the facts of that element carry, "
+                      "with their statements and caveats. About 2,000 tokens per call, then 'more: offset=N'. Use it to read the paper's "
+                      "own words behind an id."),
+         parameters=dict(type="object", properties=dict(
+             id=dict(type="string", description="A fact id or an element id written <paper>:<element>."),
+             offset=dict(type="integer", description="Skip this many output units (default 0).")),
+             required=["id"])),
 ]
 
 
@@ -337,12 +296,15 @@ def _where_err(where):
     return ""
 
 
+def _record(i):
+    """Whether an id names a record of the knowledge base (any row but a paper's)."""
+    T = Q.TREES.get(i.split(":")[0])
+    return bool(T and i in T.byid and T.byid[i]["type"] != "paper")
+
+
 IDS = {("values", "result"): (_result_ok, "not a result or setting name of the knowledge base, nor a quantity id (names are listed in the description)"),
-       ("detail", "id"): (_item, "no experiment, input, comparison or cited work has this id"),
-       ("source", "id"): (_source, "no fact or paper element has this id"),
-       ("compare", "ids"): (lambda i: _item(i) and Q.TREES[i.split(":")[0]].byid[i]["type"] == "entity", "no experiment has this id"),
-       ("claims", "linked"): (_item, "no experiment or comparison has this id"),
-       ("claims", "variable"): (lambda v: v in QUANT or (v.startswith("mechanism:") and v.split(":", 1)[1] in L.MECHANISMS), "not a quantity id or mechanism token")}
+       ("detail", "id"): (_record, "no record of the knowledge base has this id"),
+       ("source", "id"): (_source, "no fact or paper element has this id")}
 
 
 def validate(name, args):
@@ -379,7 +341,7 @@ def run_tool(name, args):
         return [], "error: " + err
     args = {k: v for k, v in args.items() if v is not None}
     blocks, err = _run(name, args)
-    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name in ("search", "find", "claims") else None)
+    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name == "search" else None)
     if not err and not [x for x in lines if x[0] != "more"]:
         err = f"error: {name}: nothing matches " + ", ".join(f"{k}={json.dumps(v, ensure_ascii=False)}" for k, v in args.items()) \
               + (" (or the offset is past the end)" if args.get("offset") else "")
@@ -552,6 +514,29 @@ def _hidden(n, what="values"):
     return f"{n} computed-here {what} hidden: parts [\"computed\"] shows them"
 
 
+def record_detail(T, f):
+    """detail of a record that is not an experiment, input, set or cited work: a claim, a caveat, a definition, a process step, or one
+    value or setting (P47)."""
+    i, typ = f["fact_id"], Q.record_type(T, f)
+    src = f" · source element: {T.key}:{f['evidence'].split(';')[0]}" if f.get("evidence") else ""
+    if f["type"] == "claim":
+        c = Q.claim_record(T, f)
+        return [claim_line(c)] + clines(c) + [y for r in c.get("sized_by", []) for y in [(r["fact"], "size · " + value_line(r) + cmark(r))] + clines(r)]
+    if f["type"] == "caveat":
+        tg = Q.caveat_targets(T, f)
+        return [(i, f"caveat: {f['statement']}{src}"), (i, f"qualifies {len(tg)} record{'s' if len(tg) != 1 else ''}: " + ", ".join(f"[{x}]" for x in tg[:40]) + (" …" if len(tg) > 40 else ""))]
+    if f["type"] == "activity":
+        own = [x for x in T.own(i) if x["type"] == "setting" and Q.text_of(x)]
+        return [(i, f"{typ} ({f['kind']}): {f['statement']}" + (f" · under [{f['parent']}]" if f.get("parent") else ""))] + \
+               [y for x in own for y in [(x["fact_id"], "setting · " + value_line(Q.record(T, x), Q.name_of(Q.ckey(x), x)) + cmark(Q.record(T, x)))] + clines(Q.record(T, x))]
+    if Q.text_of(f) and f["type"] in ("observation", "setting", "derived", "model", "cited"):
+        e = T.ent_of(i); r = Q.record(T, f, ent=e)
+        return [(i, f"{typ} · " + value_line(r, Q.name_of(Q.ckey(f), f), full=True) + cmark(r))] + clines(r) + \
+               [(e or f["parent"], f"belongs to: {T.label(e)} [{e}]" if e else f"under: [{f['parent']}]")]
+    q = f" · defines: {Q.name_of(Q.ckey(f), f)}" if f["type"] == "definition" and f["quantity"] else ""
+    return [(i, f"{typ}: {f['statement']}{q}{src}")] + [(f["parent"], f"under: [{f['parent']}]")] if f.get("parent") else [(i, f"{typ}: {f['statement']}{q}{src}")]
+
+
 def _run(name, args):
     """(blocks, error) of one call."""
     try:
@@ -595,24 +580,11 @@ def _run(name, args):
                 rec = dict(caveats=list(cav.values()))
                 items.append([(h["id"], line + cmark(rec))] + clines(rec))
             return [block(items)], ""
-        if name == "find":
-            conds = {c["quantity"]: (c.get("low"), c.get("high")) for c in args.get("conditions") or []}
-            f = Q.find(paper=args.get("paper"), material=args.get("material"), structure=args.get("structure"), result=args.get("result"),
-                       conditions=conds or None, cited=args.get("cited", True))
-            items = []
-            for gr in f["groups"]:
-                items.append(W([(gr["id"], f"comparison ({short_name(gr['paper'])}): {gr['label']} · kind: {gr['kind']} · members: "
-                                 + ", ".join(f"[{m}]" for m in gr["all_members"] if m in f["rows"]))]))
-            for i, r in f["rows"].items():
-                d = "; ".join(f"{x['name']} {x['text']}" for x in r["distinguish"])
-                head = f"{short_name(r['paper'])} · {r['name']}" + (" (inferred: not named by the paper)" if r["inferred"] else "") + f" · {r['role']}" + (f" · {d}" if d else "")
-                if r["result"]:
-                    items.append(W([y for x in r["result"] for y in [(x["record"].get("fact") or i, f"{head} · experiment [{i}] · {value_line(x['record'], x['name'])}{defined_as(r['paper'], x['key'])}{cmark(x['record'])}")] + clines(x["record"])]))
-                else:
-                    items.append(W([(i, head)]))
-            return [block(items)], ""
         if name == "detail":
             parts = [p for p in (args.get("parts") or DETAIL_DEFAULT) if p in DETAIL_PARTS] or DETAIL_DEFAULT
+            T0 = Q.tree_of(args["id"]); n0 = T0.byid[args["id"]]
+            if n0["type"] not in ("entity", "comparison", "cited") or "#" in args["id"]:
+                return [block([wrap(*x) for x in record_detail(T0, n0)])], ""
             d = Q.detail(args["id"])
             i = d["id"]
             out = []
@@ -623,6 +595,10 @@ def _run(name, args):
                                 + f" · role: {d['role']}" + (f" · material: {w['material']}" if w.get("material") else "") + (f" · substrate: {w['substrate']}" if w.get("substrate") else "")
                                 + (f" · made from: {', '.join(f'{n} [{x}]' for n, x in zip(w['inputs'], w['input_ids']))}" if w.get("inputs") else "")
                                 + (f" · part of: [{w['parent']}]" if w.get("parent") else "") + (f" · statement: {d['statement']}" if d.get("statement") else "")))
+                    meth = list(dict.fromkeys(r["record"]["method"].replace("_", " ") + (f" ({_mode(r['record'].get('mode'))})" if _mode(r["record"].get("mode")) else "")
+                                              for r in d["results"] if r["record"].get("method") and r["record"]["method"] != "calculation"))
+                    if meth:
+                        out.append((i, "its results were measured by: " + "; ".join(meth)))
                     out += [(c["id"], f"comparison it belongs to: {c['label']}") for c in d["comparisons"]]
                     out += [(i, f"identity ({x['kind']}): {x['statement']} · others: {', '.join(x['others'])}") for x in d["identity"]]
                     out += [(c["id"], f"caveat on this experiment: {c['text']}") for c in d.get("caveats", [])]
@@ -667,33 +643,6 @@ def _run(name, args):
             if "claims" in parts:
                 out += [y for c in d.get("claims", []) for y in [claim_line(c)] + clines(c)]
             return [block([wrap(*x) for x in out])], ""
-        if name == "compare":
-            c = Q.compare(args["ids"], result=args.get("result"))
-            nm = {it["id"]: it["name"] for it in c["items"]}
-            out = [(it["id"], f"item: {short_name(it['paper'])} · {it['name']}") for it in c["items"]]
-            out += [(c["items"][0]["id"], f"shared condition: {s['name']} {s['text']}") for s in c["shared"]]
-            for dff in c["differing"]:
-                out += [(i, f"differing condition: {dff['name']}: {nm[i]} {v if v is not None else 'not stated'}") for i, v in dff["values"].items()]
-            hidden = 0
-            for r in c["results"]:
-                cells = {i: cell for i, cell in r["cells"].items() if cell}
-                if not args.get("result") and cells and all(x.get("kind") == "computed here" for x in cells.values()):
-                    hidden += 1; continue
-                for i, cell in r["cells"].items():
-                    out.append(((cell or {}).get("fact") or i, f"result · {nm[i]} · " + (value_line(cell, r["name"]) + defined_as(cell.get("paper", ""), r["key"]) + cmark(cell) if cell else f"{r['name']}: no value")
-                                + (f" · note: {r['note']}" if r.get("note") else "")))
-                    out += clines(cell)
-                if r.get("relation"):
-                    rel = r["relation"]
-                    out.append((c["items"][0]["id"], f"{r['name']}: {rel['how']} {nm[c['items'][0]['id']]} to {nm[c['items'][1]['id']]} = {rel['value']} {rel['unit']}".strip() + " (kind: computed here)"))
-            if hidden:
-                out.append((c["items"][0]["id"], f"{hidden} results computed here for every item hidden: give result to see one"))
-            if c["claims"]:
-                out.append((c["items"][0]["id"], "claims linked to two or more items: " + ", ".join(f"[{cl['id']}]" for cl in c["claims"])))
-            return [block([wrap(*x) for x in out])], ""
-        if name == "claims":
-            cs = Q.claims(paper=args.get("paper"), variable=args.get("variable"), linked=args.get("linked"), author=args.get("author"))
-            return [block([[x for y in [claim_line(c)] + clines(c) for x in wrap(*y)] for c in cs])], ""
         if name == "source":
             s = Q.source(args["id"])
             eid = f"{s['paper']}:{s['element']}"

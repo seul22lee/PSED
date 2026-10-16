@@ -9,7 +9,7 @@ Arms (one model, its default settings, the same for all three; the three arms of
   model  Model only: the question, no documents, no tools.
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
-  kb     Knowledge base: the five query.py operations as tools; each returns plain text, one line per returned value or row,
+  kb     Knowledge base: four tools over query.py (tools.py: search, values, detail, source); each returns plain text, one line per value or row,
          starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls; find and claims page by 25 lines, detail by parts, no line over 300 characters.
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
 Number check: every number of the answer, sentence by sentence: matches (in a text cited in that sentence), elsewhere (in another
