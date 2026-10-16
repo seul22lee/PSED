@@ -370,12 +370,12 @@ f("s12.p17", "claim", "if Zn deposition also yields C2H6 (2 mol per mol of DEZ),
 
 # ---------------------------------------------------------------- Fig. 1 and Fig. 2 panels
 f("fig1a;fig1.cap;s9.p2", "definition", "Fig. 1(a) sketches an Al2O3 NP compact in the quartz boat: Zn(C2H5)2 or H2O diffuse in, C2H6 leaves, and T is marked at the boat bottom", method="schematic")
-f("fig1a;fig4a", "setting", "NPC diameter drawn and photographed as ~11.4 mm",
-  quantity="other", label_as_printed="diameter", value="11.4", unit="mm", data_kind="chosen input", method="schematic", mentions="~11.4 mm")
-f("fig1a", "setting", "the schematic labels the compact thickness 2L ≈ 1.6 mm",
-  quantity="other", label_as_printed="2L", value="1.6", unit="mm", data_kind="chosen input", method="schematic")
-f("fig1a;fig1.cap;s9.p2", "setting", "the schematic labels the initial porosity φ_i ≈ 51%",
-  quantity="porosity", qualifiers="stage=initial", label_as_printed="φ_i", value="51", unit="%", data_kind="chosen input", method="schematic")
+f("fig1a;fig4a", "observation", "NPC diameter drawn and photographed as ~11.4 mm",
+  quantity="other", label_as_printed="diameter", value="11.4", unit="mm", data_kind="measured", method="schematic", mentions="~11.4 mm")
+f("fig1a", "observation", "the schematic labels the compact thickness 2L ≈ 1.6 mm",
+  quantity="other", label_as_printed="2L", value="1.6", unit="mm", data_kind="measured", method="schematic")
+f("fig1a;fig1.cap;s9.p2", "observation", "the schematic labels the initial porosity φ_i ≈ 51%",
+  quantity="porosity", qualifiers="stage=initial", label_as_printed="φ_i", value="51", unit="%", data_kind="measured", method="schematic")
 f("fig1b;fig1.cap;s9.p2", "definition", "Fig. 1(b) tabulates which steps run at 120 °C and which at 160 °C in the three schedules; a 'dose' means the pulse step plus the hold step", method="schematic",
   mentions='"120 °C";"160 °C";"120/160 °C"')
 f("fig1b", "setting", 'the "120/160 °C" schedule as drawn in Fig. 1(b)', quantity="deposition_temperature",
@@ -871,7 +871,8 @@ for r in C.facts():
 # 120 °C sample is that section's observation, relative to the 120/160 °C section
 C.input_entity(K, f"{K}:ent:compacts", "the pressed Al2O3 NPCs as made, the input of every ALD run: thickness and diameter by calipers, initial porosity, cracks; "
                "d_NP from the powder's BET area and the aspect ratio from L and d_pore", "NPCs as pressed", "s8.p1;s6.p8",
-               measured=[("measurement", [f"{K}:s8.p1#7", f"{K}:s8.p1#8", f"{K}:s8.p1#9", f"{K}:s8.p1#10"])], inputs_of=[R120, R160, RCYC])
+               measured=[("measurement", [f"{K}:s8.p1#7", f"{K}:s8.p1#8", f"{K}:s8.p1#9", f"{K}:s8.p1#10", f"{K}:fig1a#2", f"{K}:fig1a#3", f"{K}:fig1a#4"])],
+               inputs_of=[R120, R160, RCYC])   # the schematic's printed labels (fig1a) repeat the compacts' measured size and porosity: read from figure (P9)
 # the temperature calibration runs (s9.p6) measured the reactor, not a sample: a measurement activity of the recipe
 N(f"{K}:meas:recipe:calibration", "activity", "temperature calibration runs with an extra thermocouple on the boat, at the same outside temperature",
   f"{K}:recipe", evidence="s9.p6", kind="measurement", how="stated", label_as_printed="temperature calibration")

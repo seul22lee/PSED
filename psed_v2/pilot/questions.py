@@ -442,7 +442,7 @@ def q26():
     F = Forest()
     ls = [l for l in F.leaves({"lumped_sticking_coefficient"}) if l["quals"].get("species") == "TMA"]
     def src(l):
-        return "cited work " + l["scope"].split(":")[-1] if l["cited"] else "this work"
+        return "cited work " + l["scope"].split(":")[-1] if l["cited"] else ("this work, model input" if kind(l["row"]) == "model" else "this work")
     def T_(l):
         t = l["ctx"].get("deposition_temperature"); return "T ambiguous" if t == "ambiguous" else (f"{t['value'] or t['value_min'] + '–' + t['value_max']} °C" if t else "no T in scope")
     text = "; ".join(f"{l['key']} {l['row']['censor']}{l['row']['value'] or l['row']['value_min'] + '–' + l['row']['value_max']} ({src(l)}, {T_(l)}, {l['row']['data_kind']})" for l in ls)

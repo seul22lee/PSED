@@ -73,7 +73,7 @@ class Tree:
                 if f["type"] == "setting" and f["quantity"]:
                     level[ckey(f)].append(f)
             for k, fs in level.items():
-                out.setdefault(k, fs)
+                out.setdefault(k, ranked(fs))                                   # nearest level first, then ranked (P10)
         return out
 
     def results(self, ent):
@@ -81,7 +81,7 @@ class Tree:
         for f in self.below(ent):
             if f["type"] in RESULT_TYPES and f["quantity"]:
                 out[ckey(f)].append(f)
-        return out
+        return {k: ranked(fs) for k, fs in out.items()}
 
     def entities(self):
         return [r["fact_id"] for r in self.rows if r["type"] == "entity" and any(f["type"] in RESULT_TYPES for f in self.below(r["fact_id"]))]
@@ -162,6 +162,47 @@ class Tree:
             if ok:
                 out.append(r)
         return out
+
+
+ELEMENT_KIND = {}
+
+
+def element_kind(key, eid):
+    """The kind of an element (panel, caption, paragraph, table_cell, ...) from <paper_id>.elements.csv."""
+    if key not in ELEMENT_KIND:
+        p = HERE / f"{KEY[key]}.elements.csv"
+        ELEMENT_KIND[key] = {r["element_id"]: r["kind"] for r in csv.DictReader(p.open(encoding="utf-8"))} if p.exists() else {}
+    return ELEMENT_KIND[key].get(eid, "")
+
+
+def kind(f):
+    """What a value is (the value record's kind): assumed (a user's assumption), cited (from another work), model (a model input or
+    output), computed (calculated from other values), read from figure (a value whose first element is a figure panel), measured
+    (an observation stated in text or a table), stated (a setting the paper states)."""
+    if f.get("data_kind") == "assumed" or f.get("author") == "user":
+        return "assumed"
+    if f["type"] == "cited" or f.get("data_kind") == "literature":
+        return "cited"
+    if f["type"] == "model":
+        return "model"
+    if f["type"] == "derived" or f.get("data_kind") in ("calculated", "fit"):
+        return "computed"
+    key = f["fact_id"].split(":")[0]
+    if element_kind(key, f["evidence"].split(";")[0]) == "panel":
+        return "read from figure"
+    return "measured" if f["type"] == "observation" else "stated"
+
+
+def rank_key(f):
+    """Among candidates at one distance from the entity (P9-P13): exact before a range before censored; printed in text or a table
+    before read from a figure before computed by this layer; measured before a model input."""
+    exact = 2 if f["censor"] else (0 if f["value"] else 1)
+    src = {"read from figure": 1}.get(kind(f), 0)
+    return (exact, src, 1 if kind(f) == "model" else 0)
+
+
+def ranked(fs):
+    return sorted(fs, key=rank_key)
 
 
 def res(T, ent, quantity, **need):
@@ -461,17 +502,17 @@ def _matches(f, q, need):
 def _candidates(T, ent, spec, need):
     """The facts that can serve an input, nearest first: the entity's results and its run's, its condition vector, its input
     entities' results and settings, then (scope paper) every fact of the paper, then the assumed facts; each as (fact, source)."""
-    pools = [("result", [f for fs in T.results(ent).values() for f in fs] + [f for fs in T.run_results(ent).values() for f in fs]),
-             ("setting", [f for fs in T.vector(ent).values() for f in fs])]
-    for i in T.inputs_of(ent):
+    pools = [("result", [f for fs in T.results(ent).values() for f in fs] + [f for fs in T.run_results(ent).values() for f in fs])]
+    for i in T.inputs_of(ent):                                                  # what the entity was made from: the same physical thing (P9)
         pools.append((f"input {T.label(i)}", [f for fs in T.results(i).values() for f in fs] + [f for f in T.own(i) if f["type"] == "setting"]))
+    pools.append(("setting", [f for fs in T.vector(ent).values() for f in fs]))
     if spec["scope"] == "paper":
         pools.append(("paper", [f for f in T.rows if "#" in f["fact_id"] and f["type"] in ("setting", "observation", "derived", "model", "cited")]))
     pools.append(("assumed", [u for u in ASSUMED if not u["links"] or any(l.split(":")[0] == T.key for l in u["links"].split(";"))]))   # an assumed fact serves the papers its links name; a constant without links serves all
     out = []
     for src, pool in pools:
         for q in spec["q"].split("|"):
-            hits = [f for f in pool if _matches(f, q, need) and (f["value"] or f["value_min"] or f["value_max"])]
+            hits = ranked([f for f in pool if _matches(f, q, need) and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)])
             exact = [f for f in hits if set(quals(f).items()) == set(need.items())]
             out += [(f, src) for f in exact] + [(f, src) for f in hits if f not in exact]
         if out and not spec["all"]:
