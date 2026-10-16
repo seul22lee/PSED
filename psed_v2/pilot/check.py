@@ -175,8 +175,10 @@ def experiment_entities(rows):
 def check_tree(rows, els):
     """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links resolve;
     no cycles; tree rows use the node types; an activity has a kind and how, an entity how; every entity has a deposition (a model run: a simulation) above it
-    (or sits under the recipe with activities of order 0 only, before any deposition); every observation sits under a measurement
-    activity or under the comparison it spans; every setting under an activity or under a comparison (what its members share);
+    (or is an input entity: under the recipe, or a piece of one, with activities of order 0 only, before any deposition, and named in
+    the `inputs` of an activity); every observation sits under a measurement activity or under the comparison it spans, never with
+    a setting quantity, and one with a measured quantity never on the paper's method activity; every setting under an activity or
+    an entity;
     every comparison has a purpose fact as its first link, two or more members that exist, and a varied quantity id unless it is a
     replicate set; what a comparison varies is never "other"; a comparison's label states no value that no member's condition
     vector carries; every claim has a link."""
@@ -254,9 +256,16 @@ def check_tree(rows, els):
         i = r["fact_id"]
         if r["type"] == "entity":
             ok = any(R[a]["type"] == "activity" and R[a]["kind"] in ("deposition", "simulation") for a in above(i))   # a model run: its simulation
-            before = R[r["parent"]]["type"] == "activity" and R[r["parent"]]["kind"] == "recipe" and all(c["order"] == "0" for c in K.get(i, []) if c["type"] == "activity")
+            acts = [a for a in above(i) if R[a]["type"] == "activity"]
+            before = not ok and bool(acts) and R[acts[0]]["kind"] == "recipe" and all(c["order"] == "0" for c in K.get(i, []) if c["type"] == "activity")
             if not ok and not before:
                 err.append(f"{i}: entity without a deposition above it")
+            if before and R[r["parent"]]["type"] == "activity" and not any(i in x["inputs"].split(";") for x in rows if x["type"] == "activity"):
+                err.append(f"{i}: input entity that no activity names in its inputs column")
+        if r["type"] == "activity":
+            for x in filter(None, r["inputs"].split(";")):
+                if x not in R or R[x]["type"] != "entity":
+                    err.append(f"{i}: inputs names {x}, not an entity")
         if r["type"] == "comparison":
             if r["kind"] not in L.COMPARISON_KINDS:
                 err.append(f"{i}: comparison kind {r['kind']!r} (lists.COMPARISON_KINDS)")
@@ -290,6 +299,11 @@ def check_tree(rows, els):
             nt, nk = (R[n]["type"], R[n]["kind"]) if n in R else ("", "")
             if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
                 err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
+            if r["type"] == "observation" and r["quantity"] in L.SETTING_QUANTITIES:
+                err.append(f"{i}: observation with the setting quantity {r['quantity']} (lists.SETTING_QUANTITIES)")
+            if (r["type"] == "observation" and nt == "activity" and nk == "measurement" and R[R[n]["parent"]]["type"] == "paper"
+                    and r["quantity"] not in ("", "other")):
+                err.append(f"{i}: {r['quantity']} measured on the paper's method activity {n}, not on an entity")
             if r["type"] == "setting" and nt not in ("activity", "entity"):
                 err.append(f"{i}: setting under {n or 'nothing'} ({nt}), not under an activity or an entity (a comparison holds no setting)")
     return err

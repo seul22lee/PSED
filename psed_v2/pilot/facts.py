@@ -258,6 +258,24 @@ def spread(fid, parents, labels):
         _facts.append(row)
 
 
+def input_entity(key, ent, statement, label, evidence, parent=None, how="stated", measured=(), inputs_of=()):
+    """A thing measured before any deposition (the chips as fabricated, the compacts as pressed, the plasma): an entity under the
+    recipe, or a piece of another input entity (parent); measured = [(method, [fact ids])] makes one measurement activity of order 0
+    per method and moves those facts under it; inputs_of = the activities that used it, which name it in their `inputs` column."""
+    N(ent, "entity", statement, parent or f"{key}:recipe", evidence=evidence, how=how, label_as_printed=label)
+    byid = {r["fact_id"]: r for r in _facts}
+    for method, fids in measured:
+        act = f"{key}:meas:{ent.split(':', 1)[1]}:{method}"
+        if act not in byid:
+            N(act, "activity", f"{method.replace('_', ' ')} on {label}, before deposition", ent, evidence=evidence, kind="measurement", how="stated",
+              order="0", label_as_printed=method.replace("_", " "))
+            byid[act] = _facts[-1]
+        for f in fids:
+            byid[f]["parent"] = act
+    for a in inputs_of:
+        byid[a]["inputs"] = ";".join(filter(None, [byid[a]["inputs"], ent]))
+
+
 def comparisons(key, table, members=None):
     """Turn the surviving group rows into comparison facts: id :grp: -> :cmp:, type comparison, kind and the varied quantity ids
     from table {group id: (kind, varied)}; links stay purpose + members (members={group id: [...]} overrides them); facts under the

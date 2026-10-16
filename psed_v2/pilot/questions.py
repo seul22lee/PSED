@@ -235,9 +235,18 @@ def q7():
 def q8():
     """The effective channel height of the 500 nm design from the fabrication tolerances."""
     T = TREES["yim20"]
-    fs = [f for f in T.rows if "#" in f["fact_id"] and f["label_as_printed"] in ("tolerance for the oxide thickness", "membrane bending displacement") or "nanostep" in f["statement"] and f["value"]]
-    where = {T.byid[f["parent"]]["type"] + " " + T.byid[f["parent"]].get("kind", "") for f in fs if f["parent"] in T.byid}
-    return unanswerable("; ".join(f"{f['statement'][:50]}… {fmt(f)}" for f in fs), f"facts in the wrong place: the chip metrology sits under {', '.join(sorted(where))}, no input entity; no derived quantity")
+    pieces = [e["fact_id"] for e in T.rows if e["type"] == "entity" and T.byid.get(e["parent"], {}).get("type") == "entity" and T.dep_of(e["fact_id"]) is None]
+    chip = next((e for e in pieces if fmt(T.vector(e).get("feature_height", [{}])[0] or {"value": "", "value_min": "", "value_max": "", "censor": "", "unit": "", "value_text": ""}) == "500 nm"), None)
+    if not chip:
+        return unanswerable("", "no input entity (a piece of the chips as fabricated) carries the 500 nm design height as its own setting")
+    H, r = T.vector(chip)["feature_height"][0], T.results(chip)
+    tol, bend = r.get("other[tolerance for the oxide thickness]"), r.get("other[membrane bending displacement]")
+    step = T.results(T.byid[chip]["parent"]).get("other[nanostep height]")                 # the chip type's observation, above the piece
+    if not (tol and bend and step):
+        return unanswerable("", "the tolerance, the bending or the nanostep is not an observation on the chip entities")
+    return answered(f"design {fmt(H)} ± {fmt(tol[0])}, membrane bending {fmt(bend[0])}, entrance nanostep {fmt(step[0])} → effective height ≈ {g(val(H) - val(bend[0]) - val(step[0]))} nm "
+                    f"({g(val(H) - val(bend[0]))} nm before the nanostep); all three observed on the chips before deposition",
+                    "the chip piece's own setting (design height) and its order-0 observations (tolerance, bending), the nanostep from the chip type above it; the subtraction in the question")
 
 
 def q9():
@@ -293,7 +302,7 @@ def q14():
 
 def q15():
     """For 120 vs 120/160 °C, the ratio of every quantity measured on both."""
-    return unanswerable("", "no operation: result against result over the members of the schedules comparison; the Zn Kα observation sits on the method, not on the entity")
+    return unanswerable("", "no operation: result against result over two members of the schedules comparison (the pair entities, their pieces and the runs' process monitors)")
 
 
 def q16():

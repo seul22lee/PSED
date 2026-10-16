@@ -117,7 +117,7 @@ F(K, "s3.p1;fig1a;fig1.cap", "definition",
   "One ALD cycle: Mo(NtBu)2(NMe2)2 vapour pulse that reacts until surface sites are used up, purge, H2S/H2/Ar remote plasma "
   "exposure, second purge; cycles are repeated to the target thickness.", mentions="Figure 1a;Mo(NtBu)2(NMe2)2;H2S/H2/Ar plasma")
 F(K, "s3.p1", "claim", "The plasma strips the ligands of the adsorbed Mo precursor and delivers S to the film.")
-F(K, "s3.p1", "observation", "Saturation curves show the process is self-limiting.", mentions="Figure S1")
+F(K, "s3.p1", "claim", "Saturation curves show the process is self-limiting.", mentions="Figure S1")
 F(K, "s3.p2", "claim", "Plasma feed gas composition and deposition temperature together decide whether amorphous S-rich or "
   "polycrystalline MoS2 grows.")
 F(K, "s3.p2", "definition", "a-MoS2+x denotes amorphous S-rich films and c-MoS2 polycrystalline MoS2 films.",
@@ -131,11 +131,10 @@ F(K, "s3.p3", "claim", "Absolute flows and other process parameters are given in
 # s3.p4 / Fig. 1a
 F(K, "s3.p4;fig1a;fig1.cap", "observation",
   "At 150 °C, ratios of 0 to 0.50 give a-MoS2+x with weak, broad Raman bands resembling amorphous MoS3.",
-  quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value_min="0", value_max="0.50", data_kind="chosen input",
   method="raman", mentions="150 °C;a-MoS3;ref. 54;Figure 1a")
 F(K, "s3.p4;fig1a", "observation",
   "At 150 °C polycrystalline MoS2 needs a ratio of at least 0.65, seen from the appearance of the MoS2 E1g (E2g1) and A1g "
-  "Raman modes.", quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2",
+  "Raman modes.", quantity="other", qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset",
   value="0.65", data_kind="measured", method="raman", mentions="150 °C;Figure 1a")
 F(K, "s3.p4;fig1a", "claim", "Raman peak intensity rises from ratio 0.65 to 0.80, suggesting better crystallinity.",
   mentions="0.65;0.80")
@@ -168,15 +167,14 @@ F(K, "s3.p6;fig1d", "observation", "The 5 nm MoS2 films on PET are highly transp
 # s3.p7 / Fig. 2
 F(K, "s3.p7;fig2;fig2.cap", "claim", "The lowest H2 flow ratio giving crystalline films rises as deposition temperature falls.",
   mentions="Figure 2;Figure S5")
-F(K, "s3.p7;fig2", "observation", "At 300 °C and above even ratio 0.20 gives c-MoS2.", quantity="plasma_gas_ratio",
-  qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.20", data_kind="measured", method="raman",
+F(K, "s3.p7;fig2", "observation", "At 300 °C and above even ratio 0.20 gives c-MoS2.", quantity="other",
+  qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset", value_max="0.20", data_kind="measured", method="raman",
   mentions="≥300 °C;0.20")
-F(K, "s3.p7;fig2", "observation", "At 100 °C ratio 0.80 is needed for c-MoS2.", quantity="plasma_gas_ratio",
-  qualifiers="gas=H2", label_as_printed="minimum H2 flow ratio for c-MoS2", value="0.80", data_kind="measured", method="raman",
+F(K, "s3.p7;fig2", "observation", "At 100 °C ratio 0.80 is needed for c-MoS2.", quantity="other",
+  qualifiers="gas=H2", label_as_printed="H2 flow ratio at the crystallinity onset", value="0.80", data_kind="measured", method="raman",
   mentions="100 °C;0.80")
 F(K, "s3.p7;s3.p13", "observation", "There is also an upper limit: XPS shows ratio 0.94 is too high, though Raman does not reveal it.",
-  quantity="plasma_gas_ratio", qualifiers="gas=H2", label_as_printed=R, value="0.94", data_kind="measured", method="xps",
-  mentions="0.94")
+  method="xps", mentions="0.94")
 
 # s3.p8 - s3.p10 / Fig. 3
 F(K, "s3.p8;fig3a;fig3.cap;s5.p18", "setting", "TEM specimen: a sub-5 nm c-MoS2 film grown at 100 °C with ratio 0.80 and 50 cycles.",
@@ -214,8 +212,7 @@ F(K, "s3.p11", "claim", "The lower S/Mo at higher temperature is likely due to c
 F(K, "s3.p11;s3.p12", "claim", "Stoichiometry and crystallinity come from the interplay of plasma chemistry (set by the H2 flow ratio) and "
   "surface chemistry (set by ratio, deposition temperature and film crystallinity).")
 F(K, "s3.p13;fig4", "observation", "At 50-100 °C some films made with high ratios are near MoS2 composition yet amorphous.",
-  quantity="deposition_temperature", value_min="50", value_max="100", unit="°C", data_kind="chosen input", method="xps",
-  mentions="50-100 °C")
+  method="xps", mentions="50-100 °C")
 F(K, "s3.p13", "claim", "Those low-temperature exceptions may come from too little thermal energy to crystallize and an S "
   "environment more like a-MoS2+x than MoS2.")
 F(K, "s3.p13;fig4", "observation", "Ratio 0.94 gives a low S/Mo although Raman shows MoS2 peaks.", method="xps",
@@ -488,8 +485,9 @@ F(K, "s3.p40", "cited", "Literature (mostly DFT) places H in MoS2 at S vacancies
   "interstitially within the Mo plane (n-type), as neutral intercalated H2, or replacing S to form n-type MoSH.",
   mentions="ref. 72;ref. 73;ref. 74;ref. 75;ref. 76;ref. 77")
 F(K, "s3.p40", "observation", "Annealing up to 300 °C causes no major change in electrical properties.",
-  quantity="annealing_temperature", label_as_printed="annealing temperature", value="300", unit="°C", data_kind="chosen input",
   method="electrical", mentions="Section S12")
+F(K, "s3.p40", "setting", "Annealing at temperatures up to 300 °C (Section S12).", quantity="annealing_temperature",
+  label_as_printed="annealing temperature", value_max="300", unit="°C", data_kind="chosen input", mentions="Section S12")
 F(K, "s3.p41", "observation", "Infrared and Raman measurements found no evidence of Mo-H or S-H bonds, which does not prove they "
   "are absent.", method="raman", mentions="Mo-H;S-H")
 F(K, "s3.p41;s3.p42", "claim", "Given the process and the S deficiency of crystalline high-ratio films, H most likely sits at S "
@@ -514,10 +512,12 @@ F(K, "s3.p44", "observation", "The 350 °C device has a thinner interface layer,
   method="tem", mentions="350 °C;Figure S14")
 F(K, "s3.p44", "claim", "The thicker interface of the 100 °C sample may explain its non-linear I-V.", mentions="100 °C")
 F(K, "s3.p44", "observation", "Films made at 100 °C start oxidizing when annealed in air at only 150 °C.",
-  quantity="annealing_temperature", label_as_printed="annealing temperature in air", value="150", unit="°C",
-  data_kind="chosen input", mentions="100 °C;Sections S11;S12")
+  mentions="100 °C;Sections S11;S12")
 F(K, "s3.p44", "claim", "Further work is needed on carrier density control, contact/MoS2 interfaces and MoS2 stability during "
   "processing for low-temperature PEALD MoS2.", mentions="MoS2")
+F(K, "s3.p44", "setting", "Annealing in air at 150 °C, the lowest temperature at which the 100 °C films oxidized (Sections S11, S12).",
+  quantity="annealing_temperature", qualifiers="gas=air", label_as_printed="annealing temperature in air", value="150", unit="°C",
+  data_kind="chosen input", mentions="100 °C;Sections S11;S12")
 
 # ------------------------------------------------------------------ other TMDCs
 F(K, "s3.p45", "claim", "The H2 flow ratio is a key parameter for low-temperature PEALD of TMDCs generally, allowing crystalline "
@@ -567,19 +567,18 @@ F(K, "s3.p52", "observation", "The H2 plasma step removes the extra S and yields
 F(K, "s3.p52", "claim", "H radicals can convert a-MoS2+x into c-MoS2 under these ALD conditions, though prevention of S uptake by "
   "a higher ratio is not excluded.", mentions="a-MoS2+x;c-MoS2")
 F(K, "s3.p53", "observation", "Lowering the H2S flow reduces S incorporation like raising the ratio; crystalline films form at "
-  "250 °C with no H2 added.", quantity="deposition_temperature", value="250", unit="°C", data_kind="chosen input",
+  "250 °C with no H2 added.", quantity="crystallinity", value_text="crystalline", data_kind="measured",
   mentions="250 °C;Figure S22a")
 F(K, "s3.p53", "observation", "At lower temperature such as 150 °C, H2 addition is still needed for c-MoS2.",
-  quantity="deposition_temperature", value="150", unit="°C", data_kind="chosen input", mentions="150 °C;Figure S22b")
+  mentions="150 °C;Figure S22b")
 F(K, "s3.p53", "observation", "At fixed ratio, more H2S flow increases S incorporation.")
 F(K, "s3.p53", "claim", "Ratio, absolute H2 and H2S flows and deposition temperature must all be considered to get the wanted "
   "film properties.")
 
 # ------------------------------------------------------------------ conclusions
 NK("s4.h", "heading")
-F(K, "s4.p1", "observation", "Polycrystalline films reach compositions MoS2.2, TiS2.2 and WS2.2 (conclusions; the WS2 section "
-  "gives WS2.1).", quantity="composition", qualifiers="element=S", label_as_printed="MoS2.2, TiS2.2, WS2.2", value="2.2",
-  data_kind="measured", method="xps", mentions="MoS2.2;TiS2.2;WS2.2")
+F(K, "s4.p1", "claim", "Polycrystalline films reach compositions MoS2.2, TiS2.2 and WS2.2 (conclusions; the WS2 section "
+  "gives WS2.1).", mentions="MoS2.2;TiS2.2;WS2.2")
 F(K, "s4.p1", "claim", "Quantifying temperature and ratio effects opens further development of low-temperature PEALD of "
   "crystalline chalcogenides with controlled stoichiometry.")
 
@@ -993,7 +992,7 @@ STANCE = {"abs.g1#1": "asserted", "abs.g1#2": "asserted", "abs.g2#1": "asserted"
           "s3.p32#2": "asserted", "s3.p32#4": "asserted", "s3.p33#1": "asserted", "s3.p37#3": "asserted", "s3.p37#5": "asserted",
           "s3.p39#2": "hedged", "s3.p39#4": "hedged", "s3.p41#2": "hedged", "s3.p44#3": "hedged", "s3.p44#5": "open", "s3.p45#1": "asserted",
           "s3.p46#5": "asserted", "s3.p48#3": "asserted", "s3.p51#1": "limitation", "s3.p51#4": "asserted", "s3.p52#1": "hedged",
-          "s3.p52#4": "open", "s3.p53#4": "asserted", "s4.p1#2": "asserted"}
+          "s3.p52#4": "open", "s3.p53#4": "asserted", "s4.p1#2": "asserted", "s3.p1#3": "asserted", "s4.p1#1": "asserted"}
 for cf in C.facts():
     if cf["type"] == "claim":
         cf["stance"] = STANCE[cf["fact_id"].split(":", 1)[1]]          # KeyError = a claim without a stance
@@ -1058,6 +1057,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's3.p52#4': ('mechanism:plasma_chemistry', 'crystallinity'),
     's3.p53#4': ('plasma_gas_ratio;gas_flow_rate;deposition_temperature', 'composition;crystallinity'),
     's4.p1#2': ('', ''),
+    's3.p1#3': ('', ''), 's4.p1#1': ('plasma_gas_ratio', 'composition'),
 }
 for cf in C.facts():
     if cf["type"] == "claim":
@@ -1219,11 +1219,15 @@ for f in C.facts():
         put(mfilm(150, {"1": "0.20", "2": "0.65", "3": "0.80"}[m.group(1)], "gc"), f["fact_id"])
 # Table 2 (flows per ratio, used at every temperature) and the shared recipe, reactor, substrates and methods: the process
 put(PROC, *[f for f in FX if f.startswith(f"{K}:tab2.")])
-put(PROC, "eq1#2", "s3.p1#3", "s3.p6#2", "s3.p50#1", "s3.p51#2", "s3.p51#3", "s4.p1#1",
+put(PROC, "eq1#2", "s3.p50#1", "s3.p51#2", "s3.p51#3",
     *[f"s5.p1#{i}" for i in (1, 2, 3, 4)], "s5.p2#1", "s5.p2#2", "s5.p2#3", "s5.p3#1", "s5.p3#2", "s5.p3#3",
-    *[f"s5.p4#{i}" for i in range(1, 7)], *[f"s5.p6#{i}" for i in range(2, 15)], "s5.p7#5",
+    *[f"s5.p4#{i}" for i in range(1, 7)], *[f"s5.p6#{i}" for i in range(2, 15)],
     "s5.p9#1", "s5.p9#2", "s5.p9#3", "s5.p10#1", "s5.p11#1", "s5.p12#1", "s5.p13#1", "s5.p14#1", "s5.p14#2", "s5.p15#1",
-    "s5.p15#2", "s5.p16#1", "s5.p16#2", "s5.p16#3", "s5.p16#4", "s5.p16#5", "s5.p17#1", "s5.p18#1")
+    "s5.p15#2", "s5.p16#1", "s5.p16#2", "s5.p16#3", "s5.p16#4", "s5.p17#1", "s5.p18#1")
+put(PROC, "s3.p1#3", links=PROC)                                            # a claim about the process (the saturation curves of Fig. S1)
+put(PROC, "s4.p1#1", links=lk(grp("map"), grp("WS2"), grp("TiS2")))          # the conclusions' compositions, over the three materials
+put(grp("cyc"), "s3.p6#2")                                                  # the 1-5 nm films of the cycle series are smooth and continuous (Figs. S3, S4)
+put(grp("map"), "s5.p16#5")                                                 # XPS depth profiles on selected grid films
 put(PROC, "s5.p18#2", links=lk(pair(150, "0.65"), pair(100, "0.80"), pair(350, "0.20")))
 # the heat-map window: facts over several temperatures
 put(grp("map"), "fig2#1", "fig2.cap#1", "fig4#1", "fig4#2", "fig7b#1", "fig8#1", "s3.p5#4", "s3.p7#4", "s3.p11#2", "s3.p11#4",
@@ -1291,11 +1295,10 @@ put(mfilm(100, "0.80", "tem"), "s3.p8#1", "s3.p8#2", "s3.p9#1", "s3.p10#1", "fig
 put(mfilm(100, "0.80", "tem"), "s3.p43#3", "s3.p43#5", "s3.p43#6", links=pair(350, "0.20"))
 put(mfilm(100, "0.80", "pet"), "fig1d#1", "fig1d#2", "fig1d#3", "s3.p6#4", "s3.p6#5", "s5.p2#4", "s5.p2#5")
 put(mfilm(100, "0.80", "pet"), "s3.p6#3", links=fid("fig1d#1"))
-# annealed films (Sections S11, S12)
-RUNS[xrun("anneal")] = (PROC, "films annealed after deposition, in vacuum or inert up to 300 °C and in air (Sections S11, S12)",
-                        "annealing", "run=specimen;how=stated;sample=annealed")
-put(xrun("anneal"), "s3.p40#2")
-put(xrun("anneal"), "s3.p44#4", links=grp("T100"))
+# annealed films (Sections S11, S12): the anneal is an activity of the 100 °C device film (stage 3b); its settings and what it
+# showed go to that film here
+put(mfilm(100, "0.80", "tem"), "s3.p40#2", "s3.p40#3", "s3.p44#6")
+put(mfilm(100, "0.80", "tem"), "s3.p44#4", links=grp("T100"))
 # H2S flow tests (Fig. S22)
 put(grp("h2s"), "s3.p53#3")
 RUNS[xrun("T250_R0_lowH2S")] = (grp("h2s"), "250 °C film with lowered H2S flow and no H2 (Fig. S22a)", "Figure S22a",
@@ -1304,6 +1307,10 @@ RUNS[xrun("T150_lowH2S")] = (grp("h2s"), "150 °C films with lowered H2S flow (F
                              "run=deposition;how=stated;sample=T150_lowH2S")
 put(xrun("T250_R0_lowH2S"), "s3.p53#1")
 put(xrun("T150_lowH2S"), "s3.p53#2")
+# the control exposures (s5.p7): the plasma alone and the Mo precursor alone, followed by in situ SE; the paper names no run
+RUNS[xrun("control")] = (PROC, "control exposures at the lowest temperatures: the H2S/H2/Ar plasma alone and the Mo precursor alone, followed by in situ SE; "
+                               "the paper names no run", "control exposures", "run=deposition;how=inferred;sample=control")
+put(xrun("control"), "s5.p7#5")
 # WS2 and TiS2 (Fig. 9)
 put(grp("WS2"), "fig9a#1")
 put(grp("WS2"), "s5.p8#1", links=grp("TiS2"))
@@ -1438,7 +1445,7 @@ for g in [r["fact_id"] for r in C.facts() if r["type"] == "group"]:
 # which Raman, XPS, in situ SE, SEM/AFM and four-point probe are measurement activities (the paper does not say whether one film
 # served all; the measurements share cycle count and substrate). Films whose cycles or substrate differ get their own stated
 # depositions: the 4" wafer (50 cycles), the glassy-carbon films of Table 1, the TEM films, the PET film, the cycle series, the
-# extra-H2-step run, the H2S tests, WS2 and TiS2; the annealed films an inferred deposition with an anneal activity. Every
+# extra-H2-step run, the H2S tests, WS2 and TiS2, the control exposures; the anneal is an activity under the 100 °C device film. Every
 # deposition carries its temperature and H2 flow ratio as settings (generated below where stage 2 has none). The (T, ratio) pair
 # groups are dropped (one entity each); the other groups survive with their members (step 3 turns them into comparisons).
 RUNROW = {r["fact_id"]: r for r in C.facts() if r["type"] == "run"}
@@ -1468,14 +1475,21 @@ for rid, r in RUNROW.items():
         dep, ent = f"{K}:dep:{s_}", f"{K}:ent:{s_}"
         DEPS[dep] = dict(statement=f"deposition of: {r['statement']}", label=r["label_as_printed"], how=how_, evidence=r["evidence"].split(";")[0])
         ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
-        if s_ == "anneal":
-            ENTS[rid]["via"] = (f"{K}:act:anneal", "anneal", "annealing after deposition, in vacuum or inert up to 300 °C and in air (Sections S11, S12)")
 DROP.append(grp("T300"))                                                   # one cell at 300 °C: no series to compare
 C.retree(K, PROC, DEPS, ENTS, group_facts_to={g: f"{K}:dep:{g.split(':')[-1]}" for g in DROP}, drop_groups=DROP)
-# observations of the plasma by OES and of the saturation curves by in situ SE: under measurement activities of the paper
-N(f"{K}:method:oes", "activity", "optical emission spectroscopy of the H2S/H2/Ar plasma", PAPER, evidence="s3.p50;s3.p51", kind="measurement", how="stated",
-  label_as_printed="OES")
-for fid_, par in ((f"{K}:s3.p50#1", f"{K}:method:oes"), (f"{K}:s3.p51#3", f"{K}:method:oes"), (f"{K}:s3.p1#3", f"{K}:method:ellipsometry")):
+# the plasma is an input entity: what OES found about it sits on its own order-0 measurement, and every plasma deposition names it
+C.input_entity(K, f"{K}:ent:plasma", "the H2S/H2/Ar plasma fed to every plasma-enhanced deposition, characterized by OES (Section S9)", "H2S/H2/Ar plasma",
+               "s3.p50;s3.p51", measured=[("oes", [f"{K}:s3.p50#1", f"{K}:s3.p51#3"])], inputs_of=[d for d in DEPS if "thermal" not in d])
+# the anneal (Sections S11, S12) is an activity of the 100 °C device film: the paper does not name the annealed films, the device
+# film (patterned and contacted) is inferred; its settings under the activity, what it showed under measurements after it
+ANN, DEV = f"{K}:act:anneal", f"{K}:ent:tem_T100_R0.80"
+N(ANN, "activity", "annealing of the 100 °C film up to 300 °C and in air at 150 °C (Sections S11, S12); which film was annealed is not stated, the device film is inferred",
+  DEV, evidence="s3.p40;s3.p44", kind="anneal", how="inferred", label_as_printed="anneal")
+for m_ in ("electrical", "measurement"):
+    N(f"{K}:meas:ent:tem_T100_R0.80:anneal:{m_}", "activity", f"{m_} after the anneal", ANN, evidence="s3.p40;s3.p44", kind="measurement", how="stated",
+      label_as_printed=m_)
+for fid_, par in ((f"{K}:s3.p40#3", ANN), (f"{K}:s3.p44#6", ANN), (f"{K}:s3.p40#2", f"{K}:meas:ent:tem_T100_R0.80:anneal:electrical"),
+                  (f"{K}:s3.p44#4", f"{K}:meas:ent:tem_T100_R0.80:anneal:measurement")):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
 # every deposition carries its temperature and H2 flow ratio
 import collections  # noqa: E402

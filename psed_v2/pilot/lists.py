@@ -26,6 +26,12 @@ QUANTITIES = sorted({
     "other",
 })
 
+# quantities that name a chosen input, never what a measurement found: an observation never carries one (check.py); a threshold
+# the authors read off a series (the ratio from which films are crystalline) is an observation of quantity other
+SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing_temperature", "pulse_time", "purge_time", "cycle_time",
+                      "cycle_number", "plasma_gas_ratio", "gas_flow_rate", "carrier_gas", "precursor_purity", "substrate", "pillar_layout",
+                      "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure_type", "material"}
+
 # the film material (material, value_text) and the test structure type (structure_type, value_text; Cremers 2019's taxonomy)
 # of a process or group; the workbench filters list these ids
 MATERIALS = ["Al2O3", "MoS2", "WS2", "TiS2", "ZnO"]

@@ -467,8 +467,9 @@ f("s14.p1;fig6a;fig6b;fig6c;fig6d;fig6e;fig6f", "observation", "the Al2O3 densit
   quantity="other", label_as_printed="denser band width", value_min="0.3", value_max="0.5", unit="mm", data_kind="measured", method="sem_eds", mentions="Fig. S5")
 f(f"s14.p1;fig6d;fig6f;s14.p2;s15.p2;abs.g4;{A}", "observation", "for T = 120 °C and 120/160 °C the normalized Zn Kα signal is about constant through the thickness apart from the outer ~0.2 mm at each face",
   quantity="other", label_as_printed="near-surface depletion depth", value="0.2", unit="mm", data_kind="measured", method="sem_eds", mentions="T = 120 °C;T cycled between 120 and 160 °C")
-f("s14.p1", "observation", "the 120 °C sample has 12% more normalized Zn Kα counts, in line with its 10% higher fractional mass gain",
-  quantity="other", label_as_printed="Zn Kα counts difference", value="12", unit="%", data_kind="measured", method="sem_eds", mentions="120 °C")
+f("s14.p1", "observation", "the 120 °C sample has 12% more normalized Zn Kα counts than the 120/160 °C sample, in line with its 10% higher fractional mass gain",
+  quantity="other", label_as_printed="Zn Kα counts relative to the 120/160 °C section", value="12", unit="%", data_kind="measured", method="sem_eds",
+  mentions="120 °C;120/160 °C")
 f("s14.p2", "observation", "XPS of top and interior surfaces shows the weaker Zn Kα signal within ~0.2 mm of the faces reflects real thinning of the ZnO", method="xps", mentions="Fig. S3;Fig. S4")
 f(f"s14.p2;s14.p6;abs.g4;{A};s15.p2", "claim", "the near-face ZnO depletion may come from Zn-containing species desorbing during the long DEZ purges, as Ti species desorb in TiO2 ALD from TiCl4/H2O at high temperature",
   mentions="ref. 39")
@@ -850,7 +851,7 @@ for lab, s_ in (("120", "120"), ("160", "160"), ("120/160", "120_160")):
                                      how=re.search(r"how=(\w+)", sr["qualifiers"]).group(1), evidence=sr["evidence"])
     EXTRA.append((f"{K}:meas:ent:{s_}:pair:weighing_before", "activity", "the two NPCs weighed before ALD", pair_,
                   dict(kind="measurement", how="stated", order="0", evidence="s9.p3", label_as_printed="weighing before ALD")))
-ENTS[BARE] = dict(dep=f"{K}:recipe", ent=f"{K}:ent:bare", parent=f"{K}:recipe", statement=RUNROW[BARE]["statement"], label="uncoated NPC", how="stated",
+ENTS[BARE] = dict(dep=f"{K}:recipe", ent=f"{K}:ent:bare", parent=f"{K}:ent:compacts", statement=RUNROW[BARE]["statement"], label="uncoated NPC", how="stated",
                   evidence=RUNROW[BARE]["evidence"])
 SIMRUNS = {SIM: dict(act=f"{K}:simact:eq1_2", ent=f"{K}:simact:eq1_2:run", parent=PAPER, statement=RUNROW[SIM]["statement"], label=RUNROW[SIM]["label_as_printed"],
                      evidence=RUNROW[SIM]["evidence"])}
@@ -861,14 +862,21 @@ for r in C.facts():                                                             
 for r in C.facts():
     if r["fact_id"] == f"{K}:meas:ent:bare:photograph":
         r["order"] = "0"                                                        # photographed before any deposition
-# the compacts as made (calipers, porosity, cracks) under a measurement activity of the paper; process observations under the
-# process-monitor method; the text's porosity list spans the three runs: under the schedules comparison
-N(f"{K}:method:compacts", "activity", "the pressed compacts as made: thickness and diameter by calipers, initial porosity, cracks", PAPER,
-  evidence="s8.p1", kind="measurement", how="stated", label_as_printed="compacts as made")
-for fid_, par in ((f"{K}:s8.p1#7", f"{K}:method:compacts"), (f"{K}:s8.p1#8", f"{K}:method:compacts"), (f"{K}:s8.p1#9", f"{K}:method:compacts"),
-                  (f"{K}:s8.p1#10", f"{K}:method:compacts"), (f"{K}:s9.p4#11", f"{K}:method:process_monitor"), (f"{K}:s9.p5#1", f"{K}:method:process_monitor"),
-                  (f"{K}:s12.x1#3", f"{K}:method:process_monitor"), (f"{K}:fig3a#2", f"{K}:method:process_monitor")):
+# the compacts as pressed are an input entity (calipers, porosity, cracks under an order-0 measurement; d_NP and the aspect ratio
+# derived from them), named in the inputs of the three runs; the uncoated NPC of Fig. 4(a) is a piece of it. What the text says of
+# the process monitor itself (hand-adjusted pulses, the chamber volume, the calibration spread, leaks, the figure's markings) stays
+# on that method activity; what it observes over all three coated samples (XRD faces and phases, the vertical current, the Al and
+# Zn maps, the pressure traces' common shape, the ranking of Δn_g and TS) spans the schedules comparison; the Zn Kα excess of the
+# 120 °C sample is that section's observation, relative to the 120/160 °C section
+C.input_entity(K, f"{K}:ent:compacts", "the pressed Al2O3 NPCs as made, the input of every ALD run: thickness and diameter by calipers, initial porosity, cracks; "
+               "d_NP from the powder's BET area and the aspect ratio from L and d_pore", "NPCs as pressed", "s8.p1;s6.p8",
+               measured=[("measurement", [f"{K}:s8.p1#7", f"{K}:s8.p1#8", f"{K}:s8.p1#9", f"{K}:s8.p1#10"])], inputs_of=[R120, R160, RCYC])
+for fid_, par in ((f"{K}:s8.p1#3", f"{K}:ent:compacts"), (f"{K}:s6.p8#7", f"{K}:ent:compacts"), (f"{K}:s9.p4#11", f"{K}:method:process_monitor"),
+                  (f"{K}:s9.p5#1", f"{K}:method:process_monitor"), (f"{K}:s12.x1#3", f"{K}:method:process_monitor"), (f"{K}:fig3a#2", f"{K}:method:process_monitor"),
+                  (f"{K}:s14.p1#5", f"{K}:meas:ent:120:section:sem_eds")):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
 C.comparisons(K, {f"{K}:grp:schedules": ("series", "deposition_temperature")})
-next(r for r in C.facts() if r["fact_id"] == f"{K}:s12.p1#8")["parent"] = f"{K}:cmp:schedules"
+for fid_ in ("s12.p1#8", "s10.p1#5", "s10.p1#9", "s13.p2#1", "s13.p2#2", "fig5#1", "s13.p4#10", "s14.p1#1", "s14.p1#3", "s14.p1#4", "s14.p2#1", "fig6d#1",
+             "fig6a#2", "s13.p1#1", "s12.p8#4", "fig3b#1", "fig3c#1", "s12.p2#2", "s12.p2#3", "s12.x1#1"):
+    next(r for r in C.facts() if r["fact_id"] == f"{K}:{fid_}")["parent"] = f"{K}:cmp:schedules"
 write(K, PID)

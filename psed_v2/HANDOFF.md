@@ -66,6 +66,14 @@ sections below.
   activities (a cycle count per temperature row) goes on the first and is copied to the others, each copy citing the same elements
   (`facts.spread`). A recipe-level lookup setting that belongs to one value of another setting (the Table 2 flows per H2 ratio)
   carries that value as a qualifier (`ratio=`), so a join can key on it.
+- An observation's subject is an entity: it sits under a measurement activity of that entity, of the deposition that made it (a
+  process monitor), or under the stated comparison whose members it spans. Its quantity is a measured one, never a setting
+  quantity (`lists.SETTING_QUANTITIES`); a threshold the authors read off a series (the ratio from which films are crystalline) is
+  an observation of quantity other on that comparison; a stated anneal is an activity under the film it treated, inferred when the
+  paper does not name the film. A thing measured before deposition (the chips as fabricated, the compacts as pressed, the plasma) is
+  an input entity under the recipe, or a piece of one, its measurements of order 0, named in the `inputs` column of every activity
+  that used it (`facts.input_entity`). Only an observation about the measurement method itself (its model, its positioning error,
+  its artefacts) stays on the paper's method activity, and it carries no measured quantity.
 
 ## v1
 v1 lives on branch `figure-provenance-repair` under `psed_v1/papers/<paper_id>/` (read with `git show figure-provenance-repair:<path>`;
@@ -115,9 +123,10 @@ Stages:
    (`<key>:cmp:<name>`, a fact with members) and cited works (`<key>:refs:N`). Each script's stage 3 still places facts under
    the old process, runs and groups; `facts.retree()` and `facts.comparisons()` then build the activity/entity tree from that
    placement (stage 3b; the per-paper tables say which runs are depositions, entities, pieces, simulations, which groups are
-   dropped). Rules checked by `check.py`: an entity has a deposition (a model run its simulation) above it or sits under the recipe
-   before any deposition; every observation under a measurement activity or the comparison it spans; every setting under an
-   activity, an entity or a comparison; a comparison has a purpose fact first, two or more members and a varied quantity id (none
+   dropped). Rules checked by `check.py`: an entity has a deposition (a model run its simulation) above it or is an input entity
+   (under the recipe or a piece of one, activities of order 0 only, named in an activity's `inputs`); every observation under a
+   measurement activity or the comparison it spans, never with a setting quantity, and never with a measured quantity on the
+   paper's method activity; every setting under an activity or an entity, never a comparison; a comparison has a purpose fact first, two or more members and a varied quantity id (none
    for a replicate set), varies nothing of quantity other, and its label's values are in a member's condition vector; a value read
    off a colour-bar panel says so. Done 2026-10-16 (commit 7d9470b): yim20 27 entities (17 stated, 10 model runs), 15 depositions,
    42 measurement activities, 8 comparisons; mat22 54 entities (36 inferred), 54 depositions, 128 measurement activities, 12

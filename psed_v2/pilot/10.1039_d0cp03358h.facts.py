@@ -1134,13 +1134,31 @@ for k in list(SIMS) + ["esi"]:
     SIMRUNS[sim(k)] = dict(act=f"{K}:simrun:{k}", ent=f"{K}:simrun:{k}:run", parent=SIMACT, statement=RUNROW[sim(k)]["statement"],
                         label=RUNROW[sim(k)]["label_as_printed"], evidence=RUNROW[sim(k)]["evidence"])
 C.retree(K, PROC, DEPS, ENTS, SIMRUNS, group_facts_to={grp("sims"): SIMACT})
-# observations about the measurement methods and about the chips as fabricated: under measurement activities of the paper
-N(f"{K}:method:metrology", "activity", "the chips as fabricated: oxide thickness tolerance and the entrance nanostep", PAPER, evidence="s16.p3;s16.p4",
-  kind="measurement", how="stated", label_as_printed="fabrication metrology")
+# observations about the reflectometry method itself (the regions it shows, the spikes) stay on the paper's method activity; the
+# ESI comparison of Series C with the model spans that series
 for fid_, par in ((f"{K}:fig3b#1", f"{K}:method:reflectometry"), (f"{K}:fig3.cap#3", f"{K}:method:reflectometry"), (f"{K}:s17.p1#2", f"{K}:method:reflectometry"),
-                  (f"{K}:s16.p3#2", f"{K}:method:metrology"), (f"{K}:s16.p4#1", f"{K}:method:metrology"), (f"{K}:s16.p4#2", f"{K}:method:metrology"),
-                  (f"{K}:s16.p4#3", f"{K}:method:metrology")):
+                  (f"{K}:s12.x1#4", grp("C"))):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
+# the chips as fabricated are an input entity (the PillarHall-3 chip, whose entrance nanostep is common to the designs), with one
+# piece per design height: the design height is the piece's own setting (s5.p1), the oxide tolerance (s16.p4) and the membrane
+# bending (s16.p5) its order-0 measurements; every deposition names the chip it coated in `inputs` (the AFM specimen's height is
+# not stated: the chip type)
+CHIPS = f"{K}:ent:chips"
+C.input_entity(K, CHIPS, "PillarHall-3 LHAR chips as fabricated, the input of every ALD run; the entrance nanostep is common to the design heights",
+               "PillarHall-3 chips", "s5.p1;s16.p3", measured=[("metrology", [f"{K}:s16.p3#2"])], inputs_of=[f"{K}:dep:S4"])
+H_DEP = {}
+for f_ in C.facts():
+    if f_["type"] == "setting" and f_["quantity"] == "feature_height" and f_["parent"].startswith((f"{K}:ent:", f"{K}:dep:")):
+        dep_ = f_["parent"] if ":dep:" in f_["parent"] else next(r["parent"] for r in C.facts() if r["fact_id"] == f_["parent"])
+        H_DEP.setdefault(int(float(f_["value"])), set()).add(dep_)
+HFACT = {100: f"{K}:s5.p1#3", 500: f"{K}:s5.p1#4", 2000: f"{K}:s5.p1#5"}
+TOL = {100: f"{K}:s16.p4#1", 500: f"{K}:s16.p4#2", 2000: f"{K}:s16.p4#3"}
+BEND = {100: [f"{K}:s16.p5#6"], 500: [f"{K}:s16.p5#4"], 2000: [f"{K}:s16.p5#5"]}
+for h in (100, 500, 2000):
+    piece = f"{K}:ent:chip_H{h}"
+    C.input_entity(K, piece, f"the {h} nm design of the PillarHall-3 chip: its oxide-defined channel height with its tolerance, its membrane bending",
+                   f"{h} nm design chip", "s5.p1;s16.p4;s16.p5", parent=CHIPS, measured=[("metrology", [TOL[h]]), ("afm", BEND[h])], inputs_of=sorted(H_DEP[h]))
+    next(r for r in C.facts() if r["fact_id"] == HFACT[h])["parent"] = piece      # the design height is the chip's own setting
 # a comparison holds no setting: the channel lengths scanned for Series A (1 mm, Fig. 4) and Series B (5 mm) are measurement settings
 # of those samples' reflectometry
 C.spread(f"{K}:fig4.cap#1", [f"{K}:meas:ent:{n}:reflectometry" for n in (1, 2, 3)], {f"{K}:meas:ent:{n}:reflectometry": f"sample {n}" for n in (1, 2, 3)})
