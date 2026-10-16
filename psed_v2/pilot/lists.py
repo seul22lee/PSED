@@ -108,7 +108,7 @@ CENSOR = {"", "<", ">", "<dl", ">dl"}
 UNCERTAINTY_KINDS = {"pieces", "runs", "position", "repeat_measurement", "fit", "measurement", "literature", "propagated", "not_stated"}
 
 # facts (stage 2): fact types and data kinds
-TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison", "identity"]   # bridge: user facts only;
+TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "bridge", "comparison", "identity", "caveat"]   # bridge: user facts only;
 #   comparison: the authors' comparison intent (a series, a grid, a replicate set), a fact with members, not a parent
 STANCES = ["asserted", "hedged", "open", "limitation"]
 # mechanism tokens for a claim's cause and effect (mechanism:<token>), beside the quantity ids

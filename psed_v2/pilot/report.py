@@ -59,7 +59,8 @@ def lite(rec):
                                                 if u.get("kind") and u["kind"] not in ("not_stated",) else "")) if u else "",
                alternatives=[a["text"] + (f" ({a['kind']})" if a["kind"] in L.KIND_WORDS else "") for a in rec.get("alternatives", [])],
                formula=rec["definition"] if rec["kind"] == "computed here" else "", assumed=rec.get("assumed", []),
-               inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []))
+               inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []),
+               caveats=rec.get("caveats", []))
     if rec.get("curve") and rec["curve"].get("points"):
         out["curve"] = dict(x=rec["curve"]["x"], points=rec["curve"]["points"])
     if rec.get("settings"):
@@ -210,6 +211,9 @@ const PN=k=>D.papers[k]||k, col=k=>`var(--c${Object.keys(D.papers).indexOf(k)})`
 const word=r=>r&&D.kinds[r.kind]?D.kinds[r.kind]:"";
 const vtext=(r,skipKind)=>!r?"":`${r.text}${r.definition?` <span class="mut">${esc(r.definition)}</span>`:""}${!skipKind&&word(r)?` <span class="mut">${word(r)}</span>`:""}`;
 const srcLink=r=>r&&r.source?`<span class="src" onclick="openSource('${r.paper}:${r.source}','${r.fact||""}')">${esc(D.sources[r.paper+":"+r.source]?.locator||"source")}</span>`:"";
+const CAV=new Set();      // a caveat once per panel (P45)
+const cav=r=>(r&&r.caveats||[]).filter(c=>!CAV.has(c.id)&&CAV.add(c.id)).map(c=>`<div class="line mut" style="margin-left:14px">caveat: ${esc(c.text)}</div>`).join("");
+const cavWord=rs=>{const cs=rs.flatMap(r=>(r&&r.caveats)||[]);return cs.length?` <span class="mark" title="${esc([...new Set(cs.map(c=>c.text))].join(" | "))}">caveat</span>`:""};
 const inferredMark=x=>x?` <span class="mark" title="not stated by the paper; inferred">i</span>`:"";
 function bar(){const sel=(k,opts,cur,lab)=>`<select name="${lab}" title="${lab}" onchange="setF('${k}',this.value)"><option value="">any ${lab}</option>${opts.map(o=>`<option value="${esc(o.v)}" ${o.v===cur?"selected":""}>${esc(o.t)}</option>`).join("")}</select>`;
  $("#bar").innerHTML=sel("material",D.filters.materials.map(m=>({v:m,t:m})),S.material,"material")+sel("structure",D.filters.structures.map(m=>({v:m,t:m.replace(/_/g," ")})),S.structure,"structure")
@@ -223,7 +227,7 @@ function visible(){return D.rows.filter(pass)}
 function setF(k,v){S[k]=v;autoSelect();render()}
 function setR(q,i,v){S.ranges[q]=S.ranges[q]||["",""];S.ranges[q][i]=v;autoSelect();render()}
 function autoSelect(){const v=visible();if(v.length&&v.length<=6){S.checked=new Set(v.map(r=>r.id));S.panel={type:"selected"}}else if(S.panel.type==="selected"){S.checked=new Set([...S.checked].filter(i=>v.some(r=>r.id===i)));if(!S.checked.size)S.panel={type:"none"}}}
-function rowLine(r){const res=S.result?(r.results[S.result]||[]).map(x=>`<span class="val">${vtext(x)}</span>`).join("; "):"";
+function rowLine(r){const res=S.result?(r.results[S.result]||[]).map(x=>`<span class="val">${vtext(x)}</span>${cavWord([x])}`).join("; "):"";
  const dis=r.distinguish.filter(d=>!r.name.includes(d.text.split(" ")[0])).map(d=>`${esc(d.name)} ${esc(d.text)}`).join(", ");
  return `<div class="row"><input type="checkbox" ${S.checked.has(r.id)?"checked":""} onchange="tick('${r.id}',this.checked)"><span class="mut">${esc(PN(r.paper))}</span> · <span class="nm" onclick="openDetail('${r.id}')">${esc(r.name)}</span>${inferredMark(r.inferred)}${dis?` · <span class="mut">${dis}</span>`:""}${res?` · ${res}`:""}</div>`}
 // search (P40): the same words and weights as the tools' search
@@ -251,21 +255,21 @@ function tickGroup(g,on){const ids=new Set(visible().map(r=>r.id));GRP[g].all.fi
 function tick(i,on){on?S.checked.add(i):S.checked.delete(i);S.panel=S.checked.size?{type:"selected"}:{type:"none"};render()}
 function openDetail(i){S.panel={type:"detail",id:i};renderRight()}function openComp(i){S.panel={type:"comparison",id:i};renderRight()}function openSource(i,f){S.panel={type:"source",id:i,fact:f||""};renderRight()}
 function lim(items,key,n=6){const all=S.open.has(key);const sh=all?items:items.slice(0,n);return sh.join("")+(items.length>n?`<div class="more" onclick="S.open.${all?"delete":"add"}('${key}');renderRight()">${all?"show fewer":`+${items.length-n} more`}</div>`:"")}
-function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span></div>`}
+function claimLine(id){const c=CL[id];if(!c)return"";return `<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)} <span class="chip">${esc(c.scope)}</span>${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(x.text)}</div>`).join("")}</div>`}
 function detailPanel(id){const d=D.details[id];if(!d)return"";const what=d.what||{};
  const link=i=>`<span class="src" onclick="openDetail('${i}')">${esc((D.details[i]||{name:i}).name)}</span>`;
  const sub=[what.substrate?`substrate: ${esc(what.substrate)}`:"",(what.input_ids||[]).length?`made from: ${what.input_ids.map(link).join(", ")}`:"",what.parent?`part of: ${link(what.parent)}`:"",d.type==="cited"?"a work the paper cites":""].filter(Boolean).join(" · ");
  const rr=(d.recipe||[]);const unc=k=>{const c=rr.find(c=>c.key===k);return c&&c.record&&c.record.uncertainty?` <span class="mut">${esc(c.record.uncertainty)}</span>`:""};
- const diffs=(d.differs||[]).map(x=>`<div class="line">${esc(x.name)} <span class="val">${esc(x.text)}</span>${unc(x.key)}</div>`);
- const full=S.open.has("recipe:"+id)?rr.map(c=>`<div class="line mut">${esc(c.name)} <span class="val">${vtext(c.record)}</span>${c.record.uncertainty?` ${esc(c.record.uncertainty)}`:""} ${srcLink(c.record)}</div>`).join(""):"";
+ const diffs=(d.differs||[]).map(x=>`<div class="line">${esc(x.name)} <span class="val">${esc(x.text)}</span>${unc(x.key)}</div>${cav((rr.find(c=>c.key===x.key)||{}).record)}`);
+ const full=S.open.has("recipe:"+id)?rr.map(c=>`<div class="line mut">${esc(c.name)} <span class="val">${vtext(c.record)}</span>${c.record.uncertainty?` ${esc(c.record.uncertainty)}`:""} ${srcLink(c.record)}</div>${cav(c.record)}`).join(""):"";
  const ORD=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","h_per_metal","film_density","density_relative_to_bulk","mass_gain","phase","crystallinity","shell_volume_fraction","coating_mass_fraction","moles_deposited","moles_from_mass_gain"];
  const ordk=k=>{const i=ORD.indexOf(k.split("{")[0]);return i<0?ORD.length:i};
  const res=(d.results||[]).filter(x=>x.record&&(x.record.text||x.record.curve)).sort((a,b)=>ordk(a.key)-ordk(b.key)).map(x=>{const r=x.record,k="res:"+id+":"+x.key,o=S.open.has(k);
   return `<div class="line"><span class="more" style="color:inherit" onclick="S.open.${o?"delete":"add"}('${k}');renderRight()">${esc(x.name)}</span> <span class="val">${r.curve&&!r.text?"curve of "+r.curve.points.length+" points":vtext(r)}</span>${r.uncertainty?` <span class="mut">${esc(r.uncertainty)}</span>`:""}${r.method&&r.method!=="calculation"?` <span class="mut">${esc(r.method.replace(/_/g," "))}${r.mode&&r.mode!=="not_stated"?", "+r.mode.replace("_"," "):""}</span>`:""} ${srcLink(r)}`
-   +(o?`<div class="mut" style="margin-left:14px">${(r.settings||[]).map(esc).join(" · ")||""}${r.alternatives.length?` chosen over ${esc(r.alternatives.join(", "))}`:""}${r.formula?` ${esc(r.formula)}`:""}${r.inputs.length?` from ${esc(r.inputs.join(", "))}`:""}${r.assumed.length?` · assumed: ${esc(r.assumed.map(a=>a.replace("user:assume_","").replace(/_/g," ")).join(", "))}`:""}</div>`:"")+`</div>`});
+   +(o?`<div class="mut" style="margin-left:14px">${(r.settings||[]).map(esc).join(" · ")||""}${r.alternatives.length?` chosen over ${esc(r.alternatives.join(", "))}`:""}${r.formula?` ${esc(r.formula)}`:""}${r.inputs.length?` from ${esc(r.inputs.join(", "))}`:""}${r.assumed.length?` · assumed: ${esc(r.assumed.map(a=>a.replace("user:assume_","").replace(/_/g," ")).join(", "))}`:""}</div>`:"")+`</div>`+cav(r)});
  const cls=(d.claims||[]).map(claimLine);
  return `<h2>${esc(d.name)}${inferredMark(d.inferred)} <span class="mut" style="font-size:14px;font-weight:400">${esc(PN(d.paper))}</span></h2>
- <div class="part"><h3>What</h3><div class="line">${esc(d.role==="model run"?"a model run":d.role==="input"?"measured before any deposition":d.type==="cited"?"cited work":"a deposited specimen")}${(d.comparisons||[]).length?` in ${d.comparisons.map(c=>`<span class="src" onclick="openComp('${c.id}')">${esc(c.label)}</span>`).join(", ")}`:""}</div>${sub?`<div class="line mut">${sub}</div>`:""}</div>
+ <div class="part"><h3>What</h3>${(d.caveats||[]).map(c=>`<div class="line mut">caveat: ${esc(c.text)}</div>`).join("")}<div class="line">${esc(d.role==="model run"?"a model run":d.role==="input"?"measured before any deposition":d.type==="cited"?"cited work":"a deposited specimen")}${(d.comparisons||[]).length?` in ${d.comparisons.map(c=>`<span class="src" onclick="openComp('${c.id}')">${esc(c.label)}</span>`).join(", ")}`:""}</div>${sub?`<div class="line mut">${sub}</div>`:""}</div>
  <div class="part"><h3>What differs</h3>${diffs.slice(0,6).join("")||'<div class="mut">nothing beyond its group</div>'}<div class="more" onclick="S.open.${S.open.has("recipe:"+id)?"delete":"add"}('recipe:${id}');renderRight()">${S.open.has("recipe:"+id)?"hide the full recipe":"full recipe"}</div>${full}</div>
  <div class="part"><h3>Results</h3>${lim(res,"r:"+id)||'<div class="mut">none</div>'}</div>
  <div class="part"><h3>Claims</h3>${lim(cls,"c:"+id,3)||'<div class="mut">none</div>'}</div>`}
@@ -274,13 +278,13 @@ function compPanel(id){const d=D.details[id];if(!d)return"";const ms=d.members.m
  const fitOf=k=>(d.fits||[]).find(f=>f.key===k);
  const ends=e=>e.low?` <span class="mut">from</span> ${esc(e.low.name)} ${esc(e.low.text)} <span class="mut">to</span> ${esc(e.high.name)} ${esc(e.high.text)}${(e.between||[]).length?` <span class="mut">(they differ in ${esc(e.between.map(x=>x.name+" "+x.low+" vs "+x.high).join("; "))})</span>`:""}`:"";
  const lines=eff.map(e=>{const f=fitOf(e.key);return `<div class="line">${esc(e.name)}: range <span class="val">${esc(e.effect)}${e.unit?" "+esc(e.unit):""}</span> over ${e.n}${ends(e)}${f?` <span class="mut">· power-law exponent ${esc(f.exponent)} against ${esc(f.x)}${f.corrected.map(c=>`, ${esc(c.exponent)} with ${esc(c.condition)} set to ${esc(c.to)}`).join("")}</span>`:""}${cant?"":` <span class="mut">${esc(e.sentence)}</span>`}</div>`});
- const own=(d.values||[]).map(v=>`<div class="line">${esc(v.text&&v.statement?v.statement:"")}</div>`);
+ const own=(d.values||[]).map(v=>`<div class="line">${esc(v.text&&v.statement?v.statement:"")}</div>${cav(v)}`);
  return `<h2>${esc(d.label)} <span class="mut" style="font-size:14px;font-weight:400">${esc(PN(d.paper))}</span></h2>${d.purpose?`<div class="line mut">${esc(d.purpose)}</div>`:""}
  <div class="part"><h3>Varies</h3><div class="line">${esc(d.varies.join(", ")||"nothing stated")}${d.confounders?` <span class="mut">· also differs: ${esc(d.confounders)}</span>`:""}</div></div>
  <div class="part"><h3>Members</h3>${lim(ms,"m:"+id)}</div><div class="part"><h3>Main results</h3>${lim(lines,"e:"+id,3)||'<div class="mut">no result on two or more members</div>'}${cant?`<div class="line mut">no repeated runs; the size of the differences cannot be judged</div>`:""}</div>
  ${own.length?`<div class="part"><h3>Stated for the set</h3>${lim(own,"o:"+id,6)}</div>`:""}`}
 function sourcePanel(id){const s=D.sources[id];if(!s)return"";const f=S.panel.fact;const vs=[...s.values].sort((a,b)=>(b.fact===f)-(a.fact===f));
- const vals=vs.map(v=>`<div class="line"${v.fact===f&&f?' style="font-weight:600"':""}>${v.of?esc(v.of)+": ":""}${esc(v.name)} <span class="val">${vtext(v)}</span></div>`);
+ const vals=vs.map(v=>`<div class="line"${v.fact===f&&f?' style="font-weight:600"':""}>${v.of?esc(v.of)+": ":""}${esc(v.name)} <span class="val">${vtext(v)}</span></div>${cav(v)}`);
  return `<h2>${esc(s.locator)} <span class="mut" style="font-size:14px;font-weight:400">${esc(PN(s.paper))}</span></h2>${s.crop&&IM[s.crop]?`<img class="crop" src="${IM[s.crop]}" alt="${esc(s.locator)}">`:""}
  ${s.text?`<div class="passage cov-${esc(s.coverage)}">${esc(s.text)}</div><div class="mut" style="font-size:14px">${s.coverage==="covered"?"covered by the knowledge base":s.coverage==="missed"?"not covered":"no knowledge to extract"}</div>`:""}
  <div class="part"><h3>${s.crop?"Values in this figure":"Values from this passage"}</h3>${lim(vals,"s:"+id)||'<div class="mut">none</div>'}</div>`}
@@ -314,7 +318,8 @@ function selPanel(){const ids=[...S.checked].filter(i=>D.details[i]);if(!ids.len
  const cnt={};ids.forEach(i=>[...(D.details[i].claims||[])].forEach(c=>cnt[c]=(cnt[c]||0)+1));const linked=Object.entries(cnt).filter(([c,n])=>n>=2).map(([c])=>claimLine(c));
  const xsel=xs.length>1?`<label class="mut">x <select onchange="S.x=this.value;renderRight()">${xs.map(x=>`<option value="${esc(x.k)}" ${x.k===S.x?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label>`:"";
  const colsMore=nAll>6?`<div class="more" onclick="S.open.${S.open.has("rcols")?"delete":"add"}('rcols');renderRight()">${S.open.has("rcols")?"fewer results":`+${nAll-6} more results`}</div>`:"";
- return `<h2>${ids.length} selected</h2>${xsel}${plot}${table}${colsMore}<div class="part"><h3>Claims on two or more of them</h3>${lim(linked,"sel-c",3)||'<div class="mut">none</div>'}</div>`}
+ const cavs=[...shared.map(([k,o])=>cav(o.v[ids[0]])),...ids.flatMap(i=>diff.map(([k,o])=>cav(o.v[i]))),...ids.flatMap(i=>rcols.map(c=>cav(c[1].v[i])))].join("");
+ return `<h2>${ids.length} selected</h2>${xsel}${plot}${table}${cavs}${colsMore}<div class="part"><h3>Claims on two or more of them</h3>${lim(linked,"sel-c",3)||'<div class="mut">none</div>'}</div>`}
 function plotSvg(pts,curves,xn,yn){if(!pts.length&&!curves.length)return '<div class="mut">nothing to plot: no shared condition with numbers, or no numeric result</div>';
  const W=620,H=300,ml=64,mb=44,mt=12,mr=16;const all=[...pts.map(p=>[p.x,p.y]),...curves.flatMap(c=>c.r.curve.points)];const X=all.map(a=>a[0]),Y=all.map(a=>a[1]);
  const lx=X.every(v=>v>0)&&Math.max(...X)/Math.min(...X)>50,ly=Y.every(v=>v>0)&&Math.max(...Y)/Math.min(...Y)>50;const tx=v=>lx?Math.log10(v):v,ty=v=>ly?Math.log10(v):v;
@@ -330,7 +335,7 @@ function plotSvg(pts,curves,xn,yn){if(!pts.length&&!curves.length)return '<div c
  ${pts.map(p=>mk(p,sx(p.x),sy(p.y))).join("")}</svg>`;
  const lg=`<div class="lg">${papers.map(k=>`<span><span style="color:${col(k)}">●</span> ${esc(PN(k))}</span>`).join("")}${modes.includes("ex_situ")?"<span>● filled, solid line: ex situ</span>":""}${modes.includes("in_situ")?"<span>○ open, dashed line: in situ</span>":""}</div>`;
  return svg+lg}
-function renderRight(){const p=S.panel;$("#right").innerHTML=(A.from?`<div class="back"><button onclick="A.from=false;showAsk()">Back to the answers</button></div>`:"")+(p.type==="detail"?detailPanel(p.id):p.type==="comparison"?compPanel(p.id):p.type==="source"?sourcePanel(p.id):p.type==="selected"?selPanel():
+function renderRight(){CAV.clear();const p=S.panel;$("#right").innerHTML=(A.from?`<div class="back"><button onclick="A.from=false;showAsk()">Back to the answers</button></div>`:"")+(p.type==="detail"?detailPanel(p.id):p.type==="comparison"?compPanel(p.id):p.type==="source"?sourcePanel(p.id):p.type==="selected"?selPanel():
  `<h2>PSED pilot</h2><div class="line mut">Three papers on conformal ALD read into one knowledge base. Filter at the top, tick experiments to set them side by side, click a name for its detail, a group header for the authors' comparison, a source for the passage or figure. Ask a question at the right end of the top line to see it answered three ways.</div>`)}
 // ---- Ask: three answers side by side (served by serve.py on 127.0.0.1; the page never sees a key)
 const A={ok:false,models:[],model:"",q:"",recs:null,busy:false,from:false,before:false,err:""};

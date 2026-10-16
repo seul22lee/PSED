@@ -73,7 +73,7 @@ def check(pid):
             bad(f"claim stance {f['stance']!r} (lists.STANCES)")
         for t in L.variables_ok(f["cause"]) + L.variables_ok(f["effect"]):
             bad(f"variable {t} (a quantity id or mechanism:<token> of lists.MECHANISMS)")
-        if f["quantity"] and f["quantity"] not in L.QUANTITIES:
+        if f["quantity"] and any(q not in L.QUANTITIES for q in (f["quantity"].split(";") if f["type"] == "caveat" else [f["quantity"]])):
             bad(f"quantity {f['quantity']}")
         if f["quantity"] == "other" and not f["label_as_printed"]:
             bad("quantity other without label_as_printed")
@@ -409,6 +409,10 @@ def check_derived():
         for c in T.comps:
             if len({Q.role(T, m) for m in T.member_entities(c)}) > 1:
                 err.append(f"{c['fact_id']}: members of different roles (P21)")
+    for k, T in Q.TREES.items():                                                # P45: a caveat qualifies some value, setting or entity
+        for c in [r for r in T.rows if r["type"] == "caveat"]:
+            if not Q.caveat_targets(T, c):
+                err.append(f"{c['fact_id']}: caveat qualifies nothing")
     return err
 
 
@@ -429,10 +433,10 @@ def check_user(all_ids):
             bad(f"author {r['author']!r}")
         if r["type"] not in L.TYPES:
             bad(f"type {r['type']}")
-        if r["quantity"] and r["quantity"] not in L.QUANTITIES:
+        if r["quantity"] and r["type"] != "caveat" and r["quantity"] not in L.QUANTITIES:
             bad(f"quantity {r['quantity']}")
-        for q in L.qualifiers_ok(r["qualifiers"]):
-            bad(f"qualifier {q}")
+        for q in [q for alt in (r["qualifiers"].split("|") if r["type"] == "caveat" else [r["qualifiers"]]) for q in L.qualifiers_ok(alt)]:
+            bad(f"qualifier {q}")                                                # a caveat's qualifiers may list alternatives (a|b)
         if not r["statement"].strip() or "\n" in r["statement"]:
             bad("statement empty or not one line")
         if r["type"] == "claim" and not r["links"]:
@@ -444,6 +448,13 @@ def check_user(all_ids):
         for l in filter(None, r["links"].split(";")):
             if l not in all_ids and l not in ids:
                 bad(f"link {l} does not exist")
+        if r["type"] == "caveat":                                                # P45
+            if not r["links"]:
+                bad("caveat without links")
+            if any(q not in L.QUANTITIES for q in filter(None, r["quantity"].split(";"))):
+                bad(f"caveat quantity {r['quantity']}")
+            if len(r["statement"]) > 200:
+                bad("caveat statement over 200 characters")
         if r["type"] == "bridge":
             if len([l for l in r["links"].split(";") if l]) != 2:
                 bad("bridge without exactly two links")

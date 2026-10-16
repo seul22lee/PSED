@@ -878,14 +878,63 @@ def mode_of(T, f):
     return ""
 
 
-def record(T, f, alternatives=()):
-    """The value record of a fact."""
+def caveats_of(T):
+    """The paper's caveats (P45), with their links split into facts and nodes and their quantities."""
+    if "cavs" not in T._cache:
+        T._cache["cavs"] = [dict(f=c, facts={l for l in c["links"].split(";") if "#" in l}, nodes={l for l in c["links"].split(";") if l and "#" not in l},
+                                 quantities=set(filter(None, c["quantity"].split(";"))),
+                                 quals=[{tuple(p.split("=", 1)) for p in alt.split(";") if "=" in p} for alt in c["qualifiers"].split("|")] if c["qualifiers"] else [set()])
+                            for c in T.rows if c["type"] == "caveat"]
+    return T._cache["cavs"]
+
+
+def caveats_for(T, f, ent=None):
+    """The caveats that apply to a value or setting f, seen on entity ent (P45): those linking f, those whose quantity and qualifiers
+    f carries and that link a node at or above f or ent; for a result, also those linking its entity (or the entity it is cut from)
+    without a quantity."""
+    anc = set(T.chain(f["fact_id"])) | (set(T.chain(ent)) if ent else set()) | {T.key}
+    out = []
+    for c in caveats_of(T):
+        if f["fact_id"] in c["facts"] or (c["quantities"] and f["quantity"] in c["quantities"] and any(alt <= set(quals(f).items()) for alt in c["quals"])
+                                          and c["nodes"] & anc):
+            out.append(c["f"])
+        elif not c["quantities"] and f["type"] in RESULT_TYPES and ent and c["nodes"] & {x for x in T.chain(ent) if T.byid[x]["type"] == "entity"}:
+            out.append(c["f"])
+    return out
+
+
+def entity_caveats(T, ent):
+    """The caveats that qualify an entity as a whole (linked without a quantity), its own or those of the entity it is cut from."""
+    ents = {x for x in T.chain(ent) if T.byid[x]["type"] == "entity"}
+    return [c["f"] for c in caveats_of(T) if not c["quantities"] and c["nodes"] & ents]
+
+
+def caveat_targets(T, c):
+    """What a caveat qualifies: the facts and entities it reaches (check.py: a caveat must qualify something)."""
+    hit = [f["fact_id"] for f in T.rows if "#" in f["fact_id"] and f["type"] in ("setting", "cited", "claim") + RESULT_TYPES
+           and c in caveats_for(T, f, T.ent_of(f["fact_id"]))]
+    hit += [e for e in T.entities() if c in entity_caveats(T, e)]
+    for e in T.entities():                                                      # settings an entity inherits from the activities above it
+        for fs in T.vector(e).values():
+            if c in caveats_for(T, fs[0], e):
+                hit.append(fs[0]["fact_id"])
+    return list(dict.fromkeys(hit))
+
+
+def cav_list(cs):
+    """Caveats as [dict(id, text)], each once."""
+    return [dict(id=c["fact_id"], text=c["statement"]) for c in {c["fact_id"]: c for c in cs}.values()]
+
+
+def record(T, f, alternatives=(), ent=None):
+    """The value record of a fact; caveats: those that apply to it as seen on ent (default: the entity it belongs to)."""
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
     return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text_of(f), kind=kind(f), definition=definition_of(f),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"]) if f["uncertainty"] else None),
-                stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives])
+                stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives],
+                caveats=cav_list(caveats_for(T, f, ent or T.ent_of(f["fact_id"]))))
 
 
 def derived_record(T, ent, did, d):
@@ -895,13 +944,14 @@ def derived_record(T, ent, did, d):
     return dict(value=d["value"], low=None, high=None, censor="", unit=d["unit"], text=text, kind="computed here", definition=L.DERIVED[did]["formula"],
                 source="", paper=T.key, fact="", method="calculation", mode="", uncertainty=None, stat="", statement="",
                 inputs=[dict(name=n, fact=fid, value=g(v, 3), unit=u, source=src) for n, fid, v, u, src in d["inputs"]],
-                assumed=d["assumed"], readings=[dict(label=lab, value=g(v, 3)) for lab, v in rs], alternatives=[])
+                assumed=d["assumed"], readings=[dict(label=lab, value=g(v, 3)) for lab, v in rs], alternatives=[],
+                caveats=cav_list([c for _, fid, *_ in d["inputs"] if fid in T.byid for c in caveats_for(T, T.byid[fid], ent)]))   # its inputs' caveats
 
 
 def condition_records(T, ent):
     """The condition vector as {key: dict(name, record)}: the chosen fact (ranked) with the others as alternatives; a spread fact of
     the entity about a condition (a fabrication tolerance) becomes that record's uncertainty."""
-    out = {k: dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:])) for k, fs in T.vector(ent).items() if text_of(fs[0])}
+    out = {k: dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:], ent=ent)) for k, fs in T.vector(ent).items() if text_of(fs[0])}
     for fs in T.results(ent).values():
         for f in fs:
             if quals(f).get("stat") and spread_key(f) in out and not out[spread_key(f)]["record"]["uncertainty"]:
@@ -919,7 +969,7 @@ def result_records(T, ent):
         fs = ranked([f for f in fs if text_of(f) or f["points_ref"]])
         if not fs or "stat=" in k:
             continue
-        r = record(T, fs[0], fs[1:])
+        r = record(T, fs[0], fs[1:], ent=ent)
         sp = [f for kk, gs in deep.items() if "stat=" in kk for f in gs if spread_key(f) == k]
         if sp and not r["uncertainty"]:
             q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""))
@@ -1081,6 +1131,7 @@ def claim_record(T, c):
     return dict(id=c["fact_id"], paper=T.key if T else "", author=c.get("author", ""), statement=c["statement"], stance=c["stance"],
                 cause=var(c["cause"]), effect=var(c["effect"]), comparisons=scope_comparisons(T, c) if T else [], entities=ents,
                 rests_on=[record(T, f) for f, e in rests_on(T, c) if text_of(f)][:12], scope=scope_text(T, ents),
+                caveats=cav_list(caveats_for(T, c)) if T else [],
                 source=c["evidence"].split(";")[0])
 
 
@@ -1190,7 +1241,7 @@ def detail(any_id):
                 differs=distinguishing(T, ent, peers or [ent], n=6), recipe=[dict(key=k, **v) for k, v in cond.items()],
                 results=[dict(key=k, **v) for k, v in result_records(T, ent).items()],
                 claims=[claim_record(T, c) for c in claims_of(T, [ent] + [c["fact_id"] for c in comps])],
-                comparisons=[dict(id=c["fact_id"], label=comparison_label(T, c)) for c in home],
+                comparisons=[dict(id=c["fact_id"], label=comparison_label(T, c)) for c in home], caveats=cav_list(entity_caveats(T, ent)),
                 identity=[dict(kind=f["kind"], statement=f["statement"], others=[o for o in f["links"].split(";") if o != ent]) for f in ids])
 
 

@@ -428,6 +428,13 @@ def identity(key, kind, ents, statement, evidence, parent=None):
     _facts.append(row)
 
 
+def caveat(key, evidence, statement, links, quantity="", qualifiers=""):
+    """A caveat (P45): the paper says a value or setting does not mean what its label says, or holds only under narrower conditions.
+    links: the facts it qualifies, or nodes (paper, activity, entity, comparison) with quantity (';'-separated ids) and qualifiers
+    meaning every value or setting of those quantities at or below the nodes; an entity without quantity: the entity's results."""
+    return F(key, evidence, "caveat", statement, links=links, quantity=quantity, qualifiers=qualifiers, parent=key)
+
+
 def qualify(key, table):
     """Append qualifiers to facts: table {fact suffix: "k=v[;k=v]"} (a definition the paper states, P5)."""
     byid = {r["fact_id"]: r for r in _facts}
