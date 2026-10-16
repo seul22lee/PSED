@@ -6,8 +6,13 @@
   lists.py and the paper keys; min and max for deposition temperature, process pressure, cycle number and exposure,
   compared in lists.UNITS after a unit conversion of the value as printed); middle, the runs of the three papers that
   pass every filter by their inherited settings (the nearest scope wins, as in the cards), one line each: paper, run
-  label, the setting the run varies with its value, an add button; right, a tray of at most eight runs or curves, and
-  the compare panel for it: (a) an overlay plot of the tray's curves that share a quantity and an abscissa (the x=
+  label, the setting the run varies with its value, "why" (its group's purpose, short) and "result" (its first linked
+  claim, else its main result value), an add button; right, a tray of at most eight runs or curves, and the compare
+  panel for it, which starts with "relations" (one line per tray pair: the differing settings and, for each result both
+  have, the direction of change with the two values; "paper's own comparison" when the pair shares a group, "not compared
+  by the authors" otherwise, or the verdict's reason when they share no result) and "what the papers say" (claims linked
+  to two or more tray items first, then per item, with stance and scope; claims of different papers on one effect
+  variable side by side), then: (a) an overlay plot of the tray's curves that share a quantity and an abscissa (the x=
   qualifier), with the y and x transforms of "Fig. 9 from tree" (S/N by the run's cycle number, S/S_plateau by its
   plateau thickness, x/H by its feature height, each value inherited from the tree; a curve without the value is
   listed, not drawn; curves on another axis are listed); (b) a condition table, one column per tray item, one row per
@@ -214,6 +219,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .rl.tray,.nd.tray{box-shadow:inset 3px 0 0 var(--acc)}.panel.tray{background:var(--sel);border-radius:6px}circle.pt.tray{stroke-width:4}
 .ns .rl{cursor:pointer}.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
 .cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}.vars{font-size:11px}
+.rel{padding:3px 0;border-bottom:1px solid var(--line)}.why,.res{font-size:11px;margin-left:4px}.wbt h4{margin:6px 0 2px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--acc)}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
 .inf{font:600 10px/1.4 ui-monospace,monospace;color:var(--missb);border:1px solid var(--missb);border-radius:3px;padding:0 3px;margin-left:4px}
 h2{font-size:15px;margin:16px 0 6px}h3{font-size:14px;margin:10px 0 4px}.mut{color:var(--mut)}svg.pts{width:100%;height:150px;background:var(--card);border:1px solid var(--line);border-radius:4px}
@@ -444,7 +450,7 @@ function wbView(){const rs=RUNS();const m=rs.filter(wbMatch);const sel=(k,opts,c
  const left=`<div class="wbf"><label>material${sel("material",LISTS.materials,WB.material)}</label><label>structure type${sel("structure",LISTS.structures,WB.structure)}</label><label>method${sel("method",LISTS.methods,WB.method)}</label><label>result quantity${sel("quantity",LISTS.quantities.filter(q=>q!=="other"),WB.quantity)}</label><label>paper${sel("paper",DATA.map(d=>d.key),WB.paper)}</label>
  ${Object.entries(RANGE).map(([q,u])=>`<label>${q.replace(/_/g," ")}${u?` (${u})`:""}<div><input type="number" placeholder="min" value="${WB.range[q][0]}" onchange="wbRange('${q}',0,this.value)"> – <input type="number" placeholder="max" value="${WB.range[q][1]}" onchange="wbRange('${q}',1,this.value)"></div></label>`).join("")}<button onclick="wbClear()">clear filters</button></div>`;
  const inTray=new Set(WB.tray.filter(t=>!t.fid).map(t=>t.id));
- const mid=`<div class="wbm"><div class="mut">${m.length} runs</div>${m.map(r=>`<div class="wbr" data-r="${r.id}"><span class="sw" style="background:var(--c${r.i})"></span>${r.d.key} · <span class="lnk" onclick="showCard(${r.i},'${r.id}')">${esc(nlab(r.n))}</span> · <span class="mut">${esc(variedText(r.T,r.id))}</span><button ${inTray.has(r.id)||WB.tray.length>=8?"disabled":""} onclick="trayAdd(${r.i},'${r.id}')">add</button></div>`).join("")}</div>`;
+ const mid=`<div class="wbm"><div class="mut">${m.length} runs</div>${m.map(r=>`<div class="wbr" data-r="${r.id}"><span class="sw" style="background:var(--c${r.i})"></span>${r.d.key} · <span class="lnk" onclick="showCard(${r.i},'${r.id}')">${esc(nlab(r.n))}</span> · <span class="mut">${esc(variedText(r.T,r.id))}${soWhat(r)}</span><button ${inTray.has(r.id)||WB.tray.length>=8?"disabled":""} onclick="trayAdd(${r.i},'${r.id}')">add</button></div>`).join("")}</div>`;
  const right=`<div class="wbt"><b>tray</b> <span class="mut">${WB.tray.length}/8</span> <button onclick="trayClear()">clear</button>${WB.tray.map((t,j)=>{const r=rs.find(x=>x.id===t.id);return `<div class="wbr"><span class="sw" style="background:var(--c${t.i})"></span>${DATA[t.i].key} · <span class="lnk" onclick="showCard(${t.i},'${t.id}')">${esc(r?nlab(r.n):t.id)}</span>${t.fid?` · <span class="mut">${esc(t.label||t.fid)}</span>`:'<span class="mut"></span>'}<b class="lnk" onclick="trayDrop(${j})">×</b></div>`}).join("")||'<div class="mut">empty</div>'}</div><div id="cmppane">${cmpPanel()}</div><div id="side" class="evbox"></div>`;
  return `<div class="wb">${left}<div>${mid}</div><div>${right}</div></div>`}
 // compare panel for the tray: (a) overlay plot with Fig. 9's transforms, (b) condition table, (c) pair verdicts
@@ -489,8 +495,30 @@ function condTable(items){const ks=[...new Set(items.flatMap(it=>Object.keys(it.
  ks.forEach(k=>{const vals=items.map(it=>it.r.inh[k]?it.r.inh[k].text:null);const stated=[...new Set(vals.filter(v=>v!==null))];const f=items.find(it=>it.r.inh[k]).r.inh[k].f;if(stated.length===1&&vals.every(v=>v!==null))common.push({f,k,text:stated[0]});else rows.push({f,k,vals})});   // common only when every item states the same value
  const byRank=(a,b)=>rank(a.f)-rank(b.f)||a.k.localeCompare(b.k);common.sort(byRank);rows.sort(byRank);
  return `<div class="pchips open">${common.map(c=>`<span class="chip" title="${esc(c.k)}">${esc(qtext(c.f))} ${esc(c.text)}</span>`).join(" ")||'<span class="mut">none</span>'}</div><div style="overflow-x:auto"><table class="ft cmp"><thead><tr><th>${rows.length} differ</th>${items.map(it=>`<th>${esc(it.label)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${qlab(r.f)}</th>${r.vals.map((v,j)=>`<td>${v===null?'<span class="mut">not stated</span>':`<span class="chip diff" ${evc(items[j].r.inh[r.k].f,items[j].r.i)}>${esc(v)}</span>`}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`}
+// so what: a run's why (its group's purpose) and result (its first linked claim, else its main result value)
+const RES_PRIM=["penetration_depth","film_thickness","growth_per_cycle","resistivity","composition","crystallinity","mass_gain"];
+const short=(t,n=72)=>t.length>n?t.slice(0,n-1)+"…":t;
+function purposeOf(T,id){let g=grpOf(T,id);while(g){const n=T.byId[g];const p=(n.links||"").split(";")[0];if(p&&T.byId[p]&&p.includes("#"))return T.byId[p];g=grpOf(T,g)}return null}
+function claimsFor(d,T,id){const g=grpOf(T,id);const ids=new Set(subtree(T,id).map(f=>f.fact_id).concat([id]));const ig=g?new Set(subtree(T,g).map(f=>f.fact_id).concat([g])):new Set();
+ return d.facts.filter(c=>c.type==="claim"&&c.links&&c.links.split(";").some(l=>ids.has(l)||ig.has(l)))}
+function resultOf(r){const c=claimsFor(r.d,r.T,r.id).filter(c=>c.links.split(";").some(l=>l===r.id||subtree(r.T,r.id).some(f=>f.fact_id===l)))[0];if(c)return {c,text:short(c.statement)};
+ const ks=Object.values(r.res).filter(o=>valStr(o.fs[0])).sort((a,b)=>{const ra=RES_PRIM.indexOf(a.f.quantity),rb=RES_PRIM.indexOf(b.f.quantity);return (ra<0?9:ra)-(rb<0?9:rb)});return ks.length?{f:ks[0].fs[0],text:`${qtext(ks[0].f)} ${valStr(ks[0].fs[0])}`}:null}
+const soWhat=r=>{const p=purposeOf(r.T,r.id),x=resultOf(r);return `${p?`<span class="chip why" title="${esc(p.statement)}">why: ${esc(short(p.statement))}</span>`:""}${x?`<span class="chip res" title="${esc(x.c?x.c.statement:x.f.statement)}">result: ${esc(x.text)}</span>`:""}`};
+// relations: per tray pair, the differing settings and the direction of each shared result; what the papers say: the claims behind the tray
+function relations(items){const out=[];items.forEach((a,i)=>items.slice(i+1).forEach(b=>{const v=verdict(a,b);const d=diffs(a,b).slice(0,4).map(x=>`${qtext(x.f)} ${x.va} vs ${x.vb}`);
+ const same=a.r.i===b.r.i&&grpOf(a.r.T,a.r.id)&&grpOf(a.r.T,a.r.id)===grpOf(b.r.T,b.r.id);const shared=Object.keys(a.keys).filter(k=>k in b.keys);
+ let body;if(v.v==="direct"){const dirs=shared.map(k=>{const fa=a.r.res[k]?a.r.res[k].fs[0]:a.keys[k],fb=b.r.res[k]?b.r.res[k].fs[0]:b.keys[k];const x=fv(fa),y=fv(fb);const arrow=x!=null&&y!=null&&!isNaN(x)&&!isNaN(y)?(y>x?"↑":y<x?"↓":"="):"·";return `<span class="chip">${qlab(a.keys[k])} ${esc(valStr(fa)||"∿")} ${arrow} ${esc(valStr(fb)||"∿")}</span>`});
+  body=`<span class="chip ${same?"diff":""}">${same?"paper's own comparison":"not compared by the authors"}</span> ${dirs.join(" ")}`}else body=`<span class="chip"><b class="${v.c}">${esc(v.v)}</b>: ${esc(v.why.split(" · differs")[0])}</span>`;
+ out.push(`<div class="rel"><b>${esc(a.label)}</b> vs <b>${esc(b.label)}</b> · ${d.length?`<span class="mut">differs: ${d.map(esc).join("; ")}</span> · `:""}${body}</div>`)}));return out.join("")||'<div class="mut">one item</div>'}
+function papersSay(items){const per=items.map(it=>({it,cs:claimsFor(it.r.d,it.r.T,it.r.id)}));const count={};per.forEach(({it,cs})=>cs.forEach(c=>{(count[c.fact_id]=count[c.fact_id]||{c,i:it.r.i,items:new Set()}).items.add(it.label)}));
+ const shared=Object.values(count).filter(o=>o.items.size>=2);const line=o=>claimLine(DATA[o.i],o.i,o.c);
+ let h=shared.length?`<div class="shared"><h4>linked to ${shared.length>1?"several":"two"} tray items</h4>${shared.map(o=>line(o)+`<div class="mut" style="margin-left:24px;font-size:11px">${[...o.items].map(esc).join(" · ")}</div>`).join("")}</div>`:"";
+ per.forEach(({it,cs})=>{const own=cs.filter(c=>count[c.fact_id].items.size<2);h+=`<h4>${esc(it.label)}</h4>${own.map(c=>claimLine(it.r.d,it.r.i,c)).join("")||'<div class="mut">no claim</div>'}`});
+ const byEff={};Object.values(count).forEach(o=>(o.c.effect||"").split(";").filter(Boolean).forEach(t=>{(byEff[t]=byEff[t]||{papers:new Set(),os:[]});byEff[t].papers.add(o.i);byEff[t].os.push(o)}));
+ const sbs=Object.entries(byEff).filter(([t,o])=>o.papers.size>=2);if(sbs.length)h+=sbs.map(([t,o])=>`<div class="sbs"><h4>same effect: ${esc(vlab(t))} <span class="mut">${o.papers.size} papers</span></h4>${o.os.map(line).join("")}</div>`).join("");
+ return h||'<div class="mut">no claim behind the tray</div>'}
 function cmpPanel(){const items=trayItems();if(items.length<1)return"";const vs=[];items.forEach((a,i)=>items.slice(i+1).forEach(b=>{const v=verdict(a,b);vs.push(`<div class="fl2 vd"><b class="${v.c}">${v.v}</b> · ${esc(a.label)} vs ${esc(b.label)} · ${esc(v.why)}</div>`)}));
- return `<div class="wbt"><b>plot</b>${overlay(items)}</div><div class="wbt"><b>conditions</b>${condTable(items)}</div><div class="wbt"><b>verdicts</b>${vs.join("")||'<div class="mut">one item</div>'}</div>`}
+ return `<div class="wbt"><b>relations</b>${relations(items)}</div><div class="wbt"><b>what the papers say</b>${papersSay(items)}</div><div class="wbt"><b>plot</b>${overlay(items)}</div><div class="wbt"><b>conditions</b>${condTable(items)}</div><div class="wbt"><b>verdicts</b>${vs.join("")||'<div class="mut">one item</div>'}</div>`}
 function wbT(k,v){WBT[k]=v;render()}
 function wbSet(k,v){WB[k]=v;render()}
 function wbRange(q,j,v){WB.range[q][j]=v;render()}
