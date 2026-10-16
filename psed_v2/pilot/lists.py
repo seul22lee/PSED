@@ -108,7 +108,7 @@ NODE_TYPES = ["paper", "activity", "entity"]
 ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
 COMPARISON_KINDS = ["series", "grid", "replicate"]
 HOW = ["stated", "inferred"]
-DATA_KINDS = ["assumed", "calculated", "chosen input", "fit", "literature", "measured"]
+DATA_KINDS = list(KINDS)                              # the stored kinds (vocab.KINDS, Sec. 18.5); the phrases are vocab.PHRASES
 
 
 def qualifiers_ok(q):
@@ -302,6 +302,9 @@ DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles",
              ("relative_to", "initial_mass"): "relative to the initial mass", ("relative_to", "final_mass"): "relative to the final mass",
              ("relative_to", "crystalline_phases"): "of the crystalline phases", ("relative_to", "reactive_gases"): "of the reactive feed gases", ("relative_to", "all_gases"): "of the whole plasma feed", ("kind", "target"): "target", ("kind", "set_point"): "set point",
              ("reference", "bulk"): "bulk value", ("mode", "in_situ"): "in situ", ("mode", "ex_situ"): "ex situ"}
-# the value kinds a screen marks with one plain word; measured and stated values carry none
-KIND_WORDS = {"read from figure": "read from figure", "computed by the authors": "computed by the authors", "computed here": "computed here", "assumed": "assumed", "model": "model", "cited": "cited"}
+# the provenance words of a value (P57): only the phrase table of the ontology (vocab.PHRASES); a screen leaves measured and stated
+# values unmarked (UNMARKED) and marks every other kind with its phrase
+UNMARKED = {"measured", "stated"}
+KIND_WORDS = {k: p for k, p in PHRASES.items() if k not in UNMARKED}
+assert set(KIND_WORDS) | UNMARKED == set(KINDS), "a kind without a phrase"
 

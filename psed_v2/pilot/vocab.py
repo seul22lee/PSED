@@ -882,9 +882,16 @@ MECHANISMS = {'channel_length': {'aliases': ['lateral length'],
 
 RELATIONS = ['increases', 'decreases', 'limits', 'causes', 'no_effect', 'requires']
 
-KINDS = []
+KINDS = ['measured', 'stated', 'read_from_figure', 'computed_by_authors', 'computed_by_kb', 'assumed', 'model_input', 'cited']
 
-PHRASES = {}
+PHRASES = {'assumed': "assumed by this knowledge base's user",
+ 'cited': 'cited from another work',
+ 'computed_by_authors': "computed by the paper's authors",
+ 'computed_by_kb': "computed by this knowledge base, not by the paper's authors",
+ 'measured': 'measured',
+ 'model_input': 'a model input',
+ 'read_from_figure': 'read from a figure',
+ 'stated': 'stated by the paper'}
 
 SPECIMEN_CLASSES = ['film', 'porous_composite']
 

@@ -44,6 +44,7 @@ base_sources:
 
 base_notes:
   - {type: dropped, what: "QUDT annotations", reason: "not used; the experimental schema file at commit 13c47dc carries none"}
+  - {type: redefined, what: "vocabularies.data_kind (Sec. 12)", reason: "Sec. 18.5: superseded by vocabularies.kind, eight closed values with a phrase table; a fit or a simulation output is computed_by_authors, a chosen input stated or model_input, a literature value cited, a value read off a plot read_from_figure (stored, not inferred from the element)"}
   - {type: unit_changed, what: "units named in schema-miner descriptions (Torr, seconds, nm per cycle, g/cm3)", reason: "canonical unit per dimension (units table below); raw value and raw unit are kept in the gold tables"}
 
 excluded_base:
@@ -2159,7 +2160,16 @@ units:   # canonical unit per dimension, and the accepted units
 
 vocabularies:
   panel_type:        [plot, image, schematic, table]
-  data_kind:         [measured, simulation, calculated, fit, cited]
+  data_kind:         [measured, simulation, calculated, fit, cited]       # v0; superseded by kind (Sec. 18.5), kept as the record of the deviation
+  kind:              # Sec. 18.5 (P57): the provenance of a value, closed; printed provenance text comes only from these phrases
+    measured:            "measured"
+    stated:              "stated by the paper"
+    read_from_figure:    "read from a figure"
+    computed_by_authors: "computed by the paper's authors"
+    computed_by_kb:      "computed by this knowledge base, not by the paper's authors"
+    assumed:             "assumed by this knowledge base's user"
+    model_input:         "a model input"
+    cited:               "cited from another work"
   series_structure:  [curve, per_point, image]
   experiment_kind:   [sample, in_situ_run, plasma_measurement, cited]
   condition_source:  [caption, methods, table, body]

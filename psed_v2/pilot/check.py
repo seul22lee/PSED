@@ -93,8 +93,8 @@ def check(pid):
             bad(f"{f['quantity']} setting without species= or gas=: which substance it is about lives only in prose (P50)")
         for q in L.qualifiers_ok(f["qualifiers"]):
             bad(f"qualifier {q}")
-        if f["data_kind"] and f["data_kind"] not in L.DATA_KINDS:
-            bad(f"data_kind {f['data_kind']}")
+        if f["data_kind"] and f["data_kind"] not in L.KINDS:
+            bad(f"kind {f['data_kind']!r} is not in the kind vocabulary (Sec. 18.5; P57)")
         if f["method"] and f["method"] not in L.METHODS:
             bad(f"method {f['method']}")
         if f["censor"] not in L.CENSOR:
@@ -544,6 +544,37 @@ def check_claims():
     return []
 
 
+def check_kinds():
+    """P57: every stored kind is in the vocabulary (per fact, above); every provenance phrase a tool prints ('kind: ...') is in the
+    phrase table, and the deictic 'computed here' appears in no tool description, tool output or page text."""
+    import tools, query as Q
+    err = []
+    texts = [t["description"] for t in tools.TOOLS]
+    for name, args in (("values", {"result": "growth_per_cycle"}), ("values", {"result": "resistivity"}), ("detail", {"id": "yim20:ent:8", "parts": ["what", "results", "computed", "recipe", "claims"]}),
+                       ("detail", {"id": "gre23:ent:120:pair", "parts": ["what", "results", "computed", "claims"]}), ("detail", {"id": "mat22:cmp:map", "parts": ["what", "computed", "claims"]}),
+                       ("search", {"words": "resistivity"}), ("source", {"id": "mat22:s3.p34"})):
+        lines, e = tools.run_tool(name, args)
+        joined = []
+        for _, t in lines:                                                      # a wrapped line continues the previous one (P44)
+            if t.startswith("… ") and joined:
+                joined[-1] += " " + t[2:]
+            else:
+                joined.append(t)
+        texts += joined + [e or ""]
+    phrases = set(L.PHRASES.values())
+    for t in texts:
+        if "computed here" in t:
+            err.append(f"'computed here' printed: {t[:80]!r} (P57)")
+        for m in re.finditer(r"(?<!set )kind: ([^·\)]+)", t):
+            if m.group(1).strip().rstrip(":") not in phrases:
+                err.append(f"provenance phrase {m.group(1).strip()!r} is not in the phrase table (P57)")
+    page = HERE / "reports" / "pilot.html"
+    if page.exists() and "computed here" in page.read_text(encoding="utf-8"):
+        err.append("'computed here' appears in reports/pilot.html (P57)")
+    print(f"== kinds (P57): {len(L.KINDS)} kinds with phrases; {len(texts)} tool texts scanned")
+    return err
+
+
 def check_caveats():
     """P56: a caveat's text is stored once in the dataset (no two caveat facts with one statement); no caveat is attached to a fact
     that already inherits it through its inputs; the counts: unique caveats, direct attachments (links and node targets), the
@@ -641,6 +672,11 @@ if __name__ == "__main__":
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_kinds()
+    print(f"== kinds (P57): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

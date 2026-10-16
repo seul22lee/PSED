@@ -43,6 +43,8 @@ def vocabulary_text():
 
 
 VOCAB = vocabulary_text()
+KIND_LIST = "; ".join(L.PHRASES[k] for k in L.KINDS)                            # the phrase table (P57): the only provenance words
+KB = L.PHRASES["computed_by_kb"]
 PAGE_LINES = 25
 MAX_LINE = 300
 DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims", "computed"]
@@ -67,8 +69,7 @@ TOOLS = [
                       "group per paper for values outside any set). A group header gives once the paper, the set id, what the set varies, "
                       "the conditions its members share (those every group of a paper shares are given once) and the result's definition "
                       "when it is not the default or the paper defines it; a row gives the settings that vary within the set, the value "
-                      "with uncertainty and unit, its kind (measured, stated, read from figure, computed by the authors, computed here, "
-                      "model, cited, assumed), its id and the id of any caveat; under the group come the caveats' texts and the ids of the "
+                      "with uncertainty and unit, its kind (" + KIND_LIST + "), its id and the id of any caveat; under the group come the caveats' texts and the ids of the "
                       "claims about the set; a last line says what differs between the groups (material, structure, reactor, process, "
                       "measurement). A quantity's base name covers all its definitions, a specific name only its own. About 2,000 tokens "
                       "per call, then 'more: offset=N'. Use it to see how one result or setting varies across experiments and conditions. "
@@ -85,10 +86,10 @@ TOOLS = [
                       "what (role, material, substrate, inputs, the methods its results were measured by, its comparison sets, identity "
                       "statements, its caveats), differs (the conditions that set it apart in its set), results (value, unit, kind, "
                       "definition, method, in situ or ex situ, uncertainty, source element, caveats), recipe (every condition), claims, "
-                      "computed (values computed here, with formula, inputs and assumed facts). A comparison set: what, its members as one "
+                      "computed (values " + L.PHRASES["computed_by_kb"] + ", with formula, inputs and assumed facts). A comparison set: what, its members as one "
                       "table of the settings that vary, results (values stated for the set), claims, computed (each effect with its "
                       "minimum and maximum members and the scatter between repeats, and power-law fits). A claim: the statement, stance, "
-                      "cause and effect, its scope (computed here), the results it rests on, the facts that give its size, its caveats. A "
+                      "cause and effect, its scope (" + L.PHRASES["computed_by_kb"] + "), the results it rests on, the facts that give its size, its caveats. A "
                       "cited work: what, recipe, results, claims. Any other id (a value, setting, definition, caveat, note, process step): "
                       "the record, what it belongs to, its source element and caveats; a caveat also lists what it qualifies. parts "
                       "(default what, differs, results) applies to experiments, inputs, sets and cited works. About 2,000 tokens per call, "
@@ -117,16 +118,16 @@ def _mode(m):
 
 def value_line(r, name="", full=False):
     """A value record as one line: the value with its unit, kind, definition when not the default, method and mode, uncertainty,
-    source element, the ids of other candidates; for a value computed here its formula, inputs and assumed facts; with full, the
+    source element, the ids of other candidates; for a value computed by this knowledge base its formula, inputs and assumed facts; with full, the
     fact's statement and the measurement settings."""
     if not r:
         return name + ": no value"
     bits = [f"{name}: {r.get('text', '')}" if name else r.get("text", "")]
     if r.get("curve") and r["curve"].get("points"):
         bits.append(f"curve against {r['curve'].get('x') or 'x'}, points (x, y): " + ", ".join(f"({x}, {y})" for x, y in r["curve"]["points"]))
-    bits.append(f"kind: {r.get('kind', '')}")
+    bits.append(f"kind: {L.PHRASES.get(r.get('kind', ''), r.get('kind', ''))}")
     if r.get("definition"):
-        bits.append(("formula: " if r.get("kind") == "computed here" else "definition: ") + r["definition"])
+        bits.append(("formula: " if r.get("kind") == "computed_by_kb" else "definition: ") + r["definition"])
     if r.get("method") and r.get("method") != "calculation":
         bits.append("method: " + r["method"] + (f", {_mode(r.get('mode'))}" if _mode(r.get("mode")) else ""))
     u = r.get("uncertainty")
@@ -185,7 +186,7 @@ def claim_line(c):
     """A claim as one line; the results it rests on as ids (source returns each in full)."""
     who = "by the user" if c.get("author") == "user" else short_name(c["paper"]) if c.get("paper") in Q.KEY else c.get("paper", "")
     return (c["id"], f"claim ({who}), {c['stance']}: {c['statement']}" + (f" · cause: {', '.join(c['cause'])}" if c.get("cause") else "")
-            + (f" · relation: {c['relation']}" if c.get("relation") else "") + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: computed here): {c['scope']}" if c.get("scope") else "")
+            + (f" · relation: {c['relation']}" if c.get("relation") else "") + (f" · effect: {', '.join(c['effect'])}" if c.get("effect") else "") + (f" · scope (kind: {KB}): {c['scope']}" if c.get("scope") else "")
             + (f" · comparisons: {', '.join(c['comparisons'])}" if c.get("comparisons") else "")
             + (f" · source element: {c['paper']}:{c['source']}" if c.get("source") and c.get("paper") else "")
             + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else "")
@@ -333,7 +334,7 @@ def validate(name, args):
 
 
 def run_tool(name, args):
-    """(lines, error): lines = [(id, text)] formatted from what query.py returns; nothing computed here; no line over MAX_LINE; at
+    """(lines, error): lines = [(id, text)] formatted from what query.py returns; the tool layer computes nothing; no line over MAX_LINE; at
     most BUDGET_TOKENS (chars/4) per call, then 'more: offset=N' (P44). A call that fails validation, or whose filters match
     nothing, returns an error text, never an unfiltered or empty result."""
     err = validate(name, args)
@@ -359,9 +360,9 @@ def endpoints(e):
 
 
 def effect_line(e):
-    """An effect of a comparison on one result: its range with both endpoints, and the judgement against noise (computed here)."""
+    """An effect of a comparison on one result: its range with both endpoints, and the judgement against noise (computed by this knowledge base)."""
     unit = f" {e['unit']}" if e.get("unit") else ""
-    return (f"effect on {e['name']}{' (main result)' if e.get('main') else ''} (kind: computed here): range {e['effect']}{unit} over {e['n']}: "
+    return (f"effect on {e['name']}{' (main result)' if e.get('main') else ''} (kind: {KB}): range {e['effect']}{unit} over {e['n']}: "
             + endpoints(e) + f" · {e['sentence']}")
 
 
@@ -420,7 +421,7 @@ def values_blocks(groups, asked):
         for key in dict.fromkeys(r["key"] for r in g["rows"]):
             rec = next(r["record"] for r in g["rows"] if r["key"] == key)
             nm = next(r["result_name"] for r in g["rows"] if r["key"] == key)
-            d = (rec.get("definition") if rec.get("kind") != "computed here" else f"formula {rec.get('definition')}") or ""
+            d = (rec.get("definition") if rec.get("kind") != "computed_by_kb" else f"formula {rec.get('definition')}") or ""
             pdef = defined_as(g["paper"], key)
             if d or pdef:
                 bydef.setdefault("; ".join(x for x in (d, pdef.replace(' · defined as: ', 'the paper: ')) if x), []).append(nm)
@@ -526,7 +527,7 @@ def members_table(T, ms, cols=5):
 
 
 def _hidden(n, what="values"):
-    return f"{n} computed-here {what} hidden: parts [\"computed\"] shows them"
+    return f"{n} {what} {KB} hidden: parts [\"computed\"] shows them"
 
 
 def record_detail(T, f):
@@ -624,9 +625,9 @@ def _run(name, args):
                     out += [(c["id"], f"caveat on this experiment: {c['text']}") for c in d.get("caveats", [])]
                 if "differs" in parts and d["differs"]:
                     out.append((i, "distinguished by: " + "; ".join(f"{x['name']} {x['text']}" for x in d["differs"])))
-                comp = [r for r in d["results"] if r["record"].get("kind") == "computed here"]
-                own = [r for r in d["results"] if r["record"].get("kind") != "computed here"]
-                show = "computed" in parts or not own                                     # computed here only when asked or nothing else exists
+                comp = [r for r in d["results"] if r["record"].get("kind") == "computed_by_kb"]
+                own = [r for r in d["results"] if r["record"].get("kind") != "computed_by_kb"]
+                show = "computed" in parts or not own                                     # values computed by the knowledge base only when asked or nothing else exists
                 if "results" in parts:
                     out += [y for r in own for y in [(r["record"].get("fact") or i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"]) + cmark(r["record"]))] + clines(r["record"])]
                     if comp and not show:
@@ -638,7 +639,7 @@ def _run(name, args):
             elif d["type"] == "comparison":
                 T = Q.tree_of(i)
                 if "what" in parts:
-                    out.append((i, f"comparison ({short_name(d['paper'])}): {d['label']} · kind: {d['kind']} · varies: {', '.join(d['varies']) or 'nothing stated'}"
+                    out.append((i, f"comparison ({short_name(d['paper'])}): {d['label']} · set kind: {d['kind']} · varies: {', '.join(d['varies']) or 'nothing stated'}"
                                 + (f" · statement: {d['statement']}" if d.get("statement") else "") + (f" · purpose: {d['purpose']}" if d.get("purpose") else "")))
                 if "differs" in parts or "what" in parts:
                     head, rows = members_table(T, d["members"])
@@ -650,8 +651,8 @@ def _run(name, args):
                 if "computed" in parts:
                     out += [(i, effect_line(e)) for e in d["effects"]]
                     for f_ in d["fits"]:
-                        out.append((i, f"fit (kind: computed here): {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
-                                    + "".join(f" · correction (kind: computed here) for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "
+                        out.append((i, f"fit (kind: {KB}): {f_['name']} ∝ {f_['x']}^{f_['exponent']} (residual {f_['residual']}, {f_['n']} points)"
+                                    + "".join(f" · correction (kind: {KB}) for {c['condition']} to {c['to']}: exponent {c['exponent']} (residual {c['residual']}); "
                                               + "; ".join(f"{name_of_id(x['id'])} {x['frm']} × {x['factor']} = {x['value']} from {x['by']}" for x in c["changes"]) for c in f_["corrected"])))
             else:
                 if "what" in parts:

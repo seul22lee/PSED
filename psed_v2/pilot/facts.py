@@ -24,7 +24,9 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   value_text   a categorical value (pillar layout v2a, a substrate, a crystallinity class, a reactor name, an LHAR type) when the
                value is a name, not a number; the statement then names the setting without repeating the value
   points_ref   the name of a digitized curve in <pid>.points.json (only from points.json or accepted v1 points)
-  data_kind    lists.DATA_KINDS (required with a value or points)
+  data_kind    the value's kind, lists.KINDS (Sec. 18.5: measured, stated, read_from_figure, computed_by_authors, computed_by_kb, assumed,
+               model_input, cited; required with a value or points); write() turns a measured or stated value whose first element is a
+               figure panel into read_from_figure and a model fact's stated input into model_input
   method       a short id from lists.METHODS
   mentions     sample, series, condition, figure and reference labels written in the element, as printed, ";"-separated
   inputs       fact_ids this fact is computed or fitted from, when the element says so
@@ -513,9 +515,28 @@ def uncertainty_kinds(key, table):
         r["uncertainty_kind"], r["uncertainty_n"] = kind, n
 
 
+OLD_KINDS = {"chosen input": "stated", "calculated": "computed_by_authors", "fit": "computed_by_authors", "literature": "cited"}   # v0 names -> Sec. 18.5
+
+
+def kinds(pid):
+    """P57: every stored data_kind is a Sec. 18.5 kind: the v0 names are mapped, a measured or stated value whose first element is a
+    figure panel becomes read_from_figure, a model fact's stated input model_input."""
+    panels = {e["element_id"] for e in elements.load(pid) if e["kind"] == "panel"}
+    for r in _facts:
+        if "#" not in r["fact_id"] or not r["data_kind"]:
+            continue
+        k = OLD_KINDS.get(r["data_kind"], r["data_kind"])
+        if r["type"] == "model" and k == "stated":
+            k = "model_input"
+        if k in ("measured", "stated") and r["evidence"].split(";")[0] in panels and r["type"] != "setting":
+            k = "read_from_figure"
+        r["data_kind"] = k
+
+
 def write(key, pid):
     """<pid>.facts.csv, <pid>.coverage.csv and <pid>.points.json; elements without facts and without an NK reason are 'missed'."""
     fill_uncertainty()
+    kinds(pid)
     for r in _facts:
         r["author"] = r["author"] or pid
     with (HERE / f"{pid}.facts.csv").open("w", newline="", encoding="utf-8") as f:

@@ -15,12 +15,12 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from query import find, detail, compare, claims, source, g  # noqa: E402,F401
 
-KW = {"read from figure": "read from figure", "computed by the authors": "computed by the authors", "computed here": "computed here", "assumed": "assumed", "model": "model", "cited": "cited"}
+KW = __import__("lists").KIND_WORDS                                                 # the phrase table (P57)
 
 
 def vt(rec):
     """A value record as text: the value, its non-default definition and its kind word (generic, used by every answer)."""
-    extra = [x for x in ((rec.get("definition") if rec.get("kind") != "computed here" else ""), KW.get(rec.get("kind"), "")) if x]
+    extra = [x for x in ((rec.get("definition") if rec.get("kind") != "computed_by_kb" else ""), KW.get(rec.get("kind"), "")) if x]
     return rec["text"] + (f" ({'; '.join(extra)})" if extra else "")
 
 
@@ -171,7 +171,7 @@ def q10():
     rows = find(paper="mat22", material="mos2", result="film_thickness", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
     c = compare(list(rows), result="film_thickness")
     p = c["plot"]
-    pts = "; ".join(f"{x['name']}: {g(x['y'])} nm at {g(x['x'])} cycles ({x['kind']}, {x['mode'].replace('_', ' ')})" for x in sorted(p["points"], key=lambda x: x["x"]))
+    pts = "; ".join(f"{x['name']}: {g(x['y'])} nm at {g(x['x'])} cycles ({KW.get(x['kind'], x['kind'])}, {x['mode'].replace('_', ' ')})" for x in sorted(p["points"], key=lambda x: x["x"]))
     cur = "; ".join(f"{x['name']}: curve of {len(x['points'])} points to {g(x['points'][-1][1])} nm after {g(x['points'][-1][0])} cycles ({x['mode'].replace('_', ' ')})" for x in p["curves"])
     gpc = [y / x * 10 for x, y in [(q["x"], q["y"]) for q in p["points"]] + [(cu["points"][-1][0], cu["points"][-1][1]) for cu in p["curves"]] if x]
     return answered(f"{pts}; {cur} · thickness/cycles {g(min(gpc), 2)}–{g(max(gpc), 2)} Å · they differ in: " + ", ".join(d["name"] for d in c["differing"]),
@@ -183,7 +183,7 @@ def q11():
     rows = find(paper="mat22", material="mos2", result="growth_per_cycle", conditions={"deposition_temperature": (150, 150), "plasma_gas_ratio": (0.8, 0.8)})["rows"]
     c = compare(list(rows), result="growth_per_cycle")
     lines = [(r["key"], i, cell) for r in c["results"] for i, cell in r["cells"].items() if cell]
-    rbs = next(x for x in lines if x[2]["kind"] == "computed here"); se = next(x for x in lines if x[2]["kind"] != "computed here")
+    rbs = next(x for x in lines if x[2]["kind"] == "computed_by_kb"); se = next(x for x in lines if x[2]["kind"] != "computed_by_kb")
     name = {it["id"]: it["name"] for it in c["items"]}
     return answered(f"{name[rbs[1]]}: {vt(rbs[2])} from Mo atoms per cycle at its own density (assumed: {', '.join(rbs[2]['assumed'])}); "
                     f"{name[se[1]]}: {vt(se[2])}; ratio {g(rbs[2]['value'] / (se[2]['value'] / 10), 2)} · {next(r['note'] for r in c['results'] if r['note'])} · the films differ in: " +
@@ -357,7 +357,7 @@ def q25():
                 continue
             for x in detail(r["id"])["results"]:
                 u = x["record"].get("uncertainty")
-                if u and u.get("kind") in ("pieces", "runs", "position") and x["record"]["kind"] != "computed here":
+                if u and u.get("kind") in ("pieces", "runs", "position") and x["record"]["kind"] != "computed_by_kb":
                     parts.append(f"{r['name']} {x['name']} {x['record']['text']} ± {u['value']}{' %' if u.get('stat') == 'relative_sd' else (' ' + x['record']['unit'])} (between {u['kind']}, n {u.get('n') or 'not stated'})")
         out.append(f"{k}: " + ("; ".join(dict.fromkeys(parts)) if parts else "no reproducibility figure"))
     return answered(" · ".join(out) + " · three definitions (between runs, positions in one film, pieces of one run); not merged",
