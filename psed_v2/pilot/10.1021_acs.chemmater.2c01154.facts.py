@@ -1442,7 +1442,13 @@ for rid, r in RUNROW.items():
         ENTS[rid] = dict(dep=dep, ent=ent, parent=dep, statement=r["statement"], label=r["label_as_printed"], how=how_, evidence=r["evidence"])
         if s_ == "anneal":
             ENTS[rid]["via"] = (f"{K}:act:anneal", "anneal", "annealing after deposition, in vacuum or inert up to 300 °C and in air (Sections S11, S12)")
+DROP.append(grp("T300"))                                                   # one cell at 300 °C: no series to compare
 C.retree(K, PROC, DEPS, ENTS, group_facts_to={g: f"{K}:dep:{g.split(':')[-1]}" for g in DROP}, drop_groups=DROP)
+# observations of the plasma by OES and of the saturation curves by in situ SE: under measurement activities of the paper
+N(f"{K}:method:oes", "activity", "optical emission spectroscopy of the H2S/H2/Ar plasma", PAPER, evidence="s3.p50;s3.p51", kind="measurement", how="stated",
+  label_as_printed="OES")
+for fid_, par in ((f"{K}:s3.p50#1", f"{K}:method:oes"), (f"{K}:s3.p51#3", f"{K}:method:oes"), (f"{K}:s3.p1#3", f"{K}:method:ellipsometry")):
+    next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
 # every deposition carries its temperature and H2 flow ratio
 import collections  # noqa: E402
 KIDS = collections.defaultdict(list)
@@ -1458,4 +1464,10 @@ for d, spec in DEPS.items():
         temp(spec["evidence"], t, spec["label"], f"{t} °C;{spec['label']}"); C.facts()[-1]["parent"] = d
     if "plasma_gas_ratio" not in have:
         ratio(spec["evidence"], rt, spec["label"], f"{rt};{spec['label']}"); C.facts()[-1]["parent"] = d
+# the authors' comparisons: the T x ratio grid (its members the 32 cell films), one ratio series per temperature row, the cycle
+# series, the H2S tests, the WS2 and TiS2 series
+CELLS_ = [f"{K}:ent:T{t}_R{r}" for (t, r) in CELLS]
+C.comparisons(K, {grp("map"): ("grid", "deposition_temperature;plasma_gas_ratio"), **{grp(f"T{t}"): ("series", "plasma_gas_ratio") for t in TEMPS if t != 300},
+                  grp("cyc"): ("series", "cycle_number"), grp("h2s"): ("series", "gas_flow_rate"), grp("WS2"): ("series", "plasma_gas_ratio"),
+                  grp("TiS2"): ("series", "plasma_gas_ratio")}, members={grp("map"): CELLS_})
 write(K, PID)

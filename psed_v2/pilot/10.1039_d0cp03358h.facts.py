@@ -1134,4 +1134,15 @@ for k in list(SIMS) + ["esi"]:
     SIMRUNS[sim(k)] = dict(act=f"{K}:simrun:{k}", ent=f"{K}:simrun:{k}:run", parent=SIMACT, statement=RUNROW[sim(k)]["statement"],
                         label=RUNROW[sim(k)]["label_as_printed"], evidence=RUNROW[sim(k)]["evidence"])
 C.retree(K, PROC, DEPS, ENTS, SIMRUNS, group_facts_to={grp("sims"): SIMACT})
+# observations about the measurement methods and about the chips as fabricated: under measurement activities of the paper
+N(f"{K}:method:metrology", "activity", "the chips as fabricated: oxide thickness tolerance and the entrance nanostep", PAPER, evidence="s16.p3;s16.p4",
+  kind="measurement", how="stated", label_as_printed="fabrication metrology")
+for fid_, par in ((f"{K}:fig3b#1", f"{K}:method:reflectometry"), (f"{K}:fig3.cap#3", f"{K}:method:reflectometry"), (f"{K}:s17.p1#2", f"{K}:method:reflectometry"),
+                  (f"{K}:s16.p3#2", f"{K}:method:metrology"), (f"{K}:s16.p4#1", f"{K}:method:metrology"), (f"{K}:s16.p4#2", f"{K}:method:metrology"),
+                  (f"{K}:s16.p4#3", f"{K}:method:metrology")):
+    next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
+# the authors' comparisons: the Table 1 series (what each varies), the reproducibility set (a replicate set), the simulations
+C.comparisons(K, {grp("A"): ("series", "pillar_layout"), grp("B"): ("series", "objective_magnification"), grp("C"): ("series", "feature_height"),
+                  grp("D"): ("series", "cycle_number"), grp("E"): ("series", "pulse_time"), grp("F"): ("series", "purge_time"),
+                  grp("repro"): ("replicate", ""), grp("sims"): ("series", "feature_height;cycle_number")})
 write(K, PID)

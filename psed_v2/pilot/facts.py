@@ -127,7 +127,8 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
     sims = sims or {}
     group_facts_to = group_facts_to or {}
     byid = {r["fact_id"]: r for r in _facts}
-    old_kids = {}                                        # the old parents, before any row is converted or re-parented
+    old_kids = {}                                        # the old parents and types, before any row is converted or re-parented
+    old_type = {r["fact_id"]: r["type"] for r in _facts}
     for r in _facts:
         old_kids.setdefault(r["parent"], []).append(r["fact_id"])
     recipe = f"{key}:recipe"
@@ -197,18 +198,20 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
     def member(i):
         """An old member (a run, a group) as a new node: the run's entity or activity; a dropped group's entities; a group itself."""
         if i in ents:
-            return [ents[i]["ent"] or ents[i]["dep"]]
+            if ents[i]["ent"]:
+                return [ents[i]["ent"]]
+            return [s["ent"] for s in ents.values() if s.get("ent") and s["dep"] == i and s["parent"] == i] or [ents[i]["dep"]]   # a deposition: its entities
         if i in sims:
             return [sims[i]["ent"]]
         if i in drop_groups:
-            return [m for c in old_kids.get(i, []) if c in byid and byid[c]["type"] in ("run", "group") for m in member(c)]
-        return [i] if i in byid and byid[i]["type"] == "group" else []
+            return [m for c in old_kids.get(i, []) if old_type.get(c) in ("run", "group") for m in member(c)]
+        return [i] if old_type.get(i) == "group" else []
     for g in [r for r in _facts if r["type"] == "group"]:
         if g["fact_id"] in drop_groups:
             continue
         links = [l for l in g["links"].split(";") if l]
         purpose_, rest = (links[:1], links[1:]) if links and "#" in links[0] else ([], links)
-        members = [m for c in old_kids.get(g["fact_id"], []) if c in byid and byid[c]["type"] in ("run", "group") for m in member(c)] + [m for l in rest for m in member(l)]
+        members = [m for c in old_kids.get(g["fact_id"], []) if old_type.get(c) in ("run", "group") for m in member(c)] + [m for l in rest for m in member(l)]
         members = list(dict.fromkeys(m for m in members if m))
         g["parent"] = key
         g["links"] = ";".join(purpose_ + members)
@@ -232,6 +235,37 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
 def points():
     """The curves kept so far (name -> dict with points and the printed axis labels)."""
     return _points
+
+
+def comparisons(key, table, members=None):
+    """Turn the surviving group rows into comparison facts: id :grp: -> :cmp:, type comparison, kind and the varied quantity ids
+    from table {group id: (kind, varied)}; links stay purpose + members (members={group id: [...]} overrides them); facts under the
+    group go under the comparison; parents and links naming the group are remapped. An observation, derived or model fact under
+    the recipe whose links name a member of a comparison moves under that comparison, as a fact spanning its members."""
+    byid = {r["fact_id"]: r for r in _facts}
+    remap, mem = {}, {}
+    for g, (kind, varied) in table.items():
+        row, new = byid[g], g.replace(":grp:", ":cmp:")
+        links = [l for l in row["links"].split(";") if l]
+        if members and g in members:
+            links = links[:1] + list(members[g])
+        row.update(fact_id=new, type="comparison", kind=kind, quantity=varied, parent=key, links=";".join(links), how="stated", qualifiers="")
+        remap[g] = new
+    for r in _facts:
+        if r["parent"] in remap:
+            r["parent"] = remap[r["parent"]]
+        if r["links"]:
+            r["links"] = ";".join(dict.fromkeys(remap.get(l, l) for l in r["links"].split(";") if l))
+    for new in remap.values():
+        mem[new] = set(byid[[g for g in remap if remap[g] == new][0]]["links"].split(";")[1:])
+    recipe = f"{key}:recipe"
+    for r in _facts:
+        if r["parent"] == recipe and r["type"] in ("observation", "derived", "model") and r["links"]:
+            ls = set(r["links"].split(";"))
+            for c, ms in mem.items():
+                if ls & ms:
+                    r["parent"] = c
+                    break
 
 
 def NK(element_ids, reason):

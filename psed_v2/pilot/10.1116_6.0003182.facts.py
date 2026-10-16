@@ -861,4 +861,14 @@ for r in C.facts():                                                             
 for r in C.facts():
     if r["fact_id"] == f"{K}:meas:ent:bare:photograph":
         r["order"] = "0"                                                        # photographed before any deposition
+# the compacts as made (calipers, porosity, cracks) under a measurement activity of the paper; process observations under the
+# process-monitor method; the text's porosity list spans the three runs: under the schedules comparison
+N(f"{K}:method:compacts", "activity", "the pressed compacts as made: thickness and diameter by calipers, initial porosity, cracks", PAPER,
+  evidence="s8.p1", kind="measurement", how="stated", label_as_printed="compacts as made")
+for fid_, par in ((f"{K}:s8.p1#7", f"{K}:method:compacts"), (f"{K}:s8.p1#8", f"{K}:method:compacts"), (f"{K}:s8.p1#9", f"{K}:method:compacts"),
+                  (f"{K}:s8.p1#10", f"{K}:method:compacts"), (f"{K}:s9.p4#11", f"{K}:method:process_monitor"), (f"{K}:s9.p5#1", f"{K}:method:process_monitor"),
+                  (f"{K}:s12.x1#3", f"{K}:method:process_monitor"), (f"{K}:fig3a#2", f"{K}:method:process_monitor")):
+    next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
+C.comparisons(K, {f"{K}:grp:schedules": ("series", "deposition_temperature")})
+next(r for r in C.facts() if r["fact_id"] == f"{K}:s12.p1#8")["parent"] = f"{K}:cmp:schedules"
 write(K, PID)

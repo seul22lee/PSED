@@ -10,11 +10,11 @@ state the same thing (same type, quantity, qualifiers, value, range, unit, value
 more words of its element in a row (own words); coverage.csv lists every element once, nothing is "missed", covered
 elements list facts that cite them, "no knowledge" has a reason.
 Tree (stage 3, papers with a type=paper row): one root; every other row has a parent that exists; links resolve; no cycles;
-an activity has a kind from lists.ACTIVITY_KINDS and how stated or inferred, an entity how, a comparison a kind from lists.COMPARISON_KINDS;
-every run and group has a child; every group's first link is its purpose fact (the paper's sentence on what it was made to test);
-every claim has a link; a setting that varies among sibling runs or groups is never "other"; every number with a unit in a
-group's label ("450 °C", "10-50 cyc") is the value of a setting fact under the group or above it, never only in the label;
-every setting under a group carries a value or a value_text;
+an activity has a kind from lists.ACTIVITY_KINDS and how stated or inferred, an entity how; every entity has a deposition above it
+(or sits under the recipe, before any deposition); every observation sits under a measurement activity or under the comparison it
+spans; every setting under an activity or a comparison; every comparison (the authors' intent: a series, a grid, a replicate set)
+has a purpose fact as its first link, two or more members and a varied quantity id (none for a replicate set); what a comparison
+varies is never "other"; every number with a unit in a comparison's label is in a member's condition vector; every claim has a link;
 tree rows (ids without "#") are not counted as facts.
 Experiments: <paper_id>.experiments.csv (experiments.py) has one run row per run of the tree (cited works are extra rows, kind cited).
 User facts (user.facts.csv, user_facts.py): the facts schema; author user; ids user:<name>, unique; types from the lists; vocabularies as
@@ -170,10 +170,13 @@ def experiment_entities(rows):
 
 
 def check_tree(rows, els):
-    """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links
-    resolve; no cycles; every run has a child; every claim has a link; tree rows use the node types (cited works: cited);
-    what a group varies is never "other"; a group's label states no value that no setting fact under or above it carries;
-    every setting under a group carries a value or a value_text."""
+    """Stage 3, for a paper that has its tree (a type=paper row): one root; every other row has a parent that exists; links resolve;
+    no cycles; tree rows use the node types; an activity has a kind and how, an entity how; every entity has a deposition (a model run: a simulation) above it
+    (or sits under the recipe with activities of order 0 only, before any deposition); every observation sits under a measurement
+    activity or under the comparison it spans; every setting under an activity or under a comparison (what its members share);
+    every comparison has a purpose fact as its first link, two or more members that exist, and a varied quantity id unless it is a
+    replicate set; what a comparison varies is never "other"; a comparison's label states no value that no member's condition
+    vector carries; every claim has a link."""
     if not any(r["type"] == "paper" for r in rows):
         return []
     err = []
@@ -191,19 +194,17 @@ def check_tree(rows, els):
         if "#" not in i:
             if r["type"] not in L.NODE_TYPES + ["cited", "comparison"]:
                 err.append(f"{i}: tree row type {r['type']}")
-        if r["type"] == "activity" and r["kind"] not in L.ACTIVITY_KINDS:
-            err.append(f"{i}: activity kind {r['kind']!r} (lists.ACTIVITY_KINDS)")
-        if r["type"] in ("activity", "entity") and r["how"] not in L.HOW:
-            err.append(f"{i}: {r['type']} how {r['how']!r} (stated or inferred)")
-        if r["type"] == "comparison" and r["kind"] not in L.COMPARISON_KINDS:
-            err.append(f"{i}: comparison kind {r['kind']!r} (lists.COMPARISON_KINDS)")
-        if r["order"] and not r["order"].isdigit():
-            err.append(f"{i}: order {r['order']!r} is not a whole number")
             for e in filter(None, r["evidence"].split(";")):
                 if e not in els:
                     err.append(f"{i}: evidence {e} not an element")
             for q in L.qualifiers_ok(r["qualifiers"]):
                 err.append(f"{i}: qualifier {q}")
+        if r["type"] == "activity" and r["kind"] not in L.ACTIVITY_KINDS:
+            err.append(f"{i}: activity kind {r['kind']!r} (lists.ACTIVITY_KINDS)")
+        if r["type"] in ("activity", "entity") and r["how"] not in L.HOW:
+            err.append(f"{i}: {r['type']} how {r['how']!r} (stated or inferred)")
+        if r["order"] and not r["order"].isdigit():
+            err.append(f"{i}: order {r['order']!r} is not a whole number")
         if r["type"] == "claim" and not r.get("links"):
             err.append(f"{i}: claim without links")
     for r in rows:                                                      # walk up: must reach the root without a repeat
@@ -212,80 +213,86 @@ def check_tree(rows, els):
             if i in seen:
                 err.append(f"{r['fact_id']}: cycle through {i}"); break
             seen.add(i); i = R[i]["parent"]
-    kids = collections.Counter(r.get("parent") for r in rows)
-    for r in rows:
-        if r["type"] == "run" and not kids[r["fact_id"]]:
-            err.append(f"{r['fact_id']}: run without children")
-        if r["type"] == "group" and not kids[r["fact_id"]] and not [l for l in r["links"].split(";")[1:] if l]:
-            err.append(f"{r['fact_id']}: group without children or members")
-        if r["type"] == "group":                                        # a group's first link is its purpose, a fact
-            first = r.get("links", "").split(";")[0]
-            if not first or first not in R or "#" not in first or R[first]["type"] not in ("claim", "observation", "setting", "model"):
-                err.append(f"{r['fact_id']}: group without a purpose fact as its first link")
-    # what a group varies is never "other": among sibling runs (or sibling groups, each taken with its own facts and its
-    # runs' facts), a setting present in two siblings with different values
     K = collections.defaultdict(list)
     for r in rows:
         if r.get("parent"):
             K[r["parent"]].append(r)
-    def sub(i, deep=False):
+    NODES = ("activity", "entity", "comparison")
+
+    def above(i):
+        out, x = [], R[i].get("parent", "")
+        while x in R:
+            out.append(x); x = R[x].get("parent", "")
+        return out
+
+    def node_of(i):                                                     # the nearest tree row at or above a fact
+        x = R[i].get("parent", "")
+        while x in R and "#" in x:
+            x = R[x].get("parent", "")
+        return x
+
+    def own(i):                                                         # a node's own facts: its subtree, not crossing another node
         out = []
         for ch in K.get(i, []):
-            if ch["type"] in ("run", "group"):
-                if deep:
-                    out += sub(ch["fact_id"], True)
+            if ch["type"] in NODES or ch["type"] in ("paper", "cited"):
                 continue
             if "#" in ch["fact_id"]:
                 out.append(ch)
-            out += sub(ch["fact_id"], deep)
+            out += own(ch["fact_id"])
+        return out
+
+    def vector(i):                                                      # the condition vector of a node: settings of the non-measurement activities at or above it
+        out = []
+        for a in [i] + above(i):
+            if R[a]["type"] == "activity" and R[a]["kind"] != "measurement":
+                out += [f for f in own(a) if f["type"] == "setting" and f["quantity"]]
         return out
     for r in rows:
-        runs = [ch for ch in K.get(r["fact_id"], []) if ch["type"] in ("run", "group")]   # sibling runs, or sibling groups
-        if len(runs) < 2:
-            continue
-        per = collections.defaultdict(dict)
-        for run in runs:
-            for f in sub(run["fact_id"], run["type"] == "group"):
-                if f["type"] == "setting" and f["quantity"]:
+        i = r["fact_id"]
+        if r["type"] == "entity":
+            ok = any(R[a]["type"] == "activity" and R[a]["kind"] in ("deposition", "simulation") for a in above(i))   # a model run: its simulation
+            before = R[r["parent"]]["type"] == "activity" and R[r["parent"]]["kind"] == "recipe" and all(c["order"] == "0" for c in K.get(i, []) if c["type"] == "activity")
+            if not ok and not before:
+                err.append(f"{i}: entity without a deposition above it")
+        if r["type"] == "comparison":
+            if r["kind"] not in L.COMPARISON_KINDS:
+                err.append(f"{i}: comparison kind {r['kind']!r} (lists.COMPARISON_KINDS)")
+            links = [l for l in r["links"].split(";") if l]
+            first = links[0] if links else ""
+            if not first or first not in R or "#" not in first or R[first]["type"] not in ("claim", "observation", "setting", "model"):
+                err.append(f"{i}: comparison without a purpose fact as its first link")
+            members = [l for l in links[1:] if l in R and "#" not in l]
+            if len(members) < 2:
+                err.append(f"{i}: comparison with {len(members)} members (want two or more)")
+            if r["kind"] != "replicate" and not all(q in L.QUANTITIES and q != "other" for q in r["quantity"].split(";")):
+                err.append(f"{i}: comparison varies {r['quantity']!r} (quantity ids)")
+            per = collections.defaultdict(dict)                         # what the members vary is never other; label values carried
+            have = set()
+            for m in members:
+                if R[m]["type"] == "comparison":
+                    continue
+                for f in vector(m):
                     key = (f["quantity"], f["qualifiers"], f["label_as_printed"] if f["quantity"] == "other" else "")
                     v = f["censor"] + f["value"] + f["unit"] if f["value"] else f["value_text"] or f["statement"].split(": ", 1)[-1]
-                    per[key][run["fact_id"]] = per[key].get(run["fact_id"], "") + "|" + v
-        for key, m in per.items():
-            if key[0] == "other" and len(set(m.values())) > 1:
-                err.append(f"{r['fact_id']}: varies setting other '{key[2]}' among its runs; give it an id in lists.py")
-    # a group's label states no value that no setting fact backs: every number with a unit in label_as_printed ("450 °C",
-    # "0.20 H2", "10-50 cyc", "120, 160, 120/160 °C"; "sample 2, 4, 8, and 12" has no unit) is the value, value_min or value_max
-    # of a setting fact in the group's subtree or on an ancestor (what the group inherits)
-    for r in rows:
-        if r["type"] != "group" or not label_values(r["label_as_printed"]):
-            continue
-        have = set()
-        members = [l for l in r["links"].split(";")[1:] if l in R and "#" not in l]        # a group's members (entities, activities, groups)
-        above, i = [], r.get("parent", "")
-        while i in R:
-            above.append(i); i = R[i].get("parent", "")
-        for m in members:
-            i = R[m].get("parent", "")
-            while i in R:
-                above.append(i); i = R[i].get("parent", "")
-        for f in sub(r["fact_id"], True) + [f for a in above for f in sub(a)] + [f for m in members for f in sub(m, True)]:
-            if f["type"] == "setting":
-                have |= {C.num(f[k]) for k in ("value", "value_min", "value_max") if f[k]}
-        for v in label_values(r["label_as_printed"]):
-            if v not in have:
-                err.append(f"{r['fact_id']}: label '{r['label_as_printed']}' states {v:g} but no setting fact under it or above it carries it")
-    # every setting under a group carries a value or a value_text (a categorical value), so that the group's runs can be compared
-    seen = set()
-    for r in rows:
-        if r["type"] == "group":
-            for f in sub(r["fact_id"], True):
-                if f["type"] == "setting" and f["fact_id"] not in seen and not (f["value"] or f["value_min"] or f["value_max"] or f["value_text"]):
-                    seen.add(f["fact_id"])
-                    err.append(f"{f['fact_id']}: setting under {r['fact_id']} with neither value nor value_text")
+                    per[key][m] = per[key].get(m, "") + "|" + v
+                    have |= {C.num(f[k]) for k in ("value", "value_min", "value_max") if f[k]}
+            for key, m in per.items():
+                if key[0] == "other" and len(set(m.values())) > 1:
+                    err.append(f"{i}: varies setting other '{key[2]}' among its members; give it an id in lists.py")
+            for v in label_values(r["label_as_printed"]):
+                if v not in have:
+                    err.append(f"{i}: label '{r['label_as_printed']}' states {v:g} but no member's condition vector carries it")
+        if "#" in i and r["type"] in ("observation", "setting"):
+            n = node_of(i)
+            nt, nk = (R[n]["type"], R[n]["kind"]) if n in R else ("", "")
+            if r["type"] == "observation" and not (nt == "comparison" or (nt == "activity" and nk == "measurement")):
+                err.append(f"{i}: observation under {n or 'nothing'} ({nt} {nk}), not under a measurement activity or a comparison")
+            if r["type"] == "setting" and not (nt == "activity" or nt == "comparison"):
+                err.append(f"{i}: setting under {n or 'nothing'} ({nt}), not under an activity or a comparison")
     return err
 
 
-NUMBER_LIST = re.compile(r"(?<![A-Za-z\d.])\d+(?:\.\d+)?(?:\s*(?:[,/–-]|,?\s*and)\s*\d+(?:\.\d+)?)*")
+NUMBER_LIST = re.compile(r"(?<![A-Za-z\d.])\d+(?:\.\d+)?(?:\s*(?:[,/\u2013-]|,?\s*and)\s*\d+(?:\.\d+)?)*")
 
 
 def label_values(label):
@@ -302,8 +309,8 @@ def tree_summary(rows):
     R = {r["fact_id"]: r for r in rows}
     root = next(r["fact_id"] for r in rows if r["type"] == "paper")
     under = [r for r in rows if r.get("parent") == root and "#" in r["fact_id"]]
-    runs = collections.Counter(re.search(r"run=(\w+)", r["qualifiers"]).group(1) for r in rows if r["type"] == "run")
-    return dict(tree_rows=collections.Counter(r["type"] for r in rows if "#" not in r["fact_id"]), runs=dict(runs),
+    runs = collections.Counter(r["kind"] for r in rows if r["type"] == "activity")
+    return dict(tree_rows=collections.Counter(r["type"] for r in rows if "#" not in r["fact_id"]), runs=dict(runs), comparisons=dict(collections.Counter(r["kind"] for r in rows if r["type"] == "comparison")),
                 under_paper=collections.Counter(r["type"] for r in under),
                 claims_unlinked=sum(1 for r in rows if r["type"] == "claim" and not r.get("links")))
 
@@ -401,7 +408,7 @@ if __name__ == "__main__":
             print("   facts:", s["n_facts"], s["facts"], "| quantity other:", s["quantity_other"])
             if s.get("tree"):
                 t = s["tree"]
-                print("   tree rows:", dict(t["tree_rows"]), "| runs:", t["runs"], "| facts directly under the paper:",
+                print("   tree rows:", dict(t["tree_rows"]), "| activities:", t["runs"], "| comparisons:", t["comparisons"], "| facts directly under the paper:",
                       sum(t["under_paper"].values()), dict(t["under_paper"]), "| claims without links:", t["claims_unlinked"])
             print("   panels:", s["panels"])
             for lab, (r, n) in (("text", s["text_numbers"]), ("table", s["table_numbers"])):

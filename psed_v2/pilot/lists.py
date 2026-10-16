@@ -43,8 +43,6 @@ QUALIFIERS = {          # key: allowed values (None = a chemical or element toke
     "stage": {"initial", "final"},
     "basis": {"AR", "EAR"},
     "species": None, "gas": None, "element": None,
-    "run": {"deposition", "specimen", "simulation"}, "how": {"stated", "inferred"},   # tree rows (stage 3)
-    "sample": None, "sim": None,
 }
 QUALIFIERS["x"] = set(QUANTITIES) - {"other"}         # the abscissa of a curve (every points_ref fact carries one), a quantity id
 
@@ -72,8 +70,8 @@ def variables_ok(s):
 # tree rows (stage 3): the paper, activities (something done, with settings: kind from ACTIVITY_KINDS, order when several apply to one
 # entity, how stated or inferred) and entities (a physical thing or its state: a specimen, a piece cut from it, a position, a model
 # run; how stated or inferred). The tree is physical provenance only: paper -> recipe -> deposition -> entity -> later activities ->
-# facts. process, group and run are the old node types, accepted until the trees are rebuilt (steps 2 and 3 of the 2026-10-16 change).
-NODE_TYPES = ["paper", "activity", "entity", "process", "group", "run"]
+# facts. The authors' comparison intent is a fact of type comparison (kind, the varied quantity, links = purpose + members), not a parent.
+NODE_TYPES = ["paper", "activity", "entity"]
 ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
 COMPARISON_KINDS = ["series", "grid", "replicate"]
 HOW = ["stated", "inferred"]
