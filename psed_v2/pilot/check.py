@@ -544,6 +544,23 @@ def check_claims():
     return []
 
 
+def check_records():
+    """P62: no value record with empty text reaches a value listing: every result record of every experiment and every record a
+    values() group returns has printable text (a curve reads 'curve, N points'); the curve records are counted."""
+    import query as Q
+    err, curves, n = [], 0, 0
+    for k, T in Q.TREES.items():
+        for e in Q.experiments(T):
+            for key, x in Q.result_records(T, e).items():
+                r = x["record"]; n += 1
+                if not r.get("text"):
+                    err.append(f"{e} {key}: a value record with empty text reaches the listing (P62)")
+                elif r["text"].startswith("curve, "):
+                    curves += 1
+    print(f"== records (P62): {n} result records on the experiments, {curves} of them curve references, none empty")
+    return err
+
+
 def check_bases_sec19():
     """P60 (Sec. 19): every nonempty uncertainty and every spread fact carries a basis from the closed list, or the paper does not say
     (uncertainty_kind not_stated) and the fact is listed here; counts per basis."""
@@ -694,6 +711,11 @@ if __name__ == "__main__":
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_records()
+    print(f"== records (P62): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

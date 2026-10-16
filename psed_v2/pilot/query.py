@@ -969,10 +969,13 @@ def incomparable(key_a, rec_a, key_b, rec_b):
 
 
 def record(T, f, alternatives=(), ent=None):
-    """The value record of a fact; caveats: those that apply to it as seen on ent (default: the entity it belongs to)."""
+    """The value record of a fact; caveats: those that apply to it as seen on ent (default: the entity it belongs to). A fact whose
+    value is a curve (points_ref, no scalar) gets the text 'curve, N points' (P62): a record either has printable text or is a curve
+    reference, never an empty line."""
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
-    return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text_of(f), kind=kind(f), definition=definition_of(f),
+    text = text_of(f) or (f"curve, {len(T.points.get(f['points_ref'], {}).get('points', []))} points" if f["points_ref"] else "")
+    return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text, kind=kind(f), definition=definition_of(f),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"], basis=f.get("basis") or L.basis_of(f["uncertainty_kind"])) if f["uncertainty"] else None),
