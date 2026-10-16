@@ -26,7 +26,7 @@ QUANTITIES = sorted({
     # derived quantities (DERIVED below): computed from facts, never stored
     "phase",                                           # a phase found in a film (value_text detected / not detected; species=), XRD, XPS or a map region (P15)
     "effective_channel_height", "exposure_per_run", "sheet_resistance", "h_per_metal", "density_relative_to_bulk", "moles_deposited",
-    "moles_from_mass_gain", "shell_volume_fraction", "deposition_rate", "coating_mass_fraction",
+    "moles_from_mass_gain", "shell_volume_fraction", "deposition_rate", "coating_mass_fraction", "target_growth_per_cycle", "plasma_h2_fraction",
     "other",
 })
 
@@ -157,7 +157,7 @@ UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_ti
          "carrier_concentration": "cm-3", "carrier_mobility": "cm2/Vs", "objective_magnification": "", "fit_r2": "", "fill_fraction": "%",
          "signal_intensity": "", "reaction_stoichiometry": "", "annealing_temperature": "°C", "raman_shift": "cm-1",
          "effective_channel_height": "nm", "exposure_per_run": "Torr s", "sheet_resistance": "Ω/sq", "h_per_metal": "", "density_relative_to_bulk": "%",
-         "moles_deposited": "mmol", "moles_from_mass_gain": "mmol", "shell_volume_fraction": "%", "deposition_rate": "nm/h", "coating_mass_fraction": "%"}
+         "moles_deposited": "mmol", "moles_from_mass_gain": "mmol", "shell_volume_fraction": "%", "deposition_rate": "nm/h", "coating_mass_fraction": "%", "target_growth_per_cycle": "nm", "plasma_h2_fraction": "%"}
 
 # unit normalisation: spellings the facts use for one unit, and every unit's dimension and factor to that dimension's base unit;
 # convert() turns a value from one unit into another of the same dimension (°C and K by offset)
@@ -227,6 +227,11 @@ DERIVED = {
     "moles_from_mass_gain": dict(unit="mmol", formula="mass gain × powder mass per compact × compacts per run / M",
                                  inputs=[_in("mg", "mass_gain", "", "", basis="initial_mass"), _in("m0", "other:powder mass", "", "g"), _in("k", "other:NPCs per run", "", ""),
                                          _in("M", "other:molar mass", "species=@material", "g/mol")], fn=lambda mg, m0, k, M: 1000 * mg * m0 * k / M),
+    "target_growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="thickness target / cycles: the growth per cycle the chosen cycle count implies",
+                                    inputs=[_in("t", "film_thickness", "kind=target", "nm"), _in("N", "cycle_number", "", "")], fn=lambda t, N: t / N),
+    "plasma_h2_fraction": dict(unit="%", formula="H2 flow / (H2S + H2 + Ar flow): the H2 share of the whole plasma feed",
+                               inputs=[_in("h2", "gas_flow_rate", "gas=H2;step=plasma", "sccm"), _in("h2s", "gas_flow_rate", "gas=H2S;step=plasma", "sccm"),
+                                       _in("ar", "gas_flow_rate", "gas=Ar;step=plasma", "sccm")], fn=lambda h2, h2s, ar: 100 * h2 / (h2 + h2s + ar)),
     "coating_mass_fraction": dict(unit="%", formula="the coating's share of the coated sample's mass: mass gain / (1 + mass gain), mass gain relative to the initial mass",
                                   inputs=[_in("mg", "mass_gain", "", "", basis="initial_mass")], fn=lambda mg: 100 * mg / (1 + mg)),
     "shell_volume_fraction": dict(unit="%", formula="(1 − φ_i) × ((d_NP + 2 t)³ / d_NP³ − 1): the coating's share of the compact volume, spherical particles",
@@ -285,6 +290,7 @@ LABELS = {
     "phase": "phase", "effective_channel_height": "H_eff", "exposure_per_run": "exposure per run", "sheet_resistance": "R_sheet", "h_per_metal": "H per metal",
     "density_relative_to_bulk": "ρ/ρ_bulk", "moles_deposited": "moles deposited", "moles_from_mass_gain": "moles from mass gain",
     "shell_volume_fraction": "coating volume fraction", "deposition_rate": "nm per hour", "coating_mass_fraction": "coating mass fraction",
+    "target_growth_per_cycle": "GPC target", "plasma_h2_fraction": "H2 share of the plasma feed",
 }
 assert all(k.split("{")[0] in QUANTITIES for k in LABELS), "LABELS key not a quantity id"
 assert all(q in LABELS for q in QUANTITIES), "quantity without a label"
@@ -315,6 +321,7 @@ NAMES = {
     "sheet_resistance": "sheet resistance", "h_per_metal": "H per metal atom", "density_relative_to_bulk": "density relative to bulk",
     "moles_deposited": "moles deposited per run", "moles_from_mass_gain": "moles from mass gain", "shell_volume_fraction": "coating volume fraction",
     "deposition_rate": "thickness per hour", "coating_mass_fraction": "coating mass fraction", "other": "other",
+    "target_growth_per_cycle": "growth per cycle implied by the thickness target", "plasma_h2_fraction": "H2 share of the plasma feed",
     "pulse_time{species=TMA;step=reactant_A}": "TMA pulse", "pulse_time{species=H2O;step=reactant_B}": "water pulse",
     "pulse_time{species=DEZ;step=reactant_A}": "DEZ pulse", "pulse_time{step=reactant_A}": "precursor pulse", "pulse_time{step=plasma}": "plasma step",
     "purge_time{step=purge_A}": "purge after precursor", "purge_time{step=purge_B}": "purge after co-reactant",

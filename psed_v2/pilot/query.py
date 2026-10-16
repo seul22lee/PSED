@@ -87,9 +87,10 @@ class Tree:
             if not self.is_cond(x):
                 continue
             level = collections.defaultdict(list)
+            sim = self.byid[x]["type"] == "activity" and self.byid[x]["kind"] == "simulation"
             for f in self.own(x):
-                if f["type"] == "setting" and f["quantity"] and matches(f):
-                    level[ckey(f)].append(f)
+                if f["quantity"] and matches(f) and (f["type"] == "setting" or (sim and f["type"] == "model" and f["data_kind"] == "chosen input")):
+                    level[ckey(f)].append(f)                                    # a simulation's chosen model inputs are its runs' conditions
             for k, fs in level.items():
                 fs = inheritable(fs, own=(x == i))
                 if fs:
@@ -468,11 +469,13 @@ def judge(T, comp, key):
     the sentence says so. The range of the n member values is set against the range expected from n draws of that noise
     (d2 × sd). Returns dict(effect, n, unit, sd, sd_n, sd_source, kind, sentence) or None when fewer than two members carry the
     result."""
-    ents = [m for m in T.member_entities(comp) if key in T.results(m) and val(T.results(m)[key][0]) is not None]
+    specs = [m for m in T.member_entities(comp) if T.byid[T.byid[m]["parent"]]["type"] != "entity"]     # specimens: a piece counts through its specimen
+    rd = {m: results_deep(T, m) for m in specs}
+    ents = [m for m in specs if key in rd[m] and val(rd[m][key][0]) is not None]
     if len(ents) < 2:
         return None
-    vals = [val(T.results(m)[key][0]) for m in ents]
-    unit = T.results(ents[0])[key][0]["unit"]
+    vals = [val(rd[m][key][0]) for m in ents]
+    unit = rd[ents[0]][key][0]["unit"]
     eff, kind = max(vals) - min(vals), member_kind(T, ents)
     out = dict(effect=eff, n=len(vals), unit=unit, kind=kind, sd=None, sd_n=None, sd_source=None)
     if kind == "model runs":
@@ -870,8 +873,14 @@ def derived_record(T, ent, did, d):
 
 
 def condition_records(T, ent):
-    """The condition vector as {key: dict(name, record)}: the chosen fact (ranked) with the others as alternatives."""
-    return {k: dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:])) for k, fs in T.vector(ent).items() if text_of(fs[0])}
+    """The condition vector as {key: dict(name, record)}: the chosen fact (ranked) with the others as alternatives; a spread fact of
+    the entity about a condition (a fabrication tolerance) becomes that record's uncertainty."""
+    out = {k: dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:])) for k, fs in T.vector(ent).items() if text_of(fs[0])}
+    for fs in T.results(ent).values():
+        for f in fs:
+            if quals(f).get("stat") and spread_key(f) in out and not out[spread_key(f)]["record"]["uncertainty"]:
+                q = quals(f); out[spread_key(f)]["record"]["uncertainty"] = dict(value=f["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""))
+    return out
 
 
 def result_records(T, ent):
@@ -923,7 +932,24 @@ def comparison_label(T, c):
     return f"{c['label_as_printed']} — {', '.join(varies)}" if varies else c["label_as_printed"]
 
 
-def find(paper=None, material=None, structure=None, result=None, conditions=None):
+def cited_name(T, w):
+    """A cited work's name: its first author as the citing paper's facts give it ('Arts et al.'), and the reference number."""
+    for f in T.kids.get(w, []):
+        m = re.match(r"(?:follow-up )?([A-Z][a-z]+(?: [a-z]+)? et al\.?)", f["statement"])
+        if m:
+            return f"{m.group(1).rstrip('.')}. ({T.label(w)})"
+    return T.label(w)
+
+
+def cited_records(T, w):
+    """A cited work's facts split into conditions (quantities the papers use as settings) and results, as records."""
+    fs = [f for f in T.kids.get(w, []) if "#" in f["fact_id"] and f["quantity"] and text_of(f)]
+    cond = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if f["quantity"] in L.SETTING_QUANTITIES or f["quantity"] in ("feature_height", "aspect_ratio")}
+    res = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if ckey(f) not in cond}
+    return cond, res
+
+
+def find(paper=None, material=None, structure=None, result=None, conditions=None, cited=True):
     """Experiments that pass the filters, grouped by the authors' comparisons. conditions = {quantity: (low, high)} in lists.UNITS.
     Returns dict(groups=[dict(id, paper, label, members)], rows={id: row}, other=[ids]); a row: id, paper, name, inferred, role,
     distinguish (1-2 conditions), result (every record of the requested result quantity), groups (the comparisons it is in)."""
@@ -963,6 +989,17 @@ def find(paper=None, material=None, structure=None, result=None, conditions=None
                            home=mine[0]["fact_id"] if mine else "")
             if not mine:
                 other.append(e)
+        if cited and not (material or structure or conditions):                  # the cited works the paper gives values for, as rows of their own
+            cw = []
+            for w in [r["fact_id"] for r in T.rows if r["type"] == "cited" and "#" not in r["fact_id"]]:
+                cond, res_ = cited_records(T, w)
+                hits = [dict(key=kk, name=x["name"], record=x["record"]) for kk, x in res_.items() if not result or kk.split("{")[0].split("[")[0] == result]
+                if (result and hits) or (not result and (cond or res_)):
+                    rows[w] = dict(id=w, paper=k, name=cited_name(T, w), inferred=False, role="cited", distinguish=[dict(key=kk, name=x["name"], text=x["record"]["text"]) for kk, x in list(cond.items())[:2]],
+                                   result=hits, groups=[f"{k}:cited"], home=f"{k}:cited")
+                    cw.append(w)
+            if cw:
+                groups.append(dict(id=f"{k}:cited", paper=k, label="cited works", kind="cited", members=cw, all_members=cw))
         for c in comps:
             ms = [m for m in T.member_entities(c) if m in kept and rows[m]["home"] == c["fact_id"]]
             if ms or any(m in kept for m in T.member_entities(c)):
@@ -1041,6 +1078,10 @@ def detail(any_id):
     or its comparisons directly), comparisons, identity. For a comparison: varies, members, main results with their effect and the
     noise sentence (judge), fits (fittable series), confounders, claims."""
     T = tree_of(any_id); n = T.byid[any_id]
+    if n["type"] == "cited":
+        cond, res_ = cited_records(T, any_id)
+        return dict(type="cited", id=any_id, paper=T.key, name=cited_name(T, any_id), statement=n["statement"], recipe=[dict(key=k, **v) for k, v in cond.items()],
+                    results=[dict(key=k, **v) for k, v in res_.items()], claims=[claim_record(T, c) for c in claims_of(T, [any_id])])
     if n["type"] == "comparison":
         ms = T.member_entities(n)
         specs = [m for m in ms if role(T, m) != "specimen" or T.byid[T.byid[m]["parent"]]["type"] == "activity"]
@@ -1049,17 +1090,38 @@ def detail(any_id):
         keys = sorted({k for m in specs for k in results_deep(T, m) if "stat=" not in k})
         shared = [k for k in keys if all(k in results_deep(T, m) for m in specs)]
         main = [k for k in keys if k.split("{")[0] in mains] or shared
-        effects = [dict(key=k, name=name_of(k), **{x: (g(v, 3) if isinstance(v, float) else v) for x, v in (judge(T, n, k) or {}).items()}) for k in main]
+        effects = [dict(key=k, name=name_of(k), main=k in main, **{x: (g(v, 3) if isinstance(v, float) else v) for x, v in j.items()})
+                   for k in shared for j in [judge(T, n, k)] if j]
         xkey = next((k for m in ms for k in T.vector(m) if k.split("{")[0] == n["quantity"].split(";")[0]), None)
         fits = []
         if xkey and n["kind"] == "series":
-            for k in main:
+            for k in shared:
                 pts = [(x, y) for _, x, y in series_xy(T, n, xkey, k) if x and y and x > 0 and y > 0]
                 if fittable(T, n, xkey, k) and len(pts) >= 3 and len({x for x, _ in pts}) >= 3:
                     b, a, r = power_fit(pts)
-                    fits.append(dict(key=k, name=name_of(k), x=name_of(xkey), exponent=g(b, 2), residual=g(r, 2), n=len(pts)))
+                    fit = dict(key=k, name=name_of(k), x=name_of(xkey), exponent=g(b, 2), residual=g(r, 2), n=len(pts), main=k in main, corrected=[])
+                    # a confounder (a condition that differs among the members besides the varied one) corrected from a stated comparison
+                    # that varies only it, and the fit redone (the correction and its source named)
+                    xy = series_xy(T, n, xkey, k)
+                    for ck in {kk for m, _, _ in xy for kk in T.vector(m) if kk != xkey}:
+                        vals = {m: fmt(T.vector(m)[ck][0]) or T.vector(m)[ck][0]["value_text"] for m, _, _ in xy if ck in T.vector(m)}
+                        if len(vals) != len(xy) or len(set(vals.values())) < 2:
+                            continue
+                        common = max(set(vals.values()), key=list(vals.values()).count)
+                        new = []
+                        for m, x, y in xy:
+                            fac, src = (1.0, None) if vals[m] == common else correction(T, ck, k, vals[m], common)
+                            if fac is None:
+                                new = []; break
+                            new.append((x, y * fac, m, vals[m], fac, src))
+                        if new and len({p[0] for p in new}) >= 3:
+                            b2, _, r2 = power_fit([(x, y) for x, y, *_ in new])
+                            fit["corrected"].append(dict(condition=name_of(ck), to=common, exponent=g(b2, 2), residual=g(r2, 2),
+                                                         changes=[dict(id=m, frm=v, factor=g(f_, 3), value=g(y, 3), by=comparison_label(T, c_)) for x, y, m, v, f_, c_ in new if c_]))
+                    fits.append(fit)
         conf = differing(T, specs, exclude={k for m in specs for k in T.vector(m) if k.split("{")[0] in n["quantity"].split(";")})
-        return dict(type="comparison", id=any_id, paper=T.key, label=comparison_label(T, n), kind=n["kind"], statement=n["statement"],
+        own_vals = [record(T, f) for f in T.own(any_id) if f["type"] in RESULT_TYPES and text_of(f)]
+        return dict(type="comparison", id=any_id, paper=T.key, label=comparison_label(T, n), kind=n["kind"], statement=n["statement"], values=own_vals,
                     varies=[L.NAMES.get(q, q) for q in n["quantity"].split(";") if q], members=specs, main=main, more=max(0, len(main) - 3),
                     effects=effects, fits=fits, confounders=conf, claims=[claim_record(T, c) for c in cl],
                     purpose=T.byid[n["links"].split(";")[0]]["statement"] if n["links"].split(";")[0] in T.byid else "")
@@ -1073,7 +1135,8 @@ def detail(any_id):
     ins = [T.label(i) for i in T.inputs_of(ent)]
     ids = [f for f in T.rows if f["type"] == "identity" and ent in f["links"].split(";")]
     return dict(type="entity", id=ent, paper=T.key, name=T.label(ent), inferred=T.byid[ent]["how"] == "inferred", role=role(T, ent),
-                statement=T.byid[ent]["statement"], what=dict(substrate=sub, inputs=ins, material=cond.get("material", {}).get("record", {}).get("text", "")),
+                statement=T.byid[ent]["statement"], what=dict(substrate=sub, inputs=ins, input_ids=T.inputs_of(ent), parent=T.byid[ent]["parent"] if T.byid[T.byid[ent]["parent"]]["type"] == "entity" else "",
+                                                               material=cond.get("material", {}).get("record", {}).get("text", "")),
                 differs=distinguishing(T, ent, peers or [ent], n=6), recipe=[dict(key=k, **v) for k, v in cond.items()],
                 results=[dict(key=k, **v) for k, v in result_records(T, ent).items()],
                 claims=[claim_record(T, c) for c in claims_of(T, [ent] + [c["fact_id"] for c in comps])],
@@ -1105,7 +1168,15 @@ def compare(ids, result=None, x=None):
         same_q = [r for r in cells.values() if r]
         defs = {r["definition"] for r in same_q if r["kind"] != "computed"}
         note = f"different definitions: {'; '.join(sorted(d or 'the default' for d in defs))}" if len(defs) > 1 else ""
-        results.append(dict(key=k, name=next(res[i][k]["name"] for i in ids if k in res[i]), cells=cells, note=note))
+        rel = None
+        if len(ids) == 2 and all(cells[i] and cells[i]["value"] is not None for i in ids):
+            a, b = (cells[i] for i in ids)
+            try:
+                va = L.convert(a["value"], a["unit"], b["unit"]) if a["unit"] != b["unit"] else a["value"]
+                how, xv_ = relate(k.split("{")[0], va, b["value"]); rel = dict(how=how, value=g(xv_, 3), unit="" if how == "ratio" else b["unit"])
+            except (ValueError, KeyError):
+                rel = None
+        results.append(dict(key=k, name=next(res[i][k]["name"] for i in ids if k in res[i]), cells=cells, note=note, relation=rel))
     # results of one quantity under different keys (definitions) say why they are not one column
     by_q = collections.defaultdict(list)
     for r in results:

@@ -973,7 +973,7 @@ N(grp("repro"), "group", "reproducibility set: samples 2, 4, 8 and 12, alike ALD
   PROC, evidence="fig8.cap;s12.x2;s16.p10;tab2.r7c6", label_as_printed="sample 2, 4, 8, and 12", qualifiers="how=stated",
   links=";".join(run(n) for n in (2, 4, 8, 12)))
 N(grp("sims"), "group", "simulations with the MATLAB diffusion-reaction model (Ylilammi et al. 2018) and their shared inputs",
-  PAPER, evidence="s8.p1;s13.p2;fig10.cap", qualifiers="how=stated")
+  PAPER, evidence="s8.p1;s13.p2;fig10.cap", qualifiers="how=stated", label_as_printed="model simulations")
 for k, (h, n) in SIMS.items():
     N(sim(k), "run", f"simulated profile for channel height {h} nm and {n} cycles (Fig. 10)", grp("sims"), evidence="fig10.cap",
       label_as_printed=f"sim · H {h} nm" if k.startswith("H") else f"sim · N {n}", qualifiers=f"run=simulation;how=stated;sim=H{h}_N{n}")

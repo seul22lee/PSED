@@ -1606,4 +1606,14 @@ for fid_, cells_ in ((f"{K}:s3.p35#5", [c for c in CELLS if c[1] == "0.94"]), (f
 C.identity(K, "not_stated", [f"{K}:ent:T150_R0.80_N50", f"{K}:ent:wafer_T150_R0.80"], "the 50-cycle film of Fig. 1b and the wafer-mapped film of Fig. 1c share every stated condition (150 °C, ratio 0.80, 50 cycles); whether they are one film is not stated", "fig1b;fig1c;fig1.cap")
 # a claim rests on the results it compares (P26): s3.p39 sets the N and O contents against the carrier concentration of s3.p36
 next(x for x in C.facts() if x["fact_id"] == f"{K}:s3.p39#4")["links"] += f";{K}:s3.p36#1"
+# plain names for the screen (entity and comparison labels): what the film is, not the panel it is drawn in
+NAMES_ = {"ent:T150_R0.20_H2step": "150 °C, 0.20 H2 film with an extra H2 step", **{f"ent:T150_R0.80_N{n}": f"150 °C, 0.80 H2 film, {n} cycles" for n in (10, 20, 30, 50)},
+          "ent:T150_lowH2S": "150 °C film with lowered H2S flow", "ent:T250_R0_lowH2S": "250 °C, 0 H2 film with lowered H2S flow",
+          "ent:TiS2_T100_R0": "TiS2 film, 100 °C, 0 H2", "ent:TiS2_T100_R0.50": "TiS2 film, 100 °C, 0.50 H2", "ent:TiS2_T100_R0.80": "TiS2 film, 0.80 H2",
+          "ent:TiS2_thermal": "TiS2 film, thermal ALD", "ent:WS2_T150_R0": "WS2 film, 150 °C, 0 H2", "ent:WS2_T150_R0.80": "WS2 film, 150 °C, 0.80 H2",
+          "ent:control": "control exposures (plasma alone, precursor alone)", "cmp:map": "temperature and H2 flow ratio grid", "cmp:cyc": "cycle series at 150 °C, 0.80 H2",
+          "cmp:h2s": "H2S flow tests", "cmp:WS2": "WS2 films", "cmp:TiS2": "TiS2 films"}
+for x in C.facts():
+    if ":" in x["fact_id"] and x["fact_id"].split(":", 1)[1] in NAMES_ and "#" not in x["fact_id"]:
+        x["label_as_printed"] = NAMES_[x["fact_id"].split(":", 1)[1]]
 write(K, PID)
