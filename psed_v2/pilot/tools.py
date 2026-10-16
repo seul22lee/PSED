@@ -11,6 +11,7 @@ V2 = HERE.parent
 sys.path.insert(0, str(HERE))
 import lists as L  # noqa: E402
 import query as Q  # noqa: E402
+import concept as CN  # noqa: E402
 
 
 def short_name(k):
@@ -51,6 +52,14 @@ DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims", "computed"]
 DETAIL_DEFAULT = ["what", "differs", "results"]
 
 TOOLS = [
+    dict(name="concept",
+         description=("Arguments: words (required). Resolves the words against the knowledge base's concepts by the ontology's rules (entry names "
+                      "and aliases, families, species, mechanisms, categorical values; an ambiguous word lists its candidates) and returns one "
+                      "line per matched concept: id · definition · unit · family and sibling ids · qualifier keys · per-paper counts of values, "
+                      "claims and settings · 'not studied in: <papers>' · an attribute flag where set. About 2,000 tokens per call. Use it first, "
+                      "to learn what exists, where and under which id, before values, detail or search."),
+         parameters=dict(type="object", properties=dict(words=dict(type="string", description="A concept in words: a quantity, a species, a mechanism, a family.")),
+                         required=["words"])),
     dict(name="search",
          description=("Arguments: words (required), paper, offset. Returns the records whose text matches the words, best first, one line "
                       "each: '[id] record type · line' (lexical: lowercase, plurals folded, _ and - as spaces, numbers and units kept; no "
@@ -570,6 +579,13 @@ def _run(name, args):
                     b["short"] = W([b["short"]])[0]
                 b["context"] = W(b["context"])
             return blocks, ""
+        if name == "concept":
+            if not Q.tokens(args["words"]):
+                return [], "error: concept: words has no letters or numbers"
+            lines = CN.concept_lines(args["words"])
+            if not lines:
+                return [], ""
+            return [block([wrap(*x) for x in lines])], ""
         if name == "search":
             if not Q.tokens(args["words"]):
                 return [], "error: search: words has no letters or numbers"
