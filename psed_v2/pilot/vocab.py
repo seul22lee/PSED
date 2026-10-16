@@ -888,6 +888,8 @@ PHRASES = {}
 
 SPECIMEN_CLASSES = ['film', 'porous_composite']
 
+AMBIGUOUS = ['AR', 'Mo', 'Zn', 'coverage', 'depth', 'power', 'pressure', 'sticking probability', 'temperature']
+
 PILOT_MAP = {'Al2O3': {'disposition': 'alias', 'entry_id': 'al2o3', 'kind': 'material', 'qualifiers': ''},
  'MoS2': {'disposition': 'alias', 'entry_id': 'mos2', 'kind': 'material', 'qualifiers': ''},
  'TiS2': {'disposition': 'alias', 'entry_id': 'tis2', 'kind': 'material', 'qualifiers': ''},

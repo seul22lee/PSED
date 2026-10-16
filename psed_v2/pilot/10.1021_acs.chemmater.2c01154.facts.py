@@ -87,11 +87,11 @@ NK("s2.p5;s2.p6;s2.p7", "received/revised/published dates")
 F(K, "s2.p8", "cited", "Typical polymer flexible substrates tolerate maximum temperatures of 100 to 400 °C.", quantity="other",
   label_as_printed="highest temperature substrates withstand", value_min="100", value_max="400", unit="°C",
   data_kind="literature", method="cited", mentions="refs. 41-43")
-F(K, "s2.p8", "cited", "PET should stay below 100-150 °C to avoid deforming.", quantity="other",
+F(K, "s2.p8", "cited", "PET should stay below 100-150 °C to avoid deforming.", qualifiers="species=pet", quantity="other",
   label_as_printed="temperature limit of PET", value_min="100", value_max="150", unit="°C", data_kind="literature",
   method="cited", mentions="PET;ref. 42")
 F(K, "s2.p8", "cited", "The few known TMDC ALD processes at or below 150 °C give amorphous films with too little conductivity "
-  "and mobility for electronics.", mentions="150 °C;ref. 36;refs. 44-46")
+  "and mobility for electronics.", quantity="deposition_temperature", value_max="150", unit="°C", data_kind="literature", mentions="150 °C;ref. 36;refs. 44-46")
 F(K, "s2.p8", "cited", "For plastic substrates only film transfer or assembly from flake dispersions (printing, spin coating) is "
   "available now.", mentions="ref. 47;ref. 48")
 F(K, "s2.p8", "claim", "Direct deposition is preferable for simplicity, cost, film quality and uniformity, and coverage of 3D "
@@ -239,7 +239,7 @@ F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoS2 is 2
   qualifiers="element=Mo", label_as_printed="Mo 3d5/2 BE", value="229.3", unit="eV", data_kind="literature", method="cited",
   mentions="MoS2;ref. 63")
 F(K, "s3.p16", "cited", "Average literature Mo 3d5/2 binding energy of MoO3 is 232.7 ± 0.3 eV.", quantity="binding_energy",
-  qualifiers="element=Mo", label_as_printed="Mo 3d5/2 BE", value="232.7", unit="eV", data_kind="literature", method="cited",
+  qualifiers="element=Mo;species=moo3", label_as_printed="Mo 3d5/2 BE", value="232.7", unit="eV", data_kind="literature", method="cited",
   mentions="MoO3;ref. 63")
 F(K, "s3.p16", "observation", "Measured binding energies vary slightly with deposition conditions.", method="xps",
   mentions="Section S5")

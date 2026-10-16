@@ -32,7 +32,7 @@ NK("s5.h;s6.h;s7.h;s8.h;s9.h;s10.h;s11.h;s12.h;s13.h;s14.h;s15.h", "heading")
 f(f"abs.g1;{A}", "claim", "conformal ALD in macroscopic nanoporous solids with AR above 10^3 may need reactant exposures of about 10^3 Torr-s or more")
 f(f"abs.g1;{A}", "claim", "with some ALD chemistries, exposures that large make non-self-limiting growth a concern")
 f(f"abs.g2;{A}", "cited", "DEZ/H2O ZnO ALD with exposures between 10 and 10^3 Torr-s has given metallic Zn at temperatures usual for wafers, e.g. ~180 °C",
-  quantity="exposure", qualifiers="species=dez", value_min="10", value_max="1e3", unit="Torr-s", data_kind="literature", method="cited", mentions="~180 °C")
+  quantity="exposure", qualifiers="species=dez;phase=zn", value_min="10", value_max="1e3", unit="Torr-s", data_kind="literature", method="cited", mentions="~180 °C")
 f(f"abs.g2;{A};s6.p6", "claim", "a lower deposition temperature suppresses the Zn deposition but slows H2O desorption, which can force impractically long purges")
 f(f"abs.g3;{A}", "setting", "the static-dose DEZ exposures used here exceed 10^4 Torr-s (as do the H2O exposures)",
   quantity="exposure", qualifiers="species=dez", value="1e4", censor=">", unit="Torr-s", data_kind="chosen input")
@@ -53,9 +53,9 @@ f("s6.p2", "cited", "for such NP thin films an exposure time of about 1 s or les
 f("s6.p2", "cited", "NP thin films have been ALD-coated with Al2O3, HfO2 and ZnO", mentions="ref. 2-8;ref. 5;ref. 4;ref. 6-8")
 f("s6.p2", "cited", "a ZnO coating is attractive for its semiconducting behaviour and because it enables bandlike transport in NP networks", mentions="ref. 6;ref. 7")
 f("s6.p3;s6.p4", "claim", "scaling the substrate up from NP thin films to mm-scale NP networks with L of order 1 mm and AR of order 10^4 could widen applications but needs much larger exposures")
-f("s6.p4", "cited", "Gayle et al. ran one TMA/H2O Al2O3 cycle through a silica aerogel monolith with AR above 60 000",
+f("s6.p4", "cited", "Gayle et al. ran one TMA/H2O Al2O3 cycle through a silica aerogel monolith with AR above 60 000", qualifiers="surface=sio2",
   quantity="aspect_ratio", value="60000", censor=">", data_kind="literature", method="cited", mentions="ref. 9;Gayle et al.")
-f("s6.p4", "cited", "porosity of that silica aerogel monolith: φ = 0.95",
+f("s6.p4", "cited", "porosity of that silica aerogel monolith: φ = 0.95", qualifiers="surface=sio2",
   quantity="porosity", label_as_printed="φ", value="0.95", data_kind="literature", method="cited", mentions="ref. 9")
 f("s6.p4", "cited", "pore diameter of that aerogel monolith ≈ 20 nm",
   quantity="feature_width", label_as_printed="d_pore", value="20", unit="nm", data_kind="literature", method="cited", mentions="ref. 9")
@@ -64,9 +64,9 @@ f("s6.p4", "cited", "L of the aerogel monolith ≈ 1.25 mm, taken as half its th
 f("s6.p4", "cited", "full infiltration, checked by SEM-EDS, took a series of 12 TMA doses with total exposure above 10^4 Torr-s",
   quantity="exposure", qualifiers="species=tma", value="1e4", censor=">", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 9")
 # Ingale (ref. 10)
-f("s6.p5", "cited", "Ingale et al. deposited up to three ZnO cycles at 80 °C onto ~2 g of mesoporous SiO2 powder",
+f("s6.p5", "cited", "Ingale et al. deposited up to three ZnO cycles at 80 °C onto ~2 g of mesoporous SiO2 powder", qualifiers="surface=sio2",
   quantity="deposition_temperature", value="80", unit="°C", data_kind="literature", method="cited", mentions="ref. 10;Ingale et al.")
-f("s6.p5", "cited", "specific surface area of the mesoporous SiO2 powder of Ingale et al.: 505 m2/g",
+f("s6.p5", "cited", "specific surface area of the mesoporous SiO2 powder of Ingale et al.: 505 m2/g", qualifiers="surface=sio2",
   quantity="other", label_as_printed="s", value="505", unit="m2/g", data_kind="literature", method="cited", mentions="ref. 10")
 f("s6.p5", "cited", "XRD, TEM, x-ray fluorescence and mass-gain data of Ingale et al. fit ZnO through the whole powder bed at a GPC of ~1 Å/cyc",
   quantity="growth_per_cycle", value="1", unit="Å/cyc", data_kind="literature", method="cited", mentions="ref. 10")
@@ -83,19 +83,19 @@ f("s6.p5", "cited", "Ferguson et al. saw signs of non-self-limiting growth durin
 f("s6.p5", "cited", "raising the exposure up to 900 Torr-s, Ferguson et al. found by in situ FTIR that background absorbance grew with exposure, which they assigned to conductive Zn from DEZ decomposition",
   quantity="exposure", qualifiers="species=dez", value_max="900", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 11")
 # Libera (ref. 12)
-f("s6.p5", "cited", "Libera et al. found Zn metal by XRD in ZnO ALD coatings in mesoporous silica gel (1 g batches, s = 100 m2/g)",
+f("s6.p5", "cited", "Libera et al. found Zn metal by XRD in ZnO ALD coatings in mesoporous silica gel (1 g batches, s = 100 m2/g)", qualifiers="surface=sio2;phase=zn",
   quantity="other", label_as_printed="s", value="100", unit="m2/g", data_kind="literature", method="cited", mentions="ref. 12;Libera et al.")
 f("s6.p5", "cited", "Libera et al. deposited ten ZnO cycles with the DEZ exposure kept at 22.5 Torr-s",
   quantity="exposure", qualifiers="species=dez", value="22.5", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12")
 f("s6.p5", "cited", "Libera et al. ran depositions between 150 and 200 °C",
   quantity="deposition_temperature", value_min="150", value_max="200", unit="°C", data_kind="literature", method="cited", mentions="ref. 12")
-f("s6.p5", "cited", "Zn metal XRD peaks appeared at 155 °C and grew steadily stronger with temperature",
+f("s6.p5", "cited", "Zn metal XRD peaks appeared at 155 °C and grew steadily stronger with temperature", qualifiers="phase=zn",
   quantity="deposition_temperature", value="155", unit="°C", data_kind="literature", method="cited", mentions="ref. 12")
 f("s6.p5", "cited", "the coated silica turned gradually from white at 150 °C to black at 200 °C along with the Zn peak growth", mentions="ref. 12")
 f("s6.p5", "cited", "at a fixed 200 °C, DEZ exposures below 10 Torr-s gave no Zn metal in XRD and no colour change",
-  quantity="exposure", qualifiers="species=dez", value="10", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12;200 °C")
+  quantity="exposure", qualifiers="species=dez;phase=zn", value="10", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 12;200 °C")
 f("s6.p5", "cited", "ZnO infiltration of NP thin films at 180 °C with DEZ exposure below 1 Torr-s showed no Zn metal",
-  quantity="exposure", qualifiers="species=dez", value="1", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 4;ref. 6-8;180 °C")
+  quantity="exposure", qualifiers="species=dez;phase=zn", value="1", censor="<", unit="Torr-s", data_kind="literature", method="cited", mentions="ref. 4;ref. 6-8;180 °C")
 f("s6.p6", "claim", "using a lower temperature to avoid Zn is hard to apply to conductive ZnO coatings on macroscopic NP networks for two reasons")
 f("s6.p6", "cited", "below ~170 °C the resistivity of ALD ZnO often rises with deposition temperature, through the temperature dependence of stoichiometry, grain size and orientation",
   quantity="deposition_temperature", value="170", censor="<", unit="°C", data_kind="literature", method="cited", mentions="ref. 13;ref. 14")
@@ -291,7 +291,7 @@ f("eq4;s12.p4", "model", "Eq. (4): DEZ half-reaction, surface (OH)x plus Zn(C2H5
 NK("s12.p5", "connective word between equations")
 f("eq5;s12.p4", "model", "Eq. (5): H2O half-reaction, surface Ox-Zn(C2H5)2-x plus H2O gives surface OZn-(OH)x and (2-x) C2H6", mentions="ref. 10;ref. 27")
 f("s12.p6;eq4;eq5", "definition", "|- marks a surface species; x may range from 0 to 2")
-f("s12.p6", "cited", "x ~1 for ZnO ALD on silica powder at 80 °C",
+f("s12.p6", "cited", "x ~1 for ZnO ALD on silica powder at 80 °C", qualifiers="surface=sio2",
   quantity="reaction_stoichiometry", label_as_printed="x", value="1", data_kind="literature", method="cited", mentions="ref. 10;80 °C")
 f("s12.p6", "cited", "x = 1.37 for ZnO ALD on a QCM at 177 °C",
   quantity="reaction_stoichiometry", label_as_printed="x", value="1.37", data_kind="literature", method="cited", mentions="ref. 28;177 °C")

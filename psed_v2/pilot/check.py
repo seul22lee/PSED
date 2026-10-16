@@ -618,6 +618,12 @@ if __name__ == "__main__":
         print("  ", e)
     bad += bool(err)
     check_claims()
+    import sentence_only
+    err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
+    print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
     err = check_comparability()
     print(f"== comparability (P53): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:

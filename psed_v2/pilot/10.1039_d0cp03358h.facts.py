@@ -672,7 +672,7 @@ F(K, "s17.p2", "observation", "repeated scans on layout v1a, with smaller pillar
 F(K, "s17.p2", "claim", "testing TMA-water on channels with a sparser pillar network could avoid remnant spikes, but lies outside this work")
 F(K, "s18.p4;s20.p3", "claim", "during long purges reversibly adsorbed water likely desorbs, lowering surface OH and hence TMA uptake; this points to a reversible part of the water reaction, against the ideal of fully irreversible ALD",
   mentions="ref. 13;ref. 50")
-F(K, "s18.p4", "cited", "Ylivaara et al. found GPC decreasing as purge time rose from 1 s to 4 s", method="cited", mentions="ref. 51")
+F(K, "s18.p4", "cited", "Ylivaara et al. found GPC decreasing as purge time rose from 1 s to 4 s", quantity="purge_time", value_min="1", value_max="4", unit="s", data_kind="literature", method="cited", mentions="ref. 51")
 F(K, "s18.p4", "cited", "Matero et al. reported higher TMA-water GPC at higher water partial pressure", method="cited", mentions="ref. 59")
 F(K, "s18.p4", "cited", "Gakis et al. assumed a reversible water reaction", method="cited", mentions="ref. 56")
 F(K, "s18.p4", "cited", "Sønsteby et al. noted that long purges can change GPC through surface dehydration", method="cited", mentions="ref. 26")
@@ -760,7 +760,7 @@ lit(2, 0, "Schwille et al. (2016): deposition at 200 °C", quantity="deposition_
 lit(2, 1, "Schwille et al. (2016): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic centrosymmetric")
 lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude estimate (footnote a)", extra="s18.p3",
     quantity="aspect_ratio", label_as_printed="Max. AR", value="100")
-F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter",
+F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter", quantity="feature_width", value="5", unit="µm", data_kind="literature",
   method="cited", mentions="ref. 41;a")
 lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor_type", value_text="single-wafer cross-flow hot-wall")
 lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="2e-2")

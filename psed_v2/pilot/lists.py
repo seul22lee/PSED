@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
-                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, LABELS as _LABELS, NAMES as _NAMES)
+                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, LABELS as _LABELS, NAMES as _NAMES)
 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
