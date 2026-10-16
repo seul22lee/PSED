@@ -45,7 +45,9 @@
   same process-defining settings) are joined; the
   runs so connected through one setting form a series, listed in the left tree beside the paper's groups (a line opens the
   tray with the series) and on the group card; a paper group whose runs differ in more than one setting is marked as
-  confounded, with the run that deviates (Series E: sample 14 also differs in pillar layout).
+  confounded, with the run that deviates (Series E: sample 14 also differs in pillar layout). The tray is the one
+  selection: its runs are highlighted in the left tree, the text tree, the figures view (panels with a fact on a tray run)
+  and the forest scatter (points whose scope is a tray run).
   Text tree: the paper as one collapsible tree (root -> process -> groups -> runs -> facts; claims and cited works as
   branches), one line per node with statement, value and element id (click = the element and its crop); among sibling
   runs only the settings that differ are bold; expanding a claim shows its linked facts; (c) figures: each panel's crop
@@ -200,6 +202,7 @@ svg.sc .pt{cursor:pointer}.sw{display:inline-block;width:10px;height:10px;border
 .wbf{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12px}.wbf label{display:block;margin:4px 0}.wbf select{width:100%;margin-top:2px}.wbf input[type=number]{width:44%;margin-top:2px}
 .wbm{max-height:84vh;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:6px 8px;font-size:12.5px}.wbr{display:flex;gap:6px;align-items:center;padding:2px 0;border-bottom:1px solid var(--line)}.wbr .mut{flex:1}.wbr button{padding:0 7px;font-size:11px}
 .wbt{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:8px 10px;font-size:12.5px;margin-bottom:10px}
+.rl.tray,.nd.tray{box-shadow:inset 3px 0 0 var(--acc)}.panel.tray{background:var(--sel);border-radius:6px}circle.pt.tray{stroke-width:4}
 .ns .rl{cursor:pointer}.gl{cursor:pointer}.gl.on{background:var(--sel);border-radius:3px;padding:0 3px}.within{opacity:.75}
 .cl{max-height:84vh;overflow:auto}.cl h3{margin:8px 0 4px}.clr{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid var(--line);font-size:12.5px}.clr .st{flex:1;min-width:240px}.scope{font-size:11px;white-space:nowrap}
 .wbt svg.ov{width:100%;max-width:560px;height:auto;display:block}table.cmp{font-size:12px}table.cmp th{font-weight:600}table.cmp td,table.cmp th{white-space:nowrap}.vd b.ok{color:var(--covb)}.vd b.tr{color:var(--acc)}.vd b.no{color:var(--missb)}
@@ -266,7 +269,7 @@ function line(n,i,T){const node=!n.fact_id.includes("#");const v=node?"":valStr(
  const lab=node&&n.label_as_printed?` <span class="mut">“${esc(n.label_as_printed)}”</span>`:"";
  return `<span class="ty ${n.type}">${node?n.type:n.type.slice(0,3)}</span><span ${node?"":`class="stm" onclick="event.preventDefault();event.stopPropagation();cardFor('${n.fact_id}',${i})"`}>${esc(n.statement)}</span>${v?` <span class="v">${esc(v)}</span>`:""}${lab}${q}${ev?`<code class="ev" title="${esc(n.fact_id)}" onclick="event.preventDefault();event.stopPropagation();side('${ev}',${i})">${ev}</code>`:""}`}
 function node(n,i,T,open){const ch=T.kids[n.fact_id]||[];const linked=n.type==="claim"&&n.links?n.links.split(";").map(l=>T.byId[l]).filter(Boolean):[];
- const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}`;
+ const cls=`nd${T.vary.has(n.fact_id)?" vary":""}${n.nopts?" dim":""}${n.type==="run"&&trayHas(i,n.fact_id)?" tray":""}`;
  if(!ch.length&&!linked.length)return `<div class="${cls} leaf" data-f="${n.fact_id}">${line(n,i,T)}</div>`;
  const op=open||n.type==="group"||n.type==="process"||(n.type==="paper"&&i===P);
  return `<details class="${cls}" data-f="${n.fact_id}" ${op?"open":""}><summary>${line(n,i,T)} <span class="mut">(${ch.length}${linked.length?`, ${linked.length} linked`:""})</span></summary>${linked.map(l=>`<div class="nd leaf linked" data-f="${l.fact_id}">${line(l,i,T)}</div>`).join("")}${ch.map(c=>node(c,i,T,false)).join("")}</details>`}
@@ -337,7 +340,7 @@ function scatter(pts){const W=820,H=360,L=64,R=16,T=18,B=44;
   if(!isNaN(lo)&&!isNaN(hi)&&(!ly||(lo>0&&hi>0)))g+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(lo).toFixed(1)}" y2="${Y(hi).toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
   const cx=f.ctx[FX];if(cx[3]!=null&&cx[4]!=null&&(!lx||(cx[3]>0&&cx[4]>0)))g+=`<line x1="${X(cx[3]).toFixed(1)}" x2="${X(cx[4]).toFixed(1)}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5"/>`;
   const tip=`${p.l.d.key} ${f.fact_id.split(":")[1]}: ${esc(f.statement)}\n${esc(FQ)} = ${esc(valStr(f))}${f.qualifiers?" ["+esc(f.qualifiers)+"]":""} · ${esc(f.data_kind)}${f.cited?" · cited":""}\n${esc(FX)} = ${esc(p.xs)} (${esc(f.ctx[FX][2].split(":")[1])})${(f.flag||[]).length?"\nflag: "+f.flag.join(", "):""}`;
-  g+=`<circle class="pt" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="${f.cited?"var(--card)":c}" stroke="${c}" stroke-width="2" onclick="jump('${f.fact_id}')"><title>${tip}</title></circle>`;
+  const tr=f.scope&&trayHas(p.l.i,f.scope);g+=`<circle class="pt ${tr?"tray":""}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tr?8:5.5}" fill="${f.cited?"var(--card)":c}" stroke="${c}" stroke-width="2" onclick="jump('${f.fact_id}')"><title>${tip}</title></circle>`;
   if(f.censor)g+=`<text x="${(x+7).toFixed(1)}" y="${(y+4).toFixed(1)}" class="tk">${esc(f.censor)}</text>`;
   if((f.flag||[]).length)g+=`<text x="${(x+7).toFixed(1)}" y="${(y-5).toFixed(1)}" fill="var(--missb)" font-size="10">${esc(f.flag.join(","))}</text>`});
  return g+"</svg>"}
@@ -363,7 +366,8 @@ const elab=e=>{let m;if(m=e.match(/^fig(\d+)([a-z]*)(\.cap)?$/))return `Fig. ${m
 function cardFor(fid,pi){const d=DATA[pi],T=buildTree(d);const run=(function(){let x=T.up[fid];while(x&&T.byId[x]&&T.byId[x].type!=="run")x=T.up[x];return x})();
  P=pi;V="tree";TM="cards";CARD=run||null;FIGC=null;GCARD=null;render();if(!run){$("#cardpane").innerHTML=`<div class="card"><h2>no run</h2><div class="mut">${esc(fid)} is not under a run (a paper-, process- or group-level fact).</div><div id="side" class="evbox"></div></div>`}}
 function openCard(pi,id){P=pi;CARD=id;FIGC=null;GCARD=null;document.querySelectorAll(".rl.on").forEach(n=>n.classList.remove("on"));document.querySelectorAll(`.rl[data-r="${CSS.escape(id)}"]`).forEach(n=>n.classList.add("on"));$("#cardpane").innerHTML=card(DATA[pi],pi,id);fitChips()}
-function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
+const trayHas=(i,id)=>WB.tray.some(t=>t.i===i&&t.id===id);
+function leftTree(d,i){const T=buildTree(d);const line=n=>`<div class="rl ${CARD===n.fact_id?"on":""} ${trayHas(i,n.fact_id)?"tray":""}" data-r="${n.fact_id}" title="${esc(n.statement)}" onclick="openCard(${i},'${n.fact_id}')"><span class="ty ${n.type}">${n.type}</span>${esc(nlab(n))}</div>`;
  const walk=x=>(T.kids[x]||[]).map(c=>{if(c.type==="process")return `<div class="mut" style="margin-left:10px">process (conditions in each card, row 2)</div>`+walk(c.fact_id);
   if(c.type==="group"){const cf=confound(T,c.fact_id);return `<details open><summary><span class="ty group">group</span><span class="gl ${GCARD===c.fact_id?"on":""}" data-g="${c.fact_id}" onclick="event.preventDefault();event.stopPropagation();openGroup(${i},'${c.fact_id}')">${esc(nlab(c))}</span>${cf?` <span class="inf" title="runs differ in ${cf.length} settings">${cf.length} settings</span>`:""}</summary>${walk(c.fact_id)}</details>`}
   if(c.type==="run"){const ch=(T.kids[c.fact_id]||[]).some(k=>k.type==="run");return ch?`<details open><summary>${line(c)}</summary>${walk(c.fact_id)}</details>`:line(c)}return""}).join("");
@@ -555,8 +559,8 @@ function treeView(){const tog=`<div class="fl">${[["find","find"],["cards","card
   return `<div id="forest"></div>${tog}<div class="wrap2"><div>${leftTree(d,P)}</div><div id="cardpane">${FIGC?figureCard(d,P,FIGC):GCARD?groupCard(d,P,GCARD):CARD?card(d,P,CARD):'<div class="card mut">no runs</div>'}</div></div>`}
  const body=DATA.map((d,i)=>{const T=buildTree(d);if(!T.root)return `<div class="tree"><b>${d.key}</b> <span class="mut">no tree yet</span></div>`;return `<div class="tree" id="tree${i}">${node(T.root,i,T,i===P)}</div>`}).join("");
  return `<div id="forest"></div>${tog}<div class="wrap"><div>${body}</div><div class="side" id="side"><span class="mut">Click an element id to see the element, its crop and its facts.</span></div></div>`}
-function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");return ps.map(e=>{const fs=factsOf(d,e.id);
- return `<div class="panel"><div><h3><span class="lnk" onclick="figCard('${e.id}',P)">${e.id}</span> <span class="mut">${esc(e.st)}${e.why?": "+esc(e.why):""} · ${fs.length} facts</span></h3>${d.imgs[e.crop]?`<img loading="lazy" src="${d.imgs[e.crop]}" style="cursor:pointer" onclick="figCard('${e.id}',P)">`:"<i>no crop</i>"}</div>
+function figView(d){const ps=d.elements.filter(e=>e.kind==="panel");const T=buildTree(d);return ps.map(e=>{const fs=factsOf(d,e.id);const tr=fs.some(f=>{const r=runOfF(T,f.fact_id);return r&&trayHas(P,r)});
+ return `<div class="panel ${tr?"tray":""}"><div><h3><span class="lnk" onclick="figCard('${e.id}',P)">${e.id}</span> <span class="mut">${esc(e.st)}${e.why?": "+esc(e.why):""} · ${fs.length} facts</span></h3>${d.imgs[e.crop]?`<img loading="lazy" src="${d.imgs[e.crop]}" style="cursor:pointer" onclick="figCard('${e.id}',P)">`:"<i>no crop</i>"}</div>
  <div>${fs.map(f=>factHTML(f,P)).join("")||"<i class='mut'>no facts</i>"}</div></div>`}).join("")}
 function render(){const d=DATA[P];
  $("#papers").innerHTML=DATA.map((x,i)=>`<button class="${i===P?"on":""}" onclick="P=${i};render();if(V==='tree'){const t=document.getElementById('tree'+${i});if(t)t.scrollIntoView()}">${x.key}</button>`).join(" ");
