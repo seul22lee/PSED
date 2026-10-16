@@ -233,6 +233,148 @@ def join_text(joins):
     return f"joined tolerating {', '.join(keys)}" if keys else "joined on equal condition vectors"
 
 
+# ------------------------------------------------------------------ the comparison layer: operations
+def results_deep(T, ent):
+    """An entity's results with those of the pieces cut from it and of the run that made it: {ckey: [facts]}."""
+    out = collections.defaultdict(list)
+    for e in [ent] + [r["fact_id"] for r in T.rows if r["type"] == "entity" and ent in T.chain(r["fact_id"])[1:]]:
+        for k, fs in T.results(e).items():
+            out[k] += fs
+    for k, fs in T.run_results(ent).items():
+        out[k] += fs
+    return out
+
+
+def power_fit(pairs):
+    """y = a x^b by least squares in log-log: (b, a, rms residual of log10 y)."""
+    pts = [(math.log10(x), math.log10(y)) for x, y in pairs if x > 0 and y > 0]
+    n = len(pts); mx, my = sum(p[0] for p in pts) / n, sum(p[1] for p in pts) / n
+    sxx = sum((p[0] - mx) ** 2 for p in pts); b = sum((p[0] - mx) * (p[1] - my) for p in pts) / sxx if sxx else float("nan")
+    a = 10 ** (my - b * mx); res = (sum((p[1] - (math.log10(a) + b * p[0])) ** 2 for p in pts) / n) ** 0.5
+    return b, a, res
+
+
+def series_xy(T, comp, xkey, ykey):
+    """The members of a stated comparison as (entity, x from its condition vector, y from its results), where y exists; x is
+    None when the member states that setting without a number (a cycled temperature)."""
+    out = []
+    for m in T.member_entities(comp):
+        x, y = T.vector(m).get(xkey), T.results(m).get(ykey)
+        if x and y and val(y[0]) is not None:
+            out.append((m, val(x[0]), val(y[0])))
+    return out
+
+
+def correction(T, key, ykey, frm, to):
+    """A factor that corrects y for a confounding setting: from a stated comparison that varies only that setting, the ratio of y
+    at the value `to` over y at `frm`; None when no such comparison exists."""
+    for c in T.comps:
+        if c["quantity"] == key.split("{")[0]:
+            by = {}
+            for m in T.member_entities(c):
+                v, y = T.vector(m).get(key), T.results(m).get(ykey)
+                if v and y:
+                    by.setdefault(fmt(v[0]) or v[0]["value_text"], []).append(val(y[0]))
+            if frm in by and to in by:
+                return (sum(by[to]) / len(by[to])) / (sum(by[frm]) / len(by[frm])), c
+    return None, None
+
+
+def routes(facts):
+    """Several facts reaching one (entity, quantity): each pair as a ratio with a warning when their definitions (qualifiers,
+    method, quantity) differ: [(fa, fb, ratio, warning)]."""
+    out = []
+    for i, a in enumerate(facts):
+        for b in facts[i + 1:]:
+            if val(a) is None or val(b) is None or not val(b):
+                continue
+            why = [w for w, ok in (("quantities", a["quantity"] == b["quantity"] and (a["quantity"] != "other" or a["label_as_printed"] == b["label_as_printed"])), ("qualifiers", a["qualifiers"] == b["qualifiers"]),
+                                   ("methods", a["method"] == b["method"])) if not ok]
+            out.append((a, b, L.convert(val(a), a["unit"], b["unit"]) / val(b) if a["unit"] != b["unit"] and a["quantity"] == b["quantity"] else val(a) / val(b),
+                        ("different " + " and ".join(why) + ": a ratio of two routes, not a contradiction") if why else "same definition: a replicate pair"))
+    return out
+
+
+def effect(T, comp, key):
+    """The effect of a stated comparison on a result: max − min of the members' values (one value per member)."""
+    vs = [(m, val(T.results(m)[key][0])) for m in T.member_entities(comp) if key in T.results(m) and val(T.results(m)[key][0]) is not None]
+    return (max(v for _, v in vs) - min(v for _, v in vs), vs) if len(vs) >= 2 else (None, vs)
+
+
+def spread(T, comp, key):
+    """The spread a replicate comparison gives for a result: its stated standard deviation fact for that result, else the
+    standard deviation computed over its members' values; (sd, source)."""
+    ms = T.member_entities(comp)
+    for f in T.own(comp["fact_id"]):
+        if f["quantity"] == "other" and "standard deviation" in f["label_as_printed"] and f["value"]:
+            words = set(re.findall(r"[a-z]+", f["label_as_printed"].lower()))
+            names = {L.LABELS.get(key, ""), L.LABELS.get(key.split("{")[0], ""), key.split("{")[0].replace("_", " ")}
+            if T.results(ms[0]).get(key, [{"unit": None}])[0]["unit"] == f["unit"] and any(w in n.lower().split() for n in names for w in words):
+                return val(f), f["fact_id"]
+    vs = [val(T.results(m)[key][0]) for m in ms if key in T.results(m) and val(T.results(m)[key][0]) is not None]
+    if len(vs) >= 2:
+        mean = sum(vs) / len(vs)
+        return (sum((v - mean) ** 2 for v in vs) / (len(vs) - 1)) ** 0.5, f"computed over {len(vs)} members"
+    return None, None
+
+
+def scale(ref_x, ref_y, x, exponent):
+    """y predicted from a reference point by a power law y ∝ x^exponent."""
+    return ref_y * (x / ref_x) ** exponent
+
+
+def ratios_between(T, a, b):
+    """Every result both entities (with their pieces and runs) carry: [(key, fa, fb, ratio)]."""
+    ra, rb = results_deep(T, a), results_deep(T, b); out = []
+    for k in ra:
+        if k in rb:
+            fa, fb = ra[k][0], rb[k][0]
+            if val(fa) is not None and val(fb):
+                out.append((k, fa, fb, L.convert(val(fa), fa["unit"], fb["unit"]) / val(fb) if fa["unit"] != fb["unit"] else val(fa) / val(fb)))
+    return out
+
+
+def scope_comparisons(T, claim):
+    """The stated comparisons a claim's links reach: a link under a comparison names it; a link under an entity names the
+    comparisons that entity is in."""
+    out = []
+    for l in filter(None, claim["links"].split(";")):
+        if l not in T.byid:
+            continue
+        for x in T.chain(l):
+            if T.byid[x]["type"] == "comparison":
+                out.append(x)
+            if T.byid[x]["type"] == "entity":
+                out += [c["fact_id"] for c in T.comps_of(x)]
+                break
+    return list(dict.fromkeys(out))
+
+
+def names_phase(T, m, marker):
+    """Whether an observation on the specimen or a piece of it states the phase (the marker word, not negated), as a phase or
+    composition statement rather than a peak position."""
+    pieces = [m] + [x["fact_id"] for x in T.rows if x["type"] == "entity" and m in T.chain(x["fact_id"])[1:]]
+    return any(re.search(r"(?<!no )" + marker, f["statement"]) and f["quantity"] in ("", "composition", "crystallinity") and (f["value"] or f["value_text"] or not f["quantity"])
+               for e in pieces for f in T.below(e) if f["type"] == "observation")
+
+
+def contrast(T, comp, key, marker):
+    """Within a stated comparison, the specimens whose observations (their pieces' included) state the phase against the others,
+    on one result, the others in the order of the comparison's varied setting: (marked [(entity, value, fact)], others [...])."""
+    marked, others = [], []
+    xkey = comp["quantity"].split(";")[0]
+    for m in T.member_entities(comp):
+        if T.byid[T.byid[m]["parent"]]["type"] != "activity":
+            continue                                                            # the specimens, not the pieces (their facts count below)
+        r = results_deep(T, m)
+        if key not in r or val(r[key][0]) is None:
+            continue
+        x = next((val(fs[0]) for k, fs in T.vector(m).items() if k.split("{")[0] == xkey), None)
+        (marked if names_phase(T, m, marker) else others).append((m, val(r[key][0]), r[key][0], x))
+    others.sort(key=lambda t: (t[3] is None, t[3]))
+    return marked, others
+
+
 # ------------------------------------------------------------------ the comparison layer: derived quantities (lists.DERIVED)
 ASSUMED = [u for u in USER if u["data_kind"] == "assumed"]
 
@@ -341,7 +483,23 @@ def q1():
         rows.append((T.label(m), pulse and val(pulse[0]), pd and val(pd[0])))
     diff = differing(T, ms, exclude={"pulse_time{species=TMA;step=reactant_A}"})
     text = "; ".join(f"{lab}: pulse {g(p)} s, PD50 {g(d)} µm" for lab, p, d in rows) + (f" · also differs: {diff}" if diff else "")
-    return unanswerable(text, "no operation: a power-law fit over the series (exponent, residual) and the Series A correction")
+    pts = [(p, d) for _, p, d in rows if p and d]
+    if len(pts) < 3 or any(p is None for p, _ in pts):
+        return unanswerable(text, "fewer than three members with a pulse time and a PD50")
+    b, a, res = power_fit(pts)
+    text += f" · fit PD50 ∝ pulse^{g(b, 2)} (rms residual {g(res, 2)} in log10)"
+    ykey, xkey = "penetration_depth{level=50%;origin=entrance}", "pulse_time{species=TMA;step=reactant_A}"
+    for k, m in [(k, m) for k, m in {k: {e: "; ".join(fmt(f) for f in fs) for e in ms for kk, fs in T.vector(e).items() if kk == k} for k in {kk for e in ms for kk in T.vector(e)}}.items()
+                 if k != xkey and len(m) == len(ms) and len(set(m.values())) > 1]:
+        common = max(set(m.values()), key=list(m.values()).count)
+        for e, v in m.items():
+            if v != common:
+                fac, c = correction(T, k, ykey, v, common)
+                if fac:
+                    corrected = [(p, d * fac if lab == T.label(e) else d) for lab, p, d in rows]
+                    b2, _, res2 = power_fit(corrected)
+                    text += f" · {T.label(e)} corrected for {k} {v}→{common} by {g(fac, 3)} from {c['label_as_printed']}: PD50 {g(dict(corrected)[next(p for lab, p, _ in rows if lab == T.label(e))])} µm, fit exponent {g(b2, 2)} (residual {g(res2, 2)})"
+    return answered(text, "series_xy over Series E (pulse from the vectors, PD50 from the results), differing() for the confounders, power_fit (log-log least squares), correction() from the stated comparison that varies only the confounder (Series A), and the fit again")
 
 
 def q2():
@@ -352,29 +510,47 @@ def q2():
         if "error" in h or not pd:
             return unanswerable("", f"{T.label(m)}: {h.get('error', 'no PD50')}")
         rows.append((T.label(m), h["value"], val(pd[0]), pd[0]))
-    text = "; ".join(f"{lab}: H_eff {g(h)} nm, PD50 {fmt(pd)}" for lab, h, _, pd in rows)
-    return unanswerable(text, "no operation: a power-law scaling (PD ∝ √H_eff) from a reference member against the measured values")
+    ref = max(rows, key=lambda r: r[1])
+    text = "; ".join(f"{lab}: H_eff {g(h)} nm, PD50 {fmt(pd)}, √H_eff scaling from {ref[0]} predicts {g(scale(ref[1], ref[2], h, 0.5))} µm" for lab, h, _, pd in rows)
+    return answered(text, "lists.DERIVED effective_channel_height per member of Series D (its design height and plateau thickness), scale() by a square-root law from the member with the largest H_eff, against the measured PD50")
 
 
 def q3():
     """For sample 11, every penetration depth value by method."""
     T = TREES["yim20"]; e = "yim20:ent:11"
     pds = [f for k, fs in T.results(e).items() for f in fs if f["quantity"] == "penetration_depth"]
-    text = "; ".join(f"{fmt(f)} by {f['method']} ({f['qualifiers'] or 'no qualifier'})" for f in pds)
-    return unanswerable(text, "no operation: two routes to one (entity, quantity) reported as a ratio with a warning when the qualifiers differ")
+    text = "; ".join(f"{fmt(f)} by {f['method']} ({f['qualifiers'] or 'no qualifier'}, {f['fact_id']})" for f in pds)
+    rs = routes(pds)
+    if not rs:
+        return unanswerable(text, "fewer than two penetration depth facts on sample 11")
+    return answered(text + " · " + "; ".join(f"ratio {g(r, 3)} ({a['method']} over {b['method']}): {w}" for a, b, r, w in rs), "routes(): every pair of facts reaching one (entity, quantity) as a ratio, with a warning naming what differs in their definitions")
 
 
 def q4():
     """Over Series F, the ratio GPC_I / GPC_IIb against purge time."""
     T = TREES["yim20"]; c = T.comp("F")
-    text = "; ".join(f"{T.label(m)}: purge {fmt(T.vector(m)['purge_time{step=purge_A}'][0])}, GPC_I {fmt(T.results(m)['growth_per_cycle{position=outside}'][0])}, "
-                     f"GPC_IIb {fmt(T.results(m)['growth_per_cycle{position=plateau}'][0])}" for m in T.member_entities(c))
-    return unanswerable(text, "no operation: a ratio of two results on one entity over a series")
+    rows = sorted(((val(T.vector(m)["purge_time{step=purge_A}"][0]), T.label(m), T.results(m)["growth_per_cycle{position=outside}"][0], T.results(m)["growth_per_cycle{position=plateau}"][0])
+                   for m in T.member_entities(c)), key=lambda r: r[0])
+    text = "; ".join(f"{lab}: purge {g(p)} s, GPC_I/GPC_IIb = {fmt(a)} / {fmt(b)} = {g(val(a) / val(b), 3)}" for p, lab, a, b in rows)
+    return answered(text, "the members of Series F ordered by purge time (vector), the ratio of two results on each (routes on one entity)")
 
 
 def q5():
     """Which stated comparisons in yim20 have an effect smaller than the reproducibility sd, per result quantity."""
-    return unanswerable("", "no operation: effect (max − min over a comparison's members) against the replicate set's sd")
+    T = TREES["yim20"]; rep_ = next((c for c in T.comps if c["kind"] == "replicate"), None)
+    if not rep_:
+        return unanswerable("", "no replicate comparison in yim20")
+    out = []
+    for c in [c for c in T.comps if c["kind"] == "series" and all(T.byid[m]["type"] == "entity" and T.dep_of(m) and T.byid[T.dep_of(m)]["kind"] == "deposition" for m in T.member_entities(c))]:
+        keys = [k for k in T.results(T.member_entities(c)[0]) if k.split("{")[0] in ("penetration_depth", "film_thickness", "growth_per_cycle")]
+        parts = []
+        for k in keys:
+            eff, vs = effect(T, c, k); sd, src = spread(T, rep_, k)
+            if eff is None or not sd:
+                continue
+            parts.append(f"{L.LABELS.get(k, k)} effect {g(eff, 2)} {vs[0][1] and T.results(vs[0][0])[k][0]['unit']} = {g(eff / sd, 2)} sd ({'within' if eff < sd else 'beyond'} sd {g(sd, 2)}, {src})")
+        out.append(f"{c['label_as_printed']}: " + ("; ".join(parts) if parts else "no shared result"))
+    return answered(" · ".join(out), "effect() = max − min over each series' members per result; spread() = the replicate comparison's stated standard deviation for that result, else computed over its members; the ratio")
 
 
 def q6():
@@ -527,12 +703,29 @@ def q14():
 
 def q15():
     """For 120 vs 120/160 °C, the ratio of every quantity measured on both."""
-    return unanswerable("", "no operation: result against result over two members of the schedules comparison (the pair entities, their pieces and the runs' process monitors)")
+    T = TREES["gre23"]; c = T.comp("schedules")
+    tops = {fmt(T.vector(m)["deposition_temperature"][0]): m for m in T.member_entities(c) if T.byid[T.byid[m]["parent"]]["type"] == "activity"}
+    a = next((m for t, m in tops.items() if t == "120 °C"), None); b = next((m for t, m in tops.items() if "/" in T.label(m)), None)
+    if not (a and b):
+        return unanswerable("", "the 120 °C and 120/160 °C pair entities are not both members of the schedules comparison")
+    rs = ratios_between(T, a, b)
+    text = "; ".join(f"{L.LABELS.get(k, k)} {fmt(fa)} / {fmt(fb)} = {g(r, 3)}" for k, fa, fb, r in rs)
+    rel = [f for k, fs in results_deep(T, a).items() for f in fs if "relative to" in f["label_as_printed"] and f["value"]]
+    text += " · stated relative: " + "; ".join(f"{f['label_as_printed']} {fmt(f)} → {g(1 + val(f) / 100, 3)}" for f in rel)
+    return answered(text, "ratios_between(): every result both pairs carry, their pieces' and their runs' monitors included; a stated relative count on one section reported as the third route")
 
 
 def q16():
     """Crystalline ZnO fraction from XRD weight % against gravimetric ZnO %."""
-    return unanswerable("", "no operation: two routes to one value on the pair entity and its XRD piece")
+    T = TREES["gre23"]; out = []
+    for m in T.member_entities(T.comp("schedules")):
+        if T.byid[T.byid[m]["parent"]]["type"] != "activity":
+            continue
+        r = results_deep(T, m); x, gv = r.get("composition{species=ZnO}"), r.get("mass_gain")
+        if x and gv:
+            for a, b, ratio, w in routes([x[0], gv[0]]):
+                out.append(f"{T.label(m)}: XRD zincite {fmt(a)} ({a['fact_id']}) over mass gain {fmt(b)} ({b['fact_id']}) = {g(ratio, 2)} → {g(100 * (1 - ratio), 2)} % of the coating not crystalline; {w}")
+    return answered(" · ".join(out), "routes() over the pair's gravimetric mass gain and its XRD piece's zincite weight percent (results_deep: the pieces' results count for the specimen), the ratio with the definitions that differ named") if out else unanswerable("", "no pair with both an XRD zincite fraction and a mass gain")
 
 
 def q17():
@@ -577,7 +770,19 @@ def q19():
 
 def q20():
     """Exposure per dose, yim20 against gre23, and what AR² scaling from yim20's x̃50 would predict for gre23's AR."""
-    return unanswerable("", "no derived quantity (yim20 exposure per dose, Q6) and no operation (square-law scaling)")
+    Y, G = TREES["yim20"], TREES["gre23"]
+    rep_ = next(c for c in Y.comps if c["kind"] == "replicate"); ms = Y.member_entities(rep_)
+    ey = derive(Y, ms[0], "exposure")
+    xs = [val(Y.results(m)["dimensionless_distance{by=H;level=50%}"][0]) for m in ms if "dimensionless_distance{by=H;level=50%}" in Y.results(m)]
+    gp = [m for m in G.member_entities(G.comp("schedules")) if G.byid[G.byid[m]["parent"]]["type"] == "activity"][0]
+    eg = [f for f in G.vector(gp).get("exposure", []) if f["value"] and not f["censor"]]
+    ar = [f for fs in results_deep(G, G.inputs_of(gp)[0]).values() for f in fs if f["quantity"] == "aspect_ratio"] if G.inputs_of(gp) else []
+    if "error" in ey or not xs or not eg or not ar:
+        return unanswerable("", "missing: yim20 exposure, x̃50, gre23 exposure or aspect ratio")
+    arY = sum(xs) / len(xs); pred = scale(arY, ey["value"], val(ar[0]), 2); egv = L.convert(val(eg[0]), eg[0]["unit"], "Torr s")
+    return answered(f"yim20 exposure per dose {g(ey['value'], 2)} Torr s ({dtext(ey, 2)}) vs gre23 {g(egv, 3)} Torr s ({eg[0]['fact_id']}); yim20 reaches x̃50 ≈ {g(arY, 3)} (mean over the replicate set), "
+                    f"gre23's AR {fmt(ar[0])} ({ar[0]['fact_id']}): AR² scaling predicts {g(pred, 2)} Torr s, gre23 used {g(egv / pred, 2)}× that",
+                    "lists.DERIVED exposure on yim20's replicate set (assumed TMA pressure), its x̃50 as the aspect ratio reached, gre23's stated exposure and the compacts' aspect ratio; scale() by a square law")
 
 
 def q21():
@@ -614,12 +819,42 @@ def q23():
     """Every claim that puts water desorption or surface OH as a cause, with the quantified effect behind each."""
     toks = {"mechanism:surface_OH", "mechanism:residual_H2O", "mechanism:desorption", "mechanism:water_readsorption"}
     cs = [(k, f) for k, T in TREES.items() for f in T.rows if f["type"] == "claim" and set(f["cause"].split(";")) & toks]
-    return unanswerable(f"{len(cs)} claims: " + "; ".join(f"{k} {f['fact_id'].split(':')[1]}" for k, f in cs), "no operation: the quantified effect behind a claim from the comparison in its scope")
+    out = []
+    for k, f in cs:
+        T = TREES[k]; parts = []
+        for c in scope_comparisons(T, f):
+            comp = T.byid[c]
+            for q in [q for q in f["effect"].split(";") if q and not q.startswith("mechanism:")]:
+                linked = [e for e in (T.ent_of(l) for l in f["links"].split(";") if l in T.byid) if e]
+                for key in {kk for m in T.member_entities(comp) for kk in T.results(m) if kk.split("{")[0] == q}:
+                    pts = series_xy(T, comp, next((vk for vk in T.vector(T.member_entities(comp)[0]) if vk.split("{")[0] == comp["quantity"].split(";")[0]), ""), key)
+                    if len([p for p in pts if p[0] in linked]) >= 2:
+                        pts = [p for p in pts if p[0] in linked]                     # the members the claim's links reach
+                    if len(pts) >= 2:
+                        pts.sort(key=lambda p: (p[1] is None, p[1])); m0, x0, y0 = pts[0]
+                        parts.append(f"{comp['label_as_printed']}: {L.LABELS.get(key, key)} {g(y0, 3)} at {T.label(m0)} ({L.LABELS.get(comp['quantity'].split(';')[0], comp['quantity'])} {g(x0) if x0 is not None else 'cycled'}) → " +
+                                     ", ".join(f"{g(y1, 3)} at {T.label(m1)} ({g(x1) if x1 is not None else 'cycled'}): {g(100 * (y1 / y0 - 1), 2)} %" for m1, x1, y1 in pts[1:]))
+        out.append(f"{f['fact_id']} ({f['cause']} → {f['effect']}): " + ("; ".join(parts) if parts else "no quantified effect: its links reach no comparison with that result"))
+    return answered(" · ".join(out), "claims by cause token; scope_comparisons() from their links; series_xy over the comparison's varied setting and the claim's effect quantity; the change from first to last member")
 
 
 def q24():
     """Resistivity drop when a metallic phase appears, per paper."""
-    return unanswerable("", "no operation: contrast within a comparison between the member whose observation names a metal and the others")
+    out = []
+    for k, T in TREES.items():
+        parts = []
+        done = set()
+        for c in sorted(T.comps, key=lambda c: len(T.member_entities(c))):          # the smallest comparison holding a marked specimen: its row
+            marked, others = contrast(T, c, "resistivity", "metallic")
+            marked = [t for t in marked if t[0] not in done]
+            if marked and others:
+                done |= {t[0] for t in marked}
+                near = min(others, key=lambda t: abs((t[3] or 0) - (marked[0][3] or 0)))
+                parts.append(f"{c['label_as_printed']}: {', '.join(f'{T.label(m)} {fmt(f)}' for m, _, f, _ in marked)} (an observation names a metallic phase) vs "
+                             + ", ".join(f"{T.label(m)} {fmt(f)}" for m, _, f, _ in others) + f": {g(near[1] / marked[0][1], 2)}× lower than its neighbour {T.label(near[0])}")
+        text_ = [f"{f['statement'][:90]}" for f in T.rows if f["type"] == "observation" and "metallic" in f["statement"] and f["quantity"] == "resistivity" or (f["type"] == "observation" and "conductive" in f["statement"] and f["quantity"] == "resistivity")]
+        out.append(f"{k}: " + ("; ".join(parts) if parts else "no comparison with a member naming a metallic phase") + (f" · the text: {'; '.join(text_)}" if text_ else ""))
+    return answered(" · ".join(out), "contrast() within each stated comparison: the specimens whose observations (pieces included) name a metallic phase against the others, on resistivity; the paper's own resistivity statements naming a metal beside it")
 
 
 def q25():

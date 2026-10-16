@@ -128,8 +128,9 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
     sims = sims or {}
     group_facts_to = group_facts_to or {}
     byid = {r["fact_id"]: r for r in _facts}
-    old_kids = {}                                        # the old parents and types, before any row is converted or re-parented
+    old_kids = {}                                        # the old parents, types and links, before any row is converted or re-parented
     old_type = {r["fact_id"]: r["type"] for r in _facts}
+    old_links = {r["fact_id"]: [l for l in r["links"].split(";") if l] for r in _facts}
     for r in _facts:
         old_kids.setdefault(r["parent"], []).append(r["fact_id"])
     recipe = f"{key}:recipe"
@@ -216,7 +217,8 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
             continue
         links = [l for l in g["links"].split(";") if l]
         purpose_, rest = (links[:1], links[1:]) if links and "#" in links[0] else ([], links)
-        members = [m for c in old_kids.get(g["fact_id"], []) if old_type.get(c) in ("run", "group") for m in member(c)] + [m for l in rest for m in member(l)]
+        members = [m for c in old_kids.get(g["fact_id"], []) if old_type.get(c) in ("run", "group") for m in member(c)] + [m for l in rest for m in member(l)] + \
+            [m for r in old_runs if g["fact_id"] in old_links.get(r, []) for m in member(r)]      # a run in two series names the second in its links
         members = list(dict.fromkeys(m for m in members if m))
         g["parent"] = key
         g["links"] = ";".join(purpose_ + members)
