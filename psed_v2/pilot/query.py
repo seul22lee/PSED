@@ -816,9 +816,17 @@ def name_of(key, f=None):
     q, qs = key.split("{")[0].split("[")[0], key.split("{")[1].split("}")[0] if "{" in key else ""
     if q == "other":
         return (f or {}).get("label_as_printed") or (key.split("[")[1].rstrip("]") if "[" in key else "other")
+    qd = dict(p.split("=", 1) for p in qs.split(";") if "=" in p)
+    if "stat" in qd:                                                            # a spread fact: named by its statistic (P1)
+        inner = ";".join(sorted(f"{k}={v}" for k, v in qd.items() if k not in ("stat", "between", "n")))
+        return f"{STAT_WORDS.get(qd['stat'], qd['stat'])} of {name_of(q + ('{' + inner + '}' if inner else ''), f)}"
     base = L.NAMES.get(q, q.replace("_", " "))
     vals = [p.split("=")[1].replace("_", " ") for p in qs.split(";") if p and p.split("=")[0] not in DEF_KEYS | {"x"}]
     return f"{base} ({', '.join(vals)})" if vals else base
+
+
+STAT_WORDS = {"sd": "standard deviation", "relative_sd": "relative standard deviation", "half_range": "half range", "tolerance": "tolerance",
+              "minimum": "minimum", "maximum": "maximum"}
 
 
 def definition_of(f):
@@ -924,16 +932,36 @@ def distinguishing(T, ent, peers, n=2):
     """The 1-2 conditions that tell an entity from its peers: the condition keys whose values differ among them, process-defining
     first (lists.PRIMARY), then the rest."""
     vt = {e: vtext(T, e) for e in peers}
-    keys = [k for k in vt.get(ent, {}) if len({vt[e].get(k) for e in peers}) > 1]
+    keyed = {k for k, fs in T.vector(ent).items() if any(set(quals(f)) & set(L.KEYED) for f in fs)}     # a flow keyed to the ratio follows the ratio
+    keys = [k for k in vt.get(ent, {}) if k not in keyed and all(k in vt[e] for e in peers) and len({vt[e].get(k) for e in peers}) > 1]
     keys.sort(key=lambda k: (L.PRIMARY.index(k.split("{")[0]) if k.split("{")[0] in L.PRIMARY else len(L.PRIMARY), k))
     cr = condition_records(T, ent)
-    return [dict(key=k, name=cr[k]["name"], text=cr[k]["record"]["text"]) for k in keys if k in cr][:n]
+    out = [dict(key=k, name=cr[k]["name"], text=cr[k]["record"]["text"]) for k in keys if k in cr][:n]
+    if not out:                                                                 # peers differ only in how they were measured (Series B: the objective)
+        ms = {e: measurement_settings(T, e) for e in peers}
+        mk = [k for k in ms.get(ent, {}) if len({ms[e].get(k, (None,))[0] for e in peers}) > 1]
+        out = [dict(key=k, name=name_of(k, ms[ent][k][1]), text=ms[ent][k][0]) for k in sorted(mk)][:n]
+    return out
+
+
+def measurement_settings(T, ent):
+    """The settings of an entity's own measurement activities: {key: (text, fact)}."""
+    out = {}
+    for a in T.rows:
+        if a["type"] == "activity" and a["kind"] == "measurement" and T.ent_of(a["fact_id"]) == ent:
+            for f in T.own(a["fact_id"]):
+                if f["type"] == "setting" and f["quantity"] and text_of(f):
+                    out.setdefault(ckey(f), (text_of(f), f))
+    return out
 
 
 def comparison_label(T, c):
     """'Series F — purge time': the comparison's label and what it varies, in words."""
     varies = [L.NAMES.get(q, q.replace("_", " ")) for q in c["quantity"].split(";") if q]
-    return f"{c['label_as_printed']} — {', '.join(varies)}" if varies else c["label_as_printed"]
+    lab = c["label_as_printed"]
+    if not varies or all(v.lower()[:5] in lab.lower() for v in varies):         # the label already says what it varies
+        return lab
+    return f"{lab} — {', '.join(varies)}"
 
 
 def cited_name(T, w):
