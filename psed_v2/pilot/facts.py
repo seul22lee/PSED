@@ -103,7 +103,8 @@ def facts():
 
 
 # measurement methods: a setting or an observation with one of these sits under a measurement activity, never in a condition vector
-MEAS_METHODS = {"reflectometry", "spectroscopic_ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "electrical", "rbs", "gravimetry",
+MEAS_METHODS = {"reflectometry", "spectroscopic_ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "four_point_probe", "two_point_through_thickness",
+                "hall", "transistor_iv", "rbs", "gravimetry",
                 "photograph", "optical_microscopy", "process_monitor"}
 
 
@@ -419,6 +420,23 @@ def fill_uncertainty():
             m = re.search(r"(?<![\d.])" + re.escape(e.group(1)) + r"\s*±\s*(\d+(?:\.\d+)?)\s*×\s*10\^(-?\d+)", r["statement"])
             if m and m.group(2) == e.group(2):
                 r["uncertainty"] = f"{m.group(1)}e{m.group(2)}"
+
+
+def specimen_classes(key, cls):
+    """P53 (Sec. 18.4): every entity made by a deposition (a specimen or a piece of one) carries specimen_class=<cls> in its
+    qualifiers; a model run or an input entity has none."""
+    byid = {r["fact_id"]: r for r in _facts}
+    for r in _facts:
+        if r["type"] != "entity" or "specimen_class=" in r["qualifiers"]:
+            continue
+        x, made = r["parent"], False
+        while x in byid:
+            n = byid[x]
+            if n["type"] == "activity" and n["kind"] == "deposition":
+                made = True; break
+            x = n["parent"]
+        if made:
+            r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], f"specimen_class={cls}"]))
 
 
 def identity(key, kind, ents, statement, evidence, parent=None):

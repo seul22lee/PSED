@@ -1320,4 +1320,5 @@ C.sized(K, {
     "s19.p3#7": ["s19.p3#1", "s19.p3#2", "s19.p3#4", "s19.p3#5", "s19.p3#6"],
     "s20.p2#3": ["s13.p1#1", "s13.p1#2", "s13.p1#3", "s13.p2#2", "s19.p3#5", "s19.p3#6"],
 })
+C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
 write(K, PID)

@@ -1805,6 +1805,7 @@ qualifiers:   # closed lists; adding a value is allowed and is logged (log: valu
   mode:      {values: [in_situ, ex_situ, not_stated], log: "pilot P6: a measurement during or after the deposition"}
   x:         {values: quantity ids, log: "pilot: the abscissa of a curve"}
   ratio:     {values: a number, log: "pilot P17: the plasma_gas_ratio a keyed setting belongs to"}
+  specimen_class: {values: [film, porous_composite], log: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis"}
 
 units:   # canonical unit per dimension, and the accepted units
   temperature:      {canonical: "°C",       accepted: ["°C", K]}
@@ -1843,6 +1844,7 @@ vocabularies:
   reactor_type:      [pump_type, flow_type, atmospheric]
   crystallinity:     [amorphous, crystalline]
   phase:             [detected, "not detected"]                              # the values of the phase categorical (P15)
+  specimen_class:    [film, porous_composite]                               # Sec. 18.4: the class of specimen a value was measured on
   structure_class:   [lateral, vertical, porous, planar]
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]
@@ -1861,7 +1863,11 @@ vocabularies:
     - {id: raman, class: raman, definition: "Raman spectroscopy: phonon modes, used for crystallinity and phase."}
     - {id: xrd, class: xrd, definition: "X-ray diffraction: crystalline phases, phase fractions and crystallite sizes."}
     - {id: rbs, class: ion_beam, definition: "Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition."}
-    - {id: electrical, class: electrical, definition: "An electrical measurement whose geometry the paper does not separate (replaced by four_point_probe, two_point_through_thickness and hall in Sec. 18.4)."}
+    - {id: electrical, class: electrical, replaced_by: [four_point_probe, two_point_through_thickness, hall, transistor_iv], definition: "An electrical measurement whose geometry the paper does not separate; re-split in Sec. 18.4 because a four-point value on a film and a two-point through-thickness value on a porous composite are not comparable."}
+    - {id: four_point_probe, class: four_point_probe, definition: "Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane)."}
+    - {id: two_point_through_thickness, class: two_point_through_thickness, definition: "Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness."}
+    - {id: hall, class: hall, definition: "Hall measurement in the van der Pauw geometry: carrier density and mobility."}
+    - {id: transistor_iv, class: transistor_iv, definition: "Current-voltage characteristics of a field-effect transistor made from the film."}
     - {id: process_monitor, class: process_monitor, definition: "The reactor's own gauges and thermocouples: pressure and temperature traces during the process."}
     - {id: gravimetry, class: gravimetry, definition: "Weighing before and after deposition."}
     - {id: photograph, class: optical_image, definition: "A photograph of the specimen."}

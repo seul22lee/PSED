@@ -374,6 +374,14 @@ def _unc(r):
     return f" ± {u.get('value')}" + Q.unc_note(u)
 
 
+def _pairs(ps):
+    """Group pairs (a, b) as 'groups 1–9' with b: [(span of the a's, b)]."""
+    by = {}
+    for a, b in ps:
+        by.setdefault(b, []).append(a)
+    return [(_span(a_s) if len(a_s) > 1 else str(a_s[0]), b) for b, a_s in by.items()]
+
+
 def _span(nums):
     """Group numbers 1, 2, 3, 5 as '1–3, 5'."""
     out, run = [], []
@@ -445,7 +453,14 @@ def values_blocks(groups, asked):
             if len(by) > 1:
                 diff.append(f"{aspect}: " + "; ".join(f"{v} (group{'s' if len(ns) > 1 else ''} {_span(ns)})" for v, ns in by.items()))
         last = ("between groups, not one series: " + " · ".join(diff)) if diff else "the groups share material, structure, reactor, process and measurement"
-        blocks.append(block([], head=[("between", last)]))
+        verdicts = {}                                                           # (result, axes) -> the group pairs, printed once
+        for k, a, b, ax in Q.group_verdicts(groups):
+            if ax:
+                verdicts.setdefault((Q.name_of(k), "; ".join(ax)), []).append((a, b))
+        head = [("between", last)] + [("between", f"not comparable on {name}: " + ", ".join(f"group{'s' if '–' in a or ',' in a else ''} {a} with group {b}" for a, b in _pairs(ps)) + f": {ax}") for (name, ax), ps in verdicts.items()]
+        if not verdicts and len(groups) > 1:
+            head.append(("between", "the groups' values are comparable: same entry, definition, method class and specimen class"))
+        blocks.append(block([], head=head))
     return blocks
 
 

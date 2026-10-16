@@ -551,6 +551,36 @@ def check_bases():
     return err
 
 
+def check_comparability():
+    """P53 (Sec. 18.4): for every output quantity, every pair of values of the same entry from two papers is judged by
+    query.incomparable: comparable, or not with the axes named. A pair that cannot be judged (a specimen with no specimen class,
+    a method with no class) is an error. Prints the counts per quantity."""
+    import query as Q
+    err, pairs = [], collections.defaultdict(lambda: [0, 0])
+    vals = collections.defaultdict(list)                                        # entry id -> [(paper, key, record)]
+    for k, T in Q.TREES.items():
+        for e in Q.experiments(T):
+            if Q.role(T, e) == "specimen" and not Q.specimen_class_of(T, e):
+                err.append(f"{e}: a specimen without specimen_class (P53)")
+            for key, x in Q.result_records(T, e).items():
+                r = x["record"]
+                if r.get("value") is None and not r.get("curve"):
+                    continue
+                q = key.split("{")[0].split("[")[0]
+                if q in L.OUTPUTS:
+                    if r.get("method") and r["method"] not in L.METHOD_CLASS:
+                        err.append(f"{r.get('fact') or e}: method {r['method']!r} has no class (P53)")
+                    vals[q].append((k, key, r))
+    for q, vs in vals.items():
+        for n, (pa, ka, ra) in enumerate(vs):
+            for pb, kb, rb in vs[n + 1:]:
+                if pa != pb and ka.split("{")[0] == kb.split("{")[0]:
+                    pairs[q][1 if Q.incomparable(ka, ra, kb, rb) else 0] += 1
+    print("== comparability (P53): cross-paper value pairs per output quantity, comparable / not: " +
+          "; ".join(f"{q} {c[0]}/{c[1]}" for q, c in sorted(pairs.items())))
+    return err
+
+
 def check_cases():
     rows = rd(HERE / "paper_case.csv")
     left = [(k, r["paper_id"]) for r in rows for k in (f"c{i}" for i in range(1, 14)) if r.get(k, "").startswith("candidate")]
@@ -561,6 +591,11 @@ if __name__ == "__main__":
     bad = 0
     err = check_vocabulary()
     print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_comparability()
+    print(f"== comparability (P53): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

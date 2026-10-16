@@ -160,7 +160,7 @@ F(K, "s3.p6", "observation", "MoS2 films about 1-5 nm thick are smooth and conti
 F(K, "s3.p6;fig1d;fig1.cap", "setting", "MoS2 is deposited on PET at the lowest temperature, 100 °C, with optimized ratio 0.80.",
   quantity="deposition_temperature", value="100", unit="°C", data_kind="chosen input", mentions="PET;0.80;Figure 1d")
 F(K, "s3.p6", "observation", "About 5 nm MoS2 on PET has a resistivity of 0.3 Ω cm.", quantity="resistivity", value="0.3",
-  unit="Ω cm", data_kind="measured", method="electrical", mentions="PET;5 nm")
+  unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="PET;5 nm")
 F(K, "s3.p6;fig1d", "observation", "The 5 nm MoS2 films on PET are highly transparent and their resistivity does not change after "
   "repeated bending by hand.", method="photograph", mentions="PET")
 
@@ -425,57 +425,57 @@ F(K, "s3.p32", "claim", "Crystallization itself changes GPC at most moderately, 
 # ------------------------------------------------------------------ electrical
 F(K, "s3.p33;fig8;fig8.cap", "claim", "The H2 flow ratio tunes resistivity over several orders of magnitude.", mentions="Figure 8")
 F(K, "s3.p33;fig8", "observation", "At a given temperature and fixed cycle count, higher ratio gives lower resistivity.",
-  quantity="resistivity", data_kind="measured", method="electrical", mentions="Figure 8;Table S2")
-F(K, "s3.p34", "observation", "For amorphous films resistivity follows stoichiometry.", method="electrical")
+  quantity="resistivity", data_kind="measured", method="four_point_probe", mentions="Figure 8;Table S2")
+F(K, "s3.p34", "observation", "For amorphous films resistivity follows stoichiometry.", method="four_point_probe")
 F(K, "s3.p34;fig8", "observation", "The most S-rich films (S/Mo ≥ 3) exceed the four-point probe detection limit, of order 1000 Ω cm "
   "for 10 nm films.", quantity="resistivity", value="1000", censor=">", unit="Ω cm", data_kind="measured",
-  method="electrical", mentions="S/Mo ≥ 3;10 nm;>dl")
-F(K, "s3.p34", "observation", "Lower S/Mo, from higher ratio and/or temperature, lowers resistivity.", method="electrical")
+  method="four_point_probe", mentions="S/Mo ≥ 3;10 nm;>dl")
+F(K, "s3.p34", "observation", "Lower S/Mo, from higher ratio and/or temperature, lowers resistivity.", method="four_point_probe")
 F(K, "s3.p34;fig8", "observation", "Lowest amorphous-film resistivity is 2 Ω cm, for MoS2.2 grown at 100 °C with ratio 0.65.",
-  quantity="resistivity", value="2", unit="Ω cm", data_kind="measured", method="electrical",
+  quantity="resistivity", value="2", unit="Ω cm", data_kind="measured", method="four_point_probe",
   mentions="MoS2.2;100 °C;0.65")
 F(K, "s3.p35;fig8", "observation", "For crystalline films, raising the ratio at a given temperature lowers resistivity.",
-  method="electrical")
+  method="four_point_probe")
 F(K, "s3.p35;s4.p1;fig8", "observation", "Lowest c-MoS2 resistivities, about 0.1-1 Ω cm, are reached at ratio 0.80.",
-  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="electrical",
+  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value_min="0.1", value_max="1", unit="Ω cm", data_kind="measured", method="four_point_probe",
   mentions="0.80;c-MoS2")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 300 °C with ratio 0.20 has 15 Ω cm.", quantity="resistivity",
-  value="15", unit="Ω cm", data_kind="measured", method="electrical", mentions="300 °C;0.20")
+  value="15", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="300 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Crystalline film grown at 450 °C with ratio 0.20 has 220 Ω cm.", quantity="resistivity",
-  value="220", unit="Ω cm", data_kind="measured", method="electrical", mentions="450 °C;0.20")
+  value="220", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="450 °C;0.20")
 F(K, "s3.p35;fig8", "observation", "Ratio 0.94 gives resistivities down to 4 mΩ cm, likely owing to a highly conductive Mo phase.",
-  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value="4", unit="mΩ cm", data_kind="measured", method="electrical", mentions="0.94")
-F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="electrical",
+  quantity="resistivity", qualifiers="stat=minimum;between=runs;n=not_stated", value="4", unit="mΩ cm", data_kind="measured", method="four_point_probe", mentions="0.94")
+F(K, "s3.p35;fig8", "observation", "c-MoS2 resistivity is lowest at the lowest temperatures, 100-150 °C.", method="four_point_probe",
   mentions="100-150 °C")
 HALL = F(K, "s3.p36;s3.p37;s4.p1;s4.p2", "observation", "c-MoS2 films grown with ratios 0.50-0.80 at 100-250 °C show p-type "
          "conduction with hole concentrations of order 10^21 cm^-3 by AC Hall.", quantity="carrier_density",
          label_as_printed="majority carrier (hole) concentration", value="1e21", unit="cm-3", data_kind="measured",
-         method="electrical", mentions="0.50-0.80;100-250 °C;Section S10")
+         method="hall", mentions="0.50-0.80;100-250 °C;Section S10")
 F(K, "s3.p36;s3.p37", "observation", "Hall mobilities of these low-temperature c-MoS2 films are modest, 0.001-0.01 (cm^2/Vs).",
   quantity="mobility", label_as_printed="Hall mobility", value_min="0.001", value_max="0.01", unit="cm2 V-1 s-1",
-  data_kind="measured", method="electrical", mentions="0.50-0.80;100-250 °C")
+  data_kind="measured", method="hall", mentions="0.50-0.80;100-250 °C")
 F(K, "s3.p37", "observation", "Reference c-MoS2 films from 350-450 °C with ratio 0.20 have carrier densities of order 10^17 to "
   "10^18 cm^-3.", quantity="carrier_density", label_as_printed="carrier density", value_min="1e17", value_max="1e18",
-  unit="cm-3", data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
+  unit="cm-3", data_kind="measured", method="hall", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "observation", "Those reference films have similar or slightly higher mobilities, of order 0.01 (cm^2/Vs), "
   "here and in Vandalon et al.", quantity="mobility", label_as_printed="mobility", value="0.01", unit="cm2 V-1 s-1",
-  data_kind="measured", method="electrical", mentions="350-450 °C;0.20;ref. 69")
+  data_kind="measured", method="hall", mentions="350-450 °C;0.20;ref. 69")
 F(K, "s3.p37", "claim", "Similar mobilities at 150 and 450 °C indicate comparable electronic quality.", mentions="150 °C;450 °C")
 F(K, "s3.p37", "cited", "MoS2 doped with 10 at.% Al at 450 °C has carrier concentrations and mobilities comparable to the "
   "low-temperature c-MoS2 here.", mentions="10 at. % Al;450 °C;ref. 69")
 F(K, "s3.p37", "claim", "The process offers an easy way to make strongly p-doped MoS2 at low temperature.")
 F(K, "s3.p38", "observation", "At 450 °C, raising the ratio from 0.20 to 0.80 lifts carrier concentration 3 orders of "
   "magnitude, from 10^17 to 10^20 cm^-3.", quantity="carrier_density", label_as_printed="carrier concentration",
-  method="electrical", mentions="450 °C;0.20;0.80")
+  method="hall", mentions="450 °C;0.20;0.80")
 F(K, "s3.p38", "observation", "Ratio 0.94 gives extremely high carrier concentrations, of order 10^22 cm^-3, consistent with "
   "partial Mo content.", quantity="carrier_density", label_as_printed="carrier concentration", value="1e22", unit="cm-3",
-  data_kind="measured", method="electrical", mentions="0.94")
+  data_kind="measured", method="hall", mentions="0.94")
 F(K, "s3.p38", "cited", "Mo thin films have carrier concentrations of 5 × 10^22 to 1 × 10^23 cm^-3.", quantity="carrier_density",
   label_as_printed="carrier concentration", value_min="5e22", value_max="1e23", unit="cm-3", data_kind="literature",
   method="cited", mentions="Mo;ref. 70;ref. 71")
 for r_, v_ in (("0.20", "1e17"), ("0.80", "1e20")):                      # the two ends of s3.p38's change are two films' values (P14)
     F(K, "s3.p38", "observation", f"At 450 °C and ratio {r_} the carrier concentration is of order {v_.replace('1e', '10^')} cm^-3.",
-      quantity="carrier_density", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="electrical",
+      quantity="carrier_density", label_as_printed="carrier concentration", value=v_, unit="cm-3", data_kind="measured", method="hall",
       mentions=f"450 °C;{r_}")
 F(K, "s3.p39", "observation", "c-MoS2 films are near stoichiometric, MoS1.8 to MoS2.2 by XPS.", quantity="element_ratio",
   qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value_min="1.8", value_max="2.2", data_kind="measured", method="xps",
@@ -491,7 +491,7 @@ F(K, "s3.p40", "cited", "Literature (mostly DFT) places H in MoS2 at S vacancies
   "interstitially within the Mo plane (n-type), as neutral intercalated H2, or replacing S to form n-type MoSH.",
   mentions="ref. 72;ref. 73;ref. 74;ref. 75;ref. 76;ref. 77")
 F(K, "s3.p40", "observation", "Annealing up to 300 °C causes no major change in electrical properties.",
-  method="electrical", mentions="Section S12")
+  method="four_point_probe", mentions="Section S12")
 F(K, "s3.p40", "setting", "Annealing at temperatures up to 300 °C (Section S12).", quantity="annealing_temperature",
   label_as_printed="annealing temperature", value_max="300", unit="°C", data_kind="chosen input", mentions="Section S12")
 F(K, "s3.p41", "observation", "Infrared and Raman measurements found no evidence of Mo-H or S-H bonds, which does not prove they "
@@ -503,13 +503,13 @@ F(K, "s3.p43", "observation", "FET channel: about 5 nm film grown at 100 °C wit
 F(K, "s3.p43", "setting", "Reference FET film of similar thickness grown at 350 °C with ratio 0.20.",
   quantity="deposition_temperature", value="350", unit="°C", data_kind="chosen input", mentions="350 °C;0.20;FET")
 F(K, "s3.p43", "observation", "Both FETs conduct p-type with on/off current ratios of about 3-4.", quantity="other",
-  label_as_printed="current on/off ratio", value_min="3", value_max="4", data_kind="measured", method="electrical",
+  label_as_printed="current on/off ratio", value_min="3", value_max="4", data_kind="measured", method="transistor_iv",
   mentions="100 °C;350 °C;Figure S13")
 F(K, "s3.p43", "cited", "Few p-type 2D semiconductors are known, unlike n-type ones.", mentions="ref. 78")
 F(K, "s3.p43", "observation", "Output current of the 100 °C FET is over ten times that of the 350 °C reference, matching its lower "
-  "resistivity and higher carrier concentration.", method="electrical", mentions="100 °C;350 °C")
+  "resistivity and higher carrier concentration.", method="transistor_iv", mentions="100 °C;350 °C")
 F(K, "s3.p43", "observation", "The 100 °C FET contacts show non-linear I-V (a Schottky barrier); the 350 °C contacts are near "
-  "Ohmic.", method="electrical", mentions="100 °C;350 °C")
+  "Ohmic.", method="transistor_iv", mentions="100 °C;350 °C")
 F(K, "s3.p44", "observation", "Device cross-sections show an amorphous MoS2/Ni interface layer about 2-3 nm thick for the 100 °C "
   "sample.", quantity="film_thickness", qualifiers="position=interface", label_as_printed="interface layer thickness",
   value_min="2", value_max="3", unit="nm", data_kind="measured", method="tem", mentions="100 °C;Ni;Figure S14")
@@ -540,7 +540,7 @@ F(K, "s3.p46;fig9a;fig9.cap;s3.x7", "observation", "Ratio 0.80 at 150 °C yields
   qualifiers="element=S;reference_element=W", label_as_printed="S/W", value="2.1", data_kind="measured", method="xps",
   mentions="WS2.1;0.80;150 °C;Figure 9a;Section S13")
 F(K, "s3.p46", "observation", "The crystalline WS2.1 film has a resistivity of 4 Ω cm.", quantity="resistivity", value="4",
-  unit="Ω cm", data_kind="measured", method="electrical", mentions="WS2.1;0.80;150 °C")
+  unit="Ω cm", data_kind="measured", method="four_point_probe", mentions="WS2.1;0.80;150 °C")
 F(K, "s3.p46;s3.p47", "claim", "MoS2 and WS2 behave alike since Mo and W share a group and both processes use analogous "
   "M(NtBu)2(NMe2)2 precursors.", mentions="M = Mo, W")
 F(K, "s3.p48", "cited", "The only reported TiS2 PEALD process is crystalline from 150 °C, but gives amorphous TiS3 at 100 °C.",
@@ -705,10 +705,10 @@ F(K, "s5.p11;fig1c", "setting", "Uniformity maps use a J.A. Woollam M-2000 (1.2-
   quantity="other", label_as_printed="spectral range", value_min="1.2", value_max="3.3", unit="eV",
   data_kind="chosen input", method="spectroscopic_ellipsometry", mentions="M-2000;5 nm;450 nm SiO2/Si;4\"")
 F(K, "s5.p12", "setting", "Sheet resistance is measured with a four-point probe (Keithley 2400 SourceMeter, Signatone "
-  "SP4-4004STRS head).", method="electrical", mentions="Keithley 2400;SP4-4004STRS")
+  "SP4-4004STRS head).", method="four_point_probe", mentions="Keithley 2400;SP4-4004STRS")
 F(K, "s5.p12", "definition", "Resistivity = sheet resistance × film thickness from in situ SE.", quantity="resistivity", method="calculation")
 F(K, "s5.p13", "setting", "Hall measurements: van der Pauw geometry on about 1 × 1 cm2 samples (Lakeshore 8404 HMS), AC Hall for "
-  "low Hall voltages, repeated without removing the sample to estimate uncertainty.", method="electrical",
+  "low Hall voltages, repeated without removing the sample to estimate uncertainty.", method="hall",
   mentions="Lakeshore 8404;1 × 1 cm2")
 F(K, "s5.p14", "setting", "SEM: Zeiss Sigma at 3 kV with InLens detector.", quantity="other",
   label_as_printed="acceleration voltage", value="3", unit="kV", data_kind="chosen input", method="sem")
@@ -894,10 +894,10 @@ F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged o
 # ------------------------------------------------------------------ Fig. 8
 F(K, "fig8;fig8.cap", "observation", "Fig. 8 maps four-point probe resistivity (log colour bar 10^-3 to 10^3 Ω cm, top band >dl) "
   "over deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="resistivity", unit="Ω cm",
-  method="electrical", mentions="Resistivity (Ωcm);>dl")
+  method="four_point_probe", mentions="Resistivity (Ωcm);>dl")
 F(K, "fig8", "observation", "Cells drawn in the black band, above the four-point-probe limit of order 1000 Ω cm (s3.p34): 200 and 150 °C at "
   "ratio 0; 200, 150, 100 and 50 °C at 0.20; 100 °C at 0.50 (7 cells, read from colour).", quantity="resistivity", censor=">", value="1000", unit="Ω cm",
-  data_kind="measured", method="electrical",
+  data_kind="measured", method="four_point_probe",
   mentions=">dl;0;0.20;0.50")
 
 # ------------------------------------------------------------------ Fig. 9
@@ -1102,10 +1102,10 @@ for (t, r) in CELLS:
     v = RHO8_VALUES[(t, r)]
     if v is None:
         RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the four-point-probe limit of order 1000 Ω cm (black), read from colour",
-                         quantity="resistivity", censor=">", value="1000", unit="Ω cm", data_kind="measured", method="electrical", mentions=f"{r};{t} °C")
+                         quantity="resistivity", censor=">", value="1000", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions=f"{r};{t} °C")
     else:
         RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity read from colour against the log bar (about)",
-                         quantity="resistivity", value=f"{v:g}", unit="Ω cm", data_kind="measured", method="electrical", mentions=f"{r};{t} °C")
+                         quantity="resistivity", value=f"{v:g}", unit="Ω cm", data_kind="measured", method="four_point_probe", mentions=f"{r};{t} °C")
 
 # ================================================================== stage 3: one tree (parent, links)
 # A MoS2 (deposition temperature, H2 flow ratio) pair is a GROUP; a RUN under it is one physical film the paper's facts are about.
@@ -1512,10 +1512,10 @@ for fid_ in (f"{K}:s3.p50#1", f"{K}:s3.p51#3"):
 ANN, DEV = f"{K}:act:anneal", f"{K}:ent:tem_T100_R0.80"
 N(ANN, "activity", "annealing of the 100 °C film up to 300 °C and in air at 150 °C (Sections S11, S12); which film was annealed is not stated, the device film is inferred",
   DEV, evidence="s3.p40;s3.p44", kind="anneal", how="inferred", label_as_printed="anneal")
-for m_ in ("electrical", "measurement"):
+for m_ in ("four_point_probe", "measurement"):
     N(f"{K}:meas:ent:tem_T100_R0.80:anneal:{m_}", "activity", f"{m_} after the anneal", ANN, evidence="s3.p40;s3.p44", kind="measurement", how="stated",
       label_as_printed=m_)
-for fid_, par in ((f"{K}:s3.p40#3", ANN), (f"{K}:s3.p44#6", ANN), (f"{K}:s3.p40#2", f"{K}:meas:ent:tem_T100_R0.80:anneal:electrical"),
+for fid_, par in ((f"{K}:s3.p40#3", ANN), (f"{K}:s3.p44#6", ANN), (f"{K}:s3.p40#2", f"{K}:meas:ent:tem_T100_R0.80:anneal:four_point_probe"),
                   (f"{K}:s3.p44#4", f"{K}:meas:ent:tem_T100_R0.80:anneal:measurement")):
     next(r for r in C.facts() if r["fact_id"] == fid_)["parent"] = par
 # every deposition carries its temperature and H2 flow ratio
@@ -1533,7 +1533,7 @@ for d, spec in DEPS.items():
 # the colour cells of Fig. 7b and Fig. 8: under the cell film's in situ SE and four-point-probe measurement activities (made here if the
 # cell had none)
 for (t, r), fid7 in GPC7B.items():
-    for fid_, meth, lab in ((fid7, "spectroscopic_ellipsometry", "in situ SE"), (RHO8[(t, r)], "electrical", "four-point probe")):
+    for fid_, meth, lab in ((fid7, "spectroscopic_ellipsometry", "in situ SE"), (RHO8[(t, r)], "four_point_probe", "four-point probe")):
         act = f"{K}:meas:ent:T{t}_R{r}:{meth}"
         if not any(x["fact_id"] == act for x in C.facts()):
             N(act, "activity", f"{meth} on the {t} °C, {r} H2 film", f"{K}:ent:T{t}_R{r}", evidence="fig7b" if meth == "spectroscopic_ellipsometry" else "fig8",
@@ -1768,4 +1768,5 @@ C.sized(K, {
     "s3.p41#2": ["tab1.r3c1#1", "tab1.r3c2#1", "s3.p39#1"],
     "s3.p44#3": ["s3.p44#1", "s3.p44#2"],
 })
+C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
 write(K, PID)

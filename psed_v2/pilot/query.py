@@ -939,12 +939,38 @@ def cav_list(cs):
     return [dict(id=c["fact_id"], text=c["statement"]) for c in {c["fact_id"]: c for c in cs}.values()]
 
 
+def specimen_class_of(T, ent):
+    """The specimen class (Sec. 18.4) of the entity an id names, or of the entity above a fact."""
+    e = ent if ent in T.byid and T.byid[ent]["type"] == "entity" else T.ent_of(ent) if ent else None
+    return quals(T.byid[e]).get("specimen_class", "") if e else ""
+
+
+AXES = ("entry", "definition", "method class", "specimen class")
+
+
+def axes_of(key, rec):
+    """The four comparability axes of a value (Sec. 18.4): the entry id, the definition (the qualifiers that define the value: over,
+    relative_to, kind, reference, reference_element, basis), the method class, the specimen class."""
+    q, _, rest = key.partition("{")
+    qd = dict(p.split("=", 1) for p in rest.rstrip("}").split(";") if "=" in p)
+    definition = ";".join(f"{k}={v}" for k, v in sorted(qd.items()) if k in DEF_KEYS | {"reference_element", "basis"})
+    return dict(zip(AXES, (q, definition or "the default", rec.get("method_class") or (rec.get("method") or "none"), rec.get("specimen_class") or "none")))
+
+
+def incomparable(key_a, rec_a, key_b, rec_b):
+    """The axes on which two values differ, as 'axis (a vs b)' texts; empty when they are comparable (same entry, definition, method
+    class and specimen class, Sec. 18.4). One rule for every quantity; no quantity-specific branch."""
+    a, b = axes_of(key_a, rec_a), axes_of(key_b, rec_b)
+    return [f"{x} ({a[x]} vs {b[x]})" for x in AXES if a[x] != b[x]]
+
+
 def record(T, f, alternatives=(), ent=None):
     """The value record of a fact; caveats: those that apply to it as seen on ent (default: the entity it belongs to)."""
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
     return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text_of(f), kind=kind(f), definition=definition_of(f),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
+                method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"]) if f["uncertainty"] else None),
                 stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives],
                 caveats=cav_list(caveats_for(T, f, ent or T.ent_of(f["fact_id"]))))
@@ -956,6 +982,7 @@ def derived_record(T, ent, did, d):
     text = " or ".join(f"{g(v, 3)} {d['unit']} if {lab}" for lab, v in rs) if rs else f"{g(d['value'], 3)} {d['unit']}".strip()
     return dict(value=d["value"], low=None, high=None, censor="", unit=d["unit"], text=text, kind="computed here", definition=L.DERIVED[did]["formula"],
                 source="", paper=T.key, fact="", method="calculation", mode="", uncertainty=None, stat="", statement="",
+                method_class=L.METHOD_CLASS.get("calculation", "calculation"), specimen_class=specimen_class_of(T, ent),
                 inputs=[dict(name=n, fact=fid, value=g(v, 3), unit=u, source=src) for n, fid, v, u, src in d["inputs"]],
                 assumed=d["assumed"], readings=[dict(label=lab, value=g(v, 3)) for lab, v in rs], alternatives=[],
                 caveats=cav_list([c for _, fid, *_ in d["inputs"] if fid in T.byid for c in caveats_for(T, T.byid[fid], ent)]))   # its inputs' caveats
@@ -1281,11 +1308,11 @@ def compare(ids, result=None, x=None):
     results = []
     for k in rkeys:
         cells = {i: res[i][k]["record"] if k in res[i] else None for i in ids}
-        same_q = [r for r in cells.values() if r]
-        defs = {r["definition"] for r in same_q if r["kind"] != "computed here"}      # a derived value's definition is its formula
-        note = f"different definitions: {'; '.join(sorted(d or 'the default' for d in defs))}" if len(defs) > 1 else ""
+        have = [(i, cells[i]) for i in ids if cells[i]]
+        axes = sorted({x for n_, (i, r) in enumerate(have) for j, s in have[n_ + 1:] for x in incomparable(k, r, k, s)})
+        note = f"not comparable: {'; '.join(axes)}" if axes else ""                   # Sec. 18.4, one rule for every quantity
         rel = None
-        if len(ids) == 2 and all(cells[i] and cells[i]["value"] is not None for i in ids):
+        if not axes and len(ids) == 2 and all(cells[i] and cells[i]["value"] is not None for i in ids):
             a, b = (cells[i] for i in ids)
             try:
                 va = L.convert(a["value"], a["unit"], b["unit"]) if a["unit"] != b["unit"] else a["value"]
@@ -1301,7 +1328,7 @@ def compare(ids, result=None, x=None):
         if len(rs) > 1:
             for r in rs:
                 others = [o for o in rs if o is not r]
-                r["note"] = r["note"] or f"not set beside {', '.join(o['name'] for o in others)}: a different definition"
+                r["note"] = r["note"] or f"not comparable with {', '.join(o['name'] for o in others)}: definition"
     xs = [d["key"] for d in differ if all(d["values"][i] and num(re.sub(r"[^\d.eE+-].*$", "", d["values"][i])) is not None for i in ids)]
     xkey = x or (xs[0] if xs else None)
     plot = None
@@ -1587,8 +1614,23 @@ def values(result, paper=None, where=None):
                                structure=sorted({crs[e]["structure"]["record"]["text"] for e in ents if "structure" in crs[e]}),
                                reactor=sorted({crs[e]["reactor_type"]["record"]["text"] for e in ents if "reactor_type" in crs[e]}),
                                process=sorted({recipe_of(T, e) for e in ents} - {""}),
-                               measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows})))
+                               measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows}),
+                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in out_rows}))          # one entry per result key (Sec. 18.4)
     return groups
+
+
+def group_verdicts(groups):
+    """Between the groups of values(): for every result key two groups share, the axes on which their values differ (Sec. 18.4),
+    as [(key, group number a, group number b, [axis texts])]; empty axes = comparable."""
+    out = []
+    for n, ga in enumerate(groups, 1):
+        for m, gb in enumerate(groups[n:], n + 1):
+            for k in ga["axes"]:
+                kb = k if k in gb["axes"] else next((x for x in gb["axes"] if x.split("{")[0] == k.split("{")[0]), None)
+                if kb:
+                    a, b = ga["axes"][k], gb["axes"][kb]
+                    out.append((k, n, m, [f"{x} ({a[x]} vs {b[x]})" for x in AXES if a[x] != b[x]]))
+    return out
 
 
 # ---------------------------------------------------------------------------------------------------------------- uncertainty words (P48)

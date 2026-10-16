@@ -237,10 +237,10 @@ f("s10.p1", "setting", "whole-pattern fits were repeated until the residual beca
   quantity="other", label_as_printed="residual", value="15", unit="%", data_kind="fit", method="xrd")
 f("s10.p1", "observation", "corundum grain size 90-100 nm, agreeing with the BET-based d_NP = 100 nm",
   quantity="crystallite_size", qualifiers="species=al2o3", label_as_printed="corundum grain size", value_min="90", value_max="100", unit="nm", data_kind="fit", method="xrd")
-f("s10.p2;tabII.cap;s14.p9", "setting", "for resistivity, top and bottom faces got blanket e-beam evaporated films at 10^-6 Torr, nominally 20 nm Ti and 200 nm Au", method="electrical")
-f("s10.p2", "setting", "prisms of about 6 × 3 × 1.6 mm were cut from the NPCs after metallization to avoid edge effects", method="electrical")
-f("s10.p2;s13.p4;tabII.cap;s14.p9", "setting", "two-point resistivity through the sample thickness on a probe station, one probe on top and the other via the conductive stage", method="electrical")
-f("s10.p2;tabII.cap;s14.p9", "setting", "resistance taken at 10 V and turned into volume resistivity with the metal film areas, which flaking during cutting reduced somewhat", method="electrical")
+f("s10.p2;tabII.cap;s14.p9", "setting", "for resistivity, top and bottom faces got blanket e-beam evaporated films at 10^-6 Torr, nominally 20 nm Ti and 200 nm Au", method="two_point_through_thickness")
+f("s10.p2", "setting", "prisms of about 6 × 3 × 1.6 mm were cut from the NPCs after metallization to avoid edge effects", method="two_point_through_thickness")
+f("s10.p2;s13.p4;tabII.cap;s14.p9", "setting", "two-point resistivity through the sample thickness on a probe station, one probe on top and the other via the conductive stage", method="two_point_through_thickness")
+f("s10.p2;tabII.cap;s14.p9", "setting", "resistance taken at 10 V and turned into volume resistivity with the metal film areas, which flaking during cutting reduced somewhat", method="two_point_through_thickness")
 f("s10.p3", "setting", "SEM samples were sectioned, epoxy-mounted, ground, polished and given a conductive coating", method="sem", mentions="Note S2")
 f("s10.p3", "setting", "SEM in a Quattro S ESEM (ThermoFisher) with an EDAX detector for EDS; collection and analysis in APEX software", method="sem_eds")
 f("s10.p3", "setting", "EDS maps and line scans of the cross sections at 30 kV, 63 nA probe current, 50 µm aperture, working distance 10 mm, amp time 0.96 µS", method="sem_eds")
@@ -448,9 +448,9 @@ f("s13.p3", "claim", "the light gray top face of the 120/160 °C sample is still
 for r, lab, v, txt, ev in (("1", "120", "1.3e7", "1.3 ± 0.2 × 10^7 (text: ~1 × 10^7)", ""), ("2", "160", "8.3e3", "8.3 ± 1.0 × 10^3 (text: ~8 × 10^3)", ""),
                            ("3", "120/160", "1.2e7", "1.2 ± 0.1 × 10^7 (text: ~1 × 10^7)", "")):
     f(f"s13.p4;tabII.r{r}c5;tabII.r0c5;tabII.r{r}c0;tabII.cap;s14.p9", "observation", f"through-thickness resistivity ρ = {txt} Ω-cm for the {lab} °C NPC",
-      quantity="resistivity", value=v, unit="Ω-cm", data_kind="measured", method="electrical", mentions=f"{lab};{lab} °C")
+      quantity="resistivity", value=v, unit="Ω-cm", data_kind="measured", method="two_point_through_thickness", mentions=f"{lab};{lab} °C")
 f("s13.p4", "claim", "the low resistivity of the 160 °C sample fits metallic Zn in it; the gap of more than three orders of magnitude to the other two is significant", mentions="160 °C")
-f("s13.p4", "setting", "only one NPC per ALD condition was measured for resistivity", method="electrical")
+f("s13.p4", "setting", "only one NPC per ALD condition was measured for resistivity", method="two_point_through_thickness")
 f("s13.p4", "claim", "the near-identical 120 and 120/160 °C resistivities need caution, as resistivity likely varies with cracking, adventitious carbon and other sample details", mentions="120;120/160 °C")
 f("s13.p4", "cited", "ALD ZnO films used for electrical measurements are typically of order 100 nm thick",
   quantity="film_thickness", value="100", unit="nm", data_kind="literature", method="cited", mentions="ref. 13;ref. 14")
@@ -459,7 +459,7 @@ f("s13.p4", "cited", "such ALD ZnO films typically have resistivity of order 10^
 f("s13.p4;s15.p2", "claim", "the NPC resistivity is high because the ZnO is very thin with crystallites smaller than the electron mean free path, likely largely amorphous, tortuous and of low volume fraction",
   mentions="ref. 36;ref. 37;ref. 38")
 f("s13.p4", "observation", "vertical current of ~300 nA or more at 10 V, about six orders of magnitude above the noise floor",
-  quantity="other", label_as_printed="vertical current", value="300", censor=">", unit="nA", data_kind="measured", method="electrical")
+  quantity="other", label_as_printed="vertical current", value="300", censor=">", unit="nA", data_kind="measured", method="two_point_through_thickness")
 f("s13.p4;s15.p2", "claim", "the measurable vertical current shows the ALD coatings form percolating networks across the NPC thickness, allowing conduction from top to bottom face")
 
 # ---------------------------------------------------------------- III C. EDS
@@ -1080,4 +1080,5 @@ C.sized(K, {
     "s15.p4#2": ["s9.p9#5", "s9.p9#6"],
     "s15.p8#1": ["s12.p1#10", "s12.p1#12"],
 })
+C.specimen_classes(K, "porous_composite")                                                 # P53: the class of specimen every value was measured on
 write(K, PID)

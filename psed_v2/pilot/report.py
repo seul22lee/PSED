@@ -59,7 +59,7 @@ def lite(rec):
                alternatives=[a["text"] + (f" ({a['kind']})" if a["kind"] in L.KIND_WORDS else "") for a in rec.get("alternatives", [])],
                formula=rec["definition"] if rec["kind"] == "computed here" else "", assumed=rec.get("assumed", []),
                inputs=[f"{i['name']} {i['value']} {i['unit']}".strip() for i in rec.get("inputs", [])], readings=rec.get("readings", []),
-               caveats=rec.get("caveats", []))
+               caveats=rec.get("caveats", []), method_class=rec.get("method_class", ""), specimen_class=rec.get("specimen_class", ""))
     if rec.get("curve") and rec["curve"].get("points"):
         out["curve"] = dict(x=rec["curve"]["x"], points=rec["curve"]["points"])
     if rec.get("settings"):
@@ -310,9 +310,12 @@ function selPanel(){const ids=[...S.checked].filter(i=>D.details[i]);if(!ids.len
  const plot=plotSvg(pts,curves,(xs.find(x=>x.k===S.x)?.name||"")+(xu?` (${xu})`:""),(rcols.length===1?rcols[0][1].name:(S.result?(D.filters.results.find(r=>r.q===S.result)||{}).name:"value"))+(yu?` (${yu})`:""));
  const colHead=([k,o])=>{const ws=[...new Set(Object.values(o.v).map(word))];const defs=[...new Set(Object.values(o.v).map(r=>r.definition||r.formula||""))].filter(x=>!Object.values(o.v).some(r=>r.formula===x));return `${esc(o.name)}${ws.length===1&&ws[0]?` <span class="mut">${ws[0]}</span>`:""}${defs.length===1&&defs[0]?` <span class="mut">${esc(defs[0])}</span>`:""}`};
  const sameDef=([k,o])=>new Set(Object.values(o.v).map(r=>r.definition||r.formula||"")).size<=1;
+ const axesOf=r=>({"definition":r.definition||r.formula||"the default","method class":r.method_class||r.method||"none","specimen class":r.specimen_class||"none"});
+ const mixed=([k,o])=>{const rs=Object.values(o.v).map(axesOf);return Object.keys(rs[0]||{}).filter(a=>new Set(rs.map(x=>x[a])).size>1)};   // the axes a column mixes (Sec. 18.4)
  const byQ={};rcols.forEach(([k])=>{const q=k.split("{")[0];byQ[q]=(byQ[q]||0)+1});
  const cell=(o,i,col)=>{const r=o.v[i];if(!r)return"";const ws=new Set(Object.values(o.v).map(word));const ok=sameDef(col);
-  return `${r.curve&&!r.text?"curve":esc(r.text)}${ws.size>1&&word(r)?` <span class="mut">${word(r)}</span>`:""}${!ok?` <span class="mut">different definition: ${esc(r.definition||r.formula||"the default")}</span>`:""}`};
+  const mx=mixed(col);const ax=axesOf(r);
+  return `${r.curve&&!r.text?"curve":esc(r.text)}${ws.size>1&&word(r)?` <span class="mut">${word(r)}</span>`:""}${mx.length?` <span class="mut">not comparable: ${esc(mx.map(a=>`${a} (${ax[a]})`).join("; "))}</span>`:""}`};
  const table=`<div class="line mut">${shared.length?"shared: "+lim(shared.map(([k,o])=>`<span class="chip">${esc(o.name)} ${esc(o.v[ids[0]].text)}</span>`),"sh",6):""}</div>
  <div style="overflow-x:auto"><table><thead><tr><th></th>${diff.map(([k,o])=>`<th>${esc(o.name)}</th>`).join("")}${rcols.map(c=>`<th>${colHead(c)}</th>`).join("")}</tr></thead><tbody>${ids.map(i=>`<tr><th><span class="src" onclick="openDetail('${i}')">${esc(ROW[i]?ROW[i].name:D.details[i].name)}</span> <span class="mut">${esc(PN(D.details[i].paper))}</span></th>${diff.map(([k,o])=>`<td>${esc(o.v[i]?o.v[i].text:"")}</td>`).join("")}${rcols.map(c=>`<td>${cell(c[1],i,c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
  const cnt={};ids.forEach(i=>[...(D.details[i].claims||[])].forEach(c=>cnt[c]=(cnt[c]||0)+1));const linked=Object.entries(cnt).filter(([c,n])=>n>=2).map(([c])=>claimLine(c));

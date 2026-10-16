@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
-                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, LABELS as _LABELS, NAMES as _NAMES)
+                   RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, LABELS as _LABELS, NAMES as _NAMES)
 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
@@ -70,7 +70,8 @@ IDENTITY_KINDS = {"same", "different", "not_stated"}
 
 # the mode a measurement method has unless a paper says otherwise (ellipsometry and generic measurements are set per activity)
 METHOD_MODE = {"process_monitor": "in_situ", "oes": "in_situ", "calibration": "in_situ", "xrd": "ex_situ", "xps": "ex_situ", "raman": "ex_situ",
-               "sem": "ex_situ", "sem_eds": "ex_situ", "tem": "ex_situ", "afm": "ex_situ", "electrical": "ex_situ", "rbs": "ex_situ",
+               "sem": "ex_situ", "sem_eds": "ex_situ", "tem": "ex_situ", "afm": "ex_situ", "four_point_probe": "ex_situ", "two_point_through_thickness": "ex_situ",
+               "hall": "ex_situ", "transistor_iv": "ex_situ", "rbs": "ex_situ",
                "reflectometry": "ex_situ", "gravimetry": "ex_situ", "weighing_before": "ex_situ", "photograph": "ex_situ",
                "optical_microscopy": "ex_situ", "metrology": "ex_situ"}
 # the definition a quantity has when none is named: the screen names a definition only when it differs from this
