@@ -591,6 +591,8 @@ def _run(name, args):
                 return [], "error: search: words has no letters or numbers"
             hits, items, seen = Q.search(args["words"], args.get("paper")), [], {}
             for h in hits:            # values and settings: one line per paper and quantity; other records: a line shown once with its count
+                if h["type"] == "concept":
+                    items.append([x for x in wrap(h["id"], f"concept · {h['line']}")]); continue
                 if h["type"] in ("value", "setting"):
                     T = Q.TREES[h["paper"]]; f = T.byid[h["id"]]
                     key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
@@ -702,7 +704,7 @@ def open_target(i):
     a fact opens the source panel of its first element; <paper>:tabN opens tabN.cap; <paper>:tabuK its first cell)."""
     k, _, rest = i.partition(":")
     if k not in Q.TREES:
-        return dict(type="none")
+        return dict(type="none")                                                # also a concept id (an entry, not a record of a paper)
     T = Q.TREES[k]
     if i in T.byid:
         n = T.byid[i]

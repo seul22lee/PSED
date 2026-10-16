@@ -544,6 +544,26 @@ def check_claims():
     return []
 
 
+def check_search():
+    """P64: the tiered ranking on the stored probes (search_probes.csv): the first hit's type (and id, when given), and a value or claim
+    before any record of the types named in value_before."""
+    import query as Q
+    err = []
+    for p in rd(HERE / "search_probes.csv"):
+        hits = Q.search(p["words"])
+        if not hits:
+            err.append(f"search {p['words']!r}: no hits (P64)"); continue
+        if hits[0]["type"] != p["first_type"] or (p["first_id"] and hits[0]["id"] != p["first_id"]):
+            err.append(f"search {p['words']!r}: first hit {hits[0]['type']} {hits[0]['id']}, expected {p['first_type']} {p['first_id']} (P64)")
+        first_val = next((n for n, h in enumerate(hits) if h["type"] in ("value", "claim")), None)
+        for t in p["value_before"].split(";"):
+            n = next((n for n, h in enumerate(hits) if h["type"] == t), None)
+            if first_val is not None and n is not None and n < first_val:
+                err.append(f"search {p['words']!r}: a {t} ranks above the first value or claim (P64)")
+    print(f"== search (P64): {len(rd(HERE / 'search_probes.csv'))} probes, tiers 1 concept / 2 claims, values, sets / 3 the rest")
+    return err
+
+
 def check_records():
     """P62: no value record with empty text reaches a value listing: every result record of every experiment and every record a
     values() group returns has printable text (a curve reads 'curve, N points'); the curve records are counted."""
@@ -711,6 +731,11 @@ if __name__ == "__main__":
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_search()
+    print(f"== search (P64): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

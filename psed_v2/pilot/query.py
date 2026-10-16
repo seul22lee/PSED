@@ -841,7 +841,7 @@ def name_of(key, f=None):
         inner = ";".join(sorted(f"{k}={v}" for k, v in qd.items() if k not in ("stat", "between", "n")))
         return f"{STAT_WORDS.get(qd['stat'], qd['stat'])} of {name_of(q + ('{' + inner + '}' if inner else ''), f)}"
     base = L.NAMES.get(q, q.replace("_", " "))
-    vals = [L.species_text(p.split("=", 1)[1]) if p.split("=")[0] in ("species", "gas", "surface") else p.split("=")[1].replace("_", " ")
+    vals = [L.species_text(p.split("=", 1)[1]) if p.split("=")[0] in ("species", "gas", "surface", "phase") else p.split("=")[1].replace("_", " ")
             for p in qs.split(";") if p and p.split("=")[0] not in DEF_KEYS | {"x"}]
     return f"{base} ({', '.join(vals)})" if vals else base
 
@@ -1435,8 +1435,17 @@ def record_type(T, f):
     return "note"
 
 
-SEARCH_TYPES = ["experiment", "model run", "input", "comparison set", "claim", "definition", "caveat", "uncertainty", "value", "setting",
+SEARCH_TYPES = ["concept", "experiment", "model run", "input", "comparison set", "claim", "definition", "caveat", "uncertainty", "value", "setting",
                 "method note", "process note", "cited work", "cited value", "note"]
+# P64: tiered ranking. Tier 1 a concept (an entry, species or mechanism matched by name or alias); tier 2 claims, values, comparison
+# sets and the experiments; tier 3 settings, method and process notes, definitions, captions and the rest; an attribute quantity's
+# records are demoted within their tier. Lexical (BM25) order survives within a tier.
+TIER = {"concept": 1, "claim": 2, "value": 2, "comparison set": 2, "experiment": 2, "model run": 2, "input": 2, "cited value": 2, "uncertainty": 2}
+
+
+def tier_of(r):
+    t = TIER.get(r["type"], 3)
+    return t + (0.5 if r.get("quantity") in L.ATTRIBUTES else 0)
 _SEARCH = {}
 
 
@@ -1445,6 +1454,14 @@ def search_records():
     if "recs" in _SEARCH:
         return _SEARCH["recs"]
     out = []
+    import concept as CN
+    for i, e in L.ENTRIES.items():                                             # the concepts themselves (P64 tier 1)
+        if e.get("replaced_by"):
+            continue
+        name = e.get("name") or i.replace("_", " ")
+        line = f"{name} ({i}): {CN.short_definition(e['definition'], 120)}"
+        words = " ".join([i, e.get("label", ""), name, " ".join(e.get("aliases", [])), e.get("family", "")])   # names and aliases only: tier 1 is a name match
+        out.append(dict(id=i, paper="", type="concept", line=line, tokens=collections.Counter(tokens(words)), quantity=i))
     for k, T in TREES.items():
         for f in T.rows:
             if f["type"] == "paper" or not (f["statement"] or f["type"] == "entity"):
@@ -1464,7 +1481,7 @@ def search_records():
             line = " — ".join(x for x in (head, f["statement"]) if x)
             words = " ".join([line, f["label_as_printed"], L.NAMES.get(f["quantity"], f["quantity"]), f["quantity"], f["qualifiers"], f["method"],
                               f.get("mentions", ""), f["cause"], f["effect"]])
-            out.append(dict(id=f["fact_id"], paper=k, type=typ, line=line, tokens=collections.Counter(tokens(words))))
+            out.append(dict(id=f["fact_id"], paper=k, type=typ, line=line, tokens=collections.Counter(tokens(words)), quantity=f["quantity"]))
     _SEARCH["recs"] = out
     n = len(out)
     df = collections.Counter(t for r in out for t in r["tokens"])
@@ -1488,12 +1505,12 @@ def search(words, paper=None):
     q = list(dict.fromkeys(tokens(words)))
     scored = []
     for n, r in enumerate(recs):
-        if paper and r["paper"] != paper:
+        if paper and r["paper"] and r["paper"] != paper:
             continue
         s = sum(search_weight(r, t) for t in q)
         if s > 0:
-            scored.append((-s, n, r))
-    return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3)) for s, n, r in sorted(scored)]
+            scored.append((tier_of(r), -s, n, r))
+    return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3), tier=t) for t, s, n, r in sorted(scored)]
 
 
 # ---------------------------------------------------------------------------------------------------------------- vocabulary (P41)

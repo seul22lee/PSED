@@ -179,7 +179,7 @@ def search_index():
     for n, r in enumerate(recs):
         for t in r["tokens"]:
             post[t].append([n, round(Q.search_weight(r, t), 3)])
-    return dict(recs=[[r["id"], r["type"], r["paper"], r["line"], TL.open_target(r["id"])] for r in recs], post=post)
+    return dict(recs=[[r["id"], r["type"], r["paper"], r["line"], TL.open_target(r["id"]), Q.tier_of(r)] for r in recs], post=post)
 
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -248,7 +248,7 @@ function rowLine(r){const res=S.result?(r.results[S.result]||[]).map(x=>`<span c
 const fold=w=>/^\d/.test(w)||w.length<=3?w:w.endsWith("ies")?w.slice(0,-3)+"y":/(sses|xes|zes|ches|shes)$/.test(w)?w.slice(0,-2):(w.endsWith("s")&&!/(ss|us|is)$/.test(w))?w.slice(0,-1):w;
 const stoks=t=>[...String(t||"").toLowerCase().replace(/[_\-‐–—]/g," ").matchAll(/\d+(?:\.\d+)?|°[cfk]?|\p{L}[\p{L}\p{N}]*|[%Ω]/gu)].map(m=>fold(m[0]));
 function searchHits(q){const sc=new Map();for(const t of new Set(stoks(q)))for(const [n,w] of (D.search.post[t]||[]))sc.set(n,(sc.get(n)||0)+w);
- return [...sc.entries()].filter(([n])=>!S.paper||D.search.recs[n][2]===S.paper).sort((a,b)=>b[1]-a[1]||a[0]-b[0]).map(([n])=>D.search.recs[n])}
+ return [...sc.entries()].filter(([n])=>!S.paper||!D.search.recs[n][2]||D.search.recs[n][2]===S.paper).sort((a,b)=>D.search.recs[a[0]][5]-D.search.recs[b[0]][5]||b[1]-a[1]||a[0]-b[0]).map(([n])=>D.search.recs[n])}   // tier, then weight (P64)
 function openRec(n){const o=D.search.recs[n][4];if(!o||o.type==="none")return;if(o.type==="source"){if(D.sources[o.id])openSource(o.id,o.fact||"")}else if(o.type==="comparison")openComp(o.id);else if(D.details[o.id])openDetail(o.id)}
 function searchList(){const hs=searchHits(S.q),seen=new Set(),rows=[];for(const r of hs){const k=r[1]+"|"+r[3];if(seen.has(k))continue;seen.add(k);rows.push(r)}
  const idx=new Map(D.search.recs.map((r,n)=>[r,n]));
