@@ -23,6 +23,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
 sys.path.insert(0, str(HERE))
+import concept as CN  # noqa: E402
 import elements as E  # noqa: E402
 import providers as P  # noqa: E402
 import query as Q  # noqa: E402
@@ -96,7 +97,12 @@ def pieces():
 
 
 def system_prompt(arm):
-    s = SHARED.format(papers=paper_lines()) + "\n\n" + ARM_PROMPT[arm]
+    """SHARED with the paper lines; for the Knowledge base arm also the L0 map generated from the data and the descend protocol (P70;
+    concept.l0_map, concept.DESCEND); then the arm's own text (and, for Paper text, the pieces)."""
+    s = SHARED.format(papers=paper_lines())
+    if arm == "kb":
+        s += "\n\n" + CN.l0_map() + "\n\n" + CN.DESCEND
+    s += "\n\n" + ARM_PROMPT[arm]
     if arm == "text":
         parts, cur = [], None
         for pid_, text in pieces():

@@ -693,6 +693,27 @@ def check_kinds():
     return err
 
 
+def check_map():
+    """P70: the L0 map of the knowledge base is generated from the data and holds counts and names only: every number is a count
+    (concept.map_numbers_are_counts), it stays within concept.MAP_BUDGET tokens, and no claim's statement (a paper's conclusion)
+    appears in it."""
+    import concept as CN, query as Q
+    err = []
+    m = CN.l0_map()
+    bad = CN.map_numbers_are_counts(m)
+    if bad:
+        err.append(f"map: numbers that are not counts: {bad} (P70)")
+    if len(m) / 4 > CN.MAP_BUDGET:
+        err.append(f"map: {len(m) / 4:.0f} tokens, over {CN.MAP_BUDGET} (P70)")
+    low = m.lower()
+    for k, T in Q.TREES.items():
+        for f in T.rows:
+            if f["type"] == "claim" and f["statement"] and " ".join(f["statement"].lower().split()[:6]) in low:
+                err.append(f"map: carries the claim {f['fact_id']} (P70)")
+    print(f"== map (P70): {len(m) / 4:.0f} tokens of at most {CN.MAP_BUDGET}, {m.count(chr(10)) + 1} lines, every number a count")
+    return err
+
+
 def check_caveats():
     """P56: a caveat's text is stored once in the dataset (no two caveat facts with one statement); no caveat is attached to a fact
     that already inherits it through its inputs; the counts: unique caveats, direct attachments (links and node targets), the
@@ -810,6 +831,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_kinds()
     print(f"== kinds (P57, P68): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_map()
+    print(f"== map (P70): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

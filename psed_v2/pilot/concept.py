@@ -4,7 +4,7 @@ rules, per-paper counts of a concept from the data, the cross-paper footer, and 
 hand-kept: every name, alias, family and count comes from vocab.py (the ontology) and the facts.
 
     python3 psed_v2/pilot/concept.py "penetration"      # the concept lines
-    python3 psed_v2/pilot/concept.py --map              # the L0 map
+    python3 psed_v2/pilot/concept.py --map              # the L0 map and the descend protocol, with the map's token count
 """
 import collections, re, sys
 from pathlib import Path
@@ -221,10 +221,17 @@ def per_paper(ids):
 
 
 # ---------------------------------------------------------------------------------------------------------------- the L0 map (P70)
+MAP_BUDGET = 800                    # tokens (chars/4) the map may take in the prompt
+DESCEND = ("How to use the knowledge base: resolve the question's words with concept (what exists, where, under which id, how many); read "
+           "grouped evidence with values (one row per specimen, comparison sets separated); open chosen ids with detail (up to 8 at once); "
+           "source gives the paper's own words behind an id. Prefer one concept call over repeated searches; a call identical to an earlier "
+           "one is not answered twice; the last line of values and search says where else the concept lives or that a paper does not study it.")
+
+
 def l0_map():
-    """The map of the knowledge base, generated from the data: the hierarchy's top nodes and families with concept counts, one
-    line per paper (id · material · process · structure class · headline outcome concepts), and the descend protocol. Counts and
-    names only; the generator keeps every number a count (checked by map_numbers_are_counts)."""
+    """The map of the knowledge base, generated from the data: the hierarchy's top nodes and families with concept counts, and one
+    line per paper (id · material · process · structure class · experiment and claim counts · headline outcome concepts). Counts and
+    names only, never a conclusion or a value; the generator keeps every number a count (checked by map_numbers_are_counts)."""
     kids = collections.defaultdict(list)
     for n in L.HIERARCHY:
         kids[n["parent"]].append(n["id"])
@@ -253,19 +260,15 @@ def l0_map():
         n_exp = len(Q.experiments(T)); n_claims = sum(1 for f in T.rows if f["type"] == "claim")
         lines.append(f"{k}: material {', '.join(sorted(mats))} · process {', '.join(sorted(procs))} · structure {', '.join(sorted(structs))} · "
                      f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} ({n} values)" for n, q in outs))
-    lines.append("How to use it: resolve the question's words with concept (what exists, where, how many); read grouped evidence with values "
-                 "(one row per specimen, comparison sets separated); open chosen ids with detail (up to 8 at once); source gives the paper's own "
-                 "words. Prefer one concept call over repeated searches; a repeated call is not answered twice; the last line of values and "
-                 "search says where else the concept lives or that a paper does not study it.")
     return "\n".join(lines)
 
 
 def map_numbers_are_counts(text=None):
     """P70 check: every number in the map is a count the generator produced (an integer in a 'N <noun>' or '<node> N' position);
-    returns the numbers that are not."""
+    a digit inside a species formula (H2O, Mo(NtBu)2(NMe2)2) is not a number. Returns the numbers that are not counts."""
     text = text or l0_map()
     bad = []
-    for m in re.finditer(r"(?<![\w.])\d+(?:\.\d+)?(?![\w.])", text):
+    for m in re.finditer(r"(?<![\w.)])\d+(?:\.\d+)?(?![\w.(])", text):
         n = m.group(0)
         after = text[m.end():m.end() + 14]; before = text[max(0, m.start() - 12):m.start()]
         ok = "." not in n and (re.match(r"\s*(values|experiments|claims|members|concepts|mechanisms|methods|species|\)|;|,|\.)", after) or re.search(r"[a-z_]+ $", before))
@@ -276,7 +279,7 @@ def map_numbers_are_counts(text=None):
 
 if __name__ == "__main__":
     if "--map" in sys.argv:
-        m = l0_map(); print(m); print(f"\n[{round(len(m) / 4)} tokens; numbers that are not counts: {map_numbers_are_counts(m) or 'none'}]")
+        m = l0_map(); print(m); print(DESCEND); print(f"\n[map {round(len(m) / 4)} tokens of at most {MAP_BUDGET}; numbers that are not counts: {map_numbers_are_counts(m) or 'none'}; protocol {round(len(DESCEND) / 4)} tokens]")
     else:
         for i, line in concept_lines(" ".join(a for a in sys.argv[1:])):
             print(f"[{i}] {line}")
