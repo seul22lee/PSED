@@ -118,6 +118,21 @@ questions are a regression test only.
 - P57. One kind vocabulary (measured, stated, read_from_figure, computed_by_authors, computed_by_kb, assumed, model_input, cited) stored at write time; every printed provenance word comes from the ontology's phrase table, never "computed here".
 - P58. A quantity the ontology bans as a concept but the data stores is an attribute entry (`attribute: true`, outside the concept vocabulary) or a promoted entry with its deviation (checked).
 - P59. `metrics.py` prints, from the data, coverage per paper with the sentence-only gaps, the compactness of the unique content against the source text, and the absorption counts of the pilot ids.
+- P60. Every ± and spread has a basis from the Sec. 19 list (instrument, within_run, run_to_run, tolerance, fit, literature, propagated), set at write time, printed with its phrase, and 'different basis' flagged when two sets differ.
+- P61. The ontology report's summary and its check 5 count extension concepts the same way (attributes and superseded entries excluded).
+- P62. No value record reaches an output without text: a curve reads 'curve, N points'.
+- P63. `concept(words)` resolves words by the ontology's own matching rules (names, aliases, families, species, mechanisms, categorical values; an ambiguous word lists its candidates) and counts a concept's values, claims and settings per paper from the data; five tools (P47 amended).
+- P64. Search is tiered: concepts first (they are records), then claims, values, sets and experiments, then settings, method notes and definitions; BM25 within a tier; attribute quantities demoted.
+- P65. `values` returns comparison-set summaries (one header per set, one row per specimen with the concept's qualifier variants as columns, kind marks, ± with its basis, fact ids), 'not comparable with set N: <axes>' dividers, a paper's common and usual conditions once, and gives way in steps over the budget (model-run sets, caveat texts, specimen sets largest first).
+- P66. `detail(ids=[...])` opens one to eight ids under one output budget, de-duplicated; nine are rejected by validation.
+- P67. Every `values` and `search` output ends with the cross-paper line derived from the concept's family: 'also in <paper>: N values · M claims' or 'not studied in: <papers>'.
+- P68. One renderer (tools.py) prints every kind, basis and caveat for all five tools from the ontology's closed tables; a kind outside the phrase table is an error; a caveat's text appears once per output; `check.py` scans a 57-call probe battery generated from the data for any wording outside the tables.
+- P69. A call whose normalized arguments (case, key order, whitespace) equal an earlier call's of the same question is answered with one line, 'identical to call N'; every record carries its process metrics (calls, refused, duplicates, tool output tokens, delivered ids, re-delivered share, cited ids, utilization) next to the number check.
+- P70. The Knowledge base prompt carries an L0 map generated from the data (concept groups and families with counts, one line per paper: material, process, structure class, experiment and claim counts, headline outcome concepts; at most 800 tokens, every number a count, checked) and the descend protocol (concept → values → detail → source).
+- P71. `dump.py` serializes the whole knowledge base once (the map, every activity, entity and cited work with settings and results, computed values with formulas, sets, claims, caveats once by id, one legend); the `dump` arm of `ask.py` puts it in the prompt with no tools; its token size is the compactness figure.
+- P72. A kind check beside the number check: the kind an answer's sentence states for each citation (matched against the phrase table and the prompt's kind words) against the record's kind; mismatches counted per answer; `ask.py --kind-check RUNS.jsonl` reruns it on stored answers.
+- P73. `prices.csv` holds miss, cache-hit and output prices for peak and off-peak (DeepSeek's 16:30–00:30 UTC window) and `ask.py` prices cache-read tokens at the hit rate by the record's time; the stored A10_v2 run recomputes to its billed figure.
+- P74. `run_metrics.py RUNS.jsonl` reports per question and total calls, executed, refused, duplicates, tool output tokens, re-delivered share, delivered and cited ids, utilization, words and cost, and rewrites the run's summary.csv with those columns; its definitions reproduce the A10_v2 reference numbers.
 
 ## Design principles
 - Why the representation stage (P49–P59) exists: evaluation runs with a cheap model showed four failure classes, and each fix is a
@@ -130,6 +145,19 @@ questions are a regression test only.
   difference is data and any output refuses the comparison with a reason (P52, P53). (4) Deictic provenance gets re-attributed:
   "computed here" reads as "computed in this paper" outside our context, so provenance words come from a closed phrase table (P57).
   The checks are as much the deliverable as the data: they must keep holding when papers 4..58 are added.
+- Why the access layer (P60–P74) exists: the A10_v2 evaluation (ten held-out questions, a cheap model, the ask-v2 tools) showed
+  that a correct knowledge base is not yet a usable one. (1) Nothing told the model what exists where: it searched by trial, fanned
+  out per paper and died inside one paper, so the prompt now carries a map generated from the data and a descend protocol
+  (concept → values → detail → source), every values and search output ends with the cross-paper line, and words resolve by the
+  ontology's own rules (P63, P67, P70). (2) Per-record pages burn the call cap: values returns comparison-set summaries, detail
+  opens up to eight ids, an identical call is answered once, and the budget gives way in steps rather than paging (P65, P66,
+  P69). (3) Provenance is copied by the model, so it must come from one place: one renderer prints kind, basis and caveat wording
+  from the closed tables, a probe battery generated from the data is scanned for anything else, and a kind check beside the number
+  check catches a fit credited to the authors (P60, P62, P68, P72). (4) What the process costs and uses must be measured, not
+  guessed: every record carries calls, refused, duplicates, tool output tokens, delivered and cited ids and their shares, the
+  cost prices cache hits and off-peak hours, a reporter reads any run, and a dump arm gives the whole knowledge base in the
+  prompt as the simplest baseline, its token size the compactness figure (P71, P73, P74). Nothing here ran a model: every
+  verification is a direct call or a recomputation on the stored A10_v2 records.
 - One tree per paper inside `<paper_id>.facts.csv`; the atom is a fact with a parent. Every screen is a projection computed from
   that file through `query.py`.
 - Two kinds of things. What a person must write down is a fact: what a paper measured, set, claimed or cited; what the user claims
@@ -332,10 +360,15 @@ python3 psed_v2/pilot/check.py                        # the one check: vocabular
 python3 psed_v2/pilot/sentence_only.py [--all]        # the sentence-only items and the allowed ones with their reasons
 python3 psed_v2/pilot/metrics.py                      # coverage with gaps, compactness, absorption (P59)
 python3 psed_v2/pilot/questions.py                    # the 26 questions through query.py -> questions.csv (status, answer, how)
+python3 psed_v2/pilot/concept.py "penetration depth"  # the concept lines (P63); --map prints the L0 map and the descend protocol with the token count (P70)
+python3 psed_v2/pilot/dump.py [--out FILE]            # the knowledge base serialized once: token size, line and record counts (P71)
+python3 psed_v2/pilot/run_metrics.py RUNS.jsonl       # process metrics per question and total; rewrites RUNS.summary.csv (P74)
+python3 psed_v2/pilot/ask.py --kind-check RUNS.jsonl  # the kind check on stored answers, no model call (P72)
+python3 psed_v2/pilot/ask.py --recost RUNS.jsonl      # a stored run's cost recomputed from its token counts with prices.csv (P73)
 python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen with its search box (about 15 s)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/serve.py      # the page with the Ask box on http://127.0.0.1:8787/ (keys in psed_v2/.env)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py "question"   # three answers -> pilot/runs/asks.jsonl
-~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions Q.txt --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb] [--max-cost 20]
+~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py --questions Q.txt --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb,dump] [--max-cost 20]
 python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py   # matrix, then the paper × case table
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
 python3 psed_v2/pilot/forest.py; python3 psed_v2/pilot/experiments.py   # older projections, still run
@@ -1482,12 +1515,13 @@ Notes from reading Cremers et al., Appl. Phys. Rev. 6, 021302 (2019). The factua
 #### 9. Growth type classification (Fig. 4)
 - The concept of telling diffusion-, reaction- and recombination-limited growth apart by profile shape (Sec. II F). Together with case N7 (parameter sensitivity), it gives a case that classifies "which type is this process" across the literature.
 
-## Resume state (2026-10-16)
+## Resume state (2026-10-16, end of directive 2)
 
-Directive 2 (the v2 pilot access layer, P60–P74) is in progress; one problem = one row in pilot/problems.csv = one commit.
-
-- Committed: P60 6bca84b, P61 1a330e1, P62 c728894, P63 7f66ba1, P64 1a323a6, P65 224af63, P66 34f0683, P67 1071261 (the P66 and P67 code shares tools.py with P65 and landed in 224af63; their commits carry the check probes, concept.py's wording and the rows). Generated ontology report: 4f5764c.
-- Next: P68 (one renderer; a check that scans a probe battery of tool outputs for provenance or basis wording outside the phrase and basis tables; a caveat cited twice appears once). Then P69–P74, CRITERIA.md Sec. 19 appended verbatim (own commit), HANDOFF's Why gist and the P60–P74 rules, the final report.
-- No stash. Working tree clean.
-- Checks: pilot/check.py all sections OK (search, records, uncertainty bases, kinds, caveats, comparability, bases, cases, user facts, derived, three papers); questions.py 26 answered; ontology/make_report.py 12 checks pass. Nothing red.
-- Note for P74: the directive's reference numbers for A10_v2 are re-delivery 30–56 % and utilization 7–18 % per question; the definitions tried so far in the chat gave 26–54 % and 11–32 %, so the definitions must be fixed to reproduce the reference before the reporter is written.
+Directive 2 (the v2 pilot access layer, P60–P74) is complete: one row per problem in pilot/problems.csv, one commit each, in
+order (P60 6bca84b … P67 1071261, P68 85c2a97, P69 3aa30be, P70 a38bbd5, P71 dc92e16, P72 a6b7ec1, P73 2c924a4, P74 6330acd). CRITERIA.md was not changed. No stash; working tree clean after the HANDOFF commit.
+- Checks: pilot/check.py all sections OK (the kinds section now scans a 57-call probe battery, the map section checks the L0
+  map); questions.py 26 answered; ontology/make_report.py 12 checks pass; the page rebuilds.
+- Not run: no model was called. The dump arm (72,201 tokens of serialization) and the P69/P70/P73 prompt and pricing changes
+  wait for the next evaluation run; the stored A10_v2 records were re-read for P72, P73 and P74.
+- Known from the kind check on A10_v2: question 6 credited the knowledge base's fits to the authors; question 5 called a
+  measured value 'read from figure'.
