@@ -1,4 +1,4 @@
-# Handoff (2026-10-16; tag ask-v2 plus the representation stage P49–P59: the ontology adopted as the pilot's one vocabulary, substances, dispositions, the composition family, comparability as data, structured claims, the sentence-only check, caveats by reference, one kind vocabulary, the attribute tier and the representation metrics)
+# Handoff (2026-10-17; tag ask-v3.1 = ask-v3 plus the call economy rows P75–P77; before that tag ask-v2 plus the representation stage P49–P59: the ontology adopted as the pilot's one vocabulary, substances, dispositions, the composition family, comparability as data, structured claims, the sentence-only check, caveats by reference, one kind vocabulary, the attribute tier and the representation metrics)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -133,6 +133,9 @@ questions are a regression test only.
 - P72. A kind check beside the number check: the kind an answer's sentence states for each citation (matched against the phrase table and the prompt's kind words) against the record's kind; mismatches counted per answer; `ask.py --kind-check RUNS.jsonl` reruns it on stored answers.
 - P73. `prices.csv` holds miss, cache-hit and output prices for peak and off-peak (DeepSeek's 16:30–00:30 UTC window) and `ask.py` prices cache-read tokens at the hit rate by the record's time; the stored A10_v2 run recomputes to its billed figure.
 - P74. `run_metrics.py RUNS.jsonl` reports per question and total calls, executed, refused, duplicates, tool output tokens, re-delivered share, delivered and cited ids, utilization, words and cost, and rewrites the run's summary.csv with those columns; its definitions reproduce the A10_v2 reference numbers.
+- P75. Only an executed call counts toward the 10-call cap; an error (unresolved name, bad argument, nothing matches) or an identical call costs nothing; two walls end a question's calls, 20 calls in all and 5 error calls, each refusal naming its wall; `run_metrics.py` adds errors, identical and wall_hit per question with the P74 columns unchanged.
+- P76. A settings entry (a condition entry under process_parameters, ald_reactor or test_structure: `lists.SETTINGS_ENTRIES`) renders in `values` as a settings table per paper, one row per distinct level or coupled-level combination with its fact ids and the count and set ids of the specimens using it, never a specimen list and never a k3 column; a derived sibling is named in one line with how to open it.
+- P77. `values(set=<id>)` (and `detail` part `table`) renders one table for a comparison set: rows the full member list (every grid cell, nested sets expanded) plus a 'set' row for the records it owns, columns every result quantity in ontology order, cells as `values` prints them; over the budget the last columns collapse into one line naming them, rows never drop.
 
 ## Design principles
 - Why the representation stage (P49–P59) exists: evaluation runs with a cheap model showed four failure classes, and each fix is a
@@ -285,7 +288,7 @@ Keep the answer under 400 words, tables included. Give the values that answer th
 - **Output budget** (P44): every call at most 2,000 tokens (chars/4), then 'more: offset=N'; lines at most 300 characters (a
   longer item continues on lines with the same id); a text once per page and a paper definition at its first use; a page that
   starts inside a group repeats its short header and its paper's shared conditions; computed-here lines only when asked for
-  (parts computed, the asked result, or nothing else exists), otherwise counted in one line; at most 10 tool calls per question.
+  (parts computed, the asked result, or nothing else exists), otherwise counted in one line; at most 10 executed tool calls per question (P75: an error or an identical call costs nothing; walls of 20 calls in all and 5 error calls).
   Probes over every result and setting name, 40 random words, one id of every record type in every paper and 14 invalid
   patterns: values max 1,954 tokens (median 1,032), search 944 (654), detail 1,689 (106), source 1,504 (411); none over budget; no effect line without its endpoints; no caveat missing where its target appears.
 - **Caveats and sizes** (P45, P46): 148 caveats (yim20 45, mat22 53, gre23 50) reach 1,783 values, settings, observations, cited
@@ -363,6 +366,7 @@ python3 psed_v2/pilot/questions.py                    # the 26 questions through
 python3 psed_v2/pilot/concept.py "penetration depth"  # the concept lines (P63); --map prints the L0 map and the descend protocol with the token count (P70)
 python3 psed_v2/pilot/dump.py [--out FILE]            # the knowledge base serialized once: token size, line and record counts (P71)
 python3 psed_v2/pilot/run_metrics.py RUNS.jsonl       # process metrics per question and total; rewrites RUNS.summary.csv (P74)
+                                                      #   with errors, identical and wall_hit (none/total/errors) per question (P75)
 python3 psed_v2/pilot/ask.py --kind-check RUNS.jsonl  # the kind check on stored answers, no model call (P72)
 python3 psed_v2/pilot/ask.py --recost RUNS.jsonl      # a stored run's cost recomputed from its token counts with prices.csv (P73)
 python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen with its search box (about 15 s)
@@ -1514,6 +1518,24 @@ Notes from reading Cremers et al., Appl. Phys. Rev. 6, 021302 (2019). The factua
 
 #### 9. Growth type classification (Fig. 4)
 - The concept of telling diffusion-, reaction- and recombination-limited growth apart by profile shape (Sec. II F). Together with case N7 (parameter sensitivity), it gives a case that classifies "which type is this process" across the literature.
+
+## Resume state (2026-10-17, end of directive 3, tag ask-v3.1)
+
+Directive 3 (call economy, bundle I: P75–P77) is complete on top of ask-v3: one row per problem in pilot/problems.csv, one
+commit each (P75 a4feb5c, P76 ac21c81, P77 ee0c74d), then this HANDOFF commit, tagged ask-v3.1. No stash; working tree clean.
+- Checks: pilot/check.py all sections OK with three new sections: calls (P75: three scripted questions through ask.answer_call, no
+  model), settings tables (P76: all 43 (entry, paper) pairs) and set tables (P77: all 21 sets); the kinds section now scans a
+  121-call probe battery (57 before + 43 settings + 21 sets) and prints its total tokens; questions.py 26 answered (questions.csv
+  unchanged); ontology/make_report.py 12 checks pass; concept.py --map prints the protocol with the new values(set=) line.
+- Probe battery tokens (chars/4 of the lines with their ids): the 57 original probes 48,278 before, 48,347 after (the footer now
+  counts settings in the other papers); the 64 added probes 29,445; the whole battery 77,792.
+- Not run: no model was called and no held-out question file was opened; the A10_v2 records live outside this directive's
+  reading scope, so the P74 reproduction was checked on pilot/runs/asks.jsonl (same numbers before and after P75) and by
+  construction (executed, refused and duplicates keep their definitions).
+- Open: `values` for a settings entry whose derived sibling has the entry's own id (cycle_time, exposure) can only point to
+  detail(parts computed) on the experiments, as the derived has no name of its own; the ald_process entries (material, reactants)
+  and the measurement settings (objective, probe resolution) are not settings entries by the P76 rule and still render as
+  specimen lists; a grid set's matrix layout by axes is a later row.
 
 ## Resume state (2026-10-16, end of directive 2)
 
