@@ -88,9 +88,12 @@ def build(onto, pmap):
         BASES=dict(voc.get("uncertainty_basis", {})),
         ENTRIES={e["id"]: dict(type=e["type"], role=e.get("role", ""), category=e.get("category", ""), definition=e.get("definition", ""), unit=str(e.get("unit", "")),
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
-                               name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""))
+                               name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
+                               dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""))
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
+        STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78
+        CATEGORICAL_VALUES={k: [str(x) for x in voc[k]] for k in voc.get("categorical_conditions", []) if isinstance(voc.get(k), list)},   # the categoricals with a fixed value list
         AMBIGUOUS_ALIASES={a: [str(x) for x in v] for a, v in voc.get("ambiguous_aliases", {}).items()},
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},

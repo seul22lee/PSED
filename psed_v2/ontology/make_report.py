@@ -17,7 +17,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 SCHEMA = HERE / "sources" / "experimental-ideal-schema.json"
-EXTENSION_CAP = 40          # Sec. 18.8: 40 for the three-paper pilot; the Sec. 11 gate is the control, the cap a tripwire
+EXTENSION_CAP = 45          # Sec. 18.8: 40 for the three-paper pilot, 45 with the P78 dimension slots (Sec. 18.11); the Sec. 11 gate is the control, the cap a tripwire
 ROLES = ["condition", "coordinate", "output", "model_parameter"]
 CATEGORIZED = ("quantity", "categorical", "model")
 SPECIES_KINDS = ("molecule", "material", "atom")
@@ -226,6 +226,20 @@ def run_checks(onto: dict, unmapped_rows=()) -> list[tuple[str, bool, str]]:
     bad += [r["label"] for r in unmapped_rows if any(r["label"] == a for e in entries for a in e.get("aliases", []) if not e.get("attribute") and (e.get("deviation") or {}).get("type") != "promoted") and not r["reason"].startswith("Sec. 18.7")]
     out.append(("12. a 'never an entry' label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry's alias", not bad,
                 f"problems: {bad}" if bad else f"attributes: {', '.join(attrs)}"))
+
+    classes = {c["id"]: c for c in onto.get("structure_classes", [])}          # Sec. 18.11 (P78): the structure taxonomy and its slots
+    by_id = {e["id"]: e for e in entries}
+    bad = [c for c, d in classes.items() if d.get("parent") and d["parent"] not in classes]
+    bad += [c for c, d in classes.items() if not d.get("parent") and c != "structure"]
+    bad += [f"{c}: no definition or citation" for c, d in classes.items() if not (d.get("definition") or "").strip() or not (d.get("citation") or "").strip()]
+    bad += [f"{e['id']}: class {e.get('class')!r} is not a structure class" for e in entries if e["type"] == "structure" and e.get("class") not in classes]
+    bad += [f"{c}: slot {sl} is not a test_structure entry" for c, d in classes.items() for sl in d.get("slots", []) if by_id.get(sl, {}).get("category") != "test_structure"]
+    slot_ids = {sl for d in classes.values() for sl in d.get("slots", [])}
+    bad += [f"{sl}: a slot without the CQ" for sl in slot_ids if by_id[sl].get("origin") == "extension" and (by_id[sl].get("deviation") or {}).get("type") == "added" and not by_id[sl].get("cq")]
+    bad += [f"{sl}: slot alias {a!r} in two slots" for a, n in Counter(x.lower() for sl in slot_ids for x in by_id[sl].get("structure_aliases", [])).items() if n > 1 for sl in slot_ids if a in [x.lower() for x in by_id[sl].get("structure_aliases", [])]]
+    bad += [f"structure_class vocabulary {sorted(set(voc.get('structure_class', [])) ^ set(classes))}"] if set(voc.get("structure_class", [])) != set(classes) else []
+    out.append(("13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots",
+                not bad, f"problems: {bad}" if bad else f"{len(classes)} classes, {len(slot_ids)} slot entries, {sum(1 for e in entries if e['type'] == 'structure')} structure instances"))
     return out
 
 
@@ -291,6 +305,28 @@ def hierarchy_html(onto: dict) -> str:
                       + render(c) + "</li>")
         return f"<ul>{items}</ul>" if items else ""
     return render(None)
+
+
+def structure_classes_html(onto: dict) -> str:
+    """Sec. 18.11 (P78): the structure-class tree with each class's slots and its instances (the structure entries of that class)."""
+    classes = onto.get("structure_classes", [])
+    kids = defaultdict(list)
+    for c in classes:
+        kids[c.get("parent") or ""].append(c)
+    inst = defaultdict(list)
+    for e in onto["entries"]:
+        if e["type"] == "structure":
+            inst[e.get("class")].append(e["id"])
+
+    def render(pid):
+        items = ""
+        for c in kids.get(pid, []):
+            items += (f'<li><b>{esc(c["id"])}</b>: {esc(c["definition"])} <i>[{esc(c["citation"])}]</i>'
+                      + (f'<br>slots: {esc(", ".join(c.get("slots", [])))}' if c.get("slots") else "<br>slots: none")
+                      + (f'<br>instances: {esc(", ".join(inst[c["id"]]))}' if inst.get(c["id"]) else "")
+                      + render(c["id"]) + "</li>")
+        return f"<ul>{items}</ul>" if items else ""
+    return render("")
 
 
 def table(header: list[str], rows: list[list], groups: dict[str, list[list]] | None = None) -> str:
@@ -420,6 +456,7 @@ within each role column and labelled with it. Green line = derives (transform), 
 Hover a node for its definition.</p>
 <div class="wide">{graph_svg(onto)}</div>
 <h2>2b. Hierarchy</h2>{hierarchy_html(onto)}
+<h2>2c. Structure classes (Sec. 18.11)</h2>{structure_classes_html(onto)}
 <h2>3. Entries (grouped by category)</h2><div class="wide">{entries_html}</div>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
 <h2>3c. Families</h2>{table(["family", "members", "what they answer"], family_rows(onto))}

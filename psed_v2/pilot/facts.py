@@ -445,6 +445,87 @@ def specimen_classes(key, cls):
             r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], f"specimen_class={cls}"]))
 
 
+def _node_of(i, byid):
+    """The nearest tree row (an entity, activity, comparison, cited work or the paper) at or above a fact."""
+    x = byid[i]["parent"] if i in byid else ""
+    while x in byid and "#" in x:
+        x = byid[x]["parent"]
+    return x
+
+
+def _made(i, byid):
+    """Whether an entity (or the owner of a fact) was made by a deposition: a specimen or a piece; False for an input entity."""
+    x = i
+    while x in byid:
+        n = byid[x]
+        if n["type"] == "activity" and n["kind"] == "deposition":
+            return True
+        x = n["parent"]
+    return False
+
+
+def structure_classes(key):
+    """P78: every entity with a structure in its condition chain (a specimen, a piece of one, an input entity) carries
+    structure_class=<class> in its qualifiers, the class of its nearest structure setting (lists.STRUCTURE_CLASS, from the ontology's
+    structure_classes); a model run, which has no structure, carries none."""
+    byid = {r["fact_id"]: r for r in _facts}
+    at = {}                                                                     # node -> the structure value stated directly under it
+    for r in _facts:
+        if r["type"] == "setting" and r["quantity"] == "structure" and r["value_text"]:
+            at.setdefault(_node_of(r["fact_id"], byid), r["value_text"])
+    for r in _facts:
+        if r["type"] != "entity" or "structure_class=" in r["qualifiers"]:
+            continue
+        x = r["fact_id"]
+        while x in byid and x not in at:
+            x = byid[x]["parent"]
+        if x in at and at[x] in L.STRUCTURE_CLASS:
+            r["qualifiers"] = ";".join(filter(None, [r["qualifiers"], f"structure_class={L.STRUCTURE_CLASS[at[x]]}"]))
+
+
+def slot_for(label, unit, describes_structure):
+    """P78: the dimension slot (lists.STRUCTURE_CLASSES) a free label names, else '': the record describes the structure itself and
+    its label is an alias, the name, the label or one of the structure_aliases of a slot entry, and its unit has the slot's dimension
+    (lists.UNIT_BASE, lists.DIMENSION_OF; a categorical slot takes no unit). A record that describes a measurement (the channel
+    length a scan was taken along) keeps its free label."""
+    lab = (label or "").strip().lower()
+    if not lab or not describes_structure:
+        return ""
+    for sid in sorted({x for c in L.STRUCTURE_CLASSES.values() for x in c["slots"]}):
+        e = L.ENTRIES[sid]
+        names = {e["name"].lower(), e["label"].lower()} | {a.lower() for a in e["aliases"]}
+        ctx = {a.lower() for a in e.get("structure_aliases", [])}
+        if lab in names or lab in ctx:
+            if e["type"] == "categorical":
+                return sid if not unit else ""
+            dim = L.UNIT_BASE.get(L.UNIT_ALIAS.get(unit, unit), ("",))[0]
+            if dim == L.DIMENSION_OF.get(e.get("dimension", ""), e.get("dimension", "")):
+                return sid
+    return ""
+
+
+def rekey_structure_dimensions(key):
+    """P78: an other[...] record that describes the structure itself (it sits on an input entity or a piece of one, on a cited work,
+    or is a setting of the recipe or the paper) and whose label names a dimension slot of the test structure (slot_for) is re-keyed
+    to that slot. Label, value, kind, unit and owner stay. Returns [(fact id, slot)]."""
+    byid = {r["fact_id"]: r for r in _facts}
+    out = []
+    for r in _facts:
+        if r["quantity"] != "other" or "#" not in r["fact_id"]:
+            continue
+        node = _node_of(r["fact_id"], byid)
+        n = byid.get(node, {})
+        ent = node                                                              # the nearest entity above the fact (through its measurement activity)
+        while ent in byid and byid[ent]["type"] not in ("entity", "paper", "cited", "comparison"):
+            ent = byid[ent]["parent"]
+        describes = (byid.get(ent, {}).get("type") == "entity" and not _made(ent, byid)) or n.get("type") == "cited" \
+            or (r["type"] == "setting" and (n.get("type") == "paper" or (n.get("type") == "activity" and n.get("kind") == "recipe")))
+        sid = slot_for(r["label_as_printed"], r["unit"], describes)
+        if sid:
+            r["quantity"] = sid; out.append((r["fact_id"], sid))
+    return out
+
+
 def identity(key, kind, ents, statement, evidence, parent=None):
     """Whether entities with equal conditions are one physical thing (P23): kind same, different or not_stated; links the entities."""
     n = sum(1 for r in _facts if r["fact_id"].startswith(f"{key}:identity#")) + 1

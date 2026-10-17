@@ -1140,5 +1140,11 @@ C.sized(K, {
     "s15.p4#2": ["s9.p9#5", "s9.p9#6"],
     "s15.p8#1": ["s12.p1#10", "s12.p1#12"],
 })
+# P78: the entry sides of the compact, a slot of the porous body stated beside the half-thickness L (added after the tree is built so
+# that the element's fact numbering is unchanged; its parent the recipe, shared by every run)
+F(K, "s6.p8;fig1.cap;s9.p2", "setting", "the reactant reaches the pores from two faces of the compact, the top and the bottom",
+  quantity="entry_sides", value_text="two", data_kind="chosen input", parent=f"{K}:recipe")
 C.specimen_classes(K, "porous_composite")                                                 # P53: the class of specimen every value was measured on
+C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
+C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
 write(K, PID)

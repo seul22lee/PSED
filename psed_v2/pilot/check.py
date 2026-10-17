@@ -606,6 +606,68 @@ def check_bases_sec19():
 DEICTIC = ("computed here", "derived here", "calculated here", "computed by us", "our calculation", "estimated here")   # tool wording, never from the tables
 
 
+def check_structure():
+    """P78: every specimen and input entity carries structure_class = the class (lists.STRUCTURE_CLASS) of its structure, a class of
+    the ontology's taxonomy (lists.STRUCTURE_CLASSES); a model run carries none. No other[...] record that the re-keying rule covers
+    remains (facts.slot_for over the records that describe the structure); the residual free labels with a length or area-per-mass
+    unit are listed for the report. A slot categorical's value is in its vocabulary (lists.CATEGORICAL_VALUES). In a paper with a
+    porous body, body_thickness agrees with feature_depth × entry_sides within the stated uncertainty (else half of the last digit)."""
+    import query as Q
+    err, resid, n_ent, n_slot, checked = [], [], 0, 0, 0
+    slots = {x for c in L.STRUCTURE_CLASSES.values() for x in c["slots"]}
+    for k, T in Q.TREES.items():
+        byid = T.byid
+        for r in T.rows:
+            if r["type"] == "entity":
+                sc = dict(p.split("=", 1) for p in r["qualifiers"].split(";") if "=" in p).get("structure_class", "")
+                st = T.vector(r["fact_id"]).get("structure")
+                want = L.STRUCTURE_CLASS.get(st[0]["value_text"], "") if st else ""
+                if Q.role(T, r["fact_id"]) in ("specimen", "input"):
+                    n_ent += 1
+                    if not sc or sc != want or sc not in L.STRUCTURE_CLASSES:
+                        err.append(f"{r['fact_id']}: structure_class {sc!r}, its structure gives {want!r} (P78)")
+                elif sc:
+                    err.append(f"{r['fact_id']}: a model run with structure_class {sc!r} (P78)")
+            if "#" not in r["fact_id"]:
+                continue
+            if r["quantity"] in slots and L.ENTRIES[r["quantity"]]["type"] == "categorical":
+                n_slot += 1
+                if r["value_text"] not in L.CATEGORICAL_VALUES.get(r["quantity"], [r["value_text"]]):
+                    err.append(f"{r['fact_id']}: {r['quantity']} value {r['value_text']!r} not in its vocabulary (P78)")
+            elif r["quantity"] in slots:
+                n_slot += 1
+            if r["quantity"] == "other":
+                node = C._node_of(r["fact_id"], byid); n = byid.get(node, {})
+                ent = node
+                while ent in byid and byid[ent]["type"] not in ("entity", "paper", "cited", "comparison"):
+                    ent = byid[ent]["parent"]
+                describes = (byid.get(ent, {}).get("type") == "entity" and not C._made(ent, byid)) or n.get("type") == "cited" \
+                    or (r["type"] == "setting" and (n.get("type") == "paper" or (n.get("type") == "activity" and n.get("kind") == "recipe")))
+                if C.slot_for(r["label_as_printed"], r["unit"], describes):
+                    err.append(f"{r['fact_id']}: other[{r['label_as_printed']}] names the slot {C.slot_for(r['label_as_printed'], r['unit'], describes)} but was not re-keyed (P78)")
+                if L.UNIT_BASE.get(L.UNIT_ALIAS.get(r["unit"], r["unit"]), ("",))[0] in ("length", "area per mass"):
+                    resid.append(f"{r['fact_id']} [{r['label_as_printed']}]")
+        # the porous-body transform: body_thickness = feature_depth × entry_sides
+        bt = [f for f in T.rows if f["quantity"] == "body_thickness" and f["value"]]
+        L_ = [f for f in T.rows if f["quantity"] == "feature_depth" and f["type"] == "setting" and f["value"]]
+        sides = [f for f in T.rows if f["quantity"] == "entry_sides" and f["value_text"]]
+        for b in bt:
+            if not L_ or not sides:
+                err.append(f"{b['fact_id']}: body_thickness without feature_depth or entry_sides to check it against (P78)"); continue
+            n_sides = {"one": 1, "two": 2}[sides[0]["value_text"]]
+            depth = L.convert(C.num(L_[0]["value"]), L_[0]["unit"], b["unit"])
+            tol = C.num(b["uncertainty"]) if b["uncertainty"] else 0.5 * 10 ** -len(b["value"].split(".")[1]) if "." in b["value"] else 0.5
+            tol += C.num(L_[0]["uncertainty"]) * n_sides if L_[0]["uncertainty"] else 0
+            checked += 1
+            if abs(C.num(b["value"]) - depth * n_sides) > tol + 1e-9:
+                err.append(f"{b['fact_id']}: body_thickness {b['value']} {b['unit']} against feature_depth × {n_sides} = {depth * n_sides:g} {b['unit']} (P78)")
+    print(f"== structure (P78): {len(L.STRUCTURE_CLASSES)} structure classes, {len(slots)} slot entries; {n_ent} specimen and input entities with a structure_class; "
+          f"{n_slot} slot records; {checked} body_thickness values checked against feature_depth × entry_sides; residual free labels with a length or area-per-mass unit: {len(resid)}")
+    for x in resid:
+        print("   ", x)
+    return err
+
+
 def check_calls():
     """P75: call accounting, scripted without a model (ask.answer_call, run_metrics.process). A question whose first four calls name
     nothing resolvable still has ten executed calls available (an error costs nothing toward the cap) and its eleventh executed call
@@ -961,6 +1023,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_bases_sec19()
     print(f"== uncertainty bases (P60): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_structure()
+    print(f"== structure (P78): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

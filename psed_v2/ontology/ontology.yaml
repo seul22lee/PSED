@@ -114,6 +114,20 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
   - id: measurement
     definition: "Settings of the characterization and the signal axes it records: probe spot, objective magnification, a spectrum's abscissa; attributes of a measurement, not properties of the film or the process."
     citation: "Cremers 2019 Table I column 'Characterization method' and Tables II-IV (the technique recorded per experiment); Sec. IV ('film thickness as a function of the depth')"
+structure_classes:   # P78: the is-a tree of structure classes (Cremers 2019 Sec. II G, Fig. 5; Sec. III). A structure entry is an instance of one class
+                     # (its class field); every specimen and input entity of the pilot carries structure_class (checked). slots = the dimension entries a class fills:
+                     # the CQ "what are the dimensions of the coated structure" is answered slot by slot; a model's geometry inputs read the same slots.
+  - {id: structure, parent: "", definition: "Any substrate or test structure on which conformality is quantified.", citation: "Cremers 2019 Sec. III, Table I 'Structure'", slots: []}
+  - {id: planar, parent: structure, definition: "A flat substrate without a 3D feature; it carries the planar reference values, conformality is not quantified on it.", citation: "Cremers 2019 Sec. II H (the planar reference thickness)", slots: []}
+  - {id: har_feature, parent: structure, definition: "A high-aspect-ratio feature with an opening of width w and a depth L along which the reactant diffuses; aspect ratio L/w, third dimension z.", citation: "Cremers 2019 Sec. II G, Fig. 5 (w, L, z; AR = L/w, Eq. 11)", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
+  - {id: trench, parent: har_feature, definition: "A vertical trench etched into a substrate: width w, depth L, length z.", citation: "Cremers 2019 Sec. II G, Fig. 5 (the width of a trench)", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
+  - {id: via_hole, parent: har_feature, definition: "A vertical hole: diameter w, depth L.", citation: "Cremers 2019 Sec. II G, Fig. 5 (the diameter of a hole)", slots: [feature_depth, feature_width, aspect_ratio]}
+  - {id: lateral_channel, parent: har_feature, definition: "A lateral high-aspect-ratio channel (LHAR) under a roof: channel height w, lateral length L along the diffusion (the channel length, feature_depth; channel_length is the mechanism entry), channel width z. pillarhall_3 and other LHAR designs are instances.", citation: "Cremers 2019 Sec. II G, Fig. 5 (channel height w, channel length L of a lateral structure); Sec. III", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
+  - {id: porous_body, parent: structure, definition: "A body the reactant enters through a continuous pore network from one or two faces: full thickness 2L (body_thickness), entry sides, diffusion length L, pore diameter w as the smallest opening, particle diameter, porosity, specific surface area, lateral size.", citation: "Cremers 2019 Sec. II G ('porous substrates': the pore size as w); gre23 Sec. II A (s6.p8, s8.p1)", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
+  - {id: nanoparticle_compact, parent: porous_body, definition: "A pressed compact of nanoparticles; the pores are the gaps between the particles, their diameter about the particle diameter.", citation: "gre23 Sec. II A (Fig. 1, s8.p1); Cremers 2019 Sec. II G", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
+  - {id: aerogel_monolith, parent: porous_body, definition: "A monolithic aerogel, porosity above 90 %, the highest aspect ratios coated by ALD.", citation: "gre23 Sec. II A (s6.p8: aerogel monoliths of higher AR than the compacts); Cremers 2019 Sec. II G", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
+  - {id: nanopore_membrane, parent: porous_body, definition: "An ordered array of straight pores through a membrane (anodic alumina and similar).", citation: "Cremers 2019 Sec. III, Table I (anodic aluminium oxide membranes as a structure to quantify conformality)", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
+
 entries:
 
   # ---------------------------------------------------------------- categorical conditions (base)
@@ -708,7 +722,7 @@ entries:
     symbol: L
     dimension: length
     unit: "µm"
-    aliases: ["L (mm)", "Length of the channel", "Lateral length of the channel (mm)", "channel length L"]
+    aliases: ["L (mm)", "Length of the channel", "Lateral length of the channel (mm)", "channel length L", "lateral length L"]
     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
     evidence: ["Yim2020 Fig. 8a", "Yim2020 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
 
@@ -1765,12 +1779,96 @@ entries:
     base: {}
     evidence: ["mat22 Sec. 5 (s5.p2)", "mat22 Fig. 1d"]
 
+  # ---------------------------------------------------------------- test-structure dimension slots (P78): the slots of the porous_body class; definitions cite the gre23 methods where no review passage defines the term (Sec. 18.10)
+  - id: body_thickness
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "2L"
+    name: "body thickness"
+    definition: "The full thickness of a porous body or membrane between its faces; with two entry sides it is twice the diffusion length L, the depth Cremers measures from the entrance (Cremers 2019 Sec. II G; gre23 Sec. II A: the NPC thickness 2L, L half of it since precursor enters through both faces). Slot of the porous_body class; transform body_thickness = feature_depth × entry_sides."
+    dimension: length
+    unit: mm
+    aliases: ["body thickness", "compact thickness", "NPC thickness", "membrane thickness"]
+    structure_aliases: ["thickness", "2L"]
+    cq: "What are the dimensions of the coated structure?"
+    base: {}
+    deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; the review defines L, not the thickness of a body, so the definition cites gre23 Sec. II A (Sec. 18.10)"}
+    evidence: ["gre23 Sec. II A (s8.p1: NPC thickness 1.55 ± 0.05 mm by calipers)", "gre23 Fig. 1(a) (2L ≈ 1.6 mm)"]
+
+  - id: entry_sides
+    type: categorical
+    origin: extension
+    role: condition
+    category: test_structure
+    values_from: "fixed list (vocabularies.entry_sides)"
+    label: "entry sides"
+    name: "entry sides"
+    definition: "Through how many faces of a porous body the reactant enters: one (a body sealed on one side, a feature closed at the bottom) or two (a free-standing compact or membrane open on both faces); the diffusion length L is the body thickness divided by this count (gre23 Sec. II A: L is half the NPC thickness since precursor enters through both the top and the bottom face; Cremers 2019 Sec. II G: L measured from the entrance along the diffusion). Slot of the porous_body class."
+    dimension: categorical
+    aliases: ["entry faces", "number of entry sides", "faces open to the reactant"]
+    cq: "What are the dimensions of the coated structure?"
+    base: {}
+    deviation: {type: added, reason: "P78: makes the relation between the body thickness and the diffusion length L explicit; defined from gre23 Sec. II A (Sec. 18.10)"}
+    evidence: ["gre23 Sec. II A (s6.p8: both the top face and the bottom face)", "gre23 Fig. 1 caption"]
+
+  - id: particle_diameter
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "d_NP"
+    name: "particle diameter"
+    definition: "The diameter of the particles of a particle compact or bed; the pores between them have about this size, so it stands in for the pore diameter w (Cremers 2019 Sec. II G: the smallest opening; gre23 Sec. II A: d_NP = 100 nm from the powder's specific surface area). Slot of the porous_body class."
+    dimension: length
+    unit: nm
+    aliases: ["particle diameter", "NP diameter", "nanoparticle diameter", "d_NP"]
+    cq: "What are the dimensions of the coated structure?"
+    base: {}
+    deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; defined from gre23 Sec. II A (Sec. 18.10)"}
+    evidence: ["gre23 Sec. II A (s8.p1: d_NP = 100 nm from s)", "gre23 Sec. I (s6.p5: the ZrO2 particles of Ferguson et al., 50 nm)"]
+
+  - id: specific_surface_area
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "s"
+    name: "specific surface area"
+    definition: "The surface area of a powder or porous body per unit mass, as measured by gas adsorption (BET); with the material density it gives the particle diameter (gre23 Sec. II A: s = 15 m2/g, the maker's BET specification of the BMA15 powder). Slot of the porous_body class."
+    dimension: area_per_mass
+    unit: m2/g
+    aliases: ["specific surface area", "BET area", "BET specific surface area", "surface area per mass"]
+    structure_aliases: ["s"]
+    cq: "What are the dimensions of the coated structure?"
+    base: {}
+    deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; defined from gre23 Sec. II A (Sec. 18.10)"}
+    evidence: ["gre23 Sec. II A (s8.p1: s = 15 m2/g)", "gre23 Sec. I (s6.p5: 505, 20.2 and 100 m2/g of cited powders)"]
+
+  - id: body_diameter
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "D"
+    name: "body diameter"
+    definition: "The lateral size of a porous body perpendicular to the diffusion direction: the diameter of a compact or a die (gre23 Sec. II A: pressed in an 11.4 mm die, final NPC diameter 11.43 mm by calipers). Slot of the porous_body class."
+    dimension: length
+    unit: mm
+    aliases: ["body diameter", "compact diameter", "die diameter", "NPC diameter"]
+    structure_aliases: ["diameter"]
+    cq: "What are the dimensions of the coated structure?"
+    base: {}
+    deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; defined from gre23 Sec. II A (Sec. 18.10)"}
+    evidence: ["gre23 Sec. II A (s8.p1: die 11.4 mm, NPC 11.43 ± 0.02 mm)", "gre23 Fig. 1(a) (11.4 mm)"]
+
   # ---------------------------------------------------------------- structures (gold papers only)
   - id: pillarhall_3
     type: structure
     origin: extension
     definition: "Microscopic all-silicon lateral high-aspect-ratio channel under a polysilicon membrane supported by pillars, PillarHall 3rd generation prototype (Yim 2020, Sec. C.A; Ylilammi 2018, Sec. I)."
-    class: lateral
+    class: lateral_channel
     aliases: ["PillarHall-3", "PillarHall prototype 3", "Microscopic rectangular PillarHall-3", "PillarHall 3rd generation"]
     base: {}
     evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7"]
@@ -1779,7 +1877,7 @@ entries:
     type: structure
     origin: extension
     definition: "Macroscopic lateral rectangular hole made by stacking two pieces of Si with a spacer in between (Werbrouck 2021, Fig. 3)."
-    class: lateral
+    class: lateral_channel
     aliases: ["macroscopic, lateral trench", "macroscopic test structures"]
     base: {}
     evidence: ["Werbrouck2021 Fig. 3", "Werbrouck2021 Sec. II D"]
@@ -1797,7 +1895,7 @@ entries:
     type: structure
     origin: extension
     definition: "A pressed compact of Al2O3 nanoparticles (NPC): a macroscopic porous body whose pores the reactants enter from both faces (gre23, Sec. II A, Fig. 1)."
-    class: porous
+    class: nanoparticle_compact
     aliases: ["nanoparticle compact", NPC, "Al2O3 nanoparticle compact", "nanoparticle compacts", NPCs]
     base: {}
     evidence: ["gre23 Fig. 1", "gre23 Table I", "gre23 Fig. 6"]
@@ -2198,6 +2296,7 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: h_per_metal,         inputs: ["element_fraction{element=H}", "element_ratio{element=S;reference_element=Mo}"], output: "element_ratio{element=H;reference_element=Mo}", formula: "H at.% / Mo at.%, Mo at.% = (100 - H - N - O at.%) / (1 + S/Mo) (P52)"}
   - {id: mean_free_path,      inputs: [deposition_temperature, partial_pressure], output: mean_free_path, formula: "k_B T / (sqrt(2) pi d^2 p), d the molecular diameter (an assumed fact) (P58)"}
   - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: "lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)"}
+  - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: "L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
@@ -2223,6 +2322,7 @@ qualifiers:   # closed lists; adding a value is allowed and is logged (log: valu
   x:         {values: quantity ids, log: "pilot: the abscissa of a curve"}
   ratio:     {values: a number, log: "pilot P17: the plasma_gas_ratio a keyed setting belongs to"}
   specimen_class: {values: [film, porous_composite], log: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis"}
+  structure_class: {values: [structure, planar, har_feature, trench, via_hole, lateral_channel, porous_body, nanoparticle_compact, aerogel_monolith, nanopore_membrane], log: "P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class"}
 
 units:   # canonical unit per dimension, and the accepted units
   temperature:      {canonical: "°C",       accepted: ["°C", K]}
@@ -2237,6 +2337,7 @@ units:   # canonical unit per dimension, and the accepted units
   energy:           {canonical: eV,         accepted: [eV]}
   wavenumber:       {canonical: cm-1,       accepted: [cm-1]}
   length:           {canonical: "nm (film thickness) / µm (position, geometry)", accepted: [pm, "Å", nm, "µm", mm, cm, m]}
+  area_per_mass:    {canonical: m2/g,       accepted: [m2/g]}
   length_per_cycle: {canonical: nm/cycle,   accepted: [pm/cycle, "Å/cycle", nm/cycle]}
   power:            {canonical: W,          accepted: [W]}
   gas_flow:         {canonical: sccm,       accepted: [sccm]}
@@ -2281,7 +2382,8 @@ vocabularies:
     fit:         "the residual of a fit, not a measured spread"
     literature:  "the spread of values reported in the literature, not a spread of this work (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on cited averages)"
     propagated:  "propagated from the uncertainties of its inputs, not measured (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on computed values)"
-  structure_class:   [lateral, vertical, porous, planar]
+  structure_class:   [structure, planar, har_feature, trench, via_hole, lateral_channel, porous_body, nanoparticle_compact, aerogel_monolith, nanopore_membrane]   # P78: the ids of structure_classes (v0 had lateral, vertical, porous, planar)
+  entry_sides:       [one, two]                                               # P78: the values of the entry_sides categorical
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
   n_elements:        [element, binary, ternary, quaternary]
   measurement_method:   # id, class (values of one class are mutually comparable, Sec. 18.4), definition; the pilot's method column uses these ids
@@ -2313,7 +2415,7 @@ vocabularies:
     - {id: schematic, class: schematic, definition: "A drawing: a value or statement read from a schematic (not a measurement)."}
     - {id: tabulated, class: tabulated, definition: "A value stated in a table without a method (not a measurement)."}
   categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
-                           plasma_configuration, reactor_type, reactor, delivery_method, substrate]
+                           plasma_configuration, reactor_type, reactor, delivery_method, substrate, entry_sides]
   categorical_outputs:    [crystallinity, phase]
   value_aliases:       # aliases of categorical values (species and structure aliases live in their entries)
     process_mode:

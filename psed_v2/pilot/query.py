@@ -1092,7 +1092,7 @@ def cited_name(T, w):
 def cited_records(T, w):
     """A cited work's facts split into conditions (quantities the papers use as settings) and results, as records."""
     fs = [f for f in T.kids.get(w, []) if "#" in f["fact_id"] and f["quantity"] and text_of(f)]
-    cond = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if f["quantity"] in L.SETTING_QUANTITIES or f["quantity"] in ("feature_width", "aspect_ratio")}
+    cond = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if f["quantity"] in L.SETTING_QUANTITIES or L.ENTRIES.get(f["quantity"], {}).get("category") == "test_structure"}   # a test-structure dimension is a condition (P78)
     res = {ckey(f): dict(name=name_of(ckey(f), f), record=record(T, f)) for f in fs if ckey(f) not in cond}
     return cond, res
 

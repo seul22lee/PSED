@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
+from vocab import (STRUCTURE_CLASSES, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
                    RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, BASES, ENTRIES, HIERARCHY, AMBIGUOUS_ALIASES, VALUE_ALIASES,
                    LABELS as _LABELS, NAMES as _NAMES)
@@ -142,7 +142,7 @@ def qualifiers_ok(q):
     return bad
 
 # canonical units (for stage 4): a fact with one of these quantities carries exactly this unit
-UNITS = {"deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
+UNITS = {"body_thickness": "mm", "body_diameter": "mm", "particle_diameter": "nm", "specific_surface_area": "m2/g", "deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
          "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
          "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
          "resistivity": "Ω cm", "film_density": "g/cm3", "element_fraction": "at. %", "element_ratio": "", "phase_fraction": "wt%", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
@@ -167,7 +167,8 @@ UNIT_BASE = {"pm": ("length", 1e-3), "Å": ("length", 0.1), "nm": ("length", 1.0
              "°C": ("temperature", 1.0), "K": ("temperature", 1.0), "g/mol": ("molar mass", 1.0), "g": ("mass", 1.0), "nm-2": ("areal density", 1.0),
              "Ω cm": ("resistivity", 1.0), "mOhm cm": ("resistivity", 1e-3), "Ω m": ("resistivity", 100.0), "Ω/sq": ("sheet resistance", 1.0), "nm/h": ("rate", 1.0), "1/mol": ("per mole", 1.0),
              "J/K": ("energy per kelvin", 1.0), "sccm": ("flow", 1.0), "W": ("power", 1.0), "eV": ("energy", 1.0), "cm-3": ("number density", 1.0),
-             "cm2/Vs": ("mobility", 1.0), "mTorr/min": ("pressure rate", 1.0)}
+             "cm2/Vs": ("mobility", 1.0), "mTorr/min": ("pressure rate", 1.0), "m2/g": ("area per mass", 1.0)}
+DIMENSION_OF = {"length": "length", "area_per_mass": "area per mass", "time": "time", "pressure": "pressure", "temperature": "temperature", "dimensionless": "fraction"}   # ontology dimension -> UNIT_BASE dimension (P78)
 
 
 def convert(v, from_unit, to_unit):
@@ -234,14 +235,14 @@ DERIVED = {
     "coating_mass_fraction": dict(unit="%", formula="the coating's share of the coated sample's mass: mass gain / (1 + mass gain), mass gain relative to the initial mass",
                                   inputs=[_in("mg", "mass_gain", "", "", basis="initial_mass")], fn=lambda mg: 100 * mg / (1 + mg)),
     "shell_volume_fraction": dict(unit="%", formula="(1 − φ_i) × ((d_NP + 2 t)³ / d_NP³ − 1): the coating's share of the compact volume, spherical particles",
-                                  inputs=[_in("phi", "porosity", "stage=initial", ""), _in("d", "other:d_NP", "", "nm"), _in("t", "film_thickness", "", "nm")],
+                                  inputs=[_in("phi", "porosity", "stage=initial", ""), _in("d", "particle_diameter", "", "nm"), _in("t", "film_thickness", "", "nm")],
                                   fn=lambda phi, d, t: 100 * (1 - phi) * ((d + 2 * t) ** 3 / d ** 3 - 1)),
     "mean_free_path": dict(unit="µm", formula="k_B T / (√2 π d² p) for reactant A at the deposition temperature and its partial pressure",
                            inputs=[_in("T", "deposition_temperature", "", "K"), _in("p", "partial_pressure", "", "Pa", pick=["", "step=reactant_A"]),
                                    _in("d", "other:molecular diameter", "species=@A", "nm"), _in("kB", "other:Boltzmann constant", "", "J/K")],
                            fn=lambda T, p, d, kB: 1e6 * kB * T / (2 ** 0.5 * 3.141592653589793 * (d * 1e-9) ** 2 * p)),
     "knudsen_number": dict(unit="", formula="mean free path / characteristic size (the hydraulic diameter, the pore or particle diameter, the feature width)",
-                           inputs=[_in("lam", "mean_free_path", "", "µm"), _in("h", "other:hydraulic diameter h|other:d_NP|feature_width", "", "µm")], fn=lambda lam, h: lam / h),
+                           inputs=[_in("lam", "mean_free_path", "", "µm"), _in("h", "other:hydraulic diameter h|particle_diameter|feature_width", "", "µm")], fn=lambda lam, h: lam / h),
     "cycle_time": dict(unit="s", formula="the sum of the pulse, hold and purge times of one cycle",
                        inputs=[_in("t", "pulse_time|purge_time|other:DEZ hold|other:H2O hold", "", "s", all=True)], fn=lambda t: sum(t)),
     "deposition_rate": dict(unit="nm/h", formula="GPC × 3600 / cycle time",

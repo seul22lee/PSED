@@ -1363,4 +1363,6 @@ C.sized(K, {
     "s20.p2#3": ["s13.p1#1", "s13.p1#2", "s13.p1#3", "s13.p2#2", "s19.p3#5", "s19.p3#6"],
 })
 C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
+C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
+C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
 write(K, PID)
