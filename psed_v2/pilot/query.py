@@ -1716,6 +1716,52 @@ def values(result, paper=None, where=None):
     return groups
 
 
+def set_members_all(T, c):
+    """The full member list of a comparison set (P77): its member entities and those of any set nested in its links, every cell of a
+    grid, kept to the experiments (specimens made by a deposition and model runs; a piece counts through its specimen, as in values)."""
+    out = list(T.member_entities(c))
+    for l in T.members(c):
+        if T.byid[l]["type"] == "comparison":
+            out += set_members_all(T, T.byid[l])
+    ex = set(experiments(T))
+    return [m for m in dict.fromkeys(out) if m in ex]
+
+
+def set_table(cid):
+    """One table for a comparison set (P77): rows = the set's full member list (set_members_all) and, first, the set itself for the
+    records it owns (values stated for the set, replicate statistics); columns = every result key with a record among those rows,
+    ordered by the ontology hierarchy of the key's quantity (vocab.HIERARCHY) then by name; cells = the value records as values()
+    chooses them (result_records: the ranked fact, spreads folded into its uncertainty); a value computed by this knowledge base is
+    counted, not a column. Returns dict(paper, id, label, kind, varies, members, columns [(key, name)], cells {row: {key: [record]}},
+    settings {member: distinguishing conditions}, kb)."""
+    T = tree_of(cid); c = T.byid[cid]
+    ms = set_members_all(T, c)
+    cells, names, kb = {}, {}, 0
+    own = [f for f in T.own(cid) if f["type"] in RESULT_TYPES and (text_of(f) or f["points_ref"])]
+    if own:
+        cells["set"] = {}
+        for f in own:
+            cells["set"].setdefault(ckey(f), []).append(record(T, f)); names.setdefault(ckey(f), name_of(ckey(f), f))
+    for m in ms:
+        cells[m] = {}
+        for k, x in result_records(T, m).items():
+            r = x["record"]
+            if not (r.get("text") or r.get("curve")):
+                continue
+            if r["kind"] == "computed_by_kb":
+                kb += 1; continue
+            cells[m][k] = [r]; names.setdefault(k, x["name"])
+    order = [h["id"] for h in L.HIERARCHY]
+
+    def pos(k):
+        q = k.split("{")[0].split("[")[0]
+        cat = L.ENTRIES.get(q, {}).get("category", "")
+        return order.index(cat) if cat in order else len(order)
+    columns = sorted({k for row in cells.values() for k in row}, key=lambda k: (pos(k), names[k].lower(), k))
+    return dict(paper=T.key, id=cid, label=comparison_label(T, c), kind=c["kind"], varies=[L.NAMES.get(q, q) for q in c["quantity"].split(";") if q],
+                members=ms, columns=[(k, names[k]) for k in columns], cells=cells, settings={m: distinguishing(T, m, ms, n=2) if len(ms) > 1 else [] for m in ms}, kb=kb)
+
+
 def group_verdicts(groups):
     """Between the groups of values(): for every result key two groups share, the axes on which their values differ (Sec. 18.4),
     as [(key, group number a, group number b, [axis texts])]; empty axes = comparable."""

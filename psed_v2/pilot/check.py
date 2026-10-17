@@ -686,14 +686,66 @@ def check_settings():
     return err
 
 
+def check_sets():
+    """P77: for every comparison set of every paper, values(set=id) runs within the budget (no 'more' line), has one row per member of
+    the full list (query.set_members_all) and the 'set' row exactly when the set owns records, and the fact ids of its table (a
+    collapsed column counted through the cells it names) are exactly the fact ids values(result=q, paper=p) lists for those rows over
+    every result name of the vocabulary, plus the set's own records; detail(ids=[set], parts=["table"]) prints the same rows."""
+    import run_metrics as RM, tools, query as Q
+    err, n_sets, size, collapsed = [], 0, 0, 0
+    for k, T in Q.TREES.items():
+        ref, deep = collections.defaultdict(set), {}                             # per experiment: the result facts values() lists, over every result name
+        for q in sorted(Q.vocabulary()["result"]):                               # (a model run's inputs, listed by values as its conditions, are not results)
+            for g in Q.values(q, k):
+                for r in g["rows"]:
+                    rec, e = r["record"], r["entity"]
+                    if e not in deep:
+                        deep[e] = {f["fact_id"] for fs in Q.results_deep(T, e).values() for f in fs}
+                    if rec.get("fact") in deep[e] and rec.get("kind") != "computed_by_kb":
+                        ref[e].add(rec["fact"])
+        for c in T.comps:
+            cid = c["fact_id"]; n_sets += 1
+            d = Q.set_table(cid)
+            members = set(d["members"])
+            lines, e_ = tools.run_tool("values", {"set": cid})
+            if e_:
+                err.append(f"values(set={cid}): {e_} (P77)"); continue
+            if lines[-1][0] == "more":
+                err.append(f"values(set={cid}): over the budget (P77)")
+            js = joined(lines)
+            size = max(size, sum(len(t) + len(i) + 4 for i, t in lines) // 4)
+            rows = [i for i, _ in js if i in members]
+            if sorted(rows) != sorted(members):
+                err.append(f"values(set={cid}): {len(rows)} member rows against {len(members)} members of the full list (P77)")
+            set_rows = [t for i, t in js if i == cid and t.startswith("set (values stated for the set")]
+            if bool(set_rows) != ("set" in d["cells"]):
+                err.append(f"values(set={cid}): the set row is {'missing' if not set_rows else 'there'} while the set {'owns' if 'set' in d['cells'] else 'owns no'} records (P77)")
+            table = {m for i, t in js if i in members or (i == cid and t.startswith("set (values stated")) for m in RM.ID.findall(t)}
+            table = {i for i in table if not (i in T.byid and T.byid[i]["type"] == "caveat")}
+            hidden = next((t for _, t in js if " more quantities not shown" in t), "")
+            if hidden:
+                collapsed += 1
+                hidden_names = {x.strip() for x in hidden.split(": ", 1)[1].split(" — open")[0].split(", ")}
+                table |= {r["fact"] for key, name in d["columns"] if name in hidden_names for row in d["cells"].values() for r in row.get(key, []) if r.get("fact")}
+            expected = set().union(*(ref[m] for m in members)) | {f["fact_id"] for f in T.own(cid) if f["type"] in Q.RESULT_TYPES and (Q.text_of(f) or f["points_ref"])}
+            if table != expected:
+                err.append(f"values(set={cid}): the table's fact ids differ from values(result=q)'s: missing {sorted(expected - table)[:4]}, extra {sorted(table - expected)[:4]} (P77)")
+            lines2, _ = tools.run_tool("detail", {"ids": [cid], "parts": ["table"]})
+            if [t for i, t in joined(lines2) if i in members] != [t for i, t in js if i in members]:
+                err.append(f"detail(ids=[{cid}], parts=[table]) does not print the rows of values(set={cid}) (P77)")
+    print(f"== set tables (P77): {n_sets} comparison sets, each one call within the budget; {collapsed} with columns collapsed; max {size} tokens per table")
+    return err
+
+
 def tool_probes():
-    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values and on every settings
-    entry per paper that states it (P76); concept and search (with and without a paper filter) on the stored search probes; detail on
-    one id of every record type of every paper, eight per call; source on one element per paper; and detail on two facts that share
-    a caveat (the caveat once)."""
+    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values, on every settings
+    entry per paper that states it (P76) and on every comparison set (P77); concept and search (with and without a paper filter) on the
+    stored search probes; detail on one id of every record type of every paper, eight per call; source on one element per paper; and
+    detail on two facts that share a caveat (the caveat once)."""
     import concept as CN, query as Q
     probes = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
     probes += [("values", {"result": S, "paper": k}) for S, k in settings_probes()]
+    probes += [("values", {"set": c["fact_id"]}) for T in Q.TREES.values() for c in T.comps]
     for p in rd(HERE / "search_probes.csv"):
         probes += [("concept", {"words": p["words"]}), ("search", {"words": p["words"]}), ("search", {"words": p["words"], "paper": "yim20"})]
     first = {}
@@ -919,6 +971,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_settings()
     print(f"== settings tables (P76): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_sets()
+    print(f"== set tables (P77): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
