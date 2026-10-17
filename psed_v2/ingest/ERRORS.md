@@ -108,7 +108,7 @@ panels were judged on `reports/figures.html` (`answers/figures.json`, 153 verdic
   Figs. 2b and 6, 10.1116_6.0003182 Fig. 6 where position is the y axis): right readings, the flag marks the shape. F4 unit-missing 16:
   dimensionless axes printed "(-)" or "(θ)" and log-axis labels, all right readings. F6 1: the single Cl point of 10.1116_6.0002804
   Fig. 5b, as printed. F5 unreadable 0: every response parsed.
-- **Repeat agreement (`--repeat`, 13 figures, 75 series).** 23 series agree (31 %) by the rule (80 % of the first-run points within
+- **Repeat agreement (`--repeat`, 12 figures, 75 series).** 23 series agree (31 %) by the rule (80 % of the first-run points within
   2 % of both ranges); the median point deviation is 0.011 of the axis range. Discrete series agree in full (the 64 cells and the two
   phase-map series, the marker series of 10.1116_6.0002804 Fig. 1, the four peaks of 10.1116_6.0002993 Fig. 2d); the disagreeing
   series are sampled continuous lines whose sample positions differ between runs (3 to 5 of 8 points within tolerance on

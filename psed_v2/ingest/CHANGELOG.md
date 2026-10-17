@@ -15,7 +15,7 @@
 - 2026-10-17: figure stage (VLM): `figures.py` reads every captioned figure of the 12 papers of the pilot and its expansion once with
   gemini-3.8-flash (PSED_VLM_MODEL in .env; the configured gemini-2.5-flash is retired for this key), one call per caption, into
   final/<id>/figures.json with rule flags F1-F6; the 3 pilot papers first, judged, then the 9 others; `report_figures.py` -> reports/figures.html;
-  the verdicts on every data panel in `answers/figures.json` (153); the repeat sample (`--repeat`, 13 figures); the Figure stage table of
+  the verdicts on every data panel in `answers/figures.json` (153); the repeat sample (`--repeat`, 12 figures); the Figure stage table of
   NUMBERS.md (`numbers_md.py`). Prompt changes during the pilot (spectra as peaks, maps with cells and categorical series, no sampling of
   spectra) each reran all 12 under one prompt hash (1cb472bef385); the caption-letter rule (a-p bracketed, a-h bare) applied by `--reflag`.
 
