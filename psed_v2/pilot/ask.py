@@ -9,8 +9,9 @@ Arms (one model, its default settings, the same for all three; the three arms of
   model  Model only: the question, no documents, no tools.
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
-  kb     Knowledge base: four tools over query.py (tools.py: search, values, detail, source); each returns plain text, one line per value or row,
-         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls; find and claims page by 25 lines, detail by parts, no line over 300 characters.
+  kb     Knowledge base: five tools over query.py (tools.py: concept, search, values, detail, source); each returns plain text, one line per value or row,
+         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls, about 2,000 tokens each, no line over 300 characters;
+         a call whose normalized arguments equal an earlier call's gets one line, 'identical to call N' (P69).
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
 Number check: every number of the answer, sentence by sentence: matches (in a text cited in that sentence), elsewhere (in another
 text the model was given), not seen (in no text it was given), uncited (the sentence cites no id); and unknown ids.
@@ -25,6 +26,7 @@ sys.path.insert(0, str(HERE))
 import elements as E  # noqa: E402
 import providers as P  # noqa: E402
 import query as Q  # noqa: E402
+import run_metrics as RM  # noqa: E402
 from tools import TOOLS, run_tool, open_target, short_name  # noqa: E402
 
 RUNS = HERE / "runs"
@@ -214,6 +216,14 @@ def check_line(nc, n_words=None):
             f"{nc['uncited']} uncited · {nc['unknown_ids']} unknown ids")
 
 
+def process_line(p):
+    """The process metrics of a Knowledge base answer after its check line (P69): '' for an arm without tool calls."""
+    if not p["calls"]:
+        return ""
+    return (f" · {p['calls']} calls ({p['refused']} refused, {p['duplicates']} duplicates) · tool output {p['tool_output_tokens']:,} tokens · "
+            f"re-delivered {100 * p['redelivered_share']:.0f} % · {p['cited']} of {p['delivered']} delivered ids cited ({100 * p['utilization']:.0f} %)")
+
+
 # ---------------------------------------------------------------------------------------------------------------- prices, records
 def price(model):
     vendor, name = model.split(":", 1)
@@ -241,10 +251,35 @@ def append(path, rec):
 
 
 # ---------------------------------------------------------------------------------------------------------------- arms
+def answer_call(c, tool_calls, given, seen_calls):
+    """One tool call answered and recorded (P38): over the cap an error; a call whose normalized arguments equal an earlier call's
+    (case, key order, whitespace: run_metrics.normalized) one line 'identical to call N' (P69); else run_tool. Returns the result
+    for the model; the record (name, arguments, results, error, chars, tokens, the full output) goes on tool_calls."""
+    key = RM.normalized(c["name"], c["arguments"])
+    if len(tool_calls) >= TOOL_CAP:
+        msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
+        rec, err = dict(results=0, error="cap", chars=0, output=msg), True
+    elif key in seen_calls:
+        msg = f"{RM.DUPLICATE}{seen_calls[key]}"
+        rec, err = dict(results=0, error=msg, chars=len(msg), output=msg), False
+    else:
+        seen_calls[key] = len(tool_calls) + 1
+        lines, e = run_tool(c["name"], c["arguments"])
+        for i, ln in lines:                                           # an id's text: every returned line that starts with it or names it
+            if i == "more":
+                continue
+            for j in dict.fromkeys([i] + MARK.findall(ln)):
+                given[j] = (given.get(j, "") + "\n" + ln).strip()
+        msg = e or "\n".join(ln if i == "more" else f"[{i}] {ln}" for i, ln in lines) or "no results"
+        rec, err = dict(results=sum(i != "more" for i, _ in lines), error=e, chars=len(msg), output=msg), bool(e)
+    tool_calls.append(dict(name=c["name"], arguments=c["arguments"], tokens=None, **rec))     # the full text the model received (P38)
+    return dict(id=c["id"], name=c["name"], content=msg, error=err)
+
+
 def run_arm(arm, question, model):
     t0 = time.time()
     usage = dict(input=0, output=0, cache_read=0, cache_write=0, reasoning=0)
-    calls, retries, tool_calls, given, text, error = 0, 0, [], {}, "", ""
+    calls, retries, tool_calls, given, text, error, seen_calls = 0, 0, [], {}, "", "", {}
     try:
         s = P.session(model, system_prompt(arm), TOOLS if arm == "kb" else None)
         if arm == "text":
@@ -253,23 +288,8 @@ def run_arm(arm, question, model):
         for k in usage:
             usage[k] += t.usage.get(k, 0)
         while t.calls and arm == "kb":
-            results, batch_ = [], []
-            for c in t.calls:
-                if len(tool_calls) >= TOOL_CAP:
-                    msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
-                    results.append(dict(id=c["id"], name=c["name"], content=msg, error=True))
-                    tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=0, error="cap", chars=0, tokens=0, output=msg)); continue
-                lines, err = run_tool(c["name"], c["arguments"])
-                for i, ln in lines:                                       # an id's text: every returned line that starts with it or names it
-                    if i == "more":
-                        continue
-                    for j in dict.fromkeys([i] + MARK.findall(ln)):
-                        given[j] = (given.get(j, "") + "\n" + ln).strip()
-                content = err or "\n".join(ln if i == "more" else f"[{i}] {ln}" for i, ln in lines) or "no results"
-                results.append(dict(id=c["id"], name=c["name"], content=content, error=bool(err)))
-                tool_calls.append(dict(name=c["name"], arguments=c["arguments"], results=sum(i != "more" for i, _ in lines), error=err, chars=len(content), tokens=None,
-                                       output=content))                  # the full text the model received (P38)
-                batch_.append(tool_calls[-1])
+            results = [answer_call(c, tool_calls, given, seen_calls) for c in t.calls]
+            batch_ = tool_calls[-len(t.calls):]
             prev = t.usage
             t = s.send(results=results); calls += 1; retries += t.retries
             for k in usage:
@@ -286,9 +306,11 @@ def run_arm(arm, question, model):
     except Exception as e:
         error = f"{type(e).__name__}: {e}"
     nc = number_check(text, arm, given)
+    proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
     return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
-                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, words=words(text), check_line=check_line(nc, words(text)), usage=usage, model_calls=calls, retries=retries,
+                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, process=proc, words=words(text),
+                check_line=check_line(nc, words(text)) + process_line(proc), usage=usage, model_calls=calls, retries=retries,
                 cost=cost_of(model, usage), seconds=round(time.time() - t0, 1), error=error)
 
 
