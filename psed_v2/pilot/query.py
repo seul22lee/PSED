@@ -1669,6 +1669,7 @@ def group_verdicts(groups):
 
 # ---------------------------------------------------------------------------------------------------------------- uncertainty words (P48)
 BETWEEN = ("pieces", "runs", "position", "repeat_measurement", "items")
+NO_BASIS = "basis not stated by the paper"                      # the one wording for a ± whose basis the paper does not give (P68)
 UNC_WORDS = {"fit": "fit error", "measurement": "measurement uncertainty", "literature": "from the literature", "propagated": "propagated"}
 
 
@@ -1678,7 +1679,7 @@ def unc_note(u):
     when the kind is not stated."""
     kind = (u or {}).get("kind")
     basis = (u or {}).get("basis") or L.basis_of(kind or "", kind if kind in BETWEEN else "", (u or {}).get("stat", ""))
-    head = L.BASES[basis] if basis in L.BASES else "basis not stated by the paper"
+    head = L.BASES[basis] if basis in L.BASES else NO_BASIS
     if not kind or kind == "not_stated":
         return f" ({head})"
     n = f", n {u['n']}" if u.get("n") and u.get("n") != "not_stated" else ""

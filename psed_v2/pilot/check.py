@@ -603,15 +603,45 @@ def check_bases_sec19():
     return err
 
 
+DEICTIC = ("computed here", "derived here", "calculated here", "computed by us", "our calculation", "estimated here")   # tool wording, never from the tables
+
+
+def tool_probes():
+    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values; concept and search
+    (with and without a paper filter) on the stored search probes; detail on one id of every record type of every paper, eight per
+    call; source on one element per paper; and detail on two facts that share a caveat (the caveat once)."""
+    import concept as CN, query as Q
+    probes = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
+    for p in rd(HERE / "search_probes.csv"):
+        probes += [("concept", {"words": p["words"]}), ("search", {"words": p["words"]}), ("search", {"words": p["words"], "paper": "yim20"})]
+    first = {}
+    for r in Q.search_records():
+        if r["type"] != "concept":
+            first.setdefault((r["paper"], r["type"]), r["id"])
+    ids = list(first.values())
+    probes += [("detail", {"ids": ids[n:n + 8], "parts": ["what", "differs", "results", "recipe", "claims", "computed"]}) for n in range(0, len(ids), 8)]
+    shared = []
+    for k, T in Q.TREES.items():
+        probes.append(("source", {"id": f"{k}:" + next(f["evidence"].split(";")[0] for f in T.rows if "#" in f["fact_id"] and f["evidence"])}))
+        c = next((c for c in Q.caveats_of(T) if len(c["facts"]) >= 2), None)
+        if c:
+            shared.append((c["f"]["fact_id"], sorted(c["facts"])[:2]))
+            probes.append(("detail", {"ids": sorted(c["facts"])[:2]}))
+    return probes, shared
+
+
 def check_kinds():
-    """P57: every stored kind is in the vocabulary (per fact, above); every provenance phrase a tool prints ('kind: ...') is in the
-    phrase table, and the deictic 'computed here' appears in no tool description, tool output or page text."""
+    """P57, P68: every provenance or basis word a tool prints is in the ontology's tables: 'kind: <phrase>' (or 'kinds: a; b') from the
+    phrase table, a mark (kN) bound to a phrase by the output's legend, a ± followed by a basis phrase, by a basis id the legend
+    binds, or by the one 'not stated' wording; a legend's basis phrase equals the table's; no deictic provenance ('computed here')
+    in any tool description, tool output or page text; a caveat's text once per output; the two-fact probe prints its shared
+    caveat's text once and its id on both facts."""
     import tools, query as Q
     err = []
-    texts = [t["description"] for t in tools.TOOLS]
-    for name, args in (("values", {"result": "growth_per_cycle"}), ("values", {"result": "resistivity"}), ("detail", {"ids": ["yim20:ent:8"], "parts": ["what", "results", "computed", "recipe", "claims"]}),
-                       ("detail", {"ids": ["gre23:ent:120:pair", "mat22:cmp:map"], "parts": ["what", "results", "computed", "claims"]}), ("concept", {"words": "resistivity"}),
-                       ("search", {"words": "resistivity"}), ("source", {"id": "mat22:s3.p34"})):
+    phrases, bases = set(L.PHRASES.values()), set(L.BASES.values())
+    probes, shared = tool_probes()
+    outputs = {}
+    for name, args in probes:
         lines, e = tools.run_tool(name, args)
         joined = []
         for _, t in lines:                                                      # a wrapped line continues the previous one (P44)
@@ -619,18 +649,47 @@ def check_kinds():
                 joined[-1] += " " + t[2:]
             else:
                 joined.append(t)
-        texts += joined + [e or ""]
-    phrases = set(L.PHRASES.values())
+        outputs[(name, json.dumps(args, sort_keys=True))] = joined + ([e] if e else [])
+    texts = [t["description"] for t in tools.TOOLS]
+    for key, out in outputs.items():
+        marks = dict(re.findall(r"\((k\d+)\) ([^;]+)", next((t for t in out if t.startswith("kinds: (")), "")))
+        legend = {m.group(1): m.group(2) for t in out for m in [re.match(r"basis (\w+): (.+)$", t)] if m}
+        for b, ph in legend.items():
+            if L.BASES.get(b) != ph:
+                err.append(f"{key[0]} {key[1]}: legend 'basis {b}: {ph[:40]}' is not the table's (P68)")
+        for t in out:
+            texts.append(t)
+            if t.startswith("kinds: (k"):                                          # the legend binds the marks to the table's phrases
+                continue
+            for m in re.finditer(r"(?<!set )kinds?: ([^·\)\]]+)", t):
+                for ph in m.group(1).split(";"):
+                    if ph.strip().rstrip(":") not in phrases:
+                        err.append(f"{key[0]} {key[1]}: provenance phrase {ph.strip()!r} is not in the phrase table (P57, P68)")
+            for m in re.finditer(r"\((k\d+)\)", t):
+                if marks.get(m.group(1), "").strip() not in phrases:
+                    err.append(f"{key[0]} {key[1]}: mark ({m.group(1)}) is not bound to a phrase of the table by the legend (P68)")
+            for m in re.finditer(r"± \S+ \(", t):
+                after = t[m.end():]
+                head = re.match(r"[^;)]*", after).group(0).strip()
+                if not (any(after.startswith(ph) for ph in bases) or head == Q.NO_BASIS or head == "basis not stated" or (head in L.BASES and legend.get(head) == L.BASES[head])):
+                    err.append(f"{key[0]} {key[1]}: basis wording {head!r} is outside the basis table (P68)")
+        cav = [t for t in out if t.startswith("caveat · ")]
+        if len(cav) != len(set(cav)):
+            err.append(f"{key[0]} {key[1]}: a caveat's text is printed twice (P68)")
+    for cid, (a, b) in shared:
+        out = outputs[("detail", json.dumps({"ids": [a, b]}, sort_keys=True))]
+        text = "\n".join(out)
+        tx = Q.TREES[cid.split(":")[0]].byid[cid]["statement"]
+        if text.count(f"caveat · {tx}") != 1 or text.count(f"[{cid}]") < 2:
+            err.append(f"detail({a}, {b}): the shared caveat {cid} should print its id on both facts and its text once (P68)")
     for t in texts:
-        if "computed here" in t:
-            err.append(f"'computed here' printed: {t[:80]!r} (P57)")
-        for m in re.finditer(r"(?<!set )kind: ([^·\)]+)", t):
-            if m.group(1).strip().rstrip(":") not in phrases:
-                err.append(f"provenance phrase {m.group(1).strip()!r} is not in the phrase table (P57)")
+        for w in DEICTIC:
+            if w in t:
+                err.append(f"{w!r} printed: {t[:80]!r} (P57, P68)")
     page = HERE / "reports" / "pilot.html"
     if page.exists() and "computed here" in page.read_text(encoding="utf-8"):
         err.append("'computed here' appears in reports/pilot.html (P57)")
-    print(f"== kinds (P57): {len(L.KINDS)} kinds with phrases; {len(texts)} tool texts scanned")
+    print(f"== kinds (P57, P68): {len(L.KINDS)} kinds with phrases, {len(L.BASES)} bases; {len(probes)} probe calls, {len(texts)} tool texts scanned; max {max(sum(len(t) for t in o) // 4 for o in outputs.values())} tokens per output")
     return err
 
 
@@ -750,7 +809,7 @@ if __name__ == "__main__":
         print("  ", e)
     bad += bool(err)
     err = check_kinds()
-    print(f"== kinds (P57): {'OK' if not err else f'{len(err)} problems'}")
+    print(f"== kinds (P57, P68): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

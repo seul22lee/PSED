@@ -44,8 +44,58 @@ def vocabulary_text():
 
 
 VOCAB = vocabulary_text()
-KIND_LIST = "; ".join(L.PHRASES[k] for k in L.KINDS)                            # the phrase table (P57): the only provenance words
-KB = L.PHRASES["computed_by_kb"]
+
+
+# ---------------------------------------------------------------------------------------------------------------- the renderer (P68)
+# Every provenance word, basis phrase and caveat any of the five tools prints comes through these functions, from the ontology's
+# closed tables: a kind as its phrase (vocab.PHRASES; in a values cell a mark (kN) that the output's legend binds to the phrase), a
+# ± with its basis (vocab.BASES: the phrase after the number, or in a cell the basis id that the legend binds to the phrase; one
+# wording when the paper gives none), a caveat as '[id]' on every line that carries it and its text once per output ('caveat · <text>'
+# at its first use; values collects the texts at the end). check.py scans a probe battery of tool outputs for any wording outside
+# the tables.
+KIND_MARK = {k: f"k{n}" for n, k in enumerate([k for k in L.KINDS if k in L.KIND_WORDS], 1)}     # a mark per marked kind; measured and stated unmarked (P57)
+
+
+def kind_phrase(k):
+    """The provenance words of a kind: only the ontology's phrase table (P57); a kind outside it is an error, never printed raw."""
+    return L.PHRASES[k]
+
+
+def kind_text(k):
+    return f"kind: {kind_phrase(k)}"
+
+
+def kinds_text(ks):
+    """The kinds of several values on one line: 'kind: <phrase>' or 'kinds: <phrase>; <phrase>' in the table's order."""
+    ks = [k for k in L.KINDS if k in set(ks)]
+    return ("kind: " if len(ks) == 1 else "kinds: ") + "; ".join(kind_phrase(k) for k in ks)
+
+
+def unc_text(u, compact=False):
+    """A ± with its basis (P48, P60): ' ± v (<basis phrase>; <what the number is>)' through query.unc_note; compact, for a cell of
+    values, ' ± v (<basis id>)' with the legend binding the id to its phrase, or '(basis not stated)' when the paper gives none."""
+    if not u:
+        return ""
+    if isinstance(u, str):
+        return " " + u
+    if compact:
+        return f" ± {u.get('value')} ({u.get('basis') if u.get('basis') in L.BASES else 'basis not stated'})"
+    return f" ± {u.get('value')}" + Q.unc_note(u)
+
+
+def cmark(rec):
+    """The caveat ids on a line that carries a caveat (P45): ' · caveat [id]'."""
+    cs = (rec or {}).get("caveats") or []
+    return (" · caveat " if len(cs) == 1 else " · caveats ") + ", ".join(f"[{c['id']}]" for c in cs) if cs else ""
+
+
+def clines(rec):
+    """The caveat texts of a value: (id, 'caveat · text') after the line that first carries it; paginate keeps a text once per output."""
+    return [(c["id"], f"caveat · {c['text']}") for c in (rec or {}).get("caveats") or []]
+
+
+KIND_LIST = "; ".join(kind_phrase(k) for k in L.KINDS)                          # the phrase table (P57): the only provenance words
+KB = kind_phrase("computed_by_kb")
 PAGE_LINES = 25
 MAX_LINE = 300
 DETAIL_PARTS = ["what", "differs", "results", "recipe", "claims", "computed"]
@@ -96,10 +146,10 @@ TOOLS = [
                       "what (role, material, substrate, inputs, the methods its results were measured by, its comparison sets, identity "
                       "statements, its caveats), differs (the conditions that set it apart in its set), results (value, unit, kind, "
                       "definition, method, in situ or ex situ, uncertainty, source element, caveats), recipe (every condition), claims, "
-                      "computed (values " + L.PHRASES["computed_by_kb"] + ", with formula, inputs and assumed facts). A comparison set: what, its members as one "
+                      "computed (values " + KB + ", with formula, inputs and assumed facts). A comparison set: what, its members as one "
                       "table of the settings that vary, results (values stated for the set), claims, computed (each effect with its "
                       "minimum and maximum members and the scatter between repeats, and power-law fits). A claim: the statement, stance, "
-                      "cause and effect, its scope (" + L.PHRASES["computed_by_kb"] + "), the results it rests on, the facts that give its size, its caveats. A "
+                      "cause and effect, its scope (" + KB + "), the results it rests on, the facts that give its size, its caveats. A "
                       "cited work: what, recipe, results, claims. Any other id (a value, setting, definition, caveat, note, process step): "
                       "the record, what it belongs to, its source element and caveats; a caveat also lists what it qualifies. parts "
                       "(default what, differs, results) applies to experiments, inputs, sets and cited works. About 2,000 tokens per call, "
@@ -135,14 +185,13 @@ def value_line(r, name="", full=False):
     bits = [f"{name}: {r.get('text', '')}" if name else r.get("text", "")]
     if r.get("curve") and r["curve"].get("points"):
         bits.append(f"curve against {r['curve'].get('x') or 'x'}, points (x, y): " + ", ".join(f"({x}, {y})" for x, y in r["curve"]["points"]))
-    bits.append(f"kind: {L.PHRASES.get(r.get('kind', ''), r.get('kind', ''))}")
+    bits.append(kind_text(r.get("kind", "")))
     if r.get("definition"):
         bits.append(("formula: " if r.get("kind") == "computed_by_kb" else "definition: ") + r["definition"])
     if r.get("method") and r.get("method") != "calculation":
         bits.append("method: " + r["method"] + (f", {_mode(r.get('mode'))}" if _mode(r.get("mode")) else ""))
-    u = r.get("uncertainty")
-    if u:
-        bits.append("uncertainty: " + (u if isinstance(u, str) else f"± {u.get('value')}" + Q.unc_note(u)))
+    if r.get("uncertainty"):
+        bits.append("uncertainty:" + unc_text(r["uncertainty"]))
     if r.get("inputs"):
         bits.append("inputs: " + "; ".join(f"{i['name']} = {i['value']} {i['unit']}".strip() + (f" [{i['fact']}]" if i.get("fact") else "") for i in r["inputs"]))
     if r.get("assumed"):
@@ -179,17 +228,6 @@ def defined_as(paper, key):
     st = f["statement"]
     short = st if len(st) <= 90 else st[:90].rsplit(" ", 1)[0] + " …"
     return f' · defined as: "{short}" [{f["fact_id"]}]'
-
-
-def cmark(rec):
-    """The caveat marker of a value line (P45): ' · caveat [id]'."""
-    cs = (rec or {}).get("caveats") or []
-    return (" · caveat " if len(cs) == 1 else " · caveats ") + ", ".join(f"[{c['id']}]" for c in cs) if cs else ""
-
-
-def clines(rec):
-    """The caveat lines of a value: (id, 'caveat: text'), printed once per page (paginate)."""
-    return [(c["id"], f"caveat · {c['text']}") for c in (rec or {}).get("caveats") or []]
 
 
 def claim_line(c):
@@ -380,15 +418,6 @@ def effect_line(e):
             + endpoints(e) + f" · {e['sentence']}")
 
 
-def _unc(r):
-    u = r.get("uncertainty")
-    if not u:
-        return ""
-    if isinstance(u, str):
-        return " " + u
-    return f" ± {u.get('value')}" + Q.unc_note(u)
-
-
 def _pairs(ps):
     """Group pairs (a, b) as 'groups 1–9' with b: [(span of the a's, b)]."""
     by = {}
@@ -412,14 +441,10 @@ def _span(nums):
     return ", ".join(out)
 
 
-KIND_MARK = {k: f"k{n}" for n, k in enumerate([k for k in L.KINDS if k in L.KIND_WORDS], 1)}     # a mark per marked kind; the legend binds it to the phrase
-
-
 def _cell(rec, marks):
     """One value as a cell: text, the kind's mark (the legend gives its phrase; measured and stated unmarked, P57), ± with its basis id
     (the basis legend gives the phrase), the fact id; the caveat ids go on the row, once (values_blocks)."""
-    u = rec.get("uncertainty")
-    unc = (f" ± {u['value']} ({u.get('basis') or 'basis not stated'})" if u and not isinstance(u, str) else "")
+    unc = unc_text(rec.get("uncertainty"), compact=True)
     k = rec.get("kind", "")
     mark = ""
     if k in KIND_MARK:
@@ -526,7 +551,7 @@ def values_blocks(groups, asked):
         full.append(block(out_rows, head=head, foot=foot))
         rng = "; ".join(f"{names[k]} {Q.g(min(v for v, _ in vs), 3)}–{Q.g(max(v for v, _ in vs), 3)} {vs[0][1]}".strip() + f" ({len(vs)})" for k, vs in ranges.items())
         collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"set [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · open with detail(ids=[{sid!r}]) or narrow with where")]))
-    tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {L.PHRASES[k]}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
+    tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
         + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
         + ([("legend", ("caveats on every row above: " if all_spec else "caveats on every specimen row above: ") + ", ".join(f"[{c}]" for c in sorted(common_cav)))] if common_cav else [])
     tail.append(("between", CN.footer(qids, paper=groups[0]["paper"] if len({g["paper"] for g in groups}) == 1 and len(Q.TREES) > 1 and all(g["paper"] == groups[0]["paper"] for g in groups) else None)))
@@ -678,21 +703,23 @@ def _run(name, args):
                 if h["type"] in ("value", "setting"):
                     T = Q.TREES[h["paper"]]; f = T.byid[h["id"]]
                     key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
-                    g = seen.setdefault(key, [h, 0, [], {}])
+                    g = seen.setdefault(key, [h, 0, [], {}, set()])
                     g[1] += 1
                     if Q.text_of(f) not in g[2]:
                         g[2].append(Q.text_of(f))
-                    g[3].update({c["id"]: c for c in Q.record(T, f)["caveats"]})            # the caveats of any value in the line
+                    rec = Q.record(T, f)
+                    g[3].update({c["id"]: c for c in rec["caveats"]})                       # the caveats of any value in the line
+                    g[4].add(rec["kind"])                                                   # the kinds of the values on the line (P68)
                     continue
-                g = seen.setdefault((h["type"], h["line"]), [h, 0, None, {}])
+                g = seen.setdefault((h["type"], h["line"]), [h, 0, None, {}, set()])
                 g[1] += 1
                 f = Q.TREES[h["paper"]].byid[h["id"]]
                 if "#" in h["id"] and f["type"] in ("observation", "setting", "derived", "model", "cited"):             # a note's caveats
                     g[3].update({c["id"]: c for c in Q.cav_list(Q.caveats_for(Q.TREES[h["paper"]], f, Q.TREES[h["paper"]].ent_of(h["id"])))})
-            for key, (h, n, vals, cav) in seen.items():
+            for key, (h, n, vals, cav, kinds) in seen.items():
                 if vals is not None:
                     shown = ", ".join(vals[:8]) + (f", … ({len(vals)} distinct)" if len(vals) > 8 else "")
-                    line = f"{h['type']}s of {key[2]} in {short_name(key[0])}: {n} record{'s' if n > 1 else ''}, {shown}"
+                    line = f"{h['type']}s of {key[2]} in {short_name(key[0])}: {n} record{'s' if n > 1 else ''} · {kinds_text(kinds)} · {shown}"
                 else:
                     line = f"{h['type']} · {h['line']}" + (f" · {n} records with this line" if n > 1 else "")
                 if len(line) > SEARCH_LINE:
