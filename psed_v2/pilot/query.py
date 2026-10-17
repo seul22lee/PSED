@@ -1752,6 +1752,34 @@ def slot_settings(T, e):
     return out
 
 
+PROCESS_KEYS = ("material", "reactant_A", "reactant_B")                        # what makes two experiments the same process (P80: a variant of a grid cell shares them)
+
+
+def _num_prefix(t):
+    m = re.match(r"\s*([-+]?\d+(?:\.\d+)?)", t or "")
+    return (0, float(m.group(1)), t) if m else (1, 0.0, t or "")
+
+
+def grid_info(T, c):
+    """P80: a grid set from its full member list: cells = every member entity ('all'); axes = the two varied quantities; the level of
+    every cell on each axis (its condition vector's text); the row and column levels sorted by value; the variant candidates: the
+    paper's other experiments of the same process (PROCESS_KEYS) whose two levels match a cell (variant substrates, TEM pieces, a
+    cycle series); the child series: the other sets whose members all lie in the cells or the candidates (views of the grid)."""
+    cells = T.member_entities(c)
+    axes = [q for q in c["quantity"].split(";") if q]
+    vt = {m: vtext(T, m) for m in experiments(T)}
+
+    def level(m, q):
+        return next((v for kk, v in vt.get(m, {}).items() if kk.split("{")[0] == q and "kind=set_point" not in kk), None)
+    level_of = {m: tuple(level(m, q) for q in axes) for m in vt}
+    cell_lv = {level_of[m]: m for m in cells}
+    proc = {kk: vt[cells[0]].get(kk) for kk in PROCESS_KEYS if cells and kk in vt[cells[0]]}
+    cand = [m for m in vt if m not in cells and level_of[m] in cell_lv and all(vt[m].get(kk) == v for kk, v in proc.items())]
+    children = [x["fact_id"] for x in T.comps if x is not c and x["kind"] != "grid" and set(T.member_entities(x)) <= set(cells) | set(cand)]
+    return dict(cells=cells, axes=[(q, L.NAMES.get(q, q)) for q in axes], level_of={m: level_of[m] for m in list(cells) + cand}, candidates=cand, children=children,
+                rows=sorted({level_of[m][0] for m in cells}, key=_num_prefix), cols=sorted({level_of[m][1] for m in cells}, key=_num_prefix) if len(axes) > 1 else [""])
+
+
 def values(result, paper=None, where=None):
     """Every value of a result (P42), never a representative, grouped by comparison set: each experiment under the smallest set it is
     a member of, the others in one group per paper. A group: paper, set id, label, kind, what the set varies, the conditions its
@@ -1778,10 +1806,17 @@ def values(result, paper=None, where=None):
         if not rows and not any(own.values()) and not ins and not pap:
             continue
         size = {c["fact_id"]: len(T.member_entities(c)) for c in T.comps}
-        home = {}
+        grids = {c["fact_id"]: grid_info(T, c) for c in T.comps if c["kind"] == "grid"} if not S else {}   # P80: a grid renders from its full member list
+        child_ids = {x for gi in grids.values() for x in gi["children"]}
+        home, variants = {}, {}
         for e in rows:
-            mine = sorted([c for c in T.comps if e in T.member_entities(c)], key=lambda c: size[c["fact_id"]])
-            home.setdefault(mine[0]["fact_id"] if mine else "", []).append(e)
+            g = next((gid for gid, gi in grids.items() if e in gi["cells"]), None)
+            if not g:
+                mine = sorted([c for c in T.comps if e in T.member_entities(c) and c["fact_id"] not in child_ids], key=lambda c: size[c["fact_id"]])
+                g = mine[0]["fact_id"] if mine else next((gid for gid, gi in grids.items() if e in gi["candidates"]), "")
+                if g in grids:
+                    variants[e] = g
+            home.setdefault(g, []).append(e)
         base = dict(paper=k, varies=[], shared=[], more_shared=0, claims=[], material=[], structure=[], reactor=[], process=[], measurement=[])
 
         def merged(rs):                                                         # several records of one key on one row: the first carries the others as alternatives (one cell lists all)
@@ -1799,7 +1834,7 @@ def values(result, paper=None, where=None):
                                axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["input"]))
         for c in T.comps:                                                       # P79: a set that is no experiment's home (a replicate set) but owns records: one aggregate row
             cid = c["fact_id"]
-            if own[cid] and cid not in home:
+            if own[cid] and cid not in home and cid not in child_ids:
                 rs = merged([dict(entity=cid, name="set", settings=[], key=kk, result_name=name, record=rec) for kk, name, rec in own[cid]])
                 groups.append(dict(base, id=cid, label=comparison_label(T, c) + " · members: " + ", ".join(T.label(m) for m in T.member_entities(c)), kind="aggregate",
                                    rows=rs, claims=[x["fact_id"] for x in claims_of(T, [cid])], axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["set"]))
@@ -1832,8 +1867,11 @@ def values(result, paper=None, where=None):
                 return vs
             out_rows.sort(key=order)
             c = T.byid.get(cid, {})
+            gi = grids.get(cid)
             groups.append(dict(paper=k, id=cid, label=comparison_label(T, c) if c else "values outside any comparison set", kind=c.get("kind", ""),
                                own=own.get(cid, []),                            # P79: the set's own records of the quantity, the first row of its block
+                               grid=dict(gi, variants=[e for e in ents if e in variants], children=[(x, comparison_label(T, T.byid[x])) for x in gi["children"]],
+                                         child_own={x: own[x] for x in gi["children"] if own.get(x)}) if gi else None,     # P80: the matrix layout, the variants, the child views
                                varies=[L.NAMES.get(q, q) for q in c.get("quantity", "").split(";") if q] if c else [],
                                shared=[dict(key=kk, name=crs[ents[0]][kk]["name"], record=crs[ents[0]][kk]["record"]) for kk in shown],
                                more_shared=len(same) - len(shown), rows=out_rows,

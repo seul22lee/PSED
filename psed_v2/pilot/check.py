@@ -668,6 +668,61 @@ def check_structure():
     return err
 
 
+def check_grids():
+    """P80: for every grid set, values(result=q, paper) renders it as a matrix from its full member list: the tested cells of every
+    matrix equal len(all) (the untested combinations are counted as n.t.); every child series' members lie in the cells or the variants
+    (query.grid_info); no child series is printed as a group of its own. Token sizes against ask-v3.1 (values_sizes_baseline.csv,
+    recorded before any change): a call whose quantity was then repeated over two or more child views must not exceed its own size
+    (the views are no longer repeated), and the total over the grid paper's calls must not exceed the ask-v3.1 total; a call with no
+    repeated view (a quantity on one series or on variants only) gains the grid's header and the P79 homes, and its delta is printed."""
+    import tools, query as Q
+    err, n_grids, n_calls, base = [], 0, 0, {(r["result"], r["paper"]): int(r["tokens"]) for r in rd(HERE / "values_sizes_baseline.csv")}
+    deltas = []
+    for k, T in Q.TREES.items():
+        for c in T.comps:
+            if c["kind"] != "grid":
+                continue
+            n_grids += 1
+            gi = Q.grid_info(T, c)
+            allowed = set(gi["cells"]) | set(gi["candidates"])
+            for cid in gi["children"]:
+                bad = [m for m in T.member_entities(T.byid[cid]) if m not in allowed]
+                if bad:
+                    err.append(f"{cid}: a child series of {c['fact_id']} with members outside its cells and variants: {bad[:3]} (P80)")
+            tot_b = tot_n = 0
+            for (q, kp), tokens in sorted(base.items()):
+                if kp != k:
+                    continue
+                n_calls += 1
+                lines, e_ = tools.run_tool("values", {"result": q, "paper": k})
+                size = sum(len(t) + len(i) + 4 for i, t in lines) // 4
+                tot_b += tokens; tot_n += size
+                views = sum(1 for cid in gi["children"] if any(kk.split("{")[0].split("[")[0] == q for m in T.member_entities(T.byid[cid]) if m in gi["cells"] for kk in Q.result_records(T, m)))
+                deltas.append(f"{q} {tokens}->{size} ({views} views)")
+                if views >= 2 and size > tokens:
+                    err.append(f"values({q}, {k}): {size} tokens, {tokens} at ask-v3.1 although its {views} child views are no longer repeated (P80)")
+            if tot_n > tot_b:
+                err.append(f"values(result, {k}) over the grid paper: {tot_n} tokens in all, {tot_b} at ask-v3.1 (P80)")
+                js = joined(lines)
+                if any(i in gi["children"] and t.startswith("set [") for i, t in js):
+                    err.append(f"values({q}, {k}): a child series of the grid printed as a group (P80)")
+                for n, (i, t) in enumerate(js):                                  # every matrix: shown + left out = every cell of the grid; the shown ones counted in its rows
+                    m = re.match(r"(.+?) · (\d+) of (\d+) cells shown \((\d+) in rows or columns left out\)", t)
+                    if i != c["fact_id"] or not m:
+                        continue
+                    shown, total, left = int(m.group(2)), int(m.group(3)), int(m.group(4))
+                    counted = 0
+                    for i2, t2 in js[n + 1:]:
+                        if i2 != c["fact_id"] or " cells shown (" in t2 or " · " not in t2 or t2.startswith(("variants of", "child series", "rows ", "set-level", "no cell holds")):
+                            break
+                        counted += sum(1 for x in t2.split(" · ", 1)[1].split(" | ") if x.strip() != "n.t.")
+                    folded = any(t2.startswith("rows ") and t2.split(": ", 1)[0].endswith("budget") and m.group(1) in t2 for _, t2 in js[n + 1:])
+                    if total != len(gi["cells"]) or shown + left != total or (counted != shown and not folded):
+                        err.append(f"values({q}, {k}): matrix of {m.group(1)}: {counted} cells in its rows, {shown} shown + {left} left out, the grid {len(gi['cells'])} (P80)")
+    print(f"== grids (P80): {n_grids} grid sets; {n_calls} values(result, paper) calls on grid papers against their ask-v3.1 sizes: " + "; ".join(deltas))
+    return err
+
+
 def check_homes():
     """P79: every value record of the page data with an entry (homeless.records) is rendered by values(result=<its entry>, paper=<its
     paper>) in full (an input row, an aggregate row, a set's own row, a paper-level row, a specimen row with every record of its key,
@@ -1041,6 +1096,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_structure()
     print(f"== structure (P78): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_grids()
+    print(f"== grids (P80): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

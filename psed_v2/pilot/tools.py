@@ -488,6 +488,89 @@ def _cells(rec, marks, fact=True):
 HOME_KINDS = {"inputs": "inputs", "aggregate": "set-level", "paper": "paper-level"}   # the P79 homes rendered as groups before the comparison sets
 
 
+def grid_lines(g, names, keys, marks, legend_cav, legend_basis, collapse=0):
+    """P80: a grid set as matrices, one per result key: rows = the levels of the first axis, columns = the levels of the second, a cell =
+    every record of the key on that cell (_cells), '—' for a tested cell with no value of it, 'n.t.' for an untested combination; a row or
+    column level with no value of the key is left out and its tested cells counted in the key's line (shown + left out = every cell);
+    caveats on every cell once above the matrices, the others after their cell. Then the variants (the same-process experiments at a
+    cell's levels: one line per cell with their records), the child series (views, not printed again) and the set-level records of those
+    children. collapse = how many kept row levels, from the last, fold into one 'range · n cells' line per key (over the budget; a
+    column is never dropped). Returns [(id, text)]."""
+    gi, sid = g["grid"], g["id"]
+    by_ent = {}
+    for r in g["rows"]:
+        by_ent.setdefault(r["entity"], {})[r["key"]] = r
+    vs = set(gi["variants"])
+    cells = {gi["level_of"][e]: e for e in gi["cells"] if e in gi["level_of"]}
+    tested = set(cells)
+    rows_, cols = gi["rows"], gi["cols"]
+    two = len(gi["axes"]) > 1
+    lv_of = lambda rl, cl: (rl, cl) if two else (rl,)
+    cell_cav = [{c["id"] for rr in [by_ent[e][kk]["record"]] + list(by_ent[e][kk]["record"].get("alternatives") or []) for c in rr.get("caveats") or []}
+                for e in cells.values() for kk in keys if kk in by_ent.get(e, {})]
+    common = set.intersection(*cell_cav) if cell_cav else set()                 # caveats on every cell: once, above the matrices
+    out = [(sid, f"matrix: rows {gi['axes'][0][1]} ({len(rows_)} levels) × columns {gi['axes'][1][1] if two else 'one column'} ({len(cols)} levels) · {len(gi['cells'])} cells, "
+                 f"{len(rows_) * len(cols) - len(tested)} combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted")]
+    if common:
+        out.append((sid, "caveats on every cell: " + ", ".join(f"[{c}]" for c in sorted(common))))
+    empty = []
+    for kk in keys:
+        has = {lv for lv, e in cells.items() if kk in by_ent.get(e, {})}
+        if not has:                                                             # no cell holds the quantity: it lives on variants or set-level records only
+            empty.append(names[kk]); continue
+        krows = [rl for rl in rows_ if any(lv[0] == rl for lv in has)]
+        kcols = [cl for cl in cols if any(lv[1] == cl for lv in has)] if two else [""]
+        keep = krows[:len(krows) - collapse] if collapse else krows
+        shown = sum(1 for lv in tested if lv[0] in krows and (not two or lv[1] in kcols))
+        out.append((sid, f"{names[kk]} · {shown} of {len(gi['cells'])} cells shown ({len(gi['cells']) - shown} in rows or columns left out)" + (" · columns: " + " | ".join(kcols) if two else "")))
+        for rl in keep:
+            cs = []
+            for cl in kcols:
+                lv = lv_of(rl, cl)
+                if lv not in tested:
+                    cs.append("n.t."); continue
+                r = by_ent.get(cells[lv], {}).get(kk)
+                if not r:
+                    cs.append("—"); continue
+                rec = r["record"]
+                cav = sorted({c["id"] for rr in [rec] + list(rec.get("alternatives") or []) for c in rr.get("caveats") or []} - common)
+                for rr in [rec] + list(rec.get("alternatives") or []):
+                    legend_cav.update({c["id"]: c["text"] for c in rr.get("caveats") or []})
+                    if (rr.get("uncertainty") or {}).get("basis") in L.BASES:
+                        legend_basis.add(rr["uncertainty"]["basis"])
+                cs.append(_cells(rec, marks) + (" · caveats " + ", ".join(f"[{c}]" for c in cav) if cav else ""))
+            out.append((sid, f"{rl} · " + " | ".join(cs)))
+        if collapse and len(krows) > len(keep):
+            gone = krows[len(keep):]
+            vals = [(by_ent[e][kk]["record"].get("value"), by_ent[e][kk]["record"].get("unit", "")) for lv, e in cells.items() if lv[0] in gone and kk in by_ent.get(e, {})]
+            nums = [v for v, _ in vals if v is not None]
+            out.append((sid, f"rows {', '.join(gone)} collapsed to stay within the budget: {names[kk]} " + (f"range {Q.g(min(nums), 3)}–{Q.g(max(nums), 3)} {vals[0][1]}".strip() + f" over {len(nums)} values" if nums else "no numeric value")
+                        + f" in {sum(1 for lv in has if lv[0] in gone)} cells · open with values(set={sid!r}) or detail(ids=[cell ids])"))
+    if empty:
+        out.append((sid, "no cell holds: " + ", ".join(empty) + " (variants or set-level records only)"))
+    for lv, e in sorted(cells.items(), key=lambda x: tuple(Q._num_prefix(t) for t in x[0])):
+        vv = [v for v in gi["variants"] if gi["level_of"].get(v) == lv and v in by_ent and any(kk in by_ent[v] for kk in keys)]
+        if vv:
+            parts = []
+            for v in vv:
+                recs = "; ".join(f"{names[kk]} {_cells(by_ent[v][kk]['record'], marks)}" for kk in keys if kk in by_ent[v])
+                for kk in keys:
+                    if kk in by_ent[v]:
+                        for rr in [by_ent[v][kk]["record"]] + list(by_ent[v][kk]["record"].get("alternatives") or []):
+                            legend_cav.update({c["id"]: c["text"] for c in rr.get("caveats") or []})
+                parts.append(f"{Q.TREES[g['paper']].label(v)} [{v}]: {recs}")
+            out.append((sid, f"variants of the cell {', '.join(lv)} (+{len(vv)}): " + " · ".join(parts)))
+    if gi["children"]:
+        out.append((sid, "child series (views of this grid, not printed again; values(set=<id>) opens one): " + ", ".join(f"[{cid}]" for cid, _ in gi["children"])))
+    for cid, own in gi["child_own"].items():
+        by_key = {}
+        for kk, name, rec in own:
+            by_key.setdefault((kk, name), []).append(rec)
+            legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
+        out.append((cid, f"set-level records of the child series [{cid}]: " + " | ".join(f"{name} " + "; ".join(_cell(r, marks) for r in recs) for (kk, name), recs in by_key.items())))
+    return out
+
+
 def _usual_names(groups, paper, usual):
     """(key, name) of the usual conditions of a paper (values_blocks)."""
     return {(x["key"], x["name"]) for g in groups if g["paper"] == paper for x in g["shared"] if (x["key"], x["record"]["text"]) in usual}
@@ -619,7 +702,7 @@ def values_blocks(groups, asked):
     between consecutive sets whose axes differ (P53), a 'different basis' flag where the uncertainty bases differ (Sec. 19.4); values
     computed by the knowledge base counted, not listed, unless the set has nothing else; the caveats' texts and the basis phrases
     once at the end, then the cross-paper footer (P67). Returns (full blocks, collapsed blocks)."""
-    legend_cav, legend_basis, marks, full, collapsed = {}, set(), set(), [], []
+    legend_cav, legend_basis, marks, full, collapsed, grid_versions = {}, set(), set(), [], [], {}
     verdict = {(a, b): ax for k, a, b, ax in Q.group_verdicts(groups) for _ in [0]} if len(groups) > 1 else {}
     pair_axes = {}
     for k, a, b, ax in Q.group_verdicts(groups):
@@ -698,6 +781,11 @@ def values_blocks(groups, asked):
                 v = r["record"].get("value")
                 if v is not None:
                     ranges.setdefault(k, []).append((v, r["record"].get("unit", "")))
+        if g.get("grid"):                                                       # P80: a grid set renders as matrices from its full member list
+            out_rows = [[(sid, t)] for sid, t in [(x[0], x[1]) for x in grid_lines(g, names, keys, marks, legend_cav, legend_basis)]]
+            n_cells = len(g["grid"]["cells"])
+            head[-1] = (sid, head[-1][1].replace(f" · {len(by_ent)} rows", f" · {n_cells} cells" + (f" + {len(g['grid']['variants'])} variants" if g["grid"]["variants"] else "")))
+            grid_versions[n - 1] = [block([[x] for x in grid_lines(g, names, keys, marks, legend_cav, legend_basis, collapse=j)], head=head, foot=[]) for j in range(1, len(g["grid"]["rows"]) + 1)]
         if g.get("own"):                                                        # P79: the set's own records of the quantity, first row of its block
             by_key = {}
             for kk, name, rec in g["own"]:
@@ -711,7 +799,8 @@ def values_blocks(groups, asked):
             out_rows.insert(0, [(sid, "set (values stated for the set, its statistics) · " + " | ".join("; ".join(_cell(r, marks) for r in by_key[k]) if k in by_key else "—" for k in keys)
                                  + (" · caveats " + ", ".join(f"[{c}]" for c in own_cav) if own_cav else ""))])
             head[-1] = (sid, head[-1][1].replace(f" · {len(by_ent)} rows", f" · {len(by_ent)} rows + the set's own records"))
-        foot = [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"][:8]) + (f" · and {len(g['claims']) - 8} more (detail(ids=[{sid!r}], parts=claims))" if len(g["claims"]) > 8 else ""))] if g["claims"] else []
+        foot = [(sid, ("claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"])) if len(g["claims"]) <= 8 else
+                      f"{len(g['claims'])} claims about this set: open with detail(ids=[{sid!r}], parts=[\"claims\"])")] if g["claims"] else []      # P44: more than eight claims are named by their count
         full.append(block(out_rows, head=head, foot=foot))
         rng = "; ".join(f"{names[k]} {Q.g(min(v for v, _ in vs), 3)}–{Q.g(max(v for v, _ in vs), 3)} {vs[0][1]}".strip() + f" ({len(vs)})" for k, vs in ranges.items())
         opener = (f"open with detail(ids=[{sid!r}]) or narrow with where" if g["kind"] not in ("inputs", "paper") else
@@ -722,7 +811,11 @@ def values_blocks(groups, asked):
         + ([("legend", ("caveats on every row above: " if all_spec else "caveats on every specimen row above: ") + ", ".join(f"[{c}]" for c in sorted(common_cav)))] if common_cav else [])
     tail.append(("between", CN.footer(qids, paper=groups[0]["paper"] if len({g["paper"] for g in groups}) == 1 and len(Q.TREES) > 1 and all(g["paper"] == groups[0]["paper"] for g in groups) else None)))
     full.append(block([], head=tail)); collapsed.append(block([], head=[tail[-1]]))
-    return full, collapsed, legend_cav
+    for n, vs in grid_versions.items():                                         # P80: a grid's own-row and foot travel with every collapsed version
+        for b in vs:
+            b["rows"] = ([full[n]["rows"][0]] if full[n]["rows"] and full[n]["rows"][0][0][1].startswith("set (values stated") else []) + b["rows"]
+            b["foot"] = full[n]["foot"]
+    return full, collapsed, legend_cav, grid_versions
 
 
 def set_blocks(d, budget=True):
@@ -890,8 +983,8 @@ def _run(name, args):
                 return settings_blocks(groups, args["result"], S, extras, args.get("where")), ""
             if not groups:
                 return [], ""
-            full, collapsed, legend_cav = values_blocks(groups, args["result"])
-            for blocks in (full, collapsed):
+            full, collapsed, legend_cav, grid_versions = values_blocks(groups, args["result"])
+            for blocks in (full, collapsed, *grid_versions.values()):
                 for b in blocks:
                     b["head"], b["foot"] = W(b["head"]), W(b["foot"])
                     b["rows"] = [W(r) for r in b["rows"]]
@@ -901,6 +994,7 @@ def _run(name, args):
             size = lambda b: sum(len(t) + len(i) + 4 for u in [b["head"]] + b["rows"] + [b["foot"]] for i, t in u)
             spec = [n for n in range(len(groups)) if groups[n].get("roles", ["specimen"]) == ["specimen"]]
             order = sorted(set(range(len(groups))) - set(spec), key=lambda n: -size(full[n])) + ["texts"] + sorted(spec, key=lambda n: -size(full[n]))
+            order = [x for n in order for x in ([("grid", n, j) for j in range(len(grid_versions[n]))] if n in grid_versions else [n])]   # P80: a grid folds row by row, never a column
 
             def with_legend(out, k):
                 text = "\n".join(t for b in out for u in [b["head"]] + b["rows"] + [b["foot"]] for _, t in u)
@@ -908,13 +1002,15 @@ def _run(name, args):
                 texts = "texts" not in order[:k]
                 cav = [(i, f"caveat · {legend_cav[i]}") for i in cited] if texts else \
                     ([("legend", f"the texts of the {len(cited)} caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])")] if cited else [])
-                n_sets = k - (0 if texts else 1)
+                n_sets = len({x for x in order[:k] if x != "texts" and not isinstance(x, tuple)})
                 note = [("between", f"{n_sets} of {len(groups)} sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where")] if n_sets else []
                 return out[:-1] + [block([], head=note + out[-1]["head"][:-1] + W(cav) + out[-1]["head"][-1:])]
             out = list(full)
             k = 0
             while BUDGET and k < len(order) and paginate(with_legend(out, k), 0)[-1][0] == "more":
-                if order[k] != "texts":
+                if isinstance(order[k], tuple):
+                    out[order[k][1]] = grid_versions[order[k][1]][order[k][2]]
+                elif order[k] != "texts":
                     out[order[k]] = collapsed[order[k]]
                 k += 1
             return with_legend(out, k), ""
