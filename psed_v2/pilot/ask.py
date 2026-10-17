@@ -18,6 +18,8 @@ Arms (one model, its default settings, the same for every arm; the arms of a que
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
 Number check: every number of the answer, sentence by sentence: matches (in a text cited in that sentence), elsewhere (in another
 text the model was given), not seen (in no text it was given), uncited (the sentence cites no id); and unknown ids.
+Kind check (P72): for every citation, the kind its sentence states (measured, read from a figure, computed by the authors, computed
+from other values, assumed, taken from another work) against the record's kind; --kind-check RUNS.jsonl reruns it on stored answers.
 LLM API calls are allowed only in this file, providers.py and serve.py. Runs with conda env psed310 (the vendor SDKs).
 """
 import argparse, concurrent.futures as cf, csv, datetime, json, re, sys, threading, time
@@ -29,10 +31,11 @@ sys.path.insert(0, str(HERE))
 import concept as CN  # noqa: E402
 import dump as DU  # noqa: E402
 import elements as E  # noqa: E402
+import lists as L  # noqa: E402
 import providers as P  # noqa: E402
 import query as Q  # noqa: E402
 import run_metrics as RM  # noqa: E402
-from tools import TOOLS, run_tool, open_target, short_name  # noqa: E402
+from tools import TOOLS, KIND_MARK, run_tool, open_target, short_name  # noqa: E402
 
 RUNS = HERE / "runs"
 ARMS = ["model", "text", "kb", "dump"]
@@ -229,6 +232,77 @@ def number_check(text, arm, given):
                 unknown_ids=len(unknown), unknown=unknown, cited=cited, per_number=rows)
 
 
+# ---------------------------------------------------------------------------------------------------------------- kind check (P72)
+# How an answer may word a kind: the ontology's phrase table and the SHARED prompt's kind words (measured, read from a figure,
+# computed by the authors, computed from other values, assumed, taken from another work), with the wordings a model derives from
+# them; 'computed here' is the wording of runs stored before P57. Measured and stated are one class (lists.UNMARKED, P57).
+STATED_KIND = [
+    ("computed_by_authors", r"(computed|calculated|fitted|fit|derived|estimated|obtained|determined) by (the )?(paper'?s? |study'?s? )?authors|authors'? (own )?(computed|calculated|fit|calculation|estimate|derived|reported)|paper'?s? (own )?(calculation|fit|estimate)"),
+    ("computed_by_kb", r"computed (from other values|by (this|the) knowledge[- ]base|here)|knowledge[- ]base[- ](computed|derived|calculated)|\bkb[- ](computed|derived|calculated)|computed by (the )?kb\b|derived (here|from other values|by (this|the) knowledge base)|calculated (here|from other values)"),
+    ("read_from_figure", r"read (off|from) (a |the )?(figure|fig\.?|plot|graph|curve|panel|image)|from (a |the )?figure"),
+    ("assumed", r"\bassumed\b|\bassumption\b"),
+    ("cited", r"taken from another work|from (another|other|a different) work|\bcited\b|literature value|from (the )?literature"),
+    ("model_input", r"model input|simulation input|model parameter|input to the model"),
+    ("stated", r"\bstated\b|\breported\b|\bquoted\b"),
+    ("measured", r"\bmeasured\b"),
+]
+RECORD_KIND = {p: k for k, p in L.PHRASES.items()}
+RECORD_KIND["computed here"] = "computed_by_kb"
+MARK_KIND = {m: k for k, m in KIND_MARK.items()}
+
+
+def _fold(ks):
+    return {"measured" if k in L.UNMARKED else k for k in ks}
+
+
+def record_kinds(i, text):
+    """The kinds of a cited id: a fact's stored kind (the data); for an entity, a set or an element the kind phrases and marks in
+    the text the model was given for it."""
+    k = i.split(":")[0]
+    if k in Q.TREES and i in Q.TREES[k].byid and "#" in i and Q.TREES[k].byid[i].get("data_kind"):
+        return {Q.TREES[k].byid[i]["data_kind"]}
+    out = set()
+    for m in re.finditer(r"(?<!set )kinds?: ([^·\)\]]+)", text or ""):
+        out |= {RECORD_KIND[p.strip().rstrip(":")] for p in m.group(1).split(";") if p.strip().rstrip(":") in RECORD_KIND}
+    out |= {MARK_KIND[m.group(1)] for m in re.finditer(r"\((k\d+)\)", text or "") if m.group(1) in MARK_KIND}
+    return out
+
+
+def kind_check(text, given):
+    """Post-hoc, beside the number check (P72): for every cited id, the kinds the sentence (or table row) around the citation states,
+    matched against the phrase table, against the record's kind; a mismatch when the sentence states a kind and none of its kinds is
+    the record's (measured and stated one class). Returns dict(mismatches, checked, per_id)."""
+    rows, checked = [], 0
+    for sent, ids in sentences(text):
+        low = sent.lower()
+        stated = {k for k, rx in STATED_KIND if re.search(rx, low)}
+        if not stated or not ids:
+            continue
+        for i in dict.fromkeys(ids):
+            rk = record_kinds(i, given.get(i, ""))
+            if not rk:
+                continue
+            checked += 1
+            if not (_fold(stated) & _fold(rk)):
+                rows.append(dict(id=i, stated=sorted(stated), record=sorted(rk), sentence=sent.strip()[:300]))
+    return dict(mismatches=len(rows), checked=checked, per_id=rows)
+
+
+def kind_recheck(path, arm=None):
+    """The kind check on the stored answers of a run file, from each record's cited texts (no model call); prints per record."""
+    out = []
+    for line in Path(path).open(encoding="utf-8"):
+        r = json.loads(line)
+        if arm and r["arm"] != arm:
+            continue
+        kc = kind_check(r["answer"], {i: v["text"] for i, v in r.get("cited", {}).items()})
+        out.append(kc)
+        print(f"{len(out):3d} {ARM_NAMES.get(r['arm'], r['arm']):15s} {kc['checked']} citations with a stated kind · {kc['mismatches']} mismatches")
+        for x in kc["per_id"]:
+            print(f"      {x['id']}: stated {', '.join(x['stated'])} · record {', '.join(x['record'])} · {x['sentence'][:120]}")
+    return out
+
+
 def words(text):
     """The answer's word count: id markers, table rules and lone punctuation are not words (P37)."""
     t = MARK.sub(" ", text or "").replace("|", " ")
@@ -333,10 +407,11 @@ def run_arm(arm, question, model):
         error = f"{type(e).__name__}: {e}"
     nc = number_check(text, arm, given)
     proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
+    kc = kind_check(text, given)                                              # P72: the stated kind of every citation against the record's
     return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
-                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, process=proc, words=words(text),
-                check_line=check_line(nc, words(text)) + process_line(proc), usage=usage, model_calls=calls, retries=retries,
+                number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, kind_check=kc, process=proc, words=words(text),
+                check_line=check_line(nc, words(text)) + f" · {kc['mismatches']} kind mismatches" + process_line(proc), usage=usage, model_calls=calls, retries=retries,
                 cost=cost_of(model, usage), seconds=round(time.time() - t0, 1), error=error)
 
 
@@ -403,9 +478,12 @@ if __name__ == "__main__":
     ap.add_argument("question", nargs="?")
     ap.add_argument("--questions"); ap.add_argument("--out"); ap.add_argument("--model"); ap.add_argument("--arms", default="model,text,kb")
     ap.add_argument("--max-cost", type=float, default=20.0); ap.add_argument("--max-calls", type=int, default=200)
+    ap.add_argument("--kind-check", metavar="RUNS.jsonl", help="the kind check (P72) on the stored answers of a run file; no model call")
     a = ap.parse_args()
     model, arms = a.model or P.default_model(), a.arms.split(",")
-    if a.questions:
+    if a.kind_check:
+        kind_recheck(a.kind_check)
+    elif a.questions:
         batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_calls)
     elif a.question:
         for r in ask(a.question, model, arms):
