@@ -658,11 +658,15 @@ def check_structure():
                     resid.append(f"{r['fact_id']} [{r['label_as_printed']}]")
         # the porous-body transform: body_thickness = feature_depth × entry_sides
         bt = [f for f in T.rows if f["quantity"] == "body_thickness" and f["value"]]
-        L_ = [f for f in T.rows if f["quantity"] == "feature_depth" and f["type"] == "setting" and f["value"]]
         sides = [f for f in T.rows if f["quantity"] == "entry_sides" and f["value_text"]]
         for b in bt:
-            if not L_ or not sides:
-                err.append(f"{b['fact_id']}: body_thickness without feature_depth or entry_sides to check it against (P78)"); continue
+            e = T.ent_of(b["fact_id"]) or next((x for x in T.chain(b["fact_id"]) if T.byid[x]["type"] == "activity"), None)
+            vec = T.vector(e) if e else {}
+            L_ = [g for kk, gs in vec.items() if kk.split("{")[0] == "feature_depth" for g in gs if g["value"]]
+            if not L_:                                                          # no depth on the same entity or activity: nothing to pair (a membrane as made)
+                continue
+            if not sides:
+                err.append(f"{b['fact_id']}: body_thickness and feature_depth without entry_sides to relate them (P78)"); continue
             n_sides = {"one": 1, "two": 2}[sides[0]["value_text"]]
             depth = L.convert(C.num(L_[0]["value"]), L_[0]["unit"], b["unit"])
             tol = C.num(b["uncertainty"]) if b["uncertainty"] else 0.5 * 10 ** -len(b["value"].split(".")[1]) if "." in b["value"] else 0.5

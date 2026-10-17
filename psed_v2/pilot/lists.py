@@ -162,7 +162,7 @@ UNIT_ALIAS = {"g/cm^3": "g/cm3", "mΩ cm": "mOhm cm", "cm2 V-1 s-1": "cm2/Vs", "
               "at. %": "%", "at.%": "%", "wt%": "%", "SCCM": "sccm", "at/nm2/cycle": "nm-2", "kg m-3": "kg/m3", "mol-1": "1/mol", "nm^-2": "nm-2"}
 UNIT_BASE = {"pm": ("length", 1e-3), "Å": ("length", 0.1), "nm": ("length", 1.0), "µm": ("length", 1e3), "mm": ("length", 1e6), "cm": ("length", 1e7),
              "m": ("length", 1e9), "s": ("time", 1.0), "min": ("time", 60.0), "h": ("time", 3600.0), "Pa": ("pressure", 1.0), "hPa": ("pressure", 100.0), "mTorr": ("pressure", 0.133322),
-             "Torr": ("pressure", 133.322), "Pa s": ("exposure", 1.0), "Torr s": ("exposure", 133.322), "g/cm3": ("density", 1.0), "kg/m3": ("density", 1e-3),
+             "Torr": ("pressure", 133.322), "Pa s": ("exposure", 1.0), "Torr s": ("exposure", 133.322), "L": ("exposure", 1.33322e-4), "g/cm3": ("density", 1.0), "kg/m3": ("density", 1e-3),
              "mol": ("amount", 1.0), "mmol": ("amount", 1e-3), "µmol": ("amount", 1e-6), "%": ("fraction", 0.01), "": ("fraction", 1.0),
              "°C": ("temperature", 1.0), "K": ("temperature", 1.0), "g/mol": ("molar mass", 1.0), "g": ("mass", 1.0), "nm-2": ("areal density", 1.0),
              "Ω cm": ("resistivity", 1.0), "mOhm cm": ("resistivity", 1e-3), "Ω m": ("resistivity", 100.0), "Ω/sq": ("sheet resistance", 1.0), "nm/h": ("rate", 1.0), "1/mol": ("per mole", 1.0),

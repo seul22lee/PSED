@@ -19,7 +19,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23"}
+PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23",
+          "10.1021_cm0303080": "ela03"}   # P83: the nine papers of directive 5 join one by one
 # lettered panels per figure, read from the crops ("" = the figure is one panel)
 PANELS = {
     "10.1039_d0cp03358h": {"1": "abc", "2": "abcd", "3": "ab", "4": "abc", "5": "ab", "6": "", "7": "", "8": "ab",
@@ -27,6 +28,7 @@ PANELS = {
     "10.1021_acs.chemmater.2c01154": {"1": "abcd", "2": "", "3": "ab", "4": "", "5": "ab", "6": "ab", "7": "ab", "8": "",
                                       "9": "ab"},
     "10.1116_6.0003182": {"1": "ab", "2": "abcd", "3": "abc", "4": "abcd", "5": "", "6": "abcdef"},
+    "10.1021_cm0303080": {"1": "ab", "2": "ab", "3": "", "4": "", "5": "ab", "6": "ab", "7": "ab", "8": "ab", "9": "ab", "10": "ab", "11": "ab", "12": "ab", "13": ""},
 }
 FIELDS = ["element_id", "kind", "section", "locator", "n_numbers", "n_chars", "crop"]
 NUM = re.compile(r"(?<![\w.])[-−]?\d+(?:[.,]\d+)?(?:\s*[×x]\s*10\^?\{?[-−]?\d+\}?)?(?:[eE][-−+]?\d+)?")

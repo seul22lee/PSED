@@ -47,7 +47,7 @@ TOTAL_WALL = 20         # every call of a question, executed or not (P75)
 ERROR_WALL = 5          # calls of a question that returned an error (P75)
 
 # ---------------------------------------------------------------------------------------------------------------- prompts (fixed)
-SHARED = """You answer questions from atomic layer deposition (ALD) researchers about three papers:
+SHARED = """You answer questions from atomic layer deposition (ALD) researchers about {n} papers:
 {papers}
 Answer in English. Start with a direct answer in one or two sentences, then give the evidence.
 For every number, give its unit and the conditions it was obtained under (material, process, temperature, structure or substrate, how it was measured), and say whether it was measured, read from a figure, computed by the authors, computed from other values, assumed, or taken from another work.
@@ -56,9 +56,9 @@ Keep the answer under 400 words, tables included. Give the values that answer th
 
 ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
-    "text": "The full text of the three papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
-    "kb": "You have tools that query a structured knowledge base built from the three papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool.",
-    "dump": "The whole structured knowledge base built from the three papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
+    "text": "The full text of the papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
+    "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool.",
+    "dump": "The whole structured knowledge base built from the papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
 
 
@@ -121,7 +121,7 @@ def dump_text():
 def system_prompt(arm):
     """SHARED with the paper lines; for the Knowledge base arm also the L0 map generated from the data and the descend protocol (P70;
     concept.l0_map, concept.DESCEND); then the arm's own text (and, for Paper text, the pieces; for KB dump, the serialization)."""
-    s = SHARED.format(papers=paper_lines())
+    s = SHARED.format(papers=paper_lines(), n=len(Q.KEY))
     if arm == "kb":
         s += "\n\n" + CN.l0_map() + "\n\n" + CN.DESCEND
     s += "\n\n" + ARM_PROMPT[arm]

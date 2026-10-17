@@ -30,6 +30,14 @@ def load():
     return onto, pmap
 
 
+def pending():
+    """ontology/pending.csv (P83): provisional extension entries a paper needed and nothing fitted (id, kind quantity | species | structure |
+    method | model | mechanism, unit, role, class, definition, citation, cq, paper, records, status). Emitted into the vocabulary
+    provisionally (ENTRIES carry pending: True) until the chat approves, renames or rejects them; never frozen."""
+    f = HERE / "pending.csv"
+    return [r for r in csv.DictReader(f.open(newline="", encoding="utf-8"))] if f.exists() else []
+
+
 def qualifier_values(q, species=(), materials=()):
     v = q.get("values")
     if isinstance(v, list):
@@ -42,8 +50,20 @@ def qualifier_values(q, species=(), materials=()):
 
 
 def build(onto, pmap):
-    entries = onto["entries"]
+    entries = list(onto["entries"])
     voc = onto["vocabularies"]
+    pend = pending()
+    for r in pend:                                                              # P83: pending entries join the vocabulary provisionally
+        e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
+                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r["id"].replace("_", " "), aliases=[], pending=True,
+                 category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
+        if r["kind"] == "species":
+            e.update(kind=r.get("class") or "molecule", formula=r["id"].upper() if r["id"] == "sicl4" else "", aliases=[r["id"].upper()])
+        if r["kind"] == "structure":
+            e["class"] = r.get("class", "")
+        if r["kind"] == "model":
+            e.update(model_type=r.get("class", ""), parameters=[], category="models")
+        entries.append(e)
     live = [e for e in entries if not e.get("replaced_by")]
     concepts = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and not e.get("attribute"))
     attributes = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and e.get("attribute"))
@@ -60,7 +80,7 @@ def build(onto, pmap):
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
-    methods = voc["measurement_method"]
+    methods = list(voc["measurement_method"]) + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=True) for r in pend if r["kind"] == "method"]
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"]) for k, q in onto["qualifiers"].items()}
     families = {}
     for e in live:
@@ -89,7 +109,7 @@ def build(onto, pmap):
         ENTRIES={e["id"]: dict(type=e["type"], role=e.get("role", ""), category=e.get("category", ""), definition=e.get("definition", ""), unit=str(e.get("unit", "")),
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
-                               dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""))
+                               dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")))
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78
@@ -97,6 +117,7 @@ def build(onto, pmap):
         AMBIGUOUS_ALIASES={a: [str(x) for x in v] for a, v in voc.get("ambiguous_aliases", {}).items()},
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
+        PENDING={r["id"]: dict(kind=r["kind"], paper=r["paper"], status=r["status"]) for r in pend},
     )
 
 
@@ -116,7 +137,7 @@ def main():
         return 0 if ok else 1
     OUT.write_text(text, encoding="utf-8")
     v = build(onto, pmap)
-    print(f"{OUT}: {len(v['CONCEPTS'])} concepts, {len(v['ATTRIBUTES'])} attributes, {len(v['TO_ABSORB'])} pilot quantity ids to absorb, "
+    print(f"{OUT}: {len(v['CONCEPTS'])} concepts, {len(v['ATTRIBUTES'])} attributes, {len(v['TO_ABSORB'])} pilot quantity ids to absorb, {len(v['PENDING'])} pending, "
           f"{len(v['METHODS'])} methods, {len(v['MATERIALS'])} materials, {len(v['STRUCTURES'])} structures, {len(v['SPECIES'])} species, "
           f"{len(v['MECHANISMS'])} mechanisms, {len(v['QUALIFIERS'])} qualifier keys")
     if v["TO_ABSORB"]:

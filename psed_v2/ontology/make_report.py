@@ -240,7 +240,19 @@ def run_checks(onto: dict, unmapped_rows=()) -> list[tuple[str, bool, str]]:
     bad += [f"structure_class vocabulary {sorted(set(voc.get('structure_class', [])) ^ set(classes))}"] if set(voc.get("structure_class", [])) != set(classes) else []
     out.append(("13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots",
                 not bad, f"problems: {bad}" if bad else f"{len(classes)} classes, {len(slot_ids)} slot entries, {sum(1 for e in entries if e['type'] == 'structure')} structure instances"))
+
+    pend = pending_rows()                                                        # P83: provisional entries, not frozen
+    bad = [r["id"] for r in pend if r["id"] in ids] + [r["id"] for r in pend if r["kind"] not in ("quantity", "species", "structure", "method", "model", "mechanism")]
+    bad += [r["id"] for r in pend if not (r["definition"] or "").strip() or not (r["citation"] or "").strip() or r["status"] != "pending"]
+    bad += [r["id"] for r in pend if r["kind"] == "structure" and r.get("class") not in classes]
+    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition, a citation and status pending, clash with no entry, and a pending structure names a class",
+                not bad, f"problems: {bad}" if bad else f"{len(pend)} pending: " + ", ".join(f"{r['id']} ({r['kind']}, {r['paper']})" for r in pend)))
     return out
+
+
+def pending_rows():
+    f = HERE / "pending.csv"
+    return list(csv.DictReader(f.open(newline="", encoding="utf-8"))) if f.exists() else []
 
 
 def graph_svg(onto: dict) -> str:
@@ -461,6 +473,7 @@ Hover a node for its definition.</p>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
 <h2>3c. Families</h2>{table(["family", "members", "what they answer"], family_rows(onto))}
 <h2>3d. Proposals</h2>{table(["what", "why", "citation", "decision", "decision reason"], proposal_rows)}
+<h2>3e. Pending entries (P83; provisional, not frozen)</h2>{table(["id", "kind", "unit", "role", "class", "definition", "citation", "CQ", "paper", "records", "status"], [[r["id"], r["kind"], r["unit"], r["role"], r["class"], r["definition"], r["citation"], r["cq"], r["paper"], r["records"], r["status"]] for r in pending_rows()])}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}
 <h2>6. Unmapped</h2>{unmapped_html}

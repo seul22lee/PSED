@@ -1574,3 +1574,24 @@ order (P60 6bca84b … P67 1071261, P68 85c2a97, P69 3aa30be, P70 a38bbd5, P71 d
   wait for the next evaluation run; the stored A10_v2 records were re-read for P72, P73 and P74.
 - Known from the kind check on A10_v2: question 6 credited the knowledge base's fits to the authors; question 5 called a
   measured value 'read from figure'.
+
+## 2026-10-17 STOP
+
+Directive 5 (expansion to 12 papers) stopped by the user on 2026-10-17 after P82; the pilot is to be rebuilt with ingest-level figure
+extraction (next directive).
+- Papers done: the three pilot papers (10.1021_acs.chemmater.2c01154 gre23, 10.1039_d0cp03358h yim20, 10.1116_6.0003182 mat22) through
+  P82 (commit 5f9d4e0: reactor names are records of `reactor`, channel_length superseded by feature_depth, check_mechanisms).
+- Elam 2003 (P83, 10.1021_cm0303080, key ela03): a DRAFT, committed as it stands (commit "P83 (partial)"). pilot/10.1021_cm0303080.facts.py
+  (469 facts, 92 tree rows, 155 of 210 elements covered) with its elements, coverage, facts, experiments csv and points.json; the last
+  check run left 2 problems (one eight-word repeat at s3.p25#2; the sim_regime set table lists the two H facts s5.x2#1/#2 that
+  values(result=q) does not, because results_deep of a run entity omits them) plus the check_structure rule change (body_thickness
+  paired with the feature_depth of the fact's own entity, needed by Elam's several membrane thicknesses; the pilot papers stay green).
+  ontology/pending.csv holds its 6 provisional entries (status pending, all from 10.1021_cm0303080): sicl4 (species), anodic_alumina_membrane
+  (structure, class nanopore_membrane), epma (method, class eds), ftir (method, class ir_spectroscopy), elam_monte_carlo (model),
+  pore_density (quantity, cm-2); ontology/export.py merges them into vocab.py as pending, make_report.py check 14 and section 3e list them.
+  pilot/absorption.py is the absorption-line writer: `python3 pilot/absorption.py <paper_id>` appends one line to ontology/absorption.csv
+  (paper, records, direct, alias, qualifier, new_pending, attribute, dropped, unmapped) from the paper's facts against the vocabulary;
+  it has not been run, so ontology/absorption.csv does not exist yet.
+- Not started (8): 10.1002_cvde.200390005 Gordon 2003, 10.1063_1.5028178 Ylilammi 2018, 10.1116_1.4903941 Gao 2015,
+  10.1021_acs.jpcc.9b08176 Arts 2019, 10.1039_d1cp04758b Yim 2022, 10.1039_d3cp05639b Heikkinen 2024, 10.1116_6.0002993 Mathew 2023,
+  10.1116_6.0002804 van der Zouw 2023. P84 and the kb-12 bundle not started.
