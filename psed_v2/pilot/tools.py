@@ -573,7 +573,7 @@ def settings_blocks(groups, result, S, extras, where=None):
             lines.append((f"{k}:settings", f"{short_name(k)} states no {name} as a setting" + (" under this where" if where else "")))
         ex = extras.get(k, {})
         for kk, d in ex.get("derived", {}).items():
-            if kk in L.DERIVED and kk not in L.SETTINGS_ENTRIES:
+            if kk in L.DERIVED and kk not in Q.settings_entries():
                 how = f'open with values(result="{d["name"]}", paper="{k}")'
             else:
                 how = 'open with detail(ids=[…], parts=["computed"]) on its experiments: ' + ", ".join(d["entities"])
@@ -688,8 +688,8 @@ def set_blocks(d, budget=True):
     the columns), one first row 'set' for the records the set owns when it has any, then one row per member of the full list (its label,
     its distinguishing conditions, one cell per column as values() prints cells (_cell), the caveat ids of its records); a value
     computed by this knowledge base is counted in one line, not a column. Over the budget the columns collapse from the last into one
-    line naming them and how to open each (values(result=<name>, paper=<paper>)); rows are never dropped; the caveat texts go last
-    of all. Then the legends, the caveat texts once and the cross-paper footer (P67)."""
+    line naming them and how to open each (values(result=<name>, paper=<paper>)); rows are never dropped; the caveat texts go first
+    (P78a, the P65 order). Then the legends, the caveat texts once and the cross-paper footer (P67)."""
     T = Q.TREES[d["paper"]]
     cols = list(d["columns"])
 
@@ -732,7 +732,7 @@ def set_blocks(d, budget=True):
             + [("between", CN.footer(sorted({k.split("{")[0].split("[")[0] for k, _ in shown} & set(L.ENTRIES)), paper=d["paper"] if len(Q.TREES) > 1 else None))]
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
         return [block([W([r]) for r in rows], head=W(head), foot=W(foot)), block([], head=W(tail))]
-    steps = [(cols[:n], True) for n in range(len(cols), -1, -1)] + [([], False)]
+    steps = [(cols, True)] + [(cols[:n], False) for n in range(len(cols), -1, -1)]      # P78a: the caveat texts go before any column (the P65 order)
     for shown, texts in steps:
         out = render(shown, texts)
         if not budget or paginate(out, 0)[-1][0] != "more":

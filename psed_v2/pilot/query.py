@@ -1039,6 +1039,11 @@ def experiments(T):
     return [e for e in T.entities() if (role(T, e) == "specimen" and T.byid[T.byid[e]["parent"]]["type"] == "activity") or role(T, e) == "model run"]
 
 
+def inputs(T):
+    """The input entities of a paper (P79): things measured before any deposition (chips as fabricated, compacts as pressed), pieces of them included."""
+    return [r["fact_id"] for r in T.rows if r["type"] == "entity" and role(T, r["fact_id"]) == "input"]
+
+
 def distinguishing(T, ent, peers, n=2):
     """The 1-2 conditions that tell an entity from its peers: the condition keys whose values differ among them, process-defining
     first (lists.PRIMARY), then the rest."""
@@ -1602,26 +1607,46 @@ def derived_names():
     return _DERIVED_NAMES
 
 
+_SETTINGS = set()
+
+
+def settings_entries():
+    """The entries that are settings in the data (P76, P78a): every condition entry of the ontology (role condition) with a stated
+    setting fact (type setting) in some paper, whatever node it sits under: materials and reactants, reactor, process parameters, test
+    structure and measurement settings (objective, probe spot) alike. An output with a stated target (film_thickness{kind=target}) is
+    not a setting entry: its records are results."""
+    if not _SETTINGS:
+        for T in TREES.values():
+            for f in T.rows:
+                if f["type"] == "setting" and f["quantity"] in L.ENTRIES and L.ENTRIES[f["quantity"]].get("role") == "condition":
+                    _SETTINGS.add(f["quantity"])
+    return _SETTINGS
+
+
 def settings_entry(result):
-    """The settings entry a values request names (P76), else '': an entry under process_parameters, ald_reactor or test_structure
-    (lists.SETTINGS_ENTRIES) given by id, key, name, alias or concept resolution. A request that is exactly the id or the name of a
-    derived definition with an id of its own (effective channel height, exposure per run) names that derived quantity, not the entry;
-    a derived definition whose id is the entry's (cycle_time, exposure: the knowledge base computes the setting itself) is the entry."""
+    """The settings entry a values request names (P76, P78a), else '': an entry that is a setting in the data (settings_entries) given
+    by id, key, name, alias or concept resolution. A request that is exactly the id or the name of a derived definition with an id of
+    its own (effective channel height, exposure per run) names that derived quantity, not the entry; a derived definition whose id is
+    the entry's (cycle_time, exposure: the knowledge base computes the setting itself) is the entry."""
     r = (result or "").strip()
     base = r.split("{")[0].split("[")[0]
     d = derived_names()
-    if r in d and d[r] not in L.SETTINGS_ENTRIES:
+    S = settings_entries()
+    if r in d and d[r] not in S:
         return ""
     qs = [base] + [q for q, n in L.NAMES.items() if n == r and "{" not in q] + concept_ids(r)
-    return next((q for q in qs if q in L.SETTINGS_ENTRIES), "")
+    return next((q for q in qs if q in S), "")
 
 
 def setting_matches(T, e, result, S):
     """[(key, name, record)] of an entity's stated conditions for a settings entry (P76): its condition records whose key is the entry's
     (or the exact key or name asked), a target excluded; never a result and never a value computed by this knowledge base."""
     hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] == S
-    return [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
-            and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
+    out = [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
+           and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
+    if not out and L.ENTRIES.get(S, {}).get("category") == "measurement":      # P78a: a measurement setting (objective, probe spot) lives on the entity's measurement activities
+        out = [(kk, name_of(kk, f), record(T, f, ent=e)) for kk, (_, f) in measurement_settings(T, e).items() if hit(kk, name_of(kk, f))]
+    return out
 
 
 def setting_extras(S, result, paper=None, where=None):

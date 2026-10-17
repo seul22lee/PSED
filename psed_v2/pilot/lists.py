@@ -13,26 +13,6 @@ from vocab import (CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED,
                    LABELS as _LABELS, NAMES as _NAMES)
 
 
-# the settings entries (P76): the condition entries under the hierarchy nodes process_parameters (with cycle_step and deposition_run),
-# ald_reactor and test_structure; a values request for one of them is rendered as a settings table, never as a specimen list
-SETTINGS_NODES = {"process_parameters", "ald_reactor", "test_structure"}
-
-
-def _under(nodes):
-    parent = {h["id"]: h["parent"] for h in HIERARCHY}
-    out = set()
-    for i in parent:
-        j = i
-        while j:
-            if j in nodes:
-                out.add(i); break
-            j = parent.get(j, "")
-    return out
-
-
-SETTINGS_CATEGORIES = _under(SETTINGS_NODES)
-SETTINGS_ENTRIES = {i for i, e in ENTRIES.items() if e.get("category") in SETTINGS_CATEGORIES and e.get("role") == "condition"}
-
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
 # ones (an entity that states no temperature is not the same experiment as one that does)
 PRIMARY = ["reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",

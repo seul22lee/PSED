@@ -641,9 +641,9 @@ def check_calls():
 
 
 def settings_probes():
-    """[(entry, paper)] for every settings entry (lists.SETTINGS_ENTRIES) with stated conditions in a paper (P76)."""
+    """[(entry, paper)] for every settings entry of the data (query.settings_entries, P78a: whatever node) with stated conditions in a paper (P76)."""
     import query as Q
-    return [(S, k) for S in sorted(L.SETTINGS_ENTRIES) for k, T in Q.TREES.items() if any(Q.setting_matches(T, e, S, S) for e in Q.experiments(T))]
+    return [(S, k) for S in sorted(Q.settings_entries()) for k, T in Q.TREES.items() if any(Q.setting_matches(T, e, S, S) for e in Q.experiments(T))]
 
 
 def joined(lines):
@@ -682,7 +682,7 @@ def check_settings():
             err.append(f"values({S}, {k}): {n_rows} level rows against {len(levels)} distinct levels in the data (P76)")
         if f"({tools.KIND_MARK['computed_by_kb']})" in "\n".join(t for _, t in js):
             err.append(f"values({S}, {k}): a value computed by this knowledge base (k3) in a settings output (P76)")
-    print(f"== settings tables (P76): {len(L.SETTINGS_ENTRIES)} settings entries under {', '.join(sorted(L.SETTINGS_NODES))}; {len(probes)} (entry, paper) pairs with stated conditions; max {size} tokens per table")
+    print(f"== settings tables (P76): {len(Q.settings_entries())} settings entries in the data (whatever node, P78a); {len(probes)} (entry, paper) pairs with stated conditions; max {size} tokens per table")
     return err
 
 
