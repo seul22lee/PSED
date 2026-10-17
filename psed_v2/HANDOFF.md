@@ -1,4 +1,4 @@
-# Handoff (2026-10-17; tag ask-v3.1 = ask-v3 plus the call economy rows P75–P77; before that tag ask-v2 plus the representation stage P49–P59: the ontology adopted as the pilot's one vocabulary, substances, dispositions, the composition family, comparability as data, structured claims, the sentence-only check, caveats by reference, one kind vocabulary, the attribute tier and the representation metrics)
+# Handoff (2026-10-17; tag ask-v4 = ask-v3.1 plus the storage integrity rows P78a, P78–P81; ask-v3.1 = ask-v3 plus the call economy rows P75–P77; before that tag ask-v2 plus the representation stage P49–P59: the ontology adopted as the pilot's one vocabulary, substances, dispositions, the composition family, comparability as data, structured claims, the sentence-only check, caveats by reference, one kind vocabulary, the attribute tier and the representation metrics)
 
 For a new session on branch `v2`. Read `psed_v2/CLAUDE.md` first; this page adds what the last sessions built and learned. It is
 also the one text file of the pilot: the facts plan, the pipeline decisions, the case candidates and the Cremers notes are
@@ -134,8 +134,13 @@ questions are a regression test only.
 - P73. `prices.csv` holds miss, cache-hit and output prices for peak and off-peak (DeepSeek's 16:30–00:30 UTC window) and `ask.py` prices cache-read tokens at the hit rate by the record's time; the stored A10_v2 run recomputes to its billed figure.
 - P74. `run_metrics.py RUNS.jsonl` reports per question and total calls, executed, refused, duplicates, tool output tokens, re-delivered share, delivered and cited ids, utilization, words and cost, and rewrites the run's summary.csv with those columns; its definitions reproduce the A10_v2 reference numbers.
 - P75. Only an executed call counts toward the 10-call cap; an error (unresolved name, bad argument, nothing matches) or an identical call costs nothing; two walls end a question's calls, 20 calls in all and 5 error calls, each refusal naming its wall; `run_metrics.py` adds errors, identical and wall_hit per question with the P74 columns unchanged.
-- P76. A settings entry (a condition entry under process_parameters, ald_reactor or test_structure: `lists.SETTINGS_ENTRIES`) renders in `values` as a settings table per paper, one row per distinct level or coupled-level combination with its fact ids and the count and set ids of the specimens using it, never a specimen list and never a k3 column; a derived sibling is named in one line with how to open it.
+- P76. A settings entry (a condition entry with a stated setting in the data, whatever node: `query.settings_entries`, P78a) renders in `values` as a settings table per paper, one row per distinct level or coupled-level combination with every fact that states it and the count and set ids of the specimens using it, never a specimen list and never a k3 column; a derived sibling is named in one line with how to open it.
 - P77. `values(set=<id>)` (and `detail` part `table`) renders one table for a comparison set: rows the full member list (every grid cell, nested sets expanded) plus a 'set' row for the records it owns, columns every result quantity in ontology order, cells as `values` prints them; over the budget the last columns collapse into one line naming them, rows never drop.
+- P78a. The settings-table rule keys on the data's stated conditions whatever node; `set_blocks` hides caveat texts before collapsing a column; the one token measure of the probe battery is the figure `check.py` prints (68,767 at ask-v3.1); `values_sizes_baseline.csv` holds the ask-v3.1 size of every `values(result, paper)` call.
+- P78. The ontology has a structure taxonomy (`structure_classes`: planar; har_feature with trench, via_hole, lateral_channel; porous_body with nanoparticle_compact, aerogel_monolith, nanopore_membrane) with dimension slots per class, five slot entries (body_thickness, entry_sides, particle_diameter, specific_surface_area, body_diameter) and the transform body_thickness = feature_depth × entry_sides; every specimen and input entity carries `structure_class`; a free-label record that describes the structure and names a slot is re-keyed to it by rule (`facts.rekey_structure_dimensions`); `check_structure` and ontology check 13 hold it.
+- P79. Every value record has a home in `values`: input rows, aggregate rows (a replicate set's own records), a first 'set' row per set block, paper-level rows, every record of a key in its cell (alternatives), a stated target as a column, orphan spreads as records, every fact of a settings level cited; `homeless.py` lists what no `values` output renders and `check_homes` asserts 0; `run_metrics` carries homeless_records.
+- P80. A grid set renders from its full member list as one matrix per quantity (rows the first axis's levels, columns the second's, every record per cell, untested combinations counted, levels without a value left out and counted), same-process variants per cell, child series named in one line and never printed as groups; over the budget row levels fold from the last, never a column; `check_grids` proves cells, children and the ask-v3.1 sizes.
+- P81. A concept card counts per paper the value records by home, settings, claims and derived records, prints 'not studied in' only when all are zero and 'derivable in p from <inputs> (<kinds>)' when a transform's inputs are present; the footer and the L0 map read the same counts; `check_cards` proves the numbers against the page data.
 
 ## Design principles
 - Why the representation stage (P49–P59) exists: evaluation runs with a cheap model showed four failure classes, and each fix is a
@@ -366,6 +371,7 @@ python3 psed_v2/pilot/questions.py                    # the 26 questions through
 python3 psed_v2/pilot/concept.py "penetration depth"  # the concept lines (P63); --map prints the L0 map and the descend protocol with the token count (P70)
 python3 psed_v2/pilot/dump.py [--out FILE]            # the knowledge base serialized once: token size, line and record counts (P71)
 python3 psed_v2/pilot/run_metrics.py RUNS.jsonl       # process metrics per question and total; rewrites RUNS.summary.csv (P74)
+python3 psed_v2/pilot/homeless.py                     # the value records no values() output renders, by paper, kind and home needed; must be 0 (P79)
                                                       #   with errors, identical and wall_hit (none/total/errors) per question (P75)
 python3 psed_v2/pilot/ask.py --kind-check RUNS.jsonl  # the kind check on stored answers, no model call (P72)
 python3 psed_v2/pilot/ask.py --recost RUNS.jsonl      # a stored run's cost recomputed from its token counts with prices.csv (P73)
@@ -1518,6 +1524,27 @@ Notes from reading Cremers et al., Appl. Phys. Rev. 6, 021302 (2019). The factua
 
 #### 9. Growth type classification (Fig. 4)
 - The concept of telling diffusion-, reaction- and recombination-limited growth apart by profile shape (Sec. II F). Together with case N7 (parameter sensitivity), it gives a case that classifies "which type is this process" across the literature.
+
+## Resume state (2026-10-17, end of directive 4, tag ask-v4)
+
+Directive 4 (storage integrity, bundle II: P78a, P78–P81) is complete on top of ask-v3.1: one row per problem in pilot/problems.csv,
+one commit each (P78a a0a730a, P78 ff48619, P79 208e416, P80 82e7e08, P81 9026a04), then this HANDOFF commit, tagged ask-v4. No stash;
+working tree clean.
+- Checks at every commit: pilot/check.py all sections OK (new sections structure P78, cards P81, grids P80, homes P79; the kinds section
+  scans 132 probes: 57 original + 54 settings pairs + 21 sets); questions.py 26 answered (questions.csv unchanged but for its change log);
+  ontology/make_report.py 13 checks (check 13 the structure classes); the page rebuilds and its const D is what homeless.py reads.
+- Probe battery tokens (the check.py figure): 68,767 at ask-v3.1 → 74,462 at ask-v4 (the settings probes grew by 7 entries, every
+  level cites every fact, the set rows and input rows are new; the grid paper's values calls fell 13,533 → 11,863 over 15 calls).
+- Counts: other[...] records 122 → 111 (labels 97 → 91), 30 residual free labels with a length unit, none a structure dimension the
+  rule covers (channel lengths scanned, nanostep and membrane bending, pillar geometry, hydraulic diameter, specimen sizes, instrument
+  settings, profile widths); homeless value records 343 → 0 of 871 (page data, fact ids deduplicated; the directive's 259 counted
+  differently); the mat22 grid: 32 cells in an 8 × 7 matrix with 24 untested combinations, 8 child views, 14 variant specimens;
+  16 (entry, paper) card texts changed from 'not studied in' (15 derived counts, 1 derivable line).
+- Open: values(set=<grid id>) keeps the P77 member table (one row per cell); the matrix layout is the values(result=q, paper) view (a
+  matrix per quantity in the set table would not fit one call and the P77 probe counts member rows); the reactor card says 'not studied
+  in' for all three papers because the papers' reactor names are stored under reactor_type; sparse quantities on a grid paper cost more
+  than at ask-v3.1 (the grid's header and the P79 homes), the dense ones about half; CRITERIA Sec. 18.11 records the taxonomy and the
+  extension cap 45.
 
 ## Resume state (2026-10-17, end of directive 3, tag ask-v3.1)
 
