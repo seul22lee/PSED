@@ -1002,7 +1002,7 @@ def condition_records(T, ent):
     for fs in T.results(ent).values():
         for f in fs:
             if quals(f).get("stat") and spread_key(f) in out and not out[spread_key(f)]["record"]["uncertainty"]:
-                q = quals(f); out[spread_key(f)]["record"]["uncertainty"] = dict(value=f["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=f.get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")))
+                q = quals(f); out[spread_key(f)]["record"]["uncertainty"] = dict(value=f["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=f.get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")), fact=f["fact_id"])
     return out
 
 
@@ -1019,11 +1019,16 @@ def result_records(T, ent):
         r = record(T, fs[0], fs[1:], ent=ent)
         sp = [f for kk, gs in deep.items() if "stat=" in kk for f in gs if spread_key(f) == k]
         if sp and not r["uncertainty"]:
-            q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=sp[0].get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")))
+            q = quals(sp[0]); r["uncertainty"] = dict(value=sp[0]["value"], kind=q.get("between", ""), n=q.get("n", ""), stat=q.get("stat", ""), basis=sp[0].get("basis") or L.basis_of("", q.get("between", ""), q.get("stat", "")), fact=sp[0]["fact_id"])
         r["curve"] = dict(ref=fs[0]["points_ref"], x=quals(fs[0]).get("x", ""), points=T.points.get(fs[0]["points_ref"], {}).get("points", [])) if fs[0]["points_ref"] else None
         act = T.byid.get(fs[0]["parent"], {})
         r["settings"] = [dict(name=name_of(ckey(s), s), text=text_of(s)) for s in T.own(act["fact_id"]) if s["type"] == "setting" and text_of(s)] if act.get("kind") == "measurement" else []
         out[k] = dict(name=name_of(k, fs[0]), record=r)
+    used = {(x["record"].get("uncertainty") or {}).get("fact") for x in out.values()}
+    for k, fs in deep.items():                                                  # P79: a spread stated as its own fact that no record absorbed (the record has its own ±) stays a record of its own
+        fs = ranked([f for f in fs if text_of(f)])
+        if "stat=" in k and fs and fs[0]["fact_id"] not in used:
+            out[k] = dict(name=name_of(k, fs[0]), record=record(T, fs[0], fs[1:], ent=ent))
     for did, D in L.DERIVED.items():
         d = derive(T, ent, did)
         if "error" in d:
@@ -1553,6 +1558,8 @@ def result_matches(T, e, result):
     if not out:
         out = [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
                and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
+    out += [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])          # P79: a stated target of the result (P18) is a column beside what was reached
+            and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") == "target" and kk not in {k for k, _, _ in out}]
     return out
 
 
@@ -1644,9 +1651,17 @@ def setting_matches(T, e, result, S):
     hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] == S
     out = [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
            and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
-    if not out and L.ENTRIES.get(S, {}).get("category") == "measurement":      # P78a: a measurement setting (objective, probe spot) lives on the entity's measurement activities
-        out = [(kk, name_of(kk, f), record(T, f, ent=e)) for kk, (_, f) in measurement_settings(T, e).items() if hit(kk, name_of(kk, f))]
-    return out
+    seen = {r["fact"] for _, _, r in out} | {a["fact"] for _, _, r in out for a in r.get("alternatives", [])}
+    for f in T.below(e):                                                        # P78a, P79: the settings of the entity's own activities (a measurement's objective, an anneal's temperature)
+        if f["type"] == "setting" and f["quantity"] and text_of(f) and f["fact_id"] not in seen and hit(ckey(f), name_of(ckey(f), f)):
+            out.append((ckey(f), name_of(ckey(f), f), record(T, f, ent=e))); seen.add(f["fact_id"])
+    by_key = {}                                                                 # one record per key: a second statement of the same setting is its alternative (one cell lists both)
+    for kk, name, rec in out:
+        if kk in by_key:
+            by_key[kk][2]["alternatives"] = list(by_key[kk][2].get("alternatives") or []) + [rec]
+        else:
+            by_key[kk] = (kk, name, dict(rec))
+    return list(by_key.values())
 
 
 def setting_extras(S, result, paper=None, where=None):
@@ -1659,7 +1674,7 @@ def setting_extras(S, result, paper=None, where=None):
         if paper and k != paper:
             continue
         der, res = {}, []
-        for e in experiments(T):
+        for e in experiments(T) + inputs(T):
             if where and not _where_ok(T, e, where):
                 continue
             for kk, x in result_records(T, e).items():
@@ -1669,8 +1684,71 @@ def setting_extras(S, result, paper=None, where=None):
                     der.setdefault(kk, dict(name=x["name"], formula=x["record"].get("definition", ""), entities=[]))["entities"].append(e)
                 else:
                     res.append((e, kk, x["name"], x["record"]))
+        for kk, name, rec, lab in paper_records(T, result, S, RESULT_TYPES):    # P79: a result of the setting attached to no entity (a calibration's measured temperature)
+            if rec.get("kind") != "computed_by_kb":
+                res.append((f"{k}:paper", kk, name, rec))
         if der or res:
             out[k] = dict(derived=der, results=res)
+    return out
+
+
+def _qs(result, S=""):
+    """The quantity ids a values request stands for: the settings entry when it names one, else the request itself, any id the
+    ontology names that way (a name or alias, concept_ids) and the base of a key."""
+    base = result.split("{")[0].split("[")[0]
+    return {S} - {""} or ({result, base} | {q for q, n in L.NAMES.items() if n == result and "{" not in q} | set(concept_ids(result)))
+
+
+def _hit(result, S):
+    qs = _qs(result, S)
+    return lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] in qs
+
+
+def own_records(T, cid, result, S):
+    """P79: the set-level records a comparison set owns for a quantity (values stated for the set, replicate statistics): [(key, name, record)]."""
+    hit = _hit(result, S)
+    return [(ckey(f), name_of(ckey(f), f), record(T, f)) for f in T.own(cid) if f["type"] in RESULT_TYPES and f["quantity"] and (text_of(f) or f["points_ref"]) and hit(ckey(f), name_of(ckey(f), f))]
+
+
+def paper_records(T, result, S, types=RESULT_TYPES + ("setting",)):
+    """P79: the records of a quantity attached to no entity and no set: facts under the paper, its recipe, reactor, method activities or
+    a simulation activity (an observation, derived or model value; a setting when no experiment or input inherits it, such as an
+    instrument's probe spot or an option): [(key, name, record, owner label)]. types narrows the fact types (the settings table takes
+    the settings, its 'result, not a setting' lines the results)."""
+    hit = _hit(result, S)
+    inherited = {g["fact_id"] for e in experiments(T) + inputs(T) for fs in T.vector(e).values() for g in fs}
+    out = []
+    for f in T.rows:
+        if "#" not in f["fact_id"] or not f["quantity"] or f["type"] not in types or not (text_of(f) or f["points_ref"]):
+            continue
+        if not hit(ckey(f), name_of(ckey(f), f)) or T.ent_of(f["fact_id"]) or f["fact_id"] in inherited:
+            continue
+        if any(T.byid[x]["type"] in ("comparison", "cited") for x in T.chain(f["fact_id"])):
+            continue
+        if f["type"] == "setting" and quals(f).get("kind") == "target":
+            continue
+        node = next((x for x in T.chain(f["fact_id"])[1:] if "#" not in x), "")
+        out.append((ckey(f), name_of(ckey(f), f), record(T, f), T.label(node) if node and T.byid[node]["type"] != "paper" else "the paper"))
+    return out
+
+
+def input_rows(T, result, S, settings):
+    """P79: {input entity: [(key, name, record)]} for the input entities (the structures before deposition) that hold a record of the quantity."""
+    out = {}
+    for e in inputs(T):
+        m = setting_matches(T, e, result, S) if settings else result_matches(T, e, result)
+        if m:
+            out[e] = m
+    return out
+
+
+def slot_settings(T, e):
+    """The structure class of an entity and its filled dimension slots, as the conditions of an input row (P78, P79)."""
+    sc = quals(T.byid[e]).get("structure_class", "")
+    slots = L.STRUCTURE_CLASSES.get(sc, {}).get("slots", [])
+    out = [dict(key="structure_class", name="structure class", text=sc)] if sc else []
+    cr = condition_records(T, e)
+    out += [dict(key=kk, name=x["name"], text=x["record"]["text"]) for kk, x in cr.items() if kk.split("{")[0].split("[")[0] in slots]
     return out
 
 
@@ -1688,19 +1766,47 @@ def values(result, paper=None, where=None):
         if paper and k != paper:
             continue
         rows = {}
-        for e in experiments(T):
+        for e in experiments(T) + (inputs(T) if S else []):
             if where and not _where_ok(T, e, where):
                 continue
             m = setting_matches(T, e, result, S) if S else result_matches(T, e, result)
             if m:
                 rows[e] = m
-        if not rows:
+        own = {c["fact_id"]: own_records(T, c["fact_id"], result, S) for c in T.comps}
+        ins = input_rows(T, result, S, False) if not (where or S) else {}       # for a settings entry the inputs are level rows of the table
+        pap = paper_records(T, result, S, ("setting",) if S else RESULT_TYPES + ("setting",)) if not where else []
+        if not rows and not any(own.values()) and not ins and not pap:
             continue
         size = {c["fact_id"]: len(T.member_entities(c)) for c in T.comps}
         home = {}
         for e in rows:
             mine = sorted([c for c in T.comps if e in T.member_entities(c)], key=lambda c: size[c["fact_id"]])
             home.setdefault(mine[0]["fact_id"] if mine else "", []).append(e)
+        base = dict(paper=k, varies=[], shared=[], more_shared=0, claims=[], material=[], structure=[], reactor=[], process=[], measurement=[])
+
+        def merged(rs):                                                         # several records of one key on one row: the first carries the others as alternatives (one cell lists all)
+            out, at = [], {}
+            for r in rs:
+                key = (r["entity"], r["key"])
+                if key in at:
+                    at[key]["record"] = dict(at[key]["record"], alternatives=list(at[key]["record"].get("alternatives") or []) + [r["record"]])
+                else:
+                    at[key] = r; out.append(r)
+            return out
+        if ins:                                                                 # P79: the input entities (the structures before deposition), one row each
+            rs = merged([dict(entity=e, name=T.label(e), settings=slot_settings(T, e), key=kk, result_name=name, record=rec) for e, m in ins.items() for kk, name, rec in m])
+            groups.append(dict(base, id=f"{k}:inputs", label="the structures before deposition (input entities)", kind="inputs", rows=rs,
+                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["input"]))
+        for c in T.comps:                                                       # P79: a set that is no experiment's home (a replicate set) but owns records: one aggregate row
+            cid = c["fact_id"]
+            if own[cid] and cid not in home:
+                rs = merged([dict(entity=cid, name="set", settings=[], key=kk, result_name=name, record=rec) for kk, name, rec in own[cid]])
+                groups.append(dict(base, id=cid, label=comparison_label(T, c) + " · members: " + ", ".join(T.label(m) for m in T.member_entities(c)), kind="aggregate",
+                                   rows=rs, claims=[x["fact_id"] for x in claims_of(T, [cid])], axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["set"]))
+        if pap:                                                                 # P79: records attached to no specimen and no set, one row each
+            rs = merged([dict(entity=f"{k}:paper", name="paper-level", settings=[dict(key="under", name="under", text=lab)], key=kk, result_name=name, record=rec) for kk, name, rec, lab in pap])
+            groups.append(dict(base, id=f"{k}:paper", label="records attached to no specimen and no set", kind="paper", rows=rs,
+                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["paper"]))
         for cid in [c["fact_id"] for c in T.comps] + [""]:
             ents = home.get(cid)
             if not ents:
@@ -1727,6 +1833,7 @@ def values(result, paper=None, where=None):
             out_rows.sort(key=order)
             c = T.byid.get(cid, {})
             groups.append(dict(paper=k, id=cid, label=comparison_label(T, c) if c else "values outside any comparison set", kind=c.get("kind", ""),
+                               own=own.get(cid, []),                            # P79: the set's own records of the quantity, the first row of its block
                                varies=[L.NAMES.get(q, q) for q in c.get("quantity", "").split(";") if q] if c else [],
                                shared=[dict(key=kk, name=crs[ents[0]][kk]["name"], record=crs[ents[0]][kk]["record"]) for kk in shown],
                                more_shared=len(same) - len(shown), rows=out_rows,

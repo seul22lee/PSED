@@ -489,7 +489,7 @@ def last_records(question, model, path=None):
 
 SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
            "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens",
-           "output_tokens", "cache_read_tokens", "cost", "seconds", "error"]
+           "output_tokens", "cache_read_tokens", "cost", "seconds", "error", "homeless_records"]
 
 
 def summary_row(r):
@@ -503,7 +503,7 @@ def summary_row(r):
                 tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
                 delivered=p["delivered"], cited=p["cited"], utilization=p["utilization"], words=r.get("words", 0), input_tokens=r["usage"]["input"],
                 output_tokens=r["usage"]["output"], cache_read_tokens=r["usage"]["cache_read"], cost="" if r["cost"] is None else round(r["cost"], 4),
-                seconds=r["seconds"], error=r["error"])
+                seconds=r["seconds"], error=r["error"], homeless_records=p["homeless_records"])
 
 
 def batch(qfile, out, model, arms, max_cost, max_calls):

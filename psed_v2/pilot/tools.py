@@ -78,9 +78,10 @@ def unc_text(u, compact=False):
         return ""
     if isinstance(u, str):
         return " " + u
+    fid = f" [{u['fact']}]" if u.get("fact") else ""                            # a spread stated as its own fact (P1): cited by id (P79)
     if compact:
-        return f" ± {u.get('value')} ({u.get('basis') if u.get('basis') in L.BASES else 'basis not stated'})"
-    return f" ± {u.get('value')}" + Q.unc_note(u)
+        return f" ± {u.get('value')} ({u.get('basis') if u.get('basis') in L.BASES else 'basis not stated'})" + fid
+    return f" ± {u.get('value')}" + Q.unc_note(u) + fid
 
 
 def cmark(rec):
@@ -478,6 +479,15 @@ def _cell(rec, marks, fact=True):
     return f"{rec.get('text') or 'curve'}{mark}{unc}" + (f" [{rec['fact']}]" if fact and rec.get("fact") else "")
 
 
+def _cells(rec, marks, fact=True):
+    """Every record of one key on one row as one cell (P42, P79): the chosen record first, then the other candidates (a value read from
+    a figure beside the table's, a component beside the main one), each as _cell prints it, joined by '; '."""
+    return "; ".join(_cell(r, marks, fact) for r in [rec] + list(rec.get("alternatives") or []))
+
+
+HOME_KINDS = {"inputs": "inputs", "aggregate": "set-level", "paper": "paper-level"}   # the P79 homes rendered as groups before the comparison sets
+
+
 def _usual_names(groups, paper, usual):
     """(key, name) of the usual conditions of a paper (values_blocks)."""
     return {(x["key"], x["name"]) for g in groups if g["paper"] == paper for x in g["shared"] if (x["key"], x["record"]["text"]) in usual}
@@ -509,7 +519,7 @@ def _shared_head(groups, k, common, usual):
             + (" · usual, unless a set varies it or lacks it: " + "; ".join(txt[c] for c in sorted(usual[k], key=txt.get)) if usual[k] else ""))
 
 
-SETTINGS_ROW = re.compile(r" \| \d+ (specimens?|model runs?|experiments?) · ")       # the specimens column that ends every settings-table row (P76)
+SETTINGS_ROW = re.compile(r" \| \d+ (specimens?|model runs?|experiments?|inputs?)(,|\b)")       # the specimens column that ends every settings-table row (P76; inputs counted, P79)
 
 
 def settings_blocks(groups, result, S, extras, where=None):
@@ -536,40 +546,50 @@ def settings_blocks(groups, result, S, extras, where=None):
         for r in rows:
             by_ent.setdefault(r["entity"], {})[r["key"]] = r
         levels = {}
+        paper_rows = [r for r in rows if r["entity"] == f"{k}:paper"]           # P79: settings no experiment inherits (an instrument's probe spot, an option)
+        by_ent = {e: c for e, c in by_ent.items() if e != f"{k}:paper"}
         for e, cells in by_ent.items():
-            level = tuple(_cell(cells[kk]["record"], marks, fact=False) if kk in cells else "—" for kk in keys)
+            level = tuple(_cells(cells[kk]["record"], marks, fact=False) if kk in cells else "—" for kk in keys)
             lv = levels.setdefault(level, dict(ents=[], facts={kk: [] for kk in keys}, recs={}, cav=set()))
             lv["ents"].append(e)
             for kk, r in cells.items():
                 rec = r["record"]
-                if rec.get("fact") and rec["fact"] not in lv["facts"][kk]:
-                    lv["facts"][kk].append(rec["fact"])
+                for rr in [rec] + list(rec.get("alternatives") or []):           # P79: every fact that states the level is cited
+                    if rr.get("fact") and rr["fact"] not in lv["facts"][kk]:
+                        lv["facts"][kk].append(rr["fact"])
                 lv["recs"].setdefault(kk, rec)
                 lv["cav"] |= {c["id"] for c in rec.get("caveats") or []}
                 legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
                 if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
                     legend_basis.add(rec["uncertainty"]["basis"])
-        if rows:
-            lines.append((f"{k}:settings", f"settings table · {short_name(k)} · {name}: one row per distinct level · columns: " + " | ".join(names[kk] for kk in keys) + " | specimens"))
+        if by_ent:
+            lines.append((f"{k}:settings", f"settings table · {short_name(k)} · {name}: one row per distinct level, every fact that states it · columns: " + " | ".join(names[kk] for kk in keys) + " | specimens"))
 
         def order(item):
             r0 = item[1]["recs"].get(keys[0])
             v = r0.get("value") if r0 else None
             return (0, v, "") if isinstance(v, (int, float)) else (1, 0, item[0][0])
         for level, lv in sorted(levels.items(), key=order):
-            cells = [txt + (f" [{fs[0]}]" if fs else "") + (f" (+{len(fs) - 1} fact{'s' if len(fs) > 2 else ''})" if len(fs) > 1 else "") for txt, fs in zip(level, (lv["facts"][kk] for kk in keys))]
-            roles = {Q.role(T, e) for e in lv["ents"]}
-            noun = ("specimen" if roles == {"specimen"} else "model run" if roles == {"model run"} else "experiment") + ("s" if len(lv["ents"]) != 1 else "")
-            sets = [s for s in dict.fromkeys(home[e] for e in lv["ents"])]
+            cells = [txt + "".join(f" [{f}]" for f in fs) for txt, fs in zip(level, (lv["facts"][kk] for kk in keys))]
+            roles = [Q.role(T, e) for e in lv["ents"]]
+            n_in = roles.count("input"); exps = [e for e, r in zip(lv["ents"], roles) if r != "input"]
+            rs = set(roles) - {"input"}
+            noun = ("specimen" if rs == {"specimen"} else "model run" if rs == {"model run"} else "experiment") + ("s" if len(exps) != 1 else "")
+            count = (f"{len(exps)} {noun}" if exps else "") + (f"{', ' if exps else ''}{n_in} input{'s' if n_in != 1 else ''}" if n_in else "")
+            sets = [s for s in dict.fromkeys(home[e] for e in exps)]
             ids = [s for s in sets if s]
-            place = ((("sets " if len(ids) > 1 else "set ") + ", ".join(f"[{s}]" for s in ids)) if ids else "") + (" and outside any set" if ids and "" in sets else "outside any set" if not ids else "")
+            place = ((("sets " if len(ids) > 1 else "set ") + ", ".join(f"[{s}]" for s in ids)) if ids else "") + (" and outside any set" if ids and "" in sets else "outside any set" if not ids and exps else "")
             first = next((lv["facts"][kk][0] for kk in keys if lv["facts"][kk]), f"{k}:settings")
-            lines.append((first, " | ".join(cells) + f" | {len(lv['ents'])} {noun} · {place}" + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(lv["cav"])) if lv["cav"] else "")))
-        if rows and not where:
+            lines.append((first, " | ".join(cells) + f" | {count}" + (f" · {place}" if place else "") + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(lv["cav"])) if lv["cav"] else "")))
+        for r in paper_rows:                                                    # P79: paper-level settings, one line each
+            rec = r["record"]
+            lines.append((rec.get("fact") or f"{k}:paper", f"paper-level · under {r['settings'][0]['text'] if r['settings'] else 'the paper'} · {r['result_name']}: {_cells(rec, marks)}" + cmark(rec)))
+            legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
+        if by_ent and not where:
             missing = [e for e in Q.experiments(T) if e not in by_ent]
             if missing:
                 lines.append((f"{k}:settings", f"not stated for {len(missing)} of {len(Q.experiments(T))} experiments: " + ", ".join(missing[:12]) + (" …" if len(missing) > 12 else "")))
-        if not rows:
+        if not by_ent and not paper_rows:
             lines.append((f"{k}:settings", f"{short_name(k)} states no {name} as a setting" + (" under this where" if where else "")))
         ex = extras.get(k, {})
         for kk, d in ex.get("derived", {}).items():
@@ -579,7 +599,8 @@ def settings_blocks(groups, result, S, extras, where=None):
                 how = 'open with detail(ids=[…], parts=["computed"]) on its experiments: ' + ", ".join(d["entities"])
             lines.append((f"{k}:derived", f"derived: {d['name']} — {len(d['entities'])} values {KB} ({d['formula']}) — {how}"))
         for e, kk, nm, rec in ex.get("results", []):
-            lines.append((rec.get("fact") or e, f"result, not a setting · {T.label(e)} [{e}] · {nm}: {_cell(rec, marks)}" + cmark(rec)))
+            who = "paper-level" if e == f"{k}:paper" else f"{T.label(e)} [{e}]"
+            lines.append((rec.get("fact") or e, f"result, not a setting · {who} · {nm}: {_cells(rec, marks)}" + cmark(rec)))
             legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
             if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
                 legend_basis.add(rec["uncertainty"]["basis"])
@@ -617,7 +638,7 @@ def values_blocks(groups, asked):
     cols_all = []                                                               # the column list once at the top when every set has the same columns
     for g in groups:
         rows_ = [r for r in g["rows"] if r["record"].get("kind") != "computed_by_kb"] or g["rows"]
-        cols_all.append(tuple(dict.fromkeys(r["result_name"] for r in rows_)))
+        cols_all.append(tuple(dict.fromkeys([r["result_name"] for r in rows_] + [name for _, name, _ in g.get("own", [])])))
     same_cols = len(set(cols_all)) == 1
     n_kb = sum(1 for g in groups for r in g["rows"] if r["record"].get("kind") == "computed_by_kb")
     common, usual = _common_usual(groups)                                       # conditions every specimen set of a paper shares, and the usual ones: once, at the top (P44)
@@ -640,8 +661,11 @@ def values_blocks(groups, asked):
         head = []
         if (common[g["paper"]] or usual[g["paper"]]) and (n == 1 or groups[n - 2]["paper"] != g["paper"]):
             head.append(_shared_head(groups, g["paper"], common, usual))
-        head += [(sid, f"set [{sid}] ({g['kind'] or 'outside any set'})" + ("" if one_paper else f" · {short_name(g['paper'])}") + f" · {g['label']}" + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
-                 + (f" · shared: {shared}" if shared else "") + (f" · lacks: {', '.join(missing)}" if missing else "") + f" · {len(by_ent)} rows" + ("" if same_cols else " · columns: " + " | ".join(names[k] for k in keys)))]
+        if g["kind"] in HOME_KINDS:                                            # P79: a home that is not a comparison set
+            head += [(sid, f"{HOME_KINDS[g['kind']]} [{sid}]" + ("" if one_paper else f" · {short_name(g['paper'])}") + f" · {g['label']}" + f" · {len(by_ent)} rows" + ("" if same_cols else " · columns: " + " | ".join(names[k] for k in keys)))]
+        else:
+            head += [(sid, f"set [{sid}] ({g['kind'] or 'outside any set'})" + ("" if one_paper else f" · {short_name(g['paper'])}") + f" · {g['label']}" + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
+                     + (f" · shared: {shared}" if shared else "") + (f" · lacks: {', '.join(missing)}" if missing else "") + f" · {len(by_ent)} rows" + ("" if same_cols else " · columns: " + " | ".join(names[k] for k in keys)))]
         if n == 1 and same_cols:
             head.insert(0, ("columns", "columns of every row: " + " | ".join(names[k] for k in keys) + (f" · {n_kb} values {KB} are not listed here (detail, parts computed)" if n_kb else "")))
         if n > 1:
@@ -663,18 +687,36 @@ def values_blocks(groups, asked):
             r0 = next(iter(cells.values()))
             st = ", ".join(f"{x['name']} {x['text']}" for x in r0["settings"])
             row_cav = {c["id"] for r in cells.values() for c in r["record"].get("caveats") or []} - (common_cav if is_spec else set()) - own_cav
-            line = f"{r0['name']}" + (f" · {st}" if st else "") + " · " + " | ".join(_cell(cells[k]["record"], marks) if k in cells else "—" for k in keys) \
+            line = f"{r0['name']}" + (f" · {st}" if st else "") + " · " + " | ".join(_cells(cells[k]["record"], marks) if k in cells else "—" for k in keys) \
                 + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(row_cav)) if row_cav else "")
             out_rows.append([(e, line)])
             for k, r in cells.items():
-                legend_cav.update({c["id"]: c["text"] for c in r["record"].get("caveats") or []})
+                for rr in [r["record"]] + list(r["record"].get("alternatives") or []):
+                    legend_cav.update({c["id"]: c["text"] for c in rr.get("caveats") or []})
+                    if (rr.get("uncertainty") or {}).get("basis") in L.BASES:
+                        legend_basis.add(rr["uncertainty"]["basis"])
                 v = r["record"].get("value")
                 if v is not None:
                     ranges.setdefault(k, []).append((v, r["record"].get("unit", "")))
+        if g.get("own"):                                                        # P79: the set's own records of the quantity, first row of its block
+            by_key = {}
+            for kk, name, rec in g["own"]:
+                by_key.setdefault(kk, []).append(rec)
+                if kk not in names:
+                    keys.append(kk); names[kk] = name
+            own_cav = sorted({c["id"] for recs in by_key.values() for r in recs for c in r.get("caveats") or []})
+            for recs in by_key.values():
+                for r in recs:
+                    legend_cav.update({c["id"]: c["text"] for c in r.get("caveats") or []})
+            out_rows.insert(0, [(sid, "set (values stated for the set, its statistics) · " + " | ".join("; ".join(_cell(r, marks) for r in by_key[k]) if k in by_key else "—" for k in keys)
+                                 + (" · caveats " + ", ".join(f"[{c}]" for c in own_cav) if own_cav else ""))])
+            head[-1] = (sid, head[-1][1].replace(f" · {len(by_ent)} rows", f" · {len(by_ent)} rows + the set's own records"))
         foot = [(sid, "claims about this set: " + ", ".join(f"[{c}]" for c in g["claims"][:8]) + (f" · and {len(g['claims']) - 8} more (detail(ids=[{sid!r}], parts=claims))" if len(g["claims"]) > 8 else ""))] if g["claims"] else []
         full.append(block(out_rows, head=head, foot=foot))
         rng = "; ".join(f"{names[k]} {Q.g(min(v for v, _ in vs), 3)}–{Q.g(max(v for v, _ in vs), 3)} {vs[0][1]}".strip() + f" ({len(vs)})" for k, vs in ranges.items())
-        collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"set [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · open with detail(ids=[{sid!r}]) or narrow with where")]))
+        opener = (f"open with detail(ids=[{sid!r}]) or narrow with where" if g["kind"] not in ("inputs", "paper") else
+                  f"open with detail(ids=[{', '.join(repr(e) for e in list(by_ent)[:8])}])" if g["kind"] == "inputs" else "open each with source(id)")
+        collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"{HOME_KINDS.get(g['kind'], 'set')} [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · {opener}")]))
     tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
         + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
         + ([("legend", ("caveats on every row above: " if all_spec else "caveats on every specimen row above: ") + ", ".join(f"[{c}]" for c in sorted(common_cav)))] if common_cav else [])
@@ -701,7 +743,7 @@ def set_blocks(d, budget=True):
                 legend_cav.update({c["id"]: c["text"] for c in r.get("caveats") or []})
                 if (r.get("uncertainty") or {}).get("basis") in L.BASES:
                     legend_basis.add(r["uncertainty"]["basis"])
-            return "; ".join(_cell(r, marks) for r in recs) if recs else "—"
+            return "; ".join(_cells(r, marks) for r in recs) if recs else "—"
         rows = []
         row_cav = {row: {c["id"] for k, _ in shown for r in d["cells"][row].get(k, []) for c in r.get("caveats") or []} for row in d["members"]}
         common = set.intersection(*row_cav.values()) if row_cav and all(row_cav.values()) else set()     # caveats on every member row: once, in the header
@@ -735,12 +777,13 @@ def set_blocks(d, budget=True):
     steps = [(cols, True)] + [(cols[:n], False) for n in range(len(cols), -1, -1)]      # P78a: the caveat texts go before any column (the P65 order)
     for shown, texts in steps:
         out = render(shown, texts)
-        if not budget or paginate(out, 0)[-1][0] != "more":
+        if not (budget and BUDGET) or paginate(out, 0)[-1][0] != "more":
             return out
     return out
 
 
 SEARCH_LINE = 200
+BUDGET = True                       # False: values renders everything, no set collapses (the homing check of P79 reads the full rendering)
 BUDGET_TOKENS = 2000
 BUDGET_CHARS = BUDGET_TOKENS * 4
 DEF_FRAG = re.compile(r' · defined as: "[^"]*" \[([^\]]+)\]')
@@ -870,7 +913,7 @@ def _run(name, args):
                 return out[:-1] + [block([], head=note + out[-1]["head"][:-1] + W(cav) + out[-1]["head"][-1:])]
             out = list(full)
             k = 0
-            while k < len(order) and paginate(with_legend(out, k), 0)[-1][0] == "more":
+            while BUDGET and k < len(order) and paginate(with_legend(out, k), 0)[-1][0] == "more":
                 if order[k] != "texts":
                     out[order[k]] = collapsed[order[k]]
                 k += 1

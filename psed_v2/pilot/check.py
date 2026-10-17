@@ -668,6 +668,18 @@ def check_structure():
     return err
 
 
+def check_homes():
+    """P79: every value record of the page data with an entry (homeless.records) is rendered by values(result=<its entry>, paper=<its
+    paper>) in full (an input row, an aggregate row, a set's own row, a paper-level row, a specimen row with every record of its key,
+    or a level of a settings table with every fact that states it): the homeless count is 0."""
+    import homeless
+    miss = homeless.report(verbose=False)
+    recs, src = homeless.records()
+    by = collections.Counter((v[0], homeless.home_needed(f)) for f, v in miss.items())
+    print(f"== homes (P79): {len(recs)} value records with an entry (from the {src}); {len(miss)} homeless" + (": " + ", ".join(f"{k} {h} {n}" for (k, h), n in sorted(by.items())) if miss else ""))
+    return [f"{f}: {q} ({kind}) has no home in values(result={q}, paper={k}); needs a {homeless.home_needed(f)} row (P79)" for f, (k, q, kind) in sorted(miss.items())]
+
+
 def check_calls():
     """P75: call accounting, scripted without a model (ask.answer_call, run_metrics.process). A question whose first four calls name
     nothing resolvable still has ten executed calls available (an error costs nothing toward the cap) and its eleventh executed call
@@ -728,7 +740,7 @@ def check_settings():
     err, probes, size = [], settings_probes(), 0
     for S, k in probes:
         T = Q.TREES[k]
-        levels = {tuple(sorted((kk, tools._cell(rec, set(), fact=False)) for kk, _, rec in m)) for e in Q.experiments(T) for m in [Q.setting_matches(T, e, S, S)] if m}
+        levels = {tuple(sorted((kk, tools._cells(rec, set(), fact=False)) for kk, _, rec in m)) for e in Q.experiments(T) + Q.inputs(T) for m in [Q.setting_matches(T, e, S, S)] if m}   # inputs are level rows too (P79)
         lines, e_ = tools.run_tool("values", {"result": S, "paper": k})
         if e_:
             err.append(f"values({S}, {k}): {e_} (P76)"); continue
@@ -762,9 +774,10 @@ def check_sets():
                 for r in g["rows"]:
                     rec, e = r["record"], r["entity"]
                     if e not in deep:
-                        deep[e] = {f["fact_id"] for fs in Q.results_deep(T, e).values() for f in fs}
-                    if rec.get("fact") in deep[e] and rec.get("kind") != "computed_by_kb":
-                        ref[e].add(rec["fact"])
+                        deep[e] = {f["fact_id"] for fs in Q.results_deep(T, e).values() for f in fs} if e in T.byid and T.byid[e]["type"] == "entity" else set()
+                    for rr in [rec] + list(rec.get("alternatives") or []):      # P79: a cell lists every record of its key, the alternatives included
+                        if rr.get("fact") in deep[e] and rr.get("kind") != "computed_by_kb":
+                            ref[e].add(rr["fact"])
         for c in T.comps:
             cid = c["fact_id"]; n_sets += 1
             d = Q.set_table(cid)
@@ -788,8 +801,8 @@ def check_sets():
             if hidden:
                 collapsed += 1
                 hidden_names = {x.strip() for x in hidden.split(": ", 1)[1].split(" — open")[0].split(", ")}
-                table |= {r["fact"] for key, name in d["columns"] if name in hidden_names for row in d["cells"].values() for r in row.get(key, []) if r.get("fact")}
-            expected = set().union(*(ref[m] for m in members)) | {f["fact_id"] for f in T.own(cid) if f["type"] in Q.RESULT_TYPES and (Q.text_of(f) or f["points_ref"])}
+                table |= {rr["fact"] for key, name in d["columns"] if name in hidden_names for row in d["cells"].values() for r in row.get(key, []) for rr in [r] + list(r.get("alternatives") or []) if rr.get("fact")}
+            expected = set().union(*(ref[m] for m in members)) | {f["fact_id"] for f in T.own(cid) if f["type"] in Q.RESULT_TYPES and f["quantity"] and (Q.text_of(f) or f["points_ref"])}
             if table != expected:
                 err.append(f"values(set={cid}): the table's fact ids differ from values(result=q)'s: missing {sorted(expected - table)[:4]}, extra {sorted(table - expected)[:4]} (P77)")
             lines2, _ = tools.run_tool("detail", {"ids": [cid], "parts": ["table"]})
@@ -1028,6 +1041,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_structure()
     print(f"== structure (P78): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_homes()
+    print(f"== homes (P79): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

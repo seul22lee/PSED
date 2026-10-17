@@ -15,6 +15,8 @@ question, utilization 7-18 %):
   within one call do not count; the seen set updates after each call.
 - delivered ids: the distinct ids over the executed calls; cited ids: the keys of the record's cited dict; utilization = cited / delivered.
 - tool output tokens: the sum of each executed call's tokens (the vendor's counts, shared by length within a turn; ask.py).
+- homeless_records (P79): the value records of the knowledge base no values() output renders (homeless.count), a property of the
+  knowledge base the run was made against, the same for every row.
 """
 import csv, json, re, sys
 from pathlib import Path
@@ -68,14 +70,24 @@ def process(tool_calls, cited=()):
                 cited=len(cited), cited_ids=cited, utilization=round(len(cited) / len(seen), 4) if seen else 0.0)
 
 
-COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "cost"]
-NO_TOTAL = ("redelivered_share", "utilization", "wall_hit")
+COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "cost", "homeless_records"]
+NO_TOTAL = ("redelivered_share", "utilization", "wall_hit", "homeless_records")
+_HOMELESS = {}
+
+
+def homeless_records():
+    """P79: the number of value records of the knowledge base no values() output renders (homeless.count), computed once per process:
+    a property of the knowledge base the run was made against, the same for every row."""
+    if "n" not in _HOMELESS:
+        import homeless
+        _HOMELESS["n"] = homeless.count()
+    return _HOMELESS["n"]
 
 
 def metrics_of(r):
     """The process metrics of a stored record, recomputed from its tool calls and cited ids (P74), with its words and cost."""
     p = process(r.get("tool_calls") or [], list((r.get("cited") or {}).keys()))
-    p["words"] = r.get("words", 0); p["cost"] = r.get("cost")
+    p["words"] = r.get("words", 0); p["cost"] = r.get("cost"); p["homeless_records"] = homeless_records()
     return p
 
 
@@ -102,6 +114,7 @@ def report(path, arm="kb", summary=True):
               f"re-delivered {100 * x['redelivered_share']:.0f} % · delivered {x['delivered']} ids, cited {x['cited']}, utilization {100 * x['utilization']:.0f} % · {x['words']} words · "
               f"{'cost not set' if x['cost'] is None else '$%.4f' % x['cost']}")
     if rows:
+        print(f"knowledge base: {rows[0]['homeless_records']} homeless records (P79)")
         print(f"total {len(rows)} questions: calls {tot['calls']} (executed {tot['executed']}, refused {tot['refused']}, duplicates {tot['duplicates']}; errors {tot['errors']}, identical {tot['identical']}, walls hit in {walls} questions) · tool output {tot['tool_output_tokens']:,} tokens · "
               f"re-delivered {100 * min(rs):.0f}–{100 * max(rs):.0f} % · delivered {tot['delivered']} ids, cited {tot['cited']} · utilization {100 * min(us):.0f}–{100 * max(us):.0f} % · "
               f"{tot['words']} words · ${tot['cost']:.4f}")
