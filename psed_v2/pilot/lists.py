@@ -15,7 +15,7 @@ from vocab import (STRUCTURE_CLASSES, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
 # ones (an entity that states no temperature is not the same experiment as one that does)
-PRIMARY = ["reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",
+PRIMARY = ["reactor", "reactor_type", "deposition_temperature", "plasma_gas_ratio", "process_pressure", "precursor_purity", "source_temperature", "pulse_time",
            "purge_time", "feature_width", "cycle_number", "substrate"]
 
 # substance-scoped settings (P50): a setting of one of these quantities is about one substance and must say which (species= or gas=);
@@ -36,7 +36,7 @@ def substance_scoped(f):
 # the authors read off a series (the ratio from which films are crystalline) is an observation of quantity other
 SETTING_QUANTITIES = {"deposition_temperature", "source_temperature", "annealing_temperature", "pulse_time", "purge_time", "cycle_time",
                       "cycle_number", "plasma_gas_ratio", "gas_flow_rate", "carrier_gas", "precursor_purity", "substrate", "pillar_layout",
-                      "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure", "material"}
+                      "reactor", "reactor_type", "objective_magnification", "probe_resolution", "process_pressure", "structure", "material"}
 
 # metal atoms per formula unit of each film material, read from its formula in the ontology (the first element of the formula);
 # a value text not yet a species id (TO_ABSORB_VALUES) keeps its hand count until P50

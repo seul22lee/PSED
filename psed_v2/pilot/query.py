@@ -1546,7 +1546,7 @@ def vocabulary():
 
 
 # ---------------------------------------------------------------------------------------------------------------- values (P42)
-SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure", "substrate", "reactor_type"]
+SHOWN_SHARED = ["material", "reactant_A", "reactant_B", "structure", "substrate", "reactor", "reactor_type"]
 
 
 def result_matches(T, e, result):
@@ -1878,7 +1878,7 @@ def values(result, paper=None, where=None):
                                claims=[x["fact_id"] for x in claims_of(T, [cid])] if cid else [],
                                material=sorted({crs[e]["material"]["record"]["text"] for e in ents if "material" in crs[e]}),
                                structure=sorted({crs[e]["structure"]["record"]["text"] for e in ents if "structure" in crs[e]}),
-                               reactor=sorted({crs[e]["reactor_type"]["record"]["text"] for e in ents if "reactor_type" in crs[e]}),
+                               reactor=sorted({crs[e]["reactor"]["record"]["text"] for e in ents if "reactor" in crs[e]}),
                                process=sorted({recipe_of(T, e) for e in ents} - {""}),
                                measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows}),
                                axes={r["key"]: axes_of(r["key"], r["record"]) for r in out_rows},          # one entry per result key (Sec. 18.4)

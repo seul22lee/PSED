@@ -590,7 +590,7 @@ F(K, "s4.p1", "claim", "Quantifying temperature and ratio effects opens further 
 
 # ------------------------------------------------------------------ experimental
 NK("s5.h", "heading")
-F(K, "s5.p1", "setting", "Reactor, with a remote inductively coupled plasma source at 13.56 MHz.", quantity="reactor_type",
+F(K, "s5.p1", "setting", "Reactor, with a remote inductively coupled plasma source at 13.56 MHz.", quantity="reactor",
   value_text="Oxford Instruments FlexAL PEALD", data_kind="chosen input", mentions="FlexAL;13.56 MHz;ICP")
 F(K, "s5.p1", "setting", "A turbomolecular pump gives a base pressure of 10^-6 Torr.", quantity="other",
   label_as_printed="base pressure", value="1e-6", unit="Torr", data_kind="chosen input")

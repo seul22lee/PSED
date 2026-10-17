@@ -143,7 +143,7 @@ f("s8.p1", "observation", "the pressing recipe was tuned for intact compacts, ye
 
 # ---------------------------------------------------------------- II B. ZnO ALD
 f("s9.p1", "setting", "reactor, with a near-horizontal cylindrical chamber and an MKS LoPro isolation valve to the pump",
-  quantity="reactor_type", value_text="ALD NanoSolutions (Forge Nano) custom RX-series")
+  quantity="reactor", value_text="ALD NanoSolutions (Forge Nano) custom RX-series")
 f("s9.p1", "setting", "deposition chamber about 20 cm long and 10 cm inner diameter",
   quantity="other", label_as_printed="chamber length", value="20", unit="cm", data_kind="chosen input", mentions="10 cm ID")
 f("s9.p1;s9.p3;fig1a", "setting", "the NPCs sit in a round-bottomed rectangular quartz boat touching only at their lower circular edge, leaving at most ~1 mm under the bottom face",

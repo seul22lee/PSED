@@ -193,7 +193,7 @@ F(K, "s5.p1", "setting", "tools: Centrotherm E1200 HT 260-4 furnaces, Primaxx ME
 F(K, "s5.p2;fig1.cap;fig1a;tab2.r6c3;tab2.r0c3;s3.p9", "setting", "channel aspect ratios in this work go up to 10 000:1 (L 5000 µm with target H 500 nm); per-channel design AR in ESI Table S1",
   quantity="aspect_ratio", value_max="10000", data_kind="chosen input", mentions="L 5000 µm;H 500 nm;Table S1;This work")
 F(K, "s5.p2", "definition", "chip layout and pillar layout designs are given in the ESI", mentions="ESI")
-F(K, "s6.p1;tab2.r7c5;tab2.r0c5", "setting", "ALD reactor", quantity="reactor_type", value_text="Picosun R-150", mentions="This work")
+F(K, "s6.p1;tab2.r7c5;tab2.r0c5", "setting", "ALD reactor", quantity="reactor", value_text="Picosun R-150", mentions="This work")
 F(K, "s6.p1", "setting", "the usual target thickness was about 50 nm", quantity="film_thickness", qualifiers="kind=target", value="50", unit="nm",
   data_kind="chosen input")
 F(K, "s6.p1;tab2.r6c4;tab2.r0c4", "setting", "the usual number of ALD cycles was 500", quantity="cycle_number", value="500",
@@ -754,7 +754,7 @@ lit(1, 1, "Dendooven et al. (2009): LHAR type", quantity="other", label_as_print
 lit(1, 2, "Dendooven et al. (2009): LHAR H 100 µm", quantity="feature_width", label_as_printed="LHAR H", value="100", unit="µm")
 lit(1, 3, "Dendooven et al. (2009): max. AR 200:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="200")
 lit(1, 4, "Dendooven et al. (2009): 150 cycles", quantity="cycle_number", value="150")
-lit(1, 5, "Dendooven et al. (2009): reactor", quantity="reactor_type", value_text="home-built")
+lit(1, 5, "Dendooven et al. (2009): reactor", quantity="reactor", value_text="home-built")
 lit(1, 6, "Dendooven et al. (2009): c_TMA 0.1", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="0.1")
 lit(2, 0, "Schwille et al. (2016): deposition at 200 °C", quantity="deposition_temperature", value="200", unit="°C")
 lit(2, 1, "Schwille et al. (2016): LHAR type", quantity="other", label_as_printed="LHAR type", value_text="microscopic centrosymmetric")
@@ -762,14 +762,14 @@ lit(2, 3, "Schwille et al. (2016): max. AR about 100:1, an order-of-magnitude es
     quantity="aspect_ratio", label_as_printed="Max. AR", value="100")
 F(K, "s18.p3;tab2.r2c3", "cited", "the Schwille structure is a microscopic cavity 5 µm high and 2000 µm long with one access hole of 4 to 100 µm diameter", quantity="feature_width", value="5", unit="µm", data_kind="literature",
   method="cited", mentions="ref. 41;a")
-lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor_type", value_text="single-wafer cross-flow hot-wall")
+lit(2, 5, "Schwille et al. (2016): reactor", quantity="reactor", value_text="single-wafer cross-flow hot-wall")
 lit(2, 6, "Schwille et al. (2016): c_TMA 2 × 10^-2", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="2e-2")
 F(K, "s18.p3;tab2.r2c4;tab2.r3c4;tab2.r0c4", "cited", "the number of ALD cycles is not reported for the Schwille and Vandalon works (dash, footnote b)",
   method="cited", mentions="ref. 41;ref. 60;b")
 lit(3, 0, "Vandalon et al. (2016): temperatures 100–300 °C", quantity="deposition_temperature", value_min="100", value_max="300", unit="°C")
 F(K, "s18.p3;tab2.r3c1;tab2.r3c2;tab2.r3c3;tab2.r0c1", "cited", "Vandalon et al. coated a planar Si(100) wafer, not an LHAR feature; their coefficients are listed for reference (footnote c)",
   method="cited", mentions="ref. 60;c")
-lit(3, 5, "Vandalon et al. (2016): reactor", quantity="reactor_type", value_text="home-built")
+lit(3, 5, "Vandalon et al. (2016): reactor", quantity="reactor", value_text="home-built")
 lit(3, 6, "Vandalon et al. (2016): c_TMA of order 10^-3 (footnote d)", extra="s18.p3", quantity="initial_sticking_coefficient",
     qualifiers="species=tma", value="1e-3")
 lit(3, 7, "Vandalon et al. (2016): c_H2O of order 10^-4 (footnote d)", extra="s18.p3;tab2.r0c7", quantity="initial_sticking_coefficient",
@@ -784,7 +784,7 @@ lit(4, 1, "Ylilammi et al. (2018): LHAR type", quantity="other", label_as_printe
 lit(4, 2, "Ylilammi et al. (2018): LHAR H 0.50 µm", quantity="feature_width", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(4, 3, "Ylilammi et al. (2018): max. AR 2000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="2000")
 lit(4, 4, "Ylilammi et al. (2018): 500 cycles", quantity="cycle_number", value="500")
-lit(4, 5, "Ylilammi et al. (2018): reactor", quantity="reactor_type", value_text="Picosun R-150")
+lit(4, 5, "Ylilammi et al. (2018): reactor", quantity="reactor", value_text="Picosun R-150")
 lit(4, 6, "Ylilammi et al. (2018): c_TMA 5.72 × 10^-3", quantity="initial_sticking_coefficient", qualifiers="species=tma", value="5.72e-3")
 F(K, "tab2.r1c7;tab2.r2c7;tab2.r4c7;tab2.r0c7", "cited", "Table 2 gives no c_H2O (dash) for Dendooven, Schwille and Ylilammi",
   method="cited", mentions="ref. 31;ref. 41;ref. 33")
@@ -793,7 +793,7 @@ lit(5, 1, "Arts et al. (2019): LHAR type", quantity="other", label_as_printed="L
 lit(5, 2, "Arts et al. (2019): LHAR H 0.50 µm", quantity="feature_width", label_as_printed="LHAR H", value="0.50", unit="µm")
 lit(5, 3, "Arts et al. (2019): max. AR 10 000:1", quantity="aspect_ratio", label_as_printed="Max. AR", value="10000")
 lit(5, 4, "Arts et al. (2019): 400 cycles", quantity="cycle_number", value="400")
-lit(5, 5, "Arts et al. (2019): reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor_type", value_text="Oxford Instruments OpAL")
+lit(5, 5, "Arts et al. (2019): reactor (name split over two parsed rows)", extra="tab2.r6c5", quantity="reactor", value_text="Oxford Instruments OpAL")
 lit(5, 6, "Arts et al. (2019): c_TMA (0.5-2) × 10^-3", quantity="initial_sticking_coefficient", qualifiers="species=tma",
     value_min="0.5e-3", value_max="2e-3")
 lit(5, 7, "Arts et al. (2019): c_H2O (0.8-2) × 10^-4 (exponent on the next parsed row)", extra="tab2.r6c6", quantity="initial_sticking_coefficient",
@@ -902,7 +902,7 @@ VARS = {   # claim id -> (cause, effect): quantity ids or mechanism:<token> (lis
     's10.x2#4': ('interaction_volume', 'signal_intensity'),
     's11.x1#2': ('probe_resolution', 'front_slope'),
     's12.x1#2': ('', 'film_thickness'),
-    's12.x1#3': ('channel_length', 'penetration_depth'),
+    's12.x1#3': ('feature_depth', 'penetration_depth'),
     's12.p1#1': ('process_pressure;probe_resolution;feature_width', 'film_thickness'),
     's13.x1#5': ('channel_plugging', 'penetration_depth'),
     's13.x2#3': ('cycle_number;feature_narrowing', 'penetration_depth'),

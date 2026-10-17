@@ -121,7 +121,7 @@ TRANSFORM_OUTPUTS = ['aspect_ratio',
  'shell_volume_fraction',
  'step_coverage']
 
-REPLACED = {'composition': 'element_fraction', 'h_per_metal': 'element_ratio'}
+REPLACED = {'channel_length': 'feature_depth', 'composition': 'element_fraction', 'h_per_metal': 'element_ratio'}
 
 QUANTITIES = ['absorption_coefficient',
  'adsorption_equilibrium_constant',
@@ -818,10 +818,7 @@ FAMILIES = {'composition': ['element_fraction', 'element_ratio', 'phase_fraction
                    'coating_mass_fraction',
                    'shell_volume_fraction']}
 
-MECHANISMS = {'channel_length': {'aliases': ['lateral length'],
-                    'definition': 'The lateral length of the channel, which does not change the saturation profile.',
-                    'name': 'channel length'},
- 'channel_plugging': {'aliases': ['plugged entry', 'plugging'],
+MECHANISMS = {'channel_plugging': {'aliases': ['plugged entry', 'plugging'],
                       'definition': 'Closure of a channel entrance by the growing film, which stops further penetration.',
                       'name': 'channel plugging'},
  'cracks': {'aliases': ['cracking'], 'definition': 'Cracks in the compact, which change its measured resistivity.', 'name': 'cracks'},
@@ -1193,17 +1190,18 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                  'type': 'categorical',
                  'unit': '',
                  'values_from': 'species with kind = molecule'},
- 'channel_length': {'aliases': ['lateral length'],
+ 'channel_length': {'aliases': [],
                     'attribute': False,
                     'category': '',
                     'cq': '',
-                    'definition': 'The lateral length of the channel, which does not change the saturation profile.',
+                    'definition': 'The lateral length of the channel, which does not change the saturation profile. Superseded (P82): the length of '
+                                  'a lateral channel is the depth L, feature_depth; the claim that named this mechanism names feature_depth.',
                     'dimension': '',
                     'family': '',
                     'label': '',
                     'name': 'channel length',
                     'qualifiers': [],
-                    'replaced_by': '',
+                    'replaced_by': 'feature_depth',
                     'role': '',
                     'structure_aliases': [],
                     'type': 'mechanism',
@@ -3813,8 +3811,8 @@ STRUCTURE_CLASSES = {'aerogel_monolith': {'definition': 'A monolithic aerogel, p
                  'parent': 'structure',
                  'slots': ['feature_depth', 'feature_width', 'feature_extent', 'aspect_ratio']},
  'lateral_channel': {'definition': 'A lateral high-aspect-ratio channel (LHAR) under a roof: channel height w, lateral length L along the diffusion '
-                                   '(the channel length, feature_depth; channel_length is the mechanism entry), channel width z. pillarhall_3 and '
-                                   'other LHAR designs are instances.',
+                                   '(the channel length, feature_depth; the former mechanism channel_length is superseded by it, P82), channel width '
+                                   'z. pillarhall_3 and other LHAR designs are instances.',
                      'parent': 'har_feature',
                      'slots': ['feature_depth', 'feature_width', 'feature_extent', 'aspect_ratio']},
  'nanoparticle_compact': {'definition': 'A pressed compact of nanoparticles; the pores are the gaps between the particles, their diameter about the '

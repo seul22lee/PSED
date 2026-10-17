@@ -527,6 +527,15 @@ def check_vocabulary():
     return err
 
 
+def check_mechanisms():
+    """P82: a mechanism is not a quantity: no mechanism entry carries a unit, and no fact of the data uses a mechanism id as its quantity."""
+    import query as Q
+    err = [f"{m}: a mechanism entry with a unit {L.ENTRIES[m].get('unit')!r} (P82)" for m in L.MECHANISMS if L.ENTRIES.get(m, {}).get("unit")]
+    err += [f"{f['fact_id']}: a value under the mechanism id {f['quantity']} (P82)" for T in Q.TREES.values() for f in T.rows if f["quantity"] in L.MECHANISMS]
+    print(f"== mechanisms (P82): {len(L.MECHANISMS)} mechanisms, none with a unit or a value")
+    return err
+
+
 def check_claims():
     """P54: every claim's cause and effect are entry ids or mechanism ids (variables_ok, above); here the counts: claims, free
     strings (always 0 once variables_ok holds), mechanisms named, and mechanisms named by claims of two or more papers."""
@@ -1155,6 +1164,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_bases_sec19()
     print(f"== uncertainty bases (P60): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_mechanisms()
+    print(f"== mechanisms (P82): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
