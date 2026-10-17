@@ -84,7 +84,47 @@ and 9); Docling reads O as 0 (7 pairs of 10.1116_1.4892385), l as I, T as Γ (3 
 of a left side (4) and prescripts, garbles text labels in equations and appends text (`\intertext` garbage in the ACS layout), and
 writes bold or stray characters. A "both wrong" pair needs the formula written anew by the review.
 
+## Figure stage (VLM): 147 data panels of 88 captioned figures judged, 142 right, 2 wrong points, 9 series missed
+
+The 12 papers of the pilot and its expansion (`ingest/figures.py`, gemini-3.8-flash, prompt 1cb472bef385, 2026-10-17; the
+counts are the Figure stage table of `NUMBERS.md`): 88 captioned figures, 236 panels (130 plot, 15 spectrum, 17 map, 40 micrograph,
+28 schematic, 5 photo, 1 table image), 5,716 points, 33 peaks, 64 cells, 525,054 tokens. The 147 plot, spectrum and map-with-data
+panels were judged on `reports/figures.html` (`answers/figures.json`, 153 verdicts: 146 data-panel keys, the two unlettered panels of
+10.1116_6.0002804 Fig. 4 share one, plus the 7 colour-scale map panels of figures that also carry data).
+- **Wrong points (2, flag → review).** 10.1039_d0cp03358h Fig. 9b and 9c: the 2000 nm series stops at its drop, the tail to zero is
+  missing (F2 flags both panels). Elsewhere a sampled line is coarse (8 to 15 points per curve on the 12-curve panels of
+  10.1039_d1cp04758b Fig. 4 and 10.1039_d3cp05639b Fig. 5) but on the printed shape.
+- **Series missed (9, judged).** The six XPS panels of 10.1116_6.0002993 Fig. 3: the peaks are marked by a fitted baseline, not by a
+  printed position, and the model returned no peak. 10.1039_d1cp04758b Fig. 7a and 7b: the pressure series on the right-hand axis
+  are not read (two y axes; only the left-axis series come back). 10.1039_d0cp03358h Fig. 8a: nine repeat profiles with three legend
+  labels were merged into four series. Fit lines drawn through data points are read as a second series in some figures
+  (10.1021_cm0303080 Figs. 10b and 12, 10.1063_1.5028178 Figs. 5-7) and not in others (Figs. 8, 11b; 10.1021_acs.jpcc.9b08176 Fig. 3).
+- **Flags (review; the judged outcome).** F1 panel-count 6: four are true differences (a sub-panel of a micrograph figure counted or
+  not, 10.1116_1.4903941 Fig. 3, 10.1116_6.0002804 Fig. 10, 10.1039_d0cp03358h Figs. 7 and 11, where panels e and f of Fig. 11 are
+  not in the crop), two are bracketed symbols in the caption text read as panel letters (10.1002_cvde.200390005 Fig. 4 "(p)",
+  10.1039_d3cp05639b Fig. 5 "(m)"). F2 out-of-range 12: tick-range rows of a phase map (10.1021_acs.chemmater.2c01154 Figs. 2 and 4,
+  the 50 and 450 °C rows lie beyond the first and last tick), points just past an axis end (within 5 % but over the 2 % tolerance)
+  and the two wrong tails above. F3 duplicate-x 68: step functions and vertical line scans read as their edge points (10.1039_d3cp05639b
+  Figs. 2b and 6, 10.1116_6.0003182 Fig. 6 where position is the y axis): right readings, the flag marks the shape. F4 unit-missing 16:
+  dimensionless axes printed "(-)" or "(θ)" and log-axis labels, all right readings. F6 1: the single Cl point of 10.1116_6.0002804
+  Fig. 5b, as printed. F5 unreadable 0: every response parsed.
+- **Repeat agreement (`--repeat`, 13 figures, 75 series).** 23 series agree (31 %) by the rule (80 % of the first-run points within
+  2 % of both ranges); the median point deviation is 0.011 of the axis range. Discrete series agree in full (the 64 cells and the two
+  phase-map series, the marker series of 10.1116_6.0002804 Fig. 1, the four peaks of 10.1116_6.0002993 Fig. 2d); the disagreeing
+  series are sampled continuous lines whose sample positions differ between runs (3 to 5 of 8 points within tolerance on
+  10.1039_d0cp03358h Fig. 10 and 10.1039_d3cp05639b Fig. 8, 2 of 30 and 0 of 10 series), and four series whose label differed between
+  runs (10.1063_1.5028178 Fig. 2). The number measures the sampling, not the shape; two runs on the same crops are not identical.
+
 ## Known limits (nothing flags them unless stated)
+- **Figure stage: what the VLM reading cannot see.** A plot or spectrum drawn inside a schematic panel is part of the schematic and is
+  not read (10.1021_acs.chemmater.2c01154 Fig. 1a, Raman spectra inside the process illustration). Insets are not read
+  (10.1116_6.0002993 Fig. 1b, 10.1116_6.0002804 Fig. 3, 10.1039_d3cp05639b Figs. 4, 5i, 5j). A second ordinate is not read
+  (10.1039_d1cp04758b Fig. 7). A top axis is not recorded (10.1116_1.4903941 Fig. 5a, 10.1021_acs.jpcc.9b08176 Fig. 2B). Reference
+  stick patterns under a diffractogram and unlabelled peaks are not returned (10.1116_6.0003182 Fig. 5, 10.1116_6.0002993 Fig. 3).
+  A continuous line is a sample of at most 40 points, so a sharp spike or a short step may be missed (10.1116_6.0003182 Fig. 2).
+  The crops are Marker's figure images (450 to 800 px wide), below the 1100 px downscale: small tick labels are read from a low-resolution
+  image. The caption's panel letters are a text rule: a bracketed symbol in the caption text can look like a panel letter (F1).
+
 
 - **Lookalike letters.** Latin v and p of the italic text font written Greek ν and ρ (6 body errors, 2 table symbol
   errors); a flag only when the token holds a digit (v1, p_A0, v_th). The text layer carries the Latin letter: the review

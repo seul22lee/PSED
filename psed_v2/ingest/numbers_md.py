@@ -264,6 +264,50 @@ def block(pids, judged):
     return out, rows
 
 
+FIG_COLS = ["captioned figures", "panels: plot", "spectrum", "micrograph", "photo", "schematic", "map", "table_image", "other", "points", "peaks", "cells", "tokens in", "tokens out",
+            "flags F1", "F2", "F3", "F4", "F5", "F6", "verdicts ok", "wrong_axis", "wrong_points", "missed_series", "wrong_type", "unreadable", "repeat: series agreeing"]
+PANEL_TYPES = ["plot", "spectrum", "micrograph", "photo", "schematic", "map", "table_image", "other"]
+VERDICTS = ["ok", "wrong_axis", "wrong_points", "missed_series", "wrong_type", "unreadable"]
+
+
+def figures_rows():
+    """Per paper with a figures.json: the figure-stage numbers (captioned figures, panels by type, points, tokens, flags by kind,
+    verdicts by kind from answers/figures.json, repeat agreement from figures_repeat.json); the papers in manifest order of the
+    stage (sorted by id here) and a total row. [] when no paper has a figures.json."""
+    ans = json.load(open(ANSWERS / "figures.json"))["items"] if (ANSWERS / "figures.json").exists() else []
+    V = Counter()
+    for v in ans:
+        V[(v["paper_id"], v["verdict"])] += 1
+    rows = []
+    for d in sorted(FINAL.iterdir()):
+        f = d / "figures.json"
+        if not f.exists():
+            continue
+        fj = json.load(open(f)); pid = fj["paper_id"]
+        P, F, pts, pks, cls, ti, to = Counter(), Counter(), 0, 0, 0, 0, 0
+        for fig in fj["figures"]:
+            ti += fig["tokens"]["in"]; to += fig["tokens"]["out"]
+            for fl in fig["flags"]:
+                F[fl["flag"]] += 1
+            for pn in fig["panels"]:
+                P[pn["panel_type"]] += 1
+                pts += sum(len(s["points"]) for s in pn.get("series") or [])
+                pks += len(pn.get("peaks") or [])
+                cls += len(pn.get("cells") or [])
+        rep = ""
+        r = d / "figures_repeat.json"
+        if r.exists():
+            rj = json.load(open(r)); a = sum(c["agreeing"] for c in rj.get("comparison", [])); t = sum(c["series"] for c in rj.get("comparison", []))
+            rep = f"{a} of {t}"
+        rows.append([pid, len(fj["figures"])] + [P[t] for t in PANEL_TYPES] + [pts, pks, cls, ti, to] + [F[f"F{i}"] for i in range(1, 7)] + [V[(pid, v)] for v in VERDICTS] + [rep])
+    if rows:
+        tot = ["**total**"] + [sum(r[i] for r in rows) for i in range(1, len(FIG_COLS))]
+        a = sum(int(r[-1].split(" of ")[0]) for r in rows if r[-1]); t = sum(int(r[-1].split(" of ")[1]) for r in rows if r[-1])
+        tot.append(f"{a} of {t}" if t else "")
+        rows.append(tot)
+    return rows
+
+
 def main():
     pids = sorted(p.name for p in FINAL.iterdir() if (p / "structure.json").exists())
     with (HERE.parent / "corpus" / "manifest.csv").open(newline="", encoding="utf-8") as f:
@@ -289,6 +333,16 @@ def main():
     L.append(f"| **total, {len(inscope)} in scope** | {tot[0]:,} | {tot[1]:,} | {round(100 * tot[1] / tot[0])} % | {tot[2]} | {tot[3]:,} | {tot[4]} | {tot[5]} | {tot[6]} | {tot[7]} |")
     for r in rows_out:
         L.append(f"| {r[0]} (out of scope, in no total) | {r[1]} | {r[2]} | {round(100 * r[2] / r[1]) if r[1] else 0} % | {r[3]} | {r[4]} | {r[5]} | {r[6]} | {r[7]} | {r[8]} |")
+    fr = figures_rows()
+    if fr:
+        L.append(f"\n## Figure stage (VLM; ingest/figures.py, {len(fr) - 1} papers with a figures.json)\n")
+        L.append("Per paper: the captioned figures sent (structure.json captions of kind figure with caption text and images), the panels returned by type, the points read,\n"
+                 "the tokens (in: images and prompt; out: the response with the model's reasoning tokens), the rule flags F1-F6 (figures.json `flags`, counted per\n"
+                 "figure and kind), the verdicts of `answers/figures.json` on every plot/spectrum panel, and the repeat agreement (series agreeing of series compared,\n"
+                 "figures_repeat.json). Captioned figures and unnumbered pictures are not the same count as the Figure captions row above: pictures without caption text are never sent.\n")
+        L.append("| paper | " + " | ".join(FIG_COLS) + " |\n|---|" + "---|" * len(FIG_COLS))
+        for r in fr:
+            L.append("| " + " | ".join(str(x) for x in r) + " |")
     (HERE / "NUMBERS.md").write_text("\n".join(L) + "\n")
     print(f"NUMBERS.md written: {len(inscope)} in scope + {len(outscope)} out of scope")
     for it in a_in: print("  ", it[0], "|", it[1][:160])

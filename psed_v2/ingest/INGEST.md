@@ -3,7 +3,7 @@
 Ingest turns each in-scope PDF (`corpus/raw/<paper_id>.pdf`, 58 in-scope papers with a PDF on 2026-10-13, plus Guyon 2004, ingested before its exclusion from the scope) into one folder
 `ingest/final/<paper_id>/` with the body text, the abstract, the figures with their captions and crops, the tables
 with a rule check and a crop, the equations from two tools, and flags wherever the output may be wrong. No LLM is
-called. The two local vision models (Marker's OCR, Docling's formula reader) are not reproducible bit for bit, so each
+called except the figure stage, which calls the VLM once per captioned figure and keeps the result. The two local vision models (Marker's OCR, Docling's formula reader) are not reproducible bit for bit, so each
 paper is converted once and the result is kept. The numbers of the 58 papers, with Guyon 2004 on its own line outside every total, are in `ingest/NUMBERS.md`; what is still
 wrong, and the known limits, in `ingest/ERRORS.md`.
 
@@ -19,6 +19,9 @@ psed310 env, GPU: python ingest/parse_docling.py --formulas <ids>    Docling lay
 psed310 env:      python ingest/structure_marker.py --all        marker/<id>/structure.json (captions, figures, tables + check, equations, abstract)
 psed310 env:      python ingest/merge.py --all                   final/<id>/ (document.md, structure.json, figures/): line_numbers.py,
                                                                  body_check.py, body_repair.py, the check again on the repaired text
+psed310 env:      python ingest/figures.py --ids <id> ... | --all   the VLM figure stage -> final/<id>/figures.json; once per paper (manifest
+                                                                 `figures` = ok skipped; a failed row resumed; --redo overwrites); --repeat the
+                                                                 agreement sample; then report_figures.py -> reports/figures.html
 ```
 
 Environments: `psed310` (Docling, pdfplumber, pypdfium2, tabulate) and `psed_marker` (marker-pdf 2.0.0 with the
@@ -51,6 +54,36 @@ caption ends a sentence and the next block starts one. A figure is bound by Mark
 the next caption on the page whose horizontal span overlaps it, else the previous, else the next; a Figure, Picture,
 Diagram or ChemicalBlock without an image file is cropped from the page. A manuscript with its figures after all
 captions binds them by page order. Captions drawn inside the picture are recovered by band OCR (T1).
+
+**Figures (VLM)** (`final/<id>/figures.json`, `figures.py`; the 12 papers of the pilot and its expansion, 2026-10-17). Every caption
+of kind figure with caption text and a non-empty images list is read once by the vision model named in `psed_v2/.env`
+(`PSED_VLM_MODEL`, vendor:model, with the vendor's key; nothing else is read from the environment): one call per caption, all its
+image files in that call in order, each downscaled to a long side of at most 1100 px, with the paper title (manifest), the abstract
+(structure.json) and the caption as the only text context. Tables, schemes and pictures without caption text are never sent. The
+response is JSON with one entry per panel: `panel`, `panel_type` (plot, spectrum, micrograph, photo, schematic, map, table_image,
+other), `content` (one line), `x_range` and `y_range` as printed (null without axes), the axes `x`/`y` (label_raw, unit_raw, log,
+is_normalized, normalization_expression, normalization_denominator_symbol), `series_axis`, `series[{label, points}]` and
+`conditions`. Points are read for plots only: every marker of a discrete series, a continuous line sampled at no more than 40 points,
+error bars ignored; a spectrum is not sampled and returns `peaks[{x, label}]` for the peaks the figure labels or marks; a map whose
+cells carry printed values (numbers or category labels in a grid) returns `cells[{x, y, value}]` with the value as printed and may
+carry series with categorical labels, while a colour-scale map without printed values returns no data; the other panel types return
+panel_type and content only. A plot or spectrum drawn inside a schematic panel is not read (known limit, ERRORS.md). The file keeps
+per figure `number`, `page`, `caption`, `images`, `tokens{in,out}`, `panels`, `flags` and the verbatim `raw_response`, and per paper
+`model`, `prompt_sha256` (the hash of the fixed prompt text; one hash over the whole set), `run_at` and `totals`. Rule flags, computed
+after the call without a model, mark a figure for the review and the later importer and delete nothing: F1 panel-count (the caption's
+panel letters, ranges expanded, differ from the panels returned), F2 out-of-range (a point or peak outside the printed range, 2 %
+tolerance), F3 duplicate-x (one series of a plot, two points at one x), F4 unit-missing (unit_raw empty while label_raw holds a
+bracket), F5 unreadable (no valid JSON or schema: the figure keeps raw_response and no panels), F6 empty-plot (a plot without series or
+with a series under 2 points). `--repeat` reads 10 % of the figures with a plot, spectrum or map panel again (at least 12, fixed seed 20261017) into
+`figures_repeat.json`: a series agrees when 80 % of its first-run points have a second-run point within 2 % of both axis ranges, matched
+by panel and label (a spectrum's peak list is one series matched on x, a map's cells one series matched on x, y and value); the share of agreeing series and the median point deviation
+are printed. The review page `reports/figures.html` (`report_figures.py`) shows each crop beside the extracted series re-plotted on the
+printed ranges; every plot, spectrum and map-with-data panel of the 12 papers was judged there into `answers/figures.json`
+(paper_id, figure, panel, verdict ok | wrong_axis | wrong_points | missed_series | wrong_type | unreadable, note). A verdict never
+edits a figures.json; a systematic fault changes a rule, the prompt or the parser, after which all 12 papers are rerun with --redo.
+Progress: manifest column `figures` (ok | failed | blank); a paper over 200k tokens stops the run; `--reflag` recomputes the flags of existing
+output by the current rules without a call. Runs twice on the same crops are not
+identical (the repeat sample measures it), so each paper is read once and kept.
 
 **Tables** (`captions` with `table`, `bbox`, `check`, `check_reasons`, `check_detail`, `crop`). Marker's table html
 as github markdown (header rows merged with " / ", rowspans and colspans honoured, superscripts as `^`, trailing
