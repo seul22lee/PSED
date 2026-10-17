@@ -1,0 +1,1542 @@
+{
+ "paper_id": "10.1021_acs.chemmater.2c01154",
+ "model": "gemini-3.8-flash",
+ "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+ "run_at": "2026-10-17T17:45:30",
+ "totals": {
+  "figures": 9,
+  "panels_by_type": {
+   "plot": 1,
+   "spectrum": 5,
+   "micrograph": 4,
+   "photo": 1,
+   "schematic": 1,
+   "map": 5
+  },
+  "points": 122,
+  "peaks": 25,
+  "cells": 64,
+  "tokens": {
+   "in": 26755,
+   "out": 21732
+  },
+  "flags": {
+   "F2": 2,
+   "F4": 1
+  }
+ },
+ "figures": [
+  {
+   "number": "1",
+   "page": 2,
+   "caption": "Figure 1. Illustration of the PEALD process and its ability to deposit crystalli",
+   "images": [
+    "figures/_page_1_Figure_3.jpeg"
+   ],
+   "tokens": {
+    "in": 3064,
+    "out": 3394
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "schematic",
+     "content": "Schematic of the PEALD process and Raman spectra showing effect of H2 flow ratio on film crystallinity"
+    },
+    {
+     "panel": "b",
+     "panel_type": "spectrum",
+     "content": "Raman spectra of MoS2 films deposited at 150 °C with different cycle counts",
+     "x_range": [
+      350.0,
+      430.0
+     ],
+     "y_range": null,
+     "x": {
+      "label_raw": "Raman shift (cm⁻¹)",
+      "unit_raw": "cm⁻¹",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Intensity (Normalized to Si)",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": true,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": "Si"
+     },
+     "series_axis": "number of cycles",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C"
+     },
+     "peaks": [
+      {
+       "x": 382.5,
+       "label": "E¹₂g"
+      },
+      {
+       "x": 406.5,
+       "label": "A₁g"
+      }
+     ]
+    },
+    {
+     "panel": "c",
+     "panel_type": "map",
+     "content": "Spectroscopic ellipsometry thickness map of MoS2 film grown on a 4-inch SiO2/Si wafer",
+     "x_range": null,
+     "y_range": null,
+     "x": {
+      "label_raw": null,
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": null,
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C",
+      "ALD cycles": "50"
+     },
+     "cells": []
+    },
+    {
+     "panel": "d",
+     "panel_type": "photo",
+     "content": "Photograph of MoS2 film deposited on a flexible PET substrate at 100 °C"
+    }
+   ],
+   "flags": [
+    {
+     "flag": "F4",
+     "detail": "panel b, y: unit_raw empty for label 'Intensity (Normalized to Si)'"
+    }
+   ]
+  },
+  {
+   "number": "2",
+   "page": 3,
+   "caption": "Figure 2. Effect of H2 flow ratio and deposition temperature on film crystallini",
+   "images": [
+    "figures/_page_2_Figure_10.jpeg"
+   ],
+   "tokens": {
+    "in": 2918,
+    "out": 2955
+   },
+   "panels": [
+    {
+     "panel": "",
+     "panel_type": "map",
+     "content": "Effect of H2 flow ratio and deposition temperature on film crystallinity",
+     "x_range": [
+      0.0,
+      0.94
+     ],
+     "y_range": [
+      100.0,
+      400.0
+     ],
+     "x": {
+      "label_raw": "H₂ flow ratio",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "T_{deposition} (°C)",
+      "unit_raw": "°C",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "Crystallinity",
+     "series": [
+      {
+       "label": "Amorphous",
+       "points": [
+        [
+         0.0,
+         150.0
+        ],
+        [
+         0.0,
+         200.0
+        ],
+        [
+         0.0,
+         250.0
+        ],
+        [
+         0.2,
+         50.0
+        ],
+        [
+         0.2,
+         100.0
+        ],
+        [
+         0.2,
+         150.0
+        ],
+        [
+         0.2,
+         200.0
+        ],
+        [
+         0.2,
+         250.0
+        ],
+        [
+         0.35,
+         250.0
+        ],
+        [
+         0.5,
+         100.0
+        ],
+        [
+         0.5,
+         150.0
+        ],
+        [
+         0.5,
+         200.0
+        ],
+        [
+         0.65,
+         100.0
+        ],
+        [
+         0.8,
+         50.0
+        ]
+       ]
+      },
+      {
+       "label": "Crystalline",
+       "points": [
+        [
+         0.2,
+         300.0
+        ],
+        [
+         0.2,
+         350.0
+        ],
+        [
+         0.2,
+         450.0
+        ],
+        [
+         0.5,
+         250.0
+        ],
+        [
+         0.5,
+         350.0
+        ],
+        [
+         0.65,
+         150.0
+        ],
+        [
+         0.65,
+         200.0
+        ],
+        [
+         0.65,
+         250.0
+        ],
+        [
+         0.8,
+         100.0
+        ],
+        [
+         0.8,
+         150.0
+        ],
+        [
+         0.8,
+         200.0
+        ],
+        [
+         0.8,
+         250.0
+        ],
+        [
+         0.8,
+         350.0
+        ],
+        [
+         0.8,
+         450.0
+        ],
+        [
+         0.94,
+         100.0
+        ],
+        [
+         0.94,
+         150.0
+        ],
+        [
+         0.94,
+         200.0
+        ],
+        [
+         0.94,
+         250.0
+        ]
+       ]
+      }
+     ],
+     "dropped_points": 0,
+     "conditions": {
+      "ALD cycles": "100–140"
+     },
+     "cells": [
+      {
+       "x": 0.0,
+       "y": 150.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.0,
+       "y": 200.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.0,
+       "y": 250.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 50.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 100.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 150.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 200.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 250.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.2,
+       "y": 300.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.2,
+       "y": 350.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.2,
+       "y": 450.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.35,
+       "y": 250.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.5,
+       "y": 100.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.5,
+       "y": 150.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.5,
+       "y": 200.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.5,
+       "y": 250.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.5,
+       "y": 350.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.65,
+       "y": 100.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.65,
+       "y": 150.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.65,
+       "y": 200.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.65,
+       "y": 250.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 50.0,
+       "value": "Amorphous"
+      },
+      {
+       "x": 0.8,
+       "y": 100.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 150.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 200.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 250.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 350.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.8,
+       "y": 450.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.94,
+       "y": 100.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.94,
+       "y": 150.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.94,
+       "y": 200.0,
+       "value": "Crystalline"
+      },
+      {
+       "x": 0.94,
+       "y": 250.0,
+       "value": "Crystalline"
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "flag": "F2",
+     "detail": "panel -: 8 points outside the printed ranges"
+    }
+   ]
+  },
+  {
+   "number": "3",
+   "page": 3,
+   "caption": "Figure 3. Film microstructure. Cross-sectional TEM images of films grown at (a) ",
+   "images": [
+    "figures/_page_2_Picture_13.jpeg"
+   ],
+   "tokens": {
+    "in": 2954,
+    "out": 474
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "micrograph",
+     "content": "Cross-sectional TEM image of MoS2 film grown at 100 °C with H2 flow ratio of 0.80"
+    },
+    {
+     "panel": "b",
+     "panel_type": "micrograph",
+     "content": "Cross-sectional TEM image of MoS2 film grown at 350 °C with H2 flow ratio of 0.20"
+    }
+   ],
+   "flags": []
+  },
+  {
+   "number": "4",
+   "page": 4,
+   "caption": "Figure 4. Effect of the H2 flow ratio on film stoichiometry and correlation of s",
+   "images": [
+    "figures/_page_3_Figure_3.jpeg"
+   ],
+   "tokens": {
+    "in": 2939,
+    "out": 3343
+   },
+   "panels": [
+    {
+     "panel": "",
+     "panel_type": "map",
+     "content": "Heat map of XPS S/Mo ratio as a function of H2 flow ratio and deposition temperature",
+     "x_range": [
+      0.0,
+      0.94
+     ],
+     "y_range": [
+      100.0,
+      400.0
+     ],
+     "x": {
+      "label_raw": "H₂ flow ratio",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "T_deposition (°C)",
+      "unit_raw": "°C",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "cycles": "100–140"
+     },
+     "cells": [
+      {
+       "x": 0.0,
+       "y": 250.0,
+       "value": 2.8
+      },
+      {
+       "x": 0.0,
+       "y": 200.0,
+       "value": 3.1
+      },
+      {
+       "x": 0.0,
+       "y": 150.0,
+       "value": 3.6
+      },
+      {
+       "x": 0.2,
+       "y": 450.0,
+       "value": 2.0
+      },
+      {
+       "x": 0.2,
+       "y": 350.0,
+       "value": 2.1
+      },
+      {
+       "x": 0.2,
+       "y": 300.0,
+       "value": 2.3
+      },
+      {
+       "x": 0.2,
+       "y": 250.0,
+       "value": 2.7
+      },
+      {
+       "x": 0.2,
+       "y": 200.0,
+       "value": 3.0
+      },
+      {
+       "x": 0.2,
+       "y": 150.0,
+       "value": 3.5
+      },
+      {
+       "x": 0.2,
+       "y": 100.0,
+       "value": 4.6
+      },
+      {
+       "x": 0.2,
+       "y": 50.0,
+       "value": 7.3
+      },
+      {
+       "x": 0.35,
+       "y": 250.0,
+       "value": 2.5
+      },
+      {
+       "x": 0.5,
+       "y": 350.0,
+       "value": 2.2
+      },
+      {
+       "x": 0.5,
+       "y": 250.0,
+       "value": 2.2
+      },
+      {
+       "x": 0.5,
+       "y": 200.0,
+       "value": 2.5
+      },
+      {
+       "x": 0.5,
+       "y": 150.0,
+       "value": 3.0
+      },
+      {
+       "x": 0.5,
+       "y": 100.0,
+       "value": 3.6
+      },
+      {
+       "x": 0.65,
+       "y": 250.0,
+       "value": 2.1
+      },
+      {
+       "x": 0.65,
+       "y": 200.0,
+       "value": 2.2
+      },
+      {
+       "x": 0.65,
+       "y": 150.0,
+       "value": 2.1
+      },
+      {
+       "x": 0.65,
+       "y": 100.0,
+       "value": 2.2
+      },
+      {
+       "x": 0.8,
+       "y": 450.0,
+       "value": 1.9
+      },
+      {
+       "x": 0.8,
+       "y": 350.0,
+       "value": 1.9
+      },
+      {
+       "x": 0.8,
+       "y": 250.0,
+       "value": 1.9
+      },
+      {
+       "x": 0.8,
+       "y": 200.0,
+       "value": 1.9
+      },
+      {
+       "x": 0.8,
+       "y": 150.0,
+       "value": 1.9
+      },
+      {
+       "x": 0.8,
+       "y": 100.0,
+       "value": 1.8
+      },
+      {
+       "x": 0.8,
+       "y": 50.0,
+       "value": 2.0
+      },
+      {
+       "x": 0.94,
+       "y": 250.0,
+       "value": 1.3
+      },
+      {
+       "x": 0.94,
+       "y": 200.0,
+       "value": 1.3
+      },
+      {
+       "x": 0.94,
+       "y": 150.0,
+       "value": 1.3
+      },
+      {
+       "x": 0.94,
+       "y": 100.0,
+       "value": 1.4
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "flag": "F2",
+     "detail": "panel -: 4 points outside the printed ranges"
+    }
+   ]
+  },
+  {
+   "number": "5",
+   "page": 4,
+   "caption": "Figure 5. Effect of the H2 flow ratio on the chemical environment of Mo and S. X",
+   "images": [
+    "figures/_page_3_Figure_12.jpeg"
+   ],
+   "tokens": {
+    "in": 2950,
+    "out": 2964
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "spectrum",
+     "content": "Mo 3d and S 2s XPS spectra of MoSx films deposited at 150 °C with varying H2 flow ratio",
+     "x_range": [
+      224.0,
+      238.0
+     ],
+     "y_range": null,
+     "x": {
+      "label_raw": "Binding energy (eV)",
+      "unit_raw": "eV",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Intensity (arb. units)",
+      "unit_raw": "arb. units",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "H2 flow ratio",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C",
+      "cycles": "140"
+     },
+     "peaks": [
+      {
+       "x": 228.6,
+       "label": "Mo"
+      },
+      {
+       "x": 235.8,
+       "label": "Mo6+ (MoO3)"
+      },
+      {
+       "x": 232.7,
+       "label": "Mo6+ (MoO3)"
+      },
+      {
+       "x": 229.4,
+       "label": "Mo(4-δ)+"
+      },
+      {
+       "x": 233.5,
+       "label": "Mo5+ (MoOxSy)"
+      },
+      {
+       "x": 229.4,
+       "label": "Mo4+ (MoSx)"
+      },
+      {
+       "x": 226.6,
+       "label": "S22- (bridging) & S2- (apical)"
+      },
+      {
+       "x": 226.0,
+       "label": "S2- & S22- (terminal)"
+      }
+     ]
+    },
+    {
+     "panel": "b",
+     "panel_type": "spectrum",
+     "content": "S 2p XPS spectra of MoSx films deposited at 150 °C with varying H2 flow ratio",
+     "x_range": [
+      160.0,
+      168.0
+     ],
+     "y_range": null,
+     "x": {
+      "label_raw": "Binding energy (eV)",
+      "unit_raw": "eV",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Intensity (arb. units)",
+      "unit_raw": "arb. units",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "H2 flow ratio",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C",
+      "cycles": "140"
+     },
+     "peaks": [
+      {
+       "x": 161.2,
+       "label": "S2- (e- rich)"
+      },
+      {
+       "x": 164.6,
+       "label": "S22- (bridging) & S2- (apical)"
+      },
+      {
+       "x": 163.4,
+       "label": "S22- (bridging) & S2- (apical)"
+      },
+      {
+       "x": 163.4,
+       "label": "S2- & S22- (terminal)"
+      },
+      {
+       "x": 162.2,
+       "label": "S2- & S22- (terminal)"
+      }
+     ]
+    }
+   ],
+   "flags": []
+  },
+  {
+   "number": "6",
+   "page": 5,
+   "caption": "Figure 6. Effect of the H2 flow ratio on film morphology and microstructure. (a)",
+   "images": [
+    "figures/_page_4_Picture_6.jpeg"
+   ],
+   "tokens": {
+    "in": 3059,
+    "out": 504
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "micrograph",
+     "content": "SEM images and roughness values of films grown at 150 °C with different H2 flow ratios"
+    },
+    {
+     "panel": "b",
+     "panel_type": "micrograph",
+     "content": "Cross-sectional TEM image of a MoS2 film grown at 150 °C with 0.65 H2 flow ratio"
+    }
+   ],
+   "flags": []
+  },
+  {
+   "number": "7",
+   "page": 6,
+   "caption": "Figure 7. Effect of the H2 flow ratio on film growth. (a) Evolution of film thic",
+   "images": [
+    "figures/_page_5_Figure_7.jpeg"
+   ],
+   "tokens": {
+    "in": 2941,
+    "out": 4632
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "plot",
+     "content": "Evolution of film thickness as a function of ALD cycles at 150 °C for different H2 flow ratios",
+     "x_range": [
+      0.0,
+      140.0
+     ],
+     "y_range": [
+      0.0,
+      22.0
+     ],
+     "x": {
+      "label_raw": "Number of ALD cycles",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Thickness (nm)",
+      "unit_raw": "nm",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "H2 flow ratio",
+     "series": [
+      {
+       "label": "0",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         0.8
+        ],
+        [
+         20.0,
+         1.5
+        ],
+        [
+         30.0,
+         2.3
+        ],
+        [
+         40.0,
+         3.0
+        ],
+        [
+         50.0,
+         3.7
+        ],
+        [
+         60.0,
+         4.4
+        ],
+        [
+         70.0,
+         5.0
+        ],
+        [
+         80.0,
+         5.5
+        ],
+        [
+         90.0,
+         6.2
+        ],
+        [
+         100.0,
+         6.8
+        ],
+        [
+         110.0,
+         7.5
+        ],
+        [
+         120.0,
+         8.2
+        ],
+        [
+         130.0,
+         8.8
+        ],
+        [
+         140.0,
+         9.5
+        ]
+       ]
+      },
+      {
+       "label": "0.20",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         1.4
+        ],
+        [
+         20.0,
+         1.9
+        ],
+        [
+         30.0,
+         2.7
+        ],
+        [
+         40.0,
+         3.2
+        ],
+        [
+         50.0,
+         3.8
+        ],
+        [
+         60.0,
+         4.3
+        ],
+        [
+         70.0,
+         4.9
+        ],
+        [
+         80.0,
+         5.4
+        ],
+        [
+         90.0,
+         6.2
+        ],
+        [
+         100.0,
+         6.9
+        ],
+        [
+         110.0,
+         7.6
+        ],
+        [
+         120.0,
+         8.2
+        ],
+        [
+         130.0,
+         8.9
+        ],
+        [
+         140.0,
+         9.5
+        ]
+       ]
+      },
+      {
+       "label": "0.50",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         0.9
+        ],
+        [
+         20.0,
+         1.5
+        ],
+        [
+         30.0,
+         2.3
+        ],
+        [
+         40.0,
+         3.6
+        ],
+        [
+         50.0,
+         4.3
+        ],
+        [
+         60.0,
+         5.1
+        ],
+        [
+         70.0,
+         5.8
+        ],
+        [
+         80.0,
+         6.6
+        ],
+        [
+         90.0,
+         7.4
+        ],
+        [
+         100.0,
+         8.1
+        ],
+        [
+         110.0,
+         8.9
+        ],
+        [
+         120.0,
+         9.7
+        ],
+        [
+         130.0,
+         10.5
+        ],
+        [
+         140.0,
+         11.3
+        ]
+       ]
+      },
+      {
+       "label": "0.65",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         1.2
+        ],
+        [
+         20.0,
+         1.9
+        ],
+        [
+         30.0,
+         2.8
+        ],
+        [
+         40.0,
+         3.8
+        ],
+        [
+         50.0,
+         4.9
+        ],
+        [
+         60.0,
+         5.9
+        ],
+        [
+         70.0,
+         7.0
+        ],
+        [
+         80.0,
+         8.2
+        ],
+        [
+         90.0,
+         9.3
+        ],
+        [
+         100.0,
+         10.5
+        ],
+        [
+         110.0,
+         11.6
+        ],
+        [
+         120.0,
+         12.7
+        ],
+        [
+         130.0,
+         13.8
+        ],
+        [
+         140.0,
+         14.9
+        ]
+       ]
+      },
+      {
+       "label": "0.80",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         1.0
+        ],
+        [
+         20.0,
+         1.6
+        ],
+        [
+         30.0,
+         2.5
+        ],
+        [
+         40.0,
+         3.9
+        ],
+        [
+         50.0,
+         5.1
+        ],
+        [
+         60.0,
+         6.6
+        ],
+        [
+         70.0,
+         8.1
+        ],
+        [
+         80.0,
+         9.6
+        ],
+        [
+         90.0,
+         11.2
+        ],
+        [
+         100.0,
+         12.9
+        ],
+        [
+         110.0,
+         14.6
+        ],
+        [
+         120.0,
+         16.4
+        ],
+        [
+         130.0,
+         18.2
+        ],
+        [
+         140.0,
+         20.2
+        ]
+       ]
+      },
+      {
+       "label": "0.94",
+       "points": [
+        [
+         0.0,
+         0.0
+        ],
+        [
+         10.0,
+         1.5
+        ],
+        [
+         20.0,
+         2.0
+        ],
+        [
+         30.0,
+         2.9
+        ],
+        [
+         40.0,
+         3.4
+        ],
+        [
+         50.0,
+         3.8
+        ],
+        [
+         60.0,
+         4.2
+        ],
+        [
+         70.0,
+         4.8
+        ],
+        [
+         80.0,
+         5.2
+        ],
+        [
+         90.0,
+         5.8
+        ],
+        [
+         100.0,
+         6.6
+        ],
+        [
+         110.0,
+         7.6
+        ],
+        [
+         120.0,
+         8.6
+        ],
+        [
+         130.0,
+         9.8
+        ],
+        [
+         140.0,
+         11.1
+        ]
+       ]
+      }
+     ],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C"
+     }
+    },
+    {
+     "panel": "b",
+     "panel_type": "map",
+     "content": "Heat map of average GPC as a function of deposition temperature and H2 flow ratio",
+     "x_range": [
+      0.0,
+      0.94
+     ],
+     "y_range": [
+      100.0,
+      400.0
+     ],
+     "x": {
+      "label_raw": "H₂ flow ratio",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Tdeposition (°C)",
+      "unit_raw": "°C",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {},
+     "cells": []
+    }
+   ],
+   "flags": []
+  },
+  {
+   "number": "8",
+   "page": 7,
+   "caption": "Figure 8. Effect of the \\text{H}_2 flow ratio on electrical properties. Heat map",
+   "images": [
+    "figures/_page_6_Figure_5.jpeg"
+   ],
+   "tokens": {
+    "in": 2937,
+    "out": 1519
+   },
+   "panels": [
+    {
+     "panel": "",
+     "panel_type": "map",
+     "content": "Heat map of film resistivity as a function of deposition temperature and H2 flow ratio",
+     "x_range": [
+      0.0,
+      0.94
+     ],
+     "y_range": [
+      100.0,
+      400.0
+     ],
+     "x": {
+      "label_raw": "H_2 flow ratio",
+      "unit_raw": "",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "T_{deposition} (°C)",
+      "unit_raw": "°C",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "cycle count": "100–140 ALD cycles"
+     },
+     "cells": []
+    }
+   ],
+   "flags": []
+  },
+  {
+   "number": "9",
+   "page": 8,
+   "caption": "Figure 9. Effect of the H2 flow ratio on the growth of other TMDCs at low temper",
+   "images": [
+    "figures/_page_7_Figure_8.jpeg"
+   ],
+   "tokens": {
+    "in": 2993,
+    "out": 1947
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "panel_type": "spectrum",
+     "content": "Raman spectra of WS2 at 150 °C with different H2 flow ratios",
+     "x_range": [
+      100.0,
+      550.0
+     ],
+     "y_range": null,
+     "x": {
+      "label_raw": "Raman shift (cm$^{-1}$)",
+      "unit_raw": "cm$^{-1}$",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Intensity (Arb. units)",
+      "unit_raw": "Arb. units",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "H2 flow ratio",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "150 °C"
+     },
+     "peaks": [
+      {
+       "x": 145.0,
+       "label": "ZA(M)"
+      },
+      {
+       "x": 174.0,
+       "label": "LA(M)"
+      },
+      {
+       "x": 347.0,
+       "label": "2LA(M)"
+      },
+      {
+       "x": 356.0,
+       "label": "E¹₂g(Γ)"
+      },
+      {
+       "x": 418.0,
+       "label": "A₁g(Γ)"
+      },
+      {
+       "x": 520.0,
+       "label": "Si"
+      }
+     ]
+    },
+    {
+     "panel": "b",
+     "panel_type": "spectrum",
+     "content": "Raman spectra of TiS2 at 100 °C for different H2 flow ratios and thermal ALD",
+     "x_range": [
+      100.0,
+      550.0
+     ],
+     "y_range": null,
+     "x": {
+      "label_raw": "Raman shift (cm$^{-1}$)",
+      "unit_raw": "cm$^{-1}$",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "label_raw": "Intensity (Arb. units)",
+      "unit_raw": "Arb. units",
+      "log": false,
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "H2 flow ratio",
+     "series": [],
+     "dropped_points": 0,
+     "conditions": {
+      "temperature": "100 °C"
+     },
+     "peaks": [
+      {
+       "x": 233.0,
+       "label": "Eg"
+      },
+      {
+       "x": 334.0,
+       "label": "A₁g"
+      },
+      {
+       "x": 376.0,
+       "label": "Sh"
+      },
+      {
+       "x": 520.0,
+       "label": "Si"
+      }
+     ]
+    }
+   ],
+   "flags": []
+  }
+ ]
+}
