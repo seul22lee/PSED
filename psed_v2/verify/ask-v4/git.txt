@@ -1,0 +1,34 @@
+0d10b23 psed_v2: HANDOFF: rules P78a and P78–P81 one sentence each, the P76 rule reworded to the data-keyed settings entries, homeless.py under How to run, resume state at the end of directive 4 with the probe-battery figure (68,767 → 74,462), the other[], homeless, grid and card counts and the open points; the P80 row's total corrected to 11,863; tag ask-v4
+9026a04 psed_v2: P81: concept cards count everything and say what is derivable: per paper the value records by home (specimen, input, aggregate, set-level, paper, cited), settings, claims and derived M, 'not studied in' only when all are zero, else 'derivable in p from <inputs> (<kinds>)' when a transform's inputs are all present; the footer and the L0 map read the same counts; check_cards proves the numbers against the page data for 92 cards x 3 papers (16 pairs no longer 'not studied in')
+82e7e08 psed_v2: P80: grid sets render as matrices from their full member list: query.grid_info (cells, axes, levels, same-process variants, child views), a cell's home is the grid, child series are views named in one line, tools.grid_lines prints one matrix per quantity with every record per cell and the untested combinations counted, variants per cell, the children's set-level records; over budget the row levels fold from the last, never a column; sets with more than eight claims named by their count; check_grids proves cells, children and the ask-v3.1 sizes (repeated views shrink, the grid paper's total falls)
+208e416 psed_v2: P79: every record has a home in values(): inputs, aggregate and paper-level groups before the comparison sets, a first 'set' row for each set's own records, every record of a key in its cell (alternatives), a stated target as a column, orphan spreads as records and spread fact ids in the ±, settings of an entity's own activities, every fact of a settings level cited, paper-level settings; homeless.py lists what no values() renders (343 -> 0 of 871 page records), check_homes asserts 0, run_metrics and the summary gain homeless_records
+ff48619 psed_v2: P78: structure taxonomy and dimension slots: structure_classes (planar; har_feature: trench, via_hole, lateral_channel; porous_body: nanoparticle_compact, aerogel_monolith, nanopore_membrane) with slots, the four structures as instances, five slot entries (body_thickness, entry_sides, particle_diameter, specific_surface_area, body_diameter) with the CQ, the transform body_thickness = feature_depth × entry_sides; every specimen and input entity carries structure_class; free-label structure dimensions re-keyed to their slots by rule (122 -> 111 other records); ontology check 13 and section 2c, pilot check_structure
+a0a730a psed_v2: P78a: three carry-overs: the settings-table rule keys on the data's stated conditions whatever node (materials, reactants, substrate, structure and measurement settings included; query.settings_entries replaces lists.SETTINGS_ENTRIES), set_blocks hides caveat texts before collapsing any column, one token measure for the probe battery (check.py's figure, 68,767 at ask-v3.1); values_sizes_baseline.csv records the ask-v3.1 size of every values(result, paper) call for P80
+
+ psed_v2/HANDOFF.md                                 |  31 +-
+ psed_v2/ontology/CRITERIA.md                       |   1 +
+ psed_v2/ontology/export.py                         |   5 +-
+ psed_v2/ontology/make_report.py                    |  39 +-
+ psed_v2/ontology/ontology.yaml                     | 114 +++-
+ psed_v2/ontology/report.html                       |  13 +-
+ .../pilot/10.1021_acs.chemmater.2c01154.facts.csv  | 108 ++--
+ .../pilot/10.1021_acs.chemmater.2c01154.facts.py   |   2 +
+ psed_v2/pilot/10.1039_d0cp03358h.facts.csv         |  42 +-
+ psed_v2/pilot/10.1039_d0cp03358h.facts.py          |   2 +
+ psed_v2/pilot/10.1116_6.0003182.coverage.csv       |   6 +-
+ psed_v2/pilot/10.1116_6.0003182.facts.csv          |  57 +-
+ psed_v2/pilot/10.1116_6.0003182.facts.py           |   6 +
+ psed_v2/pilot/ask.py                               |   4 +-
+ psed_v2/pilot/check.py                             | 232 ++++++-
+ psed_v2/pilot/concept.py                           |  87 ++-
+ psed_v2/pilot/facts.py                             |  81 +++
+ psed_v2/pilot/homeless.py                          |  96 +++
+ psed_v2/pilot/lists.py                             |  31 +-
+ psed_v2/pilot/problems.csv                         |  25 +-
+ psed_v2/pilot/query.py                             | 204 +++++-
+ psed_v2/pilot/questions.csv                        |   4 +-
+ psed_v2/pilot/run_metrics.py                       |  19 +-
+ psed_v2/pilot/tools.py                             | 213 +++++--
+ psed_v2/pilot/values_sizes_baseline.csv            |  42 ++
+ psed_v2/pilot/vocab.py                             | 683 ++++++++++++++++++++-
+ 26 files changed, 1907 insertions(+), 240 deletions(-)

@@ -1,0 +1,336 @@
+=== values({"result": "porosity", "paper": "gre23"}) · 716 tokens, 17 lines
+[gre23:inputs] inputs [gre23:inputs] · the structures before deposition (input entities) · 1 rows · columns: initial porosity
+[gre23:inputs] caveats on every row of this set: [gre23:s14.p1#8], [gre23:s8.p1#13]
+[gre23:ent:compacts] NPCs as pressed · structure class nanoparticle_compact, feature depth 0.78 mm, body diameter 11.4 mm, specific surface area 15 m2/g, entry sides two · 50.5 % ± 0.3 (basis not stated) [gre23:s8.p1#9]; 51 % (k1) [gre23:fig1a#4]
+[gre23:cmp:schedules] set [gre23:cmp:schedules] (series) · 120, 160, 120/160 °C — temperature · varies: temperature · shared: material ZnO; reactant A DEZ; reactant B H2O; structure nanoparticle_compact; reactor ALD NanoSolutions (Forge Nano) custom RX-series; DEZ purity 95 %; source temperature (DEZ) 37 °C; source
+[gre23:cmp:schedules] … temperature (H2O) 37 °C; DEZ pulse 10–14 s; water pulse 8–11 s; purge after precursor 2880 s; purge after co-reactant 2880 s; cycles 20; substrate Al2O3 · 3 rows · columns: final porosity
+[gre23:ent:120:pair] 120 °C NPC pair · temperature 120 °C, temperature in the precursor purge 120 °C, temperature in the water purge 120 °C · 36.7 % (k2) ± 0.1 (basis not stated) [gre23:tabI.r1c2#1]
+[gre23:ent:160:pair] 160 °C NPC pair · temperature 160 °C, temperature in the precursor purge 160 °C, temperature in the water purge 160 °C · 30.6 % (k2) ± 1.4 (basis not stated) [gre23:tabI.r2c2#1] · caveats [gre23:s12.p17#6]
+[gre23:ent:120_160:pair] 120/160 °C NPC pair · temperature 120 °C for the DEZ dose, DEZ purge and H2O dose, 160 °C for the H2O purge, temperature in the precursor purge 120 °C, temperature in the water purge 160 °C · 38.0 % (k2) ± 0.1 (basis not stated) [gre23:tabI.r3c2#1]
+[gre23:cmp:schedules] 45 claims about this set: open with detail(ids=['gre23:cmp:schedules'], parts=["claims"])
+[legend] kinds: (k1) read from a figure; (k2) computed by the paper's authors; unmarked: measured or stated
+[legend] caveats on every specimen row above: [gre23:s12.p1#14], [gre23:s12.p1#16], [gre23:s14.p1#8], [gre23:s8.p1#13]
+[gre23:s8.p1#13] caveat · The pressed compacts had some mm-scale cracks despite the optimized pressing; resistivity in particular may be sensitive to such cracking.
+[gre23:s14.p1#8] caveat · Al2O3 density is not uniform: a denser ~0.3-0.5 mm band lies near the bottom of each section, likely from uneven powder packing before pressing.
+[gre23:s12.p1#14] caveat · Final porosity, GPC and coating thickness are derived from mass gain under a provisional assumption that the coating is uniform through the compact.
+[gre23:s12.p1#16] caveat · The text lists the final porosities in a different run order than Table I does.
+[gre23:s12.p17#6] caveat · At 160 °C the deposit holds metallic Zn and is not uniform, so its ZnO-based porosity, GPC and solid moles are not true ZnO values; solid moles run low.
+[between]  · not studied in: yim20, mat22
+
+=== values({"result": "initial sticking coefficient", "paper": "yim20"}) · 1012 tokens, 33 lines
+[yim20:cmp:repro] set-level [yim20:cmp:repro] · sample 2, 4, 8, and 12 · members: sample 2, sample 4, sample 8, sample 12 · 1 rows · columns: TMA sticking coefficient
+[yim20:cmp:repro] caveats on every row of this set: [yim20:s13.p1#7], [yim20:s16.p10#6], [yim20:s16.p4#6], [yim20:s16.p5#10], [yim20:s19.p4#4], [yim20:s3.p5#7], [yim20:s3.p5#8], [yim20:s3.p9#9], [yim20:s7.p5#15]
+[yim20:cmp:repro] set · 4e-3 (k2) [yim20:tab2.r7c6#1]
+[yim20:cmp:repro] 11 claims about this set: open with detail(ids=['yim20:cmp:repro'], parts=["claims"])
+[yim20:cmp:E] set [yim20:cmp:E] (series) · Series E — pulse · varies: pulse · shared: material Al2O3; reactant A TMA; reactant B H2O; structure pillarhall_3; reactor Picosun R-150; temperature 300 °C; pressure 3 hPa; water pulse 0.1 s; TMA pulse 0.4 s; purge after precursor 4.0 s; purge after co-reactant 4.0
+[yim20:cmp:E] … s; feature width 500 nm; cycles 500; substrate Si · 1 rows · columns: water sticking coefficient
+[yim20:ent:14] sample 14 · 3e-4 (k2) [yim20:tab2.r7c7#1]
+[yim20:cmp:E] claims about this set: [yim20:abs.g3#2], [yim20:s14.p1#3], [yim20:s14.p1#4], [yim20:s19.p4#3]
+[yim20:cmp:sims] set [yim20:cmp:sims] (series) · model simulations — feature width, cycles · varies: feature width, cycles · shared: temperature 300 °C; TMA pulse 0.10 s · 10 rows · columns: TMA sticking coefficient
+[yim20:simrun:H100:run] sim · H 100 nm · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:H200:run] sim · H 200 nm · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:H500:run] sim · H 500 nm · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:H1000:run] sim · H 1000 nm · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:H2000:run] sim · H 2000 nm · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:N100:run] sim · N 100 · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:N250:run] sim · N 250 · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:N1000:run] sim · N 1000 · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:N2000:run] sim · N 2000 · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:simrun:esi:run] sim · ESI Fig. S10-S12 · 0.012 (k5) [yim20:fig10.cap#14]
+[yim20:cmp:sims] claims about this set: [yim20:s13.p2#4]
+[legend] kinds: (k2) computed by the paper's authors; (k5) a model input; unmarked: measured or stated
+[legend] caveats on every specimen row above: [yim20:s13.p1#7], [yim20:s14.p1#6], [yim20:s16.p10#6], [yim20:s16.p4#6], [yim20:s16.p5#10], [yim20:s19.p4#4], [yim20:s3.p5#7], [yim20:s3.p5#8], [yim20:s3.p9#9]
+[yim20:s19.p4#4] caveat · c_TMA is an average over samples 2, 4, 8 and 12; c_H2O rests on one sample (14), the only water-limited run
+[yim20:s3.p5#8] caveat · Sticking coefficients use the approximate Arts slope relation, valid only in Knudsen flow (Kn >> 1) with excess number below 0.1
+[yim20:s3.p9#9] caveat · Table 1 values average several scans on channels of L 0.1-5 mm with outliers dropped (Series B: L 5 mm only), not a single scan
+[yim20:s3.p5#7] caveat · dθ/dx~ treats thickness normalised to its entrance value as surface coverage θ, an optional reading rather than measured coverage
+[yim20:s16.p10#6] caveat · Each Table 1 value is from one chip; repeats on other chips and runs scatter by ~19 µm in PD50% and 2.8 nm in plateau thickness (sd, n=4)
+[yim20:s13.p1#7] caveat · PD50% and front slope shift with channel filling (about 10, 20, 40% at 250, 500, 1000 cycles); the usual 500 cycles exceed the <10% fill advised
+[yim20:s16.p5#10] caveat · Owing to channel roughness, PD50% should read slightly smaller and its slope somewhat steeper than on the flat surface assumed in design and models
+[yim20:s16.p4#6] caveat · Channel heights are design (target oxide) values; the real gap differs by oxide tolerance, roof sag between pillars and the 2-5 nm entrance nanostep
+[yim20:s7.p5#15] caveat · Series B samples were evaluated on the 5 mm long channel only, without averaging over channel lengths
+[yim20:s14.p1#6] caveat · With the 0.4 s TMA pulse the front was likely set by the water dose, so sample 14 front values describe water, not TMA, limitation
+[between]  · not studied in: mat22, gre23
+
+=== values({"result": "carrier density", "paper": "mat22"}) · 733 tokens, 19 lines
+[columns] columns of every row: carrier concentration
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; structure planar; reactor Oxford Instruments FlexAL PEALD; temperature 450 °C; temperature set point 200–450 °C; pressure set
+[mat22:cmp:map] … point in the dose 200 mTorr; Ar purity 99.999 %; H2S purity 99.5 %; H2 purity 99.999 %; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s; cycles 100;
+[mat22:cmp:map] … substrate SiO2 · 32 cells
+[mat22:cmp:map] set (values stated for the set, its statistics) · 1e21 cm-3 [mat22:s3.p36#1]; 1e17–1e18 cm-3 [mat22:s3.p37#1]; 1e22 cm-3 [mat22:s3.p38#2] · caveats [mat22:s3.p13#5], [mat22:s3.p36#3], [mat22:s3.p36#4], [mat22:s3.p37#6], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] caveats on every cell: [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:cmp:map] carrier concentration · 2 of 32 cells shown (30 in rows or columns left out) · columns: 0.20 | 0.80
+[mat22:cmp:map] 450 °C · 1e17 cm-3 [mat22:s3.p38#4] | 1e20 cm-3 [mat22:s3.p38#5]
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[legend] caveats on every row above: [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:s3.p36#4] caveat · Hall values are order-of-magnitude figures; AC Hall was needed because low mobility and high carrier density give tiny Hall voltages.
+[mat22:s5.p13#2] caveat · Hall samples were ~1 × 1 cm2 on fused SiO2 or on SiO2/Si cut after growth to stop leakage via side deposits; which applies to each value is not given.
+[mat22:s5.p13#3] caveat · Hall uncertainty was estimated from repeated runs without remounting the sample, so it reflects measurement repeatability only.
+[mat22:s3.p36#3] caveat · The ~1e21 cm-3 hole density and 0.001-0.01 cm2/Vs mobility apply to c-MoS2 grown at ratios 0.50-0.80 and 100-250 °C.
+[mat22:s3.p37#6] caveat · Reference densities of 1e17-1e18 cm-3 and ~0.01 cm2/Vs mobility are for c-MoS2 grown at 350-450 °C with ratio 0.20, partly from Vandalon et al.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[between]  · not studied in: yim20, gre23
+
+=== values({"result": "crystallinity", "paper": "mat22"}) · 909 tokens, 23 lines
+[columns] columns of every row: crystallinity
+[mat22:shared] Mattinen 2022 · every specimen set of this paper shares: Ar purity 99.999 %; H2 purity 99.999 %; H2S purity 99.5 %; material MoS2; plasma step 20 s; pressure set point in the dose 200 mTorr; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; purge after co-reactant 6 s; purge after precursor 10 s; purity
+[mat22:shared] … (Mo(NtBu)2(NMe2)2) 98 %; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; reactor Oxford Instruments FlexAL PEALD; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; structure planar; substrate SiO2; temperature set point 200–450 °C
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · 32 cells
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] crystallinity · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | amorphous [mat22:fig2#32] | n.t. | n.t. | n.t. | amorphous [mat22:fig2#33] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | amorphous [mat22:fig2#27] | n.t. | amorphous [mat22:fig2#28] | amorphous [mat22:fig2#29] | crystalline [mat22:fig2#30] | crystalline [mat22:fig2#31] · caveats [mat22:s3.p13#5], [mat22:s3.p7#5]
+[mat22:cmp:map] 150 °C · amorphous [mat22:fig2#21] | amorphous [mat22:fig2#22] | n.t. | amorphous [mat22:fig2#23] | crystalline [mat22:fig2#24] | crystalline [mat22:fig2#25] | crystalline [mat22:fig2#26] · caveats [mat22:s3.p13#5], [mat22:s3.p7#5]
+[mat22:cmp:map] 200 °C · amorphous [mat22:fig2#15] | amorphous [mat22:fig2#16] | n.t. | amorphous [mat22:fig2#17] | crystalline [mat22:fig2#18] | crystalline [mat22:fig2#19] | crystalline [mat22:fig2#20] · caveats [mat22:s3.p13#5], [mat22:s3.p7#5]
+[mat22:cmp:map] 250 °C · amorphous [mat22:fig2#8] | amorphous [mat22:fig2#9] | amorphous [mat22:fig2#10] | crystalline [mat22:fig2#11] | crystalline [mat22:fig2#12] | crystalline [mat22:fig2#13] | crystalline [mat22:fig2#14] · caveats [mat22:s3.p13#5], [mat22:s3.p7#5]
+[mat22:cmp:map] 300 °C · n.t. | crystalline [mat22:fig2#7] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | crystalline [mat22:fig2#4] | n.t. | crystalline [mat22:fig2#5] | n.t. | crystalline [mat22:fig2#6] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | crystalline [mat22:fig2#2] | n.t. | n.t. | n.t. | crystalline [mat22:fig2#3] | n.t.
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[between] — not comparable with set 1: method class (raman vs none) —
+[mat22:cmp:h2s] set [mat22:cmp:h2s] (series) · H2S flow tests — gas flow · varies: gas flow · shared: temperature 250 °C; H2 flow ratio 0; cycles 100–140 · 1 rows
+[mat22:ent:T250_R0_lowH2S] 250 °C, 0 H2 film with lowered H2S flow · crystalline [mat22:s3.p53#1]
+[mat22:cmp:h2s] claims about this set: [mat22:s3.p53#4]
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[mat22:s3.p7#5] caveat · Raman rates ratio 0.94 films crystalline, but XPS shows they are partly metallic Mo; the Raman class hides the second phase.
+[between] also in gre23: 0 values · 2 claims · not studied in: yim20
+
+=== values({"result": "body thickness", "paper": "gre23"}) · 232 tokens, 8 lines
+[columns] columns of every row: body thickness
+[gre23:inputs] inputs [gre23:inputs] · the structures before deposition (input entities) · 1 rows
+[gre23:inputs] caveats on every row of this set: [gre23:s14.p1#8], [gre23:s8.p1#13]
+[gre23:ent:compacts] NPCs as pressed · structure class nanoparticle_compact, feature depth 0.78 mm, body diameter 11.4 mm, specific surface area 15 m2/g, entry sides two · 1.55 mm ± 0.05 (basis not stated) [gre23:s8.p1#7]; 1.6 mm (k1) [gre23:fig1a#3]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[gre23:s8.p1#13] caveat · The pressed compacts had some mm-scale cracks despite the optimized pressing; resistivity in particular may be sensitive to such cracking.
+[gre23:s14.p1#8] caveat · Al2O3 density is not uniform: a denser ~0.3-0.5 mm band lies near the bottom of each section, likely from uneven powder packing before pressing.
+[between]  · not studied in: yim20, mat22
+
+=== values({"set": "mat22:cmp:map"}) · 1747 tokens, 42 lines
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · Mattinen 2022 · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · 32 members + the set's own records · columns: member | growth per cycle | thickness | binding energy (Mo) | binding energy (S) | carrier concentration | carrier mobility
+[mat22:cmp:map] caveats on every member row: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] set (values stated for the set, its statistics) · — | 10–20 nm [mat22:s3.p5#4] | — | — | 1e21 cm-3 [mat22:s3.p36#1]; 1e17–1e18 cm-3 [mat22:s3.p37#1]; 1e22 cm-3 [mat22:s3.p38#2] | 0.001–0.01 cm2 V-1 s-1 [mat22:s3.p36#2]; 0.01 cm2 V-1 s-1 [mat22:s3.p37#2] · caveats [mat22:s3.p13#5],
+[mat22:cmp:map] … [mat22:s3.p36#3], [mat22:s3.p36#4], [mat22:s3.p37#6], [mat22:s5.p10#3], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T450_R0.20] 450 °C, 0.20 H2 film · temperature 450 °C, H2 flow ratio 0.20 · 1.2 Å (k1) [mat22:fig7b#2] | — | — | — | 1e17 cm-3 [mat22:s3.p38#4] | — · caveats [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T450_R0.80] 450 °C, 0.80 H2 film · temperature 450 °C, H2 flow ratio 0.80 · 1.65 Å (k1) [mat22:fig7b#3] | — | — | — | 1e20 cm-3 [mat22:s3.p38#5] | — · caveats [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T350_R0.20] 350 °C, 0.20 H2 film · temperature 350 °C, H2 flow ratio 0.20 · 0.85 Å (k1) [mat22:fig7b#4] | — | — | — | — | —
+[mat22:ent:T350_R0.50] 350 °C, 0.50 H2 film · temperature 350 °C, H2 flow ratio 0.50 · 1.25 Å (k1) [mat22:fig7b#5] | — | — | — | — | —
+[mat22:ent:T350_R0.80] 350 °C, 0.80 H2 film · temperature 350 °C, H2 flow ratio 0.80 · 1.45 Å (k1) [mat22:fig7b#6] | — | — | — | — | —
+[mat22:ent:T300_R0.20] 300 °C, 0.20 H2 film · temperature 300 °C, H2 flow ratio 0.20 · 0.85 Å (k1) [mat22:fig7b#7] | — | — | — | — | —
+[mat22:ent:T250_R0] 250 °C, 0 H2 film · temperature 250 °C, H2 flow ratio 0 · 0.6 Å (k1) [mat22:fig7b#8] | — | — | — | — | —
+[mat22:ent:T250_R0.20] 250 °C, 0.20 H2 film · temperature 250 °C, H2 flow ratio 0.20 · 0.65 Å (k1) [mat22:fig7b#9] | — | — | — | — | —
+[mat22:ent:T250_R0.35] 250 °C, 0.35 H2 film · temperature 250 °C, H2 flow ratio 0.35 · 0.8 Å (k1) [mat22:fig7b#10] | — | — | — | — | —
+[mat22:ent:T250_R0.50] 250 °C, 0.50 H2 film · temperature 250 °C, H2 flow ratio 0.50 · 0.95 Å (k1) [mat22:fig7b#11] | — | — | — | — | —
+[mat22:ent:T250_R0.65] 250 °C, 0.65 H2 film · temperature 250 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#12] | — | — | — | — | —
+[mat22:ent:T250_R0.80] 250 °C, 0.80 H2 film · temperature 250 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#13] | — | — | — | — | —
+[mat22:ent:T250_R0.94] 250 °C, 0.94 H2 film · temperature 250 °C, H2 flow ratio 0.94 · 0.65 Å (k1) [mat22:fig7b#14] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T200_R0] 200 °C, 0 H2 film · temperature 200 °C, H2 flow ratio 0 · 0.6 Å (k1) [mat22:fig7b#15] | — | — | — | — | —
+[mat22:ent:T200_R0.20] 200 °C, 0.20 H2 film · temperature 200 °C, H2 flow ratio 0.20 · 0.6 Å (k1) [mat22:fig7b#16] | — | — | — | — | —
+[mat22:ent:T200_R0.50] 200 °C, 0.50 H2 film · temperature 200 °C, H2 flow ratio 0.50 · 0.85 Å (k1) [mat22:fig7b#17] | — | — | — | — | —
+[mat22:ent:T200_R0.65] 200 °C, 0.65 H2 film · temperature 200 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#18] | — | — | — | — | —
+[mat22:ent:T200_R0.80] 200 °C, 0.80 H2 film · temperature 200 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#19] | — | — | — | — | —
+[mat22:ent:T200_R0.94] 200 °C, 0.94 H2 film · temperature 200 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#20] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T150_R0] 150 °C, 0 H2 film · temperature 150 °C, H2 flow ratio 0 · 0.7 Å (k1) [mat22:fig7b#21] | curve, 15 points (k1) [mat22:fig7a#2] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.20] 150 °C, 0.20 H2 film · temperature 150 °C, H2 flow ratio 0.20 · 0.75 Å (k1) [mat22:fig7b#22] | curve, 15 points (k1) [mat22:fig7a#3] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.50] 150 °C, 0.50 H2 film · temperature 150 °C, H2 flow ratio 0.50 · 0.9 Å (k1) [mat22:fig7b#23] | curve, 15 points (k1) [mat22:fig7a#4] | — | 161.9 eV (k2) [mat22:s3.p18#2]; 163.1 eV (k2) [mat22:s3.p18#3] | — | — · caveats [mat22:s3.p20#3], [mat22:s5.p10#3], [mat22:s5.p10#4], [mat22:s5.p16#6]
+[mat22:ent:T150_R0.65] 150 °C, 0.65 H2 film · temperature 150 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#24] | curve, 15 points (k1) [mat22:fig7a#5] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.80] 150 °C, 0.80 H2 film · temperature 150 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#25] | curve, 15 points (k1) [mat22:fig7a#6] | 228.9 eV (k2) [mat22:s3.p16#1]; 229.6 eV (k2) [mat22:s3.p16#2]; 231.1 eV (k2) [mat22:s3.p16#3]; 232.9 eV (k2) [mat22:s3.p16#4] | 162.4 eV (k2) [mat22:s3.p17#2];
+[mat22:ent:T150_R0.80] … 0.9 eV (k2) [mat22:s3.p17#3] | — | — · caveats [mat22:s3.p15#2], [mat22:s3.p16#9], [mat22:s5.p10#3], [mat22:s5.p10#4], [mat22:s5.p16#6]
+[mat22:ent:T150_R0.94] 150 °C, 0.94 H2 film · temperature 150 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#26] | curve, 15 points (k1) [mat22:fig7a#7] | — | — | — | — · caveats [mat22:s3.p13#5], [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T100_R0.20] 100 °C, 0.20 H2 film · temperature 100 °C, H2 flow ratio 0.20 · 1.15 Å (k1) [mat22:fig7b#27] | — | — | — | — | —
+[mat22:ent:T100_R0.50] 100 °C, 0.50 H2 film · temperature 100 °C, H2 flow ratio 0.50 · 1.15 Å (k1) [mat22:fig7b#28] | — | — | — | — | —
+[mat22:ent:T100_R0.65] 100 °C, 0.65 H2 film · temperature 100 °C, H2 flow ratio 0.65 · 1.15 Å (k1) [mat22:fig7b#29] | — | — | — | — | —
+[mat22:ent:T100_R0.80] 100 °C, 0.80 H2 film · temperature 100 °C, H2 flow ratio 0.80 · 1.4 Å (k1) [mat22:fig7b#30] | — | — | — | — | —
+[mat22:ent:T100_R0.94] 100 °C, 0.94 H2 film · temperature 100 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#31] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T50_R0.20] 50 °C, 0.20 H2 film · temperature 50 °C, H2 flow ratio 0.20 · 1.7 Å (k1) [mat22:fig7b#32] | — | — | — | — | —
+[mat22:ent:T50_R0.80] 50 °C, 0.80 H2 film · temperature 50 °C, H2 flow ratio 0.80 · 1.45 Å (k1) [mat22:fig7b#33] | — | — | — | — | —
+[mat22:cmp:map] 9 more quantities not shown to stay within the budget: crystallinity, minimum of resistivity, phase (metallic Mo), resistivity, roughness, S/Mo, signal, signal (Mo), H2 flow ratio at the crystallinity onset — open each with values(result=<name>, paper="mat22")
+[mat22:cmp:map] 72 values computed by this knowledge base, not by the paper's authors are not listed here (detail(ids=[member ids], parts=["computed"]))
+[legend] kinds: (k1) read from a figure; (k2) computed by the paper's authors; unmarked: measured or stated
+[legend] the texts of the 12 caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])
+[between] also in yim20: 105 values · 18 claims · 1 settings · also in gre23: 8 values · 12 claims
+
+=== concept({"words": "exposure"}) · 64 tokens, 1 lines
+[exposure] quantity exposure: The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D). · unit Pa·s · qualifiers species · yim20 derived 61; gre23 6 values (cited 6) / 4 settings / 5 claims / derived 5 · not studied in: mat22
+
+=== concept({"words": "reactor"}) · 91 tokens, 2 lines
+[reactor] categorical reactor: Name and manufacturer of the reactor, as one string. ·  · not studied in: yim20, mat22, gre23
+[reactor_type] categorical reactor_type: Reactor class by working pressure regime: pump-type, flow-type or atmospheric-pressure (Cremers 2019, Sec. II C, Fig. 3). · yim20 5 values (cited 5) / 1 settings; mat22 1 settings; gre23 1 settings
+
+=== concept({"words": "channel length"}) · 43 tokens, 1 lines
+[channel_length] mechanism channel_length: The lateral length of the channel, which does not change the saturation profile. · yim20 1 claims · not studied in: mat22, gre23
+
+=== values({"result": "growth_per_cycle", "paper": "mat22"}) · 891 tokens, 21 lines
+[columns] columns of every row: growth per cycle · 11 values computed by this knowledge base, not by the paper's authors are not listed here (detail, parts computed)
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; structure planar; reactor Oxford Instruments FlexAL PEALD; temperature set point 200–450 °C; pressure set point in the dose
+[mat22:cmp:map] … 200 mTorr; Ar purity 99.999 %; H2S purity 99.5 %; H2 purity 99.999 %; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] caveats on every cell: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] growth per cycle · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 1.7 Å (k1) [mat22:fig7b#32] | n.t. | n.t. | n.t. | 1.45 Å (k1) [mat22:fig7b#33] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 1.15 Å (k1) [mat22:fig7b#27] | n.t. | 1.15 Å (k1) [mat22:fig7b#28] | 1.15 Å (k1) [mat22:fig7b#29] | 1.4 Å (k1) [mat22:fig7b#30] | 0.7 Å (k1) [mat22:fig7b#31] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 0.7 Å (k1) [mat22:fig7b#21] | 0.75 Å (k1) [mat22:fig7b#22] | n.t. | 0.9 Å (k1) [mat22:fig7b#23] | 1.1 Å (k1) [mat22:fig7b#24] | 1.3 Å (k1) [mat22:fig7b#25] | 0.7 Å (k1) [mat22:fig7b#26] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 0.6 Å (k1) [mat22:fig7b#15] | 0.6 Å (k1) [mat22:fig7b#16] | n.t. | 0.85 Å (k1) [mat22:fig7b#17] | 1.1 Å (k1) [mat22:fig7b#18] | 1.3 Å (k1) [mat22:fig7b#19] | 0.7 Å (k1) [mat22:fig7b#20] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 0.6 Å (k1) [mat22:fig7b#8] | 0.65 Å (k1) [mat22:fig7b#9] | 0.8 Å (k1) [mat22:fig7b#10] | 0.95 Å (k1) [mat22:fig7b#11] | 1.1 Å (k1) [mat22:fig7b#12] | 1.3 Å (k1) [mat22:fig7b#13] | 0.65 Å (k1) [mat22:fig7b#14] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#7] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#4] | n.t. | 1.25 Å (k1) [mat22:fig7b#5] | n.t. | 1.45 Å (k1) [mat22:fig7b#6] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 1.2 Å (k1) [mat22:fig7b#2] | n.t. | n.t. | n.t. | 1.65 Å (k1) [mat22:fig7b#3] | n.t.
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[mat22:s3.p32#5] caveat · SE-based GPC is a thickness rate and hides changes in film density and stoichiometry between conditions.
+[mat22:s3.p28#3] caveat · First-100-cycle GPC averages hide non-linear growth: at high ratios GPC keeps rising with cycle number as fins form.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[between] also in yim20: 45 values · 5 claims · also in gre23: 5 values · 7 claims
+
+=== values({"result": "element_ratio", "paper": "mat22"}) · 1229 tokens, 29 lines
+[mat22:shared] Mattinen 2022 · every specimen set of this paper shares: Ar purity 99.999 %; H2 purity 99.999 %; H2S purity 99.5 %; reactant B H2S; reactor Oxford Instruments FlexAL PEALD; structure planar; temperature set point 200–450 °C
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; pressure set point in the dose 200 mTorr; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse
+[mat22:cmp:map] … (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants · columns: S/Mo
+[mat22:cmp:map] set (values stated for the set, its statistics) · 1.8–2.3 [mat22:s3.p11#2]; 2.5–3.6 [mat22:s3.p11#4]; 1.8–2.2 [mat22:s3.p39#1] · caveats [mat22:s3.p11#8], [mat22:s3.p11#9]
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] S/Mo · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 7.3 (k1) [mat22:fig4#33] | n.t. | n.t. | n.t. | 2.0 (k1) [mat22:fig4#34] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 4.6 (k1) [mat22:fig4#28] | n.t. | 3.6 (k1) [mat22:fig4#29] | 2.2 (k1) [mat22:fig4#30] | 1.8 (k1) [mat22:fig4#31] | 1.4 (k1) [mat22:fig4#32] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 3.6 (k1) [mat22:fig4#22] | 3.5 (k1) [mat22:fig4#23]; 3.5 (k1) [mat22:fig5a#11] | n.t. | 3.0 (k1) [mat22:fig4#24]; 3.0 (k1) [mat22:fig5a#9] | 2.1 (k1) [mat22:fig4#25]; 2.1 (k1) [mat22:fig5a#7] | 1.9 (k1) [mat22:fig4#26]; 1.9 (k1) [mat22:fig5a#5] | 1.3 (k1) [mat22:fig4#27]; 1.3 (k1)
+[mat22:cmp:map] … [mat22:fig5a#3] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 3.1 (k1) [mat22:fig4#16] | 3.0 (k1) [mat22:fig4#17] | n.t. | 2.5 (k1) [mat22:fig4#18] | 2.2 (k1) [mat22:fig4#19] | 1.9 (k1) [mat22:fig4#20] | 1.3 (k1) [mat22:fig4#21] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 2.8 (k1) [mat22:fig4#9] | 2.7 (k1) [mat22:fig4#10] | 2.5 (k1) [mat22:fig4#11] | 2.2 (k1) [mat22:fig4#12] | 2.1 (k1) [mat22:fig4#13] | 1.9 (k1) [mat22:fig4#14] | 1.3 (k1) [mat22:fig4#15] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 2.3 (k1) [mat22:fig4#8] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 2.1 (k1) [mat22:fig4#5] | n.t. | 2.2 (k1) [mat22:fig4#6] | n.t. | 1.9 (k1) [mat22:fig4#7] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 2.0 (k1) [mat22:fig4#3] | n.t. | n.t. | n.t. | 1.9 (k1) [mat22:fig4#4] | n.t.
+[mat22:cmp:map] variants of the cell 150 °C, 0.20 (+1): 150 °C, 0.20 H2, glassy-carbon film [mat22:ent:gc_T150_R0.20]: S/Mo 3.7 ± 0.1 (basis not stated) [mat22:tab1.r1c1#1]; 3.4 ± 0.2 (basis not stated) [mat22:tab1.r1c2#1]
+[mat22:cmp:map] variants of the cell 150 °C, 0.65 (+1): 150 °C, 0.65 H2, glassy-carbon film [mat22:ent:gc_T150_R0.65]: S/Mo 2.1 ± 0.1 (basis not stated) [mat22:tab1.r2c1#1]; 2.1 ± 0.1 (basis not stated) [mat22:tab1.r2c2#1]
+[mat22:cmp:map] variants of the cell 150 °C, 0.80 (+1): 150 °C, 0.80 H2, glassy-carbon film [mat22:ent:gc_T150_R0.80]: S/Mo 1.8 ± 0.1 (basis not stated) [mat22:tab1.r3c1#1]; 1.9 ± 0.1 (basis not stated) [mat22:tab1.r3c2#1]
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:WS2] set [mat22:cmp:WS2] (series) · WS2 films — H2 flow ratio · varies: H2 flow ratio · shared: material WS2; reactant A W(tBuN)2(Me2N)2; temperature 150 °C; substrate SiO2 · 2 rows · columns: S/Mo | S/W
+[mat22:ent:WS2_T150_R0] WS2 film, 150 °C, 0 H2 · H2 flow ratio 0 · 4.0 [mat22:s3.p46#2] | —
+[mat22:ent:WS2_T150_R0.80] WS2 film, 150 °C, 0.80 H2 · H2 flow ratio 0.80 · — | 2.1 [mat22:s3.p46#3]
+[mat22:cmp:WS2] claims about this set: [mat22:abs.g2#1], [mat22:abs.g4#2], [mat22:s2.p11#2], [mat22:s3.p45#1], [mat22:s3.p46#5], [mat22:s4.p1#1], [mat22:s4.p1#2]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[mat22:s3.p11#8] caveat · The MoS1.8-MoS2.3 range covers most, not all, crystalline films; ratio 0.94 films with metallic Mo sit at MoS1.3-1.4.
+[mat22:s3.p11#9] caveat · The MoS2.5-MoS3.6 range is for amorphous films grown at 150 °C or above; colder amorphous films are more S-rich (up to MoS7.3 at 50 °C).
+[between] also in gre23: 4 values · 4 claims (with the family composition) · not studied in: yim20
+
+=== values({"result": "resistivity", "paper": "mat22"}) · 1156 tokens, 25 lines
+[mat22:shared] Mattinen 2022 · every specimen set of this paper shares: Ar purity 99.999 %; H2 purity 99.999 %; H2S purity 99.5 %; reactant B H2S; reactor Oxford Instruments FlexAL PEALD; structure planar; temperature set point 200–450 °C
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; pressure set point in the dose 200 mTorr; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse
+[mat22:cmp:map] … (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 1 variants · columns: resistivity
+[mat22:cmp:map] set (values stated for the set, its statistics) · >1000 Ω cm [mat22:s3.p34#2]; >1000 Ω cm (k1) [mat22:fig8#2] | 0.1–1 Ω cm [mat22:s3.p35#2]; 4 mΩ cm [mat22:s3.p35#5] · caveats [mat22:s3.p13#5], [mat22:s3.p34#5], [mat22:s3.p35#7]
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] resistivity · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | >1000 Ω cm (k1) [mat22:fig8#33] · caveats [mat22:s3.p34#5] | n.t. | n.t. | n.t. | 3 Ω cm (k1) [mat22:fig8#34] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | >1000 Ω cm (k1) [mat22:fig8#28] · caveats [mat22:s3.p34#5] | n.t. | >1000 Ω cm (k1) [mat22:fig8#29] · caveats [mat22:s3.p34#5] | 2 Ω cm [mat22:s3.p34#4]; 3 Ω cm (k1) [mat22:fig8#30] | 0.5 Ω cm (k1) [mat22:fig8#31] | 0.02 Ω cm (k1) [mat22:fig8#32] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · >1000 Ω cm (k1) [mat22:fig8#22] · caveats [mat22:s3.p34#5] | >1000 Ω cm (k1) [mat22:fig8#23] · caveats [mat22:s3.p34#5] | n.t. | 100 Ω cm (k1) [mat22:fig8#24] | 3 Ω cm (k1) [mat22:fig8#25] | 0.5 Ω cm (k1) [mat22:fig8#26] | 0.02 Ω cm (k1) [mat22:fig8#27] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · >1000 Ω cm (k1) [mat22:fig8#16] · caveats [mat22:s3.p34#5] | >1000 Ω cm (k1) [mat22:fig8#17] · caveats [mat22:s3.p34#5] | n.t. | 10 Ω cm (k1) [mat22:fig8#18] | 1 Ω cm (k1) [mat22:fig8#19] | 0.5 Ω cm (k1) [mat22:fig8#20] | 0.02 Ω cm (k1) [mat22:fig8#21] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 1000 Ω cm (k1) [mat22:fig8#9] | 500 Ω cm (k1) [mat22:fig8#10] | 30 Ω cm (k1) [mat22:fig8#11] | 5 Ω cm (k1) [mat22:fig8#12] | 1 Ω cm (k1) [mat22:fig8#13] | 0.5 Ω cm (k1) [mat22:fig8#14] | 0.02 Ω cm (k1) [mat22:fig8#15] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 15 Ω cm [mat22:s3.p35#3]; 10 Ω cm (k1) [mat22:fig8#8] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 30 Ω cm (k1) [mat22:fig8#5] | n.t. | 100 Ω cm (k1) [mat22:fig8#6] | n.t. | 1 Ω cm (k1) [mat22:fig8#7] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 220 Ω cm [mat22:s3.p35#4]; 100 Ω cm (k1) [mat22:fig8#3] | n.t. | n.t. | n.t. | 1 Ω cm (k1) [mat22:fig8#4] | n.t.
+[mat22:cmp:map] variants of the cell 100 °C, 0.80 (+1): 100 °C, 0.80 H2, PET film [mat22:ent:pet_T100_R0.80]: resistivity 0.3 Ω cm [mat22:s3.p6#4]
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:WS2] set [mat22:cmp:WS2] (series) · WS2 films — H2 flow ratio · varies: H2 flow ratio · shared: material WS2; reactant A W(tBuN)2(Me2N)2; temperature 150 °C; H2 flow ratio 0.80; substrate SiO2 · 1 rows · columns: resistivity
+[mat22:ent:WS2_T150_R0.80] WS2 film, 150 °C, 0.80 H2 · 4 Ω cm [mat22:s3.p46#4]
+[mat22:cmp:WS2] claims about this set: [mat22:abs.g2#1], [mat22:abs.g4#2], [mat22:s2.p11#2], [mat22:s3.p45#1], [mat22:s3.p46#5], [mat22:s4.p1#1], [mat22:s4.p1#2]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[mat22:s3.p34#5] caveat · Resistivities above the four-point-probe limit are only lower bounds; the ~1000 Ω cm limit is quoted for 10 nm thick films.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[mat22:s3.p35#7] caveat · The 0.1-1 Ω cm values are the lowest c-MoS2 resistivities, reached at ratio 0.80 and lowest at 100-150 °C, not typical of all low-T films.
+[between] also in gre23: 4 values · 8 claims · not studied in: yim20
+
+=== values({"result": "deposition_temperature", "paper": "gre23"}) · 514 tokens, 11 lines
+[gre23:settings] settings table · Greenberg 2023 · temperature: one row per distinct level, every fact that states it · columns: temperature | temperature in the precursor dose | temperature in the precursor purge | temperature in the water dose | temperature in the water purge | specimens
+[gre23:s9.p6#4] 120 °C [gre23:s9.p6#4] | 120 °C [gre23:fig1b#3] | 120 °C [gre23:fig1b#4] | 120 °C [gre23:fig1b#5] | 120 °C [gre23:fig1b#6] | 1 specimen · set [gre23:cmp:schedules] · caveats [gre23:s9.p6#14], [gre23:s9.p6#15], [gre23:s9.p9#9]
+[gre23:s9.p6#5] 160 °C [gre23:s9.p6#5] | 160 °C [gre23:fig1b#7] | 160 °C [gre23:fig1b#8] | 160 °C [gre23:fig1b#9] | 160 °C [gre23:fig1b#10] | 1 specimen · set [gre23:cmp:schedules] · caveats [gre23:s9.p6#14], [gre23:s9.p6#15]
+[gre23:fig1b#2] 120 °C for the DEZ dose, DEZ purge and H2O dose, 160 °C for the H2O purge [gre23:fig1b#2] | 120 °C [gre23:s9.p6#6] | 120 °C [gre23:fig1b#11] | 120 °C [gre23:fig1b#12] | 160 °C [gre23:s9.p6#7] | 1 specimen · set [gre23:cmp:schedules] · caveats [gre23:s9.p6#14], [gre23:s9.p6#15], [gre23:s9.p6#16]
+[gre23:settings] not stated for 1 of 4 experiments: gre23:simact:eq1_2:run
+[gre23:s9.p6#3] result, not a setting · paper-level · half range of temperature: 5 °C [gre23:s9.p6#3] · caveat [gre23:s9.p6#14]
+[gre23:s9.p6#14] caveat · T comes from calibration runs and was not logged during depositions; at one exterior setpoint the boat temperature spread about ±5 °C.
+[gre23:s9.p6#15] caveat · Only the boat and main chamber wall sit near T; tubing is ~90-120 °C inside and unheated windows may be below 90 °C, so the volume is not isothermal.
+[gre23:s9.p9#9] caveat · The 48 min H2O purge meets the model's theta_f < 5e-3 target only where the purge runs at 160 °C; at 120 °C the model calls for about 360 min.
+[gre23:s9.p6#16] caveat · In the cycled run 160 °C is the top of a ramp inside each H2O purge (about 33.5 min of heating), not a temperature held for the whole purge.
+[between] also in yim20: 6 values · 1 claims · 1 settings · also in mat22: 8 values · 13 claims · 55 settings
+
+=== values({"result": "probe_resolution"}) · 225 tokens, 7 lines
+[yim20:s7.p5#5] paper-level · under reflectometry (method) · probe spot: 5–6 µm (k4) [yim20:s7.p5#5]; 25 µm (k4) [yim20:s7.p5#6]; 50 µm (k4) [yim20:s7.p5#7] · caveat [yim20:s7.p5#16]
+[mat22:s5.p14#2] paper-level · under afm (method) · probe spot: 2 nm [mat22:s5.p14#2]; 400 µm [mat22:s5.p16#1] · caveat [mat22:s5.p14#4]
+[gre23:s10.p5#1] paper-level · under xps (method) · probe spot: 125 µm [gre23:s10.p5#1]
+[legend] kinds: (k4) assumed by this knowledge base's user; unmarked: measured or stated
+[yim20:s7.p5#16] caveat · Spot sizes are estimates per objective, not measured; the ×50 spot is quoted as 5-6 µm and as 5 µm
+[mat22:s5.p14#4] caveat · The 2 nm AFM tip radius (and 0.4 N/m spring constant) are nominal probe specifications, not measured values.
+[between] in yim20: 0 values · 4 claims · 3 settings · in mat22: 0 values · 0 claims · 2 settings · in gre23: 0 values · 0 claims · 1 settings
+
+=== values({"result": "body_diameter", "paper": "gre23"}) · 248 tokens, 8 lines
+[gre23:settings] settings table · Greenberg 2023 · body diameter: one row per distinct level, every fact that states it · columns: body diameter | specimens
+[gre23:s8.p1#1] 11.4 mm [gre23:s8.p1#1] | 3 specimens, 2 inputs · set [gre23:cmp:schedules]
+[gre23:settings] not stated for 1 of 4 experiments: gre23:simact:eq1_2:run
+[gre23:s8.p1#8] result, not a setting · NPCs as pressed [gre23:ent:compacts] · body diameter: 11.43 mm ± 0.02 (basis not stated) [gre23:s8.p1#8]; 11.4 mm (k1) [gre23:fig1a#2] · caveats [gre23:s8.p1#13], [gre23:s14.p1#8]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[gre23:s8.p1#13] caveat · The pressed compacts had some mm-scale cracks despite the optimized pressing; resistivity in particular may be sensitive to such cracking.
+[gre23:s14.p1#8] caveat · Al2O3 density is not uniform: a denser ~0.3-0.5 mm band lies near the bottom of each section, likely from uneven powder packing before pressing.
+[between]  · not studied in: yim20, mat22
+
+=== values({"result": "entry_sides", "paper": "gre23"}) · 90 tokens, 4 lines
+[gre23:settings] settings table · Greenberg 2023 · entry sides: one row per distinct level, every fact that states it · columns: entry sides | specimens
+[gre23:s6.p8#16] two [gre23:s6.p8#16] | 3 specimens, 2 inputs · set [gre23:cmp:schedules]
+[gre23:settings] not stated for 1 of 4 experiments: gre23:simact:eq1_2:run
+[between]  · not studied in: yim20, mat22
+
+=== detail({"ids": ["mat22:cmp:map"], "parts": ["table"]}) · 1747 tokens, 42 lines
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · Mattinen 2022 · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · 32 members + the set's own records · columns: member | growth per cycle | thickness | binding energy (Mo) | binding energy (S) | carrier concentration | carrier mobility
+[mat22:cmp:map] caveats on every member row: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] set (values stated for the set, its statistics) · — | 10–20 nm [mat22:s3.p5#4] | — | — | 1e21 cm-3 [mat22:s3.p36#1]; 1e17–1e18 cm-3 [mat22:s3.p37#1]; 1e22 cm-3 [mat22:s3.p38#2] | 0.001–0.01 cm2 V-1 s-1 [mat22:s3.p36#2]; 0.01 cm2 V-1 s-1 [mat22:s3.p37#2] · caveats [mat22:s3.p13#5],
+[mat22:cmp:map] … [mat22:s3.p36#3], [mat22:s3.p36#4], [mat22:s3.p37#6], [mat22:s5.p10#3], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T450_R0.20] 450 °C, 0.20 H2 film · temperature 450 °C, H2 flow ratio 0.20 · 1.2 Å (k1) [mat22:fig7b#2] | — | — | — | 1e17 cm-3 [mat22:s3.p38#4] | — · caveats [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T450_R0.80] 450 °C, 0.80 H2 film · temperature 450 °C, H2 flow ratio 0.80 · 1.65 Å (k1) [mat22:fig7b#3] | — | — | — | 1e20 cm-3 [mat22:s3.p38#5] | — · caveats [mat22:s3.p36#4], [mat22:s5.p13#2], [mat22:s5.p13#3]
+[mat22:ent:T350_R0.20] 350 °C, 0.20 H2 film · temperature 350 °C, H2 flow ratio 0.20 · 0.85 Å (k1) [mat22:fig7b#4] | — | — | — | — | —
+[mat22:ent:T350_R0.50] 350 °C, 0.50 H2 film · temperature 350 °C, H2 flow ratio 0.50 · 1.25 Å (k1) [mat22:fig7b#5] | — | — | — | — | —
+[mat22:ent:T350_R0.80] 350 °C, 0.80 H2 film · temperature 350 °C, H2 flow ratio 0.80 · 1.45 Å (k1) [mat22:fig7b#6] | — | — | — | — | —
+[mat22:ent:T300_R0.20] 300 °C, 0.20 H2 film · temperature 300 °C, H2 flow ratio 0.20 · 0.85 Å (k1) [mat22:fig7b#7] | — | — | — | — | —
+[mat22:ent:T250_R0] 250 °C, 0 H2 film · temperature 250 °C, H2 flow ratio 0 · 0.6 Å (k1) [mat22:fig7b#8] | — | — | — | — | —
+[mat22:ent:T250_R0.20] 250 °C, 0.20 H2 film · temperature 250 °C, H2 flow ratio 0.20 · 0.65 Å (k1) [mat22:fig7b#9] | — | — | — | — | —
+[mat22:ent:T250_R0.35] 250 °C, 0.35 H2 film · temperature 250 °C, H2 flow ratio 0.35 · 0.8 Å (k1) [mat22:fig7b#10] | — | — | — | — | —
+[mat22:ent:T250_R0.50] 250 °C, 0.50 H2 film · temperature 250 °C, H2 flow ratio 0.50 · 0.95 Å (k1) [mat22:fig7b#11] | — | — | — | — | —
+[mat22:ent:T250_R0.65] 250 °C, 0.65 H2 film · temperature 250 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#12] | — | — | — | — | —
+[mat22:ent:T250_R0.80] 250 °C, 0.80 H2 film · temperature 250 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#13] | — | — | — | — | —
+[mat22:ent:T250_R0.94] 250 °C, 0.94 H2 film · temperature 250 °C, H2 flow ratio 0.94 · 0.65 Å (k1) [mat22:fig7b#14] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T200_R0] 200 °C, 0 H2 film · temperature 200 °C, H2 flow ratio 0 · 0.6 Å (k1) [mat22:fig7b#15] | — | — | — | — | —
+[mat22:ent:T200_R0.20] 200 °C, 0.20 H2 film · temperature 200 °C, H2 flow ratio 0.20 · 0.6 Å (k1) [mat22:fig7b#16] | — | — | — | — | —
+[mat22:ent:T200_R0.50] 200 °C, 0.50 H2 film · temperature 200 °C, H2 flow ratio 0.50 · 0.85 Å (k1) [mat22:fig7b#17] | — | — | — | — | —
+[mat22:ent:T200_R0.65] 200 °C, 0.65 H2 film · temperature 200 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#18] | — | — | — | — | —
+[mat22:ent:T200_R0.80] 200 °C, 0.80 H2 film · temperature 200 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#19] | — | — | — | — | —
+[mat22:ent:T200_R0.94] 200 °C, 0.94 H2 film · temperature 200 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#20] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T150_R0] 150 °C, 0 H2 film · temperature 150 °C, H2 flow ratio 0 · 0.7 Å (k1) [mat22:fig7b#21] | curve, 15 points (k1) [mat22:fig7a#2] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.20] 150 °C, 0.20 H2 film · temperature 150 °C, H2 flow ratio 0.20 · 0.75 Å (k1) [mat22:fig7b#22] | curve, 15 points (k1) [mat22:fig7a#3] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.50] 150 °C, 0.50 H2 film · temperature 150 °C, H2 flow ratio 0.50 · 0.9 Å (k1) [mat22:fig7b#23] | curve, 15 points (k1) [mat22:fig7a#4] | — | 161.9 eV (k2) [mat22:s3.p18#2]; 163.1 eV (k2) [mat22:s3.p18#3] | — | — · caveats [mat22:s3.p20#3], [mat22:s5.p10#3], [mat22:s5.p10#4], [mat22:s5.p16#6]
+[mat22:ent:T150_R0.65] 150 °C, 0.65 H2 film · temperature 150 °C, H2 flow ratio 0.65 · 1.1 Å (k1) [mat22:fig7b#24] | curve, 15 points (k1) [mat22:fig7a#5] | — | — | — | — · caveats [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T150_R0.80] 150 °C, 0.80 H2 film · temperature 150 °C, H2 flow ratio 0.80 · 1.3 Å (k1) [mat22:fig7b#25] | curve, 15 points (k1) [mat22:fig7a#6] | 228.9 eV (k2) [mat22:s3.p16#1]; 229.6 eV (k2) [mat22:s3.p16#2]; 231.1 eV (k2) [mat22:s3.p16#3]; 232.9 eV (k2) [mat22:s3.p16#4] | 162.4 eV (k2) [mat22:s3.p17#2];
+[mat22:ent:T150_R0.80] … 0.9 eV (k2) [mat22:s3.p17#3] | — | — · caveats [mat22:s3.p15#2], [mat22:s3.p16#9], [mat22:s5.p10#3], [mat22:s5.p10#4], [mat22:s5.p16#6]
+[mat22:ent:T150_R0.94] 150 °C, 0.94 H2 film · temperature 150 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#26] | curve, 15 points (k1) [mat22:fig7a#7] | — | — | — | — · caveats [mat22:s3.p13#5], [mat22:s5.p10#3], [mat22:s5.p10#4]
+[mat22:ent:T100_R0.20] 100 °C, 0.20 H2 film · temperature 100 °C, H2 flow ratio 0.20 · 1.15 Å (k1) [mat22:fig7b#27] | — | — | — | — | —
+[mat22:ent:T100_R0.50] 100 °C, 0.50 H2 film · temperature 100 °C, H2 flow ratio 0.50 · 1.15 Å (k1) [mat22:fig7b#28] | — | — | — | — | —
+[mat22:ent:T100_R0.65] 100 °C, 0.65 H2 film · temperature 100 °C, H2 flow ratio 0.65 · 1.15 Å (k1) [mat22:fig7b#29] | — | — | — | — | —
+[mat22:ent:T100_R0.80] 100 °C, 0.80 H2 film · temperature 100 °C, H2 flow ratio 0.80 · 1.4 Å (k1) [mat22:fig7b#30] | — | — | — | — | —
+[mat22:ent:T100_R0.94] 100 °C, 0.94 H2 film · temperature 100 °C, H2 flow ratio 0.94 · 0.7 Å (k1) [mat22:fig7b#31] | — | — | — | — | — · caveats [mat22:s3.p13#5]
+[mat22:ent:T50_R0.20] 50 °C, 0.20 H2 film · temperature 50 °C, H2 flow ratio 0.20 · 1.7 Å (k1) [mat22:fig7b#32] | — | — | — | — | —
+[mat22:ent:T50_R0.80] 50 °C, 0.80 H2 film · temperature 50 °C, H2 flow ratio 0.80 · 1.45 Å (k1) [mat22:fig7b#33] | — | — | — | — | —
+[mat22:cmp:map] 9 more quantities not shown to stay within the budget: crystallinity, minimum of resistivity, phase (metallic Mo), resistivity, roughness, S/Mo, signal, signal (Mo), H2 flow ratio at the crystallinity onset — open each with values(result=<name>, paper="mat22")
+[mat22:cmp:map] 72 values computed by this knowledge base, not by the paper's authors are not listed here (detail(ids=[member ids], parts=["computed"]))
+[legend] kinds: (k1) read from a figure; (k2) computed by the paper's authors; unmarked: measured or stated
+[legend] the texts of the 12 caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])
+[between] also in yim20: 105 values · 18 claims · 1 settings · also in gre23: 8 values · 12 claims
+
+=== concept({"words": "cycle time"}) · 46 tokens, 1 lines
+[cycle_time] quantity cycle_time: The duration of one ALD cycle: the sum of its pulse, hold and purge times. · unit s · yim20 derived 31; mat22 1 settings; gre23 1 settings / derived 1
+
+=== concept({"words": "sheet resistance"}) · 91 tokens, 2 lines
+[sheet_resistance] quantity sheet_resistance: Resistivity over film thickness, the resistance of a square of the film (a transform; mat22 measures it by four-point probe and reports resistivity). · unit Ω/sq · mat22 derived 1 · derivable in gre23 from resistivity, thickness (measured, computed by the paper's
+[sheet_resistance] … authors) · not studied in: yim20
+
+=== concept({"words": "Knudsen number"}) · 76 tokens, 1 lines
+[knudsen_number] quantity knudsen_number: The mean free path of the reactant over the characteristic size of the feature (the channel height, the pore or particle diameter): Kn >> 1 is Knudsen … · unit 1 · qualifiers species · yim20 2 values (paper 2) / 1 claims; gre23 derived 3 · not studied in: mat22

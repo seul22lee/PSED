@@ -1,0 +1,20 @@
+## Resume state (2026-10-17, end of directive 4, tag ask-v4)
+
+Directive 4 (storage integrity, bundle II: P78a, P78–P81) is complete on top of ask-v3.1: one row per problem in pilot/problems.csv,
+one commit each (P78a a0a730a, P78 ff48619, P79 208e416, P80 82e7e08, P81 9026a04), then this HANDOFF commit, tagged ask-v4. No stash;
+working tree clean.
+- Checks at every commit: pilot/check.py all sections OK (new sections structure P78, cards P81, grids P80, homes P79; the kinds section
+  scans 132 probes: 57 original + 54 settings pairs + 21 sets); questions.py 26 answered (questions.csv unchanged but for its change log);
+  ontology/make_report.py 13 checks (check 13 the structure classes); the page rebuilds and its const D is what homeless.py reads.
+- Probe battery tokens (the check.py figure): 68,767 at ask-v3.1 → 74,462 at ask-v4 (the settings probes grew by 7 entries, every
+  level cites every fact, the set rows and input rows are new; the grid paper's values calls fell 13,533 → 11,863 over 15 calls).
+- Counts: other[...] records 122 → 111 (labels 97 → 91), 30 residual free labels with a length unit, none a structure dimension the
+  rule covers (channel lengths scanned, nanostep and membrane bending, pillar geometry, hydraulic diameter, specimen sizes, instrument
+  settings, profile widths); homeless value records 343 → 0 of 871 (page data, fact ids deduplicated; the directive's 259 counted
+  differently); the mat22 grid: 32 cells in an 8 × 7 matrix with 24 untested combinations, 8 child views, 14 variant specimens;
+  16 (entry, paper) card texts changed from 'not studied in' (15 derived counts, 1 derivable line).
+- Open: values(set=<grid id>) keeps the P77 member table (one row per cell); the matrix layout is the values(result=q, paper) view (a
+  matrix per quantity in the set table would not fit one call and the P77 probe counts member rows); the reactor card says 'not studied
+  in' for all three papers because the papers' reactor names are stored under reactor_type; sparse quantities on a grid paper cost more
+  than at ask-v3.1 (the grid's header and the P79 homes), the dense ones about half; CRITERIA Sec. 18.11 records the taxonomy and the
+  extension cap 45.
