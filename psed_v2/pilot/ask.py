@@ -324,18 +324,52 @@ def process_line(p):
 
 # ---------------------------------------------------------------------------------------------------------------- prices, records
 def price(model):
+    """The model's row of prices.csv (P73): input_per_mtok (a cache miss), cache_hit_per_mtok, output_per_mtok, their offpeak_
+    counterparts and offpeak_utc ('16:30-00:30', the vendor's documented window), per million tokens; None without a row."""
     vendor, name = model.split(":", 1)
     f = HERE / "prices.csv"
     if f.exists():
         for r in csv.DictReader(f.open(encoding="utf-8")):
             if r.get("vendor") == vendor and r.get("model") == name and r.get("input_per_mtok") and r.get("output_per_mtok"):
-                return float(r["input_per_mtok"]), float(r["output_per_mtok"])
+                return r
     return None
 
 
-def cost_of(model, usage):
+def offpeak(p, when):
+    """Whether a time falls in the row's off-peak window (UTC, as the vendor documents it; a window may cross midnight)."""
+    w = (p.get("offpeak_utc") or "").strip()
+    if not w or when is None:
+        return False
+    a, b = (datetime.time(*map(int, x.split(":"))) for x in w.split("-"))
+    t = when.astimezone(datetime.timezone.utc).time()
+    return (a <= t < b) if a < b else (t >= a or t < b)
+
+
+def cost_of(model, usage, when=None):
+    """The cost of a record (P73): the input tokens not read from the cache at the miss price, the cache_read tokens at the hit
+    price, the output tokens at the output price; off-peak prices when the record's time (aware, or naive local) is in the window."""
     p = price(model)
-    return None if p is None else (usage["input"] * p[0] + usage["output"] * p[1]) / 1e6
+    if p is None:
+        return None
+    if when is not None and when.tzinfo is None:
+        when = when.astimezone()
+    pre = "offpeak_" if offpeak(p, when) else ""
+    rate = lambda col: float(p.get(pre + col) or p.get(col) or 0)
+    hit = float(p.get(pre + "cache_hit_per_mtok") or p.get("cache_hit_per_mtok") or rate("input_per_mtok"))
+    cr = min(usage.get("cache_read", 0) or 0, usage["input"])
+    return ((usage["input"] - cr) * rate("input_per_mtok") + cr * hit + usage["output"] * rate("output_per_mtok")) / 1e6
+
+
+def recost(path):
+    """The cost of every record of a run file recomputed from its token counts and time with the current prices.csv (no model
+    call); prints the stored and the recomputed totals and returns the recomputed costs."""
+    out, stored = [], 0.0
+    for line in Path(path).open(encoding="utf-8"):
+        r = json.loads(line)
+        out.append(cost_of(r["model"], r["usage"], datetime.datetime.fromisoformat(r["time"])))
+        stored += r.get("cost") or 0
+    print(f"{len(out)} records · stored ${stored:.4f} · recomputed ${sum(c or 0 for c in out):.4f}")
+    return out
 
 
 _LOCK = threading.Lock()
@@ -405,6 +439,7 @@ def run_arm(arm, question, model):
         text = t.text
     except Exception as e:
         error = f"{type(e).__name__}: {e}"
+    t_start = datetime.datetime.fromtimestamp(t0).astimezone()
     nc = number_check(text, arm, given)
     proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
     kc = kind_check(text, given)                                              # P72: the stated kind of every citation against the record's
@@ -412,7 +447,7 @@ def run_arm(arm, question, model):
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
                 number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, kind_check=kc, process=proc, words=words(text),
                 check_line=check_line(nc, words(text)) + f" · {kc['mismatches']} kind mismatches" + process_line(proc), usage=usage, model_calls=calls, retries=retries,
-                cost=cost_of(model, usage), seconds=round(time.time() - t0, 1), error=error)
+                cost=cost_of(model, usage, t_start), seconds=round(time.time() - t0, 1), error=error)
 
 
 def ask(question, model=None, arms=None, out=None):
@@ -479,10 +514,13 @@ if __name__ == "__main__":
     ap.add_argument("--questions"); ap.add_argument("--out"); ap.add_argument("--model"); ap.add_argument("--arms", default="model,text,kb")
     ap.add_argument("--max-cost", type=float, default=20.0); ap.add_argument("--max-calls", type=int, default=200)
     ap.add_argument("--kind-check", metavar="RUNS.jsonl", help="the kind check (P72) on the stored answers of a run file; no model call")
+    ap.add_argument("--recost", metavar="RUNS.jsonl", help="the cost of a run file's records recomputed from their token counts with prices.csv (P73); no model call")
     a = ap.parse_args()
     model, arms = a.model or P.default_model(), a.arms.split(",")
     if a.kind_check:
         kind_recheck(a.kind_check)
+    elif a.recost:
+        recost(a.recost)
     elif a.questions:
         batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_calls)
     elif a.question:
