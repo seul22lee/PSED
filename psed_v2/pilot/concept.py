@@ -89,11 +89,29 @@ def resolve(words):
 
 # ---------------------------------------------------------------------------------------------------------------- counts from the data
 _COUNTS = {}
+HOMES = ("specimen", "input", "aggregate", "set-level", "paper", "cited")       # P81: where a value record lives (the P79 homes; cited works aside)
+
+
+def home_of(T, f):
+    """P81: the home of a value record: specimen (an experiment's rows, model runs included), input (an input entity), aggregate (a
+    replicate set's own records), set-level (another set's own records), cited (a cited work's values), paper (no entity, no set)."""
+    e = T.ent_of(f["fact_id"])
+    if e:
+        return "input" if Q.role(T, e) == "input" else "specimen"
+    for x in T.chain(f["fact_id"]):
+        n = T.byid[x]
+        if n["type"] == "comparison":
+            return "aggregate" if n["kind"] == "replicate" else "set-level"
+        if n["type"] == "cited":
+            return "cited"
+    return "paper"
 
 
 def counts():
-    """Per concept id and paper: values (facts with a value, a range or a curve), settings, claims (cause or effect), and for a
-    species, structure or mechanism the facts that name it."""
+    """P81: per concept id and paper, everything the knowledge base holds of it: the value records by home (HOMES: specimen, input,
+    aggregate, set-level, paper, cited; 'values' their sum), settings (stated conditions), claims (cause or effect), derived (records
+    computed by this knowledge base on the experiments and inputs) and, for a species, structure or mechanism, the facts that name it
+    (mentions). The concept cards, the cross-paper footer and the L0 map read these counts."""
     if _COUNTS:
         return _COUNTS
     c = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
@@ -104,10 +122,11 @@ def counts():
             q = f["quantity"]
             if q and q != "other" and f["type"] != "caveat":
                 if f["type"] == "setting":
-                    c[q][k]["settings"] += 1
+                    if Q.text_of(f):
+                        c[q][k]["settings"] += 1
                 elif f["type"] in Q.RESULT_TYPES or f["type"] == "cited":
-                    if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"] or f["value_text"]:
-                        c[q][k]["values"] += 1
+                    if Q.text_of(f) or f["points_ref"]:
+                        c[q][k][home_of(T, f)] += 1; c[q][k]["values"] += 1
             if f["type"] == "claim":
                 for t in (f["cause"] + ";" + f["effect"]).split(";"):
                     if t:
@@ -118,8 +137,44 @@ def counts():
                     c[v][k]["mentions"] += 1
             if f["value_text"] in L.SPECIES or f["value_text"] in L.STRUCTURES:
                 c[f["value_text"]][k]["mentions"] += 1
+        for e in Q.experiments(T) + Q.inputs(T):
+            for kk, x in Q.result_records(T, e).items():
+                if x["record"].get("kind") == "computed_by_kb":
+                    c[kk.split("{")[0].split("[")[0]][k]["derived"] += 1
     _COUNTS.update({i: {k: dict(v) for k, v in d.items()} for i, d in c.items()})
     return _COUNTS
+
+
+def derivable(q, k):
+    """P81: whether a paper that holds nothing of a quantity holds every input of one of its transforms (lists.DERIVED): (transform id,
+    [(input name, kind of the record found)]) for the first such transform, else None. An input given as other:<label> is a free label
+    of the paper; @formula_metals is the film's formula."""
+    T = Q.TREES[k]
+    for did, D in L.DERIVED.items():
+        if L.derived_key(did)[0] != q:
+            continue
+        found = []
+        for spec in D["inputs"]:
+            need = {a: b for a, b in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p) if not b.startswith("@")}   # the qualifiers the input must carry (a species of the material or reactant: any)
+            carries = lambda f: all(Q.quals(f).get(a) == b for a, b in need.items())
+            hit = None
+            for alt in spec["q"].split("|"):
+                if alt == "@formula_metals":
+                    hit = ("the film's formula", "stated") if T.material(Q.experiments(T)[0]) in L.FORMULA_METALS else None
+                elif alt.startswith("other:"):
+                    f = next((f for f in T.rows if f["quantity"] == "other" and f["label_as_printed"] == alt[6:] and Q.text_of(f)), None)
+                    hit = (alt[6:], Q.kind(f)) if f else None
+                else:
+                    f = next((f for f in T.rows if "#" in f["fact_id"] and f["quantity"] == alt and f["type"] in Q.RESULT_TYPES + ("setting", "cited") and Q.text_of(f) and carries(f)), None)
+                    hit = (L.NAMES.get(alt, alt), Q.kind(f)) if f else None
+                if hit:
+                    break
+            if not hit:
+                break
+            found.append(hit)
+        else:
+            return did, found
+    return None
 
 
 def family_of(i):
@@ -210,16 +265,26 @@ def short_definition(d, n=160):
 
 
 def per_paper(ids):
-    """'yim20 12 values / 3 claims / 5 settings; gre23 ...; not studied in: mat22'."""
+    """P81: per paper, in this order: values N (by home: specimen, input, aggregate, set-level, paper, cited), settings, claims,
+    derived M (computed by this knowledge base), mentions; 'not studied in: p' only when every count is zero for p, and when a
+    transform of the entry has every input in p, 'derivable in p from <inputs> (<kinds>)' instead."""
     pc = paper_counts(ids)
-    have, absent = [], []
+    have, absent, deriv = [], [], []
     for k in Q.TREES:
         d = pc.get(k, {})
-        if any(d.values()):
-            have.append(f"{k} " + " / ".join(f"{d.get(x, 0)} {x}" for x in ("values", "claims", "settings", "mentions") if d.get(x)))
+        if any(d.get(x) for x in ("values", "settings", "claims", "derived", "mentions")):
+            homes = ", ".join(f"{h} {d[h]}" for h in HOMES if d.get(h))
+            bits = ([f"{d['values']} values" + (f" ({homes})" if homes else "")] if d.get("values") else []) \
+                + [f"{d[x]} {x}" for x in ("settings", "claims") if d.get(x)] + ([f"derived {d['derived']}"] if d.get("derived") else []) \
+                + ([f"{d['mentions']} mentions"] if d.get("mentions") else [])
+            have.append(f"{k} " + " / ".join(bits))
         else:
-            absent.append(k)
-    return "; ".join(have) + (f" · not studied in: {', '.join(absent)}" if absent else "")
+            dv = derivable(ids[0], k) if len(ids) == 1 and ids[0] in L.ENTRIES else None
+            if dv:
+                deriv.append(f"derivable in {k} from " + ", ".join(n for n, _ in dv[1]) + " (" + ", ".join(L.PHRASES.get(kd, kd) for _, kd in dv[1]) + ")")
+            else:
+                absent.append(k)
+    return "; ".join(have) + ("".join(f" · {x}" for x in deriv)) + (f" · not studied in: {', '.join(absent)}" if absent else "")
 
 
 # ---------------------------------------------------------------------------------------------------------------- the L0 map (P70)

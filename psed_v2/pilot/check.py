@@ -668,6 +668,70 @@ def check_structure():
     return err
 
 
+def check_cards():
+    """P81: for every entry and paper, the card's per-paper numbers (concept.per_paper) equal the counts computed directly from the page
+    data: value records (D sources[*].values, by fact id and the tree's home), settings, claims (D claims' cause and effect) and derived
+    records (D details' results computed by this knowledge base); 'not studied in: p' never appears for an (entry, paper) with any
+    record or with every input of a transform present (concept.derivable)."""
+    import concept as CN, query as Q
+    err, n_pairs, n_lines = [], 0, 0
+    page = HERE / "reports" / "pilot.html"
+    if not page.exists():
+        print("== cards (P81): reports/pilot.html not built, the page comparison skipped"); return err
+    D = json.loads(re.search(r"const D=(\{.*?\}), IM=", page.read_text(encoding="utf-8"), re.S).group(1))
+    ref = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
+    seen = set()
+    for src in D["sources"].values():
+        for v in src["values"]:
+            f = v.get("fact")
+            if not f or f in seen:
+                continue
+            seen.add(f); k = f.split(":")[0]; T = Q.TREES[k]; row = T.byid[f]
+            if row["quantity"] in L.ENTRIES:
+                if row["type"] == "setting":
+                    ref[row["quantity"]][k]["settings"] += 1
+                else:
+                    ref[row["quantity"]][k][CN.home_of(T, row)] += 1; ref[row["quantity"]][k]["values"] += 1
+    for k, T in Q.TREES.items():                                                 # cited works' values and curves are not in the page's sources
+        for f in T.rows:
+            if "#" in f["fact_id"] and f["fact_id"] not in seen and f["quantity"] in L.ENTRIES and (f["type"] == "cited" or (f["type"] in Q.RESULT_TYPES and f["points_ref"] and not Q.text_of(f))):
+                ref[f["quantity"]][k][CN.home_of(T, f)] += 1; ref[f["quantity"]][k]["values"] += 1
+    for c in D["claims"]:                                                        # the page gives a claim's cause and effect in words; its ids come from the claim's row
+        k = c["id"].split(":")[0]
+        if k in Q.TREES and c["id"] in Q.TREES[k].byid:
+            row = Q.TREES[k].byid[c["id"]]
+            for t in (row["cause"] + ";" + row["effect"]).split(";"):
+                if t:
+                    ref[t][k]["claims"] += 1
+    for i, d in D["details"].items():
+        for r in d.get("results", []):
+            if (r.get("record") or {}).get("kind") == "computed_by_kb" and d.get("paper") in Q.TREES:
+                ref[r["key"].split("{")[0].split("[")[0]][d["paper"]]["derived"] += 1
+    for q in sorted(L.ENTRIES):
+        if L.ENTRIES[q]["type"] not in ("quantity", "categorical") or L.ENTRIES[q].get("replaced_by"):
+            continue
+        line = CN.per_paper([q]); n_lines += 1
+        for k in Q.TREES:
+            n_pairs += 1
+            d = ref[q][k]
+            m = re.search(rf"(?:^|; ){k} (.*?)(?:;|$| · )", line)
+            seg = m.group(1) if m else ""
+            got = {x: int(n) for n, x in re.findall(r"(\d+) (values|settings|claims|mentions)", seg)}
+            got["derived"] = int(re.search(r"derived (\d+)", seg).group(1)) if re.search(r"derived (\d+)", seg) else 0
+            homes = {h: int(n) for h, n in re.findall(r"(specimen|input|aggregate|set-level|paper|cited) (\d+)", seg)}
+            for x in ("values", "settings", "claims", "derived"):
+                if got.get(x, 0) != d.get(x, 0):
+                    err.append(f"card {q} / {k}: {x} {got.get(x, 0)} on the card, {d.get(x, 0)} in the page data (P81)")
+            for h in CN.HOMES:
+                if homes.get(h, 0) != d.get(h, 0):
+                    err.append(f"card {q} / {k}: {h} {homes.get(h, 0)} on the card, {d.get(h, 0)} in the page data (P81)")
+            absent = re.search(r"not studied in: ([^·]*)$", line)
+            if absent and k in [x.strip() for x in absent.group(1).split(",")] and (any(d.values()) or CN.derivable(q, k)):
+                err.append(f"card {q}: 'not studied in {k}' although the paper holds a record or every transform input (P81)")
+    print(f"== cards (P81): {n_lines} concept cards, {n_pairs} (entry, paper) pairs against the page data; counts by home {', '.join(CN.HOMES)}, settings, claims, derived")
+    return err
+
+
 def check_grids():
     """P80: for every grid set, values(result=q, paper) renders it as a matrix from its full member list: the tested cells of every
     matrix equal len(all) (the untested combinations are counted as n.t.); every child series' members lie in the cells or the variants
@@ -1096,6 +1160,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_structure()
     print(f"== structure (P78): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_cards()
+    print(f"== cards (P81): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
