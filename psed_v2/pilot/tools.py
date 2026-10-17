@@ -133,7 +133,11 @@ TOOLS = [
                       "above its sets; the caveats on every row once at the end. When the full listing would exceed about 2,000 tokens the "
                       "output gives way in steps: model-run sets collapse to their range and count, then the caveat texts go (their ids stay "
                       "on the rows), then specimen sets collapse, the largest first; a line says how many sets collapsed and that detail(ids) "
-                      "opens them. Narrow with paper or where to see more rows. The last line says where else the concept lives. Use it to see how one result or setting varies across experiments and conditions. "
+                      "opens them. Narrow with paper or where to see more rows. A setting (a process parameter, a reactor or a test-structure "
+                      "setting: temperature, pulse, purge, flow, pressure, cycles, feature width, substrate, ...) comes as a settings table per paper "
+                      "instead: one row per distinct level or combination of coupled levels, with the fact ids and the count and set ids of the "
+                      "specimens that use it; values of it computed by this knowledge base are named in one line, never listed. The last line says "
+                      "where else the concept lives. Use it to see how one result or setting varies across experiments and conditions. "
                       "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
              result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
@@ -441,20 +445,130 @@ def _span(nums):
     return ", ".join(out)
 
 
-def _cell(rec, marks):
+def _cell(rec, marks, fact=True):
     """One value as a cell: text, the kind's mark (the legend gives its phrase; measured and stated unmarked, P57), ± with its basis id
-    (the basis legend gives the phrase), the fact id; the caveat ids go on the row, once (values_blocks)."""
+    (the basis legend gives the phrase), the fact id; the caveat ids go on the row, once (values_blocks). The one cell wording of
+    every table the tools print (P68): values, the settings tables (P76) and the set-wide tables (P77)."""
     unc = unc_text(rec.get("uncertainty"), compact=True)
     k = rec.get("kind", "")
     mark = ""
     if k in KIND_MARK:
         marks.add(k); mark = f" ({KIND_MARK[k]})"
-    return f"{rec.get('text') or 'curve'}{mark}{unc}" + (f" [{rec['fact']}]" if rec.get("fact") else "")
+    return f"{rec.get('text') or 'curve'}{mark}{unc}" + (f" [{rec['fact']}]" if fact and rec.get("fact") else "")
 
 
 def _usual_names(groups, paper, usual):
     """(key, name) of the usual conditions of a paper (values_blocks)."""
     return {(x["key"], x["name"]) for g in groups if g["paper"] == paper for x in g["shared"] if (x["key"], x["record"]["text"]) in usual}
+
+
+def _common_usual(groups):
+    """Per paper (P44, P65): the conditions every specimen set shares (common) and the usual ones (shared by most sets; no key with two
+    usual values), as sets of (key, text), for the paper's shared-conditions header."""
+    common, usual = {}, {}
+    for k in dict.fromkeys(g["paper"] for g in groups):
+        gs = [g for g in groups if g["paper"] == k and g.get("roles", ["specimen"]) == ["specimen"]]
+        sets = [{(x["key"], x["record"]["text"]) for x in g["shared"]} for g in gs]
+        common[k] = set.intersection(*sets) if len(gs) > 1 else set()
+        cnt = collections.Counter(c for s in sets for c in s)
+        usual[k] = {c for c, n in cnt.items() if n * 2 > len(gs) and c not in common[k]} if len(gs) > 2 else set()
+        if len({x[0] for x in usual[k]}) < len(usual[k]):                       # two values of one key both usual: lift neither
+            usual[k] = set()
+    return common, usual
+
+
+def _shared_head(groups, k, common, usual):
+    """The paper's shared-conditions line (id <paper>:shared): what every specimen set shares and the usual conditions; None when the
+    paper has neither."""
+    if not (common.get(k) or usual.get(k)):
+        return None
+    every = [g2 for g2 in groups if g2["paper"] == k]
+    txt = {(x["key"], x["record"]["text"]): f"{x['name']} {x['record']['text']}" for g2 in every for x in g2["shared"]}
+    return (f"{k}:shared", f"{short_name(k)}" + (" · every specimen set of this paper shares: " + "; ".join(txt[c] for c in sorted(common[k], key=txt.get)) if common[k] else "")
+            + (" · usual, unless a set varies it or lacks it: " + "; ".join(txt[c] for c in sorted(usual[k], key=txt.get)) if usual[k] else ""))
+
+
+SETTINGS_ROW = re.compile(r" \| \d+ (specimens?|model runs?|experiments?) · ")       # the specimens column that ends every settings-table row (P76)
+
+
+def settings_blocks(groups, result, S, extras, where=None):
+    """P76: a settings entry as a settings table per paper, never a specimen list. The paper's shared-conditions header as in values_blocks;
+    one header line naming the columns (the entry's coupled keys: the qualifier variants that go together on one specimen) and
+    'specimens' last; one row per distinct level or level combination, its cells as values() prints them (_cell: text, kind mark, ±
+    with its basis id) with the first fact id that states the level and how many more do, then the specimens that use the level (count
+    and the ids of their sets) and the caveat ids of its records; then, where the paper states no level for some experiments, which;
+    the quantity's values computed by this knowledge base in one line that names how to open them (never a k3 column); its results
+    that are not settings, one line each; the legends, the caveat texts once and the cross-paper footer (P67) at the end."""
+    common, usual = _common_usual(groups)
+    legend_cav, legend_basis, marks, out = {}, set(), set(), []
+    papers = [k for k in Q.TREES if any(g["paper"] == k for g in groups) or k in extras]
+    name = L.NAMES.get(S, S)
+    for k in papers:
+        T = Q.TREES[k]
+        gs = [g for g in groups if g["paper"] == k]
+        lines = [x for x in [_shared_head(groups, k, common, usual)] if x]
+        rows = [r for g in gs for r in g["rows"]]
+        keys = list(dict.fromkeys(r["key"] for r in rows))
+        names = {kk: next(r["result_name"] for r in rows if r["key"] == kk) for kk in keys}
+        home = {r["entity"]: g["id"] for g in gs for r in g["rows"]}
+        by_ent = {}
+        for r in rows:
+            by_ent.setdefault(r["entity"], {})[r["key"]] = r
+        levels = {}
+        for e, cells in by_ent.items():
+            level = tuple(_cell(cells[kk]["record"], marks, fact=False) if kk in cells else "—" for kk in keys)
+            lv = levels.setdefault(level, dict(ents=[], facts={kk: [] for kk in keys}, recs={}, cav=set()))
+            lv["ents"].append(e)
+            for kk, r in cells.items():
+                rec = r["record"]
+                if rec.get("fact") and rec["fact"] not in lv["facts"][kk]:
+                    lv["facts"][kk].append(rec["fact"])
+                lv["recs"].setdefault(kk, rec)
+                lv["cav"] |= {c["id"] for c in rec.get("caveats") or []}
+                legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
+                if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
+                    legend_basis.add(rec["uncertainty"]["basis"])
+        if rows:
+            lines.append((f"{k}:settings", f"settings table · {short_name(k)} · {name}: one row per distinct level · columns: " + " | ".join(names[kk] for kk in keys) + " | specimens"))
+
+        def order(item):
+            r0 = item[1]["recs"].get(keys[0])
+            v = r0.get("value") if r0 else None
+            return (0, v, "") if isinstance(v, (int, float)) else (1, 0, item[0][0])
+        for level, lv in sorted(levels.items(), key=order):
+            cells = [txt + (f" [{fs[0]}]" if fs else "") + (f" (+{len(fs) - 1} fact{'s' if len(fs) > 2 else ''})" if len(fs) > 1 else "") for txt, fs in zip(level, (lv["facts"][kk] for kk in keys))]
+            roles = {Q.role(T, e) for e in lv["ents"]}
+            noun = ("specimen" if roles == {"specimen"} else "model run" if roles == {"model run"} else "experiment") + ("s" if len(lv["ents"]) != 1 else "")
+            sets = [s for s in dict.fromkeys(home[e] for e in lv["ents"])]
+            ids = [s for s in sets if s]
+            place = ((("sets " if len(ids) > 1 else "set ") + ", ".join(f"[{s}]" for s in ids)) if ids else "") + (" and outside any set" if ids and "" in sets else "outside any set" if not ids else "")
+            first = next((lv["facts"][kk][0] for kk in keys if lv["facts"][kk]), f"{k}:settings")
+            lines.append((first, " | ".join(cells) + f" | {len(lv['ents'])} {noun} · {place}" + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(lv["cav"])) if lv["cav"] else "")))
+        if rows and not where:
+            missing = [e for e in Q.experiments(T) if e not in by_ent]
+            if missing:
+                lines.append((f"{k}:settings", f"not stated for {len(missing)} of {len(Q.experiments(T))} experiments: " + ", ".join(missing[:12]) + (" …" if len(missing) > 12 else "")))
+        if not rows:
+            lines.append((f"{k}:settings", f"{short_name(k)} states no {name} as a setting" + (" under this where" if where else "")))
+        ex = extras.get(k, {})
+        for kk, d in ex.get("derived", {}).items():
+            if kk in L.DERIVED and kk not in L.SETTINGS_ENTRIES:
+                how = f'open with values(result="{d["name"]}", paper="{k}")'
+            else:
+                how = 'open with detail(ids=[…], parts=["computed"]) on its experiments: ' + ", ".join(d["entities"])
+            lines.append((f"{k}:derived", f"derived: {d['name']} — {len(d['entities'])} values {KB} ({d['formula']}) — {how}"))
+        for e, kk, nm, rec in ex.get("results", []):
+            lines.append((rec.get("fact") or e, f"result, not a setting · {T.label(e)} [{e}] · {nm}: {_cell(rec, marks)}" + cmark(rec)))
+            legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
+            if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
+                legend_basis.add(rec["uncertainty"]["basis"])
+        out.append(block([wrap(*x) for x in lines]))
+    tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
+        + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
+        + [(i, f"caveat · {t}") for i, t in legend_cav.items()] \
+        + [("between", CN.footer([S], paper=papers[0] if len(papers) == 1 and len(Q.TREES) > 1 else None))]
+    out.append(block([], head=[x for i, t in tail for x in wrap(i, t)]))
+    return out
 
 
 def values_blocks(groups, asked):
@@ -485,15 +599,7 @@ def values_blocks(groups, asked):
         cols_all.append(tuple(dict.fromkeys(r["result_name"] for r in rows_)))
     same_cols = len(set(cols_all)) == 1
     n_kb = sum(1 for g in groups for r in g["rows"] if r["record"].get("kind") == "computed_by_kb")
-    common, usual = {}, {}                                                      # conditions every specimen set of a paper shares: once, at the top (P44);
-    for k in dict.fromkeys(g["paper"] for g in groups):                         # the usual ones (shared by most sets) once too, a set says when it varies or lacks one
-        gs = [g for g in groups if g["paper"] == k and g.get("roles", ["specimen"]) == ["specimen"]]
-        sets = [{(x["key"], x["record"]["text"]) for x in g["shared"]} for g in gs]
-        common[k] = set.intersection(*sets) if len(gs) > 1 else set()
-        cnt = collections.Counter(c for s in sets for c in s)
-        usual[k] = {c for c, n in cnt.items() if n * 2 > len(gs) and c not in common[k]} if len(gs) > 2 else set()
-        if len({x[0] for x in usual[k]}) < len(usual[k]):                       # two values of one key both usual: lift neither
-            usual[k] = set()
+    common, usual = _common_usual(groups)                                       # conditions every specimen set of a paper shares, and the usual ones: once, at the top (P44)
     for n, g in enumerate(groups, 1):
         T = Q.TREES[g["paper"]]
         sid = g["id"] or f"{g['paper']}:outside"
@@ -512,10 +618,7 @@ def values_blocks(groups, asked):
         missing = [name for key, name in sorted(_usual_names(groups, g["paper"], usual[g["paper"]])) if is_spec and key not in present]
         head = []
         if (common[g["paper"]] or usual[g["paper"]]) and (n == 1 or groups[n - 2]["paper"] != g["paper"]):
-            every = [g2 for g2 in groups if g2["paper"] == g["paper"]]
-            txt = {(x["key"], x["record"]["text"]): f"{x['name']} {x['record']['text']}" for g2 in every for x in g2["shared"]}
-            head.append((f"{g['paper']}:shared", f"{short_name(g['paper'])}" + (" · every specimen set of this paper shares: " + "; ".join(txt[c] for c in sorted(common[g["paper"]], key=txt.get)) if common[g["paper"]] else "")
-                         + (" · usual, unless a set varies it or lacks it: " + "; ".join(txt[c] for c in sorted(usual[g["paper"]], key=txt.get)) if usual[g["paper"]] else "")))
+            head.append(_shared_head(groups, g["paper"], common, usual))
         head += [(sid, f"set [{sid}] ({g['kind'] or 'outside any set'})" + ("" if one_paper else f" · {short_name(g['paper'])}") + f" · {g['label']}" + (f" · varies: {', '.join(g['varies'])}" if g["varies"] else "")
                  + (f" · shared: {shared}" if shared else "") + (f" · lacks: {', '.join(missing)}" if missing else "") + f" · {len(by_ent)} rows" + ("" if same_cols else " · columns: " + " | ".join(names[k] for k in keys)))]
         if n == 1 and same_cols:
@@ -656,6 +759,12 @@ def _run(name, args):
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
         if name == "values":
             groups = Q.values(args["result"], args.get("paper"), args.get("where"))
+            S = Q.settings_entry(args["result"])
+            if S:                                                               # P76: a settings entry is a settings table, never a specimen list
+                extras = Q.setting_extras(S, args["result"], args.get("paper"), args.get("where"))
+                if not groups and not extras:
+                    return [], ""
+                return settings_blocks(groups, args["result"], S, extras, args.get("where")), ""
             if not groups:
                 return [], ""
             full, collapsed, legend_cav = values_blocks(groups, args["result"])

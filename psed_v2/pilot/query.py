@@ -1590,13 +1590,75 @@ def concept_ids(words):
     return [i for i in ids if i in L.ENTRIES and L.ENTRIES[i]["type"] in ("quantity", "categorical")]
 
 
+_DERIVED_NAMES = {}
+
+
+def derived_names():
+    """{text: derived id} of the knowledge base's derived definitions (lists.DERIVED): each id and its plain name, for a values request
+    that names a derived quantity itself (P76)."""
+    if not _DERIVED_NAMES:
+        for did in L.DERIVED:
+            _DERIVED_NAMES[did] = did; _DERIVED_NAMES[name_of(did)] = did
+    return _DERIVED_NAMES
+
+
+def settings_entry(result):
+    """The settings entry a values request names (P76), else '': an entry under process_parameters, ald_reactor or test_structure
+    (lists.SETTINGS_ENTRIES) given by id, key, name, alias or concept resolution. A request that is exactly the id or the name of a
+    derived definition with an id of its own (effective channel height, exposure per run) names that derived quantity, not the entry;
+    a derived definition whose id is the entry's (cycle_time, exposure: the knowledge base computes the setting itself) is the entry."""
+    r = (result or "").strip()
+    base = r.split("{")[0].split("[")[0]
+    d = derived_names()
+    if r in d and d[r] not in L.SETTINGS_ENTRIES:
+        return ""
+    qs = [base] + [q for q, n in L.NAMES.items() if n == r and "{" not in q] + concept_ids(r)
+    return next((q for q in qs if q in L.SETTINGS_ENTRIES), "")
+
+
+def setting_matches(T, e, result, S):
+    """[(key, name, record)] of an entity's stated conditions for a settings entry (P76): its condition records whose key is the entry's
+    (or the exact key or name asked), a target excluded; never a result and never a value computed by this knowledge base."""
+    hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] == S
+    return [(kk, x["name"], x["record"]) for kk, x in condition_records(T, e).items() if hit(kk, x["name"])
+            and quals(T.byid.get(x["record"]["fact"], {"qualifiers": ""})).get("kind") != "target"]
+
+
+def setting_extras(S, result, paper=None, where=None):
+    """What a settings request leaves out of its table (P76), per paper: the quantity's values computed by this knowledge base on the
+    experiments ({derived key: dict(name, formula, entities)}: named in one line, never a column) and its results that are not settings
+    (a model's estimate of a purge time: [(entity, key, name, record)])."""
+    hit = lambda kk, name: name == result or kk == result or kk.split("{")[0].split("[")[0] == S
+    out = {}
+    for k, T in TREES.items():
+        if paper and k != paper:
+            continue
+        der, res = {}, []
+        for e in experiments(T):
+            if where and not _where_ok(T, e, where):
+                continue
+            for kk, x in result_records(T, e).items():
+                if not hit(kk, x["name"]) or not (x["record"].get("text") or x["record"].get("curve")):
+                    continue
+                if x["record"]["kind"] == "computed_by_kb":
+                    der.setdefault(kk, dict(name=x["name"], formula=x["record"].get("definition", ""), entities=[]))["entities"].append(e)
+                else:
+                    res.append((e, kk, x["name"], x["record"]))
+        if der or res:
+            out[k] = dict(derived=der, results=res)
+    return out
+
+
 def values(result, paper=None, where=None):
     """Every value of a result (P42), never a representative, grouped by comparison set: each experiment under the smallest set it is
     a member of, the others in one group per paper. A group: paper, set id, label, kind, what the set varies, the conditions its
     members share (material, structure, substrate, reactor, and the process-defining ones), the number of other shared conditions,
     rows (entity, the settings that vary within the set, the value record, its key and name), the claims about the set, its
-    material, structure, reactor, process (recipe) and measurement methods for the comparison between groups."""
+    material, structure, reactor, process (recipe) and measurement methods for the comparison between groups. For a settings entry
+    (settings_entry, P76) the rows are the experiments' stated conditions only (setting_matches): no result, no value computed by
+    this knowledge base (setting_extras names those)."""
     groups = []
+    S = settings_entry(result)
     for k, T in TREES.items():
         if paper and k != paper:
             continue
@@ -1604,7 +1666,7 @@ def values(result, paper=None, where=None):
         for e in experiments(T):
             if where and not _where_ok(T, e, where):
                 continue
-            m = result_matches(T, e, result)
+            m = setting_matches(T, e, result, S) if S else result_matches(T, e, result)
             if m:
                 rows[e] = m
         if not rows:

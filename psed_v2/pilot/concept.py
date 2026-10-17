@@ -142,8 +142,8 @@ def paper_counts(ids):
 
 
 def footer(ids, paper=None):
-    """P67: one line derived from the concepts and their families: 'also in <paper>: N values · M claims' per other paper, or
-    'not studied in: <papers>'."""
+    """P67: one line derived from the concepts and their families: 'also in <paper>: N values · M claims' per other paper (and
+    '· K settings' where the concept is a setting there, P76), or 'not studied in: <papers>'."""
     fam_ids = set()
     for i in ids:
         fam_ids.add(i); fam_ids |= set(family_of(i)[1])
@@ -153,9 +153,10 @@ def footer(ids, paper=None):
         if k == paper:
             continue
         d = pc.get(k, {})
-        n = d.get("values", 0) + d.get("mentions", 0)
-        if n or d.get("claims"):
-            parts.append(f"{'also in' if paper else 'in'} {k}: {n} values · {d.get('claims', 0)} claims" + (f" (with the family {family_of(ids[0])[0]})" if any(family_of(i)[0] for i in ids) and len(fam_ids) > len(ids) else ""))
+        n, ns = d.get("values", 0) + d.get("mentions", 0), d.get("settings", 0)
+        if n or ns or d.get("claims"):
+            parts.append(f"{'also in' if paper else 'in'} {k}: {n} values · {d.get('claims', 0)} claims" + (f" · {ns} settings" if ns else "")
+                         + (f" (with the family {family_of(ids[0])[0]})" if any(family_of(i)[0] for i in ids) and len(fam_ids) > len(ids) else ""))
         else:
             absent.append(k)
     if not parts and not absent:

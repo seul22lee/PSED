@@ -640,12 +640,60 @@ def check_calls():
     return err
 
 
+def settings_probes():
+    """[(entry, paper)] for every settings entry (lists.SETTINGS_ENTRIES) with stated conditions in a paper (P76)."""
+    import query as Q
+    return [(S, k) for S in sorted(L.SETTINGS_ENTRIES) for k, T in Q.TREES.items() if any(Q.setting_matches(T, e, S, S) for e in Q.experiments(T))]
+
+
+def joined(lines):
+    """Tool lines with their wrapped continuations ('… ', P44) joined back: [(id, text)]."""
+    out = []
+    for i, t in lines:
+        if t.startswith("… ") and out:
+            out[-1] = (out[-1][0], out[-1][1] + " " + t[2:])
+        else:
+            out.append((i, t))
+    return out
+
+
+def check_settings():
+    """P76: for every settings entry with stated conditions in a paper, values(entry, paper) is a settings table: no line is a specimen
+    row (no line id is an experiment of the paper), the table header is present, the level rows (tools.SETTINGS_ROW) are as many as
+    the distinct levels in the data (the experiments' condition records of the entry, keyed by the cell wording: text, kind mark, ±
+    with its basis), and no output of a settings entry carries a k3 mark or column (a value computed by this knowledge base)."""
+    import tools, query as Q
+    err, probes, size = [], settings_probes(), 0
+    for S, k in probes:
+        T = Q.TREES[k]
+        levels = {tuple(sorted((kk, tools._cell(rec, set(), fact=False)) for kk, _, rec in m)) for e in Q.experiments(T) for m in [Q.setting_matches(T, e, S, S)] if m}
+        lines, e_ = tools.run_tool("values", {"result": S, "paper": k})
+        if e_:
+            err.append(f"values({S}, {k}): {e_} (P76)"); continue
+        js = joined(lines)
+        size = max(size, sum(len(t) + len(i) + 4 for i, t in lines) // 4)
+        spec = [i for i, _ in js if i in set(Q.experiments(T))]
+        if spec:
+            err.append(f"values({S}, {k}): specimen rows {spec[:3]} in a settings output (P76)")
+        if not any(i == f"{k}:settings" and t.startswith("settings table") for i, t in js):
+            err.append(f"values({S}, {k}): no settings-table header (P76)")
+        n_rows = sum(1 for _, t in js if tools.SETTINGS_ROW.search(t))
+        if n_rows != len(levels):
+            err.append(f"values({S}, {k}): {n_rows} level rows against {len(levels)} distinct levels in the data (P76)")
+        if f"({tools.KIND_MARK['computed_by_kb']})" in "\n".join(t for _, t in js):
+            err.append(f"values({S}, {k}): a value computed by this knowledge base (k3) in a settings output (P76)")
+    print(f"== settings tables (P76): {len(L.SETTINGS_ENTRIES)} settings entries under {', '.join(sorted(L.SETTINGS_NODES))}; {len(probes)} (entry, paper) pairs with stated conditions; max {size} tokens per table")
+    return err
+
+
 def tool_probes():
-    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values; concept and search
-    (with and without a paper filter) on the stored search probes; detail on one id of every record type of every paper, eight per
-    call; source on one element per paper; and detail on two facts that share a caveat (the caveat once)."""
+    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values and on every settings
+    entry per paper that states it (P76); concept and search (with and without a paper filter) on the stored search probes; detail on
+    one id of every record type of every paper, eight per call; source on one element per paper; and detail on two facts that share
+    a caveat (the caveat once)."""
     import concept as CN, query as Q
     probes = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
+    probes += [("values", {"result": S, "paper": k}) for S, k in settings_probes()]
     for p in rd(HERE / "search_probes.csv"):
         probes += [("concept", {"words": p["words"]}), ("search", {"words": p["words"]}), ("search", {"words": p["words"], "paper": "yim20"})]
     first = {}
@@ -723,7 +771,8 @@ def check_kinds():
     page = HERE / "reports" / "pilot.html"
     if page.exists() and "computed here" in page.read_text(encoding="utf-8"):
         err.append("'computed here' appears in reports/pilot.html (P57)")
-    print(f"== kinds (P57, P68): {len(L.KINDS)} kinds with phrases, {len(L.BASES)} bases; {len(probes)} probe calls, {len(texts)} tool texts scanned; max {max(sum(len(t) for t in o) // 4 for o in outputs.values())} tokens per output")
+    print(f"== kinds (P57, P68): {len(L.KINDS)} kinds with phrases, {len(L.BASES)} bases; {len(probes)} probe calls, {len(texts)} tool texts scanned; max {max(sum(len(t) for t in o) // 4 for o in outputs.values())} tokens per output, "
+          f"{sum(sum(len(t) for t in o) for o in outputs.values()) // 4:,} tokens over the battery")
     return err
 
 
@@ -865,6 +914,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_calls()
     print(f"== calls (P75): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_settings()
+    print(f"== settings tables (P76): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
