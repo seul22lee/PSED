@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
-"""Three ways to answer one question about the three pilot papers, side by side, with a number check.
+"""Three ways to answer one question about the three pilot papers, side by side, with a number check (and a fourth arm, the
+knowledge base dumped into the prompt, selectable with --arms).
 
-    python3 psed_v2/pilot/ask.py "question" [--model vendor:model] [--arms model,text,kb]       # -> pilot/runs/asks.jsonl
+    python3 psed_v2/pilot/ask.py "question" [--model vendor:model] [--arms model,text,kb,dump]  # -> pilot/runs/asks.jsonl
     python3 psed_v2/pilot/ask.py --questions FILE --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb]
                                  [--max-cost 20] [--max-calls 200]                            # -> RUNS.jsonl, RUNS.summary.csv
 
-Arms (one model, its default settings, the same for all three; the three arms of a question run in parallel):
+Arms (one model, its default settings, the same for every arm; the arms of a question run in parallel; default model, text, kb):
   model  Model only: the question, no documents, no tools.
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
   kb     Knowledge base: five tools over query.py (tools.py: concept, search, values, detail, source); each returns plain text, one line per value or row,
          starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls, about 2,000 tokens each, no line over 300 characters;
          a call whose normalized arguments equal an earlier call's gets one line, 'identical to call N' (P69).
+  dump   KB dump: the whole knowledge base serialized once (dump.py: the L0 map, every activity, entity and cited work with its settings and
+         results, the comparison sets, the claims, the caveats once by id) in the system prompt, no tools (P71).
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
 Number check: every number of the answer, sentence by sentence: matches (in a text cited in that sentence), elsewhere (in another
 text the model was given), not seen (in no text it was given), uncited (the sentence cites no id); and unknown ids.
@@ -24,6 +27,7 @@ HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
 sys.path.insert(0, str(HERE))
 import concept as CN  # noqa: E402
+import dump as DU  # noqa: E402
 import elements as E  # noqa: E402
 import providers as P  # noqa: E402
 import query as Q  # noqa: E402
@@ -31,8 +35,9 @@ import run_metrics as RM  # noqa: E402
 from tools import TOOLS, run_tool, open_target, short_name  # noqa: E402
 
 RUNS = HERE / "runs"
-ARMS = ["model", "text", "kb"]
-ARM_NAMES = {"model": "Model only", "text": "Paper text", "kb": "Knowledge base"}
+ARMS = ["model", "text", "kb", "dump"]
+DEFAULT_ARMS = ["model", "text", "kb"]
+ARM_NAMES = {"model": "Model only", "text": "Paper text", "kb": "Knowledge base", "dump": "KB dump"}
 TOOL_CAP = 10
 
 # ---------------------------------------------------------------------------------------------------------------- prompts (fixed)
@@ -47,6 +52,7 @@ ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
     "text": "The full text of the three papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
     "kb": "You have tools that query a structured knowledge base built from the three papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool.",
+    "dump": "The whole structured knowledge base built from the three papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
 
 
@@ -96,13 +102,25 @@ def pieces():
     return out
 
 
+_DUMP = {}
+
+
+def dump_text():
+    """The knowledge base serialized once (dump.serialize, P71), built on first use."""
+    if "text" not in _DUMP:
+        _DUMP["text"] = DU.serialize()[0]
+    return _DUMP["text"]
+
+
 def system_prompt(arm):
     """SHARED with the paper lines; for the Knowledge base arm also the L0 map generated from the data and the descend protocol (P70;
-    concept.l0_map, concept.DESCEND); then the arm's own text (and, for Paper text, the pieces)."""
+    concept.l0_map, concept.DESCEND); then the arm's own text (and, for Paper text, the pieces; for KB dump, the serialization)."""
     s = SHARED.format(papers=paper_lines())
     if arm == "kb":
         s += "\n\n" + CN.l0_map() + "\n\n" + CN.DESCEND
     s += "\n\n" + ARM_PROMPT[arm]
+    if arm == "dump":
+        s += "\n\n" + dump_text()
     if arm == "text":
         parts, cur = [], None
         for pid_, text in pieces():
@@ -290,6 +308,8 @@ def run_arm(arm, question, model):
         s = P.session(model, system_prompt(arm), TOOLS if arm == "kb" else None)
         if arm == "text":
             given = dict(pieces())
+        elif arm == "dump":
+            given = DU.given(dump_text())
         t = s.send(question); calls += 1; retries += t.retries
         for k in usage:
             usage[k] += t.usage.get(k, 0)
@@ -323,7 +343,7 @@ def run_arm(arm, question, model):
 def ask(question, model=None, arms=None, out=None):
     """The arms of one question in parallel; each record appended to out (default runs/asks.jsonl)."""
     model = model or P.default_model()
-    arms = arms or ARMS
+    arms = arms or DEFAULT_ARMS
     with cf.ThreadPoolExecutor(len(arms)) as ex:
         recs = list(ex.map(lambda a: run_arm(a, question, model), arms))
     for r in recs:
