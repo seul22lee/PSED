@@ -6,7 +6,10 @@ what the answer used, from the stored records alone (no model call); ask.py stor
 
 Definitions (these reproduce the reference numbers on A10_v2.jsonl: 98 executed and 18 refused calls, re-delivery 30-56 % per
 question, utilization 7-18 %):
-- executed calls: error == ""; refused: the cap or a validation error; duplicate: 'identical to call N' (P69).
+- executed calls: error == ""; refused: the cap, a wall or a tool error; duplicate (identical): 'identical to call N' (P69).
+- errors (P75): the refused calls that were tool errors (an unresolved name, a bad argument, nothing matches), not the cap or a wall;
+  wall_hit: 'total' or 'errors' when a refusal of the question names that wall (ask.TOTAL_WALL, ask.ERROR_WALL), else 'none'.
+  The columns of P74 keep their definitions: executed, refused and duplicates are unchanged by P75.
 - ids: every match of [<paper>:<rest>] in an executed call's stored output, counted as occurrences in call order.
 - re-delivered share: occurrences whose id already appeared in a previous call of the same question / all occurrences; duplicates
   within one call do not count; the seen set updates after each call.
@@ -36,15 +39,22 @@ def normalized(name, args):
 
 def process(tool_calls, cited=()):
     """The process metrics of one question: calls, executed, refused, duplicates, tool output tokens, the delivered ids, the
-    re-delivered share, the cited ids and the utilization (cited / delivered)."""
+    re-delivered share, the cited ids and the utilization (cited / delivered); P75: errors (tool errors), identical (= duplicates,
+    the directive's name) and wall_hit (none, total or errors)."""
     seen, occurrences, redelivered, tokens = set(), 0, 0, 0
-    executed = refused = duplicates = 0
+    executed = refused = duplicates = errors = 0
+    wall = "none"
     for c in tool_calls:
         e = c.get("error") or ""
         if e.startswith(DUPLICATE):
             duplicates += 1; continue
         if e:
-            refused += 1; continue
+            refused += 1
+            if e.startswith("wall:"):
+                wall = e[5:] if wall == "none" else wall
+            elif e != "cap":
+                errors += 1
+            continue
         executed += 1
         tokens += c.get("tokens") or 0
         ids = ID.findall(c.get("output") or "")
@@ -52,13 +62,14 @@ def process(tool_calls, cited=()):
         redelivered += sum(1 for i in ids if i in seen)
         seen |= set(ids)
     cited = [i for i in dict.fromkeys(cited)]
-    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, tool_output_tokens=tokens,
+    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, errors=errors, identical=duplicates, wall_hit=wall, tool_output_tokens=tokens,
                 delivered=len(seen), delivered_ids=sorted(seen), id_occurrences=occurrences,
                 redelivered_share=round(redelivered / occurrences, 4) if occurrences else 0.0,
                 cited=len(cited), cited_ids=cited, utilization=round(len(cited) / len(seen), 4) if seen else 0.0)
 
 
-COLUMNS = ["calls", "executed", "refused", "duplicates", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "cost"]
+COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "cost"]
+NO_TOTAL = ("redelivered_share", "utilization", "wall_hit")
 
 
 def metrics_of(r):
@@ -83,14 +94,15 @@ def report(path, arm="kb", summary=True):
             continue
         p = metrics_of(r)
         rows.append(dict(question=r["question"], arm=r["arm"], model=r["model"], **{k: p[k] for k in COLUMNS}))
-    tot = {k: sum((x[k] or 0) for x in rows) for k in COLUMNS if k not in ("redelivered_share", "utilization")}
+    tot = {k: sum((x[k] or 0) for x in rows) for k in COLUMNS if k not in NO_TOTAL}
     rs = [x["redelivered_share"] for x in rows]; us = [x["utilization"] for x in rows]
+    walls = sum(1 for x in rows if x["wall_hit"] != "none")
     for n, x in enumerate(rows, 1):
-        print(f"{n:3d} calls {x['calls']:3d} (executed {x['executed']}, refused {x['refused']}, duplicates {x['duplicates']}) · tool output {x['tool_output_tokens']:,} tokens · "
+        print(f"{n:3d} calls {x['calls']:3d} (executed {x['executed']}, refused {x['refused']}, duplicates {x['duplicates']}; errors {x['errors']}, identical {x['identical']}, wall {x['wall_hit']}) · tool output {x['tool_output_tokens']:,} tokens · "
               f"re-delivered {100 * x['redelivered_share']:.0f} % · delivered {x['delivered']} ids, cited {x['cited']}, utilization {100 * x['utilization']:.0f} % · {x['words']} words · "
               f"{'cost not set' if x['cost'] is None else '$%.4f' % x['cost']}")
     if rows:
-        print(f"total {len(rows)} questions: calls {tot['calls']} (executed {tot['executed']}, refused {tot['refused']}, duplicates {tot['duplicates']}) · tool output {tot['tool_output_tokens']:,} tokens · "
+        print(f"total {len(rows)} questions: calls {tot['calls']} (executed {tot['executed']}, refused {tot['refused']}, duplicates {tot['duplicates']}; errors {tot['errors']}, identical {tot['identical']}, walls hit in {walls} questions) · tool output {tot['tool_output_tokens']:,} tokens · "
               f"re-delivered {100 * min(rs):.0f}–{100 * max(rs):.0f} % · delivered {tot['delivered']} ids, cited {tot['cited']} · utilization {100 * min(us):.0f}–{100 * max(us):.0f} % · "
               f"{tot['words']} words · ${tot['cost']:.4f}")
     return rows

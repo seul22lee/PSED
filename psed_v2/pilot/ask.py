@@ -11,8 +11,9 @@ Arms (one model, its default settings, the same for every arm; the arms of a que
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
   kb     Knowledge base: five tools over query.py (tools.py: concept, search, values, detail, source); each returns plain text, one line per value or row,
-         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 tool calls, about 2,000 tokens each, no line over 300 characters;
-         a call whose normalized arguments equal an earlier call's gets one line, 'identical to call N' (P69).
+         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 executed tool calls, about 2,000 tokens each, no line over 300 characters;
+         a call whose normalized arguments equal an earlier call's gets one line, 'identical to call N' (P69); an error or an identical call costs nothing
+         toward the 10, and two walls end a question's calls: 20 calls in all, 5 calls that returned an error (P75).
   dump   KB dump: the whole knowledge base serialized once (dump.py: the L0 map, every activity, entity and cited work with its settings and
          results, the comparison sets, the claims, the caveats once by id) in the system prompt, no tools (P71).
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
@@ -41,7 +42,9 @@ RUNS = HERE / "runs"
 ARMS = ["model", "text", "kb", "dump"]
 DEFAULT_ARMS = ["model", "text", "kb"]
 ARM_NAMES = {"model": "Model only", "text": "Paper text", "kb": "Knowledge base", "dump": "KB dump"}
-TOOL_CAP = 10
+TOOL_CAP = 10           # executed calls per question (P44); an error or an identical call costs nothing toward it (P75)
+TOTAL_WALL = 20         # every call of a question, executed or not (P75)
+ERROR_WALL = 5          # calls of a question that returned an error (P75)
 
 # ---------------------------------------------------------------------------------------------------------------- prompts (fixed)
 SHARED = """You answer questions from atomic layer deposition (ALD) researchers about three papers:
@@ -384,16 +387,27 @@ def append(path, rec):
 
 # ---------------------------------------------------------------------------------------------------------------- arms
 def answer_call(c, tool_calls, given, seen_calls):
-    """One tool call answered and recorded (P38): over the cap an error; a call whose normalized arguments equal an earlier call's
-    (case, key order, whitespace: run_metrics.normalized) one line 'identical to call N' (P69); else run_tool. Returns the result
-    for the model; the record (name, arguments, results, error, chars, tokens, the full output) goes on tool_calls."""
+    """One tool call answered and recorded (P38): a call whose normalized arguments equal an earlier call's (case, key order,
+    whitespace: run_metrics.normalized) gets one line 'identical to call N' (P69); else run_tool. Call accounting (P75): only an
+    executed call (no error) counts toward TOOL_CAP; an error (unresolved name, bad argument, nothing matches) or an identical call
+    costs nothing toward it; two walls end a question's calls, TOTAL_WALL calls in all and ERROR_WALL error calls, and a refusal
+    names the wall it hit (record error 'wall:total' or 'wall:errors'; the cap's refusal is 'cap', its message unchanged). Returns
+    the result for the model; the record (name, arguments, results, error, chars, tokens, the full output) goes on tool_calls."""
     key = RM.normalized(c["name"], c["arguments"])
-    if len(tool_calls) >= TOOL_CAP:
-        msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
-        rec, err = dict(results=0, error="cap", chars=0, output=msg), True
+    n = RM.process(tool_calls)
+    if n["calls"] >= TOTAL_WALL:
+        msg = (f"error: the wall of {TOTAL_WALL} calls in this question is reached ({n['executed']} executed, {n['errors']} errors, "
+               f"{n['identical']} identical); answer from what you have")
+        rec, err = dict(results=0, error="wall:total", chars=0, output=msg), True
     elif key in seen_calls:
         msg = f"{RM.DUPLICATE}{seen_calls[key]}"
         rec, err = dict(results=0, error=msg, chars=len(msg), output=msg), False
+    elif n["errors"] >= ERROR_WALL:
+        msg = f"error: the wall of {ERROR_WALL} calls that returned an error is reached in this question; answer from what you have"
+        rec, err = dict(results=0, error="wall:errors", chars=0, output=msg), True
+    elif n["executed"] >= TOOL_CAP:
+        msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
+        rec, err = dict(results=0, error="cap", chars=0, output=msg), True
     else:
         seen_calls[key] = len(tool_calls) + 1
         lines, e = run_tool(c["name"], c["arguments"])
@@ -434,7 +448,7 @@ def run_arm(arm, question, model):
             tot = sum(x["chars"] for x in batch_) or 1
             for x in batch_:
                 x["tokens"] = round(max(grow, 0) * x["chars"] / tot) if grow > 0 else round(x["chars"] / 4)
-            if calls > TOOL_CAP + 10:
+            if calls > TOTAL_WALL + 10:
                 break
         text = t.text
     except Exception as e:
@@ -474,8 +488,8 @@ def last_records(question, model, path=None):
 
 
 SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
-           "duplicates", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens", "output_tokens",
-           "cache_read_tokens", "cost", "seconds", "error"]
+           "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens",
+           "output_tokens", "cache_read_tokens", "cost", "seconds", "error"]
 
 
 def summary_row(r):
@@ -485,7 +499,8 @@ def summary_row(r):
     kc = r.get("kind_check") or kind_check(r["answer"], {i: v["text"] for i, v in r.get("cited", {}).items()})
     return dict(question=r["question"], arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
                 not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], kind_mismatches=kc["mismatches"], tool_calls=p["calls"],
-                executed=p["executed"], refused=p["refused"], duplicates=p["duplicates"], tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
+                executed=p["executed"], refused=p["refused"], duplicates=p["duplicates"], errors=p["errors"], identical=p["identical"], wall_hit=p["wall_hit"],
+                tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
                 delivered=p["delivered"], cited=p["cited"], utilization=p["utilization"], words=r.get("words", 0), input_tokens=r["usage"]["input"],
                 output_tokens=r["usage"]["output"], cache_read_tokens=r["usage"]["cache_read"], cost="" if r["cost"] is None else round(r["cost"], 4),
                 seconds=r["seconds"], error=r["error"])
@@ -508,7 +523,7 @@ def batch(qfile, out, model, arms, max_cost, max_calls):
     print("totals per arm:")
     for a in arms:
         rs = [r for r in rows if r["arm"] == a]
-        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused", "duplicates", "tool_output_tokens", "delivered", "cited", "words", "input_tokens", "output_tokens")}
+        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused", "duplicates", "errors", "identical", "tool_output_tokens", "delivered", "cited", "words", "input_tokens", "output_tokens")}
         cost = sum(r["cost"] for r in rs if r["cost"] != "") if priced else "cost not set"
         print(f"  {ARM_NAMES[a]:15s} {tot} cost {cost} · failed: {sum(1 for r in rs if r['error'])}")
     print(f"records {out}; summary {summ}")

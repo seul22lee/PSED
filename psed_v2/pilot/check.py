@@ -606,6 +606,40 @@ def check_bases_sec19():
 DEICTIC = ("computed here", "derived here", "calculated here", "computed by us", "our calculation", "estimated here")   # tool wording, never from the tables
 
 
+def check_calls():
+    """P75: call accounting, scripted without a model (ask.answer_call, run_metrics.process). A question whose first four calls name
+    nothing resolvable still has ten executed calls available (an error costs nothing toward the cap) and its eleventh executed call
+    gets the unchanged cap message; a question with five error calls hits the error wall, whose refusal names it; a question with
+    twenty calls in all (errors and identical calls included) hits the total wall; the records report executed, errors, identical
+    and wall_hit."""
+    import ask, concept as CN, run_metrics as RM
+    err = []
+    valid = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
+    bad = lambda n: [("values", {"result": f"no_such_quantity_{i}"}) for i in range(n)]
+
+    def play(calls):
+        tool_calls, given, seen = [], {}, {}
+        res = [ask.answer_call(dict(id=str(n), name=name, arguments=dict(args)), tool_calls, given, seen) for n, (name, args) in enumerate(calls, 1)]
+        return res, RM.process(tool_calls)
+    cap_msg = f"error: the limit of {ask.TOOL_CAP} tool calls is reached"
+    res, p = play(bad(4) + valid[:ask.TOOL_CAP + 1])                          # four errors, then eleven valid calls
+    if not all(r["error"] for r in res[:4]) or p["errors"] != 4:
+        err.append(f"calls: four unresolvable names should be four error calls, got errors {p['errors']} (P75)")
+    if any(r["error"] for r in res[4:4 + ask.TOOL_CAP]) or p["executed"] != ask.TOOL_CAP:
+        err.append(f"calls: {ask.TOOL_CAP} executed calls must remain available after four errors, got executed {p['executed']} (P75)")
+    if res[4 + ask.TOOL_CAP]["content"] != cap_msg or p["wall_hit"] != "none":
+        err.append(f"calls: the call after {ask.TOOL_CAP} executed ones should get the cap message, got {res[4 + ask.TOOL_CAP]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
+    res, p = play(bad(ask.ERROR_WALL) + valid[:1])                             # five errors, then a valid call: the error wall
+    if f"wall of {ask.ERROR_WALL} calls that returned an error" not in res[-1]["content"] or p["wall_hit"] != "errors" or p["executed"] != 0:
+        err.append(f"calls: the call after {ask.ERROR_WALL} errors should be refused naming the error wall, got {res[-1]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
+    n_id = ask.TOTAL_WALL - 4 - ask.TOOL_CAP
+    res, p = play(bad(4) + valid[:ask.TOOL_CAP] + valid[:n_id] + valid[ask.TOOL_CAP:ask.TOOL_CAP + 1])   # 4 errors + 10 executed + 6 identical = 20, then one more
+    if p["identical"] != n_id or p["calls"] != ask.TOTAL_WALL + 1 or f"wall of {ask.TOTAL_WALL} calls" not in res[-1]["content"] or p["wall_hit"] != "total":
+        err.append(f"calls: the call after {ask.TOTAL_WALL} calls in all should be refused naming the total wall, got {res[-1]['content'][:80]!r}, wall {p['wall_hit']}, identical {p['identical']} (P75)")
+    print(f"== calls (P75): cap {ask.TOOL_CAP} executed calls; walls {ask.TOTAL_WALL} calls in all and {ask.ERROR_WALL} error calls; 3 scripted questions, {4 + ask.TOOL_CAP + 1 + ask.ERROR_WALL + 1 + ask.TOTAL_WALL + 1} calls")
+    return err
+
+
 def tool_probes():
     """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values; concept and search
     (with and without a paper filter) on the stored search probes; detail on one id of every record type of every paper, eight per
@@ -826,6 +860,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_bases_sec19()
     print(f"== uncertainty bases (P60): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_calls()
+    print(f"== calls (P75): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
