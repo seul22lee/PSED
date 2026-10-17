@@ -473,14 +473,20 @@ def last_records(question, model, path=None):
     return [last[a] for a in ARMS if a in last]
 
 
-SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "tool_calls", "input_tokens", "output_tokens",
+SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
+           "duplicates", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens", "output_tokens",
            "cache_read_tokens", "cost", "seconds", "error"]
 
 
 def summary_row(r):
-    nc = r["number_check"]
+    """One summary.csv row of a record: the number check, the kind check (recomputed when the record predates P72), the process
+    metrics (recomputed from the record's tool calls and cited ids: run_metrics.metrics_of, P74), words, tokens, cost."""
+    nc, p = r["number_check"], RM.metrics_of(r)
+    kc = r.get("kind_check") or kind_check(r["answer"], {i: v["text"] for i, v in r.get("cited", {}).items()})
     return dict(question=r["question"], arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
-                not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], tool_calls=len(r["tool_calls"]), input_tokens=r["usage"]["input"],
+                not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], kind_mismatches=kc["mismatches"], tool_calls=p["calls"],
+                executed=p["executed"], refused=p["refused"], duplicates=p["duplicates"], tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
+                delivered=p["delivered"], cited=p["cited"], utilization=p["utilization"], words=r.get("words", 0), input_tokens=r["usage"]["input"],
                 output_tokens=r["usage"]["output"], cache_read_tokens=r["usage"]["cache_read"], cost="" if r["cost"] is None else round(r["cost"], 4),
                 seconds=r["seconds"], error=r["error"])
 
@@ -502,7 +508,7 @@ def batch(qfile, out, model, arms, max_cost, max_calls):
     print("totals per arm:")
     for a in arms:
         rs = [r for r in rows if r["arm"] == a]
-        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "tool_calls", "input_tokens", "output_tokens")}
+        tot = {k: sum(r[k] for r in rs) for k in ("numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused", "duplicates", "tool_output_tokens", "delivered", "cited", "words", "input_tokens", "output_tokens")}
         cost = sum(r["cost"] for r in rs if r["cost"] != "") if priced else "cost not set"
         print(f"  {ARM_NAMES[a]:15s} {tot} cost {cost} · failed: {sum(1 for r in rs if r['error'])}")
     print(f"records {out}; summary {summ}")
