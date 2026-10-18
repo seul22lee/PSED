@@ -1060,7 +1060,7 @@ def _run(name, args):
             hits, items, seen = Q.search(args["words"], args.get("paper")), [], {}
             for h in hits:            # values and settings: one line per paper and quantity; other records: a line shown once with its count
                 if h["type"] == "concept":
-                    items.append([x for x in wrap(h["id"], f"concept · {h['line']}")]); continue
+                    items.append([x for x in wrap(h["id"], Q.render_hit(h)[0])]); continue
                 if h["type"] in ("value", "setting"):
                     T = Q.TREES[h["paper"]]; f = T.byid[h["id"]]
                     key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
@@ -1072,17 +1072,16 @@ def _run(name, args):
                     g[3].update({c["id"]: c for c in rec["caveats"]})                       # the caveats of any value in the line
                     g[4].add(rec["kind"])                                                   # the kinds of the values on the line (P68)
                     continue
-                g = seen.setdefault((h["type"], h["line"]), [h, 0, None, {}, set()])
+                line, cav = Q.render_hit(h)                                      # P84e: every other kind through the one registry (a figure-inventory record is no tree row)
+                g = seen.setdefault((h["type"], line), [h, 0, None, {}, set(), line])
                 g[1] += 1
-                f = Q.TREES[h["paper"]].byid[h["id"]]
-                if "#" in h["id"] and f["type"] in ("observation", "setting", "derived", "model", "cited"):             # a note's caveats
-                    g[3].update({c["id"]: c for c in Q.cav_list(Q.caveats_for(Q.TREES[h["paper"]], f, Q.TREES[h["paper"]].ent_of(h["id"])))})
-            for key, (h, n, vals, cav, kinds) in seen.items():
+                g[3].update(cav)
+            for key, (h, n, vals, cav, kinds, *rest) in seen.items():
                 if vals is not None:
                     shown = ", ".join(vals[:8]) + (f", … ({len(vals)} distinct)" if len(vals) > 8 else "")
                     line = f"{h['type']}s of {key[2]} in {short_name(key[0])}: {n} record{'s' if n > 1 else ''} · {kinds_text(kinds)} · {shown}"
                 else:
-                    line = f"{h['type']} · {h['line']}" + (f" · {n} records with this line" if n > 1 else "")
+                    line = rest[0] + (f" · {n} records with this line" if n > 1 else "")
                 if len(line) > SEARCH_LINE:
                     line = line[:SEARCH_LINE - 2].rsplit(" ", 1)[0] + " …"
                 rec = dict(caveats=list(cav.values()))

@@ -1641,6 +1641,35 @@ def search_weight(r, t, k1=1.2, b=0.75):
     return _SEARCH["idf"][t] * tf * (k1 + 1) / (tf + k1 * (1 - b + b * ln / _SEARCH["avg"]))
 
 
+def hit_record(h):
+    """The tree row behind a search hit, or None for a record that is no row (a concept, a figure-inventory record)."""
+    T = TREES.get(h.get("paper") or "")
+    return T.byid.get(h["id"]) if T else None
+
+
+def _render_panel(h):
+    inv = next((i for i in TREES[h["paper"]].inventory if i["id"] == h["id"]), None)
+    if not inv:
+        return f"figure panel · {h['line']}", {}
+    return f"figure panel · {h['paper']} · Fig. {inv['figure']}{(' panel ' + inv['panel']) if inv['panel'] else ''} · {inv['panel_type']} · {inv['content']}", {}
+
+
+def _render_row(h):
+    T = TREES[h["paper"]]; f = hit_record(h)
+    cav = {}
+    if f is not None and "#" in h["id"] and f["type"] in ("observation", "setting", "derived", "model", "cited"):
+        cav = {c["id"]: c for c in cav_list(caveats_for(T, f, T.ent_of(h["id"])))}
+    return f"{h['type']} · {h['line']}", cav
+
+
+HIT_RENDER = {"concept": lambda h: (f"concept · {h['line']}", {}), "figure panel": _render_panel}   # P84e: one registry; every other kind renders through its tree row
+
+
+def render_hit(h):
+    """One line and the caveats of any search hit, whatever its kind (the registry HIT_RENDER, the tree row by default)."""
+    return HIT_RENDER.get(h["type"], _render_row)(h)
+
+
 def search(words, paper=None):
     """Records ranked by BM25 over the query's tokens (each token counted once); ties keep the papers' order."""
     recs = search_records()

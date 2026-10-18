@@ -691,7 +691,34 @@ def check_search():
             n = next((n for n, h in enumerate(hits) if h["type"] == t), None)
             if first_val is not None and n is not None and n < first_val:
                 err.append(f"search {p['words']!r}: a {t} ranks above the first value or claim (P64)")
-    print(f"== search (P64): {len(rd(HERE / 'search_probes.csv'))} probes, tiers 1 concept / 2 claims, values, sets / 3 the rest")
+    import tools
+    kinds = {}                                                                  # P84e: one probe per record kind any index can return: the tool renders every hit, one line each, no exception
+    for r in Q.search_records():
+        kinds.setdefault(r["type"], r)
+    for t, r in sorted(kinds.items()):
+        words = " ".join(w for w in Q.tokens(r["line"])[:6] if len(w) > 2) or r["id"]
+        args = {"words": words, "paper": r["paper"]} if r["paper"] else {"words": words}
+        lines, offset, e = [], 0, ""
+        try:
+            for _ in range(40):                                                 # every page: a tier-3 kind can sit far down the ranking
+                page, e = tools.run_tool("search", dict(args, offset=offset) if offset else args)
+                if e:
+                    break
+                lines += page
+                more = next((x for i, x in page if i == "more"), "")
+                if not more:
+                    break
+                offset = int(more.split("offset=")[1])
+        except Exception as ex:
+            err.append(f"search for a {t} record ({r['id']}): {type(ex).__name__}: {ex} (P84e)"); continue
+        if e:
+            err.append(f"search for a {t} record ({r['id']}, words {words!r}): {e} (P84e)"); continue
+        ids = {i for i, _ in lines}
+        hits = Q.search(words, r["paper"] or None)
+        grouped = t in ("value", "setting") and any(x.startswith(f"{t}s of ") for _, x in lines)   # values and settings render as one grouped line per paper and quantity
+        if not grouped and not any(h["id"] in ids for h in hits if h["type"] == t):
+            err.append(f"search for a {t} record ({r['id']}): no hit of that kind rendered as a line (P84e)")
+    print(f"== search (P64): {len(rd(HERE / 'search_probes.csv'))} probes, tiers 1 concept / 2 claims, values, sets / 3 the rest; check_search: {len(kinds)} record kinds probed, each hit rendered as one line (P84e)")
     return err
 
 
@@ -1091,6 +1118,9 @@ def tool_probes():
     shared = []
     for k, T in Q.TREES.items():
         probes.append(("source", {"id": f"{k}:" + next(f["evidence"].split(";")[0] for f in T.rows if "#" in f["fact_id"] and f["evidence"])}))
+        inv = next((i for i in T.inventory if i.get("content")), None)        # P84e: a search that hits a figure-inventory record of each paper
+        if inv:
+            probes.append(("search", {"words": " ".join(w for w in Q.tokens(inv["content"])[:5] if len(w) > 2), "paper": k}))
         c = next((c for c in Q.caveats_of(T) if len(c["facts"]) >= 2), None)
         if c:
             shared.append((c["f"]["fact_id"], sorted(c["facts"])[:2]))
