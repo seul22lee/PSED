@@ -51,7 +51,7 @@ def unit_dimension(unit):
     return _UNITS.get(str(unit), "")
 
 
-def qualifier_values(q, species=(), materials=()):
+def qualifier_values(q, species=(), materials=(), definitions=()):
     v = q.get("values")
     if isinstance(v, list):
         return sorted(str(x) for x in v)
@@ -59,6 +59,8 @@ def qualifier_values(q, species=(), materials=()):
         return sorted(species)
     if v == "material ids":
         return sorted(materials)
+    if v == "definition ids":                                                   # P108 (b): the definition ids of every entry with definitions
+        return sorted(definitions)
     return None                                                                 # an open value (a number, an element symbol, a quantity id)
 
 
@@ -78,6 +80,9 @@ def build(onto, pmap):
             e["class"] = r.get("class", "")
         if r["kind"] == "model":
             e.update(model_type=r.get("class", ""), parameters=[], category="models")
+        if r.get("converts_to"):                                                # P109: target|rule|requires
+            t, rule, req = (r["converts_to"].split("|") + ["", ""])[:3]
+            e["converts_to"] = dict(target=t, rule=rule, requires=req)
         entries.append(e)
     live = [e for e in entries if not e.get("replaced_by")]
     concepts = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and not e.get("attribute"))
@@ -96,7 +101,8 @@ def build(onto, pmap):
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
     methods = list(voc["measurement_method"]) + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]
-    quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"]) for k, q in onto["qualifiers"].items()}
+    defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
+    quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
     families = {}
     for e in live:
         if e.get("family"):
@@ -125,7 +131,8 @@ def build(onto, pmap):
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
                                dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
-                               ratio_of=[str(x) for x in e.get("ratio_of", [])], parameters=[str(x) for x in e.get("parameters", [])])   # P101: a model's parameters are card edges
+                               ratio_of=[str(x) for x in e.get("ratio_of", [])], parameters=[str(x) for x in e.get("parameters", [])],   # P101: a model's parameters are card edges
+                               definitions=[dict(d) for d in e.get("definitions", [])], converts_to=dict(e["converts_to"]) if e.get("converts_to") else {})   # P108 (b), P109
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78

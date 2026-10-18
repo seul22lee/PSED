@@ -100,7 +100,7 @@ DEFS = [("tabu1.r1c0;tabu1.r1c1;s4.p4", "a", "the geometry factor a = s + 1: out
         ("tabu1.r13c0;tabu1.r13c1", "h", "height of the cylinder", "", ""),
         ("tabu1.r14c0;tabu1.r14c1", "k_B", "Boltzmann constant", "", ""),
         ("tabu1.r15c0;tabu1.r15c1;tab2.r1c0", "m_r|m_R|mr|reactant molar mass", "mass of a single reactant molecule; Table 2 gives it as a molar mass", "molar_mass", "the reactant, generic"),
-        ("tabu1.r16c0;tabu1.r16c1;s4.p3", "n_P0|n_p0|n_P|n_p|n_{P0}|volumetric reactant number density|reactant number density", "volumetric reactant number density of the gas in the pores (n_P0 at the surface)", "", ""),
+        ("tabu1.r16c0;tabu1.r16c1;s4.p3", "n_P0|n_p0|n_P|n_p|n_{P0}|volumetric reactant number density|reactant number density", "volumetric reactant number density of the gas in the pores (n_P0 at the surface)", "reactant_number_density", "n_P0: the value at the particle surface"),
         ("tabu1.r17c0;tabu1.r17c1", "p_A0|pA0|p_{A0}", "partial pressure of the reactant A", "partial_pressure", ""),
         ("tabu1.r18c0;tabu1.r18c1;s2.p9", "r|radial coordinate", "radial coordinate from the outer surface (0) to the centre (R)", "distance", "from the particle surface inward"),
         ("tabu1.r19c0;tabu1.r19c1;s8.p1", "r_θ=1/2|r_{θ=1/2}|r_{\\theta=1/2}|rθ=1/2|penetration depth|coating penetration depth", "the penetration depth: the radial position where the coverage is one half", "penetration_depth",
@@ -160,7 +160,7 @@ bset("R", "tab1.r6c0;tab1.r6c1;tab1.cap", "Table 1 baseline: particle radius 3e-
 bset("mR", "tab2.r1c0;tab2.r1c1;tab2.cap", "Table 2 baseline: reactant molar mass 100 g/mol", quantity="molar_mass", qualifiers="species=model_reactant", label_as_printed="m_R", value="100", unit="g/mol")
 bset("beta", "tab2.r2c0;tab2.r2c1;tab2.cap", "Table 2 baseline: initial sticking probability 2e-2", quantity="initial_sticking_coefficient", qualifiers="kind=set_point;species=model_reactant", label_as_printed="β0", value="0.02", mentions="2 × 10^-2")
 bset("sigma", "tab2.r3c0;tab2.r3c1;tab2.cap", "Table 2 baseline: areal number density of metal atoms per cycle at saturation 4e18 m-2, that is 4 nm-2", quantity="saturation_density", label_as_printed="σ_p", value="4", unit="nm-2", mentions="4 × 10^18 m^-2")
-bset("np0", "tab2.r4c0;tab2.r4c1;tab2.cap;s5.p2", "Table 2 baseline: reactant number density outside the particle 1.71e22 m-3, estimated for 100 Pa of reactant vapour at the 423 K baseline", quantity="other", label_as_printed="n_p0", value="1.71e22", unit="m-3",
+bset("np0", "tab2.r4c0;tab2.r4c1;tab2.cap;s5.p2", "Table 2 baseline: reactant number density outside the particle 1.71e22 m-3, estimated for 100 Pa of reactant vapour at the 423 K baseline", quantity="reactant_number_density", label_as_printed="n_p0", value="1.71e22", unit="m-3",
      mentions="100 Pa;423 K")
 bset("pA0", "s5.p2;tab2.r4c1", "the baseline reactant partial pressure is 100 Pa, the vapour pressure the number density is estimated from", quantity="partial_pressure", qualifiers="species=model_reactant", label_as_printed="p_A0", value="100", unit="Pa")
 bset("T", "tab2.r5c0;tab2.r5c1;tab2.cap", "Table 2 baseline: temperature 423 K", quantity="deposition_temperature", label_as_printed="T", value="423", unit="K")

@@ -458,7 +458,7 @@ for ser, T_, MA, c_, kn, sl, cext, ratio, rows in T3:
             FX[FMF[sym_]]["evidence"] += ";" + evc(col)
     T3RUN[rid] = (ser, e)
     put(e, f(evc(4) + ";tab3.cap", "derived", f"Table 3: Knudsen number {kn} for the run at T {T_} K, M_A {MA}, c {c_}", quantity="knudsen_number", value=kn, data_kind="computed_by_authors", method="calculation", mentions=lbl),
-        f(evc(5) + ";tab3.cap", "derived", f"Table 3: slope dθ/dx̃ at θ = 1/2 of {sl} for the run at T {T_} K, M_A {MA}, c {c_}", quantity="front_slope", qualifiers="by=H;reference=assumed_saturation", value=sl, data_kind="computed_by_authors",
+        f(evc(5) + ";tab3.cap", "derived", f"Table 3: slope dθ/dx̃ at θ = 1/2 of {sl} for the run at T {T_} K, M_A {MA}, c {c_}", quantity="front_slope", qualifiers="by=H;reference=assumed_saturation;definition=normalized", value=sl, data_kind="computed_by_authors",
           method="calculation", mentions=lbl),
         f(evc(6) + ";tab3.cap", "derived", f"Table 3: the back-extracted sticking coefficient c_ext = {cext} for the run at T {T_} K, M_A {MA}, c {c_}", quantity="initial_sticking_coefficient", qualifiers="species=tma", label_as_printed="c_ext",
           value=cext, data_kind="computed_by_authors", method="calculation", mentions=lbl + ";slope method"),

@@ -987,7 +987,9 @@ def check_edges():
             err.append(f"card {q}: {len(ed)} edges (P101)")
         n_cards += bool(ed); n_edges += len(ed)
         for t in ed:
-            if m := re.match(r"ratio of (.+)$", t):
+            if m := re.match(r"converts to (\S+) given (\S+) \(", t):
+                bad = [x for x in (m.group(1), m.group(2)) if x not in L.ENTRIES]
+            elif m := re.match(r"ratio of (.+)$", t):
                 bad = [x for x in m.group(1).split(" / ") if x.split("{")[0] not in L.ENTRIES]
             elif m := re.match(r"derived from (.+) \((\S+)\)$", t):
                 bad = [x for x in m.group(1).split(", ") if x.split("{")[0] not in L.ENTRIES and not x.startswith("other:") and not x.startswith("@")] + ([m.group(2)] if m.group(2) not in tids else [])
@@ -1287,17 +1289,28 @@ def check_kinds():
     err = []
     phrases, bases = set(L.PHRASES.values()), set(L.BASES.values())
     probes, shared = tool_probes()
-    outputs = {}
+    outputs, outputs_ids = {}, {}
     for name, args in probes:
         lines, e = tools.run_tool(name, args)
-        joined = []
-        for _, t in lines:                                                      # a wrapped line continues the previous one (P44)
+        joined, jids = [], []
+        for i_, t in lines:                                                     # a wrapped line continues the previous one (P44)
             if t.startswith("… ") and joined:
                 joined[-1] += " " + t[2:]
             else:
-                joined.append(t)
+                joined.append(t); jids.append(i_)
         outputs[(name, json.dumps(args, sort_keys=True))] = joined + ([e] if e else [])
+        outputs_ids[(name, json.dumps(args, sort_keys=True))] = list(zip(jids, joined))
     texts = [t["description"] for t in tools.TOOLS]
+    slots = {}                                                                   # P107: derived structure slots (a fact with inputs) and their value texts
+    for k, T in Q.TREES.items():
+        for f in T.rows:
+            if "#" in f["fact_id"] and f["quantity"] in Q.SLOTS and f.get("inputs") and Q.text_of(f):
+                slots[f["fact_id"]] = Q.text_of(f)
+    for key, out in outputs_ids.items():
+        for i_, t in out:
+            for fid, vt in slots.items():
+                if (i_ == fid or f"[{fid}]" in t) and vt in t and not t.startswith("claim") and "entry from" not in t and "from " not in t.split(vt, 1)[1][:200]:   # a claim's statement is the paper's wording
+                    err.append(f"{key[0]} {key[1]}: the derived slot {fid} ({vt}) prints without its source (P107): {t[:100]}")
     for key, out in outputs.items():
         marks = dict(re.findall(r"\((k\d+)\) ([^;]+)", next((t for t in out if t.startswith("kinds: (")), "")))
         legend = {m.group(1): m.group(2) for t in out for m in [re.match(r"basis (\w+): (.+)$", t)] if m}
@@ -1443,8 +1456,8 @@ def check_bases():
     for pid in list(KEYS) + ["user"]:
         for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
             q = f["quantity"]
-            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or "stat=" in f["qualifiers"]:
-                continue
+            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or "stat=" in f["qualifiers"] or L.ENTRIES.get(q, {}).get("definitions"):
+                continue                                                        # P108 (b): an entry with definitions carries one dimension per definition (check_dimensions)
             if f["value"] or f["value_min"] or f["value_max"]:
                 u = L.UNIT_ALIAS.get(f["unit"], f["unit"])
                 if u and u not in L.UNIT_BASE:
@@ -1462,6 +1475,142 @@ def check_bases():
         if len([b for b in c if b != "not_stated"]) > 1:
             err.append(f"{q}: values on more than one basis: {dict(c)} (P52)")
     print(f"== bases: {len(units)} quantity ids with values; bases stated on {len(bases)} ({', '.join(f'{q} {dict(c)}' for q, c in sorted(bases.items()))})")
+    return err
+
+
+def unit_dimensions():
+    """{unit symbol or variant: dimension} from ontology/units.yaml (P108)."""
+    import yaml
+    out = {}
+    for u in yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
+        for v in [u["symbol"]] + list(u["variants"]):
+            out.setdefault(str(v), u["dimension"])
+    return out
+
+
+def dimension_problem(q, unit, quals, dims):
+    """P108: '' when a record's unit fits its quantity, else the mismatch. % and '1' (or no unit) are dimensionless; a signal quantity takes
+    signal or dimensionless units; a count takes a count or no unit; a categorical takes no unit; a relative spread (stat relative_sd) is
+    dimensionless whatever the quantity; an entry with definitions (P108 b) is checked against the definition the record's qualifier names,
+    and a record without that qualifier is a problem."""
+    e = L.ENTRIES.get(q)
+    if not e:
+        return f"no entry {q}"
+    u = L.UNIT_ALIAS.get(unit, unit)
+    d = dims.get(u) if u else "dimensionless"
+    if e["type"] == "categorical":
+        return "" if not u else f"unit {unit!r} on a categorical"
+    if quals.get("stat") in ("relative_sd",) and d == "dimensionless":
+        return ""
+    ed = e.get("dimension")
+    if e.get("definitions"):
+        did = quals.get("definition")
+        dd = next((x for x in e["definitions"] if x["id"] == did), None)
+        if not dd:
+            return f"no definition qualifier (the entry has definitions {[x['id'] for x in e['definitions']]})"
+        ed = dd.get("dimension") or dims.get(str(dd.get("unit", "")), "")
+    if d is None:
+        return f"unit {unit!r} not in units.yaml"
+    if d == ed or (ed == "signal" and d in ("signal", "dimensionless")) or (ed == "count" and d in ("count", "dimensionless")):
+        return ""
+    return f"{d} vs {ed}"
+
+
+def check_dimensions():
+    """P108: every value record's unit matches its quantity's dimension (units.yaml): the facts' values (spread facts included), the
+    imported figure values (cells, peaks), the derived scalars and both axes of every curve. A mismatch is fixed in the facts (rule a) or by
+    an entry's definitions with their own units and the records' definition qualifier (rule b); never by a forced unit."""
+    import json
+    dims = unit_dimensions()
+    err, n = [], 0
+    for pid in list(KEYS) + ["user"]:
+        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+            q = f["quantity"]
+            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or not (f["value"] or f["value_min"] or f["value_max"]):
+                continue
+            n += 1
+            m = dimension_problem(q, f["unit"], dict(p.split("=", 1) for p in f["qualifiers"].split(";") if "=" in p), dims)
+            if m:
+                err.append(f"{f['fact_id']}: {q} in {f['unit']!r}: {m} (P108)")
+    for pid in KEYS:
+        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        if not p.exists():
+            continue
+        d = json.loads(p.read_text(encoding="utf-8"))
+        for v in d.get("values", []) + d.get("derived", []):
+            if v.get("quantity"):
+                n += 1
+                m = dimension_problem(v["quantity"], v.get("unit", ""), dict(x.split("=", 1) for x in str(v.get("qualifiers", "")).split(";") if "=" in x), dims)
+                if m:
+                    err.append(f"{v['id']}: {v['quantity']} in {v.get('unit')!r}: {m} (P108)")
+        for c in d.get("curves", []):
+            for ax in ("x", "y"):
+                if c[ax].get("quantity"):
+                    n += 1
+                    m = dimension_problem(c[ax]["quantity"], c[ax].get("unit", ""), {}, dims)
+                    if m:
+                        err.append(f"{c['id']}: {ax} {c[ax]['quantity']} in {c[ax].get('unit')!r}: {m} (P108)")
+    print(f"== dimensions (P108): {n} value records (facts, cells, peaks, derived, curve axes) against units.yaml; {sum(1 for e in L.ENTRIES.values() if e.get('definitions'))} entries with definitions")
+    return err
+
+
+def check_cycle():
+    """P106: every experiment whose conditions state a hold (step=hold_A or hold_B) renders it on its dose line in detail(parts=recipe)
+    ('…, then hold …') and in the settings table of pulse_time (values(result='pulse_time', paper)); no hold is a cycle step of its own."""
+    import query as Q, tools
+    err, n_ents, papers = [], 0, set()
+    for k, T in Q.TREES.items():
+        for e in Q.experiments(T):
+            cond = Q.condition_records(T, e)
+            if not any("step=hold_" in kk for kk in cond):
+                continue
+            n_ents += 1; papers.add(k)
+            lines, er = tools.run_tool("detail", {"ids": [e], "parts": ["recipe"]})
+            js = joined(lines)
+            if er or not any(t.startswith("cycle step") and ", then hold " in t for _, t in js):
+                err.append(f"detail({e}, recipe): the hold is not on its dose line (P106) {er}")
+            if any(t.startswith("cycle step") and t.split(" · ", 1)[-1].startswith("hold") for _, t in js):
+                err.append(f"detail({e}, recipe): a hold as a cycle step of its own (P106)")
+        if k in papers:
+            lines, er = tools.run_tool("values", {"result": "pulse_time", "paper": k})
+            if er or not any(", then hold " in t for _, t in lines):
+                err.append(f"values(pulse_time, {k}): no dose cell carries its hold (P106) {er}")
+    print(f"== cycle (P106): {n_ents} experiments with a stated hold in {len(papers)} paper(s); the hold on the dose line in detail(recipe) and in the pulse_time settings table")
+    return err
+
+
+def check_conversions():
+    """P109: every converts_to target and required quantity is an entry; every converted series of the imported curves cites a context
+    record that exists in its paper's facts and names the required quantity; values() never renders a converted value."""
+    import json, query as Q, tools
+    err, n_decl, n_conv = [], 0, 0
+    for q, e in L.ENTRIES.items():
+        ct = e.get("converts_to")
+        if ct:
+            n_decl += 1
+            err += [f"{q}: converts_to {x!r} is no entry (P109)" for x in (ct.get("target"), ct.get("requires")) if x not in L.ENTRIES]
+    for pid, k in KEYS.items():
+        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        if not p.exists():
+            continue
+        T = Q.TREES[k]
+        for c in json.loads(p.read_text(encoding="utf-8")).get("curves", []):
+            cv = c.get("converted")
+            if not cv or not cv.get("context"):
+                continue
+            n_conv += 1
+            f = T.byid.get(cv["context"])
+            own = cv["context"] == c["id"] and cv["requires"] in (c.get("conditions") or {})   # the curve's own condition (series label) is its context
+            if not own and (not f or f.get("quantity") != cv["requires"]):
+                err.append(f"{c['id']}: converted series cites {cv['context']!r}, not a {cv['requires']} record of the paper (P109)")
+            if cv.get("kind") != "computed_by_kb":
+                err.append(f"{c['id']}: converted series kind {cv.get('kind')!r} (P109)")
+        if n_conv:
+            for q in {c["converted"]["quantity"] for c in json.loads(p.read_text(encoding="utf-8")).get("curves", []) if (c.get("converted") or {}).get("context")}:
+                lines, _ = tools.run_tool("values", {"result": q, "paper": k})
+                if any("converted" in t for _, t in lines):
+                    err.append(f"values({q}, {k}) renders a converted series (P109)")
+    print(f"== conversions (P109): {n_decl} entries with converts_to, {n_conv} converted curve series citing their context")
     return err
 
 
@@ -1607,6 +1756,21 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_bases()
     print(f"== bases (P52): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_dimensions()
+    print(f"== dimensions (P108): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_cycle()
+    print(f"== cycle (P106): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_conversions()
+    print(f"== conversions (P109): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

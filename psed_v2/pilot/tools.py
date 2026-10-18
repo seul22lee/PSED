@@ -672,7 +672,7 @@ def settings_blocks(groups, result, S, extras, where=None):
         T = Q.TREES[k]
         gs = [g for g in groups if g["paper"] == k]
         lines = [x for x in [_shared_head(groups, k, common, usual)] if x]
-        rows = [r for g in gs for r in g["rows"]]
+        rows = [dict(r, record=Q.with_hold(T, r["entity"], r["key"], r["record"])) for g in gs for r in g["rows"]]   # P106: a dose cell carries its hold
         keys = list(dict.fromkeys(r["key"] for r in rows))
         names = {kk: next(r["result_name"] for r in rows if r["key"] == kk) for kk in keys}
         home = {r["entity"]: g["id"] for g in gs for r in g["rows"]}
@@ -1185,9 +1185,9 @@ def _run(name, args):
                     key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
                     g = seen.setdefault(key, [h, 0, [], {}, set()])
                     g[1] += 1
-                    if Q.text_of(f) not in g[2]:
-                        g[2].append(Q.text_of(f))
                     rec = Q.record(T, f)
+                    if rec["text"] not in g[2]:                                 # P107: a derived slot's text carries its source here too
+                        g[2].append(rec["text"])
                     g[3].update({c["id"]: c for c in rec["caveats"]})                       # the caveats of any value in the line
                     g[4].add(rec["kind"])                                                   # the kinds of the values on the line (P68)
                     continue
@@ -1258,7 +1258,12 @@ def _run(name, args):
                 if show:
                     out += [y for r in comp for y in [(i, "result · " + value_line(r["record"], r["name"]) + defined_as(d["paper"], r["key"]) + cmark(r["record"]))] + clines(r["record"])]
                 if "recipe" in parts:
-                    out += [y for c in d["recipe"] for y in [(c["record"].get("fact") or i, "condition · " + value_line(c["record"], c["name"]) + cmark(c["record"]))] + clines(c["record"])]
+                    T_ = Q.tree_of(i)
+                    cyc = Q.cycle_block(T_, i, {c["key"]: c for c in d["recipe"]})   # P106: the cycle's steps in the paper's stated order, a hold on its dose line
+                    used = {k for b in cyc for k in b["keys"]}
+                    for n, b in enumerate(cyc, 1):
+                        out.append((b["facts"][0] if b["facts"] else i, f"cycle step {n} ({'stated order' if b['stated'] else 'role order dose → hold → purge'}) · {b['text']}" + (" · " + ", ".join(f"[{x}]" for x in b["facts"][1:]) if len(b["facts"]) > 1 else "")))
+                    out += [y for c in d["recipe"] if c["key"] not in used for y in [(c["record"].get("fact") or i, "condition · " + value_line(c["record"], c["name"]) + cmark(c["record"]))] + clines(c["record"])]
             elif d["type"] == "comparison":
                 T = Q.tree_of(i)
                 if "what" in parts:
@@ -1314,6 +1319,12 @@ def _run(name, args):
             if c["flags"]:
                 out.append((c["id"], "flags of the figure stage: " + ", ".join(sorted(set(c["flags"]))) + " (a flag marks the figure for review; it deletes nothing)"))
             out.append((c["id"], "points (x, y): " + ", ".join(f"({x}, {y})" for x, y in c["points"])))
+            cv = c.get("converted")                                             # P109: the converted series, rendered here only
+            if cv and cv.get("context"):
+                out.append((c["id"], f"converted {cv['axis']} ({KB}): {L.NAMES.get(cv['quantity'], cv['quantity'])} ({cv['quantity']}) in {cv['unit']} by {cv['rule']} with {L.NAMES.get(cv['requires'], cv['requires'])} "
+                                     f"{cv['context_value']:g} {cv['context_unit']} [{cv['context']}] · points (x, y): " + ", ".join(f"({x}, {y})" for x, y in cv["points"])))
+            elif cv:
+                out.append((c["id"], f"converts to {cv['quantity']} given {cv['requires']}: not computed ({cv.get('reason', '')})"))
             out.append((c["id"], f"provenance: {c['provenance'].get('extractor', 'vlm')} {c['provenance'].get('model', '')}, prompt {str(c['provenance'].get('prompt_sha256', ''))[:12]}"))
             return [block([wrap(*x) for x in out])], ""
         return [], f"error: unknown tool {name}"

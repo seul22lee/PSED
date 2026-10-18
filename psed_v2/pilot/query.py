@@ -1113,12 +1113,101 @@ def record(T, f, alternatives=(), ent=None):
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
     text = text_of(f) or (curve_text(T, f) if f["points_ref"] else "")
+    src = slot_source(T, f)
+    if src:                                                                     # P107: a derived structure slot never appears without its source
+        text = f"{text} ({src})"
     return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text, kind=kind(f), definition=definition_of(f) or f.get("definition_note", ""),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"], basis=f.get("basis") or L.basis_of(f["uncertainty_kind"])) if f["uncertainty"] else None),
                 stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives],
                 caveats=cav_list(caveats_for(T, f, ent or T.ent_of(f["fact_id"]))))
+
+
+SLOTS = {sl for d in L.STRUCTURE_CLASSES.values() for sl in d.get("slots", [])}
+
+
+def slot_source(T, f):
+    """P107: the source words of a structure slot derived from other records (feature_depth = body_thickness / entry_sides, P78): 'half of
+    the 1.55 mm thickness; entry from both faces' from the fact's inputs; for other inputs 'from <name> <text>; …'; '' when the fact has
+    no inputs or is no slot."""
+    if f["quantity"] not in SLOTS or not f.get("inputs"):
+        return ""
+    ins = [T.byid[i] for i in f["inputs"].split(";") if i in T.byid]
+    bt = next((g for g in ins if g["quantity"] == "body_thickness"), None)
+    es = next((g for g in ins if g["quantity"] == "entry_sides"), None)
+    if bt and es:
+        return (f"half of the {text_of(bt)} thickness; entry from both faces" if es["value_text"] in ("two", "2", "both")
+                else f"the {text_of(bt)} thickness; entry from one face")
+    return "from " + "; ".join(f"{name_of(ckey(g), g)} {text_of(g)}" for g in ins if text_of(g)) if ins else ""
+
+
+# ---------------------------------------------------------------------------------------------------------------- the ALD cycle (P106)
+STEP_ORDER = ["reactant_A", "hold_A", "purge_A", "reactant_B", "hold_B", "purge_B", "plasma"]
+STEP_WORDS = {"reactant_A": "dose A", "reactant_B": "dose B", "hold_A": "hold", "hold_B": "hold", "purge_A": "purge A", "purge_B": "purge B", "plasma": "plasma"}
+
+
+def cycle_sequence(T, ent):
+    """P106: the stated order of one cycle's steps: a setting labelled 'cycle sequence' on the entity's recipe or above (value_text:
+    step ids separated by ';' or ','), else the role order STEP_ORDER. Returns (steps, stated)."""
+    for node in [recipe_of(T, ent)] + list(T.chain(ent)):
+        for f in T.kids.get(node, []):
+            if f["type"] == "setting" and f["label_as_printed"] == "cycle sequence" and f["value_text"]:
+                steps = [x.strip() for x in re.split(r"[;,]", f["value_text"]) if x.strip()]
+                if all(x in STEP_ORDER for x in steps):
+                    return steps, True
+    return STEP_ORDER, False
+
+
+def cycle_block(T, ent, cond=None):
+    """P106: the entity's cycle-step conditions as ordered steps: [dict(step, text, facts, keys)]; a dose line carries the hold of the same
+    reactant ('dose 10–14 s, then hold 1920 s at ~9 Torr'); a hold is never a step of its own; the keys list what the block consumed.
+    Empty when the entity states no step-qualified condition."""
+    cond = cond if cond is not None else condition_records(T, ent)
+    by_step = {}
+    for kk, x in cond.items():
+        st = dict(p.split("=", 1) for p in (kk.split("{")[1].split("}")[0] if "{" in kk else "").split(";") if "=" in p).get("step")
+        if st in STEP_ORDER:
+            by_step.setdefault(st, []).append((kk, x))
+    if not by_step:
+        return []
+    seq, stated = cycle_sequence(T, ent)
+    out = []
+    for st in seq:
+        if st.startswith("hold_") or st not in by_step:
+            continue
+        items = by_step[st]
+        facts, keys, bits = [], [], []
+        for kk, x in items:
+            r = x["record"]; keys.append(kk); facts += [r["fact"]] if r.get("fact") else []
+            q = kk.split("{")[0].split("[")[0]
+            bits.append(r["text"] if q in ("pulse_time", "purge_time") else f"{x['name']} {r['text']}")
+        text = f"{STEP_WORDS[st]} " + ", ".join(bits)
+        if st.startswith("reactant_"):
+            hold = by_step.get("hold_" + st[-1], [])
+            if hold:
+                ht = [x["record"]["text"] for _, x in hold if x["record"].get("text")]
+                sp = {dict(p.split("=", 1) for p in (kk.split("{")[1].split("}")[0] if "{" in kk else "").split(";") if "=" in p).get("species") for kk, _ in items} - {None}
+                press = [x["record"]["text"] for kk, x in cond.items() if kk.split("{")[0] in ("partial_pressure", "process_pressure")   # the pressure of this dose or hold: by step, or by the dose's species
+                         and (f"step={st}" in kk or f"step=hold_{st[-1]}" in kk or any(f"species={x}" in kk for x in sp))]
+                text = f"{STEP_WORDS[st]} {', '.join(b for b in bits if not b.startswith(('partial pressure', 'pressure')))}, then hold {', '.join(ht)}" + (f" at {press[0]}" if press else "")
+                keys += [kk for kk, _ in hold]; facts += [x["record"]["fact"] for _, x in hold if x["record"].get("fact")]
+        out.append(dict(step=st, text=text, facts=facts, keys=keys, stated=stated))
+    if out:
+        out[0]["keys"] += [kk for kk in cond if kk.startswith("other[cycle sequence]")]   # the sequence record is the block's order, not a condition of its own
+    return out
+
+
+def with_hold(T, ent, key, rec):
+    """P106: a dose record (pulse_time{step=reactant_X}) as a copy whose text carries the entity's hold of the same reactant."""
+    st = dict(p.split("=", 1) for p in (key.split("{")[1].split("}")[0] if "{" in key else "").split(";") if "=" in p).get("step", "")
+    if key.split("{")[0] != "pulse_time" or not st.startswith("reactant_"):
+        return rec
+    cond = condition_records(T, ent)
+    hold = [x["record"]["text"] for kk, x in cond.items() if f"step=hold_{st[-1]}" in kk and x["record"].get("text")]
+    if not hold:
+        return rec
+    return dict(rec, text=f"{rec['text']}, then hold {', '.join(hold)}")
 
 
 def curve_text(T, f):
@@ -2142,7 +2231,18 @@ def curve(cid, n_max=40):
                 y=dict(quantity=c["y"]["quantity"], name=L.NAMES.get(c["y"]["quantity"], c["y"]["quantity"]), unit=c["y"]["unit"], label_raw=c["y"]["label_raw"], transform=c["y"].get("transform", "")),
                 points=[[g(x, 4), g(y, 4)] for x, y in pts], n_points=len(c["points"]), thinned=len(c["points"]) > n_max,
                 conditions=[dict(key=q, name=n, text=t) for q, n, t in T.curve_conditions(cid)], derived=[dict(id=d["id"], name=L.NAMES.get(d["quantity"], d["quantity"]), method=d["method"], value=g(d["value"], 3), unit=d["unit"]) for d in T.derived_of(cid)],
-                flags=c.get("flags", []), uncertainty=record(T, T.byid[cid]).get("uncertainty"), provenance=c.get("provenance", {}))
+                flags=c.get("flags", []), uncertainty=record(T, T.byid[cid]).get("uncertainty"), provenance=c.get("provenance", {}),
+                converted=_thin(c.get("converted"), n_max))                     # P109: the converted series beside the native one (curve() only)
+
+
+def _thin(conv, n_max):
+    if not conv or not conv.get("points"):
+        return conv
+    pts = conv["points"]
+    if len(pts) > n_max:
+        step = (len(pts) - 1) / (n_max - 1)
+        pts = [pts[round(i * step)] for i in range(n_max)]
+    return dict(conv, points=pts)
 
 
 def sets_with_quantity(T, qids):

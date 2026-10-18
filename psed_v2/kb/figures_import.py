@@ -129,6 +129,73 @@ def paper_definitions(pid, with_quantity=True):
     return out
 
 
+K_B = 1.380649e-23                                                              # J/K (P109: p = n·k_B·T)
+_FACT_ROWS = {}
+
+
+def fact_rows(pid):
+    """The paper's facts table (pilot/<pid>.facts.csv) as {fact id: row}, read once (P109: the context of a conversion)."""
+    if pid not in _FACT_ROWS:
+        p = V2 / "pilot" / f"{pid}.facts.csv"
+        _FACT_ROWS[pid] = {r["fact_id"]: r for r in csv.DictReader(p.open(encoding="utf-8"))} if p.exists() else {}
+    return _FACT_ROWS[pid]
+
+
+def context_fact(pid, fig, panel, quantity, conditions, cid=""):
+    """P109: the record that gives a conversion's required quantity for a panel: the panel's own condition of it (its fact id or
+    series label), else a setting or model fact of that quantity with a value on the entity whose facts cite the panel, or above it
+    (parent chain); None when nothing states it. Returns (fact id, value in the record's unit, unit)."""
+    c = (conditions or {}).get(quantity)
+    if c and c.get("value") is not None:                                        # the curve's own condition record (its series label or panel): the curve is the context
+        return (c.get("fact") or cid, float(c["value"]), c.get("unit", ""))
+    rows = fact_rows(pid)
+    cites = {r["parent"] for r in rows.values() if "#" in r["fact_id"] and any(ev in (f"fig{fig}{panel}", f"fig{fig}") for ev in r["evidence"].split(";"))}
+    seen = set()
+    for node in sorted(cites):
+        while node in rows and node not in seen:
+            seen.add(node)
+            for r in rows.values():
+                if r["parent"] == node and r["quantity"] == quantity and r["type"] in ("setting", "model") and r["value"] and "stat=" not in r["qualifiers"]:
+                    try:
+                        return (r["fact_id"], float(r["value"]), r["unit"])
+                    except ValueError:
+                        pass
+            node = rows[node]["parent"]
+    return None
+
+
+def kelvin(v, unit):
+    return v + 273.15 if unit.strip() in ("°C", "C", "degC") else v
+
+
+def convert_curve(pid, c):
+    """P109: for an axis whose quantity declares converts_to, the converted series stored beside the native one: quantity, unit, points
+    (the other axis unchanged), the rule, the context record (kind computed_by_kb, citing it); nothing when the context is missing."""
+    for ax in ("x", "y"):
+        q = c[ax].get("quantity"); e = L.ENTRIES.get(q, {})
+        ct = e.get("converts_to")
+        if not ct or not c.get("points"):
+            continue
+        ctx = context_fact(pid, c["figure"], c["panel"], ct["requires"], c.get("conditions"), c["id"])
+        if not ctx:
+            c["converted"] = dict(axis=ax, quantity=ct["target"], rule=ct["rule"], requires=ct["requires"], context=None, reason="no record of the required quantity on this panel's run")
+            continue
+        fid, v, u = ctx
+        if ct["rule"].startswith("p = n") and ct["requires"] == "deposition_temperature":
+            T = kelvin(v, u); src = UNIT_BY_SYMBOL.get(c[ax]["unit"]) or unit_of(c[ax]["unit"])
+            n_fac = src["factor"] if src else 1.0                                 # to 1/m3
+            pts = [[x, n * n_fac * K_B * T] if ax == "y" else [n * n_fac * K_B * T, y] for (x, y), n in zip(c["points"], [p[1] if ax == "y" else p[0] for p in c["points"]])]
+            tgt = entry_unit_row(ct["target"]); unit = "Pa"
+            if tgt and tgt["dimension"] == "pressure":
+                pts = [[x, convert(y, UNIT_BY_SYMBOL["Pa"], tgt)] if ax == "y" else [convert(x, UNIT_BY_SYMBOL["Pa"], tgt), y] for x, y in pts]; unit = tgt["symbol"]
+            c["converted"] = dict(axis=ax, quantity=ct["target"], unit=unit, points=[[g4(x), g4(y)] for x, y in pts], rule=ct["rule"], requires=ct["requires"],
+                                  context=fid, context_value=v, context_unit=u, kind="computed_by_kb")
+
+
+def g4(v):
+    return float(f"{v:.4g}") if isinstance(v, (int, float)) else v
+
+
 class Resolver:
     """Labels, series labels and condition keys against the ontology (vocab.py): one index of every normalised id, name, label and
     alias of the quantity entries with a role in ROLES, and of every species id, formula and alias."""
@@ -690,6 +757,9 @@ class Importer:
                         counts["sets"] += 1
                     else:
                         row["reason"] = "set not formed: series are kinds (model vs measured), no varied quantity" if all(c["series"]["cls"] == "kind" for c in curves) else "set not formed: series_axis unresolved"
+                for c in curves:
+                    convert_curve(pid, c)                                      # P109: a converts_to axis stores its converted series
+                counts["converted"] += sum(1 for c in curves if (c.get("converted") or {}).get("context"))
                 out["curves"] += curves; counts["curves"] += n_imp
                 # cells (a map with printed values) and peaks (a spectrum)
                 if p.get("cells"):
@@ -789,7 +859,7 @@ def main(argv):
     for r in results:
         c = r["report"]
         print(f"{r['paper_id']}: {c.get('data_panels', 0)} data panels, {sum(1 for i in r['inventory'] if i['status'] == 'imported')} imported; {c.get('curves', 0)} curves, {c.get('cells', 0)} cells, {c.get('peaks', 0)} peaks, "
-              f"{c.get('sets', 0)} sets, {c.get('derived', 0)} derived, {c.get('inventory', 0)} inventory; {c.get('unmapped', 0)} unmapped; {c.get('resolved_p89', 0)} fields through the paper's definitions (P89)")
+              f"{c.get('sets', 0)} sets, {c.get('derived', 0)} derived, {c.get('converted', 0)} converted, {c.get('inventory', 0)} inventory; {c.get('unmapped', 0)} unmapped; {c.get('resolved_p89', 0)} fields through the paper's definitions (P89)")
     reasons = collections.Counter(u["reason"].split(":")[0] for u in imp.unmapped)
     print(f"unmapped rows {len(imp.unmapped)}: {dict(reasons)}")
 

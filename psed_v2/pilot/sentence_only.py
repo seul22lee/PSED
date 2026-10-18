@@ -118,7 +118,7 @@ def base(v, unit):
     u = L.UNIT_ALIAS.get(unit, unit)
     if u in L.UNIT_BASE and u not in ("°C", "K"):
         d, fac = L.UNIT_BASE[u]
-        return (d, round(abs(v) * fac, 9))
+        return ("length" if d == "length per cycle" else d, round(abs(v) * fac, 9))   # P108: a per-cycle value stored in nm/cycle matches the prose's '0.49 Å'
     return ("", round(abs(v), 9))
 
 

@@ -333,10 +333,10 @@ def tab1_facts():
                      qualifiers="position=plateau", value=v[1], unit="nm", data_kind="measured", method="reflectometry", mentions=men)
         if v[2] is not None:
             F(K, ev(9), "derived", f"sample {n}: S_I/N (GPC_I) {v[2]} nm", quantity="growth_per_cycle", qualifiers="position=outside",
-              label_as_printed="S_I/N (GPC_I)", value=v[2], unit="nm", data_kind="calculated", method="calculation", mentions=men,
+              label_as_printed="S_I/N (GPC_I)", value=v[2], unit="nm/cycle", data_kind="calculated", method="calculation", mentions=men,
               inputs=[ID[n, 7], ID[n, 5]])
         F(K, ev(10), "derived", f"sample {n}: S_IIb/N (GPC_IIb) {v[3]} nm", quantity="growth_per_cycle", qualifiers="position=plateau",
-          label_as_printed="S_IIb/N (GPC_IIb)", value=v[3], unit="nm", data_kind="calculated", method="calculation", mentions=men,
+          label_as_printed="S_IIb/N (GPC_IIb)", value=v[3], unit="nm/cycle", data_kind="calculated", method="calculation", mentions=men,
           inputs=[ID[n, 8], ID[n, 5]])
         ID[n, 11] = F(K, ev(11), "observation", f"sample {n}: x50% (PD50%) {v[4]} µm", quantity="penetration_depth",
                       qualifiers="level=50%;origin=entrance", label_as_printed="x_50% (PD^50%)", value=v[4], unit="µm",
@@ -344,11 +344,11 @@ def tab1_facts():
         F(K, ev(12), "derived", f"sample {n}: dimensionless x~50% {v[5]}, the half-thickness depth over the channel height, i.e. the aspect ratio the coating reached", quantity="coated_aspect_ratio",
           qualifiers="basis=AR", label_as_printed="x̃_50%", value=v[5], data_kind="calculated", method="calculation",
           mentions=men, inputs=[ID[n, 11], ID[n, 3]])
-        ID[n, 13] = F(K, ev(13), "derived", f"sample {n}: front slope d(S/N)/dx~ {v[6]} nm", quantity="front_slope", qualifiers="by=H",
+        ID[n, 13] = F(K, ev(13), "derived", f"sample {n}: front slope d(S/N)/dx~ {v[6]} nm", quantity="front_slope", qualifiers="by=H;definition=thickness_per_cycle",
                       label_as_printed="Slope d(S/N)/dx̃", value=v[6], unit="nm", data_kind="fit", method="calculation", mentions=men,
                       inputs=[ID[n, 5], ID[n, 3]])                     # a slope of S/N against x/H: defined with N and H (P25)
         ID[n, 14] = F(K, ev(14), "derived", f"sample {n}: front slope dθ/dx~ {v[7]}", quantity="front_slope",
-                      qualifiers="by=H;reference=entrance", label_as_printed="Slope dθ/dx̃", value=v[7], data_kind="fit",
+                      qualifiers="by=H;reference=entrance;definition=normalized", label_as_printed="Slope dθ/dx̃", value=v[7], data_kind="fit",
                       method="calculation", mentions=men, inputs=[ID[n, 3]])   # against x/H (P25)
         F(K, ev(15), "derived", f"sample {n}: R^2 of the linear front fit {v[8]}", quantity="fit_r2",
           label_as_printed="Linear fitting residual R^2", value=v[8], data_kind="fit", method="calculation", mentions=men)
@@ -533,7 +533,7 @@ PAR = [("T", "deposition_temperature", "", "300", "°C", "temperature"),
        ("d_B", "other", "", "374", "pm", "molecular diameter of N2"),
        ("b_film", "other", "", "2", "", "metal atoms per film formula unit"),
        ("b_TMA", "other", "", "1", "", "metal atoms per TMA molecule"),
-       ("gpc_sat", "growth_per_cycle", "", "0.098", "nm", "saturation growth per cycle"),
+       ("gpc_sat", "growth_per_cycle", "", "0.098", "nm/cycle", "saturation growth per cycle"),
        ("q", "saturation_density", "", "3.6", "nm-2", "adsorption density at saturation"),
        ("K", "other", "", "1000.0", "Pa-1", "adsorption equilibrium constant"),
        ("c_TMA", "initial_sticking_coefficient", "species=tma", "0.012", "", "lumped sticking coefficient of TMA"),
@@ -636,7 +636,7 @@ def std_facts():
       qualifiers="level=50%;origin=entrance;stat=sd;between=runs;n=4", label_as_printed="standard deviation of PD50%", value="19.4", unit="µm", data_kind="calculated", method="calculation",
       mentions=men, inputs=[ID[int(s), 11] for s in S])
     F(K, "s16.p10", "derived", "standard deviation of the slope at PD50% over those samples is 0.0003 nm", quantity="front_slope",
-      qualifiers="by=H;stat=sd;between=runs;n=4", label_as_printed="standard deviation of the slope at PD50%", value="0.0003", unit="nm", data_kind="calculated",
+      qualifiers="by=H;definition=thickness_per_cycle;stat=sd;between=runs;n=4", label_as_printed="standard deviation of the slope at PD50%", value="0.0003", unit="nm", data_kind="calculated",
       method="calculation", mentions=men, inputs=[ID[int(s), 13] for s in S])
     F(K, "s16.p10", "derived", "standard deviation of the initial Region IIb thickness over those samples is 2.8 nm", quantity="film_thickness",
       qualifiers="position=plateau;stat=sd;between=runs;n=4", label_as_printed="standard deviation of the initial film thickness in Region IIb", value="2.8", unit="nm",

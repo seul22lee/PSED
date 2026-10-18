@@ -133,7 +133,7 @@ f("s8.p1", "setting", "pressing pressure 481 MPa",
   quantity="other", label_as_printed="pressing pressure", value="481", unit="MPa", data_kind="chosen input")
 f("s8.p1", "setting", "the load was held under 1 min, then released and the compact ejected",
   quantity="other", label_as_printed="load hold", value="1", censor="<", unit="min", data_kind="chosen input")
-f(f"s8.p1;abs.g3;{A}", "observation", "final NPC thickness 1.55 ± 0.05 mm by electronic calipers",
+npc_thick = f(f"s8.p1;abs.g3;{A}", "observation", "final NPC thickness 1.55 ± 0.05 mm by electronic calipers",
   quantity="other", label_as_printed="thickness", value="1.55", unit="mm", data_kind="measured")
 f("s8.p1", "observation", "final NPC diameter 11.43 ± 0.02 mm by electronic calipers",
   quantity="other", label_as_printed="diameter", value="11.43", unit="mm", data_kind="measured")
@@ -1133,8 +1133,11 @@ C.sized(K, {
 })
 # P78: the entry sides of the compact, a slot of the porous body stated beside the half-thickness L (added after the tree is built so
 # that the element's fact numbering is unchanged; its parent the recipe, shared by every run)
-F(K, "s6.p8;fig1.cap;s9.p2", "setting", "the reactant reaches the pores from two faces of the compact, the top and the bottom",
+F(K, "s9.p4;s6.p8", "setting", "one cycle in the stated order: DEZ pulse, hold, purge, H2O pulse, hold, purge",
+  quantity="other", label_as_printed="cycle sequence", value_text="reactant_A;hold_A;purge_A;reactant_B;hold_B;purge_B", data_kind="stated", parent=f"{K}:recipe")   # P106: the paper's stated step order
+sides_id = F(K, "s6.p8;fig1.cap;s9.p2", "setting", "the reactant reaches the pores from two faces of the compact, the top and the bottom",
   quantity="entry_sides", value_text="two", data_kind="chosen input", parent=f"{K}:recipe")
+next(r for r in C.facts() if r["fact_id"] == L_)["inputs"] = ";".join([npc_thick, sides_id])   # P107: the derived depth slot cites its source (half the thickness, two entry faces)
 C.specimen_classes(K, "porous_composite")                                                 # P53: the class of specimen every value was measured on
 C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
 C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)

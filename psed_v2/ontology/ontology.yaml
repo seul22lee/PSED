@@ -1601,11 +1601,14 @@ entries:
     label: "front slope"
     name: "front slope"
     definition: "The slope of a saturation profile at its half-thickness point, as thickness per cycle or as normalized thickness per unit of dimensionless distance (yim20 Table 1); an attribute of a profile, stored as data, not a concept (Sec. 18.7)."
+    definitions:   # P108 (b): two definitions with their own dimension; a record carries definition=<id> (the comparability axis), never a forced unit
+      - {id: normalized, unit: "1", dimension: dimensionless, text: "dθ/dx̃: the slope of the normalized thickness θ against the dimensionless distance x̃ (yim20 Table 1 column 'Slope dθ/dx̃'; yim22 Table 3)"}
+      - {id: thickness_per_cycle, unit: nm, dimension: length, text: "d(S/N)/dx̃: the slope of the scaled thickness S/N (nm per cycle) against the dimensionless distance x̃, printed in nm (yim20 Table 1 column 'Slope d(S/N)/dx̃')"}
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [by, reference]
+    qualifiers: [by, reference, definition]
     aliases: ["Slope dθ/dx̃", "Slope d(S/N)/dx̃", "front slope"]
     base: {}
     evidence: ["yim20 Table 1", "yim20 Fig. 9"]
@@ -2473,6 +2476,7 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: "lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)"}
   - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: "L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
+  definition: {values: definition ids, log: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)"}
   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
   species:   {values: species ids}
   gas:       {values: species ids}

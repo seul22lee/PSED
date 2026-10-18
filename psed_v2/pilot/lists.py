@@ -144,7 +144,7 @@ def qualifiers_ok(q):
 # canonical units (for stage 4): a fact with one of these quantities carries exactly this unit
 UNITS = {"body_thickness": "mm", "body_diameter": "mm", "particle_diameter": "nm", "specific_surface_area": "m2/g", "deposition_temperature": "°C", "source_temperature": "°C", "pulse_time": "s", "purge_time": "s", "cycle_time": "s",
          "process_pressure": "Pa", "partial_pressure": "Pa", "exposure": "Pa s", "film_thickness": "nm", "feature_width": "nm",
-         "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å", "gas_flow_rate": "sccm",
+         "feature_depth": "nm", "distance": "µm", "penetration_depth": "µm", "growth_per_cycle": "Å/cycle", "gas_flow_rate": "sccm",
          "resistivity": "Ω cm", "film_density": "g/cm3", "element_fraction": "at. %", "element_ratio": "", "phase_fraction": "wt%", "mean_free_path": "µm", "cycle_number": "", "aspect_ratio": "",
          "coated_aspect_ratio": "", "equivalent_aspect_ratio": "", "initial_sticking_coefficient": "",
          "recombination_probability": "", "knudsen_number": "", "normalized_thickness": "", "dimensionless_distance": "",
@@ -158,17 +158,17 @@ UNITS = {"body_thickness": "mm", "body_diameter": "mm", "particle_diameter": "nm
 
 # unit normalisation: spellings the facts use for one unit, and every unit's dimension and factor to that dimension's base unit;
 # convert() turns a value from one unit into another of the same dimension (°C and K by offset)
-UNIT_ALIAS = {"g/cm^3": "g/cm3", "mΩ cm": "mOhm cm", "cm2 V-1 s-1": "cm2/Vs", "×": "", "Å/cyc": "Å", "Å/cycle": "Å", "nm/cycle": "nm", "nm/cyc": "nm", "µmol/cyc": "µmol", "Torr-s": "Torr s", "Ω-cm": "Ω cm",
+UNIT_ALIAS = {"1/m3": "m-3", "m^-3": "m-3", "1/cm3": "cm-3", "cm^-3": "cm-3", "g/cm^3": "g/cm3", "mΩ cm": "mOhm cm", "cm2 V-1 s-1": "cm2/Vs", "×": "", "Å/cyc": "Å/cycle", "nm/cyc": "nm/cycle", "µmol/cyc": "µmol", "Torr-s": "Torr s", "Ω-cm": "Ω cm",
               "at. %": "%", "at.%": "%", "wt%": "%", "SCCM": "sccm", "at/nm2/cycle": "nm-2", "kg m-3": "kg/m3", "mol-1": "1/mol", "nm^-2": "nm-2"}
-UNIT_BASE = {"1/Pa": ("inverse pressure", 1.0), "Pa·s": ("exposure", 1.0), "µΩ cm": ("resistivity", 1e-6), "pm": ("length", 1e-3), "Å": ("length", 0.1), "nm": ("length", 1.0), "µm": ("length", 1e3), "mm": ("length", 1e6), "cm": ("length", 1e7),
+UNIT_BASE = {"nm/cycle": ("length per cycle", 1.0), "Å/cycle": ("length per cycle", 0.1), "pm/cycle": ("length per cycle", 1e-3), "1/Pa": ("inverse pressure", 1.0), "Pa·s": ("exposure", 1.0), "µΩ cm": ("resistivity", 1e-6), "pm": ("length", 1e-3), "Å": ("length", 0.1), "nm": ("length", 1.0), "µm": ("length", 1e3), "mm": ("length", 1e6), "cm": ("length", 1e7),
              "m": ("length", 1e9), "s": ("time", 1.0), "min": ("time", 60.0), "h": ("time", 3600.0), "Pa": ("pressure", 1.0), "hPa": ("pressure", 100.0), "mTorr": ("pressure", 0.133322),
              "Torr": ("pressure", 133.322), "Pa s": ("exposure", 1.0), "Torr s": ("exposure", 133.322), "L": ("exposure", 1.33322e-4), "g/cm3": ("density", 1.0), "kg/m3": ("density", 1e-3),
              "mol": ("amount", 1.0), "mmol": ("amount", 1e-3), "µmol": ("amount", 1e-6), "%": ("fraction", 0.01), "": ("fraction", 1.0),
              "°C": ("temperature", 1.0), "K": ("temperature", 1.0), "g/mol": ("molar mass", 1.0), "g": ("mass", 1.0), "nm-2": ("areal density", 1.0),
              "Ω cm": ("resistivity", 1.0), "mOhm cm": ("resistivity", 1e-3), "Ω m": ("resistivity", 100.0), "Ω/sq": ("sheet resistance", 1.0), "nm/h": ("rate", 1.0), "1/mol": ("per mole", 1.0),
-             "J/K": ("energy per kelvin", 1.0), "sccm": ("flow", 1.0), "W": ("power", 1.0), "eV": ("energy", 1.0), "cm-3": ("number density", 1.0),
+             "J/K": ("energy per kelvin", 1.0), "sccm": ("flow", 1.0), "W": ("power", 1.0), "eV": ("energy", 1.0), "cm-3": ("number density", 1.0), "m-3": ("number density", 1e-6),
              "cm2/Vs": ("mobility", 1.0), "mTorr/min": ("pressure rate", 1.0), "m2/g": ("area per mass", 1.0)}
-DIMENSION_OF = {"length": "length", "area_per_mass": "area per mass", "time": "time", "pressure": "pressure", "temperature": "temperature", "dimensionless": "fraction"}   # ontology dimension -> UNIT_BASE dimension (P78)
+DIMENSION_OF = {"length": "length", "area_per_mass": "area per mass", "time": "time", "pressure": "pressure", "temperature": "temperature", "dimensionless": "fraction", "length_per_cycle": "length per cycle"}   # ontology dimension -> UNIT_BASE dimension (P78)
 
 
 def convert(v, from_unit, to_unit):
@@ -209,11 +209,11 @@ DERIVED = {
                              inputs=[_in("E", "exposure", "", "Torr s"), _in("N", "cycle_number", "", "")], fn=lambda E, N: E * N),
     "sheet_resistance": dict(unit="Ω/sq", formula="resistivity / film thickness",
                              inputs=[_in("rho", "resistivity", "", "Ω cm"), _in("t", "film_thickness", "", "cm")], fn=lambda rho, t: rho / t),
-    "growth_per_cycle": dict(unit="nm", qualifiers="over=run", formula="atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density",
+    "growth_per_cycle": dict(unit="nm/cycle", qualifiers="over=run", formula="atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density",
                              inputs=[_in("n", "atoms_per_cycle", "", "nm-2"), _in("M", "other:molar mass", "species=@material", "g/mol"), _in("rho", "film_density", "", "g/cm3"),
                                      _in("NA", "other:Avogadro constant", "", "1/mol")], fn=lambda n, M, rho, NA: n * M / (NA * rho * 1e-21)),
     "atoms_per_cycle": dict(unit="nm-2", qualifiers="over=run", formula="GPC × ρ N_A / M × metal atoms per formula unit: metal atoms per nm² per cycle at the film's own density",
-                            inputs=[_in("gpc", "growth_per_cycle", "", "nm", pick=["", "position=plateau"]), _in("rho", "film_density", "", "g/cm3"),
+                            inputs=[_in("gpc", "growth_per_cycle", "", "nm/cycle", pick=["", "position=plateau"]), _in("rho", "film_density", "", "g/cm3"),
                                     _in("M", "other:molar mass", "species=@material", "g/mol"), _in("NA", "other:Avogadro constant", "", "1/mol"),
                                     _in("b", "@formula_metals")],
                             fn=lambda gpc, rho, M, NA, b: gpc * rho * 1e-21 * NA / M * b),
@@ -246,7 +246,7 @@ DERIVED = {
     "cycle_time": dict(unit="s", formula="the sum of the pulse, hold and purge times of one cycle",
                        inputs=[_in("t", "pulse_time|purge_time|other:DEZ hold|other:H2O hold", "", "s", all=True)], fn=lambda t: sum(t)),
     "deposition_rate": dict(unit="nm/h", formula="GPC × 3600 / cycle time",
-                            inputs=[_in("gpc", "growth_per_cycle", "", "nm", pick=["", "position=plateau"]), _in("tc", "cycle_time", "", "s")], fn=lambda gpc, tc: gpc * 3600 / tc),
+                            inputs=[_in("gpc", "growth_per_cycle", "", "nm/cycle", pick=["", "position=plateau"]), _in("tc", "cycle_time", "", "s")], fn=lambda gpc, tc: gpc * 3600 / tc),
 }
 
 

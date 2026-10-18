@@ -1115,7 +1115,7 @@ assert set(GPC7B_VALUES) == set(RHO8_VALUES) == set(CELLS)
 GPC7B, RHO8 = {}, {}
 for (t, r) in CELLS:
     GPC7B[(t, r)] = F(K, "fig7b", "observation", f"Fig. 7b cell at {t} °C and ratio {r}: GPC over the first 100 cycles, read from colour against the bar (about)",
-                      quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å", data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{r};{t} °C")
+                      quantity="growth_per_cycle", value=f"{GPC7B_VALUES[(t, r)]:g}", unit="Å/cycle", data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{r};{t} °C")
     v = RHO8_VALUES[(t, r)]
     if v is None:
         RHO8[(t, r)] = F(K, "fig8", "observation", f"Fig. 8 cell at {t} °C and ratio {r}: resistivity above the four-point-probe limit of order 1000 Ω cm (black), read from colour",

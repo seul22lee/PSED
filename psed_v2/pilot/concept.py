@@ -332,6 +332,9 @@ def edges(i):
     (family) and 'defined by paper k (symbol)' (the papers' definition facts). Every target is an id that resolves (check_edges)."""
     e = L.ENTRIES.get(i, {})
     out = []
+    if e.get("converts_to"):                                                   # P109: the store-level transformation, one line
+        ct = e["converts_to"]
+        out.append(f"converts to {ct['target']} given {ct['requires']} ({ct['rule']}; curve() shows the converted series)")
     if e.get("ratio_of"):
         out.append("ratio of " + " / ".join(e["ratio_of"]))
     for t in L.TRANSFORMS:
