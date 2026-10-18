@@ -107,7 +107,9 @@ TOOLS = [
          description=("Arguments: words (required). Resolves the words against the knowledge base's concepts by the ontology's rules (entry names "
                       "and aliases, families, species, mechanisms, categorical values; an ambiguous word lists its candidates) and returns one "
                       "line per matched concept: id · definition · unit · family and sibling ids · qualifier keys · per-paper counts of values, "
-                      "claims and settings · 'not studied in: <papers>' · an attribute flag where set. About 2,000 tokens per call. Use it first, "
+                      "claims and settings · 'not studied in: <papers>' · an attribute flag where set · up to five edges. A phrase with a qualifier "
+                      "('thickness in the channel', 'phase (metallic Mo)', 'H2O exposure') resolves to the quantity with that qualifier's counts first; "
+                      "words naming nothing return the three nearest ids (no error). About 2,000 tokens per call. Use it first, "
                       "to learn what exists, where and under which id, before values, detail or search."),
          parameters=dict(type="object", properties=dict(words=dict(type="string", description="A concept in words: a quantity, a species, a mechanism, a family.")),
                          required=["words"])),
@@ -374,6 +376,25 @@ def _result_ok(r):
     return r in _names() or r in QUANT or bool(Q.concept_ids(r))
 
 
+def nearest_results(r):
+    """P105: the three result or setting names, quantity ids or concept ids nearest to r by word overlap, then by spelling."""
+    import concept as CN
+    qw = set(CN.words_of(r))
+    pool = sorted(_names()) + sorted(QUANT)
+    scored = sorted(((-len(qw & set(CN.words_of(n))), len(n), n) for n in pool if qw & set(CN.words_of(n))))
+    near = [n for _, _, n in scored[:3]]
+    if not near:
+        near = CN.resolve_phrase(r)["nearest"][:3] or difflib.get_close_matches(r, pool, n=3, cutoff=0.0)
+    return near
+
+
+def nearest_papers(p):
+    """P105: the three paper keys nearest to p (keys and short names)."""
+    names = {k: k for k in Q.TREES} | {short_name(k).lower(): k for k in Q.TREES}
+    near = list(dict.fromkeys(names[x] for x in difflib.get_close_matches(str(p).lower(), list(names), n=6, cutoff=0.3)))[:3]
+    return near or list(Q.TREES)[:3]
+
+
 def _where_err(where):
     for k, x in where.items():
         if k not in _names("setting") and k not in QUANT:
@@ -403,8 +424,7 @@ def _curve(i):
     return bool(T and i in T.curves)
 
 
-IDS = {("values", "result"): (_result_ok, "not a result or setting name of the knowledge base, nor a quantity id (names are listed in the description)"),
-       ("curve", "id"): (_curve, "no curve of the knowledge base has this id (curve ids read <paper>:fig<N><panel>#c<n>)"),
+IDS = {("curve", "id"): (_curve, "no curve of the knowledge base has this id (curve ids read <paper>:fig<N><panel>#c<n>)"),
        ("detail", "ids"): (_record, "no record of the knowledge base has this id"),
        ("source", "id"): (_source, "no fact or paper element has this id")}
 
@@ -416,7 +436,7 @@ def validate(name, args):
         return f"unknown tool {name}; tools: {', '.join(SCHEMA)}"
     if not isinstance(args, dict):
         return f"{name}: the arguments must be an object"
-    e = _check("", args, SCHEMA[name])
+    e = _check("", {k: v for k, v in args.items() if not (k == "paper" and name in ("search", "values") and isinstance(v, str))}, SCHEMA[name])   # P105: an unknown paper name suggests, never errors
     if e:
         return f"{name}: {e.lstrip('.')}" if not e.startswith(":") else f"{name}{e}"
     if name == "values":                                                        # P77: result or set, one of the two
@@ -434,10 +454,7 @@ def validate(name, args):
         e = _where_err(args["where"])
         if e:
             return f"values: {e}"
-    if name == "values" and args.get("result") is not None and not _result_ok(args["result"]):
-        near = difflib.get_close_matches(args["result"], sorted(_names()), n=5, cutoff=0.4)
-        return f"values: result {args['result']!r}: not a result or setting name of the knowledge base, nor a quantity id" + (f"; nearest: {', '.join(near)}" if near else "")
-    for (tool, arg), (ok, why) in IDS.items():
+    for (tool, arg), (ok, why) in IDS.items():                                   # P105: an unknown result name is no error (values suggests the nearest three)
         if tool == name and args.get(arg) is not None:
             for v in (args[arg] if isinstance(args[arg], list) else [args[arg]]):
                 if not ok(v):
@@ -1057,8 +1074,12 @@ def _run(name, args):
     """(blocks, error) of one call."""
     try:
         W = lambda pairs: [x for i, t in pairs for x in wrap(i, t)]
+        if name in ("values", "search") and args.get("paper") and args["paper"] not in Q.TREES:   # P105: an unknown paper name: the nearest three, executed
+            return [block([wrap("none", f"no paper named {args['paper']!r}; nearest: " + ", ".join(nearest_papers(args["paper"])) + " · the keys: " + ", ".join(Q.TREES))])], ""
         if name == "values" and args.get("set"):                                # P77: one table for a comparison set
             return set_blocks(Q.set_table(args["set"])), ""
+        if name == "values" and not _result_ok(args["result"]):                 # P105: an unknown result name: the nearest three, executed
+            return [block([wrap("none", f"no result named {args['result']!r}; nearest: " + ", ".join(nearest_results(args["result"])))])], ""
         if name == "values":
             groups = Q.values(args["result"], args.get("paper"), args.get("where"))
             S = Q.settings_entry(args["result"])

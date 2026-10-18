@@ -917,6 +917,62 @@ def check_cards():
     return err
 
 
+QUALIFIER_PHRASES = [                                                           # P105: (phrase, quantity id) — a qualifier phrase resolves to the quantity, that qualifier's counts first
+    ("growth per cycle in the channel", "growth_per_cycle"), ("phase (metallic Mo)", "phase"), ("initial porosity", "porosity"), ("MoS2 crystallinity", "crystallinity"),
+    ("thickness in the channel", "film_thickness"), ("penetration depth (50%)", "penetration_depth"), ("step coverage (bottom)", "step_coverage"), ("exposure (H2O)", "exposure"),
+    ("partial pressure (TMA)", "partial_pressure"), ("initial sticking coefficient (TiCl4)", "initial_sticking_coefficient"), ("molar mass (N2)", "molar_mass"),
+    ("source temperature (DEZ)", "source_temperature"), ("binding energy (Mo)", "binding_energy"), ("element fraction (Cl)", "element_fraction"), ("thickness (sidewall)", "film_thickness"),
+    ("coated aspect ratio (front end)", "coated_aspect_ratio"), ("H2O exposure", "exposure"), ("TMA partial pressure", "partial_pressure"), ("sidewall thickness", "film_thickness"),
+    ("front-end penetration depth", "penetration_depth")]
+MISSES = [("concept", {"words": "zzz qqq"}), ("concept", {"words": "banana curvature"}), ("values", {"result": "no such result"}),
+          ("values", {"result": "growth per cycle", "paper": "Mattinen"}), ("search", {"words": "growth", "paper": "nosuch"})]
+
+
+def check_resolution():
+    """P105: every concept entry's label, name and alias and the 20 qualifier phrases resolve through concept() to the entry (an
+    ambiguous alias lists it among its candidates; a qualifier phrase puts the qualifier's counts first); the misses return a
+    'nearest' line and no error; only a malformed call errors. Prints the calls and tokens of this battery."""
+    import tools
+    err, calls, chars = [], 0, 0
+
+    def run(name, args):
+        nonlocal calls, chars
+        lines, e = tools.run_tool(name, args)
+        calls += 1; chars += sum(len(i) + len(t) + 4 for i, t in lines)
+        return lines, e
+    amb = {CN_norm(a) for a in L.AMBIGUOUS}
+    for q in sorted(L.ENTRIES):
+        e = L.ENTRIES[q]
+        if e["type"] not in ("quantity", "categorical") or e.get("replaced_by"):
+            continue
+        for w in dict.fromkeys([e.get("label", ""), e.get("name", "")] + list(e.get("aliases", []))):
+            if not w or CN_norm(w) in amb:
+                continue
+            lines, er = run("concept", {"words": w})
+            ids = {i for i, _ in lines}
+            if er or q not in ids:
+                err.append(f"resolution: concept({w!r}) should name {q}, got {sorted(ids)[:4]} {er} (P105)")
+    for ph, q in QUALIFIER_PHRASES:
+        lines, er = run("concept", {"words": ph})
+        ids = {i for i, _ in lines}
+        if er or q not in ids or not lines or not lines[0][1].startswith("qualifier "):
+            err.append(f"resolution: concept({ph!r}) should put the qualifier's counts first and name {q}, got {lines[:1]} {er} (P105)")
+    for name, args in MISSES:
+        lines, er = run(name, args)
+        if er or not any("nearest" in t for _, t in lines):
+            err.append(f"resolution: {name}({args}) should return a nearest line without error, got {lines[:1]} {er} (P105)")
+    _, er = run("values", {"result": "penetration depth", "no_such_argument": 1})
+    if not er:
+        err.append("resolution: a malformed call must still be an error (P105)")
+    print(f"== resolution (P105): {calls} calls ({len(QUALIFIER_PHRASES)} qualifier phrases, {len(MISSES)} misses), {chars // 4:,} tokens; a miss suggests the nearest three, only a malformed call errors")
+    return err
+
+
+def CN_norm(w):
+    import concept as CN
+    return CN.norm(w)
+
+
 def check_edges():
     """P101: every concept card has at most MAX_EDGES edge lines, each of a known form, and every target resolves: a quantity, model
     or family member to an entry, a transform to lists.TRANSFORMS, a paper key to a tree; the number of cards with edges is printed."""
@@ -1024,7 +1080,7 @@ def check_calls():
     import ask, concept as CN, run_metrics as RM
     err = []
     valid = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
-    bad = lambda n: [("values", {"result": f"no_such_quantity_{i}"}) for i in range(n)]
+    bad = lambda n: [("values", {"result": "penetration depth", "no_such_argument": i}) for i in range(n)]   # P105: only a malformed call errors; an unknown name suggests
 
     def play(calls):
         tool_calls, given, seen = [], {}, {}
@@ -1033,7 +1089,7 @@ def check_calls():
     cap_msg = f"error: the limit of {ask.TOOL_CAP} tool calls is reached"
     res, p = play(bad(4) + valid[:ask.TOOL_CAP + 1])                          # four errors, then eleven valid calls
     if not all(r["error"] for r in res[:4]) or p["errors"] != 4:
-        err.append(f"calls: four unresolvable names should be four error calls, got errors {p['errors']} (P75)")
+        err.append(f"calls: four malformed calls should be four error calls, got errors {p['errors']} (P75)")
     if any(r["error"] for r in res[4:4 + ask.TOOL_CAP]) or p["executed"] != ask.TOOL_CAP:
         err.append(f"calls: {ask.TOOL_CAP} executed calls must remain available after four errors, got executed {p['executed']} (P75)")
     if res[4 + ask.TOOL_CAP]["content"] != cap_msg or p["wall_hit"] != "none":
@@ -1491,6 +1547,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_cards_values()
     print(f"== card–values (P95): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_resolution()
+    print(f"== resolution (P105): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

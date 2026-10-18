@@ -7,7 +7,8 @@ what the answer used, from the stored records alone (no model call); ask.py stor
 Definitions (these reproduce the reference numbers on A10_v2.jsonl: 98 executed and 18 refused calls, re-delivery 30-56 % per
 question, utilization 7-18 %):
 - executed calls: error == ""; refused: the cap, a wall or a tool error; duplicate (identical): 'identical to call N' (P69).
-- errors (P75): the refused calls that were tool errors (an unresolved name, a bad argument, nothing matches), not the cap or a wall;
+- errors (P75): the refused calls that were tool errors (a malformed call: unknown tool or argument, wrong type, an id that names nothing, nothing
+  matches a filter; P105: an unknown concept, result or paper name is answered with the nearest three and is executed), not the cap or a wall;
   wall_hit: 'total' or 'errors' when a refusal of the question names that wall (ask.TOTAL_WALL, ask.ERROR_WALL), else 'none'.
   The columns of P74 keep their definitions: executed, refused and duplicates are unchanged by P75.
 - ids: every match of [<paper>:<rest>] in an executed call's stored output, counted as occurrences in call order.

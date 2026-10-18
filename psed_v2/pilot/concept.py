@@ -87,6 +87,65 @@ def resolve(words):
     return uniq, note
 
 
+def resolve_phrase(words):
+    """P105: concept() resolves like values(result=…). Returns dict(ids, keys, qualifier, note, nearest): ids = the concept ids the
+    words name (resolve); else a result or setting name of the data (query.vocabulary: 'thickness in the channel', 'phase (metallic
+    Mo)') gives its keys' quantities; else the longest window of the words that names quantities, the remaining words being the
+    qualifier words ('initial porosity', 'MoS2 crystallinity', 'H2O exposure'), matched against the data keys of those quantities
+    whose name contains every remaining word (keys). With no id at all, nearest = the three concept ids nearest by word overlap."""
+    ids, note = resolve(words)
+    out = dict(ids=ids, keys=[], qualifier="", note=note, nearest=[])
+    voc = Q.vocabulary()
+    nm = {norm(n): n for n in voc["keys"]}
+    if norm(words) in nm and all("{" in k for k in voc["keys"][nm[norm(words)]]):   # a qualified data name ('penetration depth (50%)'): its keys and their quantities
+        keys = voc["keys"][nm[norm(words)]]
+        qids = sorted({k.split("{")[0].split("[")[0] for k in keys if k.split("{")[0].split("[")[0] in L.ENTRIES})
+        if qids:
+            out.update(keys=keys, ids=qids, qualifier=nm[norm(words)])
+            return out
+    if ids:
+        return out
+    w = [x for x in words_of(words) if x not in STOP]
+    for n in range(len(w) - 1, 0, -1):                                          # the longest window that names quantities; the rest qualifies
+        for a in range(len(w) - n + 1):
+            win = w[a:a + n]
+            cand = [i for i in resolve(" ".join(win))[0] if i in L.ENTRIES and L.ENTRIES[i]["type"] in ("quantity", "categorical")]
+            if cand:
+                rest = set(w[:a] + w[a + n:])
+                keys = [k for q in cand for k in sorted({k for ks in voc["keys"].values() for k in ks if k.split("{")[0].split("[")[0] == q})
+                        if rest <= set(words_of(Q.name_of(k)))]
+                out.update(ids=cand, keys=keys, qualifier=" ".join(sorted(rest)))
+                return out
+    qw = set(w)
+    ix = index()
+    scored = []
+    for i, sets in ix["wordsets"].items():
+        ov = max((len(qw & s) for s in sets), default=0)
+        if ov:
+            scored.append((-ov, min(len(s) for s in sets), i))
+    near = [i for _, _, i in sorted(scored)[:3]]
+    if not near:
+        import difflib
+        names = {norm(n): i for i, it in ix["items"].items() for n in it["names"]}
+        near = list(dict.fromkeys(names[x] for x in difflib.get_close_matches(norm(words), list(names), n=8, cutoff=0.0)))[:3]   # always three: the nearest spellings
+    out["nearest"] = near
+    return out
+
+
+STOP = {"of", "in", "the", "a", "an", "at", "on", "for", "per", "with"}
+
+
+def key_counts(keys):
+    """P105: per paper, the value and setting records under the given data keys: 'k 3 values / 1 settings; …'."""
+    pc = collections.defaultdict(collections.Counter)
+    ks = set(keys)
+    for k, T in Q.TREES.items():
+        for f in T.rows:
+            if "#" in f["fact_id"] and Q.ckey(f) in ks and Q.text_of(f):
+                pc[k]["settings" if f["type"] == "setting" else "values"] += 1
+    return "; ".join(f"{k} " + " / ".join(f"{n} {x}" for x in ("values", "settings") if (n := d.get(x))) for k, d in pc.items() if d) or "no record under this key"
+
+
 # ---------------------------------------------------------------------------------------------------------------- counts from the data
 _COUNTS = {}
 HOMES = ("specimen", "input", "aggregate", "set-level", "paper", "cited")       # P81: where a value record lives (the P79 homes; cited works aside)
@@ -230,10 +289,13 @@ def footer(ids, paper=None):
 def concept_lines(words):
     """[(id, line)] for every concept the words name: id · definition · unit · family and siblings · qualifier keys · per-paper
     counts · not studied in · attribute flag; plus the ambiguity note when the word has several definitions."""
-    ids, note = resolve(words)
+    r = resolve_phrase(words)
+    ids, note = r["ids"], r["note"]
     out = [("concept", note)] if note else []
-    if not ids:
-        return out
+    if not ids:                                                                 # P105: a miss suggests, never errors
+        return out + [("concept", f"no concept named {words!r}" + ("; nearest: " + ", ".join(r["nearest"]) if r["nearest"] else "; nothing near it"))]
+    if r["qualifier"]:                                                           # P105: the qualifier's counts first
+        out.append(("concept", f"qualifier '{r['qualifier']}' of {', '.join(ids)}: " + (f"keys {', '.join(Q.name_of(k) for k in r['keys'][:6])}" + (" …" if len(r["keys"]) > 6 else "") + " · " + key_counts(r["keys"]) if r["keys"] else "no data key of these quantities carries it; the full card follows")))
     for i in ids:
         it = index()["items"][i]
         if i.startswith("family:"):
