@@ -957,8 +957,9 @@ def paginate(blocks, offset, max_lines=None):
             if m.group(1) in seen_defs:
                 t = t.replace(m.group(0), "")
             seen_defs.add(m.group(1))
-        if t not in seen_lines:                                                # a text once per page, whatever its id
-            page.append((i, t)); seen_lines.add(t)
+        key = (i, t) if t.startswith("… ") else t                                # a text once per page, whatever its id; a wrapped continuation belongs to its own line (P68: caveat ids on every fact)
+        if key not in seen_lines:
+            page.append((i, t)); seen_lines.add(key)
     for b in blocks:                                                            # a block's tail closes every page (the cross-paper footer, P67)
         page += [x for x in b.get("tail", []) if x not in page]
     if n < len(units):

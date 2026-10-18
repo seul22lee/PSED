@@ -349,7 +349,7 @@ def figure_refs(row):
         if m and m.group(1) not in out:
             out.append(m.group(1))
     for m in FIGREF.finditer(row["statement"] + " ; " + row["mentions"]):
-        ref = f"fig{m.group(1)}{(m.group(2) or m.group(3) or '').lower()}"
+        ref = f"fig{m.group(1)}{(m.group(2) or m.group(3) or '')}"                 # the panel letter as the paper prints it (the figure stage keeps the case: Arts 2019 has (A), (B))
         if ref not in out:
             out.append(ref)
     return ";".join(out)

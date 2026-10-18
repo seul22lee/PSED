@@ -191,6 +191,7 @@ class Resolver:
         if not q and strip_unit_brackets(raw).count("/") == 1 and all(x.strip() for x in strip_unit_brackets(raw).split("/")):      # P90a on a worded ratio: 'Distance / cavity height'
             a, b = (x.strip() for x in strip_unit_brackets(raw).split("/"))
             qa, _ = self._quantity(a, "", ""); qb, _ = self._quantity(b, "", "")
+            qa = qa or self._defined(a, defs); qb = qb or self._defined(b, defs)   # P89 on the parts: 'Distance / cavity height' with h defined by the paper
             r = self.ratio(a, b) or (next(iter({i for i, e in L.ENTRIES.items() if len(e.get("ratio_of") or []) == 2 and e["ratio_of"][0].split("{")[0] == qa and e["ratio_of"][1].split("{")[0] == qb}), "") if qa and qb else "")
             if r:
                 return r, transform, ""
@@ -205,6 +206,18 @@ class Resolver:
                     self.p89_hits.append((raw, defs[c]))
                     return defs[c][0], transform, "definition:" + defs[c][2]
         return "", transform, why
+
+    def _defined(self, raw, defs):
+        """The paper's definition (P89) that names `raw`, as the quantity id, or ''."""
+        if not defs or not str(raw).strip():
+            return ""
+        toks = _tokens(raw)
+        cands = [norm(raw), "sym:" + delatex(str(raw).strip()).translate(SUB).replace("μ", "µ").replace(" ", "")] + ([norm(toks[-1])] if len(toks) > 1 else [])
+        for c in [x for c0 in cands for x in (plural_forms(c0) if not c0.startswith("sym:") else [c0])]:
+            if c in defs:
+                self.p89_hits.append((raw, defs[c]))
+                return defs[c][0]
+        return ""
 
     def _quantity(self, raw, unit_dimension="", axis=""):
         """The ontology part of the resolution: (id, reason)."""
@@ -429,7 +442,11 @@ class Importer:
                    quantity="", unit="", transform="", dimension="", denominator=None, reason="")
         uraw0 = a.get("unit_raw") or ""
         if not uraw0.strip():                                                   # P90b: the unit inside the label's bracket feeds unit resolution
-            m = re.search(r"[\(\[]([^()\[\]]*)[\)\]]\s*$", delatex(a.get("label_raw") or ""))
+            lab0 = delatex(a.get("label_raw") or "")
+            mt = TRANSFORM.match(lab0)
+            if mt:                                                              # 'ln(Plasma time (s))': the bracket inside the transform
+                lab0 = mt.group(2)
+            m = re.search(r"[\(\[]([^()\[\]]*)[\)\]]\s*$", lab0)
             if m and unit_of(m.group(1)):
                 uraw0 = m.group(1)
         urow0 = unit_of(uraw0)
@@ -446,7 +463,7 @@ class Importer:
         out["quantity"], out["dimension"] = q, e.get("dimension", "")
         if a.get("is_normalized") and a.get("normalization_denominator_symbol"):
             den = a["normalization_denominator_symbol"]
-            dq, _, _ = self.R.quantity(den)
+            dq, _, _ = self.R.quantity(den, "", self.defs)                       # P89: a denominator the paper defines ('cavity height' = h)
             sp = self.R.species_id(den) if not dq else ""
             if dq:
                 out["denominator"] = dict(symbol=den, quantity=dq)

@@ -1,12 +1,12 @@
 {
  "paper_id": "10.1021_acs.jpcc.9b08176",
- "key": "10.1021_acs.jpcc.9b08176",
+ "key": "art19",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-17T23:10:07",
+ "imported_at": "2026-10-18T00:16:44",
  "inventory": [
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig1A",
+   "id": "art19:fig1A",
    "figure": "1",
    "panel": "A",
    "panel_type": "schematic",
@@ -16,7 +16,7 @@
    "status": "inventory"
   },
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig1B",
+   "id": "art19:fig1B",
    "figure": "1",
    "panel": "B",
    "panel_type": "schematic",
@@ -26,7 +26,7 @@
    "status": "inventory"
   },
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig1C",
+   "id": "art19:fig1C",
    "figure": "1",
    "panel": "C",
    "panel_type": "schematic",
@@ -36,7 +36,7 @@
    "status": "inventory"
   },
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig2A",
+   "id": "art19:fig2A",
    "figure": "2",
    "panel": "A",
    "panel_type": "micrograph",
@@ -46,40 +46,1837 @@
    "status": "inventory"
   },
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig2B",
+   "id": "art19:fig2B",
    "figure": "2",
    "panel": "B",
    "panel_type": "plot",
    "content": "Normalized thickness profiles along the cavity depth for SiO2, TiO2, Al2O3, and HfO2 films",
    "quantities": [
+    "dimensionless_distance",
     "normalized_thickness"
    ],
    "flags": [],
-   "status": "unresolved axis"
+   "status": "imported"
   },
   {
-   "id": "10.1021_acs.jpcc.9b08176:fig3",
+   "id": "art19:fig3",
    "figure": "3",
    "panel": "",
    "panel_type": "plot",
    "content": "Film penetration versus the natural logarithm of plasma exposure time for SiO2 and TiO2",
-   "quantities": [],
+   "quantities": [
+    "time",
+    "coated_aspect_ratio"
+   ],
    "flags": [
     "F4"
    ],
-   "status": "unresolved axis"
+   "status": "imported"
   }
  ],
- "curves": [],
+ "curves": [
+  {
+   "id": "art19:fig2B#c1",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "SiO2, 3.8 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     22.7,
+     0.99
+    ],
+    [
+     52.6,
+     0.96
+    ],
+    [
+     87.1,
+     0.91
+    ],
+    [
+     127.3,
+     0.88
+    ],
+    [
+     179.0,
+     0.86
+    ],
+    [
+     225.0,
+     0.85
+    ],
+    [
+     259.5,
+     0.79
+    ],
+    [
+     294.0,
+     0.73
+    ],
+    [
+     322.7,
+     0.61
+    ],
+    [
+     345.7,
+     0.47
+    ],
+    [
+     368.7,
+     0.35
+    ],
+    [
+     385.9,
+     0.27
+    ],
+    [
+     414.7,
+     0.14
+    ],
+    [
+     437.6,
+     0.06
+    ],
+    [
+     449.1,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     22.7,
+     0.99
+    ],
+    [
+     52.6,
+     0.96
+    ],
+    [
+     87.1,
+     0.91
+    ],
+    [
+     127.3,
+     0.88
+    ],
+    [
+     179.0,
+     0.86
+    ],
+    [
+     225.0,
+     0.85
+    ],
+    [
+     259.5,
+     0.79
+    ],
+    [
+     294.0,
+     0.73
+    ],
+    [
+     322.7,
+     0.61
+    ],
+    [
+     345.7,
+     0.47
+    ],
+    [
+     368.7,
+     0.35
+    ],
+    [
+     385.9,
+     0.27
+    ],
+    [
+     414.7,
+     0.14
+    ],
+    [
+     437.6,
+     0.06
+    ],
+    [
+     449.1,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 4.4910000000000005,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c2",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "SiO2, 12 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     28.7,
+     0.99
+    ],
+    [
+     69.0,
+     0.95
+    ],
+    [
+     114.9,
+     0.91
+    ],
+    [
+     160.9,
+     0.89
+    ],
+    [
+     212.6,
+     0.88
+    ],
+    [
+     275.9,
+     0.87
+    ],
+    [
+     333.3,
+     0.87
+    ],
+    [
+     390.8,
+     0.85
+    ],
+    [
+     442.5,
+     0.82
+    ],
+    [
+     488.5,
+     0.77
+    ],
+    [
+     528.7,
+     0.69
+    ],
+    [
+     563.2,
+     0.57
+    ],
+    [
+     592.0,
+     0.44
+    ],
+    [
+     620.7,
+     0.31
+    ],
+    [
+     643.7,
+     0.18
+    ],
+    [
+     660.9,
+     0.07
+    ],
+    [
+     666.7,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     28.7,
+     0.99
+    ],
+    [
+     69.0,
+     0.95
+    ],
+    [
+     114.9,
+     0.91
+    ],
+    [
+     160.9,
+     0.89
+    ],
+    [
+     212.6,
+     0.88
+    ],
+    [
+     275.9,
+     0.87
+    ],
+    [
+     333.3,
+     0.87
+    ],
+    [
+     390.8,
+     0.85
+    ],
+    [
+     442.5,
+     0.82
+    ],
+    [
+     488.5,
+     0.77
+    ],
+    [
+     528.7,
+     0.69
+    ],
+    [
+     563.2,
+     0.57
+    ],
+    [
+     592.0,
+     0.44
+    ],
+    [
+     620.7,
+     0.31
+    ],
+    [
+     643.7,
+     0.18
+    ],
+    [
+     660.9,
+     0.07
+    ],
+    [
+     666.7,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 6.667000000000001,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c3",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "SiO2, 38 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     40.2,
+     0.97
+    ],
+    [
+     97.7,
+     0.93
+    ],
+    [
+     155.2,
+     0.91
+    ],
+    [
+     218.4,
+     0.9
+    ],
+    [
+     281.6,
+     0.9
+    ],
+    [
+     344.8,
+     0.89
+    ],
+    [
+     408.0,
+     0.88
+    ],
+    [
+     477.0,
+     0.86
+    ],
+    [
+     534.5,
+     0.84
+    ],
+    [
+     586.2,
+     0.81
+    ],
+    [
+     638.0,
+     0.77
+    ],
+    [
+     683.9,
+     0.7
+    ],
+    [
+     724.1,
+     0.59
+    ],
+    [
+     758.6,
+     0.47
+    ],
+    [
+     787.4,
+     0.34
+    ],
+    [
+     804.6,
+     0.24
+    ],
+    [
+     821.8,
+     0.15
+    ],
+    [
+     850.6,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     40.2,
+     0.97
+    ],
+    [
+     97.7,
+     0.93
+    ],
+    [
+     155.2,
+     0.91
+    ],
+    [
+     218.4,
+     0.9
+    ],
+    [
+     281.6,
+     0.9
+    ],
+    [
+     344.8,
+     0.89
+    ],
+    [
+     408.0,
+     0.88
+    ],
+    [
+     477.0,
+     0.86
+    ],
+    [
+     534.5,
+     0.84
+    ],
+    [
+     586.2,
+     0.81
+    ],
+    [
+     638.0,
+     0.77
+    ],
+    [
+     683.9,
+     0.7
+    ],
+    [
+     724.1,
+     0.59
+    ],
+    [
+     758.6,
+     0.47
+    ],
+    [
+     787.4,
+     0.34
+    ],
+    [
+     804.6,
+     0.24
+    ],
+    [
+     821.8,
+     0.15
+    ],
+    [
+     850.6,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 8.506,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c4",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "SiO2, 120 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     40.2,
+     0.95
+    ],
+    [
+     92.0,
+     0.94
+    ],
+    [
+     149.4,
+     0.92
+    ],
+    [
+     201.1,
+     0.9
+    ],
+    [
+     252.9,
+     0.91
+    ],
+    [
+     316.1,
+     0.89
+    ],
+    [
+     379.3,
+     0.9
+    ],
+    [
+     448.3,
+     0.89
+    ],
+    [
+     505.7,
+     0.87
+    ],
+    [
+     557.5,
+     0.86
+    ],
+    [
+     620.7,
+     0.82
+    ],
+    [
+     672.4,
+     0.79
+    ],
+    [
+     724.1,
+     0.75
+    ],
+    [
+     770.1,
+     0.72
+    ],
+    [
+     816.1,
+     0.67
+    ],
+    [
+     856.3,
+     0.59
+    ],
+    [
+     890.8,
+     0.49
+    ],
+    [
+     925.3,
+     0.37
+    ],
+    [
+     948.3,
+     0.27
+    ],
+    [
+     965.5,
+     0.16
+    ],
+    [
+     977.0,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     40.2,
+     0.95
+    ],
+    [
+     92.0,
+     0.94
+    ],
+    [
+     149.4,
+     0.92
+    ],
+    [
+     201.1,
+     0.9
+    ],
+    [
+     252.9,
+     0.91
+    ],
+    [
+     316.1,
+     0.89
+    ],
+    [
+     379.3,
+     0.9
+    ],
+    [
+     448.3,
+     0.89
+    ],
+    [
+     505.7,
+     0.87
+    ],
+    [
+     557.5,
+     0.86
+    ],
+    [
+     620.7,
+     0.82
+    ],
+    [
+     672.4,
+     0.79
+    ],
+    [
+     724.1,
+     0.75
+    ],
+    [
+     770.1,
+     0.72
+    ],
+    [
+     816.1,
+     0.67
+    ],
+    [
+     856.3,
+     0.59
+    ],
+    [
+     890.8,
+     0.49
+    ],
+    [
+     925.3,
+     0.37
+    ],
+    [
+     948.3,
+     0.27
+    ],
+    [
+     965.5,
+     0.16
+    ],
+    [
+     977.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 9.77,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c5",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "TiO2, 12 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     23.0,
+     0.93
+    ],
+    [
+     63.2,
+     0.9
+    ],
+    [
+     109.2,
+     0.86
+    ],
+    [
+     155.2,
+     0.83
+    ],
+    [
+     201.1,
+     0.81
+    ],
+    [
+     252.9,
+     0.78
+    ],
+    [
+     304.6,
+     0.74
+    ],
+    [
+     356.3,
+     0.7
+    ],
+    [
+     408.0,
+     0.64
+    ],
+    [
+     436.8,
+     0.55
+    ],
+    [
+     465.5,
+     0.46
+    ],
+    [
+     488.5,
+     0.36
+    ],
+    [
+     511.5,
+     0.26
+    ],
+    [
+     528.7,
+     0.15
+    ],
+    [
+     546.0,
+     0.05
+    ],
+    [
+     557.5,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     23.0,
+     0.93
+    ],
+    [
+     63.2,
+     0.9
+    ],
+    [
+     109.2,
+     0.86
+    ],
+    [
+     155.2,
+     0.83
+    ],
+    [
+     201.1,
+     0.81
+    ],
+    [
+     252.9,
+     0.78
+    ],
+    [
+     304.6,
+     0.74
+    ],
+    [
+     356.3,
+     0.7
+    ],
+    [
+     408.0,
+     0.64
+    ],
+    [
+     436.8,
+     0.55
+    ],
+    [
+     465.5,
+     0.46
+    ],
+    [
+     488.5,
+     0.36
+    ],
+    [
+     511.5,
+     0.26
+    ],
+    [
+     528.7,
+     0.15
+    ],
+    [
+     546.0,
+     0.05
+    ],
+    [
+     557.5,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 5.575,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c6",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "TiO2, 120 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     34.5,
+     0.94
+    ],
+    [
+     86.2,
+     0.91
+    ],
+    [
+     149.4,
+     0.87
+    ],
+    [
+     218.4,
+     0.84
+    ],
+    [
+     287.4,
+     0.81
+    ],
+    [
+     356.3,
+     0.78
+    ],
+    [
+     431.0,
+     0.76
+    ],
+    [
+     511.5,
+     0.73
+    ],
+    [
+     592.0,
+     0.69
+    ],
+    [
+     672.4,
+     0.64
+    ],
+    [
+     741.4,
+     0.6
+    ],
+    [
+     775.9,
+     0.52
+    ],
+    [
+     810.3,
+     0.45
+    ],
+    [
+     844.8,
+     0.38
+    ],
+    [
+     879.3,
+     0.29
+    ],
+    [
+     908.0,
+     0.17
+    ],
+    [
+     931.0,
+     0.06
+    ],
+    [
+     936.8,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     34.5,
+     0.94
+    ],
+    [
+     86.2,
+     0.91
+    ],
+    [
+     149.4,
+     0.87
+    ],
+    [
+     218.4,
+     0.84
+    ],
+    [
+     287.4,
+     0.81
+    ],
+    [
+     356.3,
+     0.78
+    ],
+    [
+     431.0,
+     0.76
+    ],
+    [
+     511.5,
+     0.73
+    ],
+    [
+     592.0,
+     0.69
+    ],
+    [
+     672.4,
+     0.64
+    ],
+    [
+     741.4,
+     0.6
+    ],
+    [
+     775.9,
+     0.52
+    ],
+    [
+     810.3,
+     0.45
+    ],
+    [
+     844.8,
+     0.38
+    ],
+    [
+     879.3,
+     0.29
+    ],
+    [
+     908.0,
+     0.17
+    ],
+    [
+     931.0,
+     0.06
+    ],
+    [
+     936.8,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 9.368,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c7",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "Al2O3, 120 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     11.5,
+     0.88
+    ],
+    [
+     23.0,
+     0.77
+    ],
+    [
+     34.5,
+     0.69
+    ],
+    [
+     46.0,
+     0.62
+    ],
+    [
+     57.5,
+     0.54
+    ],
+    [
+     69.0,
+     0.46
+    ],
+    [
+     80.5,
+     0.38
+    ],
+    [
+     92.0,
+     0.27
+    ],
+    [
+     103.4,
+     0.15
+    ],
+    [
+     114.9,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     11.5,
+     0.88
+    ],
+    [
+     23.0,
+     0.77
+    ],
+    [
+     34.5,
+     0.69
+    ],
+    [
+     46.0,
+     0.62
+    ],
+    [
+     57.5,
+     0.54
+    ],
+    [
+     69.0,
+     0.46
+    ],
+    [
+     80.5,
+     0.38
+    ],
+    [
+     92.0,
+     0.27
+    ],
+    [
+     103.4,
+     0.15
+    ],
+    [
+     114.9,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 1.149,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig2B#c8",
+   "figure": "2",
+   "panel": "B",
+   "series": {
+    "label_raw": "HfO2, 120 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Distance / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     5.7,
+     0.87
+    ],
+    [
+     11.5,
+     0.76
+    ],
+    [
+     17.2,
+     0.65
+    ],
+    [
+     23.0,
+     0.55
+    ],
+    [
+     28.7,
+     0.44
+    ],
+    [
+     34.5,
+     0.34
+    ],
+    [
+     40.2,
+     0.23
+    ],
+    [
+     46.0,
+     0.13
+    ],
+    [
+     51.7,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.0
+    ],
+    [
+     5.7,
+     0.87
+    ],
+    [
+     11.5,
+     0.76
+    ],
+    [
+     17.2,
+     0.65
+    ],
+    [
+     23.0,
+     0.55
+    ],
+    [
+     28.7,
+     0.44
+    ],
+    [
+     34.5,
+     0.34
+    ],
+    [
+     40.2,
+     0.23
+    ],
+    [
+     46.0,
+     0.13
+    ],
+    [
+     51.7,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 0.517,
+    "y": 0.01
+   },
+   "set": "art19:cmp:fig2B",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "B"
+   }
+  },
+  {
+   "id": "art19:fig3#c1",
+   "figure": "3",
+   "panel": "",
+   "series": {
+    "label_raw": "SiO_{2}",
+    "cls": "species",
+    "species": "sio2"
+   },
+   "x": {
+    "quantity": "time",
+    "unit": "s",
+    "transform": "ln",
+    "label_raw": "ln(Plasma time (s))",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "coated_aspect_ratio",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "PD^{50%} / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     2.857651118063164,
+     330.0
+    ],
+    [
+     11.023176380641601,
+     565.0
+    ],
+    [
+     35.87354084706276,
+     730.0
+    ],
+    [
+     120.30136866321547,
+     870.0
+    ]
+   ],
+   "points_raw": [
+    [
+     1.05,
+     330.0
+    ],
+    [
+     2.4,
+     565.0
+    ],
+    [
+     3.58,
+     730.0
+    ],
+    [
+     4.79,
+     870.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "y denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 1.174437175451523,
+    "y": 5.4
+   },
+   "set": "art19:cmp:fig3",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "3",
+    "panel": ""
+   }
+  },
+  {
+   "id": "art19:fig3#c2",
+   "figure": "3",
+   "panel": "",
+   "series": {
+    "label_raw": "TiO_{2}",
+    "cls": "species",
+    "species": "tio2"
+   },
+   "x": {
+    "quantity": "time",
+    "unit": "s",
+    "transform": "ln",
+    "label_raw": "ln(Plasma time (s))",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "coated_aspect_ratio",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "PD^{50%} / cavity height",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     11.023176380641601,
+     445.0
+    ],
+    [
+     120.30136866321547,
+     790.0
+    ]
+   ],
+   "points_raw": [
+    [
+     2.4,
+     445.0
+    ],
+    [
+     4.79,
+     790.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "y denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 1.0927819228257387,
+    "y": 3.45
+   },
+   "set": "art19:cmp:fig3",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "3",
+    "panel": ""
+   }
+  }
+ ],
  "values": [],
- "sets": [],
+ "sets": [
+  {
+   "id": "art19:cmp:fig2B",
+   "figure": "2",
+   "panel": "B",
+   "kind": "replicate",
+   "varied": "",
+   "varied_raw": "material and exposure time",
+   "members": [
+    "art19:fig2B#c1",
+    "art19:fig2B#c2",
+    "art19:fig2B#c3",
+    "art19:fig2B#c4",
+    "art19:fig2B#c5",
+    "art19:fig2B#c6",
+    "art19:fig2B#c7",
+    "art19:fig2B#c8"
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "label": "Fig. 2B replicates (material and exposure time)"
+  },
+  {
+   "id": "art19:cmp:fig3",
+   "figure": "3",
+   "panel": "",
+   "kind": "series",
+   "varied": "material",
+   "varied_raw": "material",
+   "members": [
+    "art19:fig3#c1",
+    "art19:fig3#c2"
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "y denominator",
+     "raw": "cavity height",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "cavity height"
+    }
+   },
+   "label": "Fig. 3 series (material)"
+  }
+ ],
  "derived": [],
- "p89": [],
+ "p89": [
+  {
+   "label": "cavity height",
+   "quantity": "feature_width",
+   "note": "the lateral trench's height",
+   "definition": "art19:s4.p10#3"
+  },
+  {
+   "label": "cavity height",
+   "quantity": "feature_width",
+   "note": "the lateral trench's height",
+   "definition": "art19:s4.p10#3"
+  },
+  {
+   "label": "cavity height",
+   "quantity": "feature_width",
+   "note": "the lateral trench's height",
+   "definition": "art19:s4.p10#3"
+  },
+  {
+   "label": "cavity height",
+   "quantity": "feature_width",
+   "note": "the lateral trench's height",
+   "definition": "art19:s4.p10#3"
+  }
+ ],
  "report": {
   "inventory": 6,
   "data_panels": 2,
+  "sets": 2,
+  "curves": 10,
   "derived": 0,
-  "unmapped": 3,
-  "resolved_p89": 0
+  "unmapped": 1,
+  "resolved_p89": 4
  }
 }
