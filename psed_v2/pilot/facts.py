@@ -495,8 +495,15 @@ def structure_classes(key):
     for r in _facts:
         if r["type"] == "setting" and r["quantity"] == "structure" and r["value_text"]:
             at.setdefault(_node_of(r["fact_id"], byid), r["value_text"])
+    def under_simulation(i):
+        x = byid.get(i, {}).get("parent", "")
+        while x in byid:
+            if byid[x]["type"] == "activity" and byid[x].get("kind") == "simulation":
+                return True
+            x = byid[x]["parent"]
+        return False
     for r in _facts:
-        if r["type"] != "entity" or "structure_class=" in r["qualifiers"]:
+        if r["type"] != "entity" or "structure_class=" in r["qualifiers"] or under_simulation(r["fact_id"]):   # a model run's geometry is a model input, not a specimen's structure (P78)
             continue
         x = r["fact_id"]
         while x in byid and x not in at:

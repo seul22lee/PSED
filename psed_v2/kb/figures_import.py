@@ -632,7 +632,7 @@ class Importer:
                     if why.startswith("definition:"):
                         why = ""
                     kind_only = all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or []) \
-                        or bool(re.search(r"\b(type|kind|model|dataset|method)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type'), not a quantity
+                        or bool(re.search(r"\b(type|kind|model|dataset|method|geometry|shape)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type', 'particle geometry'), not a quantity
                     if not sa_q and not kind_only:                                  # a series axis over kinds ('model', 'type': fitted vs measured) names no quantity
                         self.unm(pid, fig, pan, "series_axis", sa_raw, f"label_unresolved: {why}")
                 curves = []
