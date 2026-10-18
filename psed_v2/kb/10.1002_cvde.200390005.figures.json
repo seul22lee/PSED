@@ -1,12 +1,12 @@
 {
  "paper_id": "10.1002_cvde.200390005",
- "key": "10.1002_cvde.200390005",
+ "key": "gor03",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-17T22:36:54",
+ "imported_at": "2026-10-17T22:48:54",
  "inventory": [
   {
-   "id": "10.1002_cvde.200390005:fig1",
+   "id": "gor03:fig1",
    "figure": "1",
    "panel": "",
    "panel_type": "schematic",
@@ -16,21 +16,22 @@
    "status": "inventory"
   },
   {
-   "id": "10.1002_cvde.200390005:fig3",
+   "id": "gor03:fig3",
    "figure": "3",
    "panel": "",
    "panel_type": "plot",
    "content": "Predicted exposure needed for holes with aspect ratios from 1 to 2000",
    "quantities": [
-    "aspect_ratio"
+    "aspect_ratio",
+    "exposure"
    ],
    "flags": [
     "F4"
    ],
-   "status": "unresolved axis"
+   "status": "imported"
   },
   {
-   "id": "10.1002_cvde.200390005:fig2",
+   "id": "gor03:fig2",
    "figure": "2",
    "panel": "",
    "panel_type": "micrograph",
@@ -40,7 +41,7 @@
    "status": "inventory"
   },
   {
-   "id": "10.1002_cvde.200390005:fig4",
+   "id": "gor03:fig4",
    "figure": "4",
    "panel": "",
    "panel_type": "schematic",
@@ -52,16 +53,195 @@
    "status": "inventory"
   }
  ],
- "curves": [],
+ "curves": [
+  {
+   "id": "gor03:fig3#c1",
+   "figure": "3",
+   "panel": "",
+   "series": {
+    "label_raw": "",
+    "cls": "empty"
+   },
+   "x": {
+    "quantity": "aspect_ratio",
+    "unit": "1",
+    "transform": "log",
+    "label_raw": "log(Aspect Ratio)",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "exposure",
+    "unit": "Pa·s",
+    "transform": "log",
+    "label_raw": "log(Exposure, in Langmuirs)",
+    "unit_raw": "Langmuirs",
+    "definition": "gor03:s6.p7#5",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     1.0,
+     0.0029847077963620827
+    ],
+    [
+     1.7782794100389228,
+     0.0055577859943032075
+    ],
+    [
+     3.1622776601683795,
+     0.011882335757386722
+    ],
+    [
+     5.623413251903491,
+     0.029847077963620825
+    ],
+    [
+     10.0,
+     0.0841204950807883
+    ],
+    [
+     17.78279410038923,
+     0.2370837675052093
+    ],
+    [
+     31.622776601683793,
+     0.6996838021542021
+    ],
+    [
+     56.23413251903491,
+     2.113011302053007
+    ],
+    [
+     100.0,
+     6.681928436165523
+    ],
+    [
+     177.82794100389228,
+     21.130113020530068
+    ],
+    [
+     316.22776601683796,
+     66.81928436165522
+    ],
+    [
+     562.341325190349,
+     211.30113020530067
+    ],
+    [
+     1000.0,
+     668.1928436165523
+    ],
+    [
+     1412.537544622754,
+     1333.22
+    ],
+    [
+     1995.2623149688789,
+     2660.123623562809
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.35
+    ],
+    [
+     0.25,
+     1.62
+    ],
+    [
+     0.5,
+     1.95
+    ],
+    [
+     0.75,
+     2.35
+    ],
+    [
+     1.0,
+     2.8
+    ],
+    [
+     1.25,
+     3.25
+    ],
+    [
+     1.5,
+     3.72
+    ],
+    [
+     1.75,
+     4.2
+    ],
+    [
+     2.0,
+     4.7
+    ],
+    [
+     2.25,
+     5.2
+    ],
+    [
+     2.5,
+     5.7
+    ],
+    [
+     2.75,
+     6.2
+    ],
+    [
+     3.0,
+     6.7
+    ],
+    [
+     3.15,
+     7.0
+    ],
+    [
+     3.3,
+     7.3
+    ]
+   ],
+   "conditions": {},
+   "conditions_raw": {},
+   "flags": [
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 19.94262314968879,
+    "y": 26.60120638855013
+   },
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "3",
+    "panel": ""
+   }
+  }
+ ],
  "values": [],
  "sets": [],
  "derived": [],
- "p89": [],
+ "p89": [
+  {
+   "label": "Exposure, in Langmuirs",
+   "quantity": "exposure",
+   "note": "",
+   "definition": "gor03:s6.p7#5"
+  }
+ ],
  "report": {
   "inventory": 4,
   "data_panels": 1,
+  "curves": 1,
   "derived": 0,
-  "unmapped": 1,
-  "resolved_p89": 0
+  "unmapped": 0,
+  "resolved_p89": 1
  }
 }

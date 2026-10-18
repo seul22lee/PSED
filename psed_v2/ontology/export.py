@@ -12,6 +12,7 @@ pending id is emitted into the vocabulary provisionally so that the data keeps p
 Needs PyYAML.
 """
 import csv
+import re
 import pprint
 import sys
 from pathlib import Path
@@ -70,8 +71,9 @@ def build(onto, pmap):
                  definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=True,
                  dimension=unit_dimension(r.get("unit", "")),
                  category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
-        if r["kind"] == "species":
-            e.update(kind=r.get("class") or "molecule", formula=r["id"].upper() if r["id"] == "sicl4" else "", aliases=[r["id"].upper()])
+        if r["kind"] == "species":                                              # a pending species: its formula is its first formula-like alias, its aliases the column's
+            als = [a for a in (r.get("aliases") or "").split("|") if a] or [r["id"].upper()]
+            e.update(kind=r.get("class") or "molecule", formula=next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), als[0]), aliases=als)
         if r["kind"] == "structure":
             e["class"] = r.get("class", "")
         if r["kind"] == "model":
