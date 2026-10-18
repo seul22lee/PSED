@@ -1118,22 +1118,30 @@ def check_calls():
         tool_calls, given, seen = [], {}, {}
         res = [ask.answer_call(dict(id=str(n), name=name, arguments=dict(args)), tool_calls, given, seen) for n, (name, args) in enumerate(calls, 1)]
         return res, RM.process(tool_calls)
-    cap_msg = f"error: the limit of {ask.TOOL_CAP} tool calls is reached"
-    res, p = play(bad(4) + valid[:ask.TOOL_CAP + 1])                          # four errors, then eleven valid calls
-    if not all(r["error"] for r in res[:4]) or p["errors"] != 4:
-        err.append(f"calls: four malformed calls should be four error calls, got errors {p['errors']} (P75)")
-    if any(r["error"] for r in res[4:4 + ask.TOOL_CAP]) or p["executed"] != ask.TOOL_CAP:
-        err.append(f"calls: {ask.TOOL_CAP} executed calls must remain available after four errors, got executed {p['executed']} (P75)")
-    if res[4 + ask.TOOL_CAP]["content"] != cap_msg or p["wall_hit"] != "none":
-        err.append(f"calls: the call after {ask.TOOL_CAP} executed ones should get the cap message, got {res[4 + ask.TOOL_CAP]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
-    res, p = play(bad(ask.ERROR_WALL) + valid[:1])                             # five errors, then a valid call: the error wall
-    if f"wall of {ask.ERROR_WALL} calls that returned an error" not in res[-1]["content"] or p["wall_hit"] != "errors" or p["executed"] != 0:
-        err.append(f"calls: the call after {ask.ERROR_WALL} errors should be refused naming the error wall, got {res[-1]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
-    n_id = ask.TOTAL_WALL - 4 - ask.TOOL_CAP
-    res, p = play(bad(4) + valid[:ask.TOOL_CAP] + valid[:n_id] + valid[ask.TOOL_CAP:ask.TOOL_CAP + 1])   # 4 errors + 10 executed + 6 identical = 20, then one more
-    if p["identical"] != n_id or p["calls"] != ask.TOTAL_WALL + 1 or f"wall of {ask.TOTAL_WALL} calls" not in res[-1]["content"] or p["wall_hit"] != "total":
-        err.append(f"calls: the call after {ask.TOTAL_WALL} calls in all should be refused naming the total wall, got {res[-1]['content'][:80]!r}, wall {p['wall_hit']}, identical {p['identical']} (P75)")
-    print(f"== calls (P75): cap {ask.TOOL_CAP} executed calls; walls {ask.TOTAL_WALL} calls in all and {ask.ERROR_WALL} error calls; 3 scripted questions, {4 + ask.TOOL_CAP + 1 + ask.ERROR_WALL + 1 + ask.TOTAL_WALL + 1} calls")
+    def scripted(cap):
+        """The three scripted questions at one cap (ask.set_max_calls): cap executed calls, total wall 2·cap, error wall 5."""
+        C = ask.set_max_calls(cap)
+        cap_msg = f"error: the limit of {C['cap']} tool calls is reached"
+        res, p = play(bad(4) + valid[:C["cap"] + 1])                            # four errors, then cap + 1 valid calls
+        if not all(r["error"] for r in res[:4]) or p["errors"] != 4:
+            err.append(f"calls (cap {cap}): four malformed calls should be four error calls, got errors {p['errors']} (P75)")
+        if any(r["error"] for r in res[4:4 + C["cap"]]) or p["executed"] != C["cap"]:
+            err.append(f"calls (cap {cap}): {C['cap']} executed calls must remain available after four errors, got executed {p['executed']} (P75)")
+        if res[4 + C["cap"]]["content"] != cap_msg or p["wall_hit"] != "none":
+            err.append(f"calls (cap {cap}): the call after {C['cap']} executed ones should get the cap message, got {res[4 + C['cap']]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
+        res, p = play(bad(C["errors"]) + valid[:1])                               # five errors, then a valid call: the error wall
+        if f"wall of {C['errors']} calls that returned an error" not in res[-1]["content"] or p["wall_hit"] != "errors" or p["executed"] != 0 or C["errors"] != 5:
+            err.append(f"calls (cap {cap}): the call after {C['errors']} errors should be refused naming the error wall (5 whatever the cap), got {res[-1]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
+        n_id = C["total"] - 4 - C["cap"]
+        res, p = play(bad(4) + valid[:C["cap"]] + valid[:n_id] + valid[C["cap"]:C["cap"] + 1])   # 4 errors + cap executed + identical up to 2·cap, then one more
+        if C["total"] != 2 * C["cap"] or p["identical"] != n_id or p["calls"] != C["total"] + 1 or f"wall of {C['total']} calls" not in res[-1]["content"] or p["wall_hit"] != "total":
+            err.append(f"calls (cap {cap}): the call after {C['total']} calls in all should be refused naming the total wall (2 × cap), got {res[-1]['content'][:80]!r}, wall {p['wall_hit']}, identical {p['identical']} (P75)")
+        return C
+    try:
+        c10 = scripted(ask.TOOL_CAP); c20 = scripted(20)                         # Directive 10′a: the default and N = 20; the walls scale (cap N, total 2N, errors 5)
+    finally:
+        ask.set_max_calls(ask.TOOL_CAP)
+    print(f"== calls (P75): cap {c10['cap']} executed calls (default) and {c20['cap']} (--max-calls 20); walls {c10['total']} / {c20['total']} calls in all and {c10['errors']} error calls; 6 scripted questions")
     return err
 
 

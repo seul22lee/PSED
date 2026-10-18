@@ -142,6 +142,8 @@ def report(path, arm="kb", summary=True, stability_only=False):
                 print(f"  {a:5s} · {q[:70]:70s} · numbers {v['numbers']:.2f} · papers {v['papers']:.2f} · first sentence {v['first_sentence']:.2f} · stability {v['stability']:.2f}")
         vals = [v["stability"] for v in stab.values() if v["stability"] is not None]
         print(f"  mean stability {sum(vals) / len(vals):.2f} over {len(vals)} (question, arm) pairs")
+    caps = sorted({r.get("max_calls", 10) for r in recs})
+    print(f"max_calls (executed-call cap per question, P75 default 10): {', '.join(map(str, caps))}; total wall 2× the cap, error wall 5; executed, refused and errors as in P74/P75")
     if stability_only:
         return []
     if summary:

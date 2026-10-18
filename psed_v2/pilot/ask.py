@@ -4,16 +4,16 @@ knowledge base dumped into the prompt, selectable with --arms).
 
     python3 psed_v2/pilot/ask.py "question" [--model vendor:model] [--arms model,text,kb,dump]  # -> pilot/runs/asks.jsonl
     python3 psed_v2/pilot/ask.py --questions FILE --out RUNS.jsonl [--model vendor:model] [--arms model,text,kb]
-                                 [--max-cost 20] [--max-calls 200]                            # -> RUNS.jsonl, RUNS.summary.csv
+                                 [--max-cost 20] [--max-model-calls 200] [--max-calls 10] [--repeat N]   # -> RUNS.jsonl, RUNS.summary.csv
 
 Arms (one model, its default settings, the same for every arm; the arms of a question run in parallel; default model, text, kb):
   model  Model only: the question, no documents, no tools.
   text   Paper text: every element of the three papers as "[id] text" in the system prompt (a table is one piece,
          <paper>:tabN, holding its caption and its markdown; figure panels have no text and are left out).
   kb     Knowledge base: five tools over query.py (tools.py: concept, search, values, detail, source); each returns plain text, one line per value or row,
-         starting with its id in square brackets (format only; the tool layer computes nothing). At most 10 executed tool calls, about 2,000 tokens each, no line over 300 characters;
+         starting with its id in square brackets (format only; the tool layer computes nothing). At most N executed tool calls (--max-calls, default 10 = P75), about 2,000 tokens each, no line over 300 characters;
          a call whose normalized arguments equal an earlier call's gets one line, 'identical to call N' (P69); an error or an identical call costs nothing
-         toward the 10, and two walls end a question's calls: 20 calls in all, 5 calls that returned an error (P75).
+         toward the N, and two walls end a question's calls: 2N calls in all, 5 calls that returned an error (P75); the record stores max_calls.
   dump   KB dump: the whole knowledge base serialized once (dump.py: the L0 map, every activity, entity and cited work with its settings and
          results, the comparison sets, the claims, the caveats once by id) in the system prompt, no tools (P71).
 The models cite by writing ids in square brackets; nothing vendor-specific changes what a model sees (providers.py).
@@ -43,9 +43,19 @@ ARMS = ["model", "text", "kb", "dump"]
 DEFAULT_ARMS = ["model", "text", "kb"]
 ARM_NAMES = {"model": "Model only", "text": "Paper text", "kb": "Knowledge base", "dump": "KB dump"}
 TEXT_LIMIT = 900_000    # tokens (chars/4) the Paper text arm's prompt may reach; above it the arm refuses before any call (Directive 9′)
-TOOL_CAP = 10           # executed calls per question (P44); an error or an identical call costs nothing toward it (P75)
-TOTAL_WALL = 20         # every call of a question, executed or not (P75)
-ERROR_WALL = 5          # calls of a question that returned an error (P75)
+TOOL_CAP = 10           # executed calls per question (P44), the P75 default; an error or an identical call costs nothing toward it
+TOTAL_WALL = 20         # every call of a question, executed or not (P75): twice the cap
+ERROR_WALL = 5          # calls of a question that returned an error (P75); fixed whatever the cap
+CAPS = dict(cap=TOOL_CAP, total=TOTAL_WALL, errors=ERROR_WALL)   # the run's values (Directive 10′a: --max-calls N sets cap N, total 2N)
+
+
+def set_max_calls(n):
+    """The executed-call cap of a run (--max-calls, default TOOL_CAP = P75): cap n, total wall 2n, error wall unchanged."""
+    n = int(n)
+    if n < 1:
+        raise ValueError("--max-calls must be at least 1")
+    CAPS.update(cap=n, total=2 * n, errors=ERROR_WALL)
+    return dict(CAPS)
 
 # ---------------------------------------------------------------------------------------------------------------- prompts (fixed)
 SHARED = """You answer questions from atomic layer deposition (ALD) researchers about {n} papers:
@@ -58,7 +68,8 @@ Keep the answer under 400 words, tables included. Give the values that answer th
 ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
     "text": "The full text of the papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
-    "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool.",
+    "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool. "
+          "Your budget: at most {cap} executed tool calls for this question (a call that returns an error or repeats an earlier call does not count); after {total} calls in all, or {errors} calls that returned an error, the tools stop answering and you answer from what you have.",
     "dump": "The whole structured knowledge base built from the papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
 
@@ -125,7 +136,7 @@ def system_prompt(arm):
     s = SHARED.format(papers=paper_lines(), n=len(Q.KEY))
     if arm == "kb":
         s += "\n\n" + CN.l0_map() + "\n\n" + CN.DESCEND
-    s += "\n\n" + ARM_PROMPT[arm]
+    s += "\n\n" + (ARM_PROMPT[arm].format(**CAPS) if arm == "kb" else ARM_PROMPT[arm])   # the kb preamble states the run's actual budget (P75, --max-calls)
     if arm == "dump":
         s += "\n\n" + dump_text()
     if arm == "text":
@@ -441,18 +452,18 @@ def answer_call(c, tool_calls, given, seen_calls):
     the result for the model; the record (name, arguments, results, error, chars, tokens, the full output) goes on tool_calls."""
     key = RM.normalized(c["name"], c["arguments"])
     n = RM.process(tool_calls)
-    if n["calls"] >= TOTAL_WALL:
-        msg = (f"error: the wall of {TOTAL_WALL} calls in this question is reached ({n['executed']} executed, {n['errors']} errors, "
+    if n["calls"] >= CAPS["total"]:
+        msg = (f"error: the wall of {CAPS['total']} calls in this question is reached ({n['executed']} executed, {n['errors']} errors, "
                f"{n['identical']} identical); answer from what you have")
         rec, err = dict(results=0, error="wall:total", chars=0, output=msg), True
     elif key in seen_calls:
         msg = f"{RM.DUPLICATE}{seen_calls[key]}"
         rec, err = dict(results=0, error=msg, chars=len(msg), output=msg), False
-    elif n["errors"] >= ERROR_WALL:
-        msg = f"error: the wall of {ERROR_WALL} calls that returned an error is reached in this question; answer from what you have"
+    elif n["errors"] >= CAPS["errors"]:
+        msg = f"error: the wall of {CAPS['errors']} calls that returned an error is reached in this question; answer from what you have"
         rec, err = dict(results=0, error="wall:errors", chars=0, output=msg), True
-    elif n["executed"] >= TOOL_CAP:
-        msg = f"error: the limit of {TOOL_CAP} tool calls is reached"
+    elif n["executed"] >= CAPS["cap"]:
+        msg = f"error: the limit of {CAPS['cap']} tool calls is reached"
         rec, err = dict(results=0, error="cap", chars=0, output=msg), True
     else:
         seen_calls[key] = len(tool_calls) + 1
@@ -508,7 +519,7 @@ def run_arm(arm, question, model, run=1):
             tot = sum(x["chars"] for x in batch_) or 1
             for x in batch_:
                 x["tokens"] = round(max(grow, 0) * x["chars"] / tot) if grow > 0 else round(x["chars"] / 4)
-            if calls > TOTAL_WALL + 10:
+            if calls > CAPS["total"] + 10:
                 break
         text = t.text
     except Exception as e:
@@ -517,7 +528,7 @@ def run_arm(arm, question, model, run=1):
     nc = number_check(text, arm, given)
     proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
     kc = kind_check(text, given)                                              # P72: the stated kind of every citation against the record's
-    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, run=run, answer=text,
+    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, run=run, max_calls=CAPS["cap"], answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
                 number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, kind_check=kc, process=proc, words=words(text),
                 check_line=check_line(nc, words(text)) + f" · {kc['mismatches']} kind mismatches" + process_line(proc), usage=usage, model_calls=calls, retries=retries,
@@ -547,7 +558,7 @@ def last_records(question, model, path=None):
     return [last[a] for a in ARMS if a in last]
 
 
-SUMMARY = ["question", "run", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
+SUMMARY = ["question", "run", "max_calls", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
            "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens",
            "output_tokens", "cache_read_tokens", "cost", "seconds", "error", "homeless_records", "stability"]
 
@@ -557,7 +568,7 @@ def summary_row(r):
     metrics (recomputed from the record's tool calls and cited ids: run_metrics.metrics_of, P74), words, tokens, cost."""
     nc, p = r["number_check"], RM.metrics_of(r)
     kc = r.get("kind_check") or kind_check(r["answer"], {i: v["text"] for i, v in r.get("cited", {}).items()})
-    return dict(question=r["question"], run=r.get("run", 1), arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
+    return dict(question=r["question"], run=r.get("run", 1), max_calls=r.get("max_calls", TOOL_CAP), arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
                 not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], kind_mismatches=kc["mismatches"], tool_calls=p["calls"],
                 executed=p["executed"], refused=p["refused"], duplicates=p["duplicates"], errors=p["errors"], identical=p["identical"], wall_hit=p["wall_hit"],
                 tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
@@ -604,13 +615,15 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("question", nargs="?")
     ap.add_argument("--questions"); ap.add_argument("--out"); ap.add_argument("--model"); ap.add_argument("--arms", default="model,text,kb")
-    ap.add_argument("--max-cost", type=float, default=20.0); ap.add_argument("--max-calls", type=int, default=200)
+    ap.add_argument("--max-cost", type=float, default=20.0); ap.add_argument("--max-model-calls", type=int, default=200, help="a batch's model-call limit when the model has no price row")
+    ap.add_argument("--max-calls", type=int, default=TOOL_CAP, help=f"executed tool calls per question (P75 default {TOOL_CAP}); the total-call wall is twice it, the error wall stays {ERROR_WALL}")
     ap.add_argument("--repeat", type=int, default=1, help="run the question file N times into one jsonl, each record with its run index (P115)")
     ap.add_argument("--size", action="store_true", help="print the text and dump arms' prompt sizes (tokens as chars/4) and exit; no model call")
     ap.add_argument("--kind-check", metavar="RUNS.jsonl", help="the kind check (P72) on the stored answers of a run file; no model call")
     ap.add_argument("--recost", metavar="RUNS.jsonl", help="the cost of a run file's records recomputed from their token counts with prices.csv (P73); no model call")
     a = ap.parse_args()
     model, arms = a.model or P.default_model(), a.arms.split(",")
+    set_max_calls(a.max_calls)
     if a.size:
         print("\n".join(size_lines()))
     elif a.kind_check:
@@ -618,7 +631,7 @@ if __name__ == "__main__":
     elif a.recost:
         recost(a.recost)
     elif a.questions:
-        batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_calls, a.repeat)
+        batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_model_calls, a.repeat)
     elif a.question:
         for r in ask(a.question, model, arms):
             print(f"== {ARM_NAMES[r['arm']]} ({r['model']}) · {r['check_line']} · {r['usage']['input']} in / {r['usage']['output']} out tokens · "
