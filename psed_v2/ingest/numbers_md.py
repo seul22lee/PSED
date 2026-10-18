@@ -265,7 +265,7 @@ def block(pids, judged):
 
 
 FIG_COLS = ["captioned figures", "panels: plot", "spectrum", "micrograph", "photo", "schematic", "map", "table_image", "other", "points", "peaks", "cells", "tokens in", "tokens out",
-            "flags F1", "F2", "F3", "F4", "F5", "F6", "verdicts ok", "wrong_axis", "wrong_points", "missed_series", "wrong_type", "unreadable", "repeat: series agreeing"]
+            "flags F1", "F2", "F3", "F4", "F5", "F6", "verdicts ok", "wrong_axis", "wrong_points", "missed_series", "wrong_type", "unreadable", "repeat: median / p90 distance (series)"]
 PANEL_TYPES = ["plot", "spectrum", "micrograph", "photo", "schematic", "map", "table_image", "other"]
 VERDICTS = ["ok", "wrong_axis", "wrong_points", "missed_series", "wrong_type", "unreadable"]
 
@@ -278,7 +278,7 @@ def figures_rows():
     V = Counter()
     for v in ans:
         V[(v["paper_id"], v["verdict"])] += 1
-    rows = []
+    rows, rep_all, rep_series = [], [], [0]
     for d in sorted(FINAL.iterdir()):
         f = d / "figures.json"
         if not f.exists():
@@ -296,14 +296,15 @@ def figures_rows():
                 cls += len(pn.get("cells") or [])
         rep = ""
         r = d / "figures_repeat.json"
-        if r.exists():
-            rj = json.load(open(r)); a = sum(c["agreeing"] for c in rj.get("comparison", [])); t = sum(c["series"] for c in rj.get("comparison", []))
-            rep = f"{a} of {t}"
+        if r.exists():                                                           # P104: the interpolation distance over the paper's repeat sample
+            rj = json.load(open(r)); dist = [x for c in rj.get("comparison", []) for row in c.get("rows", []) for x in row.get("distances", [])]
+            ns = sum(len(c.get("rows", [])) for c in rj.get("comparison", []))
+            rep = f"{statistics.median(dist):.4f} / {sorted(dist)[max(0, -(-9 * len(dist) // 10) - 1)]:.4f} ({ns})" if dist else ""
+            rep_all.extend(dist); rep_series[0] += ns
         rows.append([pid, len(fj["figures"])] + [P[t] for t in PANEL_TYPES] + [pts, pks, cls, ti, to] + [F[f"F{i}"] for i in range(1, 7)] + [V[(pid, v)] for v in VERDICTS] + [rep])
     if rows:
         tot = ["**total**"] + [sum(r[i] for r in rows) for i in range(1, len(FIG_COLS))]
-        a = sum(int(r[-1].split(" of ")[0]) for r in rows if r[-1]); t = sum(int(r[-1].split(" of ")[1]) for r in rows if r[-1])
-        tot.append(f"{a} of {t}" if t else "")
+        tot.append(f"{statistics.median(rep_all):.4f} / {sorted(rep_all)[max(0, -(-9 * len(rep_all) // 10) - 1)]:.4f} ({rep_series[0]})" if rep_all else "")
         rows.append(tot)
     return rows
 
@@ -338,7 +339,7 @@ def main():
         L.append(f"\n## Figure stage (VLM; ingest/figures.py, {len(fr) - 1} papers with a figures.json)\n")
         L.append("Per paper: the captioned figures sent (structure.json captions of kind figure with caption text and images), the panels returned by type, the points read,\n"
                  "the tokens (in: images and prompt; out: the response with the model's reasoning tokens), the rule flags F1-F6 (figures.json `flags`, counted per\n"
-                 "figure and kind), the verdicts of `answers/figures.json` on every plot/spectrum panel, and the repeat agreement (series agreeing of series compared,\n"
+                 "figure and kind), the verdicts of `answers/figures.json` on every plot/spectrum panel, and the repeat distance (P104: median / 90th percentile of each first-run point's distance to the second-run polyline, normalised by the axis ranges; series compared in brackets,\n"
                  "figures_repeat.json). Captioned figures and unnumbered pictures are not the same count as the Figure captions row above: pictures without caption text are never sent.\n")
         L.append("| paper | " + " | ".join(FIG_COLS) + " |\n|---|" + "---|" * len(FIG_COLS))
         for r in fr:

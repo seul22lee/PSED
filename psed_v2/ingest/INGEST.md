@@ -75,9 +75,10 @@ panel letters, ranges expanded, differ from the panels returned), F2 out-of-rang
 tolerance), F3 duplicate-x (one series of a plot, two points at one x), F4 unit-missing (unit_raw empty while label_raw holds a
 bracket), F5 unreadable (no valid JSON or schema: the figure keeps raw_response and no panels), F6 empty-plot (a plot without series or
 with a series under 2 points). `--repeat` reads 10 % of the figures with a plot, spectrum or map panel again (at least 12, fixed seed 20261017) into
-`figures_repeat.json`: a series agrees when 80 % of its first-run points have a second-run point within 2 % of both axis ranges, matched
-by panel and label (a spectrum's peak list is one series matched on x, a map's cells one series matched on x, y and value); the share of agreeing series and the median point deviation
-are printed. The review page `reports/figures.html` (`report_figures.py`) shows each crop beside the extracted series re-plotted on the
+`figures_repeat.json`; the repeat metric (P104) is the interpolation distance: each first-run point's distance to the second run's
+polyline (same panel and label; a spectrum's peak list is one series on x, a map's cells one series matched on x, y and value), x and
+y normalised by the axis ranges; the median and 90th percentile per series and over the sample are stored and printed (a series the
+second run lacks counts every point as 1.0); `--recompare` recomputes the stored comparisons without a call. The review page `reports/figures.html` (`report_figures.py`) shows each crop beside the extracted series re-plotted on the
 printed ranges; every plot, spectrum and map-with-data panel of the 12 papers was judged there into `answers/figures.json`
 (paper_id, figure, panel, verdict ok | wrong_axis | wrong_points | missed_series | wrong_type | unreadable, note). A verdict never
 edits a figures.json; a systematic fault changes a rule, the prompt or the parser, after which all 12 papers are rerun with --redo.

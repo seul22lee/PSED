@@ -121,21 +121,21 @@ in no total. One recorded number names its origin (the kinds of the unmatched pa
 
 Per paper: the captioned figures sent (structure.json captions of kind figure with caption text and images), the panels returned by type, the points read,
 the tokens (in: images and prompt; out: the response with the model's reasoning tokens), the rule flags F1-F6 (figures.json `flags`, counted per
-figure and kind), the verdicts of `answers/figures.json` on every plot/spectrum panel, and the repeat agreement (series agreeing of series compared,
+figure and kind), the verdicts of `answers/figures.json` on every plot/spectrum panel, and the repeat distance (P104: median / 90th percentile of each first-run point's distance to the second-run polyline, normalised by the axis ranges; series compared in brackets,
 figures_repeat.json). Captioned figures and unnumbered pictures are not the same count as the Figure captions row above: pictures without caption text are never sent.
 
-| paper | captioned figures | panels: plot | spectrum | micrograph | photo | schematic | map | table_image | other | points | peaks | cells | tokens in | tokens out | flags F1 | F2 | F3 | F4 | F5 | F6 | verdicts ok | wrong_axis | wrong_points | missed_series | wrong_type | unreadable | repeat: series agreeing |
+| paper | captioned figures | panels: plot | spectrum | micrograph | photo | schematic | map | table_image | other | points | peaks | cells | tokens in | tokens out | flags F1 | F2 | F3 | F4 | F5 | F6 | verdicts ok | wrong_axis | wrong_points | missed_series | wrong_type | unreadable | repeat: median / p90 distance (series) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 10.1002_cvde.200390005 | 4 | 1 | 0 | 1 | 0 | 2 | 0 | 0 | 0 | 15 | 0 | 0 | 11079 | 6985 | 1 | 0 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |  |
-| 10.1021_acs.chemmater.2c01154 | 9 | 1 | 5 | 4 | 1 | 1 | 5 | 0 | 0 | 122 | 25 | 64 | 26755 | 21732 | 0 | 2 | 0 | 1 | 0 | 0 | 8 | 0 | 0 | 0 | 0 | 0 | 3 of 3 |
+| 10.1021_acs.chemmater.2c01154 | 9 | 1 | 5 | 4 | 1 | 1 | 5 | 0 | 0 | 122 | 25 | 64 | 26755 | 21732 | 0 | 2 | 0 | 1 | 0 | 0 | 8 | 0 | 0 | 0 | 0 | 0 | 0.0000 / 0.0000 (3) |
 | 10.1021_acs.jpcc.9b08176 | 3 | 2 | 0 | 1 | 0 | 3 | 0 | 0 | 0 | 138 | 0 | 0 | 9265 | 5452 | 0 | 0 | 0 | 1 | 0 | 0 | 2 | 0 | 0 | 0 | 0 | 0 |  |
-| 10.1021_cm0303080 | 13 | 16 | 0 | 4 | 0 | 2 | 5 | 0 | 0 | 584 | 0 | 0 | 40332 | 41711 | 0 | 3 | 0 | 1 | 0 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 of 0 |
-| 10.1039_d0cp03358h | 11 | 18 | 0 | 5 | 0 | 9 | 0 | 0 | 0 | 1162 | 0 | 0 | 31919 | 31532 | 2 | 7 | 0 | 0 | 0 | 0 | 15 | 0 | 2 | 1 | 0 | 0 | 4 of 33 |
+| 10.1021_cm0303080 | 13 | 16 | 0 | 4 | 0 | 2 | 5 | 0 | 0 | 584 | 0 | 0 | 40332 | 41711 | 0 | 3 | 0 | 1 | 0 | 0 | 16 | 0 | 0 | 0 | 0 | 0 |  |
+| 10.1039_d0cp03358h | 11 | 18 | 0 | 5 | 0 | 9 | 0 | 0 | 0 | 1162 | 0 | 0 | 31919 | 31532 | 2 | 7 | 0 | 0 | 0 | 0 | 15 | 0 | 2 | 1 | 0 | 0 | 0.0062 / 0.0186 (33) |
 | 10.1039_d1cp04758b | 7 | 23 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 722 | 0 | 0 | 21270 | 24873 | 0 | 0 | 0 | 10 | 0 | 0 | 21 | 0 | 0 | 2 | 0 | 0 |  |
-| 10.1039_d3cp05639b | 8 | 32 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 1185 | 0 | 0 | 23635 | 35483 | 1 | 0 | 53 | 1 | 0 | 0 | 32 | 0 | 0 | 0 | 0 | 0 | 4 of 16 |
-| 10.1063_1.5028178 | 7 | 6 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 586 | 0 | 0 | 20505 | 18615 | 0 | 0 | 2 | 1 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 6 of 15 |
+| 10.1039_d3cp05639b | 8 | 32 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 1185 | 0 | 0 | 23635 | 35483 | 1 | 0 | 53 | 1 | 0 | 0 | 32 | 0 | 0 | 0 | 0 | 0 | 0.0043 / 0.0339 (16) |
+| 10.1063_1.5028178 | 7 | 6 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 586 | 0 | 0 | 20505 | 18615 | 0 | 0 | 2 | 1 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0.0047 / 1.0000 (15) |
 | 10.1116_1.4903941 | 6 | 2 | 0 | 12 | 0 | 2 | 0 | 1 | 0 | 169 | 0 | 0 | 17900 | 9985 | 1 | 0 | 1 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 0 | 0 |  |
-| 10.1116_6.0002804 | 10 | 15 | 1 | 4 | 0 | 0 | 4 | 0 | 0 | 515 | 4 | 0 | 30832 | 36786 | 1 | 0 | 0 | 0 | 0 | 1 | 19 | 0 | 0 | 0 | 0 | 0 | 5 of 5 |
-| 10.1116_6.0002993 | 4 | 4 | 8 | 6 | 0 | 0 | 3 | 0 | 0 | 88 | 4 | 0 | 12568 | 13262 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 6 | 0 | 0 | 1 of 3 |
+| 10.1116_6.0002804 | 10 | 15 | 1 | 4 | 0 | 0 | 4 | 0 | 0 | 515 | 4 | 0 | 30832 | 36786 | 1 | 0 | 0 | 0 | 0 | 1 | 19 | 0 | 0 | 0 | 0 | 0 | 0.0015 / 0.0036 (5) |
+| 10.1116_6.0002993 | 4 | 4 | 8 | 6 | 0 | 0 | 3 | 0 | 0 | 88 | 4 | 0 | 12568 | 13262 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 6 | 0 | 0 | 0.0019 / 0.0067 (3) |
 | 10.1116_6.0003182 | 6 | 10 | 1 | 3 | 4 | 2 | 0 | 0 | 0 | 430 | 0 | 0 | 19441 | 13137 | 0 | 0 | 12 | 0 | 0 | 0 | 11 | 0 | 0 | 0 | 0 | 0 |  |
-| **total** | 88 | 130 | 15 | 40 | 5 | 28 | 17 | 1 | 0 | 5716 | 33 | 64 | 265501 | 259553 | 6 | 12 | 68 | 16 | 0 | 1 | 142 | 0 | 2 | 9 | 0 | 0 | 23 of 75 |
+| **total** | 88 | 130 | 15 | 40 | 5 | 28 | 17 | 1 | 0 | 5716 | 33 | 64 | 265501 | 259553 | 6 | 12 | 68 | 16 | 0 | 1 | 142 | 0 | 2 | 9 | 0 | 0 | 0.0036 / 0.0294 (75) |

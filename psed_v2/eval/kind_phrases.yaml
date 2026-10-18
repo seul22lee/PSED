@@ -1,0 +1,56 @@
+# P102: how an answer's sentence may word the kind of a cited record (pilot/ask.py kind_check reads this; the record kinds are the
+# ontology's kind vocabulary). Each entry: the kinds a phrase may mean (a mixed phrase passes when any listed kind is the record's;
+# measured and stated are one class) and the regular expressions, matched on the lowercased sentence. Calibrated on the probe
+# battery and 30 synthetic sentences (verify/d8/kind_check_calibration.md).
+phrases:
+  - kinds: [read_from_figure]
+    patterns:
+      - "read (off|from) (a |the )?(figure|fig\\.?|plot|graph|curve|panel|image)"
+      - "from fig\\.? ?s?\\d+[a-z]?"
+      - "figure[- ]read"
+      - "read from the (plot|curve|panel)"
+      - "digiti[sz]ed"
+  - kinds: [computed_by_kb]
+    patterns:
+      - "computed by (this|the) (knowledge[- ]?base|kb)"
+      - "computed (from other values|here)"
+      - "knowledge[- ]?base[- ](computed|derived|calculated)"
+      - "\\bkb[- ](computed|derived|calculated)"
+      - "derived (here|from other values)"
+  - kinds: [computed_by_authors]
+    patterns:
+      - "(computed|calculated|fitted|fit|derived|estimated|obtained|determined|extracted) by (the )?(paper'?s? |study'?s? )?authors"
+      - "authors'? (own )?(computed|calculated|fit|fits|calculation|estimate|derived|model fit)"
+      - "paper'?s? (own )?(fit|calculation|estimate)"
+      - "\\brietveld\\b"
+      - "from (the )?mass gain"
+      - "fitted to the (data|profile|curve)"
+  - kinds: [measured]
+    patterns:
+      - "\\bmeasured\\b"
+      - "\\bby (xps|afm|sem|tem|stem|xrr|xrf|ellipsometry|eds|edx|rbs|sims|erda|tof-erda|xrd|giwaxs|raman|profilometry|qcm|uv-vis|epma|ftir|four-point probe|hall)\\b"
+      - "\\b(xps|afm|sem|tem|xrr|ellipsometry|xrd|raman|sims|tof-erda) (measurement|data|result)s?\\b"
+  - kinds: [stated, measured]
+    patterns:
+      - "\\bstated\\b"
+      - "\\breported\\b"
+      - "\\bquoted\\b"
+      - "\\bgiven in the (text|paper|table)\\b"
+  - kinds: [simulated, model_input]
+    patterns:
+      - "\\bsimulated\\b"
+      - "\\bsimulation\\b"
+      - "\\bmodel(l)?ed\\b"
+      - "\\bmodel (curve|profile|result|output|input|parameter|run)s?\\b"
+      - "\\bsimulation input\\b"
+      - "\\binput to the model\\b"
+  - kinds: [cited]
+    patterns:
+      - "\\bcited\\b"
+      - "(taken )?from (another|other|a different|an earlier) work"
+      - "literature value"
+      - "from (the )?literature"
+  - kinds: [assumed]
+    patterns:
+      - "\\bassumed\\b"
+      - "\\bassumption\\b"

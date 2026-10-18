@@ -36,14 +36,15 @@ Flags, computed after the call without a model, per figure (a flag deletes nothi
   F5 unreadable: the response is not valid JSON or fails the schema (the figure keeps raw_response, no panels);
   F6 empty-plot: a plot panel with no series, or a series with fewer than 2 points (not a spectrum: it carries peaks, not series).
 
---repeat agreement: a series of the first run agrees when at least 80 % of its points have a point of the second run (same panel,
-same label) within 2 % of both axis ranges; the share of agreeing series and the median point deviation (in range units) are printed
-and stored in figures_repeat.json.
+--repeat metric (P104): for every series of the first run (same panel, same label in the second run) each point's distance to the
+second run's polyline, x and y normalised by the axis ranges; the median and 90th percentile per series and over the sample are
+printed and stored in figures_repeat.json (a series the second run lacks counts every point as 1.0). --recompare recomputes the
+stored comparisons without a call.
 
 The reading part (prompt schema, the downscale, one call per figure, JSON parsing, panel flattening) is ported from psed_v1
 pipeline/figures/figure_extract.py; nothing is imported from psed_v1 and no path into it is used.
 """
-import csv, datetime, hashlib, io, json, os, random, re, statistics, sys, time, traceback
+import csv, datetime, hashlib, io, json, math, os, random, re, statistics, sys, time, traceback
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -458,7 +459,7 @@ def repeat(client, model, pids, titles):
     n = max(REPEAT_MIN, round(REPEAT_SHARE * len(pool)))
     chosen = sorted(random.Random(REPEAT_SEED).sample(pool, min(n, len(pool))))
     print(f"[repeat] {len(chosen)} of {len(pool)} plot/spectrum figures chosen (seed {REPEAT_SEED})")
-    agree, total, devs = 0, 0, []
+    total, devs = 0, []
     for pid in sorted({p for p, _ in chosen}):
         nums = {num for p, num in chosen if p == pid}
         first = {str(f["number"]): f for f in json.loads((FINAL / pid / "figures.json").read_text(encoding="utf-8"))["figures"]}
@@ -467,66 +468,112 @@ def repeat(client, model, pids, titles):
         comp = []
         for f2 in rec["figures"]:
             f1 = first[str(f2["number"])]
-            a, t, dv, rows = compare(f1, f2)
-            agree += a; total += t; devs += dv
-            comp.append({"number": f2["number"], "series": t, "agreeing": a, "rows": rows})
+            rows, d = compare(f1, f2)
+            total += len(rows); devs += d
+            comp.append({"number": f2["number"], "series": len(rows), "median": statistics.median(d) if d else None, "p90": _p90(d), "rows": rows})
         rec["comparison"] = comp
+        rec["repeat_metric"] = "interpolation distance (P104): each first-run point's distance to the second-run polyline, normalised by the axis ranges"
         write_json(FINAL / pid / "figures_repeat.json", rec)
     med = statistics.median(devs) if devs else None
-    print(f"[repeat] series agreeing: {agree} of {total} ({100 * agree / total:.0f} %); median point deviation {med:.4f} of the axis range" if total else "[repeat] nothing to compare")
-    return {"figures": len(chosen), "pool": len(pool), "series": total, "agreeing": agree, "share": round(agree / total, 4) if total else None, "median_deviation": med}
+    print(f"[repeat] {total} series, {len(devs)} points: median distance {med:.4f}, p90 {_p90(devs):.4f} of the axis range" if total else "[repeat] nothing to compare")
+    return {"figures": len(chosen), "pool": len(pool), "series": total, "points": len(devs), "median": med, "p90": _p90(devs)}
 
 
-def compare(f1, f2, tol=0.02):
-    """Series of f1 (plot/spectrum panels) against f2 by panel key and label: (agreeing, total, deviations, rows)."""
+def _seg_dist(px, py, ax, ay, bx, by):
+    """Distance of (px, py) to the segment (ax, ay)-(bx, by), all in normalised units."""
+    dx, dy = bx - ax, by - ay
+    if dx == 0 and dy == 0:
+        return math.hypot(px - ax, py - ay)
+    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def _p90(xs):
+    xs = sorted(xs)
+    return xs[min(len(xs) - 1, int(math.ceil(0.9 * len(xs)) - 1))] if xs else None
+
+
+def compare(f1, f2):
+    """P104: series of f1 (plot/spectrum/map panels) against f2 by panel key and label. Each first-run point's distance to the
+    second-run polyline (segments between its points in x order), x and y normalised by the panel's axis ranges, Euclidean; a
+    spectrum's peaks are matched on x alone, a map's cells to the nearest cell with the same value (x and y). Per series: the
+    distances, their median and 90th percentile (1.0 = the range; a series without a match in the second run counts every point as
+    1.0). Returns (rows, all distances)."""
     def key(p):
         return panel_key(p["panel"]) or p["panel"]
     p2 = {key(p): p for p in f2["panels"] if p["panel_type"] in ("plot", "spectrum", "map")}
-    agree, total, devs, rows = 0, 0, [], []
+    rows, alld = [], []
+
+    def row(panel, label, d, n2, reason=None):
+        d = [round(min(x, 1.0), 4) for x in d]
+        alld.extend(d)
+        r = {"panel": panel, "label": label, "points": len(d), "points_second": n2, "median": statistics.median(d) if d else None, "p90": _p90(d), "distances": d}
+        if reason:
+            r["reason"] = reason
+        rows.append(r)
+
     for p in f1["panels"]:
         if p["panel_type"] not in ("plot", "spectrum", "map"):
             continue
         q = p2.get(key(p))
         xr = p.get("x_range") or (q or {}).get("x_range"); yr = p.get("y_range") or (q or {}).get("y_range")
-        if p["panel_type"] == "map" and p.get("cells"):                          # a map's cells are one series matched on x and y with the same value
+        if p["panel_type"] == "map" and p.get("cells"):
             c1 = p["cells"]; c2 = (q or {}).get("cells") or []
-            total += 1
             sx = (max(xr) - min(xr)) if xr and max(xr) > min(xr) else (max(abs(c["x"]) for c in c1) or 1.0)
             sy = (max(yr) - min(yr)) if yr and max(yr) > min(yr) else (max(abs(c["y"]) for c in c1) or 1.0)
-            hit = 0
-            for c in c1:
-                d = min((max(abs(c["x"] - e["x"]) / sx, abs(c["y"] - e["y"]) / sy) for e in c2 if str(e["value"]).strip().lower() == str(c["value"]).strip().lower()), default=1.0)
-                devs.append(min(d, 1.0)); hit += d <= tol
-            ok = hit >= 0.8 * len(c1); agree += ok
-            rows.append({"panel": p["panel"], "label": "cells", "agree": ok, "matched": hit, "points": len(c1), "points_second": len(c2)})
-        if p["panel_type"] == "spectrum":                                        # a spectrum's peak list is one series: peaks matched on x alone
-            pk1 = [[pk["x"], 0.0] for pk in p.get("peaks") or []]; pk2 = [[pk["x"], 0.0] for pk in (q or {}).get("peaks") or []]
+            d = [min((math.hypot((c["x"] - e["x"]) / sx, (c["y"] - e["y"]) / sy) for e in c2 if str(e["value"]).strip().lower() == str(c["value"]).strip().lower()), default=1.0) for c in c1]
+            row(p["panel"], "cells", d, len(c2), None if c2 else "no cells in the second run")
+        if p["panel_type"] == "spectrum":
+            pk1 = [pk["x"] for pk in p.get("peaks") or []]; pk2 = [pk["x"] for pk in (q or {}).get("peaks") or []]
             if pk1:
-                total += 1
-                sx = (max(xr) - min(xr)) if xr and max(xr) > min(xr) else (max(abs(x) for x, _ in pk1) or 1.0)
-                hit = 0
-                for x, _ in pk1:
-                    d = min(abs(x - x2) / sx for x2, _ in pk2) if pk2 else 1.0
-                    devs.append(min(d, 1.0)); hit += d <= tol
-                ok = hit >= 0.8 * len(pk1); agree += ok
-                rows.append({"panel": p["panel"], "label": "peaks", "agree": ok, "matched": hit, "points": len(pk1), "points_second": len(pk2)})
+                sx = (max(xr) - min(xr)) if xr and max(xr) > min(xr) else (max(abs(x) for x in pk1) or 1.0)
+                d = [min((abs(x - x2) / sx for x2 in pk2), default=1.0) for x in pk1]
+                row(p["panel"], "peaks", d, len(pk2), None if pk2 else "no peaks in the second run")
             continue
-        for s in p["series"]:
-            total += 1
+        for s in p.get("series") or []:
             s2 = next((t for t in (q or {}).get("series", []) if t["label"].strip().lower() == s["label"].strip().lower()), None) if q else None
-            if s2 is None or not s["points"]:
-                rows.append({"panel": p["panel"], "label": s["label"], "agree": False, "reason": "no matching series in the second run"}); continue
+            if s2 is None or not s["points"] or not s2["points"]:
+                row(p["panel"], s["label"], [1.0] * len(s["points"]), len((s2 or {}).get("points") or []), "no matching series in the second run"); continue
             sx = (max(xr) - min(xr)) if xr and max(xr) > min(xr) else (max(abs(x) for x, _ in s["points"]) or 1.0)
             sy = (max(yr) - min(yr)) if yr and max(yr) > min(yr) else (max(abs(y) for _, y in s["points"]) or 1.0)
-            hit = 0
+            poly = sorted(((x / sx, y / sy) for x, y in s2["points"]), key=lambda t: t[0])
+            d = []
             for x, y in s["points"]:
-                d = min(max(abs(x - x2) / sx, abs(y - y2) / sy) for x2, y2 in s2["points"]) if s2["points"] else float("inf")
-                devs.append(d if d != float("inf") else 1.0)
-                hit += d <= tol
-            ok = hit >= 0.8 * len(s["points"])
-            agree += ok
-            rows.append({"panel": p["panel"], "label": s["label"], "agree": ok, "matched": hit, "points": len(s["points"]), "points_second": len(s2["points"])})
-    return agree, total, devs, rows
+                px, py = x / sx, y / sy
+                if len(poly) == 1:
+                    d.append(math.hypot(px - poly[0][0], py - poly[0][1]))
+                else:
+                    d.append(min(_seg_dist(px, py, *poly[j], *poly[j + 1]) for j in range(len(poly) - 1)))
+            row(p["panel"], s["label"], d, len(s2["points"]))
+    return rows, alld
+
+
+def recompare(pids):
+    """P104: the comparison of every existing figures_repeat.json recomputed from figures.json with the interpolation distance (no
+    VLM call); the per-series and whole-sample median and 90th percentile printed."""
+    alld, n_series = [], 0
+    for pid in pids:
+        rp = FINAL / pid / "figures_repeat.json"
+        if not rp.exists():
+            continue
+        rec = json.loads(rp.read_text(encoding="utf-8"))
+        first = {str(f["number"]): f for f in json.loads((FINAL / pid / "figures.json").read_text(encoding="utf-8"))["figures"]}
+        comp = []
+        for f2 in rec["figures"]:
+            f1 = first.get(str(f2["number"]))
+            if not f1:
+                continue
+            rows, d = compare(f1, f2)
+            alld += d; n_series += len(rows)
+            comp.append({"number": f2["number"], "series": len(rows), "median": statistics.median(d) if d else None, "p90": _p90(d), "rows": rows})
+            for r in rows:
+                print(f"[repeat] {pid} Fig. {f2['number']}{r['panel']} {r['label'][:40]!r}: {r['points']} points, median {r['median']:.4f}, p90 {r['p90']:.4f}" + (f" ({r['reason']})" if r.get("reason") else ""))
+        rec["comparison"] = comp
+        rec["repeat_metric"] = "interpolation distance (P104): each first-run point's distance to the second-run polyline, normalised by the axis ranges"
+        write_json(rp, rec)
+    if alld:
+        print(f"[repeat] sample: {n_series} series, {len(alld)} points, median distance {statistics.median(alld):.4f}, p90 {_p90(alld):.4f} of the axis range")
+    return {"series": n_series, "points": len(alld), "median": statistics.median(alld) if alld else None, "p90": _p90(alld)}
 
 
 # ------------------------------------------------------------------------------------------------------------ main
@@ -546,6 +593,9 @@ def reflag(pids):
 
 def main(argv):
     redo = "--redo" in argv; rep = "--repeat" in argv; allp = "--all" in argv
+    if "--recompare" in argv:                                                    # P104: the stored repeat comparisons recomputed, no call
+        ids = [i for i in argv[argv.index("--ids") + 1:] if not i.startswith("--")] if "--ids" in argv else sorted(p.name for p in FINAL.iterdir() if (p / "figures_repeat.json").exists())
+        recompare(ids); return
     if "--reflag" in argv:
         ids = [i for i in argv[argv.index("--ids") + 1:] if not i.startswith("--")] if "--ids" in argv else []
         return reflag(ids or sorted(p.name for p in FINAL.iterdir() if (p / "figures.json").exists()))

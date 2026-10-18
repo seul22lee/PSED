@@ -150,7 +150,7 @@ SKIP = re.compile(r"\b(?:Fig(?:ure)?s?\.?|Tables?|Eq(?:uation)?s?\.?|[Rr]efs?\.?
 
 
 def normalize(t):
-    t = t.translate(SUP)
+    t = re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+", lambda m: "^" + m.group(0).translate(SUP), t)       # P103: 10⁷ -> 10^7, 10⁻³ -> 10^-3 (an exponent, never digits)
     t = re.sub(r"\\(?:times)", "×", t)
     t = re.sub(r"\\(?:cdot)", "·", t)
     t = re.sub(r"\\(?:text|mathrm|mathit)\s*", "", t)
@@ -187,8 +187,9 @@ def nums(t, skip=False):
     return out
 
 
-def sentences(text):
-    """[(sentence text without markers, [cited ids])]: lines, then sentences; markers right after a sentence's end belong to it."""
+def sentences(text, raw=False):
+    """[(sentence text without markers, [cited ids])]: lines, then sentences; markers right after a sentence's end belong to it;
+    with raw, triples with the sentence as written (markers kept)."""
     out = []
     for line in text.splitlines():
         s = line
@@ -208,7 +209,7 @@ def sentences(text):
                     ids += toks
             clean = MARK.sub(lambda m: " " if all(ID.match(x.strip().rstrip(".,;")) for x in re.split(r"[,;]\s*|\s+", m.group(1)) if x.strip()) else m.group(0), seg)
             if clean.strip() or ids:
-                out.append((clean, ids))
+                out.append((clean, ids, seg) if raw else (clean, ids))
     return out
 
 
@@ -229,27 +230,46 @@ def number_check(text, arm, given):
         pool = [n for i in known for n in nums(given[i])]
         for v, half, raw in nums(sent, skip=True):
             st = "uncited" if not ids else "matches" if _hit(v, half, pool) else "elsewhere" if _hit(v, half, everything) else "not seen"
+            if st == "not seen" and _percent_of(v, half, raw, sent, pool):     # P103: a percentage computed from two cited numbers within 1 %
+                st = "derived"
             rows.append(dict(number=raw.strip(), value=v, status=st, sentence=sent.strip()[:300], ids=ids))
-    c = {k: sum(r["status"] == k for r in rows) for k in ("matches", "elsewhere", "not seen", "uncited")}
-    return dict(numbers=len(rows), match=c["matches"], elsewhere=c["elsewhere"], not_seen=c["not seen"], uncited=c["uncited"],
+    c = {k: sum(r["status"] == k for r in rows) for k in ("matches", "elsewhere", "not seen", "uncited", "derived")}
+    return dict(numbers=len(rows), match=c["matches"], elsewhere=c["elsewhere"], not_seen=c["not seen"], uncited=c["uncited"], derived=c["derived"],
                 unknown_ids=len(unknown), unknown=unknown, cited=cited, per_number=rows)
+
+
+def _percent_of(v, half, raw, sent, pool):
+    """P103: the number is printed as a percentage (raw followed by %) and equals 100 a / b, or 100 (a - b) / b, of two numbers of the
+    cited texts within 1 % (or the last digit): 'derived, consistent' rather than 'not seen'."""
+    if not re.search(re.escape(raw.strip()) + r"\s*%", normalize(sent)):
+        return False
+    vals = [c for c, _, _ in pool if c]
+    tol = max(0.01 * abs(v), half)
+    for a in vals:
+        for b in vals:
+            if a is not b and b and (abs(100.0 * a / b - v) <= tol or abs(100.0 * (a - b) / b - v) <= tol):
+                return True
+    return False
 
 
 # ---------------------------------------------------------------------------------------------------------------- kind check (P72)
 # How an answer may word a kind: the ontology's phrase table and the SHARED prompt's kind words (measured, read from a figure,
 # computed by the authors, computed from other values, assumed, taken from another work), with the wordings a model derives from
 # them; 'computed here' is the wording of runs stored before P57. Measured and stated are one class (lists.UNMARKED, P57).
-STATED_KIND = [
-    ("computed_by_authors", r"(computed|calculated|fitted|fit|derived|estimated|obtained|determined) by (the )?(paper'?s? |study'?s? )?authors|authors'? (own )?(computed|calculated|fit|calculation|estimate|derived|reported)|paper'?s? (own )?(calculation|fit|estimate)"),
-    ("computed_by_kb", r"computed (from other values|by (this|the) knowledge[- ]base|here)|knowledge[- ]base[- ](computed|derived|calculated)|\bkb[- ](computed|derived|calculated)|computed by (the )?kb\b|derived (here|from other values|by (this|the) knowledge base)|calculated (here|from other values)"),
-    ("read_from_figure", r"read (off|from) (a |the )?(figure|fig\.?|plot|graph|curve|panel|image)|from (a |the )?figure"),
-    ("assumed", r"\bassumed\b|\bassumption\b"),
-    ("cited", r"taken from another work|from (another|other|a different) work|\bcited\b|literature value|from (the )?literature"),
-    ("model_input", r"model input|simulation input|model parameter|input to the model"),
-    ("simulated", r"\bsimulated\b|\bsimulation\b|\bmodel(?:led|ed)?\s+(?:curve|profile|result|output)"),
-    ("stated", r"\bstated\b|\breported\b|\bquoted\b"),
-    ("measured", r"\bmeasured\b"),
-]
+KIND_PHRASES = Path(__file__).resolve().parents[1] / "eval" / "kind_phrases.yaml"            # P102: the wording table, calibrated
+
+
+def stated_kind_table():
+    """[(frozenset of kinds, compiled pattern)] from eval/kind_phrases.yaml; a phrase may list several kinds (stated or measured)."""
+    import yaml
+    out = []
+    for e in yaml.safe_load(KIND_PHRASES.read_text(encoding="utf-8"))["phrases"]:
+        for pat in e["patterns"]:
+            out.append((frozenset(e["kinds"]), re.compile(pat)))
+    return out
+
+
+STATED_KIND = stated_kind_table()
 RECORD_KIND = {p: k for k, p in L.PHRASES.items()}
 RECORD_KIND["computed here"] = "computed_by_kb"
 MARK_KIND = {m: k for k, m in KIND_MARK.items()}
@@ -265,6 +285,8 @@ def record_kinds(i, text):
     k = i.split(":")[0]
     if k in Q.TREES and i in Q.TREES[k].byid and "#" in i and Q.TREES[k].byid[i].get("data_kind"):
         return {Q.TREES[k].byid[i]["data_kind"]}
+    if re.search(r"#[kc]\d+$", i):                                                  # P102: a figure's peak (#kN) or map cell (#cN) is read from the figure
+        return {"read_from_figure"}
     out = set()
     for m in re.finditer(r"(?<!set )kinds?: ([^·\)\]]+)", text or ""):
         out |= {RECORD_KIND[p.strip().rstrip(":")] for p in m.group(1).split(";") if p.strip().rstrip(":") in RECORD_KIND}
@@ -277,12 +299,12 @@ def kind_check(text, given):
     matched against the phrase table, against the record's kind; a mismatch when the sentence states a kind and none of its kinds is
     the record's (measured and stated one class). Returns dict(mismatches, checked, per_id)."""
     rows, checked = [], 0
-    for sent, ids in sentences(text):
-        low = sent.lower()
-        stated = {k for k, rx in STATED_KIND if re.search(rx, low)}
-        if not stated or not ids:
+    for sent, ids, raw in sentences(text, raw=True):
+        if not ids:
             continue
-        for i in dict.fromkeys(ids):
+        for i, stated in stated_per_id(raw).items():                            # P102: each phrase belongs to the nearest citation
+            if not stated:
+                continue
             rk = record_kinds(i, given.get(i, ""))
             if not rk:
                 continue
@@ -290,6 +312,28 @@ def kind_check(text, given):
             if not (_fold(stated) & _fold(rk)):
                 rows.append(dict(id=i, stated=sorted(stated), record=sorted(rk), sentence=sent.strip()[:300]))
     return dict(mismatches=len(rows), checked=checked, per_id=rows)
+
+
+def stated_per_id(raw):
+    """P102: {id: kinds stated for it} in one sentence with its [id] markers: every phrase match goes to the marker nearest to it (by
+    character distance), so a sentence citing several ids is checked per id; with one marker every phrase is its."""
+    marks = []
+    for m in MARK.finditer(raw):
+        toks = [x.strip().rstrip(".,;") for x in re.split(r"[,;]\s*|\s+", m.group(1)) if x.strip()]
+        if toks and all(ID.match(x) for x in toks):
+            marks.append((m.start(), m.end(), toks))
+    out = {i: set() for _, _, toks in marks for i in toks}
+    if not marks:
+        return out
+    low = raw.lower()
+    for kinds, rx in STATED_KIND:
+        for m in rx.finditer(low):
+            if any(a <= m.start() < b for a, b, _ in marks):
+                continue
+            near = min(marks, key=lambda mk: min(abs(m.start() - mk[1]), abs(mk[0] - m.end())))
+            for i in near[2]:
+                out[i] |= kinds
+    return out
 
 
 def kind_recheck(path, arm=None):
@@ -315,7 +359,7 @@ def words(text):
 
 def check_line(nc, n_words=None):
     return (("" if n_words is None else f"{n_words} words · ") + f"{nc['numbers']} numbers · {nc['match']} match · {nc['elsewhere']} elsewhere · {nc['not_seen']} not seen · "
-            f"{nc['uncited']} uncited · {nc['unknown_ids']} unknown ids")
+            + (f"{nc['derived']} derived · " if nc.get("derived") else "") + f"{nc['uncited']} uncited · {nc['unknown_ids']} unknown ids")
 
 
 def process_line(p):
