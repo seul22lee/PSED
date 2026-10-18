@@ -22,7 +22,8 @@ V2 = HERE.parent
 PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23",
           "10.1021_cm0303080": "ela03", "10.1002_cvde.200390005": "gor03", "10.1063_1.5028178": "yli18",
           "10.1116_1.4903941": "gao15", "10.1021_acs.jpcc.9b08176": "art19",
-          "10.1039_d1cp04758b": "yim22", "10.1039_d3cp05639b": "hei24", "10.1116_6.0002993": "mat23"}   # Directive 7′: the nine papers join one by one
+          "10.1039_d1cp04758b": "yim22", "10.1039_d3cp05639b": "hei24", "10.1116_6.0002993": "mat23",
+          "10.1116_6.0002804": "zou23"}   # Directive 7′: the nine papers join one by one
 # lettered panels per figure, read from the crops ("" = the figure is one panel)
 PANELS = {
     "10.1039_d0cp03358h": {"1": "abc", "2": "abcd", "3": "ab", "4": "abc", "5": "ab", "6": "", "7": "", "8": "ab",
@@ -38,6 +39,7 @@ PANELS = {
     "10.1039_d1cp04758b": {"1": "ab", "2": "ab", "3": "", "4": "abcdefghi", "5": "abcdef", "6": "abcd", "7": "ab"},
     "10.1039_d3cp05639b": {"1": "abc", "2": "ab", "3": "", "4": "", "5": "abcdefghijkl", "6": "abcdefghijkl", "7": "ab", "8": "ab"},
     "10.1116_6.0002993": {"1": "abc", "2": "abcdefghij", "3": "abcdef", "4": "ab"},
+    "10.1116_6.0002804": {"1": "abcde", "2": "", "3": "", "4": "", "5": "ab", "6": "ab", "7": "ab", "8": "", "9": "ab", "10": "abcdef"},
 }
 FIELDS = ["element_id", "kind", "section", "locator", "n_numbers", "n_chars", "crop"]
 NUM = re.compile(r"(?<![\w.])[-−]?\d+(?:[.,]\d+)?(?:\s*[×x]\s*10\^?\{?[-−]?\d+\}?)?(?:[eE][-−+]?\d+)?")
