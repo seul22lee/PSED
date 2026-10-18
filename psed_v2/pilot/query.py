@@ -2066,6 +2066,24 @@ def grid_info(T, c):
                 rows=sorted({level_of[m][0] for m in cells}, key=_num_prefix), cols=sorted({level_of[m][1] for m in cells}, key=_num_prefix) if len(axes) > 1 else [""])
 
 
+def key_species(k):
+    """The species-like qualifier values of a data key (species, gas, surface, phase, material)."""
+    qs = k.split("{")[1].split("}")[0] if "{" in k else ""
+    return {p.split("=", 1)[1] for p in qs.split(";") if "=" in p and p.split("=")[0] in ("species", "gas", "surface", "phase", "material")}
+
+
+def species_scope(result):
+    """P111: (quantity id, species id) when the result phrase names a quantity with a species or material in parentheses or as a word
+    ('resistivity (MoS2)', 'ZnO growth per cycle') and no data name spells it; else None."""
+    import concept as CN
+    if result in L.ENTRIES or result in vocabulary()["keys"]:
+        return None
+    r = CN.resolve_phrase(result)
+    if r.get("species") and r["ids"]:
+        return r["ids"][0], r["species"]
+    return None
+
+
 def values(result, paper=None, where=None):
     """Every value of a result (P42), never a representative, grouped by comparison set: each experiment under the smallest set it is
     a member of, the others in one group per paper. A group: paper, set id, label, kind, what the set varies, the conditions its
@@ -2075,6 +2093,9 @@ def values(result, paper=None, where=None):
     (settings_entry, P76) the rows are the experiments' stated conditions only (setting_matches): no result, no value computed by
     this knowledge base (setting_extras names those)."""
     groups = []
+    scope = species_scope(result)                                               # P111: 'resistivity (MoS2)': the quantity on records or experiments of that species
+    if scope:
+        result, sid = scope
     S = settings_entry(result)
     for k, T in TREES.items():
         if paper and k != paper:
@@ -2084,14 +2105,18 @@ def values(result, paper=None, where=None):
             if where and not _where_ok(T, e, where):
                 continue
             m = setting_matches(T, e, result, S) if S else result_matches(T, e, result)
+            if scope and m:
+                m = [x for x in m if sid in key_species(x[0])] or (m if T.material(e) == sid else [])
             if m:
                 rows[e] = m
-        own = {c["fact_id"]: own_records(T, c["fact_id"], result, S) for c in T.comps}
+        own = {c["fact_id"]: [x for x in own_records(T, c["fact_id"], result, S) if not scope or sid in key_species(x[0])] for c in T.comps}
         qs_c = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q} | set(concept_ids(result))
         cited = [] if (where or S) else [f for f in T.rows if f["type"] == "cited" and "#" in f["fact_id"] and f["quantity"] and text_of(f)
                                           and (ckey(f).split("{")[0].split("[")[0] in qs_c or name_of(ckey(f), f) == result)]   # P95: cited works' values, home 'cited
-        ins = input_rows(T, result, S, False) if not (where or S) else {}       # for a settings entry the inputs are level rows of the table
-        pap = paper_records(T, result, S, ("setting",) if S else RESULT_TYPES + ("setting",)) if not where else []
+        ins = input_rows(T, result, S, False) if not (where or S or scope) else {}   # for a settings entry the inputs are level rows of the table
+        pap = paper_records(T, result, S, ("setting",) if S else RESULT_TYPES + ("setting",)) if not (where or scope) else []
+        if scope:
+            cited = [f for f in cited if sid in key_species(ckey(f))]
         if not rows and not any(own.values()) and not ins and not pap and not cited:
             continue
         size = {c["fact_id"]: len(T.member_entities(c)) for c in T.comps}

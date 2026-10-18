@@ -158,13 +158,13 @@ TOOLS = [
     dict(name="papers",
          description=("Arguments: material, structure, process, quantity, offset (all optional). Returns one line per paper of the knowledge base: key · "
                       "material · process (reactant A / reactant B) · structure class · experiment and claim counts · main outcome quantities with "
-                      "their value counts · panels and curves. Filters: material (a species id or name), structure (a structure class or id), "
-                      "process (words of a reactant), quantity (an id or name: only papers with values, claims or settings of it). At most 20 lines "
+                      "their value counts · panels and curves. Filters: material (a species id, formula or name), structure (a structure class or id), "
+                      "process (words of a reactant, or a mode: thermal, plasma, ozone), quantity (an id or name: only papers with values, claims or settings of it). At most 20 lines "
                       "per call, then 'more: offset=N'. Use it after the map to see which papers to open."),
          parameters=dict(type="object", properties=dict(
-             material=dict(type="string", description="A material: a species id (al2o3) or its printed name (Al2O3)."),
+             material=dict(type="string", description="A material: a species id (al2o3), its formula or its printed name (Al2O3)."),
              structure=dict(type="string", description="A structure class (lateral_channel, planar, porous_body, trench, …) or a structure id."),
-             process=dict(type="string", description="Words of a reactant (TMA, H2O, plasma …)."),
+             process=dict(type="string", description="Words of a reactant (TMA, H2O) or a process mode: thermal, plasma, ozone."),
              quantity=dict(type="string", description="A quantity id or name; only papers that hold values, claims or settings of it."),
              offset=dict(type="integer", description="Skip this many lines (default 0).")),
              required=[])),
@@ -373,7 +373,8 @@ def _names(kind=None):
 
 
 def _result_ok(r):
-    return r in _names() or r in QUANT or bool(Q.concept_ids(r))
+    import concept as CN
+    return r in _names() or r in QUANT or bool(Q.concept_ids(r)) or bool(CN.resolve_phrase(r)["ids"])   # P105/P111: a qualifier or species phrase resolves
 
 
 def nearest_results(r):
@@ -413,7 +414,10 @@ def _comparison(i):
 
 
 def _record(i):
-    """Whether an id names a record of the knowledge base (any row but a paper's) or a location (P92)."""
+    """Whether an id names a record of the knowledge base (any row but a paper's), a location (P92) or a concept, model, mechanism,
+    species, structure or family id (P110)."""
+    if i in L.ENTRIES or (i.startswith("family:") and i[7:] in L.FAMILIES):
+        return True
     T = Q.TREES.get(i.split(":")[0])
     return bool(T and i in T.byid and T.byid[i]["type"] != "paper") or Q.located(i) is not None
 
@@ -1161,6 +1165,8 @@ def _run(name, args):
                 hs = by_paper[pk]; best = hs[0]
                 line, cav = Q.render_hit(best)
                 sets = Q.sets_with_quantity(Q.TREES[pk], qids) if qids else []
+                qw = set(CN.words_of(args["words"]))                            # P113: the sets by word overlap with the query, the stored order breaking ties
+                sets = sorted(sets, key=lambda c: -len(qw & set(CN.words_of((Q.TREES[pk].byid[c].get("label_as_printed") or "") + " " + Q.TREES[pk].byid[c]["statement"]))))
                 if len(line) > 130:
                     line = line[:128].rsplit(" ", 1)[0] + " …"
                 text = (f"{pk} ({short_name(pk)}) · [{best['id']}] {line}" + (f" · +{len(hs) - 1} hits" if len(hs) > 1 else "")
@@ -1217,6 +1223,8 @@ def _run(name, args):
                     b, e = _run("detail", {"id": i, "parts": parts})
                     out += b; errs += [e] if e else []
                 return out, "; ".join(errs)
+            if args["id"] in L.ENTRIES or args["id"].startswith("family:"):      # P110: a concept, model, mechanism, species, structure or family id: its card
+                return [block([wrap(*x) for x in CN.concept_lines(args["id"])])], ""
             T0 = Q.tree_of(args["id"]); n0 = T0.byid.get(args["id"])
             if n0 is None:                                                      # P92: a location id: the records located there, in page order
                 loc = Q.located(args["id"])

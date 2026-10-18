@@ -70,6 +70,8 @@ def resolve(words):
     q = norm(words); qw = set(words_of(words))
     note = ""
     out = []
+    if words.strip() in ix["items"] and q not in ix["exact"]:                   # an id as written whose name matches nothing else (family:conformality, phase=detected)
+        out.append(words.strip())
     if q in ix["ambiguous"]:
         cands = [c for c in ix["ambiguous"][q] if c in L.ENTRIES]
         note = f"'{words}' is ambiguous in the ontology: " + ", ".join(ix["ambiguous"][q]) + " (native = no entry)"
@@ -87,6 +89,21 @@ def resolve(words):
     return uniq, note
 
 
+def species_id(words):
+    """P111: the species id the words name (an alias, formula, printed name or id of lists.SPECIES, normalised), else ''."""
+    w = norm(words)
+    for sid, sp in L.SPECIES.items():
+        if w in {norm(x) for x in [sid, sp.get("formula", ""), sp.get("name", "")] + list(sp.get("aliases", [])) if x}:
+            return sid
+    return ""
+
+
+def key_species(k):
+    """The species-like qualifier values of a data key (species, gas, surface, phase, material)."""
+    qs = k.split("{")[1].split("}")[0] if "{" in k else ""
+    return {p.split("=", 1)[1] for p in qs.split(";") if "=" in p and p.split("=")[0] in ("species", "gas", "surface", "phase", "material")}
+
+
 def resolve_phrase(words):
     """P105: concept() resolves like values(result=…). Returns dict(ids, keys, qualifier, note, nearest): ids = the concept ids the
     words name (resolve); else a result or setting name of the data (query.vocabulary: 'thickness in the channel', 'phase (metallic
@@ -94,8 +111,16 @@ def resolve_phrase(words):
     qualifier words ('initial porosity', 'MoS2 crystallinity', 'H2O exposure'), matched against the data keys of those quantities
     whose name contains every remaining word (keys). With no id at all, nearest = the three concept ids nearest by word overlap."""
     ids, note = resolve(words)
-    out = dict(ids=ids, keys=[], qualifier="", note=note, nearest=[])
+    out = dict(ids=ids, keys=[], qualifier="", note=note, nearest=[], species="")
     voc = Q.vocabulary()
+    m = re.match(r"^(.*?)\s*\(([^()]+)\)\s*$", words.strip())                 # P111: 'resistivity (MoS2)': the quantity with the species or material as a qualifier
+    if m and species_id(m.group(2)) and not (norm(words) in {norm(n) for n in voc["keys"]}):
+        q_ids = [i for i in resolve(m.group(1))[0] if i in L.ENTRIES and L.ENTRIES[i]["type"] in ("quantity", "categorical")]
+        if q_ids:
+            sid = species_id(m.group(2))
+            keys = [k for q in q_ids for k in sorted({k for ks in voc["keys"].values() for k in ks if k.split("{")[0].split("[")[0] == q}) if sid in key_species(k)]
+            out.update(ids=q_ids, keys=keys, qualifier=m.group(2).strip(), species=sid)
+            return out
     nm = {norm(n): n for n in voc["keys"]}
     if norm(words) in nm and all("{" in k for k in voc["keys"][nm[norm(words)]]):   # a qualified data name ('penetration depth (50%)'): its keys and their quantities
         keys = voc["keys"][nm[norm(words)]]
@@ -112,9 +137,10 @@ def resolve_phrase(words):
             cand = [i for i in resolve(" ".join(win))[0] if i in L.ENTRIES and L.ENTRIES[i]["type"] in ("quantity", "categorical")]
             if cand:
                 rest = set(w[:a] + w[a + n:])
+                sid = species_id(" ".join(w[:a] + w[a + n:]))                     # P111: the remaining words may name a species or material
                 keys = [k for q in cand for k in sorted({k for ks in voc["keys"].values() for k in ks if k.split("{")[0].split("[")[0] == q})
-                        if rest <= set(words_of(Q.name_of(k)))]
-                out.update(ids=cand, keys=keys, qualifier=" ".join(sorted(rest)))
+                        if rest <= set(words_of(Q.name_of(k))) or (sid and sid in key_species(k))]
+                out.update(ids=cand, keys=keys, qualifier=" ".join(sorted(rest)), species=sid)
                 return out
     qw = set(w)
     ix = index()
@@ -133,6 +159,16 @@ def resolve_phrase(words):
 
 
 STOP = {"of", "in", "the", "a", "an", "at", "on", "for", "per", "with"}
+
+
+def species_counts(qids, sid):
+    """P111: per paper, the value records of the quantities on experiments whose material is the species: 'k 3 values; …'."""
+    pc = collections.Counter()
+    for k, T in Q.TREES.items():
+        for e in Q.experiments(T):
+            if T.material(e) == sid:
+                pc[k] += sum(1 for kk, x in Q.result_records(T, e).items() if kk.split("{")[0].split("[")[0] in qids and (x["record"].get("text") or x["record"].get("curve")))
+    return "; ".join(f"{k} {n} values" for k, n in pc.items() if n)
 
 
 def key_counts(keys):
@@ -295,7 +331,14 @@ def concept_lines(words):
     if not ids:                                                                 # P105: a miss suggests, never errors
         return out + [("concept", f"no concept named {words!r}" + ("; nearest: " + ", ".join(r["nearest"]) if r["nearest"] else "; nothing near it"))]
     if r["qualifier"]:                                                           # P105: the qualifier's counts first
-        out.append(("concept", f"qualifier '{r['qualifier']}' of {', '.join(ids)}: " + (f"keys {', '.join(Q.name_of(k) for k in r['keys'][:6])}" + (" …" if len(r["keys"]) > 6 else "") + " · " + key_counts(r["keys"]) if r["keys"] else "no data key of these quantities carries it; the full card follows")))
+        sp = f" (species {r['species']})" if r.get("species") else ""
+        if r["keys"]:
+            tail = f"keys {', '.join(Q.name_of(k) for k in r['keys'][:6])}" + (" …" if len(r["keys"]) > 6 else "") + " · " + key_counts(r["keys"])
+        elif r.get("species"):                                                   # P111: no key carries the species: the records on experiments of that material
+            tail = f"no data key carries it; records on experiments whose material is {L.species_text(r['species'])}: " + (species_counts(ids, r["species"]) or "none") + " · the full card follows"
+        else:
+            tail = "no data key of these quantities carries it; the full card follows"
+        out.append(("concept", f"qualifier '{r['qualifier']}'{sp} of {', '.join(ids)}: {tail}"))
     for i in ids:
         it = index()["items"][i]
         if i.startswith("family:"):
@@ -422,7 +465,15 @@ def paper_summary(k, T=None):
     procs = sorted({f"{d.get('reactant_A', '?')} / {d.get('reactant_B', '?')}" for d in pairs.values()})
     outs = sorted(((pc.get(q, {}).get(k, {}).get("values", 0), q) for q in L.OUTPUTS if pc.get(q, {}).get(k, {}).get("values")), reverse=True)
     inv = collections.Counter(i["panel_type"] for i in T.inventory)
-    return dict(key=k, materials=sorted(mats), processes=procs, structures=sorted(structs), experiments=len(Q.experiments(T)),
+    modes = set()                                                                # P112: thermal | plasma | ozone per experiment, from its settings (process_mode, a plasma step or power, an ozone or radical reactant)
+    for e in Q.experiments(T):
+        vt = Q.vtext(T, e)
+        pm = next((v for kk, v in vt.items() if kk.split("{")[0] == "process_mode"), "")
+        plasma = any("step=plasma" in kk or kk.split("{")[0] in ("plasma_power", "plasma_gas_ratio", "plasma_configuration") for kk in vt) or "plasma" in pm.lower() \
+            or any(L.SPECIES.get(v, {}).get("kind") == "radical" or v in ("o_atom",) for kk, v in vt.items() if kk.split("{")[0] in ("reactant_A", "reactant_B"))
+        ozone = "ozone" in pm.lower() or any(v == "o3" for kk, v in vt.items() if kk.split("{")[0] in ("reactant_A", "reactant_B"))
+        modes.add("plasma" if plasma else "ozone" if ozone else "thermal")
+    return dict(key=k, materials=sorted(mats), processes=procs, structures=sorted(structs), modes=sorted(modes), experiments=len(Q.experiments(T)),
                 claims=sum(1 for f in T.rows if f["type"] == "claim"), outcomes=outs, panels=sum(inv.values()), curves=len(T.curves))
 
 
@@ -435,7 +486,7 @@ def summaries():
 def paper_line(s):
     """The one line of a paper (P97): key · material · process · structure class · experiment and claim counts · main outcomes · panels, curves."""
     figs = f" · panels {s['panels']}, curves {s['curves']}" if s["panels"] else ""
-    return (f"{s['key']}: material {', '.join(s['materials']) or '—'} · process {', '.join(s['processes']) or '—'} · structure {', '.join(s['structures']) or '—'} · "
+    return (f"{s['key']}: material {', '.join(s['materials']) or '—'} · process {', '.join(s['processes']) or '—'}" + (f" ({', '.join(s['modes'])})" if s.get("modes") else "") + f" · structure {', '.join(s['structures']) or '—'} · "
             f"{s['experiments']} experiments, {s['claims']} claims · main outcomes: " + ", ".join(f"{q} {n}" for n, q in s["outcomes"][:4]) + figs)
 
 
@@ -449,12 +500,13 @@ def papers_lines(material=None, structure=None, process=None, quantity=None):
         qids |= {q for q, n in L.NAMES.items() if n.lower() == str(quantity).lower()}
     pc = counts()
     out = []
+    msid = species_id(material) if material else ""                             # P112: a species id, formula or printed name
     for k, s in summ.items():
-        if material and not any(norm(material) in (norm(m), norm(L.species_text(material) if material in L.SPECIES else "")) or norm(material) == norm(m) for m in s["materials"]):
+        if material and not any(norm(material) == norm(m) or (msid and norm(L.species_text(msid)) == norm(m)) for m in s["materials"]):
             continue
         if structure and not any(norm(structure) in (norm(x), norm(L.STRUCTURE_CLASS.get(structure, ""))) for x in s["structures"]):
             continue
-        if process and not any(norm(process) in norm(x) for x in s["processes"]):
+        if process and not (any(norm(process) in norm(x) for x in s["processes"]) or norm(process) in {norm(x) for x in s.get("modes", [])}):   # P112: a reactant's words or a mode (thermal, plasma, ozone)
             continue
         if quantity and not any(pc.get(q, {}).get(k, {}).get(x) for q in qids for x in ("values", "claims", "settings")):
             continue

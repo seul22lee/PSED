@@ -923,7 +923,13 @@ QUALIFIER_PHRASES = [                                                           
     ("partial pressure (TMA)", "partial_pressure"), ("initial sticking coefficient (TiCl4)", "initial_sticking_coefficient"), ("molar mass (N2)", "molar_mass"),
     ("source temperature (DEZ)", "source_temperature"), ("binding energy (Mo)", "binding_energy"), ("element fraction (Cl)", "element_fraction"), ("thickness (sidewall)", "film_thickness"),
     ("coated aspect ratio (front end)", "coated_aspect_ratio"), ("H2O exposure", "exposure"), ("TMA partial pressure", "partial_pressure"), ("sidewall thickness", "film_thickness"),
-    ("front-end penetration depth", "penetration_depth")]
+    ("front-end penetration depth", "penetration_depth"),
+    # P111: a species or material in parentheses is a qualifier of the quantity (a data key that carries it, else the experiments of that material)
+    ("initial sticking coefficient (TMA)", "initial_sticking_coefficient"), ("resistivity (MoS2)", "resistivity"), ("growth per cycle (ZnO)", "growth_per_cycle"),
+    ("penetration depth (Al2O3)", "penetration_depth"), ("partial pressure (H2O)", "partial_pressure"), ("molar mass (TMA)", "molar_mass"),
+    ("saturation density (H2O)", "saturation_density"), ("recombination probability (atomic O, Al2O3)", "recombination_probability"), ("film thickness (ZnO)", "film_thickness"),
+    ("exposure (DEZ)", "exposure")]
+SPECIES_PHRASES = QUALIFIER_PHRASES[20:]
 MISSES = [("concept", {"words": "zzz qqq"}), ("concept", {"words": "banana curvature"}), ("values", {"result": "no such result"}),
           ("values", {"result": "growth per cycle", "paper": "Mattinen"}), ("search", {"words": "growth", "paper": "nosuch"})]
 
@@ -932,7 +938,7 @@ def check_resolution():
     """P105: every concept entry's label, name and alias and the 20 qualifier phrases resolve through concept() to the entry (an
     ambiguous alias lists it among its candidates; a qualifier phrase puts the qualifier's counts first); the misses return a
     'nearest' line and no error; only a malformed call errors. Prints the calls and tokens of this battery."""
-    import tools
+    import tools, concept as CN, query as Q
     err, calls, chars = [], 0, 0
 
     def run(name, args):
@@ -957,14 +963,38 @@ def check_resolution():
         ids = {i for i, _ in lines}
         if er or q not in ids or not lines or not lines[0][1].startswith("qualifier "):
             err.append(f"resolution: concept({ph!r}) should put the qualifier's counts first and name {q}, got {lines[:1]} {er} (P105)")
+    for ph, q in SPECIES_PHRASES:                                                # P111: the same phrase through values(result=…): no error, no nearest line, rows present
+        lines, er = run("values", {"result": ph})
+        if er or not lines or any("nearest" in t for _, t in lines[:1]):
+            err.append(f"resolution: values(result={ph!r}) should return the quantity's records with the species as a qualifier, got {lines[:1]} {er} (P111)")
     for name, args in MISSES:
         lines, er = run(name, args)
         if er or not any("nearest" in t for _, t in lines):
             err.append(f"resolution: {name}({args}) should return a nearest line without error, got {lines[:1]} {er} (P105)")
+    for i_ in ("penetration_depth", "crystallinity", "ylilammi_diffusion_reaction", "run_variation", "tma", "pillarhall_3", "family:conformality"):   # P110: one probe per id kind
+        lines, er = run("detail", {"ids": [i_]})
+        if er or not lines or lines[0][0] != i_ or not any(lines[0][1].startswith(x) for x in ("quantity ", "categorical ", "model ", "mechanism ", "species ", "structure ", "family ")):
+            err.append(f"detail(ids=[{i_!r}]) should return the card as concept() would, got {lines[:1]} {er} (P110)")
+    _, er = run("detail", {"ids": ["no_such_id"]})
+    if not er:
+        err.append("detail(ids=['no_such_id']) must be an error: an id of no kind (P110)")
+    lines, er = run("papers", {"process": "plasma"})                             # P112: a process mode
+    got = {i for i, _ in lines if i in Q.TREES}
+    want = {k for k, s_ in CN.summaries().items() if "plasma" in s_.get("modes", [])}
+    if er or got != want:
+        err.append(f"papers(process='plasma') returned {sorted(got)}, the plasma papers are {sorted(want)} (P112)")
+    lines, er = run("papers", {"material": "MoS2"})
+    if er or {i for i, _ in lines if i in Q.TREES} != {k for k, s_ in CN.summaries().items() if "MoS2" in s_["materials"]}:
+        err.append(f"papers(material='MoS2') should resolve the formula (P112) {er}")
+    lines, er = run("search", {"words": "purge growth per cycle"})              # P113: a paper's sets by word overlap with the query
+    y = next((t for i, t in lines if i == "yim20"), "")
+    first = re.search(r"sets: \[([^\]]+)\]", y)
+    if not first or "purge" not in (Q.TREES["yim20"].byid[first.group(1)]["statement"] + Q.TREES["yim20"].byid[first.group(1)].get("label_as_printed", "")).lower():
+        err.append(f"search('purge growth per cycle'): yim20's first set should be a purge series, got {first.group(1) if first else None} (P113)")
     _, er = run("values", {"result": "penetration depth", "no_such_argument": 1})
     if not er:
         err.append("resolution: a malformed call must still be an error (P105)")
-    print(f"== resolution (P105): {calls} calls ({len(QUALIFIER_PHRASES)} qualifier phrases, {len(MISSES)} misses), {chars // 4:,} tokens; a miss suggests the nearest three, only a malformed call errors")
+    print(f"== resolution (P105, P110–P113): {calls} calls ({len(QUALIFIER_PHRASES)} qualifier phrases of which {len(SPECIES_PHRASES)} species, {len(MISSES)} misses, 7 detail ids, papers and search probes), {chars // 4:,} tokens; a miss suggests the nearest three, only a malformed call errors")
     return err
 
 
