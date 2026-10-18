@@ -61,7 +61,7 @@ F(K, "s2.p2", "cited", "even ALD does not guarantee conformal coating at a given
 F(K, "s2.p2", "cited", "in ideal ALD, how deep the coating reaches grows as the square root of reactant dose",
   method="cited", mentions="ref. 29;ref. 32-34")
 F(K, "s2.p2;s14.p1", "definition", "dose = reactant partial pressure times exposure time; in this work the partial pressure is not strictly constant, so dose need not grow linearly with pulse time", quantity="exposure",
-  mentions="dose")
+  mentions="dose", term="dose")
 F(K, "s2.p2", "cited", "reactivity, often given as a lumped sticking coefficient c_A, sets how fast uniform thickness is reached; CVD from decomposition or pulse mixing, or unsaturated reactions, harm conformality",
   method="cited", mentions="c_A;ref. 1;ref. 31;ref. 35-37")
 F(K, "s2.p3", "cited", "vertical HAR structures etched in silicon, analysed by SEM or TEM after careful preparation, have been the practical industry standard for conformality",
@@ -120,7 +120,7 @@ F(K, "s3.p3;s3.p4", "cited", "earlier works often used the aspect ratio as horiz
   method="cited", mentions="AR;ref. 1;ref. 2;ref. 40;ref. 47")
 F(K, "s3.p4", "claim", "x~ stays fixed however much film grows, while the aspect ratio felt by the process rises as the film narrows the channel")
 F(K, "s3.p5;fig2c;fig2.cap", "definition", "Type 1 normalized profile: growth with its channel-entrance value set to 1 against x~", quantity="normalized_thickness",
-  method="schematic", mentions="Fig. 2c")
+  method="schematic", mentions="Fig. 2c", term="Type 1 normalized profile")
 F(K, "s3.p5;tabu2.r28c0;tabu2.r28c1", "definition", "the normalized growth may be read as surface coverage θ, with 0 ≤ θ ≤ 1",
   label_as_printed="θ", mentions="ref. 32;ref. 36")
 F(K, "s3.p5", "cited", "Arts et al. get a lumped sticking coefficient from the slope of the Type 1 profile when the mean free path greatly exceeds the limiting channel size and the excess number is below 0.1",
@@ -159,11 +159,11 @@ F(K, "s3.p9;tab1.r0c0", "definition", "each Table 1 series varies one parameter:
   mentions="Series A;Series B;Series C;Series D;Series E;Series F")
 F(K, "s3.p9;tab1.r0c1", "definition", "original traceable sample codes are listed in ESI Table S3", mentions="Table S3")
 F(K, "s3.p9;tab1.r0c8", "definition", "initial thickness S_IIb is the mean of the first five points of the constant Region IIb; for H 100 nm it is the first point of the constant region", quantity="film_thickness", qualifiers="position=plateau",
-  method="calculation", mentions="S_IIb;Region IIb;Fig. 3;100 nm")
+  method="calculation", mentions="S_IIb;Region IIb;Fig. 3;100 nm", term="S_IIb")
 F(K, "s3.p9;s16.p7;s16.p8", "claim", "the optically measured thickness includes native silicon oxide, which may have raised the measured values somewhat",
   method="reflectometry")
 F(K, "s3.p9;tab1.r0c14", "definition", "Region III front slope = slope of the best-fitting straight line through the scaled profile", quantity="front_slope",
-  method="calculation", mentions="Region III;Fig. 3")
+  method="calculation", mentions="Region III;Fig. 3", term="Region III front slope")
 
 # ------------------------------------------------------------------ C. experimental
 F(K, "s5.p1", "setting", "the test chips (PillarHall-3, third generation) were made by MEMS processing with a process modified from PillarHall-1 of Gao et al.",

@@ -3,7 +3,7 @@
  "key": "10.1039_d1cp04758b",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-17T20:53:25",
+ "imported_at": "2026-10-17T22:18:54",
  "inventory": [
   {
    "id": "10.1039_d1cp04758b:fig1a",
@@ -32,12 +32,13 @@
    "panel_type": "plot",
    "content": "Simulated partial pressure of Reactant A along the microchannel for different times",
    "quantities": [
-    "distance"
+    "distance",
+    "partial_pressure"
    ],
    "flags": [
     "F4"
    ],
-   "status": "unresolved axis"
+   "status": "imported"
   },
   {
    "id": "10.1039_d1cp04758b:fig2b",
@@ -358,6 +359,662 @@
  ],
  "curves": [
   {
+   "id": "10.1039_d1cp04758b:fig2a#c1",
+   "figure": "2",
+   "panel": "a",
+   "series": {
+    "label_raw": "t_1 = 0.01 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "distance",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "x (µm)",
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "partial_pressure",
+    "unit": "Pa",
+    "transform": "",
+    "label_raw": "p_A (Pa)",
+    "unit_raw": "Pa",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     9.3,
+     77.5
+    ],
+    [
+     18.3,
+     57.4
+    ],
+    [
+     27.1,
+     39.3
+    ],
+    [
+     35.4,
+     23.3
+    ],
+    [
+     42.7,
+     10.6
+    ],
+    [
+     48.9,
+     3.5
+    ],
+    [
+     55.0,
+     0.8
+    ],
+    [
+     65.0,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     9.3,
+     77.5
+    ],
+    [
+     18.3,
+     57.4
+    ],
+    [
+     27.1,
+     39.3
+    ],
+    [
+     35.4,
+     23.3
+    ],
+    [
+     42.7,
+     10.6
+    ],
+    [
+     48.9,
+     3.5
+    ],
+    [
+     55.0,
+     0.8
+    ],
+    [
+     65.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "partial_pressure": {
+     "key_raw": "p_{A0}",
+     "raw": "100 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "feature_width": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "conditions_raw": {
+    "T": "500 K",
+    "p_{A0}": "100 Pa",
+    "H": "0.5 µm",
+    "W": "0.1 mm"
+   },
+   "flags": [
+    "F4"
+   ],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": 0.65,
+    "y": 1.0
+   },
+   "set": "10.1039_d1cp04758b:cmp:fig2a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "a"
+   }
+  },
+  {
+   "id": "10.1039_d1cp04758b:fig2a#c2",
+   "figure": "2",
+   "panel": "a",
+   "series": {
+    "label_raw": "t_1 = 0.02 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "distance",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "x (µm)",
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "partial_pressure",
+    "unit": "Pa",
+    "transform": "",
+    "label_raw": "p_A (Pa)",
+    "unit_raw": "Pa",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     11.6,
+     84.6
+    ],
+    [
+     23.1,
+     70.2
+    ],
+    [
+     34.6,
+     56.1
+    ],
+    [
+     45.6,
+     41.9
+    ],
+    [
+     55.2,
+     27.1
+    ],
+    [
+     62.50000000000001,
+     14.6
+    ],
+    [
+     68.1,
+     5.2
+    ],
+    [
+     74.8,
+     1.0
+    ],
+    [
+     83.0,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     11.6,
+     84.6
+    ],
+    [
+     23.1,
+     70.2
+    ],
+    [
+     34.6,
+     56.1
+    ],
+    [
+     45.6,
+     41.9
+    ],
+    [
+     55.2,
+     27.1
+    ],
+    [
+     62.5,
+     14.6
+    ],
+    [
+     68.1,
+     5.2
+    ],
+    [
+     74.8,
+     1.0
+    ],
+    [
+     83.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "partial_pressure": {
+     "key_raw": "p_{A0}",
+     "raw": "100 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "feature_width": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "conditions_raw": {
+    "T": "500 K",
+    "p_{A0}": "100 Pa",
+    "H": "0.5 µm",
+    "W": "0.1 mm"
+   },
+   "flags": [
+    "F4"
+   ],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": 0.8300000000000001,
+    "y": 1.0
+   },
+   "set": "10.1039_d1cp04758b:cmp:fig2a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "a"
+   }
+  },
+  {
+   "id": "10.1039_d1cp04758b:fig2a#c3",
+   "figure": "2",
+   "panel": "a",
+   "series": {
+    "label_raw": "t_1 = 0.05 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "distance",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "x (µm)",
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "partial_pressure",
+    "unit": "Pa",
+    "transform": "",
+    "label_raw": "p_A (Pa)",
+    "unit_raw": "Pa",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     17.4,
+     85.2
+    ],
+    [
+     34.9,
+     71.0
+    ],
+    [
+     52.1,
+     57.1
+    ],
+    [
+     68.9,
+     43.2
+    ],
+    [
+     84.7,
+     28.8
+    ],
+    [
+     96.1,
+     16.5
+    ],
+    [
+     104.7,
+     6.6
+    ],
+    [
+     112.9,
+     1.5
+    ],
+    [
+     125.00000000000001,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     17.4,
+     85.2
+    ],
+    [
+     34.9,
+     71.0
+    ],
+    [
+     52.1,
+     57.1
+    ],
+    [
+     68.9,
+     43.2
+    ],
+    [
+     84.7,
+     28.8
+    ],
+    [
+     96.1,
+     16.5
+    ],
+    [
+     104.7,
+     6.6
+    ],
+    [
+     112.9,
+     1.5
+    ],
+    [
+     125.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "partial_pressure": {
+     "key_raw": "p_{A0}",
+     "raw": "100 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "feature_width": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "conditions_raw": {
+    "T": "500 K",
+    "p_{A0}": "100 Pa",
+    "H": "0.5 µm",
+    "W": "0.1 mm"
+   },
+   "flags": [
+    "F4"
+   ],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": 1.2500000000000002,
+    "y": 1.0
+   },
+   "set": "10.1039_d1cp04758b:cmp:fig2a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "a"
+   }
+  },
+  {
+   "id": "10.1039_d1cp04758b:fig2a#c4",
+   "figure": "2",
+   "panel": "a",
+   "series": {
+    "label_raw": "t_1 = 0.1 s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "distance",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "x (µm)",
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "partial_pressure",
+    "unit": "Pa",
+    "transform": "",
+    "label_raw": "p_A (Pa)",
+    "unit_raw": "Pa",
+    "definition": "",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     21.0,
+     86.2
+    ],
+    [
+     41.9,
+     73.0
+    ],
+    [
+     63.20000000000001,
+     59.5
+    ],
+    [
+     83.8,
+     46.1
+    ],
+    [
+     103.5,
+     32.3
+    ],
+    [
+     119.8,
+     18.8
+    ],
+    [
+     130.6,
+     8.7
+    ],
+    [
+     138.8,
+     2.4
+    ],
+    [
+     149.0,
+     0.2
+    ],
+    [
+     160.0,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     100.0
+    ],
+    [
+     21.0,
+     86.2
+    ],
+    [
+     41.9,
+     73.0
+    ],
+    [
+     63.2,
+     59.5
+    ],
+    [
+     83.8,
+     46.1
+    ],
+    [
+     103.5,
+     32.3
+    ],
+    [
+     119.8,
+     18.8
+    ],
+    [
+     130.6,
+     8.7
+    ],
+    [
+     138.8,
+     2.4
+    ],
+    [
+     149.0,
+     0.2
+    ],
+    [
+     160.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "partial_pressure": {
+     "key_raw": "p_{A0}",
+     "raw": "100 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "feature_width": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "conditions_raw": {
+    "T": "500 K",
+    "p_{A0}": "100 Pa",
+    "H": "0.5 µm",
+    "W": "0.1 mm"
+   },
+   "flags": [
+    "F4"
+   ],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": 1.6,
+    "y": 1.0
+   },
+   "set": "10.1039_d1cp04758b:cmp:fig2a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "2",
+    "panel": "a"
+   }
+  },
+  {
    "id": "10.1039_d1cp04758b:fig2b#c1",
    "figure": "2",
    "panel": "b",
@@ -371,14 +1028,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "surface_coverage",
     "unit": "1",
     "transform": "",
     "label_raw": "θ (-)",
-    "unit_raw": ""
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -531,14 +1192,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "surface_coverage",
     "unit": "1",
     "transform": "",
     "label_raw": "θ (-)",
-    "unit_raw": ""
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -691,14 +1356,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "surface_coverage",
     "unit": "1",
     "transform": "",
     "label_raw": "θ (-)",
-    "unit_raw": ""
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -851,14 +1520,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "surface_coverage",
     "unit": "1",
     "transform": "",
     "label_raw": "θ (-)",
-    "unit_raw": ""
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1011,14 +1684,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1112,14 +1789,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1213,14 +1894,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1314,14 +1999,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1415,14 +2104,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1516,14 +2209,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1617,14 +2314,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1718,14 +2419,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1819,14 +2524,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -1920,14 +2629,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2021,14 +2734,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2122,14 +2839,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2223,14 +2944,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2324,14 +3049,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2425,14 +3154,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2526,14 +3259,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2627,14 +3364,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2728,14 +3469,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2829,14 +3574,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -2930,14 +3679,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3031,14 +3784,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3124,14 +3881,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3217,14 +3978,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3318,14 +4083,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3419,14 +4188,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3520,14 +4293,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3629,14 +4406,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3738,14 +4519,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3839,14 +4624,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -3940,14 +4729,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4041,14 +4834,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4150,14 +4947,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4259,14 +5060,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4360,14 +5165,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4461,14 +5270,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4562,14 +5375,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4663,14 +5480,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4764,14 +5585,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4865,14 +5690,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -4966,14 +5795,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5067,14 +5900,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5168,14 +6005,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5269,14 +6110,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5370,14 +6215,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5471,14 +6320,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5576,14 +6429,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5695,14 +6552,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5814,14 +6675,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -5933,14 +6798,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6052,14 +6921,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6171,14 +7044,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6290,14 +7167,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6408,14 +7289,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6518,14 +7403,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6628,14 +7517,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6738,14 +7631,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6848,14 +7745,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -6958,14 +7859,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7068,14 +7973,18 @@
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
-    "unit_raw": "µm"
+    "unit_raw": "µm",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7187,14 +8096,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7306,14 +8219,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7425,14 +8342,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7544,14 +8465,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7663,14 +8588,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7782,14 +8711,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -7901,14 +8834,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8019,14 +8956,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8137,14 +9078,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8255,14 +9200,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8373,14 +9322,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8491,14 +9444,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8609,14 +9566,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8727,14 +9688,18 @@
     "unit": "1",
     "transform": "",
     "label_raw": "x̃ (-)",
-    "unit_raw": "-"
+    "unit_raw": "-",
+    "definition": "",
+    "definition_note": ""
    },
    "y": {
     "quantity": "growth_per_cycle",
     "unit": "nm/cycle",
     "transform": "",
     "label_raw": "s/N (nm)",
-    "unit_raw": "nm"
+    "unit_raw": "nm",
+    "definition": "",
+    "definition_note": ""
    },
    "points": [
     [
@@ -8831,6 +9796,50 @@
  ],
  "values": [],
  "sets": [
+  {
+   "id": "10.1039_d1cp04758b:cmp:fig2a",
+   "figure": "2",
+   "panel": "a",
+   "kind": "series",
+   "varied": "time",
+   "varied_raw": "time",
+   "members": [
+    "10.1039_d1cp04758b:fig2a#c1",
+    "10.1039_d1cp04758b:fig2a#c2",
+    "10.1039_d1cp04758b:fig2a#c3",
+    "10.1039_d1cp04758b:fig2a#c4"
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "partial_pressure": {
+     "key_raw": "p_{A0}",
+     "raw": "100 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "feature_width": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "label": "Fig. 2a series (time)"
+  },
   {
    "id": "10.1039_d1cp04758b:cmp:fig2b",
    "figure": "2",
@@ -9156,12 +10165,14 @@
   }
  ],
  "derived": [],
+ "p89": [],
  "report": {
   "inventory": 26,
   "data_panels": 23,
-  "sets": 14,
-  "curves": 77,
+  "sets": 15,
+  "curves": 81,
   "derived": 0,
-  "unmapped": 13
+  "unmapped": 12,
+  "resolved_p89": 0
  }
 }

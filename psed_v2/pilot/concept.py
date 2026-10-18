@@ -300,7 +300,8 @@ DESCEND = ("How to use the knowledge base: resolve the question's words with con
            "grouped evidence with values (one row per specimen, comparison sets separated); open chosen ids with detail (up to 8 at once); "
            "source gives the paper's own words behind an id. Prefer one concept call over repeated searches; a call identical to an earlier "
            "one is not answered twice; the last line of values and search says where else the concept lives or that a paper does not study it. "
-           "To see everything a set measured, values(set=<id>) is one call.")
+           "To see everything a set measured, values(set=<id>) is one call; detail also takes a location id (a paragraph, a table cell, a figure "
+           "panel or a figure) and returns the records located there.")
 
 
 def l0_map():

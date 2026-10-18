@@ -63,7 +63,9 @@ class Tree:
             self.points[c["id"]] = dict(points=c["points"], x_label_as_printed=c["x"]["label_raw"], y_label_as_printed=c["y"]["label_raw"], source="figure stage (VLM), imported by rule (P84)")
             self.curves[c["id"]] = c
             unc = c.get("uncertainty") or {}
-            self.rows.append(row(fact_id=c["id"], type="observation" if c["kind"] == "read_from_figure" else "model", quantity=yq, qualifiers=f"x={xq}", unit=c["y"]["unit"],
+            note = "; ".join(x for x in (c["y"].get("definition_note", ""), c["x"].get("definition_note", "")) if x)
+            self.rows.append(row(fact_id=c["id"], type="observation" if c["kind"] == "read_from_figure" else "model", quantity=yq, qualifiers=f"x={xq}", unit=c["y"]["unit"], definition_note=note,
+                                 term="|".join(x for x in (c["y"].get("definition", ""), c["x"].get("definition", "")) if x),
                                  points_ref=c["id"], data_kind=c["kind"], evidence=f"fig{c['figure']}{c['panel']}", parent=c["set"] or f"{key}:figures", mentions=lab,
                                  label_as_printed=lab or f"Fig. {c['figure']}{c['panel']} curve", statement=f"a curve of Fig. {c['figure']}{c['panel']}: {L.NAMES.get(yq, yq)} against {L.NAMES.get(xq, xq)}, read by the figure stage and imported by rule",
                                  uncertainty=(g(unc["y"], 3) if unc.get("y") is not None and c["kind"] == "read_from_figure" else ""), uncertainty_kind="measurement" if c["kind"] == "read_from_figure" else "",
@@ -98,11 +100,13 @@ class Tree:
                 self.cells[v["id"]] = v
                 at = ", ".join(f"{L.NAMES.get(q, q)} {g(x, 4)}" for q, x in v["at"].items())
                 self.rows.append(row(fact_id=v["id"], type="observation", quantity=v["quantity"], value=g(v["value"], 4) if v.get("value") is not None else "", value_text=v.get("value_text", ""), unit=v.get("unit", ""),
-                                     data_kind="read_from_figure", basis="printed", evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures", label_as_printed=str(v.get("value_text") or v.get("value")),
+                                     data_kind="read_from_figure", basis="printed", evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures",
+                                     label_as_printed=f"cell {v.get('value_text') or g(v['value'], 4)} · {L.NAMES.get(v['quantity'], v['quantity'])} ({v['quantity']})",   # P91a: the row names its quantity
                                      statement=f"a cell of the Fig. {v['figure']}{v['panel']} map, the value as printed", mentions=at))
             else:
                 self.rows.append(row(fact_id=v["id"], type="observation", quantity=v["quantity"], value=g(v["value"], 5), unit=v.get("unit", ""), data_kind="read_from_figure", basis="printed",
-                                     evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures", label_as_printed=v.get("label", ""), qualifiers="",
+                                     evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures", qualifiers="",
+                                     label_as_printed=f"peak {v.get('label') or ''} · {L.NAMES.get(v['quantity'], v['quantity'])} ({v['quantity']})".replace("peak  ·", "peak ·"),   # P91a
                                      statement=f"a peak of Fig. {v['figure']}{v['panel']}, its position and label as printed", mentions=v.get("label", "")))
 
     def is_figset(self, cid):
@@ -1072,6 +1076,29 @@ def axes_of(key, rec):
     return dict(zip(AXES, (q, definition or "the default", rec.get("method_class") or (rec.get("method") or "none"), rec.get("specimen_class") or "none")))
 
 
+def located(loc_id):
+    """P92: the records at a location: a paragraph (<paper>:sN.pM), a table cell (<paper>:tabN.rXcY), a figure panel (<paper>:figNx) or a
+    figure (<paper>:figN, every panel and its caption). Facts whose evidence names the element (figure_ref for a panel), the imported
+    curves, cells and peaks of the panel, the inventory line; in page order (the facts in their file order). None for no such location."""
+    k, _, el = loc_id.partition(":")
+    T = TREES.get(k)
+    if not T or not el:
+        return None
+    kinds = {e["element_id"]: e["kind"] for e in (csv.DictReader((HERE / f"{KEY[k]}.elements.csv").open(encoding="utf-8")) if (HERE / f"{KEY[k]}.elements.csv").exists() else [])}
+    inv = [i for i in T.inventory if i["id"] == loc_id or (re.match(r"^fig\d+$", el) and i["id"].startswith(loc_id) and re.match(rf"^{re.escape(loc_id)}[a-z]?$", i["id"]))]
+    if el not in kinds and not inv:
+        return None
+    fig = re.match(r"^(fig\d+)([a-z]?)$", el)
+    def at(f):
+        evs = [e for e in f["evidence"].split(";") if e]
+        if fig:
+            refs = (f.get("figure_ref") or "").split(";")
+            return (el in evs) or (el in refs) or (not fig.group(2) and any(e == el or e == el + ".cap" or re.match(rf"^{el}[a-z]$", e) for e in evs + refs))
+        return el in evs
+    facts = [f for f in T.rows if "#" in f["fact_id"] and at(f)]
+    return dict(id=loc_id, paper=k, kind=kinds.get(el, "figure" if fig and not fig.group(2) else "panel"), facts=facts, inventory=inv)
+
+
 def incomparable(key_a, rec_a, key_b, rec_b):
     """The axes on which two values differ, as 'axis (a vs b)' texts; empty when they are comparable (same entry, definition, method
     class and specimen class, Sec. 18.4). One rule for every quantity; no quantity-specific branch."""
@@ -1086,7 +1113,7 @@ def record(T, f, alternatives=(), ent=None):
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
     text = text_of(f) or (curve_text(T, f) if f["points_ref"] else "")
-    return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text, kind=kind(f), definition=definition_of(f),
+    return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text, kind=kind(f), definition=definition_of(f) or f.get("definition_note", ""),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"], basis=f.get("basis") or L.basis_of(f["uncertainty_kind"])) if f["uncertainty"] else None),

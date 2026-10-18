@@ -108,6 +108,20 @@ def plural_forms(c):
 TRANSFORM = re.compile(r"^\s*(log10|log|ln)\s*[\(\[](.+)[\)\]]\s*$", re.I)
 
 
+def paper_definitions(pid):
+    """P89: the paper's definition facts that name a quantity (pilot/<pid>.facts.csv): {normalised term: (quantity, note, fact id)}."""
+    p = V2 / "pilot" / f"{pid}.facts.csv"
+    out = {}
+    if p.exists():
+        for r in csv.DictReader(p.open(encoding="utf-8")):
+            if r["type"] == "definition" and r.get("term") and r["quantity"] and r["quantity"] in L.ENTRIES:
+                for t in r["term"].split("|"):
+                    out.setdefault(norm(t), (r["quantity"], r.get("definition_note", ""), r["fact_id"]))
+                    sym = delatex(t).translate(SUB).replace("μ", "µ").replace(" ", "")
+                    out.setdefault("sym:" + sym, (r["quantity"], r.get("definition_note", ""), r["fact_id"]))
+    return out
+
+
 class Resolver:
     """Labels, series labels and condition keys against the ontology (vocab.py): one index of every normalised id, name, label and
     alias of the quantity entries with a role in ROLES, and of every species id, formula and alias."""
@@ -115,12 +129,17 @@ class Resolver:
     def __init__(self):
         self.idx = collections.defaultdict(set)
         self.label_of = {}
+        self.alias_sym = {}
         for i, e in L.ENTRIES.items():
             if e["type"] not in ("quantity", "categorical") or e.get("replaced_by") or e.get("role") not in ROLES:
                 continue
             for s in [i.replace("_", " "), e.get("name") or "", e.get("label") or ""] + list(e.get("aliases") or []):
                 if s:
                     self.idx[norm(s)].add(i)
+            for a in e.get("aliases") or []:                                     # the symbol part of an alias ('Pressure pA (Pa)' -> pA): matched as a symbol only
+                ts = _tokens(a)
+                if len(ts) > 1 and is_symbol(ts[-1]) and not re.fullmatch(r"\d+", ts[-1]):
+                    self.alias_sym.setdefault(norm(ts[-1]), set()).add(i)
             if e.get("label"):
                 self.label_of.setdefault(delatex(e["label"]).translate(SUB).replace("μ", "µ").replace(" ", ""), set()).add(i)   # case-sensitive: T and t differ
         self.species = collections.defaultdict(set)
@@ -129,22 +148,33 @@ class Resolver:
                 if a:
                     self.species[norm(a)].add(i)
         self.ambiguous = {norm(a) for a in L.AMBIGUOUS_ALIASES}
+        self.p89_hits = []
 
-    def _pick(self, hit, dimension):
-        """The ids whose dimension is the printed unit's, when a unit is known (a lone symbol of another dimension is not a match)."""
+    def _pick(self, hit, dimension, axis=""):
+        """The ids whose dimension is the printed unit's, when a unit is known (a lone symbol of another dimension is not a match); still
+        several and an axis given: P90c, an x axis takes a coordinate over a condition, a y axis an output."""
         if dimension:
             hit = {i for i in hit if L.ENTRIES[i].get("dimension") == dimension or (dimension == "dimensionless" and L.ENTRIES[i].get("dimension") in ("signal", "count"))}
-        return set(hit)
+        hit = set(hit)
+        if len(hit) > 1 and axis:
+            want = {"x": ("coordinate",), "y": ("output",)}[axis]
+            pref = {i for i in hit if L.ENTRIES[i].get("role") in want}
+            if len(pref) == 1 and all(L.ENTRIES[i].get("role") in ("coordinate", "condition", "output") for i in hit):
+                hit = pref
+        return hit
 
-    def symbol(self, t, dimension=""):
+    def symbol(self, t, dimension="", axis=""):
         """A symbol token against the entries' labels, case-sensitive, then the index (case-folded)."""
         key = delatex(t).translate(SUB).replace("μ", "µ").replace(" ", "")
-        hit = self._pick(self.label_of.get(key, set()), dimension)
+        hit = self._pick(self.label_of.get(key, set()), dimension, axis)
         if len(hit) == 1:
             return hit
-        return self._pick(self.idx.get(norm(t), set()), dimension)
+        hit = self._pick(self.idx.get(norm(t), set()), dimension, axis)
+        if hit:
+            return hit
+        return self._pick(self.alias_sym.get(norm(t), set()), dimension, axis)
 
-    def quantity(self, label, unit_dimension=""):
+    def quantity(self, label, unit_dimension="", defs=None, axis=""):
         """(id, transform, reason) for an axis label or a condition key: the whole label (plural folded), the label without its
         trailing symbol, the symbol alone (case-sensitive against the entries' labels), a symbol with a subscript word, A/B where a
         transform of the ontology divides A by B; several matches are narrowed to the printed unit's dimension; '' with a reason
@@ -157,11 +187,32 @@ class Resolver:
         raw = re.sub(r"^\s*#\s*", "number of ", raw)                            # '#ALD cycle' = number of ALD cycles
         if not raw.strip():
             return "", transform, "empty"
+        q, why = self._quantity(raw, unit_dimension, axis)
+        if not q and strip_unit_brackets(raw).count("/") == 1 and all(x.strip() for x in strip_unit_brackets(raw).split("/")):      # P90a on a worded ratio: 'Distance / cavity height'
+            a, b = (x.strip() for x in strip_unit_brackets(raw).split("/"))
+            qa, _ = self._quantity(a, "", ""); qb, _ = self._quantity(b, "", "")
+            r = self.ratio(a, b) or (next(iter({i for i, e in L.ENTRIES.items() if len(e.get("ratio_of") or []) == 2 and e["ratio_of"][0].split("{")[0] == qa and e["ratio_of"][1].split("{")[0] == qb}), "") if qa and qb else "")
+            if r:
+                return r, transform, ""
+            why = f"{why}; P90a ratio: parts {a!r} -> {qa or 'unresolved'}, {b!r} -> {qb or 'unresolved'}, no entry declares that ratio"
+        if q:
+            return q, transform, ""
+        if defs:                                                                # P89: the paper's own definitions, after the ontology and before giving up
+            toks = _tokens(raw)
+            cands = [norm(raw)] + ([norm(" ".join(toks[:-1])), "sym:" + delatex(toks[-1]).translate(SUB).replace("μ", "µ").replace(" ", ""), norm(toks[-1])] if len(toks) > 1 else ["sym:" + delatex(raw.strip()).translate(SUB).replace("μ", "µ").replace(" ", "")])
+            for c in cands:
+                if c in defs:
+                    self.p89_hits.append((raw, defs[c]))
+                    return defs[c][0], transform, "definition:" + defs[c][2]
+        return "", transform, why
+
+    def _quantity(self, raw, unit_dimension="", axis=""):
+        """The ontology part of the resolution: (id, reason)."""
         toks = _tokens(raw)
         if len(toks) == 1 and is_symbol(toks[0]):                                  # a lone symbol: case-sensitive against the entries' labels first (N is not n, T is not t)
-            hit = self.symbol(toks[0], unit_dimension)
+            hit = self.symbol(toks[0], unit_dimension, axis)
             if len(hit) == 1:
-                return next(iter(hit)), transform, ""
+                return next(iter(hit)), ""
         steps = [norm(raw)]
         words = toks[:-1] if len(toks) > 1 and is_symbol(toks[-1]) else toks
         if len(toks) > 1 and is_symbol(toks[-1]):
@@ -173,40 +224,51 @@ class Resolver:
             for cc in plural_forms(c):
                 if not cc:
                     continue
-                hit = self._pick(self.idx.get(cc, set()), unit_dimension)
+                hit = self._pick(self.idx.get(cc, set()), unit_dimension, axis)
                 if len(hit) == 1:
-                    return next(iter(hit)), transform, ""
+                    return next(iter(hit)), ""
                 if len(hit) > 1:
-                    return "", transform, f"ambiguous: {', '.join(sorted(hit))}"
+                    return "", f"ambiguous: {', '.join(sorted(hit))}"
                 if cc in self.ambiguous:
-                    return "", transform, f"ambiguous alias: {', '.join(L.AMBIGUOUS_ALIASES.get(cc, []))}"
+                    return "", f"ambiguous alias: {', '.join(L.AMBIGUOUS_ALIASES.get(cc, []))}"
         sym = toks[-1] if len(toks) > 1 and is_symbol(toks[-1]) else (toks[0] if len(toks) == 1 else "")
         if sym:
             if "/" in sym and sym.count("/") == 1 and all(sym.split("/")):            # A/B: a transform of the ontology that divides A by B
                 a, b = sym.split("/")
+                r = self.ratio(a, b)                                            # P90a: an entry that declares this ratio
+                if r:
+                    return r, ""
                 ha, hb = self.symbol(a) | self.idx.get(norm(a), set()), self.symbol(b) | self.idx.get(norm(b), set())
                 outs = {t["output"].split("{")[0] for t in V.TRANSFORMS if [x.split("{")[0] for x in t["inputs"]] in [[ia, ib] for ia in ha for ib in hb] and "/" in t["formula"].split("(")[0]}
                 if len(outs) == 1:
-                    return next(iter(outs)), transform, ""
-            hit = self.symbol(sym, unit_dimension)
+                    return next(iter(outs)), ""
+            hit = self.symbol(sym, unit_dimension, axis)
             if len(hit) == 1:
-                return next(iter(hit)), transform, ""
+                return next(iter(hit)), ""
             if len(hit) > 1:
-                return "", transform, f"ambiguous: {', '.join(sorted(hit))}"
+                return "", f"ambiguous: {', '.join(sorted(hit))}"
             if norm(sym) in self.ambiguous:
-                return "", transform, f"ambiguous alias: {', '.join(L.AMBIGUOUS_ALIASES.get(norm(sym), []))}"
+                return "", f"ambiguous alias: {', '.join(L.AMBIGUOUS_ALIASES.get(norm(sym), []))}"
         m = re.match(r"^\s*([A-Za-z]̃?|[δΔθτσρλαβ])\s*[_]?\s*\{?([A-Za-z]+)\}?\s*$", delatex(strip_unit_brackets(raw)))
         if m:                                                                       # a symbol with a subscript word: T_deposition
             ids = self.label_of.get(m.group(1), set())
             word = m.group(2).lower()
             ids = {i for i in ids if len(word) >= 3 and (word in (L.ENTRIES[i].get("name") or i).lower().replace("_", " ").split() or any(word in re.findall(r"[a-z]+", a.lower()) for a in L.ENTRIES[i].get("aliases") or []))}
             if len(ids) == 1:
-                return next(iter(ids)), transform, ""
+                return next(iter(ids)), ""
         if len(words) >= 2 and (unit_dimension or prefixed):                       # 'Elapsed time', 'MoCl2O2 pulse', 'Normalized X-ray counts': the head word alone, confirmed by the unit's dimension or the prefix
             hit = self._pick(self.idx.get(norm(words[-1]), set()) | self.symbol(words[-1]), unit_dimension)
             if len(hit) == 1:
-                return next(iter(hit)), transform, ""
-        return "", transform, "no entry, alias or label matches"
+                return next(iter(hit)), ""
+        return "", "no entry, alias or label matches"
+
+    def ratio(self, a, b):
+        """P90a: 'X / Y' whose parts resolve to the ratio_of of an entry resolves to that entry ('' otherwise)."""
+        ha = self.symbol(a) | self.idx.get(norm(a), set()); hb = self.symbol(b) | self.idx.get(norm(b), set())
+        if not ha or not hb:
+            return ""
+        outs = {i for i, e in L.ENTRIES.items() if len(e.get("ratio_of") or []) == 2 and e["ratio_of"][0].split("{")[0] in ha and e["ratio_of"][1].split("{")[0] in hb}
+        return next(iter(outs)) if len(outs) == 1 else ""
 
     def species_id(self, label):
         hit = self.species.get(norm(label), set())
@@ -347,9 +409,17 @@ class Importer:
         """One axis resolved: dict(quantity, unit, unit_raw, label_raw, transform, dimension, unit_row, denominator, reason)."""
         out = dict(label_raw=a.get("label_raw"), unit_raw=a.get("unit_raw") or "", log=bool(a.get("log")), is_normalized=bool(a.get("is_normalized")),
                    quantity="", unit="", transform="", dimension="", denominator=None, reason="")
-        urow0 = unit_of(a.get("unit_raw") or "")
-        q, tr, why = self.R.quantity(a.get("label_raw") or "", urow0["dimension"] if urow0 else "")
+        uraw0 = a.get("unit_raw") or ""
+        if not uraw0.strip():                                                   # P90b: the unit inside the label's bracket feeds unit resolution
+            m = re.search(r"[\(\[]([^()\[\]]*)[\)\]]\s*$", delatex(a.get("label_raw") or ""))
+            if m and unit_of(m.group(1)):
+                uraw0 = m.group(1)
+        urow0 = unit_of(uraw0)
+        q, tr, why = self.R.quantity(a.get("label_raw") or "", urow0["dimension"] if urow0 else "", self.defs, ax)
         out["transform"] = tr
+        if why.startswith("definition:"):
+            out["definition"] = why.split(":", 1)[1]; out["definition_note"] = self.defs_note.get(q, "")
+            why = ""
         if not q:
             out["reason"] = f"label_unresolved: {why}"
             self.unm(pid, fig, panel, f"{ax}.label_raw", a.get("label_raw") or "", out["reason"])
@@ -368,7 +438,7 @@ class Importer:
                 out["reason"] = "denominator"
                 self.unm(pid, fig, panel, f"{ax}.normalization_denominator_symbol", den, "denominator: no quantity or species matches")
                 return out
-        uraw = a.get("unit_raw") or ""
+        uraw = uraw0
         row = fit_unit(uraw, q)
         if row is None:
             if True:
@@ -395,11 +465,13 @@ class Importer:
         """A condition key and printed value resolved: dict(key_raw, raw, quantity, value, value_max, unit, role) or None."""
         pv0 = parse_value(text)
         urow0 = unit_of(pv0[2]) if pv0 and pv0[2].strip() else None
-        q, _, why = self.R.quantity(key, urow0["dimension"] if urow0 else "")
+        q, _, why = self.R.quantity(key, urow0["dimension"] if urow0 else "", self.defs)
         if not q:
             self.unm(pid, fig, panel, "conditions.key", key, f"label_unresolved: {why}")
             return None
         rec = dict(key_raw=key, raw=text, quantity=q, role=L.ENTRIES[q].get("role", ""), value=None, value_max=None, unit="")
+        if why.startswith("definition:"):
+            rec["definition"] = why.split(":", 1)[1]
         pv = parse_value(text)
         if pv is None:
             rec["text"] = str(text)
@@ -450,6 +522,9 @@ class Importer:
     def paper(self, pid):
         d = json.loads((FINAL / pid / "figures.json").read_text(encoding="utf-8"))
         key = PAPERS.get(pid, pid)
+        self.defs = paper_definitions(pid)                                      # P89
+        self.defs_note = {q: note for _, (q, note, _) in self.defs.items()}
+        self.R.p89_hits = []
         prov = dict(extractor="vlm", model=d["model"], prompt_sha256=d["prompt_sha256"])
         out = dict(paper_id=pid, key=key, model=d["model"], prompt_sha256=d["prompt_sha256"], imported_at=datetime.datetime.now().isoformat(timespec="seconds"),
                    inventory=[], curves=[], values=[], sets=[], derived=[])
@@ -496,7 +571,9 @@ class Importer:
                         pv0 = parse_value(s0.get("label") or "")
                         if pv0 and pv0[2].strip() and unit_of(pv0[2]):
                             dim0 = unit_of(pv0[2])["dimension"]; break
-                    sa_q, _, why = self.R.quantity(sa_raw, dim0)
+                    sa_q, _, why = self.R.quantity(sa_raw, dim0, self.defs)
+                    if why.startswith("definition:"):
+                        why = ""
                     if not sa_q:
                         self.unm(pid, fig, pan, "series_axis", sa_raw, f"label_unresolved: {why}")
                 curves = []
@@ -519,8 +596,8 @@ class Importer:
                     xr = (max(x for x, _ in pts) - min(x for x, _ in pts)) or 1.0
                     yr = (max(y for _, y in pts) - min(y for _, y in pts)) or 1.0
                     cid = f"{eid}#c{n}"
-                    curves.append(dict(id=cid, figure=fig, panel=pan, series=lab, x=dict(quantity=ax["x"]["quantity"], unit=ax["x"]["unit"], transform=ax["x"]["transform"], label_raw=ax["x"]["label_raw"], unit_raw=ax["x"]["unit_raw"]),
-                                       y=dict(quantity=ax["y"]["quantity"], unit=ax["y"]["unit"], transform=ax["y"]["transform"], label_raw=ax["y"]["label_raw"], unit_raw=ax["y"]["unit_raw"]),
+                    curves.append(dict(id=cid, figure=fig, panel=pan, series=lab, x=dict(quantity=ax["x"]["quantity"], unit=ax["x"]["unit"], transform=ax["x"]["transform"], label_raw=ax["x"]["label_raw"], unit_raw=ax["x"]["unit_raw"], definition=ax["x"].get("definition", ""), definition_note=ax["x"].get("definition_note", "")),
+                                       y=dict(quantity=ax["y"]["quantity"], unit=ax["y"]["unit"], transform=ax["y"]["transform"], label_raw=ax["y"]["label_raw"], unit_raw=ax["y"]["unit_raw"], definition=ax["y"].get("definition", ""), definition_note=ax["y"].get("definition_note", "")),
                                        points=pts, points_raw=s["points"], conditions=cconds, conditions_raw=dict(p.get("conditions") or {}), flags=flags, kind=kind,
                                        uncertainty=dict(basis="digitized" if kind == "read_from_figure" else "", x=0.01 * (max(x for x, _ in pts) - min(x for x, _ in pts)) if ax["x"].get("unit_row") else None,
                                                         y=0.01 * (max(y for _, y in pts) - min(y for _, y in pts))),
@@ -573,6 +650,7 @@ class Importer:
                 inv["status"] = "imported"
                 row.update(outcome="imported", reason=row["reason"] or f"{n_imp} curves, {len(p.get('cells') or [])} cells, {len(p.get('peaks') or [])} peaks" + (f", set {sid}" if sid else ""))
         counts["derived"] = len(out["derived"]); counts["unmapped"] = sum(1 for u in self.unmapped if u["paper"] == pid)
+        counts["resolved_p89"] = len(self.R.p89_hits); out["p89"] = [dict(label=l, quantity=q, note=n, definition=f) for l, (q, n, f) in self.R.p89_hits]
         out["report"] = dict(counts)
         (HERE / f"{pid}.figures.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
         return out
@@ -582,19 +660,24 @@ class Importer:
         out = []
         xq, yq = c["x"]["quantity"], c["y"]["quantity"]
         pts = sorted(c["points"])
+        def canon(v, q, from_unit):                                             # P91b: a derived value in its quantity's canonical unit, never a source axis's
+            tgt = entry_unit_row(q); src = UNIT_BY_SYMBOL.get(from_unit) or unit_of(from_unit)
+            return (convert(v, src, tgt), tgt["symbol"]) if tgt and src and src["dimension"] == tgt["dimension"] else (v, L.ENTRIES[q].get("unit", from_unit))
         xe, ye = L.ENTRIES.get(xq, {}), L.ENTRIES.get(yq, {})
         n = 0
         if xe.get("role") == "coordinate" and yq in PROFILE_Y and len(pts) >= PLATEAU_MIN:
             pl = plateau_of(pts)
             if pl:
                 n += 1
-                out.append(dict(id=f"{c['id'].split('#')[0]}#d{c['id'].split('#c')[1]}_{n}", source=c["id"], quantity=yq, qualifiers="position=plateau", value=pl[0], unit=c["y"]["unit"],
+                pv, pu = canon(pl[0], yq, c["y"]["unit"])
+                out.append(dict(id=f"{c['id'].split('#')[0]}#d{c['id'].split('#c')[1]}_{n}", source=c["id"], quantity=yq, qualifiers="position=plateau", value=pv, unit=pu,
                                 method="plateau", rule="P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)", conditions=c["conditions"], figure=c["figure"], panel=c["panel"]))
                 if xe.get("dimension") == "length":
                     hx = half_crossing(pts, pl[0], pl[2])
                     if hx is not None:
                         n += 1
-                        out.append(dict(id=f"{c['id'].split('#')[0]}#d{c['id'].split('#c')[1]}_{n}", source=c["id"], quantity="penetration_depth", qualifiers="level=50%", value=hx, unit=c["x"]["unit"],
+                        hv, hu = canon(hx, "penetration_depth", c["x"]["unit"])
+                        out.append(dict(id=f"{c['id'].split('#')[0]}#d{c['id'].split('#c')[1]}_{n}", source=c["id"], quantity="penetration_depth", qualifiers="level=50%", value=hv, unit=hu,
                                         method="half_value_crossing", rule="P86: the x where y first falls below 50 % of the plateau, linear interpolation", conditions=c["conditions"], figure=c["figure"], panel=c["panel"]))
         if yq == "film_thickness" and xq == "cycle_number" and len(pts) >= 4:
             fit = linear_fit(pts)
@@ -609,10 +692,10 @@ class Importer:
 
 def write_reports(imp, results):
     with (HERE / "import_report.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["paper_id", "key", "data_panels", "imported_panels", "curves", "cells", "peaks", "sets", "derived", "inventory_records", "unmapped"])
+        w = csv.writer(f); w.writerow(["paper_id", "key", "data_panels", "imported_panels", "curves", "cells", "peaks", "sets", "derived", "inventory_records", "unmapped", "resolved_p89"])
         for r in results:
             c = r["report"]
-            w.writerow([r["paper_id"], r["key"], c.get("data_panels", 0), sum(1 for i in r["inventory"] if i["status"] == "imported"), c.get("curves", 0), c.get("cells", 0), c.get("peaks", 0), c.get("sets", 0), c.get("derived", 0), c.get("inventory", 0), c.get("unmapped", 0)])
+            w.writerow([r["paper_id"], r["key"], c.get("data_panels", 0), sum(1 for i in r["inventory"] if i["status"] == "imported"), c.get("curves", 0), c.get("cells", 0), c.get("peaks", 0), c.get("sets", 0), c.get("derived", 0), c.get("inventory", 0), c.get("unmapped", 0), c.get("resolved_p89", 0)])
     with (HERE / "import_panels.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "panel_type", "verdict", "flags", "outcome", "reason"]); w.writeheader(); w.writerows(imp.panels)
     keep = [r for r in csv.DictReader(UNMAPPED.open(newline="", encoding="utf-8")) if r.get("field") == "pilot"] if UNMAPPED.exists() else []   # the pilot's hand rows stay
@@ -630,7 +713,7 @@ def main(argv):
     for r in results:
         c = r["report"]
         print(f"{r['paper_id']}: {c.get('data_panels', 0)} data panels, {sum(1 for i in r['inventory'] if i['status'] == 'imported')} imported; {c.get('curves', 0)} curves, {c.get('cells', 0)} cells, {c.get('peaks', 0)} peaks, "
-              f"{c.get('sets', 0)} sets, {c.get('derived', 0)} derived, {c.get('inventory', 0)} inventory; {c.get('unmapped', 0)} unmapped")
+              f"{c.get('sets', 0)} sets, {c.get('derived', 0)} derived, {c.get('inventory', 0)} inventory; {c.get('unmapped', 0)} unmapped; {c.get('resolved_p89', 0)} fields through the paper's definitions (P89)")
     reasons = collections.Counter(u["reason"].split(":")[0] for u in imp.unmapped)
     print(f"unmapped rows {len(imp.unmapped)}: {dict(reasons)}")
 

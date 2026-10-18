@@ -492,6 +492,7 @@ entries:
 
   - id: coated_aspect_ratio
     type: quantity
+    ratio_of: [penetration_depth, feature_width]   # P90a: the entry is literally this ratio; a label "X / Y" whose parts resolve to them resolves to it
     label: "coated AR"
     name: "coated aspect ratio"
     origin: base
@@ -787,6 +788,7 @@ entries:
 
   - id: normalized_thickness
     type: quantity
+    ratio_of: [film_thickness, "film_thickness{position=plateau}"]   # P90a: the entry is literally this ratio; a label "X / Y" whose parts resolve to them resolves to it
     label: "normalized S"
     name: "normalized thickness"
     origin: extension
@@ -846,6 +848,7 @@ entries:
 
   - id: dimensionless_distance
     type: quantity
+    ratio_of: [distance, feature_width]   # P90a: the entry is literally this ratio; a label "X / Y" whose parts resolve to them resolves to it
     label: "x̃"
     name: "depth over height"
     origin: extension

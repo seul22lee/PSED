@@ -25,6 +25,10 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
                value is a name, not a number; the statement then names the setting without repeating the value
   points_ref   (P88) empty in every facts file: figure curves are imported records (kb/<pid>.figures.json), their ids serve as points_ref
   figure_ref   (P88) the figure panels the fact cites, by rule from its evidence and its 'Fig. N(x)' mentions (facts.figure_refs)
+  term         (P89) a definition fact: the symbol or phrase the paper defines, as printed ('r_θ=1/2', 'n_p', 'relative coverage'); required
+               when the definition names a quantity (defaults to label_as_printed); the importer resolves figure labels through it
+  definition_note  (P89) how the paper's definition differs from the entry's ('half-coverage radius, spherical particle'); the comparability
+               axis "definition" of the records resolved through it
   data_kind    the value's kind, lists.KINDS (Sec. 18.5: measured, stated, read_from_figure, computed_by_authors, computed_by_kb, assumed,
                model_input, cited; required with a value or points); write() turns a measured or stated value whose first element is a
                figure panel into read_from_figure and a model fact's stated input into model_input
@@ -62,7 +66,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "basis", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by", "figure_ref"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "basis", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by", "figure_ref", "term", "definition_note"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -652,6 +656,8 @@ def write(key, pid):
     for r in _facts:
         r["author"] = r["author"] or pid
         r["figure_ref"] = figure_refs(r) if "#" in r["fact_id"] else ""         # P88: the panels a fact cites, by rule
+        if r["type"] == "definition" and r["quantity"] and not r["term"]:
+            r["term"] = r["label_as_printed"]                                    # P89: the symbol a definition defines, as printed (the label when the fact gives one)
     with (HERE / f"{pid}.facts.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(_facts)
     els = elements.load(pid)

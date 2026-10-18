@@ -111,6 +111,8 @@ def check(pid):
             bad("a value from a colour-bar panel must say 'read from colour'")
         if f["points_ref"]:
             bad("points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)")
+        if f["type"] == "definition" and f["quantity"] and not f.get("term"):
+            bad("a definition that names a quantity has no term (the symbol or phrase as printed; P89)")
         if not f["statement"].strip() or "\n" in f["statement"]:
             bad("statement empty or not one line")
         if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"] or f["value_text"]:
@@ -481,6 +483,9 @@ def check_figures_import():
         for v in F["values"]:
             if v.get("quantity") and v["basis"] not in L.BASES:
                 err.append(f"{v['id']}: basis {v['basis']!r} not in the basis table (P87)")
+        for d in F["derived"]:                                                   # P91b: a derived value carries its quantity's canonical unit
+            if d["unit"] != L.ENTRIES.get(d["quantity"], {}).get("unit", d["unit"]):
+                err.append(f"{d['id']}: unit {d['unit']!r} is not the canonical unit {L.ENTRIES.get(d['quantity'], {}).get('unit')!r} of {d['quantity']} (P91b)")
         r = report.get(pid)
         if not r:
             err.append(f"{k}: no row in kb/import_report.csv (P84)")
@@ -1121,6 +1126,20 @@ def tool_probes():
         inv = next((i for i in T.inventory if i.get("content")), None)        # P84e: a search that hits a figure-inventory record of each paper
         if inv:
             probes.append(("search", {"words": " ".join(w for w in Q.tokens(inv["content"])[:5] if len(w) > 2), "paper": k}))
+    locs = {}                                                                   # P92: one detail probe per location kind (a paragraph, a table cell, a panel, a figure)
+    for k, T in Q.TREES.items():
+        for f in T.rows:
+            if "#" not in f["fact_id"]:
+                continue
+            for e in f["evidence"].split(";"):
+                if re.match(r"^s\d+\.p\d+$", e):
+                    locs.setdefault("paragraph", f"{k}:{e}")
+                elif re.match(r"^tab\w+\.r\d+c\d+$", e):
+                    locs.setdefault("table cell", f"{k}:{e}")
+                elif re.match(r"^fig\d+[a-z]$", e):
+                    locs.setdefault("panel", f"{k}:{e}"); locs.setdefault("figure", f"{k}:{e[:-1]}")
+    probes += [("detail", {"ids": [i]}) for i in locs.values()]
+    for k, T in Q.TREES.items():
         c = next((c for c in Q.caveats_of(T) if len(c["facts"]) >= 2), None)
         if c:
             shared.append((c["f"]["fact_id"], sorted(c["facts"])[:2]))

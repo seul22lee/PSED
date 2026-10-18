@@ -160,7 +160,9 @@ TOOLS = [
                       "minimum and maximum members and the scatter between repeats, and power-law fits). A claim: the statement, stance, "
                       "cause and effect, its scope (" + KB + "), the results it rests on, the facts that give its size, its caveats. A "
                       "cited work: what, recipe, results, claims. Any other id (a value, setting, definition, caveat, note, process step): "
-                      "the record, what it belongs to, its source element and caveats; a caveat also lists what it qualifies. parts "
+                      "the record, what it belongs to, its source element and caveats; a caveat also lists what it qualifies. A location id "
+                      "(a paragraph <paper>:sN.pM, a table cell <paper>:tabN.rXcY, a figure panel <paper>:figNx or a figure <paper>:figN) returns the "
+                      "records located there: facts, values, curves, cells, peaks and the panel's inventory line, in page order. parts "
                       "(default what, differs, results) applies to experiments, inputs, sets and cited works. About 2,000 tokens per call, "
                       "then 'more: offset=N'. Use it for more about one id that search or values returned."),
          parameters=dict(type="object", properties=dict(
@@ -374,9 +376,9 @@ def _comparison(i):
 
 
 def _record(i):
-    """Whether an id names a record of the knowledge base (any row but a paper's)."""
+    """Whether an id names a record of the knowledge base (any row but a paper's) or a location (P92)."""
     T = Q.TREES.get(i.split(":")[0])
-    return bool(T and i in T.byid and T.byid[i]["type"] != "paper")
+    return bool(T and i in T.byid and T.byid[i]["type"] != "paper") or Q.located(i) is not None
 
 
 def _curve(i):
@@ -1098,7 +1100,15 @@ def _run(name, args):
                     b, e = _run("detail", {"id": i, "parts": parts})
                     out += b; errs += [e] if e else []
                 return out, "; ".join(errs)
-            T0 = Q.tree_of(args["id"]); n0 = T0.byid[args["id"]]
+            T0 = Q.tree_of(args["id"]); n0 = T0.byid.get(args["id"])
+            if n0 is None:                                                      # P92: a location id: the records located there, in page order
+                loc = Q.located(args["id"])
+                out = [(loc["id"], f"location [{loc['id']}] · {short_name(loc['paper'])} · {loc['kind']} · {len(loc['facts'])} records" + (f" · {len(loc['inventory'])} panel{'s' if len(loc['inventory']) != 1 else ''}" if loc["inventory"] else ""))]
+                for inv in loc["inventory"]:
+                    out.append((inv["id"], f"figure panel · Fig. {inv['figure']}{(' panel ' + inv['panel']) if inv['panel'] else ''} · {inv['panel_type']} · {inv['content']} · {inv['status']}"))
+                for f in loc["facts"]:
+                    out += record_detail(T0, f)[:1]
+                return [block([wrap(*x) for x in out])], ""
             if n0["type"] not in ("entity", "comparison", "cited") or "#" in args["id"]:
                 return [block([wrap(*x) for x in record_detail(T0, n0)])], ""
             d = Q.detail(args["id"])

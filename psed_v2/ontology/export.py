@@ -122,7 +122,8 @@ def build(onto, pmap):
         ENTRIES={e["id"]: dict(type=e["type"], role=e.get("role", ""), category=e.get("category", ""), definition=e.get("definition", ""), unit=str(e.get("unit", "")),
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
-                               dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")))
+                               dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
+                               ratio_of=[str(x) for x in e.get("ratio_of", [])])
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78
