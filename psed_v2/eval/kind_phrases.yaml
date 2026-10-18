@@ -30,12 +30,13 @@ phrases:
       - "\\bmeasured\\b"
       - "\\bby (xps|afm|sem|tem|stem|xrr|xrf|ellipsometry|eds|edx|rbs|sims|erda|tof-erda|xrd|giwaxs|raman|profilometry|qcm|uv-vis|epma|ftir|four-point probe|hall)\\b"
       - "\\b(xps|afm|sem|tem|xrr|ellipsometry|xrd|raman|sims|tof-erda) (measurement|data|result)s?\\b"
-  - kinds: [stated, measured]
+  - kinds: [stated, measured, computed_by_authors]   # P114: a paper states its own measured and computed values alike
     patterns:
       - "\\bstated\\b"
       - "\\breported\\b"
       - "\\bquoted\\b"
       - "\\bgiven in the (text|paper|table)\\b"
+      - "\\b(the )?(paper|authors) (give|gives|report|reports|state|states)\\b"
   - kinds: [simulated, model_input]
     patterns:
       - "\\bsimulated\\b"

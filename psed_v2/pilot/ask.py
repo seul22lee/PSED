@@ -42,6 +42,7 @@ RUNS = HERE / "runs"
 ARMS = ["model", "text", "kb", "dump"]
 DEFAULT_ARMS = ["model", "text", "kb"]
 ARM_NAMES = {"model": "Model only", "text": "Paper text", "kb": "Knowledge base", "dump": "KB dump"}
+TEXT_LIMIT = 900_000    # tokens (chars/4) the Paper text arm's prompt may reach; above it the arm refuses before any call (Directive 9′)
 TOOL_CAP = 10           # executed calls per question (P44); an error or an identical call costs nothing toward it (P75)
 TOTAL_WALL = 20         # every call of a question, executed or not (P75)
 ERROR_WALL = 5          # calls of a question that returned an error (P75)
@@ -467,11 +468,25 @@ def answer_call(c, tool_calls, given, seen_calls):
     return dict(id=c["id"], name=c["name"], content=msg, error=err)
 
 
-def run_arm(arm, question, model):
+def prompt_tokens(arm):
+    """The size of an arm's system prompt in tokens, as chars/4 (no tokenizer of ours; the vendor's count comes with the usage)."""
+    return len(system_prompt(arm)) // 4
+
+
+def size_lines():
+    """The prompt sizes of the Paper text and KB dump arms, one line each: papers, pieces and tokens (chars/4); the text arm's limit."""
+    n_text = prompt_tokens("text"); n_dump = prompt_tokens("dump")
+    return [f"text arm: {len(Q.KEY)} papers, {len(pieces())} pieces, prompt ≈ {n_text:,} tokens (chars/4); limit {TEXT_LIMIT:,}" + (" — REFUSED above the limit" if n_text > TEXT_LIMIT else ""),
+            f"dump arm: {len(Q.KEY)} papers, prompt ≈ {n_dump:,} tokens (chars/4)"]
+
+
+def run_arm(arm, question, model, run=1):
     t0 = time.time()
     usage = dict(input=0, output=0, cache_read=0, cache_write=0, reasoning=0)
     calls, retries, tool_calls, given, text, error, seen_calls = 0, 0, [], {}, "", "", {}
     try:
+        if arm == "text" and prompt_tokens("text") > TEXT_LIMIT:                # the text arm refuses a prompt over the limit before any call
+            raise RuntimeError(f"text arm refused: the prompt of {len(Q.KEY)} papers is ≈ {prompt_tokens('text'):,} tokens (chars/4), over the limit of {TEXT_LIMIT:,}; narrow the papers or raise TEXT_LIMIT")
         s = P.session(model, system_prompt(arm), TOOLS if arm == "kb" else None)
         if arm == "text":
             given = dict(pieces())
@@ -502,19 +517,19 @@ def run_arm(arm, question, model):
     nc = number_check(text, arm, given)
     proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
     kc = kind_check(text, given)                                              # P72: the stated kind of every citation against the record's
-    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, answer=text,
+    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, run=run, answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
                 number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, kind_check=kc, process=proc, words=words(text),
                 check_line=check_line(nc, words(text)) + f" · {kc['mismatches']} kind mismatches" + process_line(proc), usage=usage, model_calls=calls, retries=retries,
                 cost=cost_of(model, usage, t_start), seconds=round(time.time() - t0, 1), error=error)
 
 
-def ask(question, model=None, arms=None, out=None):
-    """The arms of one question in parallel; each record appended to out (default runs/asks.jsonl)."""
+def ask(question, model=None, arms=None, out=None, run=1):
+    """The arms of one question in parallel; each record appended to out (default runs/asks.jsonl); run = the repeat index (P115)."""
     model = model or P.default_model()
     arms = arms or DEFAULT_ARMS
     with cf.ThreadPoolExecutor(len(arms)) as ex:
-        recs = list(ex.map(lambda a: run_arm(a, question, model), arms))
+        recs = list(ex.map(lambda a: run_arm(a, question, model, run), arms))
     for r in recs:
         append(out or RUNS / "asks.jsonl", r)
     return recs
@@ -532,9 +547,9 @@ def last_records(question, model, path=None):
     return [last[a] for a in ARMS if a in last]
 
 
-SUMMARY = ["question", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
+SUMMARY = ["question", "run", "arm", "model", "numbers", "match", "elsewhere", "not_seen", "uncited", "unknown_ids", "kind_mismatches", "tool_calls", "executed", "refused",
            "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "input_tokens",
-           "output_tokens", "cache_read_tokens", "cost", "seconds", "error", "homeless_records"]
+           "output_tokens", "cache_read_tokens", "cost", "seconds", "error", "homeless_records", "stability"]
 
 
 def summary_row(r):
@@ -542,26 +557,37 @@ def summary_row(r):
     metrics (recomputed from the record's tool calls and cited ids: run_metrics.metrics_of, P74), words, tokens, cost."""
     nc, p = r["number_check"], RM.metrics_of(r)
     kc = r.get("kind_check") or kind_check(r["answer"], {i: v["text"] for i, v in r.get("cited", {}).items()})
-    return dict(question=r["question"], arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
+    return dict(question=r["question"], run=r.get("run", 1), arm=r["arm"], model=r["model"], numbers=nc["numbers"], match=nc["match"], elsewhere=nc["elsewhere"],
                 not_seen=nc["not_seen"], uncited=nc["uncited"], unknown_ids=nc["unknown_ids"], kind_mismatches=kc["mismatches"], tool_calls=p["calls"],
                 executed=p["executed"], refused=p["refused"], duplicates=p["duplicates"], errors=p["errors"], identical=p["identical"], wall_hit=p["wall_hit"],
                 tool_output_tokens=p["tool_output_tokens"], redelivered_share=p["redelivered_share"],
                 delivered=p["delivered"], cited=p["cited"], utilization=p["utilization"], words=r.get("words", 0), input_tokens=r["usage"]["input"],
                 output_tokens=r["usage"]["output"], cache_read_tokens=r["usage"]["cache_read"], cost="" if r["cost"] is None else round(r["cost"], 4),
-                seconds=r["seconds"], error=r["error"], homeless_records=p["homeless_records"])
+                seconds=r["seconds"], error=r["error"], homeless_records=p["homeless_records"], stability=r.get("stability", ""))
 
 
-def batch(qfile, out, model, arms, max_cost, max_calls):
+def batch(qfile, out, model, arms, max_cost, max_calls, repeat=1):
+    """Every question of the file through the arms, repeat times into one jsonl (each record carries its run index, P115); the text
+    and dump arms' prompt sizes printed first; stops at the cost or call limit."""
     qs = [l.strip() for l in Path(qfile).read_text(encoding="utf-8").splitlines() if l.strip()]
     out = Path(out)
     rows, spent, calls = [], 0.0, 0
     priced = price(model) is not None
-    for n, q in enumerate(qs, 1):
-        if (priced and spent >= max_cost) or (not priced and calls >= max_calls):
-            print(f"stopped before question {n}: {'cost' if priced else 'model calls'} limit reached"); break
-        for r in ask(q, model, arms, out):
-            rows.append(summary_row(r)); spent += r["cost"] or 0; calls += r["model_calls"]
-            print(f"{n:3d} {ARM_NAMES[r['arm']]:15s} {r['check_line']}{' · ERROR ' + r['error'][:80] if r['error'] else ''}")
+    if "text" in arms or "dump" in arms:
+        for line in size_lines():
+            print(line)
+    stop = False
+    for run in range(1, repeat + 1):
+        for n, q in enumerate(qs, 1):
+            if (priced and spent >= max_cost) or (not priced and calls >= max_calls):
+                print(f"stopped before question {n} of run {run}: {'cost' if priced else 'model calls'} limit reached"); stop = True; break
+            for r in ask(q, model, arms, out, run):
+                rows.append(summary_row(r)); spent += r["cost"] or 0; calls += r["model_calls"]
+                print(f"{(f'run {run} · ' if repeat > 1 else '')}{n:3d} {ARM_NAMES[r['arm']]:15s} {r['check_line']}{' · ERROR ' + r['error'][:80] if r['error'] else ''}")
+        if stop:
+            break
+    if repeat > 1:
+        RM.report(str(out), arm=None, summary=False, stability_only=True)        # P115: the agreement across runs per question
     summ = out.with_suffix(".summary.csv")
     with summ.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=SUMMARY); w.writeheader(); w.writerows(rows)
@@ -579,16 +605,20 @@ if __name__ == "__main__":
     ap.add_argument("question", nargs="?")
     ap.add_argument("--questions"); ap.add_argument("--out"); ap.add_argument("--model"); ap.add_argument("--arms", default="model,text,kb")
     ap.add_argument("--max-cost", type=float, default=20.0); ap.add_argument("--max-calls", type=int, default=200)
+    ap.add_argument("--repeat", type=int, default=1, help="run the question file N times into one jsonl, each record with its run index (P115)")
+    ap.add_argument("--size", action="store_true", help="print the text and dump arms' prompt sizes (tokens as chars/4) and exit; no model call")
     ap.add_argument("--kind-check", metavar="RUNS.jsonl", help="the kind check (P72) on the stored answers of a run file; no model call")
     ap.add_argument("--recost", metavar="RUNS.jsonl", help="the cost of a run file's records recomputed from their token counts with prices.csv (P73); no model call")
     a = ap.parse_args()
     model, arms = a.model or P.default_model(), a.arms.split(",")
-    if a.kind_check:
+    if a.size:
+        print("\n".join(size_lines()))
+    elif a.kind_check:
         kind_recheck(a.kind_check)
     elif a.recost:
         recost(a.recost)
     elif a.questions:
-        batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_calls)
+        batch(a.questions, a.out or str(RUNS / "batch.jsonl"), model, arms, a.max_cost, a.max_calls, a.repeat)
     elif a.question:
         for r in ask(a.question, model, arms):
             print(f"== {ARM_NAMES[r['arm']]} ({r['model']}) · {r['check_line']} · {r['usage']['input']} in / {r['usage']['output']} out tokens · "

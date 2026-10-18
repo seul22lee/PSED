@@ -61,6 +61,10 @@ def synthetic():
         i, t = by[k][0]
         out.append((f"The value {WORDING[k]} [{i}].", {i: t}, {i: False}))
         out.append((f"The value {WORDING[WRONG_FOR[k]]} [{i}].", {i: t}, {i: True}))
+    if by.get("computed_by_authors"):                                            # P114: 'stated' passes on an authors' computed value, 'measured' still fails on it
+        i, t = by["computed_by_authors"][min(1, len(by["computed_by_authors"]) - 1)]
+        out.append((f"The value is reported in the paper [{i}].", {i: t}, {i: False}))
+        out.append((f"The value was measured by XPS [{i}].", {i: t}, {i: True}))
     j = 1
     while len(out) < 30:
         k1, k2 = kinds[j % len(kinds)], kinds[(j + 1) % len(kinds)]
@@ -130,12 +134,12 @@ def number_test(outs, old=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--old", help="path to the previous ask.py (v5) for the before/after of the number check")
-    ap.add_argument("--out", default=str(HERE.parent / "verify" / "d8" / "kind_check_calibration.md"))
+    ap.add_argument("--out", default=str(HERE.parent / "verify" / "d9" / "kind_check_calibration.md"))
     a = ap.parse_args()
     outs = battery_outputs()
     kc = kind_calibration(outs)
     nt = number_test(outs, load_old(a.old) if a.old else None)
-    md = ["# Kind-check and number-check calibration (P102, P103)", "",
+    md = ["# Kind-check and number-check calibration (P102, P103; P114 stated phrases)", "",
           f"Kind check: {kc['n']} synthetic sentences, {kc['ids']} cited ids ({kc['tp'] + kc['fn']} wrong kinds, {kc['fp'] + kc['tn']} right); "
           f"mismatch flag: TP {kc['tp']}, FP {kc['fp']}, FN {kc['fn']}, TN {kc['tn']}; precision {kc['precision']:.2f}, recall {kc['recall']:.2f}.",
           f"Battery value lines carrying a kind phrase, each cited by its own id (other ids and the paper's statement removed): {kc['battery_lines']} lines, {kc['battery_checked']} citations checked, {kc['battery_mismatches']} mismatches"
