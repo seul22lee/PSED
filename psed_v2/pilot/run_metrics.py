@@ -11,7 +11,8 @@ question, utilization 7-18 %):
   sets, the cited-paper sets and the first sentence's words, and their mean; printed per question and written to the summary column.
 - errors (P75): the refused calls that were tool errors (a malformed call: unknown tool or argument, wrong type, an id that names nothing, nothing
   matches a filter; P105: an unknown concept, result or paper name is answered with the nearest three and is executed), not the cap or a wall;
-  wall_hit: 'total' or 'errors' when a refusal of the question names that wall (ask.TOTAL_WALL, ask.ERROR_WALL), else 'none'.
+  wall_hit: 'tokens' (P119, the budget of delivered tool output), 'total' or 'errors' when a refusal of the question names that wall, else 'none';
+  tool_tokens_delivered: the executed calls' output as chars/4 (the P119 measure) beside tool_output_tokens (the vendor's estimate, P74).
   The columns of P74 keep their definitions: executed, refused and duplicates are unchanged by P75.
 - ids: every match of [<paper>:<rest>] in an executed call's stored output, counted as occurrences in call order.
 - re-delivered share: occurrences whose id already appeared in a previous call of the same question / all occurrences; duplicates
@@ -46,7 +47,7 @@ def process(tool_calls, cited=()):
     """The process metrics of one question: calls, executed, refused, duplicates, tool output tokens, the delivered ids, the
     re-delivered share, the cited ids and the utilization (cited / delivered); P75: errors (tool errors), identical (= duplicates,
     the directive's name) and wall_hit (none, total or errors)."""
-    seen, occurrences, redelivered, tokens = set(), 0, 0, 0
+    seen, occurrences, redelivered, tokens, delivered_tokens = set(), 0, 0, 0, 0
     executed = refused = duplicates = errors = 0
     wall = "none"
     for c in tool_calls:
@@ -62,18 +63,19 @@ def process(tool_calls, cited=()):
             continue
         executed += 1
         tokens += c.get("tokens") or 0
+        delivered_tokens += c.get("delivered_tokens") if c.get("delivered_tokens") is not None else len(c.get("output") or "") // 4   # P119: chars/4
         ids = ID.findall(c.get("output") or "")
         occurrences += len(ids)
         redelivered += sum(1 for i in ids if i in seen)
         seen |= set(ids)
     cited = [i for i in dict.fromkeys(cited)]
-    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, errors=errors, identical=duplicates, wall_hit=wall, tool_output_tokens=tokens,
+    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, errors=errors, identical=duplicates, wall_hit=wall, tool_output_tokens=tokens, tool_tokens_delivered=delivered_tokens,
                 delivered=len(seen), delivered_ids=sorted(seen), id_occurrences=occurrences,
                 redelivered_share=round(redelivered / occurrences, 4) if occurrences else 0.0,
                 cited=len(cited), cited_ids=cited, utilization=round(len(cited) / len(seen), 4) if seen else 0.0)
 
 
-COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "redelivered_share", "delivered", "cited", "utilization", "words", "cost", "homeless_records"]
+COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "tool_tokens_delivered", "redelivered_share", "delivered", "cited", "utilization", "words", "cost", "homeless_records"]
 NO_TOTAL = ("redelivered_share", "utilization", "wall_hit", "homeless_records")
 _HOMELESS = {}
 
@@ -142,8 +144,9 @@ def report(path, arm="kb", summary=True, stability_only=False):
                 print(f"  {a:5s} · {q[:70]:70s} · numbers {v['numbers']:.2f} · papers {v['papers']:.2f} · first sentence {v['first_sentence']:.2f} · stability {v['stability']:.2f}")
         vals = [v["stability"] for v in stab.values() if v["stability"] is not None]
         print(f"  mean stability {sum(vals) / len(vals):.2f} over {len(vals)} (question, arm) pairs")
-    caps = sorted({r.get("max_calls", 10) for r in recs})
-    print(f"max_calls (executed-call cap per question, P75 default 10): {', '.join(map(str, caps))}; total wall 2× the cap, error wall 5; executed, refused and errors as in P74/P75")
+    caps = sorted({str(r.get("max_calls", "")) for r in recs}); toks = sorted({str(r.get("max_tokens", "")) for r in recs}); pre = sorted({str(r.get("preamble_sha256", "")) for r in recs})
+    print(f"max_tokens (P119 budget of delivered tool output, chars/4): {', '.join(toks)}; max_calls (safety ceiling, total wall 2×): {', '.join(caps)}; error wall 5; preamble {', '.join(pre)}; "
+          "wall_hit = tokens | errors | total | none; executed, refused and errors as in P74/P75")
     if stability_only:
         return []
     if summary:
@@ -161,7 +164,7 @@ def report(path, arm="kb", summary=True, stability_only=False):
     rs = [x["redelivered_share"] for x in rows]; us = [x["utilization"] for x in rows]
     walls = sum(1 for x in rows if x["wall_hit"] != "none")
     for n, x in enumerate(rows, 1):
-        print(f"{n:3d} calls {x['calls']:3d} (executed {x['executed']}, refused {x['refused']}, duplicates {x['duplicates']}; errors {x['errors']}, identical {x['identical']}, wall {x['wall_hit']}) · tool output {x['tool_output_tokens']:,} tokens · "
+        print(f"{n:3d} calls {x['calls']:3d} (executed {x['executed']}, refused {x['refused']}, duplicates {x['duplicates']}; errors {x['errors']}, identical {x['identical']}, wall {x['wall_hit']}) · tool output {x['tool_output_tokens']:,} tokens ({x['tool_tokens_delivered']:,} delivered, chars/4) · "
               f"re-delivered {100 * x['redelivered_share']:.0f} % · delivered {x['delivered']} ids, cited {x['cited']}, utilization {100 * x['utilization']:.0f} % · {x['words']} words · "
               f"{'cost not set' if x['cost'] is None else '$%.4f' % x['cost']}" + (f" · run {x['run']} · stability {x['stability']}" if x["stability"] != "" else ""))
     if rows:

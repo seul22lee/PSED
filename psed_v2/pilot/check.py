@@ -1104,44 +1104,79 @@ def check_homes():
 
 
 def check_calls():
-    """P75: call accounting, scripted without a model (ask.answer_call, run_metrics.process). A question whose first four calls name
-    nothing resolvable still has ten executed calls available (an error costs nothing toward the cap) and its eleventh executed call
-    gets the unchanged cap message; a question with five error calls hits the error wall, whose refusal names it; a question with
-    twenty calls in all (errors and identical calls included) hits the total wall; the records report executed, errors, identical
-    and wall_hit."""
-    import ask, concept as CN, run_metrics as RM
+    """P75, P119: call accounting, scripted without a model (ask.answer_call, run_metrics.process). Walls: a question's calls end when the
+    delivered tool output of its executed calls reaches the token budget (chars/4; the refusal names it, every executed result ends with a
+    'budget left' line that decreases monotonically and never goes negative, an error call leaves it unchanged), after five error calls
+    (error wall), or at the executed-call ceiling (--max-calls, total wall twice it). Run at the default budget and at 80,000 tokens, the
+    ceiling test at 10 and 20."""
+    import ask, concept as CN, query as Q, run_metrics as RM
     err = []
-    valid = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
+    pc = CN.counts()
+    valid = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in pc.get(q, {}).values())]
+    valid += [("values", {"result": q, "paper": k}) for q in sorted(L.OUTPUTS) for k in Q.TREES if pc.get(q, {}).get(k, {}).get("values")]
     bad = lambda n: [("values", {"result": "penetration depth", "no_such_argument": i}) for i in range(n)]   # P105: only a malformed call errors; an unknown name suggests
 
     def play(calls):
         tool_calls, given, seen = [], {}, {}
         res = [ask.answer_call(dict(id=str(n), name=name, arguments=dict(args)), tool_calls, given, seen) for n, (name, args) in enumerate(calls, 1)]
-        return res, RM.process(tool_calls)
+        return res, RM.process(tool_calls), tool_calls
+
     def scripted(cap):
-        """The three scripted questions at one cap (ask.set_max_calls): cap executed calls, total wall 2·cap, error wall 5."""
-        C = ask.set_max_calls(cap)
-        cap_msg = f"error: the limit of {C['cap']} tool calls is reached"
-        res, p = play(bad(4) + valid[:C["cap"] + 1])                            # four errors, then cap + 1 valid calls
+        """The ceiling and the error and total walls at one cap (ask.set_max_calls), the token budget out of the way."""
+        ask.set_max_tokens(10 ** 9); C = ask.set_max_calls(cap)
+        cap_msg = f"error: the ceiling of {C['cap']} executed tool calls is reached; answer from what you have"
+        res, p, _ = play(bad(4) + valid[:C["cap"] + 1])                         # four errors, then cap + 1 valid calls
         if not all(r["error"] for r in res[:4]) or p["errors"] != 4:
             err.append(f"calls (cap {cap}): four malformed calls should be four error calls, got errors {p['errors']} (P75)")
         if any(r["error"] for r in res[4:4 + C["cap"]]) or p["executed"] != C["cap"]:
             err.append(f"calls (cap {cap}): {C['cap']} executed calls must remain available after four errors, got executed {p['executed']} (P75)")
         if res[4 + C["cap"]]["content"] != cap_msg or p["wall_hit"] != "none":
-            err.append(f"calls (cap {cap}): the call after {C['cap']} executed ones should get the cap message, got {res[4 + C['cap']]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
-        res, p = play(bad(C["errors"]) + valid[:1])                               # five errors, then a valid call: the error wall
+            err.append(f"calls (cap {cap}): the call after {C['cap']} executed ones should get the ceiling message, got {res[4 + C['cap']]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
+        res, p, _ = play(bad(C["errors"]) + valid[:1])                            # five errors, then a valid call: the error wall
         if f"wall of {C['errors']} calls that returned an error" not in res[-1]["content"] or p["wall_hit"] != "errors" or p["executed"] != 0 or C["errors"] != 5:
             err.append(f"calls (cap {cap}): the call after {C['errors']} errors should be refused naming the error wall (5 whatever the cap), got {res[-1]['content'][:80]!r}, wall {p['wall_hit']} (P75)")
         n_id = C["total"] - 4 - C["cap"]
-        res, p = play(bad(4) + valid[:C["cap"]] + valid[:n_id] + valid[C["cap"]:C["cap"] + 1])   # 4 errors + cap executed + identical up to 2·cap, then one more
+        res, p, _ = play(bad(4) + valid[:C["cap"]] + valid[:n_id] + valid[C["cap"]:C["cap"] + 1])   # 4 errors + cap executed + identical up to 2·cap, then one more
         if C["total"] != 2 * C["cap"] or p["identical"] != n_id or p["calls"] != C["total"] + 1 or f"wall of {C['total']} calls" not in res[-1]["content"] or p["wall_hit"] != "total":
             err.append(f"calls (cap {cap}): the call after {C['total']} calls in all should be refused naming the total wall (2 × cap), got {res[-1]['content'][:80]!r}, wall {p['wall_hit']}, identical {p['identical']} (P75)")
         return C
+
+    def token_wall(budget):
+        """P119: values on large outputs (every paper) until the token wall is named; an error call in the middle; the budget-left line."""
+        ask.set_max_calls(200); C = ask.set_max_tokens(budget)                  # the ceiling out of the way: the token wall must come first
+        calls = valid[:3] + bad(1) + valid[3:len(valid)]
+        res, p, tc = play(calls)
+        lefts, prev = [], budget
+        for r, c in zip(res, tc):
+            m = re.search(r"budget left: ([\d,]+) tokens$", r["content"])
+            if c.get("error"):
+                if m or c.get("delivered_tokens"):
+                    err.append(f"tokens ({budget}): an error or refused call carries a budget line or delivered tokens (P119)")
+                continue
+            if not m:
+                err.append(f"tokens ({budget}): an executed result without its 'budget left' line (P119): {r['content'][-80:]!r}"); break
+            left = int(m.group(1).replace(",", ""))
+            if left < 0 or left > prev or left != max(prev - c["delivered_tokens"], 0):   # monotone, never negative, and exactly this call's cost (an error in between cost nothing)
+                err.append(f"tokens ({budget}): budget left {left} after {prev} with {c['delivered_tokens']} delivered (P119)")
+            lefts.append(left); prev = left
+        hit = next((i for i, c in enumerate(tc) if c.get("error") == "wall:tokens"), None)
+        if hit is None or p["wall_hit"] != "tokens" or f"budget of {budget:,} tool tokens is spent" not in res[hit]["content"]:
+            err.append(f"tokens ({budget}): the token wall was not named (wall {p['wall_hit']}) (P119)")
+        else:
+            spent = sum(c.get("delivered_tokens") or 0 for c in tc[:hit] if not c.get("error"))
+            if spent < budget or lefts[-1] != 0:
+                err.append(f"tokens ({budget}): the wall came at {spent} delivered tokens, budget left {lefts[-1] if lefts else None} (P119)")
+            if p["tool_tokens_delivered"] != spent:
+                err.append(f"tokens ({budget}): run_metrics counts {p['tool_tokens_delivered']} delivered tokens, {spent} were (P119)")
+        return dict(budget=budget, executed=p["executed"], spent=p["tool_tokens_delivered"], transcript=[r["content"] for r in res[max(0, (hit or 0) - 2):(hit or 0) + 1]])
     try:
-        c10 = scripted(ask.TOOL_CAP); c20 = scripted(20)                         # Directive 10′a: the default and N = 20; the walls scale (cap N, total 2N, errors 5)
+        c10 = scripted(10); c20 = scripted(20)                                     # the ceiling and the walls scale (cap N, total 2N, errors 5)
+        t40 = token_wall(ask.TOKEN_BUDGET); t80 = token_wall(80_000)              # P119 at the default budget and at 80,000
     finally:
-        ask.set_max_calls(ask.TOOL_CAP)
-    print(f"== calls (P75): cap {c10['cap']} executed calls (default) and {c20['cap']} (--max-calls 20); walls {c10['total']} / {c20['total']} calls in all and {c10['errors']} error calls; 6 scripted questions")
+        ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
+    check_calls.transcript = t40["transcript"]
+    print(f"== calls (P75, P119): token budget {t40['budget']:,} spent after {t40['executed']} executed calls ({t40['spent']:,} tokens delivered), {t80['budget']:,} after {t80['executed']} ({t80['spent']:,}); "
+          f"ceiling {c10['cap']} / {c20['cap']} executed calls, total walls {c10['total']} / {c20['total']}, error wall {c10['errors']}; {len(valid)} valid probes")
     return err
 
 
