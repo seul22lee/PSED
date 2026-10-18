@@ -246,6 +246,7 @@ STATED_KIND = [
     ("assumed", r"\bassumed\b|\bassumption\b"),
     ("cited", r"taken from another work|from (another|other|a different) work|\bcited\b|literature value|from (the )?literature"),
     ("model_input", r"model input|simulation input|model parameter|input to the model"),
+    ("simulated", r"\bsimulated\b|\bsimulation\b|\bmodel(?:led|ed)?\s+(?:curve|profile|result|output)"),
     ("stated", r"\bstated\b|\breported\b|\bquoted\b"),
     ("measured", r"\bmeasured\b"),
 ]

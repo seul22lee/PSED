@@ -6,7 +6,7 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
       quantity="film_thickness", qualifiers="position=entrance", value="50", unit="nm", data_kind="measured",
       method="reflectometry", mentions="sample 8;H 500 nm")
     NK("s0.p1", "citation line")                 # an element with no knowledge, with the reason
-    write(K, PID)                                # <pid>.facts.csv, <pid>.coverage.csv, <pid>.points.json
+    write(K, PID)                                # <pid>.facts.csv, <pid>.coverage.csv (figure points: kb/figures_import.py, P88)
 
 <pid>.facts.csv columns (one row per piece of knowledge; a fact stated in several elements is one row citing all of them):
   fact_id      <key>:<first evidence id>#<n>, stable while the element's facts keep their order
@@ -23,7 +23,8 @@ A <paper_id>.facts.py reads the paper itself (element texts from elements.py --t
   value, value_min, value_max, censor, unit   as printed in the element (no unit conversion in stage 2)
   value_text   a categorical value (pillar layout v2a, a substrate, a crystallinity class, a reactor name, an LHAR type) when the
                value is a name, not a number; the statement then names the setting without repeating the value
-  points_ref   the name of a digitized curve in <pid>.points.json (only from points.json or accepted v1 points)
+  points_ref   (P88) empty in every facts file: figure curves are imported records (kb/<pid>.figures.json), their ids serve as points_ref
+  figure_ref   (P88) the figure panels the fact cites, by rule from its evidence and its 'Fig. N(x)' mentions (facts.figure_refs)
   data_kind    the value's kind, lists.KINDS (Sec. 18.5: measured, stated, read_from_figure, computed_by_authors, computed_by_kb, assumed,
                model_input, cited; required with a value or points); write() turns a measured or stated value whose first element is a
                figure panel into read_from_figure and a model fact's stated input into model_input
@@ -61,7 +62,7 @@ import lists as L  # noqa: E402
 import elements  # noqa: E402
 
 FIELDS = ["fact_id", "type", "kind", "order", "how", "evidence", "statement", "quantity", "qualifiers", "label_as_printed", "value", "value_min",
-          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "basis", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by"]
+          "value_max", "censor", "unit", "value_text", "uncertainty", "uncertainty_kind", "uncertainty_n", "basis", "points_ref", "data_kind", "method", "mentions", "inputs", "parent", "links", "stance", "cause", "effect", "relation", "author", "sized_by", "figure_ref"]
 COV_FIELDS = ["element_id", "kind", "status", "fact_ids", "reason", "n_numbers", "n_numbers_reached"]
 
 _facts, _nk, _count, _points = [], {}, {}, {}
@@ -326,11 +327,28 @@ def NK(element_ids, reason):
 
 
 def P(pid, name, points, source, x_label="", y_label="", note=""):
-    """Keep a digitized curve for <pid>.points.json under its name; returns the points_ref (the name)."""
-    if name in _points:
-        raise KeyError(f"points {name} given twice")
-    _points[name] = dict(source=source, x_label_as_printed=x_label, y_label_as_printed=y_label, note=note, points=points)
-    return name
+    """P88: a facts file holds no figure points. Figure data enters the knowledge base only through kb/figures_import.py (the figure
+    stage's figures.json imported by rule); the hand-read <pid>.points.json files are kept for the record and compared by
+    kb/figures_agreement.py, never built."""
+    raise RuntimeError("P88: no figure points in a facts file; figure data comes from kb/figures_import.py")
+
+
+FIGREF = re.compile(r"\bFig(?:ure|s)?\.?\s*(\d+)(?:\(([a-zA-Z])\)|([a-z])(?![a-zA-Z]))?")   # 'Fig. 9a', 'Fig. 9(a)', 'Figure 5b', 'Figs. 9 and 10' (no panel)
+
+
+def figure_refs(row):
+    """P88: the figure panels a fact refers to, by rule: its evidence elements that are panels or captions (fig9a, fig9.cap -> fig9) and
+    every 'Fig. N(x)' mention in its statement and mentions; ';'-joined, in order of first mention."""
+    out = []
+    for e in row["evidence"].split(";"):
+        m = re.match(r"^(fig\d+[a-z]?)(?:\.cap)?$", e.strip())
+        if m and m.group(1) not in out:
+            out.append(m.group(1))
+    for m in FIGREF.finditer(row["statement"] + " ; " + row["mentions"]):
+        ref = f"fig{m.group(1)}{(m.group(2) or m.group(3) or '').lower()}"
+        if ref not in out:
+            out.append(ref)
+    return ";".join(out)
 
 
 def cases_points(pid, figure, panel, series):
@@ -627,15 +645,15 @@ def bases():
 
 
 def write(key, pid):
-    """<pid>.facts.csv, <pid>.coverage.csv and <pid>.points.json; elements without facts and without an NK reason are 'missed'."""
+    """<pid>.facts.csv and <pid>.coverage.csv (no points.json since P88); elements without facts and without an NK reason are 'missed'."""
     fill_uncertainty()
     kinds(pid)
     bases()
     for r in _facts:
         r["author"] = r["author"] or pid
+        r["figure_ref"] = figure_refs(r) if "#" in r["fact_id"] else ""         # P88: the panels a fact cites, by rule
     with (HERE / f"{pid}.facts.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(_facts)
-    (HERE / f"{pid}.points.json").write_text(json.dumps(_points, ensure_ascii=False, indent=0), encoding="utf-8")
     els = elements.load(pid)
     texts = elements.texts(pid)
     by_el = {}

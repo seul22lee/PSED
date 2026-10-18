@@ -2365,6 +2365,7 @@ vocabularies:
     assumed:             "assumed by this knowledge base's user"
     model_input:         "a model input"
     cited:               "cited from another work"
+    simulated:           "simulated by the paper's authors"            # P87: a series of a simulated curve read from a figure (the model's output, not a measurement)
   series_structure:  [curve, per_point, image]
   experiment_kind:   [sample, in_situ_run, plasma_measurement, cited]
   condition_source:  [caption, methods, table, body]
@@ -2384,6 +2385,8 @@ vocabularies:
     fit:         "the residual of a fit, not a measured spread"
     literature:  "the spread of values reported in the literature, not a spread of this work (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on cited averages)"
     propagated:  "propagated from the uncertainties of its inputs, not measured (added to the Sec. 19 list, 2026-10-16: the pilot stores such ± on computed values)"
+    digitized:   "digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)"   # P87: a curve read by the VLM
+    printed:     "the value as printed on the figure (a cell or a peak label), no digitizing error"                            # P87: a cell or a peak
   structure_class:   [structure, planar, har_feature, trench, via_hole, lateral_channel, porous_body, nanoparticle_compact, aerogel_monolith, nanopore_membrane]   # P78: the ids of structure_classes (v0 had lateral, vertical, porous, planar)
   entry_sides:       [one, two]                                               # P78: the values of the entry_sides categorical
   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]

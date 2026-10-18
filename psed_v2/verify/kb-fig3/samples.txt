@@ -1,0 +1,170 @@
+====================================================================================================
+PROBE map({})
+Knowledge base map (generated from the data):
+Concept groups (concepts): ald_process 4; process_parameters 15; ald_reactor 4; test_structure 16; deposited_film 32; modelling 7; reaction_monitoring 6; measurement 2
+Families (members): composition 3; conformality 5; growth_amount 7
+Species 28, mechanisms 35, methods 28.
+yim20: material Al2O3 · process TMA / H2O · structure lateral_channel · 27 experiments, 54 claims · main outcomes: film_thickness (61 values), growth_per_cycle (45 values), front_slope (33 values), penetration_depth (20 values), fit_r2 (16 values), coated_aspect_ratio (16 values) · figure panels 32 (plot 18, schematic 9, micrograph 5; 58 curves imported)
+mat22: material MoS2, TiS2, WS2 · process Mo(NtBu)2(NMe2)2 / H2S, TDMAT / H2S, W(tBuN)2(Me2N)2 / H2S · structure planar · 54 experiments, 62 claims · main outcomes: crystallinity (65 values), element_ratio (48 values), resistivity (41 values), growth_per_cycle (32 values), binding_energy (23 values), film_thickness (20 values) · figure panels 17 (spectrum 5, map 5, micrograph 4, schematic 1, photo 1, plot 1; 8 curves imported)
+gre23: material ZnO · process DEZ / H2O · structure nanoparticle_compact · 4 experiments, 69 claims · main outcomes: reaction_stoichiometry (6 values), pressure_rise (6 values), pressure_rate (6 values), porosity (6 values), gas_moles_per_cycle (6 values), growth_per_cycle (5 values) · figure panels 20 (plot 10, photo 4, micrograph 3, schematic 2, spectrum 1; 13 curves imported)
+====================================================================================================
+PROBE concept({"words": "penetration_depth"})
+[penetration_depth] quantity penetration_depth: The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b). · unit µm · family conformality: coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction ·
+[penetration_depth] … the family across papers: yim20 53 values (specimen 37, aggregate 1, set-level 14, paper 1) / 13 curves among them / 16 claims / derived 19; gre23 1 values (set-level 1) / 3 claims · not studied in: mat22 · qualifiers level · yim20 20 values (specimen 18, aggregate 1, set-level 1) / 15 claims /
+[penetration_depth] … derived 16 · not studied in: mat22, gre23
+-- 3 lines, 174 tokens
+====================================================================================================
+PROBE values({"result": "film_thickness", "paper": "yim20"})
+[yim20:inputs] inputs [yim20:inputs] · Yim 2020 · the structures before deposition (input entities) · 4 rows · thickness target 50–50 nm (4) · open with detail(ids=['yim20:ent:chips', 'yim20:ent:chip_H100', 'yim20:ent:chip_H500', 'yim20:ent:chip_H2000'])
+[yim20:cmp:repro] set-level [yim20:cmp:repro] · Yim 2020 · sample 2, 4, 8, and 12 · members: sample 2, sample 4, sample 8, sample 12 · 1 rows · standard deviation of thickness in the channel 2.8–2.8 nm (1) · open with detail(ids=['yim20:cmp:repro']) or narrow with where
+[yim20:cmp:A] set [yim20:cmp:A] (series) · Series A — pillar layout · varies: pillar layout · 3 rows · columns: thickness outside the channel | thickness in the channel | thickness target | thickness
+[yim20:cmp:A] caveats on every row of this set: [yim20:s16.p5#9], [yim20:s3.p9#6]
+[yim20:ent:1] sample 1 · pillar layout v1a · 49.8 nm [yim20:tab1.r1c7#1] | 53.3 nm [yim20:tab1.r1c8#1] | 50 nm [yim20:s6.p1#3] | — · caveats [yim20:s16.p6#2]
+[yim20:ent:2] sample 2 · pillar layout v1b · 49.6 nm [yim20:tab1.r2c7#1] | 54.5 nm [yim20:tab1.r2c8#1] | 50 nm [yim20:s6.p1#3] | curve, 36 points, series 'Sample 2' · x -12.3 to 182 µm · plateau 58 nm · half value crossing 143 µm (k1) ± 0.653 (digitized) [yim20:fig8b#c1] · caveats [yim20:s17.p1#3],
+[yim20:ent:2] … [yim20:s7.p1#3]
+[yim20:ent:3] sample 3 · pillar layout v2a · 50.5 nm [yim20:tab1.r3c7#1] | 53.4 nm [yim20:tab1.r3c8#1] | 50 nm [yim20:s6.p1#3] | — · caveats [yim20:s16.p6#2]
+[yim20:cmp:A] claims about this set: [yim20:s10.p1#4], [yim20:s16.p6#1], [yim20:s6.p2#2]
+[yim20:cmp:B] set [yim20:cmp:B] (series) · Series B — objective · varies: objective · 3 rows · columns: thickness | thickness outside the channel | thickness in the channel | thickness target
+[yim20:cmp:B] caveats on every row of this set: [yim20:s16.p5#9], [yim20:s17.p1#3], [yim20:s3.p9#6], [yim20:s7.p1#3], [yim20:s7.p5#15]
+[yim20:ent:4] sample 4 · objective 50 × · curve, 50 points, series 'X50 (5 µm)' · x -13.7 to 165 µm · plateau 51.9 nm · half value crossing 104 µm (k1) ± 0.557 (digitized) [yim20:fig7#c3]; curve, 43 points, series 'Sample 4' · x -10.2 to 186 µm (k1) ± 0.579 (digitized) [yim20:fig8b#c2] | 47.4 nm
+[yim20:ent:4] … [yim20:tab1.r4c7#1] | 47.8 nm [yim20:tab1.r4c8#1] | 50 nm [yim20:s6.p1#3]
+[yim20:ent:5] sample 5 · objective 10 × · curve, 55 points, series 'X10 (25 µm)' · x -49.8 to 149 µm · plateau 50.6 nm · half value crossing 104 µm (k1) ± 0.588 (digitized) [yim20:fig7#c2] | 49.1 nm [yim20:tab1.r5c7#1] | 50.0 nm [yim20:tab1.r5c8#1] | 50 nm [yim20:s6.p1#3] · caveats [yim20:s11.x1#5]
+[yim20:ent:6] sample 6 · objective 5 × · curve, 37 points, series 'X5 (50 µm)' · x -24.2 to 147 µm · plateau 51.6 nm · half value crossing 109 µm (k1) ± 0.452 (digitized) [yim20:fig7#c1] | 51.4 nm [yim20:tab1.r6c7#1] | 52.9 nm [yim20:tab1.r6c8#1] | 50 nm [yim20:s6.p1#3] · caveats [yim20:s11.x1#5]
+[yim20:cmp:B] claims about this set: [yim20:s11.x1#2], [yim20:s7.p5#12]
+[yim20:cmp:C] set [yim20:cmp:C] · Yim 2020 · Series C — feature width · 3 rows · thickness in the channel 47.8–51.1 nm (3); thickness target 50–50 nm (3); thickness outside the channel 45.3–46.7 nm (2) · open with detail(ids=['yim20:cmp:C']) or narrow with where
+[yim20:cmp:D] set [yim20:cmp:D] (series) · Series D — cycles · varies: cycles · 2 rows · columns: thickness | thickness outside the channel | thickness in the channel | thickness target
+[yim20:cmp:D] caveats on every row of this set: [yim20:s16.p5#9], [yim20:s17.p1#3], [yim20:s3.p9#6], [yim20:s7.p1#3]
+[yim20:ent:10] sample 10 · cycles 250 · curve, 12 points, series '250 cycles' · x -15 to 170 µm · plateau 25.6 nm · half value crossing 114 µm (k1) ± 0.263 (digitized) [yim20:fig9d#c1] | 24.3 nm [yim20:tab1.r10c7#1] | 26.0 nm [yim20:tab1.r10c8#1] | 50 nm [yim20:s6.p1#3]
+[yim20:ent:11] sample 11 · cycles 1000 · curve, 15 points, series '1000 cycles' · x -15 to 180 µm · plateau 97.3 nm · half value crossing 97.4 µm (k1) ± 0.995 (digitized) [yim20:fig9d#c3] | 94.7 nm [yim20:tab1.r12c7#1] | 99.3 nm [yim20:tab1.r12c8#1] | 50 nm [yim20:s6.p1#3]
+[yim20:cmp:D] 12 claims about this set: open with detail(ids=['yim20:cmp:D'], parts=["claims"])
+[yim20:cmp:E] set [yim20:cmp:E] · Yim 2020 · Series E — pulse · 3 rows · thickness outside the channel 47.5–48.6 nm (3); thickness in the channel 49.8–51 nm (3); thickness target 50–50 nm (3) · open with detail(ids=['yim20:cmp:E']) or narrow with where
+[yim20:cmp:F] set [yim20:cmp:F] (series) · Series F — purge · varies: purge · 2 rows · columns: thickness | thickness outside the channel | thickness in the channel | thickness target
+[yim20:ent:15] sample 15 · purge after precursor 1.0 s, purge after co-reactant 1.0 s · curve, 29 points, series '1 s' · x -10 to 182 µm · plateau 52.2 nm · half value crossing 101 µm (k1) ± 0.52 (digitized) [yim20:fig11b#c1] | 50.4 nm [yim20:tab1.r16c7#1] | 51.9 nm [yim20:tab1.r16c8#1] | 50 nm [yim20:s6.p1#3]
+[yim20:ent:16] sample 16 · purge after precursor 10.0 s, purge after co-reactant 10.0 s · curve, 33 points, series '10 s' · x -10 to 187 µm · plateau 47.9 nm · half value crossing 120 µm (k1) ± 0.43 (digitized) [yim20:fig11b#c3] | 44.8 nm [yim20:tab1.r18c7#1] | 48.9 nm [yim20:tab1.r18c8#1] | 50 nm
+[yim20:ent:16] … [yim20:s6.p1#3]
+[yim20:cmp:F] claims about this set: [yim20:abs.g3#2], [yim20:s18.p4#1], [yim20:s18.p5#1], [yim20:s18.p6#1], [yim20:s20.p3#1], [yim20:s18.p2#1]
+[between] — not comparable with set 8: specimen class (film vs none) —
+[yim20:cmp:sims] set [yim20:cmp:sims] · Yim 2020 · model simulations — feature width, cycles · 9 rows · no numeric values · open with detail(ids=['yim20:cmp:sims']) or narrow with where
+[yim20:outside] set [yim20:outside] (outside any set) · values outside any comparison set · shared: feature width 0.50 µm · 1 rows · columns: thickness target
+[yim20:ent:S4] Table S4 specimen · 50 nm [yim20:s6.p1#3]
+[yim20:cmp:fig7] 8 figure sets of Yim 2020 with 29 curves of this quantity: [yim20:cmp:fig7], [yim20:cmp:fig8b], [yim20:cmp:fig9a], [yim20:cmp:fig9d], [yim20:cmp:fig10a], [yim20:cmp:fig10d], [yim20:cmp:fig11a], [yim20:cmp:fig11b] · open one with values(set=<id>)
+[between] 13 of 18 sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where
+[legend] kinds: (k1) read from a figure; (k2) computed by the paper's authors; (k3) computed by this knowledge base, not by the paper's authors; (k7) simulated by the paper's authors; unmarked: measured or stated
+[legend] basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+[legend] caveats on every specimen row above: [yim20:s16.p10#6], [yim20:s16.p7#5], [yim20:s16.p8#4], [yim20:s3.p9#8], [yim20:s3.p9#9]
+[legend] the texts of the 12 caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])
+[between] also in mat22: 20 values · 4 claims · 8 settings · also in gre23: 3 values · 5 claims
+-- 39 lines, 1736 tokens
+====================================================================================================
+PROBE values({"set": "yim20:cmp:fig9a"})
+[yim20:cmp:fig9a] set [yim20:cmp:fig9a] (series) · Yim 2020 · Fig. 9a series (channel height) — feature width · varies: feature width · 3 members · columns: member | thickness | thickness in the channel | penetration depth (50%)
+[yim20:cmp:fig9a] caveats on every member row: [yim20:s7.p1#3]
+[yim20:fig9a#c1] 100 nm · feature width 0.1 µm · curve, 15 points, series '100 nm' · x 0 to 113 µm (k1) ± 0.454 (digitized) [yim20:fig9a#c1] | — | —
+[yim20:fig9a#c2] 500 nm · feature width 0.5 µm · curve, 18 points, series '500 nm' · x -8 to 185 µm · plateau 49.9 nm · half value crossing 106 µm (k1) ± 0.508 (digitized) [yim20:fig9a#c2] | 49.9 nm (k3) [yim20:fig9a#d2_1] | 105.9 µm (k3) [yim20:fig9a#d2_2]
+[yim20:fig9a#c3] 2000 nm · feature width 2 µm · curve, 16 points, series '2000 nm' · x -5 to 385 µm · plateau 48.3 nm · half value crossing 379 µm (k1) ± 0.339 (digitized) [yim20:fig9a#c3] | 48.3 nm (k3) [yim20:fig9a#d3_1] | 379.4 µm (k3) [yim20:fig9a#d3_2]
+[legend] kinds: (k1) read from a figure; (k3) computed by this knowledge base, not by the paper's authors; unmarked: measured or stated
+[legend] basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+[between] also in mat22: 20 values · 4 claims · 8 settings (with the family conformality) · also in gre23: 4 values · 8 claims (with the family conformality)
+-- 8 lines, 345 tokens
+====================================================================================================
+PROBE curve({"id": "yim20:fig9a#c3"})
+[yim20:fig9a#c3] curve [yim20:fig9a#c3] · Yim 2020 Fig. 9a · series '2000 nm' · 16 points · kind: read from a figure · set [yim20:cmp:fig9a]
+[yim20:fig9a#c3] x: distance from the entrance (distance) in µm · printed label 'Distance inside the channel x (µm)'
+[yim20:fig9a#c3] y: thickness (film_thickness) in nm · printed label 'Film thickness S (nm)'
+[yim20:fig9a#c3] conditions: feature width 2 µm; cycles 500 cycle; temperature 300 °C
+[yim20:fig9a#c3] values computed by this knowledge base, not by the paper's authors: thickness 48.3 nm by plateau [yim20:fig9a#d3_1]; penetration depth 379 µm by half value crossing [yim20:fig9a#d3_2]
+[yim20:fig9a#c3] uncertainty: ± 0.339 (digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′); measurement uncertainty)
+[yim20:fig9a#c3] flags of the figure stage: F2 (a flag marks the figure for review; it deletes nothing)
+[yim20:fig9a#c3] points (x, y): (-5, 45.8), (0, 50.1), (15, 48.8), (50, 48.5), (100, 48.5), (150, 48.7), (200, 48.5), (250, 48), (300, 47.8), (345, 46.5), (360, 42.5), (366, 39), (372, 33), (378, 26.5), (381, 21.5), (385, 16.2)
+[yim20:fig9a#c3] provenance: vlm gemini-3.8-flash, prompt 1cb472bef385
+-- 9 lines, 302 tokens
+====================================================================================================
+PROBE values({"result": "element_ratio", "paper": "mat22"})
+[mat22:shared] Mattinen 2022 · every specimen set of this paper shares: Ar purity 99.999 %; H2 purity 99.999 %; H2S purity 99.5 %; reactant B H2S; reactor Oxford Instruments FlexAL PEALD; structure planar; temperature set point 200–450 °C
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; pressure set point in the dose 200 mTorr; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse
+[mat22:cmp:map] … (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants · columns: S/Mo
+[mat22:cmp:map] set (values stated for the set, its statistics) · 1.8–2.3 [mat22:s3.p11#2]; 2.5–3.6 [mat22:s3.p11#4]; 1.8–2.2 [mat22:s3.p39#1] · caveats [mat22:s3.p11#8], [mat22:s3.p11#9]
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] S/Mo · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 7.3 (k1) [mat22:fig4#33] | n.t. | n.t. | n.t. | 2.0 (k1) [mat22:fig4#34] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 4.6 (k1) [mat22:fig4#28] | n.t. | 3.6 (k1) [mat22:fig4#29] | 2.2 (k1) [mat22:fig4#30] | 1.8 (k1) [mat22:fig4#31] | 1.4 (k1) [mat22:fig4#32] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 3.6 (k1) [mat22:fig4#22] | 3.5 (k1) [mat22:fig4#23]; 3.5 (k1) [mat22:fig5a#11] | n.t. | 3.0 (k1) [mat22:fig4#24]; 3.0 (k1) [mat22:fig5a#9] | 2.1 (k1) [mat22:fig4#25]; 2.1 (k1) [mat22:fig5a#7] | 1.9 (k1) [mat22:fig4#26]; 1.9 (k1) [mat22:fig5a#5] | 1.3 (k1) [mat22:fig4#27]; 1.3 (k1)
+[mat22:cmp:map] … [mat22:fig5a#3] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 3.1 (k1) [mat22:fig4#16] | 3.0 (k1) [mat22:fig4#17] | n.t. | 2.5 (k1) [mat22:fig4#18] | 2.2 (k1) [mat22:fig4#19] | 1.9 (k1) [mat22:fig4#20] | 1.3 (k1) [mat22:fig4#21] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 2.8 (k1) [mat22:fig4#9] | 2.7 (k1) [mat22:fig4#10] | 2.5 (k1) [mat22:fig4#11] | 2.2 (k1) [mat22:fig4#12] | 2.1 (k1) [mat22:fig4#13] | 1.9 (k1) [mat22:fig4#14] | 1.3 (k1) [mat22:fig4#15] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 2.3 (k1) [mat22:fig4#8] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 2.1 (k1) [mat22:fig4#5] | n.t. | 2.2 (k1) [mat22:fig4#6] | n.t. | 1.9 (k1) [mat22:fig4#7] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 2.0 (k1) [mat22:fig4#3] | n.t. | n.t. | n.t. | 1.9 (k1) [mat22:fig4#4] | n.t.
+[mat22:cmp:map] variants of the cell 150 °C, 0.20 (+1): 150 °C, 0.20 H2, glassy-carbon film [mat22:ent:gc_T150_R0.20]: S/Mo 3.7 ± 0.1 (basis not stated) [mat22:tab1.r1c1#1]; 3.4 ± 0.2 (basis not stated) [mat22:tab1.r1c2#1]
+[mat22:cmp:map] variants of the cell 150 °C, 0.65 (+1): 150 °C, 0.65 H2, glassy-carbon film [mat22:ent:gc_T150_R0.65]: S/Mo 2.1 ± 0.1 (basis not stated) [mat22:tab1.r2c1#1]; 2.1 ± 0.1 (basis not stated) [mat22:tab1.r2c2#1]
+[mat22:cmp:map] variants of the cell 150 °C, 0.80 (+1): 150 °C, 0.80 H2, glassy-carbon film [mat22:ent:gc_T150_R0.80]: S/Mo 1.8 ± 0.1 (basis not stated) [mat22:tab1.r3c1#1]; 1.9 ± 0.1 (basis not stated) [mat22:tab1.r3c2#1]
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:WS2] set [mat22:cmp:WS2] (series) · WS2 films — H2 flow ratio · varies: H2 flow ratio · shared: material WS2; reactant A W(tBuN)2(Me2N)2; temperature 150 °C; substrate SiO2 · 2 rows · columns: S/Mo | S/W
+[mat22:ent:WS2_T150_R0] WS2 film, 150 °C, 0 H2 · H2 flow ratio 0 · 4.0 [mat22:s3.p46#2] | —
+[mat22:ent:WS2_T150_R0.80] WS2 film, 150 °C, 0.80 H2 · H2 flow ratio 0.80 · — | 2.1 [mat22:s3.p46#3]
+[mat22:cmp:WS2] claims about this set: [mat22:abs.g2#1], [mat22:abs.g4#2], [mat22:s2.p11#2], [mat22:s3.p45#1], [mat22:s3.p46#5], [mat22:s4.p1#1], [mat22:s4.p1#2]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[mat22:s3.p11#8] caveat · The MoS1.8-MoS2.3 range covers most, not all, crystalline films; ratio 0.94 films with metallic Mo sit at MoS1.3-1.4.
+[mat22:s3.p11#9] caveat · The MoS2.5-MoS3.6 range is for amorphous films grown at 150 °C or above; colder amorphous films are more S-rich (up to MoS7.3 at 50 °C).
+[between] also in gre23: 4 values · 4 claims (with the family composition) · not studied in: yim20
+-- 29 lines, 1229 tokens
+====================================================================================================
+PROBE values({"result": "growth_per_cycle", "paper": "mat22"})
+[columns] columns of every row: growth per cycle · 16 values computed by this knowledge base, not by the paper's authors are not listed here (detail, parts computed)
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; structure planar; reactor Oxford Instruments FlexAL PEALD; temperature set point 200–450 °C; pressure set point in the dose
+[mat22:cmp:map] … 200 mTorr; Ar purity 99.999 %; H2S purity 99.5 %; H2 purity 99.999 %; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] caveats on every cell: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] growth per cycle · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 1.7 Å (k1) [mat22:fig7b#32] | n.t. | n.t. | n.t. | 1.45 Å (k1) [mat22:fig7b#33] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 1.15 Å (k1) [mat22:fig7b#27] | n.t. | 1.15 Å (k1) [mat22:fig7b#28] | 1.15 Å (k1) [mat22:fig7b#29] | 1.4 Å (k1) [mat22:fig7b#30] | 0.7 Å (k1) [mat22:fig7b#31] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 0.7 Å (k1) [mat22:fig7b#21] | 0.75 Å (k1) [mat22:fig7b#22] | n.t. | 0.9 Å (k1) [mat22:fig7b#23] | 1.1 Å (k1) [mat22:fig7b#24] | 1.3 Å (k1) [mat22:fig7b#25] | 0.7 Å (k1) [mat22:fig7b#26] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 0.6 Å (k1) [mat22:fig7b#15] | 0.6 Å (k1) [mat22:fig7b#16] | n.t. | 0.85 Å (k1) [mat22:fig7b#17] | 1.1 Å (k1) [mat22:fig7b#18] | 1.3 Å (k1) [mat22:fig7b#19] | 0.7 Å (k1) [mat22:fig7b#20] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 0.6 Å (k1) [mat22:fig7b#8] | 0.65 Å (k1) [mat22:fig7b#9] | 0.8 Å (k1) [mat22:fig7b#10] | 0.95 Å (k1) [mat22:fig7b#11] | 1.1 Å (k1) [mat22:fig7b#12] | 1.3 Å (k1) [mat22:fig7b#13] | 0.65 Å (k1) [mat22:fig7b#14] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#7] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#4] | n.t. | 1.25 Å (k1) [mat22:fig7b#5] | n.t. | 1.45 Å (k1) [mat22:fig7b#6] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 1.2 Å (k1) [mat22:fig7b#2] | n.t. | n.t. | n.t. | 1.65 Å (k1) [mat22:fig7b#3] | n.t.
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:fig7a] set [mat22:cmp:fig7a] (figure) · Fig. 7a series (H2 flow ratio) · varies: H2 flow ratio · 5 rows
+[mat22:cmp:fig7a] caveats on every row of this set: [mat22:s3.p32#5]
+[mat22:fig7a#c1] 0 · H2 flow ratio 0 1 · 0.06654 nm/cycle (k3) [mat22:fig7a#d1_1]
+[mat22:fig7a#c2] 0.20 · H2 flow ratio 0.2 1 · 0.06414 nm/cycle (k3) [mat22:fig7a#d2_1]
+[mat22:fig7a#c3] 0.50 · H2 flow ratio 0.5 1 · 0.08046 nm/cycle (k3) [mat22:fig7a#d3_1]
+[mat22:fig7a#c4] 0.65 · H2 flow ratio 0.65 1 · 0.1072 nm/cycle (k3) [mat22:fig7a#d4_1]
+[mat22:fig7a#c5] 0.80 · H2 flow ratio 0.8 1 · 0.1461 nm/cycle (k3) [mat22:fig7a#d5_1]
+[legend] kinds: (k1) read from a figure; (k3) computed by this knowledge base, not by the paper's authors; unmarked: measured or stated
+[mat22:s3.p32#5] caveat · SE-based GPC is a thickness rate and hides changes in film density and stoichiometry between conditions.
+[mat22:s3.p28#3] caveat · First-100-cycle GPC averages hide non-linear growth: at high ratios GPC keeps rising with cycle number as fins form.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[between] also in yim20: 45 values · 5 claims · also in gre23: 5 values · 7 claims
+-- 28 lines, 1061 tokens
+====================================================================================================
+PROBE values({"result": "pressure_rise", "paper": "gre23"})
+[gre23:paper] paper-level [gre23:paper] · records attached to no specimen and no set · 1 rows · columns: maximum pressure rise | pressure rise
+[gre23:paper] caveats on every row of this set: [gre23:fig3.cap#1], [gre23:s12.x1#14], [gre23:s12.x1#16]
+[gre23:paper] paper-level · under process monitor · 450 mTorr [gre23:s12.x1#5]; 500 mTorr [gre23:s12.x1#11] | 2.7 Torr [gre23:s12.p7#1]
+[between] — not comparable with set 1: specimen class (none vs porous_composite) —
+[gre23:cmp:schedules] set [gre23:cmp:schedules] (series) · 120, 160, 120/160 °C — temperature · varies: temperature · shared: material ZnO; reactant A DEZ; reactant B H2O; structure nanoparticle_compact; reactor ALD NanoSolutions (Forge Nano) custom RX-series; DEZ purity 95 %; source temperature (DEZ) 37 °C; source
+[gre23:cmp:schedules] … temperature (H2O) 37 °C; DEZ pulse 10–14 s; water pulse 8–11 s; purge after precursor 2880 s; purge after co-reactant 2880 s; cycles 20; substrate Al2O3 · 3 rows · columns: maximum pressure rise | pressure rise
+[gre23:ent:120:pair] 120 °C NPC pair · temperature 120 °C, temperature in the precursor purge 120 °C, temperature in the water purge 120 °C · 500 mTorr [gre23:s12.x1#11] | —
+[gre23:ent:160:pair] 160 °C NPC pair · temperature 160 °C, temperature in the precursor purge 160 °C, temperature in the water purge 160 °C · — | 2.7 Torr [gre23:s12.p7#1] · caveats [gre23:fig3.cap#1]
+[gre23:ent:120_160:pair] 120/160 °C NPC pair · temperature 120 °C for the DEZ dose, DEZ purge and H2O dose, 160 °C for the H2O purge, temperature in the precursor purge 120 °C, temperature in the water purge 160 °C · 450 mTorr [gre23:s12.x1#5] | —
+[gre23:cmp:schedules] 45 claims about this set: open with detail(ids=['gre23:cmp:schedules'], parts=["claims"])
+[gre23:cmp:fig3a] set [gre23:cmp:fig3a] (figure) · Fig. 3a series (temperature) · varies: temperature · 3 rows · columns: pressure rise
+[gre23:fig3a#c1] 160 °C · temperature 160 °C · curve, 16 points, series '160 °C' · x 0 to 1.91e+03 s (k1) ± 0.0273 (digitized) [gre23:fig3a#c1]
+[gre23:fig3a#c2] 120 °C · temperature 120 °C · curve, 11 points, series '120 °C' · x 0 to 1.91e+03 s (k1) ± 0.0049 (digitized) [gre23:fig3a#c2]
+[gre23:fig3a#c3] 120/160 °C · cycles 15 cycle · curve, 11 points, series '120/160 °C' · x 0 to 1.91e+03 s (k1) ± 0.0044 (digitized) [gre23:fig3a#c3]
+[legend] kinds: (k1) read from a figure; unmarked: measured or stated
+[legend] basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+[legend] caveats on every specimen row above: [gre23:s12.x1#14], [gre23:s12.x1#16]
+[gre23:s12.x1#14] caveat · Peak pressure rise, time to peak, terminal slope and the 2.7 Torr rise come from one representative DEZ hold (cycle 15), relative to ~9 Torr at hold start.
+[gre23:s12.x1#16] caveat · Hold pressure changes include a net outward leak across the pump valve that varies with valve seating; slopes are limited by 10 mTorr data resolution.
+[gre23:fig3.cap#1] caveat · Part of the 160 °C pressure-rise trace was read from the 1000 Torr gauge and is noisier than the 10 Torr gauge data used elsewhere.
+[between]  · not studied in: yim20, mat22
+-- 21 lines, 793 tokens
+====================================================================================================
+PROBE BATTERY (check.py figure): == kinds (P57, P68): 9 kinds with phrases, 9 bases; 153 probe calls, 1994 tool texts scanned; max 1811 tokens per output, 77,068 tokens over the battery
+reference: 74,462 at ask-v4 (74,469 after P82)

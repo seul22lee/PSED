@@ -7,7 +7,7 @@ import sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 import re  # noqa: E402
 import facts as C  # noqa: E402
-from facts import F, N, NK, P, write, cases_points  # noqa: E402
+from facts import F, N, NK, write  # noqa: E402
 
 K, PID = "gre23", "10.1116_6.0003182"
 
@@ -504,11 +504,8 @@ f("fig6d;fig6e;fig6f;fig6.cap;s15.p6", "observation", "Figs. 6(d)-(f): Al, Zn, O
 SER = {"d": "Zn K-alpha, T held at 120 C", "e": "Zn K-alpha, T held at 160 C (section incomplete above 0.42 mm)", "f": "Zn K-alpha, T cycled 120/160 C"}
 LAB = {"d": "120 °C", "e": "160 °C", "f": "120/160 °C"}
 for p in "def":
-    s = cases_points(PID, "6", p, SER[p])
-    ref = P(PID, f"fig6{p}_zn", s["points"], source=f"points.json: figure 6 panel {p}, series '{SER[p]}' ({s['source']})",
-            x_label=s["x_label_as_printed"], y_label=s["y_label_as_printed"], note="points are [x, y] = [normalized counts, position mm] (axes swapped); " + s["quality"])
     f(f"fig6{p};fig6.cap;s15.p6", "observation", f"Fig. 6({p}) Zn Kα line scan of the {LAB[p]} sample: normalized counts against position through the thickness",
-      quantity="signal_intensity", qualifiers="element=Zn", label_as_printed="Normalized X-ray counts (Zn)", points_ref=ref, data_kind="measured", method="sem_eds", mentions=LAB[p])
+      quantity="signal_intensity", qualifiers="element=Zn", label_as_printed="Normalized X-ray counts (Zn)", data_kind="measured", method="sem_eds", mentions=LAB[p])
 for p in "def":
     f(f"fig6{p}", "observation", f"Fig. 6({p}), {LAB[p]}: the Al Kα trace is the highest-count curve and the noisiest, roughly flat across the section",
       quantity="signal_intensity", qualifiers="element=Al", method="sem_eds", mentions=LAB[p])
@@ -564,12 +561,6 @@ COATED = f("s14.p1;abs.g4;s6.p8;fig6d;fig6f", "derived", "the Zn signal is level
            "full half-thickness: the aspect ratio coated equals the structure's, 7800 (the near-face depletion aside)",
            quantity="coated_aspect_ratio", qualifiers="basis=AR", value="7800", data_kind="calculated", method="sem_eds", inputs=[AR7800, f"{K}:s14.p1#4"], mentions="AR;Zn Kα")
 SUBSTR = f("s8.p1;abs.g1", "setting", "the growth surface is the Al2O3 of the pressed nanoparticle compacts", quantity="substrate", value_text="al2o3", data_kind="chosen input", mentions="Al2O3")
-
-# ---------------------------------------------------------------- the abscissa of the Fig. 6 line scans: the position through the compact (x= qualifier).
-# The paper draws the position vertically and the points are kept as printed (counts, position); the scan's independent variable is the position.
-for cf in C.facts():
-    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
-        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=distance"]))
 
 
 # ---------------------------------------------------------------- the stance of every claim, from the paper's wording (lists.STANCES)

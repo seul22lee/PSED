@@ -141,6 +141,30 @@ questions are a regression test only.
 - P79. Every value record has a home in `values`: input rows, aggregate rows (a replicate set's own records), a first 'set' row per set block, paper-level rows, every record of a key in its cell (alternatives), a stated target as a column, orphan spreads as records, every fact of a settings level cited; `homeless.py` lists what no `values` output renders and `check_homes` asserts 0; `run_metrics` carries homeless_records.
 - P80. A grid set renders from its full member list as one matrix per quantity (rows the first axis's levels, columns the second's, every record per cell, untested combinations counted, levels without a value left out and counted), same-process variants per cell, child series named in one line and never printed as groups; over the budget row levels fold from the last, never a column; `check_grids` proves cells, children and the ask-v3.1 sizes.
 - P81. A concept card counts per paper the value records by home, settings, claims and derived records, prints 'not studied in' only when all are zero and 'derivable in p from <inputs> (<kinds>)' when a transform's inputs are present; the footer and the L0 map read the same counts; `check_cards` proves the numbers against the page data.
+- P82. A reactor name is a record of `reactor` (reactor_type keeps the pressure-regime class); channel_length is superseded by feature_depth;
+  no mechanism has a unit or a value (`check_mechanisms`).
+- P84. Figure data enters the knowledge base only through `kb/figures_import.py`, by rule: a panel with verdict ok and no F5/F6 flag is
+  imported, axis labels resolve to entries in a closed order (the label, the label without its symbol, the symbol case-sensitive,
+  a symbol with a subscript word, A/B through a transform, the head word confirmed by the unit's dimension), units through
+  `ontology/units.yaml` with a dimension check, a normalised axis through its denominator, series labels in four classes (numeric with
+  unit, species, model or measurement word, replicate), conditions through the same aliases; every panel is an inventory record; what
+  stays unresolved goes to `ontology/unmapped.csv` with a reason and the panel stays inventory only; `query.py` loads `kb/<id>.figures.json`
+  as rows of the tree and the `curve` tool returns a curve's points.
+- P85. A plot or map panel with two or more series is a comparison set of kind series over the resolved series_axis (a replicate set when
+  every label is a replicate label), a map with cells a grid over its axes; `values(set=)` and the P77 table list its curves, cells and
+  derived scalars one row each; a figure set is no view of a grid.
+- P86. Three derived scalars per curve where they apply (plateau: the mean of the longest run within 5 % of the running maximum, 4+ points;
+  half-value crossing by linear interpolation → penetration_depth; the linear slope of thickness against cycles, R² ≥ 0.98 → growth_per_cycle),
+  stored kind computed_by_kb with the method and the source curve, listed after the stated values and never counted as the paper's;
+  `check_figure_derived` compares each with the stated values of the curve's entity (else of every entity with the same conditions) and
+  lists a difference over max(10 % of the stated value, 2 % of the axis range) in `kb/problems.txt`.
+- P87. A measured series is read_from_figure with the basis digitized (±1 % of the axis range, the Directive 5′ repeat sample), a simulated
+  series (a model word in its label, else in the panel's content line or the caption) the kind simulated, cells and peaks read_from_figure
+  with the basis printed; the kinds and bases are entries of the ontology's tables.
+- P88. A facts file holds no figure points and writes no points.json (`facts.P` refuses); every fact carries `figure_ref` by rule (its panel or
+  caption evidence and its 'Fig. N(x)' mentions); a fact of an entity that cites a panel and names the series binds the imported curve to
+  that entity as its second home (links); the hand-read curves stay on disk unused and `kb/figures_agreement.py` compares them with the
+  imported ones (`pilot/figures_agreement.csv`).
 
 ## Design principles
 - Why the representation stage (P49–P59) exists: evaluation runs with a cheap model showed four failure classes, and each fix is a
@@ -383,7 +407,11 @@ python3 psed_v2/pilot/quantity_matrix.py && python3 psed_v2/pilot/paper_case.py 
 python3 psed_v2/pilot/cremers.py                      # Cremers tables and checks
 python3 psed_v2/pilot/forest.py; python3 psed_v2/pilot/experiments.py   # older projections, still run
 python3 psed_v2/ingest/regression.py                  # ingest output against the answer set
+python3 psed_v2/kb/figures_import.py [<paper_id> ...]  # P84-P87: ingest/final/<id>/figures.json + answers/figures.json -> kb/<id>.figures.json, kb/import_report.csv,
+                                                      #   kb/import_panels.csv, ontology/unmapped.csv (importer rows; the pilot's hand rows keep field=pilot); rerun after any rule change
+python3 psed_v2/kb/figures_agreement.py               # P88: the hand-read curves against the imported ones -> pilot/figures_agreement.csv
 ```
+The knowledge base build, in order: the three facts scripts, `kb/figures_import.py`, `ontology/export.py`, `pilot/experiments.py`, `pilot/report.py`, `pilot/check.py`.
 Playwright (Python) is in conda env psed310 for driving the page.
 
 ## Facts layer: plan
@@ -1595,3 +1623,35 @@ extraction (next directive).
 - Not started (8): 10.1002_cvde.200390005 Gordon 2003, 10.1063_1.5028178 Ylilammi 2018, 10.1116_1.4903941 Gao 2015,
   10.1021_acs.jpcc.9b08176 Arts 2019, 10.1039_d1cp04758b Yim 2022, 10.1039_d3cp05639b Heikkinen 2024, 10.1116_6.0002993 Mathew 2023,
   10.1116_6.0002804 van der Zouw 2023. P84 and the kb-12 bundle not started.
+
+## Resume state (2026-10-17, end of directive 6′: P84–P88, figure import by rule)
+
+Directive 6′ is complete on top of the figure stage (verify/figures-12): one row per rule in pilot/problems.csv (P84–P88), one commit
+"P84–P88: figure import by rule; pilot rebuilt on figures.json; regression", then the bundle verify/kb-fig3/. The knowledge base is
+built from the three pilot papers only (elements.PAPERS; the Elam draft stays out); the importer ran on all 12 papers (kb/import_report.csv).
+- Checks: pilot/check.py all sections OK (new sections figures import P84–P87 and figure derived P86; the P86 cross-check lists 1 mismatch in
+  kb/problems.txt, a finding); questions.py 26 answered; ontology/make_report.py 14 checks pass (two pending entries added by the data rule:
+  diffraction_angle, a peak coordinate in 3 papers; molar_mass, a condition in 3 papers); the page rebuilds; homes 0.
+- Probe battery tokens (the check.py figure): 74,469 after P82 → 77,068 (153 probe calls; the 21 figure sets add values(set=) probes); max 1,811
+  tokens per output.
+- Import on the 3-paper KB: 34 ok panels, 79 curves (49 read from a figure, 30 simulated: the yim20 Fig. 10 panels), 64 cells, 25 peaks, 21 sets,
+  43 derived scalars; over the 12 papers 208 curves (92 read, 116 simulated), 131 unmapped rows (label_unresolved 130: one-paper symbols
+  such as r_θ=1/2, n_p, c, 1-2s/H; the typo 'Postion'; a cell quantity without series_axis).
+- Rule changes to checks, with reasons: `check(pid)` refuses points_ref in a facts file (P88) instead of requiring points.json; `check_sets`
+  skips the set-row assertion for figure sets (their own records are the rows); `check_cards` counts a computed_by_kb row as derived (P86);
+  `homeless.rendered` renders without the page cut (the figure sets lengthen a paper's listing past one page; values has no offset);
+  `make_report` check 12 reads the pilot's hand rows of unmapped.csv only (field pilot; the importer's rows are checked by check.py).
+- Access-layer changes: figure groups render after a paper's sets, one row per curve, with the derived scalars after the curves; the
+  collapsed figure sets of a paper fold into one line; a figure set's curves carry no comparability axes; a settings entry lists a curve of
+  the setting among its 'result, not a setting' lines; grid children exclude figure sets; the curve tool; the map's per-paper inventory counts.
+- Regression (step 4): NOT run. The A10 and B11 question files and run records are held-out materials outside this repository (HANDOFF
+  'A10_v2 records live outside this directive's reading scope'); this directive forbids reading them. Run instead: questions.py (26 answered,
+  unchanged), the probe battery (above) and the kinds check with the new kind simulated. The regression table (verify/kb-fig3/regression.md)
+  waits for a directive that provides the question files.
+- Open points: the mat22 Fig. 4 cells (S/Mo) carry no quantity (the VLM returned no series_axis for a numeric map; a rule reading the
+  panel's content line would be a guess); gre23 Fig. 6 d–f stay inventory only ('Postion' typo on the page); the EDS element series
+  (yim20 Fig. 5b) form no set (series_axis 'element' is a qualifier key, not a quantity); the P86 plateau rule reads an entrance bump as
+  the plateau where a profile rises before its front (the one listed mismatch is fig11b#d3_2, 120 vs 109 µm); the hand-curve agreement
+  is 0.43 on average (sampled continuous lines differ in sampling position, as the Directive 5′ repeat sample showed; marker series
+  agree 0.87–1.0); the nine other papers come in the next directive.
+

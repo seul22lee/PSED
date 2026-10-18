@@ -17,22 +17,10 @@ import sys
 
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 import facts as C  # noqa: E402
-from facts import F, N, NK, P, write  # noqa: E402
+from facts import F, N, NK, write  # noqa: E402
 import re  # noqa: E402
 
 K, PID = "yim20", "10.1039_d0cp03358h"
-
-
-def v1(sid, name, xl, yl):
-    s = C.v1_points(sid)
-    return P(PID, name, s["points"], f"v1_points.json {sid} (accepted in v1_points_check.csv)", xl, yl,
-             s.get("note", ""))
-
-
-def cp(fig, panel, series, name):
-    s = C.cases_points(PID, fig, panel, series)
-    return P(PID, name, s["points"], f"points.json Fig. {fig}{panel} '{series}'", s["x_label_as_printed"],
-             s["y_label_as_printed"], s.get("quality", ""))
 
 
 # ------------------------------------------------------------------ front matter and headings
@@ -405,7 +393,7 @@ F(K, "s10.p2;fig5b", "observation", "next comes a plateau of slightly larger thi
 for el, nm in (("O", "O"), ("Al", "Al"), ("Si", "Si")):
     F(K, "fig5b", "observation", f"Fig. 5b curve {el}: EDS intensity across the coated channels",
       quantity="signal_intensity", label_as_printed="Intensity [a.u.]", qualifiers=f"element={el}",
-      points_ref=v1(f"yim20:F5b-{nm}", f"fig5b_{el}", "Distance [µm]", "Intensity [a.u.]"), data_kind="measured", method="sem_eds",
+      data_kind="measured", method="sem_eds",
       mentions=f"{el};Fig. 5b")
 F(K, "s10.x3;fig6;fig6.cap", "observation", "Fig. 6: AFM image of a coated channel (500 nm design, 500 cycles at 300 °C, Table S4); white are membrane remnants and black are holes from torn-off pillars",
   method="afm", mentions="Fig. 6;Table S4")
@@ -419,10 +407,10 @@ F(K, "s10.x3", "observation", "the nanostep also appears in the AFM line scan of
 F(K, "fig7;fig7.cap;s11.x1", "observation", "Fig. 7: as-measured profiles, film thickness S (nm) against distance x (µm), for three reflectometer spot sizes; samples 4, 5, 6 of Series B",
   method="reflectometry", mentions="Fig. 7;Samples 4, 5, and 6;Series B")
 F(K, "fig7", "observation", "Fig. 7 curve X5 (50 µm spot)", quantity="film_thickness",
-  points_ref=v1("yim20:F7-x5", "fig7_X5", "Distance x (µm)", "Film thickness S (nm)"), data_kind="measured", method="reflectometry",
+  data_kind="measured", method="reflectometry",
   mentions="X5 (50 µm);Fig. 7")
 F(K, "fig7", "observation", "Fig. 7 curve X10 (25 µm spot)", quantity="film_thickness",
-  points_ref=v1("yim20:F7-x10", "fig7_X10", "Distance x (µm)", "Film thickness S (nm)"), data_kind="measured", method="reflectometry",
+  data_kind="measured", method="reflectometry",
   mentions="X10 (25 µm);Fig. 7")
 F(K, "fig7", "observation", "Fig. 7 curve X50 (5 µm spot); no accepted points", quantity="film_thickness", method="reflectometry",
   mentions="X50 (5 µm);Fig. 7")
@@ -441,8 +429,7 @@ F(K, "s12.x1;fig8a;fig8.cap", "observation", "Fig. 8a: repeated reflectometer sc
 F8A = [("0.1", 1, None), ("0.1", 2, None), ("0.1", 3, None), ("0.5", 1, None), ("0.5", 2, None), ("0.5", 3, "yim20:F8a-L0.5-scan3"),
        ("1", 1, "yim20:F8a-L1-scan1"), ("1", 2, None), ("5", 1, "yim20:F8a-L5-scan1")]
 for L, k, sid in F8A:
-    kw = dict(points_ref=v1(sid, f"fig8a_L{L}mm_scan{k}", "Distance inside the channel x (µm)", "Film thickness S (nm)"),
-              data_kind="measured") if sid else {}
+    kw = dict(data_kind="measured") if sid else {}
     F(K, "fig8a", "observation", f"Fig. 8a curve L {L} mm, legend entry {k} of that length" + ("" if sid else "; no accepted points"),
       quantity="film_thickness", method="reflectometry", mentions=f"L (mm): {L};Fig. 8a", **kw)
 F(K, "s12.x1;fig8a", "claim", "the overlapping repeated profiles show good measurement repeatability", method="reflectometry")
@@ -454,7 +441,6 @@ F(K, "s12.x2;fig8b;fig8.cap;s16.p10", "observation", "Fig. 8b: profiles of diffe
   method="reflectometry", mentions="Fig. 8b")
 for smp in ("2", "4", "8", "12"):
     F(K, "fig8b", "observation", f"Fig. 8b curve Sample {smp}", quantity="film_thickness",
-      points_ref=v1(f"yim20:F8b-S{smp}", f"fig8b_sample{smp}", "Distance inside the channel x (µm)", "Film thickness S (nm)"),
       data_kind="measured", method="reflectometry", mentions=f"Sample {smp};Fig. 8b")
 F(K, "s12.x2;fig8b", "observation", "different chips gave somewhat different thickness and penetration depth with the same ALD sequence",
   method="reflectometry")
@@ -489,13 +475,11 @@ XQ = {"Distance inside the channel x (µm)": "distance", "Distance x (µm)": "di
 def curves(fig, F_, typ, dk, method):
     for p, lst in F_.items():
         xl, yl, q, qual = LAB[p]
-        qual = ";".join(filter(None, [qual, "x=" + XQ[xl]]))
         for lab, src in lst:
             name = f"fig{fig}{p}_{lab.replace(' ', '')}"
             kw = {}
             if src:
-                ref = v1(src[1], name, xl, yl) if src[0] == "v1" else cp(fig, p, src[1], name)
-                kw = dict(points_ref=ref, data_kind=dk)
+                kw = dict(data_kind=dk)                                         # P88: the curve itself is an imported record (kb/figures_import.py)
             F(K, f"fig{fig}{p}", typ, f"Fig. {fig}{p} curve {lab}" + ("" if src else "; no accepted points"), quantity=q,
               qualifiers=qual, method=method, mentions=f"{lab};Fig. {fig}{p}", **kw)
 
@@ -574,7 +558,6 @@ F(K, "fig11a;fig11.cap", "observation", "Fig. 11a: film thickness S (nm) against
   method="reflectometry", mentions="Fig. 11a;sample 12, 13, and 14;Series E")
 for t, sid in (("0.1 s", "0.1s"), ("0.2 s", "0.2s"), ("0.4 s", "0.4s")):
     F(K, "fig11a", "observation", f"Fig. 11a curve TMA pulse {t}", quantity="film_thickness",
-      points_ref=v1(f"yim20:F11a-{sid}", f"fig11a_TMA{sid}", "Distance inside the channel x (µm)", "Film thickness S (nm)"),
       data_kind="measured", method="reflectometry", mentions=f"TMA pulse: {t};Fig. 11a")
 F(K, "s14.p1;fig11a", "observation", "penetration depth grew with TMA pulse time, i.e. it depends on the precursor dose", method="reflectometry")
 F(K, "s14.p1;fig11a", "observation", "with a 0.4 s TMA pulse the front was much broader than with 0.1 or 0.2 s pulses while GPC stayed alike",
@@ -586,7 +569,6 @@ F(K, "fig11b;fig11.cap;s14.x1", "observation", "Fig. 11b: film thickness S (nm) 
   method="reflectometry", mentions="Fig. 11b;sample 12, 15, and 16;Series F")
 for t in ("1", "4", "10"):
     F(K, "fig11b", "observation", f"Fig. 11b curve purge {t} s", quantity="film_thickness",
-      points_ref=v1(f"yim20:F11b-{t}s", f"fig11b_purge{t}s", "Distance inside the channel x (µm)", "Film thickness S (nm)"),
       data_kind="measured", method="reflectometry", mentions=f"Purge: {t} s;Fig. 11b")
 F(K, "s14.x1;fig11b", "observation", "for every purge time the as-measured profile has a constant region and then a sharp fall", method="reflectometry")
 F(K, "s14.x1;s18.p2;s18.p4;fig11b", "observation", "going from 1 to 10 s purge, GPC dropped slightly and PD50% rose slightly (inverse GPC-purge dependence)",
@@ -862,12 +844,7 @@ MAT = F(K, "s6.p1;abs.g1", "setting", "film material of this work", quantity="ma
 STRUCT = F(K, "s5.p1;abs.g1", "setting", "test structure type of this work: PillarHall-3 LHAR chips", quantity="structure",
            value_text="pillarhall_3", data_kind="chosen input", mentions="PillarHall-3;LHAR")
 
-# ------------------------------------------------------------------ the abscissa of every curve with points (x= qualifier, from the printed x label)
-for cf in C.facts():
-    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
-        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
-
-
+# P88: curves are imported records (kb/figures_import.py); no x= qualifier is set here
 # ------------------------------------------------------------------ the stance of every claim, from the paper's wording (lists.STANCES)
 STANCE = {"abs.g1#1": "asserted", "abs.g2#2": "asserted", "abs.g3#1": "asserted", "abs.g3#2": "asserted", "abs.g4#1": "asserted",
           "s2.p13#1": "asserted", "s2.p13#2": "open", "s3.p2#1": "asserted", "s3.p4#1": "asserted", "s3.p6#3": "hedged", "s3.p9#4": "limitation",
@@ -1301,7 +1278,7 @@ CAVEATS = [
     ("s17.p1;s17.p2;fig3.cap", "Spikes ahead of the front in reflectometer profiles are artefacts near pillar remnants (absent in EDS), more frequent with dense layout v1a",
      ["fig3.cap#3", "recipe"], "film_thickness", "x=distance"),
     ("s7.p1;s11.x1;fig6.cap", "Profiles were taken after peeling the roof off with tape; membrane remnants left near the entry add a bump to the measured thickness",
-     ["recipe"], "film_thickness", "x=distance"),
+     [K], "film_thickness", "x=distance"),                                      # P88: the profiles are imported curves under their figure sets; the caveat links the paper
     ("s7.p4;fig6.cap", "AFM heights are after line-wise first-order tilt and drift correction; the 3.081 µm Z range spans roof remnants and pillar holes, not film",
      ["fig6#1"], "", ""),
     ("s16.p5;s16.p3;s7.p4", "Roof sag is a local AFM displacement between pillars, so the gap is reduced there, not uniformly over the channel",

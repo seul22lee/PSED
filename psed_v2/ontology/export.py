@@ -38,6 +38,18 @@ def pending():
     return [r for r in csv.DictReader(f.open(newline="", encoding="utf-8"))] if f.exists() else []
 
 
+_UNITS = {}
+
+
+def unit_dimension(unit):
+    """A pending quantity's dimension: the dimension of its unit in ontology/units.yaml (P84; '' when the unit is not there)."""
+    if not _UNITS:
+        for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]:
+            for v in [u["symbol"]] + list(u["variants"]):
+                _UNITS.setdefault(str(v), u["dimension"])
+    return _UNITS.get(str(unit), "")
+
+
 def qualifier_values(q, species=(), materials=()):
     v = q.get("values")
     if isinstance(v, list):
@@ -55,7 +67,8 @@ def build(onto, pmap):
     pend = pending()
     for r in pend:                                                              # P83: pending entries join the vocabulary provisionally
         e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
-                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r["id"].replace("_", " "), aliases=[], pending=True,
+                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=True,
+                 dimension=unit_dimension(r.get("unit", "")),
                  category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
         if r["kind"] == "species":
             e.update(kind=r.get("class") or "molecule", formula=r["id"].upper() if r["id"] == "sicl4" else "", aliases=[r["id"].upper()])
@@ -118,6 +131,7 @@ def build(onto, pmap):
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
         PENDING={r["id"]: dict(kind=r["kind"], paper=r["paper"], status=r["status"]) for r in pend},
+        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
     )
 
 

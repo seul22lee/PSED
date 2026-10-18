@@ -4,7 +4,8 @@ and Fig. 8 colours are read cell by cell against the bars (one fact each, "read 
 Points only from points.json (Fig. 1c) and accepted v1 curves."""
 import sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
-from facts import F, NK, P, write, v1_points, cases_points  # noqa: E402
+from facts import F, NK, write  # noqa: E402
+import facts as C  # noqa: E402
 
 K, PID = "mat22", "10.1021_acs.chemmater.2c01154"
 R = "H2 flow ratio"
@@ -757,13 +758,8 @@ F(K, "fig1a;fig1.cap", "observation", "Panel a plots Raman intensity (arb. units
   label_as_printed="Intensity (Arb. units)", data_kind="measured", method="raman",
   mentions="150 °C;140 ALD cycles;Raman shift (cm-1)")
 for r, key in (("0.94", "s1a_R094"), ("0.80", "s1a_R080"), ("0.65", "s1a_R065")):
-    s = v1_points(f"{K}:{key}")
-    pts = [p for p in s["points"] if p[0] != 518.0]
-    ref = P(PID, f"fig1a_{r}", pts, "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
-            "Intensity (Arb. units)", note="offset curve, y in v1's own scale (axis unnumbered); clipped Si point at 518 cm-1 "
-            "dropped")
     F(K, "fig1a;fig1.cap", "observation", f"Raman spectrum of the {r} film: MoS2 E2g1 and A1g peaks present.",
-      quantity="signal_intensity", label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman",
+      quantity="signal_intensity", label_as_printed="Intensity (Arb. units)", data_kind="measured", method="raman",
       mentions=f"{R}: {r}")
 for r, what in (("0.50", "with only weak broad features"),
                 ("0.20", "with the broad a-MoS3 bands marked by arrows"),
@@ -778,11 +774,8 @@ for c, th in (("50", "4.8"), ("30", "2.6"), ("20", "1.6"), ("10", "0.9")):
     F(K, "fig1b;fig1.cap" + (";s3.p5" if c == "10" else ""), "observation",
       f"Raman spectrum of the {c}-cycle film, whose ex situ SE thickness is {th} nm{extra}.", quantity="film_thickness",
       value=th, unit="nm", data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{c} cyc ({th} nm)")
-s = v1_points(f"{K}:s1b_sub")
-ref = P(PID, "fig1b_substrate", s["points"], "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
-        "Intensity (Normalized to Si)", note="flat substrate line; y in v1's own scale (axis unnumbered)")
 F(K, "fig1b;fig1.cap", "observation", "Bare SiO2/Si substrate gives a flat line in the 350-430 cm-1 window.",
-  quantity="signal_intensity", label_as_printed="Intensity (Normalized to Si)", points_ref=ref, data_kind="measured",
+  quantity="signal_intensity", label_as_printed="Intensity (Normalized to Si)", data_kind="measured",
   method="raman", mentions="SiO2/Si")
 temp("fig1c;fig1.cap", "150", "Fig. 1c wafer film", "Figure 1c")
 ratio("fig1c;fig1.cap", "0.80", "Fig. 1c wafer film", "Figure 1c")
@@ -790,11 +783,8 @@ cyc("fig1c;fig1.cap", "50", "Fig. 1c wafer film", "Figure 1c")
 F(K, "fig1c;fig1.cap", "observation", "Mean SE thickness over the 4\" SiO2/Si wafer is 5.1 ± 0.2 nm; colour scale runs 4.7-5.3 nm "
   "and dots mark the measured points.", quantity="film_thickness", value="5.1", unit="nm", data_kind="measured",
   method="spectroscopic_ellipsometry", mentions="5.1±0.2 nm;4\" SiO2/Si wafer")
-s = cases_points(PID, "1", "c", "thickness along the vertical diameter of the map")
-ref = P(PID, "fig1c_diameter", s["points"], "points.json (read by eye from the figure image)",
-        s["x_label_as_printed"], s["y_label_as_printed"], note=s["quality"])
 F(K, "fig1c", "observation", "Along the vertical diameter the film is thickest (~5.3 nm) in the upper half and thinnest (~4.7-4.8 "
-  "nm) at the bottom edge.", quantity="film_thickness", unit="nm", points_ref=ref, data_kind="measured",
+  "nm) at the bottom edge.", quantity="film_thickness", unit="nm", data_kind="measured",
   method="spectroscopic_ellipsometry", mentions="Thickness (nm)")
 temp("fig1d;fig1.cap", "100", "Fig. 1d PET film", "Figure 1d")
 cyc("fig1d;fig1.cap", "50", "Fig. 1d PET film", "Figure 1d")
@@ -853,11 +843,8 @@ F(K, "fig5a;fig5.cap;s3.x3", "observation", "Panel a: XPS Mo 3d/S 2s spectra, in
   qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", data_kind="measured", method="xps",
   mentions="Mo 3d / S 2s;150 °C")
 for r, smo in (("0.94", "1.3"), ("0.80", "1.9"), ("0.65", "2.1"), ("0.50", "3.0"), ("0.20", "3.5")):
-    s = v1_points(f"{K}:s5a_R{r.replace('.', '')}_data")
-    ref = P(PID, f"fig5a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv", "Binding energy (eV)",
-            "Intensity (arb. units)", note="data markers; stacked curves, y in v1's own scale (axis unnumbered)")
     F(K, "fig5a;fig5.cap", "observation", f"Mo 3d/S 2s spectrum (data) of the ratio {r} film.", quantity="signal_intensity",
-      qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", points_ref=ref, data_kind="measured", method="xps",
+      qualifiers="element=Mo", label_as_printed="Intensity (arb. units)", data_kind="measured", method="xps",
       mentions=f"{r};MoS{smo}")
     F(K, "fig5a;fig5b;fig5.cap;s3.x3", "observation", f"Spectra of the ratio {r} film are labelled with composition MoS{smo}.",
       quantity="element_ratio", qualifiers="element=S;reference_element=Mo", label_as_printed="S/Mo", value=smo, data_kind="measured", method="xps",
@@ -882,11 +869,8 @@ F(K, "fig7a;fig7.cap;s3.x6", "observation", "Panel a: in situ SE thickness (nm, 
   "150 °C for six ratios.", quantity="film_thickness", unit="nm", data_kind="measured", method="spectroscopic_ellipsometry",
   mentions="Thickness (nm);Number of ALD cycles;150 °C")
 for r in ("0", "0.20", "0.50", "0.65", "0.80", "0.94"):
-    s = v1_points(f"{K}:s7a_R{r.replace('.', '').ljust(3, '0')}")
-    ref = P(PID, f"fig7a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv",
-            "Number of ALD cycles", "Thickness (nm)", note=s.get("note", ""))
     F(K, "fig7a", "observation", f"Thickness against cycles for the ratio {r} film.", quantity="film_thickness", unit="nm",
-      points_ref=ref, data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{R}: {r}")
+      data_kind="measured", method="spectroscopic_ellipsometry", mentions=f"{R}: {r}")
 F(K, "fig7b;fig7.cap;s3.x6", "observation", "Panel b: heat map of GPC averaged over the first 100 cycles (colour bar 0.50-1.75 "
   "Å/cycle) against deposition temperature and ratio; the cells are read against the bar, one fact each.", quantity="growth_per_cycle",
   unit="Å/cycle", method="spectroscopic_ellipsometry", mentions="GPCaverage (Å/cycle);100 cycles")
@@ -905,22 +889,16 @@ F(K, "fig9a;fig9.cap;s3.x7", "observation", "Panel a: Raman spectra (100-550 cm-
   "refs 82-84: ZA(M), LA(M), 2LA(M), E2g1(Γ), A1g(Γ) and Si.", method="raman",
   mentions="WS2 @ 150 °C;ref. 82;ref. 84")
 for r, key, what in (("0.80", "s9a_R080", "WS2 phonon peaks"), ("0", "s9a_R000", "a flat line without WS2 peaks")):
-    s = v1_points(f"{K}:{key}")
-    ref = P(PID, f"fig9a_{r}", s["points"], "v1 points, accepted in v1_points_check.csv", "Raman shift (cm-1)",
-            "Intensity (Arb. units)", note=s.get("note", ""))
     F(K, "fig9a", "observation", f"WSx spectrum at ratio {r}: {what}.", quantity="signal_intensity",
-      label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman", mentions=f"{R}: {r}")
+      label_as_printed="Intensity (Arb. units)", data_kind="measured", method="raman", mentions=f"{R}: {r}")
 F(K, "fig9b;fig9.cap;s3.x7", "observation", "Panel b: Raman spectra of TiSx grown at 100 °C, peaks Eg, A1g, Sh and Si.",
   method="raman", mentions="TiS2 @ 100 °C")
 F(K, "fig9b;fig9.cap;s3.x7", "definition", "Sh means shoulder, a TiS2 mode often seen but not conclusively identified.",
   mentions="Sh")
 for r, key, what in (("0.50", "s9b_R050", "strong Eg, A1g and Sh features"),
                      ("Thermal ALD", "s9b_thermal", "weak Eg and A1g bumps")):
-    s = v1_points(f"{K}:{key}")
-    ref = P(PID, f"fig9b_{r.replace(' ', '_')}", s["points"], "v1 points, accepted in v1_points_check.csv",
-            "Raman shift (cm-1)", "Intensity (Arb. units)", note=s.get("note", ""))
     F(K, "fig9b", "observation", f"TiSx spectrum, {r}: {what}.", quantity="signal_intensity",
-      label_as_printed="Intensity (Arb. units)", points_ref=ref, data_kind="measured", method="raman", mentions=r)
+      label_as_printed="Intensity (Arb. units)", data_kind="measured", method="raman", mentions=r)
 F(K, "fig9b", "observation", "TiSx spectrum at ratio 0: nearly flat apart from the Si line (not digitized).", method="raman",
   mentions=f"{R}: 0")
 
@@ -979,15 +957,6 @@ MAT_W = F(K, "s5.p8;fig9a", "setting", "film material of the WS2 depositions", q
           mentions="WS2")
 MAT_T = F(K, "s5.p8;fig9b", "setting", "film material of the TiS2 depositions", quantity="material", value_text="tis2", data_kind="chosen input",
           mentions="TiS2")
-# the abscissa of every curve with points (x= qualifier, from the printed x label)
-XQ = {"Raman shift (cm-1)": "raman_shift", "Binding energy (eV)": "binding_energy", "Number of ALD cycles": "cycle_number",
-      "(wafer position, read off the map, mm)": "distance"}
-import facts as C  # noqa: E402
-for cf in C.facts():
-    if cf["points_ref"] and "x=" not in cf["qualifiers"]:
-        cf["qualifiers"] = ";".join(filter(None, [cf["qualifiers"], "x=" + XQ[C.points()[cf["points_ref"]]["x_label_as_printed"]]]))
-
-
 # the reactants of the four processes (P50): the MoS2 recipe, and the WS2, TiS2 and thermal TiS2 recipes made in the tree pass
 REACT = {"mos2": (F(K, "s5.p6;abs.g1", "setting", "reactant A of the MoS2 process: Mo(NtBu)2(NMe2)2", quantity="reactant_A", value_text="mo_ntbu2_nme22", data_kind="chosen input", mentions="Mo(NtBu)2(NMe2)2"),
                   F(K, "s5.p6;abs.g1", "setting", "reactant B of the MoS2 process: H2S, in the H2S/H2/Ar plasma", quantity="reactant_B", value_text="h2s", data_kind="chosen input", mentions="H2S")),

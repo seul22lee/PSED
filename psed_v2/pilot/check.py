@@ -110,11 +110,7 @@ def check(pid):
                 and "read from colour" not in f["statement"]:                      # the fact's own element is a colour-bar panel
             bad("a value from a colour-bar panel must say 'read from colour'")
         if f["points_ref"]:
-            used_points.add(f["points_ref"])
-            if f["points_ref"] not in pts:
-                bad(f"points_ref {f['points_ref']} not in {pid}.points.json")
-            if "x=" not in f["qualifiers"]:
-                bad("points without an x= qualifier (the curve's abscissa)")
+            bad("points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)")
         if not f["statement"].strip() or "\n" in f["statement"]:
             bad("statement empty or not one line")
         if f["value"] or f["value_min"] or f["value_max"] or f["points_ref"] or f["value_text"]:
@@ -134,7 +130,7 @@ def check(pid):
             tw = words(texts.get(e, ""))
             if any(tuple(tw[i:i + 8]) in grams for i in range(len(tw) - 7)):
                 bad(f"statement repeats eight words of {e} in a row")
-    for p in sorted(set(pts) - used_points):
+    for p in sorted(set() - used_points):
         err.append(f"points {p} not referenced")
     cids = [c["element_id"] for c in cov]
     if sorted(cids) != sorted(els):
@@ -431,6 +427,132 @@ def check_derived():
     return err
 
 
+def check_figures_import():
+    """P84-P87: for every paper of the knowledge base with a kb/<id>.figures.json: every data panel whose verdict is ok is imported or
+    listed in ontology/unmapped.csv (or kb/import_panels.csv) with a reason; every curve's axes resolve to entries whose dimension is
+    the unit's (units.yaml); every set from a panel has its varied condition resolved (a replicate set none); the counts of
+    kb/import_report.csv equal the records on disk; the kinds and bases of the records are in the ontology's tables."""
+    import query as Q, yaml
+    err = []
+    KB = HERE.parent / "kb"
+    units = yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]
+    dim = {}
+    for u in units:
+        dim[u["symbol"]] = u["dimension"]
+    report = {r["paper_id"]: r for r in rd(KB / "import_report.csv")}
+    panels = rd(KB / "import_panels.csv")
+    unm = rd(HERE.parent / "ontology" / "unmapped.csv")
+    n_curves = n_sets = n_panels = 0
+    for k, T in Q.TREES.items():
+        pid = Q.KEY[k]
+        p = KB / f"{pid}.figures.json"
+        if not p.exists():
+            err.append(f"{k}: no kb/{pid}.figures.json (run kb/figures_import.py) (P84)"); continue
+        F = json.loads(p.read_text(encoding="utf-8"))
+        for row in [x for x in panels if x["paper"] == pid and x["verdict"] == "ok"]:
+            n_panels += 1
+            if row["outcome"] == "imported":
+                continue
+            listed = any(u["paper"] == pid and u["figure"] == row["figure"] and u["panel"] == row["panel"] for u in unm) or row["reason"].startswith("flag")
+            if not listed:
+                err.append(f"{k} Fig. {row['figure']}{row['panel']}: verdict ok, not imported and not in unmapped.csv ({row['reason']}) (P84)")
+        for c in F["curves"]:
+            n_curves += 1
+            for ax in ("x", "y"):
+                q, u = c[ax]["quantity"], c[ax]["unit"]
+                e = L.ENTRIES.get(q)
+                if not e:
+                    err.append(f"{c['id']}: {ax} quantity {q!r} is no entry (P84a)"); continue
+                if u not in dim:
+                    err.append(f"{c['id']}: {ax} unit {u!r} is not in units.yaml (P84b)"); continue
+                if dim[u] != e.get("dimension") and not (e.get("dimension") == "signal" and dim[u] in ("signal", "dimensionless")):
+                    err.append(f"{c['id']}: {ax} unit {u} ({dim[u]}) against {q} ({e.get('dimension')}) (P84b)")
+            if c["kind"] not in L.KINDS:
+                err.append(f"{c['id']}: kind {c['kind']} not in the kind table (P87)")
+            if c["kind"] == "read_from_figure" and (c.get("uncertainty") or {}).get("basis") not in L.BASES:
+                err.append(f"{c['id']}: basis {(c.get('uncertainty') or {}).get('basis')!r} not in the basis table (P87)")
+        for st in F["sets"]:
+            n_sets += 1
+            if st["kind"] == "replicate":
+                continue
+            for q in st["varied"].split(";"):
+                if q not in L.ENTRIES:
+                    err.append(f"{st['id']}: varied condition {q!r} unresolved (P85)")
+        for v in F["values"]:
+            if v.get("quantity") and v["basis"] not in L.BASES:
+                err.append(f"{v['id']}: basis {v['basis']!r} not in the basis table (P87)")
+        r = report.get(pid)
+        if not r:
+            err.append(f"{k}: no row in kb/import_report.csv (P84)")
+        else:
+            disk = dict(curves=len(F["curves"]), cells=sum(1 for v in F["values"] if v["kind"] == "cell"), peaks=sum(1 for v in F["values"] if v["kind"] == "peak"), sets=len(F["sets"]),
+                        derived=len(F["derived"]), inventory_records=len(F["inventory"]))
+            for col, n in disk.items():
+                if int(r[col]) != n:
+                    err.append(f"{k}: import_report.csv {col} {r[col]} against {n} records on disk (P84)")
+    print(f"== figures import (P84-P87): {n_panels} ok panels, {n_curves} curves, {n_sets} sets over {len(Q.TREES)} papers; import report, unmapped.csv and units checked")
+    return err
+
+
+def check_figure_derived():
+    """P86: the cross-check of every scalar derived from a curve against a stated value of the same quantity under the same conditions in
+    the same paper: a stated fact of the quantity (same qualifiers) that cites the panel (figure_ref) and names the series label; a
+    difference over max(10 % of the stated value, 2 % of the axis range) is a problem, listed in kb/problems.txt (a finding about the
+    data, not a failure of the build)."""
+    import query as Q
+    probs, n_checked, n_pairs = [], 0, 0
+    for k, T in Q.TREES.items():
+        F = getattr(T, "figures", None)
+        if not F:
+            continue
+        for d in F["derived"]:
+            n_checked += 1
+            c = T.curves[d["source"]]
+            panel = f"fig{d['figure']}{d['panel']}"
+            conds = {q: cc for q, cc in (c.get("conditions") or {}).items() if cc.get("value") is not None}
+            def same_conditions(e):                                             # every numeric condition of the curve that the entity states agrees within 1 %
+                vt, n_hit = T.vector(e), 0
+                for q, cc in conds.items():
+                    fs = next((fs for kk, fs in vt.items() if kk.split("{")[0] == q), None)
+                    if not fs:
+                        continue
+                    v = Q.val(fs[0])
+                    if v is None:
+                        return False
+                    try:
+                        v = L.convert(v, fs[0]["unit"], cc["unit"]) if fs[0]["unit"] and cc.get("unit") and fs[0]["unit"] != cc["unit"] else v
+                    except (ValueError, KeyError):
+                        return False
+                    if abs(v - cc["value"]) > 0.01 * max(abs(cc["value"]), 1e-12):
+                        return False
+                    n_hit += 1
+                return n_hit >= 1
+            anchored = [e for e in (T.byid[c["id"]]["links"] or "").split(";") if e]     # P88: the entity the curve is bound to, else every entity with the same conditions
+            same = (lambda e: e in anchored) if anchored else same_conditions
+            stated = [f for f in T.rows if "#" in f["fact_id"] and f["quantity"] == d["quantity"] and f["type"] in ("observation", "derived", "setting")
+                      and f["data_kind"] not in ("computed_by_kb",) and f["value"] and not f["points_ref"] and f["fact_id"] not in T.curves
+                      and set(p for p in f["qualifiers"].split(";") if p and p.split("=")[0] in ("position", "level")) == set(p for p in d.get("qualifiers", "").split(";") if p)
+                      and T.ent_of(f["fact_id"]) and same(T.ent_of(f["fact_id"]))]
+            for f in stated:
+                n_pairs += 1
+                sv = C.num(f["value"])
+                if sv is None:
+                    continue
+                try:
+                    sv = L.convert(sv, f["unit"], d["unit"]) if f["unit"] and f["unit"] != d["unit"] else sv
+                except (ValueError, KeyError):
+                    continue
+                axis = "y" if d["quantity"] == c["y"]["quantity"] else "x"
+                vals = [p[1] if axis == "y" else p[0] for p in c["points"]]
+                rng = (max(vals) - min(vals)) if vals else 0.0
+                tol = max(0.1 * abs(sv), 0.02 * rng)
+                if abs(d["value"] - sv) > tol:
+                    probs.append(f"P86 {d['id']} ({d['method']}): derived {Q.g(d['value'], 4)} {d['unit']} against stated {f['value']} {f['unit']} [{f['fact_id']}]; tolerance {Q.g(tol, 3)} {d['unit']}")
+    (HERE.parent / "kb" / "problems.txt").write_text("\n".join(probs) + ("\n" if probs else ""), encoding="utf-8")
+    print(f"== figure derived (P86): {n_checked} derived scalars, {n_pairs} stated counterparts found, {len(probs)} outside tolerance (listed in kb/problems.txt, a finding, not a failure)")
+    return []
+
+
 def check_user(all_ids):
     rows = rd(HERE / "user.facts.csv")
     err = []
@@ -709,6 +831,11 @@ def check_cards():
         for f in T.rows:
             if "#" in f["fact_id"] and f["fact_id"] not in seen and f["quantity"] in L.ENTRIES and (f["type"] == "cited" or (f["type"] in Q.RESULT_TYPES and f["points_ref"] and not Q.text_of(f))):
                 ref[f["quantity"]][k][CN.home_of(T, f)] += 1; ref[f["quantity"]][k]["values"] += 1
+    for q in list(ref):                                                          # P86: a scalar derived from a curve (kind computed_by_kb) is a derived record, never the paper's value
+        for k, T in Q.TREES.items():
+            for f in T.rows:
+                if "#" in f["fact_id"] and f["quantity"] == q and f["data_kind"] == "computed_by_kb" and f["fact_id"] in seen:
+                    ref[q][k][CN.home_of(T, f)] -= 1; ref[q][k]["values"] -= 1; ref[q][k]["derived"] += 1
     for c in D["claims"]:                                                        # the page gives a claim's cause and effect in words; its ids come from the claim's row
         k = c["id"].split(":")[0]
         if k in Q.TREES and c["id"] in Q.TREES[k].byid:
@@ -925,7 +1052,7 @@ def check_sets():
             if sorted(rows) != sorted(members):
                 err.append(f"values(set={cid}): {len(rows)} member rows against {len(members)} members of the full list (P77)")
             set_rows = [t for i, t in js if i == cid and t.startswith("set (values stated for the set")]
-            if bool(set_rows) != ("set" in d["cells"]):
+            if bool(set_rows) != ("set" in d["cells"]) and not T.is_figset(cid):   # P85: a figure set's own records are its rows
                 err.append(f"values(set={cid}): the set row is {'missing' if not set_rows else 'there'} while the set {'owns' if 'set' in d['cells'] else 'owns no'} records (P77)")
             table = {m for i, t in js if i in members or (i == cid and t.startswith("set (values stated")) for m in RM.ID.findall(t)}
             table = {i for i in table if not (i in T.byid and T.byid[i]["type"] == "caveat")}
@@ -1252,6 +1379,12 @@ if __name__ == "__main__":
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
+    err = check_figures_import()
+    print(f"== figures import (P84-P87): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    check_figure_derived()
     import metrics
     metrics.report()                                                             # P59: the representation metrics, from the data
     for pid, k in KEYS.items():

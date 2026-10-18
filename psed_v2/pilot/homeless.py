@@ -45,12 +45,12 @@ def rendered(q, k):
     """The ids values(result=q, paper=k) renders in full (every [id] in its lines)."""
     import tools
     if (q, k) not in _CACHE:
-        old = tools.BUDGET
-        tools.BUDGET = False
+        old, old_chars = tools.BUDGET, tools.BUDGET_CHARS
+        tools.BUDGET, tools.BUDGET_CHARS = False, 10 ** 9                       # the full rendering: no collapse and no page cut (P84: the figure sets lengthen a paper's listing)
         try:
             lines, _ = tools.run_tool("values", {"result": q, "paper": k})
         finally:
-            tools.BUDGET = old
+            tools.BUDGET, tools.BUDGET_CHARS = old, old_chars
         _CACHE[(q, k)] = {i for _, t in lines for i in re.findall(r"\[([a-z0-9]+:[^\]\s]+)\]", t)} | {i for i, _ in lines}
     return _CACHE[(q, k)]
 

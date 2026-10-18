@@ -19,8 +19,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23",
-          "10.1021_cm0303080": "ela03"}   # P83: the nine papers of directive 5 join one by one
+PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23"}
+# 10.1021_cm0303080 (ela03): a draft facts file stopped on 2026-10-17 (Directive 5), not built; the nine papers join in a later directive
 # lettered panels per figure, read from the crops ("" = the figure is one panel)
 PANELS = {
     "10.1039_d0cp03358h": {"1": "abc", "2": "abcd", "3": "ab", "4": "abc", "5": "ab", "6": "", "7": "", "8": "ab",

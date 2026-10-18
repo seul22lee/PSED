@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """The query layer of the pilot: the only place that selects, derives or compares values. The page (report.py), the regression
-test (questions.py) and any later reader use it. It reads the three trees (<paper_id>.facts.csv, .points.json) and user.facts.csv.
+test (questions.py) and any later reader use it. It reads the three trees (<paper_id>.facts.csv and, P84, kb/<paper_id>.figures.json:
+the figure records the rule-based importer wrote, loaded as rows of the tree) and user.facts.csv.
 """
 import collections, csv, json, math, re, sys
 from pathlib import Path
@@ -22,15 +23,121 @@ class Tree:
     def __init__(self, key):
         self.key = key
         self.rows = list(csv.DictReader((HERE / f"{KEY[key]}.facts.csv").open(encoding="utf-8")))
+        for r in self.rows:
+            r.setdefault("figure_ref", "")
+        self._cache = {}
+        self.points, self.curves, self.cells, self.inventory, self.figsets = {}, {}, {}, [], set()
+        self._load_figures(KEY[key])                                            # P84: the imported figure records as rows (sets, curves, derived scalars, cells, peaks)
         self.byid = {r["fact_id"]: r for r in self.rows}
         self.kids = collections.defaultdict(list)
         for r in self.rows:
             if r["parent"]:
                 self.kids[r["parent"]].append(r)
         self.comps = [r for r in self.rows if r["type"] == "comparison"]
-        self._cache = {}
-        pj = HERE / f"{KEY[key]}.points.json"
-        self.points = json.loads(pj.read_text(encoding="utf-8")) if pj.exists() else {}
+
+    def _load_figures(self, pid):
+        """P84-P87: kb/<pid>.figures.json into rows of the tree: one comparison row per set (P85; the panel's curves are its members, by
+        id), one observation or model row per curve (points_ref = the curve id, its points in self.points, the record in self.curves),
+        one derived row per P86 scalar (kind computed_by_kb, inputs = its curve), one observation row per cell or peak (basis printed),
+        under their set or under the node <key>:figures when the panel formed no set. The inventory records are kept in self.inventory
+        (the map and search read them); they are no rows."""
+        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        if not p.exists():
+            return
+        F = json.loads(p.read_text(encoding="utf-8"))
+        key = self.key
+        self.figures = F
+        def row(**kw):
+            r = {f: "" for f in FIELDS}; r.update(kw); r["author"] = r["author"] or pid; return r
+        self.rows.append(row(fact_id=f"{key}:figures", type="activity", kind="measurement", how="stated", parent=key, order="0",
+                             statement="figure panels read by the figure stage (ingest/figures.py) whose panel formed no comparison set", label_as_printed="figure panels outside any set"))
+        for st in F["sets"]:
+            self.rows.append(row(fact_id=st["id"], type="comparison", kind=st["kind"], quantity=st["varied"], parent=key, how="stated", evidence=f"fig{st['figure']}{st['panel']}",
+                                 statement=f"{st['label']}: the series of one figure panel as a comparison set (P85), members by id", label_as_printed=st["label"], links=";".join([""] + st["members"]),
+                                 mentions=st.get("varied_raw", "")))
+            self.figsets.add(st["id"])
+        self.inventory = F.get("inventory", [])
+        for c in F["curves"]:
+            lab = c["series"].get("label_raw", "")
+            xq, yq = c["x"]["quantity"], c["y"]["quantity"]
+            self.points[c["id"]] = dict(points=c["points"], x_label_as_printed=c["x"]["label_raw"], y_label_as_printed=c["y"]["label_raw"], source="figure stage (VLM), imported by rule (P84)")
+            self.curves[c["id"]] = c
+            unc = c.get("uncertainty") or {}
+            self.rows.append(row(fact_id=c["id"], type="observation" if c["kind"] == "read_from_figure" else "model", quantity=yq, qualifiers=f"x={xq}", unit=c["y"]["unit"],
+                                 points_ref=c["id"], data_kind=c["kind"], evidence=f"fig{c['figure']}{c['panel']}", parent=c["set"] or f"{key}:figures", mentions=lab,
+                                 label_as_printed=lab or f"Fig. {c['figure']}{c['panel']} curve", statement=f"a curve of Fig. {c['figure']}{c['panel']}: {L.NAMES.get(yq, yq)} against {L.NAMES.get(xq, xq)}, read by the figure stage and imported by rule",
+                                 uncertainty=(g(unc["y"], 3) if unc.get("y") is not None and c["kind"] == "read_from_figure" else ""), uncertainty_kind="measurement" if c["kind"] == "read_from_figure" else "",
+                                 basis=unc.get("basis", "") if c["kind"] == "read_from_figure" else ""))
+        anchors = [r for r in self.rows if "#" in r["fact_id"] and r.get("figure_ref") and r["fact_id"] not in self.curves]
+        def _n(t):
+            return re.sub(r"[\s_\-()]+", "", re.sub(r"\s*[\(\[].*$", "", str(t))).lower()
+        for c in F["curves"]:                                                   # P88: an entity's fact that cites the panel and names the series binds the curve to that entity (its second home)
+            panel = f"fig{c['figure']}{c['panel']}"
+            lab = _n(c["series"].get("label_raw", ""))
+            ents = set()
+            for a in anchors:
+                if panel not in a["figure_ref"].split(";") or a["quantity"] not in ("", c["y"]["quantity"]):
+                    continue
+                texts = [_n(x) for x in a["mentions"].split(";") + [a["label_as_printed"]] if x]
+                hit = (not lab and len([x for x in F["curves"] if x["figure"] == c["figure"] and x["panel"] == c["panel"]]) == 1) or any(t and (t == lab or t.endswith(lab) or lab.endswith(t)) for t in texts)
+                if hit:
+                    e = self._ent_of_raw(a["fact_id"])
+                    if e:
+                        ents.add(e)
+            if len(ents) == 1:
+                self.byid_row(c["id"])["links"] = next(iter(ents))
+        for d in F["derived"]:
+            src = self.curves.get(d["source"], {})
+            self.rows.append(row(fact_id=d["id"], type="derived", quantity=d["quantity"], qualifiers=d.get("qualifiers", ""), value=g(d["value"], 4), unit=d["unit"], data_kind="computed_by_kb",
+                                 method="calculation", inputs=d["source"], evidence=f"fig{d['figure']}{d['panel']}", parent=src.get("set") or f"{key}:figures", mentions=src.get("series", {}).get("label_raw", ""),
+                                 statement=f"{d['method'].replace('_', ' ')} of the curve [{d['source']}], computed by this knowledge base by the P86 rule", label_as_printed=src.get("series", {}).get("label_raw", "")))
+        for v in F["values"]:
+            if not v.get("quantity"):
+                continue
+            if v["kind"] == "cell":
+                self.cells[v["id"]] = v
+                at = ", ".join(f"{L.NAMES.get(q, q)} {g(x, 4)}" for q, x in v["at"].items())
+                self.rows.append(row(fact_id=v["id"], type="observation", quantity=v["quantity"], value=g(v["value"], 4) if v.get("value") is not None else "", value_text=v.get("value_text", ""), unit=v.get("unit", ""),
+                                     data_kind="read_from_figure", basis="printed", evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures", label_as_printed=str(v.get("value_text") or v.get("value")),
+                                     statement=f"a cell of the Fig. {v['figure']}{v['panel']} map, the value as printed", mentions=at))
+            else:
+                self.rows.append(row(fact_id=v["id"], type="observation", quantity=v["quantity"], value=g(v["value"], 5), unit=v.get("unit", ""), data_kind="read_from_figure", basis="printed",
+                                     evidence=f"fig{v['figure']}{v['panel']}", parent=v["set"] or f"{key}:figures", label_as_printed=v.get("label", ""), qualifiers="",
+                                     statement=f"a peak of Fig. {v['figure']}{v['panel']}, its position and label as printed", mentions=v.get("label", "")))
+
+    def is_figset(self, cid):
+        return cid in self.figsets
+
+    def byid_row(self, i):
+        return next(r for r in self.rows if r["fact_id"] == i)
+
+    def _ent_of_raw(self, i):
+        """The entity above a row, before the indexes exist (used while loading the figure rows)."""
+        byid = {r["fact_id"]: r for r in self.rows}
+        while i in byid:
+            if byid[i]["type"] == "entity":
+                return i
+            i = byid[i]["parent"]
+        return None
+
+    def derived_of(self, cid):
+        """The P86 scalars derived from a curve."""
+        return [d for d in getattr(self, "figures", {}).get("derived", []) if d["source"] == cid]
+
+    def curve_conditions(self, cid):
+        """The resolved conditions of an imported curve or cell as [(key, name, text)]: the series value first, then the panel's."""
+        c = self.curves.get(cid) or self.cells.get(cid)
+        if not c:
+            return []
+        out = []
+        conds = c.get("conditions") or {}
+        if cid in self.cells:
+            for q, x in c["at"].items():
+                out.append((q, L.NAMES.get(q, q), f"{g(x, 4)} {L.ENTRIES.get(q, {}).get('unit', '')}".strip()))
+        for q, cc in sorted(conds.items(), key=lambda kv: (not kv[1].get("from_series_label"), kv[0])):
+            t = cc.get("text") or (f"{g(cc['value'], 4)}" + (f"–{g(cc['value_max'], 4)}" if cc.get("value_max") is not None else "") + (f" {cc['unit']}" if cc.get("unit") else "") if cc.get("value") is not None else cc.get("raw", ""))
+            out.append((q, L.NAMES.get(q, q), t))
+        return out
 
     def chain(self, i):
         if ("chain", i) in self._cache:
@@ -103,6 +210,10 @@ class Tree:
         out = collections.defaultdict(list)
         for f in self.below(ent):
             if f["type"] in RESULT_TYPES and f["quantity"]:
+                out[ckey(f)].append(f)
+        for cid in self.curves:                                                 # P88: an imported curve bound to this entity by an anchoring fact (links) is its result too
+            f = self.byid[cid]
+            if f["links"] and ent in f["links"].split(";"):
                 out[ckey(f)].append(f)
         self._cache[("results", ent)] = {k: ranked(fs) for k, fs in out.items()}
         return self._cache[("results", ent)]
@@ -974,13 +1085,28 @@ def record(T, f, alternatives=(), ent=None):
     reference, never an empty line."""
     q = quals(f)
     lo, hi = num(f["value_min"]), num(f["value_max"])
-    text = text_of(f) or (f"curve, {len(T.points.get(f['points_ref'], {}).get('points', []))} points" if f["points_ref"] else "")
+    text = text_of(f) or (curve_text(T, f) if f["points_ref"] else "")
     return dict(value=val(f), low=lo, high=hi, censor=f["censor"], unit=f["unit"], text=text, kind=kind(f), definition=definition_of(f),
                 source=f["evidence"].split(";")[0], paper=f["fact_id"].split(":")[0], fact=f["fact_id"], method=f["method"], mode=mode_of(T, f),
                 method_class=L.METHOD_CLASS.get(f["method"], ""), specimen_class=specimen_class_of(T, ent or f["fact_id"]),
                 uncertainty=(dict(value=f["uncertainty"], kind=f["uncertainty_kind"], n=f["uncertainty_n"], basis=f.get("basis") or L.basis_of(f["uncertainty_kind"])) if f["uncertainty"] else None),
                 stat=q.get("stat", ""), statement=f["statement"], alternatives=[record(T, a) for a in alternatives],
                 caveats=cav_list(caveats_for(T, f, ent or T.ent_of(f["fact_id"]))))
+
+
+def curve_text(T, f):
+    """The one line of a curve (P84 access layer): 'curve, N points' and, for an imported curve, its series label, x range in canonical
+    units and the P86 scalars derived from it (plateau, half-value crossing, slope)."""
+    pts = T.points.get(f["points_ref"], {}).get("points", [])
+    c = T.curves.get(f["points_ref"])
+    if not c:
+        return f"curve, {len(pts)} points"
+    xs = [x for x, _ in pts]
+    bits = [f"curve, {len(pts)} points" + (f", series '{c['series'].get('label_raw')}'" if c["series"].get("label_raw") else ""),
+            f"x {g(min(xs), 3)} to {g(max(xs), 3)} {c['x']['unit']}".strip() if xs else ""]
+    for d in T.derived_of(f["points_ref"]):
+        bits.append(f"{d['method'].replace('_', ' ')} {g(d['value'], 3)} {d['unit']}".strip())
+    return " · ".join(b for b in bits if b)
 
 
 def derived_record(T, ent, did, d):
@@ -1279,7 +1405,7 @@ def detail(any_id):
                                                          changes=[dict(id=m, frm=v, factor=g(f_, 3), value=g(y, 3), by=comparison_label(T, c_)) for x, y, m, v, f_, c_ in new if c_]))
                     fits.append(fit)
         conf = differing(T, specs, exclude={k for m in specs for k in T.vector(m) if k.split("{")[0] in n["quantity"].split(";")})
-        own_vals = [record(T, f) for f in T.own(any_id) if f["type"] in RESULT_TYPES and text_of(f)]
+        own_vals = [record(T, f) for f in T.own(any_id) if f["type"] in RESULT_TYPES and (text_of(f) or (f["points_ref"] and T.is_figset(any_id)))]
         return dict(type="comparison", id=any_id, paper=T.key, label=comparison_label(T, n), kind=n["kind"], statement=n["statement"], values=own_vals,
                     varies=[L.NAMES.get(q, q) for q in n["quantity"].split(";") if q], members=specs, main=main, more=max(0, len(main) - 3),
                     effects=effects, fits=fits, confounders=conf, claims=[claim_record(T, c) for c in cl],
@@ -1439,6 +1565,8 @@ def record_type(T, f):
         if quals(f).get("stat"):
             return "uncertainty"
         if not text_of(f):
+            if f["points_ref"]:
+                return "value"
             par = T.byid.get(f["parent"], {})
             return "method note" if par.get("kind") == "measurement" or f["method"] else "note"
         return "setting" if t == "setting" else "value"
@@ -1446,7 +1574,7 @@ def record_type(T, f):
 
 
 SEARCH_TYPES = ["concept", "experiment", "model run", "input", "comparison set", "claim", "definition", "caveat", "uncertainty", "value", "setting",
-                "method note", "process note", "cited work", "cited value", "note"]
+                "method note", "process note", "cited work", "cited value", "figure panel", "note"]
 # P64: tiered ranking. Tier 1 a concept (an entry, species or mechanism matched by name or alias); tier 2 claims, values, comparison
 # sets and the experiments; tier 3 settings, method and process notes, definitions, captions and the rest; an attribute quantity's
 # records are demoted within their tier. Lexical (BM25) order survives within a tier.
@@ -1483,15 +1611,19 @@ def search_records():
                 head = comparison_label(T, f)
             elif f["type"] == "cited" and "#" not in f["fact_id"]:
                 head = cited_name(T, f["fact_id"])
-            elif text_of(f):
+            elif text_of(f) or f["points_ref"]:
                 e = T.ent_of(f["fact_id"])
-                head = (T.label(e) + " · " if e else "") + f"{name_of(ckey(f), f)}: {text_of(f)}"
+                head = (T.label(e) + " · " if e else "") + f"{name_of(ckey(f), f)}: {text_of(f) or curve_text(T, f)}"
             else:
                 head = ""
             line = " — ".join(x for x in (head, f["statement"]) if x)
             words = " ".join([line, f["label_as_printed"], L.NAMES.get(f["quantity"], f["quantity"]), f["quantity"], f["qualifiers"], f["method"],
                               f.get("mentions", ""), f["cause"], f["effect"]])
             out.append(dict(id=f["fact_id"], paper=k, type=typ, line=line, tokens=collections.Counter(tokens(words)), quantity=f["quantity"]))
+    for k, T in TREES.items():                                                 # P84e: the figure inventory, one record per panel (never a value)
+        for inv in T.inventory:
+            line = f"Fig. {inv['figure']}{inv['panel']} ({inv['panel_type']}): {inv['content']}" + (" · " + ", ".join(L.NAMES.get(q, q) for q in inv["quantities"]) if inv.get("quantities") else "") + f" · {inv['status']}"
+            out.append(dict(id=inv["id"], paper=k, type="figure panel", line=line, tokens=collections.Counter(tokens(" ".join([line] + [L.NAMES.get(q, q) + " " + q for q in inv.get("quantities", [])]))), quantity=""))
     _SEARCH["recs"] = out
     n = len(out)
     df = collections.Counter(t for r in out for t in r["tokens"])
@@ -1687,6 +1819,10 @@ def setting_extras(S, result, paper=None, where=None):
         for kk, name, rec, lab in paper_records(T, result, S, RESULT_TYPES):    # P79: a result of the setting attached to no entity (a calibration's measured temperature)
             if rec.get("kind") != "computed_by_kb":
                 res.append((f"{k}:paper", kk, name, rec))
+        for c in T.comps:                                                       # P84: a curve, cell or derived scalar of the setting read from a figure is a result of it, not a setting
+            if T.is_figset(c["fact_id"]):
+                for kk, name, rec in own_records(T, c["fact_id"], result, S):
+                    res.append((c["fact_id"], kk, name, rec))
         if der or res:
             out[k] = dict(derived=der, results=res)
     return out
@@ -1775,7 +1911,7 @@ def grid_info(T, c):
     cell_lv = {level_of[m]: m for m in cells}
     proc = {kk: vt[cells[0]].get(kk) for kk in PROCESS_KEYS if cells and kk in vt[cells[0]]}
     cand = [m for m in vt if m not in cells and level_of[m] in cell_lv and all(vt[m].get(kk) == v for kk, v in proc.items())]
-    children = [x["fact_id"] for x in T.comps if x is not c and x["kind"] != "grid" and set(T.member_entities(x)) <= set(cells) | set(cand)]
+    children = [x["fact_id"] for x in T.comps if x is not c and x["kind"] != "grid" and not T.is_figset(x["fact_id"]) and T.member_entities(x) and set(T.member_entities(x)) <= set(cells) | set(cand)]   # P84: a figure set has no entity members and is no view of the grid
     return dict(cells=cells, axes=[(q, L.NAMES.get(q, q)) for q in axes], level_of={m: level_of[m] for m in list(cells) + cand}, candidates=cand, children=children,
                 rows=sorted({level_of[m][0] for m in cells}, key=_num_prefix), cols=sorted({level_of[m][1] for m in cells}, key=_num_prefix) if len(axes) > 1 else [""])
 
@@ -1832,8 +1968,11 @@ def values(result, paper=None, where=None):
             rs = merged([dict(entity=e, name=T.label(e), settings=slot_settings(T, e), key=kk, result_name=name, record=rec) for e, m in ins.items() for kk, name, rec in m])
             groups.append(dict(base, id=f"{k}:inputs", label="the structures before deposition (input entities)", kind="inputs", rows=rs,
                                axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["input"]))
+        fig_groups = [figure_group(T, c, own[c["fact_id"]], base) for c in T.comps if T.is_figset(c["fact_id"]) and own[c["fact_id"]] and not S]   # P84, P85: one row per curve, cell or derived scalar; appended after the paper's sets
         for c in T.comps:                                                       # P79: a set that is no experiment's home (a replicate set) but owns records: one aggregate row
             cid = c["fact_id"]
+            if T.is_figset(cid):
+                continue
             if own[cid] and cid not in home and cid not in child_ids:
                 rs = merged([dict(entity=cid, name="set", settings=[], key=kk, result_name=name, record=rec) for kk, name, rec in own[cid]])
                 groups.append(dict(base, id=cid, label=comparison_label(T, c) + " · members: " + ", ".join(T.label(m) for m in T.member_entities(c)), kind="aggregate",
@@ -1883,7 +2022,58 @@ def values(result, paper=None, where=None):
                                measurement=sorted({r["record"].get("method") or r["record"]["kind"] for r in out_rows}),
                                axes={r["key"]: axes_of(r["key"], r["record"]) for r in out_rows},          # one entry per result key (Sec. 18.4)
                                roles=sorted({role(T, e) for e in ents})))
+        groups += fig_groups
     return groups
+
+
+def figure_rows(T, cid, recs):
+    """One row per record a figure set owns (P84): entity = the record's id (a curve, a cell) or its curve for a derived scalar,
+    name = the series label, settings = the resolved conditions that vary within the set."""
+    rows = []
+    varied = set(filter(None, T.byid[cid]["quantity"].split(";")))
+    for kk, name, rec in recs:
+        f = T.byid[rec["fact"]]
+        owner = f["inputs"] if f["type"] == "derived" and f["inputs"] in T.byid else rec["fact"]
+        conds = T.curve_conditions(owner)
+        settings = [dict(key=q, name=n, text=t) for q, n, t in conds if q in varied] or [dict(key=q, name=n, text=t) for q, n, t in conds[:2]]
+        rows.append(dict(entity=owner, name=T.label(owner), settings=settings, key=kk, result_name=name, record=rec))
+    return rows
+
+
+def figure_group(T, c, recs, base):
+    """A values() group for a figure set (P84, P85): kind figure, one row per record, the set's varied condition, no shared conditions
+    beyond the panel's, the claims that point at the set."""
+    cid = c["fact_id"]
+    rows = figure_rows(T, cid, recs)
+    gi = None
+    if c["kind"] == "grid":                                                     # P85: a map with cells renders as a matrix (the P80 layout) from its cells
+        axes = [q for q in c["quantity"].split(";") if q]
+        cells = [r["entity"] for r in rows if r["entity"] in T.cells]
+        level_of = {e: tuple(f"{g(T.cells[e]['at'][q], 4)}" for q in axes) for e in cells}
+        gi = dict(cells=cells, axes=[(q, L.NAMES.get(q, q)) for q in axes], level_of=level_of, candidates=[], children=[], variants=[], child_own={},
+                  rows=sorted({level_of[e][0] for e in cells}, key=_num_prefix), cols=sorted({level_of[e][1] for e in cells}, key=_num_prefix) if len(axes) > 1 else [""])
+    return dict(base, id=cid, label=comparison_label(T, c), kind="figure", rows=rows, grid=gi, varies=[L.NAMES.get(q, q) for q in c["quantity"].split(";") if q],
+                claims=[x["fact_id"] for x in claims_of(T, [cid])], axes={},      # a figure set's curves carry no method or specimen class: no comparability divider (Sec. 18.4)
+                measurement=sorted({r["record"].get("kind", "") for r in rows}), roles=["curve"])
+
+
+def curve(cid, n_max=40):
+    """P84 access layer: an imported curve's canonical points (at most n_max, evenly thinned), axes, conditions, kind, set, flags and
+    provenance; None when the id is no curve."""
+    T = tree_of(cid)
+    c = T.curves.get(cid) if T else None
+    if not c:
+        return None
+    pts = c["points"]
+    if len(pts) > n_max:
+        step = (len(pts) - 1) / (n_max - 1)
+        pts = [pts[round(i * step)] for i in range(n_max)]
+    return dict(id=cid, paper=T.key, figure=c["figure"], panel=c["panel"], label=c["series"].get("label_raw", ""), series=c["series"], kind=c["kind"], set=c["set"],
+                x=dict(quantity=c["x"]["quantity"], name=L.NAMES.get(c["x"]["quantity"], c["x"]["quantity"]), unit=c["x"]["unit"], label_raw=c["x"]["label_raw"], transform=c["x"].get("transform", "")),
+                y=dict(quantity=c["y"]["quantity"], name=L.NAMES.get(c["y"]["quantity"], c["y"]["quantity"]), unit=c["y"]["unit"], label_raw=c["y"]["label_raw"], transform=c["y"].get("transform", "")),
+                points=[[g(x, 4), g(y, 4)] for x, y in pts], n_points=len(c["points"]), thinned=len(c["points"]) > n_max,
+                conditions=[dict(key=q, name=n, text=t) for q, n, t in T.curve_conditions(cid)], derived=[dict(id=d["id"], name=L.NAMES.get(d["quantity"], d["quantity"]), method=d["method"], value=g(d["value"], 3), unit=d["unit"]) for d in T.derived_of(cid)],
+                flags=c.get("flags", []), uncertainty=record(T, T.byid[cid]).get("uncertainty"), provenance=c.get("provenance", {}))
 
 
 def set_members_all(T, c):
@@ -1905,6 +2095,17 @@ def set_table(cid):
     counted, not a column. Returns dict(paper, id, label, kind, varies, members, columns [(key, name)], cells {row: {key: [record]}},
     settings {member: distinguishing conditions}, kb)."""
     T = tree_of(cid); c = T.byid[cid]
+    if T.is_figset(cid):                                                        # P84, P85: rows = the curves or cells, columns = their quantity and the P86 scalars
+        own = [f for f in T.own(cid) if f["type"] in RESULT_TYPES and (text_of(f) or f["points_ref"])]
+        cells, names, settings = {}, {}, {}
+        rows_ = figure_rows(T, cid, [(ckey(f), name_of(ckey(f), f), record(T, f)) for f in own])
+        for r in rows_:
+            cells.setdefault(r["entity"], {}).setdefault(r["key"], []).append(r["record"]); names.setdefault(r["key"], r["result_name"]); settings.setdefault(r["entity"], r["settings"])
+        order = [h["id"] for h in L.HIERARCHY]
+        pos = lambda k: (order.index(L.ENTRIES.get(k.split("{")[0].split("[")[0], {}).get("category", "")) if L.ENTRIES.get(k.split("{")[0].split("[")[0], {}).get("category", "") in order else len(order))
+        columns = sorted({k for row in cells.values() for k in row}, key=lambda k: (pos(k), names[k].lower(), k))
+        return dict(paper=T.key, id=cid, label=comparison_label(T, c), kind=c["kind"], varies=[L.NAMES.get(q, q) for q in c["quantity"].split(";") if q],
+                    members=list(cells), columns=[(k, names[k]) for k in columns], cells=cells, settings=settings, kb=0)
     ms = set_members_all(T, c)
     cells, names, kb = {}, {}, 0
     own = [f for f in T.own(cid) if f["type"] in RESULT_TYPES and (text_of(f) or f["points_ref"])]

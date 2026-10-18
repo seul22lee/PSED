@@ -168,6 +168,15 @@ TOOLS = [
              parts=dict(type="array", items=dict(type="string", enum=DETAIL_PARTS), description="Any of what, differs, results, recipe, claims, computed, table (default what, differs, results); table, for a comparison set, is the set-wide table values(set=...) gives."),
              offset=dict(type="integer", description="Skip this many output units (default 0).")),
              required=["ids"])),
+    dict(name="curve",
+         description=("Arguments: id (required). Returns one curve read from a figure by the figure stage and imported by rule: its axes "
+                      "(quantity, canonical unit, the label as printed), its series label and the conditions it was obtained under, its kind "
+                      "(read from a figure, or simulated by the paper's authors), its comparison set, the values this knowledge base derived "
+                      "from it (plateau, half-value crossing, slope), its flags, and its points (x, y) in canonical units, at most 40, evenly "
+                      "thinned when the curve has more. About 2,000 tokens per call. Use it after values or detail returned a curve id "
+                      "(<paper>:fig<N><panel>#c<n>) to read the points themselves."),
+         parameters=dict(type="object", properties=dict(id=dict(type="string", description="A curve id as values, detail or search returned it.")),
+                         required=["id"])),
     dict(name="source",
          description=("Arguments: id (required), offset. Returns the paper element behind a fact or element id: its locator, its text "
                       "(figure panels have none), whether the knowledge base covers it, and every value the facts of that element carry, "
@@ -370,7 +379,14 @@ def _record(i):
     return bool(T and i in T.byid and T.byid[i]["type"] != "paper")
 
 
+def _curve(i):
+    """Whether an id names an imported curve."""
+    T = Q.TREES.get(str(i).split(":")[0])
+    return bool(T and i in T.curves)
+
+
 IDS = {("values", "result"): (_result_ok, "not a result or setting name of the knowledge base, nor a quantity id (names are listed in the description)"),
+       ("curve", "id"): (_curve, "no curve of the knowledge base has this id (curve ids read <paper>:fig<N><panel>#c<n>)"),
        ("detail", "ids"): (_record, "no record of the knowledge base has this id"),
        ("source", "id"): (_source, "no fact or paper element has this id")}
 
@@ -730,7 +746,7 @@ def values_blocks(groups, asked):
         sid = g["id"] or f"{g['paper']}:outside"
         own = [r for r in g["rows"] if r["record"].get("kind") != "computed_by_kb"]
         kb = [r for r in g["rows"] if r["record"].get("kind") == "computed_by_kb"]
-        rows = own or kb
+        rows = (own + kb) if g["kind"] == "figure" else (own or kb)               # P86: a figure set lists its curves, then the scalars derived from them, each marked
         keys = list(dict.fromkeys(r["key"] for r in rows))
         names = {k: next(r["result_name"] for r in rows if r["key"] == k) for k in keys}
         by_ent = {}
@@ -803,13 +819,30 @@ def values_blocks(groups, asked):
                       f"{len(g['claims'])} claims about this set: open with detail(ids=[{sid!r}], parts=[\"claims\"])")] if g["claims"] else []      # P44: more than eight claims are named by their count
         full.append(block(out_rows, head=head, foot=foot))
         rng = "; ".join(f"{names[k]} {Q.g(min(v for v, _ in vs), 3)}–{Q.g(max(v for v, _ in vs), 3)} {vs[0][1]}".strip() + f" ({len(vs)})" for k, vs in ranges.items())
-        opener = (f"open with detail(ids=[{sid!r}]) or narrow with where" if g["kind"] not in ("inputs", "paper") else
+        if g["kind"] == "figure":                                               # P84: a collapsed figure set names its curves and the ranges of the scalars derived from them
+            n_curves = sum(1 for r in own if r["record"].get("curve") or (r["record"].get("text") or "").startswith("curve"))
+            rng = f"{n_curves} curves" + (f" · {rng}" if rng else "")
+        opener = (f"open with values(set={sid!r})" if g["kind"] == "figure" else f"open with detail(ids=[{sid!r}]) or narrow with where" if g["kind"] not in ("inputs", "paper") else
                   f"open with detail(ids=[{', '.join(repr(e) for e in list(by_ent)[:8])}])" if g["kind"] == "inputs" else "open each with source(id)")
         collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"{HOME_KINDS.get(g['kind'], 'set')} [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · {opener}")]))
     tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
         + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
         + ([("legend", ("caveats on every row above: " if all_spec else "caveats on every specimen row above: ") + ", ".join(f"[{c}]" for c in sorted(common_cav)))] if common_cav else [])
     tail.append(("between", CN.footer(qids, paper=groups[0]["paper"] if len({g["paper"] for g in groups}) == 1 and len(Q.TREES) > 1 and all(g["paper"] == groups[0]["paper"] for g in groups) else None)))
+    merged_c = []                                                               # P84: the collapsed figure sets of one paper fold into one line naming them
+    for n, g in enumerate(groups):
+        if g["kind"] == "figure" and merged_c and merged_c[-1][0] == g["paper"]:
+            merged_c[-1][1].append(n)
+        elif g["kind"] == "figure":
+            merged_c.append((g["paper"], [n]))
+    for paper, ns in merged_c:
+        if len(ns) > 1:
+            ids = [groups[n]["id"] for n in ns]
+            n_curves = sum(1 for n in ns for r in groups[n]["rows"] if (r["record"].get("text") or "").startswith("curve"))
+            line = (ids[0], f"{len(ns)} figure sets of {short_name(paper)} with {n_curves} curves of this quantity: " + ", ".join(f"[{i}]" for i in ids) + " · open one with values(set=<id>)")
+            collapsed[ns[0]] = block([], head=[line])
+            for n in ns[1:]:
+                collapsed[n] = block([], head=[])
     full.append(block([], head=tail)); collapsed.append(block([], head=[tail[-1]]))
     for n, vs in grid_versions.items():                                         # P80: a grid's own-row and foot travel with every collapsed version
         for b in vs:
@@ -1138,6 +1171,24 @@ def _run(name, args):
             for f in [f for f in T_.rows if "#" in f["fact_id"] and s["element"] in f["evidence"].split(";") and not Q.text_of(f) and f["type"] != "claim"]:
                 r = dict(caveats=Q.cav_list(Q.caveats_for(T_, f, T_.ent_of(f["fact_id"])))) if f["type"] in ("observation", "setting", "derived", "model", "cited") else {}
                 out += [(f["fact_id"], f"statement without a value: {f['statement']}{cmark(r)}")] + clines(r)
+            return [block([wrap(*x) for x in out])], ""
+        if name == "curve":                                                     # P84 access layer: one curve, its points within the budget
+            c = Q.curve(args["id"])
+            r = Q.record(Q.TREES[c["paper"]], Q.TREES[c["paper"]].byid[c["id"]])
+            out = [(c["id"], f"curve [{c['id']}] · {short_name(c['paper'])} Fig. {c['figure']}{c['panel']}" + (f" · series '{c['label']}'" if c["label"] else "") + f" · {c['n_points']} points"
+                   + (f", {len(c['points'])} shown (evenly thinned)" if c["thinned"] else "") + f" · {kind_text(c['kind'])}" + (f" · set [{c['set']}]" if c["set"] else "")),
+                   (c["id"], f"x: {c['x']['name']} ({c['x']['quantity']}) in {c['x']['unit'] or 'no unit'} · printed label '{c['x']['label_raw']}'" + (f" · transform {c['x']['transform']} undone" if c["x"]["transform"] else "")),
+                   (c["id"], f"y: {c['y']['name']} ({c['y']['quantity']}) in {c['y']['unit'] or 'no unit'} · printed label '{c['y']['label_raw']}'" + (f" · transform {c['y']['transform']} undone" if c["y"]["transform"] else ""))]
+            if c["conditions"]:
+                out.append((c["id"], "conditions: " + "; ".join(f"{x['name']} {x['text']}" for x in c["conditions"])))
+            if c["derived"]:
+                out.append((c["id"], f"values {KB}: " + "; ".join(f"{d['name']} {d['value']} {d['unit']} by {d['method'].replace('_', ' ')} [{d['id']}]" for d in c["derived"])))
+            if c["uncertainty"]:
+                out.append((c["id"], "uncertainty:" + unc_text(c["uncertainty"])))
+            if c["flags"]:
+                out.append((c["id"], "flags of the figure stage: " + ", ".join(sorted(set(c["flags"]))) + " (a flag marks the figure for review; it deletes nothing)"))
+            out.append((c["id"], "points (x, y): " + ", ".join(f"({x}, {y})" for x, y in c["points"])))
+            out.append((c["id"], f"provenance: {c['provenance'].get('extractor', 'vlm')} {c['provenance'].get('model', '')}, prompt {str(c['provenance'].get('prompt_sha256', ''))[:12]}"))
             return [block([wrap(*x) for x in out])], ""
         return [], f"error: unknown tool {name}"
     except Exception as e:

@@ -390,8 +390,11 @@ def main() -> int:
     onto = yaml.safe_load((HERE / "ontology.yaml").read_text(encoding="utf-8"))
     with (HERE / "unmapped.csv").open(newline="", encoding="utf-8") as f:
         unmapped = list(csv.DictReader(f))
+    for r in unmapped:                                                           # P84: one file, the pilot's hand rows (field pilot) and the importer's rows (field = the unresolved field)
+        m = re.match(r"^(.*?)(?: \[([^\]]*)\])?$", r.get("raw", ""))
+        r.setdefault("label", m.group(1) if m else r.get("raw", "")); r.setdefault("unit", (m.group(2) or "") if m else ""); r.setdefault("location", f"Fig. {r.get('figure', '')}{r.get('panel', '')}")
     entries = onto["entries"]
-    checks = run_checks(onto, unmapped)
+    checks = run_checks(onto, [r for r in unmapped if r.get("field", "pilot") == "pilot"])   # check 12 reads the pilot's hand labels; the importer's rows are checked by pilot/check.py (P84)
     ok = all(c[1] for c in checks)
     nodes, _, leaf_ids = tree(onto)
 

@@ -125,8 +125,14 @@ def counts():
                     if Q.text_of(f):
                         c[q][k]["settings"] += 1
                 elif f["type"] in Q.RESULT_TYPES or f["type"] == "cited":
-                    if Q.text_of(f) or f["points_ref"]:
+                    if f["data_kind"] == "computed_by_kb":                       # P86: a scalar this knowledge base derived from a curve is never the paper's value
+                        c[q][k]["derived"] += 1
+                    elif Q.text_of(f) or f["points_ref"]:
                         c[q][k][home_of(T, f)] += 1; c[q][k]["values"] += 1
+                        if f["points_ref"]:
+                            c[q][k]["curves"] += 1
+                        elif f["fact_id"] in T.cells:
+                            c[q][k]["cells"] += 1
             if f["type"] == "claim":
                 for t in (f["cause"] + ";" + f["effect"]).split(";"):
                     if t:
@@ -275,6 +281,7 @@ def per_paper(ids):
         if any(d.get(x) for x in ("values", "settings", "claims", "derived", "mentions")):
             homes = ", ".join(f"{h} {d[h]}" for h in HOMES if d.get(h))
             bits = ([f"{d['values']} values" + (f" ({homes})" if homes else "")] if d.get("values") else []) \
+                + ([f"{d['curves']} curves" + (f", {d['cells']} cells" if d.get("cells") else "") + " among them"] if d.get("curves") else ([f"{d['cells']} cells among them"] if d.get("cells") else [])) \
                 + [f"{d[x]} {x}" for x in ("settings", "claims") if d.get(x)] + ([f"derived {d['derived']}"] if d.get("derived") else []) \
                 + ([f"{d['mentions']} mentions"] if d.get("mentions") else [])
             have.append(f"{k} " + " / ".join(bits))
@@ -326,8 +333,10 @@ def l0_map():
         procs = sorted({f"{d.get('reactant_A', '?')} / {d.get('reactant_B', '?')}" for d in pairs.values()})
         outs = sorted(((pc.get(q, {}).get(k, {}).get("values", 0), q) for q in L.OUTPUTS if pc.get(q, {}).get(k, {}).get("values")), reverse=True)[:6]
         n_exp = len(Q.experiments(T)); n_claims = sum(1 for f in T.rows if f["type"] == "claim")
+        inv = collections.Counter(i["panel_type"] for i in T.inventory)        # P84e: the figure inventory by panel type, counts only
+        figs = (f" · figure panels {sum(inv.values())} (" + ", ".join(f"{t} {n}" for t, n in inv.most_common()) + f"; {len(T.curves)} curves imported)") if inv else ""
         lines.append(f"{k}: material {', '.join(sorted(mats))} · process {', '.join(sorted(procs))} · structure {', '.join(sorted(structs))} · "
-                     f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} ({n} values)" for n, q in outs))
+                     f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} ({n} values)" for n, q in outs) + figs)
     return "\n".join(lines)
 
 
@@ -339,7 +348,7 @@ def map_numbers_are_counts(text=None):
     for m in re.finditer(r"(?<![\w.)])\d+(?:\.\d+)?(?![\w.(])", text):
         n = m.group(0)
         after = text[m.end():m.end() + 14]; before = text[max(0, m.start() - 12):m.start()]
-        ok = "." not in n and (re.match(r"\s*(values|experiments|claims|members|concepts|mechanisms|methods|species|\)|;|,|\.)", after) or re.search(r"[a-z_]+ $", before))
+        ok = "." not in n and (re.match(r"\s*(values|experiments|claims|members|concepts|mechanisms|methods|species|curves|\)|;|,|\.)", after) or re.search(r"[a-z_]+ $", before))
         if not ok:
             bad.append(n)
     return bad
