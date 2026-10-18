@@ -789,7 +789,8 @@ def values_blocks(groups, asked):
         out_rows, ranges = [], {}
         for e, cells in by_ent.items():
             r0 = next(iter(cells.values()))
-            st = ", ".join(f"{x['name']} {x['text']}" for x in r0["settings"])
+            table_q = {kk.split("{")[0].split("[")[0] for kk in keys}
+            st = ", ".join(f"{x['name']} {x['text']}" + (f" [{x['fact']}]" if x.get("fact") and x.get("quantity") in table_q else "") for x in r0["settings"])   # P79: a varied input of the result's own quantity (a set sticking coefficient against the extracted one) carries its id
             row_cav = {c["id"] for r in cells.values() for c in r["record"].get("caveats") or []} - (common_cav if is_spec else set()) - own_cav
             line = f"{r0['name']}" + (f" · {st}" if st else "") + " · " + " | ".join(_cells(cells[k]["record"], marks) if k in cells else "—" for k in keys) \
                 + (" · caveats " + ", ".join(f"[{c}]" for c in sorted(row_cav)) if row_cav else "")

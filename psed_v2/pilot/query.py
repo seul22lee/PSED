@@ -1210,7 +1210,7 @@ def distinguishing(T, ent, peers, n=2):
     keys = [k for k in vt.get(ent, {}) if k not in keyed and all(k in vt[e] for e in peers) and len({vt[e].get(k) for e in peers}) > 1]
     keys.sort(key=lambda k: (L.PRIMARY.index(k.split("{")[0]) if k.split("{")[0] in L.PRIMARY else len(L.PRIMARY), k))
     cr = condition_records(T, ent)
-    out = [dict(key=k, name=cr[k]["name"], text=cr[k]["record"]["text"]) for k in keys if k in cr][:n]
+    out = [dict(key=k, name=cr[k]["name"], text=cr[k]["record"]["text"], fact=cr[k]["record"].get("fact"), quantity=k.split("{")[0].split("[")[0]) for k in keys if k in cr][:n]
     if not out:                                                                 # peers differ only in how they were measured (Series B: the objective)
         ms = {e: measurement_settings(T, e) for e in peers}
         mk = [k for k in ms.get(ent, {}) if len({ms[e].get(k, (None,))[0] for e in peers}) > 1]

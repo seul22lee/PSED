@@ -108,17 +108,24 @@ def plural_forms(c):
 TRANSFORM = re.compile(r"^\s*(log10|log|ln)\s*[\(\[](.+)[\)\]]\s*$", re.I)
 
 
-def paper_definitions(pid):
-    """P89: the paper's definition facts that name a quantity (pilot/<pid>.facts.csv): {normalised term: (quantity, note, fact id)}."""
+def paper_definitions(pid, with_quantity=True):
+    """P89: the paper's definition facts that name a quantity (pilot/<pid>.facts.csv): {normalised term: (quantity, note, fact id)}.
+    With with_quantity=False, the terms the paper defines WITHOUT an ontology quantity (D, η, P_d ...): {normalised term: fact id}; a
+    label that is such a term is the paper's own symbol and resolves to nothing, never to an ontology guess (P89b)."""
     p = V2 / "pilot" / f"{pid}.facts.csv"
     out = {}
     if p.exists():
         for r in csv.DictReader(p.open(encoding="utf-8")):
-            if r["type"] == "definition" and r.get("term") and r["quantity"] and r["quantity"] in L.ENTRIES:
-                for t in r["term"].split("|"):
-                    out.setdefault(norm(t), (r["quantity"], r.get("definition_note", ""), r["fact_id"]))
-                    sym = delatex(t).translate(SUB).replace("μ", "µ").replace(" ", "")
-                    out.setdefault("sym:" + sym, (r["quantity"], r.get("definition_note", ""), r["fact_id"]))
+            if r["type"] != "definition" or not r.get("term"):
+                continue
+            has_q = bool(r["quantity"]) and r["quantity"] in L.ENTRIES
+            if has_q != with_quantity:
+                continue
+            for t in r["term"].split("|"):
+                val = (r["quantity"], r.get("definition_note", ""), r["fact_id"]) if with_quantity else r["fact_id"]
+                out.setdefault(norm(t), val)
+                sym = delatex(t).translate(SUB).replace("μ", "µ").replace(" ", "")
+                out.setdefault("sym:" + sym, val)
     return out
 
 
@@ -187,6 +194,14 @@ class Resolver:
         raw = re.sub(r"^\s*#\s*", "number of ", raw)                            # '#ALD cycle' = number of ALD cycles
         if not raw.strip():
             return "", transform, "empty"
+        noq = getattr(self, "noq", {})
+        if noq:                                                                 # P89b: a symbol the paper defines without an ontology quantity is its own, not an ontology guess
+            core = strip_unit_brackets(raw).strip()
+            sym = "sym:" + delatex(core).translate(SUB).replace("μ", "µ").replace(" ", "")
+            keys = [sym] if " " not in core else [sym, norm(core), norm(core.replace("|", ""))]   # a lone symbol matches case-sensitively (h is not H, S is not s); a worded label by its words, absolute-value bars aside
+            hit = next((noq[c] for c in keys if c in noq), "")                  # the whole label defined: beats any token-level match
+            if hit:
+                return "", transform, f"defined by the paper without an ontology quantity ({hit}; P89b)"
         q, why = self._quantity(raw, unit_dimension, axis)
         if not q and strip_unit_brackets(raw).count("/") == 1 and all(x.strip() for x in strip_unit_brackets(raw).split("/")):      # P90a on a worded ratio: 'Distance / cavity height'
             a, b = (x.strip() for x in strip_unit_brackets(raw).split("/"))
@@ -564,6 +579,7 @@ class Importer:
         d = json.loads((FINAL / pid / "figures.json").read_text(encoding="utf-8"))
         key = PAPERS.get(pid, pid)
         self.defs = paper_definitions(pid)                                      # P89
+        self.R.noq = paper_definitions(pid, with_quantity=False)                # P89b
         self.defs_note = {q: note for _, (q, note, _) in self.defs.items()}
         self.R.p89_hits = []
         prov = dict(extractor="vlm", model=d["model"], prompt_sha256=d["prompt_sha256"])
@@ -615,7 +631,8 @@ class Importer:
                     sa_q, _, why = self.R.quantity(sa_raw, dim0, self.defs)
                     if why.startswith("definition:"):
                         why = ""
-                    kind_only = all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or [])
+                    kind_only = all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or []) \
+                        or bool(re.search(r"\b(type|kind|model|dataset|method)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type'), not a quantity
                     if not sa_q and not kind_only:                                  # a series axis over kinds ('model', 'type': fitted vs measured) names no quantity
                         self.unm(pid, fig, pan, "series_axis", sa_raw, f"label_unresolved: {why}")
                 curves = []

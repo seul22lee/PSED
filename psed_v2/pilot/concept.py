@@ -335,9 +335,9 @@ def l0_map():
         outs = sorted(((pc.get(q, {}).get(k, {}).get("values", 0), q) for q in L.OUTPUTS if pc.get(q, {}).get(k, {}).get("values")), reverse=True)[:6]
         n_exp = len(Q.experiments(T)); n_claims = sum(1 for f in T.rows if f["type"] == "claim")
         inv = collections.Counter(i["panel_type"] for i in T.inventory)        # P84e: the figure inventory by panel type, counts only
-        figs = (f" · figure panels {sum(inv.values())} (" + ", ".join(f"{t} {n}" for t, n in inv.most_common()) + f"; {len(T.curves)} curves imported)") if inv else ""
-        lines.append(f"{k}: material {', '.join(sorted(mats))} · process {', '.join(sorted(procs))} · structure {', '.join(sorted(structs))} · "
-                     f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} ({n} values)" for n, q in outs) + figs)
+        figs = f" · panels {sum(inv.values())}, curves {len(T.curves)}" if inv else ""   # counts only; the panel types are in search's inventory records
+        lines.append(f"{k}: material {', '.join(sorted(mats)) or '—'} · process {', '.join(sorted(procs)) or '—'} · structure {', '.join(sorted(structs)) or '—'} · "
+                     f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} {n}" for n, q in outs[:4]) + figs)
     return "\n".join(lines)
 
 
