@@ -130,7 +130,7 @@ TOOLS = [
     dict(name="values",
          description=("Arguments: result or set (one of the two), paper, where; or paper alone. With paper alone: the paper's quantity index, one line per quantity it holds values for "
                       "(label, id, value counts by home, range with unit, the set ids that hold it, claims), the figure panels and model inputs as counts; never a value with its id. "
-                      "With set (a comparison set id): one table of everything the set measured, "
+                      "With result as a list of up to 8 names: the single-quantity outputs as consecutive blocks, each under its own columns header, legends and footer once; over the budget whole blocks fold from the last into one line naming how to open them (P121). With set (a comparison set id): one table of everything the set measured, "
                       "rows = every member of the set (every cell of a grid) and first the set itself for the values stated for it, columns = every "
                       "result quantity with a value among them in the ontology's order, cells = value, kind mark, fact id, ± with its basis; over the "
                       "budget the last columns collapse into one line naming them, rows are never dropped. With result: returns every value of one result or stated setting as comparison-set "
@@ -151,7 +151,7 @@ TOOLS = [
                       "where else the concept lives. Use it to see how one result or setting varies across experiments and conditions. "
                       "The knowledge base's names, generated from its data: " + VOCAB),
          parameters=dict(type="object", properties=dict(
-             result=dict(type="string", description="A result or setting name from the list in this description, or a quantity id."),
+             result=dict(description="A result or setting name from the list in this description, a quantity id or a qualifier phrase; or a list of up to 8 of them (P121: one call, one block per quantity)."),
              set=dict(type="string", description="A comparison set id (<paper>:cmp:<name>, as values, detail or the map return it): the set-wide table instead of result; takes no paper or where."),
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              where=dict(type="object", description="Only experiments whose stated settings match: {setting name: a value (number or text), or [min, max] (either may be null)}; numbers in the setting's unit as the values lines show it.",
@@ -448,6 +448,9 @@ def validate(name, args):
     if name == "values":                                                        # P77: result or set, one of the two; P117: paper alone = the paper's quantity index
         if args.get("result") is None and args.get("set") is None and args.get("paper") is None:
             return "values: missing result, set or paper"
+        r = args.get("result")
+        if r is not None and not (isinstance(r, str) or (isinstance(r, list) and r and len(r) <= 8 and all(isinstance(x, str) and x.strip() for x in r))):
+            return "values: result must be a name, id or qualifier phrase, or a list of 1 to 8 of them (P121)"
         if args.get("result") is not None and args.get("set") is not None:
             return "values: give result or set, not both"
         if args.get("set") is not None:
@@ -966,6 +969,74 @@ SEARCH_LINE = 200
 SEARCH_PAPERS = 6                                                               # P93: papers in the cross-paper search view
 
 
+TAIL_IDS = ("legend", "between")                                                 # the legend and cross-paper footer lines of a values output
+
+
+def flat_lines(blocks):
+    """Every line of a block list in order, unpaginated: [(id, text)]."""
+    out = []
+    for b in blocks:
+        out += list(b["head"])
+        for r in b["rows"]:
+            out += list(r)
+        out += list(b["foot"])
+    return out
+
+
+def split_tail(lines):
+    """A values output's lines split into its body and its tail (legend and footer lines, and the caveat texts shown at the end)."""
+    body, tail = [], []
+    for i, t in lines:
+        if i in TAIL_IDS or (t.startswith("caveat · ") and i not in TAIL_IDS and any(x in TAIL_IDS for x, _ in lines[lines.index((i, t)):])):
+            tail.append((i, t))
+        else:
+            body.append((i, t))
+    return body, tail
+
+
+def multi_values_blocks(results, paper, where):
+    """P121: values(result=[q1, …, qk], paper): the k single-quantity outputs as consecutive blocks, each under its own 'columns' header,
+    the legends, caveat texts and the cross-paper footer once at the end (deduplicated by text). Over the per-call budget the P65 collapse
+    has already run inside each block; then whole blocks collapse from the last into one line 'q: n values in m sets — open with
+    values(result=q, paper=p)', never the first. An item that resolves to nothing gets its P105 nearest line; the others render."""
+    import concept as CN
+    parts, tails, seen_tail, marks, qids = [], [], set(), {}, []
+    for r in results:
+        blocks, e = _run("values", {k: v for k, v in dict(result=r, paper=paper, where=where).items() if v is not None})
+        lines = flat_lines(blocks) if not e else [("none", e)]
+        body, tail = split_tail(lines)
+        for i, t in tail:
+            if t.startswith("kinds: ("):                                         # the kind legends merge into one
+                marks.update(dict(re.findall(r"\((k\d+)\) ([^;]+)", t)))
+            elif i == "between":
+                continue                                                        # the cross-paper footer comes once, over every quantity
+            elif t not in seen_tail:
+                seen_tail.add(t); tails.append((i, t))
+        qids += [q for q in CN.resolve_phrase(r)["ids"] if q in L.ENTRIES]
+        parts.append((r, body))
+    if marks:
+        tails.insert(0, ("legend", "kinds: " + "; ".join(f"({m}) {ph.strip()}" for m, ph in sorted(marks.items())) + "; unmarked: measured or stated"))
+    if qids:
+        foot = CN.footer(list(dict.fromkeys(qids)), paper if paper and len(Q.TREES) > 1 else None)
+        if foot:
+            tails.append(("between", foot))
+
+    def collapsed(r, k_):
+        qids = CN.resolve_phrase(r)["ids"] or [r]
+        n = sum(CN.counts().get(q, {}).get(kk, {}).get("values", 0) for q in qids for kk in ([k_] if k_ else Q.TREES))
+        m = sum(len(Q.sets_with_quantity(Q.TREES[kk], set(qids))) for kk in ([k_] if k_ else Q.TREES))
+        return [(f"{k_ or 'all'}:folded", f"{r}: {n} values in {m} sets — open with values(result={json.dumps(r, ensure_ascii=False)}" + (f", paper=\"{k_}\"" if k_ else "") + ")")]
+    out = [dict(block([[x] for x in body], head=[]), scope=n + 1) for n, (_, body) in enumerate(parts)]   # each block dedupes within itself
+    out[0]["tail"] = tails                                                       # the legends and the footer close every page (paginate appends a block's tail to each page)
+    assemble = lambda: list(out)
+    k = len(parts) - 1
+    while BUDGET and k > 0 and paginate(assemble(), 0)[-1][0] == "more":       # whole blocks fold from the last, never the first nor a one-line block (a nearest line)
+        if len(parts[k][1]) > 1:
+            out[k] = block([], head=collapsed(parts[k][0], paper))
+        k -= 1
+    return assemble()
+
+
 def empty_pair_blocks(result, paper):
     """P94: values(result, paper) with no value row but claims, curves, panels or definitions of the quantity in the paper: one line of
     counts; [] (an error upstream) when the paper holds nothing of it or the words name no quantity."""
@@ -1009,26 +1080,32 @@ def paginate(blocks, offset, max_lines=None):
             else:
                 units.append((b, kind, u))
     offset = max(0, int(offset or 0))
-    out, n, size = [], offset, 0
+    out, scopes, n, size = [], [], offset, 0
     if 0 < offset < len(units):
         b0 = units[offset][0]
         out += b0["context"] + ([b0["short"]] if units[offset][1] != "head" and b0["short"] else [])
+        scopes += [b0.get("scope", 0)] * len(out)
         size += sum(len(t) + len(i) + 4 for i, t in out)
     while n < len(units):
         u = units[n][2]
         cost = sum(len(t) + len(i) + 4 for i, t in u)
         if (out and size + cost > BUDGET_CHARS - 60) or (max_lines and out and len(out) + len(u) > max_lines - 1):
             break
-        out += u; size += cost; n += 1
-    seen_lines, seen_defs, page = set(), set(), []
-    for i, t in out:
+        out += u; scopes += [units[n][0].get("scope", 0)] * len(u); size += cost; n += 1
+    seen_lines, seen_defs, page, dropped = set(), set(), [], False
+    for (i, t), sc in zip(out, scopes):                                         # P121: a block with its own scope dedupes within itself (one quantity's block of a multi-quantity call)
         for m in DEF_FRAG.finditer(t):                                          # a paper definition once per page
             if m.group(1) in seen_defs:
                 t = t.replace(m.group(0), "")
             seen_defs.add(m.group(1))
-        key = (i, t) if t.startswith("… ") else t                                # a text once per page, whatever its id; a wrapped continuation belongs to its own line (P68: caveat ids on every fact)
+        key = (sc, i, t) if t.startswith("… ") else (sc, t)                      # a text once per page (per scope), whatever its id; a wrapped continuation belongs to its own line (P68: caveat ids on every fact)
+        if t.startswith("… ") and dropped:                                      # the continuation of a dropped duplicate goes with it (P121: blocks share their headers)
+            continue
+        dropped = False
         if key not in seen_lines:
             page.append((i, t)); seen_lines.add(key)
+        else:
+            dropped = not t.startswith("… ")
     for b in blocks:                                                            # a block's tail closes every page (the cross-paper footer, P67)
         page += [x for x in b.get("tail", []) if x not in page]
     if n < len(units):
@@ -1084,6 +1161,8 @@ def _run(name, args):
             return [block([wrap("none", f"no paper named {args['paper']!r}; nearest: " + ", ".join(nearest_papers(args["paper"])) + " · the keys: " + ", ".join(Q.TREES))])], ""
         if name == "values" and args.get("set"):                                # P77: one table for a comparison set
             return set_blocks(Q.set_table(args["set"])), ""
+        if name == "values" and isinstance(args.get("result"), list):           # P121: several quantities, one block each, legends and footer once
+            return multi_values_blocks(args["result"], args.get("paper"), args.get("where")), ""
         if name == "values" and args.get("result") is None:                     # P117: values(paper=p): the paper's quantity index
             return [block([wrap(*x) for x in CN.paper_index(args["paper"], short_name(args["paper"]))])], ""
         if name == "values" and not _result_ok(args["result"]):                 # P105: an unknown result name: the nearest three, executed

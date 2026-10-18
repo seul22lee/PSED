@@ -1296,6 +1296,8 @@ def paper_probes(k):
     if qs:
         probes.append(("concept", {"words": L.NAMES.get(qs[0], qs[0])}))
     probes += [("values", {"result": q, "paper": k}) for q in qs[:3]]
+    if len(qs) >= 2:
+        probes.append(("values", {"result": qs[:3], "paper": k}))                  # P121: the three most populated quantities in one call
     comps = sorted((c["fact_id"] for c in T.comps), key=lambda c: (T.is_figset(c), c))
     probes += [("values", {"set": cid}) for cid in comps[:2]]
     if T.curves:
@@ -1667,6 +1669,53 @@ def check_cycle():
     return err
 
 
+def check_multi_values():
+    """P121: for every paper, values(result=[its three most populated quantities], paper) equals, block by block, the single calls' outputs
+    without their legend and footer lines — or a block (never the first) is the one folded line naming how to open it; the legends and the
+    footer come once at the end; a list with an unresolvable item renders the others and gives that item its nearest line."""
+    import concept as CN, query as Q, tools
+    err, n_folded, n_blocks = [], 0, 0
+    pc = CN.counts()
+    for k in Q.TREES:
+        qs = [q for _, q in sorted(((d[k]["values"], q) for q, d in pc.items() if q in L.OUTPUTS and d.get(k, {}).get("values")), reverse=True)][:3]
+        if len(qs) < 2:
+            continue
+        lines, e = tools.run_tool("values", {"result": qs, "paper": k})
+        if e:
+            err.append(f"values({qs}, {k}): {e} (P121)"); continue
+        combined = [x for x in joined(lines) if x[0] != "more"]                 # wrapped continuations joined back (P44)
+        texts = {t for _, t in combined}
+        folded = {i + str(n): t for n, (i, t) in enumerate(combined) if i.endswith(":folded") and " — open with values(result=" in t}
+        if any(i == "more" for i, _ in lines) and len(folded) < len(qs) - 1:
+            err.append(f"values({qs}, {k}): over the budget with {len(qs) - 1 - len(folded)} block(s) still unfolded (P121)")
+        singles = {}
+        for q in qs:
+            blocks, e1 = tools._run("values", {"result": q, "paper": k})
+            singles[q], _ = tools.split_tail(tools.flat_lines(blocks))
+        for n, q in enumerate(qs):                                               # each block: the single call's lines (a text once per page, P44) or, past the first, one folded line
+            n_blocks += 1
+            if any(t.startswith(f"{q}:") for t in folded.values()):
+                if n == 0:
+                    err.append(f"values({qs}, {k}): the first block folded (P121)")
+                n_folded += 1; continue
+            if any(i == "more" for i, _ in lines) and n > 0:
+                continue                                                        # beyond the first page
+            missing = [t for _, t in joined(singles[q]) if t not in texts]
+            if missing:
+                err.append(f"values({qs}, {k}): block {n + 1} ({q}) lacks {len(missing)} line(s) of the single call (P121): {missing[0][:80]!r}")
+        allowed = {t for b in singles.values() for _, t in joined(b)} | set(folded.values())
+        stray = [t for i, t in combined if i not in ("legend", "between") and not t.startswith("caveat · ") and not t.startswith("kinds: (") and t not in allowed]
+        if stray:
+            err.append(f"values({qs}, {k}): {len(stray)} line(s) in no single call's output (P121): {stray[0][:80]!r}")
+        if sum(1 for _, t in combined if t.startswith("kinds: (")) > 1 or sum(1 for i, _ in combined if i == "between") > 1:
+            err.append(f"values({qs}, {k}): the legend or the footer appears more than once (P121)")
+    lines, e = tools.run_tool("values", {"result": ["penetration depth", "no such thing"], "paper": "yim20"})
+    if e or not any("nearest" in t for _, t in lines) or not any(i.startswith("yim20:") and i != "yim20:folded" for i, _ in lines):
+        err.append(f"values(['penetration depth', 'no such thing'], yim20): the unresolvable item should get its nearest line and the other render (P121) {e}")
+    print(f"== multi-quantity values (P121): {n_blocks} blocks over {len(Q.TREES)} papers' top-3 lists, {n_folded} folded to one line within the budget; legends and footer once")
+    return err
+
+
 def check_paper_index():
     """P117: every paper's quantity index (values(paper=k), detail(ids=[k])) is within the budget (no 'more' line), lists every quantity the
     concept cards count values for in the paper with the same count (P95 both ways), prints no value with an id, and ends with the two
@@ -1892,6 +1941,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_cycle()
     print(f"== cycle (P106): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_multi_values()
+    print(f"== multi-quantity values (P121): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
