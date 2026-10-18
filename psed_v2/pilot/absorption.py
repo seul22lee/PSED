@@ -15,6 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import lists as L  # noqa: E402
+import vocab as V  # noqa: E402
 
 OUT = HERE.parent / "ontology" / "absorption.csv"
 COLS = ["paper", "records", "direct", "alias", "qualifier", "new_pending", "attribute", "dropped", "unmapped"]
@@ -30,7 +31,7 @@ def row(pid):
         if not (q or m):
             continue
         c["records"] += 1
-        if q in L.PENDING or m in L.PENDING or f["value_text"] in L.PENDING:
+        if q in V.PENDING or m in V.PENDING or f["value_text"] in V.PENDING:
             c["new_pending"] += 1
         elif q == "other":
             c["dropped"] += 1

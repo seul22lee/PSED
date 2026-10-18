@@ -1655,3 +1655,9 @@ built from the three pilot papers only (elements.PAPERS; the Elam draft stays ou
   is 0.43 on average (sampled continuous lines differ in sampling position, as the Directive 5′ repeat sample showed; marker series
   agree 0.87–1.0); the nine other papers come in the next directive.
 
+## Directive 7′ progress (2026-10-17): P89–P92 (commit 82314ad), then the nine papers one by one
+
+| paper | key | facts | curves imported | sets | P89 fields | pending added | problems | commit |
+|---|---|---|---|---|---|---|---|---|
+| 10.1021_cm0303080 Elam 2003 | ela03 | 472 (54 claims, 272 settings, 53 model, 38 observations, 17 derived, 14 caveats, 10 definitions) | 34 (16 of 16 ok panels) | 6 | 24 | 0 new (the 6 of Directive 5 stay) | check green; 2 unmapped (H without a quantity, TMA pressure in 10^-3 Torr) | this commit |
+

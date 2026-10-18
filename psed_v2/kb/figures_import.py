@@ -200,7 +200,7 @@ class Resolver:
         if defs:                                                                # P89: the paper's own definitions, after the ontology and before giving up
             toks = _tokens(raw)
             cands = [norm(raw)] + ([norm(" ".join(toks[:-1])), "sym:" + delatex(toks[-1]).translate(SUB).replace("μ", "µ").replace(" ", ""), norm(toks[-1])] if len(toks) > 1 else ["sym:" + delatex(raw.strip()).translate(SUB).replace("μ", "µ").replace(" ", "")])
-            for c in cands:
+            for c in [x for c0 in cands for x in (plural_forms(c0) if not c0.startswith("sym:") else [c0])]:
                 if c in defs:
                     self.p89_hits.append((raw, defs[c]))
                     return defs[c][0], transform, "definition:" + defs[c][2]
@@ -209,6 +209,12 @@ class Resolver:
     def _quantity(self, raw, unit_dimension="", axis=""):
         """The ontology part of the resolution: (id, reason)."""
         toks = _tokens(raw)
+        if len(toks) >= 2 and self.species_id(toks[0]):                            # '<species> pressure': the species-scoped entry of what the rest names
+            q0, why0 = self._quantity(" ".join(toks[1:]), unit_dimension, axis)
+            dim = L.ENTRIES[q0].get("dimension") if q0 else unit_dimension
+            scoped = {i for i, e in L.ENTRIES.items() if e.get("role") in ROLES and "species" in (e.get("qualifiers") or []) and e.get("dimension") == dim and dim}
+            if len(scoped) == 1:
+                return next(iter(scoped)), ""
         if len(toks) == 1 and is_symbol(toks[0]):                                  # a lone symbol: case-sensitive against the entries' labels first (N is not n, T is not t)
             hit = self.symbol(toks[0], unit_dimension, axis)
             if len(hit) == 1:
@@ -341,6 +347,9 @@ def parse_value(text):
     m = SCI.match(t)
     if m:
         return float(m.group(1)) * 10 ** int(m.group(2)), None, m.group(3)
+    m = re.match(r"^\s*10\s*\^?\s*\{?([-+]?\d+)\}?\s*(.*?)\s*$", t)                     # '10^-3 Torr'
+    if m:
+        return 10 ** int(m.group(1)), None, m.group(2)
     m = NUM.match(t)
     if not m or m.group(1) is None:
         return None
@@ -479,6 +488,12 @@ class Importer:
         v, vmax, u = pv
         row = fit_unit(u, q)
         target = entry_unit_row(q)
+        if self.defs and not (row and target and row["dimension"] == target["dimension"]) and not why.startswith("definition:"):   # P89: the paper's definition of the symbol, when the ontology's match fails the unit check
+            q2, _, why2 = self.R.quantity(key, "", self.defs) if False else ("", "", "")
+            dq = self.defs.get(norm(key)) or self.defs.get("sym:" + delatex(key).translate(SUB).replace("μ", "µ").replace(" ", ""))
+            if dq and dq[0] != q:
+                q = dq[0]; rec.update(quantity=q, role=L.ENTRIES[q].get("role", ""), definition=dq[2]); self.R.p89_hits.append((key, dq))
+                row = fit_unit(u, q); target = entry_unit_row(q)
         if row and target and row["dimension"] == target["dimension"]:
             rec.update(value=convert(v, row, target), value_max=convert(vmax, row, target) if vmax is not None else None, unit=target["symbol"])
         else:
@@ -691,13 +706,22 @@ class Importer:
 
 
 def write_reports(imp, results):
-    with (HERE / "import_report.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["paper_id", "key", "data_panels", "imported_panels", "curves", "cells", "peaks", "sets", "derived", "inventory_records", "unmapped", "resolved_p89"])
-        for r in results:
-            c = r["report"]
-            w.writerow([r["paper_id"], r["key"], c.get("data_panels", 0), sum(1 for i in r["inventory"] if i["status"] == "imported"), c.get("curves", 0), c.get("cells", 0), c.get("peaks", 0), c.get("sets", 0), c.get("derived", 0), c.get("inventory", 0), c.get("unmapped", 0), c.get("resolved_p89", 0)])
-    with (HERE / "import_panels.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "panel_type", "verdict", "flags", "outcome", "reason"]); w.writeheader(); w.writerows(imp.panels)
+    """The reports: a subset run replaces its papers' rows and keeps the others'."""
+    done = {r["paper_id"] for r in results}
+    rp = HERE / "import_report.csv"
+    old = [r for r in csv.DictReader(rp.open(encoding="utf-8")) if r["paper_id"] not in done] if rp.exists() else []
+    cols = ["paper_id", "key", "data_panels", "imported_panels", "curves", "cells", "peaks", "sets", "derived", "inventory_records", "unmapped", "resolved_p89"]
+    rows = [dict(r, **{k: r.get(k, "") for k in cols}) for r in old]
+    for r in results:
+        c = r["report"]
+        rows.append(dict(zip(cols, [r["paper_id"], r["key"], c.get("data_panels", 0), sum(1 for i in r["inventory"] if i["status"] == "imported"), c.get("curves", 0), c.get("cells", 0), c.get("peaks", 0), c.get("sets", 0), c.get("derived", 0), c.get("inventory", 0), c.get("unmapped", 0), c.get("resolved_p89", 0)])))
+    rows.sort(key=lambda r: r["paper_id"])
+    with rp.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols); w.writeheader(); w.writerows({k: r.get(k, "") for k in cols} for r in rows)
+    pp = HERE / "import_panels.csv"
+    oldp = [r for r in csv.DictReader(pp.open(encoding="utf-8")) if r["paper"] not in done] if pp.exists() else []
+    with pp.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "panel_type", "verdict", "flags", "outcome", "reason"]); w.writeheader(); w.writerows(sorted(oldp + imp.panels, key=lambda r: (r["paper"], len(r["figure"]), r["figure"], r["panel"])))
     keep = [r for r in csv.DictReader(UNMAPPED.open(newline="", encoding="utf-8")) if r.get("field") == "pilot"] if UNMAPPED.exists() else []   # the pilot's hand rows stay
     done = {r["paper_id"] for r in results}
     old = [r for r in csv.DictReader(UNMAPPED.open(newline="", encoding="utf-8")) if r.get("field") != "pilot" and r["paper"] not in done] if UNMAPPED.exists() else []

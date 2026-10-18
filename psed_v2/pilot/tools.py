@@ -748,7 +748,8 @@ def values_blocks(groups, asked):
         sid = g["id"] or f"{g['paper']}:outside"
         own = [r for r in g["rows"] if r["record"].get("kind") != "computed_by_kb"]
         kb = [r for r in g["rows"] if r["record"].get("kind") == "computed_by_kb"]
-        rows = (own + kb) if g["kind"] == "figure" else (own or kb)               # P86: a figure set lists its curves, then the scalars derived from them, each marked
+        stored = [r for r in kb if r["record"].get("fact")]                       # P86: a stored derived record (a scalar of a curve) is listed after the stated values, marked; a value computed on request is counted
+        rows = (own + stored) if (own or stored) else kb
         keys = list(dict.fromkeys(r["key"] for r in rows))
         names = {k: next(r["result_name"] for r in rows if r["key"] == k) for k in keys}
         by_ent = {}
@@ -1048,6 +1049,18 @@ def _run(name, args):
                 elif order[k] != "texts":
                     out[order[k]] = collapsed[order[k]]
                 k += 1
+            if BUDGET and paginate(with_legend(out, k), 0)[-1][0] == "more":    # the last step: a paper's collapsed sets fold into one line naming them, the largest paper first
+                size_of = lambda b: sum(len(t) + len(i) + 4 for u in [b["head"]] + b["rows"] + [b["foot"]] for i, t in u)
+                papers = sorted({g["paper"] for g in groups}, key=lambda pk: -sum(size_of(out[n]) for n, g in enumerate(groups) if g["paper"] == pk))
+                for pk in papers:
+                    idxs = [n for n, g in enumerate(groups) if g["paper"] == pk]
+                    line = (f"{pk}:folded", f"{len(idxs)} sets of {short_name(pk)} folded to stay within the budget: " + ", ".join(f"[{groups[n]['id'] or pk + ':outside'}]" for n in idxs)
+                            + f' · open them with values(result="{args["result"]}", paper="{pk}") or values(set=<id>)')
+                    out[idxs[0]] = block([], head=[line])
+                    for n in idxs[1:]:
+                        out[n] = block([], head=[])
+                    if paginate(with_legend(out, k), 0)[-1][0] != "more":
+                        break
             return with_legend(out, k), ""
         if name == "concept":
             if not Q.tokens(args["words"]):

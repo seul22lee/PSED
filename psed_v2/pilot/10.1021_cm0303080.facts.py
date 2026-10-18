@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# DRAFT — stopped mid-extraction 2026-10-17; figure part will be replaced by ingest figures.json
 """Stage 2 facts for ela03 (10.1021_cm0303080, Elam et al. 2003, Chem. Mater.: Al2O3 and ZnO ALD in the nanopores of anodic alumina
 membranes, EPMA infiltration profiles, a Monte Carlo pore model, FTIR of the diffusion- and reaction-limited regimes). One row per
 piece of knowledge, each citing the elements that state it; handles (variables) instead of hard-coded fact numbers (P83).
@@ -9,7 +8,7 @@ piece of knowledge, each citing the elements that state it; handles (variables) 
 import sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 import facts as C  # noqa: E402
-from facts import F, N, NK, P, write, cases_points, purpose  # noqa: E402
+from facts import F, N, NK, write, purpose  # noqa: E402
 
 K, PID = "ela03", "10.1021_cm0303080"
 A = "s1.p4"                                                                     # the abstract printed again as a body paragraph
@@ -145,8 +144,8 @@ eq2_m = f("eq2;s3.p23", "model", "Eq. (2), the B half-reaction of Al2O3 ALD: a s
 pur_dez = f("s3.p24", "setting", "ZnO ALD used Akzo Nobel semiconductor-grade diethylzinc and deionized water", quantity="precursor_purity", qualifiers="species=dez", value_text="semiconductor grade", mentions="refs 31, 33, 34")
 eq3_m = f("eq3;s3.p24", "model", "Eq. (3), the A half-reaction of ZnO ALD: a surface hydroxyl takes up DEZ, leaving ZnOZn(C2H5)* and releasing ethane")
 eq4_m = f("eq4;s3.p24", "model", "Eq. (4), the B half-reaction of ZnO ALD: the surface ethyl reacts with water to a hydroxyl and ethane")
-def_t = f("s3.p25", "definition", "the timing sequence t1-t2-t3-t4 in seconds: t1 the A exposure, t2 the purge after it, t3 the B exposure, t4 the purge after it", quantity="pulse_time")
-rng_t = f("s3.p25", "setting", "exposure steps of 1 to 30 s were used across the study (sequences from 1-3-1-3 to 30-30-30-30)", quantity="pulse_time", qualifiers="step=reactant_A;species=tma", value_min="1", value_max="30", unit="s", data_kind="stated")
+def_t = f("s3.p25", "definition", "the timing sequence t1-t2-t3-t4 in seconds: t1 the A exposure, t2 the purge after it, t3 the B exposure, t4 the purge after it", quantity="pulse_time", term="t1|t3|exposure time|Exposure Time")
+rng_t = f("s3.p25", "setting", "exposure steps of 1 to 30 s were used across the study; the shortest sequence was 1-3-1-3 and the longest 30-30-30-30", quantity="pulse_time", qualifiers="step=reactant_A;species=tma", value_min="1", value_max="30", unit="s", data_kind="stated")
 rng_pg = f("s3.p25", "setting", "purge times across the study ranged from 3 to 30 s", quantity="purge_time", qualifiers="step=purge_A", value_min="3", value_max="30", unit="s", data_kind="stated")
 p_tma = f("s3.p25;s5.p10;s5.p12", "setting", "TMA partial pressure 0.15 Torr in the Al2O3 exposures", quantity="partial_pressure", qualifiers="species=tma", value="0.15", unit="Torr", data_kind="stated")
 p_dez = f("s3.p25;s5.p24", "setting", "DEZ partial pressure 0.068 Torr in the ZnO exposures", quantity="partial_pressure", qualifiers="species=dez", value="0.068", unit="Torr", data_kind="stated")
@@ -237,16 +236,21 @@ o_map_prog = f("s4.x1;fig4", "observation", "the Zn reaches progressively furthe
 o_map30 = f("s4.x1;fig4", "observation", "with 30 s exposures the Zn concentration is nearly uniform through the membrane", method="epma", mentions="30 s")
 claim("s4.x1", "a nearly uniform Zn map means a conformal ZnO film continuous along the whole pore", "asserted", "pulse_time", "step_coverage", "increases", supports=[o_map30])
 scan_step = f("s4.p5", "setting", "EPMA line scans along the pore axis recorded the Zn concentration about every 1 µm", quantity="other", label_as_printed="scan step", value="1", unit="µm", data_kind="stated", method="epma")
-def_norm = f("s4.p5;s4.p8;fig5.cap", "definition", "the Zn profiles of Fig. 5(a) are normalized to the highest Zn concentration measured", quantity="normalized_thickness")
+def_norm = f("s4.p5;s4.p8;fig5.cap", "definition", "the Zn profiles of Fig. 5(a) are normalized to the highest Zn concentration measured", quantity="normalized_thickness", qualifiers="reference=maximum",
+             term="Relative ZnO Coverage|Relative Al2O3 Coverage|relative coverage", definition_note="EPMA counts normalized to the highest concentration of the line scan, not to a planar reference")
 o_prof = f("s4.p8;fig5a", "observation", "the ZnO film extends further into the membrane as the exposure time grows", method="epma")
 unif30 = f("s4.p8;fig5a", "observation", "for 30 s exposures the Zn profile is nearly uniform through the membrane, within ±10 %",
            quantity="thickness_nonuniformity", value="10", unit="%", data_kind="measured", method="epma", mentions="30 s")
 PTS = {}
 for t in ("1", "3", "10", "30"):
-    s = cases_points(PID, 5, "a", f"ZnO EPMA line scan, DEZ exposure {t} s, d 65 nm")
-    ref = P(PID, f"fig5a_zno_{t}s", s["points"], source=f"points.json: figure 5 panel a, series '{s['series']}' ({s['source']})", x_label=s["x_label_as_printed"], y_label=s["y_label_as_printed"], note=s["quality"])
     PTS[("5a", t)] = f("fig5a;fig5.cap;s4.p8", "observation", f"Fig. 5(a), {t} s exposures: relative ZnO coverage against distance into the membrane from one face (EPMA line scan)",
-                       quantity="normalized_thickness", qualifiers="reference=maximum;x=distance", points_ref=ref, data_kind="measured", method="epma", mentions=f"{t} s")
+                       quantity="normalized_thickness", qualifiers="reference=maximum", data_kind="measured", method="epma", mentions=f"{t} s")
+def_int = f("s4.p9;fig5.cap", "definition", "the normalized integrated coverage is the integral of a relative coverage profile over the membrane, normalized to its saturation value", quantity="surface_coverage",
+            term="Normalized Integrated ZnO Coverage|Normalized Integrated Al2O3 Coverage|Normalized Integrated Coverage|integrated coverage",
+            definition_note="integral of the relative EPMA coverage over the pore length, normalized to saturation, not a fraction of covered sites")
+def_pd = f("s4.p10;fig6.cap", "definition", "the pore diameter d of a membrane is the width of its cylindrical pores", quantity="feature_width", term="Pore Diameter|d", definition_note="pore diameter of the membrane")
+def_oh = f("fig8.cap", "definition", "the loss in hydroxyl feature is the drop of the FTIR hydroxyl absorbance after an exposure, in absorbance units", quantity="signal_intensity",
+           term="Loss in Hydroxyl Feature", definition_note="FTIR hydroxyl absorbance lost after an exposure")
 fig5b_obs = f("s4.x2;s4.p9;fig5b;fig5.cap", "observation", "Fig. 5(b): the normalized integrated ZnO coverage of each Fig. 5(a) profile against exposure time", quantity="surface_coverage", method="epma")
 k_exp = f("s4.p9;s5.x1;fig5b", "derived", "a least-squares fit y = k t^1/2 to the integrated coverages between 0 and 10 s gives k = 0.23",
           quantity="other", label_as_printed="k", value="0.23", unit="s^-1/2", data_kind="computed_by_authors", method="calculation", mentions="Fig. 5b")
@@ -268,10 +272,8 @@ dia_tB = f("s4.p10", "setting", "diameter series: water exposure 5 s", quantity=
 dia_pB = f("s4.p10", "setting", "diameter series: purge after water 10 s", quantity="purge_time", qualifiers="step=purge_B", value="10", unit="s", data_kind="stated", mentions="5-10-5-10")
 o_dia = f("s4.p10;fig6a", "observation", "at a fixed 5 s exposure the ZnO profiles reach further into the pores the wider the pores are", method="epma")
 for d, n in (("19", "19"), ("46", "45"), ("65", "64")):
-    s = cases_points(PID, 6, "a", f"ZnO EPMA line scan, d {d} nm, {n} cycles, DEZ 5 s")
-    ref = P(PID, f"fig6a_zno_d{d}", s["points"], source=f"points.json: figure 6 panel a, series '{s['series']}' ({s['source']})", x_label=s["x_label_as_printed"], y_label=s["y_label_as_printed"], note=s["quality"])
     PTS[("6a", d)] = f("fig6a;fig6.cap;s4.p10", "observation", f"Fig. 6(a), d = {d} nm: relative ZnO coverage against distance into the membrane (EPMA line scan, 5 s exposures)",
-                       quantity="normalized_thickness", qualifiers="reference=maximum;x=distance", points_ref=ref, data_kind="measured", method="epma", mentions=f"{d} nm")
+                       quantity="normalized_thickness", qualifiers="reference=maximum", data_kind="measured", method="epma", mentions=f"{d} nm")
 fig6b_obs = f("fig6b;fig6.cap;s4.p10", "observation", "Fig. 6(b): the normalized integrated ZnO coverage against pore diameter, with a linear least-squares fit", quantity="surface_coverage", method="epma")
 slope_exp = f("s5.p17;s4.p10;fig6b", "derived", "the linear fit of integrated coverage against pore diameter in Fig. 6(b) has a slope of 0.25 per nm",
               quantity="other", label_as_printed="slope", value="0.25", unit="nm-1", data_kind="computed_by_authors", method="calculation", mentions="Fig. 6b")
@@ -279,14 +281,13 @@ slope_exp = f("s5.p17;s4.p10;fig6b", "derived", "the linear fit of integrated co
 ar_d = f("s4.p11;fig7.cap", "setting", "the ultrahigh-aspect-ratio membrane has 19 nm pores", quantity="feature_width", label_as_printed="d", value="19", unit="nm", data_kind="stated")
 ar_L = f("s4.p11;fig7.cap", "setting", "the ultrahigh-aspect-ratio membrane is 92 µm thick", quantity="body_thickness", label_as_printed="L", value="92", unit="µm", data_kind="stated")
 ar5000 = f("s4.p11;abs.g3;fig7.cap;s6.p1;s5.p34", "derived", "its aspect ratio L/d is about 5000", quantity="aspect_ratio", label_as_printed="L/d", value="5000", data_kind="computed_by_authors", method="calculation", inputs=[ar_L, ar_d])
-f("s4.p11", "definition", "the paper's aspect ratio L/d divides the full membrane thickness L by the pore diameter d, although reactant enters from both faces", quantity="aspect_ratio")
+f("s4.p11", "definition", "the paper's aspect ratio L/d divides the full membrane thickness L by the pore diameter d, although reactant enters from both faces", quantity="aspect_ratio",
+  term="L/d|Aspect Ratio (L/D)", definition_note="full membrane thickness over pore diameter, both faces open")
 ar_qs = f("s4.p11;s4.p12", "setting", "the AR 5000 membrane was coated in the quasi-static mode of Sec. II B", mentions="Sec. II B")
 ar_N = f("s4.p12;fig7.cap", "setting", "the AR 5000 membrane got 19 ZnO ALD cycles", quantity="cycle_number", value="19", data_kind="stated")
 fig7a_obs = f("s4.p12;fig7a;fig7.cap", "observation", "Fig. 7(a): the EPMA Zn map of the AR 5000 membrane", method="epma")
-s7 = cases_points(PID, "7", "b", "ZnO, 19 cycles, 120 s at 5 Torr DEZ, 19 nm pores, 92 um membrane (EPMA line scan)")
-ref7 = P(PID, "fig7b_zno_ar5000", s7["points"], source=f"points.json: figure 7 panel b, series '{s7['series']}' ({s7['source']})", x_label=s7["x_label_as_printed"], y_label=s7["y_label_as_printed"], note=s7["quality"])
 PTS[("7b", "")] = f("fig7b;fig7.cap;s4.p12", "observation", "Fig. 7(b): relative ZnO coverage across the 92 µm membrane (EPMA line scan)",
-                    quantity="normalized_thickness", qualifiers="reference=maximum;x=distance", points_ref=ref7, data_kind="measured", method="epma")
+                    quantity="normalized_thickness", qualifiers="reference=maximum", data_kind="measured", method="epma")
 o_nodip = f("s4.p12;fig7b", "observation", "the profile shows no dip at the middle of the 92 µm membrane", method="epma")
 claim("s4.p12", "the missing mid-membrane dip means the ZnO coating runs continuously through the pores of the AR 5000 membrane", "asserted", "exposure", "step_coverage", "increases", supports=[o_nodip])
 o_slope7 = f("s4.p12;fig7b", "observation", "the Zn profile slopes across the membrane", method="epma")
@@ -295,7 +296,7 @@ claim("s4.p12", "the slope may reflect how the sample was oriented in the microp
 
 # ---------------------------------------------------------------- III C. FTIR
 sat_al = f("s4.p13", "cited", "the TMA and H2O half-reactions of Al2O3 ALD saturate at exposures of about 10^4 L", quantity="exposure", qualifiers="species=tma", value="1e4", unit="L", data_kind="cited", method="cited", mentions="ref 24")
-f("s4.p13", "definition", "1 Langmuir (L) is 10^-6 Torr s", quantity="exposure")
+f("s4.p13", "definition", "1 Langmuir (L) is 10^-6 Torr s", quantity="exposure", term="Langmuir")
 sat_si = f("s4.p13", "cited", "the SiCl4 and H2O half-reactions of SiO2 ALD need about 10^9 L to saturate", quantity="exposure", qualifiers="species=sicl4", value="1e9", unit="L", data_kind="cited", method="cited", mentions="ref 39")
 claim("s4.p13", "the saturation exposures imply far higher reactive sticking coefficients for TMA and H2O on Al2O3 than for SiCl4 and H2O on SiO2", "asserted",
       "exposure", "initial_sticking_coefficient", "decreases", supports=[sat_al, sat_si])
@@ -402,7 +403,7 @@ claim("s5.p17", "the diameter simulations of Fig. 11 agree very well with the ex
 claim("s5.p18", "whether the coating is diffusion- or reaction-limited is set by the reactive sticking coefficient together with the pore aspect ratio, and each regime leaves a different profile", "asserted",
       "initial_sticking_coefficient;aspect_ratio", "gas_diffusion", "limits")
 eq7_m = f("eq7;s5.p18;s5.p19", "model", "Eq. (7): a molecule A that entered the pore diffuses with probability H to an empty site (B) and reacts there with probability S (C)")
-f("s5.p19", "definition", "S, the reactive sticking coefficient, is the probability that a surface collision ends in reaction; it follows from reactive uptake measurements", quantity="initial_sticking_coefficient")
+f("s5.p19", "definition", "S, the reactive sticking coefficient, is the probability that a surface collision ends in reaction; it follows from reactive uptake measurements", quantity="initial_sticking_coefficient", term="S")
 f("s5.p20;s5.p21", "definition", "H, the hopping coefficient, is the probability that one hop reaches an empty site, from a one-dimensional random walk (ref 41): the most probable number of hops to a site j hops away is j², so H = 1/j²", mentions="ref 41")
 mc_H = f("s5.p21", "model", "with L/4 (half the way to the array midpoint) as the typical distance to an empty site and d as the hop length, j = L/(4d) and H = 16 (d/L)²")
 claim("s5.p22", "in the diffusion-limited regime, S much larger than H, sites fill in order from the entrance with a sharp boundary between coated and uncoated pore, and the result does not depend on S", "asserted",
@@ -410,9 +411,9 @@ claim("s5.p22", "in the diffusion-limited regime, S much larger than H, sites fi
 claim("s5.p22", "in the reaction-limited regime, S much smaller than H, sites fill at random, the profiles are flat and the molecules equilibrate through the membrane before reacting", "asserted",
       "initial_sticking_coefficient", "normalized_thickness", "causes")
 H_a = f("s5.x2;fig12.cap", "derived", "Fig. 12(a), diffusion-limited: d = 65 nm, L = 50 µm, S = 7 × 10^-3 give H = 2.7 × 10^-5, so S is much larger than H",
-        quantity="other", label_as_printed="H", value="2.7e-5", data_kind="computed_by_authors", method="calculation", mentions="Fig. 12a")
+        quantity="other", label_as_printed="hopping coefficient H", value="2.7e-5", data_kind="computed_by_authors", method="calculation", mentions="Fig. 12a")
 H_b = f("s5.x2;fig12.cap;s5.p24", "derived", "Fig. 12(b), reaction-limited: d = 65 nm, L = 0.5 µm, S = 10^-4 give H = 0.27, so S is much smaller than H",
-        quantity="other", label_as_printed="H", value="0.27", data_kind="computed_by_authors", method="calculation", mentions="Fig. 12b")
+        quantity="other", label_as_printed="hopping coefficient H", value="0.27", data_kind="computed_by_authors", method="calculation", mentions="Fig. 12b")
 sim12b_L = f("s5.x2;fig12.cap", "setting", "Fig. 12(b) uses a 0.5 µm thin membrane", quantity="body_thickness", label_as_printed="L", value="0.5", unit="µm", data_kind="model_input", mentions="Fig. 12b")
 sim12b_S = f("s5.x2;fig12.cap", "setting", "Fig. 12(b) uses S = 10^-4", quantity="initial_sticking_coefficient", qualifiers="species=dez", label_as_printed="S", value="1e-4", data_kind="model_input", mentions="Fig. 12b")
 sim12_d = f("s5.x2;fig12.cap", "setting", "both Fig. 12 simulations use d = 65 nm", quantity="feature_width", label_as_printed="d", value="65", unit="nm", data_kind="model_input", mentions="Fig. 12")
@@ -422,7 +423,7 @@ c_12a = claim("s5.x2;fig12a", "the diffusion-limited simulation (Fig. 12a) predi
 c_12b = claim("s5.x2;fig12b", "the reaction-limited simulation (Fig. 12b) predicts a linear time dependence", "asserted", "initial_sticking_coefficient", "surface_coverage", "limits", supports=[H_b])
 fig12a_obs = f("fig12a;fig12.cap", "model", "Fig. 12(a): simulated normalized integrated coverage against exposure time, diffusion-limited", quantity="surface_coverage", method="simulation")
 fig12b_obs = f("fig12b;fig12.cap", "model", "Fig. 12(b): simulated normalized integrated coverage against exposure time, reaction-limited", quantity="surface_coverage", method="simulation")
-H_ftir = f("s5.p25;s5.p26", "derived", "the FTIR membrane, d = 47 nm and L = 50 µm, has H = 1.4 × 10^-5", quantity="other", label_as_printed="H", value="1.4e-5", data_kind="computed_by_authors", method="calculation", inputs=[ftir_d, ftir_L])
+H_ftir = f("s5.p25;s5.p26", "derived", "the FTIR membrane, d = 47 nm and L = 50 µm, has H = 1.4 × 10^-5", quantity="other", label_as_printed="hopping coefficient H", value="1.4e-5", data_kind="computed_by_authors", method="calculation", inputs=[ftir_d, ftir_L])
 claim("s5.p25;fig8a", "with S about 10^-3 for Al2O3 ALD (ref 24) and H = 1.4 × 10^-5, S is much larger than H, and Fig. 8(a) indeed follows a square-root time law as Fig. 12(a) predicts", "asserted",
       "gas_diffusion", "surface_coverage", "limits", supports=[s_al, H_ftir, c_12a])
 claim("s5.p26;fig8b", "with S about 10^-8 for SiO2 ALD (ref 39) and the same H, S is much smaller than H, and Fig. 8(b) follows a linear time law as Fig. 12(b) predicts (the parsed text prints t^4 for the exponent 1)", "asserted",
@@ -438,7 +439,8 @@ gam = f("s5.p34", "setting", "Γ = 0.84 (in 10^15 cm-2, i.e. 8.4 nm-2) for ZnO A
 m_dez = f("s5.p34", "setting", "m = 123 amu for DEZ in the Eq. (10) example", quantity="other", label_as_printed="m", value="123", unit="amu", data_kind="model_input")
 t_min = f("s5.p34", "derived", "with P 5 Torr, L/d 5000, m 123 and Γ 0.84, Eq. (10) gives 11 s as the shortest exposure that coats the pore conformally",
           quantity="pulse_time", qualifiers="step=reactant_A;species=dez", value="11", unit="s", data_kind="computed_by_authors", method="calculation", inputs=[gam, m_dez, qs_pdez], mentions="L/d = 5000;P = 5")
-f("s5.p34", "definition", "the minimum exposure time of Eq. (10) is the exposure step length at which the integrated coverage of the pore reaches 1", quantity="pulse_time")
+f("s5.p34", "definition", "the minimum exposure time of Eq. (10) is the exposure step length at which the integrated coverage of the pore reaches 1", quantity="pulse_time",
+  term="Minimum Exposure Time", definition_note="the exposure step length at which the integrated coverage reaches 1 (Eq. 10), a model estimate")
 claim("s5.p34", "Eq. (10) gives a ready estimate of the exposure needed for conformal coating of porous samples of very high aspect ratio", "asserted", "aspect_ratio", "pulse_time", "increases")
 p13 = f("s5.x3;fig13.cap", "setting", "the Fig. 13 curves take the DEZ pressure as 0.01, 0.1, 1 or 10 Torr, 0.01 to 10 Torr", quantity="partial_pressure", qualifiers="species=dez", value_min="0.01", value_max="10", unit="Torr", data_kind="model_input")
 fig13_obs = f("s5.x3;fig13;fig13.cap", "model", "Fig. 13: the Eq. (10) minimum exposure time plotted over the aspect ratio for ZnO ALD, one curve per DEZ pressure", quantity="pulse_time", qualifiers="step=reactant_A;species=dez", method="simulation", links=p13)
