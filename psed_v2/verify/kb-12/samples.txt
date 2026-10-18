@@ -1,0 +1,186 @@
+===== map()
+Knowledge base map (generated from the data):
+Concept groups (concepts): ald_process 4; process_parameters 15; ald_reactor 4; test_structure 16; deposited_film 32; modelling 7; reaction_monitoring 6; measurement 3
+Families (members): composition 3; conformality 5; growth_amount 7
+Species 38, mechanisms 36, methods 34.
+yim20: material Al2O3 · process TMA / H2O · structure lateral_channel · 27 experiments, 54 claims · main outcomes: film_thickness 61, growth_per_cycle 45, front_slope 33, penetration_depth 20 · panels 32, curves 58
+mat22: material MoS2, TiS2, WS2 · process Mo(NtBu)2(NMe2)2 / H2S, TDMAT / H2S, W(tBuN)2(Me2N)2 / H2S · structure planar · 54 experiments, 62 claims · main outcomes: crystallinity 65, element_ratio 48, resistivity 41, growth_per_cycle 32 · panels 17, curves 8
+gre23: material ZnO · process DEZ / H2O · structure nanoparticle_compact · 4 experiments, 69 claims · main outcomes: reaction_stoichiometry 6, pressure_rise 6, pressure_rate 6, porosity 6 · panels 20, curves 13
+ela03: material Al2O3, SiO2, ZnO · process DEZ / H2O, SICL4 / H2O, TMA / H2O · structure nanopore_membrane · 25 experiments, 54 claims · main outcomes: normalized_thickness 20, surface_coverage 11, film_thickness 3, signal_intensity 2 · panels 27, curves 34
+gor03: material HfO2 · process Hf(NMe2)4 / H2O · structure via_hole · 5 experiments, 18 claims · main outcomes: fill_fraction 2, step_coverage 1, growth_per_cycle 1, film_thickness 1 · panels 4, curves 1
+yli18: material Al2O3, TiO2 · process TMA / H2O, TiCl4 / H2O · structure lateral_channel · 11 experiments, 15 claims · main outcomes: film_thickness 10, surface_coverage 8, penetration_depth 3 · panels 7, curves 29
+gao15: material Al2O3, TiO2 · process TMA / ?, TiCl4 / ?, TiCl4 / H2O · structure lateral_channel · 14 experiments, 21 claims · main outcomes: penetration_depth 8, coated_aspect_ratio 8, film_thickness 6, normalized_thickness 1 · panels 17, curves 4
+art19: material Al2O3, HfO2, SiO2, TiO2 · process TDMACpH / atomic O · structure lateral_channel · 12 experiments, 21 claims · main outcomes: normalized_thickness 12, film_thickness 8, coated_aspect_ratio 6 · panels 6, curves 10
+yim22: material — · process — · structure — · 68 experiments, 93 claims · main outcomes: film_thickness 59, growth_per_cycle 14, front_slope 13, film_density 6 · panels 26, curves 87
+hei24: material — · process — · structure porous_body · 83 experiments, 31 claims · main outcomes: surface_coverage 63, penetration_depth 32, porosity 1 · panels 35, curves 90
+mat23: material Ga2S3, GaSx · process ? / H2S, Ga2(NMe2)6 / ? · structure planar · 14 experiments, 24 claims · main outcomes: growth_per_cycle 14, film_thickness 11, element_fraction 4, binding_energy 4 · panels 21, curves 8
+zou23: material metallic Mo · process MoCl2O2 / atomic hydrogen · structure planar, trench · 8 experiments, 26 claims · main outcomes: growth_per_cycle 13, element_fraction 9, resistivity 6, film_thickness 4 · panels 24, curves 11
+
+===== concept: concept({"words": "penetration depth"})
+penetration_depth | quantity penetration_depth: The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b). · unit µm · family conformality: coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction ·
+penetration_depth | … the family across papers: yim20 53 values (specimen 37, aggregate 1, set-level 14, paper 1) / 13 curves among them / 16 claims / derived 19; gre23 1 values (set-level 1) / 3 claims; ela03 21 values (specimen 3, set-level 17, paper 1) / 18 curves among them / 18 claims / derived 26; gor03 3
+penetration_depth | … values (specimen 3) / 9 claims; yli18 3 values (paper 3) / 3 curves among them / 10 claims / derived 8; gao15 17 values (specimen 16, cited 1) / 12 claims / derived 1; art19 18 values (specimen 4, aggregate 8, set-level 2, cited 4) / 10 curves among them / 10 claims; yim22 39 claims; hei24 32
+penetration_depth | … values (specimen 5, set-level 27) / 27 curves among them / 15 claims; mat23 1 claims; zou23 2 values (specimen 2) / 2 claims · not studied in: mat22 · qualifiers level · yim20 20 values (specimen 18, aggregate 1, set-level 1) / 15 claims / derived 16; ela03 1 values (specimen 1) / 9 claims /
+penetration_depth | … derived 11; yli18 3 values (paper 3) / 3 curves among them / 6 claims / derived 8; gao15 8 values (specimen 8) / 8 claims / derived 1; art19 5 claims; yim22 7 claims; hei24 32 values (specimen 5, set-level 27) / 27 curves among them / 15 claims · not studied in: mat22, gre23, gor03, mat23, zou23
+
+===== values penetration depth: values({"result": "penetration_depth"})
+yim20:cmp:repro | set-level [yim20:cmp:repro] · Yim 2020 · sample 2, 4, 8, and 12 · members: sample 2, sample 4, sample 8, sample 12 · 1 rows · standard deviation of penetration depth at 50 % 19.4–19.4 µm (1) · open with detail(ids=['yim20:cmp:repro']) or narrow with where
+yim20:cmp:A | set [yim20:cmp:A] · Yim 2020 · Series A — pillar layout · 3 rows · penetration depth at 50 % 110–140 µm (3); penetration depth 100–100 µm (1) · open with detail(ids=['yim20:cmp:A']) or narrow with where
+yim20:cmp:B | set [yim20:cmp:B] · Yim 2020 · Series B — objective · 3 rows · penetration depth at 50 % 103–109 µm (3) · open with detail(ids=['yim20:cmp:B']) or narrow with where
+yim20:cmp:C | set [yim20:cmp:C] · Yim 2020 · Series C — feature width · 3 rows · penetration depth at 50 % 10–375 µm (3) · open with detail(ids=['yim20:cmp:C']) or narrow with where
+yim20:cmp:D | set [yim20:cmp:D] · Yim 2020 · Series D — cycles · 2 rows · penetration depth at 50 % 95–115 µm (2); penetration depth 125–125 µm (1) · open with detail(ids=['yim20:cmp:D']) or narrow with where
+yim20:cmp:E | set [yim20:cmp:E] · Yim 2020 · Series E — pulse · 3 rows · penetration depth at 50 % 96–197 µm (3) · open with detail(ids=['yim20:cmp:E']) or narrow with where
+yim20:cmp:F | set [yim20:cmp:F] · Yim 2020 · Series F — purge · 2 rows · penetration depth at 50 % 99–109 µm (2) · open with detail(ids=['yim20:cmp:F']) or narrow with where
+yim20:cmp:fig7 | 6 figure sets of Yim 2020 with 0 curves of this quantity: [yim20:cmp:fig7], [yim20:cmp:fig8b], [yim20:cmp:fig9a], [yim20:cmp:fig9d], [yim20:cmp:fig11a], [yim20:cmp:fig11b] · open one with values(set=<id>)
+ela03:paper | paper-level [ela03:paper] · Elam 2003 · records attached to no specimen and no set · 1 rows · penetration depth (50%) 97.6–97.6 µm (1) · open each with source(id)
+ela03:cmp:sim_al2o3 | set [ela03:cmp:sim_al2o3] · Elam 2003 · simulated Al2O3 exposure series — pulse · 1 rows · penetration depth (front start) 11–11 µm (1) · open with detail(ids=['ela03:cmp:sim_al2o3']) or narrow with where
+ela03:cmp:fig5a | 5 figure sets of Elam 2003 with 0 curves of this quantity: [ela03:cmp:fig5a], [ela03:cmp:fig6a], [ela03:cmp:fig9a], [ela03:cmp:fig10a], [ela03:cmp:fig11a] · open one with values(set=<id>)
+yli18:paper | paper-level [yli18:paper] · Ylilammi 2018 · records attached to no specimen and no set · 1 rows · penetration depth (50%) 134–134 µm (1) · open each with source(id)
+yli18:outside | set [yli18:outside] · Ylilammi 2018 · values outside any comparison set · 1 rows · no numeric values · open with detail(ids=['yli18:outside']) or narrow with where
+yli18:cmp:fig3 | 2 figure sets of Ylilammi 2018 with 0 curves of this quantity: [yli18:cmp:fig3], [yli18:cmp:fig4] · open one with values(set=<id>)
+gao15:paper | paper-level [gao15:paper] · Gao 2015 · records attached to no specimen and no set · 1 rows · penetration depth (50%) 71.5–71.5 µm (1) · open each with source(id)
+gao15:cmp:al_T | set [gao15:cmp:al_T] (series) · Gao 2015 · Al2O3 temperature series · varies: temperature · 1 rows · columns: penetration depth (front end)
+gao15:cmp:al_T | caveats on every row of this set: [gao15:fig3.cap#33]
+gao15:ent:al_300_50_500 | Al2O3 300 °C, 500 nm gap · 100 µm [gao15:s6.p12#3]; 90 µm [gao15:s6.p13#3]
+gao15:cmp:al_T | claims about this set: [gao15:s8.p1#1], [gao15:s6.p12#4], [gao15:s6.p12#5], [gao15:s6.p12#6], [gao15:s6.p13#1]
+gao15:cmp:al_gap | set [gao15:cmp:al_gap] (series) · Gao 2015 · Al2O3 gap series — feature width · varies: feature width · 2 rows · columns: penetration depth (front end)
+gao15:ent:al_300_50_200 | Al2O3 300 °C, 200 nm gap · feature width 200 nm · 25 µm [gao15:s6.p13#2]
+gao15:ent:al_300_50_1000 | Al2O3 300 °C, 1000 nm gap · feature width 1000 nm · 155 µm [gao15:s6.p13#4]
+gao15:cmp:shape | set [gao15:cmp:shape] (series) · Gao 2015 · the Al2O3 and TiO2 line scans compared — material · varies: material · shared: cycles 1109 · 1 rows · columns: penetration depth (front start)
+gao15:ent:al_300_1109_500 | Al2O3 300 °C, 1109 cycles, 500 nm gap · 52 µm [gao15:s6.p21#1]
+gao15:cmp:shape | claims about this set: [gao15:s5.p1#1], [gao15:s8.p1#2], [gao15:s6.p19#1], [gao15:s6.p21#4], [gao15:s6.p23#5], [gao15:s6.p23#6]
+between | — not comparable with set 28: method class (optical_thickness vs optical_image) —
+gao15:outside | set [gao15:outside] (outside any set) · Gao 2015 · values outside any comparison set · 1 rows · columns: penetration depth (front start) | penetration depth (50%) | penetration depth (front end)
+gao15:outside | caveats on every row of this set: [gao15:s6.p18#7]
+gao15:ent:al_300_100_fig4 | Al2O3 300 °C, 100 nm, Fig. 4 chip, 500 nm gap · 65 µm [gao15:s6.p18#1] | 80 µm [gao15:s6.p18#3] | 90 µm [gao15:s6.p18#5]
+between | — not comparable with set 29: method class (optical_image vs simulation); specimen class (film vs none) —
+hei24:cmp:fig2 | set [hei24:cmp:fig2] · Heikkinen 2024 · the three geometries at the baseline — structure · 3 rows · penetration depth (50%) 114–177 µm (3) · open with detail(ids=['hei24:cmp:fig2']) or narrow with where
+hei24:cmp:fig3_1e5 | set [hei24:cmp:fig3_1e5] · Heikkinen 2024 · the three geometries at the highest exposure — structure · 2 rows · penetration depth (50%) 161–229 µm (2) · open with detail(ids=['hei24:cmp:fig3_1e5']) or narrow with where
+hei24:cmp:fig7_R300 | set [hei24:cmp:fig7_R300] · Heikkinen 2024 · the exposure series at R 300 µm · 3 rows · no numeric values · open with detail(ids=['hei24:cmp:fig7_R300']) or narrow with where
+hei24:cmp:fig7_R200 | set [hei24:cmp:fig7_R200] · Heikkinen 2024 · the exposure series at R 200 µm · 3 rows · no numeric values · open with detail(ids=['hei24:cmp:fig7_R200']) or narrow with where
+hei24:cmp:fig7_R100 | set [hei24:cmp:fig7_R100] · Heikkinen 2024 · the exposure series at R 100 µm · 3 rows · no numeric values · open with detail(ids=['hei24:cmp:fig7_R100']) or narrow with where
+hei24:cmp:fig3 | 3 figure sets of Heikkinen 2024 with 27 curves of this quantity: [hei24:cmp:fig3], [hei24:cmp:fig7a], [hei24:cmp:fig7b] · open one with values(set=<id>)
+between | 33 of 37 sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where
+legend | kinds: (k1) read from a figure; (k2) computed by the paper's authors; (k3) computed by this knowledge base, not by the paper's authors; (k7) simulated by the paper's authors; unmarked: measured or stated
+legend | basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+between | in yim20: 53 values · 16 claims (with the family conformality) · in gre23: 1 values · 3 claims (with the family conformality) · in ela03: 21 values · 18 claims (with the family conformality) · in gor03: 3 values · 9 claims (with the family conformality) · in yli18: 3 values · 10 claims (with the
+between | … family conformality) · in gao15: 17 values · 12 claims (with the family conformality) · in art19: 18 values · 10 claims (with the family conformality) · in yim22: 0 values · 39 claims (with the family conformality) · in hei24: 32 values · 15 claims (with the family conformality) · in mat23: 0
+legend | the texts of the 2 caveats cited above are not shown, to stay within the budget: open them with detail(ids=[caveat ids])
+between | … values · 1 claims (with the family conformality) · in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+
+===== values initial sticking coefficient: values({"result": "initial_sticking_coefficient"})
+yim20:cmp:repro | set-level [yim20:cmp:repro] · Yim 2020 · sample 2, 4, 8, and 12 · members: sample 2, sample 4, sample 8, sample 12 · 1 rows · TMA sticking coefficient 0.004–0.004 (1) · open with detail(ids=['yim20:cmp:repro']) or narrow with where
+yim20:cmp:E | set [yim20:cmp:E] · Yim 2020 · Series E — pulse · 1 rows · water sticking coefficient 0.0003–0.0003 (1) · open with detail(ids=['yim20:cmp:E']) or narrow with where
+yim20:cmp:sims | set [yim20:cmp:sims] · Yim 2020 · model simulations — feature width, cycles · 10 rows · TMA sticking coefficient 0.012–0.012 (10) · open with detail(ids=['yim20:cmp:sims']) or narrow with where
+between | — not comparable with set 3: method class (simulation vs none) —
+ela03:cmp:sim_al2o3 | set [ela03:cmp:sim_al2o3] · Elam 2003 · simulated Al2O3 exposure series — pulse · 3 rows · TMA sticking coefficient 0.001–0.001 (3) · open with detail(ids=['ela03:cmp:sim_al2o3']) or narrow with where
+ela03:cmp:sim_zno_t | set [ela03:cmp:sim_zno_t] · Elam 2003 · simulated ZnO exposure series — pulse · 4 rows · initial sticking coefficient (DEZ) 0.007–0.007 (4) · open with detail(ids=['ela03:cmp:sim_zno_t']) or narrow with where
+ela03:cmp:sim_regime | set [ela03:cmp:sim_regime] · Elam 2003 · the two kinetic regimes of Fig. 12 — initial sticking coefficient, body thickness · 2 rows · initial sticking coefficient (DEZ) 0.0001–0.007 (2) · open with detail(ids=['ela03:cmp:sim_regime']) or narrow with where
+yli18:cmp:films | set [yli18:cmp:films] · Ylilammi 2018 · the two measured films — material · 2 rows · initial sticking coefficient (TiCl4) 0.1–0.1 (1); TMA sticking coefficient 0.00572–0.00572 (1) · open with detail(ids=['yli18:cmp:films']) or narrow with where
+between | — not comparable with set 7: method class (calculation vs none); specimen class (film vs none) —
+yli18:cmp:sim_tp | set [yli18:cmp:sim_tp] · Ylilammi 2018 · the pulse-length series · 4 rows · TMA sticking coefficient 0.01–0.01 (4) · open with detail(ids=['yli18:cmp:sim_tp']) or narrow with where
+yli18:cmp:sim_H | set [yli18:cmp:sim_H] · Ylilammi 2018 · the channel-height series — feature width · 4 rows · TMA sticking coefficient 0.01–0.01 (4) · open with detail(ids=['yli18:cmp:sim_H']) or narrow with where
+yli18:outside | set [yli18:outside] · Ylilammi 2018 · values outside any comparison set · 1 rows · TMA sticking coefficient 0.01–0.01 (1) · open with detail(ids=['yli18:outside']) or narrow with where
+art19:cmp:fits | set [art19:cmp:fits] · Arts 2019 · the four r determinations compared — material · 4 rows · initial sticking coefficient (atomic O) 0.0001–0.0001 (4) · open with detail(ids=['art19:cmp:fits']) or narrow with where
+yim22:folded | 27 sets of Yim 2022 folded to stay within the budget: [yim22:paper], [yim22:cmp:fig2], [yim22:cmp:fig4a], [yim22:cmp:fig4b], [yim22:cmp:fig4c], [yim22:cmp:fig4d], [yim22:cmp:fig4e], [yim22:cmp:fig4g], [yim22:cmp:fig4h], [yim22:cmp:fig4i], [yim22:cmp:fig5a], [yim22:cmp:fig5b], [yim22:cmp:tab3_T], [yim22:cmp:tab3_M], [yim22:cmp:tab3_c], [yim22:cmp:fig7], [yim22:cmp:fig4a], [yim22:cmp:fig4b], [yim22:cmp:fig4c], [yim22:cmp:fig4d], [yim22:cmp:fig4e], [yim22:cmp:fig4g], [yim22:cmp:fig4h], [yim22:cmp:fig4i], [yim22:cmp:fig5a], [yim22:cmp:fig5b], [yim22:outside] · open them with values(result="initial_sticking_coefficient", paper="yim22") or values(set=<id>)
+hei24:folded | 18 sets of Heikkinen 2024 folded to stay within the budget: [hei24:cmp:fig2], [hei24:cmp:fig3_1e5], [hei24:cmp:fig3_1e4], [hei24:cmp:fig4], [hei24:cmp:mR_sphere], [hei24:cmp:mR_slab], [hei24:cmp:sigma_sphere], [hei24:cmp:sigma_slab], [hei24:cmp:beta_sphere], [hei24:cmp:beta_slab], [hei24:cmp:dpore_sphere], [hei24:cmp:dpore_slab], [hei24:cmp:fig7_R300], [hei24:cmp:fig7_R200], [hei24:cmp:fig7_R100], [hei24:cmp:fig8a], [hei24:cmp:fig8b], [hei24:outside] · open them with values(result="initial_sticking_coefficient", paper="hei24") or values(set=<id>)
+between | 56 of 56 sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where
+legend | kinds: (k1) read from a figure; (k2) computed by the paper's authors; (k5) a model input; unmarked: measured or stated
+legend | basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+between | in yim20: 13 values · 3 claims · in ela03: 2 values · 9 claims · 9 settings · in gor03: 1 values · 3 claims · in yli18: 3 values · 3 claims · in art19: 1 values · 1 claims · in yim22: 25 values · 8 claims · 8 settings · in hei24: 1 values · 2 claims · 10 settings · not studied in: mat22, gre23,
+between | … gao15, mat23, zou23
+
+===== values particle-geometry set (hei24:cmp:fig2, the three geometries at the baseline): values({"set": "hei24:cmp:fig2"})
+hei24:cmp:fig2 | set [hei24:cmp:fig2] (series) · Heikkinen 2024 · the three geometries at the baseline — structure · varies: structure · 3 members · columns: member | penetration depth (50%) | surface coverage
+hei24:cmp:fig2 | caveats on every member row: [hei24:s5.p1#2]
+hei24:simrun:fig2:sphere | baseline run, sphere · structure porous_sphere · 177 µm (k2) [hei24:s7.p1#3] | curve, 4 points, series 'Sphere (s = 2)' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig2b#c1] · caveats [hei24:s8.p2#1]
+hei24:simrun:fig2:cylinder | baseline run, cylinder · structure porous_cylinder · 133 µm (k2) [hei24:s7.p1#4] | curve, 4 points, series 'Cylinder (s = 1)' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig2b#c2] · caveats [hei24:s7.p1#6]
+hei24:simrun:fig2:slab | baseline run, slab · structure porous_slab · 114 µm (k2) [hei24:s7.p1#5] | curve, 4 points, series 'Slab (s = 0)' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig2b#c3] · caveats [hei24:s8.p2#1]
+hei24:cmp:fig2 | 3 values computed by this knowledge base, not by the paper's authors are not listed here (detail(ids=[member ids], parts=["computed"]))
+legend | kinds: (k1) read from a figure; (k2) computed by the paper's authors; unmarked: measured or stated
+legend | basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+hei24:s8.p2#1 | caveat · The text places the Fig. 2 depths (177 and 114 µm) at R = 200 µm in Fig. 3 while Table 1 gives the baseline radius as 300 µm; the baseline here follows Table 1.
+hei24:s7.p1#6 | caveat · The cylinder equation neglects the ends (a height above about a hundred radii); real cylinders with few radii of height approach the sphere.
+between | also in yim20: 53 values · 16 claims (with the family conformality) · also in gre23: 1 values · 4 claims (with the family conformality) · also in ela03: 32 values · 25 claims (with the family conformality) · also in gor03: 3 values · 10 claims (with the family conformality) · also in yli18: 11
+between | … values · 10 claims (with the family conformality) · also in gao15: 17 values · 12 claims (with the family conformality) · also in art19: 18 values · 10 claims (with the family conformality) · also in yim22: 4 values · 39 claims (with the family conformality) · also in mat23: 0 values · 1 claims
+between | … (with the family conformality) · also in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+
+===== curve measured Elam profile: curve({"id": "ela03:fig5a#c1"})
+ela03:fig5a#c1 | curve [ela03:fig5a#c1] · Elam 2003 Fig. 5a · series '1' · 26 points · kind: read from a figure · set [ela03:cmp:fig5a]
+ela03:fig5a#c1 | x: distance from the entrance (distance) in µm · printed label 'Distance (μm)'
+ela03:fig5a#c1 | y: normalized thickness (normalized_thickness) in 1 · printed label 'Relative ZnO Coverage'
+ela03:fig5a#c1 | conditions: pulse 1; cycles 64 cycle
+ela03:fig5a#c1 | uncertainty: ± 0.0085 (digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′); measurement uncertainty)
+ela03:fig5a#c1 | points (x, y): (0, 0.17), (1.1, 0.88), (2, 0.71), (3.1, 0.65), (4.1, 0.61), (5, 0.51), (6, 0.42), (7, 0.3), (8, 0.22), (9, 0.15), (10, 0.11), (11, 0.09), (12, 0.08), (13, 0.07), (14, 0.05), (15, 0.05), (16.2, 0.04), (17.2, 0.04), (18.4, 0.04), (19.2, 0.04), (20, 0.04), (21, 0.04), (22, 0.03),
+ela03:fig5a#c1 | … (23, 0.03), (24.4, 0.03), (25.3, 0.03)
+ela03:fig5a#c1 | provenance: vlm gemini-3.8-flash, prompt 1cb472bef385
+
+===== values growth per cycle, van der Zouw: values({"result": "growth_per_cycle", "paper": "zou23"})
+zou23:shared | Zouw 2023 · every specimen set of this paper shares: material metallic Mo; pressure 1e-8 hPa; pulse (MoCl2O2, reactant A) 1 s; pulse (atomic hydrogen, reactant B) 29 s; purge after co-reactant 15 s; reactant A MoCl2O2; reactant B atomic hydrogen; reactor home-built hot-wall HWALD reactor;
+zou23:shared | … structure planar; substrate Si · usual, unless a set varies it or lacks it: purge after precursor 15 s; temperature 350 °C
+zou23:paper | paper-level [zou23:paper] · records attached to no specimen and no set · 1 rows · columns: growth per cycle
+zou23:paper | paper-level · under figure panels outside any set · curve, 6 points · x 0 to 2 s (k1) ± 0.000258 (digitized) [zou23:fig1a#c1]; curve, 12 points · x 0 to 30 s (k1) ± 0.00025 (digitized) [zou23:fig1b#c1]; curve, 8 points · x 1 to 15 s (k1) ± 0.000255 (digitized) [zou23:fig1c#c1]; curve, 8 points ·
+zou23:paper | … x 1 to 15 s (k1) ± 3e-05 (digitized) [zou23:fig1d#c1]; curve, 17 points · x 1.63e+03 to 2.6e+03 °C (k1) ± 0.000234 (digitized) [zou23:fig1e#c1]
+zou23:cmp:ald_T | set [zou23:cmp:ald_T] (series) · the ALD temperature series · varies: temperature · 2 rows · columns: growth per cycle (planar)
+zou23:ent:ald250 | ALD Mo film, 250 °C · temperature 250 °C · 0.022 nm/cycle [zou23:s7.p8#9]
+zou23:ent:ald450 | ALD Mo film, 450 °C · temperature 450 °C · 0.022 nm/cycle [zou23:s7.p8#8]
+zou23:cmp:ald_T | 11 claims about this set: open with detail(ids=['zou23:cmp:ald_T'], parts=["claims"])
+zou23:cmp:cvd_T | set [zou23:cmp:cvd_T] (series) · the CVD temperature series · varies: temperature · shared: purge after precursor 0 s · 1 rows · columns: growth per cycle (planar) | growth per cycle
+zou23:ent:cvd350 | CVD Mo film, 350 °C · 0.080 nm/cycle [zou23:s7.p8#6] | curve, 3 points, series 'CVD SE' · x 250 to 450 °C (k1) ± 0.000251 (digitized) [zou23:fig2#c1]; curve, 3 points, series 'CVD XRR' · x 250 to 450 °C (k1) ± 0.000129 (digitized) [zou23:fig2#c2]
+zou23:cmp:cvd_T | claims about this set: [zou23:s7.p8#1], [zou23:s7.p8#2], [zou23:s9.p5#1]
+zou23:cmp:mode | set [zou23:cmp:mode] (series) · ALD against pulsed CVD at the standard temperature — material · varies: material · 1 rows · columns: growth per cycle (planar) | growth per cycle
+zou23:cmp:mode | caveats on every row of this set: [zou23:s7.p4#1], [zou23:s8.p3#2]
+zou23:ent:ald350 | ALD Mo film, 350 °C · 0.022 nm/cycle [zou23:s7.p8#5] | curve, 6 points · x 0 to 2 s (k1) ± 0.000258 (digitized) [zou23:fig1a#c1]; curve, 12 points · x 0 to 30 s (k1) ± 0.00025 (digitized) [zou23:fig1b#c1]; curve, 8 points · x 1 to 15 s (k1) ± 0.000255 (digitized) [zou23:fig1c#c1]; curve, 8 points
+zou23:ent:ald350 | … x 1 to 15 s (k1) ± 3e-05 (digitized) [zou23:fig1d#c1]; curve, 17 points · x 1.63e+03 to 2.6e+03 °C (k1) ± 0.000234 (digitized) [zou23:fig1e#c1]
+zou23:cmp:mode | 10 claims about this set: open with detail(ids=['zou23:cmp:mode'], parts=["claims"])
+zou23:cmp:fig2 | set [zou23:cmp:fig2] (figure) · Fig. 2 replicates (measurement technique and process) · 4 rows · columns: growth per cycle
+zou23:fig2#c1 | CVD SE · curve, 3 points, series 'CVD SE' · x 250 to 450 °C (k1) ± 0.000251 (digitized) [zou23:fig2#c1]
+zou23:fig2#c2 | CVD XRR · curve, 3 points, series 'CVD XRR' · x 250 to 450 °C (k1) ± 0.000129 (digitized) [zou23:fig2#c2]
+zou23:fig2#c3 | ALD SE · curve, 7 points, series 'ALD SE' · x 150 to 450 °C (k1) ± 0.000275 (digitized) [zou23:fig2#c3]
+zou23:fig2#c4 | ALD XRR · curve, 4 points, series 'ALD XRR' · x 150 to 450 °C (k1) ± 0.000249 (digitized) [zou23:fig2#c4]
+legend | kinds: (k1) read from a figure; unmarked: measured or stated
+legend | basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+zou23:s7.p4#1 | caveat · The hot-wire temperature of Fig. 1(e) is estimated from the wire power through an earlier setup, not measured here.
+zou23:s8.p3#2 | caveat · Mass spectrometry was run outside the standard ALD conditions to protect the sensor.
+between | also in yim20: 45 values · 5 claims · also in mat22: 32 values · 7 claims · also in gre23: 5 values · 7 claims · also in gor03: 1 values · 0 claims · also in yim22: 14 values · 0 claims · also in mat23: 14 values · 4 claims · not studied in: ela03, yli18, gao15, art19, hei24
+
+===== detail by location: detail({"ids": ["yli18:s8.p24", "yli18:fig6"]})
+yli18:s8.p24 | location [yli18:s8.p24] · Ylilammi 2018 · paragraph · 19 records
+yli18:s8.p21#10 | setting · carrier gas: N2 · kind: stated by the paper · source element: yli18:s8.p21 · statement: nitrogen served as purge and carrier gas
+yli18:s8.p24#1 | setting · structure: pillarhall_3 · kind: stated by the paper · source element: yli18:s8.p24 · statement: the chips were PillarHall third-generation prototypes by VTT
+yli18:s5.p3#6 | setting · substrate: Si · kind: stated by the paper · source element: yli18:s5.p3 · statement: the growth surface is the silicon of the all-silicon LHAR chip
+yli18:s8.p24#2 | setting · thermalization time: 10 min · kind: stated by the paper · source element: yli18:s8.p24 · statement: the chips were held 10 min at the growth temperature in the chamber before the first pulse
+yli18:s8.p24#3 | setting · TMA pulse: 0.1 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: Al2O3: TMA pulse 0.1 s
+yli18:s8.p24#4 | setting · purge after precursor: 4.0 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: Al2O3: purge after TMA 4.0 s
+yli18:s8.p24#5 | setting · water pulse: 0.1 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: Al2O3: water pulse 0.1 s
+yli18:s8.p24#6 | setting · purge after co-reactant: 4.0 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: Al2O3: purge after water 4.0 s
+yli18:s8.p24#7 | setting · cycles: 500 · kind: stated by the paper · source element: yli18:s8.p24 · statement: Al2O3: 500 cycles
+yli18:s8.p24#8 | value · thickness (planar): 50 nm · kind: stated by the paper · method: reflectometry, ex situ · source element: yli18:s8.p24 · statement: the Al2O3 sequence gave approximately 50 nm of film · caveats [yli18:s8.p25#17], [yli18:s8.p24#17]
+yli18:s8.p24#9 | setting · N2 flow: 150 sccm · kind: stated by the paper · source element: yli18:s8.p24 · statement: nitrogen flowed at 150 sccm through each reactant line
+yli18:s8.p24#10 | setting · pulse (TiCl4, reactant A): 0.1 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: TiO2: reactant pulses 0.1 s
+yli18:s8.p24#11 | setting · purge after precursor: 4.0 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: TiO2: purges 4.0 s
+yli18:s8.p24#12 | setting · water pulse: 0.1 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: TiO2: water pulse 0.1 s
+yli18:s8.p24#13 | setting · purge after co-reactant: 4.0 s · kind: stated by the paper · source element: yli18:s8.p24 · statement: TiO2: purge after water 4.0 s
+yli18:s8.p24#14 | setting · cycles: 1000 · kind: stated by the paper · source element: yli18:s8.p24 · statement: TiO2: 1000 pulse sequences
+yli18:s8.p24#15 | value · thickness (planar): 50 nm · kind: stated by the paper · method: reflectometry, ex situ · source element: yli18:s8.p24 · statement: the TiO2 sequence gave approximately 50 nm of film · caveats [yli18:s8.p25#17], [yli18:s8.p24#17]
+yli18:s8.p24#16 | setting · pressure: 300 Pa · kind: stated by the paper · source element: yli18:s8.p24 · statement: the chamber pressure during both runs was about 300 Pa
+yli18:s8.p24#17 | caveat · The approximately 50 nm film thickness is the planar value the sequence leads to, stated without a measurement. · source element: yli18:s8.p24
+yli18:fig6 | location [yli18:fig6] · Ylilammi 2018 · panel · 16 records · 1 panel
+yli18:fig6 | figure panel · Fig. 6 · plot · Measured and calculated Al2O3 film thickness profiles along the lateral channel · imported
+yli18:s8.p21#4 | setting · reactant A: TMA · kind: stated by the paper · source element: yli18:s8.p21 · statement: Al2O3 reactant A: trimethylaluminum
+yli18:s8.p21#5 | setting · reactant B: H2O · kind: stated by the paper · source element: yli18:s8.p21 · statement: Al2O3 reactant B: water
+yli18:fig6.cap#1 | setting · feature width: 500 nm · kind: stated by the paper · source element: yli18:fig6.cap · statement: the channels' nominal gap is 0.5 µm high
+yli18:fig6.cap#2 | setting · feature depth: 1 mm · kind: stated by the paper · source element: yli18:fig6.cap · statement: the channel length L was 1 mm
+yli18:fig6.cap#3 | value · aspect ratio: 2000 · kind: computed by the paper's authors · source element: yli18:fig6.cap · statement: the structural aspect ratio of the measured channels is 2000
+yli18:s9.p1#1 | method note: Figs. 6 and 7: the measured and fitted thickness profiles of the Al2O3 and TiO2 films · source element: yli18:s9.p1
+yli18:s9.p5#1 | method note: the Al2O3 film keeps a constant thickness from the channel start almost to the penetration depth · source element: yli18:s9.p5
+yli18:fig6#1 | method note: Fig. 6: the fitted thickness profile of the Al2O3 film · source element: yli18:fig6 · caveat [yli18:s8.p25#17]
+yli18:fig6#2 | method note: Fig. 6: the measured thickness profile of the Al2O3 film · source element: yli18:fig6 · caveat [yli18:s8.p25#17]
+yli18:fig6#c1 | value · thickness: curve, 25 points, series 'Fitting result' · x 0 to 164 µm · plateau 52.3 nm · half value crossing 134 µm · kind: simulated by the paper's authors · source element: yli18:fig6 · statement: a curve of Fig. 6: thickness against distance from the entrance, read by the figure stage
+yli18:fig6#c1 | … and imported by rule
+yli18:fig6#c2 | value · thickness: curve, 63 points, series 'Measured' · x 0.5 to 162 µm · plateau 52.6 nm · half value crossing 134 µm · kind: read from a figure · uncertainty: ± 0.512 (digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′); measurement
+yli18:fig6#c2 | … uncertainty) · source element: yli18:fig6 · statement: a curve of Fig. 6: thickness against distance from the entrance, read by the figure stage and imported by rule
+yli18:fig6#d1_1 | value · thickness in the channel: 52.34 nm · kind: computed by this knowledge base, not by the paper's authors · source element: yli18:fig6 · statement: plateau of the curve [yli18:fig6#c1], computed by this knowledge base by the P86 rule
+yli18:fig6#d1_2 | value · penetration depth (50%): 133.7 µm · kind: computed by this knowledge base, not by the paper's authors · source element: yli18:fig6 · statement: half value crossing of the curve [yli18:fig6#c1], computed by this knowledge base by the P86 rule
+yli18:fig6#d2_1 | value · thickness in the channel: 52.65 nm · kind: computed by this knowledge base, not by the paper's authors · source element: yli18:fig6 · statement: plateau of the curve [yli18:fig6#c2], computed by this knowledge base by the P86 rule
+yli18:fig6#d2_2 | value · penetration depth (50%): 134.4 µm · kind: computed by this knowledge base, not by the paper's authors · source element: yli18:fig6 · statement: half value crossing of the curve [yli18:fig6#c2], computed by this knowledge base by the P86 rule

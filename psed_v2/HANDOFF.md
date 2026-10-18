@@ -1655,6 +1655,33 @@ built from the three pilot papers only (elements.PAPERS; the Elam draft stays ou
   is 0.43 on average (sampled continuous lines differ in sampling position, as the Directive 5′ repeat sample showed; marker series
   agree 0.87–1.0); the nine other papers come in the next directive.
 
+## Directive 7′ rules (2026-10-17, commit 82314ad), one sentence each
+
+- P89 (definition resolution). A paper's definition facts carry `term` (the symbol or phrase as printed, `|`-separated), `quantity` and `definition_note`; the importer resolves a label, condition key, ratio part or normalization denominator through them after the ontology fails or fails the unit check, and P89b: a term the paper defines without an ontology quantity resolves to nothing, never to an ontology guess (lone symbols case-sensitive, worded labels by their words).
+- P90 (label rules). The resolver tries the whole label with plurals, the label minus its trailing symbol, the prefixed head word, the lone symbol case-sensitively, A/B through `ratio_of` and the transforms, the subscript word, the head word confirmed by the unit's dimension, the species-prefixed entry, dimension disambiguation, the x/y role tie-break (P90c), a worded ratio (P90a), the bracket unit inside ln(...) (P90b), a counted noun ('cycle count', P90d), and a length unit for a per-cycle entry; each failure has its own unmapped reason.
+- P91 (cells and peaks). Printed cell and peak rows name their quantity in the record label ('cell <value> · <name>', 'peak <label> · <name>') and derived values are stored in the canonical unit of their entry (P91b), the unit table deciding.
+- P92 (detail by location). `detail(ids=[<paper>:sN.pM | <paper>:tabN.rXcY | <paper>:figNx | <paper>:figN])` returns the records at a location: the facts whose evidence names the element, the panel's imported curves, cells and peaks, and the inventory line, in page order.
+
+## kb-12 import table (data panels; imported panels, unmapped labels before Part 2 at 82314ad → after; fields resolved through the paper's definitions)
+
+| paper | data panels | imported before → after | unmapped before → after | P89 fields |
+|---|---|---|---|---|
+| 10.1039_d0cp03358h yim20 | 18 | 15 → 15 | 5 → 4 | 0 |
+| 10.1021_acs.chemmater.2c01154 mat22 | 8 | 8 → 8 | 1 → 3 (the figure stage's series labels now classified; two 'unit_unknown' and one cell-quantity reason) | 0 |
+| 10.1116_6.0003182 gre23 | 11 | 8 → 8 | 3 → 3 | 0 |
+| 10.1021_cm0303080 ela03 | 16 | 1 → 16 | 17 → 2 | 24 |
+| 10.1002_cvde.200390005 gor03 | 1 | 0 → 1 | 1 → 0 | 1 |
+| 10.1063_1.5028178 yli18 | 6 | 6 → 6 | 22 → 0 | 9 |
+| 10.1116_1.4903941 gao15 | 2 | 2 → 2 | 1 → 0 | 1 |
+| 10.1021_acs.jpcc.9b08176 art19 | 2 | 0 → 2 | 3 → 1 | 4 |
+| 10.1039_d1cp04758b yim22 | 23 | 15 → 18 | 12 → 5 (all P89b) | 13 |
+| 10.1039_d3cp05639b hei24 | 32 | 0 → 16 | 51 → 21 (all P89b) | 55 |
+| 10.1116_6.0002993 mat23 | 12 | 2 → 4 | 7 → 5 | 0 |
+| 10.1116_6.0002804 zou23 | 16 | 9 → 9 | 6 → 6 | 0 |
+| all | 147 | 66 → 105 | 129 → 50 | 107 |
+
+Open points after kb-12: (1) the 50 unmapped labels are of three kinds: the paper's own symbols without an ontology quantity (P89b: reactant number density, τ/ε, s̄, ξ, P_d, channel filling, the scaled slope, diffusion coefficients), compound series axes ('material and exposure time', 'particle radius and reactant exposure', 'measurement technique and process') that name two quantities, and single-paper axes (optical: wavelength, transmittance, photon energy; SIMS concentration; 'Time (cycles)'); none is a resolver error. (2) The probe battery has grown to 457 calls and 221,223 tokens (83,282 at the kb-fig3 reference); the per-call maxima stay under budget but the battery itself is now long. (3) The sentence-only check needs allow-list rows for element names read as gas species (oxygen → o2, hydrogen → h2, air) and for instrument parameters; a rule distinguishing an element word from a molecule id would remove most of the 60 rows added in Part 2.
+
 ## Directive 7′ progress (2026-10-17): P89–P92 (commit 82314ad), then the nine papers one by one
 
 | paper | key | facts | curves imported | sets | P89 fields | pending added | problems | commit |
