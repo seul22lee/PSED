@@ -1875,6 +1875,11 @@ def setting_extras(S, result, paper=None, where=None):
         for kk, name, rec, lab in paper_records(T, result, S, RESULT_TYPES):    # P79: a result of the setting attached to no entity (a calibration's measured temperature)
             if rec.get("kind") != "computed_by_kb":
                 res.append((f"{k}:paper", kk, name, rec))
+        for f in T.rows:                                                        # P95: a cited work's value of the setting (the card counts it under home 'cited')
+            if f["type"] == "cited" and "#" in f["fact_id"] and f["quantity"] and text_of(f) and hit(ckey(f), name_of(ckey(f), f)):
+                if where and not _where_ok(T, f["parent"], where):
+                    continue
+                res.append((f["parent"] if f["parent"] in T.byid else f"{k}:paper", ckey(f), name_of(ckey(f), f), record(T, f)))
         for c in T.comps:                                                       # P84: a curve, cell or derived scalar of the setting read from a figure is a result of it, not a setting
             if T.is_figset(c["fact_id"]):
                 for kk, name, rec in own_records(T, c["fact_id"], result, S):
@@ -1993,9 +1998,12 @@ def values(result, paper=None, where=None):
             if m:
                 rows[e] = m
         own = {c["fact_id"]: own_records(T, c["fact_id"], result, S) for c in T.comps}
+        qs_c = {result} | {q for q, n in L.NAMES.items() if n == result and "{" not in q} | set(concept_ids(result))
+        cited = [] if (where or S) else [f for f in T.rows if f["type"] == "cited" and "#" in f["fact_id"] and f["quantity"] and text_of(f)
+                                          and (ckey(f).split("{")[0].split("[")[0] in qs_c or name_of(ckey(f), f) == result)]   # P95: cited works' values, home 'cited
         ins = input_rows(T, result, S, False) if not (where or S) else {}       # for a settings entry the inputs are level rows of the table
         pap = paper_records(T, result, S, ("setting",) if S else RESULT_TYPES + ("setting",)) if not where else []
-        if not rows and not any(own.values()) and not ins and not pap:
+        if not rows and not any(own.values()) and not ins and not pap and not cited:
             continue
         size = {c["fact_id"]: len(T.member_entities(c)) for c in T.comps}
         grids = {c["fact_id"]: grid_info(T, c) for c in T.comps if c["kind"] == "grid"} if not S else {}   # P80: a grid renders from its full member list
@@ -2033,6 +2041,11 @@ def values(result, paper=None, where=None):
                 rs = merged([dict(entity=cid, name="set", settings=[], key=kk, result_name=name, record=rec) for kk, name, rec in own[cid]])
                 groups.append(dict(base, id=cid, label=comparison_label(T, c) + " · members: " + ", ".join(T.label(m) for m in T.member_entities(c)), kind="aggregate",
                                    rows=rs, claims=[x["fact_id"] for x in claims_of(T, [cid])], axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["set"]))
+        if cited:                                                               # P95: the values of cited works, one row per cited work
+            rs = merged([dict(entity=f["parent"] if f["parent"] in T.byid and T.byid[f["parent"]]["type"] == "cited" else f"{k}:refs", name=(cited_name(T, f["parent"]) if f["parent"] in T.byid and T.byid[f["parent"]]["type"] == "cited" else "cited work"),
+                               settings=[], key=ckey(f), result_name=name_of(ckey(f), f), record=record(T, f)) for f in cited])
+            groups.append(dict(base, id=f"{k}:cited", label="values of cited works, not this paper's", kind="cited", rows=rs,
+                               axes={r["key"]: axes_of(r["key"], r["record"]) for r in rs}, roles=["cited"]))
         if pap:                                                                 # P79: records attached to no specimen and no set, one row each
             rs = merged([dict(entity=f"{k}:paper", name="paper-level", settings=[dict(key="under", name="under", text=lab)], key=kk, result_name=name, record=rec) for kk, name, rec, lab in pap])
             groups.append(dict(base, id=f"{k}:paper", label="records attached to no specimen and no set", kind="paper", rows=rs,
@@ -2130,6 +2143,38 @@ def curve(cid, n_max=40):
                 points=[[g(x, 4), g(y, 4)] for x, y in pts], n_points=len(c["points"]), thinned=len(c["points"]) > n_max,
                 conditions=[dict(key=q, name=n, text=t) for q, n, t in T.curve_conditions(cid)], derived=[dict(id=d["id"], name=L.NAMES.get(d["quantity"], d["quantity"]), method=d["method"], value=g(d["value"], 3), unit=d["unit"]) for d in T.derived_of(cid)],
                 flags=c.get("flags", []), uncertainty=record(T, T.byid[cid]).get("uncertainty"), provenance=c.get("provenance", {}))
+
+
+def sets_with_quantity(T, qids):
+    """P93: the comparison sets of a paper that hold a value of one of the quantities: a member with a result of it, a curve of it under the
+    set, or a record the set owns."""
+    out = []
+    for c in T.comps:
+        cid = c["fact_id"]
+        hit = any(T.byid[x]["quantity"] in qids for x in T.curves if T.byid[x]["parent"] == cid)
+        if not hit:
+            for e in set_members_all(T, c):
+                if any(k.split("{")[0].split("[")[0] in qids for k in T.results(e)):
+                    hit = True; break
+        if not hit:
+            hit = any(f["quantity"] in qids for f in T.own(cid))
+        if hit:
+            out.append(cid)
+    return out
+
+
+def empty_pair(result, k):
+    """P94: what a paper holds of a quantity when values() finds no value row: (claims, curves, panels, definitions) counts, or None when
+    the words name no quantity."""
+    qids = ({result} if result in L.ENTRIES else set()) | set(concept_ids(result)) | {q for q, n in L.NAMES.items() if n == result}
+    if not qids:
+        return None
+    T = TREES[k]
+    claims = sum(1 for f in T.rows if f["type"] == "claim" and set((f["cause"] + ";" + f["effect"]).split(";")) & qids)
+    curves = sum(1 for x in T.curves if T.byid[x]["quantity"] in qids)
+    panels = sum(1 for i in T.inventory if set(i.get("quantities") or []) & qids)
+    defs = sum(1 for f in T.rows if f["type"] == "definition" and f["quantity"] in qids)
+    return dict(claims=claims, curves=curves, panels=panels, definitions=defs, qids=sorted(qids))
 
 
 def set_members_all(T, c):

@@ -301,13 +301,79 @@ DESCEND = ("How to use the knowledge base: resolve the question's words with con
            "source gives the paper's own words behind an id. Prefer one concept call over repeated searches; a call identical to an earlier "
            "one is not answered twice; the last line of values and search says where else the concept lives or that a paper does not study it. "
            "To see everything a set measured, values(set=<id>) is one call; detail also takes a location id (a paragraph, a table cell, a figure "
-           "panel or a figure) and returns the records located there.")
+           "panel or a figure) and returns the records located there. papers lists the papers one line each, filtered by material, structure, process or "
+           "quantity; search without a paper gives one line per paper (the best hit, the count of further hits, the sets holding the quantity), and "
+           "search(words, paper=…) opens one paper.")
 
 
-def l0_map():
-    """The map of the knowledge base, generated from the data: the hierarchy's top nodes and families with concept counts, and one
-    line per paper (id · material · process · structure class · experiment and claim counts · headline outcome concepts). Counts and
-    names only, never a conclusion or a value; the generator keeps every number a count (checked by map_numbers_are_counts)."""
+_SUMM = {}
+
+
+def paper_summary(k, T=None):
+    """One paper's map data (P97): materials, processes (reactant A / reactant B pairs), structure classes, experiment and claim counts,
+    the outcome quantities with values (by count), panel and curve counts. Counts and names only."""
+    T = T or Q.TREES[k]
+    pc = counts()
+    mats, procs, structs = set(), [], set()
+    for f in T.rows:
+        if f["type"] == "setting" and f["quantity"] == "material" and f["value_text"]:
+            mats.add(L.species_text(f["value_text"]))
+        if f["type"] == "setting" and f["quantity"] == "structure" and f["value_text"]:
+            structs.add(L.STRUCTURE_CLASS.get(f["value_text"], f["value_text"]))
+        if f["type"] == "setting" and f["quantity"] in ("reactant_A", "reactant_B") and f["value_text"]:
+            procs.append((f["parent"], f["quantity"], L.species_text(f["value_text"])))
+    pairs = collections.defaultdict(dict)
+    for par, qn, sp in procs:
+        pairs[par][qn] = sp
+    procs = sorted({f"{d.get('reactant_A', '?')} / {d.get('reactant_B', '?')}" for d in pairs.values()})
+    outs = sorted(((pc.get(q, {}).get(k, {}).get("values", 0), q) for q in L.OUTPUTS if pc.get(q, {}).get(k, {}).get("values")), reverse=True)
+    inv = collections.Counter(i["panel_type"] for i in T.inventory)
+    return dict(key=k, materials=sorted(mats), processes=procs, structures=sorted(structs), experiments=len(Q.experiments(T)),
+                claims=sum(1 for f in T.rows if f["type"] == "claim"), outcomes=outs, panels=sum(inv.values()), curves=len(T.curves))
+
+
+def summaries():
+    if not _SUMM:
+        _SUMM.update({k: paper_summary(k, T) for k, T in Q.TREES.items()})
+    return _SUMM
+
+
+def paper_line(s):
+    """The one line of a paper (P97): key · material · process · structure class · experiment and claim counts · main outcomes · panels, curves."""
+    figs = f" · panels {s['panels']}, curves {s['curves']}" if s["panels"] else ""
+    return (f"{s['key']}: material {', '.join(s['materials']) or '—'} · process {', '.join(s['processes']) or '—'} · structure {', '.join(s['structures']) or '—'} · "
+            f"{s['experiments']} experiments, {s['claims']} claims · main outcomes: " + ", ".join(f"{q} {n}" for n, q in s["outcomes"][:4]) + figs)
+
+
+def papers_lines(material=None, structure=None, process=None, quantity=None):
+    """[(key, line)] of the papers that pass the filters (P97): material (a species id or its printed name), structure (a class or a
+    structure id), process (words of a reactant), quantity (an id or name: papers holding values, claims or settings of it)."""
+    summ = summaries()
+    qids = set()
+    if quantity:
+        qids = {quantity} if quantity in L.ENTRIES else set(Q.concept_ids(quantity))
+        qids |= {q for q, n in L.NAMES.items() if n.lower() == str(quantity).lower()}
+    pc = counts()
+    out = []
+    for k, s in summ.items():
+        if material and not any(norm(material) in (norm(m), norm(L.species_text(material) if material in L.SPECIES else "")) or norm(material) == norm(m) for m in s["materials"]):
+            continue
+        if structure and not any(norm(structure) in (norm(x), norm(L.STRUCTURE_CLASS.get(structure, ""))) for x in s["structures"]):
+            continue
+        if process and not any(norm(process) in norm(x) for x in s["processes"]):
+            continue
+        if quantity and not any(pc.get(q, {}).get(k, {}).get(x) for q in qids for x in ("values", "claims", "settings")):
+            continue
+        out.append((k, paper_line(s)))
+    return out
+
+
+def l0_map(summ=None):
+    """The map of the knowledge base, generated from the data (P70, P97): corpus-level counts only: papers, the hierarchy's top nodes and
+    families with concept counts, species, structures, mechanisms and methods, the materials and structure classes with their paper counts,
+    and the ten most populated quantities with their paper counts; the per-paper lines live in papers(). Counts and names only, never a
+    conclusion or a value; the generator keeps every number a count (checked by map_numbers_are_counts)."""
+    summ = summ if summ is not None else summaries()
     kids = collections.defaultdict(list)
     for n in L.HIERARCHY:
         kids[n["parent"]].append(n["id"])
@@ -315,29 +381,16 @@ def l0_map():
 
     def under(n):
         return cat[n] + sum(under(c) for c in kids.get(n, []))
-    lines = ["Knowledge base map (generated from the data):", "Concept groups (concepts): " + "; ".join(f"{n} {under(n)}" for n in kids[""]),
+    mats = collections.Counter(m for s in summ.values() for m in s["materials"])
+    structs = collections.Counter(x for s in summ.values() for x in s["structures"])
+    qpap = collections.Counter(q for s in summ.values() for _, q in s["outcomes"])
+    lines = ["Knowledge base map (generated from the data):", f"Papers {len(summ)} (one line each: papers(material=…, structure=…, process=…, quantity=…)).",
+             "Concept groups (concepts): " + "; ".join(f"{n} {under(n)}" for n in kids[""]),
              "Families (members): " + "; ".join(f"{f} {len(m)}" for f, m in sorted(L.FAMILIES.items())),
-             f"Species {len(L.SPECIES)}, mechanisms {len(L.MECHANISMS)}, methods {len(L.METHODS)}."]
-    pc = counts()
-    for k, T in Q.TREES.items():
-        mats, procs, structs = set(), [], set()
-        for f in T.rows:
-            if f["type"] == "setting" and f["quantity"] == "material" and f["value_text"]:
-                mats.add(L.species_text(f["value_text"]))
-            if f["type"] == "setting" and f["quantity"] == "structure" and f["value_text"]:
-                structs.add(L.STRUCTURE_CLASS.get(f["value_text"], f["value_text"]))
-            if f["type"] == "setting" and f["quantity"] in ("reactant_A", "reactant_B") and f["value_text"]:
-                procs.append((f["parent"], f["quantity"], L.species_text(f["value_text"])))
-        pairs = collections.defaultdict(dict)
-        for par, qn, sp in procs:
-            pairs[par][qn] = sp
-        procs = sorted({f"{d.get('reactant_A', '?')} / {d.get('reactant_B', '?')}" for d in pairs.values()})
-        outs = sorted(((pc.get(q, {}).get(k, {}).get("values", 0), q) for q in L.OUTPUTS if pc.get(q, {}).get(k, {}).get("values")), reverse=True)[:6]
-        n_exp = len(Q.experiments(T)); n_claims = sum(1 for f in T.rows if f["type"] == "claim")
-        inv = collections.Counter(i["panel_type"] for i in T.inventory)        # P84e: the figure inventory by panel type, counts only
-        figs = f" · panels {sum(inv.values())}, curves {len(T.curves)}" if inv else ""   # counts only; the panel types are in search's inventory records
-        lines.append(f"{k}: material {', '.join(sorted(mats)) or '—'} · process {', '.join(sorted(procs)) or '—'} · structure {', '.join(sorted(structs)) or '—'} · "
-                     f"{n_exp} experiments, {n_claims} claims · main outcomes: " + ", ".join(f"{q} {n}" for n, q in outs[:4]) + figs)
+             f"Species {len(L.SPECIES)}, structures {len(L.STRUCTURES)}, mechanisms {len(L.MECHANISMS)}, methods {len(L.METHODS)}.",
+             "Materials (papers): " + "; ".join(f"{m} {n}" for m, n in mats.most_common()),
+             "Structure classes (papers): " + "; ".join(f"{x} {n}" for x, n in structs.most_common()),
+             "Most populated quantities (papers with values): " + "; ".join(f"{q} {n}" for q, n in qpap.most_common(10))]
     return "\n".join(lines)
 
 
@@ -349,7 +402,7 @@ def map_numbers_are_counts(text=None):
     for m in re.finditer(r"(?<![\w.)])\d+(?:\.\d+)?(?![\w.(])", text):
         n = m.group(0)
         after = text[m.end():m.end() + 14]; before = text[max(0, m.start() - 12):m.start()]
-        ok = "." not in n and (re.match(r"\s*(values|experiments|claims|members|concepts|mechanisms|methods|species|curves|\)|;|,|\.)", after) or re.search(r"[a-z_]+ $", before))
+        ok = "." not in n and (re.match(r"\s*(values|experiments|claims|members|concepts|mechanisms|methods|species|structures|curves|\)|;|,|\.)", after) or re.search(r"[A-Za-z_]+ $", before))
         if not ok:
             bad.append(n)
     return bad

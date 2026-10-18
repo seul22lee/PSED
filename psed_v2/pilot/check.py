@@ -697,6 +697,19 @@ def check_search():
             if first_val is not None and n is not None and n < first_val:
                 err.append(f"search {p['words']!r}: a {t} ranks above the first value or claim (P64)")
     import tools
+    for p in rd(HERE / "search_probes.csv"):                                    # P93: the cross-paper view: at most SEARCH_PAPERS paper lines, under 800 tokens
+        hits = Q.search(p["words"])
+        papers = {h["paper"] for h in hits if h["paper"]}
+        lines, e = tools.run_tool("search", {"words": p["words"]})
+        if e:
+            err.append(f"search {p['words']!r}: {e} (P93)"); continue
+        paper_lines = [i for i, t in lines if i in Q.TREES and not t.startswith("… ")]
+        if len(paper_lines) != len(set(paper_lines)):
+            err.append(f"search {p['words']!r}: a paper takes more than one line in the cross-paper view (P93)")
+        if len(papers) >= 8 and len(paper_lines) > tools.SEARCH_PAPERS:
+            err.append(f"search {p['words']!r}: {len(paper_lines)} paper lines for {len(papers)} papers hit, at most {tools.SEARCH_PAPERS} (P93)")
+        if sum(len(t) for _, t in lines) // 4 > 800:
+            err.append(f"search {p['words']!r}: the cross-paper view takes {sum(len(t) for _, t in lines) // 4} tokens, over 800 (P93)")
     kinds = {}                                                                  # P84e: one probe per record kind any index can return: the tool renders every hit, one line each, no exception
     for r in Q.search_records():
         kinds.setdefault(r["type"], r)
@@ -1105,48 +1118,76 @@ def check_sets():
     return err
 
 
-def tool_probes():
-    """The probe battery whose outputs check_kinds scans (P68): values on every output concept that has values, on every settings
-    entry per paper that states it (P76) and on every comparison set (P77); concept and search (with and without a paper filter) on the
-    stored search probes; detail on one id of every record type of every paper, eight per call; source on one element per paper; and
-    detail on two facts that share a caveat (the caveat once)."""
+PROBE_PAPER = {}                                                               # P97: (tool, json args) -> the paper a probe belongs to ('' = cross-paper)
+BATTERY = {}                                                                    # P97: paper -> (calls, tokens) after check_kinds
+
+
+def paper_probes(k):
+    """P97: the fixed probe list of one paper: concept on its most populated quantity; values on its three most populated quantities;
+    values on two of its comparison sets (facts-level first); one curve; detail on a paragraph and a panel location; one search with
+    the paper filter from its figure inventory; the settings tables of its first two settings entries (P76); source on one element;
+    detail on two facts sharing a caveat (P68)."""
     import concept as CN, query as Q
-    probes = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
-    probes += [("values", {"result": S, "paper": k}) for S, k in settings_probes()]
-    probes += [("values", {"set": c["fact_id"]}) for T in Q.TREES.values() for c in T.comps]
+    T = Q.TREES[k]; s = CN.summaries()[k]
+    probes = []
+    qs = [q for _, q in s["outcomes"]]
+    if qs:
+        probes.append(("concept", {"words": L.NAMES.get(qs[0], qs[0])}))
+    probes += [("values", {"result": q, "paper": k}) for q in qs[:3]]
+    comps = sorted((c["fact_id"] for c in T.comps), key=lambda c: (T.is_figset(c), c))
+    probes += [("values", {"set": cid}) for cid in comps[:2]]
+    if T.curves:
+        probes.append(("curve", {"id": next(iter(T.curves))}))
+    locs = {}
+    for f in T.rows:
+        if "#" not in f["fact_id"]:
+            continue
+        for e in f["evidence"].split(";"):
+            if re.match(r"^s\d+\.p\d+$", e):
+                locs.setdefault("paragraph", f"{k}:{e}")
+            elif re.match(r"^fig\d+[a-zA-Z]$", e):
+                locs.setdefault("panel", f"{k}:{e}")
+    probes += [("detail", {"ids": [i]}) for i in locs.values()]
+    inv = next((i for i in T.inventory if i.get("content")), None)
+    if inv:
+        probes.append(("search", {"words": " ".join(w for w in Q.tokens(inv["content"])[:5] if len(w) > 2), "paper": k}))
+    probes += [("values", {"result": S, "paper": kk}) for S, kk in settings_probes() if kk == k][:2]
+    first = next((f["evidence"].split(";")[0] for f in T.rows if "#" in f["fact_id"] and f["evidence"]), "")
+    if first:
+        probes.append(("source", {"id": f"{k}:{first}"}))
+    c = next((c for c in Q.caveats_of(T) if len(c["facts"]) >= 2), None)
+    shared = (c["f"]["fact_id"], sorted(c["facts"])[:2]) if c else None
+    if shared:
+        probes.append(("detail", {"ids": shared[1]}))
+    return probes, shared
+
+
+def tool_probes():
+    """The probe battery whose outputs check_kinds scans (P68), defined per paper (P97): paper_probes for every paper, plus the cross-paper
+    probes once: values on every output concept that has values, concept and search (no paper filter) on the stored search probes, and
+    detail on one id of every record type of every paper, eight per call. Returns (probes, shared); PROBE_PAPER maps each probe to its paper."""
+    import concept as CN, query as Q
+    PROBE_PAPER.clear()
+    probes, shared = [], []
+    for k in Q.TREES:
+        ps, sh = paper_probes(k)
+        for name, args in ps:
+            PROBE_PAPER[(name, json.dumps(args, sort_keys=True))] = k
+        probes += ps
+        if sh:
+            shared.append(sh)
+    cross = [("values", {"result": q}) for q in sorted(L.OUTPUTS) if any(d.get("values") for d in CN.counts().get(q, {}).values())]
     for p in rd(HERE / "search_probes.csv"):
-        probes += [("concept", {"words": p["words"]}), ("search", {"words": p["words"]}), ("search", {"words": p["words"], "paper": "yim20"})]
+        cross += [("concept", {"words": p["words"]}), ("search", {"words": p["words"]})]
     first = {}
     for r in Q.search_records():
         if r["type"] != "concept":
             first.setdefault((r["paper"], r["type"]), r["id"])
     ids = list(first.values())
-    probes += [("detail", {"ids": ids[n:n + 8], "parts": ["what", "differs", "results", "recipe", "claims", "computed"]}) for n in range(0, len(ids), 8)]
-    shared = []
-    for k, T in Q.TREES.items():
-        probes.append(("source", {"id": f"{k}:" + next(f["evidence"].split(";")[0] for f in T.rows if "#" in f["fact_id"] and f["evidence"])}))
-        inv = next((i for i in T.inventory if i.get("content")), None)        # P84e: a search that hits a figure-inventory record of each paper
-        if inv:
-            probes.append(("search", {"words": " ".join(w for w in Q.tokens(inv["content"])[:5] if len(w) > 2), "paper": k}))
-    locs = {}                                                                   # P92: one detail probe per location kind (a paragraph, a table cell, a panel, a figure)
-    for k, T in Q.TREES.items():
-        for f in T.rows:
-            if "#" not in f["fact_id"]:
-                continue
-            for e in f["evidence"].split(";"):
-                if re.match(r"^s\d+\.p\d+$", e):
-                    locs.setdefault("paragraph", f"{k}:{e}")
-                elif re.match(r"^tab\w+\.r\d+c\d+$", e):
-                    locs.setdefault("table cell", f"{k}:{e}")
-                elif re.match(r"^fig\d+[a-z]$", e):
-                    locs.setdefault("panel", f"{k}:{e}"); locs.setdefault("figure", f"{k}:{e[:-1]}")
-    probes += [("detail", {"ids": [i]}) for i in locs.values()]
-    for k, T in Q.TREES.items():
-        c = next((c for c in Q.caveats_of(T) if len(c["facts"]) >= 2), None)
-        if c:
-            shared.append((c["f"]["fact_id"], sorted(c["facts"])[:2]))
-            probes.append(("detail", {"ids": sorted(c["facts"])[:2]}))
-    return probes, shared
+    cross += [("detail", {"ids": ids[n:n + 8], "parts": ["what", "differs", "results", "recipe", "claims", "computed"]}) for n in range(0, len(ids), 8)]
+    for name, args in cross:
+        PROBE_PAPER.setdefault((name, json.dumps(args, sort_keys=True)), "")
+    return probes + cross, shared
 
 
 def check_kinds():
@@ -1178,6 +1219,8 @@ def check_kinds():
                 err.append(f"{key[0]} {key[1]}: legend 'basis {b}: {ph[:40]}' is not the table's (P68)")
         for t in out:
             texts.append(t)
+            if "0 curves of this quantity" in t:                                  # P96: no empty figure-set line
+                err.append(f"{key[0]} {key[1]}: an empty figure-set line ('0 curves of this quantity') (P96)")
             if t.startswith("kinds: (k"):                                          # the legend binds the marks to the table's phrases
                 continue
             for m in re.finditer(r"(?<!set )kinds?: ([^·\)\]]+)", t):
@@ -1187,7 +1230,7 @@ def check_kinds():
             for m in re.finditer(r"\((k\d+)\)", t):
                 if marks.get(m.group(1), "").strip() not in phrases:
                     err.append(f"{key[0]} {key[1]}: mark ({m.group(1)}) is not bound to a phrase of the table by the legend (P68)")
-            for m in re.finditer(r"± \S+ \(", t):
+            for m in re.finditer(r"± \S+ \(", t.split(" · statement: ")[0]):      # a fact's own statement is the paper's wording, not the tool's basis phrase
                 after = t[m.end():]
                 head = re.match(r"[^;)]*", after).group(0).strip()
                 if not (any(after.startswith(ph) for ph in bases) or head == Q.NO_BASIS or head == "basis not stated" or (head in L.BASES and legend.get(head) == L.BASES[head])):
@@ -1208,6 +1251,18 @@ def check_kinds():
     page = HERE / "reports" / "pilot.html"
     if page.exists() and "computed here" in page.read_text(encoding="utf-8"):
         err.append("'computed here' appears in reports/pilot.html (P57)")
+    BATTERY.clear()                                                             # P97: the battery per paper (tokens = chars / 4), '' = the cross-paper probes
+    for key, out in outputs.items():
+        pk = PROBE_PAPER.get(key, "")
+        c, tk = BATTERY.get(pk, (0, 0))
+        BATTERY[pk] = (c + 1, tk + sum(len(t) for t in out) // 4)
+    with (HERE / "battery_per_paper.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh); w.writerow(["paper", "calls", "tokens"])
+        for pk in list(Q.TREES) + [""]:
+            if pk in BATTERY:
+                w.writerow([pk or "cross-paper", *BATTERY[pk]])
+        w.writerow(["total", sum(c for c, _ in BATTERY.values()), sum(t for _, t in BATTERY.values())])
+    print("== battery per paper (P97): " + "; ".join(f"{pk or 'cross-paper'} {c} calls {tk:,} tokens" for pk, (c, tk) in BATTERY.items()))
     print(f"== kinds (P57, P68): {len(L.KINDS)} kinds with phrases, {len(L.BASES)} bases; {len(probes)} probe calls, {len(texts)} tool texts scanned; max {max(sum(len(t) for t in o) // 4 for o in outputs.values())} tokens per output, "
           f"{sum(sum(len(t) for t in o) for o in outputs.values()) // 4:,} tokens over the battery")
     return err
@@ -1230,7 +1285,46 @@ def check_map():
         for f in T.rows:
             if f["type"] == "claim" and f["statement"] and " ".join(f["statement"].lower().split()[:6]) in low:
                 err.append(f"map: carries the claim {f['fact_id']} (P70)")
-    print(f"== map (P70): {len(m) / 4:.0f} tokens of at most {CN.MAP_BUDGET}, {m.count(chr(10)) + 1} lines, every number a count")
+    summ = CN.summaries()
+    fake = {}
+    for i in range(5):                                                          # P97: 58 papers simulated from the 12 by replication; a check, not stored data
+        for k, sm in summ.items():
+            if len(fake) < 58:
+                fake[f"{k}_{i}"] = dict(sm, key=f"{k}_{i}")
+    m58 = CN.l0_map(fake)
+    if len(m58) / 4 > CN.MAP_BUDGET:
+        err.append(f"map: {len(m58) / 4:.0f} tokens at 58 simulated papers, over {CN.MAP_BUDGET} (P97)")
+    print(f"== map (P70, P97): {len(m) / 4:.0f} tokens of at most {CN.MAP_BUDGET}, {m.count(chr(10)) + 1} lines, every number a count; {len(m58) / 4:.0f} tokens at 58 simulated papers")
+    return err
+
+
+def check_cards_values():
+    """P95: for every (quantity, paper) pair a concept card lists with one value or more, values(result=<the quantity's id>, paper)
+    returns value rows, and the distinct value facts it renders in full (no budget) number the card's count."""
+    import concept as CN, query as Q, tools
+    err, n = [], 0
+    old = tools.BUDGET, tools.BUDGET_CHARS
+    tools.BUDGET, tools.BUDGET_CHARS = False, 10 ** 9
+    try:
+        for q, d in sorted(CN.counts().items()):
+            if q not in L.ENTRIES or L.ENTRIES[q]["type"] not in ("quantity", "categorical"):
+                continue
+            for k, c in d.items():
+                if not c.get("values"):
+                    continue
+                n += 1
+                T = Q.TREES[k]
+                lines, e = tools.run_tool("values", {"result": q, "paper": k})
+                if e:
+                    err.append(f"card {q} / {k}: {c['values']} values on the card, values(result={q!r}, paper={k!r}) answers {e} (P95)"); continue
+                ids = {i for _, t in lines for i in re.findall(r"\[([a-z0-9]+:[^\]\s]+)\]", t)} | {i for i, _ in lines}
+                rows = {i for i in ids if i in T.byid and "#" in i and T.byid[i]["quantity"] == q and T.byid[i]["type"] in Q.RESULT_TYPES + ("cited",)
+                        and (Q.text_of(T.byid[i]) or T.byid[i]["points_ref"]) and T.byid[i]["data_kind"] != "computed_by_kb"}
+                if len(rows) != c["values"]:
+                    err.append(f"card {q} / {k}: {c['values']} values on the card, {len(rows)} value rows in values(result={q!r}, paper={k!r}) (P95)")
+    finally:
+        tools.BUDGET, tools.BUDGET_CHARS = old
+    print(f"== card–values (P95): {n} (quantity, paper) pairs with values on a card, each against values(result, paper)")
     return err
 
 
@@ -1361,6 +1455,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_cards()
     print(f"== cards (P81): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_cards_values()
+    print(f"== card–values (P95): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

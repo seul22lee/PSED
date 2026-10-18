@@ -112,8 +112,10 @@ TOOLS = [
          parameters=dict(type="object", properties=dict(words=dict(type="string", description="A concept in words: a quantity, a species, a mechanism, a family.")),
                          required=["words"])),
     dict(name="search",
-         description=("Arguments: words (required), paper, offset. Returns the records whose text matches the words, best first, one line "
-                      "each: '[id] record type · line' (lexical: lowercase, plurals folded, _ and - as spaces, numbers and units kept; no "
+         description=("Arguments: words (required), paper, offset. Without paper: the matching concepts, then one line per paper for the six "
+                      "best-scoring papers: paper key · its best hit · the count of further hits · the comparison sets of that paper that hold "
+                      "the quantity the words name; search(words, paper=…) then opens one paper: its records whose text matches the words, best "
+                      "first, one line each: '[id] record type · line' (lexical: lowercase, plurals folded, _ and - as spaces, numbers and units kept; no "
                       "synonyms). The values and settings of one quantity come as one line with their distinct values; a line whose value "
                       "has a caveat carries the caveat's id, and the caveat's text follows once. At most 25 lines and about 2,000 tokens "
                       "per call, then 'more: offset=N'. Use it to find where something is discussed and what the knowledge base calls it. "
@@ -137,7 +139,8 @@ TOOLS = [
                       "above its sets; the caveats on every row once at the end. When the full listing would exceed about 2,000 tokens the "
                       "output gives way in steps: model-run sets collapse to their range and count, then the caveat texts go (their ids stay "
                       "on the rows), then specimen sets collapse, the largest first; a line says how many sets collapsed and that detail(ids) "
-                      "opens them. Narrow with paper or where to see more rows. A setting (a process parameter, a reactor or a test-structure "
+                      "opens them. Narrow with paper or where to see more rows. A paper that holds no value of the result but claims, curves, figure panels "
+                      "or definitions of it answers with one line of those counts. A setting (a process parameter, a reactor or a test-structure "
                       "setting: temperature, pulse, purge, flow, pressure, cycles, feature width, substrate, ...) comes as a settings table per paper "
                       "instead: one row per distinct level or combination of coupled levels, with the fact ids and the count and set ids of the "
                       "specimens that use it; values of it computed by this knowledge base are named in one line, never listed. The last line says "
@@ -149,6 +152,19 @@ TOOLS = [
              paper=dict(type="string", enum=PAPER_KEYS, description=f"Only this paper: {PAPER_WORDS}."),
              where=dict(type="object", description="Only experiments whose stated settings match: {setting name: a value (number or text), or [min, max] (either may be null)}; numbers in the setting's unit as the values lines show it.",
                         additionalProperties={})),
+             required=[])),
+    dict(name="papers",
+         description=("Arguments: material, structure, process, quantity, offset (all optional). Returns one line per paper of the knowledge base: key · "
+                      "material · process (reactant A / reactant B) · structure class · experiment and claim counts · main outcome quantities with "
+                      "their value counts · panels and curves. Filters: material (a species id or name), structure (a structure class or id), "
+                      "process (words of a reactant), quantity (an id or name: only papers with values, claims or settings of it). At most 20 lines "
+                      "per call, then 'more: offset=N'. Use it after the map to see which papers to open."),
+         parameters=dict(type="object", properties=dict(
+             material=dict(type="string", description="A material: a species id (al2o3) or its printed name (Al2O3)."),
+             structure=dict(type="string", description="A structure class (lateral_channel, planar, porous_body, trench, …) or a structure id."),
+             process=dict(type="string", description="Words of a reactant (TMA, H2O, plasma …)."),
+             quantity=dict(type="string", description="A quantity id or name; only papers that hold values, claims or settings of it."),
+             offset=dict(type="integer", description="Skip this many lines (default 0).")),
              required=[])),
     dict(name="detail",
          description=("Arguments: ids (required, up to 8), parts, offset. Returns what the knowledge base holds about each id, under one budget. An experiment or input: "
@@ -438,7 +454,7 @@ def run_tool(name, args):
         return [], "error: " + err
     args = {k: v for k, v in args.items() if v is not None}
     blocks, err = _run(name, args)
-    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name == "search" else None)
+    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name == "search" else 20 if name == "papers" else None)
     if not err and not [x for x in lines if x[0] != "more"]:
         err = f"error: {name}: nothing matches " + ", ".join(f"{k}={json.dumps(v, ensure_ascii=False)}" for k, v in args.items()) \
               + (" (or the offset is past the end)" if args.get("offset") else "")
@@ -503,7 +519,7 @@ def _cells(rec, marks, fact=True):
     return "; ".join(_cell(r, marks, fact) for r in [rec] + list(rec.get("alternatives") or []))
 
 
-HOME_KINDS = {"inputs": "inputs", "aggregate": "set-level", "paper": "paper-level"}   # the P79 homes rendered as groups before the comparison sets
+HOME_KINDS = {"inputs": "inputs", "aggregate": "set-level", "paper": "paper-level", "cited": "cited works"}   # the P79 homes rendered as groups before the comparison sets
 
 
 def grid_lines(g, names, keys, marks, legend_cav, legend_basis, collapse=0):
@@ -830,6 +846,10 @@ def values_blocks(groups, asked):
             rng = f"{n_curves} curves" + (f" · {rng}" if rng else "")
         opener = (f"open with values(set={sid!r})" if g["kind"] == "figure" else f"open with detail(ids=[{sid!r}]) or narrow with where" if g["kind"] not in ("inputs", "paper") else
                   f"open with detail(ids=[{', '.join(repr(e) for e in list(by_ent)[:8])}])" if g["kind"] == "inputs" else "open each with source(id)")
+        only_hit = sum(1 for g2 in groups if g2["paper"] == g["paper"]) == 1   # P96: a set with no range and no count is left out unless it is the paper's only hit
+        if not rng and not only_hit:
+            collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else [])))
+            continue
         collapsed.append(block([], head=([head[0]] if head[0][0] == "between" else []) + [(sid, f"{HOME_KINDS.get(g['kind'], 'set')} [{sid}] · {short_name(g['paper'])} · {g['label']} · {len(by_ent)} rows · " + (rng or "no numeric values") + f" · {opener}")]))
     tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
         + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
@@ -845,6 +865,10 @@ def values_blocks(groups, asked):
         if len(ns) > 1:
             ids = [groups[n]["id"] for n in ns]
             n_curves = sum(1 for n in ns for r in groups[n]["rows"] if (r["record"].get("text") or "").startswith("curve"))
+            if n_curves == 0 and len(ns) < sum(1 for g2 in groups if g2["paper"] == paper):   # P96: no "0 curves of this quantity" line
+                for n in ns:
+                    collapsed[n] = block([], head=[])
+                continue
             line = (ids[0], f"{len(ns)} figure sets of {short_name(paper)} with {n_curves} curves of this quantity: " + ", ".join(f"[{i}]" for i in ids) + " · open one with values(set=<id>)")
             collapsed[ns[0]] = block([], head=[line])
             for n in ns[1:]:
@@ -916,6 +940,27 @@ def set_blocks(d, budget=True):
 
 
 SEARCH_LINE = 200
+SEARCH_PAPERS = 6                                                               # P93: papers in the cross-paper search view
+
+
+def empty_pair_blocks(result, paper):
+    """P94: values(result, paper) with no value row but claims, curves, panels or definitions of the quantity in the paper: one line of
+    counts; [] (an error upstream) when the paper holds nothing of it or the words name no quantity."""
+    if not paper:
+        return []
+    d = Q.empty_pair(result, paper)
+    if not d or not any(d[x] for x in ("claims", "curves", "panels", "definitions")):
+        return []
+    opens = []
+    if d["claims"]:
+        opens.append("detail(ids=[<claim ids from search>])")
+    if d["curves"]:
+        opens.append(f"values(set=<a set of {paper}>) or curve(id)")
+    if d["panels"]:
+        opens.append("detail(ids=[<paper>:fig<N><panel>])")
+    line = (f"{paper}: 0 values · {d['claims']} claims · {d['curves']} curves · {d['panels']} panels" + (f" · {d['definitions']} definitions" if d["definitions"] else "")
+            + f" of {', '.join(dict.fromkeys(L.NAMES.get(q, q) for q in d['qids']))} — open with " + " / ".join(opens or ["search(words, paper)"]))
+    return [block([], head=[(f"{paper}:none", line)])]
 BUDGET = True                       # False: values renders everything, no set collapses (the homing check of P79 reads the full rendering)
 BUDGET_TOKENS = 2000
 BUDGET_CHARS = BUDGET_TOKENS * 4
@@ -1020,10 +1065,10 @@ def _run(name, args):
             if S:                                                               # P76: a settings entry is a settings table, never a specimen list
                 extras = Q.setting_extras(S, args["result"], args.get("paper"), args.get("where"))
                 if not groups and not extras:
-                    return [], ""
+                    return empty_pair_blocks(args["result"], args.get("paper")), ""
                 return settings_blocks(groups, args["result"], S, extras, args.get("where")), ""
             if not groups:
-                return [], ""
+                return empty_pair_blocks(args["result"], args.get("paper")), ""
             full, collapsed, legend_cav, grid_versions = values_blocks(groups, args["result"])
             for blocks in (full, collapsed, *grid_versions.values()):
                 for b in blocks:
@@ -1067,6 +1112,11 @@ def _run(name, args):
                     if paginate(with_legend(out, k), 0)[-1][0] != "more":
                         break
             return with_legend(out, k), ""
+        if name == "papers":
+            lines = CN.papers_lines(args.get("material"), args.get("structure"), args.get("process"), args.get("quantity"))
+            if not lines:
+                return [], ""
+            return [block([wrap(*x) for x in lines])], ""
         if name == "concept":
             if not Q.tokens(args["words"]):
                 return [], "error: concept: words has no letters or numbers"
@@ -1074,6 +1124,34 @@ def _run(name, args):
             if not lines:
                 return [], ""
             return [block([wrap(*x) for x in lines])], ""
+        if name == "search" and not args.get("paper"):                        # P93: the cross-paper view, one line per paper
+            if not Q.tokens(args["words"]):
+                return [], "error: search: words has no letters or numbers"
+            hits = Q.search(args["words"])
+            items = [[x for x in wrap(h["id"], Q.render_hit(h)[0])] for h in hits if h["type"] == "concept"][:3]
+            by_paper = {}
+            for h in hits:
+                if h["type"] != "concept" and h["paper"]:
+                    by_paper.setdefault(h["paper"], []).append(h)
+            cids = [h["id"] for h in hits if h["type"] == "concept"][:3] or CN.resolve(args["words"])[0][:3]
+            qids = {c for c in cids if c in L.ENTRIES and L.ENTRIES[c]["type"] in ("quantity", "categorical")}
+            qname = ", ".join(L.NAMES.get(q, q) for q in sorted(qids))
+            for pk in list(by_paper)[:SEARCH_PAPERS]:
+                hs = by_paper[pk]; best = hs[0]
+                line, cav = Q.render_hit(best)
+                sets = Q.sets_with_quantity(Q.TREES[pk], qids) if qids else []
+                if len(line) > 130:
+                    line = line[:128].rsplit(" ", 1)[0] + " …"
+                text = (f"{pk} ({short_name(pk)}) · [{best['id']}] {line}" + (f" · +{len(hs) - 1} hits" if len(hs) > 1 else "")
+                        + (" · sets: " + ", ".join(f"[{c}]" for c in sets[:4]) + (f" +{len(sets) - 4}" if len(sets) > 4 else "") if sets else ""))
+                rec = dict(caveats=list(cav.values()))
+                items.append([x for x in wrap(pk, text + cmark(rec))])          # the caveat ids stay on the line; their texts come with the paper view
+            rest = list(by_paper)[SEARCH_PAPERS:]
+            foot = "open a paper with search(words, paper=<key>)" + (f"; sets hold {qname}" if qids and any(Q.sets_with_quantity(Q.TREES[pk], qids) for pk in list(by_paper)[:SEARCH_PAPERS]) else "")
+            if rest:
+                foot += f" · further papers with hits: {', '.join(rest)}"
+            b = block(items); b["tail"] = W([("between", foot)]) if foot else []
+            return [b], ""
         if name == "search":
             if not Q.tokens(args["words"]):
                 return [], "error: search: words has no letters or numbers"
