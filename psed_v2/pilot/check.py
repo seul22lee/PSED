@@ -1061,9 +1061,11 @@ def check_sets():
     for k, T in Q.TREES.items():
         ref, deep = collections.defaultdict(set), {}                             # per experiment: the result facts values() lists, over every result name
         for q in sorted(Q.vocabulary()["result"]):                               # (a model run's inputs, listed by values as its conditions, are not results)
-            for g in Q.values(q, k):
-                for r in g["rows"]:
-                    rec, e = r["record"], r["entity"]
+            S = Q.settings_entry(q)
+            rows = [(r["record"], r["entity"]) for g in Q.values(q, k) for r in g["rows"]]
+            if S:                                                                # a settings entry: values lists its results as 'result, not a setting' lines (P76), the same facts
+                rows += [(rec, e) for e, kk, nm, rec in Q.setting_extras(S, q, k).get(k, {}).get("results", [])]
+            for rec, e in rows:
                     if e not in deep:
                         deep[e] = {f["fact_id"] for fs in Q.results_deep(T, e).values() for f in fs} if e in T.byid and T.byid[e]["type"] == "entity" else set()
                     for rr in [rec] + list(rec.get("alternatives") or []):      # P79: a cell lists every record of its key, the alternatives included

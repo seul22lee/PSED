@@ -661,8 +661,9 @@ def settings_blocks(groups, result, S, extras, where=None):
                 lv["recs"].setdefault(kk, rec)
                 lv["cav"] |= {c["id"] for c in rec.get("caveats") or []}
                 legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
-                if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
-                    legend_basis.add(rec["uncertainty"]["basis"])
+                for rr in [rec] + list(rec.get("alternatives") or []):           # every ± printed in the cell has its basis in the legend (P68)
+                    if (rr.get("uncertainty") or {}).get("basis") in L.BASES:
+                        legend_basis.add(rr["uncertainty"]["basis"])
         if by_ent:
             lines.append((f"{k}:settings", f"settings table · {short_name(k)} · {name}: one row per distinct level, every fact that states it · columns: " + " | ".join(names[kk] for kk in keys) + " | specimens"))
 
@@ -703,8 +704,9 @@ def settings_blocks(groups, result, S, extras, where=None):
             who = "paper-level" if e == f"{k}:paper" else f"{T.label(e)} [{e}]"
             lines.append((rec.get("fact") or e, f"result, not a setting · {who} · {nm}: {_cells(rec, marks)}" + cmark(rec)))
             legend_cav.update({c["id"]: c["text"] for c in rec.get("caveats") or []})
-            if (rec.get("uncertainty") or {}).get("basis") in L.BASES:
-                legend_basis.add(rec["uncertainty"]["basis"])
+            for rr in [rec] + list(rec.get("alternatives") or []):
+                if (rr.get("uncertainty") or {}).get("basis") in L.BASES:
+                    legend_basis.add(rr["uncertainty"]["basis"])
         out.append(block([wrap(*x) for x in lines]))
     tail = ([("legend", "kinds: " + "; ".join(f"({KIND_MARK[k]}) {kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated")] if marks else []) \
         + [("legend", f"basis {b}: {L.BASES[b]}") for b in sorted(legend_basis)] \
@@ -870,8 +872,9 @@ def set_blocks(d, budget=True):
         def cell(recs):
             for r in recs:
                 legend_cav.update({c["id"]: c["text"] for c in r.get("caveats") or []})
-                if (r.get("uncertainty") or {}).get("basis") in L.BASES:
-                    legend_basis.add(r["uncertainty"]["basis"])
+                for rr in [r] + list(r.get("alternatives") or []):               # every ± the cell prints has its basis in the legend (P68)
+                    if (rr.get("uncertainty") or {}).get("basis") in L.BASES:
+                        legend_basis.add(rr["uncertainty"]["basis"])
             return "; ".join(_cells(r, marks) for r in recs) if recs else "—"
         rows = []
         row_cav = {row: {c["id"] for k, _ in shown for r in d["cells"][row].get(k, []) for c in r.get("caveats") or []} for row in d["members"]}

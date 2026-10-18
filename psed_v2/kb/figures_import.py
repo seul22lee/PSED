@@ -266,6 +266,15 @@ class Resolver:
             hit = self._pick(self.idx.get(norm(words[-1]), set()) | self.symbol(words[-1]), unit_dimension)
             if len(hit) == 1:
                 return next(iter(hit)), ""
+        m = re.match(r"^(?:number of|no\. of)\s+(.+)$|^(.+?)\s+(?:count|number)$", str(raw).strip(), flags=re.I)
+        if m:                                                                       # 'cycle count', 'number of cycles': the counted noun, as its plural, is the label (P90d)
+            noun = (m.group(1) or m.group(2)).strip().lower()
+            hit = set()
+            for cand in (noun, noun + "s", noun.rstrip("s")):
+                hit |= self.idx.get(norm(cand), set())
+            hit = self._pick(hit, unit_dimension or "count")
+            if len(hit) == 1:
+                return next(iter(hit)), ""
         return "", "no entry, alias or label matches"
 
     def ratio(self, a, b):
@@ -589,7 +598,8 @@ class Importer:
                     sa_q, _, why = self.R.quantity(sa_raw, dim0, self.defs)
                     if why.startswith("definition:"):
                         why = ""
-                    if not sa_q:
+                    kind_only = all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or [])
+                    if not sa_q and not kind_only:                                  # a series axis over kinds ('model', 'type': fitted vs measured) names no quantity
                         self.unm(pid, fig, pan, "series_axis", sa_raw, f"label_unresolved: {why}")
                 curves = []
                 n_imp = 0
@@ -637,7 +647,7 @@ class Importer:
                             c["set"] = sid
                         counts["sets"] += 1
                     else:
-                        row["reason"] = "set not formed: series_axis unresolved"
+                        row["reason"] = "set not formed: series are kinds (model vs measured), no varied quantity" if all(c["series"]["cls"] == "kind" for c in curves) else "set not formed: series_axis unresolved"
                 out["curves"] += curves; counts["curves"] += n_imp
                 # cells (a map with printed values) and peaks (a spectrum)
                 if p.get("cells"):

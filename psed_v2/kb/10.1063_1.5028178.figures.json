@@ -1,12 +1,12 @@
 {
  "paper_id": "10.1063_1.5028178",
- "key": "10.1063_1.5028178",
+ "key": "yli18",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-17T22:36:54",
+ "imported_at": "2026-10-17T23:33:07",
  "inventory": [
   {
-   "id": "10.1063_1.5028178:fig1",
+   "id": "yli18:fig1",
    "figure": "1",
    "panel": "",
    "panel_type": "schematic",
@@ -16,7 +16,7 @@
    "status": "inventory"
   },
   {
-   "id": "10.1063_1.5028178:fig2",
+   "id": "yli18:fig2",
    "figure": "2",
    "panel": "",
    "panel_type": "plot",
@@ -32,7 +32,7 @@
    "status": "imported"
   },
   {
-   "id": "10.1063_1.5028178:fig3",
+   "id": "yli18:fig3",
    "figure": "3",
    "panel": "",
    "panel_type": "plot",
@@ -47,7 +47,7 @@
    "status": "imported"
   },
   {
-   "id": "10.1063_1.5028178:fig4",
+   "id": "yli18:fig4",
    "figure": "4",
    "panel": "",
    "panel_type": "plot",
@@ -60,7 +60,7 @@
    "status": "imported"
   },
   {
-   "id": "10.1063_1.5028178:fig5",
+   "id": "yli18:fig5",
    "figure": "5",
    "panel": "",
    "panel_type": "plot",
@@ -73,7 +73,7 @@
    "status": "imported"
   },
   {
-   "id": "10.1063_1.5028178:fig6",
+   "id": "yli18:fig6",
    "figure": "6",
    "panel": "",
    "panel_type": "plot",
@@ -86,7 +86,7 @@
    "status": "imported"
   },
   {
-   "id": "10.1063_1.5028178:fig7",
+   "id": "yli18:fig7",
    "figure": "7",
    "panel": "",
    "panel_type": "plot",
@@ -101,7 +101,7 @@
  ],
  "curves": [
   {
-   "id": "10.1063_1.5028178:fig2#c1",
+   "id": "yli18:fig2#c1",
    "figure": "2",
    "panel": "",
    "series": {
@@ -574,13 +574,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -590,6 +591,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -617,6 +627,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -644,7 +674,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -654,7 +684,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c2",
+   "id": "yli18:fig2#c2",
    "figure": "2",
    "panel": "",
    "series": {
@@ -791,13 +821,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -807,6 +838,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -834,6 +874,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -861,7 +921,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -871,7 +931,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c3",
+   "id": "yli18:fig2#c3",
    "figure": "2",
    "panel": "",
    "series": {
@@ -1272,13 +1332,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -1288,6 +1349,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -1315,6 +1385,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -1342,7 +1432,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1352,7 +1442,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c4",
+   "id": "yli18:fig2#c4",
    "figure": "2",
    "panel": "",
    "series": {
@@ -1489,13 +1579,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -1505,6 +1596,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -1532,6 +1632,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -1559,7 +1679,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1569,7 +1689,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c5",
+   "id": "yli18:fig2#c5",
    "figure": "2",
    "panel": "",
    "series": {
@@ -1898,13 +2018,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -1914,6 +2035,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -1941,6 +2071,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -1968,7 +2118,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1978,7 +2128,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c6",
+   "id": "yli18:fig2#c6",
    "figure": "2",
    "panel": "",
    "series": {
@@ -2123,13 +2273,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -2139,6 +2290,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -2166,6 +2326,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -2193,7 +2373,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2203,7 +2383,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c7",
+   "id": "yli18:fig2#c7",
    "figure": "2",
    "panel": "",
    "series": {
@@ -2532,13 +2712,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -2548,6 +2729,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -2575,6 +2765,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -2602,7 +2812,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2612,7 +2822,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c8",
+   "id": "yli18:fig2#c8",
    "figure": "2",
    "panel": "",
    "series": {
@@ -2749,13 +2959,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -2765,6 +2976,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -2792,6 +3012,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -2819,7 +3059,7 @@
     "x": 2.0,
     "y": 1.0
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2829,7 +3069,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c9",
+   "id": "yli18:fig2#c9",
    "figure": "2",
    "panel": "",
    "series": {
@@ -2886,13 +3126,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -2902,6 +3143,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -2929,6 +3179,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -2956,7 +3226,7 @@
     "x": 0.0,
     "y": 0.3
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2966,7 +3236,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig2#c10",
+   "id": "yli18:fig2#c10",
    "figure": "2",
    "panel": "",
    "series": {
@@ -3023,13 +3293,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -3039,6 +3310,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -3066,6 +3346,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -3093,7 +3393,7 @@
     "x": 0.0,
     "y": 0.3
    },
-   "set": "10.1063_1.5028178:cmp:fig2",
+   "set": "yli18:cmp:fig2",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3103,7 +3403,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c1",
+   "id": "yli18:fig3#c1",
    "figure": "3",
    "panel": "",
    "series": {
@@ -3320,13 +3620,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -3336,6 +3637,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -3363,6 +3673,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -3389,7 +3719,7 @@
     "x": 0.9,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3399,7 +3729,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c2",
+   "id": "yli18:fig3#c2",
    "figure": "3",
    "panel": "",
    "series": {
@@ -3544,13 +3874,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -3560,6 +3891,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -3587,6 +3927,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -3613,7 +3973,7 @@
     "x": 2.0,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3623,7 +3983,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c3",
+   "id": "yli18:fig3#c3",
    "figure": "3",
    "panel": "",
    "series": {
@@ -3840,13 +4200,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -3856,6 +4217,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -3883,6 +4253,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -3909,7 +4299,7 @@
     "x": 0.8,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3919,7 +4309,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c4",
+   "id": "yli18:fig3#c4",
    "figure": "3",
    "panel": "",
    "series": {
@@ -4056,13 +4446,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -4072,6 +4463,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -4099,6 +4499,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -4125,7 +4545,7 @@
     "x": 2.0,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4135,7 +4555,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c5",
+   "id": "yli18:fig3#c5",
    "figure": "3",
    "panel": "",
    "series": {
@@ -4320,13 +4740,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -4336,6 +4757,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -4363,6 +4793,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -4389,7 +4839,7 @@
     "x": 0.6,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4399,7 +4849,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c6",
+   "id": "yli18:fig3#c6",
    "figure": "3",
    "panel": "",
    "series": {
@@ -4536,13 +4986,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -4552,6 +5003,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -4579,6 +5039,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -4605,7 +5085,7 @@
     "x": 2.0,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4615,7 +5095,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c7",
+   "id": "yli18:fig3#c7",
    "figure": "3",
    "panel": "",
    "series": {
@@ -4808,13 +5288,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -4824,6 +5305,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -4851,6 +5341,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -4877,7 +5387,7 @@
     "x": 0.74,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4887,7 +5397,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig3#c8",
+   "id": "yli18:fig3#c8",
    "figure": "3",
    "panel": "",
    "series": {
@@ -5032,13 +5542,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -5048,6 +5559,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -5075,6 +5595,26 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -5101,7 +5641,7 @@
     "x": 2.0,
     "y": 0.01
    },
-   "set": "10.1063_1.5028178:cmp:fig3",
+   "set": "yli18:cmp:fig3",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5111,7 +5651,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig4#c1",
+   "id": "yli18:fig4#c1",
    "figure": "4",
    "panel": "",
    "series": {
@@ -5262,6 +5802,25 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5284,7 +5843,7 @@
     "x": 6.15,
     "y": 1.062
    },
-   "set": "10.1063_1.5028178:cmp:fig4",
+   "set": "yli18:cmp:fig4",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5294,7 +5853,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig4#c2",
+   "id": "yli18:fig4#c2",
    "figure": "4",
    "panel": "",
    "series": {
@@ -5408,6 +5967,25 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5440,7 +6018,7 @@
     "x": 1.1500000000000001,
     "y": 1.05
    },
-   "set": "10.1063_1.5028178:cmp:fig4",
+   "set": "yli18:cmp:fig4",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5450,7 +6028,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig4#c3",
+   "id": "yli18:fig4#c3",
    "figure": "4",
    "panel": "",
    "series": {
@@ -5548,6 +6126,25 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5580,7 +6177,7 @@
     "x": 0.77,
     "y": 1.06
    },
-   "set": "10.1063_1.5028178:cmp:fig4",
+   "set": "yli18:cmp:fig4",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5590,7 +6187,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig4#c4",
+   "id": "yli18:fig4#c4",
    "figure": "4",
    "panel": "",
    "series": {
@@ -5680,6 +6277,25 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5712,7 +6328,7 @@
     "x": 0.6,
     "y": 0.9400000000000001
    },
-   "set": "10.1063_1.5028178:cmp:fig4",
+   "set": "yli18:cmp:fig4",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5722,7 +6338,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig5#c1",
+   "id": "yli18:fig5#c1",
    "figure": "5",
    "panel": "",
    "series": {
@@ -5947,13 +6563,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -5963,6 +6580,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -5990,6 +6616,36 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -6025,7 +6681,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig5#c2",
+   "id": "yli18:fig5#c2",
    "figure": "5",
    "panel": "",
    "series": {
@@ -6226,13 +6882,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -6242,6 +6899,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -6269,6 +6935,36 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -6304,7 +7000,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig5#c3",
+   "id": "yli18:fig5#c3",
    "figure": "5",
    "panel": "",
    "series": {
@@ -6425,13 +7121,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -6441,6 +7138,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -6468,6 +7174,36 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "conditions_raw": {
@@ -6503,7 +7239,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig6#c1",
+   "id": "yli18:fig6#c1",
    "figure": "6",
    "panel": "",
    "series": {
@@ -6733,7 +7469,17 @@
      0.5
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "conditions_raw": {
     "cycle count": "500"
    },
@@ -6754,7 +7500,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig6#c2",
+   "id": "yli18:fig6#c2",
    "figure": "6",
    "panel": "",
    "series": {
@@ -7288,7 +8034,17 @@
      2.8
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "conditions_raw": {
     "cycle count": "500"
    },
@@ -7309,7 +8065,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig7#c1",
+   "id": "yli18:fig7#c1",
    "figure": "7",
    "panel": "",
    "series": {
@@ -7477,6 +8233,16 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "definition": "yli18:tabu1.r18c0#1"
     }
    },
    "conditions_raw": {
@@ -7501,7 +8267,7 @@
    }
   },
   {
-   "id": "10.1063_1.5028178:fig7#c2",
+   "id": "yli18:fig7#c2",
    "figure": "7",
    "panel": "",
    "series": {
@@ -7829,6 +8595,16 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "definition": "yli18:tabu1.r18c0#1"
     }
    },
    "conditions_raw": {
@@ -7856,23 +8632,23 @@
  "values": [],
  "sets": [
   {
-   "id": "10.1063_1.5028178:cmp:fig2",
+   "id": "yli18:cmp:fig2",
    "figure": "2",
    "panel": "",
    "kind": "series",
    "varied": "pulse_time",
    "varied_raw": "pulse time",
    "members": [
-    "10.1063_1.5028178:fig2#c1",
-    "10.1063_1.5028178:fig2#c2",
-    "10.1063_1.5028178:fig2#c3",
-    "10.1063_1.5028178:fig2#c4",
-    "10.1063_1.5028178:fig2#c5",
-    "10.1063_1.5028178:fig2#c6",
-    "10.1063_1.5028178:fig2#c7",
-    "10.1063_1.5028178:fig2#c8",
-    "10.1063_1.5028178:fig2#c9",
-    "10.1063_1.5028178:fig2#c10"
+    "yli18:fig2#c1",
+    "yli18:fig2#c2",
+    "yli18:fig2#c3",
+    "yli18:fig2#c4",
+    "yli18:fig2#c5",
+    "yli18:fig2#c6",
+    "yli18:fig2#c7",
+    "yli18:fig2#c8",
+    "yli18:fig2#c9",
+    "yli18:fig2#c10"
    ],
    "conditions": {
     "feature_width": {
@@ -7885,13 +8661,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -7901,6 +8678,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -7928,26 +8714,46 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "label": "Fig. 2 series (pulse time)"
   },
   {
-   "id": "10.1063_1.5028178:cmp:fig3",
+   "id": "yli18:cmp:fig3",
    "figure": "3",
    "panel": "",
    "kind": "series",
    "varied": "pulse_time",
    "varied_raw": "Pulse time",
    "members": [
-    "10.1063_1.5028178:fig3#c1",
-    "10.1063_1.5028178:fig3#c2",
-    "10.1063_1.5028178:fig3#c3",
-    "10.1063_1.5028178:fig3#c4",
-    "10.1063_1.5028178:fig3#c5",
-    "10.1063_1.5028178:fig3#c6",
-    "10.1063_1.5028178:fig3#c7",
-    "10.1063_1.5028178:fig3#c8"
+    "yli18:fig3#c1",
+    "yli18:fig3#c2",
+    "yli18:fig3#c3",
+    "yli18:fig3#c4",
+    "yli18:fig3#c5",
+    "yli18:fig3#c6",
+    "yli18:fig3#c7",
+    "yli18:fig3#c8"
    ],
    "conditions": {
     "feature_width": {
@@ -7960,13 +8766,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -7976,6 +8783,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8003,24 +8819,63 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "label": "Fig. 3 series (Pulse time)"
   },
   {
-   "id": "10.1063_1.5028178:cmp:fig4",
+   "id": "yli18:cmp:fig4",
    "figure": "4",
    "panel": "",
    "kind": "series",
    "varied": "feature_width",
    "varied_raw": "channel height H",
    "members": [
-    "10.1063_1.5028178:fig4#c1",
-    "10.1063_1.5028178:fig4#c2",
-    "10.1063_1.5028178:fig4#c3",
-    "10.1063_1.5028178:fig4#c4"
+    "yli18:fig4#c1",
+    "yli18:fig4#c2",
+    "yli18:fig4#c3",
+    "yli18:fig4#c4"
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -8036,8 +8891,8 @@
  ],
  "derived": [
   {
-   "id": "10.1063_1.5028178:fig3#d1_1",
-   "source": "10.1063_1.5028178:fig3#c1",
+   "id": "yli18:fig3#d1_1",
+   "source": "yli18:fig3#c1",
    "quantity": "surface_coverage",
    "qualifiers": "position=plateau",
    "value": 0.9949999999999999,
@@ -8055,13 +8910,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8071,6 +8927,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8098,14 +8963,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d1_2",
-   "source": "10.1063_1.5028178:fig3#c1",
+   "id": "yli18:fig3#d1_2",
+   "source": "yli18:fig3#c1",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 137.6315789473684,
@@ -8123,13 +9008,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8139,6 +9025,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8166,14 +9061,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d3_1",
-   "source": "10.1063_1.5028178:fig3#c3",
+   "id": "yli18:fig3#d3_1",
+   "source": "yli18:fig3#c3",
    "quantity": "surface_coverage",
    "qualifiers": "position=plateau",
    "value": 0.99875,
@@ -8191,13 +9106,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8207,6 +9123,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8234,14 +9159,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d3_2",
-   "source": "10.1063_1.5028178:fig3#c3",
+   "id": "yli18:fig3#d3_2",
+   "source": "yli18:fig3#c3",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 97.78365384615384,
@@ -8259,13 +9204,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8275,6 +9221,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8302,14 +9257,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d5_1",
-   "source": "10.1063_1.5028178:fig3#c5",
+   "id": "yli18:fig3#d5_1",
+   "source": "yli18:fig3#c5",
    "quantity": "surface_coverage",
    "qualifiers": "position=plateau",
    "value": 0.992,
@@ -8327,13 +9302,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8343,6 +9319,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8370,14 +9355,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d5_2",
-   "source": "10.1063_1.5028178:fig3#c5",
+   "id": "yli18:fig3#d5_2",
+   "source": "yli18:fig3#c5",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 56.0125,
@@ -8395,13 +9400,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8411,6 +9417,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8438,14 +9453,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d7_1",
-   "source": "10.1063_1.5028178:fig3#c7",
+   "id": "yli18:fig3#d7_1",
+   "source": "yli18:fig3#c7",
    "quantity": "surface_coverage",
    "qualifiers": "position=plateau",
    "value": 0.995,
@@ -8463,13 +9498,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8479,6 +9515,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8506,14 +9551,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig3#d7_2",
-   "source": "10.1063_1.5028178:fig3#c7",
+   "id": "yli18:fig3#d7_2",
+   "source": "yli18:fig3#c7",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 46.267857142857146,
@@ -8531,13 +9596,14 @@
      "unit": "µm"
     },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 1.0,
+     "value": 300.0,
      "value_max": null,
-     "unit": "Pa"
+     "unit": "Pa",
+     "definition": "yli18:s5.p6#1"
     },
     "molar_mass": {
      "key_raw": "M_B",
@@ -8547,6 +9613,15 @@
      "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
     },
     "saturation_density": {
      "key_raw": "q",
@@ -8574,14 +9649,34 @@
      "value": 1.0,
      "value_max": null,
      "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yli18:tabu1.r2c0#1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 999.9999999999999,
+     "value_max": null,
+     "unit": "nm/cycle",
+     "definition": "yli18:s9.p3#1"
     }
    },
    "figure": "3",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig4#d1_1",
-   "source": "10.1063_1.5028178:fig4#c1",
+   "id": "yli18:fig4#d1_1",
+   "source": "yli18:fig4#c1",
    "quantity": "film_thickness",
    "qualifiers": "position=plateau",
    "value": 105.66666666666667,
@@ -8589,6 +9684,25 @@
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -8603,8 +9717,8 @@
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig4#d1_2",
-   "source": "10.1063_1.5028178:fig4#c1",
+   "id": "yli18:fig4#d1_2",
+   "source": "yli18:fig4#c1",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 460.7725321888412,
@@ -8612,6 +9726,25 @@
    "method": "half_value_crossing",
    "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yli18:tabu1.r3c2#1"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -8626,60 +9759,100 @@
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig6#d1_1",
-   "source": "10.1063_1.5028178:fig6#c1",
+   "id": "yli18:fig6#d1_1",
+   "source": "yli18:fig6#c1",
    "quantity": "film_thickness",
    "qualifiers": "position=plateau",
    "value": 52.34444444444445,
    "unit": "nm",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "figure": "6",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig6#d1_2",
-   "source": "10.1063_1.5028178:fig6#c1",
+   "id": "yli18:fig6#d1_2",
+   "source": "yli18:fig6#c1",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 133.69666666666666,
    "unit": "µm",
    "method": "half_value_crossing",
    "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "figure": "6",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig6#d2_1",
-   "source": "10.1063_1.5028178:fig6#c2",
+   "id": "yli18:fig6#d2_1",
+   "source": "yli18:fig6#c2",
    "quantity": "film_thickness",
    "qualifiers": "position=plateau",
    "value": 52.65,
    "unit": "nm",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "figure": "6",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig6#d2_2",
-   "source": "10.1063_1.5028178:fig6#c2",
+   "id": "yli18:fig6#d2_2",
+   "source": "yli18:fig6#c2",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 134.41666666666666,
    "unit": "µm",
    "method": "half_value_crossing",
    "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "figure": "6",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig7#d2_1",
-   "source": "10.1063_1.5028178:fig7#c2",
+   "id": "yli18:fig7#d2_1",
+   "source": "yli18:fig7#c2",
    "quantity": "film_thickness",
    "qualifiers": "position=plateau",
    "value": 47.26666666666667,
@@ -8704,14 +9877,24 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "definition": "yli18:tabu1.r18c0#1"
     }
    },
    "figure": "7",
    "panel": ""
   },
   {
-   "id": "10.1063_1.5028178:fig7#d2_2",
-   "source": "10.1063_1.5028178:fig7#c2",
+   "id": "yli18:fig7#d2_2",
+   "source": "yli18:fig7#c2",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
    "value": 89.08771929824562,
@@ -8736,20 +9919,103 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "definition": "yli18:tabu1.r18c0#1"
     }
    },
    "figure": "7",
    "panel": ""
   }
  ],
- "p89": [],
+ "p89": [
+  {
+   "label": "p_B",
+   "quantity": "partial_pressure",
+   "note": "",
+   "definition": "yli18:s5.p6#1"
+  },
+  {
+   "label": "c",
+   "quantity": "initial_sticking_coefficient",
+   "note": "a lumped coefficient of every sequential and parallel surface process",
+   "definition": "yli18:tabu1.r2c0#1"
+  },
+  {
+   "label": "gpc_{sat}",
+   "quantity": "saturation_growth_per_cycle",
+   "note": "the Langmuir-extrapolated growth at saturating exposure",
+   "definition": "yli18:s9.p3#1"
+  },
+  {
+   "label": "p_B",
+   "quantity": "partial_pressure",
+   "note": "",
+   "definition": "yli18:s5.p6#1"
+  },
+  {
+   "label": "c",
+   "quantity": "initial_sticking_coefficient",
+   "note": "a lumped coefficient of every sequential and parallel surface process",
+   "definition": "yli18:tabu1.r2c0#1"
+  },
+  {
+   "label": "gpc_{sat}",
+   "quantity": "saturation_growth_per_cycle",
+   "note": "the Langmuir-extrapolated growth at saturating exposure",
+   "definition": "yli18:s9.p3#1"
+  },
+  {
+   "label": "reactant pulse length",
+   "quantity": "pulse_time",
+   "note": "",
+   "definition": "yli18:tabu1.r3c2#1"
+  },
+  {
+   "label": "p_B",
+   "quantity": "partial_pressure",
+   "note": "",
+   "definition": "yli18:s5.p6#1"
+  },
+  {
+   "label": "c",
+   "quantity": "initial_sticking_coefficient",
+   "note": "a lumped coefficient of every sequential and parallel surface process",
+   "definition": "yli18:tabu1.r2c0#1"
+  },
+  {
+   "label": "t_p",
+   "quantity": "pulse_time",
+   "note": "",
+   "definition": "yli18:tabu1.r3c2#1"
+  },
+  {
+   "label": "gpc_{sat}",
+   "quantity": "saturation_growth_per_cycle",
+   "note": "the Langmuir-extrapolated growth at saturating exposure",
+   "definition": "yli18:s9.p3#1"
+  },
+  {
+   "label": "channel length",
+   "quantity": "feature_depth",
+   "note": "",
+   "definition": "yli18:tabu1.r18c0#1"
+  }
+ ],
  "report": {
   "inventory": 7,
   "data_panels": 6,
   "sets": 3,
   "curves": 29,
   "derived": 16,
-  "unmapped": 22,
-  "resolved_p89": 0
+  "unmapped": 0,
+  "resolved_p89": 12
  }
 }
