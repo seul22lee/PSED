@@ -1,0 +1,74 @@
+====================================================================================================
+map()  · 225 tokens
+Knowledge base map (generated from the data):
+Papers 12 (one line each: papers(material=…, structure=…, process=…, quantity=…)).
+Concept groups (concepts): ald_process 4; process_parameters 15; ald_reactor 4; test_structure 19; deposited_film 32; modelling 7; reaction_monitoring 6; measurement 3
+Families (members): composition 3; conformality 5; growth_amount 7
+Species 38, structures 12, mechanisms 36, methods 34.
+Materials (papers): Al2O3 5; TiO2 3; ZnO 2; SiO2 2; HfO2 2; MoS2 1; TiS2 1; WS2 1; Ga2S3 1; GaSx 1; metallic Mo 1
+Structure classes (papers): lateral_channel 4; planar 3; nanoparticle_compact 1; nanopore_membrane 1; via_hole 1; porous_body 1; trench 1
+Most populated quantities (papers with values): film_thickness 11; growth_per_cycle 7; penetration_depth 5; coated_aspect_ratio 4; normalized_thickness 4; phase 4; surface_coverage 4; film_density 3; crystallinity 3; resistivity 3
+====================================================================================================
+papers({"quantity": "penetration_depth"})
+[yim20] yim20: material Al2O3 · process TMA / H2O · structure lateral_channel · 27 experiments, 54 claims · main outcomes: film_thickness 61, growth_per_cycle 45, front_slope 33, penetration_depth 20 · panels 32, curves 58
+[ela03] ela03: material Al2O3, SiO2, ZnO · process DEZ / H2O, SICL4 / H2O, TMA / H2O · structure nanopore_membrane · 25 experiments, 54 claims · main outcomes: normalized_thickness 20, surface_coverage 11, film_thickness 3, signal_intensity 2 · panels 27, curves 34
+[yli18] yli18: material Al2O3, TiO2 · process TMA / H2O, TiCl4 / H2O · structure lateral_channel · 11 experiments, 15 claims · main outcomes: film_thickness 10, surface_coverage 8, penetration_depth 3 · panels 7, curves 29
+[gao15] gao15: material Al2O3, TiO2 · process TMA / ?, TiCl4 / ?, TiCl4 / H2O · structure lateral_channel · 14 experiments, 21 claims · main outcomes: penetration_depth 8, coated_aspect_ratio 8, film_thickness 6, normalized_thickness 1 · panels 17, curves 4
+[art19] art19: material Al2O3, HfO2, SiO2, TiO2 · process TDMACpH / atomic O · structure lateral_channel · 12 experiments, 21 claims · main outcomes: normalized_thickness 12, film_thickness 8, coated_aspect_ratio 6 · panels 6, curves 10
+[yim22] yim22: material — · process — · structure — · 68 experiments, 93 claims · main outcomes: film_thickness 59, growth_per_cycle 14, front_slope 13, film_density 6 · panels 26, curves 90
+[hei24] hei24: material — · process — · structure porous_body · 83 experiments, 31 claims · main outcomes: surface_coverage 63, penetration_depth 32, porosity 1 · panels 35, curves 90
+====================================================================================================
+search({"words": "purge growth per cycle"})
+[growth_per_cycle] concept · growth per cycle (growth_per_cycle): The amount of material deposited on the surface after each ALD cycle, here expressed as thickness per cycle (Cremers …
+[saturation_growth_per_cycle] concept · saturation growth per cycle (saturation_growth_per_cycle): The equilibrium thickness of layer growth in one cycle at saturation, i.e. at high reactant exposure (Ylilammi 2018, …
+[atoms_per_cycle] concept · metal atoms per cycle (atoms_per_cycle): Metal atoms deposited per unit area per cycle, the amount-based growth per cycle (Cremers 2019 Sec. I allows the GPC as …
+[zou23] zou23 (Zouw 2023) · [zou23:fig1c#c1] value · growth per cycle: curve, 8 points · x 1 to 15 s — a curve of Fig. 1c: growth per cycle against purge, read by the … · +57 hits · sets: [zou23:cmp:ald_T], [zou23:cmp:cvd_T], [zou23:cmp:mode], [zou23:cmp:fig2]
+[yim20] yim20 (Yim 2020) · [yim20:fig10.cap#11] value · growth per cycle: 0.098 nm — simulation input gpc_sat = 0.098 nm: saturation growth per cycle · +325 hits · sets: [yim20:cmp:A], [yim20:cmp:B], [yim20:cmp:C], [yim20:cmp:D] +7 · caveats [yim20:s8.p1#8], [yim20:s8.p1#9]
+[gor03] gor03 (Gordon 2003) · [gor03:s4.p3#2] value · flat HfO2 film · growth per cycle: 0.1 nm/cycle — the saturation dose corresponds to a thickness of 0.1 nm per cycle · +34 hits
+[mat23] mat23 (Mathew 2023) · [mat23:s9.p4#1] cited value · growth per cycle: 0.049 nm/cycle — Meng et al. report 0.49 Å per cycle for the thermal process at 200 °C · +45 hits · sets: [mat23:cmp:gpc_pe], [mat23:cmp:gpc_t], [mat23:cmp:growth], [mat23:cmp:fig1a] +2
+[yli18] yli18 (Ylilammi 2018) · [yli18:tabI.r1c6#1] value · Al2O3 film, 500 cycles · saturation growth per cycle (TMA): 0.1056 nm/cycle — Table I, Al2O3: the fitted saturation … · +70 hits · sets: [yli18:cmp:films]
+[mat22] mat22 (Mattinen 2022) · [mat22:fig7a#d1_1] value · growth per cycle: 0.06654 nm/cycle — linear slope of the curve [mat22:fig7a#c1], computed by this knowledge base by the … · +258 hits · sets: [mat22:cmp:map], [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250] +5 · caveat [mat22:s3.p32#5]
+open a paper with search(words, paper=<key>); sets hold metal atoms per cycle, growth per cycle, saturation growth per cycle · further papers with hits: yim22, gre23, ela03, hei24, gao15, art19
+====================================================================================================
+values({"result": "penetration depth", "paper": "art19"})
+[art19:none] art19: 0 values · 5 claims · 0 curves · 0 panels · 1 definitions of penetration depth — open with detail(ids=[<claim ids from search>])
+====================================================================================================
+values({"result": "penetration depth", "paper": "yim22"})
+[yim22:none] yim22: 0 values · 7 claims · 0 curves · 0 panels · 1 definitions of penetration depth — open with detail(ids=[<claim ids from search>])
+====================================================================================================
+concept({"words": "initial_sticking_coefficient"})
+[initial_sticking_coefficient] quantity initial_sticking_coefficient: The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5). · unit 1 · qualifiers species · yim20 13 values (specimen 1, aggregate 1, paper 1, cited 10) / 3 claims; ela03 2 values (cited 2) / 9
+[initial_sticking_coefficient] … settings / 9 claims; gor03 1 values (cited 1) / 3 claims; yli18 3 values (specimen 2, paper 1) / 3 claims; art19 1 values (paper 1) / 1 claims; yim22 25 values (specimen 13, paper 12) / 6 curves among them / 8 settings / 8 claims; hei24 1 values (paper 1) / 10 settings / 2 claims · not studied
+[initial_sticking_coefficient] … in: mat22, gre23, gao15, mat23, zou23
+[initial_sticking_coefficient] edge · input of model arts_slope, yanguas_gil_markov_chain, ylilammi_diffusion_reaction
+[initial_sticking_coefficient] edge · defined by paper yim20 (c_TMA), ela03, yli18, art19, yim22 (c), hei24 (β0)
+====================================================================================================
+values({"result": "growth per cycle", "paper": "mat22"})
+[columns] columns of every row: growth per cycle · 16 values computed by this knowledge base, not by the paper's authors are not listed here (detail, parts computed)
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; structure planar; reactor Oxford Instruments FlexAL PEALD; temperature set point 200–450 °C; pressure set point in the dose
+[mat22:cmp:map] … 200 mTorr; Ar purity 99.999 %; H2S purity 99.5 %; H2 purity 99.999 %; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] caveats on every cell: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] growth per cycle · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 1.7 Å (k1) [mat22:fig7b#32] | n.t. | n.t. | n.t. | 1.45 Å (k1) [mat22:fig7b#33] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 1.15 Å (k1) [mat22:fig7b#27] | n.t. | 1.15 Å (k1) [mat22:fig7b#28] | 1.15 Å (k1) [mat22:fig7b#29] | 1.4 Å (k1) [mat22:fig7b#30] | 0.7 Å (k1) [mat22:fig7b#31] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 0.7 Å (k1) [mat22:fig7b#21] | 0.75 Å (k1) [mat22:fig7b#22] | n.t. | 0.9 Å (k1) [mat22:fig7b#23] | 1.1 Å (k1) [mat22:fig7b#24] | 1.3 Å (k1) [mat22:fig7b#25] | 0.7 Å (k1) [mat22:fig7b#26] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 0.6 Å (k1) [mat22:fig7b#15] | 0.6 Å (k1) [mat22:fig7b#16] | n.t. | 0.85 Å (k1) [mat22:fig7b#17] | 1.1 Å (k1) [mat22:fig7b#18] | 1.3 Å (k1) [mat22:fig7b#19] | 0.7 Å (k1) [mat22:fig7b#20] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 0.6 Å (k1) [mat22:fig7b#8] | 0.65 Å (k1) [mat22:fig7b#9] | 0.8 Å (k1) [mat22:fig7b#10] | 0.95 Å (k1) [mat22:fig7b#11] | 1.1 Å (k1) [mat22:fig7b#12] | 1.3 Å (k1) [mat22:fig7b#13] | 0.65 Å (k1) [mat22:fig7b#14] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#7] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 0.85 Å (k1) [mat22:fig7b#4] | n.t. | 1.25 Å (k1) [mat22:fig7b#5] | n.t. | 1.45 Å (k1) [mat22:fig7b#6] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 1.2 Å (k1) [mat22:fig7b#2] | n.t. | n.t. | n.t. | 1.65 Å (k1) [mat22:fig7b#3] | n.t.
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:fig7a] set [mat22:cmp:fig7a] (figure) · Fig. 7a series (H2 flow ratio) · varies: H2 flow ratio · 5 rows
+[mat22:cmp:fig7a] caveats on every row of this set: [mat22:s3.p32#5]
+[mat22:fig7a#c1] 0 · H2 flow ratio 0 1 · 0.06654 nm/cycle (k3) [mat22:fig7a#d1_1]
+[mat22:fig7a#c2] 0.20 · H2 flow ratio 0.2 1 · 0.06414 nm/cycle (k3) [mat22:fig7a#d2_1]
+[mat22:fig7a#c3] 0.50 · H2 flow ratio 0.5 1 · 0.08046 nm/cycle (k3) [mat22:fig7a#d3_1]
+[mat22:fig7a#c4] 0.65 · H2 flow ratio 0.65 1 · 0.1072 nm/cycle (k3) [mat22:fig7a#d4_1]
+[mat22:fig7a#c5] 0.80 · H2 flow ratio 0.8 1 · 0.1461 nm/cycle (k3) [mat22:fig7a#d5_1]
+[legend] kinds: (k1) read from a figure; (k3) computed by this knowledge base, not by the paper's authors; unmarked: measured or stated
+[mat22:s3.p32#5] caveat · SE-based GPC is a thickness rate and hides changes in film density and stoichiometry between conditions.
+[mat22:s3.p28#3] caveat · First-100-cycle GPC averages hide non-linear growth: at high ratios GPC keeps rising with cycle number as fins form.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+also in yim20: 45 values · 5 claims · also in gre23: 5 values · 7 claims · also in gor03: 1 values · 0 claims · also in yim22: 14 values · 0 claims · also in mat23: 14 values · 4 claims · also in zou23: 13 values · 4 claims · not studied in: ela03, yli18, gao15, art19, hei24
