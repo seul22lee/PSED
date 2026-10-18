@@ -1732,3 +1732,37 @@ Open points after kb-12: (1) the 50 unmapped labels are of three kinds: the pape
 - The cross-paper probes carry 44 % of the battery tokens (66k of 152k): `values(result=q)` over all papers for every output quantity is the one call class with no per-paper budget.
 - gao15 cites two mean-free-path values as type cited with data_kind stated; the kind check flags the tool's own "cited" phrase against the record (facts content, not changed in 8′).
 - 31 external-id rows are marked check (QUDT kinds for areal densities, per-cycle lengths and gas flows; eight species CIDs not recalled) and wait for a lookup the directive did not allow.
+
+## Directive 9′ (2026-10-18, commits 286ae45, f659b89, 99bf280): set-C and v7/v8 rules, text arm readied — one sentence each
+
+- P106 (cycle in stated order). detail(parts=recipe) renders one ALD cycle as ordered steps from a 'cycle sequence' setting on the recipe (gre23 s9.p4: dose A, hold, purge, dose B, hold, purge), else the role order dose → hold → purge per reactant; a hold sits on its dose line ("dose 10–14 s, then hold 1920 s at 9 Torr", the pressure by step or by the dose's species) in detail and in the pulse_time settings table (query.cycle_block, with_hold); check_cycle; settings tables max 1426 tokens (P76).
+- P107 (derived slot with its source). A structure slot derived from other records (feature_depth from body_thickness and entry_sides) renders with its source wherever it appears — "0.78 mm (half of the 1.55 mm thickness; entry from both faces)" — from the fact's inputs (gre23 L_, ela03 half_L now cite them; query.slot_source); search lines render the record text, and the battery scan flags a derived slot printed without its source.
+- P108 (unit–quantity on every value). check_dimensions runs on every value record (facts, cells, peaks, derived scalars, curve axes; 2,736 records) against units.yaml: % and 1 dimensionless, signal units for signal quantities, no unit on a categorical, a relative spread dimensionless; corrections (verify/d9/p108_corrections.csv): yim20 and mat22 growth-per-cycle facts stored in nm or Å become nm/cycle and Å/cycle (64 facts), the lists.py aliases that collapsed nm/cycle to nm were a wrong rule and are gone (per-cycle units have their own base), m-3 added; split (b): front_slope gets definitions normalized (dθ/dx̃, dimensionless) and thickness_per_cycle (d(S/N)/dx̃, nm) and its 46 records carry definition=…, a new qualifier key whose values export computes from the entries' definitions; P52 skips entries with definitions.
+- P109 (transformation field). An entry may declare converts_to {target, rule, requires}; reactant_number_density (pending, accepted by rule d: it converts to an accepted entry) → partial_pressure by p = n·k_B·T given deposition_temperature; the importer stores the converted series beside the native one (kind computed_by_kb, citing the context record: the run's temperature fact or the curve's own series-label condition); curve() and the concept card render it, values() native only; hei24 imports 16 → 31 panels, 90 → 163 curves, 21 → 10 unmapped, 73 converted series; yim22 unchanged (verify/d9/import_before_after.csv); check_conversions.
+- P110 (detail on any id). detail(ids) accepts a concept, model, mechanism, species, structure or family id and returns its card (as concept() would) within the budget; only an id of no kind errors; one probe per id kind in the resolution check.
+- P111 (species qualifiers). "initial sticking coefficient (TMA)", "resistivity (MoS2)", "phase (metallic Mo)" resolve through concept() and values(result=…) to the quantity with the species or material as qualifier: a data key that carries it, else the records of the experiments whose material it is (query.species_scope); ten such phrases in the resolution check.
+- P112 (papers by mode). papers(process=) accepts a mode — thermal, plasma, ozone, derived per experiment from process_mode, a plasma step or power, a radical reactant — as well as a reactant's words; papers(material=) a species id, formula or printed name; the paper line shows the modes; papers(process="plasma") returns art19, mat22, mat23.
+- P113 (set order in search). The cross-paper search orders a paper's set ids by word overlap with the query (four shown, then +n): "purge growth per cycle" lists yim20's purge series [yim20:cmp:F] first.
+- P114 (kind phrases 'stated'). "stated / reported / given in the paper" passes for measured, computed_by_authors and stated records; "measured" still fails on computed_by_authors; recalibrated: 30 synthetic sentences precision 1.00, recall 1.00; 611 battery value lines, 2 mismatches (gao15's cited facts stored with data_kind stated).
+- P115 (repeated runs). ask.py --repeat N runs the question file N times into one jsonl (record field run); run_metrics reports per (question, arm) the agreement across runs — number-set Jaccard, cited-paper set Jaccard, first-sentence word overlap — and their mean as a stability column of the summary; no model was called.
+- Text arm. The Paper text prompt holds document.md of every paper in the KB (12 papers, 1,494 pieces, ≈159k tokens as chars/4; the dump arm ≈140k); ask.py --size prints the sizes, a batch prints them first, and above 900k tokens the arm refuses before any call; cache hits are priced as in P73.
+
+### P108 corrections and splits
+
+- (a) facts: yim20 32 growth_per_cycle values (Table 1 S_I/N, S_IIb/N, the Fig. 10 gpc_sat) nm → nm/cycle; mat22 32 Fig. 7b cells Å → Å/cycle; hei24 the Table 2 baseline n_P0 from other to reactant_number_density (P109).
+- (a) rules: lists.UNIT_ALIAS no longer maps Å/cycle, nm/cycle to a length (the aliases hid the mismatch on 7 papers' GPC facts); UNIT_BASE gains nm/cycle, Å/cycle, pm/cycle and m-3; sentence_only compares a per-cycle value with the prose's length number.
+- (b) split: front_slope → definitions normalized | thickness_per_cycle; yim20 17 + 16 records, yim22 13 records carry the definition qualifier; no other entry mixes dimensions.
+
+### Battery (pilot/battery_per_paper.csv)
+
+| paper | yim20 | mat22 | gre23 | ela03 | gor03 | yli18 | gao15 | art19 | yim22 | hei24 | mat23 | zou23 | cross-paper | total |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| calls | 13 | 14 | 14 | 13 | 12 | 12 | 14 | 14 | 14 | 13 | 13 | 13 | 65 | 224 |
+| tokens | 9,614 | 11,252 | 8,577 | 6,644 | 3,903 | 5,825 | 6,740 | 6,576 | 6,805 | 8,281 | 7,539 | 4,580 | 68,724 | 155,060 |
+
+### Open points after 9′
+
+- The 10 hei24 labels still unmapped are the paper's own ratios (ξ, 1 − r_slab/r_sphere) and τ/ε, s̄ (P89b); a paper-defined quantity or a converts_to-like declaration would import them.
+- The text arm at 12 papers is ≈159k tokens; at 58 papers it would be ≈770k, close to the 900k limit; the pieces of tables (1 per table) are the largest items.
+- gao15's two cited mean-free-path facts carry data_kind stated: the one data mismatch of the kind calibration (facts content, unchanged).
+- Process modes are inferred (no paper states process_mode); zou23's hot-wire process counts as thermal.
