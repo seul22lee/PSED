@@ -562,6 +562,29 @@ def paper_index(k, short=""):
     return out
 
 
+PROMPT_INDEX_BUDGET = 300                                                       # P120: tokens per paper line in the kb prompt
+
+
+def prompt_index(names=None, pc=None, keys=None):
+    """P120: the compact paper index of the kb prompt, from concept.counts (the P117 source): one line per paper — key (short name) ·
+    <quantity id> n, … (every quantity with values, by count) · claims n · panels n · curves n. No labels, ranges, set ids or values;
+    at most PROMPT_INDEX_BUDGET tokens per paper. names = {key: short name}; pc, keys override the counts and papers (the 58-paper
+    simulation of check_map)."""
+    pc = pc if pc is not None else counts()
+    keys = keys if keys is not None else list(Q.TREES)
+    out = ["Paper index (every quantity each paper holds values for, by count; open a paper with values(paper=<key>)):"]
+    for k in keys:
+        qs = sorted(((d[k]["values"], q) for q, d in pc.items() if q in L.ENTRIES and L.ENTRIES[q]["type"] in ("quantity", "categorical") and d.get(k, {}).get("values")), key=lambda x: (-x[0], x[1]))
+        T = Q.TREES.get(k)
+        claims = sum(1 for f in T.rows if f["type"] == "claim") if T else 0
+        line = f"{k}" + (f" ({names[k]})" if names and k in names else "") + " · " + ", ".join(f"{q} {n}" for n, q in qs) + f" · claims {claims} · panels {len(T.inventory) if T else 0} · curves {len(T.curves) if T else 0}"
+        while len(line) // 4 > PROMPT_INDEX_BUDGET and qs:                       # over the budget: the smallest counts fold into '+n more'
+            qs = qs[:-1]
+            line = f"{k}" + (f" ({names[k]})" if names and k in names else "") + " · " + ", ".join(f"{q} {n}" for n, q in qs) + f" +{len(qs)} more · claims {claims} · panels {len(T.inventory) if T else 0} · curves {len(T.curves) if T else 0}"
+        out.append(line)
+    return "\n".join(out)
+
+
 def l0_map(summ=None):
     """The map of the knowledge base, generated from the data (P70, P97): corpus-level counts only: papers, the hierarchy's top nodes and
     families with concept counts, species, structures, mechanisms and methods, the materials and structure classes with their paper counts,

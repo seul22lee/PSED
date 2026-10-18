@@ -1467,7 +1467,22 @@ def check_map():
     m58 = CN.l0_map(fake)
     if len(m58) / 4 > CN.MAP_BUDGET:
         err.append(f"map: {len(m58) / 4:.0f} tokens at 58 simulated papers, over {CN.MAP_BUDGET} (P97)")
-    print(f"== map (P70, P97): {len(m) / 4:.0f} tokens of at most {CN.MAP_BUDGET}, {m.count(chr(10)) + 1} lines, every number a count; {len(m58) / 4:.0f} tokens at 58 simulated papers")
+    pc = CN.counts()                                                             # P120: the compact paper index of the kb prompt, from the same counts as the cards (P95)
+    block = CN.prompt_index()
+    for line in block.splitlines()[1:]:
+        k = line.split(" ")[0]
+        if len(line) / 4 > CN.PROMPT_INDEX_BUDGET:
+            err.append(f"paper index: {k} takes {len(line) / 4:.0f} tokens, over {CN.PROMPT_INDEX_BUDGET} (P120)")
+        got = {q: int(n) for q, n in re.findall(r"(\w+) (\d+)(?:,| ·)", line.split(" · ", 1)[1].split(" · claims")[0] + " ·")}
+        want = {q: d[k]["values"] for q, d in pc.items() if q in L.ENTRIES and L.ENTRIES[q]["type"] in ("quantity", "categorical") and d.get(k, {}).get("values")}
+        if "+" not in line and got != want:
+            err.append(f"paper index: {k} counts differ from the cards: {sorted(set(got.items()) ^ set(want.items()))[:4]} (P120, P95)")
+    fake_pc = {q: {kk: pc[q][kk.rsplit("_", 1)[0]] for kk in fake if kk.rsplit("_", 1)[0] in pc[q]} for q in pc}   # the 12 papers' counts replicated to 58 keys
+    block58 = CN.prompt_index(None, fake_pc, list(fake))
+    if len(block58) / 4 > 20_000:
+        err.append(f"paper index: {len(block58) / 4:.0f} tokens at 58 simulated papers, over 20,000 (P120)")
+    print(f"== map (P70, P97, P120): {len(m) / 4:.0f} tokens of at most {CN.MAP_BUDGET}, {m.count(chr(10)) + 1} lines, every number a count; {len(m58) / 4:.0f} tokens at 58 simulated papers; "
+          f"paper index {len(block) / 4:.0f} tokens at 12 papers, {len(block58) / 4:.0f} at 58 simulated (at most 20,000), counts equal the cards'")
     return err
 
 

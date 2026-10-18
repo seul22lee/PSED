@@ -85,7 +85,7 @@ ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
     "text": "The full text of the papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
     "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool. "
-          "values(paper=p) lists everything a paper measures; open it for each paper you will cite before answering a question about trade-offs, costs, penalties, side effects or 'what else changes'. "
+          "The paper index above lists every quantity each paper holds values for; values(paper=p) opens a paper's full index with ranges and sets, values(result=…, paper=p) the values themselves. "
           "Your budget: {tokens:,} tokens of tool output for this question (every executed result ends with 'budget left: M tokens'; a call that returns an error or repeats an earlier call costs nothing); after {errors} calls that returned an error, or {cap} executed calls ({total} calls in all, a safety ceiling), the tools stop answering and you answer from what you have.",
     "dump": "The whole structured knowledge base built from the papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
@@ -152,7 +152,7 @@ def system_prompt(arm):
     concept.l0_map, concept.DESCEND); then the arm's own text (and, for Paper text, the pieces; for KB dump, the serialization)."""
     s = SHARED.format(papers=paper_lines(), n=len(Q.KEY))
     if arm == "kb":
-        s += "\n\n" + CN.l0_map() + "\n\n" + CN.DESCEND
+        s += "\n\n" + CN.l0_map() + "\n\n" + CN.prompt_index({k: short_name(k) for k in Q.KEY}) + "\n\n" + CN.DESCEND   # P120: the paper index is prompt, not tool output
     s += "\n\n" + (ARM_PROMPT[arm].format(**CAPS) if arm == "kb" else ARM_PROMPT[arm])   # the kb preamble states the run's actual budget (P75, --max-calls)
     if arm == "dump":
         s += "\n\n" + dump_text()
