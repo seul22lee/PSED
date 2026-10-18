@@ -514,6 +514,54 @@ def papers_lines(material=None, structure=None, process=None, quantity=None):
     return out
 
 
+INDEX_LINES = 40
+
+
+def paper_index(k, short=""):
+    """P117: the paper's quantity index: one line per quantity the paper holds values for — label (id) · n values (by home, derived) ·
+    range with unit · the set ids that hold it · claims n — ordered by count, at most INDEX_LINES lines (the tail collapsed into one
+    '+n quantities: ids' line), then two closing lines with counts only: the figure panels by type and the model inputs. Never a value
+    with its id. [(line id, text)]."""
+    T = Q.TREES[k]
+    pc = counts()
+    qs = [(d[k]["values"], q) for q, d in pc.items() if q in L.ENTRIES and L.ENTRIES[q]["type"] in ("quantity", "categorical") and d.get(k, {}).get("values")]
+    qs.sort(key=lambda x: (-x[0], x[1]))
+    out = [(f"{k}:index", f"{short or k} ({k}) · quantity index: {len(qs)} quantities with values · label (id) · n values (by home) · range · sets · claims; open one with values(result=<id>, paper=\"{k}\")")]
+    for n, q in qs[:INDEX_LINES]:
+        d = pc[q][k]; e = L.ENTRIES[q]
+        homes = ", ".join(f"{h} {d[h]}" for h in HOMES if d.get(h))
+        unit = e.get("unit", "")
+        vals = []
+        base = lambda x: "" if x == "1" else L.UNIT_ALIAS.get(x, L.UNIT_ALIAS.get(x.replace("·", " "), x.replace("·", " ")))   # '1' is the dimensionless unit, stored as ''
+
+        tgt = base(unit)
+        for f in T.rows:                                                        # the counted value records: results and cited values, not settings, not KB-computed
+            if "#" in f["fact_id"] and f["quantity"] == q and f["type"] in Q.RESULT_TYPES + ("cited",) and "stat=" not in f["qualifiers"] and f.get("data_kind") != "computed_by_kb":
+                v = Q.val(f)
+                if v is None:
+                    continue
+                u = base(f["unit"])
+                if unit and u != tgt:
+                    if u in L.UNIT_BASE and tgt in L.UNIT_BASE and L.UNIT_BASE[u][0] == L.UNIT_BASE[tgt][0]:
+                        v = v * L.UNIT_BASE[u][1] / L.UNIT_BASE[tgt][1]
+                    else:
+                        continue
+                vals.append(v)
+        rng = (f"{Q.g(min(vals), 3)}–{Q.g(max(vals), 3)} {unit}".strip() if len(vals) > 1 and min(vals) != max(vals) else f"{Q.g(vals[0], 3)} {unit}".strip()) if vals else ("categorical" if e["type"] == "categorical" else "no numeric value")
+        sets = Q.sets_with_quantity(T, {q})
+        bits = [f"{L.LABELS.get(q, q)} ({q})", f"{n} values ({homes})" + (f", derived {d['derived']}" if d.get("derived") else ""), rng,
+                ("sets " + ", ".join(f"[{c}]" for c in sets[:4]) + (f" +{len(sets) - 4}" if len(sets) > 4 else "")) if sets else "no set",
+                f"claims {d.get('claims', 0)}"]
+        out.append((f"{k}:index", " · ".join(bits)))
+    if len(qs) > INDEX_LINES:
+        out.append((f"{k}:index", f"+{len(qs) - INDEX_LINES} quantities: " + ", ".join(q for _, q in qs[INDEX_LINES:])))
+    inv = collections.Counter(i["panel_type"] for i in T.inventory)
+    out.append((f"{k}:index", f"figure panels {sum(inv.values())}" + (" (" + ", ".join(f"{t} {n}" for t, n in inv.most_common()) + ")" if inv else "") + f" · curves {len(T.curves)}"))
+    inputs_n = sum(1 for f in T.rows if "#" in f["fact_id"] and f.get("data_kind") == "model_input" and Q.text_of(f))
+    out.append((f"{k}:index", f"model inputs {inputs_n} · input entities {len(Q.inputs(T))} · experiments {len(Q.experiments(T))} · claims {sum(1 for f in T.rows if f['type'] == 'claim')}"))
+    return out
+
+
 def l0_map(summ=None):
     """The map of the knowledge base, generated from the data (P70, P97): corpus-level counts only: papers, the hierarchy's top nodes and
     families with concept counts, species, structures, mechanisms and methods, the materials and structure classes with their paper counts,

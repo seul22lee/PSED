@@ -23,7 +23,7 @@ Kind check (P72): for every citation, the kind its sentence states (measured, re
 from other values, assumed, taken from another work) against the record's kind; --kind-check RUNS.jsonl reruns it on stored answers.
 LLM API calls are allowed only in this file, providers.py and serve.py. Runs with conda env psed310 (the vendor SDKs).
 """
-import argparse, concurrent.futures as cf, csv, datetime, json, re, sys, threading, time
+import argparse, hashlib, concurrent.futures as cf, csv, datetime, json, re, sys, threading, time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -69,6 +69,7 @@ ARM_PROMPT = {
     "model": "You have no documents and no tools. Answer from your own knowledge. For each statement, say whether you know it from these papers specifically or from general knowledge, and how confident you are. Do not write source ids.",
     "text": "The full text of the papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
     "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool. "
+          "values(paper=p) lists everything a paper measures; open it for each paper you will cite before answering a question about trade-offs, costs, penalties, side effects or 'what else changes'. "
           "Your budget: at most {cap} executed tool calls for this question (a call that returns an error or repeats an earlier call does not count); after {total} calls in all, or {errors} calls that returned an error, the tools stop answering and you answer from what you have.",
     "dump": "The whole structured knowledge base built from the papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
@@ -479,6 +480,15 @@ def answer_call(c, tool_calls, given, seen_calls):
     return dict(id=c["id"], name=c["name"], content=msg, error=err)
 
 
+def preamble_sha256(arm):
+    """P118: the hash of an arm's preamble (SHARED with the paper lines, the arm prompt with the run's budget, the kb descend protocol
+    and tool descriptions; not the documents or the dump), so that runs with different preambles are distinguishable."""
+    s = SHARED.format(papers=paper_lines(), n=len(Q.KEY)) + "\n" + (ARM_PROMPT[arm].format(**CAPS) if arm == "kb" else ARM_PROMPT[arm])
+    if arm == "kb":
+        s += "\n" + CN.DESCEND + "\n" + json.dumps(TOOLS, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:16]
+
+
 def prompt_tokens(arm):
     """The size of an arm's system prompt in tokens, as chars/4 (no tokenizer of ours; the vendor's count comes with the usage)."""
     return len(system_prompt(arm)) // 4
@@ -528,7 +538,7 @@ def run_arm(arm, question, model, run=1):
     nc = number_check(text, arm, given)
     proc = RM.process(tool_calls, nc["cited"])                               # P69: calls, refused, duplicates, tool output tokens, delivered and cited ids, shares
     kc = kind_check(text, given)                                              # P72: the stated kind of every citation against the record's
-    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, run=run, max_calls=CAPS["cap"], answer=text,
+    return dict(time=datetime.datetime.now().isoformat(timespec="seconds"), question=question, arm=arm, model=model, run=run, max_calls=CAPS["cap"], preamble_sha256=preamble_sha256(arm), answer=text,
                 cited={i: dict(text=given[i], open=open_target(i)) for i in nc["cited"]}, unknown_ids=nc["unknown"], tool_calls=tool_calls,
                 number_check={k: v for k, v in nc.items() if k not in ("cited", "unknown")}, kind_check=kc, process=proc, words=words(text),
                 check_line=check_line(nc, words(text)) + f" · {kc['mismatches']} kind mismatches" + process_line(proc), usage=usage, model_calls=calls, retries=retries,

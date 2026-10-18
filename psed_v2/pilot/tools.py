@@ -128,7 +128,9 @@ TOOLS = [
              offset=dict(type="integer", description="Skip this many results (default 0).")),
              required=["words"])),
     dict(name="values",
-         description=("Arguments: result or set (one of the two), paper, where. With set (a comparison set id): one table of everything the set measured, "
+         description=("Arguments: result or set (one of the two), paper, where; or paper alone. With paper alone: the paper's quantity index, one line per quantity it holds values for "
+                      "(label, id, value counts by home, range with unit, the set ids that hold it, claims), the figure panels and model inputs as counts; never a value with its id. "
+                      "With set (a comparison set id): one table of everything the set measured, "
                       "rows = every member of the set (every cell of a grid) and first the set itself for the values stated for it, columns = every "
                       "result quantity with a value among them in the ontology's order, cells = value, kind mark, fact id, ± with its basis; over the "
                       "budget the last columns collapse into one line naming them, rows are never dropped. With result: returns every value of one result or stated setting as comparison-set "
@@ -416,7 +418,7 @@ def _comparison(i):
 def _record(i):
     """Whether an id names a record of the knowledge base (any row but a paper's), a location (P92) or a concept, model, mechanism,
     species, structure or family id (P110)."""
-    if i in L.ENTRIES or (i.startswith("family:") and i[7:] in L.FAMILIES):
+    if i in L.ENTRIES or (i.startswith("family:") and i[7:] in L.FAMILIES) or i in Q.TREES:   # P110, P117 (a paper key: its index)
         return True
     T = Q.TREES.get(i.split(":")[0])
     return bool(T and i in T.byid and T.byid[i]["type"] != "paper") or Q.located(i) is not None
@@ -443,9 +445,9 @@ def validate(name, args):
     e = _check("", {k: v for k, v in args.items() if not (k == "paper" and name in ("search", "values") and isinstance(v, str))}, SCHEMA[name])   # P105: an unknown paper name suggests, never errors
     if e:
         return f"{name}: {e.lstrip('.')}" if not e.startswith(":") else f"{name}{e}"
-    if name == "values":                                                        # P77: result or set, one of the two
-        if args.get("result") is None and args.get("set") is None:
-            return "values: missing result or set"
+    if name == "values":                                                        # P77: result or set, one of the two; P117: paper alone = the paper's quantity index
+        if args.get("result") is None and args.get("set") is None and args.get("paper") is None:
+            return "values: missing result, set or paper"
         if args.get("result") is not None and args.get("set") is not None:
             return "values: give result or set, not both"
         if args.get("set") is not None:
@@ -1082,6 +1084,8 @@ def _run(name, args):
             return [block([wrap("none", f"no paper named {args['paper']!r}; nearest: " + ", ".join(nearest_papers(args["paper"])) + " · the keys: " + ", ".join(Q.TREES))])], ""
         if name == "values" and args.get("set"):                                # P77: one table for a comparison set
             return set_blocks(Q.set_table(args["set"])), ""
+        if name == "values" and args.get("result") is None:                     # P117: values(paper=p): the paper's quantity index
+            return [block([wrap(*x) for x in CN.paper_index(args["paper"], short_name(args["paper"]))])], ""
         if name == "values" and not _result_ok(args["result"]):                 # P105: an unknown result name: the nearest three, executed
             return [block([wrap("none", f"no result named {args['result']!r}; nearest: " + ", ".join(nearest_results(args["result"])))])], ""
         if name == "values":
@@ -1223,6 +1227,8 @@ def _run(name, args):
                     b, e = _run("detail", {"id": i, "parts": parts})
                     out += b; errs += [e] if e else []
                 return out, "; ".join(errs)
+            if args["id"] in Q.TREES:                                           # P117: a paper key: its quantity index
+                return [block([wrap(*x) for x in CN.paper_index(args["id"], short_name(args["id"]))])], ""
             if args["id"] in L.ENTRIES or args["id"].startswith("family:"):      # P110: a concept, model, mechanism, species, structure or family id: its card
                 return [block([wrap(*x) for x in CN.concept_lines(args["id"])])], ""
             T0 = Q.tree_of(args["id"]); n0 = T0.byid.get(args["id"])

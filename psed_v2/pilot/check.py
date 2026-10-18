@@ -1617,6 +1617,44 @@ def check_cycle():
     return err
 
 
+def check_paper_index():
+    """P117: every paper's quantity index (values(paper=k), detail(ids=[k])) is within the budget (no 'more' line), lists every quantity the
+    concept cards count values for in the paper with the same count (P95 both ways), prints no value with an id, and ends with the two
+    count lines."""
+    import concept as CN, query as Q, tools
+    err, size = [], 0
+    pc = CN.counts()
+    for k in Q.TREES:
+        lines, e = tools.run_tool("values", {"paper": k})
+        if e:
+            err.append(f"values(paper={k}): {e} (P117)"); continue
+        js = joined(lines)
+        size = max(size, sum(len(t) + len(i) + 4 for i, t in lines) // 4)
+        if any(i == "more" for i, _ in lines):
+            err.append(f"values(paper={k}): over the budget (P117)")
+        got = {m.group(1): int(m.group(2)) for _, t in js for m in [re.search(r"^\S.*? \((\w+)\) · (\d+) values", t)] if m}
+        tail = next((t for _, t in js if t.startswith("+")), "")
+        tail_ids = set(re.findall(r"\b([a-z0-9_]+)\b", tail.split(":", 1)[1])) if ":" in tail else set()
+        want = {q: d[k]["values"] for q, d in pc.items() if q in L.ENTRIES and L.ENTRIES[q]["type"] in ("quantity", "categorical") and d.get(k, {}).get("values")}
+        for q, n in want.items():
+            if q in got and got[q] != n:
+                err.append(f"values(paper={k}): {q} {got[q]} values in the index, {n} on the card (P117, P95)")
+            if q not in got and q not in tail_ids:
+                err.append(f"values(paper={k}): {q} has {n} values on the card and is not in the index (P117, P95)")
+        for q in got:
+            if q not in want:
+                err.append(f"values(paper={k}): {q} in the index but no values on the card (P117, P95)")
+        if any(re.search(r"\[\w+:\S+#\S+\]", t) for _, t in js):
+            err.append(f"values(paper={k}): a value with its fact id in the index (P117)")
+        if not (js[-2][1].startswith("figure panels") and js[-1][1].startswith("model inputs")):
+            err.append(f"values(paper={k}): the two closing count lines are missing (P117)")
+        d_lines, e2 = tools.run_tool("detail", {"ids": [k]})
+        if e2 or [t for _, t in d_lines] != [t for _, t in lines]:
+            err.append(f"detail(ids=[{k}]) should return the same index as values(paper={k}) (P117) {e2}")
+    print(f"== paper index (P117): {len(Q.TREES)} papers, max {size} tokens per index, at most {CN.INDEX_LINES} quantity lines; counts equal the concept cards' (P95 both ways)")
+    return err
+
+
 def check_conversions():
     """P109: every converts_to target and required quantity is an entry; every converted series of the imported curves cites a context
     record that exists in its paper's facts and names the required quantity; values() never renders a converted value."""
@@ -1804,6 +1842,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_cycle()
     print(f"== cycle (P106): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_paper_index()
+    print(f"== paper index (P117): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
