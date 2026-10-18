@@ -161,7 +161,8 @@ class Resolver:
         """The ids whose dimension is the printed unit's, when a unit is known (a lone symbol of another dimension is not a match); still
         several and an axis given: P90c, an x axis takes a coordinate over a condition, a y axis an output."""
         if dimension:
-            hit = {i for i in hit if L.ENTRIES[i].get("dimension") == dimension or (dimension == "dimensionless" and L.ENTRIES[i].get("dimension") in ("signal", "count"))}
+            hit = {i for i in hit if L.ENTRIES[i].get("dimension") == dimension or (dimension == "dimensionless" and L.ENTRIES[i].get("dimension") in ("signal", "count"))
+                   or (dimension == "length" and L.ENTRIES[i].get("dimension") == "length_per_cycle")}   # 'Growth per cycle (Å)': a per-cycle entry printed in a length unit (as fit_unit reads it)
         hit = set(hit)
         if len(hit) > 1 and axis:
             want = {"x": ("coordinate",), "y": ("output",)}[axis]
