@@ -315,6 +315,11 @@ class Resolver:
         return next(iter(outs)) if len(outs) == 1 else ""
 
     def species_id(self, label):
+        ws = str(label).split()
+        if len(ws) <= 2 and (ew := L.element_word(ws[0], "", ws[1] if len(ws) == 2 else "")):   # P99: "oxygen" is an element, "oxygen gas" the molecule
+            return ew[1] if ew[0] == "species" else ""
+        if L.SUPPLIER_RX.fullmatch(str(label).strip()):
+            return ""
         hit = self.species.get(norm(label), set())
         return next(iter(hit)) if len(hit) == 1 else ""
 
@@ -566,6 +571,8 @@ class Importer:
         head = re.sub(r"\s*[\(\[].*$", "", lab).strip()
         if head in ELEMENTS:
             return dict(label_raw=lab, cls="species", element=head)
+        if (ew := L.element_word(head)) and ew[0] == "element":                    # P99: an element word alone is the element
+            return dict(label_raw=lab, cls="species", element=ew[1])
         sp = self.R.species_id(head)
         if sp:
             return dict(label_raw=lab, cls="species", species=sp)

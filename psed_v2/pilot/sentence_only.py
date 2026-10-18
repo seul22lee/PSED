@@ -51,7 +51,7 @@ def species_dict():
     for sid, s in L.SPECIES.items():
         element = bool(re.fullmatch(r"[A-Z][a-z]?", s["formula"] or ""))
         for a in list(s["aliases"]) + ([] if element else [s["formula"], s["name"], sid]):
-            if a and len(a) > 1 and norm(a) not in amb and not re.fullmatch(r"[A-Z][a-z]?", a):
+            if a and len(a) > 1 and norm(a) not in amb and not re.fullmatch(r"[A-Z][a-z]?", a) and a.lower() not in L.ELEMENT_WORDS:   # P99: "oxygen" is an element word
                 out[norm(a)] = sid
     return out
 
@@ -66,13 +66,17 @@ WORD = re.compile(r"[A-Za-z][A-Za-z0-9()\.,'/+\-]*[A-Za-z0-9)]|[A-Za-z]")
 
 def species_in(text):
     """The species ids whose alias appears in the text (one to three words, normalized as Sec. 6 says)."""
-    words = WORD.findall(text)
+    words = WORD.findall(L.SUPPLIER_RX.sub(" ", text))                            # P99: a supplier's name is no species
     hits = set()
     for n in (3, 2, 1):
         for i in range(len(words) - n + 1):
             w = norm(" ".join(words[i:i + n]).strip(".,;:()"))
             if w in SPECIES:
                 hits.add(SPECIES[w])
+            elif n == 1:                                                           # P99: an element word is a species only with a gas word
+                ew = L.element_word(words[i], words[i - 1] if i else "", words[i + 1] if i + 1 < len(words) else "")
+                if ew and ew[0] == "species":
+                    hits.add(ew[1])
     return hits
 
 

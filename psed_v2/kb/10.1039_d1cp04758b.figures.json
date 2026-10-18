@@ -3,7 +3,7 @@
  "key": "yim22",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-18T02:33:41",
+ "imported_at": "2026-10-18T10:05:14",
  "inventory": [
   {
    "id": "yim22:fig1a",
@@ -253,7 +253,8 @@
    "panel_type": "plot",
    "content": "Diffusion coefficients against the Knudsen number",
    "quantities": [
-    "knudsen_number"
+    "knudsen_number",
+    "effective_diffusion_coefficient"
    ],
    "flags": [
     "F4",
@@ -262,7 +263,7 @@
     "F4",
     "F4"
    ],
-   "status": "unresolved axis"
+   "status": "imported"
   },
   {
    "id": "yim22:fig6b",
@@ -9799,6 +9800,678 @@
    }
   },
   {
+   "id": "yim22:fig6a#c1",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "Dkn",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "knudsen_number",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Kn (-)",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "effective_diffusion_coefficient",
+    "unit": "m2/s",
+    "transform": "",
+    "label_raw": "Diffusion coefficient (m2/s)",
+    "unit_raw": "m2/s",
+    "definition": "yim22:tabu1.r5c0#1",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.092,
+     4.3e-05
+    ],
+    [
+     0.18,
+     4.3e-05
+    ],
+    [
+     0.37,
+     4.3e-05
+    ],
+    [
+     0.74,
+     4.3e-05
+    ],
+    [
+     1.47,
+     4.3e-05
+    ],
+    [
+     2.9,
+     4.3e-05
+    ],
+    [
+     5.9,
+     4.3e-05
+    ],
+    [
+     11.8,
+     4.3e-05
+    ],
+    [
+     23.6,
+     4.3e-05
+    ],
+    [
+     47.1,
+     4.3e-05
+    ],
+    [
+     94.3,
+     4.3e-05
+    ],
+    [
+     188.5,
+     4.3e-05
+    ],
+    [
+     1800.0,
+     4.3e-05
+    ]
+   ],
+   "points_raw": [
+    [
+     0.092,
+     4.3e-05
+    ],
+    [
+     0.18,
+     4.3e-05
+    ],
+    [
+     0.37,
+     4.3e-05
+    ],
+    [
+     0.74,
+     4.3e-05
+    ],
+    [
+     1.47,
+     4.3e-05
+    ],
+    [
+     2.9,
+     4.3e-05
+    ],
+    [
+     5.9,
+     4.3e-05
+    ],
+    [
+     11.8,
+     4.3e-05
+    ],
+    [
+     23.6,
+     4.3e-05
+    ],
+    [
+     47.1,
+     4.3e-05
+    ],
+    [
+     94.3,
+     4.3e-05
+    ],
+    [
+     188.5,
+     4.3e-05
+    ],
+    [
+     1800.0,
+     4.3e-05
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.1 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "cycle_number": {
+     "key_raw": "N",
+     "raw": "1",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "523.15 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 250.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "pulse_time": {
+     "key_raw": "t1",
+     "raw": "2 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 2.0,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yim22:tabu2.r5c0#1"
+    },
+    "molar_mass": {
+     "key_raw": "MA",
+     "raw": "0.1 kg mol-1",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yim22:tabu1.r1c0#1"
+    }
+   },
+   "conditions_raw": {
+    "W": "10 mm",
+    "H": "0.1 μm",
+    "N": "1",
+    "T": "523.15 K",
+    "t1": "2 s",
+    "MA": "0.1 kg mol-1",
+    "c": "0.01"
+   },
+   "flags": [
+    "F4",
+    "F4",
+    "F4",
+    "F4",
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 17.99908,
+    "y": 0.0
+   },
+   "set": "yim22:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   }
+  },
+  {
+   "id": "yim22:fig6a#c2",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "Deff",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "knudsen_number",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Kn (-)",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "effective_diffusion_coefficient",
+    "unit": "m2/s",
+    "transform": "",
+    "label_raw": "Diffusion coefficient (m2/s)",
+    "unit_raw": "m2/s",
+    "definition": "yim22:tabu1.r5c0#1",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.092,
+     6.2e-06
+    ],
+    [
+     0.18,
+     1.1e-05
+    ],
+    [
+     0.37,
+     1.8e-05
+    ],
+    [
+     0.74,
+     2.5e-05
+    ],
+    [
+     1.47,
+     3.2e-05
+    ],
+    [
+     2.9,
+     3.6e-05
+    ],
+    [
+     5.9,
+     3.9e-05
+    ],
+    [
+     11.8,
+     4.1e-05
+    ],
+    [
+     23.6,
+     4.2e-05
+    ],
+    [
+     47.1,
+     4.25e-05
+    ],
+    [
+     94.3,
+     4.28e-05
+    ],
+    [
+     188.5,
+     4.29e-05
+    ],
+    [
+     1800.0,
+     4.3e-05
+    ]
+   ],
+   "points_raw": [
+    [
+     0.092,
+     6.2e-06
+    ],
+    [
+     0.18,
+     1.1e-05
+    ],
+    [
+     0.37,
+     1.8e-05
+    ],
+    [
+     0.74,
+     2.5e-05
+    ],
+    [
+     1.47,
+     3.2e-05
+    ],
+    [
+     2.9,
+     3.6e-05
+    ],
+    [
+     5.9,
+     3.9e-05
+    ],
+    [
+     11.8,
+     4.1e-05
+    ],
+    [
+     23.6,
+     4.2e-05
+    ],
+    [
+     47.1,
+     4.25e-05
+    ],
+    [
+     94.3,
+     4.28e-05
+    ],
+    [
+     188.5,
+     4.29e-05
+    ],
+    [
+     1800.0,
+     4.3e-05
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.1 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "cycle_number": {
+     "key_raw": "N",
+     "raw": "1",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "523.15 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 250.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "pulse_time": {
+     "key_raw": "t1",
+     "raw": "2 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 2.0,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yim22:tabu2.r5c0#1"
+    },
+    "molar_mass": {
+     "key_raw": "MA",
+     "raw": "0.1 kg mol-1",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yim22:tabu1.r1c0#1"
+    }
+   },
+   "conditions_raw": {
+    "W": "10 mm",
+    "H": "0.1 μm",
+    "N": "1",
+    "T": "523.15 K",
+    "t1": "2 s",
+    "MA": "0.1 kg mol-1",
+    "c": "0.01"
+   },
+   "flags": [
+    "F4",
+    "F4",
+    "F4",
+    "F4",
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 17.99908,
+    "y": 3.68e-07
+   },
+   "set": "yim22:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   }
+  },
+  {
+   "id": "yim22:fig6a#c3",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "DA",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "knudsen_number",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Kn (-)",
+    "unit_raw": "",
+    "definition": "",
+    "definition_note": ""
+   },
+   "y": {
+    "quantity": "effective_diffusion_coefficient",
+    "unit": "m2/s",
+    "transform": "",
+    "label_raw": "Diffusion coefficient (m2/s)",
+    "unit_raw": "m2/s",
+    "definition": "yim22:tabu1.r5c0#1",
+    "definition_note": ""
+   },
+   "points": [
+    [
+     0.092,
+     7.3e-06
+    ],
+    [
+     0.18,
+     1.45e-05
+    ],
+    [
+     0.37,
+     2.9e-05
+    ],
+    [
+     0.74,
+     5.8e-05
+    ],
+    [
+     1.47,
+     0.000115
+    ],
+    [
+     2.9,
+     0.00023
+    ],
+    [
+     5.9,
+     0.00046
+    ],
+    [
+     11.8,
+     0.00092
+    ],
+    [
+     23.6,
+     0.00184
+    ],
+    [
+     47.1,
+     0.0037
+    ],
+    [
+     94.3,
+     0.0074
+    ],
+    [
+     188.5,
+     0.0148
+    ],
+    [
+     1800.0,
+     0.14
+    ]
+   ],
+   "points_raw": [
+    [
+     0.092,
+     7.3e-06
+    ],
+    [
+     0.18,
+     1.45e-05
+    ],
+    [
+     0.37,
+     2.9e-05
+    ],
+    [
+     0.74,
+     5.8e-05
+    ],
+    [
+     1.47,
+     0.000115
+    ],
+    [
+     2.9,
+     0.00023
+    ],
+    [
+     5.9,
+     0.00046
+    ],
+    [
+     11.8,
+     0.00092
+    ],
+    [
+     23.6,
+     0.00184
+    ],
+    [
+     47.1,
+     0.0037
+    ],
+    [
+     94.3,
+     0.0074
+    ],
+    [
+     188.5,
+     0.0148
+    ],
+    [
+     1800.0,
+     0.14
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.1 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "cycle_number": {
+     "key_raw": "N",
+     "raw": "1",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "523.15 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 250.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "pulse_time": {
+     "key_raw": "t1",
+     "raw": "2 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 2.0,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yim22:tabu2.r5c0#1"
+    },
+    "molar_mass": {
+     "key_raw": "MA",
+     "raw": "0.1 kg mol-1",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yim22:tabu1.r1c0#1"
+    }
+   },
+   "conditions_raw": {
+    "W": "10 mm",
+    "H": "0.1 μm",
+    "N": "1",
+    "T": "523.15 K",
+    "t1": "2 s",
+    "MA": "0.1 kg mol-1",
+    "c": "0.01"
+   },
+   "flags": [
+    "F4",
+    "F4",
+    "F4",
+    "F4",
+    "F4"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 17.99908,
+    "y": 0.0013999270000000002
+   },
+   "set": "yim22:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   }
+  },
+  {
    "id": "yim22:fig6b#c1",
    "figure": "6",
    "panel": "b",
@@ -11065,6 +11738,78 @@
     }
    },
    "label": "Fig. 5d series (N (-))"
+  },
+  {
+   "id": "yim22:cmp:fig6a",
+   "figure": "6",
+   "panel": "a",
+   "kind": "series",
+   "varied": "effective_diffusion_coefficient",
+   "varied_raw": "diffusion coefficient type",
+   "members": [
+    "yim22:fig6a#c1",
+    "yim22:fig6a#c2",
+    "yim22:fig6a#c3"
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.1 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "cycle_number": {
+     "key_raw": "N",
+     "raw": "1",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "523.15 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 250.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "pulse_time": {
+     "key_raw": "t1",
+     "raw": "2 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 2.0,
+     "value_max": null,
+     "unit": "s",
+     "definition": "yim22:tabu2.r5c0#1"
+    },
+    "molar_mass": {
+     "key_raw": "MA",
+     "raw": "0.1 kg mol-1",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1",
+     "definition": "yim22:tabu1.r1c0#1"
+    }
+   },
+   "label": "Fig. 6a series (diffusion coefficient type)"
   }
  ],
  "derived": [],
@@ -11092,6 +11837,30 @@
    "quantity": "partial_pressure",
    "note": "of the inert carrier gas I",
    "definition": "yim22:tabu1.r29c0#1"
+  },
+  {
+   "label": "Diffusion coefficient (m2/s)",
+   "quantity": "effective_diffusion_coefficient",
+   "note": "",
+   "definition": "yim22:tabu1.r5c0#1"
+  },
+  {
+   "label": "t1",
+   "quantity": "pulse_time",
+   "note": "the reactant-A step",
+   "definition": "yim22:tabu2.r5c0#1"
+  },
+  {
+   "label": "c",
+   "quantity": "initial_sticking_coefficient",
+   "note": "a lumped coefficient",
+   "definition": "yim22:tabu1.r1c0#1"
+  },
+  {
+   "label": "diffusion coefficient type",
+   "quantity": "effective_diffusion_coefficient",
+   "note": "",
+   "definition": "yim22:tabu1.r5c0#1"
   },
   {
    "label": "c (-)",
@@ -11151,10 +11920,10 @@
  "report": {
   "inventory": 26,
   "data_panels": 23,
-  "sets": 15,
-  "curves": 87,
+  "sets": 16,
+  "curves": 90,
   "derived": 0,
-  "unmapped": 5,
-  "resolved_p89": 13
+  "unmapped": 4,
+  "resolved_p89": 17
  }
 }

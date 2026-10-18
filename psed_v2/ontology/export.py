@@ -34,7 +34,7 @@ def load():
 def pending():
     """ontology/pending.csv (P83): provisional extension entries a paper needed and nothing fitted (id, kind quantity | species | structure |
     method | model | mechanism, unit, role, class, definition, citation, cq, paper, records, status). Emitted into the vocabulary
-    provisionally (ENTRIES carry pending: True) until the chat approves, renames or rejects them; never frozen."""
+    (ENTRIES carry pending: True while the status is pending; P98: pending_decide.py sets status accepted by rule a, b or c); never frozen."""
     f = HERE / "pending.csv"
     return [r for r in csv.DictReader(f.open(newline="", encoding="utf-8"))] if f.exists() else []
 
@@ -68,7 +68,7 @@ def build(onto, pmap):
     pend = pending()
     for r in pend:                                                              # P83: pending entries join the vocabulary provisionally
         e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
-                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=True,
+                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=r.get("status", "pending") != "accepted",
                  dimension=unit_dimension(r.get("unit", "")),
                  category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
         if r["kind"] == "species":                                              # a pending species: its formula is its first formula-like alias, its aliases the column's
@@ -95,7 +95,7 @@ def build(onto, pmap):
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
-    methods = list(voc["measurement_method"]) + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=True) for r in pend if r["kind"] == "method"]
+    methods = list(voc["measurement_method"]) + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"]) for k, q in onto["qualifiers"].items()}
     families = {}
     for e in live:
@@ -125,7 +125,7 @@ def build(onto, pmap):
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
                                dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
-                               ratio_of=[str(x) for x in e.get("ratio_of", [])])
+                               ratio_of=[str(x) for x in e.get("ratio_of", [])], parameters=[str(x) for x in e.get("parameters", [])])   # P101: a model's parameters are card edges
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78

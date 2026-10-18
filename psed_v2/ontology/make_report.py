@@ -243,11 +243,55 @@ def run_checks(onto: dict, unmapped_rows=()) -> list[tuple[str, bool, str]]:
 
     pend = pending_rows()                                                        # P83: provisional entries, not frozen
     bad = [r["id"] for r in pend if r["id"] in ids] + [r["id"] for r in pend if r["kind"] not in ("quantity", "species", "structure", "method", "model", "mechanism")]
-    bad += [r["id"] for r in pend if not (r["definition"] or "").strip() or not (r["citation"] or "").strip() or r["status"] != "pending"]
+    bad += [r["id"] for r in pend if not (r["definition"] or "").strip() or not (r["citation"] or "").strip() or r["status"] not in ("pending", "accepted")]
     bad += [r["id"] for r in pend if r["kind"] == "structure" and r.get("class") not in classes]
-    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition, a citation and status pending, clash with no entry, and a pending structure names a class",
-                not bad, f"problems: {bad}" if bad else f"{len(pend)} pending: " + ", ".join(f"{r['id']} ({r['kind']}, {r['paper']})" for r in pend)))
+    dec = {r["id"]: r for r in pending_decisions()}                             # P98: the status is the rule's decision, never a hand edit
+    bad += [f"{r['id']}: no row in pending_decisions.csv" for r in pend if r["id"] not in dec]
+    bad += [f"{r['id']}: status {r['status']} but decided {dec[r['id']]['decision']} (rule {dec[r['id']]['rule']})" for r in pend if r["id"] in dec and dec[r["id"]]["decision"] != r["status"]]
+    bad += [f"{i}: decided but not in pending.csv" for i in dec if i not in {r["id"] for r in pend}]
+    acc = [r for r in pend if r["status"] == "accepted"]
+    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition, a citation and a status that pending_decisions.csv decided by rule (P98: a, b or c -> accepted, else pending), clash with no entry, and a pending structure names a class",
+                not bad, f"problems: {bad}" if bad else f"{len(acc)} accepted (" + ", ".join(f"{r['id']} ({dec[r['id']]['rule']})" for r in acc) + f"); {len(pend) - len(acc)} pending: " + ", ".join(f"{r['id']} ({r['kind']}, {r['paper']})" for r in pend if r["status"] != "accepted")))
+
+    units = {str(v): u for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}   # P100: family audit
+    fams = defaultdict(list)
+    for e in entries:
+        if e.get("family") and not e.get("replaced_by"):
+            fams[e["family"]].append(e)
+    decl = onto.get("families", {}) or {}
+    bad = [f"{f}: not declared under families:" for f in fams if f not in decl] + [f"{f}: declared but no member" for f in decl if f not in fams]
+    for f, ms in sorted(fams.items()):
+        dims = {e["id"]: (units.get(str(e.get("unit", "")), {}).get("qudt") or "?") for e in ms}
+        if len(set(dims.values())) > 1 and not (decl.get(f) or {}).get("mixed_dimensions"):
+            bad.append(f"{f}: dimensions differ {dims} and no mixed_dimensions")
+        if (decl.get(f) or {}).get("mixed_dimensions") and not (decl.get(f) or {}).get("reason"):
+            bad.append(f"{f}: mixed_dimensions without a reason")
+        if (decl.get(f) or {}).get("mixed_dimensions") and len(set(dims.values())) == 1:
+            bad.append(f"{f}: declared mixed but one dimension {set(dims.values())}")
+    out.append(("15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason",
+                not bad, f"problems: {bad}" if bad else "; ".join(f"{f}: {len(ms)} members, " + ("mixed (" + (decl[f].get("reason") or "")[:60] + "…)" if decl.get(f, {}).get("mixed_dimensions") else "one dimension " + next(iter({units.get(str(e.get("unit", "")), {}).get("qudt") for e in ms}))) for f, ms in sorted(fams.items()))))
     return out
+
+
+def external_ids_coverage(onto: dict) -> str:
+    """P100: how many quantity entries carry qudt_quantity_kind / qudt_unit and species a pubchem_cid (store-only fields from
+    ontology/external_ids.csv), with the ids still blank and the rows marked check."""
+    live = [e for e in onto["entries"] if not e.get("replaced_by")]
+    q = [e for e in live if e["type"] in ("quantity", "categorical") and e.get("unit")]
+    sp = [e for e in live if e["type"] == "species"]
+    f = HERE / "external_ids.csv"
+    conf = {r["id"]: r["confidence"] for r in csv.DictReader(f.open(newline="", encoding="utf-8"))} if f.exists() else {}
+    lines = [f"quantities with a unit: {len(q)}; qudt_quantity_kind {sum(1 for e in q if e.get('qudt_quantity_kind'))}, qudt_unit {sum(1 for e in q if e.get('qudt_unit'))}"
+             + f"; blank kind: {', '.join(e['id'] for e in q if not e.get('qudt_quantity_kind')) or 'none'}",
+             f"species: {len(sp)}; pubchem_cid {sum(1 for e in sp if e.get('pubchem_cid'))}; blank: {', '.join(e['id'] for e in sp if not e.get('pubchem_cid')) or 'none'}",
+             f"external_ids.csv rows {len(conf)}: sure {sum(1 for c in conf.values() if c == 'sure')}, check {sum(1 for c in conf.values() if c == 'check')} ({', '.join(i for i, c in conf.items() if c == 'check')})",
+             "nothing at runtime reads these fields (export.py does not emit them)"]
+    return "\n".join(lines)
+
+
+def pending_decisions():
+    f = HERE / "pending_decisions.csv"
+    return list(csv.DictReader(f.open(newline="", encoding="utf-8"))) if f.exists() else []
 
 
 def pending_rows():
@@ -397,6 +441,8 @@ def main() -> int:
     checks = run_checks(onto, [r for r in unmapped if r.get("field", "pilot") == "pilot"])   # check 12 reads the pilot's hand labels; the importer's rows are checked by pilot/check.py (P84)
     ok = all(c[1] for c in checks)
     nodes, _, leaf_ids = tree(onto)
+    coverage = external_ids_coverage(onto)                                       # P100: store-only external ids
+    print("external ids (P100): " + coverage.replace("\n", " | "))
 
     counts = Counter((e["type"], e["origin"], "with evidence" if e.get("evidence") else "no evidence") for e in entries)
     ext_all = [e for e in entries if e["type"] == "quantity" and e["origin"] == "extension"]
@@ -476,6 +522,7 @@ Hover a node for its definition.</p>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
 <h2>3c. Families</h2>{table(["family", "members", "what they answer"], family_rows(onto))}
 <h2>3d. Proposals</h2>{table(["what", "why", "citation", "decision", "decision reason"], proposal_rows)}
+<h2>3d. External identifiers (P100; store-only, from ontology/external_ids.csv)</h2><pre>{esc(coverage)}</pre>
 <h2>3e. Pending entries (P83; provisional, not frozen)</h2>{table(["id", "kind", "unit", "role", "class", "definition", "citation", "CQ", "paper", "records", "status"], [[r["id"], r["kind"], r["unit"], r["role"], r["class"], r["definition"], r["citation"], r["cq"], r["paper"], r["records"], r["status"]] for r in pending_rows()])}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}

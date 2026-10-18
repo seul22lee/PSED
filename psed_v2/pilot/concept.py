@@ -249,9 +249,6 @@ def concept_lines(words):
         bits = [f"{e['type']} {i}: {d}"]
         if e.get("unit"):
             bits.append(f"unit {e['unit']}")
-        fam, members = family_of(i)
-        if fam:
-            bits.append(f"family {fam}: " + ", ".join(m for m in members if m != i) + " · the family across papers: " + per_paper(members))
         if e.get("qualifiers"):
             bits.append("qualifiers " + ", ".join(e["qualifiers"]))
         if e["type"] == "species" and L.SPECIES.get(i, {}).get("formula"):
@@ -260,7 +257,39 @@ def concept_lines(words):
         if e.get("attribute"):
             bits.append("attribute quantity (stored as data, not a concept)")
         out.append((i, " · ".join(bits)))
+        out += [(i, "edge · " + t) for t in edges(i)]                            # P101: up to five edges, one line each
     return out
+
+
+MAX_EDGES = 5
+
+
+def edges(i):
+    """P101: up to MAX_EDGES edge lines of a concept card, from existing fields only: 'ratio of a / b' (ratio_of), 'derived from
+    a, b (transform)' (the transforms with the entry as output), 'input of model m' (a model's parameters), 'same family f: members'
+    (family) and 'defined by paper k (symbol)' (the papers' definition facts). Every target is an id that resolves (check_edges)."""
+    e = L.ENTRIES.get(i, {})
+    out = []
+    if e.get("ratio_of"):
+        out.append("ratio of " + " / ".join(e["ratio_of"]))
+    for t in L.TRANSFORMS:
+        if t["output"].split("{")[0] == i:
+            out.append(f"derived from {', '.join(t['inputs'])} ({t['id']})")
+    models = [m for m, me in L.ENTRIES.items() if me["type"] == "model" and i in me.get("parameters", [])]
+    if models:
+        out.append("input of model " + ", ".join(models))
+    fam, members = family_of(i)
+    if fam:
+        out.append(f"same family {fam}: " + ", ".join(m for m in members if m != i) + " · the family across papers: " + per_paper(members))
+    defs = {}
+    for k, T in Q.TREES.items():
+        for f in T.rows:
+            if f["type"] == "definition" and f["quantity"] == i and "#" in f["fact_id"]:
+                m = re.match(r"symbol (\S+):", f["statement"])
+                defs.setdefault(k, m.group(1) if m else "")
+    if defs:
+        out.append("defined by paper " + ", ".join(f"{k} ({sym})" if sym else k for k, sym in defs.items()))
+    return out[:MAX_EDGES]
 
 
 def short_definition(d, n=160):

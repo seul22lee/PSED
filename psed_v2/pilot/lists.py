@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from vocab import (STRUCTURE_CLASSES, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
+from vocab import (STRUCTURE_CLASSES, TRANSFORMS, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
                    RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, BASES, ENTRIES, HIERARCHY, AMBIGUOUS_ALIASES, VALUE_ALIASES,
                    LABELS as _LABELS, NAMES as _NAMES)
@@ -324,6 +324,30 @@ DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles",
 # the provenance words of a value (P57): only the phrase table of the ontology (vocab.PHRASES); a screen leaves measured and stated
 # values unmarked (UNMARKED) and marks every other kind with its phrase
 UNMARKED = {"measured", "stated"}
+
+# P99: an element word alone names an element, never a gas species ("oxygen" -> O, the element qualifier's business); the molecule
+# needs its formula (O2) or a gas phrase ("oxygen gas", "hydrogen plasma" -> h2, the plasma being the process); a supplier's name
+# in a purity phrase ("Air Liquide") is no species.
+ELEMENT_WORDS = {"oxygen": "O", "hydrogen": "H", "nitrogen": "N", "sulfur": "S", "sulphur": "S", "chlorine": "Cl", "fluorine": "F"}
+GAS_WORDS = {"gas", "gases", "plasma", "molecule", "molecules", "flow", "atmosphere", "ambient", "carrier"}
+MOLECULAR_WORDS = {"molecular", "diatomic"}
+SUPPLIERS = ["Air Liquide", "Air Products", "Strem Chemicals", "Strem", "Sigma-Aldrich", "Sigma Aldrich", "Linde", "Praxair", "Matheson", "Messer",
+             "Pegasus Chemicals", "Dockweiler", "Alfa Aesar", "Merck", "Westfalen", "Nippon Sanso", "Taiyo Nippon Sanso"]
+SUPPLIER_RX = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(SUPPLIERS, key=len, reverse=True)) + r")\b", re.I)
+
+
+def element_word(word, before="", after=""):
+    """('element', symbol) for a bare element word, ('species', id) when a gas word follows or 'molecular' precedes it and the
+    diatomic molecule is a species of the ontology, else None (not an element word)."""
+    w = str(word).strip().lower()
+    if w not in ELEMENT_WORDS:
+        return None
+    sym = ELEMENT_WORDS[w]
+    if str(after).strip().lower().rstrip(".,;:)") in GAS_WORDS or str(before).strip().lower() in MOLECULAR_WORDS:
+        sid = next((i for i, s in SPECIES.items() if s["formula"] == sym + "2"), "")
+        if sid:
+            return ("species", sid)
+    return ("element", sym)
 KIND_WORDS = {k: p for k, p in PHRASES.items() if k not in UNMARKED}
 assert set(KIND_WORDS) | UNMARKED == set(KINDS), "a kind without a phrase"
 

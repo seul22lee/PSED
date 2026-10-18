@@ -917,6 +917,37 @@ def check_cards():
     return err
 
 
+def check_edges():
+    """P101: every concept card has at most MAX_EDGES edge lines, each of a known form, and every target resolves: a quantity, model
+    or family member to an entry, a transform to lists.TRANSFORMS, a paper key to a tree; the number of cards with edges is printed."""
+    import concept as CN, query as Q
+    err, n_cards, n_edges = [], 0, 0
+    tids = {t["id"] for t in L.TRANSFORMS}
+    for q in sorted(L.ENTRIES):
+        if L.ENTRIES[q]["type"] not in ("quantity", "categorical") or L.ENTRIES[q].get("replaced_by"):
+            continue
+        ed = CN.edges(q)
+        if len(ed) > CN.MAX_EDGES:
+            err.append(f"card {q}: {len(ed)} edges (P101)")
+        n_cards += bool(ed); n_edges += len(ed)
+        for t in ed:
+            if m := re.match(r"ratio of (.+)$", t):
+                bad = [x for x in m.group(1).split(" / ") if x.split("{")[0] not in L.ENTRIES]
+            elif m := re.match(r"derived from (.+) \((\S+)\)$", t):
+                bad = [x for x in m.group(1).split(", ") if x.split("{")[0] not in L.ENTRIES and not x.startswith("other:") and not x.startswith("@")] + ([m.group(2)] if m.group(2) not in tids else [])
+            elif m := re.match(r"input of model (.+)$", t):
+                bad = [x for x in m.group(1).split(", ") if L.ENTRIES.get(x, {}).get("type") != "model"]
+            elif m := re.match(r"same family (\S+): (.+?) · the family across papers: ", t):
+                bad = ([m.group(1)] if m.group(1) not in L.FAMILIES else []) + [x for x in m.group(2).split(", ") if x not in L.ENTRIES]
+            elif m := re.match(r"defined by paper (.+)$", t):
+                bad = [x for x in re.findall(r"(\w+)(?: \([^)]*\))?(?:, |$)", m.group(1)) if x not in Q.TREES]
+            else:
+                bad = [t]
+            err += [f"card {q}: edge target {b!r} does not resolve (P101): {t[:80]}" for b in bad]
+    print(f"== card edges (P101): {n_cards} cards with edges, {n_edges} edges")
+    return err
+
+
 def check_grids():
     """P80: for every grid set, values(result=q, paper) renders it as a matrix from its full member list: the tested cells of every
     matrix equal len(all) (the untested combinations are counted as n.t.); every child series' members lie in the cells or the variants
@@ -1460,6 +1491,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_cards_values()
     print(f"== card–values (P95): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_edges()
+    print(f"== card edges (P101): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
