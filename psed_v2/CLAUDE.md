@@ -92,6 +92,7 @@ These rules go into `CLAUDE.md` so that every session starts from them.
 - An investigation that reaches no conclusion in 20 minutes ends with two options and a question.
 - A report back is 15 lines or fewer: what changed, how the score moved, what is left.
 - Each unit starts a new session; `CLAUDE.md` supplies the context.
+- From P132 on, Claude Code does not read paper text to decide a record, a label or an ontology entry; it writes and runs the code that does.
 
 ## Stage 0 workflow
 

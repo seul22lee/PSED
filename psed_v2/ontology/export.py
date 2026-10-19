@@ -4,6 +4,8 @@
     python3 psed_v2/ontology/export.py            # write vocab.py, print the counts and the pilot ids still to absorb
     python3 psed_v2/ontology/export.py --check    # exit 1 when vocab.py on disk differs from what the ontology gives
 
+P132: it also writes the extraction form, psed_v2/schema/form.json, form_pass0.json and FORM.md (form_files; --check covers them).
+
 pilot_map.csv is the disposition table of every pilot id (quantity, material, structure or method): direct (the id is an entry),
 alias (another entry's id), qualifier (an entry plus qualifiers), transform (the output of a transform), new_entry (an entry made
 for it, under its own id), attribute (an entry with attribute: true), reserved (the escape id other), dropped (no data) or
@@ -12,6 +14,8 @@ pending id is emitted into the vocabulary provisionally so that the data keeps p
 Needs PyYAML.
 """
 import csv
+import hashlib
+import json
 import re
 import pprint
 import sys
@@ -179,6 +183,213 @@ def build(onto, pmap):
     )
 
 
+# P132: the extraction form, generated from ontology.yaml + units.yaml + facts.FIELDS + lists.* (nothing hand-written in the schema):
+# schema/form.json (one record), schema/form_pass0.json (one paper's named things) and schema/FORM.md (one table, one row per field)
+SCHEMA = HERE.parent / "schema"
+FORM_TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "caveat"]   # lists.TYPES without bridge, comparison, identity
+VALUE_TYPES = ["setting", "observation", "derived", "model"]                   # quantity required; other types: required once a value is given
+VALUE_FIELDS = ["value", "value_min", "value_max", "value_text"]
+CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
+COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
+FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
+QUOTE_WORDS, NOTE_WORDS = 15, 20
+PASS0_ROLES = ["specimen", "run", "simulation", "cited_work"]
+
+
+def form_field(column):
+    """The form field a facts.FIELDS column fills ('' when none: a column whose name the form gives to another column has no field)."""
+    return FROM_FACTS.get(column) or ("" if column in FROM_FACTS.values() else column)
+
+
+def ontology_hash():
+    """sha256 of ontology.yaml without its '# ontology v1 sha256' header line, then units.yaml (verify/d14/ontology_v1.txt)."""
+    b = re.sub(r"(?m)^# ontology v1 sha256 .*\n", "", (HERE / "ontology.yaml").read_text(encoding="utf-8")).encode()
+    return hashlib.sha256(b + (HERE / "units.yaml").read_bytes()).hexdigest()
+
+
+def _words(n):
+    return {"type": "string", "pattern": r"^\S+(\s+\S+){0,%d}$" % (n - 1)}
+
+
+def _pilot():
+    sys.path.insert(0, str(HERE.parent / "pilot"))
+    import lists as L, facts as F                                               # after vocab.py is written: lists imports it
+    return L, F
+
+
+def form_defs(onto):
+    live = [e for e in onto["entries"] if not e.get("replaced_by")]
+    ids = lambda *t: sorted(e["id"] for e in live if e["type"] in t)            # noqa: E731
+    return {"quantity_id": {"enum": ids("quantity", "categorical")},
+            "cause_effect": {"enum": sorted(ids("quantity", "categorical") + ids("mechanism"))},
+            "species": {"enum": ids("species")},
+            "material": {"enum": sorted(e["id"] for e in live if e["type"] == "species" and e.get("kind") == "material")},
+            "definition": {"enum": sorted({d["id"] for e in live for d in (e.get("definitions") or [])})},
+            "element": {"type": "string", "pattern": "^[A-Z][a-z]?$"}}          # the ontology has no element list: the form of a symbol
+
+
+def qualifier_schema(q):
+    v = q.get("values")
+    if isinstance(v, list):
+        return {"enum": sorted(str(x) for x in v)}
+    ref = {"species ids": "species", "material ids": "material", "definition ids": "definition", "element symbols": "element", "quantity ids": "quantity_id"}
+    if v in ref:
+        return {"$ref": f"#/$defs/{ref[v]}"}
+    if v == "a number":
+        return {"type": "number"}
+    if v == "a number or not_stated":
+        return {"anyOf": [{"type": "number"}, {"const": "not_stated"}]}
+    raise ValueError(f"qualifier values not expressible: {v!r}")
+
+
+def _is(field, values):
+    return {"properties": {field: {"enum": values} if isinstance(values, list) else {"const": values}}, "required": [field]}
+
+
+def _none(fields):
+    return {"properties": {f: False for f in fields}}
+
+
+def form_schema(onto, L, F):
+    assert set(FORM_TYPES) <= set(L.TYPES) and set(COMPILER_ONLY) <= set(F.FIELDS) and set(FROM_FACTS) <= set(F.FIELDS)
+    defs = form_defs(onto)
+    dims = sorted({u["dimension"] for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]})
+    s = lambda: {"type": "string", "minLength": 1}                              # noqa: E731
+    props = {
+        "type": {"enum": [t for t in L.TYPES if t in FORM_TYPES]},
+        "quantity": {"enum": defs["quantity_id"]["enum"] + ["other"]},
+        "label_as_printed": s(),
+        "qualifiers": {"type": "object", "additionalProperties": False, "properties": {k: qualifier_schema(q) for k, q in onto["qualifiers"].items()}},
+        "value": {"type": "number"}, "value_min": {"type": "number"}, "value_max": {"type": "number"},
+        "censor": {"enum": sorted(c for c in L.CENSOR if c)},
+        "unit": s(), "value_text": s(),
+        "kind": {"enum": list(L.KINDS)}, "method": {"enum": list(L.METHODS)},
+        "mentions": {"type": "array", "minItems": 1, "items": s()},
+        "quote": _words(QUOTE_WORDS),
+        "cause": {"$ref": "#/$defs/cause_effect"}, "relation": {"enum": list(L.RELATIONS)}, "effect": {"$ref": "#/$defs/cause_effect"},
+        "stance": {"enum": list(L.STANCES)},
+        "note": _words(NOTE_WORDS),
+        "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1}, "additionalProperties": {"$ref": "#/$defs/quantity_id"}},
+        "candidate": {"type": "object", "additionalProperties": False, "required": ["definition_quote", "unit_as_printed", "dimension", "symbol"],
+                      "properties": {"definition_quote": s(), "unit_as_printed": {"type": "string"}, "dimension": {"enum": dims}, "symbol": {"type": "string"}}},
+    }
+    h = ontology_hash()
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "urn:psed_v2:schema:form",
+        "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}",
+        "title": "PSED v2 extraction form: one record",
+        "description": f"One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version {onto['version']}, sha256 {h}) "
+                       f"and pilot/lists.py; fields from pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
+        "type": "object", "additionalProperties": False, "properties": props,
+        "required": ["type", "quote"],
+        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity"] for f in VALUE_FIELDS},
+                              **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
+        "allOf": [
+            {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
+            {"if": _is("type", "claim"), "then": _none(["quantity"]), "else": _none(CLAIM_FIELDS)},
+            {"if": _is("type", ["claim", "definition"]), "else": _none(["note"])},
+            {"if": _is("type", "definition"), "else": _none(["variables"])},
+            {"if": _is("quantity", "other"), "then": {"required": ["candidate"]}, "else": _none(["candidate"])},
+        ],
+        "$defs": defs,
+    }
+
+
+def pass0_schema(onto, L):
+    h = ontology_hash()
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "urn:psed_v2:schema:form_pass0",
+        "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}",
+        "title": "PSED v2 extraction form, pass 0: the things one paper names",
+        "description": f"One paper = a list of the specimens, runs, simulations and cited works it names (ontology version {onto['version']}, sha256 {h}).",
+        "type": "array",
+        "items": {"type": "object", "additionalProperties": False, "required": ["name_as_printed", "role", "introduced_in"],
+                  "properties": {"name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
+                                 "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
+                                 "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
+                                 "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
+                                 "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}},
+    }
+
+
+def _allowed(p):
+    if p is False:
+        return "forbidden"
+    if "$ref" in p:
+        return _allowed(DEFS[p["$ref"].split("/")[-1]]) + f" ({p['$ref'].split('/')[-1]})"
+    if "enum" in p:
+        return f"enum, {len(p['enum'])} values" if len(p["enum"]) > 6 else "one of " + ", ".join(f"`{x}`" for x in p["enum"])
+    if "const" in p:
+        return f"`{p['const']}`"
+    if "anyOf" in p:
+        return " or ".join(_allowed(x) for x in p["anyOf"])
+    if p.get("pattern", "").startswith("^\\S+"):
+        return f"string, at most {int(re.search(r'0,(\d+)', p['pattern']).group(1)) + 1} words"
+    if "pattern" in p:
+        return f"string matching `{p['pattern']}`"
+    if p.get("type") == "array":
+        return f"list of {_allowed(p['items'])}"
+    if p.get("type") == "object" and "additionalProperties" in p and p["additionalProperties"] is not False:
+        return f"object: symbol -> {_allowed(p['additionalProperties'])}"
+    if p.get("type") == "object":
+        return f"object, keys closed ({len(p['properties'])}: {', '.join(p['properties'])})"
+    return {"string": "string", "number": "number"}.get(p.get("type"), str(p))
+
+
+DEFS = {}
+
+
+def form_md(form, pass0, onto, F):
+    DEFS.clear(); DEFS.update(form["$defs"])
+    req = {f: [] for f in form["properties"]}
+    for f in form["required"]:
+        req[f].append("always")
+    for r in form["allOf"]:
+        cond = "type " + " / ".join(r["if"]["properties"]["type"].get("enum", [r["if"]["properties"]["type"].get("const")])) if "type" in r["if"]["properties"] \
+            else "quantity = `other`"
+        for f in r.get("then", {}).get("required", []):
+            req[f].append(f"required when {cond}")
+        for f, v in r.get("then", {}).get("properties", {}).items():
+            req[f].append(f"forbidden when {cond}")
+        for f, v in r.get("else", {}).get("properties", {}).items():
+            req[f].append(f"only when {cond}")
+    for f, deps in form["dependentRequired"].items():
+        for d in deps:
+            req[d].append(f"required with {f}")
+    rows = [(f, _allowed(p), "; ".join(req[f]) or "optional", "extractor") for f, p in form["properties"].items()]
+    for k, p in form["properties"]["qualifiers"]["properties"].items():
+        rows.append((f"qualifiers.{k}", _allowed(p), "optional", "extractor"))
+    for k, p in form["properties"]["candidate"]["properties"].items():
+        rows.append((f"candidate.{k}", _allowed(p), "required with candidate", "extractor"))
+    it = pass0["items"]
+    for k, p in it["properties"].items():
+        rows.append((f"pass0.{k}", _allowed(p), "always" if k in it["required"] else "optional", "extractor, pass 0"))
+    form_cols = set(form["properties"])
+    for c in F.FIELDS:
+        if c in COMPILER_ONLY:
+            rows.append((c, "not in the form", "", "compiler"))
+        elif form_field(c) not in form_cols:
+            rows.append((c, "not in the form (facts.FIELDS column with no form field)", "", "nobody"))
+    for c, f in FROM_FACTS.items():
+        rows.append((c, f"facts.FIELDS column; the form's `{f}`", "", "extractor"))
+    esc = lambda x: str(x).replace("|", "\\|")                                  # noqa: E731
+    out = ["<!-- GENERATED by psed_v2/ontology/export.py; do not edit -->", "# Extraction form", "",
+           f"Ontology version {onto['version']}, sha256 `{ontology_hash()}`. Schemas: `form.json` (one record, JSON Schema 2020-12, "
+           "additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.", "",
+           "| field | allowed values | required when | who fills |", "|---|---|---|---|"]
+    out += [f"| {' | '.join(esc(x) for x in r)} |" for r in rows]
+    return "\n".join(out) + "\n"
+
+
+def form_files(onto):
+    L, F = _pilot()
+    form, pass0 = form_schema(onto, L, F), pass0_schema(onto, L)
+    j = lambda x: json.dumps(x, indent=1, ensure_ascii=False) + "\n"            # noqa: E731
+    return {SCHEMA / "form.json": j(form), SCHEMA / "form_pass0.json": j(pass0), SCHEMA / "FORM.md": form_md(form, pass0, onto, F)}
+
+
 def render(v):
     out = [HEADER]
     for k, x in v.items():
@@ -192,8 +403,13 @@ def main():
     if "--check" in sys.argv:
         ok = OUT.exists() and OUT.read_text(encoding="utf-8") == text
         print("vocab.py", "up to date" if ok else "STALE: run python3 psed_v2/ontology/export.py")
-        return 0 if ok else 1
+        stale = [p.name for p, t in form_files(onto).items() if not p.exists() or p.read_text(encoding="utf-8") != t]   # P132
+        print("schema/", "up to date" if not stale else "STALE: " + ", ".join(stale))
+        return 0 if ok and not stale else 1
     OUT.write_text(text, encoding="utf-8")
+    SCHEMA.mkdir(exist_ok=True)
+    for p, t in form_files(onto).items():                                       # P132
+        p.write_text(t, encoding="utf-8")
     v = build(onto, pmap)
     print(f"{OUT}: {len(v['CONCEPTS'])} concepts, {len(v['ATTRIBUTES'])} attributes, {len(v['TO_ABSORB'])} pilot quantity ids to absorb, {len(v['PENDING'])} pending, "
           f"{len(v['METHODS'])} methods, {len(v['MATERIALS'])} materials, {len(v['STRUCTURES'])} structures, {len(v['SPECIES'])} species, "
