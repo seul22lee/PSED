@@ -171,6 +171,20 @@ def species_counts(qids, sid):
     return "; ".join(f"{k} {n} values" for k, n in pc.items() if n)
 
 
+def in_unit(v, u, unit):
+    """P122: a value in a record's unit expressed in the entry's unit through vocab.UNIT_BASE (variants aliased to their symbol); a unitless
+    record of a count, dimensionless or signal entry passes as is; None when the dimensions differ."""
+    u0 = L.UNIT_ALIAS.get(u, u) if u else ""
+    t0 = L.UNIT_ALIAS.get(unit, unit) if unit else ""
+    if u0 == t0 or (u0 == "1" and t0 == "") or (u0 == "" and t0 == "1"):
+        return v
+    if not u0 and L.UNIT_BASE.get(t0, ("",))[0] in ("count", "dimensionless", "signal"):
+        return v
+    if u0 in L.UNIT_BASE and t0 in L.UNIT_BASE and L.UNIT_BASE[u0][0] == L.UNIT_BASE[t0][0]:
+        return v * L.UNIT_BASE[u0][1] / L.UNIT_BASE[t0][1]
+    return None
+
+
 def key_counts(keys):
     """P105: per paper, the value and setting records under the given data keys: 'k 3 values / 1 settings; …'."""
     pc = collections.defaultdict(collections.Counter)
@@ -532,22 +546,18 @@ def paper_index(k, short=""):
         homes = ", ".join(f"{h} {d[h]}" for h in HOMES if d.get(h))
         unit = e.get("unit", "")
         vals = []
-        base = lambda x: "" if x == "1" else L.UNIT_ALIAS.get(x, L.UNIT_ALIAS.get(x.replace("·", " "), x.replace("·", " ")))   # '1' is the dimensionless unit, stored as ''
-
-        tgt = base(unit)
         for f in T.rows:                                                        # the counted value records: results and cited values, not settings, not KB-computed
             if "#" in f["fact_id"] and f["quantity"] == q and f["type"] in Q.RESULT_TYPES + ("cited",) and "stat=" not in f["qualifiers"] and f.get("data_kind") != "computed_by_kb":
                 v = Q.val(f)
                 if v is None:
                     continue
-                u = base(f["unit"])
-                if unit and u != tgt:
-                    if u in L.UNIT_BASE and tgt in L.UNIT_BASE and L.UNIT_BASE[u][0] == L.UNIT_BASE[tgt][0]:
-                        v = v * L.UNIT_BASE[u][1] / L.UNIT_BASE[tgt][1]
-                    else:
-                        continue
-                vals.append(v)
+                v = in_unit(v, f["unit"], unit)                                 # P122: through the generated unit table
+                if v is not None:
+                    vals.append(v)
         rng = (f"{Q.g(min(vals), 3)}–{Q.g(max(vals), 3)} {unit}".strip() if len(vals) > 1 and min(vals) != max(vals) else f"{Q.g(vals[0], 3)} {unit}".strip()) if vals else ("categorical" if e["type"] == "categorical" else "no numeric value")
+        only = [h for h in HOMES if d.get(h)]
+        if len(only) == 1 and only[0] in ("cited", "paper", "input") and vals:    # P123: one home holds every counted record: the range says so
+            rng = f"{only[0]}: {rng}"
         sets = Q.sets_with_quantity(T, {q})
         bits = [f"{L.LABELS.get(q, q)} ({q})", f"{n} values ({homes})" + (f", derived {d['derived']}" if d.get("derived") else ""), rng,
                 ("sets " + ", ".join(f"[{c}]" for c in sets[:4]) + (f" +{len(sets) - 4}" if len(sets) > 4 else "")) if sets else "no set",

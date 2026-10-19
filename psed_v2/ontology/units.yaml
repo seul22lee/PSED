@@ -37,9 +37,9 @@ units:
   - {symbol: "Å/cycle", variants: ["Å/cycle", "A/cycle", "Å/cyc", "Å per cycle", "Angstrom/cycle"], dimension: length_per_cycle, factor: 1.0e-10, qudt: L}
   - {symbol: pm/cycle, variants: [pm/cycle],                                      dimension: length_per_cycle, factor: 1.0e-12, qudt: L}
   # dimensionless
-  - {symbol: "1",   variants: ["1", "", "-", "(-)", "a.u.", "arb. units", "arb.units", "arbitrary units", "dimensionless"], dimension: dimensionless, factor: 1.0, qudt: "1"}
+  - {symbol: "1",   variants: ["1", "", "-", "(-)", "×", "a.u.", "arb. units", "arb.units", "arbitrary units", "dimensionless"], dimension: dimensionless, factor: 1.0, qudt: "1"}
   - {symbol: "%",   variants: ["%", percent],                                     dimension: dimensionless, factor: 0.01, qudt: "1"}
-  - {symbol: "at.%", variants: ["at.%", "at%", "at. %", "atomic %", "atom %", "atomic percent"], dimension: dimensionless, factor: 0.01, qudt: "1"}
+  - {symbol: "at.%", variants: ["at.%", "at%", "at. %", "atomic %", "atom %", "atomic percent", "at.-%"], dimension: dimensionless, factor: 0.01, qudt: "1"}
   - {symbol: "wt%", variants: ["wt%", "wt.%", "wt. %", "weight %"],               dimension: dimensionless, factor: 0.01, qudt: "1"}
   # signal (no dimension: intensities are not converted)
   - {symbol: "",    variants: [counts, "counts/s", cps, "counts per second"],     dimension: signal, factor: 1.0, qudt: "1"}
@@ -47,7 +47,7 @@ units:
   - {symbol: cycle, variants: [cycle, cycles, "ALD cycles", "ALD cycle", "AB cycles", "AB cycle", cyc], dimension: count, factor: 1.0, qudt: "1"}
   # resistivity
   - {symbol: "Ω·m",   variants: ["Ω·m", "Ω m", "Ohm m", "ohm m", "Ωm"],           dimension: resistivity, factor: 1.0,    qudt: "L^3 M T^-3 I^-2"}
-  - {symbol: "Ω·cm",  variants: ["Ω·cm", "Ω cm", "Ohm cm", "ohm cm", "Ωcm"],      dimension: resistivity, factor: 1.0e-2, qudt: "L^3 M T^-3 I^-2"}
+  - {symbol: "Ω·cm",  variants: ["Ω·cm", "Ω cm", "Ω-cm", "Ohm cm", "ohm cm", "Ωcm"],      dimension: resistivity, factor: 1.0e-2, qudt: "L^3 M T^-3 I^-2"}
   - {symbol: "mΩ·cm", variants: ["mΩ·cm", "mΩ cm", "mOhm cm", "mΩcm"],            dimension: resistivity, factor: 1.0e-5, qudt: "L^3 M T^-3 I^-2"}
   - {symbol: "µΩ·cm", variants: ["µΩ·cm", "µΩ cm", "μΩcm", "µΩcm", "uOhm cm", "µOhm cm", "\\muΩcm"], dimension: resistivity, factor: 1.0e-8, qudt: "L^3 M T^-3 I^-2"}
   # resistance per square
@@ -68,7 +68,7 @@ units:
   # amount
   - {symbol: mol,   variants: [mol, mole],                                        dimension: amount, factor: 1.0,    qudt: N}
   - {symbol: mmol,  variants: [mmol],                                             dimension: amount, factor: 1.0e-3, qudt: N}
-  - {symbol: "µmol", variants: ["µmol", "μmol", "\\mumol", umol],                 dimension: amount, factor: 1.0e-6, qudt: N}
+  - {symbol: "µmol", variants: ["µmol", "μmol", "\\mumol", umol, "µmol/cyc", "µmol/cycle"],                 dimension: amount, factor: 1.0e-6, qudt: N}
   # pressure per time
   - {symbol: Pa/s,      variants: [Pa/s],                                         dimension: pressure_per_time, factor: 1.0,               qudt: "L^-1 M T^-3"}
   - {symbol: mTorr/min, variants: [mTorr/min, "mTorr min-1"],                     dimension: pressure_per_time, factor: 0.002222033,       qudt: "L^-1 M T^-3"}
@@ -77,15 +77,16 @@ units:
   - {symbol: nm/h,  variants: [nm/h, "nm/hr", "nm per hour"],                     dimension: length_per_time, factor: 2.7777778e-13, qudt: "L T^-1"}
   - {symbol: nm/s,  variants: [nm/s],                                             dimension: length_per_time, factor: 1.0e-9, qudt: "L T^-1"}
   # gas flow
-  - {symbol: sccm,  variants: [sccm],                                             dimension: gas_flow, factor: 1.0, qudt: "L^3 T^-1"}
+  - {symbol: sccm,  variants: [sccm, SCCM],                                             dimension: gas_flow, factor: 1.0, qudt: "L^3 T^-1"}
   # power
   - {symbol: W,     variants: [W, watt],                                          dimension: power, factor: 1.0, qudt: "L^2 M T^-3"}
   # density
   - {symbol: g/cm3, variants: [g/cm3, "g/cm^3", "g cm-3", "g/cm³", "g cm^-3"],    dimension: density, factor: 1.0e3, qudt: "L^-3 M"}
   - {symbol: kg/m3, variants: [kg/m3, "kg/m^3", "kg m-3", "kg m^-3", "kg/m³"],    dimension: density, factor: 1.0,   qudt: "L^-3 M"}
   # areal density
-  - {symbol: nm-2,  variants: [nm-2, "nm^-2", "nm⁻²", "1/nm2", "at/nm2", "nm^{-2}"], dimension: areal_density, factor: 1.0e18, qudt: "L^-2"}
+  - {symbol: nm-2,  variants: [nm-2, "nm^-2", "nm⁻²", "1/nm2", "at/nm2", "at/nm2/cycle", "nm^{-2}"], dimension: areal_density, factor: 1.0e18, qudt: "L^-2"}
   - {symbol: m-2,   variants: [m-2, "m^-2", "m⁻²", "1/m2", "m^{-2}"],              dimension: areal_density, factor: 1.0,    qudt: "L^-2"}
+  - {symbol: cm-2,  variants: [cm-2, "cm^-2", "cm⁻²", "1/cm2", "cm^{-2}"],         dimension: areal_density, factor: 1.0e4,  qudt: "L^-2"}
   # inverse pressure
   - {symbol: 1/Pa,  variants: [1/Pa, "Pa-1", "Pa^-1", "Pa⁻¹"],                    dimension: inverse_pressure, factor: 1.0,  qudt: "L M^-1 T^2"}
   - {symbol: 1/mbar, variants: [1/mbar, "mbar-1"],                                dimension: inverse_pressure, factor: 0.01, qudt: "L M^-1 T^2"}
@@ -97,3 +98,9 @@ units:
   # molar mass
   - {symbol: g/mol,  variants: [g/mol, "g mol-1", "g mol^-1", "g mol⁻¹", "g mol^{-1}"], dimension: molar_mass, factor: 1.0e-3, qudt: "M N^-1"}
   - {symbol: kg/mol, variants: [kg/mol, "kg mol-1", "kg mol^-1", "kg mol⁻¹"],     dimension: molar_mass, factor: 1.0,    qudt: "M N^-1"}
+  # P122: the spellings lists.py carried by hand (Avogadro's constant, Boltzmann's constant, a specimen mass in lists.DERIVED)
+  - {symbol: 1/mol, variants: [1/mol, "mol-1", "mol^-1", "mol⁻¹"],                dimension: inverse_amount, factor: 1.0, qudt: "N^-1"}
+  - {symbol: J/K,   variants: [J/K, "J K-1", "J K^-1", "J K⁻¹"],                   dimension: energy_per_temperature, factor: 1.0, qudt: "L^2 M T^-2 Θ^-1"}
+  - {symbol: g,     variants: [g, gram, grams],                                    dimension: mass, factor: 1.0e-3, qudt: M}
+  - {symbol: kg,    variants: [kg, kilogram],                                      dimension: mass, factor: 1.0,    qudt: M}
+  - {symbol: mg,    variants: [mg],                                                dimension: mass, factor: 1.0e-6, qudt: M}

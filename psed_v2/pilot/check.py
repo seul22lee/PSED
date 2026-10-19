@@ -821,7 +821,7 @@ def check_structure():
                     or (r["type"] == "setting" and (n.get("type") == "paper" or (n.get("type") == "activity" and n.get("kind") == "recipe")))
                 if C.slot_for(r["label_as_printed"], r["unit"], describes):
                     err.append(f"{r['fact_id']}: other[{r['label_as_printed']}] names the slot {C.slot_for(r['label_as_printed'], r['unit'], describes)} but was not re-keyed (P78)")
-                if L.UNIT_BASE.get(L.UNIT_ALIAS.get(r["unit"], r["unit"]), ("",))[0] in ("length", "area per mass"):
+                if L.UNIT_BASE.get(L.UNIT_ALIAS.get(r["unit"], r["unit"]), ("",))[0] in ("length", "area_per_mass"):
                     resid.append(f"{r['fact_id']} [{r['label_as_printed']}]")
         # the porous-body transform: body_thickness = feature_depth × entry_sides
         bt = [f for f in T.rows if f["quantity"] == "body_thickness" and f["value"]]
@@ -1558,7 +1558,7 @@ def check_bases():
                 if "relative_to" in qd:
                     bases[q][qd["relative_to"]] += 1
     for q, c in units.items():
-        dims = [d for d in c if d and d != "fraction"] + (["fraction"] if "fraction" in c else [])
+        dims = [d for d in c if d and d != "dimensionless"] + (["dimensionless"] if "dimensionless" in c else [])
         if len([d for d in c if d]) > 1:
             err.append(f"{q}: values in more than one unit dimension: {dict(c)} (P52)")
     for q, c in bases.items():
@@ -1586,7 +1586,7 @@ def dimension_problem(q, unit, quals, dims):
     e = L.ENTRIES.get(q)
     if not e:
         return f"no entry {q}"
-    u = L.UNIT_ALIAS.get(unit, unit)
+    u = L.UNIT_ALIAS.get(unit, unit) if unit else ""                             # no unit stays no unit (the generated alias would read '' as the dimensionless '1')
     d = dims.get(u) if u else "dimensionless"
     if e["type"] == "categorical":
         return "" if not u else f"unit {unit!r} on a categorical"
@@ -1604,6 +1604,50 @@ def dimension_problem(q, unit, quals, dims):
     if d == ed or (ed == "signal" and d in ("signal", "dimensionless")) or (ed == "count" and d in ("count", "dimensionless")):
         return ""
     return f"{d} vs {ed}"
+
+
+def check_unit_table():
+    """P122: every unit spelling the knowledge base uses resolves through the generated table (vocab.UNIT_BASE from ontology/units.yaml):
+    every entry unit, every stored record unit on an ontology quantity (facts, cells, peaks, derived scalars, curve axes), every
+    lists.DERIVED unit and every lists.UNITS value; the hand tables are gone from lists.py."""
+    import json
+    err, seen = [], set()
+    ok = lambda u: (not u) or L.UNIT_ALIAS.get(u, u) in L.UNIT_BASE
+    for q, e in L.ENTRIES.items():
+        if e.get("unit") and not ok(str(e["unit"])):
+            err.append(f"entry {q}: unit {e['unit']!r} is not in the unit table (P122)")
+        for d in e.get("definitions") or []:
+            if d.get("unit") and not ok(str(d["unit"])):
+                err.append(f"entry {q}: definition unit {d['unit']!r} is not in the unit table (P122)")
+    for pid in list(KEYS) + ["user"]:
+        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+            if "#" in f["fact_id"] and f["quantity"] in L.ENTRIES and f["unit"] and (f["value"] or f["value_min"] or f["value_max"]):
+                seen.add(f["unit"])
+                if not ok(f["unit"]):
+                    err.append(f"{f['fact_id']}: unit {f['unit']!r} is not in the unit table (P122)")
+    for pid in KEYS:
+        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        if p.exists():
+            d = json.loads(p.read_text(encoding="utf-8"))
+            for v in d.get("values", []) + d.get("derived", []):
+                if v.get("quantity") in L.ENTRIES and v.get("unit") and not ok(v["unit"]):
+                    err.append(f"{v['id']}: unit {v['unit']!r} is not in the unit table (P122)")
+            for c in d.get("curves", []):
+                for ax in ("x", "y"):
+                    if c[ax].get("quantity") in L.ENTRIES and c[ax].get("unit") and not ok(c[ax]["unit"]):
+                        err.append(f"{c['id']}: {ax} unit {c[ax]['unit']!r} is not in the unit table (P122)")
+    for did, D in L.DERIVED.items():
+        for u in [D["unit"]] + [i["unit"] for i in D["inputs"]]:
+            if not ok(u):
+                err.append(f"DERIVED {did}: unit {u!r} is not in the unit table (P122)")
+    for q, u in L.UNITS.items():
+        if not ok(u):
+            err.append(f"UNITS[{q}]: {u!r} is not in the unit table (P122)")
+    src = (HERE / "lists.py").read_text(encoding="utf-8")
+    if "UNIT_BASE = {" in src or "UNIT_ALIAS = {" in src:
+        err.append("lists.py still carries a hand unit table (P122)")
+    print(f"== unit table (P122): {len(L.UNIT_BASE)} spellings in {len(L.DIMENSION_OF)} dimensions generated from units.yaml; {len(seen)} record spellings, {len(L.DERIVED)} derived definitions, {len(L.UNITS)} default units resolve")
+    return err
 
 
 def check_dimensions():
@@ -1745,6 +1789,19 @@ def check_paper_index():
                 err.append(f"values(paper={k}): {q} in the index but no values on the card (P117, P95)")
         if any(re.search(r"\[\w+:\S+#\S+\]", t) for _, t in js):
             err.append(f"values(paper={k}): a value with its fact id in the index (P117)")
+        for _, t in js:                                                          # P123: a single home holding every counted record prefixes the range
+            m = re.search(r" · \d+ values \(([a-z-]+) \d+\)(?:, derived \d+)? · ([^·]+) · ", t)
+            if m and m.group(1) in ("cited", "paper", "input") and not m.group(2).startswith(m.group(1) + ": ") and m.group(2).strip() not in ("categorical", "no numeric value"):
+                err.append(f"values(paper={k}): {t[:60]!r}: the one home {m.group(1)} should prefix the range (P123)")
+            if m and m.group(2).startswith(("cited: ", "paper: ", "input: ")) and not m.group(2).startswith(m.group(1) + ": "):
+                err.append(f"values(paper={k}): {t[:60]!r}: the range names a home that is not the only one (P123)")
+        if any("no numeric value" in t for _, t in js if not t.endswith("categorical")):
+            for _, t in js:
+                if "no numeric value" in t:
+                    q = re.search(r"\((\w+)\) · ", t).group(1)
+                    if any(Q.val(f) is not None for f in Q.TREES[k].rows if "#" in f["fact_id"] and f["quantity"] == q and f["type"] in Q.RESULT_TYPES + ("cited",)
+                           and "stat=" not in f["qualifiers"] and f.get("data_kind") != "computed_by_kb"):   # the counted records: not a spread, not KB-computed
+                        err.append(f"values(paper={k}): {q} reads 'no numeric value' although it has a numeric record (P122)")
         if not (js[-2][1].startswith("figure panels") and js[-1][1].startswith("model inputs")):
             err.append(f"values(paper={k}): the two closing count lines are missing (P117)")
         d_lines, e2 = tools.run_tool("detail", {"ids": [k]})
@@ -1931,6 +1988,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_bases()
     print(f"== bases (P52): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_unit_table()
+    print(f"== unit table (P122): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)

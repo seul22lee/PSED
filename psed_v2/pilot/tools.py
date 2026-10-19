@@ -1030,7 +1030,8 @@ def multi_values_blocks(results, paper, where):
     out[0]["tail"] = tails                                                       # the legends and the footer close every page (paginate appends a block's tail to each page)
     assemble = lambda: list(out)
     k = len(parts) - 1
-    while BUDGET and k > 0 and paginate(assemble(), 0)[-1][0] == "more":       # whole blocks fold from the last, never the first nor a one-line block (a nearest line)
+    over = lambda: (pg := paginate(assemble(), 0))[-1][0] == "more" or sum(len(t) + len(i) + 4 for i, t in pg) > BUDGET_CHARS   # the page with its tail within the ordinary per-call budget
+    while BUDGET and k > 0 and over():                                          # whole blocks fold from the last, never the first nor a one-line block (a nearest line)
         if len(parts[k][1]) > 1:
             out[k] = block([], head=collapsed(parts[k][0], paper))
         k -= 1

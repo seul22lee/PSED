@@ -1,0 +1,10 @@
+P122: spellings added to ontology/units.yaml so that every hand entry of lists.py, every stored record unit on an ontology quantity, every lists.DERIVED unit and every lists.UNITS value resolves through the generated table (ontology/export.py unit_tables -> vocab.UNIT_BASE, UNIT_ALIAS, DIMENSION_OF; lists.py imports them, hand tables removed):
+- "×" as a variant of the dimensionless "1" (yim20 objective magnification, 16 records)
+- "at.-%" as a variant of at.%; "at. %" was already a variant (lists.UNITS element_fraction)
+- "Ω-cm" as a variant of Ω·cm (gre23 resistivity, 4 records)
+- "µmol/cyc", "µmol/cycle" as variants of µmol (gre23 moles per cycle, 6 records)
+- "at/nm2/cycle" as a variant of nm-2 (mat22 atoms per cycle, 3 records)
+- "SCCM" as a variant of sccm (gre23, 1 record)
+- cm-2 (areal_density, factor 1e4 to m-2; pore_density's entry unit, ela03 1 record)
+- new dimensions with canonical units in the ontology's units: block: mass (g, kg, mg: the specimen mass of lists.DERIVED), inverse_amount (1/mol, mol-1: Avogadro's constant), energy_per_temperature (J/K: Boltzmann's constant); canonical units also declared for molar_mass (g/mol), diffusivity (m2/s) and angle (°), which units.yaml had without an ontology canonical
+P117 "no numeric value" cases resolved by the generated table: mobility (records in cm2/Vs against the entry's m2/(V·s)), cycle_number and normalized_thickness (unitless records of a count or dimensionless entry), signal_intensity (signal); per-cycle, number-density (m-3, 1/m3, cm-3), mobility and exposure (Pa·s, Torr·s, Torr-s, Pa s, Torr s, L) spellings all resolve.

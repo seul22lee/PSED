@@ -25,7 +25,7 @@ import query as Q  # noqa: E402
 
 ALLOW_FILE = HERE / "sentence_only_allow.csv"
 
-UNITS = sorted({u for u in list(L.UNIT_BASE) + list(L.UNIT_ALIAS) if u and u != "×"} | {"°C", "K", "nm", "µm", "μm", "mm", "cm", "m", "Å", "pm", "s", "min", "h", "ms", "%", "sccm", "SCCM", "Torr", "mTorr",
+UNITS = sorted({u for u in set(L.UNIT_ALIAS.values()) | (set(L.UNIT_BASE) - set(L.UNIT_ALIAS)) if u and u not in ("×", "1", "-", "(-)", "°")} | {"°C", "K", "nm", "µm", "μm", "mm", "cm", "m", "Å", "pm", "s", "min", "h", "ms", "%", "sccm", "SCCM", "Torr", "mTorr",
                                                                            "Pa", "hPa", "mbar", "eV", "keV", "kV", "MeV", "W", "mW", "V", "nA", "mA", "Ω cm", "Ω-cm", "Ωcm", "mΩ cm", "Ω/sq",
                                                                            "wt%", "at.%", "at. %", "g/cm3", "g/cm^3", "kg m-3", "nm-2", "µmol", "mmol", "mol", "cm-3", "cm^-3", "cm2/Vs",
                                                                            "Torr-s", "Torr s", "Pa s", "mTorr/min", "Å/cyc", "Å/cycle", "nm/cycle", "nm/h", "m2/g", "l",
@@ -118,7 +118,7 @@ def base(v, unit):
     u = L.UNIT_ALIAS.get(unit, unit)
     if u in L.UNIT_BASE and u not in ("°C", "K"):
         d, fac = L.UNIT_BASE[u]
-        return ("length" if d == "length per cycle" else d, round(abs(v) * fac, 9))   # P108: a per-cycle value stored in nm/cycle matches the prose's '0.49 Å'
+        return ("length" if d == "length_per_cycle" else d, round(abs(v) * fac, 9))   # P108: a per-cycle value stored in nm/cycle matches the prose's '0.49 Å'
     return ("", round(abs(v), 9))
 
 

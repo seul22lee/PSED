@@ -64,6 +64,30 @@ def qualifier_values(q, species=(), materials=(), definitions=()):
     return None                                                                 # an open value (a number, an element symbol, a quantity id)
 
 
+def unit_tables(onto):
+    """P122: lists.UNIT_BASE, UNIT_ALIAS and DIMENSION_OF from ontology/units.yaml: every symbol and variant -> (dimension, factor relative
+    to the dimension's canonical unit: the ontology's units: block, else the row with factor 1, else the first row); every variant -> its
+    symbol; every dimension -> itself. Never hand-edited again."""
+    rows = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]
+    by_dim = {}
+    for u in rows:
+        by_dim.setdefault(u["dimension"], []).append(u)
+    canon = {}
+    for dim, us in by_dim.items():
+        want = str((onto.get("units", {}).get(dim) or {}).get("canonical", "")).split(" ")[0]
+        row = next((u for u in us if want and want in [str(u["symbol"])] + [str(v) for v in u["variants"]]), None) \
+            or next((u for u in us if float(u["factor"]) == 1.0), us[0])
+        canon[dim] = float(row["factor"])
+    base, alias = {}, {}
+    for u in rows:
+        fac = float(u["factor"]) / canon[u["dimension"]]
+        for v in [u["symbol"]] + list(u["variants"]):
+            base.setdefault(str(v), (u["dimension"], fac))
+            if str(v) != str(u["symbol"]):
+                alias.setdefault(str(v), str(u["symbol"]))
+    return base, alias, {d: d for d in by_dim}
+
+
 def build(onto, pmap):
     entries = list(onto["entries"])
     voc = onto["vocabularies"]
@@ -109,7 +133,9 @@ def build(onto, pmap):
             families.setdefault(e["family"], []).append(e["id"])
     mechanisms = {e["id"]: dict(name=e.get("name", e["id"].replace("_", " ")), definition=e.get("definition", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "mechanism"}
     kinds = voc.get("kind", {})
+    unit_base, unit_alias, dimension_of = unit_tables(onto)                     # P122
     return dict(
+        UNIT_BASE=unit_base, UNIT_ALIAS=unit_alias, DIMENSION_OF=dimension_of,
         CONCEPTS=concepts, ATTRIBUTES=attributes, TO_ABSORB=absorb, TRANSFORM_OUTPUTS=transforms, REPLACED=replaced,
         QUANTITIES=sorted(set(concepts) | set(attributes) | set(absorb) | {"other"}),
         LABELS=labels, NAMES=names,
