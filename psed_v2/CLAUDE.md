@@ -48,6 +48,7 @@ psed_v2/
   ingest/regression.py      # tracked: the output against answers/ (known real errors kept, no known not-error newly flagged, repairs intact)
   ingest/reports/           # gitignored: papers.html, review_body.html and glyph_evidence/ (crops behind glyph_codes.json)
   ingest/INGEST.md, ERRORS.md, NUMBERS.md, CHANGELOG.md # tracked: the pipeline per item; the errors and known limits; the numbers; the history pointer
+  extract/ (tracked: common.py, pass0_paper.py, pass1_elements.py; P133), records/<paper_id>.jsonl (tracked: one line per provider call, append-only), cache/ (gitignored: one file per call)
 ```
 
 ## Environments

@@ -3,10 +3,14 @@
 
 Ontology version 1, sha256 `6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
 
+Out of scope (P133): a statement-only setting or observation (no quantity, value or qualifiers; only method or mentions) is not a form record.
+
+Provider schema (P133, extract/common.py): an enum longer than 50 values is sent as a plain string, its ids listed in the prompt; form.json keeps the enum and the compiler validates against it (P134).
+
 | field | allowed values | required when | who fills |
 |---|---|---|---|
 | type | enum, 8 values | always | extractor |
-| quantity | enum, 105 values | required when type setting / observation / derived / model; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
+| quantity | enum, 105 values | required when type setting / observation / derived; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
 | label_as_printed | string | required with quantity | extractor |
 | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
 | value | number | needs quantity; required with uncertainty; required with uncertainty_kind; required with uncertainty_n | extractor |

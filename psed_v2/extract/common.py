@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""P133: what the extraction passes share: the paper index, the held-out guard, the provider call, the cache and records/<pid>.jsonl.
+
+Provider: google-genai (conda env psed310), the client and the tolerant JSON parse of ingest/figures.py (ported from psed_v1
+pipeline/figures/figure_extract.py); MODEL fixed, temperature 0, provider-side structured output (response_json_schema). The
+provider schema is the form with the keywords the provider does not take removed (PROVIDER_DROP); enums are kept.
+Key: GOOGLE_API_KEY, from the environment or psed_v2/.env (figures.load_env; never printed, never written).
+Cache: cache/<pid>/<pass>_<section>_<prompt_hash>_<model>.json (gitignored); a hit makes no call and appends nothing.
+Records: records/<pid>.jsonl (tracked), one line per call made, append-only.
+One retry on a transport error; a second failure, or any other error, stops the run.
+"""
+import datetime
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
+
+V2 = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(V2 / "pilot"))
+sys.path.insert(0, str(V2 / "ingest"))
+sys.path.insert(0, str(V2 / "ontology"))
+import elements as E  # noqa: E402
+import export as X  # noqa: E402
+from figures import client_for, load_env, loads_json  # noqa: E402,F401
+
+MODEL = "gemini-3.8-flash"                                                       # user, P133: pinned (gemini-2.5-flash 404s)
+KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
+HELD_OUT = {"yim22", "gre23", "mat23"}
+HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
+CACHE, RECORDS, SCHEMA = V2 / "cache", V2 / "records", V2 / "schema"
+PROVIDER_DROP = {"additionalProperties", "pattern", "uniqueItems", "propertyNames", "minProperties", "dependentRequired", "allOf", "if", "then",
+                 "else", "$schema", "$id", "$comment"}   # validation the compiler does against the full form.json (P134)
+
+
+class Stop(Exception):
+    """The run stops: the reason is printed and nothing more is called."""
+
+
+def resolve(arg):
+    """A paper key (yli18) or paper id -> (pid, key), from pilot/elements.py PAPERS; held-out papers are refused."""
+    pid = next((p for p, k in E.PAPERS.items() if arg in (p, k)), None)
+    if pid is None:
+        raise Stop(f"{arg}: not in the paper index (pilot/elements.py PAPERS)")
+    if pid in HELD_OUT or E.PAPERS[pid] in HELD_OUT:
+        raise Stop(f"{arg}: held out, never run")
+    return pid, E.PAPERS[pid]
+
+
+def schema(name):
+    return json.loads((SCHEMA / name).read_text(encoding="utf-8"))
+
+
+def provider_schema(s, defs=None):
+    """The schema without PROVIDER_DROP (a false schema left under properties is dropped too); enums kept. P133 (user, option 2,
+    after a bare 400 on pass 1): every $ref inlined from defs (the schema's own $defs by default; $defs then removed) and a const
+    written as a one-value enum; P133 (user, after a second bare 400): no union, an anyOf becomes a string (the compiler casts it);
+    P133 (user, after the probe): an enum longer than export.PROVIDER_ENUM_MAX becomes a plain string (the prompt lists its ids)."""
+    if defs is None and isinstance(s, dict):
+        defs = s.get("$defs", {})
+    if isinstance(s, dict):
+        if "anyOf" in s:
+            return {"type": "string"}
+        if "$ref" in s:
+            return provider_schema(defs[s["$ref"].split("/")[-1]], defs)
+        if len(s.get("enum", [])) > X.PROVIDER_ENUM_MAX:
+            return {"type": "string"}
+        if "const" in s:
+            s = {**{k: v for k, v in s.items() if k != "const"}, "enum": [s["const"]]}
+        return {k: provider_schema(v, defs) for k, v in s.items() if k not in PROVIDER_DROP | {"$defs"} and v is not False}
+    if isinstance(s, list):
+        return [provider_schema(v, defs) for v in s]
+    return s
+
+
+def request_hash(prompt, rschema, thinking=None):
+    """sha256 of the full request: the prompt, the response schema and the thinking setting when one is set (all decide the response)."""
+    extra = "\n" + json.dumps(thinking, sort_keys=True) if thinking else ""
+    return hashlib.sha256((prompt + "\n" + json.dumps(rschema, sort_keys=True, ensure_ascii=False) + extra).encode("utf-8")).hexdigest()
+
+
+def cache_path(pid, pass_, section, h):
+    return CACHE / pid / f"{pass_}_{section}_{h[:16]}_{MODEL}.json"
+
+
+def plan(pid, jobs, thinking=None):
+    """jobs: [(pass, section, prompt, rschema, element_ids)] -> prints the planned calls; stops when the key is missing."""
+    todo = [j for j in jobs if not cache_path(pid, j[0], j[1], request_hash(j[2], j[3], thinking)).exists()]
+    load_env()
+    print(f"{pid}: {len(jobs)} planned calls ({len(jobs) - len(todo)} cached, {len(todo)} to call), model {MODEL}")
+    if todo and not os.environ.get(KEY_ENV):
+        raise Stop(f"{KEY_ENV} is not set: no call made")
+    return todo
+
+
+def _transport(e):
+    return isinstance(e, (ConnectionError, TimeoutError, OSError)) or type(e).__name__ in ("ConnectError", "ReadTimeout", "ConnectTimeout",
+                                                                                         "RemoteProtocolError", "ReadError")
+
+
+def call(client, prompt, rschema, thinking=None):
+    """One structured call -> (raw text, usage, request_ts); one retry on a transport error. thinking: e.g. {"thinking_level": "MINIMAL"}."""
+    from google.genai import types
+    cfg = types.GenerateContentConfig(temperature=0, response_mime_type="application/json", response_json_schema=rschema,
+                                      thinking_config=types.ThinkingConfig(**thinking) if thinking else None)
+    for attempt in (1, 2):
+        ts = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+        try:
+            r = client.models.generate_content(model=MODEL, contents=prompt, config=cfg)
+        except Exception as e:
+            if attempt == 1 and _transport(e):
+                continue
+            if getattr(e, "code", None) == 404:                                 # user, P133: never switch models; list them and stop
+                names = sorted(m.name for m in client.models.list() if "generateContent" in (m.supported_actions or []))
+                raise Stop(f"{MODEL}: 404; models supporting generateContent:\n  " + "\n  ".join(names))
+            raise Stop(f"provider error ({type(e).__name__}): {str(e)[:300]}")
+        u = r.usage_metadata
+        return r.text or "", dict(input_tokens=u.prompt_token_count or 0,
+                                  output_tokens=(u.candidates_token_count or 0) + (u.thoughts_token_count or 0)), ts
+
+
+def run(pid, jobs, thinking=None):
+    """Every job: from the cache, else one call (cached, then appended to records/<pid>.jsonl). Returns (lines, calls made).
+    thinking (P133, pass 1): the provider's thinking setting, recorded in the line; None = the model's default (pass 0)."""
+    todo = plan(pid, jobs, thinking)
+    client = client_for("google", os.environ[KEY_ENV]) if todo else None
+    out, made = [], 0
+    for pass_, section, prompt, rschema, ids in jobs:
+        h = request_hash(prompt, rschema, thinking)
+        cp = cache_path(pid, pass_, section, h)
+        if cp.exists():
+            out.append(json.loads(cp.read_text(encoding="utf-8")))
+            continue
+        text, usage, ts = call(client, prompt, rschema, thinking)
+        made += 1
+        line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
+                    request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), response=text)
+        cp.parent.mkdir(parents=True, exist_ok=True)
+        cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")
+        RECORDS.mkdir(exist_ok=True)
+        with (RECORDS / f"{pid}.jsonl").open("a", encoding="utf-8") as f:
+            f.write(json.dumps(line, ensure_ascii=False) + "\n")
+        out.append(line)
+    print(f"{pid}: {made} calls made, {len(jobs) - made} from the cache")
+    return out, made
+
+
+def lines(pid, pass_=None):
+    p = RECORDS / f"{pid}.jsonl"
+    rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()] if p.exists() else []
+    return [r for r in rows if pass_ is None or r["pass"] == pass_]
+
+
+def main(fn):
+    try:
+        return fn(sys.argv[1] if len(sys.argv) > 1 else "")
+    except Stop as e:
+        print("STOP:", e)
+        return 1
