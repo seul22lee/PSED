@@ -130,7 +130,7 @@ TOOLS = [
     dict(name="values",
          description=("Arguments: result or set (one of the two), paper, where; or paper alone. With paper alone: the paper's quantity index, one line per quantity it holds values for "
                       "(label, id, value counts by home, range with unit, the set ids that hold it, claims), the figure panels and model inputs as counts; never a value with its id. "
-                      "With result as a list of up to 8 names: the single-quantity outputs as consecutive blocks, each under its own columns header, legends and footer once; over the budget whole blocks fold from the last into one line naming how to open them (P121). With set (a comparison set id): one table of everything the set measured, "
+                      "With result as a list of up to 8 names: the single-quantity outputs as consecutive blocks, each under its own columns header, legends and footer once, within k times the per-call budget (at most 8,000 tokens); over it whole blocks fold from the last into one line naming how to open them (P121). With set (a comparison set id): one table of everything the set measured, "
                       "rows = every member of the set (every cell of a grid) and first the set itself for the values stated for it, columns = every "
                       "result quantity with a value among them in the ontology's order, cells = value, kind mark, fact id, ± with its basis; over the "
                       "budget the last columns collapse into one line naming them, rows are never dropped. With result: returns every value of one result or stated setting as comparison-set "
@@ -479,8 +479,13 @@ def run_tool(name, args):
     if err:
         return [], "error: " + err
     args = {k: v for k, v in args.items() if v is not None}
-    blocks, err = _run(name, args)
-    lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name == "search" else 20 if name == "papers" else None)
+    k_list = len(args["result"]) if name == "values" and isinstance(args.get("result"), list) else 1
+    _CALL_BUDGET.append(BUDGET_CHARS * min(k_list, LIST_BUDGET_MAX))            # P121b: k listed quantities, k × the per-call budget (at most 4×)
+    try:
+        blocks, err = _run(name, args)
+        lines = [] if err else paginate(blocks, args.get("offset"), PAGE_LINES if name == "search" else 20 if name == "papers" else None)
+    finally:
+        _CALL_BUDGET.pop()
     if not err and not [x for x in lines if x[0] != "more"]:
         err = f"error: {name}: nothing matches " + ", ".join(f"{k}={json.dumps(v, ensure_ascii=False)}" for k, v in args.items()) \
               + (" (or the offset is past the end)" if args.get("offset") else "")
@@ -1030,7 +1035,7 @@ def multi_values_blocks(results, paper, where):
     out[0]["tail"] = tails                                                       # the legends and the footer close every page (paginate appends a block's tail to each page)
     assemble = lambda: list(out)
     k = len(parts) - 1
-    over = lambda: (pg := paginate(assemble(), 0))[-1][0] == "more" or sum(len(t) + len(i) + 4 for i, t in pg) > BUDGET_CHARS   # the page with its tail within the ordinary per-call budget
+    over = lambda: (pg := paginate(assemble(), 0))[-1][0] == "more" or sum(len(t) + len(i) + 4 for i, t in pg) > call_budget()   # the page with its tail within the ordinary per-call budget
     while BUDGET and k > 0 and over():                                          # whole blocks fold from the last, never the first nor a one-line block (a nearest line)
         if len(parts[k][1]) > 1:
             out[k] = block([], head=collapsed(parts[k][0], paper))
@@ -1059,6 +1064,12 @@ def empty_pair_blocks(result, paper):
 BUDGET = True                       # False: values renders everything, no set collapses (the homing check of P79 reads the full rendering)
 BUDGET_TOKENS = 2000
 BUDGET_CHARS = BUDGET_TOKENS * 4
+LIST_BUDGET_MAX = 4                 # P121b: a values call with k listed quantities has a budget of min(k, 4) × BUDGET_TOKENS (at most 8,000 tokens)
+_CALL_BUDGET = [BUDGET_CHARS]       # the budget of the call being answered (chars); paginate and the P65 collapse read it
+
+
+def call_budget():
+    return _CALL_BUDGET[-1]
 DEF_FRAG = re.compile(r' · defined as: "[^"]*" \[([^\]]+)\]')
 
 
@@ -1076,7 +1087,7 @@ def paginate(blocks, offset, max_lines=None):
         for kind, u in [("head", b["head"])] + [("row", r) for r in b["rows"]] + [("foot", b["foot"])]:
             if not u:
                 continue
-            if sum(len(t) + len(i) + 4 for i, t in u) > BUDGET_CHARS - 400:          # a unit larger than a page goes line by line
+            if sum(len(t) + len(i) + 4 for i, t in u) > call_budget() - 400:        # a unit larger than a page goes line by line
                 units += [(b, kind, [x]) for x in u]
             else:
                 units.append((b, kind, u))
@@ -1090,7 +1101,7 @@ def paginate(blocks, offset, max_lines=None):
     while n < len(units):
         u = units[n][2]
         cost = sum(len(t) + len(i) + 4 for i, t in u)
-        if (out and size + cost > BUDGET_CHARS - 60) or (max_lines and out and len(out) + len(u) > max_lines - 1):
+        if (out and size + cost > call_budget() - 60) or (max_lines and out and len(out) + len(u) > max_lines - 1):
             break
         out += u; scopes += [units[n][0].get("scope", 0)] * len(u); size += cost; n += 1
     seen_lines, seen_defs, page, dropped = set(), set(), [], False

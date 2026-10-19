@@ -1733,9 +1733,21 @@ def check_multi_values():
         if any(i == "more" for i, _ in lines) and len(folded) < len(qs) - 1:
             err.append(f"values({qs}, {k}): over the budget with {len(qs) - 1 - len(folded)} block(s) still unfolded (P121)")
         singles = {}
-        for q in qs:
-            blocks, e1 = tools._run("values", {"result": q, "paper": k})
-            singles[q], _ = tools.split_tail(tools.flat_lines(blocks))
+        tools._CALL_BUDGET.append(tools.BUDGET_CHARS * min(len(qs), tools.LIST_BUDGET_MAX))   # P121b: the single calls under the list call's budget
+        try:
+            for q in qs:
+                blocks, e1 = tools._run("values", {"result": q, "paper": k})
+                singles[q], _ = tools.split_tail(tools.flat_lines(blocks))
+        finally:
+            tools._CALL_BUDGET.pop()
+        budget = tools.BUDGET_TOKENS * min(len(qs), tools.LIST_BUDGET_MAX)       # P121b: k × the per-call budget; a block folds only when unfolding it would exceed the budget
+        size = sum(len(t) + len(i) + 4 for i, t in lines) // 4
+        if folded and not any(i == "more" for i, _ in lines):
+            unfolded = size + sum(sum(len(t) + len(i) + 4 for i, t in singles[q]) // 4 for q in qs if any(t.startswith(f"{q}:") for t in folded.values()))
+            if unfolded <= budget * 0.95:                                        # within 5 %: the page margin and the tail paginate reserves
+                err.append(f"values({qs}, {k}): {len(folded)} block(s) folded although unfolded the call would be {unfolded} tokens, within its budget of {budget} (P121b)")
+        if size > budget + 60:
+            err.append(f"values({qs}, {k}): {size} tokens over the call's budget of {budget} (P121b)")
         for n, q in enumerate(qs):                                               # each block: the single call's lines (a text once per page, P44) or, past the first, one folded line
             n_blocks += 1
             if any(t.startswith(f"{q}:") for t in folded.values()):
@@ -1756,7 +1768,7 @@ def check_multi_values():
     lines, e = tools.run_tool("values", {"result": ["penetration depth", "no such thing"], "paper": "yim20"})
     if e or not any("nearest" in t for _, t in lines) or not any(i.startswith("yim20:") and i != "yim20:folded" for i, _ in lines):
         err.append(f"values(['penetration depth', 'no such thing'], yim20): the unresolvable item should get its nearest line and the other render (P121) {e}")
-    print(f"== multi-quantity values (P121): {n_blocks} blocks over {len(Q.TREES)} papers' top-3 lists, {n_folded} folded to one line within the budget; legends and footer once")
+    print(f"== multi-quantity values (P121, P121b): {n_blocks} blocks over {len(Q.TREES)} papers' top-3 lists, {n_folded} folded to one line (18 of 36 before P121b); a list call's budget is k × {tools.BUDGET_TOKENS} tokens, at most {tools.LIST_BUDGET_MAX}×; legends and footer once")
     return err
 
 
