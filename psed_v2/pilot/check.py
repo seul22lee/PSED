@@ -1840,7 +1840,20 @@ def check_compare_runs():
         err.append(f"compare_runs: verdict counts {row_sum} against the synthetic file's {dict(want)} (P126)")
     if any(len(r.get("answer") or "") > 200 and (r.get("answer") or "")[:200] in md2 for r in recs):
         err.append("compare_runs: an answer body is copied into the report (P126)")
-    print(f"== compare_runs (P126): report on {path.name} ({len(recs)} records, {len(qno)} questions, arms {', '.join(arms)}): six sections; synthetic verdicts join and count")
+    if {"kb", "text"} <= set(arms):                                              # P127: anchor columns and one kb × text grid per run, summing to its questions
+        runs = sorted({r.get("run", 1) for r in recs if r["arm"] in ("kb", "text")})
+        if "anchors kb only" not in md2 or "## 5c. Per-question verdict agreement" not in md2:
+            err.append("compare_runs: the anchor columns or section 5c is missing (P127)")
+        else:
+            blocks = md2.split("## 5c. Per-question verdict agreement", 1)[1].split("## 6.", 1)[0].split("(rows kb, columns text)")[1:]
+            for run, b in zip(runs, blocks):
+                total = sum(int(c) for l in b.splitlines() if l.startswith("| ") and not l.startswith("| kb") for c in l.strip("|").split("|")[1:])
+                want = len({r["question"].strip() for r in recs if r["arm"] in ("kb", "text") and r.get("run", 1) == run})
+                if total != want:
+                    err.append(f"compare_runs: run {run} verdict grid counts {total} questions, {want} have a kb or text record (P127)")
+            if len(blocks) != len(runs):
+                err.append(f"compare_runs: {len(blocks)} verdict grids for {len(runs)} runs (P127)")
+    print(f"== compare_runs (P126): report on {path.name} ({len(recs)} records, {len(qno)} questions, arms {', '.join(arms)}): six sections; synthetic verdicts join and count; anchor columns and one kb × text verdict grid per run (P127)")
     return err
 
 

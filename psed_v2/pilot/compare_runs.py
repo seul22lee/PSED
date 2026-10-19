@@ -6,7 +6,10 @@ paths given:
 Sections (each a table generated from the records): 1 runs; 2 cost and process per (run, arm); 3 number and kind checks with the
 P74/P75 process columns; 4 stability (P115) where a file holds repeats; 5 the per-question table (and the verdict counts with the
 Wilson 95 % interval when --verdicts is given: columns question_no, run_file, arm, run, verdict right | slips | material | fabricated |
-empty, note; joined on file, arm, run and the question's order of first appearance); 6 one closing paragraph computed from the numbers.
+empty, note; joined on file, arm, run and the question's order of first appearance); P127: for every file holding both the kb and the
+text arm and each run number in it, section 5 adds the cited anchors (an id truncated at '#') both arms share, kb only and text only, and
+the cited papers (the prefix before ':') the same way, and with --verdicts section 5c counts kb verdict × text verdict per question, with
+the questions one arm got right and the other graded otherwise; 6 one closing paragraph computed from the numbers.
 Answer bodies are never copied; the question text is truncated to 60 characters."""
 import argparse, collections, csv, json, math, statistics, sys
 from pathlib import Path
@@ -60,6 +63,20 @@ def wilson(k, n, z=1.96):
         return (0.0, 0.0)
     p = k / n; d = 1 + z * z / n; c = p + z * z / (2 * n); h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
     return ((c - h) / d, (c + h) / d)
+
+
+def anchors(r):
+    """P127: the cited ids of a record truncated at '#' (yim20:tab1.r13c11#1 -> yim20:tab1.r13c11; an id without '#' stays)."""
+    return {i.split("#", 1)[0] for i in (r.get("cited") or {})}
+
+
+def overlap(a, b):
+    """(both, a only, b only) of two sets, each sorted."""
+    return sorted(a & b), sorted(a - b), sorted(b - a)
+
+
+def ids_cell(xs):
+    return f"{len(xs)}: " + ", ".join(xs) if xs else "0"
 
 
 def question_numbers(recs):
@@ -134,6 +151,10 @@ def report(paths, verdicts=None):
         for v in csv.DictReader(Path(verdicts).open(encoding="utf-8")):
             verd[(v["run_file"], v["arm"], int(v.get("run") or 1), int(v["question_no"]))] = v["verdict"]
     cols = list(groups)
+    pairs = [(f, run) for f in dict.fromkeys(k[0] for k in groups) if (f, "kb") in groups and (f, "text") in groups      # P127: (file, run) with both arms
+             for run in sorted({r.get("run", 1) for a in ("kb", "text") for r in groups[(f, a)]})]
+    def pick(f, a, run, q):
+        return next((r for r in groups[(f, a)] if r.get("run", 1) == run and r["question"].strip() == q), None)
     rows = []
     for q, n in qno.items():
         row = [n, q[:60]]
@@ -149,8 +170,16 @@ def report(paths, verdicts=None):
                 if vd:
                     cell[-1] += f" · verdict {vd}"
             row.append("<br>".join(cell))
+        for f, run in pairs:
+            rk, rt = pick(f, "kb", run, q), pick(f, "text", run, q)
+            if rk is None or rt is None:
+                row += ["—"] * 4; continue
+            ak, at = anchors(rk), anchors(rt)
+            row += [ids_cell(x) for x in overlap(ak, at)]
+            row.append(" / ".join(", ".join(x) or "—" for x in overlap({i.split(":", 1)[0] for i in ak}, {i.split(":", 1)[0] for i in at})))
         rows.append(row)
-    out += ["## 5. Per question", "", table(["no", "question", *[f"{f} · {ARM_NAMES.get(a, a)}" for f, a in cols]], rows)]
+    out += ["## 5. Per question", "", table(["no", "question", *[f"{f} · {ARM_NAMES.get(a, a)}" for f, a in cols],
+                                             *[f"{f} run {run} · {c}" for f, run in pairs for c in ("anchors both", "anchors kb only", "anchors text only", "papers both / kb only / text only")]], rows)]
     counts = {}
     if verd:
         rows = []
@@ -160,6 +189,23 @@ def report(paths, verdicts=None):
             counts[key] = (c, n, lo, hi)
             rows.append([key[0], ARM_NAMES.get(key[1], key[1]), *[c.get(v, 0) for v in VERDICTS], c.get("—", 0), f"{100 * c.get('right', 0) / n:.0f} % [{100 * lo:.0f}–{100 * hi:.0f}]" if n else "—"])
         out += ["## 5b. Verdicts per (run, arm)", "", table(["file", "arm", *VERDICTS, "not graded", "right share (Wilson 95 %)"], rows)]
+    if verd and pairs:                                                           # P127: kb verdict × text verdict per question
+        out += ["## 5c. Per-question verdict agreement", ""]
+        labels = VERDICTS + ["not graded"]
+        for f, run in pairs:
+            grid, kb_only, text_only = collections.Counter(), [], []
+            for q, n in qno.items():
+                if pick(f, "kb", run, q) is None and pick(f, "text", run, q) is None:
+                    continue
+                vk, vt = (verd.get((f, a, run, n)) if pick(f, a, run, q) is not None else None for a in ("kb", "text"))
+                vk, vt = (v if v in VERDICTS else "not graded" for v in (vk, vt))
+                grid[(vk, vt)] += 1
+                if vk == "right" and vt not in ("right", "not graded"):
+                    kb_only.append(n)
+                if vt == "right" and vk not in ("right", "not graded"):
+                    text_only.append(n)
+            out += [f"{f} run {run} (rows kb, columns text)", "", table(["kb \\ text", *labels], [[vk, *[grid[(vk, vt)] for vt in labels]] for vk in labels]),
+                    f"kb right & text not right: {len(kb_only)} questions (nos {', '.join(map(str, kb_only)) or '—'}); text right & kb not right: {len(text_only)} (nos {', '.join(map(str, text_only)) or '—'})", ""]
     # 6 closing paragraph, computed
     sent = []
     priced = {k: v["per_answer"] for k, v in stats.items() if v["per_answer"]}
