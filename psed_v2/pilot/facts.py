@@ -732,11 +732,12 @@ def bases():
 
 
 def rekey_from_other():
-    """P131b: an other[...] record whose printed label (exactly) is a from_other label of an entry (lists.FROM_OTHER: the entry was promoted
-    from that free label, ontology/merge_pending.py) is re-keyed to the entry. Label, value, kind, unit and owner stay. Returns the fact ids."""
+    """P131b: a record whose printed label (exactly) is a from_other label of an entry (lists.FROM_OTHER: the entry was promoted from that
+    free label, ontology/merge_pending.py) is keyed to the entry, from other[...] or (12b) from any other quantity id: every "base pressure"
+    is base_pressure. Label, value, kind, unit and owner stay. Returns the fact ids."""
     out = []
     for r in _facts:
-        if r["quantity"] == "other" and r["label_as_printed"] in L.FROM_OTHER:
+        if r["quantity"] and r["label_as_printed"] in L.FROM_OTHER and r["quantity"] != L.FROM_OTHER[r["label_as_printed"]]:
             r["quantity"] = L.FROM_OTHER[r["label_as_printed"]]; out.append(r["fact_id"])
     return out
 

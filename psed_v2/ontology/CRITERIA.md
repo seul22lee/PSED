@@ -315,6 +315,8 @@ For each label carrying data:
 5. Otherwise → native. Promote to a new extension entry only if it carries data in ≥ 2 papers, a CQ needs it, a definition can be cited, and the expert approves.
 6. A word that now has two definitions → move it to `ambiguous_aliases`.
 
+The extension-quantity cap (make_report check 5) is a tripwire; cap is reset at each growth round to count + 10 % (P131b: 53 → 60).
+
 Ids are frozen from the start of the Ylilammi gold pilot (the v0 rename gap → feature_width is the last rename). After that, ids are never renamed or deleted; a merged entry gets `replaced_by: <id>`.
 
 ## 12. Fixed vocabularies

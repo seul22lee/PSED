@@ -2,17 +2,20 @@
 """P131b: alias audit. For every setting, observation and derived record of the 12 papers' facts.csv with a quantity id (not other), the printed
 form it was keyed from: its label_as_printed, else the longest alias of the id that occurs in the text of its evidence elements
 (elements.texts(), read at run time, never written out), else unlocated. Status: matched (the printed form is an alias, the label or the name
-of the entry, up to case, subscript underscores and spaces: fold()), missing (it is none of them), unlocated (no printed form found), spread (a record with a stat= qualifier: its printed label
-names the statistic, "standard deviation of PD50%", not the quantity; listed, never an alias source). Writes verify/d14/alias_audit.csv (entry id, printed form,
-paper, element, status; one row per distinct entry, printed form, paper); counts printed.
+of the entry, up to case, subscript underscores and spaces: fold()), spread (a record with a stat= qualifier: its printed label names the
+statistic, "standard deviation of PD50%", not the quantity; listed, never an alias source), ambiguous (P131b-12b: the form is a key of
+vocabularies.ambiguous_aliases), pending (the form is the label or an alias of a pending.csv row still pending), missing (none of these;
+the target is 0), unlocated (no printed form found). Writes verify/d14/alias_audit.csv (entry id, printed form, paper, element, status;
+one row per distinct entry, printed form, paper); counts printed.
 
     python3 psed_v2/ontology/alias_audit.py            # audit only
     python3 psed_v2/ontology/alias_audit.py --apply    # also add every missing printed form verbatim as an alias of its entry in ontology.yaml,
                                                        # with its evidence (paper, element) appended to the entry's evidence; then audit again
 
-A missing printed form that is already an alias, label or name of another entry, an ambiguous alias, or missing for two entries in the same
-run, is not added (it would put one word in two entries, make_report check 4); nor is one that an other[...] record carries as its label
-(the P78 slot rule, facts.rekey_structure_dimensions, would re-key that record to the entry): it is listed as stopped. Unlocated rows are listed, not fixed.
+Sec. 11 rule 6 (12b): a missing printed form that is already an alias, label or name of another entry, or missing for two entries in the
+same run, is a word with two definitions: it goes to vocabularies.ambiguous_aliases with every entry it would match (move_ambiguous(),
+which also drops it from the entries' aliases, make_report check 4). One that an other[...] record carries as its label is not added
+(the P78 slot rule, facts.rekey_structure_dimensions, would re-key that record): it is listed as stopped. Unlocated rows are listed, not fixed.
 """
 import collections, csv, glob, re, sys
 from pathlib import Path
@@ -37,8 +40,17 @@ def names(e):
     return {fold(a) for a in e.get("aliases") or []} | {fold(e.get("label") or ""), fold(e.get("name") or "")} - {""}
 
 
-def audit(entries):
+def pending_forms():
+    """The labels and aliases of the pending.csv rows still pending, folded."""
+    rows = list(csv.DictReader((HERE / "pending.csv").open(newline="", encoding="utf-8")))
+    return {fold(a) for r in rows if r["status"] == "pending" for a in [r.get("label", "")] + (r.get("aliases") or "").split("|") if a}
+
+
+def audit(onto):
     import elements
+    entries = {e["id"]: e for e in onto["entries"]}
+    ambiguous = {fold(a) for a in onto["vocabularies"].get("ambiguous_aliases") or {}}
+    pend = pending_forms()
     rows = []
     for p in sorted(glob.glob(str(V2 / "pilot" / "10.*.facts.csv"))):
         pid = Path(p).name[:-len(".facts.csv")]
@@ -54,7 +66,9 @@ def audit(entries):
                 found = [(len(a), a, x) for a in entries[q].get("aliases") or [] for x in els if a and a in texts.get(x, "")]
                 if found:
                     _, printed, el = max(found)
-            status = "unlocated" if not printed else "matched" if fold(printed) in names(entries[q]) else "spread" if any(x.startswith("stat=") for x in r["qualifiers"].split(";")) else "missing"
+            status = ("unlocated" if not printed else "matched" if fold(printed) in names(entries[q])
+                      else "spread" if any(x.startswith("stat=") for x in r["qualifiers"].split(";"))
+                      else "ambiguous" if fold(printed) in ambiguous else "pending" if fold(printed) in pend else "missing")
             rows.append(dict(entry=q, printed=printed, paper=r["fact_id"].split(":")[0], element=el, status=status, fact_id=r["fact_id"]))
     return rows
 
@@ -82,15 +96,36 @@ def set_field(text, eid, field, value):
     return head + "\nentries:\n" + "".join(blocks) + "\nfamilies:" + tail
 
 
+def move_ambiguous(text, form, cands):
+    """Sec. 11 rule 6: form becomes a key of vocabularies.ambiguous_aliases listing cands (merged with an existing key of the same fold), and
+    leaves the aliases of every entry (make_report check 4: an ambiguous word in no entry's aliases)."""
+    onto = yaml.safe_load(text)
+    for e in onto["entries"]:
+        if any(fold(a) == fold(form) for a in e.get("aliases") or []):
+            text = set_field(text, e["id"], "aliases", [a for a in e["aliases"] if fold(a) != fold(form)])
+    amb = onto["vocabularies"].get("ambiguous_aliases") or {}
+    key = next((k for k in amb if fold(k) == fold(form)), None)
+    head, rest = text.split("\n  ambiguous_aliases:\n", 1)
+    lines = rest.split("\n")
+    n = next(i for i, ln in enumerate(lines) if not ln.startswith("    "))
+    block = lines[:n]
+    if key is not None:
+        merged = list(dict.fromkeys([str(x) for x in amb[key]] + sorted(cands)))
+        i = next(i for i, ln in enumerate(block) if yaml.safe_load(ln.strip()) and key in yaml.safe_load(ln.strip()))
+        block[i] = "    " + yaml.safe_dump({key: merged}, default_flow_style=None, allow_unicode=True, width=100000).strip()
+    else:
+        block.append("    " + yaml.safe_dump({form: sorted(cands)}, default_flow_style=None, allow_unicode=True, width=100000).strip() + "   # P131b-12b: Sec. 11 rule 6")
+    return head + "\n  ambiguous_aliases:\n" + "\n".join(block + lines[n:])
+
+
 def apply(rows, onto):
     entries = {e["id"]: e for e in onto["entries"]}
     owner = collections.defaultdict(set)
     for e in onto["entries"]:
         for a in names(e):
             owner[a].add(e["id"])
-    ambiguous = {fold(a) for a in onto["vocabularies"].get("ambiguous_aliases", {})}
     free = {r["label_as_printed"] for p in glob.glob(str(V2 / "pilot" / "*.facts.csv")) for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other"}
-    add, stopped = collections.defaultdict(dict), []
+    add, stopped, amb = collections.defaultdict(dict), [], collections.defaultdict(set)
     batch = collections.defaultdict(set)
     for r in rows:
         if r["status"] == "missing":
@@ -99,9 +134,11 @@ def apply(rows, onto):
         if r["status"] != "missing":
             continue
         others = (owner.get(fold(r["printed"]), set()) | batch[fold(r["printed"])]) - {r["entry"]}
-        if others or fold(r["printed"]) in ambiguous or r["printed"] in free:
-            stopped.append(dict(r, why=f"already a name of {', '.join(sorted(others))}" if others else "an ambiguous alias" if fold(r["printed"]) in ambiguous
-                                else "the label of an other[...] record"))
+        if others:
+            amb[r["printed"]] |= others | {r["entry"]}
+            continue
+        if r["printed"] in free:
+            stopped.append(dict(r, why="the label of an other[...] record"))
             continue
         add[r["entry"]].setdefault(r["printed"], []).append(f"{r['paper']} {r['element']}")
     text = (HERE / "ontology.yaml").read_text(encoding="utf-8")
@@ -116,6 +153,9 @@ def apply(rows, onto):
         text = set_field(text, eid, "aliases", al)
         text = set_field(text, eid, "evidence", ev)
         n += len(forms)
+    for form, cands in sorted(amb.items()):
+        text = move_ambiguous(text, form, cands)
+        print(f"ambiguous {form!r}: {', '.join(sorted(cands))}")
     (HERE / "ontology.yaml").write_text(text, encoding="utf-8")
     yaml.safe_load(text)
     return n, len(add), stopped
@@ -130,14 +170,13 @@ def write(rows):
 
 def counts(rows, label):
     c = collections.Counter(r["status"] for r in rows)
-    print(f"{label}: {len(rows)} distinct (entry, printed form, paper): matched {c['matched']}, missing {c['missing']}, unlocated {c['unlocated']}, spread {c['spread']}")
+    print(f"{label}: {len(rows)} distinct (entry, printed form, paper): " + ", ".join(f"{k} {c[k]}" for k in ("matched", "missing", "unlocated", "spread", "ambiguous", "pending")))
     return c
 
 
 def main():
     onto = yaml.safe_load((HERE / "ontology.yaml").read_text(encoding="utf-8"))
-    entries = {e["id"]: e for e in onto["entries"]}
-    rows = distinct(audit(entries))
+    rows = distinct(audit(onto))
     counts(rows, "before")
     if "--apply" in sys.argv:
         n, ne, stopped = apply(rows, onto)
@@ -145,7 +184,7 @@ def main():
         for s in stopped:
             print(f"STOPPED {s['entry']} {s['printed']!r} ({s['paper']} {s['element']}): {s['why']}")
         onto = yaml.safe_load((HERE / "ontology.yaml").read_text(encoding="utf-8"))
-        rows = distinct(audit({e["id"]: e for e in onto["entries"]}))
+        rows = distinct(audit(onto))
         counts(rows, "after")
     write(rows)
     return 0

@@ -11,7 +11,10 @@ evidence (the evidence column: paper key and element ids, pending_decide.naming(
 leave pending.csv and pending_decisions.csv (make_report check 14: a pending row clashes with no entry); the rows that stay pending keep
 their evidence column. An id already in ontology.yaml with the same definition and dimension is skipped (not duplicated); aliases that differ only by case keep the
 first spelling (make_report check 4 compares aliases lowercased). The same id with another definition or dimension stops the script before anything is written, and is reported, not resolved.
-Also (P131b): the qualifier value kind=estimated gets its evidence, the records that carry it.
+Also (P131b): the qualifier value kind=estimated gets its evidence, the records that carry it. 12b: an entry made from a free label takes
+its printed label as name, definition_status: template and category_status: provisional (the user decides both); an alias that two entries
+carry up to case after the merge is a word with two definitions (Sec. 11 rule 6): alias_audit.move_ambiguous() moves it to
+vocabularies.ambiguous_aliases with both entries.
 """
 import csv, glob, re, sys
 from pathlib import Path
@@ -24,7 +27,7 @@ sys.path.insert(0, str(HERE))
 import export          # noqa: E402
 import pending_decide  # noqa: E402
 
-ORDER = ["id", "type", "label", "name", "origin", "role", "category", "definition", "dimension", "unit", "kind", "formula", "class", "model_type",
+ORDER = ["id", "type", "label", "name", "origin", "role", "category", "category_status", "definition", "definition_status", "dimension", "unit", "kind", "formula", "class", "model_type",
          "parameters", "aliases", "converts_to", "citation", "cq", "base", "deviation", "from_other", "evidence"]
 
 
@@ -49,8 +52,9 @@ def entry(r, dec):
              evidence=[x for x in r.get("evidence", "").split("; ") if x])
     if e.get("aliases"):                                                        # a case variant of an earlier alias is the same word (make_report check 4)
         e["aliases"] = list({a.lower(): a for a in reversed(e["aliases"])}.values())[::-1]
-    if r["id"] in pending_decide.FREE:
-        e["from_other"] = [a for a in r["aliases"].split("|") if a]
+    if r["id"] in pending_decide.FREE:                                         # 12b: a free-label entry is named as printed; its definition is the
+        e["from_other"] = [a for a in r["aliases"].split("|") if a]            # candidate() template and its category export's default, both for the user
+        e.update(name=r["label"], definition_status="template", category_status="provisional")
     return {k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)}
 
 
@@ -104,6 +108,18 @@ def main():
         head, tail = text.split(mark)
         text = head.rstrip("\n") + "\n\n  # ---------------------------------------------------------------- P131b: merged from pending.csv (accepted by the P98 rules)\n" \
             + "".join(block(e) for e in new).rstrip("\n") + "\n" + mark + tail
+    import alias_audit
+    onto2 = yaml.safe_load(text)
+    carriers = {}
+    for e in onto2["entries"]:
+        for a in e.get("aliases") or []:
+            carriers.setdefault(a.lower(), {}).setdefault(a, set()).add(e["id"])
+    for low, spell in sorted(carriers.items()):
+        ids = set().union(*spell.values())
+        if len(ids) > 1:
+            for a in spell:
+                text = alias_audit.move_ambiguous(text, a, ids)
+                print(f"ambiguous {a!r}: {', '.join(sorted(ids))} (Sec. 11 rule 6)")
     ev = estimated_evidence()
     line = re.search(r"(?m)^  kind: +\{values: \[[^\]]*\bestimated\b[^\]]*\], log: \"[^\"]*\"(, evidence: \[[^\]]*\])?\}$", text)
     assert line, "qualifier kind=estimated not found"

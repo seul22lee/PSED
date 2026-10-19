@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 356a86b4bd1349213c2f9321ec8f1c441c279028d23d48ca858136dd3f56ebd1
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): befb9ad2027f0b6addd092f96d76492c56605e287f60fefbba72fc19caa4b701
 version: 1
 
 base_sources:
@@ -2453,8 +2453,8 @@ entries:
     definition: Silicon tetrachloride SiCl4, the silicon precursor of SiO2 ALD with water (formula SiCl4; aliases SiCl4, silicon tetrachloride).
     dimension: dimensionless
     kind: molecule
-    formula: SICL4
-    aliases: [SICL4]
+    formula: SiCl4
+    aliases: [SiCl4]
     citation: Elam 2003 Sec. II D and Eqs. (5)-(6), citing Klaus 1997
     cq: Which reactants were used, at which exposure?
     base: {}
@@ -2592,7 +2592,7 @@ entries:
     definition: The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density).
     dimension: length
     unit: pm
-    aliases: [d_A, dA, d_B, molecular diameter, diameter of molecule A, d_TMA, d_TiCl4]
+    aliases: [d_B, molecular diameter, diameter of molecule A, d_TMA, d_TiCl4]
     citation: Ylilammi 2018 Sec. II, Eqs. (7)-(8) (d_A = 418 pm for water, 591 pm for TMA, 703.9 pm for TiCl4); Yim 2022 Fig. 2 conditions (d_A)
     cq: Which model inputs give the profile?
     base: {}
@@ -2904,7 +2904,7 @@ entries:
     definition: The gas-phase (molecular, bulk) diffusion coefficient D_A of the reactant in the carrier gas, set by intermolecular collisions and so by the total pressure; the continuum limit of the Bosanquet interpolation; a model parameter of the diffusion-reaction models.
     dimension: diffusivity
     unit: m2/s
-    aliases: [D_A, DA, D_mi, Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
+    aliases: [D_mi, Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
     citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_A); Heikkinen 2024 Table 1 (D_mi)
     cq: How fast does the reactant diffuse into the structure?
     base: {}
@@ -2932,11 +2932,13 @@ entries:
   - id: b_film
     type: quantity
     label: b_film
-    name: b film
+    name: b_film
     origin: extension
     role: model_parameter
     category: measurement
+    category_status: provisional
     definition: 'b_film: the free label of 4 records in 3 papers; first record (yim20:fig10.cap#9): simulation input b_film = 2 : metal atoms per film formula unit'
+    definition_status: template
     dimension: dimensionless
     aliases: [b_film]
     citation: yim20:fig10.cap#9 (fig10.cap); yim22:tab1.cap#17 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yli18:s5.p18#1 (s5.p18); yli18:s5.p18#2 (s5.p18)
@@ -2952,7 +2954,9 @@ entries:
     origin: extension
     role: condition
     category: measurement
+    category_status: provisional
     definition: 'wall temperature: the free label of 2 records in 2 papers; first record (mat22:s5.p1#3): Reactor walls heat to at most 150 °C; for 50-150 °C depositions wall and substrate are set equal.'
+    definition_status: template
     dimension: temperature
     unit: °C
     aliases: [wall temperature]
@@ -2969,7 +2973,9 @@ entries:
     origin: extension
     role: condition
     category: measurement
+    category_status: provisional
     definition: 'wavelength range: the free label of 3 records in 2 papers; first record (yim20:s7.p5#1): saturation profiles were measured as line scans with a FilmTek 2000M spectroscopic reflectometer covering 380 to 800 nm'
+    definition_status: template
     dimension: length
     unit: nm
     aliases: [wavelength range]
@@ -2986,7 +2992,9 @@ entries:
     origin: extension
     role: condition
     category: measurement
+    category_status: provisional
     definition: 'base pressure: the free label of 2 records in 2 papers; first record (mat22:s5.p1#2): A turbomolecular pump gives a base pressure of 10^-6 Torr.'
+    definition_status: template
     dimension: pressure
     unit: Torr
     aliases: [base pressure]
@@ -2999,11 +3007,13 @@ entries:
   - id: p_d
     type: quantity
     label: P_d
-    name: p d
+    name: P_d
     origin: extension
     role: model_parameter
     category: measurement
+    category_status: provisional
     definition: 'P_d: the free label of 10 records in 2 papers; first record (yim20:fig10.cap#15): simulation input P_d = 0.043 1 s-1: desorption probability per unit time'
+    definition_status: template
     dimension: inverse_time
     unit: 1/s
     aliases: [P_d]
@@ -3202,6 +3212,14 @@ vocabularies:
     AR:                   [aspect_ratio, ar]                             # AR the aspect ratio, Ar the gas: one normalized string
     Mo:                   [mo, native]                                  # the metallic phase or the element symbol (element qualifier)
     Zn:                   [zn, native]
+    d_A: [gas_phase_diffusion_coefficient, molecule_diameter]
+    L: [body_thickness, feature_depth]   # P131b-12b: Sec. 11 rule 6
+    R: [feature_depth, recombination_probability]   # P131b-12b: Sec. 11 rule 6
+    S: [film_thickness, initial_sticking_coefficient, specific_surface_area]   # P131b-12b: Sec. 11 rule 6
+    Zn (metallic) Wt. %: [phase, phase_fraction]   # P131b-12b: Sec. 11 rule 6
+    a: [aspect_ratio, reactant_A]   # P131b-12b: Sec. 11 rule 6
+    d: [body_diameter, feature_width]   # P131b-12b: Sec. 11 rule 6
+    thickness: [body_thickness, film_thickness]   # P131b-12b: Sec. 11 rule 6
 
 proposals:   # Sec. 17: concepts the reviews show to be missing, duplicated or wrongly split/merged. Reviewed in the chat, not applied.
   - what: "Add a categorical characterization_method (values: vocabularies.measurement_method) under deposited_film."

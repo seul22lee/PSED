@@ -85,3 +85,49 @@ p_d 10). No record was renamed. check.py exits 0 and questions.py answers 26 of 
      the merge keeps them verbatim.
 5. Not run: ontology/report.html (generated output, left at d9df13c) and apply_external_ids.py, so the merged entries have no QUDT or
    PubChem lines.
+
+## 12b: fix-up (Directive 12b)
+
+Rebuilt from the d9df13c inputs with the same chain, plus `chip size;gap height` on the --labels list and an export and facts pass before
+the audit (so the audit sees the base-pressure re-key). The yaml header and hash were written last.
+
+1. **Cap:** make_report `EXTENSION_CAP` 45 → 60. CRITERIA Sec. 11 gains the line "cap is reset at each growth round to count + 10 %".
+   Check 5 passes with 53.
+2. **Rule 6:** `alias_audit.move_ambiguous()` adds a form to vocabularies.ambiguous_aliases with every entry it would match and removes it
+   from all entries' aliases.
+   - From the merge: `d_A`/`dA`/`D_A`/`DA` were dropped from molecule_diameter and gas_phase_diffusion_coefficient. One key, `d_A`, lists
+     both entries; concept.norm folds case and underscores, so all four spellings resolve to it, each with both candidates.
+   - From the audit: `L` (body_thickness, feature_depth), `R` (feature_depth, recombination_probability), `S` (film_thickness,
+     initial_sticking_coefficient, specific_surface_area), `a` (aspect_ratio, reactant_A), `d` (body_diameter, feature_width), `thickness`
+     (body_thickness, film_thickness), `Zn (metallic) Wt. %` (phase, phase_fraction). `sticking probability` was already a key.
+   - As a result `thickness` and the one-letter labels no longer resolve to a single entry.
+   - `gap height` is the alias of nothing. It became the pending row `gap_height` (gre23 only, rule none); gre23:s9.p1#3 keeps
+     `other[gap height]`.
+   - `base pressure` was not made ambiguous: step 3 resolves it.
+   - New audit statuses: ambiguous, pending. Missing counts forms that are none of alias, ambiguous or pending.
+3. **base pressure:** `facts.rekey_from_other()` now keys any record whose printed label is a `from_other` label, not only `other[...]`.
+   It changes exactly two records against d814cb1: zou23:s5.p1#2 (1e-8 hPa) and mat23:s7.p1#2 (7e-6 hPa), both setting,
+   process_pressure → base_pressure. Against d9df13c: 23 records (mat22 2, ela03 1, yim20 3, yim22 10, yli18 2, mat23 4, zou23 1).
+4. **chip size:** stopped, two concepts (yim20 mm vs gao15 no unit), not accepted. See decisions.md.
+5. **The five entries:**
+   - `name` is the printed form: `b_film`, `wall temperature`, `wavelength range`, `base pressure`, `P_d`.
+   - `definition_status: template`: the pending rows held only the candidate() template, no definition of their own.
+   - `category_status: provisional` (category `measurement` unchanged).
+   - verify/d14/five_entries.md (written by five_entries.py) has 5 entries and 23 records, each with the verbatim text of its evidence
+     elements. **It is not committed**: it holds paper text (CLAUDE.md: full text lives outside git). Re-create it with
+     `python3 psed_v2/verify/d14/five_entries.py`.
+6. **sicl4:** formula `SiCl4`. export.pending_entry derived it from the id (`r["id"].upper()` when the row had no aliases). It now takes
+   the first formula-like alias, else the row definition's "(formula X" verbatim; no other species changed.
+7. export → vocab.py (`--check` up to date); make_report 15/15 pass; check.py exits 0; questions.py 26/26 answered, questions.csv unchanged.
+
+Audit (alias_audit.csv):
+
+| | matched | missing | unlocated | spread | ambiguous | pending |
+|---|---|---|---|---|---|---|
+| 12a final | 203 | 16 | 175 | 6 | – | – |
+| 12b final | 205 | **0** | 175 | 6 | 13 | 1 |
+
+Hashes:
+- kb preamble: 90f1459ac13f8154 → **0ea67d562f985c3a** (2,588 tokens). The tool descriptions carry the new names and the 9th pending
+  entry.
+- ontology v1: 356a86b4… (d814cb1) → **befb9ad2027f0b6addd092f96d76492c56605e287f60fefbba72fc19caa4b701**. Tag ontology-v1 moved.

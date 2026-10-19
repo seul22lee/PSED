@@ -1,4 +1,4 @@
-# P131b step 3: the six multi-paper `other` labels
+# P131b step 3 (and 12b step 4): the multi-paper `other` labels
 
 Run: `python3 psed_v2/ontology/pending_decide.py --labels "b_film;wall temperature;wavelength range;base pressure;k;p_d"`.
 Each label became a candidate pending.csv row by code (`pending_decide.candidate()`: the `other[...]` records whose printed label is equal
@@ -19,10 +19,13 @@ up to case), then the P98 rules ran unchanged: (a) records in ≥ 2 papers; (b) 
   The script stops on two dimensions and writes no row. Not resolved here; the yim20 `K` record stays `other[K]`.
 - `p_d` needed the unit `1/s`: units.yaml had no inverse-time row, so `1/s` and `1 s-1` had no dimension. P131b adds
   `{symbol: 1/s, variants: [1/s, s-1, 1 s-1, s^-1, s⁻¹], dimension: inverse_time}` to units.yaml and `inverse_time` to the units: block.
-- Rule-made fields to check by eye: id = the label in snake case; definition = the printed label, the record count and the first record's
-  statement verbatim; cq blank; category `measurement` (export's rule for a quantity whose cq does not name a structure).
+- Rule-made fields: id = the label in snake case; definition = the printed label, the record count and the first record's
+  statement verbatim (12b: `definition_status: template`); cq blank; name = the printed label (12b); category `measurement`, export's rule
+  (12b: `category_status: provisional`). The user decides name, definition and category from five_entries.md.
 - The five accepted rows were merged into ontology.yaml by `merge_pending.py` with `from_other: [<printed label>]`; `facts.write()`
   re-keys those `other[...]` records (21 records, verify/d14/REPORT.md).
-- Not in the six, found by the same count: `chip size` (yim20, gao15; 2 setting records, units mm and none) is a seventh multi-paper
-  `other` label. Not decided.
+- `chip size` (12b, the same run with the same rules): **stopped, two concepts**. yim20:s5.p1#7 carries mm (length) and
+  gao15:s6.p5#1 has no unit (dimensionless), so no row and no entry. Both records stay `other[chip size]`.
+- `gap height` (12b): a candidate row by the same rules, gre23:s9.p1#3 only (1 paper), rule none, so **pending** (`gap_height` in
+  pending.csv). The record keeps `other[gap height]`; gao15's `gap height` record stays `feature_width`; the form is the alias of nothing.
 - Veto: name the id; `merge_pending.py` does not delete, so a veto is a hand removal of the yaml block and its `from_other` re-key.

@@ -17,7 +17,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 SCHEMA = HERE / "sources" / "experimental-ideal-schema.json"
-EXTENSION_CAP = 45          # Sec. 18.8: 40 for the three-paper pilot, 45 with the P78 dimension slots (Sec. 18.11); the Sec. 11 gate is the control, the cap a tripwire
+EXTENSION_CAP = 60          # Sec. 18.8: 40 for the three-paper pilot, 45 with the P78 dimension slots (Sec. 18.11), 60 at ontology v1 (P131b: 53 + 10 %, Sec. 11); the Sec. 11 gate is the control, the cap a tripwire
 ROLES = ["condition", "coordinate", "output", "model_parameter"]
 CATEGORIZED = ("quantity", "categorical", "model")
 SPECIES_KINDS = ("molecule", "material", "atom")
