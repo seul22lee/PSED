@@ -57,6 +57,18 @@ class Turn:
     retries: int = 0
 
 
+def parsed_call(cid, name, raw):
+    """P124: a tool call's arguments parsed; when the string is not valid JSON (or not an object) the call carries the raw string and
+    malformed=<message>, so that ask.answer_call answers it as an error call and the question goes on."""
+    try:
+        args = json.loads(raw or "{}")
+        if not isinstance(args, dict):
+            raise ValueError(f"the arguments are a {type(args).__name__}, not an object")
+        return dict(id=cid, name=name, arguments=args)
+    except Exception as e:
+        return dict(id=cid, name=name, arguments=raw if isinstance(raw, str) else str(raw), malformed=f"{type(e).__name__}: {e}")
+
+
 def retryable(e):
     """A rate-limit, quota or overload error (HTTP 429, 503, 529 or the SDK's class for it)."""
     code = getattr(e, "status_code", None) or getattr(e, "code", None) or getattr(getattr(e, "response", None), "status_code", None)
@@ -152,7 +164,7 @@ class OpenAISession:
         cr = getattr(getattr(u, "prompt_tokens_details", None), "cached_tokens", 0) or getattr(u, "prompt_cache_hit_tokens", 0) or 0   # DeepSeek names it so
         rt = getattr(getattr(u, "completion_tokens_details", None), "reasoning_tokens", 0) or 0
         out = u.completion_tokens + (rt if rt and (u.total_tokens or 0) >= u.prompt_tokens + u.completion_tokens + rt else 0)   # reasoning counted once
-        return Turn(text=m.content or "", calls=[dict(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments or "{}")) for c in m.tool_calls or []],
+        return Turn(text=m.content or "", calls=[parsed_call(c.id, c.function.name, c.function.arguments) for c in m.tool_calls or []],
                     usage=dict(input=u.prompt_tokens, output=out, cache_read=cr, cache_write=0, reasoning=rt), retries=n)
 
 

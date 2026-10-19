@@ -1169,14 +1169,71 @@ def check_calls():
             if p["tool_tokens_delivered"] != spent:
                 err.append(f"tokens ({budget}): run_metrics counts {p['tool_tokens_delivered']} delivered tokens, {spent} were (P119)")
         return dict(budget=budget, executed=p["executed"], spent=p["tool_tokens_delivered"], transcript=[r["content"] for r in res[max(0, (hit or 0) - 2):(hit or 0) + 1]])
+    def malformed_turn():
+        """P124: a turn whose call carries broken JSON is an error call (record error 'malformed', the raw string kept, chars 0), the question
+        continues, and the error wall still fires at five."""
+        ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
+        tool_calls, given, seen = [], {}, {}
+        broken = dict(id="1", name="values", arguments='{"result": "penetration depth", "paper": ', malformed="JSONDecodeError: Expecting value: line 1 column 42 (char 41)")
+        r1 = ask.answer_call(broken, tool_calls, given, seen)
+        r2 = ask.answer_call(dict(id="2", name="nosuchtool", arguments={"x": 1}), tool_calls, given, seen)
+        r3 = ask.answer_call(dict(id="3", name="values", arguments={"result": "penetration depth", "paper": "yim20"}), tool_calls, given, seen)
+        p = RM.process(tool_calls)
+        if not (r1["error"] and "not valid JSON" in r1["content"] and "send the call again" in r1["content"]):
+            err.append(f"malformed: the model-facing text should name the JSON error and ask again, got {r1['content'][:80]!r} (P124)")
+        if tool_calls[0].get("error") != "malformed" or tool_calls[0].get("arguments") != broken["arguments"] or tool_calls[0].get("chars") != 0:
+            err.append(f"malformed: the record should hold error 'malformed', the raw argument string and chars 0, got {tool_calls[0]} (P124)")
+        if not (r2["error"] and tool_calls[1].get("error") == "malformed" and "unknown tool" in r2["content"]):
+            err.append(f"malformed: an unknown tool name should be an error call too, got {r2['content'][:80]!r} (P124)")
+        if r3["error"] or p["executed"] != 1 or p["errors"] != 2 or p["malformed"] != 2:
+            err.append(f"malformed: the question should continue (executed 1, errors 2, malformed 2), got {p['executed']}, {p['errors']}, {p['malformed']} (P124)")
+        for n in range(3):
+            ask.answer_call(dict(id=str(10 + n), name="values", arguments="{", malformed="JSONDecodeError"), tool_calls, given, seen)
+        r = ask.answer_call(dict(id="20", name="values", arguments={"result": "growth per cycle", "paper": "yim20"}), tool_calls, given, seen)
+        if "wall of 5 calls that returned an error" not in r["content"]:
+            err.append(f"malformed: five malformed calls should fire the error wall, got {r['content'][:80]!r} (P124)")
+        return [r1["content"], r3["content"][-300:]]
+
+    def repeat_question():
+        """P125: the same values(result, paper) twice (the second is identical: one line), then the list form of the same quantity (its lines
+        fold into 'unchanged from call 1' lines naming every dropped id), then values(paper=): new lines; the budget falls by the delivered
+        lines only."""
+        ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
+        tool_calls, given, seen = [], {}, {}
+        q, k = "penetration depth", "yim20"
+        res = [ask.answer_call(dict(id=str(n), name="values", arguments=a), tool_calls, given, seen) for n, a in
+               enumerate([{"result": q, "paper": k}, {"result": q, "paper": k}, {"result": [q], "paper": k}, {"paper": k}], 1)]
+        first, second, third, fourth = tool_calls
+        n1 = len(first["output"].splitlines()); n2 = len(second["output"].splitlines())
+        if n2 > 0.1 * n1:
+            err.append(f"repeat: the second (identical) call delivers {n2} lines, over 10 % of the first's {n1} (P125)")
+        folds = [t for t in third["output"].splitlines() if t.startswith("[unchanged]")]
+        folded_ids = set(re.findall(r"[a-z0-9]+:[^,\s]+", " ".join(f.split(": ids ", 1)[1] for f in folds if ": ids " in f)))
+        droppable = {i for i, t in first["lines"] if i not in ask.NEVER_FOLD and not t.startswith(ask.HEADER_START)}
+        if not folds or droppable - folded_ids:
+            err.append(f"repeat: the fold line should list every dropped id, missing {sorted(droppable - folded_ids)[:5]} (P125)")
+        if third["folded_lines"] < len(droppable) or any((i, t) in set(first["lines"]) for i, t in third["lines"] if i not in ask.NEVER_FOLD and not t.startswith(ask.HEADER_START)):
+            err.append(f"repeat: {third['folded_lines']} lines folded, at least {len(droppable)} were repeats, or a repeated line was delivered again (P125)")
+        left = [int(re.search(r"budget left: ([\d,]+)", c["output"]).group(1).replace(",", "")) for c in (first, third, fourth)]
+        kept_tokens = len("\n".join(l for l in third["output"].splitlines() if not l.startswith("budget left"))) // 4
+        if left[0] - left[1] != kept_tokens or kept_tokens != third["delivered_tokens"]:
+            err.append(f"repeat: the budget fell by {left[0] - left[1]} tokens, the delivered lines of the third call are {kept_tokens} (P125)")
+        if fourth["folded_lines"] or fourth["delivered_tokens"] == 0:
+            err.append(f"repeat: values(paper=) should deliver new lines (P125)")
+        p = RM.process(tool_calls)
+        if p["folded_lines"] != third["folded_lines"]:
+            err.append(f"repeat: run_metrics folded_lines {p['folded_lines']} against {third['folded_lines']} (P125)")
+        return [c["output"][-700:] for c in (first, third, fourth)]
     try:
         c10 = scripted(10); c20 = scripted(20)                                     # the ceiling and the walls scale (cap N, total 2N, errors 5)
         t40 = token_wall(ask.TOKEN_BUDGET); t80 = token_wall(80_000)              # P119 at the default budget and at 80,000
+        mal = malformed_turn(); rep = repeat_question()                          # P124, P125
     finally:
         ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
-    check_calls.transcript = t40["transcript"]
+    check_calls.transcript = t40["transcript"]; check_calls.malformed = mal; check_calls.repeat = rep
     print(f"== calls (P75, P119): token budget {t40['budget']:,} spent after {t40['executed']} executed calls ({t40['spent']:,} tokens delivered), {t80['budget']:,} after {t80['executed']} ({t80['spent']:,}); "
-          f"ceiling {c10['cap']} / {c20['cap']} executed calls, total walls {c10['total']} / {c20['total']}, error wall {c10['errors']}; {len(valid)} valid probes")
+          f"ceiling {c10['cap']} / {c20['cap']} executed calls, total walls {c10['total']} / {c20['total']}, error wall {c10['errors']}; {len(valid)} valid probes; "
+          f"a malformed call is an error call and the question goes on (P124); repeated lines fold into 'unchanged from call K' (P125)")
     return err
 
 

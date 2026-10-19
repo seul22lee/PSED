@@ -9,6 +9,8 @@ question, utilization 7-18 %):
 - executed calls: error == ""; refused: the cap, a wall or a tool error; duplicate (identical): 'identical to call N' (P69).
 - stability (P115): per (question, arm) over repeated runs (ask.py --repeat N, record field run), the mean pairwise Jaccard of the number
   sets, the cited-paper sets and the first sentence's words, and their mean; printed per question and written to the summary column.
+- malformed (P124): the error calls whose arguments were not valid JSON or whose tool name is unknown (counted under errors too);
+  folded_lines (P125): result lines already delivered in the question, replaced by 'unchanged from call K' lines.
 - errors (P75): the refused calls that were tool errors (a malformed call: unknown tool or argument, wrong type, an id that names nothing, nothing
   matches a filter; P105: an unknown concept, result or paper name is answered with the nearest three and is executed), not the cap or a wall;
   wall_hit: 'tokens' (P119, the budget of delivered tool output), 'total' or 'errors' when a refusal of the question names that wall, else 'none';
@@ -48,7 +50,7 @@ def process(tool_calls, cited=()):
     re-delivered share, the cited ids and the utilization (cited / delivered); P75: errors (tool errors), identical (= duplicates,
     the directive's name) and wall_hit (none, total or errors)."""
     seen, occurrences, redelivered, tokens, delivered_tokens = set(), 0, 0, 0, 0
-    executed = refused = duplicates = errors = 0
+    executed = refused = duplicates = errors = malformed = folded = 0
     wall = "none"
     for c in tool_calls:
         e = c.get("error") or ""
@@ -60,8 +62,10 @@ def process(tool_calls, cited=()):
                 wall = e[5:] if wall == "none" else wall
             elif e != "cap":
                 errors += 1
+                malformed += e == "malformed"                                   # P124: counted under errors and reported apart
             continue
         executed += 1
+        folded += c.get("folded_lines") or 0                                      # P125
         tokens += c.get("tokens") or 0
         delivered_tokens += c.get("delivered_tokens") if c.get("delivered_tokens") is not None else len(c.get("output") or "") // 4   # P119: chars/4
         ids = ID.findall(c.get("output") or "")
@@ -69,13 +73,13 @@ def process(tool_calls, cited=()):
         redelivered += sum(1 for i in ids if i in seen)
         seen |= set(ids)
     cited = [i for i in dict.fromkeys(cited)]
-    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, errors=errors, identical=duplicates, wall_hit=wall, tool_output_tokens=tokens, tool_tokens_delivered=delivered_tokens,
+    return dict(calls=len(tool_calls), executed=executed, refused=refused, duplicates=duplicates, errors=errors, malformed=malformed, folded_lines=folded, identical=duplicates, wall_hit=wall, tool_output_tokens=tokens, tool_tokens_delivered=delivered_tokens,
                 delivered=len(seen), delivered_ids=sorted(seen), id_occurrences=occurrences,
                 redelivered_share=round(redelivered / occurrences, 4) if occurrences else 0.0,
                 cited=len(cited), cited_ids=cited, utilization=round(len(cited) / len(seen), 4) if seen else 0.0)
 
 
-COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "identical", "wall_hit", "tool_output_tokens", "tool_tokens_delivered", "redelivered_share", "delivered", "cited", "utilization", "words", "cost", "homeless_records"]
+COLUMNS = ["calls", "executed", "refused", "duplicates", "errors", "malformed", "folded_lines", "identical", "wall_hit", "tool_output_tokens", "tool_tokens_delivered", "redelivered_share", "delivered", "cited", "utilization", "words", "cost", "homeless_records"]
 NO_TOTAL = ("redelivered_share", "utilization", "wall_hit", "homeless_records")
 _HOMELESS = {}
 
