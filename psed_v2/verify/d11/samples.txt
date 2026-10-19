@@ -1,0 +1,80 @@
+====================================================================================================
+scripted P124 transcript (check_calls.malformed_turn): the model-facing text of the broken-JSON call, then the tail of the next executed result
+== calls (P75, P119): token budget 40,000 spent after 39 executed calls (40,050 tokens delivered), 80,000 after 97 (80,199); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 119 valid probes; a malformed call is an error call and the question goes on (P124); repeated lines fold into 'unchanged from call K' (P125)
+--- turn 1
+error: the arguments of values are not valid JSON (JSONDecodeError: Expecting value: line 1 column 42 (char 41)); send the call again
+--- turn 2
+eat · Profiles were taken after peeling the roof off with tape; membrane remnants left near the entry add a bump to the measured thickness
+[between] … (with the family conformality) · also in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+budget left: 38,047 tokens
+====================================================================================================
+scripted P125 transcript (check_calls.repeat_question): values(result, paper), the list form of the same quantity (folded), values(paper=): the tail of each result with its budget-left line
+--- result 1 (last 700 chars)
+wth and the roof sags ~40 nm, so sample 7 values reflect a closing channel
+[yim20:s10.x2#6] caveat · The 125 µm is the reach of the Al X-ray map, not a 50% thickness point; reflectometry gives PD50% 95 µm on the same sample
+[yim20:s14.p1#6] caveat · With the 0.4 s TMA pulse the front was likely set by the water dose, so sample 14 front values describe water, not TMA, limitation
+[yim20:s7.p1#3] caveat · Profiles were taken after peeling the roof off with tape; membrane remnants left near the entry add a bump to the measured thickness
+[between] … (with the family conformality) · also in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+budget left: 38,047 tokens
+--- result 2 (last 700 chars)
+ in: mat22
+[unchanged] 44 lines unchanged from call 1: ids yim20:cmp:A, yim20:ent:1, yim20:ent:2, yim20:ent:3, yim20:cmp:B, yim20:ent:4, yim20:ent:5, yim20:ent:6, yim20:ent:7, yim20:ent:8, yim20:ent:9, yim20:cmp:C, yim20:ent:10, yim20:ent:11, yim20:cmp:D, yim20:ent:12, yim20:ent:13, yim20:ent:14, yim20:cmp:E, yim20:ent:15, yim20:ent:16, yim20:cmp:F, yim20:cmp:fig9a, yim20:fig9a#c2, yim20:fig9a#c3, yim20:fig11a#c2, yim20:fig11a#c3, yim20:s3.p9#9, yim20:s16.p7#6, yim20:s16.p4#8, yim20:s16.p10#6, yim20:s13.p1#7, yim20:s16.p5#10, yim20:s7.p5#15, yim20:s16.p6#2, yim20:s10.p1#6, yim20:s10.p1#7, yim20:s11.x1#5, yim20:s13.x1#7, yim20:s10.x2#6, yim20:s14.p1#6, yim20:s7.p1#3
+budget left: 37,271 tokens
+--- result 3 (last 700 chars)
+er 2) · paper: 40–100 µm · no set · claims 0
+[yim20:index] p_partial (partial_pressure) · 2 values (paper 2) · paper: 65–300 Pa · no set · claims 0
+[yim20:index] x (distance) · 1 values (specimen 1) · 0 µm · sets [yim20:cmp:D] · claims 0
+[yim20:index] pulse (pulse_time) · 1 values (paper 1) · paper: 0.1 s · no set · claims 3
+[yim20:index] purge (purge_time) · 1 values (cited 1) · cited: 2.5 s · no set · claims 3
+[yim20:index] q_sat (saturation_density) · 1 values (paper 1) · paper: 3.6 nm-2 · no set · claims 0
+[yim20:index] figure panels 32 (plot 18, schematic 9, micrograph 5) · curves 58
+[yim20:index] model inputs 18 · input entities 4 · experiments 27 · claims 54
+budget left: 36,449 tokens
+====================================================================================================
+compare_runs report of pilot/runs/asks.jsonl
+# Run comparison (P126)
+
+Files: asks.jsonl · 12 records · 3 questions
+
+## 1. Runs
+
+| file | arms | model | max_tokens/max_calls | preamble | repeats | git head |
+|---|---|---|---|---|---|---|
+| asks.jsonl | kb, model, text | deepseek:deepseek-flash, xai:grok-4.3 | —/— | — | 1 | unknown |
+
+## 2. Cost and process per (run, arm)
+
+| file | arm | answers | empty/failed | tool calls / question (mean, min–max) | tool output tokens / question (vendor) | delivered tokens / question (chars/4) | input tokens (cache-read share) | output tokens | cost | cost / answer | s / answer | cost ratio vs cheapest |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| asks.jsonl | Model only | 3 | 1 | 0.0 (0–0) | 0 | 0 | 1,187 (22 % cached) | 36,149 | $0.0437 | $0.0146 | 55.2 | 1.00× |
+| asks.jsonl | Paper text | 3 | 1 | 0.0 (0–0) | 0 | 0 | 169,841 (66 % cached) | 30,807 | $0.0879 | $0.0293 | 42.7 | 2.01× |
+| asks.jsonl | Knowledge base | 3 | 1 | 9.2 (0–21) | 14,333 | 0 | 213,698 (71 % cached) | 18,426 | $0.0862 | $0.0287 | 31.1 | 1.97× |
+
+## 3. Number and kind checks per (run, arm)
+
+| file | arm | numbers | match | elsewhere | not seen | derived | uncited | kind mismatches | unknown ids | executed | refused | errors | malformed | folded lines | wall hits | re-delivered | utilization |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| asks.jsonl | Model only | 163 | 0 % | 0 | 27 | 0 | 136 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | none | 0 % | 0 % |
+| asks.jsonl | Paper text | 485 | 78 % | 45 | 36 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | none | 0 % | 0 % |
+| asks.jsonl | Knowledge base | 171 | 86 % | 4 | 14 | 0 | 6 | 0 | 0 | 24 | 13 | 0 | 0 | 0 | none | 0 % | 0 % |
+
+## 4. Stability per (run, arm) (P115, files with repeats)
+
+| file | arm | questions | numbers | papers | first sentence | stability |
+|---|---|---|---|---|---|---|
+| asks.jsonl | Model only | 1 | 0.00 | 1.00 | 0.00 | 0.33 |
+| asks.jsonl | Paper text | 1 | 0.00 | 0.00 | 0.00 | 0.00 |
+| asks.jsonl | Knowledge base | 1 | 0.00 | 0.00 | 0.00 | 0.00 |
+
+## 5. Per question
+
+| no | question | asks.jsonl · Model only | asks.jsonl · Paper text | asks.jsonl · Knowledge base |
+|---|---|---|---|---|
+| 1 | PD50 against TMA pulse time over Series E, with every other  | 0 calls · 0 tok · no numbers<br>0 calls · 0 tok · match 0 % · not seen 0 · uncited 4 | 0 calls · 0 tok · no numbers<br>0 calls · 0 tok · match 93 % · not seen 1 · uncited 0 | 0 calls · 0 tok · no numbers<br>4 calls · 0 tok · match 98 % · not seen 0 · uncited 0 |
+| 2 | What can distort thickness or composition profiles measured  | 0 calls · 0 tok · match 0 % · not seen 0 · uncited 132 | 0 calls · 0 tok · match 81 % · not seen 0 · uncited 25 | 21 calls · 0 tok · match 83 % · not seen 0 · uncited 6 |
+| 3 | How does the growth per cycle depend on the deposition tempe | 0 calls · 0 tok · match 0 % · not seen 27 · uncited 0 | 0 calls · 0 tok · match 70 % · not seen 35 · uncited 0 | 12 calls · 0 tok · match 76 % · not seen 14 · uncited 0 |
+
+## 6. Summary
+
+Per answer, Model only (asks.jsonl) is the cheapest at $0.0146; Paper text (asks.jsonl) costs 2.01× as much at $0.0293. Knowledge base (asks.jsonl) has the fewest not-seen and uncited numbers (20); Model only (asks.jsonl) 163; Paper text (asks.jsonl) 61.
+

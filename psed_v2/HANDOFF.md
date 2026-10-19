@@ -400,6 +400,7 @@ python3 psed_v2/pilot/homeless.py                     # the value records no val
                                                       #   with errors, identical and wall_hit (none/total/errors) per question (P75)
 python3 psed_v2/pilot/ask.py --kind-check RUNS.jsonl  # the kind check on stored answers, no model call (P72)
 python3 psed_v2/pilot/ask.py --recost RUNS.jsonl      # a stored run's cost recomputed from its token counts with prices.csv (P73)
+python3 psed_v2/pilot/compare_runs.py RUN.jsonl [RUN.jsonl ...] [--verdicts verdicts.csv] [--out report.md]   # the kb-vs-text report from run files (P126); no model call
 python3 psed_v2/pilot/report.py                       # reports/pilot.html, the one screen with its search box (about 15 s)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/serve.py      # the page with the Ask box on http://127.0.0.1:8787/ (keys in psed_v2/.env)
 ~/miniconda3/envs/psed310/bin/python psed_v2/pilot/ask.py "question"   # three answers -> pilot/runs/asks.jsonl
@@ -1785,3 +1786,9 @@ Open points after kb-12: (1) the 50 unmapped labels are of three kinds: the pape
 - The battery is now 240 calls and 172k tokens; the P121 probes added 12 calls and 17k tokens.
 - The token budget is measured as chars/4 of the delivered text, not vendor tokens; the two differ by up to a third on symbol-heavy lines, so 40,000 budget tokens is roughly 30–45k vendor tokens.
 - The index range converts through the generated table; a record in a unit of another dimension (a resistivity given as sheet resistance) is left out of the range silently.
+
+## Directive 10′c (2026-10-18): pilot close-out — one sentence each
+
+- P124 (malformed calls). A tool call whose arguments do not parse as a JSON object, or whose tool name is unknown, is answered "error: the arguments of <name> are not valid JSON (<message>); send the call again", recorded with error `malformed`, the raw argument string and chars 0, counts toward the error wall only, and the question continues with the model's next turn (providers.parsed_call, ask.answer_call); run_metrics reports `malformed` beside errors; the scripted check continues after a broken-JSON turn and fires the error wall at five.
+- P125 (repeated lines fold). A result line whose id and text were already delivered in the question is dropped and replaced, per earlier call, by "N lines unchanged from call K: ids …" (every dropped id listed); legends, headers and 'more' lines never fold; only delivered lines count toward the P119 budget; the kb preamble says so; run_metrics adds `folded_lines`; the scripted repeat question folds every repeated id and the budget falls by the delivered lines only (the token wall now comes after 39 calls at 40,000, 32 before).
+- P126 (comparison report). `python3 psed_v2/pilot/compare_runs.py RUN.jsonl [RUN.jsonl …] [--verdicts verdicts.csv] [--out report.md]` writes one markdown report from any run files: runs; cost and process per (run, arm) with the cost ratio against the cheapest; number and kind checks with the P74/P75 columns; stability where a file holds repeats; the per-question table with verdicts joined on (file, arm, run, question order) and the verdict counts with the Wilson 95 % interval; a closing paragraph computed from the numbers; no answer body copied; check_compare_runs runs it on pilot/runs/asks.jsonl with a synthetic verdicts file.
