@@ -1,11 +1,16 @@
 """P127 fixture: two invented run files (fix_a.jsonl: arms kb and text, runs 1 and 2; fix_b.jsonl: arms kb, text and model, run 1)
-and a matching verdicts.csv; fix_a carries one preamble hash per arm (P128). Questions, papers (alp01, bet02, gam03) and ids are made up; nothing comes from the corpus.
+and a matching verdicts.csv; fix_a carries one preamble hash per arm (P128); P129: the model is priced in prices.csv, each record's
+cost is ask.cost_of of its invented token counts, and the answers are short markdown (paragraph, heading, bullets, bold, a table). Questions, papers (alp01, bet02, gam03) and ids are made up; nothing comes from the corpus.
 
     python3 psed_v2/verify/d12/fixture/make_fixture.py   # writes next to itself"""
-import csv, json
+import csv, datetime, json, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parents[2] / "pilot"))
+import ask  # noqa: E402  (cost_of and prices.csv only; nothing is changed)
+
+MODEL, TIME = "deepseek:deepseek-flash", "2026-10-18T12:00:00+00:00"   # a peak-hour time: the standard prices
 Q = ["Fixture question one: how thick is the made-up widget layer?",
      "Fixture question two: which invented gadget grows faster?",
      "Fixture question three: what limits the pretend coating depth?"]
@@ -42,16 +47,35 @@ VERDICTS = {   # (file, arm, run, question_no) -> verdict; fix_a text run 2 ques
 }
 
 
+def answer(arm, ids, qi):
+    """An invented markdown answer: a first paragraph, a heading, a bullet list with bold, a pipe table; every id cited once."""
+    if arm == "model":
+        return ""
+    head, rest = ids[:1], ids[1:]
+    cite = lambda xs: " ".join(f"[{i}]" for i in xs)
+    out = [f"The invented widget answer for question {qi + 1} is **{7 + qi} units** {cite(head)}.".replace("  ", " ").replace(" .", ".")]
+    if rest:
+        out += ["", "## Details", *[f"- **point {k + 1}**: a made-up observation {cite([i])}" for k, i in enumerate(rest)]]
+    out += ["", "| sample | value |", "|---|---|", f"| S{qi + 1} | {3 * (qi + 1)} nm |"]
+    return "\n".join(out)
+
+
 def record(f, arm, run, qi, ids):
     calls = [dict(name="values", arguments={"result": "thickness", "paper": i.split(":")[0]}, error="", tokens=100, results=1,
                   delivered_tokens=50, output=f"[{i}] invented line\nbudget left: 39,950 tokens") for i in ids] if arm == "kb" else []
     n = len(ids)
-    return dict(question=Q[qi], arm=arm, model="fixture:none", run=run, answer=("Invented answer. " + " ".join(f"[{i}]" for i in ids)) if arm != "model" else "",
+    if arm == "kb":                                   # one model call per tool call plus the answer; the preamble re-sent each turn
+        mc = n + 1; usage = dict(input=3000 * mc, output=200 + 50 * n, cache_read=2048 * (mc - 1), cache_write=0, reasoning=0)
+    elif arm == "text":                               # one call with the whole text; run 2 reads it from the cache
+        mc = 1; usage = dict(input=20000 + 100 * qi, output=300 + 40 * n, cache_read=19968 if run == 2 else 0, cache_write=0, reasoning=0)
+    else:
+        mc = 0; usage = dict(input=0, output=0, cache_read=0, cache_write=0, reasoning=0)
+    return dict(time=TIME, question=Q[qi], arm=arm, model=MODEL, run=run, answer=answer(arm, ids, qi),
                 cited={i: "invented" for i in ids}, tool_calls=calls, error="" if arm != "model" else "fixture: no model",
                 number_check=dict(numbers=n, match=max(n - 1, 0), elsewhere=0, not_seen=min(n, 1), derived=0, uncited=0, unknown_ids=0,
                                   per_number=[dict(value=float(k), status="match") for k in range(n)]),
-                kind_check=dict(mismatches=0), usage=dict(input=1000 * (n + 1), output=100, cache_read=500 * n), cost=round(0.001 * (n + 1) * (0.5 if arm == "text" else 1), 6),
-                seconds=1.0, max_tokens=40000, max_calls=10, git_head="fixture",
+                kind_check=dict(mismatches=0), usage=usage, model_calls=mc, cost=round(ask.cost_of(MODEL, usage, datetime.datetime.fromisoformat(TIME)), 8),
+                seconds=round(2.0 + 1.5 * mc, 1), max_tokens=40000, max_calls=10, git_head="fixture",
                 preamble_sha256={"kb": "50e4fixturekb000", "text": "1d62fixturetx000"}.get(arm, "fixture") if f == "fix_a.jsonl" else "fixture")
 
 

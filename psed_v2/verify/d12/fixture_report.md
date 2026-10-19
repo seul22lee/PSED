@@ -6,18 +6,18 @@ Files: fix_a.jsonl, fix_b.jsonl · 18 records · 3 questions
 
 | file | arms | model | max_tokens/max_calls | preamble | repeats | git head |
 |---|---|---|---|---|---|---|
-| fix_a.jsonl | kb, text | fixture:none | 40000/10 | kb 50e4… · text 1d62… | 2 | fixture |
-| fix_b.jsonl | kb, model, text | fixture:none | 40000/10 | fixture | 1 | fixture |
+| fix_a.jsonl | kb, text | deepseek:deepseek-flash | 40000/10 | kb 50e4… · text 1d62… | 2 | fixture |
+| fix_b.jsonl | kb, model, text | deepseek:deepseek-flash | 40000/10 | fixture | 1 | fixture |
 
 ## 2. Cost and process per (run, arm)
 
 | file | arm | answers | empty/failed | tool calls / question (mean, min–max) | tool output tokens / question (vendor) | delivered tokens / question (chars/4) | input tokens (cache-read share) | output tokens | cost | cost / answer | s / answer | cost ratio vs cheapest |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| fix_a.jsonl | Knowledge base | 6 | 0 | 1.8 (0–4) | 183 | 92 | 17,000 (32 % cached) | 600 | $0.0170 | $0.0028 | 1.0 | 2.83× |
-| fix_a.jsonl | Paper text | 6 | 0 | 0.0 (0–0) | 0 | 0 | 17,000 (32 % cached) | 600 | $0.0085 | $0.0014 | 1.0 | 1.42× |
-| fix_b.jsonl | Knowledge base | 2 | 0 | 1.0 (1–1) | 100 | 50 | 4,000 (25 % cached) | 200 | $0.0040 | $0.0020 | 1.0 | 2.00× |
-| fix_b.jsonl | Paper text | 2 | 0 | 0.0 (0–0) | 0 | 0 | 4,000 (25 % cached) | 200 | $0.0020 | $0.0010 | 1.0 | 1.00× |
-| fix_b.jsonl | Model only | 0 | 2 | 0.0 (0–0) | 0 | 0 | 2,000 (0 % cached) | 200 | $0.0020 |  | 1.0 |  |
+| fix_a.jsonl | Knowledge base | 6 | 0 | 1.8 (0–4) | 183 | 92 | 51,000 (44 % cached) | 1,750 | $0.0108 | $0.0018 | 6.2 | 1.20× |
+| fix_a.jsonl | Paper text | 6 | 0 | 0.0 (0–0) | 0 | 0 | 120,600 (50 % cached) | 2,240 | $0.0213 | $0.0035 | 3.5 | 2.37× |
+| fix_b.jsonl | Knowledge base | 2 | 0 | 1.0 (1–1) | 100 | 50 | 12,000 (34 % cached) | 500 | $0.0030 | $0.0015 | 5.0 | 1.00× |
+| fix_b.jsonl | Paper text | 2 | 0 | 0.0 (0–0) | 0 | 0 | 40,100 (0 % cached) | 680 | $0.0128 | $0.0064 | 3.5 | 4.29× |
+| fix_b.jsonl | Model only | 0 | 2 | 0.0 (0–0) | 0 | 0 | 0 (0 % cached) | 0 | $0.0000 |  | 2.0 |  |
 
 ## 3. Number and kind checks per (run, arm)
 
@@ -97,4 +97,4 @@ kb right & text not right: 0 questions (nos —); text right & kb not right: 1 (
 
 ## 6. Summary
 
-In fix_a.jsonl, kb costs 2.0× text per answer. In fix_b.jsonl, kb costs 2.0× text per answer. Model only (fix_b.jsonl) has the fewest not-seen and uncited numbers (0); Knowledge base (fix_a.jsonl) 5; Paper text (fix_a.jsonl) 6; Knowledge base (fix_b.jsonl) 2; Paper text (fix_b.jsonl) 2. Knowledge base (fix_a.jsonl): 4 of 6 graded answers right (30–90 % Wilson 95 %), 1 slips, 0 material, 0 fabricated, 1 empty. Paper text (fix_a.jsonl): 2 of 5 graded answers right (12–77 % Wilson 95 %), 1 slips, 1 material, 1 fabricated, 0 empty. Knowledge base (fix_b.jsonl): 1 of 2 graded answers right (9–91 % Wilson 95 %), 0 slips, 1 material, 0 fabricated, 0 empty. Paper text (fix_b.jsonl): 2 of 2 graded answers right (34–100 % Wilson 95 %), 0 slips, 0 material, 0 fabricated, 0 empty. Model only (fix_b.jsonl): 0 of 2 graded answers right (0–66 % Wilson 95 %), 0 slips, 0 material, 0 fabricated, 2 empty.
+In fix_a.jsonl, kb costs 0.5× text per answer. In fix_b.jsonl, kb costs 0.2× text per answer. Model only (fix_b.jsonl) has the fewest not-seen and uncited numbers (0); Knowledge base (fix_a.jsonl) 5; Paper text (fix_a.jsonl) 6; Knowledge base (fix_b.jsonl) 2; Paper text (fix_b.jsonl) 2. Knowledge base (fix_a.jsonl): 4 of 6 graded answers right (30–90 % Wilson 95 %), 1 slips, 0 material, 0 fabricated, 1 empty. Paper text (fix_a.jsonl): 2 of 5 graded answers right (12–77 % Wilson 95 %), 1 slips, 1 material, 1 fabricated, 0 empty. Knowledge base (fix_b.jsonl): 1 of 2 graded answers right (9–91 % Wilson 95 %), 0 slips, 1 material, 0 fabricated, 0 empty. Paper text (fix_b.jsonl): 2 of 2 graded answers right (34–100 % Wilson 95 %), 0 slips, 0 material, 0 fabricated, 0 empty. Model only (fix_b.jsonl): 0 of 2 graded answers right (0–66 % Wilson 95 %), 0 slips, 0 material, 0 fabricated, 2 empty.

@@ -1857,6 +1857,66 @@ def check_compare_runs():
     return err
 
 
+def check_report_html():
+    """P129: report_html.report on the d12 fixture (verify/d12/fixture): (a) one card per question; (b) the verdict tables of section 4
+    equal compare_runs' sections 5b/5c cell by cell, and the card badges count as section 5b per (file, arm); (c) both cost columns of
+    section 2 recompute from the records (billed: their cost) and prices.csv (every input token at the full input price, the record's
+    tier); (d) no http:// or https:// and no <script src=."""
+    import report_html as RH, compare_runs as CR, html as _html, ask, datetime
+    err = []
+    fx = HERE.parent / "verify" / "d12" / "fixture"
+    paths, vpath = [str(fx / "fix_a.jsonl"), str(fx / "fix_b.jsonl")], str(fx / "verdicts.csv")
+    if not all(Path(p).exists() for p in paths + [vpath]):
+        print("== report html (P129): verify/d12/fixture missing, skipped"); return err
+    try:
+        page = RH.report(paths, vpath)
+    except Exception as e:
+        return [f"report_html: {type(e).__name__}: {e} (P129)"]
+    recs = [r for p in paths for r in CR.load(p)]; qno = CR.question_numbers(recs)
+    cells = lambda row: [_html.unescape(re.sub(r"<.*?>", "", c)).strip() for c in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", row, re.S)]
+    rows_of = lambda part: [cells(r) for r in re.findall(r"<tr>(.*?)</tr>", part, re.S)]
+    n_cards = page.count('<section class="card"')
+    if n_cards != len(qno):                                                                          # (a)
+        err.append(f"report_html: {n_cards} cards for {len(qno)} questions (P129)")
+    md = CR.report(paths, vpath).split("## 5b.", 1)[1].split("## 6.", 1)[0]                        # (b)
+    md_rows = [[c.strip() for c in l.strip().strip("|").split("|")] for l in md.splitlines() if l.startswith("|") and not re.fullmatch(r"\|(---\|)+", l.strip())]
+    sec4 = page.split("<h2>4. Verdicts</h2>", 1)[1].split("<h2>5.", 1)[0]
+    if rows_of(sec4) != md_rows:
+        err.append(f"report_html: section 4 tables differ from compare_runs 5b/5c ({len(rows_of(sec4))} rows against {len(md_rows)}) (P129)")
+    want = {(r[0], r[1]): dict(zip(CR.VERDICTS + ["not graded"], map(int, r[2:8]))) for r in md_rows if r[0].endswith(".jsonl") and len(r) == 9}
+    got = collections.defaultdict(collections.Counter)
+    for card in page.split('<section class="card"')[1:]:
+        for f_part in card.split('<div class="file">')[1:]:
+            f = re.match(r"([^<]+)</div>", f_part).group(1)
+            for arm, col in zip(("Knowledge base", "Paper text"), re.split(r'<div class="col"><h4>', f_part)[1:]):
+                for b in re.findall(r'<span class="badge[^>]*>([^<]+)</span>', col):
+                    got[(f, arm)][b] += 1
+    for k, v in want.items():
+        if k[1] in ("Knowledge base", "Paper text") and {x: got[k].get(x, 0) for x in v} != v:
+            err.append(f"report_html: card badges {dict(got[k])} against section 5b {v} for {k} (P129)")
+    prices = {(r["vendor"] + ":" + r["model"]): r for r in csv.DictReader((HERE / "prices.csv").open(encoding="utf-8"))}   # (c)
+    sec2 = rows_of(page.split("<h2>2.", 1)[1].split("<h2>3.", 1)[0])
+    head = sec2[0]; n_cost = 0
+    for row in sec2[1:]:
+        f, arm = row[0], row[1]
+        rs = [r for r in recs if r["_file"] == f and CR.ARM_NAMES.get(r["arm"], r["arm"]) == arm]
+        ans = [r for r in rs if (r.get("answer") or "").strip() and not r.get("error")]
+        if not ans:
+            continue
+        def full(r):
+            p = prices[r["model"]]; t = "offpeak_" if ask.offpeak(p, datetime.datetime.fromisoformat(r["time"])) else ""
+            return (r["usage"]["input"] * float(p[t + "input_per_mtok"]) + r["usage"]["output"] * float(p[t + "output_per_mtok"])) / 1e6
+        billed, nocache = sum(r["cost"] for r in rs) / len(ans), sum(full(r) for r in rs) / len(ans)
+        if row[head.index("cost / answer as billed")] != f"${billed:.4f}" or row[head.index("cost / answer without cache discount")] != f"${nocache:.4f}":
+            err.append(f"report_html: {f} {arm} costs {row[6:8]} against ${billed:.4f} / ${nocache:.4f} recomputed (P129)")
+        n_cost += 2
+    if "http://" in page or "https://" in page or "<script src" in page:                             # (d)
+        err.append("report_html: an external URL or a <script src= in the page (P129)")
+    print(f"== report html (P129): fixture {len(recs)} records: {n_cards} cards for {len(qno)} questions; section 4 = compare_runs 5b/5c ({len(md_rows)} rows), "
+          f"badges = 5b; {n_cost} cost cells recomputed from the records and prices.csv; {len(page):,} characters, no external URL")
+    return err
+
+
 def check_paper_index():
     """P117: every paper's quantity index (values(paper=k), detail(ids=[k])) is within the budget (no 'more' line), lists every quantity the
     concept cards count values for in the paper with the same count (P95 both ways), prints no value with an id, and ends with the two
@@ -2110,6 +2170,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_compare_runs()
     print(f"== compare_runs (P126): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_report_html()
+    print(f"== report html (P129): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
