@@ -189,6 +189,8 @@ SCHEMA = HERE.parent / "schema"
 FORM_TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "caveat"]   # lists.TYPES without bridge, comparison, identity
 VALUE_TYPES = ["setting", "observation", "derived", "model"]                   # quantity required; other types: required once a value is given
 VALUE_FIELDS = ["value", "value_min", "value_max", "value_text"]
+UNCERTAINTY_FIELDS = ["uncertainty", "uncertainty_kind", "uncertainty_n"]     # P132b: only on a record with a value
+JOINED = ["cause", "effect"]                                                    # P132b: lists in the form, joined with ";" by the compiler
 CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
 COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
@@ -255,6 +257,7 @@ def form_schema(onto, L, F):
     defs = form_defs(onto)
     dims = sorted({u["dimension"] for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]})
     s = lambda: {"type": "string", "minLength": 1}                              # noqa: E731
+    ids_list = lambda d: {"type": "array", "minItems": 1, "uniqueItems": True, "items": {"$ref": f"#/$defs/{d}"}}   # noqa: E731
     props = {
         "type": {"enum": [t for t in L.TYPES if t in FORM_TYPES]},
         "quantity": {"enum": defs["quantity_id"]["enum"] + ["other"]},
@@ -266,7 +269,8 @@ def form_schema(onto, L, F):
         "kind": {"enum": list(L.KINDS)}, "method": {"enum": list(L.METHODS)},
         "mentions": {"type": "array", "minItems": 1, "items": s()},
         "quote": _words(QUOTE_WORDS),
-        "cause": {"$ref": "#/$defs/cause_effect"}, "relation": {"enum": list(L.RELATIONS)}, "effect": {"$ref": "#/$defs/cause_effect"},
+        "uncertainty": {"type": "number"}, "uncertainty_kind": {"enum": sorted(L.UNCERTAINTY_KINDS)}, "uncertainty_n": {"type": "integer"},
+        "cause": ids_list("cause_effect"), "relation": {"enum": list(L.RELATIONS)}, "effect": ids_list("cause_effect"),
         "stance": {"enum": list(L.STANCES)},
         "note": _words(NOTE_WORDS),
         "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1}, "additionalProperties": {"$ref": "#/$defs/quantity_id"}},
@@ -283,7 +287,7 @@ def form_schema(onto, L, F):
                        f"and pilot/lists.py; fields from pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
         "type": "object", "additionalProperties": False, "properties": props,
         "required": ["type", "quote"],
-        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity"] for f in VALUE_FIELDS},
+        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity"] for f in VALUE_FIELDS}, **{f: ["value"] for f in UNCERTAINTY_FIELDS},
                               **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
         "allOf": [
             {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
@@ -335,7 +339,7 @@ def _allowed(p):
         return f"object: symbol -> {_allowed(p['additionalProperties'])}"
     if p.get("type") == "object":
         return f"object, keys closed ({len(p['properties'])}: {', '.join(p['properties'])})"
-    return {"string": "string", "number": "number"}.get(p.get("type"), str(p))
+    return {"string": "string", "number": "number", "integer": "integer"}.get(p.get("type"), str(p))
 
 
 DEFS = {}
@@ -356,9 +360,11 @@ def form_md(form, pass0, onto, F):
         for f, v in r.get("else", {}).get("properties", {}).items():
             req[f].append(f"only when {cond}")
     for f, deps in form["dependentRequired"].items():
+        req[f].append("needs " + ", ".join(deps))
         for d in deps:
             req[d].append(f"required with {f}")
-    rows = [(f, _allowed(p), "; ".join(req[f]) or "optional", "extractor") for f, p in form["properties"].items()]
+    rows = [(f, _allowed(p), "; ".join(req[f]) or "optional", "extractor" + ("; the compiler joins the list with `;`" if f in JOINED else ""))
+            for f, p in form["properties"].items()]
     for k, p in form["properties"]["qualifiers"]["properties"].items():
         rows.append((f"qualifiers.{k}", _allowed(p), "optional", "extractor"))
     for k, p in form["properties"]["candidate"]["properties"].items():

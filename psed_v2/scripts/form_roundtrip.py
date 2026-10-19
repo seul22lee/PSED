@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""P132 round trip: every record of the 12 gold pilot/<paper_id>.facts.csv cast into the extraction form and validated against schema/form.json.
+"""P132 round trip (P132b: term of a definition -> label_as_printed; failures grouped pre_form / form): every record of the 12 gold pilot/<paper_id>.facts.csv cast into the extraction form and validated against schema/form.json.
 
     python3 psed_v2/scripts/form_roundtrip.py      # writes verify/d15/roundtrip.csv and roundtrip_summary.txt
 
@@ -44,6 +44,11 @@ def cast(row, props):
         if not v or c in X.COMPILER_ONLY:
             continue
         f = X.form_field(c)
+        if c == "term" and row["type"] == "definition":                         # P132b: a definition's term is its label as printed
+            if row["label_as_printed"] and row["label_as_printed"] != v:
+                lost.append((c, "differs from label_as_printed"))
+                continue
+            f = "label_as_printed"
         if f not in props:
             lost.append((c, "no form field"))
         elif f == "qualifiers":
@@ -53,10 +58,10 @@ def cast(row, props):
                 qp = props["qualifiers"]["properties"].get(k, {})
                 q[k] = as_number(val) if numeric(qp) else val
             rec[f] = q
-        elif f == "mentions":
+        elif props[f].get("type") == "array":                                   # mentions, cause, effect: a ';' list
             rec[f] = [m.strip() for m in v.split(";") if m.strip()]
         else:
-            rec[f] = as_number(v) if numeric(props[f]) else v
+            rec[f] = int(v) if props[f].get("type") == "integer" and re.fullmatch(r"-?\d+", v) else as_number(v) if numeric(props[f]) else v
     return rec, lost
 
 
@@ -66,7 +71,7 @@ def explain(e, rec):
     if e.validator in ("required", "dependentRequired"):
         names = re.findall(r"'([^']+)'", e.message)
         return names[0], "missing" if e.validator == "required" else f"missing (required with {names[1]})"
-    field = ".".join(path) or "(record)"
+    field = ".".join(p for p in path if not p.isdigit()) or "(record)"         # a list item's error is its list's
     if e.validator == "enum":
         return field, f"not in enum: {e.instance}"
     if e.schema is False or e.validator == "False schema":
@@ -78,6 +83,13 @@ def explain(e, rec):
     if e.validator == "pattern":
         return field, "pattern"
     return field, f"{e.validator}: {e.message[:80]}"
+
+
+PRE_FORM = {("quote", "absent"), ("label_as_printed", "missing (required with quantity)"), ("candidate", "missing")}   # P132b: what the gold never had
+
+
+def group(x):
+    return "pre_form" if (x["field"], x["reason"]) in PRE_FORM else "form"
 
 
 def generic(reason):
@@ -105,30 +117,36 @@ def main():
                 fails.append(dict(pid=pid, fact_id=row["fact_id"], type=row["type"], field=f, reason=r))
             bad.add((pid, row["fact_id"]))
     OUT.mkdir(parents=True, exist_ok=True)
+    for x in fails:
+        x["group"] = group(x)
     with (OUT / "roundtrip.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["pid", "fact_id", "field", "reason"], extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=["pid", "fact_id", "field", "reason", "group"], extrasaction="ignore")
         w.writeheader()
         w.writerows(fails)
-    beyond = [x for x in fails if x["field"] != "quote"]
-    bad_beyond = {(x["pid"], x["fact_id"]) for x in beyond}
-    rec_type = {(x["pid"], x["fact_id"]): x["type"] for x in fails}
-    L = [f"P132 round trip: {len(GOLD)} gold pilot/<paper_id>.facts.csv against schema/form.json (ontology sha256 {X.ontology_hash()})",
+    key = lambda x: (x["pid"], x["fact_id"])                                    # noqa: E731
+    rec_type = {key(x): x["type"] for x in fails}
+    pre, form = [x for x in fails if x["group"] == "pre_form"], [x for x in fails if x["group"] == "form"]
+    bad_pre, bad_form = {key(x) for x in pre}, {key(x) for x in form}
+    L = [f"P132b round trip: {len(GOLD)} gold pilot/<paper_id>.facts.csv against schema/form.json (ontology sha256 {X.ontology_hash()})",
          f"not cast (not form types): {sum(skipped.values())} rows ({', '.join(f'{k} {v}' for k, v in sorted(skipped.items()))})",
-         f"records total {n}, pass {n - len(bad)}, fail {len(bad)}",
-         f"without the quote failure (every record): pass {n - len(bad_beyond)}, fail {len(bad_beyond)}", "",
-         "failures by field (records failing on the field, failure rows):"]
+         f"records total {n}, pass {n - len(bad)}, fail {len(bad)} (any failure)", "",
+         "pre-form gold: what the gold never carried (failing records per reason):"]
+    L += [f"  {c:6d}  {k}" for k, c in collections.Counter(f"{x['field']}: {x['reason']}" for x in pre).most_common()]
+    L += [f"  records failing only here: {len(bad_pre - bad_form)}", "",
+          f"form: pass {n - len(bad_form)}, fail {len(bad_form)} (the pre-form gold failures left out)", "",
+          "  by field (records failing on the field, failure rows):"]
     recs_by_field = collections.defaultdict(set)
-    for x in fails:
-        recs_by_field[x["field"]].add((x["pid"], x["fact_id"]))
-    rows_by_field = collections.Counter(x["field"] for x in fails)
-    L += [f"  {k:24s} {len(recs_by_field[k]):5d} {rows_by_field[k]:6d}" for k, _ in rows_by_field.most_common()]
-    L += ["", "failures by type, without the quote failure (failing records / records of the type):"]
-    ft = collections.Counter(rec_type[k] for k in bad_beyond)
-    L += [f"  {t:12s} {ft[t]:5d} / {by_type_total[t]}" for t in X.FORM_TYPES]
-    L += ["", "top reasons (failure rows, field: reason):"]
-    L += [f"  {c:6d}  {k}" for k, c in collections.Counter(f"{x['field']}: {generic(x['reason'])}" for x in fails).most_common(15)]
-    L += ["", "top values behind 'not in enum' / 'unknown key' (failure rows):"]
-    L += [f"  {c:6d}  {k}" for k, c in collections.Counter(f"{x['field']}: {x['reason']}" for x in fails if generic(x["reason"]) != x["reason"]).most_common(20)]
+    for x in form:
+        recs_by_field[x["field"]].add(key(x))
+    rows_by_field = collections.Counter(x["field"] for x in form)
+    L += [f"    {k:24s} {len(recs_by_field[k]):5d} {rows_by_field[k]:6d}" for k, _ in rows_by_field.most_common()]
+    L += ["", "  by type (failing records / records of the type):"]
+    ft = collections.Counter(rec_type[k] for k in bad_form)
+    L += [f"    {t:12s} {ft[t]:5d} / {by_type_total[t]}" for t in X.FORM_TYPES]
+    L += ["", "  top reasons (failure rows, field: reason):"]
+    L += [f"    {c:6d}  {k}" for k, c in collections.Counter(f"{x['field']}: {generic(x['reason'])}" for x in form).most_common(15)]
+    L += ["", "  top values behind 'not in enum' / 'unknown key' (failure rows):"]
+    L += [f"    {c:6d}  {k}" for k, c in collections.Counter(f"{x['field']}: {x['reason']}" for x in form if generic(x["reason"]) != x["reason"]).most_common(20)]
     (OUT / "roundtrip_summary.txt").write_text("\n".join(L) + "\n", encoding="utf-8")
     print("\n".join(L))
     return 0

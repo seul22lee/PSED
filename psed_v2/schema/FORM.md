@@ -6,22 +6,25 @@ Ontology version 1, sha256 `6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05
 | field | allowed values | required when | who fills |
 |---|---|---|---|
 | type | enum, 8 values | always | extractor |
-| quantity | enum, 105 values | required when type setting / observation / derived / model; forbidden when type claim; required with value; required with value_min; required with value_max; required with value_text | extractor |
+| quantity | enum, 105 values | required when type setting / observation / derived / model; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
 | label_as_printed | string | required with quantity | extractor |
 | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
-| value | number | optional | extractor |
-| value_min | number | optional | extractor |
-| value_max | number | optional | extractor |
+| value | number | needs quantity; required with uncertainty; required with uncertainty_kind; required with uncertainty_n | extractor |
+| value_min | number | needs quantity | extractor |
+| value_max | number | needs quantity | extractor |
 | censor | one of `<`, `<dl`, `>`, `>dl` | optional | extractor |
 | unit | string | optional | extractor |
-| value_text | string | optional | extractor |
+| value_text | string | needs quantity | extractor |
 | kind | enum, 9 values | optional | extractor |
 | method | enum, 34 values | optional | extractor |
 | mentions | list of string | optional | extractor |
 | quote | string, at most 15 words | always | extractor |
-| cause | enum, 140 values (cause_effect) | only when type claim; required with relation; required with effect | extractor |
-| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | only when type claim; required with cause; required with effect | extractor |
-| effect | enum, 140 values (cause_effect) | only when type claim; required with cause; required with relation | extractor |
+| uncertainty | number | needs value | extractor |
+| uncertainty_kind | enum, 9 values | needs value | extractor |
+| uncertainty_n | integer | needs value | extractor |
+| cause | list of enum, 140 values (cause_effect) | only when type claim; needs relation, effect; required with relation; required with effect | extractor; the compiler joins the list with `;` |
+| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | only when type claim; required with cause; needs cause, effect; required with effect | extractor |
+| effect | list of enum, 140 values (cause_effect) | only when type claim; required with cause; required with relation; needs cause, relation | extractor; the compiler joins the list with `;` |
 | stance | one of `asserted`, `hedged`, `open`, `limitation` | only when type claim | extractor |
 | note | string, at most 20 words | only when type claim / definition | extractor |
 | variables | object: symbol -> enum, 104 values (quantity_id) | only when type definition | extractor |
@@ -68,9 +71,6 @@ Ontology version 1, sha256 `6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05
 | how | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | evidence | not in the form |  | compiler |
 | statement | not in the form |  | compiler |
-| uncertainty | not in the form (facts.FIELDS column with no form field) |  | nobody |
-| uncertainty_kind | not in the form (facts.FIELDS column with no form field) |  | nobody |
-| uncertainty_n | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | basis | not in the form |  | compiler |
 | points_ref | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | inputs | not in the form |  | compiler |

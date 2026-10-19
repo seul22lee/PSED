@@ -417,8 +417,32 @@
    "type": "string",
    "pattern": "^\\S+(\\s+\\S+){0,14}$"
   },
+  "uncertainty": {
+   "type": "number"
+  },
+  "uncertainty_kind": {
+   "enum": [
+    "fit",
+    "literature",
+    "measurement",
+    "not_stated",
+    "pieces",
+    "position",
+    "propagated",
+    "repeat_measurement",
+    "runs"
+   ]
+  },
+  "uncertainty_n": {
+   "type": "integer"
+  },
   "cause": {
-   "$ref": "#/$defs/cause_effect"
+   "type": "array",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "$ref": "#/$defs/cause_effect"
+   }
   },
   "relation": {
    "enum": [
@@ -431,7 +455,12 @@
    ]
   },
   "effect": {
-   "$ref": "#/$defs/cause_effect"
+   "type": "array",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "$ref": "#/$defs/cause_effect"
+   }
   },
   "stance": {
    "enum": [
@@ -534,6 +563,15 @@
   ],
   "value_text": [
    "quantity"
+  ],
+  "uncertainty": [
+   "value"
+  ],
+  "uncertainty_kind": [
+   "value"
+  ],
+  "uncertainty_n": [
+   "value"
   ],
   "cause": [
    "relation",

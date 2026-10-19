@@ -1,64 +1,48 @@
-P132 round trip: 12 gold pilot/<paper_id>.facts.csv against schema/form.json (ontology sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b)
+P132b round trip: 12 gold pilot/<paper_id>.facts.csv against schema/form.json (ontology sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b)
 not cast (not form types): 1008 rows (activity 541, comparison 91, entity 355, identity 9, paper 12)
-records total 4349, pass 0, fail 4349
-without the quote failure (every record): pass 1461, fail 2888
+records total 4349, pass 0, fail 4349 (any failure)
 
-failures by field (records failing on the field, failure rows):
-  quote                     4349   4349
-  label_as_printed          1781   1781
-  quantity                   639    639
-  candidate                  282    282
-  term                       204    204
-  uncertainty                 53     53
-  uncertainty_kind            53     53
-  cause                       51     51
-  qualifiers.species          48     48
-  effect                      17     17
-  uncertainty_n                7      7
-
-failures by type, without the quote failure (failing records / records of the type):
-  setting       1146 / 1420
-  observation    636 / 788
-  derived        159 / 303
-  model          541 / 671
-  definition     204 / 270
-  claim           67 / 372
-  cited          110 / 303
-  caveat          25 / 222
-
-top reasons (failure rows, field: reason):
+pre-form gold: what the gold never carried (failing records per reason):
     4349  quote: absent
-    1781  label_as_printed: missing (required with quantity)
-     619  quantity: missing
+    1659  label_as_printed: missing (required with quantity)
      282  candidate: missing
-     204  term: no form field
-      53  uncertainty: no form field
-      53  uncertainty_kind: no form field
-      51  cause: not in enum
-      48  qualifiers.species: not in enum
-      17  effect: not in enum
-      13  quantity: not in enum
-       7  uncertainty_n: no form field
-       7  quantity: forbidden on type claim
+  records failing only here: 3660
 
-top values behind 'not in enum' / 'unknown key' (failure rows):
-      48  qualifiers.species: not in enum: model_reactant
-       4  quantity: not in enum: film_thickness;growth_per_cycle
-       3  effect: not in enum: element_ratio;crystallinity
-       2  cause: not in enum: deposition_temperature;plasma_gas_ratio
-       2  cause: not in enum: deposition_temperature;excess_sulfur
-       2  cause: not in enum: cycle_number;feature_narrowing
-       2  cause: not in enum: purge_time;desorption
-       2  cause: not in enum: cycle_number;feature_width
-       2  quantity: not in enum: penetration_depth;coated_aspect_ratio;front_slope
-       2  quantity: not in enum: film_thickness;growth_per_cycle;normalized_thickness
-       2  cause: not in enum: deposition_temperature;purge_time
-       1  cause: not in enum: plasma_gas_ratio;excess_sulfur
-       1  effect: not in enum: growth_per_cycle;roughness;resistivity
-       1  cause: not in enum: plasma_gas_ratio;deposition_temperature
-       1  effect: not in enum: crystallinity;film_thickness
-       1  cause: not in enum: element_ratio;plasma_chemistry
-       1  cause: not in enum: plasma_gas_ratio;deposition_temperature;surface_chemistry
-       1  cause: not in enum: roughness;surface_oxidation
-       1  cause: not in enum: plasma_gas_ratio;film_thickness
-       1  effect: not in enum: fin_growth;roughness
+form: pass 3660, fail 689 (the pre-form gold failures left out)
+
+  by field (records failing on the field, failure rows):
+    quantity                   639    639
+    qualifiers.species          48     48
+    cause                        1      2
+    uncertainty_n                1      1
+
+  by type (failing records / records of the type):
+    setting        155 / 1420
+    observation    231 / 788
+    derived          0 / 303
+    model          282 / 671
+    definition       0 / 270
+    claim            8 / 372
+    cited            1 / 303
+    caveat          12 / 222
+
+  top reasons (failure rows, field: reason):
+       619  quantity: missing
+        48  qualifiers.species: not in enum
+        13  quantity: not in enum
+         7  quantity: forbidden on type claim
+         2  cause: not in enum
+         1  uncertainty_n: not a integer
+
+  top values behind 'not in enum' / 'unknown key' (failure rows):
+        48  qualifiers.species: not in enum: model_reactant
+         4  quantity: not in enum: film_thickness;growth_per_cycle
+         2  quantity: not in enum: penetration_depth;coated_aspect_ratio;front_slope
+         2  quantity: not in enum: film_thickness;growth_per_cycle;normalized_thickness
+         1  quantity: not in enum: pore_density
+         1  quantity: not in enum: penetration_depth;film_thickness;growth_per_cycle;coated_aspect_ratio;front_slope;fit_r2
+         1  quantity: not in enum: front_slope;normalized_thickness
+         1  quantity: not in enum: penetration_depth;film_thickness;front_slope
+         1  quantity: not in enum: growth_per_cycle;film_thickness
+         1  cause: not in enum: tortuosity
+         1  cause: not in enum: pore_volume
