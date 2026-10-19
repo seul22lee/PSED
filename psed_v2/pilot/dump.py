@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """The whole knowledge base serialized once, compactly, for the dump arm of ask.py (P71): the L0 map, then per paper its tree in
 order (every activity with its own settings, every entity and cited work with its own settings and results), its comparison sets
-(kind, what they vary, members, purpose), its claims (stance, statement, cause, relation, effect, scope, the results they rest on)
-and its caveats once by id; one legend for the kind marks and the basis phrases at the end. Every record starts with or carries
+(kind, what they vary, members, purpose) and its caveats once by id; then the claim nodes once (P130: one per cause, relation,
+effect; the member claims beneath with stance, statement, scope, the results they rest on); one legend for the kind marks and the basis phrases at the end. Every record starts with or carries
 its id in square brackets, as the tools print them (the renderer of tools.py: P68), so the number check and the kind check read it
 the same way. Definitions, notes and process steps are left out (search reaches them; the dump holds the evidence).
 
@@ -23,7 +23,7 @@ import tools as TL  # noqa: E402
 
 def serialize():
     """The serialization as one text; returns (text, counts)."""
-    marks, bases, counts = set(), set(), collections.Counter()
+    marks, bases, counts, printed = set(), set(), collections.Counter(), set()
     out = [CN.l0_map(), ""]
 
     def cell(rec, lifted=()):
@@ -87,25 +87,37 @@ def serialize():
             purpose = T.byid[c["links"].split(";")[0]]["statement"] if c["links"].split(";")[0] in T.byid else ""
             out.append(f"set [{c['fact_id']}] ({c['kind']}) {Q.comparison_label(T, c)} · varies {', '.join(L.NAMES.get(q, q) for q in c['quantity'].split(';') if q) or 'nothing stated'}"
                        f" · members {', '.join(f'[{m}]' for m in ms)}" + (f" · purpose: {purpose}" if purpose else "")); counts["sets"] += 1
-        for f in T.rows:
-            if f["type"] != "claim":
-                continue
-            cr = Q.claim_record(T, f)
-            line = f"claim [{f['fact_id']}] ({cr['stance']}) {cr['statement']}"
-            if cr["cause"] or cr["effect"]:
-                line += f" · {', '.join(cr['cause']) or '?'} {cr['relation'] or '→'} {', '.join(cr['effect']) or '?'}"
+        for cid in sorted(cav_ids):
+            out.append(f"caveat [{cid}] {T.byid[cid]['statement']}"); counts["caveats"] += 1
+            printed.add(cid)
+        out.append("")
+    out.append("== claims: one node per (cause, relation, effect), its member claims beneath (P130) ==")
+    claim_cav = set()
+    for nid in Q.claim_nodes():
+        n = Q.node_record(nid)
+        out.append(f"claim [{nid}] {', '.join(n['cause'])} {n['relation']} {', '.join(n['effect'])} · {len(n['papers'])} paper{'s' if len(n['papers']) != 1 else ''}"
+                   + (f": {', '.join(n['papers'])}" if n["papers"] else "")); counts["claim nodes"] += 1
+        for cr in n["members"]:
+            line = f"  [{cr['id']}] ({cr['stance']}) {cr['statement']}"
             if cr["scope"] and cr["entities"]:
                 line += f" · scope ({TL.KB}): {cr['scope']}"
             if cr["rests_on"]:
                 line += " · rests on " + ", ".join(f"[{r['fact']}]" for r in cr["rests_on"] if r.get("fact"))
-            if cr["sized_by"]:
+            if cr.get("sized_by"):
                 line += " · sized by " + ", ".join(f"[{r['fact']}]" for r in cr["sized_by"])
             line += TL.cmark(cr)
-            cav_ids.update(c["id"] for c in cr.get("caveats", []))
+            claim_cav.update(c["id"] for c in cr.get("caveats", []) if c["id"] not in printed)
             out.append(line); counts["claims"] += 1
-        for cid in sorted(cav_ids):
-            out.append(f"caveat [{cid}] {T.byid[cid]['statement']}"); counts["caveats"] += 1
-        out.append("")
+    loose = [(T, f) for T in Q.TREES.values() for f in T.rows if f["type"] == "claim" and not Q.triple_of(f)]   # P131 re-types these; none once it holds
+    if loose:
+        out.append("== claims without a full triple (no node) ==")
+    for T, f in loose:
+        cr = Q.claim_record(T, f)
+        out.append(f"claim [{f['fact_id']}] ({cr['stance']}) {cr['statement']}" + (" · rests on " + ", ".join(f"[{r['fact']}]" for r in cr["rests_on"] if r.get("fact")) if cr["rests_on"] else "") + TL.cmark(cr))
+        claim_cav.update(c["id"] for c in cr.get("caveats", []) if c["id"] not in printed); counts["claims"] += 1
+    for cid in sorted(claim_cav):
+        out.append(f"caveat [{cid}] {Q.tree_of(cid).byid[cid]['statement']}"); counts["caveats"] += 1
+    out.append("")
     out.append("legend · kinds: " + "; ".join(f"({TL.KIND_MARK[k]}) {TL.kind_phrase(k)}" for k in L.KINDS if k in marks) + "; unmarked: measured or stated by the paper")
     out += [f"legend · basis {b}: {L.BASES[b]}" for b in sorted(bases)]
     return "\n".join(out), counts

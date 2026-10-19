@@ -663,6 +663,50 @@ def check_mechanisms():
     return err
 
 
+def check_nodes():
+    """P130: the claim nodes against the claims: the node count equals the distinct (cause, relation, effect) triples; every member is
+    reachable from its node (the node's detail names it) and names its node (its claim line); a node of two or more papers prints each
+    paper once; the claims tool returns nodes only, and a claim without a full triple is in no node."""
+    import query as Q, tools as TL
+    err = []
+    pool = [(k, c) for k, T in Q.TREES.items() for c in T.rows if c["type"] == "claim"] + [("user", u) for u in Q.USER if u["type"] == "claim"]
+    triples = {(c["cause"], c["relation"], c["effect"]) for _, c in pool if c["cause"] and c["relation"] and c["effect"]}
+    nodes = Q.claim_nodes()
+    if len(nodes) != len(triples):
+        err.append(f"{len(nodes)} claim nodes, {len(triples)} distinct triples (P130)")
+    in_nodes = {f for n in nodes.values() for _, f in n["members"]}
+    for k, c in pool:
+        full = bool(c["cause"] and c["relation"] and c["effect"])
+        if full and c["fact_id"] not in in_nodes:
+            err.append(f"{c['fact_id']}: a claim with a full triple in no node (P130)")
+        if not full and c["fact_id"] in in_nodes:
+            err.append(f"{c['fact_id']}: a claim without a full triple in a node (P130)")
+    multi = 0
+    for nid, n in nodes.items():
+        lines, e = TL.run_tool("detail", {"ids": [nid]})
+        text = "\n".join(f"[{i}] {t}" for i, t in lines)
+        if e:
+            err.append(f"{nid}: detail fails: {e}"); continue
+        for _, f in n["members"]:
+            if f"[{f}]" not in text:
+                err.append(f"{nid}: member {f} not reachable from its node (P130)")
+            if f.split(":")[0] in Q.TREES and Q.node_of(f) != nid:
+                err.append(f"{f}: its claim line names {Q.node_of(f)!r}, not {nid} (P130)")
+        if len(n["papers"]) >= 2:
+            multi += 1
+            body = [t for i, t in lines if t.startswith("  ")]
+            for k in n["papers"]:
+                hits = sum(1 for t in body if t.startswith(f"  {k} ("))
+                if hits != 1:
+                    err.append(f"{nid}: paper {k} printed {hits} times (P130: each paper once)")
+    got = Q.claims()
+    if any("members" not in r for r in got) or len(got) != len(nodes):
+        err.append(f"claims() returns {len(got)} records, {len(nodes)} nodes (P130)")
+    print(f"== claim nodes (P130): {len(nodes)} nodes for {len(triples)} distinct triples of {len(pool)} claims ({len(in_nodes)} members); "
+          f"{multi} nodes asserted in two or more papers, each paper printed once")
+    return err
+
+
 def check_claims():
     """P54: every claim's cause and effect are entry ids or mechanism ids (variables_ok, above); here the counts: claims, free
     strings (always 0 once variables_ok holds), mechanisms named, and mechanisms named by claims of two or more papers."""
@@ -881,13 +925,16 @@ def check_cards():
             for f in T.rows:
                 if "#" in f["fact_id"] and f["quantity"] == q and f["data_kind"] == "computed_by_kb" and f["fact_id"] in seen:
                     ref[q][k][CN.home_of(T, f)] -= 1; ref[q][k]["values"] -= 1; ref[q][k]["derived"] += 1
-    for c in D["claims"]:                                                        # the page gives a claim's cause and effect in words; its ids come from the claim's row
-        k = c["id"].split(":")[0]
-        if k in Q.TREES and c["id"] in Q.TREES[k].byid:
-            row = Q.TREES[k].byid[c["id"]]
-            for t in (row["cause"] + ";" + row["effect"]).split(";"):
-                if t:
-                    ref[t][k]["claims"] += 1
+    for c in D["claims"]:                                                        # P130: the page gives one entry per claim node; its ids come from the member claims' rows
+        ts = set()
+        for m in c["members"]:
+            k = m["id"].split(":")[0]
+            if k in Q.TREES and m["id"] in Q.TREES[k].byid:
+                row = Q.TREES[k].byid[m["id"]]
+                ts |= {t for t in (row["cause"] + ";" + row["effect"]).split(";") if t}
+        for t in ts:
+            for k in {m["id"].split(":")[0] for m in c["members"]} & set(Q.TREES):
+                ref[t][k]["claims"] += 1
     for i, d in D["details"].items():
         for r in d.get("results", []):
             if (r.get("record") or {}).get("kind") == "computed_by_kb" and d.get("paper") in Q.TREES:
@@ -2047,6 +2094,11 @@ if __name__ == "__main__":
         print("  ", e)
     bad += bool(err)
     check_claims()
+    err = check_nodes()
+    print(f"== claim nodes (P130): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
     import sentence_only
     err = [f"{i}: {k} {x!r} only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)" for i, k, x in sentence_only.report()]
     print(f"== sentence-only (P55): {'OK' if not err else f'{len(err)} problems'}")

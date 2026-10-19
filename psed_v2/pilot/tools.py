@@ -278,7 +278,36 @@ def claim_line(c):
             + (f" · comparisons: {', '.join(c['comparisons'])}" if c.get("comparisons") else "")
             + (f" · source element: {c['paper']}:{c['source']}" if c.get("source") and c.get("paper") else "")
             + (" · rests on: " + ", ".join(f"[{r['fact']}]" for r in c["rests_on"] if r.get("fact")) if c.get("rests_on") else "")
-            + (" · sized by: " + ", ".join(f"[{r['fact']}]" for r in c["sized_by"]) if c.get("sized_by") else "") + cmark(c))
+            + (" · sized by: " + ", ".join(f"[{r['fact']}]" for r in c["sized_by"]) if c.get("sized_by") else "")
+            + (f" · node [{Q.node_of(c['id'])}]" if Q.node_of(c["id"]) else "") + cmark(c))
+
+
+NODE_RESTS = 4                      # P130: the ids of the results a member rests on shown on its line, then '+n'
+
+
+def node_head(n):
+    """P130: the one line of a claim node: 'cause relation effect — asserted in N papers: p1, p2 … [ids]'."""
+    ps = n["papers"]
+    return (n["id"], f"claim · {', '.join(n['cause'])} {n['relation']} {', '.join(n['effect'])} — asserted in {len(ps)} paper{'s' if len(ps) != 1 else ''}"
+            + (f": {', '.join(ps)}" if ps else "") + (" and by the user" if any(m == "user" or m.startswith("user:") for m in n["member_ids"]) else "")
+            + " " + " ".join(f"[{i}]" for i in n["member_ids"]))
+
+
+def node_lines(n):
+    """P130: a claim node as the claims tool and the claims tier of search print it: the node line, then one short line per member paper
+    (each member's sentence, stance and the results it rests on, P26), nothing else."""
+    out, by = [node_head(n)], {}
+    for m in n["members"]:
+        by.setdefault(m["paper"], []).append(m)
+    for k, ms in by.items():
+        who = "by the user" if k == "user" else f"{k} ({short_name(k)})" if k in Q.KEY else k
+        parts = []
+        for j, m in enumerate(ms):
+            rs = [r["fact"] for r in m.get("rests_on", []) if r.get("fact")]
+            parts.append(("" if j == 0 else f"[{m['id']}] ") + f"{m['stance']}: {m['statement']}"
+                         + (" · rests on " + ", ".join(f"[{r}]" for r in rs[:NODE_RESTS]) + (f" +{len(rs) - NODE_RESTS}" if len(rs) > NODE_RESTS else "") if rs else " · no stated result"))
+        out.append((ms[0]["id"], f"  {who} · " + "; ".join(parts)))
+    return out
 
 
 def wrap(i, text):
@@ -418,7 +447,7 @@ def _comparison(i):
 def _record(i):
     """Whether an id names a record of the knowledge base (any row but a paper's), a location (P92) or a concept, model, mechanism,
     species, structure or family id (P110)."""
-    if i in L.ENTRIES or (i.startswith("family:") and i[7:] in L.FAMILIES) or i in Q.TREES:   # P110, P117 (a paper key: its index)
+    if i in L.ENTRIES or (i.startswith("family:") and i[7:] in L.FAMILIES) or i in Q.TREES or i in Q.claim_nodes():   # P110, P117 (a paper key: its index), P130 (a claim node)
         return True
     T = Q.TREES.get(i.split(":")[0])
     return bool(T and i in T.byid and T.byid[i]["type"] != "paper") or Q.located(i) is not None
@@ -972,6 +1001,7 @@ def set_blocks(d, budget=True):
 
 SEARCH_LINE = 200
 SEARCH_PAPERS = 6                                                               # P93: papers in the cross-paper search view
+SEARCH_NODES = 3                                                                # P130: cross-paper claim nodes in the cross-paper search view
 
 
 TAIL_IDS = ("legend", "between")                                                 # the legend and cross-paper footer lines of a values output
@@ -1249,6 +1279,7 @@ def _run(name, args):
                 return [], "error: search: words has no letters or numbers"
             hits = Q.search(args["words"])
             items = [[x for x in wrap(h["id"], Q.render_hit(h)[0])] for h in hits if h["type"] == "concept"][:3]
+            items += [wrap(*node_head(Q.node_record(h["id"]))) for h in hits if h["type"] == "claim" and len(h["papers"]) > 1][:SEARCH_NODES]   # P130: a cross-paper claim is one node line (P93 budget: its members open with detail)
             by_paper = {}
             for h in hits:
                 if h["type"] != "concept" and h["paper"]:
@@ -1281,6 +1312,8 @@ def _run(name, args):
             for h in hits:            # values and settings: one line per paper and quantity; other records: a line shown once with its count
                 if h["type"] == "concept":
                     items.append([x for x in wrap(h["id"], Q.render_hit(h)[0])]); continue
+                if h["type"] == "claim":                                        # P130: a claim node, its members beneath
+                    items.append([x for y in node_lines(Q.node_record(h["id"])) for x in wrap(*y)]); continue
                 if h["type"] in ("value", "setting"):
                     T = Q.TREES[h["paper"]]; f = T.byid[h["id"]]
                     key = (h["paper"], h["type"], Q.name_of(Q.ckey(f), f))
@@ -1318,6 +1351,8 @@ def _run(name, args):
                     b, e = _run("detail", {"id": i, "parts": parts})
                     out += b; errs += [e] if e else []
                 return out, "; ".join(errs)
+            if args["id"] in Q.claim_nodes():                                    # P130: a claim node: its line and its members
+                return [block([wrap(*y) for y in node_lines(Q.node_record(args["id"]))])], ""
             if args["id"] in Q.TREES:                                           # P117: a paper key: its quantity index
                 return [block([wrap(*x) for x in CN.paper_index(args["id"], short_name(args["id"]))])], ""
             if args["id"] in L.ENTRIES or args["id"].startswith("family:"):      # P110: a concept, model, mechanism, species, structure or family id: its card

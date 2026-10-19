@@ -13,7 +13,12 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from query import find, detail, compare, claims, source, g  # noqa: E402,F401
+from query import find, detail, compare, claims, source, values, g  # noqa: E402,F401
+
+
+def members(**kw):
+    """The member claims of the claim nodes claims() returns (P130)."""
+    return [c for n in claims(**kw) for c in n["members"]]
 
 KW = __import__("lists").KIND_WORDS                                                 # the phrase table (P57)
 
@@ -266,14 +271,13 @@ def q18():
 # ------------------------------------------------------------------ across the papers
 def q19():
     """Knudsen number of each paper's structure under its own conditions."""
-    yim = [r for c in claims(paper="yim20", variable="knudsen_number") for r in c["rests_on"] if "Knudsen" in r["statement"]]
-    yim += [r for c in claims(paper="yim20") if c["id"] == "yim20:s19.p3#7" for r in c["rests_on"] if "Knudsen" in r["statement"]]
+    yim = [r["record"] for g in values("knudsen_number", "yim20") for r in g["rows"]]
     gre = find(paper="gre23", result="knudsen_number")["rows"]
     mat = {cond(detail(r["id"]), "structure")["record"]["text"] for r in find(paper="mat22")["rows"].values() if r["role"] == "specimen"}
     ass = sorted({a for r in gre.values() for a in r["result"][0]["record"].get("assumed", [])})
     return answered(f"yim20: {'; '.join(dict.fromkeys(vt(r) + ' (' + r['statement'][:40] + ')' for r in yim))} · mat22: {', '.join(sorted(mat))} films, no Knudsen number applies · gre23: " +
                     "; ".join(f"{r['name']} {vt(r['result'][0]['record'])}" for r in gre.values()) + f" (assumed: {', '.join(ass)})",
-                    "claims(yim20).rests_on: the stated Knudsen numbers · detail(mat22 films).recipe structure · find(gre23, Knudsen number): computed per run")
+                    "values(Knudsen number, yim20): the stated Knudsen numbers · detail(mat22 films).recipe structure · find(gre23, Knudsen number): computed per run")
 
 
 def q20():
@@ -318,7 +322,7 @@ def q23():
     """Every claim that puts water desorption or surface OH as a cause, with the quantified effect behind each."""
     out = []
     for tok in ("surface_hydroxyl", "residual_water", "desorption"):
-        for c in claims(variable=tok):
+        for c in members(variable=tok):
             effs = [f"{e['name']} range {e['effect']} {e['unit']} ({detail(cid)['label']}; {e['sentence']})" for cid in c["comparisons"] for e in detail(cid)["effects"]
                     if any(n in e["name"] for n in c["effect"])]
             out.append(f"{c['id']} ({', '.join(c['cause'])} → {', '.join(c['effect'])}): " + ("; ".join(effs) if effs else "no comparison it reaches quantifies that effect"))

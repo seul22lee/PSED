@@ -1452,24 +1452,110 @@ def scope_text(T, ents):
     return f"{len(ents)} experiment{'s' if len(ents) > 1 else ''}" + (" · " + " · ".join(parts[:3]) if parts else "")
 
 
-def claims(paper=None, variable=None, linked=None, author=None):
-    """Claims with stance, cause → effect, scope and the results they rest on. variable: a quantity id or mechanism token in cause or
-    effect; linked: an entity or comparison id the claim points at; author 'user' for the user's claims (user.facts.csv)."""
-    out = []
-    for k, T in TREES.items():
-        if paper and k != paper or author == "user":
+def user_claim_record(u):
+    """A claim of user.facts.csv as claims() returns it: no tree, the facts it links across papers."""
+    return dict(id=u["fact_id"], paper="user", author="user", statement=u["statement"], stance=u["stance"],
+                cause=[L.NAMES.get(t, t) for t in u["cause"].split(";") if t], effect=[L.NAMES.get(t, t) for t in u["effect"].split(";") if t], relation=u.get("relation", "").replace("_", " "),
+                cause_ids=[t for t in u["cause"].split(";") if t], effect_ids=[t for t in u["effect"].split(";") if t],
+                comparisons=[], entities=[], rests_on=[], scope=f"{len(u['links'].split(';'))} facts across papers", source="")
+
+
+# ---------------------------------------------------------------------------------------------------------------- claim nodes (P130)
+_NODES = {}
+
+
+def triple_of(c):
+    """P130/P131: a claim's (cause, relation, effect) as stored, when all three are set; else None (not a node)."""
+    return (c["cause"], c["relation"], c["effect"]) if c.get("cause") and c.get("relation") and c.get("effect") else None
+
+
+def node_id(t):
+    """The id of the node of a triple: node:<cause>.<relation>.<effect>, several ids of one side joined by '+'."""
+    return "node:" + ".".join(x.replace(";", "+") for x in t)
+
+
+def claim_nodes():
+    """P130: one node per distinct (cause, relation, effect) triple, derived at load time from the claims (no stored record): members the
+    claims with that triple, in paper order (the user's claims last), papers the paper keys among them. {node id: dict(id, cause,
+    relation, effect, members=[(paper key or 'user', fact id)], papers=[keys])}."""
+    if _NODES:
+        return _NODES
+    out = {}
+    pool = [(k, c) for k, T in TREES.items() for c in T.rows if c["type"] == "claim"] + [("user", u) for u in USER if u["type"] == "claim"]
+    for k, c in pool:
+        t = triple_of(c)
+        if not t:
             continue
-        pool = claims_of(T, [linked]) if linked and linked.split(":")[0] == k else ([] if linked else [c for c in T.rows if c["type"] == "claim"])
-        for c in pool:
-            if variable and variable not in c["cause"].split(";") + c["effect"].split(";"):
-                continue
-            out.append(claim_record(T, c))
-    if author in (None, "user") and not paper and not linked:
-        for u in USER:
-            if u["type"] == "claim" and (not variable or variable in u["cause"].split(";") + u["effect"].split(";")):
-                out.append(dict(id=u["fact_id"], paper="user", author="user", statement=u["statement"], stance=u["stance"],
-                                cause=[L.NAMES.get(t, t) for t in u["cause"].split(";") if t], effect=[L.NAMES.get(t, t) for t in u["effect"].split(";") if t], relation=u.get("relation", "").replace("_", " "),
-                                comparisons=[], entities=[], rests_on=[], scope=f"{len(u['links'].split(';'))} facts across papers", source=""))
+        n = out.setdefault(node_id(t), dict(id=node_id(t), cause=t[0], relation=t[1], effect=t[2], members=[], papers=[]))
+        n["members"].append((k, c["fact_id"]))
+        if k != "user" and k not in n["papers"]:
+            n["papers"].append(k)
+    _NODES.update(out)
+    return _NODES
+
+
+def node_of(fid):
+    """The node id of a claim (P130), or '' for a claim without a full triple."""
+    k = fid.split(":")[0]
+    c = TREES[k].byid.get(fid) if k in TREES else next((u for u in USER if u["fact_id"] == fid), None)
+    t = triple_of(c) if c else None
+    return node_id(t) if t else ""
+
+
+def node_record(nid, paper=None, linked=None):
+    """P130: a node as claims() returns it: the triple in words and ids, the papers asserting it, and per member its claim record (the
+    sentence, stance, the results it rests on: P26); paper / linked narrow the members shown, never the papers counted."""
+    n = claim_nodes()[nid]
+    var = lambda s: [L.MECHANISMS[t]["name"] if t in L.MECHANISMS else L.NAMES.get(t, t.replace("_", " ")) for t in s.split(";") if t]
+    ms = []
+    for k, fid in n["members"]:
+        if paper and k != paper:
+            continue
+        if k == "user":
+            ms.append(user_claim_record(next(u for u in USER if u["fact_id"] == fid)))
+            continue
+        T = TREES[k]
+        if linked and fid not in {c["fact_id"] for c in claims_of(T, [linked])}:
+            continue
+        ms.append(claim_record(T, T.byid[fid]))
+    return dict(id=nid, cause=var(n["cause"]), relation=n["relation"].replace("_", " "), effect=var(n["effect"]), cause_ids=n["cause"].split(";"),
+                effect_ids=n["effect"].split(";"), papers=list(n["papers"]), n_members=len(n["members"]), member_ids=[f for _, f in n["members"]], members=ms)
+
+
+def nodes_with(ids):
+    """{paper: set of node ids} of the nodes whose cause or effect holds any of the ids (P130: what 'M claims' counts)."""
+    ids = set(ids)
+    out = collections.defaultdict(set)
+    for nid, n in claim_nodes().items():
+        if set(n["cause"].split(";") + n["effect"].split(";")) & ids:
+            for k in n["papers"]:
+                out[k].add(nid)
+    return out
+
+
+def nodes_of_paper(k):
+    """The node ids with a member claim in paper k (P130)."""
+    return [nid for nid, n in claim_nodes().items() if k in n["papers"]]
+
+
+def claims(paper=None, variable=None, linked=None, author=None):
+    """P130: the claim nodes, one per (cause, relation, effect) triple, each with its member claims (stance, cause → effect, scope and the
+    results they rest on). variable: a quantity id or mechanism token in cause or effect; paper: nodes with a member in the paper (only
+    those members shown); linked: an entity or comparison id a member points at; author 'user' for the nodes of the user's claims
+    (user.facts.csv). A claim without a full triple is no node and is not returned (P131)."""
+    out = []
+    for nid, n in claim_nodes().items():
+        if variable and variable not in n["cause"].split(";") + n["effect"].split(";"):
+            continue
+        if author == "user" and not any(k == "user" for k, _ in n["members"]):
+            continue
+        if (paper or linked) and author == "user":
+            continue
+        r = node_record(nid, paper=paper or (linked.split(":")[0] if linked else None), linked=linked)
+        if author == "user":
+            r["members"] = [m for m in r["members"] if m["author"] == "user"]
+        if r["members"]:
+            out.append(r)
     return out
 
 
@@ -1718,7 +1804,7 @@ def search_records():
         out.append(dict(id=i, paper="", type="concept", line=line, tokens=collections.Counter(tokens(words)), quantity=i))
     for k, T in TREES.items():
         for f in T.rows:
-            if f["type"] == "paper" or not (f["statement"] or f["type"] == "entity"):
+            if f["type"] in ("paper", "claim") or not (f["statement"] or f["type"] == "entity"):   # P130: claims are searched as their nodes (below)
                 continue
             typ = record_type(T, f)
             if f["type"] == "entity":
@@ -1736,6 +1822,13 @@ def search_records():
             words = " ".join([line, f["label_as_printed"], L.NAMES.get(f["quantity"], f["quantity"]), f["quantity"], f["qualifiers"], f["method"],
                               f.get("mentions", ""), f["cause"], f["effect"]])
             out.append(dict(id=f["fact_id"], paper=k, type=typ, line=line, tokens=collections.Counter(tokens(words)), quantity=f["quantity"]))
+    for nid, n in claim_nodes().items():                                        # P130: the claims tier holds the nodes, one record per triple
+        var = lambda x: " ".join(L.MECHANISMS[t]["name"] if t in L.MECHANISMS else L.NAMES.get(t, t.replace("_", " ")) for t in x.split(";"))
+        line = f"{var(n['cause'])} {n['relation'].replace('_', ' ')} {var(n['effect'])}"
+        rows = [TREES[k].byid[i] if k in TREES else next(u for u in USER if u["fact_id"] == i) for k, i in n["members"]]
+        words = " ".join([line, n["cause"].replace(";", " "), n["effect"].replace(";", " ")] + [r["statement"] for r in rows])
+        out.append(dict(id=nid, paper=n["papers"][0] if len(n["papers"]) == 1 else "", papers=n["papers"] or ["user"], type="claim", line=line,
+                        tokens=collections.Counter(tokens(words)), quantity=""))
     for k, T in TREES.items():                                                 # P84e: the figure inventory, one record per panel (never a value)
         for inv in T.inventory:
             line = f"Fig. {inv['figure']}{inv['panel']} ({inv['panel_type']}): {inv['content']}" + (" · " + ", ".join(L.NAMES.get(q, q) for q in inv["quantities"]) if inv.get("quantities") else "") + f" · {inv['status']}"
@@ -1778,7 +1871,7 @@ def _render_row(h):
     return f"{h['type']} · {h['line']}", cav
 
 
-HIT_RENDER = {"concept": lambda h: (f"concept · {h['line']}", {}), "figure panel": _render_panel}   # P84e: one registry; every other kind renders through its tree row
+HIT_RENDER = {"concept": lambda h: (f"concept · {h['line']}", {}), "figure panel": _render_panel, "claim": lambda h: (f"claim · {h['line']}", {})}   # P84e: one registry; every other kind renders through its tree row
 
 
 def render_hit(h):
@@ -1792,12 +1885,12 @@ def search(words, paper=None):
     q = list(dict.fromkeys(tokens(words)))
     scored = []
     for n, r in enumerate(recs):
-        if paper and r["paper"] and r["paper"] != paper:
+        if paper and (r["paper"] and r["paper"] != paper or r["type"] == "claim" and paper not in r["papers"]):   # P130: a node is in the papers of its members
             continue
         s = sum(search_weight(r, t) for t in q)
         if s > 0:
             scored.append((tier_of(r), -s, n, r))
-    return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3), tier=t) for t, s, n, r in sorted(scored)]
+    return [dict(id=r["id"], paper=r["paper"], type=r["type"], line=r["line"], score=round(-s, 3), tier=t, **({"papers": r["papers"]} if "papers" in r else {})) for t, s, n, r in sorted(scored)]
 
 
 # ---------------------------------------------------------------------------------------------------------------- vocabulary (P41)
@@ -2295,7 +2388,7 @@ def empty_pair(result, k):
     if not qids:
         return None
     T = TREES[k]
-    claims = sum(1 for f in T.rows if f["type"] == "claim" and set((f["cause"] + ";" + f["effect"]).split(";")) & qids)
+    claims = len(nodes_with(qids).get(k, ()))                                  # P130: claim nodes, not member claims
     curves = sum(1 for x in T.curves if T.byid[x]["quantity"] in qids)
     panels = sum(1 for i in T.inventory if set(i.get("quantities") or []) & qids)
     defs = sum(1 for f in T.rows if f["type"] == "definition" and f["quantity"] in qids)

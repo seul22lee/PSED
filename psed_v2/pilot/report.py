@@ -119,9 +119,10 @@ def build():
     for gr in found["groups"]:
         own = sorted({v["fact"].split(":")[0] and Q.TREES[gr["paper"]].byid[v["fact"]]["quantity"] for v in details.get(gr["id"], {}).get("values", []) if v.get("fact")})
         groups.append(dict(id=gr["id"], paper=gr["paper"], label=gr["label"], kind=gr["kind"], members=gr["members"], all=gr["all_members"], own=own))
-    cl = Q.claims()
-    claims_ = [dict(c, rests_on=[lite(x) for x in c["rests_on"]], sized_by=[lite(x) for x in c.get("sized_by", [])], user=c["author"] == "user",
-                    caveats=[x["id"] for x in c.get("caveats", [])]) for c in cl]
+    member = lambda c: dict(c, rests_on=[lite(x) for x in c["rests_on"]], sized_by=[lite(x) for x in c.get("sized_by", [])], user=c["author"] == "user",
+                            caveats=[x["id"] for x in c.get("caveats", [])])
+    claims_ = sorted([dict(n, members=[member(c) for c in n["members"]]) for n in Q.claims()], key=lambda n: -len(n["papers"]))   # P130: one entry per claim node, its members beneath, cross-paper first
+    loose_ = [member(Q.claim_record(T, f)) for T in Q.TREES.values() for f in T.rows if f["type"] == "claim" and not Q.triple_of(f)]   # no node (P131 re-types them)
     caveat_texts, fact_caveats = {}, {}                                          # every caveat text once; fact id -> the caveats it carries (P56)
     for k, T in Q.TREES.items():
         for c in Q.caveats_of(T):
@@ -167,7 +168,7 @@ def build():
     filters = dict(materials=sorted({r["material"] for r in rows if r["material"]}), structures=sorted({r["structure"] for r in rows if r["structure"]}),
                    results=[dict(q=q, name=L.NAMES.get(q, q.replace("_", " "))) for q in results if q != "other"],
                    ranges=[dict(q=q, name=n, unit=u) for q, n, u in RANGES])
-    return dict(papers=names, rows=rows, groups=groups, details=details, claims=claims_, sources=sources, coverage=coverage, filters=filters,
+    return dict(papers=names, rows=rows, groups=groups, details=details, claims=claims_, loose_claims=loose_, sources=sources, coverage=coverage, filters=filters,
                 kinds=L.KIND_WORDS, primary=L.PRIMARY, search=search_index(), caveats=caveat_texts, fact_caveats=fact_caveats), imgs
 
 
@@ -216,9 +217,9 @@ svg text{font-size:14px;fill:var(--fg)}svg .ax{stroke:var(--mut)}.lg{display:fle
 <div id="bar"></div><div id="more"></div><main><div id="left"></div><div id="right"></div></main><div id="askv"></div>
 <script>
 const D=__DATA__, IM=__IMGS__;
-const S={q:"",qn:50,paper:"",material:"",structure:"",result:"",ranges:{},list:"experiments",checked:new Set(),panel:{type:"none"},x:"",open:new Set()};
+const S={q:"",qn:50,paper:"",material:"",structure:"",result:"",ranges:{},list:"experiments",node:"",checked:new Set(),panel:{type:"none"},x:"",open:new Set()};
 const $=s=>document.querySelector(s), esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const ROW=Object.fromEntries(D.rows.map(r=>[r.id,r])), GRP=Object.fromEntries(D.groups.map(g=>[g.id,g])), CL=Object.fromEntries(D.claims.map(c=>[c.id,c]));
+const ROW=Object.fromEntries(D.rows.map(r=>[r.id,r])), GRP=Object.fromEntries(D.groups.map(g=>[g.id,g])), CL=Object.fromEntries(D.claims.flatMap(n=>n.members).concat(D.loose_claims).map(c=>[c.id,c]));
 const PN=k=>D.papers[k]||k, col=k=>`var(--c${Object.keys(D.papers).indexOf(k)})`;
 const word=r=>r&&D.kinds[r.kind]?D.kinds[r.kind]:"";
 const vtext=(r,skipKind)=>!r?"":`${r.text}${r.definition?` <span class="mut">${esc(r.definition)}</span>`:""}${!skipKind&&word(r)?` <span class="mut">${word(r)}</span>`:""}`;
@@ -256,8 +257,8 @@ function searchList(){const hs=searchHits(S.q),seen=new Set(),rows=[];for(const 
   +rows.slice(0,S.qn).map(r=>`<div class="row" style="padding-left:0;text-indent:0"><span class="mut">${esc(PN(r[2]))} · ${esc(r[1])}</span> · <span class="nm" onclick="openRec(${idx.get(r)})">${esc(r[3])}</span></div>`).join("")
   +(rows.length>S.qn?`<div class="more" onclick="S.qn+=50;render()">${rows.length-S.qn} more</div>`:"")}
 function left(){if(S.q)return searchList();const tog=`<div class="tog"><button class="${S.list==="experiments"?"on":""}" onclick="S.list='experiments';render()">experiments</button> <button class="${S.list==="claims"?"on":""}" onclick="S.list='claims';render()">claims</button></div>`;
- if(S.list==="claims"){const cs=D.claims.filter(c=>(!S.paper||c.paper===S.paper)&&(!S.result||c.effect.includes((D.filters.results.find(r=>r.q===S.result)||{}).name)));
-  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims</div>`+cs.map(c=>`<div class="claim"><span class="mut">${c.user?"by user":esc(PN(c.paper))} · ${esc(c.stance)}</span> ${esc(c.statement)}${c.cause.length||c.effect.length?` <span class="mut">${esc(c.cause.join(", "))} ${esc(c.relation||"→")} ${esc(c.effect.join(", "))}</span>`:""} <span class="chip">${esc(c.scope)}</span>${(c.sized_by||[]).length?` <span class="mut">sized by ${esc(c.sized_by.map(r=>r.text+(r.uncertainty?" "+r.uncertainty:"")).join("; "))}</span>`:""}${(c.caveats||[]).map(x=>`<div class="mut">caveat: ${esc(CT[x])}</div>`).join("")}</div>`).join("")}
+ if(S.list==="claims"){const rn=(D.filters.results.find(r=>r.q===S.result)||{}).name;const cs=D.claims.filter(n=>(!S.paper||n.papers.includes(S.paper))&&(!S.result||n.effect.includes(rn)));
+  return tog+`<div class="mut" style="margin:6px 0">${cs.length} claims (one per cause, relation, effect; open one for its member claims)</div>`+cs.map(n=>`<div class="claim"><span class="nm" onclick="S.node=S.node===${JSON.stringify(n.id).replace(/"/g,"&quot;")}?'':${JSON.stringify(n.id).replace(/"/g,"&quot;")};render()">${esc(n.cause.join(", "))} ${esc(n.relation)} ${esc(n.effect.join(", "))}</span> <span class="mut">— ${n.papers.length} paper${n.papers.length===1?"":"s"}: ${esc(n.papers.map(PN).join(", "))}${n.members.some(c=>c.user)?" and by user":""} · ${n.members.length} claim${n.members.length===1?"":"s"}</span>${S.node===n.id?n.members.map(c=>claimLine(c.id)).join(""):""}</div>`).join("")}
  const v=visible(), ids=new Set(v.map(r=>r.id));let h=tog+`<div class="mut" style="margin:6px 0">${v.length} experiments${S.checked.size?` · ${S.checked.size} selected <span class="more" onclick="S.checked=new Set();S.panel={type:'none'};render()">clear</span>`:""}</div>`;
  if(S.paper){const c=D.coverage[S.paper];h+=`<div class="mut">coverage of ${esc(PN(S.paper))}: ${c.covered} of ${c.total} elements covered, ${c.missed} missed</div>`}
  for(const k of Object.keys(D.papers)){if(S.paper&&k!==S.paper)continue;const gs=D.groups.filter(g=>g.paper===k&&g.kind!=="cited").concat(D.groups.filter(g=>g.paper===k&&g.kind==="cited"));const rs=v.filter(r=>r.paper===k);if(!rs.length)continue;

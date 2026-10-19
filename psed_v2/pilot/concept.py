@@ -242,10 +242,6 @@ def counts():
                             c[q][k]["curves"] += 1
                         elif f["fact_id"] in T.cells:
                             c[q][k]["cells"] += 1
-            if f["type"] == "claim":
-                for t in (f["cause"] + ";" + f["effect"]).split(";"):
-                    if t:
-                        c[t][k]["claims"] += 1
             for p in f["qualifiers"].split(";"):
                 kk, _, v = p.partition("=")
                 if kk in ("species", "gas", "phase", "surface") and v in L.SPECIES:
@@ -256,6 +252,10 @@ def counts():
             for kk, x in Q.result_records(T, e).items():
                 if x["record"].get("kind") == "computed_by_kb":
                     c[kk.split("{")[0].split("[")[0]][k]["derived"] += 1
+    for n in Q.claim_nodes().values():                                           # P130: claims counts nodes (one per triple), not member claims
+        for t in set(n["cause"].split(";") + n["effect"].split(";")):
+            for k in n["papers"]:
+                c[t][k]["claims"] += 1
     _COUNTS.update({i: {k: dict(v) for k, v in d.items()} for i, d in c.items()})
     return _COUNTS
 
@@ -303,12 +303,26 @@ def family_of(i):
 
 
 def paper_counts(ids):
-    """{paper: {values, claims, settings}} summed over the ids."""
+    """{paper: {values, claims, settings}} summed over the ids; claims counts the distinct claim nodes naming any of the ids (P130)."""
     out = collections.defaultdict(collections.Counter)
     for i in ids:
         for k, d in counts().get(i, {}).items():
             out[k].update(d)
+    nodes = Q.nodes_with(ids)
+    for k in out:
+        out[k]["claims"] = len(nodes.get(k, ()))
     return out
+
+
+FOOTER_NODES = 3                    # P130: cross-paper claim nodes named in the P67 footer
+
+
+def footer_nodes(ids):
+    """P130: the cross-paper claim nodes (two or more papers) whose cause or effect is one of the ids, as 'claim [node] in p1, p2, …'."""
+    ns = sorted((n for n in Q.claim_nodes().values() if len(n["papers"]) > 1 and set(n["cause"].split(";") + n["effect"].split(";")) & set(ids)),
+                key=lambda n: -len(n["papers"]))
+    out = [f"claim [{n['id']}] in {', '.join(n['papers'])}" for n in ns[:FOOTER_NODES]]
+    return out + ([f"+{len(ns) - FOOTER_NODES} cross-paper claims"] if len(ns) > FOOTER_NODES else [])
 
 
 def footer(ids, paper=None):
@@ -332,7 +346,7 @@ def footer(ids, paper=None):
             absent.append(k)
     if not parts and not absent:
         return ""
-    return " · ".join(parts) + (f" · not studied in: {', '.join(absent)}" if absent else "")
+    return " · ".join(parts + footer_nodes(ids)) + (f" · not studied in: {', '.join(absent)}" if absent else "")
 
 
 # ---------------------------------------------------------------------------------------------------------------- the concept lines (P63)
@@ -488,7 +502,7 @@ def paper_summary(k, T=None):
         ozone = "ozone" in pm.lower() or any(v == "o3" for kk, v in vt.items() if kk.split("{")[0] in ("reactant_A", "reactant_B"))
         modes.add("plasma" if plasma else "ozone" if ozone else "thermal")
     return dict(key=k, materials=sorted(mats), processes=procs, structures=sorted(structs), modes=sorted(modes), experiments=len(Q.experiments(T)),
-                claims=sum(1 for f in T.rows if f["type"] == "claim"), outcomes=outs, panels=sum(inv.values()), curves=len(T.curves))
+                claims=len(Q.nodes_of_paper(k)), outcomes=outs, panels=sum(inv.values()), curves=len(T.curves))
 
 
 def summaries():
@@ -568,7 +582,7 @@ def paper_index(k, short=""):
     inv = collections.Counter(i["panel_type"] for i in T.inventory)
     out.append((f"{k}:index", f"figure panels {sum(inv.values())}" + (" (" + ", ".join(f"{t} {n}" for t, n in inv.most_common()) + ")" if inv else "") + f" · curves {len(T.curves)}"))
     inputs_n = sum(1 for f in T.rows if "#" in f["fact_id"] and f.get("data_kind") == "model_input" and Q.text_of(f))
-    out.append((f"{k}:index", f"model inputs {inputs_n} · input entities {len(Q.inputs(T))} · experiments {len(Q.experiments(T))} · claims {sum(1 for f in T.rows if f['type'] == 'claim')}"))
+    out.append((f"{k}:index", f"model inputs {inputs_n} · input entities {len(Q.inputs(T))} · experiments {len(Q.experiments(T))} · claims {len(Q.nodes_of_paper(k))}"))
     return out
 
 
@@ -586,7 +600,7 @@ def prompt_index(names=None, pc=None, keys=None):
     for k in keys:
         qs = sorted(((d[k]["values"], q) for q, d in pc.items() if q in L.ENTRIES and L.ENTRIES[q]["type"] in ("quantity", "categorical") and d.get(k, {}).get("values")), key=lambda x: (-x[0], x[1]))
         T = Q.TREES.get(k)
-        claims = sum(1 for f in T.rows if f["type"] == "claim") if T else 0
+        claims = len(Q.nodes_of_paper(k)) if T else 0                            # P130: claim nodes
         line = f"{k}" + (f" ({names[k]})" if names and k in names else "") + " · " + ", ".join(f"{q} {n}" for n, q in qs) + f" · claims {claims} · panels {len(T.inventory) if T else 0} · curves {len(T.curves) if T else 0}"
         while len(line) // 4 > PROMPT_INDEX_BUDGET and qs:                       # over the budget: the smallest counts fold into '+n more'
             qs = qs[:-1]
