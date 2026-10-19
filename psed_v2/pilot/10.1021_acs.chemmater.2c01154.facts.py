@@ -1788,6 +1788,9 @@ C.sized(K, {
 C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
 C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
 C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
+# the mechanism of the 450 °C ratio comparison as a claim (the comparison sentence of s3.p37 is observation s3.p37#1)
+F(K, "s3.p38", "claim", "A higher H2 flow ratio raises the carrier concentration at high deposition temperature too: at 450 °C going from ratio 0.20 to 0.80 adds three orders of magnitude.",
+  stance="asserted", cause="plasma_gas_ratio", relation="increases", effect="carrier_density", links=f"{K}:s3.p38#4;{K}:s3.p38#5;{K}:s3.p38#1", parent=K)
 # P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
 BG = 'background, motivation, prior art or scope'
 RETYPE = {
@@ -1801,7 +1804,7 @@ RETYPE = {
     's2.p11#2': ('triple', 'plasma_gas_ratio', 'causes', 'crystallinity'),
     's3.p1#3': ('triple', 'self_limiting_growth', 'causes', 'growth_per_cycle'),
     's3.p25#4': ('triple', 'thiol_groups', 'increases', 'fin_growth'),
-    's3.p37#5': ('triple', 'deposition_temperature', 'causes', 'carrier_density'),
+    's3.p37#5': ('observation', '^s3.p36#1'),
     's3.p41#2': ('triple', 'sulfur_vacancy;thiol_groups', 'causes', 'hydrogen_incorporation'),
     's3.p46#5': ('triple', 'plasma_gas_ratio', 'causes', 'crystallinity'),
     's3.p51#4': ('triple', 'reactant_B', 'causes', 'plasma_chemistry'),
