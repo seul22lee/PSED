@@ -1829,6 +1829,51 @@ def check_multi_values():
     return err
 
 
+def check_compare_runs():
+    """P126: compare_runs.report on the repo's own small run file (pilot/runs/asks.jsonl) gives a markdown report with all six sections and
+    no exception; a synthetic verdicts file joins on (file, arm, run, question order) and counts correctly, with the Wilson interval."""
+    import compare_runs as CR, tempfile, csv as _csv
+    err = []
+    path = HERE / "runs" / "asks.jsonl"
+    if not path.exists():
+        print("== compare_runs (P126): pilot/runs/asks.jsonl missing, skipped"); return err
+    try:
+        md = CR.report([str(path)])
+    except Exception as e:
+        return [f"compare_runs: {type(e).__name__}: {e} (P126)"]
+    for sec in ("## 1. Runs", "## 2. Cost and process", "## 3. Number and kind checks", "## 4. Stability", "## 5. Per question", "## 6. Summary"):
+        if sec not in md:
+            err.append(f"compare_runs: section {sec!r} missing (P126)")
+    recs = CR.load(str(path)); qno = CR.question_numbers(recs)
+    arms = sorted({r["arm"] for r in recs})
+    with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, newline="", encoding="utf-8") as f:
+        w = _csv.DictWriter(f, fieldnames=["question_no", "run_file", "arm", "run", "verdict", "note"]); w.writeheader()
+        keys = list(dict.fromkeys((r["_file"], r["arm"], r.get("run", 1), qno[r["question"].strip()]) for r in recs))   # one verdict per join key (file, arm, run, question)
+        verd = {k: CR.VERDICTS[n % len(CR.VERDICTS)] for n, k in enumerate(keys)}
+        for k, v in verd.items():
+            w.writerow(dict(question_no=k[3], run_file=k[0], arm=k[1], run=k[2], verdict=v, note="synthetic"))
+        vpath = f.name
+    try:
+        md2 = CR.report([str(path)], vpath)
+    except Exception as e:
+        return err + [f"compare_runs with verdicts: {type(e).__name__}: {e} (P126)"]
+    if "## 5b. Verdicts" not in md2 or "Wilson" not in md2:
+        err.append("compare_runs: the verdict section or the Wilson interval is missing (P126)")
+    want = collections.Counter(verd[(r["_file"], r["arm"], r.get("run", 1), qno[r["question"].strip()])] for r in recs)   # every record of a key carries its verdict
+    row_sum = {v: 0 for v in CR.VERDICTS}
+    for line in md2.split("## 5b. Verdicts", 1)[1].splitlines():
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if len(cells) >= 2 + len(CR.VERDICTS) and cells[0].endswith(".jsonl"):
+            for v, c in zip(CR.VERDICTS, cells[2:2 + len(CR.VERDICTS)]):
+                row_sum[v] += int(c)
+    if row_sum != dict(want):
+        err.append(f"compare_runs: verdict counts {row_sum} against the synthetic file's {dict(want)} (P126)")
+    if any(len(r.get("answer") or "") > 200 and (r.get("answer") or "")[:200] in md2 for r in recs):
+        err.append("compare_runs: an answer body is copied into the report (P126)")
+    print(f"== compare_runs (P126): report on {path.name} ({len(recs)} records, {len(qno)} questions, arms {', '.join(arms)}): six sections; synthetic verdicts join and count")
+    return err
+
+
 def check_paper_index():
     """P117: every paper's quantity index (values(paper=k), detail(ids=[k])) is within the budget (no 'more' line), lists every quantity the
     concept cards count values for in the paper with the same count (P95 both ways), prints no value with an id, and ends with the two
@@ -2077,6 +2122,11 @@ if __name__ == "__main__":
     bad += bool(err)
     err = check_multi_values()
     print(f"== multi-quantity values (P121): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_compare_runs()
+    print(f"== compare_runs (P126): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
