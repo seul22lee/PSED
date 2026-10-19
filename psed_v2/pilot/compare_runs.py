@@ -113,9 +113,9 @@ def report(paths, verdicts=None):
         walls = collections.Counter(p["wall_hit"] for p in ps)
         rows.append([f, ARM_NAMES.get(a, a), tot.get("numbers", 0), f"{100 * tot.get('match', 0) / tot['numbers']:.0f} %" if tot.get("numbers") else "—", tot.get("elsewhere", 0), tot.get("not_seen", 0), tot.get("derived", 0),
                      tot.get("uncited", 0), sum(kc(r) for r in rs), tot.get("unknown", 0), sum(p["executed"] for p in ps), sum(p["refused"] for p in ps), sum(p["errors"] for p in ps), sum(p["malformed"] for p in ps),
-                     sum(p["folded_lines"] for p in ps), ", ".join(f"{k} {v}" for k, v in sorted(walls.items()) if k != "none") or "none", f"{100 * mean([p['redelivered_share'] for p in ps]):.0f} %", f"{100 * mean([p['utilization'] for p in ps]):.0f} %"])
+                     ", ".join(f"{k} {v}" for k, v in sorted(walls.items()) if k != "none") or "none", f"{100 * mean([p['redelivered_share'] for p in ps]):.0f} %", f"{100 * mean([p['utilization'] for p in ps]):.0f} %"])
     out += ["## 3. Number and kind checks per (run, arm)", "", table(["file", "arm", "numbers", "match", "elsewhere", "not seen", "derived", "uncited", "kind mismatches", "unknown ids", "executed", "refused", "errors", "malformed",
-                                                                    "folded lines", "wall hits", "re-delivered", "utilization"], rows)]
+                                                                    "wall hits", "re-delivered", "utilization"], rows)]
     # 4 stability
     rows = []
     for p in paths:

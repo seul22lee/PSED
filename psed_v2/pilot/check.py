@@ -1194,46 +1194,16 @@ def check_calls():
             err.append(f"malformed: five malformed calls should fire the error wall, got {r['content'][:80]!r} (P124)")
         return [r1["content"], r3["content"][-300:]]
 
-    def repeat_question():
-        """P125: the same values(result, paper) twice (the second is identical: one line), then the list form of the same quantity (its lines
-        fold into 'unchanged from call 1' lines naming every dropped id), then values(paper=): new lines; the budget falls by the delivered
-        lines only."""
-        ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
-        tool_calls, given, seen = [], {}, {}
-        q, k = "penetration depth", "yim20"
-        res = [ask.answer_call(dict(id=str(n), name="values", arguments=a), tool_calls, given, seen) for n, a in
-               enumerate([{"result": q, "paper": k}, {"result": q, "paper": k}, {"result": [q], "paper": k}, {"paper": k}], 1)]
-        first, second, third, fourth = tool_calls
-        n1 = len(first["output"].splitlines()); n2 = len(second["output"].splitlines())
-        if n2 > 0.1 * n1:
-            err.append(f"repeat: the second (identical) call delivers {n2} lines, over 10 % of the first's {n1} (P125)")
-        folds = [t for t in third["output"].splitlines() if t.startswith("[unchanged]")]
-        folded_ids = set(re.findall(r"[a-z0-9]+:[^,\s]+", " ".join(f.split(": ids ", 1)[1] for f in folds if ": ids " in f)))
-        droppable = {i for i, t in first["lines"] if i not in ask.NEVER_FOLD and not t.startswith(ask.HEADER_START)}
-        if not folds or droppable - folded_ids:
-            err.append(f"repeat: the fold line should list every dropped id, missing {sorted(droppable - folded_ids)[:5]} (P125)")
-        if third["folded_lines"] < len(droppable) or any((i, t) in set(first["lines"]) for i, t in third["lines"] if i not in ask.NEVER_FOLD and not t.startswith(ask.HEADER_START)):
-            err.append(f"repeat: {third['folded_lines']} lines folded, at least {len(droppable)} were repeats, or a repeated line was delivered again (P125)")
-        left = [int(re.search(r"budget left: ([\d,]+)", c["output"]).group(1).replace(",", "")) for c in (first, third, fourth)]
-        kept_tokens = len("\n".join(l for l in third["output"].splitlines() if not l.startswith("budget left"))) // 4
-        if left[0] - left[1] != kept_tokens or kept_tokens != third["delivered_tokens"]:
-            err.append(f"repeat: the budget fell by {left[0] - left[1]} tokens, the delivered lines of the third call are {kept_tokens} (P125)")
-        if fourth["folded_lines"] or fourth["delivered_tokens"] == 0:
-            err.append(f"repeat: values(paper=) should deliver new lines (P125)")
-        p = RM.process(tool_calls)
-        if p["folded_lines"] != third["folded_lines"]:
-            err.append(f"repeat: run_metrics folded_lines {p['folded_lines']} against {third['folded_lines']} (P125)")
-        return [c["output"][-700:] for c in (first, third, fourth)]
     try:
         c10 = scripted(10); c20 = scripted(20)                                     # the ceiling and the walls scale (cap N, total 2N, errors 5)
         t40 = token_wall(ask.TOKEN_BUDGET); t80 = token_wall(80_000)              # P119 at the default budget and at 80,000
-        mal = malformed_turn(); rep = repeat_question()                          # P124, P125
+        mal = malformed_turn()                                                   # P124
     finally:
         ask.set_max_calls(ask.TOOL_CAP); ask.set_max_tokens(ask.TOKEN_BUDGET)
-    check_calls.transcript = t40["transcript"]; check_calls.malformed = mal; check_calls.repeat = rep
+    check_calls.transcript = t40["transcript"]; check_calls.malformed = mal
     print(f"== calls (P75, P119): token budget {t40['budget']:,} spent after {t40['executed']} executed calls ({t40['spent']:,} tokens delivered), {t80['budget']:,} after {t80['executed']} ({t80['spent']:,}); "
           f"ceiling {c10['cap']} / {c20['cap']} executed calls, total walls {c10['total']} / {c20['total']}, error wall {c10['errors']}; {len(valid)} valid probes; "
-          f"a malformed call is an error call and the question goes on (P124); repeated lines fold into 'unchanged from call K' (P125)")
+          f"a malformed call is an error call and the question goes on (P124)")
     return err
 
 

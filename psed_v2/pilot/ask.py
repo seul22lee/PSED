@@ -86,7 +86,7 @@ ARM_PROMPT = {
     "text": "The full text of the papers follows, split into pieces. Each piece starts with its id in square brackets. Base your answer on them. After every sentence that uses a piece, write the piece's id in square brackets, for example [yim20:s7.p5]. Cite only ids that appear below.",
     "kb": "You have tools that query a structured knowledge base built from the papers. Use them. Every result line starts with its id in square brackets. After every sentence that uses a result, write the result's id in square brackets. Cite only ids the tools returned. Do not state a number from the papers that you did not obtain from a tool. "
           "The paper index above lists every quantity each paper holds values for; values(paper=p) opens a paper's full index with ranges and sets, values(result=…, paper=p) the values themselves. "
-          "Your budget: {tokens:,} tokens of tool output for this question (every executed result ends with 'budget left: M tokens'; a call that returns an error or repeats an earlier call costs nothing; a result line you already received is replaced by 'unchanged from call K'); after {errors} calls that returned an error, or {cap} executed calls ({total} calls in all, a safety ceiling), the tools stop answering and you answer from what you have.",
+          "Your budget: {tokens:,} tokens of tool output for this question (every executed result ends with 'budget left: M tokens'; a call that returns an error or repeats an earlier call costs nothing); after {errors} calls that returned an error, or {cap} executed calls ({total} calls in all, a safety ceiling), the tools stop answering and you answer from what you have.",
     "dump": "The whole structured knowledge base built from the papers follows, serialized once: its map, then per paper every activity, specimen, model run and cited work with its settings and results, the comparison sets, the claims and the caveats. Every record carries its id in square brackets; a value's kind is a mark explained in the legend at the end, unmarked values are measured or stated by the paper. Base your answer on it. After every sentence that uses a record, write the record's id in square brackets. Cite only ids that appear below.",
 }
 
@@ -500,38 +500,12 @@ def answer_call(c, tool_calls, given, seen_calls):
                 continue
             for j in dict.fromkeys([i] + MARK.findall(ln)):
                 given[j] = (given.get(j, "") + "\n" + ln).strip()
-        lines, n_folded = fold_repeats(lines, tool_calls)                       # P125: lines already delivered in this question fold into 'unchanged from call K'
         body = e or "\n".join(ln if i == "more" else f"[{i}] {ln}" for i, ln in lines) or "no results"
-        delivered = 0 if e else len(body) // 4                                  # P119: what this result costs, chars/4 (the delivered lines only)
+        delivered = 0 if e else len(body) // 4                                  # P119: what this result costs, chars/4
         msg = body if e else body + f"\nbudget left: {max(CAPS['tokens'] - spent - delivered, 0):,} tokens"
-        rec, err = dict(results=sum(i not in ("more", "unchanged") for i, _ in lines), error=e, chars=len(msg), delivered_tokens=delivered, folded_lines=n_folded,
-                        lines=[(i, t) for i, t in lines if i not in ("more", "unchanged")] if not e else [], output=msg), bool(e)
+        rec, err = dict(results=sum(i != "more" for i, _ in lines), error=e, chars=len(msg), delivered_tokens=delivered, output=msg), bool(e)
     tool_calls.append(dict(name=c["name"], arguments=c["arguments"], tokens=None, **rec))     # the full text the model received (P38)
     return dict(id=c["id"], name=c["name"], content=msg, error=err)
-
-
-NEVER_FOLD = ("legend", "between", "columns", "more", "unchanged")                # P125: legends, headers and 'more' lines are never folded
-HEADER_START = ("set [", "settings table", "columns of every row", "inputs [", "paper-level [", "cited works [", "set-level [", "matrix:")
-
-
-def fold_repeats(lines, tool_calls):
-    """P125: a result line (id and text) already delivered by an earlier executed call of this question is dropped and replaced, per
-    earlier call, by one line 'N lines unchanged from call K: ids a, b, …' (every dropped id listed); legends, headers and 'more' lines
-    stay. Returns (lines, number of folded lines)."""
-    seen = {}
-    for k, rec in enumerate(tool_calls, 1):
-        if not rec.get("error"):
-            for i, t in rec.get("lines") or []:
-                seen.setdefault((i, t), k)
-    out, folds, n = [], {}, 0
-    for i, t in lines:
-        if i in NEVER_FOLD or t.startswith(HEADER_START) or (i, t) not in seen:
-            out.append((i, t)); continue
-        folds.setdefault(seen[(i, t)], []).append(i); n += 1
-    for k in sorted(folds):
-        ids = list(dict.fromkeys(folds[k]))
-        out.append(("unchanged", f"{len(folds[k])} lines unchanged from call {k}: ids " + ", ".join(ids)))
-    return out, n
 
 
 def preamble_sha256(arm):
