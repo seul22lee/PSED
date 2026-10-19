@@ -1842,7 +1842,7 @@ def check_compare_runs():
         err.append("compare_runs: an answer body is copied into the report (P126)")
     if {"kb", "text"} <= set(arms):                                              # P127: anchor columns and one kb × text grid per run, summing to its questions
         runs = sorted({r.get("run", 1) for r in recs if r["arm"] in ("kb", "text")})
-        if "anchors kb only" not in md2 or "## 5c. Per-question verdict agreement" not in md2:
+        if "anchors both / kb only / text only · papers both / kb only / text only" not in md2 or "## 5c. Per-question verdict agreement" not in md2:
             err.append("compare_runs: the anchor columns or section 5c is missing (P127)")
         else:
             blocks = md2.split("## 5c. Per-question verdict agreement", 1)[1].split("## 6.", 1)[0].split("(rows kb, columns text)")[1:]

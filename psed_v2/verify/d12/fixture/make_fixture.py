@@ -1,5 +1,5 @@
 """P127 fixture: two invented run files (fix_a.jsonl: arms kb and text, runs 1 and 2; fix_b.jsonl: arms kb, text and model, run 1)
-and a matching verdicts.csv. Questions, papers (alp01, bet02, gam03) and ids are made up; nothing comes from the corpus.
+and a matching verdicts.csv; fix_a carries one preamble hash per arm (P128). Questions, papers (alp01, bet02, gam03) and ids are made up; nothing comes from the corpus.
 
     python3 psed_v2/verify/d12/fixture/make_fixture.py   # writes next to itself"""
 import csv, json
@@ -50,8 +50,9 @@ def record(f, arm, run, qi, ids):
                 cited={i: "invented" for i in ids}, tool_calls=calls, error="" if arm != "model" else "fixture: no model",
                 number_check=dict(numbers=n, match=max(n - 1, 0), elsewhere=0, not_seen=min(n, 1), derived=0, uncited=0, unknown_ids=0,
                                   per_number=[dict(value=float(k), status="match") for k in range(n)]),
-                kind_check=dict(mismatches=0), usage=dict(input=1000 * (n + 1), output=100, cache_read=500 * n), cost=round(0.001 * (n + 1), 6),
-                seconds=1.0, max_tokens=40000, max_calls=10, preamble_sha256="fixture", git_head="fixture")
+                kind_check=dict(mismatches=0), usage=dict(input=1000 * (n + 1), output=100, cache_read=500 * n), cost=round(0.001 * (n + 1) * (0.5 if arm == "text" else 1), 6),
+                seconds=1.0, max_tokens=40000, max_calls=10, git_head="fixture",
+                preamble_sha256={"kb": "50e4fixturekb000", "text": "1d62fixturetx000"}.get(arm, "fixture") if f == "fix_a.jsonl" else "fixture")
 
 
 for f in ("fix_a.jsonl", "fix_b.jsonl"):

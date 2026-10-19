@@ -7,9 +7,11 @@ Sections (each a table generated from the records): 1 runs; 2 cost and process p
 P74/P75 process columns; 4 stability (P115) where a file holds repeats; 5 the per-question table (and the verdict counts with the
 Wilson 95 % interval when --verdicts is given: columns question_no, run_file, arm, run, verdict right | slips | material | fabricated |
 empty, note; joined on file, arm, run and the question's order of first appearance); P127: for every file holding both the kb and the
-text arm and each run number in it, section 5 adds the cited anchors (an id truncated at '#') both arms share, kb only and text only, and
-the cited papers (the prefix before ':') the same way, and with --verdicts section 5c counts kb verdict × text verdict per question, with
-the questions one arm got right and the other graded otherwise; 6 one closing paragraph computed from the numbers.
+text arm and each run number in it, section 5 adds one column with the counts of cited anchors (an id truncated at '#') both arms
+share, kb only and text only, and of the cited papers (the prefix before ':') the same way (P128: counts only), and with --verdicts
+section 5c counts kb verdict × text verdict per question, with the questions one arm got right and the other graded otherwise; 6 one
+closing paragraph computed from the numbers (P128: the cost ratio kb / text per answer within each file holding both, never across
+files). P128: section 1 labels a file's preamble hashes by arm when it holds several.
 Answer bodies are never copied; the question text is truncated to 60 characters."""
 import argparse, collections, csv, json, math, statistics, sys
 from pathlib import Path
@@ -71,12 +73,19 @@ def anchors(r):
 
 
 def overlap(a, b):
-    """(both, a only, b only) of two sets, each sorted."""
-    return sorted(a & b), sorted(a - b), sorted(b - a)
+    """P128: the counts 'both / a only / b only' of two sets."""
+    return f"{len(a & b)} / {len(a - b)} / {len(b - a)}"
 
 
-def ids_cell(xs):
-    return f"{len(xs)}: " + ", ".join(xs) if xs else "0"
+def preambles(rs):
+    """P128: the preamble hash of a file's records; several hashes are labelled by arm, each shortened to four characters."""
+    hs = {str(r.get("preamble_sha256", "—")) for r in rs}
+    if len(hs) <= 1:
+        return ", ".join(hs)
+    by = {}
+    for r in rs:
+        by.setdefault(r["arm"], set()).add(str(r.get("preamble_sha256", "—")))
+    return " · ".join(f"{a} " + "/".join(h[:4] + "…" for h in sorted(v)) for a, v in sorted(by.items()))
 
 
 def question_numbers(recs):
@@ -101,7 +110,7 @@ def report(paths, verdicts=None):
     for p in paths:
         rs = load(p)
         rows.append([Path(p).name, ", ".join(sorted({r["arm"] for r in rs})), ", ".join(sorted({r["model"] for r in rs})),
-                     ", ".join(sorted({f"{r.get('max_tokens', '—')}/{r.get('max_calls', '—')}" for r in rs})), ", ".join(sorted({str(r.get("preamble_sha256", "—")) for r in rs})),
+                     ", ".join(sorted({f"{r.get('max_tokens', '—')}/{r.get('max_calls', '—')}" for r in rs})), preambles(rs),
                      max((r.get("run", 1) for r in rs), default=1), ", ".join(sorted({str(r.get("git_head", "unknown")) for r in rs}))])
     out += ["## 1. Runs", "", table(["file", "arms", "model", "max_tokens/max_calls", "preamble", "repeats", "git head"], rows)]
     # 2 cost and process
@@ -173,13 +182,12 @@ def report(paths, verdicts=None):
         for f, run in pairs:
             rk, rt = pick(f, "kb", run, q), pick(f, "text", run, q)
             if rk is None or rt is None:
-                row += ["—"] * 4; continue
+                row.append("—"); continue
             ak, at = anchors(rk), anchors(rt)
-            row += [ids_cell(x) for x in overlap(ak, at)]
-            row.append(" / ".join(", ".join(x) or "—" for x in overlap({i.split(":", 1)[0] for i in ak}, {i.split(":", 1)[0] for i in at})))
+            row.append(overlap(ak, at) + " · " + overlap({i.split(":", 1)[0] for i in ak}, {i.split(":", 1)[0] for i in at}))
         rows.append(row)
     out += ["## 5. Per question", "", table(["no", "question", *[f"{f} · {ARM_NAMES.get(a, a)}" for f, a in cols],
-                                             *[f"{f} run {run} · {c}" for f, run in pairs for c in ("anchors both", "anchors kb only", "anchors text only", "papers both / kb only / text only")]], rows)]
+                                             *[f"{f} run {run} · anchors both / kb only / text only · papers both / kb only / text only" for f, run in pairs]], rows)]
     counts = {}
     if verd:
         rows = []
@@ -208,10 +216,10 @@ def report(paths, verdicts=None):
                     f"kb right & text not right: {len(kb_only)} questions (nos {', '.join(map(str, kb_only)) or '—'}); text right & kb not right: {len(text_only)} (nos {', '.join(map(str, text_only)) or '—'})", ""]
     # 6 closing paragraph, computed
     sent = []
-    priced = {k: v["per_answer"] for k, v in stats.items() if v["per_answer"]}
-    if len(priced) >= 2:
-        lo_k = min(priced, key=priced.get); hi_k = max(priced, key=priced.get)
-        sent.append(f"Per answer, {ARM_NAMES.get(lo_k[1], lo_k[1])} ({lo_k[0]}) is the cheapest at ${priced[lo_k]:.4f}; {ARM_NAMES.get(hi_k[1], hi_k[1])} ({hi_k[0]}) costs {priced[hi_k] / priced[lo_k]:.2f}× as much at ${priced[hi_k]:.4f}.")
+    ratios = [f"In {f}, kb costs {stats[(f, 'kb')]['per_answer'] / stats[(f, 'text')]['per_answer']:.1f}× text per answer"           # P128: within a file only
+              for f in dict.fromkeys(k[0] for k in stats) if (stats.get((f, "kb")) or {}).get("per_answer") and (stats.get((f, "text")) or {}).get("per_answer")]
+    if ratios:
+        sent.append(". ".join(ratios) + ".")
     bad = {k: sum(nc(r)["not_seen"] + nc(r)["uncited"] for r in rs) for k, rs in groups.items()}
     if len(bad) >= 2:
         b = min(bad, key=bad.get)

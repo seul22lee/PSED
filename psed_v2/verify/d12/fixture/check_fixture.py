@@ -1,5 +1,6 @@
-"""P127 check on the fixture: recompute, from the .jsonl files and verdicts.csv alone, per (file, run, question) the anchor and paper
-overlaps and per (file, run) the kb × text verdict grid and the two 'right & not right' lines, and compare with fixture_report.md."""
+"""P127/P128 check on the fixture: recompute, from the .jsonl files and verdicts.csv alone, per (file, run, question) the anchor and paper
+overlap counts, per (file, run) the kb × text verdict grid and the two 'right & not right' lines, per file the preamble label (by arm when
+several) and the within-file kb / text cost ratio, and compare with fixture_report.md."""
 import collections, csv, json, re, sys
 from pathlib import Path
 
@@ -19,18 +20,17 @@ rows = {int(c[0]): c for c in ([x.strip() for x in l.strip("|").split("|")] for 
 by = {(r["_file"], r["arm"], r["run"], qno[r["question"]]): r for r in recs}
 pairs = sorted({(f, run) for (f, a, run, n) in by if a == "kb" and any(k[0] == f and k[1] == "text" for k in by)})
 for f, run in pairs:
-    col = head.index(f"{f} run {run} · anchors both")
+    col = head.index(f"{f} run {run} · anchors both / kb only / text only · papers both / kb only / text only")
     for q, n in qno.items():
         kb, tx = by.get((f, "kb", run, n)), by.get((f, "text", run, n))
-        got = rows[n][col:col + 4]
+        got = rows[n][col]
         if kb is None or tx is None:
-            want = ["—"] * 4
+            want = "—"
         else:
             a, b = ({i.split("#")[0] for i in r["cited"]} for r in (kb, tx))
-            cell = lambda s: f"{len(s)}: " + ", ".join(sorted(s)) if s else "0"
             pa, pb = ({i.split(":")[0] for i in s} for s in (a, b))
-            want = [cell(a & b), cell(a - b), cell(b - a), " / ".join(", ".join(sorted(s)) or "—" for s in (pa & pb, pa - pb, pb - pa))]
-        n_cells += 4
+            want = f"{len(a & b)} / {len(a - b)} / {len(b - a)} · {len(pa & pb)} / {len(pa - pb)} / {len(pb - pa)}"
+        n_cells += 1
         if got != want:
             err.append(f"{f} run {run} q{n}: {got} != {want}")
 sec5c = md.split("## 5c. Per-question verdict agreement", 1)[1].split("## 6.", 1)[0]
@@ -52,8 +52,29 @@ for f, run in pairs:
     if want not in block:
         err.append(f"{f} run {run}: line missing: {want}")
     n_grids += 1
+sec1 = md.split("## 1. Runs", 1)[1].split("## 2.", 1)[0]
+for f in ("fix_a.jsonl", "fix_b.jsonl"):
+    hs = {}
+    for r in recs:
+        if r["_file"] == f:
+            hs.setdefault(r["arm"], set()).add(r["preamble_sha256"])
+    allh = set().union(*hs.values())
+    want = next(iter(allh)) if len(allh) == 1 else " · ".join(f"{a} " + "/".join(h[:4] + "…" for h in sorted(v)) for a, v in sorted(hs.items()))
+    if not any(l.startswith(f"| {f} |") and f"| {want} |" in l for l in sec1.splitlines()):
+        err.append(f"section 1: preamble of {f} should read {want!r}")
+sec6 = md.split("## 6. Summary", 1)[1]
+for f in ("fix_a.jsonl", "fix_b.jsonl"):
+    per = {}
+    for a in ("kb", "text"):
+        rs = [r for r in recs if r["_file"] == f and r["arm"] == a]
+        ans = [r for r in rs if r["answer"].strip() and not r["error"]]
+        per[a] = sum(r["cost"] for r in rs) / len(ans)
+    if f"In {f}, kb costs {per['kb'] / per['text']:.1f}× text per answer" not in sec6:
+        err.append(f"section 6: the within-file cost clause of {f} is missing")
+if "cheapest" in sec6:
+    err.append("section 6: a cross-file cost comparison is still there")
 if re.search(r"Fixture question", md) is None:
     err.append("questions missing from the report")
-print(f"== P127 fixture: {len(recs)} records, {len(qno)} questions, {len(pairs)} (file, run) pairs with kb and text; {n_cells} anchor/paper cells and {n_grids} verdict grids recomputed from the jsonl and verdicts.csv")
+print(f"== P127 fixture: {len(recs)} records, {len(qno)} questions, {len(pairs)} (file, run) pairs with kb and text; {n_cells} anchor/paper count cells, {n_grids} verdict grids, 2 preamble labels and 2 cost clauses recomputed from the jsonl and verdicts.csv")
 print("== P127 fixture: " + ("OK" if not err else "FAILED\n" + "\n".join(err)))
 sys.exit(1 if err else 0)
