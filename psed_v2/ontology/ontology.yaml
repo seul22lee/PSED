@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): befb9ad2027f0b6addd092f96d76492c56605e287f60fefbba72fc19caa4b701
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): dd5ad1454c153446cc4dc60103b7c3a2ce9f5614ec10c37404d8a9327c16145a
 version: 1
 
 base_sources:
@@ -2932,31 +2932,28 @@ entries:
   - id: b_film
     type: quantity
     label: b_film
-    name: b_film
+    name: metal atoms per film formula unit
     origin: extension
     role: model_parameter
-    category: measurement
-    category_status: provisional
-    definition: 'b_film: the free label of 4 records in 3 papers; first record (yim20:fig10.cap#9): simulation input b_film = 2 : metal atoms per film formula unit'
-    definition_status: template
+    category: surface_kinetics
+    definition: b_film is the number of metal atoms in the formula unit of the deposited film
     dimension: dimensionless
     aliases: [b_film]
     citation: yim20:fig10.cap#9 (fig10.cap); yim22:tab1.cap#17 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yli18:s5.p18#1 (s5.p18); yli18:s5.p18#2 (s5.p18)
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22 yli18; merged from pending.csv (P131b)'}
     from_other: [b_film]
-    evidence: [yim20 fig10.cap, yim22 s12.p1 s12.p2 s12.p5 tab1.cap tab1.r10c1 tab1.r11c1 tab1.r1c1 tab1.r2c1 tab1.r3c1 tab1.r4c1 tab1.r5c1 tab1.r6c1 (+3), yli18 eq9 s5.p17 s5.p18]
+    definition_source: paper
+    evidence: [yim20 fig10.cap, yim22 s12.p1 s12.p2 s12.p5 tab1.cap tab1.r10c1 tab1.r11c1 tab1.r1c1 tab1.r2c1 tab1.r3c1 tab1.r4c1 tab1.r5c1 tab1.r6c1 (+3), yli18 eq9 s5.p17 s5.p18, 'quote yli18 s5.p18: b_film is the number of metal atoms in the formula unit of the deposited film']
 
   - id: wall_temperature
     type: quantity
     label: wall temperature
-    name: wall temperature
+    name: reactor wall temperature
     origin: extension
     role: condition
-    category: measurement
-    category_status: provisional
-    definition: 'wall temperature: the free label of 2 records in 2 papers; first record (mat22:s5.p1#3): Reactor walls heat to at most 150 °C; for 50-150 °C depositions wall and substrate are set equal.'
-    definition_status: template
+    category: deposition_run
+    definition: temperature at which the reactor or chamber walls are held during deposition, as distinct from the substrate or table temperature
     dimension: temperature
     unit: °C
     aliases: [wall temperature]
@@ -2964,18 +2961,17 @@ entries:
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers mat22 mat23; merged from pending.csv (P131b)'}
     from_other: [wall temperature]
+    definition_source: user
     evidence: [mat22 s5.p1, mat23 s7.p1]
 
   - id: wavelength_range
     type: quantity
     label: wavelength range
-    name: wavelength range
+    name: measurement wavelength range
     origin: extension
     role: condition
     category: measurement
-    category_status: provisional
-    definition: 'wavelength range: the free label of 3 records in 2 papers; first record (yim20:s7.p5#1): saturation profiles were measured as line scans with a FilmTek 2000M spectroscopic reflectometer covering 380 to 800 nm'
-    definition_status: template
+    definition: wavelength interval covered by an optical measurement (reflectometry, transmittance)
     dimension: length
     unit: nm
     aliases: [wavelength range]
@@ -2983,37 +2979,35 @@ entries:
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers mat23 yim20; merged from pending.csv (P131b)'}
     from_other: [wavelength range]
+    definition_source: user
     evidence: [mat23 fig4.cap s10.p15, yim20 s7.p5]
 
   - id: base_pressure
     type: quantity
     label: base pressure
-    name: base pressure
+    name: reactor base pressure
     origin: extension
     role: condition
-    category: measurement
-    category_status: provisional
-    definition: 'base pressure: the free label of 2 records in 2 papers; first record (mat22:s5.p1#2): A turbomolecular pump gives a base pressure of 10^-6 Torr.'
-    definition_status: template
+    category: ald_reactor
+    definition: lowest pressure the pumped reactor reaches with no gas flowing (ultimate vacuum), stated before deposition
     dimension: pressure
     unit: Torr
     aliases: [base pressure]
-    citation: mat22:s5.p1#2 (s5.p1); ela03:s3.p26#3 (s3.p26;s3.p27)
+    citation: mat22:s5.p1#2 (s5.p1); zou23:s5.p1#2 (s5.p1); mat23:s7.p1#2 (s7.p1)
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers ela03 mat22; merged from pending.csv (P131b)'}
     from_other: [base pressure]
-    evidence: [ela03 s3.p26 s3.p27, mat22 s5.p1]
+    definition_source: user
+    evidence: [mat22 s5.p1, mat23 s7.p1, zou23 s5.p1]
 
   - id: p_d
     type: quantity
     label: P_d
-    name: P_d
+    name: desorption probability (per unit time)
     origin: extension
     role: model_parameter
-    category: measurement
-    category_status: provisional
-    definition: 'P_d: the free label of 10 records in 2 papers; first record (yim20:fig10.cap#15): simulation input P_d = 0.043 1 s-1: desorption probability per unit time'
-    definition_status: template
+    category: surface_kinetics
+    definition: desorption probability, P_d
     dimension: inverse_time
     unit: 1/s
     aliases: [P_d]
@@ -3021,7 +3015,8 @@ entries:
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22; merged from pending.csv (P131b)'}
     from_other: [P_d]
-    evidence: [yim20 fig10.cap, yim22 fig4.cap fig4f fig6.cap fig7.cap s12.p1 s12.p2 s12.p5 s14.p6 s15.p4 tab1.cap tab1.r10c1 tab1.r11c1 (+10)]
+    definition_source: paper
+    evidence: [yim20 fig10.cap, yim22 fig4.cap fig4f fig6.cap fig7.cap s12.p1 s12.p2 s12.p5 s14.p6 s15.p4 tab1.cap tab1.r10c1 tab1.r11c1 (+10), 'quote yim22 fig4.cap: desorption probability, P_d', 'quote yli18 s6.p6: where $\theta$ is the surface coverage, $q$ the saturation adsorption density, and $P_d$ the desorption probability in unit time.']
 
 families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
   composition: {}

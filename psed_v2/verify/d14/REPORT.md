@@ -131,3 +131,38 @@ Hashes:
 - kb preamble: 90f1459ac13f8154 → **0ea67d562f985c3a** (2,588 tokens). The tool descriptions carry the new names and the 9th pending
   entry.
 - ontology v1: 356a86b4… (d814cb1) → **befb9ad2027f0b6addd092f96d76492c56605e287f60fefbba72fc19caa4b701**. Tag ontology-v1 moved.
+
+## 12c: definitions of the five entries (Directive 12c)
+
+`ontology/entry_definitions.py` holds the user's table and writes it. It removed definition_status and category_status, and checked
+every paper quote by substring match against the element text (LaTeX wrapper removed); all matched. Categories are the ones the user
+chose in the chat: `model_parameter` is a role and `setting` a record type, and neither is a hierarchy leaf (make_report check 8).
+
+| id | name | category | source | definition |
+|---|---|---|---|---|
+| b_film | metal atoms per film formula unit | surface_kinetics | paper | b_film is the number of metal atoms in the formula unit of the deposited film |
+| p_d | desorption probability (per unit time) | surface_kinetics | paper | desorption probability, P_d |
+| wall_temperature | reactor wall temperature | deposition_run | user | temperature at which the reactor or chamber walls are held during deposition, as distinct from the substrate or table temperature |
+| base_pressure | reactor base pressure | ald_reactor | user | lowest pressure the pumped reactor reaches with no gas flowing (ultimate vacuum), stated before deposition |
+| wavelength_range | measurement wavelength range | measurement | user | wavelength interval covered by an optical measurement (reflectometry, transmittance) |
+
+- **Quotes in evidence:**
+  - b_film: `quote yli18 s5.p18`. The element prints `$b_{\text{film}}$`.
+  - p_d: `quote yim22 fig4.cap`, plus the yli18 sentence with P_d and "desorption", verbatim: s6.p6 "where $\theta$ is the surface
+    coverage, $q$ the saturation adsorption density, and $P_d$ the desorption probability in unit time."
+- **b_film's leaf:** the user asked for the leaf of gpc_sat, q and rho. gpc_sat (`saturation_growth_per_cycle`) and q
+  (`saturation_density`) are in surface_kinetics, but film density rho (`film_density`) is in film_properties, as an output. b_film went
+  to surface_kinetics, with the two model parameters of the group.
+- **wavelength_range:** the schema has a category for instrument and measurement settings (`measurement`: "Settings of the
+  characterization…"), so no provisional flag.
+- **Units and roles unchanged:** p_d stays 1/s, b_film has no unit, and roles are as before.
+- **ela03 re-key:** ela03:s3.p26#3 is no longer a base pressure. Its printed label in 10.1021_cm0303080.facts.py is now
+  `evacuated below`, printed in s3.p26 ("the flow tube was first evacuated below 0.035 Torr"). The facts.write() rule no longer keys it,
+  so it stays `other[evacuated below]`; it is the only record that changed.
+  - `pending_decide.py --labels "evacuated below"` made the pending row `evacuated_below` (ela03, rule none).
+  - base_pressure's evidence is now mat22 s5.p1, mat23 s7.p1, zou23 s5.p1, and its citation lists those three records. Its
+    deviation.reason still records the P131b decision as it was made (rule a, papers ela03 mat22).
+- **Audit:** matched 204, missing 0, unlocated 175, spread 6, ambiguous 13, pending 1.
+- **Hashes:**
+  - kb preamble: 0ea67d562f985c3a → **b267b30d2286615c**.
+  - ontology v1: befb9ad2… → **dd5ad1454c153446cc4dc60103b7c3a2ce9f5614ec10c37404d8a9327c16145a**.

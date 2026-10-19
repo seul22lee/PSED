@@ -154,7 +154,7 @@ p_h2o = f("s3.p25;s5.p2", "setting", "the water partial pressure in the H2O expo
 claim("s3.p26", "the highest-aspect-ratio membranes need very large exposures, impractical under continuous flow because they drain the precursor reservoirs", "asserted",
       "aspect_ratio", "exposure", "increases")
 qs_mode = f("s3.p26", "setting", "for those membranes the reactor ran quasi-statically, with a computer-controlled pneumatic exhaust valve between the flow tube and the mechanical pump")
-qs_base = f("s3.p26;s3.p27", "setting", "quasi-static cycle: the tube is pumped below 0.035 Torr before each dose and after it", quantity="other", label_as_printed="base pressure", value="0.035", censor="<", unit="Torr", data_kind="stated")
+qs_base = f("s3.p26;s3.p27", "setting", "quasi-static cycle: the tube is pumped below 0.035 Torr before each dose and after it", quantity="other", label_as_printed="evacuated below", value="0.035", censor="<", unit="Torr", data_kind="stated")   # 12c: not a base pressure (pumped between doses); the printed words of s3.p26
 qs_pdez = f("s3.p26;s4.p12", "setting", "quasi-static cycle: with the exhaust valve shut, 5 Torr of DEZ fills the reactor", quantity="partial_pressure", qualifiers="species=dez", value="5", unit="Torr", data_kind="stated")
 qs_tdez = f("s3.p26;s4.p12", "setting", "quasi-static cycle: DEZ exposure 120 s", quantity="pulse_time", qualifiers="step=reactant_A;species=dez", value="120", unit="s", data_kind="stated")
 qs_purge = f("s3.p27", "setting", "quasi-static cycle: after evacuation, a 200 sccm N2 purge at 1 Torr for 240 s", quantity="purge_time", qualifiers="step=purge_A", value="240", unit="s", data_kind="stated")
