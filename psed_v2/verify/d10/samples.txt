@@ -1,0 +1,167 @@
+====================================================================================================
+P120 block as it appears in the kb prompt (after the L0 map, before the descend protocol):
+Paper index (every quantity each paper holds values for, by count; open a paper with values(paper=<key>)):
+yim20 (Yim 2020) · film_thickness 61, growth_per_cycle 45, front_slope 33, penetration_depth 20, coated_aspect_ratio 16, fit_r2 16, initial_sticking_coefficient 13, normalized_thickness 13, feature_width 9, deposition_temperature 6, reactor 5, aspect_ratio 4, fill_fraction 4, cycle_number 3, signal_intensity 3, film_density 2, knudsen_number 2, mean_free_path 2, partial_pressure 2, distance 1, pulse_time 1, purge_time 1, saturation_density 1 · claims 54 · panels 32 · curves 58
+mat22 (Mattinen 2022) · crystallinity 65, element_ratio 48, resistivity 41, growth_per_cycle 32, binding_energy 23, film_thickness 20, raman_shift 12, element_fraction 11, deposition_temperature 10, roughness 7, carrier_density 6, phase 6, film_density 4, atoms_per_cycle 3, mobility 2, plasma_gas_ratio 2, crystallite_size 1 · claims 62 · panels 17 · curves 8
+gre23 (Greenberg 2023) · deposition_temperature 7, exposure 6, gas_moles_per_cycle 6, porosity 6, pressure_rate 6, pressure_rise 6, reaction_stoichiometry 6, crystallite_size 5, growth_per_cycle 5, phase_fraction 4, resistivity 4, deposited_moles_per_cycle 3, film_thickness 3, mass_gain 3, phase 3, process_pressure 3, specific_surface_area 3, aspect_ratio 2, body_diameter 2, body_thickness 2, particle_diameter 2, purge_time 2, time_to_maximum 2, coated_aspect_ratio 1, feature_depth 1, feature_width 1, partial_pressure 1, pulse_time 1 · claims 69 · panels 20 · curves 13
+ela03 (Elam 2003) · normalized_thickness 20, surface_coverage 11, time 4, feature_width 3, film_thickness 3, exposure 2, initial_sticking_coefficient 2, signal_intensity 2, aspect_ratio 1, body_thickness 1, mean_free_path 1, penetration_depth 1, pulse_time 1, thickness_nonuniformity 1 · claims 54 · panels 27 · curves 34
+gor03 (Gordon 2003) · exposure 6, aspect_ratio 3, fill_fraction 2, saturation_density 2, atoms_per_cycle 1, feature_extent 1, feature_width 1, film_thickness 1, growth_per_cycle 1, initial_sticking_coefficient 1, step_coverage 1 · claims 18 · panels 4 · curves 1
+yli18 (Ylilammi 2018) · partial_pressure 14, film_thickness 10, surface_coverage 8, molecule_diameter 4, adsorption_equilibrium_constant 3, initial_sticking_coefficient 3, penetration_depth 3, saturation_growth_per_cycle 3, aspect_ratio 2, molar_mass 2, deposition_temperature 1, feature_extent 1, feature_width 1, pulse_time 1, saturation_density 1 · claims 15 · panels 7 · curves 29
+gao15 (Gao 2015) · coated_aspect_ratio 8, penetration_depth 8, film_thickness 6, aspect_ratio 3, feature_width 2, process_pressure 2, mean_free_path 1, normalized_thickness 1 · claims 21 · panels 17 · curves 4
+art19 (Arts 2019) · normalized_thickness 12, recombination_probability 11, film_thickness 8, coated_aspect_ratio 6, aspect_ratio 2, initial_sticking_coefficient 1, mean_free_path 1 · claims 21 · panels 6 · curves 10
+yim22 (Yim 2022) · film_thickness 59, knudsen_number 39, initial_sticking_coefficient 25, partial_pressure 20, molar_mass 17, growth_per_cycle 14, front_slope 13, molecule_diameter 12, saturation_density 7, deposition_temperature 6, feature_extent 6, feature_width 6, film_density 6, cycle_number 5, pulse_time 5, surface_coverage 4, effective_diffusion_coefficient 3, adsorption_equilibrium_constant 1, process_pressure 1, saturation_growth_per_cycle 1 · claims 93 · panels 26 · curves 90
+hei24 (Heikkinen 2024) · reactant_number_density 74, surface_coverage 63, penetration_depth 32, feature_depth 5, feature_width 2, pulse_time 2, specific_surface_area 2, deposition_temperature 1, exposure 1, initial_sticking_coefficient 1, molar_mass 1, partial_pressure 1, porosity 1, saturation_density 1 · claims 31 · panels 35 · curves 163
+mat23 (Mathew 2023) · growth_per_cycle 14, film_thickness 11, binding_energy 4, diffraction_angle 4, element_fraction 4, element_ratio 3, crystallinity 2, phase 2, roughness 2, cycle_number 1 · claims 24 · panels 21 · curves 8
+zou23 (Zouw 2023) · growth_per_cycle 13, element_fraction 9, resistivity 6, diffraction_angle 4, film_thickness 4, crystallinity 2, step_coverage 2, deposition_temperature 1, phase 1, process_pressure 1, thickness_nonuniformity 1 · claims 26 · panels 24 · curves 11
+====================================================================================================
+values({"result": ["growth per cycle", "resistivity", "element fraction"], "paper": "mat22"})
+[columns] columns of every row: growth per cycle · 16 values computed by this knowledge base, not by the paper's authors are not listed here (detail, parts computed)
+[mat22:cmp:map] set [mat22:cmp:map] (grid) · temperature and H2 flow ratio grid · varies: temperature, H2 flow ratio · shared: material MoS2; reactant A Mo(NtBu)2(NMe2)2; reactant B H2S; structure planar; reactor Oxford Instruments FlexAL PEALD; temperature set point 200–450 °C; pressure set point in the dose
+[mat22:cmp:map] … 200 mTorr; Ar purity 99.999 %; H2S purity 99.5 %; H2 purity 99.999 %; purity (Mo(NtBu)2(NMe2)2) 98 %; source temperature (Mo(NtBu)2(NMe2)2) 50 °C; pulse (Mo(NtBu)2(NMe2)2, reactant A) 6 s; plasma step 20 s; purge after precursor 10 s; purge after co-reactant 6 s · 32 cells + 3 variants
+[mat22:cmp:map] matrix: rows temperature (8 levels) × columns H2 flow ratio (7 levels) · 32 cells, 24 combinations n.t. · '—' = no value in a tested cell · a level with no value is left out, its cells counted
+[mat22:cmp:map] caveats on every cell: [mat22:s3.p28#3], [mat22:s3.p32#5]
+[mat22:cmp:map] growth per cycle · 32 of 32 cells shown (0 in rows or columns left out) · columns: 0 | 0.20 | 0.35 | 0.50 | 0.65 | 0.80 | 0.94
+[mat22:cmp:map] 50 °C · n.t. | 1.7 Å/cycle (k1) [mat22:fig7b#32] | n.t. | n.t. | n.t. | 1.45 Å/cycle (k1) [mat22:fig7b#33] | n.t.
+[mat22:cmp:map] 100 °C · n.t. | 1.15 Å/cycle (k1) [mat22:fig7b#27] | n.t. | 1.15 Å/cycle (k1) [mat22:fig7b#28] | 1.15 Å/cycle (k1) [mat22:fig7b#29] | 1.4 Å/cycle (k1) [mat22:fig7b#30] | 0.7 Å/cycle (k1) [mat22:fig7b#31] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 150 °C · 0.7 Å/cycle (k1) [mat22:fig7b#21] | 0.75 Å/cycle (k1) [mat22:fig7b#22] | n.t. | 0.9 Å/cycle (k1) [mat22:fig7b#23] | 1.1 Å/cycle (k1) [mat22:fig7b#24] | 1.3 Å/cycle (k1) [mat22:fig7b#25] | 0.7 Å/cycle (k1) [mat22:fig7b#26] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 200 °C · 0.6 Å/cycle (k1) [mat22:fig7b#15] | 0.6 Å/cycle (k1) [mat22:fig7b#16] | n.t. | 0.85 Å/cycle (k1) [mat22:fig7b#17] | 1.1 Å/cycle (k1) [mat22:fig7b#18] | 1.3 Å/cycle (k1) [mat22:fig7b#19] | 0.7 Å/cycle (k1) [mat22:fig7b#20] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 250 °C · 0.6 Å/cycle (k1) [mat22:fig7b#8] | 0.65 Å/cycle (k1) [mat22:fig7b#9] | 0.8 Å/cycle (k1) [mat22:fig7b#10] | 0.95 Å/cycle (k1) [mat22:fig7b#11] | 1.1 Å/cycle (k1) [mat22:fig7b#12] | 1.3 Å/cycle (k1) [mat22:fig7b#13] | 0.65 Å/cycle (k1) [mat22:fig7b#14] · caveats [mat22:s3.p13#5]
+[mat22:cmp:map] 300 °C · n.t. | 0.85 Å/cycle (k1) [mat22:fig7b#7] | n.t. | n.t. | n.t. | n.t. | n.t.
+[mat22:cmp:map] 350 °C · n.t. | 0.85 Å/cycle (k1) [mat22:fig7b#4] | n.t. | 1.25 Å/cycle (k1) [mat22:fig7b#5] | n.t. | 1.45 Å/cycle (k1) [mat22:fig7b#6] | n.t.
+[mat22:cmp:map] 450 °C · n.t. | 1.2 Å/cycle (k1) [mat22:fig7b#2] | n.t. | n.t. | n.t. | 1.65 Å/cycle (k1) [mat22:fig7b#3] | n.t.
+[mat22:cmp:map] child series (views of this grid, not printed again; values(set=<id>) opens one): [mat22:cmp:T450], [mat22:cmp:T350], [mat22:cmp:T250], [mat22:cmp:T200], [mat22:cmp:T150], [mat22:cmp:T100], [mat22:cmp:T50], [mat22:cmp:cyc]
+[mat22:cmp:map] 35 claims about this set: open with detail(ids=['mat22:cmp:map'], parts=["claims"])
+[mat22:cmp:fig7a] set [mat22:cmp:fig7a] (figure) · Fig. 7a series (H2 flow ratio) · varies: H2 flow ratio · 5 rows
+[mat22:cmp:fig7a] caveats on every row of this set: [mat22:s3.p32#5]
+[mat22:fig7a#c1] 0 · H2 flow ratio 0 1 · 0.06654 nm/cycle (k3) [mat22:fig7a#d1_1]
+[mat22:fig7a#c2] 0.20 · H2 flow ratio 0.2 1 · 0.06414 nm/cycle (k3) [mat22:fig7a#d2_1]
+[mat22:fig7a#c3] 0.50 · H2 flow ratio 0.5 1 · 0.08046 nm/cycle (k3) [mat22:fig7a#d3_1]
+[mat22:fig7a#c4] 0.65 · H2 flow ratio 0.65 1 · 0.1072 nm/cycle (k3) [mat22:fig7a#d4_1]
+[mat22:fig7a#c5] 0.80 · H2 flow ratio 0.8 1 · 0.1461 nm/cycle (k3) [mat22:fig7a#d5_1]
+[mat22:folded] resistivity: 41 values in 9 sets — open with values(result="resistivity", paper="mat22")
+[mat22:folded] element fraction: 11 values in 1 sets — open with values(result="element fraction", paper="mat22")
+[legend] kinds: (k1) read from a figure; (k3) computed by this knowledge base, not by the paper's authors; unmarked: measured or stated
+[mat22:s3.p32#5] caveat · SE-based GPC is a thickness rate and hides changes in film density and stoichiometry between conditions.
+[mat22:s3.p28#3] caveat · First-100-cycle GPC averages hide non-linear growth: at high ratios GPC keeps rising with cycle number as fins form.
+[mat22:s3.p13#5] caveat · Ratio 0.94 films hold metallic Mo besides c-MoS2, so their S/Mo, GPC, roughness, resistivity and carrier density describe a two-phase film.
+[mat22:s3.p34#5] caveat · Resistivities above the four-point-probe limit are only lower bounds; the ~1000 Ω cm limit is quoted for 10 nm thick films.
+[mat22:s3.p35#7] caveat · The 0.1-1 Ω cm values are the lowest c-MoS2 resistivities, reached at ratio 0.80 and lowest at 100-150 °C, not typical of all low-T films.
+[legend] caveats on every row above: [mat22:s3.p19#8], [mat22:s5.p17#3]
+[mat22:s3.p19#8] caveat · Table 1 RBS/ERD/XPS data are from ~50 nm films on glassy carbon, thicker and on another substrate than the 10-20 nm SiO2/Si films used elsewhere.
+[mat22:s5.p17#3] caveat · The ± values of RBS and ERD results include known systematic as well as statistical uncertainty.
+[between] also in yim20: 45 values · 5 claims (with the family composition) · also in gre23: 13 values · 19 claims (with the family composition) · also in gor03: 1 values · 0 claims (with the family composition) · also in yim22: 14 values · 0 claims (with the family composition) · also in mat23: 21 values · 6 claims (with the family composition) · also in zou23: 28 values · 11 claims (with the family composition) · not studied in: ela03, yli18, gao15, art19, hei24
+====================================================================================================
+values({"result": ["penetration depth", "no such thing"], "paper": "yim20"})
+[yim20:cmp:repro] set-level [yim20:cmp:repro] · Yim 2020 · sample 2, 4, 8, and 12 · members: sample 2, sample 4, sample 8, sample 12 · 1 rows · standard deviation of penetration depth at 50 % 19.4–19.4 µm (1) · open with detail(ids=['yim20:cmp:repro']) or narrow with where
+[yim20:cmp:A] set [yim20:cmp:A] (series) · Series A — pillar layout · varies: pillar layout · 3 rows + the set's own records · columns: penetration depth at 50 % | penetration depth
+[yim20:cmp:A] set (values stated for the set, its statistics) · — | 140 µm [yim20:s10.p1#2] · caveats [yim20:s10.p1#7]
+[yim20:ent:1] sample 1 · pillar layout v1a · 140 µm [yim20:tab1.r1c11#1] | — · caveats [yim20:s16.p6#2]
+[yim20:ent:2] sample 2 · pillar layout v1b · 140 µm [yim20:tab1.r2c11#1] | —
+[yim20:ent:3] sample 3 · pillar layout v2a · 110 µm [yim20:tab1.r3c11#1] | 100 µm [yim20:s10.p1#3] · caveats [yim20:s10.p1#6], [yim20:s10.p1#7], [yim20:s16.p6#2]
+[yim20:cmp:A] claims about this set: [yim20:s10.p1#4], [yim20:s16.p6#1], [yim20:s6.p2#2]
+[yim20:cmp:B] set [yim20:cmp:B] (series) · Series B — objective · varies: objective · 3 rows · columns: penetration depth at 50 %
+[yim20:cmp:B] caveats on every row of this set: [yim20:s7.p5#15]
+[yim20:ent:4] sample 4 · objective 50 × · 105 µm [yim20:tab1.r4c11#1]
+[yim20:ent:5] sample 5 · objective 10 × · 103 µm [yim20:tab1.r5c11#1] · caveats [yim20:s11.x1#5]
+[yim20:ent:6] sample 6 · objective 5 × · 109 µm [yim20:tab1.r6c11#1] · caveats [yim20:s11.x1#5]
+[yim20:cmp:B] claims about this set: [yim20:s11.x1#2], [yim20:s7.p5#12]
+[yim20:cmp:C] set [yim20:cmp:C] (series) · Series C — feature width · varies: feature width · 3 rows · columns: penetration depth at 50 %
+[yim20:ent:7] sample 7 · feature width 100 nm · 10 µm [yim20:tab1.r7c11#1] · caveats [yim20:s13.x1#7], [yim20:s16.p6#2]
+[yim20:ent:8] sample 8 · feature width 500 nm · 106 µm [yim20:tab1.r8c11#1]
+[yim20:ent:9] sample 9 · feature width 2000 nm · 375 µm [yim20:tab1.r9c11#1] · caveats [yim20:s16.p6#2]
+[yim20:cmp:C] 9 claims about this set: open with detail(ids=['yim20:cmp:C'], parts=["claims"])
+[yim20:cmp:D] set [yim20:cmp:D] (series) · Series D — cycles · varies: cycles · 2 rows · columns: penetration depth at 50 % | penetration depth
+[yim20:ent:10] sample 10 · cycles 250 · 115 µm [yim20:tab1.r10c11#1] | —
+[yim20:ent:11] sample 11 · cycles 1000 · 95 µm [yim20:tab1.r12c11#1] | 125 µm [yim20:s10.x2#2] · caveats [yim20:s10.x2#6]
+[yim20:cmp:D] 12 claims about this set: open with detail(ids=['yim20:cmp:D'], parts=["claims"])
+[yim20:cmp:E] set [yim20:cmp:E] (series) · Series E — pulse · varies: pulse · 3 rows · columns: penetration depth at 50 %
+[yim20:ent:12] sample 12 · TMA pulse 0.1 s, pillar layout v1b · 96 µm [yim20:tab1.r13c11#1]
+[yim20:ent:13] sample 13 · TMA pulse 0.2 s, pillar layout v1b · 133 µm [yim20:tab1.r14c11#1]
+[yim20:ent:14] sample 14 · TMA pulse 0.4 s, pillar layout v2a · 197 µm [yim20:tab1.r15c11#1] · caveats [yim20:s14.p1#6]
+[yim20:cmp:E] claims about this set: [yim20:abs.g3#2], [yim20:s14.p1#3], [yim20:s14.p1#4], [yim20:s19.p4#3]
+[yim20:cmp:F] set [yim20:cmp:F] (series) · Series F — purge · varies: purge · 2 rows · columns: penetration depth at 50 %
+[yim20:ent:15] sample 15 · purge after precursor 1.0 s, purge after co-reactant 1.0 s · 99 µm [yim20:tab1.r16c11#1]
+[yim20:ent:16] sample 16 · purge after precursor 10.0 s, purge after co-reactant 10.0 s · 109 µm [yim20:tab1.r18c11#1]
+[yim20:cmp:F] claims about this set: [yim20:abs.g3#2], [yim20:s18.p4#1], [yim20:s18.p5#1], [yim20:s18.p6#1], [yim20:s20.p3#1], [yim20:s18.p2#1]
+[yim20:cmp:fig9a] set [yim20:cmp:fig9a] (figure) · Fig. 9a series (channel height) — feature width · varies: feature width · 2 rows · columns: penetration depth (50%)
+[yim20:cmp:fig9a] caveats on every row of this set: [yim20:s7.p1#3]
+[yim20:fig9a#c2] 500 nm · feature width 0.5 µm · 105.9 µm (k3) [yim20:fig9a#d2_2]
+[yim20:fig9a#c3] 2000 nm · feature width 2 µm · 379.4 µm (k3) [yim20:fig9a#d3_2]
+[yim20:cmp:fig11a] set [yim20:cmp:fig11a] (figure) · Fig. 11a series (TMA pulse) · varies: pulse · 2 rows · columns: penetration depth (50%)
+[yim20:fig11a#c2] 0.2 s · pulse 0.2 s · 133.4 µm (k3) [yim20:fig11a#d2_2]
+[yim20:fig11a#c3] 0.4 s · pulse 0.4 s · 196.3 µm (k3) [yim20:fig11a#d3_2]
+[none] no result named 'no such thing'; nearest: nucleation_period, body_thickness, pulse_time
+[legend] kinds: (k2) computed by the paper's authors; (k3) computed by this knowledge base, not by the paper's authors; unmarked: measured or stated
+[legend] caveats on every specimen row above: [yim20:s13.p1#7], [yim20:s16.p10#6], [yim20:s16.p4#8], [yim20:s16.p5#10], [yim20:s16.p7#6], [yim20:s3.p9#9]
+[yim20:s3.p9#9] caveat · Table 1 values average several scans on channels of L 0.1-5 mm with outliers dropped (Series B: L 5 mm only), not a single scan
+[yim20:s16.p7#6] caveat · PD50% is measured from an entry point set by hand under the microscope (about 2 µm uncertainty); a scan off 90° would broaden the front and raise PD50%
+[yim20:s16.p4#8] caveat · PD50% depends on the true gap: in a 500 nm channel a 1% height error gives about 1.5% PD50% error, against a ±20 nm height tolerance
+[yim20:s16.p10#6] caveat · Each Table 1 value is from one chip; repeats on other chips and runs scatter by ~19 µm in PD50% and 2.8 nm in plateau thickness (sd, n=4)
+[yim20:s13.p1#7] caveat · PD50% and front slope shift with channel filling (about 10, 20, 40% at 250, 500, 1000 cycles); the usual 500 cycles exceed the <10% fill advised
+[yim20:s16.p5#10] caveat · Owing to channel roughness, PD50% should read slightly smaller and its slope somewhat steeper than on the flat surface assumed in design and models
+[yim20:s7.p5#15] caveat · Series B samples were evaluated on the 5 mm long channel only, without averaging over channel lengths
+[yim20:s16.p6#2] caveat · Only 500 nm channels with layout v1b met the design best; samples on other heights or layouts carry larger fabrication uncertainty
+[yim20:s10.p1#6] caveat · Sample 3 (layout v2a) likely had a channel narrower than the 500 nm design, as the roof hangs lower between its sparse pillars; its front is wavy
+[yim20:s10.p1#7] caveat · These penetration depths were judged by eye from the colour contrast in optical images, not at a defined thickness level
+[yim20:s11.x1#5] caveat · Samples 5 and 6 were read with 25 and 50 µm spots, near or above the ~30 µm front width, which broadens the entrance bump and the front
+[yim20:s13.x1#7] caveat · In the 100 nm channel a ~50 nm film plugged the entry during growth and the roof sags ~40 nm, so sample 7 values reflect a closing channel
+[yim20:s10.x2#6] caveat · The 125 µm is the reach of the Al X-ray map, not a 50% thickness point; reflectometry gives PD50% 95 µm on the same sample
+[yim20:s14.p1#6] caveat · With the 0.4 s TMA pulse the front was likely set by the water dose, so sample 14 front values describe water, not TMA, limitation
+[yim20:s7.p1#3] caveat · Profiles were taken after peeling the roof off with tape; membrane remnants left near the entry add a bump to the measured thickness
+[between] also in gre23: 1 values · 3 claims (with the family conformality) · also in ela03: 21 values · 18 claims (with the family conformality) · also in gor03: 3 values · 9 claims (with the family conformality) · also in yli18: 3 values · 10 claims (with the family conformality) · also in gao15: 17 values · 12 claims (with the family conformality) · also in art19: 18 values · 10 claims (with the family conformality) · also in yim22: 0 values · 39 claims (with the family conformality) · also in hei24: 32 values · 15 claims (with the family conformality) · also in mat23: 0 values · 1 claims (with the family conformality) · also in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+====================================================================================================
+values({"paper": "gre23"})
+[gre23:index] Greenberg 2023 (gre23) · quantity index: 28 quantities with values · label (id) · n values (by home) · range · sets · claims; open one with values(result=<id>, paper="gre23")
+[gre23:index] T (deposition_temperature) · 7 values (paper 2, cited 5) · 80–177 °C · no set · claims 24
+[gre23:index] exposure (exposure) · 6 values (cited 6), derived 5 · cited: 133–1.33e+06 Pa·s · no set · claims 5
+[gre23:index] Δn_g (gas_moles_per_cycle) · 6 values (set-level 3, paper 3) · 50.8–191 µmol · sets [gre23:cmp:fig3b] · claims 2
+[gre23:index] porosity (porosity) · 6 values (specimen 3, input 2, cited 1) · 0.95–51 % · sets [gre23:cmp:schedules] · claims 2
+[gre23:index] TS (pressure_rate) · 6 values (set-level 3, paper 3) · -2–80 mTorr/min · sets [gre23:cmp:fig3c] · claims 3
+[gre23:index] δp (pressure_rise) · 6 values (set-level 3, paper 3) · 0.45–2.7 Torr · sets [gre23:cmp:fig3a] · claims 4
+[gre23:index] ȳ (reaction_stoichiometry) · 6 values (paper 3, cited 3) · 1–1.88 1 · no set · claims 6
+[gre23:index] crystallite size (crystallite_size) · 5 values (specimen 4, set-level 1) · 5.1–95 nm · sets [gre23:cmp:schedules] · claims 2
+[gre23:index] GPC (growth_per_cycle) · 5 values (specimen 3, cited 2) · 0.1–0.348 nm/cycle · sets [gre23:cmp:schedules] · claims 7
+[gre23:index] wt% (phase_fraction) · 4 values (specimen 4) · 12.5–23.3 wt% · no set · claims 4
+[gre23:index] ρ (resistivity) · 4 values (specimen 3, cited 1) · 0.0001–1.3e+05 Ω·m · no set · claims 8
+[gre23:index] Δn_s (deposited_moles_per_cycle) · 3 values (specimen 3) · 139–217 µmol · sets [gre23:cmp:schedules] · claims 1
+[gre23:index] S (film_thickness) · 3 values (specimen 2, cited 1) · 4.28–100 nm · sets [gre23:cmp:schedules] · claims 5
+[gre23:index] mass gain (mass_gain) · 3 values (specimen 3) · 26.4–36.4 % · sets [gre23:cmp:schedules] · claims 3
+[gre23:index] phase (phase) · 3 values (specimen 3) · categorical · no set · claims 0
+[gre23:index] p (process_pressure) · 3 values (paper 3) · no numeric value · no set · claims 0
+[gre23:index] s (specific_surface_area) · 3 values (cited 3) · cited: 20.2–505 m2/g · no set · claims 0
+[gre23:index] AR (aspect_ratio) · 2 values (input 1, cited 1) · 7.8e+03–6e+04 1 · no set · claims 3
+[gre23:index] D (body_diameter) · 2 values (input 2) · input: 11.4–11.4 mm · no set · claims 0
+[gre23:index] 2L (body_thickness) · 2 values (input 2) · input: 1.55–1.6 mm · no set · claims 0
+[gre23:index] d_NP (particle_diameter) · 2 values (input 1, cited 1) · 50–100 nm · no set · claims 0
+[gre23:index] purge (purge_time) · 2 values (specimen 2) · 660–2.16e+04 s · no set · claims 11
+[gre23:index] t_max (time_to_maximum) · 2 values (paper 2) · paper: 10–15 min · no set · claims 0
+[gre23:index] coated AR (coated_aspect_ratio) · 1 values (set-level 1) · 7.8e+03 1 · sets [gre23:cmp:schedules] · claims 2
+[gre23:index] depth (feature_depth) · 1 values (cited 1) · cited: 1.25e+03 µm · no set · claims 0
+[gre23:index] w (feature_width) · 1 values (cited 1) · cited: 0.02 µm · no set · claims 2
+[gre23:index] p_partial (partial_pressure) · 1 values (cited 1) · cited: 133 Pa · no set · claims 0
+[gre23:index] pulse (pulse_time) · 1 values (cited 1) · cited: 1 s · no set · claims 0
+[gre23:index] figure panels 20 (plot 10, photo 4, micrograph 3, schematic 2, spectrum 1) · curves 13
+[gre23:index] model inputs 0 · input entities 2 · experiments 4 · claims 69
+====================================================================================================
+scripted token-wall transcript (check_calls, default budget 40,000): the last three results, the refusal last
+== calls (P75, P119): token budget 40,000 spent after 32 executed calls (41,604 tokens delivered), 80,000 after 77 (80,793); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 119 valid probes
+--- result 1 (last 2386 chars shown)
+5 s; purge after co-reactant 15 s; substrate SiO2 · 1 rows · columns: step coverage (sidewall) | step coverage (bottom)
+[zou23:outside] caveats on every row of this set: [zou23:s11.p5#8]
+[zou23:ent:trench] Mo in Si trenches · 0.95 [zou23:s11.p5#5] | 0.90 [zou23:s11.p5#6]
+[between] in yim20: 53 values · 16 claims (with the family conformality) · in gre23: 1 values · 3 claims (with the family conformality) · in ela03: 21 values · 18 claims (with the family conformality) · in gor03: 3 values · 9 claims (with the family conformality) · in yli18: 3 values · 10 claims (with the
+[between] … family conformality) · in gao15: 17 values · 12 claims (with the family conformality) · in art19: 18 values · 10 claims (with the family conformality) · in yim22: 0 values · 39 claims (with the family conformality) · in hei24: 32 values · 15 claims (with the family conformality) · in mat23: 0
+[zou23:s11.p5#8] caveat · The conformality was read from STEM images of one 3:1 trench; the trench film's deposition temperature is not stated.
+[between] … values · 1 claims (with the family conformality) · in zou23: 2 values · 2 claims (with the family conformality) · not studied in: mat22
+budget left: 265 tokens
+--- result 2 (last 7501 chars shown)
+{pore} = 20 nm · pulse 500 s · curve, 4 points, series 'd_{pore} = 20 nm' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig6l#c3]
+[hei24:fig6l#c4] d_{pore} = 30 nm · pulse 500 s · curve, 4 points, series 'd_{pore} = 30 nm' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig6l#c4]
+[hei24:fig6l#c5] d_{pore} = 40 nm · pulse 500 s · curve, 4 points, series 'd_{pore} = 40 nm' · x 0 to 300 µm (k1) ± 0.01 (digitized) [hei24:fig6l#c5]
+[between] 20 of 29 sets collapsed to their range and count to stay within the budget; open them with detail(ids=[set ids]) or narrow with where
+[legend] kinds: (k1) read from a figure; (k2) computed by the paper's authors; (k3) computed by this knowledge base, not by the paper's authors; (k7) simulated by the paper's authors; unmarked: measured or stated
+[legend] basis digitized: digitized from the figure, ±1 % of the axis range (the repeat sample of the figure stage, Directive 5′)
+[between] in gre23: 0 values · 1 claims · in ela03: 11 values · 7 claims · in gor03: 0 values · 1 claims · in yli18: 8 values · 0 claims · in yim22: 4 values · 0 claims · in hei24: 63 values · 1 claims · not studied in: yim20, mat22, gao15, art19, mat23, zou23
+budget left: 0 tokens
+--- result 3 (last 95 chars shown)
+error: the budget of 40,000 tool tokens is spent (32 calls executed); answer from what you have
