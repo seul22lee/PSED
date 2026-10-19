@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (STRUCTURE_CLASSES, TRANSFORMS, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
                    RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, BASES, ENTRIES, HIERARCHY, AMBIGUOUS_ALIASES, VALUE_ALIASES,
-                   LABELS as _LABELS, NAMES as _NAMES)
+                   LABELS as _LABELS, NAMES as _NAMES, FROM_OTHER)
 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same

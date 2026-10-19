@@ -1,0 +1,5 @@
+ontology v1 (P131b, tag ontology-v1)
+sha256: 356a86b4bd1349213c2f9321ec8f1c441c279028d23d48ca858136dd3f56ebd1
+over: psed_v2/ontology/ontology.yaml with its '# ontology v1 sha256' header line removed, followed by psed_v2/ontology/units.yaml (bytes, UTF-8)
+recompute:
+  python3 -c "import hashlib,re;b=re.sub(r'(?m)^# ontology v1 sha256 .*\n','',open('psed_v2/ontology/ontology.yaml',encoding='utf-8').read()).encode();print(hashlib.sha256(b+open('psed_v2/ontology/units.yaml','rb').read()).hexdigest())"

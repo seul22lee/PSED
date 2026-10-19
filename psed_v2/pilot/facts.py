@@ -731,8 +731,19 @@ def bases():
             r["basis"] = L.basis_of(r["uncertainty_kind"], q.get("between", ""), q.get("stat", ""))
 
 
+def rekey_from_other():
+    """P131b: an other[...] record whose printed label (exactly) is a from_other label of an entry (lists.FROM_OTHER: the entry was promoted
+    from that free label, ontology/merge_pending.py) is re-keyed to the entry. Label, value, kind, unit and owner stay. Returns the fact ids."""
+    out = []
+    for r in _facts:
+        if r["quantity"] == "other" and r["label_as_printed"] in L.FROM_OTHER:
+            r["quantity"] = L.FROM_OTHER[r["label_as_printed"]]; out.append(r["fact_id"])
+    return out
+
+
 def write(key, pid):
     """<pid>.facts.csv and <pid>.coverage.csv (no points.json since P88); elements without facts and without an NK reason are 'missed'."""
+    rekey_from_other()
     fill_uncertainty()
     kinds(pid)
     bases()

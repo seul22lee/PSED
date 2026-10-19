@@ -1,7 +1,8 @@
-# PSED v2 ontology v0. Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+# PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-version: 0
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 356a86b4bd1349213c2f9321ec8f1c441c279028d23d48ca858136dd3f56ebd1
+version: 1
 
 base_sources:
   schema_miner:
@@ -375,10 +376,10 @@ entries:
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:SEC"
     qualifiers: [step]
-    aliases: [DosingTime, "pulse time", "Pulse length (s)", "Length of the reactant pulse", "TMA pulse", "plasma pulse length", "pulse length"]
+    aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length, t_1]
     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
     deviation: {type: renamed, reason: "Cremers and all gold papers say pulse time; the two fields become one entry with the step qualifier"}
-    evidence: ["Yim2020 Table 1", "Yim2020 Fig. 11a", "Yim2020 Fig. 10", "Ylilammi2018 Fig. 5", "Ylilammi2018 Fig. 4", "Ylilammi2018 Sec. VII", "Werbrouck2021 Fig. 11", "Werbrouck2021 Sec. II D"]
+    evidence: [Yim2020 Table 1, Yim2020 Fig. 11a, Yim2020 Fig. 10, Ylilammi2018 Fig. 5, Ylilammi2018 Fig. 4, Ylilammi2018 Sec. VII, Werbrouck2021 Fig. 11, Werbrouck2021 Sec. II D, 'alias ''t_1'': yim22 tab1.r2c1 (P131b alias audit)']
 
   - id: purge_time
     type: quantity
@@ -459,10 +460,10 @@ entries:
     unit: 1/m3
     qudt_quantity_kind: "quantitykind:NumberDensity"
     qudt_unit: "unit:PER-M3"
-    aliases: [CarrierDensity]
+    aliases: [CarrierDensity, majority carrier (hole) concentration]
     base: {source: schema_miner, path: MaterialProperties/ElectricalProperties/CarrierDensity}
     deviation: {type: redefined, reason: "a number density (1/m3), not a charge density"}
-    evidence: []
+    evidence: ['alias ''majority carrier (hole) concentration'': mat22 s3.p36 (P131b alias audit)']
 
   - id: mobility
     type: quantity
@@ -476,9 +477,9 @@ entries:
     unit: "m2/(V·s)"
     qudt_quantity_kind: "quantitykind:Mobility"
     qudt_unit: "unit:M2-PER-V-SEC"
-    aliases: [Mobility]
+    aliases: [Mobility, Hall mobility]
     base: {source: schema_miner, path: MaterialProperties/ElectricalProperties/Mobility}
-    evidence: []
+    evidence: ['alias ''Hall mobility'': mat22 s3.p36 (P131b alias audit)']
 
   - id: thickness_nonuniformity
     type: quantity
@@ -510,10 +511,10 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: [AspectRatio, "aspect ratio", "Max. AR", "structural aspect ratio"]
+    aliases: [AspectRatio, aspect ratio, Max. AR, structural aspect ratio, L/d]
     base: {source: schema_miner, path: MaterialProperties/Conformality/AspectRatio}
     deviation: {type: split, reason: "split into aspect_ratio and coated_aspect_ratio: the AR of the structure is not the AR reached by the coating (Cremers Sec. II G-H)"}
-    evidence: ["Yim2020 Table 2", "Yim2020 Fig. 1", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+    evidence: [Yim2020 Table 2, Yim2020 Fig. 1, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''L/d'': ela03 abs.g1 (P131b alias audit)']
 
   - id: coated_aspect_ratio
     type: quantity
@@ -564,9 +565,9 @@ entries:
     unit: g/cm3
     qudt_quantity_kind: "quantitykind:MassDensity"
     qudt_unit: "unit:GM-PER-CentiM3"
-    aliases: [FilmDensity, "film density", "Density of the condensed phase"]
+    aliases: [FilmDensity, film density, Density of the condensed phase, rho]
     base: {source: schema_miner, path: MaterialProperties/FilmDensity}
-    evidence: []
+    evidence: ['alias ''rho'': yim22 tab1.r4c1 (P131b alias audit)']
 
   # ---------------------------------------------------------------- base quantities from Cremers / Popov
   - id: partial_pressure
@@ -583,9 +584,9 @@ entries:
     qudt_quantity_kind: "quantitykind:PartialPressure"
     qudt_unit: "unit:PA"
     qualifiers: [species]
-    aliases: ["Partial pressure of reactant A", "Input partial pressure of reactant A", "Pressure pA (Pa)", "pA0 (Pa)", "pO (mbar)", "Partial pressure of active species"]
+    aliases: [Partial pressure of reactant A, Input partial pressure of reactant A, Pressure pA (Pa), pA0 (Pa), pO (mbar), Partial pressure of active species, p_A0, p_i, vapour pressure]
     base: {source: cremers_2019, section: "Sec. II D; second half of the split of schema_miner ProcessParameters/Pressure (path recorded on process_pressure)"}
-    evidence: ["Ylilammi2018 Fig. 2", "Ylilammi2018 Table I", "Ylilammi2018 Figs. 3-5", "Yim2020 Fig. 10", "Werbrouck2021 Fig. 13", "Werbrouck2021 Fig. 14", "Werbrouck2021 Sec. II D"]
+    evidence: [Ylilammi2018 Fig. 2, Ylilammi2018 Table I, Ylilammi2018 Figs. 3-5, Yim2020 Fig. 10, Werbrouck2021 Fig. 13, Werbrouck2021 Fig. 14, Werbrouck2021 Sec. II D, 'alias ''p_A0'': yim22 tab1.r1c1; yli18 tabI.r1c3 (P131b alias audit)', 'alias ''p_i'': yim22 tab1.r9c1 (P131b alias audit)', 'alias ''vapour pressure'': zou23 s5.p1 (P131b alias audit)']
 
   - id: exposure
     type: quantity
@@ -599,9 +600,9 @@ entries:
     unit: "Pa·s"
     qudt_unit: "unit:PA-SEC"
     qualifiers: [species]
-    aliases: ["reactant exposure"]
+    aliases: [reactant exposure, Pt]
     base: {source: cremers_2019, section: "Sec. II D"}
-    evidence: []
+    evidence: ['alias ''Pt'': gor03 s6.p7 (P131b alias audit)']
 
   - id: source_temperature
     type: quantity
@@ -633,9 +634,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Thickness"
     qudt_unit: "unit:NanoM"
     qualifiers: [position]
-    aliases: ["Film thickness (nm)", "Film thickness S (nm)", "Thickness (nm)", "film thickness", "Thickness outside SI (nm)", "Initial thickness SIIb (nm)"]
+    aliases: [Film thickness (nm), Film thickness S (nm), Thickness (nm), film thickness, Thickness outside SI (nm), Initial thickness SIIb (nm), interface layer thickness, onset of steady growth]
     base: {source: cremers_2019, section: "Sec. II H, Fig. 7"}
-    evidence: ["Yim2020 Fig. 7", "Yim2020 Fig. 8", "Yim2020 Fig. 9a", "Yim2020 Fig. 9d", "Yim2020 Fig. 10a", "Yim2020 Fig. 10d", "Yim2020 Fig. 11", "Yim2020 Table 1", "Ylilammi2018 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 12"]
+    evidence: [Yim2020 Fig. 7, Yim2020 Fig. 8, Yim2020 Fig. 9a, Yim2020 Fig. 9d, Yim2020 Fig. 10a, Yim2020 Fig. 10d, Yim2020 Fig. 11, Yim2020 Table 1, Ylilammi2018 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Fig. 11, Werbrouck2021 Fig. 12, 'alias ''interface layer thickness'': mat22 s3.p44 (P131b alias audit)', 'alias ''onset of steady growth'': zou23 s8.x1 (P131b alias audit)']
 
   - id: penetration_depth
     type: quantity
@@ -652,9 +653,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
     qualifiers: [level]
-    aliases: ["PD50%", "x50% (PD50%)", "Penetration depth xp (µm)", "Half-thickness penetration depth", "50% thickness penetration depth"]
+    aliases: [PD50%, x50% (PD50%), Penetration depth xp (µm), Half-thickness penetration depth, 50% thickness penetration depth, x_50% (PD^50%)]
     base: {source: cremers_2019, section: "Sec. II H"}
-    evidence: ["Yim2020 Table 1", "Ylilammi2018 Fig. 5"]
+    evidence: [Yim2020 Table 1, Ylilammi2018 Fig. 5, 'alias ''x_50% (PD^50%)'': yim20 tab1.r1c11 (P131b alias audit)']
 
   - id: equivalent_aspect_ratio
     type: quantity
@@ -706,9 +707,9 @@ entries:
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [species]
-    aliases: ["initial sticking coefficient", "lumped sticking coefficient", "cTMA", "cH2O", "sticking coefficient"]
+    aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, cH2O, sticking coefficient, c, c_ext]
     base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
-    evidence: ["Ylilammi2018 Table I", "Ylilammi2018 Figs. 2-5", "Yim2020 Table 2", "Yim2020 Fig. 10", "Werbrouck2021 Sec. III D"]
+    evidence: [Ylilammi2018 Table I, Ylilammi2018 Figs. 2-5, Yim2020 Table 2, Yim2020 Fig. 10, Werbrouck2021 Sec. III D, 'alias ''c'': yim22 tab1.r7c1; yli18 tabI.r1c4 (P131b alias audit)', 'alias ''c_ext'': yim22 tab3.r1c6 (P131b alias audit)']
 
   - id: recombination_probability
     type: quantity
@@ -758,9 +759,9 @@ entries:
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: ["Design channel height H (nm)", "Channel height (nm)", "Height of the channel", "H (nm)", "LHAR H (µm)", "opening height", "channel gap height"]
+    aliases: [Design channel height H (nm), Channel height (nm), Height of the channel, H (nm), LHAR H (µm), opening height, channel gap height, minor axis, h, pore diameter (nm), targeted channel height H, Design channel height H, LHAR H, d_pore]
     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
-    evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 9", "Yim2020 Fig. 10", "Ylilammi2018 Table I", "Ylilammi2018 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+    evidence: [Yim2020 Table 1, Yim2020 Table 2, Yim2020 Fig. 9, Yim2020 Fig. 10, Ylilammi2018 Table I, Ylilammi2018 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''minor axis'': gor03 s8.p1 (P131b alias audit)', 'alias ''h'': art19 s4.p10 (P131b alias audit)', 'alias ''pore diameter (nm)'': ela03 tab1.r1c4 (P131b alias audit)', 'alias ''targeted channel height H'': yim20 s5.p1 (P131b alias audit)', 'alias ''Design channel height H'': yim20 tab1.r1c3 (P131b alias audit)', 'alias ''LHAR H'': yim20 tab2.r6c2 (P131b alias audit)', 'alias ''H'': yim22 tab1.r10c1; yli18 s5.p3 (P131b alias audit)', 'alias ''d_pore'': hei24 fig5.cap (P131b alias audit)']
 
   - id: feature_depth
     type: quantity
@@ -775,9 +776,9 @@ entries:
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: ["L (mm)", "Length of the channel", "Lateral length of the channel (mm)", "channel length L", "lateral length L"]
+    aliases: [L (mm), Length of the channel, Lateral length of the channel (mm), channel length L, lateral length L, l/2, cavity length]
     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
-    evidence: ["Yim2020 Fig. 8a", "Yim2020 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+    evidence: [Yim2020 Fig. 8a, Yim2020 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''l/2'': ela03 s5.p4 (P131b alias audit)', 'alias ''cavity length'': gao15 abs.g2 (P131b alias audit)']
 
   - id: feature_extent
     type: quantity
@@ -792,9 +793,9 @@ entries:
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: ["Width of the channel", "channel width W"]
+    aliases: [Width of the channel, channel width W, major axis]
     base: {source: cremers_2019, section: "Sec. II G, Fig. 6"}
-    evidence: ["Ylilammi2018 Figs. 2-5", "Werbrouck2021 Sec. II D"]
+    evidence: [Ylilammi2018 Figs. 2-5, Werbrouck2021 Sec. II D, 'alias ''major axis'': gor03 s8.p1 (P131b alias audit)']
 
   # ---------------------------------------------------------------- extension quantities (gold)
   - id: cycle_number
@@ -1188,9 +1189,9 @@ entries:
     qudt_quantity_kind: "quantitykind:InverseArea"
     qudt_unit: "unit:PER-NanoM2"
     qualifiers: [element, over]
-    aliases: ["atoms per cycle", "metal atoms per cycle"]
+    aliases: [atoms per cycle, metal atoms per cycle, Mo atoms deposited per cycle]
     base: {}
-    evidence: ["gre23 Sec. III A (s12.p1)", "yim20 Fig. 10 (model input q)"]
+    evidence: [gre23 Sec. III A (s12.p1), yim20 Fig. 10 (model input q), 'alias ''Mo atoms deposited per cycle'': mat22 s3.p30 (P131b alias audit)']
 
   - id: coating_mass_fraction
     type: quantity
@@ -1270,9 +1271,9 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: ["ȳ", "gas-to-solid ratio", "x"]
+    aliases: [ȳ, gas-to-solid ratio, x, ȳ (printed ν̄ in the text layer)]
     base: {}
-    evidence: ["gre23 Sec. III A (s12.p6)", "gre23 Table II"]
+    evidence: [gre23 Sec. III A (s12.p6), gre23 Table II, 'alias ''ȳ (printed ν̄ in the text layer)'': gre23 s12.p14 (P131b alias audit)']
 
   - id: pressure_rise
     type: quantity
@@ -1287,9 +1288,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Pressure"
     qudt_unit: "unit:TORR"
     qualifiers: [level, step]
-    aliases: ["δp", "pressure rise", "δp_max"]
+    aliases: [δp, pressure rise, δp_max, δp maximum]
     base: {}
-    evidence: ["gre23 Fig. 2", "gre23 Sec. III A (s12.p1)"]
+    evidence: [gre23 Fig. 2, gre23 Sec. III A (s12.p1), 'alias ''δp maximum'': gre23 s12.x1 (P131b alias audit)']
 
   - id: pressure_rate
     type: quantity
@@ -1319,9 +1320,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:MIN"
     qualifiers: [step]
-    aliases: ["t_max", "time to pressure maximum"]
+    aliases: [t_max, time to pressure maximum, time to δp maximum]
     base: {}
-    evidence: ["gre23 Fig. 2", "gre23 Sec. III A (s12.p7)"]
+    evidence: [gre23 Fig. 2, gre23 Sec. III A (s12.p7), 'alias ''time to δp maximum'': gre23 s12.x1 (P131b alias audit)']
 
   - id: porosity
     type: quantity
@@ -1336,9 +1337,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Porosity"
     qudt_unit: "unit:PERCENT"
     qualifiers: [stage, relative_to]
-    aliases: ["porosity", "φ_i", "φ_f"]
+    aliases: [porosity, φ_i, φ_f, 'Final porosity, φ_f (%)']
     base: {}
-    evidence: ["gre23 Table I", "gre23 Sec. II A (s8.p1)"]
+    evidence: [gre23 Table I, gre23 Sec. II A (s8.p1), 'alias ''Final porosity, φ_f (%)'': gre23 tabI.r1c2 (P131b alias audit)']
 
   - id: fill_fraction
     type: quantity
@@ -1353,9 +1354,9 @@ entries:
     unit: "%"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
-    aliases: ["channel filled"]
+    aliases: [channel filled, coated length fraction]
     base: {}
-    evidence: ["yim20 Table 1", "yim20 Sec. D (s13.x1)"]
+    evidence: [yim20 Table 1, yim20 Sec. D (s13.x1), 'alias ''coated length fraction'': gor03 s8.p5 (P131b alias audit)']
 
   - id: roughness
     type: quantity
@@ -1369,9 +1370,9 @@ entries:
     unit: "nm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:NanoM"
-    aliases: ["Rq", "roughness", "RMS roughness"]
+    aliases: [Rq, roughness, RMS roughness, root-mean-square roughness]
     base: {}
-    evidence: ["mat22 Fig. 6a", "mat22 Sec. 3 (s3.p22)"]
+    evidence: [mat22 Fig. 6a, mat22 Sec. 3 (s3.p22), 'alias ''root-mean-square roughness'': mat22 s3.p10 (P131b alias audit)']
 
   - id: binding_energy
     type: quantity
@@ -1386,9 +1387,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Energy"
     qudt_unit: "unit:EV"
     qualifiers: [element]
-    aliases: ["BE", "binding energy"]
+    aliases: [BE, binding energy, Mo 3d5/2 BE, S 2p3/2 BE, BE shift below S2-, Ga 2p3/2, S 2s]
     base: {}
-    evidence: ["mat22 Fig. 5", "mat22 Sec. 3 (s3.p16, s3.p17)"]
+    evidence: [mat22 Fig. 5, 'mat22 Sec. 3 (s3.p16, s3.p17)', 'alias ''Mo 3d5/2 BE'': mat22 s3.p16 (P131b alias audit)', 'alias ''S 2p3/2 BE'': mat22 s3.p17 (P131b alias audit)', 'alias ''BE shift below S2-'': mat22 s3.p17 (P131b alias audit)', 'alias ''Ga 2p3/2'': mat23 fig3a (P131b alias audit)', 'alias ''S 2s'': mat23 fig3b (P131b alias audit)']
 
   - id: crystallite_size
     type: quantity
@@ -1403,9 +1404,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:NanoM"
     qualifiers: [species]
-    aliases: ["crystallite size", "grain size"]
+    aliases: [crystallite size, grain size, nanocrystallite width, corundum grain size, ZnO (zincite) Crystallite size (nm), Zn (metallic) Crystallite size (nm)]
     base: {}
-    evidence: ["gre23 Table II", "mat22 Sec. 3 (s3.p26)"]
+    evidence: [gre23 Table II, mat22 Sec. 3 (s3.p26), 'alias ''nanocrystallite width'': mat22 s3.p9 (P131b alias audit)', 'alias ''corundum grain size'': gre23 s10.p1 (P131b alias audit)', 'alias ''ZnO (zincite) Crystallite size (nm)'': gre23 tabII.r1c2 (P131b alias audit)', 'alias ''Zn (metallic) Crystallite size (nm)'': gre23 tabII.r2c4 (P131b alias audit)']
 
   - id: sheet_resistance
     type: quantity
@@ -1468,9 +1469,9 @@ entries:
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
     qualifiers: [gas]
-    aliases: ["annealing temperature", "T_anneal"]
+    aliases: [annealing temperature, T_anneal, annealing temperature in air]
     base: {}
-    evidence: ["mat22 Sec. 3 (s3.p40)"]
+    evidence: [mat22 Sec. 3 (s3.p40), 'alias ''annealing temperature in air'': mat22 s3.p44 (P131b alias audit)']
 
   - id: saturation_density
     type: quantity
@@ -1485,9 +1486,9 @@ entries:
     unit: "nm-2"
     qudt_quantity_kind: "quantitykind:InverseArea"
     qudt_unit: "unit:PER-NanoM2"
-    aliases: ["q", "saturation density", "q_sat"]
+    aliases: [q, saturation density, q_sat, S_Hf, S_O, Γ, σ]
     base: {}
-    evidence: ["yim20 Fig. 10", "yim20 Table 2"]
+    evidence: [yim20 Fig. 10, yim20 Table 2, 'alias ''S_Hf'': gor03 s4.p1 (P131b alias audit)', 'alias ''S_O'': gor03 s4.p2 (P131b alias audit)', 'alias ''Γ'': ela03 s5.p34 (P131b alias audit)', 'alias ''σ'': hei24 fig5.cap (P131b alias audit)']
 
   - id: probe_resolution
     type: quantity
@@ -1519,9 +1520,9 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: ["objective", "magnification"]
+    aliases: [objective, magnification, Reflectometer magnification]
     base: {}
-    evidence: ["yim20 Table 1", "yim20 Fig. 7"]
+    evidence: [yim20 Table 1, yim20 Fig. 7, 'alias ''Reflectometer magnification'': yim20 tab1.r1c6 (P131b alias audit)']
 
   - id: pillar_layout
     type: categorical
@@ -1626,9 +1627,9 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: ["R2", "R²", "Linear fitting residual R2"]
+    aliases: [R2, R², Linear fitting residual R2, Linear fitting residual R^2]
     base: {}
-    evidence: ["yim20 Table 1"]
+    evidence: [yim20 Table 1, 'alias ''Linear fitting residual R^2'': yim20 tab1.r1c15 (P131b alias audit)']
 
   - id: signal_intensity
     type: quantity
@@ -1642,9 +1643,9 @@ entries:
     dimension: signal
     unit: ""
     qualifiers: [element, species]
-    aliases: ["Intensity", "a.u.", "counts"]
+    aliases: [Intensity, a.u., counts, Intensity (Arb. units), Intensity (Normalized to Si), 'Intensity [a.u.]', Normalized X-ray counts (Zn)]
     base: {}
-    evidence: ["yim20 Fig. 5b", "mat22 Fig. 1a", "mat22 Fig. 5", "gre23 Fig. 6d-f"]
+    evidence: [yim20 Fig. 5b, mat22 Fig. 1a, mat22 Fig. 5, gre23 Fig. 6d-f, 'alias ''Intensity (Arb. units)'': mat22 fig1a (P131b alias audit)', 'alias ''Intensity (Normalized to Si)'': mat22 fig1b (P131b alias audit)', 'alias ''Intensity (arb. units)'': mat22 fig5a (P131b alias audit)', 'alias ''Intensity [a.u.]'': yim20 fig5b (P131b alias audit)', 'alias ''Normalized X-ray counts (Zn)'': gre23 fig6d (P131b alias audit)']
 
   # ---------------------------------------------------------------- the composition family (decision D1, Sec. 18.3; P52)
   - id: element_fraction
@@ -1661,9 +1662,9 @@ entries:
     qudt_quantity_kind: "quantitykind:AmountOfSubstanceFraction"
     qudt_unit: "unit:PERCENT"
     qualifiers: [element]
-    aliases: ["at.%", "at. %", "atomic percent", "H content", "O content", "N content", "C content"]
+    aliases: [at.%, at. %, atomic percent, H content, O content, N content, C content, H (at. %), C (at. %), N (at. %), O (at. %), C after sputtering, O after sputtering]
     base: {}
-    evidence: ["mat22 Table 1", "mat22 Sec. 3 (s3.p21)"]
+    evidence: [mat22 Table 1, mat22 Sec. 3 (s3.p21), 'alias ''H (at. %)'': mat22 tab1.r1c4 (P131b alias audit)', 'alias ''C (at. %)'': mat22 tab1.r1c5 (P131b alias audit)', 'alias ''N (at. %)'': mat22 tab1.r1c6 (P131b alias audit)', 'alias ''O (at. %)'': mat22 tab1.r1c7 (P131b alias audit)', 'alias ''C after sputtering'': mat23 fig3c (P131b alias audit)', 'alias ''O after sputtering'': mat23 fig3d (P131b alias audit)']
 
   - id: element_ratio
     type: quantity
@@ -1679,9 +1680,9 @@ entries:
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [element, reference_element]
-    aliases: ["S/Mo", "S/W", "S/Mo ratio", "stoichiometry"]
+    aliases: [S/Mo, S/W, S/Mo ratio, stoichiometry, S/Mo ratio (RBS), S/Mo ratio (XPS), XPS S/Mo ratio]
     base: {}
-    evidence: ["mat22 Fig. 4", "mat22 Table 1", "mat22 Fig. 5", "mat22 Sec. 3 (s3.p46)"]
+    evidence: [mat22 Fig. 4, mat22 Table 1, mat22 Fig. 5, mat22 Sec. 3 (s3.p46), 'alias ''S/Mo ratio (RBS)'': mat22 tab1.r1c1 (P131b alias audit)', 'alias ''S/Mo ratio (XPS)'': mat22 tab1.r1c2 (P131b alias audit)', 'alias ''XPS S/Mo ratio'': mat22 fig4 (P131b alias audit)']
 
   - id: phase_fraction
     type: quantity
@@ -1697,9 +1698,9 @@ entries:
     qudt_quantity_kind: "quantitykind:MassFraction"
     qudt_unit: "unit:PERCENT"
     qualifiers: [phase, relative_to]
-    aliases: ["wt%", "Wt. %", "weight percent"]
+    aliases: [wt%, Wt. %, weight percent, ZnO (zincite) Wt. %]
     base: {}
-    evidence: ["gre23 Table II", "gre23 Fig. 5"]
+    evidence: [gre23 Table II, gre23 Fig. 5, 'alias ''ZnO (zincite) Wt. %'': gre23 tabII.r1c1 (P131b alias audit)']
 
   - id: h_per_metal
     type: quantity
@@ -1955,12 +1956,12 @@ entries:
     unit: mm
     qudt_quantity_kind: "quantitykind:Thickness"
     qudt_unit: "unit:MilliM"
-    aliases: ["body thickness", "compact thickness", "NPC thickness", "membrane thickness"]
+    aliases: [body thickness, compact thickness, NPC thickness, membrane thickness, film thickness (µm)]
     structure_aliases: ["thickness", "2L"]
     cq: "What are the dimensions of the coated structure?"
     base: {}
     deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; the review defines L, not the thickness of a body, so the definition cites gre23 Sec. II A (Sec. 18.10)"}
-    evidence: ["gre23 Sec. II A (s8.p1: NPC thickness 1.55 ± 0.05 mm by calipers)", "gre23 Fig. 1(a) (2L ≈ 1.6 mm)"]
+    evidence: ['gre23 Sec. II A (s8.p1: NPC thickness 1.55 ± 0.05 mm by calipers)', gre23 Fig. 1(a) (2L ≈ 1.6 mm), 'alias ''film thickness (µm)'': ela03 tab1.r1c5 (P131b alias audit)']
 
   - id: entry_sides
     type: categorical
@@ -2027,12 +2028,12 @@ entries:
     unit: mm
     qudt_quantity_kind: "quantitykind:Diameter"
     qudt_unit: "unit:MilliM"
-    aliases: ["body diameter", "compact diameter", "die diameter", "NPC diameter"]
+    aliases: [body diameter, compact diameter, die diameter, NPC diameter, membrane diameter, diameter]
     structure_aliases: ["diameter"]
     cq: "What are the dimensions of the coated structure?"
     base: {}
     deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; defined from gre23 Sec. II A (Sec. 18.10)"}
-    evidence: ["gre23 Sec. II A (s8.p1: die 11.4 mm, NPC 11.43 ± 0.02 mm)", "gre23 Fig. 1(a) (11.4 mm)"]
+    evidence: ['gre23 Sec. II A (s8.p1: die 11.4 mm, NPC 11.43 ± 0.02 mm)', gre23 Fig. 1(a) (11.4 mm), 'alias ''membrane diameter'': ela03 s3.p1 (P131b alias audit)', 'alias ''diameter'': gre23 s8.p1 (P131b alias audit)']
 
   # ---------------------------------------------------------------- structures (gold papers only)
   - id: pillarhall_3
@@ -2443,6 +2444,575 @@ entries:
     base: {}
     evidence: ["Yim2020 Table 2"]
 
+  # ---------------------------------------------------------------- P131b: merged from pending.csv (accepted by the P98 rules)
+  - id: sicl4
+    type: species
+    label: sicl4
+    name: sicl4
+    origin: extension
+    definition: Silicon tetrachloride SiCl4, the silicon precursor of SiO2 ALD with water (formula SiCl4; aliases SiCl4, silicon tetrachloride).
+    dimension: dimensionless
+    kind: molecule
+    formula: SICL4
+    aliases: [SICL4]
+    citation: Elam 2003 Sec. II D and Eqs. (5)-(6), citing Klaus 1997
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers ela03; merged from pending.csv (P131b)'}
+    evidence: [ela03 abs.g6 s1.p4 s3.p34 s3.p35 s4.p13 s4.p16 s4.p17 s5.p26]
+
+  - id: anodic_alumina_membrane
+    type: structure
+    label: anodic alumina membrane
+    name: anodic alumina membrane
+    origin: extension
+    definition: 'A free-standing anodic alumina (AA) membrane: a hexagonal close-packed array of uniform cylindrical nanopores open on both faces, made by anodizing aluminium.'
+    dimension: dimensionless
+    class: nanopore_membrane
+    citation: Elam 2003 Sec. I and Sec. II A, Fig. 1; Cremers 2019 Sec. III, Table I (anodic aluminium oxide)
+    cq: What are the dimensions of the coated structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule b (Sec. III, Table I (anodic aluminium oxide membranes as porous test structures)), papers ela03; merged from pending.csv (P131b)'}
+    evidence: [ela03 abs.g1 s2.p2 s3.p1]
+
+  - id: epma
+    type: method
+    label: epma
+    name: epma
+    origin: extension
+    definition: 'Electron probe microanalysis: an electron microprobe''s X-ray elemental maps and line scans across a polished cross section (comparable in kind with SEM-EDS line scans: class eds).'
+    dimension: dimensionless
+    class: eds
+    citation: Elam 2003 Sec. II C
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers ela03; merged from pending.csv (P131b)'}
+    evidence: [ela03 fig4 fig4.cap fig5.cap fig5a fig5b fig6.cap fig6a fig6b fig7.cap fig7a fig7b s2.p23 (+12)]
+
+  - id: ftir
+    type: method
+    label: ftir
+    name: ftir
+    origin: extension
+    definition: Transmission Fourier transform infrared absorption of surface species on a porous sample during the half-reactions (in situ).
+    dimension: dimensionless
+    class: ir_spectroscopy
+    citation: Elam 2003 Sec. II D
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers ela03; merged from pending.csv (P131b)'}
+    evidence: [ela03 abs.g5 fig8.cap fig8a fig8b s1.p4 s2.p25 s3.p33 s3.p34 s4.p14 s4.p15 s4.p16 s4.p17]
+
+  - id: diffraction_angle
+    type: quantity
+    label: 2θ
+    name: diffraction angle
+    origin: extension
+    role: coordinate
+    category: measurement
+    definition: 'The diffraction angle 2θ of an X-ray diffractogram: the abscissa of a diffraction pattern, on which the peaks of a phase are read as printed (P84: a peak coordinate).'
+    dimension: angle
+    unit: °
+    aliases: [2θ (deg.), 2θ (°), diffraction angle, 2theta]
+    citation: Greenberg 2023 Fig. 5 (XRD patterns, 2θ in degrees); Mathew 2023 Fig. 2d; van der Zouw 2023 Fig. 8
+    cq: Which crystalline phases does the film show?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers gre23 mat23 zou23; merged from pending.csv (P131b)'}
+    evidence: [gre23 fig5, mat23 fig2d, zou23 fig8]
+
+  - id: molar_mass
+    type: quantity
+    label: M
+    name: molar mass
+    origin: extension
+    role: condition
+    category: measurement
+    definition: The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.
+    dimension: molar_mass
+    unit: g/mol
+    aliases: [M_A, M_B, MA, molar mass, reactant molar mass, molar mass of reactant A]
+    citation: Ylilammi 2018 Fig. 2 conditions (M_A, M_B); Yim 2022 Figs. 4c and 6c (M_A in g mol-1 and kg mol-1); Heikkinen 2024 Fig. 5 series (50 to 250 g mol-1)
+    cq: Which model inputs give the profile?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. V B (M in the Knudsen diffusion coefficient D_Kn = (d_h/3)(8RT/πM)^1/2)), papers gor03 hei24 yim22 yli18; merged from pending.csv (P131b)'}
+    evidence: [gor03 s6.p5 s6.p7, hei24 abs.g3 abs.g4 fig5.cap fig5c fig5d fig6.cap fig6c fig6d s12.p3 s9.p3 tab2.cap tab2.r1c0 (+3), yim22 abs.g3 fig2.cap fig4.cap fig4c fig6.cap fig6a fig6b fig6c fig6d fig7.cap s12.p1 s12.p2 (+57), yli18 fig2 fig2.cap fig3 fig3.cap fig5 fig5.cap tabu1.r19c0 tabu1.r19c1 tabu1.r20c0 tabu1.r20c1]
+
+  - id: hfo2
+    type: species
+    label: hfo2
+    name: hfo2
+    origin: extension
+    definition: Hafnium dioxide HfO2, the film of hafnium amide / water ALD (formula HfO2; aliases HfO2, hafnium dioxide, hafnium oxide, hafnia).
+    dimension: dimensionless
+    kind: material
+    formula: HfO2
+    aliases: [HfO2, hafnium dioxide, hafnium oxide, hafnia]
+    citation: Gordon 2003 abstract and Sec. 4 (hafnium dioxide films conformal in holes of aspect ratio 43)
+    cq: Which material was deposited?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Table III lists Gordon 2003''s HfO2 but defines no material), papers art19 gor03; merged from pending.csv (P131b)'}
+    evidence: [art19 abs.g3 s5.p1 s5.p3 s6.p2 s6.p5 tab1.cap tab1.r4c1, gor03 abs.g2 s2.p3 s8.p1]
+
+  - id: hf_nme2_4
+    type: species
+    label: hf nme2 4
+    name: hf nme2 4
+    origin: extension
+    definition: Tetrakis(dimethylamido)hafnium Hf(NMe2)4, the hafnium precursor of HfO2 ALD with water (formula Hf(N(CH3)2)4; aliases TDMAH, hafnium dimethylamide).
+    dimension: dimensionless
+    kind: molecule
+    formula: Hf(NMe2)4
+    aliases: [Hf(NMe2)4, TDMAH, hafnium dimethylamide, tetrakis(dimethylamido)hafnium, hafnium dialkylamide]
+    citation: Gordon 2003 Secs. 2, 3.1 and 6 (hafnium dimethylamide vapor, Hf(NMe2)4, tetrakis(dimethyl amido) hafnium)
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers gor03; merged from pending.csv (P131b)'}
+    evidence: [gor03 abs.g2 eq1 fig2.cap s10.p4 s4.p1 s6.p10 s6.p7 s6.p9 s7.p13 s8.p1 s8.p3 s8.p5]
+
+  - id: etched_hole_array
+    type: structure
+    label: etched hole array
+    name: etched hole array
+    origin: extension
+    definition: An array of elliptical holes etched into a silicon wafer (0.17 by 0.30 µm, 7.3 µm deep), the step-coverage test structure of Gordon 2003.
+    dimension: dimensionless
+    class: via_hole
+    aliases: [etched holes, elliptical holes]
+    citation: Gordon 2003 Secs. 4 and 6 (elliptical holes 0.17 µm by 0.30 µm by 7.3 µm deep etched in silicon)
+    cq: What are the dimensions of the coated structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers gor03; merged from pending.csv (P131b)'}
+    evidence: [gor03 s10.p7 s8.p1]
+
+  - id: molecule_diameter
+    type: quantity
+    label: d_A
+    name: molecule diameter
+    origin: extension
+    role: condition
+    category: measurement
+    definition: The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density).
+    dimension: length
+    unit: pm
+    aliases: [d_A, dA, d_B, molecular diameter, diameter of molecule A, d_TMA, d_TiCl4]
+    citation: Ylilammi 2018 Sec. II, Eqs. (7)-(8) (d_A = 418 pm for water, 591 pm for TMA, 703.9 pm for TiCl4); Yim 2022 Fig. 2 conditions (d_A)
+    cq: Which model inputs give the profile?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. II D (d in the mean free path λ = k_B T/(√2 π d² p))), papers yim22 yli18; merged from pending.csv (P131b)'}
+    evidence: [yim22 fig2.cap fig6.cap fig7.cap s12.p1 s12.p2 s12.p5 s14.p6 s15.p4 s5.p8 tab1.cap tab1.r10c1 tab1.r11c1 (+21), yli18 fig2 fig2.cap fig3 fig3.cap fig5 fig5.cap s5.p15 s5.p16 tabu1.r5c0 tabu1.r5c1, 'alias ''d_TMA'': yli18 s5.p16 (P131b alias audit)', 'alias ''d_TiCl4'': yli18 s5.p16 (P131b alias audit)']
+
+  - id: pillarhall_1
+    type: structure
+    label: microscopic LHAR
+    name: pillarhall 1
+    origin: extension
+    definition: 'The first microscopic silicon lateral high-aspect-ratio (LHAR) test structure: a lateral cavity 200-1000 nm high and 20-5000 um long inside silicon under a polysilicon membrane on oxide pillars, with a central port; the PillarHall prototype 1 of Gao 2015.'
+    dimension: dimensionless
+    class: lateral_channel
+    aliases: [microscopic LHAR, LHAR test structure, microscopic LHAR structure, PillarHall prototype 1]
+    citation: Gao 2015 abstract, Sec. II, Fig. 1; Ylilammi 2018 Sec. I (the earlier prototypes)
+    cq: What are the dimensions of the coated structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule b (Sec. III C and Table IV (lateral high-aspect-ratio structures, the PillarHall prototypes of Gao 2015)), papers gao15; merged from pending.csv (P131b)'}
+    evidence: [gao15 abs.g1 s6.p1]
+
+  - id: infrared_microscopy
+    type: method
+    label: infrared microscopy
+    name: infrared microscopy
+    origin: extension
+    definition: 'Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is transparent in the infrared).'
+    dimension: dimensionless
+    class: optical_image
+    aliases: [infrared microscopy, IR microscopy, top-view infrared microscopy]
+    citation: Gao 2015 Sec. II and Sec. III A, Fig. 3
+    cq: How far does the film reach into the structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers gao15; merged from pending.csv (P131b)'}
+    evidence: [gao15 fig3.cap fig3a fig3b fig3c fig3d fig3e fig3f fig3g fig3h fig3i s6.p12 s6.p13]
+
+  - id: bdeas
+    type: species
+    label: BDEAS
+    name: bdeas
+    origin: extension
+    definition: Bis(diethylamino)silane SiH2(N(C2H5)2)2 (BDEAS), the silicon precursor of plasma ALD SiO2 (formula SiH2(NEt2)2; aliases BDEAS, bis(diethylamino)silane).
+    dimension: dimensionless
+    kind: molecule
+    formula: BDEAS
+    aliases: [BDEAS, SiH2(N(C2H5)2)2, SiH2(NEt2)2, bis(diethylamino)silane]
+    citation: Arts 2019 Experimental Details (SiH2(N(C2H5)2)2, BDEAS, for SiO2)
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers art19; merged from pending.csv (P131b)'}
+    evidence: [art19 s5.p1]
+
+  - id: tdmacph
+    type: species
+    label: TDMACpH
+    name: tdmacph
+    origin: extension
+    definition: HfCp(N(CH3)2)3 (TDMACpH), cyclopentadienyl-tris(dimethylamido)hafnium, the hafnium precursor of plasma ALD HfO2 (formula HfCp(NMe2)3; aliases TDMACpH).
+    dimension: dimensionless
+    kind: molecule
+    formula: TDMACpH
+    aliases: [TDMACpH, HfCp(N(CH3)2)3, HfCp(NMe2)3]
+    citation: Arts 2019 Experimental Details (HfCp(N(CH3)2)3, TDMACpH, for HfO2); Sharma 2017 (ref 26)
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers art19; merged from pending.csv (P131b)'}
+    evidence: [art19 s5.p1]
+
+  - id: pillarhall_4
+    type: structure
+    label: PillarHall-4
+    name: pillarhall 4
+    origin: extension
+    definition: 'PillarHall LHAR generation 4 (LHAR4): the microscopic lateral high-aspect-ratio channel under a polysilicon membrane on silicon pillars, 500 nm nominal gap, with a larger pillar spacing than generation 3; variants LHAR4-ADVANCED trench W90 L1020 and the LHAR4 small chip (vS1, vS2).'
+    dimension: dimensionless
+    class: lateral_channel
+    aliases: [PillarHall-4, PillarHall LHAR generation 4, LHAR4, LHAR4-ADVANCED, PillarHall 4th generation]
+    citation: Arts 2019 Modeling and Experimental Details, Fig. 2 caption (PillarHall LHAR generation 4; LHAR4-ADVANCED trench W90 L1020; LHAR4 small chip vS1, vS2)
+    cq: What are the dimensions of the coated structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers art19; merged from pending.csv (P131b)'}
+    evidence: [art19 s4.p3 s5.p2]
+
+  - id: surface_recombination
+    type: mechanism
+    label: surface recombination
+    name: surface recombination
+    origin: extension
+    definition: Loss of plasma radicals by recombination on the growth surface (probability r per collision), which makes the radical density fall exponentially into a high-aspect-ratio feature and limits how far a plasma ALD film penetrates.
+    dimension: dimensionless
+    aliases: [surface recombination, radical recombination, recombination of plasma radicals]
+    citation: Arts 2019 abstract, Modeling (Eqs. 3-6), Conclusions; Knoops 2010 (ref 9)
+    cq: Which mechanism limits the penetration depth?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. II E (recombination probability r of plasma radicals on the surface)), papers art19 zou23; merged from pending.csv (P131b)'}
+    evidence: [art19 abs.g1 abs.g2 abs.g3 fig1.cap s2.p1 s3.p1 s3.p2 s3.p3 s3.p4 s3.p8 s4.p4 s6.p1 (+3), zou23 fig10.cap fig9.cap s11.p5 s11.p6 s11.p9 s12.p2]
+
+  - id: ga2s3
+    type: species
+    label: Ga2S3
+    name: ga2s3
+    origin: extension
+    definition: Gallium(III) sulfide Ga2S3, the film of the PE-ALD process of Mathew 2023 (crystalline, cubic, (111)-oriented); formula Ga2S3.
+    dimension: dimensionless
+    kind: material
+    formula: Ga2S3
+    aliases: [Ga2S3, gallium sulfide, gallium(III) sulfide]
+    citation: Mathew 2023 abstract, Sec. III B
+    cq: Which material was deposited?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers mat23; merged from pending.csv (P131b)'}
+    evidence: [mat23 abs.g3 fig2.cap fig2d s10.p4]
+
+  - id: gasx
+    type: species
+    label: GaSx
+    name: gasx
+    origin: extension
+    definition: Amorphous, sulfur-deficient gallium sulfide GaSx (S/Ga about 0.5 to 1.2), the film of the thermal Ga2(NMe2)6/H2S ALD process (Meng 2014; Mathew 2023); formula GaSx.
+    dimension: dimensionless
+    kind: material
+    formula: GaSx
+    aliases: [GaSx, amorphous gallium sulfide]
+    citation: Mathew 2023 Sec. I and III (thermal ALD GaSx, S/Ga 0.5); Meng 2014
+    cq: Which material was deposited?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers mat23; merged from pending.csv (P131b)'}
+    evidence: [mat23 s10.p1 s6.p4]
+
+  - id: ga2_nme2_6
+    type: species
+    label: Ga2(NMe2)6
+    name: ga2 nme2 6
+    origin: extension
+    definition: Hexakis(dimethylamido)digallium Ga2(NMe2)6, the gallium precursor of the thermal and plasma-enhanced gallium sulfide ALD processes (formula Ga2(N(CH3)2)6).
+    dimension: dimensionless
+    kind: molecule
+    formula: Ga2(NMe2)6
+    aliases: [Ga2(NMe2)6, hexakis(dimethylamido)digallium, hexakis(dimethyl amido)digallium]
+    citation: Mathew 2023 abstract and Sec. II (Ga2(NMe2)6, 98 %, Strem Chemicals)
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers mat23; merged from pending.csv (P131b)'}
+    evidence: [mat23 abs.g2 s7.p1 s7.p2]
+
+  - id: giwaxs
+    type: method
+    label: GIWAXS
+    name: giwaxs
+    origin: extension
+    definition: 'Grazing-incidence wide-angle X-ray scattering: a 2D diffraction pattern of a thin film at grazing incidence (synchrotron), azimuthally integrated to a 1D XRD profile; phases, texture (preferred orientation) and crystallite size.'
+    dimension: dimensionless
+    class: xrd
+    aliases: [GIWAXS, grazing incidence wide-angle x-ray scattering]
+    citation: Mathew 2023 Sec. II and III B (NCD-SWEET beamline, ALBA; 12.4 and 12.95 keV, 0.19 and 0.2 degrees)
+    cq: Which phase and orientation does the film have?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers mat23; merged from pending.csv (P131b)'}
+    evidence: [mat23 fig2.cap fig2a fig2b fig2c fig2d s10.p1 s10.p4 s10.p5 s10.p6 s11.p1 s7.p3]
+
+  - id: uv_vis_spectroscopy
+    type: method
+    label: UV-vis spectroscopy
+    name: uv vis spectroscopy
+    origin: extension
+    definition: 'UV-visible transmission spectrophotometry of a film on a transparent substrate: transmittance against wavelength, and the Tauc plot for the optical band gap.'
+    dimension: dimensionless
+    class: optical_spectroscopy
+    aliases: [UV-vis, UV-vis transmission, transmission measurement, spectrophotometry]
+    citation: Mathew 2023 Sec. II and III B, Fig. 4 (Perkin Elmer Lambda 1050, 250-1100 nm)
+    cq: Which optical properties does the film have?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers mat23; merged from pending.csv (P131b)'}
+    evidence: [mat23 abs.g5 fig4.cap fig4a s10.p15 s7.p4]
+
+  - id: mocl2o2
+    type: species
+    label: MoCl2O2
+    name: mocl2o2
+    origin: extension
+    definition: Molybdenum dichloride dioxide MoCl2O2, the molybdenum precursor of the hot-wire-assisted Mo ALD process (formula MoCl2O2, solid, vessel at 75 degrees C).
+    dimension: dimensionless
+    kind: molecule
+    formula: MoCl2O2
+    aliases: [MoCl2O2, molybdenum dichloride dioxide, Mo-oxychloride]
+    citation: van der Zouw 2023 abstract and Sec. II
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 abs.g1 s5.p1 s5.p3 s7.p3]
+
+  - id: h_atom
+    type: species
+    label: atomic hydrogen
+    name: h atom
+    origin: extension
+    definition: Atomic hydrogen (at-H), the reducing coreactant made by dissociating H2 on a heated tungsten filament (hot-wire ALD); formula H.
+    dimension: dimensionless
+    kind: molecule
+    formula: atomic hydrogen
+    aliases: [atomic hydrogen, hydrogen atoms]
+    citation: van der Zouw 2023 abstract and Sec. I-II (at-H from a heated W filament)
+    cq: Which reactants were used, at which exposure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 abs.g1 s5.p1 s5.p3 s7.p3]
+
+  - id: sims
+    type: method
+    label: SIMS
+    name: sims
+    origin: extension
+    definition: 'Secondary ion mass spectrometry depth profiling: elemental concentrations (atoms per cm3) against depth.'
+    dimension: dimensionless
+    class: sims
+    aliases: [SIMS, secondary ion mass spectrometry, secondary ion mass spectroscopy]
+    citation: van der Zouw 2023 Sec. II (Atomika 4100 quadrupole SIMS) and Fig. 6
+    cq: Which impurities does the film contain?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 fig6.cap fig6a fig6b s5.p8 s9.p5]
+
+  - id: tof_erda
+    type: method
+    label: TOF-ERDA
+    name: tof erda
+    origin: extension
+    definition: 'Time-of-flight elastic recoil detection analysis: elemental composition and depth profiles in at.%, hydrogen included, from a heavy-ion beam.'
+    dimension: dimensionless
+    class: ion_beam
+    aliases: [TOF-ERDA, elastic recoil detection analysis, ERDA, ERD]
+    citation: van der Zouw 2023 Sec. II (30 MeV 127I beam, 5 MV tandem accelerator, Helsinki) and Fig. 5
+    cq: Which elements does the film contain?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 abs.g2 abs.g4 fig5.cap fig5a fig5b s5.p7 s9.p1 s9.p2]
+
+  - id: tem_eds
+    type: method
+    label: TEM-EDX
+    name: tem eds
+    origin: extension
+    definition: 'Energy-dispersive X-ray spectroscopy in a (scanning) transmission electron microscope: elemental maps and line integrals of a cross-section.'
+    dimension: dimensionless
+    class: eds
+    aliases: [TEM-EDX, STEM-EDX, EDX mapping, EDX]
+    citation: van der Zouw 2023 Sec. II and Fig. 10 (FEI Titan, EDX maps of a trench)
+    cq: How is the element distributed in the feature?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 fig10.cap fig10a fig10b fig10c fig10d fig10e fig10f s11.p6 s11.p9]
+
+  - id: si_trench_capped
+    type: structure
+    label: SiO2-capped Si trench
+    name: si trench capped
+    origin: extension
+    definition: Vertical trenches etched in silicon with an SiO2 capping layer on which the film grows, aspect ratios 2:1 to 10:1, the conformality test structure of van der Zouw 2023.
+    dimension: dimensionless
+    class: trench
+    aliases: [SiO2-capped Si trench, HAR trench, narrow trench, Si trenches]
+    citation: van der Zouw 2023 Sec. III E and Figs. 9-10
+    cq: What are the dimensions of the coated structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule c, papers zou23; merged from pending.csv (P131b)'}
+    evidence: [zou23 fig9.cap s11.p5]
+
+  - id: knudsen_diffusion_coefficient
+    type: quantity
+    label: D_Kn
+    name: knudsen diffusion coefficient
+    origin: extension
+    role: model_parameter
+    category: test_structure
+    definition: 'The Knudsen diffusion coefficient D_Kn of the reactant in a feature or pore: wall collisions alone set it, D_Kn = (d_h/3)(8RT/(πM))^1/2 with the hydraulic diameter d_h and the molar mass M; a model parameter of the diffusion-reaction models, varied through the pressure and the geometry.'
+    dimension: diffusivity
+    unit: m2/s
+    aliases: [D_Kn, DKn, Knudsen diffusion coefficient]
+    citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_Kn); Heikkinen 2024 Table 1 (D_Kn)
+    cq: How fast does the reactant diffuse into the structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. V B (D_Kn of the diffusion-reaction models)), papers hei24 yim22; merged from pending.csv (P131b)'}
+    evidence: [hei24 tabu1.r7c0 tabu1.r7c1, yim22 s5.p9 tabu1.r6c0 tabu1.r6c1]
+
+  - id: effective_diffusion_coefficient
+    type: quantity
+    label: D_eff
+    name: effective diffusion coefficient
+    origin: extension
+    role: model_parameter
+    category: test_structure
+    definition: 'The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.'
+    dimension: diffusivity
+    unit: m2/s
+    aliases: [D_eff, Deff, D_e, De, effective diffusion coefficient]
+    citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_eff); Heikkinen 2024 Table 1 and Sec. 4 (D_e)
+    cq: How fast does the reactant diffuse into the structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. V B (Bosanquet interpolation 1/D_eff = 1/D + 1/D_Kn)), papers hei24 yim22; merged from pending.csv (P131b)'}
+    evidence: [hei24 s4.p5 tabu1.r5c0 tabu1.r5c1, yim22 fig6a s5.p2 tabu1.r5c0 tabu1.r5c1]
+
+  - id: gas_phase_diffusion_coefficient
+    type: quantity
+    label: D_A
+    name: gas phase diffusion coefficient
+    origin: extension
+    role: model_parameter
+    category: test_structure
+    definition: The gas-phase (molecular, bulk) diffusion coefficient D_A of the reactant in the carrier gas, set by intermolecular collisions and so by the total pressure; the continuum limit of the Bosanquet interpolation; a model parameter of the diffusion-reaction models.
+    dimension: diffusivity
+    unit: m2/s
+    aliases: [D_A, DA, D_mi, Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
+    citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_A); Heikkinen 2024 Table 1 (D_mi)
+    cq: How fast does the reactant diffuse into the structure?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a (Sec. V B (the molecular (bulk) diffusion coefficient D of the Bosanquet interpolation)), papers hei24 yim22; merged from pending.csv (P131b)'}
+    evidence: [hei24 tabu1.r8c0 tabu1.r8c1, yim22 s5.p2 tabu1.r4c0 tabu1.r4c1]
+
+  - id: reactant_number_density
+    type: quantity
+    label: n_P
+    name: reactant number density
+    origin: extension
+    role: output
+    category: measurement
+    definition: The number of reactant molecules per unit gas volume n (n_P0 at the surface of a porous body), the concentration variable of Heikkinen 2024's diffusion-reaction equation; a model output along the depth and a model input at the surface. Converts to the partial pressure by the ideal gas law p = n·k_B·T given the temperature (P109).
+    dimension: number_density
+    unit: 1/m3
+    aliases: [n_P, n_P0, reactant number density, volumetric reactant number density, number density of the reactant]
+    converts_to: {target: partial_pressure, rule: p = n·k_B·T, requires: deposition_temperature}
+    citation: Heikkinen 2024 Sec. 4, Eq. (1) and Table 1 (n_P0); Cremers 2019 Sec. V B writes the same equations in partial pressure
+    cq: How much reactant is in the gas at a given depth?
+    base: {}
+    deviation: {type: added, reason: 'P98 rule d (Sec. V B writes the continuum equations in partial pressure, not number density), papers hei24; merged from pending.csv (P131b)'}
+    evidence: [hei24 fig2a fig5a fig5b fig5c fig5d fig5e fig5f fig5g fig5h fig5i fig5j fig5k (+10)]
+
+  - id: b_film
+    type: quantity
+    label: b_film
+    name: b film
+    origin: extension
+    role: model_parameter
+    category: measurement
+    definition: 'b_film: the free label of 4 records in 3 papers; first record (yim20:fig10.cap#9): simulation input b_film = 2 : metal atoms per film formula unit'
+    dimension: dimensionless
+    aliases: [b_film]
+    citation: yim20:fig10.cap#9 (fig10.cap); yim22:tab1.cap#17 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yli18:s5.p18#1 (s5.p18); yli18:s5.p18#2 (s5.p18)
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22 yli18; merged from pending.csv (P131b)'}
+    from_other: [b_film]
+    evidence: [yim20 fig10.cap, yim22 s12.p1 s12.p2 s12.p5 tab1.cap tab1.r10c1 tab1.r11c1 tab1.r1c1 tab1.r2c1 tab1.r3c1 tab1.r4c1 tab1.r5c1 tab1.r6c1 (+3), yli18 eq9 s5.p17 s5.p18]
+
+  - id: wall_temperature
+    type: quantity
+    label: wall temperature
+    name: wall temperature
+    origin: extension
+    role: condition
+    category: measurement
+    definition: 'wall temperature: the free label of 2 records in 2 papers; first record (mat22:s5.p1#3): Reactor walls heat to at most 150 °C; for 50-150 °C depositions wall and substrate are set equal.'
+    dimension: temperature
+    unit: °C
+    aliases: [wall temperature]
+    citation: mat22:s5.p1#3 (s5.p1); mat23:s7.p1#3 (s7.p1)
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers mat22 mat23; merged from pending.csv (P131b)'}
+    from_other: [wall temperature]
+    evidence: [mat22 s5.p1, mat23 s7.p1]
+
+  - id: wavelength_range
+    type: quantity
+    label: wavelength range
+    name: wavelength range
+    origin: extension
+    role: condition
+    category: measurement
+    definition: 'wavelength range: the free label of 3 records in 2 papers; first record (yim20:s7.p5#1): saturation profiles were measured as line scans with a FilmTek 2000M spectroscopic reflectometer covering 380 to 800 nm'
+    dimension: length
+    unit: nm
+    aliases: [wavelength range]
+    citation: yim20:s7.p5#1 (s7.p5); mat23:s10.p15#1 (s10.p15;fig4.cap); mat23:s10.p15#2 (s10.p15;fig4.cap)
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers mat23 yim20; merged from pending.csv (P131b)'}
+    from_other: [wavelength range]
+    evidence: [mat23 fig4.cap s10.p15, yim20 s7.p5]
+
+  - id: base_pressure
+    type: quantity
+    label: base pressure
+    name: base pressure
+    origin: extension
+    role: condition
+    category: measurement
+    definition: 'base pressure: the free label of 2 records in 2 papers; first record (mat22:s5.p1#2): A turbomolecular pump gives a base pressure of 10^-6 Torr.'
+    dimension: pressure
+    unit: Torr
+    aliases: [base pressure]
+    citation: mat22:s5.p1#2 (s5.p1); ela03:s3.p26#3 (s3.p26;s3.p27)
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers ela03 mat22; merged from pending.csv (P131b)'}
+    from_other: [base pressure]
+    evidence: [ela03 s3.p26 s3.p27, mat22 s5.p1]
+
+  - id: p_d
+    type: quantity
+    label: P_d
+    name: p d
+    origin: extension
+    role: model_parameter
+    category: measurement
+    definition: 'P_d: the free label of 10 records in 2 papers; first record (yim20:fig10.cap#15): simulation input P_d = 0.043 1 s-1: desorption probability per unit time'
+    dimension: inverse_time
+    unit: 1/s
+    aliases: [P_d]
+    citation: yim20:fig10.cap#15 (fig10.cap); yim22:tab1.cap#11 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yim22:fig6.cap#15 (fig6.cap;s15.p4;fig7.cap); yim22:s14.p6#15 (s14.p6;tab2.cap); yim22:s14.p6#31 (s14.p6;tab2.cap); yim22:tab1.r6c1#1 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#2 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#3 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#4 (tab1.r6c1;fig4.cap;fig4f); yim22:fig6.cap#31 (fig6.cap;s15.p4;fig7.cap)
+    base: {}
+    deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22; merged from pending.csv (P131b)'}
+    from_other: [P_d]
+    evidence: [yim20 fig10.cap, yim22 fig4.cap fig4f fig6.cap fig7.cap s12.p1 s12.p2 s12.p5 s14.p6 s15.p4 tab1.cap tab1.r10c1 tab1.r11c1 (+10)]
+
 families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
   composition: {}
   conformality: {mixed_dimensions: true, reason: "the depth the film reaches is given either as a length (penetration_depth) or scaled to the feature (coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction); the transform coated_ar links the two"}
@@ -2488,7 +3058,7 @@ qualifiers:   # closed lists; adding a value is allowed and is logged (log: valu
   level:     {values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum"}
   basis:     {values: [AR, EAR], source: "Cremers Sec. II G"}
   surface:   {values: material ids}
-  kind:      {values: [set_point, measured, default, option, target, estimated], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures"}
+  kind:      {values: [set_point, measured, default, option, target, estimated], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", evidence: ['gre23:s9.p6#12 (s9.p6;s12.p6)', 'gre23:s9.p6#13 (s9.p6)']}
   by:        {values: [H, 2H, d, w, lambda, none], log: "pilot: what a dimensionless distance is divided by"}
   origin:    {values: [entrance, top_face, hole_centre, nearer_face, opening_centre], log: "pilot: where a distance is measured from"}
   stage:     {values: [initial, final], log: "pilot: before or after the deposition (porosity, channel height)"}
@@ -2535,6 +3105,7 @@ units:   # canonical unit per dimension, and the accepted units
   molar_mass:       {canonical: g/mol,      accepted: [g/mol, kg/mol]}
   diffusivity:      {canonical: m2/s,       accepted: [m2/s, cm2/s]}
   angle:            {canonical: "°",        accepted: ["°"]}
+  inverse_time:     {canonical: 1/s,        accepted: [1/s]}
 
 vocabularies:
   panel_type:        [plot, image, schematic, table]

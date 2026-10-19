@@ -88,26 +88,30 @@ def unit_tables(onto):
     return base, alias, {d: d for d in by_dim}
 
 
+def pending_entry(r):
+    """The entry a pending.csv row stands for (P83); merge_pending.py writes the same dict into ontology.yaml when the row is accepted."""
+    e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
+             definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=r.get("status", "pending") != "accepted",
+             dimension=unit_dimension(r.get("unit", "")),
+             category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
+    if r["kind"] == "species":                                                  # a pending species: its formula is its first formula-like alias, its aliases the column's
+        als = [a for a in (r.get("aliases") or "").split("|") if a] or [r["id"].upper()]
+        e.update(kind=r.get("class") or "molecule", formula=next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), als[0]), aliases=als)
+    if r["kind"] == "structure":
+        e["class"] = r.get("class", "")
+    if r["kind"] == "model":
+        e.update(model_type=r.get("class", ""), parameters=[], category="models")
+    if r.get("converts_to"):                                                    # P109: target|rule|requires
+        t, rule, req = (r["converts_to"].split("|") + ["", ""])[:3]
+        e["converts_to"] = dict(target=t, rule=rule, requires=req)
+    return e
+
+
 def build(onto, pmap):
     entries = list(onto["entries"])
     voc = onto["vocabularies"]
     pend = pending()
-    for r in pend:                                                              # P83: pending entries join the vocabulary provisionally
-        e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
-                 definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=r.get("status", "pending") != "accepted",
-                 dimension=unit_dimension(r.get("unit", "")),
-                 category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
-        if r["kind"] == "species":                                              # a pending species: its formula is its first formula-like alias, its aliases the column's
-            als = [a for a in (r.get("aliases") or "").split("|") if a] or [r["id"].upper()]
-            e.update(kind=r.get("class") or "molecule", formula=next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), als[0]), aliases=als)
-        if r["kind"] == "structure":
-            e["class"] = r.get("class", "")
-        if r["kind"] == "model":
-            e.update(model_type=r.get("class", ""), parameters=[], category="models")
-        if r.get("converts_to"):                                                # P109: target|rule|requires
-            t, rule, req = (r["converts_to"].split("|") + ["", ""])[:3]
-            e["converts_to"] = dict(target=t, rule=rule, requires=req)
-        entries.append(e)
+    entries += [pending_entry(r) for r in pend]                                 # P83: pending entries join the vocabulary provisionally
     live = [e for e in entries if not e.get("replaced_by")]
     concepts = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and not e.get("attribute"))
     attributes = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and e.get("attribute"))
@@ -124,7 +128,8 @@ def build(onto, pmap):
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
-    methods = list(voc["measurement_method"]) + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]
+    methods = list(voc["measurement_method"]) + [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"]) for e in onto["entries"] if e["type"] == "method"] \
+        + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]   # P131b: merged methods are entries
     defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
     families = {}
@@ -167,6 +172,7 @@ def build(onto, pmap):
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
         PENDING={r["id"]: dict(kind=r["kind"], paper=r["paper"], status=r["status"]) for r in pend},
+        FROM_OTHER={lab: e["id"] for e in live for lab in e.get("from_other", [])},   # P131b: printed label -> the entry promoted from the free label other[label]
         TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
     )
 
