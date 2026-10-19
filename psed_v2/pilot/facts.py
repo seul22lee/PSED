@@ -580,6 +580,82 @@ def relations(key, table):
             assert not (r["cause"] and r["effect"]) or r["relation"] in L.RELATIONS, f"{r['fact_id']}: a claim with a cause and an effect needs a relation (lists.RELATIONS)"
 
 
+RETYPED = {}                        # P131: {key: {target: n}} of the last retype() per paper, for the verify table
+
+
+def retype(key, table):
+    """P131: a claim is a triple or it is not a claim. One rule for every paper; table {claim suffix: spec}, spec one of
+      ("triple", cause, relation, effect)  a mechanism claim whose triple was missing or partial, filled from the ontology (P54 ids)
+      ("model", node)                      a model, simulation or fit agrees with or reproduces data, or a model is described: a model
+                                           record under that model node (a validation line; links, the data it rests on, kept)
+      ("caveat", links, quantity, quals)   a limitation of a method or measurement, or what the paper could not determine (P45, P56):
+                                           a caveat on what it qualifies (links: fact or node ids; empty keeps the claim's links)
+      ("setting", node, fields)            a stated or estimated apparatus or process condition under that node; fields may give
+                                           quantity, value fields, unit and qualifiers (kind=estimated), else it restates its links
+      ("observation", node, fields)        a statement whose content is a number or range (a capability, a dimension, a property)
+                                           under that node, the number as its value fields (the claim's own, or fields), else its links
+      ("cited", node, fields)              a number the paper states about a structure class or the field in general, not of its own
+                                           specimens (an introduction's background number linked by another record): a cited value under
+                                           the paper, as gao15's background values are (method cited, kind stated)
+      ("removed", why)                     background, motivation, prior-art or scope that reports nothing of this paper's own work:
+                                           out of the knowledge base (the text arm keeps it); no record may link to it
+      ("duplicate", caveat)                a limitation an existing caveat of the paper already states (P56: a caveat is stored once):
+                                           out, the caveat keeps it; no record may link to it
+    Every claim left must carry a full triple; re-typed records keep their fact ids. A node is an id (with or without the paper key)."""
+    byid = {r["fact_id"]: r for r in _facts}
+    full0 = lambda s: s if s.startswith(key + ":") or s == key else f"{key}:{s}"
+    full = lambda s: byid[full0(s[1:])]["parent"] if s.startswith("^") else full0(s)     # '^id': the node the fact id sits under
+    done, gone = {}, set()
+    for sfx, spec in table.items():
+        r = byid[full(sfx)]
+        assert r["type"] == "claim", f"{r['fact_id']}: retype on a {r['type']}"
+        t = spec[0]
+        clear = dict(stance="", cause="", effect="", relation="", sized_by="")
+        if t == "triple":
+            c, rel, e = spec[1:]
+            assert rel in L.RELATIONS, f"{r['fact_id']}: relation {rel!r}"
+            r.update(cause=c, relation=rel, effect=e)
+        elif t == "model":
+            assert full(spec[1]) in byid, f"{r['fact_id']}: no model node {spec[1]}"
+            r.update(clear, type="model", parent=full(spec[1]))
+        elif t == "caveat":
+            links = ";".join(full(x) for x in spec[1]) if spec[1] else r["links"]
+            r.update(clear, type="caveat", parent=key, links=links, quantity=spec[2] if len(spec) > 2 else r["quantity"] if r["value"] or r["value_min"] else "",
+                     qualifiers=spec[3] if len(spec) > 3 else "", value="", value_min="", value_max="", censor="", unit="", value_text="", data_kind="", label_as_printed="")
+        elif t == "cited":
+            r.update(clear, type="cited", parent=full(spec[1]), method="cited", data_kind=r["data_kind"] or "stated", **(spec[2] if len(spec) > 2 else {}))
+        elif t in ("setting", "observation"):
+            assert full(spec[1]) in byid, f"{r['fact_id']}: no node {spec[1]}"
+            fields = spec[2] if len(spec) > 2 else {}
+            r.update(clear, type=t, parent=full(spec[1]), **fields)
+            if (r["value"] or r["value_min"] or r["value_max"] or r["value_text"]) and not r["data_kind"]:
+                r["data_kind"] = "stated"
+        elif t == "removed":
+            gone.add(r["fact_id"])
+        elif t == "duplicate":
+            assert byid.get(full(spec[1]), {}).get("type") == "caveat", f"{r['fact_id']}: {spec[1]} is no caveat"
+            gone.add(r["fact_id"])
+        else:
+            raise ValueError(f"{r['fact_id']}: retype target {t!r}")
+        done[t] = done.get(t, 0) + 1
+    if gone:                                                                     # no id that another record (or the user file) links to may disappear
+        refs = {l: r["fact_id"] for r in _facts if r["fact_id"] not in gone for c in ("links", "inputs", "parent", "sized_by") for l in r[c].split(";") if l}
+        user = HERE / "user.facts.csv"
+        if user.exists():
+            refs.update({l: u["fact_id"] for u in csv.DictReader(user.open(encoding="utf-8")) for l in u["links"].split(";") if l})
+        bad = sorted(f"{g} (linked by {refs[g]})" for g in gone if g in refs)
+        assert not bad, f"P131: a removed claim is linked: {bad}"
+        evs = {e for r in _facts if r["fact_id"] in gone for e in r["evidence"].split(";")}
+        _facts[:] = [r for r in _facts if r["fact_id"] not in gone]
+        kept = {e for r in _facts if "#" in r["fact_id"] for e in r["evidence"].split(";")}
+        for e in evs - kept - set(_nk):
+            _nk[e] = "background, motivation, prior art or scope only (P131: the text arm keeps it)"
+    left = [r["fact_id"] for r in _facts if r["type"] == "claim" and not (r["cause"] and r["relation"] and r["effect"])]
+    assert not left, f"P131: claims without a full triple: {left}"
+    RETYPED[key] = done
+    return done
+
+
 def sized(key, table):
     """P46: table {claim suffix: [fact suffixes]}: the facts of the same paper that give the size of a mechanism, limitation or
     measurement-effect claim."""

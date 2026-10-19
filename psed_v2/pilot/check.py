@@ -707,6 +707,26 @@ def check_nodes():
     return err
 
 
+def check_triples(ref="pilot-v6"):
+    """P131: a claim is a triple or it is not a claim: zero claims without a full (cause, relation, effect); the record type distribution
+    per paper before (the facts tables at tag ref, when git has it) and after."""
+    import io, subprocess
+    err = []
+    print(f"== triples (P131): record types per paper, {ref} -> now (fact rows; only the types that changed)")
+    for pid in KEYS:
+        now = rd(HERE / f"{pid}.facts.csv")
+        err += [f"{f['fact_id']}: a claim without a full triple (P131)" for f in now if f["type"] == "claim" and not (f["cause"] and f["relation"] and f["effect"])]
+        git = subprocess.run(["git", "show", f"{ref}:psed_v2/pilot/{pid}.facts.csv"], capture_output=True, text=True, cwd=HERE)
+        a = collections.Counter(f["type"] for f in now if "#" in f["fact_id"])
+        if git.returncode:
+            print(f"   {KEYS[pid]}: {dict(a)} (no {ref} in git)"); continue
+        b = collections.Counter(f["type"] for f in csv.DictReader(io.StringIO(git.stdout)) if "#" in f["fact_id"])
+        print(f"   {KEYS[pid]}: " + (", ".join(f"{t} {b[t]} -> {a[t]}" for t in sorted(set(a) | set(b)) if a[t] != b[t]) or "unchanged"))
+    n = sum(1 for pid in KEYS for f in rd(HERE / f"{pid}.facts.csv") if f["type"] == "claim")
+    print(f"== triples (P131): {n} claims, {len(err)} without a full triple")
+    return err
+
+
 def check_claims():
     """P54: every claim's cause and effect are entry ids or mechanism ids (variables_ok, above); here the counts: claims, free
     strings (always 0 once variables_ok holds), mechanisms named, and mechanisms named by claims of two or more papers."""
@@ -2094,6 +2114,11 @@ if __name__ == "__main__":
         print("  ", e)
     bad += bool(err)
     check_claims()
+    err = check_triples()
+    print(f"== triples (P131): {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
     err = check_nodes()
     print(f"== claim nodes (P130): {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:

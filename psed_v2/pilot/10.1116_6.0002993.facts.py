@@ -323,4 +323,21 @@ for ev_, st_, links_, q_, qq_ in CAV:
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g2#2': ('removed', BG),
+    'abs.g1#1': ('removed', BG),
+    's6.p5#1': ('removed', BG),
+    's6.p5#2': ('removed', BG),
+    's11.p1#1': ('removed', BG),
+    's7.p2#1': ('duplicate', 's7.p2#6'),
+    's10.p4#1': ('duplicate', 's10.p4#2'),
+    's10.p12#2': ('duplicate', 's10.p12#3'),
+    's7.p3#1': ('model', 'mat23:recipe'),
+    'abs.g5#1': ('observation', 'mat23:cmp:optics'),
+    's10.p1#2': ('observation', 'mat23:meas:ent:p150:giwaxs', {'links': 'mat23:fig2d#1;mat23:s10.p6#1;mat23:ent:p150'}),
+    'abs.g2#1': ('triple', 'plasma_chemistry', 'causes', 'crystallinity'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

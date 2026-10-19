@@ -1,0 +1,16 @@
+kb preamble (ask.preamble_sha256('kb'), sha256 truncated to 16 hex as in P118):
+  pilot-v6 (35c41a9): 50e49ed69ae0ea54
+  P130 (3dabc53):     4de4fab216082b31
+  P131:               402eadb6c3e6bb68
+  why: the search and values tool descriptions are generated from the data (P41): they carry the record-type counts of the search
+  index and the setting names. P130 makes the claims tier one record per node (claim 488 -> 256); P131 changes claim 256 -> 267
+  nodes, caveat 213 -> 222, setting 1301 -> 1305, cited value 207 -> 212, method note 1141 -> 1152, note 188 -> 221, concept
+  199 -> 201 (the pending entries tortuosity, pore_volume), and adds the setting names "internal tubing temperature" and
+  "unheated window temperature". ask.py's answer rules, the arm prompt and the descend protocol are unchanged; the L0 map is not
+  part of the hash (and its text is unchanged: it prints no claim count).
+kb system prompt (map, paper index, protocol, arm prompt): 2,576 tokens at pilot-v6, 2,580 after P131 (chars/4).
+
+dump (pilot/dump.py, chars/4):
+  pilot-v6: 139,394 tokens, 1883 lines; claims 488 (each once, per paper)
+  P130:     140,772 tokens, 2144 lines; 256 claim nodes with their 355 members + 135 claims without a full triple listed apart
+  P131:     135,331 tokens, 2044 lines; 267 claim nodes, 374 members (372 paper claims + 2 user claims), none apart

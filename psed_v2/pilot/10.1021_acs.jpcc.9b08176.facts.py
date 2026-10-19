@@ -334,4 +334,20 @@ C.sized(K, {c_matdep.split(":", 1)[1]: [R[m].split(":", 1)[1] for m in ("sio2", 
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    's3.p1#1': ('removed', BG),
+    's3.p3#2': ('removed', BG),
+    'abs.g3#1': ('triple', 'surface_recombination', 'limits', 'coated_aspect_ratio'),
+    's6.p1#6': ('triple', 'surface_recombination', 'decreases', 'step_coverage'),
+    's6.p8#1': ('triple', 'deposition_temperature;process_pressure;surface_chemistry;roughness', 'causes', 'recombination_probability'),
+    's4.p8#1': ('model', 'art19:sim'),
+    's6.p6#1': ('model', 'art19:sim'),
+    's5.p1#14': ('duplicate', 's5.p1#27'),
+    's6.p8#2': ('duplicate', 's6.p9#1'),
+    's6.p2#6': ('caveat', ['s6.p5#4']),
+    's6.p10#1': ('caveat', ['s6.p5#1', 's6.p5#2', 's6.p5#3', 's6.p5#4']),
+}
+C.retype(K, RETYPE)
 write(K, PID)

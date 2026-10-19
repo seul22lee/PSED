@@ -311,7 +311,7 @@ NAMES = {**_NAMES, "other": "other",
 DEF_WORDS = {("over", "first_100_cycles"): "averaged over the first 100 cycles", ("over", "saturation"): "saturation value",
              ("over", "not_stated"): "averaging not stated", ("relative_to", "not_stated"): "basis not stated",
              ("relative_to", "initial_mass"): "relative to the initial mass", ("relative_to", "final_mass"): "relative to the final mass",
-             ("relative_to", "crystalline_phases"): "of the crystalline phases", ("relative_to", "reactive_gases"): "of the reactive feed gases", ("relative_to", "all_gases"): "of the whole plasma feed", ("kind", "target"): "target", ("kind", "set_point"): "set point",
+             ("relative_to", "crystalline_phases"): "of the crystalline phases", ("relative_to", "reactive_gases"): "of the reactive feed gases", ("relative_to", "all_gases"): "of the whole plasma feed", ("kind", "target"): "target", ("kind", "set_point"): "set point", ("kind", "estimated"): "estimated by the paper",
              ("reference", "bulk"): "bulk value", ("mode", "in_situ"): "in situ", ("mode", "ex_situ"): "ex situ"}
 # the provenance words of a value (P57): only the phrase table of the ontology (vocab.PHRASES); a screen leaves measured and stated
 # values unmarked (UNMARKED) and marks every other kind with its phrase

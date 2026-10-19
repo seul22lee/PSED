@@ -1141,4 +1141,21 @@ next(r for r in C.facts() if r["fact_id"] == L_)["inputs"] = ";".join([npc_thick
 C.specimen_classes(K, "porous_composite")                                                 # P53: the class of specimen every value was measured on
 C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
 C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    's6.p1#1': ('removed', BG),
+    's6.p8#2': ('removed', BG),
+    's15.p4#3': ('removed', BG),
+    's6.p8#1': ('setting', '^s6.p8#7'),
+    's12.p1#13': ('observation', '^s12.p1#12'),
+    's15.p2#1': ('observation', '^s13.p4#1'),
+    's9.p6#12': ('setting', '^s9.p6#11', {'quantity': 'other', 'label_as_printed': 'internal tubing temperature', 'value_min': '90', 'value_max': '120', 'unit': '°C', 'qualifiers': 'kind=estimated'}),
+    's9.p6#13': ('setting', '^s9.p6#11', {'quantity': 'other', 'label_as_printed': 'unheated window temperature', 'value': '90', 'censor': '<', 'unit': '°C', 'qualifiers': 'kind=estimated'}),
+    's9.p3#4': ('caveat', ['s9.p3#3']),
+    's12.p15#1': ('caveat', ['s12.p14#1', 's12.p14#3']),
+    's13.p3#6': ('caveat', ['s13.p1#5']),
+    's9.p7#1': ('model', 'gre23:simact:eq1_2'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

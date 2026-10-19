@@ -68,7 +68,7 @@ CLAIMS[pore_dens] = ("asserted", "", "", "", [])
 c_perp = claim("s2.p2;s2.p1", "the nanopores run perpendicular to the membrane surface, roughly in a hexagonal close-packed array", "asserted")
 d_range = claim("s2.p2", "by choice of the anodization conditions AA membranes can be made with pore diameters from 4 to 200 nm", "asserted",
                 quantity="feature_width", label_as_printed="d", value_min="4", value_max="200", unit="nm", data_kind="stated")
-L_range = claim("s2.p2", "AA membrane pore lengths range from 1 µm to over 200 µm", "asserted",
+L_range = claim("s2.p2", "AA membrane pore lengths range from 1 to 200 µm and beyond", "asserted",
                 quantity="body_thickness", label_as_printed="L", value_min="1", value_max="200", unit="µm", data_kind="stated")
 ar_max = claim("s2.p2", "so AA nanopores can reach aspect ratios as high as 2.5 × 10^4", "asserted",
                quantity="aspect_ratio", label_as_printed="L/d", value="2.5e4", data_kind="stated", supports=[d_range, L_range])
@@ -769,4 +769,27 @@ C.sized(K, {c_sem.split(":", 1)[1]: [o_3s.split(":", 1)[1], o_1s.split(":", 1)[1
 C.specimen_classes(K, "porous_composite")                                      # P53: ZnO or Al2O3 inside a porous membrane
 C.structure_classes(K)                                                         # P78
 C.rekey_structure_dimensions(K)                                                # P78
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g1#1': ('removed', BG),
+    's2.p2#2': ('removed', BG),
+    's2.p2#6': ('removed', BG),
+    's2.p2#1': ('cited', 'ela03'),
+    's2.p2#3': ('cited', 'ela03'),
+    's2.p2#4': ('cited', 'ela03'),
+    's2.p2#5': ('cited', 'ela03', {'censor': '<'}),
+    's2.p23#1': ('setting', 'ela03:recipe'),
+    's2.p23#2': ('setting', 'ela03:recipe'),
+    's3.p28#2': ('setting', 'ela03:method:sem'),
+    's3.p30#1': ('setting', 'ela03:method:sem'),
+    's3.p33#4': ('setting', 'ela03:method:ftir'),
+    's3.p30#2': ('caveat', ['s4.p1#22']),
+    's5.p14#1': ('model', 'ela03:cmp:sim_al2o3'),
+    's5.x1#2': ('model', 'ela03:cmp:sim_zno_t'),
+    's5.p17#2': ('model', 'ela03:cmp:sim_zno_d'),
+    's6.p2#1': ('model', 'ela03:sim'),
+    's5.p35#1': ('triple', 'aspect_ratio', 'increases', 'exposure'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

@@ -544,4 +544,27 @@ C.sized(K, {c_slope.split(":", 1)[1]: [ratio_all.split(":", 1)[1]], c_knee.split
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g1#1': ('removed', BG),
+    's16.p7#1': ('removed', BG),
+    's2.p1#1': ('removed', BG),
+    's2.p9#1': ('removed', BG),
+    's2.p2#1': ('removed', BG),
+    's2.p10#1': ('removed', BG),
+    'abs.g2#1': ('model', 'yim22:sim'),
+    's14.p1#1': ('model', 'yim22:sim'),
+    's4.p2#1': ('model', 'yim22:sim'),
+    's4.p4#1': ('model', 'yim22:sim'),
+    's5.p12#1': ('model', 'yim22:sim'),
+    's10.p7#1': ('model', 'yim22:sim'),
+    's5.p19#1': ('model', 'yim22:sim'),
+    's9.p5#1': ('model', 'yim22:sim:modelB'),
+    's12.p1#2': ('model', 'yim22:sim:base'),
+    's16.p6#1': ('caveat', ['s15.x1#1']),
+    's12.p4#1': ('triple', 'molar_mass;saturation_density;film_density', 'causes', 'coated_aspect_ratio;front_slope'),
+    's13.p6#1': ('triple', 'fill_fraction;knudsen_number', 'limits', 'coated_aspect_ratio'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

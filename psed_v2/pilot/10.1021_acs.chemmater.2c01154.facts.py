@@ -1788,4 +1788,26 @@ C.sized(K, {
 C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
 C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
 C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g1#1': ('removed', BG),
+    'abs.g1#2': ('removed', BG),
+    'abs.g3#2': ('removed', BG),
+    'abs.g4#1': ('removed', BG),
+    's2.p8#5': ('removed', BG),
+    's3.p3#1': ('removed', BG),
+    's4.p1#2': ('removed', BG),
+    's2.p11#2': ('triple', 'plasma_gas_ratio', 'causes', 'crystallinity'),
+    's3.p1#3': ('triple', 'self_limiting_growth', 'causes', 'growth_per_cycle'),
+    's3.p25#4': ('triple', 'thiol_groups', 'increases', 'fin_growth'),
+    's3.p37#5': ('triple', 'deposition_temperature', 'causes', 'carrier_density'),
+    's3.p41#2': ('triple', 'sulfur_vacancy;thiol_groups', 'causes', 'hydrogen_incorporation'),
+    's3.p46#5': ('triple', 'plasma_gas_ratio', 'causes', 'crystallinity'),
+    's3.p51#4': ('triple', 'reactant_B', 'causes', 'plasma_chemistry'),
+    's3.p18#6': ('duplicate', 's3.p20#3'),
+    's3.p51#1': ('duplicate', 's3.p51#6'),
+    's3.p44#5': ('caveat', ['s3.p43#3', 's3.p43#5', 's3.p44#1', 's3.p44#4']),
+}
+C.retype(K, RETYPE)
 write(K, PID)

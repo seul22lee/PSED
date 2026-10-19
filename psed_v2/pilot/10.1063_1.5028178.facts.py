@@ -390,4 +390,11 @@ C.sized(K, {c_agree.split(":", 1)[1]: [TAB[("al", "e")].split(":", 1)[1], TAB[("
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    's5.p4#1': ('model', 'yli18:sim'),
+    's9.p5#5': ('duplicate', 's6.p10#3'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

@@ -337,4 +337,5 @@ C.sized(K, {c_above.split(":", 1)[1]: [Pt_43.split(":", 1)[1], E30.split(":", 1)
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+C.retype(K, {})                                                         # P131: every claim already carries a full triple
 write(K, PID)

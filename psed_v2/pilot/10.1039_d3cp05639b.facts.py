@@ -393,4 +393,21 @@ C.sized(K, {c_xi.split(":", 1)[1]: [thr5.split(":", 1)[1], thr1.split(":", 1)[1]
 C.specimen_classes(K, "porous_composite")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    's2.p1#1': ('removed', BG),
+    's2.p3#1': ('removed', BG),
+    's2.p8#1': ('removed', BG),
+    's2.p10#1': ('removed', BG),
+    's2.p11#1': ('removed', BG),
+    'abs.g1#1': ('model', 'hei24:sim'),
+    'abs.g4#1': ('model', 'hei24:sim'),
+    's2.p9#1': ('model', 'hei24:sim'),
+    's7.p1#2': ('model', 'hei24:simrun:fig2:cylinder'),
+    's8.x1#5': ('model', 'hei24:simrun:fig3:sphere:1e4'),
+    's5.p1#1': ('duplicate', 's5.p1#2'),
+    'abs.g3#1': ('triple', 'porosity;tortuosity;feature_width;specific_surface_area;pore_volume;feature_depth;molar_mass;growth_per_cycle;initial_sticking_coefficient;exposure;deposition_temperature', 'causes', 'penetration_depth'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

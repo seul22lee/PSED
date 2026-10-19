@@ -336,4 +336,18 @@ C.sized(K, {c_gap.split(":", 1)[1]: [PD3[g].split(":", 1)[1] for g in ("200", "5
 C.specimen_classes(K, "film")
 C.structure_classes(K)
 C.rekey_structure_dimensions(K)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g1#1': ('removed', BG),
+    's5.p3#1': ('removed', BG),
+    's8.p2#1': ('removed', BG),
+    's7.p1#1': ('removed', BG),
+    's8.p1#1': ('observation', '^s6.p13#3'),
+    's6.p18#6': ('observation', '^s6.p18#1'),
+    's6.p11#1': ('setting', '^s6.p16#1'),
+    's6.p19#1': ('caveat', ['s6.p20#1']),
+    's6.p21#4': ('triple', 'pillar_effect', 'causes', 'film_thickness'),
+}
+C.retype(K, RETYPE)
 write(K, PID)

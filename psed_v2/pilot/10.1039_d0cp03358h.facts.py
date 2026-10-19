@@ -1342,4 +1342,24 @@ C.sized(K, {
 C.specimen_classes(K, "film")                                                 # P53: the class of specimen every value was measured on
 C.structure_classes(K)                                                  # P78: the class of the structure every specimen and input entity sits on
 C.rekey_structure_dimensions(K)                                         # P78: free-label structure dimensions move to their slots (body_thickness, d_NP, s, ...)
+# P131: a claim is a triple or it is not a claim; every claim without a full triple re-typed by the one rule (facts.retype)
+BG = 'background, motivation, prior art or scope'
+RETYPE = {
+    'abs.g1#1': ('removed', BG),
+    'abs.g3#1': ('removed', BG),
+    'abs.g4#1': ('removed', BG),
+    's2.p13#1': ('removed', BG),
+    's2.p13#2': ('removed', BG),
+    's3.p2#1': ('removed', BG),
+    's20.p1#1': ('removed', BG),
+    's8.p1#7': ('model', 'yim20:sim'),
+    's13.p2#4': ('model', 'yim20:cmp:sims'),
+    's19.p3#7': ('model', 'yim20:refs:36'),
+    's19.p4#2': ('model', 'yim20:refs:36'),
+    's19.p4#3': ('model', 'yim20:refs:36'),
+    'fig1.cap#3': ('cited', 'yim20', {'quantity': 'aspect_ratio', 'label_as_printed': 'L:H', 'value': '200', 'censor': '>'}),
+    's12.x1#2': ('observation', '^s12.x1#1'),
+    's20.p3#1': ('triple', 'self_limiting_growth', 'causes', 'normalized_thickness'),
+}
+C.retype(K, RETYPE)
 write(K, PID)
