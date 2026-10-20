@@ -1,0 +1,117 @@
+"""P139-check (read-only): parent paths per compiled fact row; definitions lost P138 -> P139; null rates. Writes kb/reports/P139-check.*.csv."""
+import collections, csv, io, json, subprocess, sys, tempfile
+from pathlib import Path
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "extract"))
+import common as C   # noqa: E402
+import compile as K  # noqa: E402
+
+R = V2 / "kb" / "reports"
+PAPERS = {"yli18": "10.1063_1.5028178", "yim20": "10.1039_d0cp03358h"}
+PATHS = {"paper (record)": "parent() compile.py:458 record parent \"paper\" -> paper row",
+         "parent_null (paper)": "parent() compile.py:461 record parent null -> paper row (filled)",
+         "parent_unknown (paper)": "parent() compile.py:464 record parent an id pass 0 does not have -> paper row (filled)",
+         "specimen measurement (record)": "parent() compile.py:468 record parent a specimen id, a result with a value -> <specimen>:meas:<method>",
+         "series parent (record)": "parent() compile.py:472 record parent a series id, a setting -> the series' parent row",
+         "series without a parent (paper)": "parent() compile.py:472 record parent a series id without a parent -> paper row",
+         "series (record)": "parent() compile.py:473 record parent a series id, not a setting -> the comparison",
+         "record id": "parent() compile.py:474 record parent a pass-0 id -> its tree row"}
+
+
+def wr(name, rows, fields):
+    with (R / name).open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+
+
+q1, q1sum, rates_stmt, rates_par = [], [], [], []
+for key, pid in PAPERS.items():
+    K.OUT = Path(tempfile.mkdtemp(prefix="p139c_"))
+    run = K.Run(pid)
+    src = collections.defaultdict(list)                                     # id(fact row) -> [(raw parent, path)]
+    made = {}
+    parent0, fact_row0, dedupe0 = run.parent, run.fact_row, run.dedupe
+
+    def parent_t(r):
+        p, why = parent0(r)
+        r["_why"] = why
+        return p, why
+
+    def fact_row_t(r, parent):
+        f = fact_row0(r, parent)
+        raw = r["rec"].get("parent", None)
+        src[id(f)].append((("null" if raw is None else "paper" if raw == "paper" else f"id {raw}"), r["_why"], r["eid"]))
+        made[id(f)] = f
+        return f
+
+    def dedupe_t(items):
+        out = dedupe0(items)
+        kept = {id(f) for f in out}
+        for f in items:                                                     # a merged row keeps the first row's parent; its sources join it
+            if id(f) in kept or id(f) not in src:
+                continue
+            g = next((x for x in out if (K.text_key(x) == K.text_key(f) if K.text_key(f) is not None else all(x[k] == f[k] for k in K.DEDUPE_KEY))
+                      and set(f["evidence"].split(";")) <= set(x["evidence"].split(";"))), None)
+            if g is not None:
+                src[id(g)] += [(a, b + " [merged into this row by dedupe(); its own parent was " + f["parent"] + "]", c) for a, b, c in src[id(f)]]
+        return out
+    run.parent, run.fact_row, run.dedupe = parent_t, fact_row_t, dedupe_t
+    rows = run.run()
+    paths = collections.Counter()
+    for f in rows:
+        if "#" not in f["fact_id"]:
+            continue
+        ss = src.get(id(f))
+        if ss:
+            for raw, why, eid in ss:
+                path = PATHS.get(why, PATHS["record id"] if why.endswith("(record)") else why)
+                if "[merged" in why:
+                    path = PATHS.get(why.split(" [")[0], PATHS["record id"] if why.split(" [")[0].endswith("(record)") else why) + " ; " + why.split(" [", 1)[1].rstrip("]")
+                q1.append(dict(paper=key, fact_id=f["fact_id"], type=f["type"], record_element=eid, raw_parent=raw, final_parent=f["parent"], path=path,
+                               parent_filled_flag=f.get("_parent_filled", "")))
+                paths[path.split(" ;")[0]] += 1
+        else:
+            how = ("derived() compile.py:582 a KB-derived row -> the entity it is derived for" if f.get("data_kind") == "computed_by_kb"
+                   else "figures() compile.py:341-437 a row built from figures.json (setting under the series' parent row / entity, model under the entity, observation under the entity's measurement; fallback series under the paper row, :404)")
+            q1.append(dict(paper=key, fact_id=f["fact_id"], type=f["type"], record_element="", raw_parent="(no pass-1 record)", final_parent=f["parent"], path=how,
+                           parent_filled_flag=f.get("_parent_filled", "")))
+            paths[how.split(" a ")[0]] += 1
+    q1sum += [dict(paper=key, path=p, rows=n) for p, n in paths.most_common()]
+    # null rates on the raw pass-1 records of the latest lines
+    recs = run.read()
+    t = collections.Counter(r["rec"].get("type") for r in recs)
+    sn = sum(1 for r in recs if r["rec"].get("statement") in (None, ""))
+    rates_stmt.append(dict(paper=key, records=len(recs), statement_null=sn, rate=f"{sn / max(len(recs), 1):.2f}"))
+    for ty, n in sorted(t.items(), key=lambda x: -x[1]):
+        pn = sum(1 for r in recs if r["rec"].get("type") == ty and r["rec"].get("parent") in (None, ""))
+        rates_par.append(dict(paper=key, type=ty, records=n, parent_null=pn, rate=f"{pn / max(n, 1):.2f}"))
+wr("P139-check.q1_parent_paths.csv", q1, ["paper", "fact_id", "type", "record_element", "raw_parent", "final_parent", "path", "parent_filled_flag"])
+wr("P139-check.q1_summary.csv", q1sum, ["paper", "path", "rows"])
+wr("P139-check.statement_null.csv", rates_stmt, ["paper", "records", "statement_null", "rate"])
+wr("P139-check.parent_null_by_type.csv", rates_par, ["paper", "type", "records", "parent_null", "rate"])
+
+# Q2: gold definitions T6 in P138 and not in P139
+q2 = []
+for key, pid in PAPERS.items():
+    old = list(csv.DictReader(io.StringIO(subprocess.run(["git", "show", f"b30fec3:psed_v2/kb/compiled/{pid}.audit.csv"], capture_output=True, text=True, cwd=V2).stdout)))
+    new = {r["fact_id"]: r for r in csv.DictReader((V2 / "kb" / "compiled" / f"{pid}.audit.csv").open(encoding="utf-8"))}
+    run = K.Run(pid)
+    recs = run.read()
+    for o in old:
+        if o["type"] != "definition" or o["stage"] != "T6 matched":
+            continue
+        n = new.get(o["fact_id"], {})
+        if n.get("stage") == "T6 matched":
+            continue
+        rec = json.loads(n["jsonl_record"]) if n.get("jsonl_record") else {}
+        ev = o["evidence"].split(";")
+        same = [r["rec"] for r in recs if r["eid"] in ev and r["rec"].get("type") == "definition"]
+        q2.append(dict(paper=key, gold_fact_id=o["fact_id"], gold_quantity=o["quantity"], evidence=o["evidence"], P138_compiled=o["compiled_row"],
+                       P139_stage=n.get("stage", ""), P139_detail=n.get("detail", ""),
+                       record_term=rec.get("term"), record_quantity=rec.get("quantity"), record_quote=rec.get("quote"), record_parent=rec.get("parent"),
+                       P139_compiled=n.get("compiled_row", ""),
+                       definition_records_on_the_elements=" | ".join(f"term={x.get('term')} quantity={x.get('quantity')} parent={x.get('parent')}" for x in same)))
+wr("P139-check.q2_definitions_lost.csv", q2, list(q2[0]) if q2 else ["paper"])
+print(json.dumps(dict(q1=len(q1), q1sum=q1sum, q2=len(q2), stmt=rates_stmt), indent=0)[:3000])

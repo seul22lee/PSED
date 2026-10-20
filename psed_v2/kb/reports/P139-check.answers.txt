@@ -1,0 +1,34 @@
+Q1 parent paths (kb/extract/compile.py, P139 state fdfd3be)
+- parent() :474  record parent = a pass-0 id -> its tree row                         (yli18 128, yim20 165)
+- parent() :468  record parent = a specimen id, result with a value -> <specimen>:meas:<method>   (yli18 3, yim20 146)
+- parent() :472  record parent = a series id, a setting -> the series' parent row     (yli18 2, yim20 9)
+- parent() :473  record parent = a series id, not a setting -> the comparison        (yli18 1, yim20 10)
+- parent() :458  record parent = "paper" -> paper row                                (yli18 95, yim20 134)
+- parent() :461  record parent = null -> paper row, flagged                          (yli18 27, yim20 3)
+- parent() :464  record parent = an id pass 0 does not have -> paper row, flagged    (yim20 2)
+Paths other than "record id" or "null -> paper":
+- figures() :341-437  rows built from figures.json, no pass-1 record: settings under the series' parent row or entity,
+  model rows under the entity, observations under the entity's measurement; fallback series under the paper row (:404)
+                                                                                    (yli18 46, yim20 72)
+- derived() :582  KB-derived rows (lists.DERIVED) under the entity they are derived for   (yli18 5, yim20 47)
+- dedupe() :514   a merged row keeps the first row's parent; the merged records' own parents are not used
+                                                                                    (sources merged: yli18 36, yim20 42)
+Every row of these paths is in P139-check.q1_parent_paths.csv.
+
+What audit.py's parent_filled reads (kb/extract/audit.py:201, :208): the compiled row's _parent_filled flag, set in
+compile.py:506 from the record that made the row: True only when parent() took :461 (null) or :464 (unknown id). It is
+counted over the gold rows at T5/T6 (the gold rows matched or mismatched to a compiled row), not over records. So
+yli18 23 yes / 142 no and yim20 4 / 408 count gold rows: "no" covers every compiled row whose parent came from a record
+id, from "paper", from figures(), from derived(), and every row a dedupe merge kept for another record's parent. The 27
+(yli18) and 3+2 (yim20) filled records are the only source of "yes"; a filled record that matches no gold row, or is
+merged into an unflagged row, does not appear. The audit's parent column ("paper" 52 / 57) is a different test: the
+compiled parent is the paper row where the gold's is not, whatever the path, including record parent "paper".
+
+Q2 definitions T6 in P138, not T6 in P139 (P139-check.q2_definitions_lost.csv, 20 rows)
+- yim20 18: T4 step d quote_not_found. Each has a definition record with term and quantity on the gold element; its
+  quote is not a substring of the normalized element text: 11 differ only in case (D11 is case-sensitive), 7 have every
+  word present but not contiguous (P139-check.q2_quote_class.csv).
+- yli18 2: s5.p6#1 T3 (the element now has one model record, no definition); tabu1.r2c2#1 T5 (quantity
+  deposition_temperature vs the compiled row's time on the shared element).
+
+Null rates (raw pass-1 records of the P139 lines): P139-check.statement_null.csv, P139-check.parent_null_by_type.csv
