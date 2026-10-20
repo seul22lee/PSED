@@ -1,0 +1,107 @@
+"""P142-probe: gold experiment units vs the latest pass-0 line, per dev paper. Read-only; writes kb/reports/P142-probe.*.csv."""
+import collections, csv, json, re, sys
+from pathlib import Path
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "extract"))
+import common as C   # noqa: E402
+import compile as K  # noqa: E402
+
+R = V2 / "kb" / "reports"
+DEV = [p for p in C.E.PAPERS if p not in C.HELD_OUT]
+norm = lambda t: re.sub(r"\W+", " ", (t or "").lower()).strip()   # noqa: E731
+
+
+def gold_units(pid):
+    rows = [r for r in csv.DictReader((V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")) if "#" not in r["fact_id"] or r["type"] == "identity"]
+    B = {r["fact_id"]: r for r in rows}
+
+    def anc(r):
+        x, out = r["parent"], []
+        while x in B:
+            out.append(B[x]); x = B[x]["parent"]
+        return out
+    U = []
+    for r in rows:
+        a = anc(r)
+        role = ("run" if r["type"] == "activity" and r["kind"] == "deposition" else
+                "simulation" if r["type"] == "activity" and r["kind"] == "simulation" else
+                "model_run" if r["type"] == "entity" and any(x["type"] == "activity" and x["kind"] == "simulation" for x in a) else
+                "specimen" if r["type"] == "entity" and any(x["type"] == "activity" and x["kind"] == "deposition" for x in a) else
+                "series" if r["type"] == "comparison" and r["kind"] == "series" else "")
+        if not role:
+            continue
+        run = next((x["fact_id"] for x in a if x["type"] == "activity" and x["kind"] == "deposition"), "")
+        U.append(dict(id=r["fact_id"], role=role, name=r["label_as_printed"], ev=set(filter(None, r["evidence"].split(";"))), run=run,
+                      members=[m for m in r["links"].split(";")[1:] if m] if role == "series" else []))
+    return U
+
+
+def p0_units(pid):
+    lines = C.lines(pid, 0)
+    if not lines:
+        return [], None
+    x = lines[-1]
+    items = [it for it in C.loads_json(x["response"]) if isinstance(it, dict)]
+    return [dict(id=it.get("id") or "", role=it.get("role") or "", name=it.get("name_as_printed") or "", ev=set(it.get("introduced_in") or []),
+                 parent=it.get("parent") or "", members=it.get("members") or [], quote=it.get("evidence_quote")) for it in items
+            if it.get("role") in ("run", "specimen", "simulation", "model_run", "series")], x
+
+
+summary, detail, quotes = [], [], []
+for pid in DEV:
+    key = C.E.PAPERS[pid]
+    G, (P, line) = gold_units(pid), p0_units(pid)
+    text = K.normalize(" ".join(C.E.texts(pid).values()))
+    for u in P:
+        if u["role"] == "run":
+            q = u["quote"]
+            quotes.append(dict(paper=key, run=u["id"], name=u["name"], evidence_quote=q or "",
+                               check="null" if not q else "found" if K.normalize(q) in text else "tokens in order" if K.in_order(K.normalize(q).split(), text) else "not found"))
+    row = dict(paper=key)
+    for role in ("run", "specimen", "simulation", "model_run", "series"):
+        g = [u for u in G if u["role"] == role]
+        p = [u for u in P if u["role"] == role]
+        edges = [(i, j) for i, a in enumerate(g) for j, b in enumerate(p) if (a["ev"] & b["ev"]) or (norm(a["name"]) and norm(a["name"]) == norm(b["name"]))]
+        parent = {("g", i): ("g", i) for i in range(len(g))} | {("p", j): ("p", j) for j in range(len(p))}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]; x = parent[x]
+            return x
+        for i, j in edges:
+            parent[find(("g", i))] = find(("p", j))
+        comps = collections.defaultdict(lambda: ([], []))
+        for i in range(len(g)):
+            comps[find(("g", i))][0].append(g[i])
+        for j in range(len(p)):
+            comps[find(("p", j))][1].append(p[j])
+        cnt = collections.Counter()
+        for gs, ps in comps.values():
+            kind = ("matched" if len(gs) == 1 and len(ps) == 1 else "missing" if not ps else "extra" if not gs else
+                    "merged" if len(ps) == 1 else "split" if len(gs) == 1 else "merged+split")
+            cnt[kind] += 1
+            detail.append(dict(paper=key, role=role, outcome=kind, gold=" | ".join(f"{u['name'] or u['id']}" for u in gs),
+                               pass0=" | ".join(f"{u['id']}: {u['name']}" for u in ps),
+                               gold_members=" | ".join(f"{len(u['members'])}" for u in gs) if role == "series" else "",
+                               pass0_members=" | ".join(f"{len(u['members'])}" for u in ps) if role == "series" else ""))
+        row[f"{role} gold/pass0"] = f"{len(g)}/{len(p)}"
+        row[f"{role} merged/split/missing/extra"] = f"{cnt['merged'] + cnt['merged+split']}/{cnt['split'] + cnt['merged+split']}/{cnt['missing']}/{cnt['extra']}"
+    gr = collections.Counter(u["run"] for u in G if u["role"] == "specimen")
+    pr = collections.Counter(u["parent"] for u in P if u["role"] == "specimen")
+    row["specimens per run gold"] = " ".join(str(n) for _, n in sorted(gr.items()))
+    row["specimens per run pass0"] = " ".join(str(n) for _, n in sorted(pr.items()))
+    row["pass0 line tokens out"] = line["usage"]["output_tokens"] if line else ""
+    summary.append(row)
+
+
+def wr(name, rows):
+    with (R / name).open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(dict.fromkeys(k for r in rows for k in r)))
+        w.writeheader()
+        w.writerows(rows)
+wr("P142-probe.summary.csv", summary)
+wr("P142-probe.units.csv", detail)
+wr("P142-probe.run_quotes.csv", quotes)
+for r in summary:
+    print(r)

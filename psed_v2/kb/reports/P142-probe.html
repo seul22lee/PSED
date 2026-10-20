@@ -1,0 +1,488 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P142-probe</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P142-probe</h1>
+<h2>Method</h2><p>kb/reports/P142-probe.method.txt</p>
+<pre>Gold units (kb/pilot/&lt;pid&gt;.facts.csv tree rows): run = activity kind deposition; specimen = entity with a deposition above it;
+simulation = activity kind simulation; model_run = entity with a simulation above it; series = comparison kind series (members =
+its links after the purpose). Pass-0 units: the latest pass-0 line (P142 definitions). Pairing per role: a gold unit and a pass-0
+item are linked when their evidence (gold evidence vs introduced_in) shares an element or their names are equal after
+lower-casing and dropping punctuation; outcome per connected group: matched 1:1, merged n-&gt;1, split 1-&gt;n, missing, extra.
+evidence_quote check: normalize() substring of the paper&#x27;s element texts joined, else tokens in order, else not found.
+Cost: 9 calls $0.994 at the prices.csv row; approved ~$0.2.
+</pre>
+<h2>Per paper: counts gold/pass-0 and merged/split/missing/extra</h2><p>kb/reports/P142-probe.summary.csv</p>
+<table><tr><th>paper</th><th>run gold/pass0</th><th>run merged/split/missing/extra</th><th>specimen gold/pass0</th><th>specimen merged/split/missing/extra</th><th>simulation gold/pass0</th><th>simulation merged/split/missing/extra</th><th>model_run gold/pass0</th><th>model_run merged/split/missing/extra</th><th>series gold/pass0</th><th>series merged/split/missing/extra</th><th>specimens per run gold</th><th>specimens per run pass0</th><th>pass0 line tokens out</th></tr>
+<tr><td>yim20</td><td>15/12</td><td>0/0/15/12</td><td>17/16</td><td>1/1/1/0</td><td>11/1</td><td>1/0/1/0</td><td>10/6</td><td>1/1/1/0</td><td>7/9</td><td>0/1/0/0</td><td>1 1 1 1 1 1 1 1 1 1 1 1 1 3 1</td><td>3 1 1 1 3 1 1 1 1 1 1 1</td><td>35190</td></tr>
+<tr><td>mat22</td><td>54/9</td><td>3/2/46/1</td><td>54/11</td><td>3/3/41/0</td><td>0/0</td><td>0/0/0/0</td><td>0/0</td><td>0/0/0/0</td><td>11/1</td><td>0/0/11/1</td><td>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</td><td>1 1 1 1 1 3 1 1 1</td><td>33980</td></tr>
+<tr><td>ela03</td><td>14/14</td><td>0/0/14/14</td><td>14/14</td><td>0/0/14/14</td><td>14/1</td><td>1/0/12/0</td><td>13/16</td><td>3/4/0/0</td><td>8/7</td><td>0/0/8/7</td><td>1 1 1 1 1 1 1 1 1 1 1 1 1 1</td><td>1 1 1 1 1 1 1 1 1 1 1 1 1 1</td><td>33319</td></tr>
+<tr><td>gor03</td><td>4/3</td><td>0/1/3/1</td><td>4/4</td><td>1/1/0/0</td><td>1/1</td><td>0/0/1/1</td><td>1/1</td><td>0/0/0/0</td><td>1/1</td><td>0/0/0/0</td><td>1 1 1 1</td><td>1 1 1 1</td><td>22300</td></tr>
+<tr><td>yli18</td><td>2/2</td><td>0/0/2/2</td><td>2/2</td><td>0/0/0/0</td><td>2/2</td><td>1/0/0/1</td><td>9/0</td><td>0/0/9/0</td><td>3/0</td><td>0/0/3/0</td><td>1 1</td><td>1 1</td><td>3977</td></tr>
+<tr><td>gao15</td><td>9/8</td><td>2/2/1/0</td><td>14/13</td><td>2/2/0/0</td><td>0/0</td><td>0/0/0/0</td><td>0/0</td><td>0/0/0/0</td><td>5/4</td><td>1/1/1/0</td><td>1 1 2 1 3 3 1 1 1</td><td>1 1 1 1 4 1 1 3</td><td>35106</td></tr>
+<tr><td>art19</td><td>4/8</td><td>1/0/0/7</td><td>8/8</td><td>1/1/0/0</td><td>1/1</td><td>0/0/0/0</td><td>4/0</td><td>0/0/4/0</td><td>4/2</td><td>1/1/1/0</td><td>1 1 4 2</td><td>1 1 1 1 1 1 1 1</td><td>24926</td></tr>
+<tr><td>hei24</td><td>0/0</td><td>0/0/0/0</td><td>0/0</td><td>0/0/0/0</td><td>1/1</td><td>0/0/0/0</td><td>83/5</td><td>2/2/70/0</td><td>24/10</td><td>4/1/1/0</td><td></td><td></td><td>26473</td></tr>
+<tr><td>zou23</td><td>2/5</td><td>0/0/2/5</td><td>8/6</td><td>1/2/2/0</td><td>0/0</td><td>0/0/0/0</td><td>0/0</td><td>0/0/0/0</td><td>3/10</td><td>1/1/0/5</td><td>6 2</td><td>3 1 2</td><td>13104</td></tr>
+</table>
+<h2>Units per role, by name</h2><p>kb/reports/P142-probe.units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>gold</th><th>pass0</th><th>gold_members</th><th>pass0_members</th></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of samples 1-3</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 4</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 5</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 6</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 7</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 8</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 9</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 10</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 11</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 12</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 13</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 14</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 15</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of sample 16</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>missing</td><td>run of the AFM specimen</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r1: the same ALD run</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r2: ALD Al2O3</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r3: Al2O3 ALD</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r4: ALD runs</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r5: Al2O3 ALD</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r6: Al2O3 ALD</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r7: growth cycles</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r8: ALD runs</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r9: Al2O3 ALD film</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r10: Al2O3 ALD film</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r11: Al2O3 ALD film</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>run</td><td>extra</td><td></td><td>r12: Al2O3 ALD film</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>specimen</td><td>merged+split</td><td>sample 1 | sample 2 | sample 3 | sample 4 | sample 5 | sample 6 | sample 7 | sample 8 | sample 9 | sample 10 | sample 11 | sample 12 | sample 13 | sample 14 | sample 15 | sample 16</td><td>s1: sample 1 | s2: sample 2 | s3: sample 3 | s4: sample 4 | s5: sample 5 | s6: sample 6 | s7: sample 7 | s8: sample 8 | s9: sample 9 | s10: sample 10 | s11: sample 11 | s12: sample 12 | s13: sample 13 | s14: sample 14 | s15: sample 15 | s16: sample 16</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>specimen</td><td>missing</td><td>Table S4 specimen</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>simulation</td><td>merged</td><td>model | sim · H 100 nm | sim · H 200 nm | sim · H 500 nm | sim · H 1000 nm | sim · H 2000 nm | sim · N 100 | sim · N 250 | sim · N 1000 | sim · N 2000</td><td>sim1: diffusion–reaction model</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>simulation</td><td>missing</td><td>sim · ESI Fig. S10-S12</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>model_run</td><td>merged+split</td><td>sim · H 100 nm | sim · H 200 nm | sim · H 500 nm | sim · H 1000 nm | sim · H 2000 nm | sim · N 100 | sim · N 250 | sim · N 1000 | sim · N 2000</td><td>mr1: 100 nm | mr2: 500 nm | mr3: 2000 nm | mr4: 250 | mr5: 500 | mr6: 1000</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>model_run</td><td>missing</td><td>sim · ESI Fig. S10-S12</td><td></td><td></td><td></td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series A</td><td>ser1: Series A</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series B</td><td>ser2: Series B</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series C</td><td>ser3: Series C</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series D</td><td>ser4: Series D</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series E</td><td>ser5: Series E</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>matched</td><td>Series F</td><td>ser6: Series F</td><td>3</td><td>3</td></tr>
+<tr><td>yim20</td><td>series</td><td>split</td><td>model simulations</td><td>ser7: reproducibility of ALD runs | ser8: varying channel height H | ser9: varying number of cycles N</td><td>10</td><td>4 | 3 | 3</td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>450 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>450 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>merged+split</td><td>350 °C, 0.20 H2 | 100 °C, 0.80 H2 | 100 °C, 0.80 H2, TEM film</td><td>r1: c-MoS2 | r2: MoS2 | r3: reference film | r4: MoS2 film</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>350 °C, 0.20 H2, TEM film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>350 °C, 0.50 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>350 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>300 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>250 °C, 0 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>250 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>merged</td><td>250 °C, 0.35 H2 | 250 °C, 0.50 H2</td><td>r7: WS2</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>250 °C, 0.65 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>250 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>250 °C, 0.94 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0.50 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0.65 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>200 °C, 0.94 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.20 H2, glassy-carbon film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.50 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>matched</td><td>150 °C, 0.65 H2</td><td>r5: MoS2</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.65 H2, glassy-carbon film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.65 H2, TEM film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.80 H2, glassy-carbon film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.80 H2, wafer film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>150 °C, 0.94 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>100 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>100 °C, 0.50 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>100 °C, 0.65 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>100 °C, 0.80 H2, PET film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>100 °C, 0.94 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>50 °C, 0.20 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>50 °C, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>H2 gas or H2 plasma step</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>10 cyc</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>20 cyc</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>30 cyc</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>50 cyc</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>Figure S22b</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>Figure S22a</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>merged+split</td><td>TiS2 @ 100 °C, 0 | Thermal ALD</td><td>r8: TiS2 | r9: thermal TiSx recipe</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>TiS2 @ 100 °C, 0.50</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>0.80</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>WS2 @ 150 °C, 0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>WS2 @ 150 °C, 0.80</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>missing</td><td>control exposures</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>run</td><td>extra</td><td></td><td>r6: MoSx films deposited at 150 °C</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>450 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>450 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>350 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>merged+split</td><td>350 °C, 0.20 H2, TEM/FET film | 150 °C, 0.80 H2, wafer film | 100 °C, 0.80 H2, TEM/FET film | 100 °C, 0.80 H2, PET film</td><td>s1: sub-5 nm c-MoS2 film | s2: approximately 5 nm thick MoS2 film deposited on a transparent PET substrate (15 × 15 cm) at 100 °C using a H2 flow ratio of 0.80 and 50 ALD cycles | s3: 350 °C using a H2 flow ratio of 0.20 and 60 ALD cycles | s4: film grown at 150 °C, H2 flow ratio of 0.80, 50 ALD cycles</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>350 °C, 0.50 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>350 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>300 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.35 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.50 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.65 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0.94 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0.50 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0.65 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>200 °C, 0.94 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>merged+split</td><td>150 °C, 0.20 H2, glassy-carbon film | 150 °C, 0.65 H2, glassy-carbon film | 150 °C, 0.80 H2, glassy-carbon film | WS2 film, 150 °C, 0 H2 | WS2 film, 150 °C, 0.80 H2</td><td>s6: 0.20 | s7: 0.65 | s8: 0.80 | s9: crystalline WS2.1 films</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.50 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.65 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>matched</td><td>150 °C, 0.65 H2, TEM film</td><td>s5: ~50 nm thick MoS2 film grown at 150 °C using a H2 flow ratio of 0.65 and 500 ALD cycles</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.94 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>100 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>100 °C, 0.50 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>100 °C, 0.65 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>100 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>100 °C, 0.94 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>50 °C, 0.20 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>50 °C, 0.80 H2 film</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.20 H2 film with an extra H2 step</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.80 H2 film, 10 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.80 H2 film, 20 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.80 H2 film, 30 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C, 0.80 H2 film, 50 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>150 °C film with lowered H2S flow</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>250 °C, 0 H2 film with lowered H2S flow</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>merged+split</td><td>TiS2 film, 100 °C, 0 H2 | TiS2 film, 100 °C, 0.50 H2 | TiS2 film, thermal ALD</td><td>s10: TiS2 films at 100 °C | s11: thermal TiSx</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>TiS2 film, 0.80 H2</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>missing</td><td>control exposures (plasma alone, precursor alone)</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>450 °C</td><td></td><td>2</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>350 °C</td><td></td><td>4</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>250 °C</td><td></td><td>7</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>200 °C</td><td></td><td>6</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>150 °C</td><td></td><td>13</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>100 °C</td><td></td><td>7</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>50 °C</td><td></td><td>2</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>cycle series at 150 °C, 0.80 H2</td><td></td><td>4</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>H2S flow tests</td><td></td><td>2</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>WS2 films</td><td></td><td>2</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>missing</td><td>TiS2 films</td><td></td><td>4</td><td></td></tr>
+<tr><td>mat22</td><td>series</td><td>extra</td><td></td><td>ser1: Effect of the H2 Flow Ratio on Film Composition</td><td></td><td>3</td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>Al2O3, 1 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>Al2O3, 3 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>Al2O3, 10 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>Al2O3, 30 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, 1 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, 3 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, 10 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, 30 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, d 19 nm, 19 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, d 46 nm, 45 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, d 65 nm, 64 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>ZnO, AR 5000 membrane</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>FTIR Al2O3 layer</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td>FTIR SiO2 layer</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_al_1: 1–5–1–5</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_al_2: 3–6–3–6</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_al_3: 10–30–10–30</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_al_4: 30–30–30–30</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_1: 1–5–1–5</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_2: 3–6–3–6</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_3: 10–30–10–30</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_4: 30–30–30–30</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_d19: 19</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_d46: 45</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_d65: 64</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_zn_har: quasi-static mode</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_ftir_al: Al2O3 ALD</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td>r_ftir_si: SiO2 ALD</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>Al2O3, 1 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>Al2O3, 3 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>Al2O3, 10 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>Al2O3, 30 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, 1 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, 3 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, 10 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, 30 s exposures</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, d 19 nm, 19 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, d 46 nm, 45 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, d 65 nm, 64 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>ZnO, AR 5000 membrane</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>FTIR Al2O3 layer</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td>FTIR SiO2 layer</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_al_1: 1 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_al_2: 3 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_al_3: 10 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_al_4: 30 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_1: 1 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_2: 3 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_3: 10 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_4: 30 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_d19: 19 nm</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_d46: 46 nm</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_d65: 65 nm</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_zn_har: L/d ≈ 5000</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_ftir_al: AlOH*</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td>s_ftir_si: SiOH*</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>Monte Carlo model</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim Al2O3, 1 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim Al2O3, 3 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim Al2O3, 10 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, 1 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, 3 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, 10 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, 30 s</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, d 19 nm</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, d 47 nm</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim ZnO, d 65 nm</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>merged</td><td>sim Fig. 12a (diffusion-limited) | sim Fig. 12b (reaction-limited)</td><td>sim1: Monte Carlo simulation</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>missing</td><td>sim Eq. (10), L/d 5000</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>sim Al2O3, 1 s | sim Al2O3, 3 s | sim Al2O3, 10 s</td><td>mr_al_1: 1 s | mr_al_3: 3 s | mr_al_10: 10 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>sim ZnO, 1 s | sim ZnO, 3 s | sim ZnO, 10 s | sim ZnO, 30 s</td><td>mr_zn_1: 1 s | mr_zn_3: 3 s | mr_zn_10: 10 s | mr_zn_30: 30 s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>sim ZnO, d 19 nm | sim ZnO, d 47 nm | sim ZnO, d 65 nm | sim Fig. 12a (diffusion-limited) | sim Fig. 12b (reaction-limited)</td><td>mr_zn_d19: 19 nm | mr_zn_d46: 46 nm | mr_zn_d65: 65 nm | mr_diff_lim: diffusion-limited | mr_reac_lim: reaction-limited</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>split</td><td>sim Eq. (10), L/d 5000</td><td>mr_p001: 0.01 Torr | mr_p01: 0.1 Torr | mr_p1: 1 Torr | mr_p10: 10 Torr</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>Al2O3 SEM series</td><td></td><td>4</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>ZnO EPMA series</td><td></td><td>4</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>ZnO diameter series</td><td></td><td>3</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>simulated Al2O3 exposure series</td><td></td><td>3</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>simulated ZnO exposure series</td><td></td><td>4</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>simulated ZnO diameter series</td><td></td><td>3</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>the two kinetic regimes of Fig. 12</td><td></td><td>2</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>missing</td><td>FTIR uptake on one membrane</td><td></td><td>2</td><td></td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_exp_al: exposure times of 1, 3, 10, and 30 s</td><td></td><td>4</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_exp_zn: exposure times of 1, 3, 10, and 30 s</td><td></td><td>4</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_exp_diam: pore diameters of 19, 46, and 65 nm</td><td></td><td>3</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_sim_al: TMA exposure times of 1, 3, and 10 s</td><td></td><td>3</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_sim_zn: DEZ exposure times of 1, 3, 10, and 30 s</td><td></td><td>4</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_sim_diam: nanopore diameters of 19, 46, and 65 nm</td><td></td><td>3</td></tr>
+<tr><td>ela03</td><td>series</td><td>extra</td><td></td><td>ser_sim_press: DEZ pressures of 0.01, 0.1, 1, and 10 Torr</td><td></td><td>4</td></tr>
+<tr><td>gor03</td><td>run</td><td>missing</td><td>run 30 × 10^3 Langmuir, 250 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>missing</td><td>run 4 × 10^3 Langmuir, 250 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>missing</td><td>run 2 × 10^3 Langmuir, 350 cycles</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>split</td><td>flat-surface runs</td><td>r2: 4 × 10^3 Langmuir (250 cycles) | r3: 2 × 10^3 Langmuir (350 cycles)</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>extra</td><td></td><td>r1: 30 × 10^3 Langmuir of exposure in each of 250 cycles</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>specimen</td><td>merged+split</td><td>holes, 30 × 10^3 Langmuir, 250 cycles | holes, 4 × 10^3 Langmuir, 250 cycles | holes, 2 × 10^3 Langmuir, 350 cycles | flat HfO2 film</td><td>s1: uncoated hole | s2: two holes coated using 2 × 10^3 Langmuir (350 cycles) | s3: two holes coated using 4 × 10^3 Langmuir (250 cycles) | s4: hole coated with 100 % step coverage using 30 × 10^3 Langmuir of exposure in each of 250 cycles</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>simulation</td><td>missing</td><td>kinetic model</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>simulation</td><td>extra</td><td></td><td>sim1: A Kinetic Model for the Diffusion of Reactants</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>model_run</td><td>matched</td><td>Fig. 3 prediction</td><td>mr1: predicted exposure needed for holes with a range of aspect ratios from 1 to 2000</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>series</td><td>matched</td><td>Fig. 2 exposure series</td><td>ser1: HFO2-coated holes</td><td>3</td><td>4</td></tr>
+<tr><td>yli18</td><td>run</td><td>missing</td><td>Al2O3 run</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>run</td><td>missing</td><td>TiO2 run</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>run</td><td>extra</td><td></td><td>r1: Al2O3</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>run</td><td>extra</td><td></td><td>r2: TiO2</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>specimen</td><td>matched</td><td>Al2O3 film, 500 cycles</td><td>s1: Al2O3</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>specimen</td><td>matched</td><td>TiO2 film, 1000 cycles</td><td>s2: TiO2</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>simulation</td><td>merged</td><td>diffusion-reaction model | Gordon model</td><td>sim2: Gordon model</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>simulation</td><td>extra</td><td></td><td>sim1: diffusion model</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, pulse 0.1 s</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, pulse 0.05 s</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, pulse 0.02 s</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, pulse 0.01 s</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, H 2 µm</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, H 1 µm</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, H 0.5 µm</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>run, H 0.2 µm</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>missing</td><td>Fig. 5 models</td><td></td><td></td><td></td></tr>
+<tr><td>yli18</td><td>series</td><td>missing</td><td>the two measured films</td><td></td><td>2</td><td></td></tr>
+<tr><td>yli18</td><td>series</td><td>missing</td><td>the pulse-length series</td><td></td><td>4</td><td></td></tr>
+<tr><td>yli18</td><td>series</td><td>missing</td><td>the channel-height series</td><td></td><td>4</td><td></td></tr>
+<tr><td>gao15</td><td>run</td><td>merged+split</td><td>Al2O3 110 °C, 50 nm | TiO2 110 °C, 50 nm | Al2O3 200 °C, 50 nm | TiO2 200 °C, 50 nm | Al2O3 300 °C, 50 nm | TiO2 300 °C, 50 nm</td><td>r1: ALD Al2O3 | r2: TiO2 films | r3: ALD Al2O3 | r4: TiO2 films | r5: ALD Al2O3 | r6: TiO2 films</td><td></td><td></td></tr>
+<tr><td>gao15</td><td>run</td><td>missing</td><td>Al2O3 300 °C, 100 nm</td><td></td><td></td><td></td></tr>
+<tr><td>gao15</td><td>run</td><td>merged+split</td><td>Al2O3 300 °C, 1109 cycles | TiO2 110 °C, 2000 cycles</td><td>r7: Al2O3 processed at 300 °C in 1109 ALD cycles | r8: TiO2 processed at 110 °C in 2000 ALD cycles</td><td></td><td></td></tr>
+<tr><td>gao15</td><td>specimen</td><td>merged+split</td><td>Al2O3 110 °C, 500 nm gap | TiO2 110 °C, 500 nm gap | Al2O3 200 °C, 500 nm gap | TiO2 200 °C, 500 nm gap | Al2O3 300 °C, 500 nm gap | TiO2 300 °C, 500 nm gap | Al2O3 300 °C, 200 nm gap | Al2O3 300 °C, 1000 nm gap</td><td>s1: (a) | s2: (b) | s3: (d) | s4: (e) | s5_c: (c) | s5_f: (f) | s5_g: (g) | s5_i: (i) | s6: (h)</td><td></td><td></td></tr>
+<tr><td>gao15</td><td>specimen</td><td>merged+split</td><td>Al2O3 300 °C, 100 nm, Fig. 4 chip, 500 nm gap | Al2O3 300 °C, 100 nm, Fig. 6 chip, 500 nm gap | Al2O3 300 °C, 1109 cycles, 500 nm gap | TiO2 110 °C, 2000 cycles, 200 nm gap | TiO2 110 °C, 2000 cycles, 500 nm gap | TiO2 110 °C, 2000 cycles, 1000 nm gap</td><td>s7: Al2O3 grown at 300 °C in LHAR with gap height of 500 nm | s8_200: 200 nm | s8_500: 500 nm | s8_1000: 1000 nm</td><td></td><td></td></tr>
+<tr><td>gao15</td><td>series</td><td>merged+split</td><td>Al2O3 temperature series | TiO2 temperature series | Al2O3 gap series</td><td>ser2: dependency of film penetration depth on the gap height | ser3: dependency of film penetration depth with temperature | ser4: dependency of film penetration depth with temperature</td><td>3 | 3 | 3</td><td>3 | 3 | 3</td></tr>
+<tr><td>gao15</td><td>series</td><td>matched</td><td>TiO2 gap series</td><td>ser1: LHAR gap size 200, 500, and 1000 nm</td><td>3</td><td>3</td></tr>
+<tr><td>gao15</td><td>series</td><td>missing</td><td>the Al2O3 and TiO2 line scans compared</td><td></td><td>2</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>merged</td><td>SiO2 plasma ALD | TiO2 plasma ALD | Al2O3 plasma ALD | HfO2 plasma ALD</td><td>r1: 3.8 s</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r2: 12 s</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r3: 38 s SiO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r4: 120 s SiO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r5: 12 s TiO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r6: 120 s TiO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r7: 120 s Al2O3</td><td></td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td>r8: 120 s HfO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>specimen</td><td>merged+split</td><td>SiO2, 3.8 s plasma | SiO2, 12 s plasma | SiO2, 38 s plasma | SiO2, 120 s plasma | TiO2, 12 s plasma | TiO2, 120 s plasma | Al2O3, 120 s plasma | HfO2, 120 s plasma</td><td>s1: SiO2 | s2: SiO2 | s3: SiO2 | s4: SiO2 | s5: TiO2 | s6: TiO2 | s7: Al2O3 | s8: HfO2</td><td></td><td></td></tr>
+<tr><td>art19</td><td>simulation</td><td>matched</td><td>recombination-limited model</td><td>sim1: continuum model</td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td>SiO2 fit</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td>TiO2 fit</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td>Al2O3 fit</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td>HfO2 fit</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>series</td><td>merged+split</td><td>SiO2 plasma-time series | TiO2 plasma-time series | the four materials at 120 s plasma</td><td>ser1: SiO2 | ser2: TiO2</td><td>4 | 2 | 4</td><td>4 | 2</td></tr>
+<tr><td>art19</td><td>series</td><td>missing</td><td>the four r determinations compared</td><td></td><td>4</td><td></td></tr>
+<tr><td>hei24</td><td>simulation</td><td>matched</td><td>porous-particle model</td><td>sim1: diffusion–reaction model</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>merged+split</td><td>baseline run, sphere | baseline run, cylinder | baseline run, slab</td><td>mr1: spherical (s = 2) | mr2: cylindrical (s = 1) | mr3: slab (s = 0)</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, sphere, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, sphere, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, cylinder, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, cylinder, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, slab, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 3 run, slab, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 4 runs, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 4 runs, 5e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 4 runs, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(a) run, τ/ε 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(a) run, τ/ε 3</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(a) run, τ/ε 4</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(a) run, τ/ε 5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(b) run, τ/ε 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(b) run, τ/ε 3</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(b) run, τ/ε 4</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(b) run, τ/ε 5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(c) run, reactant molar mass 50</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(c) run, reactant molar mass 150</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(c) run, reactant molar mass 200</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(c) run, reactant molar mass 250</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(d) run, reactant molar mass 50</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(d) run, reactant molar mass 150</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(d) run, reactant molar mass 200</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(d) run, reactant molar mass 250</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(e) run, σ 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(e) run, σ 2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(e) run, σ 6</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(e) run, σ 8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(f) run, σ 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(f) run, σ 2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(f) run, σ 6</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(f) run, σ 8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(g) run, s̄ 1e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(g) run, s̄ 2e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(g) run, s̄ 3e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(g) run, s̄ 4e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(g) run, s̄ 5e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(h) run, s̄ 1e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(h) run, s̄ 2e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(h) run, s̄ 3e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(h) run, s̄ 4e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(h) run, s̄ 5e8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(i) run, sticking probability 0.0001</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(i) run, sticking probability 0.001</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(i) run, sticking probability 0.01</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(i) run, sticking probability 0.1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(i) run, sticking probability 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(j) run, sticking probability 0.0001</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(j) run, sticking probability 0.001</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(j) run, sticking probability 0.01</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(j) run, sticking probability 0.1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(j) run, sticking probability 1</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(k) run, d_pore 5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(k) run, d_pore 10</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(k) run, d_pore 30</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(k) run, d_pore 40</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(l) run, d_pore 5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(l) run, d_pore 10</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(l) run, d_pore 30</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 5(l) run, d_pore 40</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 300 µm, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 300 µm, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 300 µm, 1e3 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 200 µm, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 200 µm, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 200 µm, 1e3 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 100 µm, 1e5 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 100 µm, 1e4 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td>Fig. 7 run, R 100 µm, 1e3 Pa s</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>merged+split</td><td>Fig. 8(a) run, 373 K | Fig. 8(a) run, 423 K | Fig. 8(a) run, 473 K | Fig. 8(a) run, 523 K | Fig. 8(a) run, 573 K | Fig. 8(b) run, 373 K | Fig. 8(b) run, 423 K | Fig. 8(b) run, 473 K | Fig. 8(b) run, 523 K | Fig. 8(b) run, 573 K</td><td>mr4: fixed volumetric reactant number density to 1.94 x 10^22 m^-3 | mr5: fixed partial pressure to 100 Pa</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>series</td><td>matched</td><td>the three geometries at the baseline</td><td>ser1: The effect of the shape factor (s)</td><td>3</td><td>3</td></tr>
+<tr><td>hei24</td><td>series</td><td>merged</td><td>the three geometries at the highest exposure | the three geometries at the middle exposure | the three geometries at the lowest exposure | the exposure series of the porous sphere | the exposure series of the porous cylinder | the exposure series of the porous slab</td><td>ser2: The effect of varying particle size R</td><td>3 | 3 | 3 | 3 | 3 | 3</td><td>0</td></tr>
+<tr><td>hei24</td><td>series</td><td>missing</td><td>the exposure series of the slab–sphere comparison</td><td></td><td>3</td><td></td></tr>
+<tr><td>hei24</td><td>series</td><td>merged+split</td><td>reactant molar mass series in the porous sphere | reactant molar mass series in the porous slab | σ series in the porous sphere | σ series in the porous slab | sticking probability series in the porous sphere | sticking probability series in the porous slab | d_pore series in the porous sphere | d_pore series in the porous slab</td><td>ser3: tortuosity (tau) per porosity (epsilon) | ser4: reactant molar mass variation (m_r) | ser5: reactant areal number density | ser6: varying s_bar = A_0/V_p | ser7: sticking probability (beta_0) | ser8: pore diameter (d_pore)</td><td>5 | 5 | 5 | 5 | 5 | 5 | 5 | 5</td><td>0 | 0 | 0 | 0 | 0 | 0</td></tr>
+<tr><td>hei24</td><td>series</td><td>merged</td><td>the exposure series at R 300 µm | the exposure series at R 200 µm | the exposure series at R 100 µm | the radius series at the lowest exposure | the radius series at the middle exposure | the radius series at the highest exposure</td><td>ser9: Achieved penetration depth (r_theta=1/2) with three varying parameters</td><td>3 | 3 | 3 | 3 | 3 | 3</td><td>0</td></tr>
+<tr><td>hei24</td><td>series</td><td>merged</td><td>the temperature series with the number density fixed | the temperature series with the partial pressure fixed</td><td>ser10: The effect of selecting the volumetric reactant number density (m^-3) or partial pressure (Pa) in a diffusion–reaction model as a function of temperature</td><td>5 | 5</td><td>2</td></tr>
+<tr><td>zou23</td><td>run</td><td>missing</td><td>Mo ALD</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>missing</td><td>Mo pulsed CVD</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td>r1: standard ALD cycle</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td>r2: pulsed CVD experiments</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td>r3: HAR trenches</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td>r4: in situ SE</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td>r5: MoCl2O2 + at-H ALD process</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>merged+split</td><td>ALD Mo film, 350 °C | ALD Mo film, 150 °C | ALD Mo film, 250 °C | CVD Mo film, 250 °C | ALD Mo film on SiO2, 350 °C</td><td>s1: 20 nm thick ALD film obtained at 350 °C on a Si substrate | s2: approximately 24 nm thick ALD film deposited at 350 °C on SiO2 | s3: ALD sample obtained at 150 °C | s4: CVD film grown at 250 °C</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td>ALD Mo film, 450 °C</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td>CVD Mo film, 350 °C</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>split</td><td>Mo in Si trenches</td><td>s5: 3:1 trench | s6: narrow trench</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>series</td><td>merged+split</td><td>the ALD temperature series | the CVD temperature series | ALD against pulsed CVD at the standard temperature</td><td>ser6: GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments | ser7: averaged ALD film composition at various temperatures | ser8: elemental concentrations in CVD films deposited at various temperatures | ser9: Film resistivity as a function of (a) the ALD film thickness | ser10: Film resistivity as a function of ... (b) process temperature</td><td>4 | 2 | 2</td><td>0 | 0 | 0 | 0 | 0</td></tr>
+<tr><td>zou23</td><td>series</td><td>extra</td><td></td><td>ser1: MoCl2O2 pulse time</td><td></td><td>0</td></tr>
+<tr><td>zou23</td><td>series</td><td>extra</td><td></td><td>ser2: at-H pulse time</td><td></td><td>0</td></tr>
+<tr><td>zou23</td><td>series</td><td>extra</td><td></td><td>ser3: MoCl2O2 purge time</td><td></td><td>0</td></tr>
+<tr><td>zou23</td><td>series</td><td>extra</td><td></td><td>ser4: at-H purge time</td><td></td><td>0</td></tr>
+<tr><td>zou23</td><td>series</td><td>extra</td><td></td><td>ser5: hot-wire temperature</td><td></td><td>0</td></tr>
+</table>
+<h2>Run evidence_quote check</h2><p>kb/reports/P142-probe.run_quotes.csv</p>
+<table><tr><th>paper</th><th>run</th><th>name</th><th>evidence_quote</th><th>check</th></tr>
+<tr><td>yim20</td><td>r1</td><td>the same ALD run</td><td>All of the films were grown in the same ALD run to avoid run-to-run variations (Series A in Table 1).</td><td>found</td></tr>
+<tr><td>yim20</td><td>r2</td><td>ALD Al2O3</td><td>As-measured saturation profiles for ALD Al2O3 as a function of reflectometer spot sizes. Samples 4, 5, and 6 (Table 1 Series B).</td><td>found</td></tr>
+<tr><td>yim20</td><td>r3</td><td>Al2O3 ALD</td><td>Fig. 9 (panels a–c) presents the effect of the channel height on the saturation profile of Al2O3 ALD (Table 1, Series C).</td><td>found</td></tr>
+<tr><td>yim20</td><td>r4</td><td>ALD runs</td><td>reproducibility of ALD runs (b) for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b.</td><td>found</td></tr>
+<tr><td>yim20</td><td>r5</td><td>Al2O3 ALD</td><td>For each design channel height H, the thickness of the film coated on channels having different lateral lengths L (0.1 to 5 nm) were measured several times and averaged except for the Series B for which L of 5 nm data was used.</td><td>found</td></tr>
+<tr><td>yim20</td><td>r6</td><td>Al2O3 ALD</td><td>Fig. 9 (panels d–f) shows the effect of the number of ALD cycles on the Al2O3 ALD saturation profile (Table 1, Series D) for a channel height of 500 nm.</td><td>found</td></tr>
+<tr><td>yim20</td><td>r7</td><td>growth cycles</td><td>1000 growth cycles were used on the LHAR channels with a design height of 500 nm (sample details are reported in Table 1).</td><td>found</td></tr>
+<tr><td>yim20</td><td>r8</td><td>ALD runs</td><td>Based on the data reported in Table 1 for samples 2, 4, 8, and 12, the standard deviation of PD50% and the slope at PD50% were 19.4 μm and 0.0003 nm, respectively.</td><td>not found</td></tr>
+<tr><td>yim20</td><td>r9</td><td>Al2O3 ALD film</td><td>using (a) different TMA pulse times (sample 12, 13, and 14 in Table 1 Series E)</td><td>found</td></tr>
+<tr><td>yim20</td><td>r10</td><td>Al2O3 ALD film</td><td>For a TMA pulse time of 0.4 s, the adsorption front was notably broadened compared to pulse times of 0.1 and 0.2 s, while GPC remained similar.</td><td>found</td></tr>
+<tr><td>yim20</td><td>r11</td><td>Al2O3 ALD film</td><td>(b) purge times in the LHAR channel with a design channel height of 500 nm (sample 12, 15, and 16 in Table 1 Series F).</td><td>found</td></tr>
+<tr><td>yim20</td><td>r12</td><td>Al2O3 ALD film</td><td>The GPC slightly decreased when the purge time increased from 1 to 10 s, while PD50% slightly increased (Series F in Table 1).</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r1</td><td>c-MoS2</td><td>For this purpose, we deposited a sub-5 nm c-MoS2 film at the lowest temperature of 100 °C using a H2 flow ratio of 0.80 and 50 ALD cycles.</td><td>tokens in order</td></tr>
+<tr><td>mat22</td><td>r2</td><td>MoS2</td><td>Using the lowest deposition temperature of 100 °C and an optimized H2 flow ratio of 0.80, MoS2 films can be deposited on low-cost plastic substrates applicable for flexible electronics such as PET as shown in Figure 1d.</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r3</td><td>reference film</td><td>Furthermore, this 100 °C film was compared to a reference film deposited at a higher temperature of 350 °C and a lower H2 flow ratio of 0.20 (Figure 3b).</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r4</td><td>MoS2 film</td><td>film grown at 150 °C, H2 flow ratio of 0.80, 50 ALD cycles</td><td>found</td></tr>
+<tr><td>mat22</td><td>r5</td><td>MoS2</td><td>using a slightly lower H2 flow ratio of 0.65 at 150 °C results in crystalline films that are smooth even at a thickness of approximately 50 nm.</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r6</td><td>MoSx films deposited at 150 °C</td><td>Rutherford backscattering spectrometry (RBS) and elastic recoil detection (ERD) measurements were performed on three samples deposited at 150 °C, one amorphous (H2 flow ratio of 0.20) and two crystalline films (H2 flow ratios of 0.65 and 0.80).</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r7</td><td>WS2</td><td>In this work, WS2 was deposited at 150 °C using a H2 flow ratio of 0.80 and TiS2 at 100 °C using a H2 flow ratio of 0.50.</td><td>found</td></tr>
+<tr><td>mat22</td><td>r8</td><td>TiS2</td><td>modifying the reported PEALD process to use a H2 flow ratio of 0.50, we were able to deposit TiS2 films at 100 °C with improved crystallinity (Figure 9b) and stoichiometry (Table S7 in Supporting Information) over the reported thermal process.</td><td>not found</td></tr>
+<tr><td>mat22</td><td>r9</td><td>thermal TiSx recipe</td><td>A thermal TiSx recipe was also used for comparison.80</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_al_1</td><td>1–5–1–5</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_al_2</td><td>3–6–3–6</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_al_3</td><td>10–30–10–30</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_al_4</td><td>30–30–30–30</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_1</td><td>1–5–1–5</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_2</td><td>3–6–3–6</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_3</td><td>10–30–10–30</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_4</td><td>30–30–30–30</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_d19</td><td>19</td><td>AA membranes with L = 50 μm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_d46</td><td>45</td><td>AA membranes with L = 50 μm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_d65</td><td>64</td><td>AA membranes with L = 50 μm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td></tr>
+<tr><td>ela03</td><td>r_zn_har</td><td>quasi-static mode</td><td>The membrane was coated using 19 ZnO ALD cycles with exposure times of 120 s and reactant pressures of 5 Torr at a deposition temperature of 177 °C.</td><td>found</td></tr>
+<tr><td>ela03</td><td>r_ftir_al</td><td>Al2O3 ALD</td><td>FTIR absorption measurements were performed versus time during sequential TMA and H2O exposures to monitor the surface species on the AA membrane during Al2O3 ALD at 177 °C.</td><td>tokens in order</td></tr>
+<tr><td>ela03</td><td>r_ftir_si</td><td>SiO2 ALD</td><td>Additional FTIR measurements were performed versus time during sequential SiCl4 and H2O exposures to monitor the surface species on the AA membrane during SiO2 ALD at 427 °C.</td><td>tokens in order</td></tr>
+<tr><td>gor03</td><td>r1</td><td>30 × 10^3 Langmuir of exposure in each of 250 cycles</td><td>Figure 2 shows an example of a cross section of a hole coated with 100 % step coverage using 30 × 10^3 Langmuir of exposure in each of 250 cycles.</td><td>tokens in order</td></tr>
+<tr><td>gor03</td><td>r2</td><td>4 × 10^3 Langmuir (250 cycles)</td><td>The two holes coated using 4 × 10^3 Langmuir (250 cycles) were coated over about three quarters of their length.</td><td>tokens in order</td></tr>
+<tr><td>gor03</td><td>r3</td><td>2 × 10^3 Langmuir (350 cycles)</td><td>The two holes coated using 2 × 10^3 Langmuir (350 cycles) were only coated along the top quarter of their length.</td><td>tokens in order</td></tr>
+<tr><td>yli18</td><td>r1</td><td>Al2O3</td><td>Al2O3 was grown with the same process as in Gao (2015) from trimethylaluminum (TMA) and water (H2O) at 300 °C</td><td>not found</td></tr>
+<tr><td>yli18</td><td>r2</td><td>TiO2</td><td>TiO2 from titanium tetrachloride (TiCl4) and H2O at 110 °C.</td><td>not found</td></tr>
+<tr><td>gao15</td><td>r1</td><td>ALD Al2O3</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r2</td><td>TiO2 films</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r3</td><td>ALD Al2O3</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r4</td><td>TiO2 films</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r5</td><td>ALD Al2O3</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r6</td><td>TiO2 films</td><td>Top-view infrared microscopy images of ALD Al2O3 [(a), (c), (d), (f), (g), and (j)] and TiO2 films [(b), (e), and (h)] grown at 110 °C [(a) and (b)], 200 °C [(d) and (e)], and 300 °C [(c), (f), (g), (h), and (i)] in LHAR test structures with gap height of 200 nm (c), 500 nm [(a), (b), (d), (e), (f), (g), and (h)], and 1000 nm (i). Target film thickness in all cases was 50 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r7</td><td>Al2O3 processed at 300 °C in 1109 ALD cycles</td><td>Al2O3 processed at 300 °C in 1109 ALD cycles, LHAR gap size 500 nm.</td><td>tokens in order</td></tr>
+<tr><td>gao15</td><td>r8</td><td>TiO2 processed at 110 °C in 2000 ALD cycles</td><td>TiO2 processed at 110 °C in 2000 ALD cycles, LHAR gap size 200, 500, and 1000 nm.</td><td>tokens in order</td></tr>
+<tr><td>art19</td><td>r1</td><td>3.8 s</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r2</td><td>12 s</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r3</td><td>38 s SiO2</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r4</td><td>120 s SiO2</td><td>LHAR3-v1a trench W100L5mm (120 s SiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r5</td><td>12 s TiO2</td><td>LHAR4 small chip vS2 (12 s TiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r6</td><td>120 s TiO2</td><td>vS1 (120 s TiO2)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r7</td><td>120 s Al2O3</td><td>LHAR4-ADVANCED trench W90 L1020 (120 s Al2O3)</td><td>not found</td></tr>
+<tr><td>art19</td><td>r8</td><td>120 s HfO2</td><td>LHAR4 small chip vS2 (120 s HfO2)</td><td>not found</td></tr>
+<tr><td>zou23</td><td>r1</td><td>standard ALD cycle</td><td>The pulse durations used for a standard ALD cycle were 1 s of MoCl2O2 and 29 s of at-H, with both pulses separated from each other by 15 s N2 purges.</td><td>not found</td></tr>
+<tr><td>zou23</td><td>r2</td><td>pulsed CVD experiments</td><td>Specifically, 1 s MoCl2O2 pulses were introduced every 30 s under a constant at-H supply and without N2 purges.</td><td>not found</td></tr>
+<tr><td>zou23</td><td>r3</td><td>HAR trenches</td><td>Film conformality was investigated in HAR trenches (the aspect ratio varying between 2:1 and 10:1) by scanning TEM, as shown in Fig. 9(a). The Si trenches had a SiO2 capping, on which Mo was deposited.</td><td>not found</td></tr>
+<tr><td>zou23</td><td>r4</td><td>in situ SE</td><td>An appropriate ALD cycle was determined at 350 °C by evaluating the GPC with in situ SE, while independently varying the MoCl2O2 pulse time (t1) and purge time (t2), and the at-H pulse time (t3) and purge time (t4) durations.</td><td>not found</td></tr>
+<tr><td>zou23</td><td>r5</td><td>MoCl2O2 + at-H ALD process</td><td>Introducing a saturation MoCl2O2 pulse of 1 s to a substrate pre-exposed to at-H is accompanied by a significant elimination of HCl and only a little H2O. Oppositely, a subsequent at-H pulse of 1s coincides with considerable H2O elimination and only a weak HCl production.</td><td>not found</td></tr>
+</table>
+<h2>Calls and cost</h2><p>kb/reports/P142-probe.calls.csv</p>
+<table><tr><th>paper</th><th>input_tokens</th><th>output_tokens</th><th>thinking</th><th>cost_usd</th></tr>
+<tr><td>yim20</td><td>38528</td><td>35190</td><td>MEDIUM</td><td>0.161</td></tr>
+<tr><td>mat22</td><td>30903</td><td>33980</td><td>MEDIUM</td><td>0.151</td></tr>
+<tr><td>ela03</td><td>21045</td><td>33319</td><td>MEDIUM</td><td>0.141</td></tr>
+<tr><td>gor03</td><td>10675</td><td>22300</td><td>MEDIUM</td><td>0.092</td></tr>
+<tr><td>yli18</td><td>21041</td><td>3977</td><td>MEDIUM</td><td>0.031</td></tr>
+<tr><td>gao15</td><td>9246</td><td>35106</td><td>MEDIUM</td><td>0.139</td></tr>
+<tr><td>art19</td><td>14445</td><td>24926</td><td>MEDIUM</td><td>0.104</td></tr>
+<tr><td>hei24</td><td>23311</td><td>26473</td><td>MEDIUM</td><td>0.117</td></tr>
+<tr><td>zou23</td><td>14842</td><td>13104</td><td>MEDIUM</td><td>0.060</td></tr>
+</table>
+</body></html>

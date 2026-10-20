@@ -1,0 +1,7 @@
+Gold units (kb/pilot/<pid>.facts.csv tree rows): run = activity kind deposition; specimen = entity with a deposition above it;
+simulation = activity kind simulation; model_run = entity with a simulation above it; series = comparison kind series (members =
+its links after the purpose). Pass-0 units: the latest pass-0 line (P142 definitions). Pairing per role: a gold unit and a pass-0
+item are linked when their evidence (gold evidence vs introduced_in) shares an element or their names are equal after
+lower-casing and dropping punctuation; outcome per connected group: matched 1:1, merged n->1, split 1->n, missing, extra.
+evidence_quote check: normalize() substring of the paper's element texts joined, else tokens in order, else not found.
+Cost: 9 calls $0.994 at the prices.csv row; approved ~$0.2.
