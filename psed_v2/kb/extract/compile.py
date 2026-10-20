@@ -51,8 +51,9 @@ def norm_ws(t):
 
 def normalize(t):
     """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
-    $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
+    \\circ / ^\\circ -> °; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
+    t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
     t = unicodedata.normalize("NFKC", t)
     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
     t = re.sub(r"[$_^{}*]", "", t)
@@ -154,16 +155,10 @@ class Run:
         return out
 
     def type_rules(self, recs):
-        out, defs_seen = [], set()
+        out = []                                                                # P136 1a: definitions from every element (D1 dropped)
         for r in recs:
             rec, eid = r["rec"], r["eid"]
             t = rec["type"]
-            if t == "definition":
-                if self.kind_of.get(eid) != "equation":
-                    self.drop("b", eid, rec, "definition_outside_equation"); continue
-                if eid in defs_seen:
-                    self.drop("b", eid, rec, "definition_extra"); continue
-                defs_seen.add(eid)
             if t == "model" and rec.get("quantity") and "value" in rec:
                 self.count("b", "model_with_value (kept)")
             if t in ("setting", "observation") and not rec.get("quantity"):
@@ -329,6 +324,97 @@ class Run:
             self.meas[i] = r
         return i
 
+    def figures(self):
+        """P136 1c: kb/<pid>.figures.json, its fields as they are. A simulated curve -> an entity (the run it shows) under the simulation
+        whose pass-0 introduced_in shares an element with the figure (else the only simulation, else the paper, logged), its model row
+        (quantity = the curve's y quantity, no value) and the conditions it does not share with its set as settings (model_input); a
+        measured curve -> its observation row and its own conditions under the measurement activity of the specimen whose introduced_in
+        shares an element with the figure (else the paper, logged); a set -> its conditions as settings under the set's activity and
+        one comparison (kind, varied; links = the first curve row as purpose, then the curve entities). Returns (tree rows, fact rows)."""
+        p = C.V2 / "kb" / f"{self.pid}.figures.json"
+        if not p.exists():
+            self.note("1c: no figures.json")
+            return [], []
+        Fj, k = json.loads(p.read_text(encoding="utf-8")), self.key
+        tree, facts = [], []
+        sims = [r for r in self.rows_tree if r["type"] == "activity" and r["kind"] == "simulation"]
+        specs = [r for r in self.rows_tree if r["type"] == "entity"]
+
+        def els(fig, panel=""):
+            return [e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order]
+
+        def owner(fig, rows, fallback=""):
+            hit = [r["fact_id"] for r in rows if set(r["evidence"].split(";")) & set(els(fig))]
+            return hit[0] if len(hit) == 1 else fallback
+
+        def row(**kw):
+            r = {x: "" for x in F.FIELDS}
+            r.update(kw)
+            r["author"] = self.pid
+            return r
+
+        def settings(conds, parent, ev, kind, mentions=""):
+            for c in conds.values():
+                q, u = c.get("quantity", ""), unit_symbol(c.get("unit") or "") if c.get("unit") else ""
+                if q not in L.QUANTITIES or c.get("value") is None:
+                    self.count("1c", "condition without a quantity id or a value"); continue
+                if u is None:
+                    self.count("1c", "condition unit unresolved"); continue
+                lo, hi = (num_text(c["value"]), num_text(c["value_max"])) if c.get("value_max") is not None else ("", "")
+                facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
+                                 value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
+                self.count("1c", "setting")
+        sets = {st["id"]: st for st in Fj.get("sets", [])}
+        members = collections.defaultdict(list)
+        first = {}
+        for cu in Fj.get("curves", []):
+            ev = ";".join(els(cu["figure"], cu.get("panel", "")))
+            st = sets.get(cu.get("set") or "")
+            shared = st["conditions"] if st else {}
+            own = {q: c for q, c in (cu.get("conditions") or {}).items() if shared.get(q, {}).get("value") != c.get("value")}
+            y, lab = cu["y"], cu.get("series", {}).get("label_raw", "")
+            if y.get("quantity") not in L.QUANTITIES:
+                self.count("1c", "curve y quantity not an id"); continue
+            if cu["kind"] == "simulated":
+                sim = owner(cu["figure"], sims, self.sole_sim)
+                if not sim:
+                    self.count("1c", "curve parent: paper (no simulation found)")
+                e = f"{k}:figrun:{cu['id'].split(':', 1)[1].replace('#', '.')}"
+                tree.append(row(fact_id=e, type="entity", how="stated", evidence=ev, parent=sim or k, label_as_printed=lab or cu["id"],
+                                statement=f"the simulation run of curve {cu['id']} ({lab or 'no series label'})"))
+                members[cu.get("set") or ""].append(e)
+                parent, kind = e, "model_input"
+                facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
+                                 mentions=lab, evidence=ev, parent=e))
+            else:
+                spec = owner(cu["figure"], specs)
+                parent, kind = (self.measurement(spec, ""), "stated") if spec else (k, "stated")
+                if not spec:
+                    self.count("1c", "curve parent: paper (no specimen found)")
+                facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
+                                 mentions=lab, evidence=ev, parent=parent))
+            first.setdefault(cu.get("set") or "", facts[-1])
+            self.count("1c", f"curve {cu['kind']}")
+            settings(own, parent, ev, kind, mentions=lab)
+        for sid, st in sets.items():
+            ev = ";".join(els(st["figure"], st.get("panel", "")))
+            sim = owner(st["figure"], sims, self.sole_sim)
+            spec = owner(st["figure"], specs)
+            act = sim if members[sid] and sim else (self.measurement(spec, "") if spec else "")
+            if act:
+                settings(st.get("conditions") or {}, act, ev, "model_input" if act == sim else "stated")
+            else:
+                self.count("1c", "set conditions skipped (no activity found)")
+            if len(members[sid]) >= 2 and sid in first and st.get("varied") in L.QUANTITIES:
+                first[sid]["_purpose_of"] = sid
+                tree.append(row(fact_id=f"{k}:figset:{sid.split(':')[-1]}", type="comparison", kind=st["kind"], how="stated", quantity=st["varied"],
+                                label_as_printed=st.get("label", ""), evidence=ev, parent=k, links="", _members=members[sid], _sid=sid,
+                                statement=f"the curves of figure set {sid} as a comparison, varying {L.NAMES.get(st['varied'], st['varied'])}"))
+                self.count("1c", "comparison")
+            else:
+                self.count("1c", "set without a comparison (fewer than two curve entities or no varied id)")
+        return tree, facts
+
     def parent(self, r):
         """h: claim, definition, caveat and cited under the paper (gold shape); a model input -> its simulation; a model -> its
         simulation; a setting -> its run or the recipe (D9); a value naming exactly one specimen -> that specimen's measurement activity."""
@@ -382,14 +468,28 @@ class Run:
             f.update(type="setting", data_kind="", value_text=r["species"])
         if f["type"] == "definition":
             vs = rec.get("variables") or {}
-            f["term"] = "|".join(s for s, q in vs.items() if q == f["quantity"])
+            f["term"] = rec.get("term") or "|".join(s for s, q in vs.items() if q == f["quantity"])
         f["evidence"], f["parent"], f["author"] = r["eid"], parent, self.pid
         return f
 
     def dedupe(self, items):
-        """i (D3): equal DEDUPE_KEY from different elements -> one record, evidence = all element ids in element order. Value records only."""
+        """i (D3): equal DEDUPE_KEY from different elements -> one record, evidence = all element ids in element order. Value records
+        only; P136 1a: a definition by its normalized term (term, else label_as_printed, else the first mention)."""
         seen, out = {}, []
         for f in items:
+            if f["type"] == "definition":
+                t = normalize(f["term"] or f["label_as_printed"] or f["mentions"].split(";")[0]).lower()
+                if not t:
+                    out.append(f); continue
+                key = ("definition", t)
+                if key in seen:
+                    g = seen[key]
+                    g["evidence"] = ";".join(sorted(set(g["evidence"].split(";")) | set(f["evidence"].split(";")), key=self.order.get))
+                    self.count("i", "definition merged")
+                    self.note(f"i: definition {t!r}: merged {f['evidence']} into {g['evidence']}")
+                    continue
+                seen[key] = f
+                out.append(f); continue
             if not any(f[x] for x in VALUE_KEYS):
                 out.append(f); continue
             key = tuple(f[x] for x in DEDUPE_KEY)
@@ -557,10 +657,16 @@ class Run:
             p, why = self.parent(r)
             self.count("h", f"parent: {why}")
             items.append(self.fact_row(r, p))
-        items = self.dedupe(items)
+        fig_tree, fig_facts = self.figures()
+        items = self.dedupe(items + fig_facts)
         self.count("i", "kept", len(items))
         items = self.ids(items)
-        rows = tree + list(self.meas.values()) + items
+        for c in fig_tree:                                                      # 1c: a comparison's links once its purpose row has an id
+            if c["type"] == "comparison":
+                sid = c.pop("_sid")
+                purpose = next(f["fact_id"] for f in items if f.get("_purpose_of") == sid)
+                c["links"] = ";".join([purpose] + c.pop("_members"))
+        rows = tree + fig_tree + list(self.meas.values()) + items
         rows = self.derived(rows)
         rows = self.statements(rows)
         self.coverage(rows)
@@ -602,13 +708,37 @@ def write_csv(path, fields, rows):
 
 
 # ---------------------------------------------------------------------------------------------------------------- diff against the gold
+def canon(f):
+    """P136 1d: a value for comparison: in the quantity's canonical unit (lists.UNITS, lists.convert), else in its dimension's base unit
+    (vocab.UNIT_BASE; °C through K), else the raw (value, unit) strings."""
+    v = F.num(f["value"]) if f["value"] else None
+    if v is None:
+        return None
+    u = V.UNIT_ALIAS.get(f["unit"], f["unit"])
+    for to in (L.UNITS.get(f["quantity"]), "K" if u == "°C" else None):
+        if to is not None:
+            try:
+                v, u = L.convert(v, u, to), V.UNIT_ALIAS.get(to, to)
+                break
+            except (KeyError, ValueError):
+                pass
+    if u in V.UNIT_BASE:
+        dim, fac = V.UNIT_BASE[u]
+        return dim, float(f"{v * fac:.6g}")
+    return f["value"], f["unit"]
+
+
+def match_key(f):
+    """The P134 match on the value side, P136 1d: type, quantity, the value in canonical units, value_text."""
+    return f["type"], f["quantity"], canon(f), f["value_text"].lower()
+
+
 def diff(run):
     """Gold pilot/<pid>.facts.csv against the compiled rows: a match shares an evidence element and has equal type, quantity, value,
-    unit (canonical spelling) and value_text; one gold row per compiled row, first come."""
+    value in canonical units (canon) and value_text; one gold row per compiled row, first come."""
     gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
     comp = run.rows
-    u = lambda x: V.UNIT_ALIAS.get(x, x)
-    key = lambda f: (f["type"], f["quantity"], F.num(f["value"]) if f["value"] else None, u(f["unit"]), f["value_text"].lower())
+    key = match_key
     free = list(range(len(gold)))
     matched = collections.Counter()
     for c in comp:

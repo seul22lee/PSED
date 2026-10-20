@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """P135b: where the pipeline loses each gold row of one paper. No provider call; no fix.
 
-    python3 psed_v2/kb/extract/audit.py yli18
+    python3 psed_v2/kb/extract/audit.py yli18 [--unit P136]      # report tables go to kb/reports/<unit>.*.csv (default P135b)
 
 Per gold row of kb/pilot/<pid>.facts.csv the first stage test that fails:
   T0 tree      a tree row (no '#' in fact_id, or type paper/activity/entity/comparison/identity); a setting with no quantity, value
@@ -14,7 +14,8 @@ Per gold row of kb/pilot/<pid>.facts.csv the first stage test that fails:
   T3 prompt    no record of the 22 lines in use (compile.py input rule) on an evidence element with the gold type
   T3q          such records exist, none with the gold quantity (P135c)
   T4 compiler  the matching record was dropped (compile.py step, reason, field)
-  T5 mismatch  the matching record reached facts.csv but the P134 match (type, quantity, value, unit, value_text) fails
+  T5 mismatch  the matching record reached facts.csv but the P134 match (type, quantity, value in canonical units, value_text) fails
+  (P136: the rows compile.py builds from figures.json count as records of their evidence elements)
   T6 matched
 Several matching records: the first that reached facts.csv decides (T6 if any matches, else T5), else the first dropped (T4).
 The compiler is re-run in memory (outputs to a temporary folder) so that each record is followed to its drop or its fact row.
@@ -39,26 +40,21 @@ import vocab as V  # noqa: E402
 
 TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
 NO_SLOT = ("links", "inputs", "parent", "figure_ref")
-MATCH = ("type", "quantity", "value", "unit", "value_text")
 COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "cast_fills", "no_slot", "same_element_same_type",
         "same_element_same_type_same_quantity", "jsonl_record", "compiled_row"]
 REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
 
 
-def key(f):
-    """The P134 match key (compile.diff)."""
-    return (f["type"], f["quantity"], K.F.num(f["value"]) if f["value"] else None, V.UNIT_ALIAS.get(f["unit"], f["unit"]), f["value_text"].lower())
-
-
 def matches(g, c):
-    return key(g) == key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
+    """The P134 match with the P136 1d value comparison (compile.match_key: canonical units)."""
+    return K.match_key(g) == K.match_key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
 
 
 def traced_run(pid):
     """compile.Run in a temporary folder, with each record followed: {id(rec): ('drop', step, reason, field) | ('fact', row)}."""
     K.OUT = Path(tempfile.mkdtemp(prefix="audit_"))
     run = K.Run(pid)
-    fate, made = {}, {}
+    fate, made, fig_records = {}, {}, []
     drop, fact_row, dedupe = run.drop, run.fact_row, run.dedupe
 
     def drop_t(step, eid, rec, reason, field=""):
@@ -74,6 +70,10 @@ def traced_run(pid):
         out = dedupe(items)
         kept = {id(f) for f in out}
         for f in items:                                                         # a merged row: its record lives on in the row it merged into
+            if id(f) not in made:                                               # P136: a row from figures.json (compile 1c) stands in as its own record
+                rec = dict(type=f["type"], quantity=f["quantity"], source="figures.json", label_as_printed=f["label_as_printed"])
+                fig_records.append(dict(eid=f["evidence"].split(";")[0], rec=rec, evidence=f["evidence"].split(";")))
+                made[id(f)] = id(rec)
             g = f if id(f) in kept else next(x for x in out if all(x[k] == f[k] for k in K.DEDUPE_KEY) and f["evidence"] in x["evidence"].split(";"))
             fate[made[id(f)]] = ("fact", g)
         return out
@@ -81,7 +81,7 @@ def traced_run(pid):
     records = run.read()                                                        # the records as compile.py reads them (variables mapped)
     run.read = lambda: records
     rows = run.run()
-    return run, records, fate, rows
+    return run, records + fig_records, fate, rows
 
 
 def ontology_test(g, qids):
@@ -118,27 +118,15 @@ def rec_json(r):
 
 
 def differing(g, c):
+    """The fields that differ; value and unit compared in canonical units (compile.canon), the raw strings shown beside them."""
     out = []
-    for k in MATCH:
+    for k in ("type", "quantity", "value_text"):
         a, b = g[k], c[k]
-        if k == "value":
-            ga, cb = K.F.num(a) if a else None, K.F.num(b) if b else None
-            if ga != cb:
-                conv = ""
-                to = L.UNITS.get(g["quantity"], g["unit"])
-                try:
-                    x = L.convert(ga, g["unit"], to) if ga is not None else None
-                    y = L.convert(cb, c["unit"], to) if cb is not None else None
-                    conv = f" (in {to}: {x:g} vs {y:g}, {'equal' if x is not None and y is not None and abs(x - y) <= 1e-9 * max(abs(x), 1) else 'differ'})" \
-                        if x is not None and y is not None else ""
-                except (KeyError, ValueError) as e:
-                    conv = f" (no conversion: {e})"
-                out.append(f"value {a!r} vs {b!r}{conv}")
-        elif k == "unit":
-            if V.UNIT_ALIAS.get(a, a) != V.UNIT_ALIAS.get(b, b):
-                out.append(f"unit {a!r} vs {b!r}")
-        elif (a.lower() if k == "value_text" else a) != (b.lower() if k == "value_text" else b):
+        if (a.lower() if k == "value_text" else a) != (b.lower() if k == "value_text" else b):
             out.append(f"{k} {a!r} vs {b!r}")
+    cg, cc = K.canon(g), K.canon(c)
+    if cg != cc:
+        out.append(f"value {g['value']!r} {g['unit']!r} vs {c['value']!r} {c['unit']!r} (canonical {cg} vs {cc})")
     return "; ".join(out) or "evidence shares no element"
 
 
@@ -166,7 +154,7 @@ def main(arg):
         a["no_slot"], a["cast_fills"] = ";".join(no_slot), ";".join(fills)
         if err:
             a.update(stage="T2 form", detail=err); out.append(a); continue
-        on_el = [r for r in records if r["eid"] in ev]
+        on_el = [r for r in records if (set(r.get("evidence") or [r["eid"]]) & set(ev))]
         typed = [r for r in on_el if r["rec"].get("type") == g["type"]]
         hits = [r for r in typed if not g["quantity"] or r["rec"].get("quantity") == g["quantity"]]
         a.update(same_element_same_type=len(typed), same_element_same_type_same_quantity=len(hits))
@@ -205,11 +193,12 @@ def main(arg):
     K.write_csv(D / f"{pid}.audit.csv", COLS, out)
     K.write_csv(D / f"{pid}.audit_reverse.csv", REV, rev)
     R = C.V2 / "kb" / "reports"
-    K.write_csv(R / "P135b.text.csv", ["fact_id", "element_text"], texts)            # gitignored: paper text
+    unit = sys.argv[sys.argv.index("--unit") + 1] if "--unit" in sys.argv else "P135b"
+    K.write_csv(R / f"{unit}.text.csv", ["fact_id", "element_text"], texts)            # gitignored: paper text
     st = collections.Counter((a["stage"], a["type"]) for a in out)
     types = sorted({a["type"] for a in out}, key=lambda t: -sum(v for (s, ty), v in st.items() if ty == t))
     stages = sorted({a["stage"] for a in out})
-    with (R / "P135b.stage_type.csv").open("w", newline="", encoding="utf-8") as fh:
+    with (R / f"{unit}.stage_type.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["stage"] + types + ["total"])
         for s in stages:
@@ -217,11 +206,11 @@ def main(arg):
         w.writerow(["total"] + [sum(st[(s, t)] for s in stages) for t in types] + [len(out)])
     for name, stage in (("t2_errors", "T2 form"), ("t4_reasons", "T4 compiler")):
         c = collections.Counter(a["detail"] for a in out if a["stage"] == stage)
-        with (R / f"P135b.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+        with (R / f"{unit}.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
             w.writerow(["detail", "rows"])
             w.writerows(c.most_common())
-    with (R / "P135b.t3_split.csv").open("w", newline="", encoding="utf-8") as fh:  # P135c: T3 (no record of the type) vs T3q (no record with the quantity)
+    with (R / f"{unit}.t3_split.csv").open("w", newline="", encoding="utf-8") as fh:  # P135c: T3 (no record of the type) vs T3q (no record with the quantity)
         w = csv.writer(fh)
         w.writerow(["type", "T3 prompt", "T3q"])
         w.writerows([t, st[("T3 prompt", t)], st[("T3q", t)]] for t in types if st[("T3 prompt", t)] or st[("T3q", t)])
