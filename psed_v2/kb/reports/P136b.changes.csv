@@ -1,0 +1,14 @@
+item,file,where,why
+D11,kb/extract/compile.py,quotes(),quote grounded in the record's element plus the element ids it mentions (texts joined)
+D12,kb/extract/compile.py,validate(),variables quantity outside the enum -> null; logged variables_unmapped; record kept
+D13,kb/extract/compile.py + audit.py,matches(); audit T3,a gold model row without value matches a model row on a shared element
+step k (figures),kb/extract/compile.py,figures(),one entity per distinct conditions dict; shared conditions on the simulation; row type by curve kind; evidence de-duplicated
+fallbacks,kb/extract/compile.py,fallbacks(),inferred simulation for simulated curves with no pass-0 simulation for their figure (extends 'no simulation from pass 0'); inferred run when pass 0 names none
+dedupe,kb/extract/compile.py,dedupe(),same-element exact duplicates (same label) dropped; evidence merged as sets (a crash on multi-element evidence)
+statements,kb/extract/compile.py,statements(),value text then label/term left out when a statement repeats eight words
+normalize,kb/extract/compile.py,normalize(),\\times -> × (the printed unit of 50×)
+units,ontology/units.yaml,dimensionless row,"x" added ("×" was already there)
+alias,ontology/ontology.yaml,normalized_thickness,"normalized thickness"; header hash 7a72429b
+prompt,kb/extract/pass1_elements.py,RULES + examples(),NK reasons defined; claim definition + full claim example; reactor/instrument value_text = name
+pass 0,kb/extract/pass0_paper.py,INSTRUCTION + example(),run/simulation/specimen defined; one example list from another dev paper's gold tree
+prices,kb/pilot/prices.csv,new row,google gemini-3.8-flash 0.75 in / 3.75 out per Mtok (third-party listings; introductory)

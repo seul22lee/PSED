@@ -1,0 +1,567 @@
+commit 74dfb19968162f263bc0d4b2169fb7960163c92d
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 22:44:43 2026 -0500
+
+    P136b: D11-D13, figure entities by conditions, fallback activities, prompt NK/claim/run definitions, units, prices
+    
+    compile.py: D11 quote against the record's element and the element ids it mentions,
+    texts joined; D12 a variables quantity outside the enum -> null (variables_unmapped,
+    record kept); D13 a gold model row without a value matches a model row on a shared
+    element (diff and audit). figures.json: one entity per distinct conditions dict;
+    the conditions all entities of a simulation share go once on it; row type by the
+    curve's kind (simulated -> model, read_from_figure -> observation); evidence ids
+    de-duplicated. Fallbacks: a simulation activity (how inferred) for simulated curves
+    pass 0 gives none for; a run under the recipe (how inferred) when pass 0 names none
+    and reactant_A / deposition_temperature settings exist. Dedupe: the same row again
+    from the same element(s) with the same label is dropped (D5 kept); multi-element
+    evidence merged as sets. normalize(): \times -> ×. Step k: the printed value text,
+    then label and term, left out when a statement still repeats eight words.
+    units.yaml: "x" for 1; normalized_thickness += "normalized thickness"; ontology.yaml
+    header hash 7a72429b. pass1 RULES: the four NK reasons, claim (with a full claim
+    example), reactor/instrument value_text = the name. pass0 INSTRUCTION: run,
+    simulation, specimen defined; one example list from another dev paper's gold tree.
+    prices.csv: google gemini-3.8-flash 0.75 / 3.75 per Mtok (third-party listings).
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index f3e073a..d199774 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -46,8 +46,8 @@ REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence",
+ 
+ 
+ def matches(g, c):
+-    """The P134 match with the P136 1d value comparison (compile.match_key: canonical units)."""
+-    return K.match_key(g) == K.match_key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
++    """compile.matches: the P134 match with canonical units (1d) and D13."""
++    return K.matches(g, c)
+ 
+ 
+ def same(x, f):
+@@ -166,7 +166,8 @@ def main(arg):
+             a.update(stage="T2 form", detail=err); out.append(a); continue
+         on_el = [r for r in records if (set(r.get("evidence") or [r["eid"]]) & set(ev))]
+         typed = [r for r in on_el if r["rec"].get("type") == g["type"]]
+-        hits = [r for r in typed if not g["quantity"] or r["rec"].get("quantity") == g["quantity"]]
++        valueless_model = g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"])   # D13
++        hits = [r for r in typed if not g["quantity"] or valueless_model or r["rec"].get("quantity") == g["quantity"]]
+         a.update(same_element_same_type=len(typed), same_element_same_type_same_quantity=len(hits))
+         if typed and not hits:
+             a.update(stage="T3q", detail=f"quantities of the {len(typed)} {g['type']} records: {dict(collections.Counter(r['rec'].get('quantity', '') for r in typed))}")
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 4ecccb2..dbff4a5 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -51,11 +51,12 @@ def norm_ws(t):
+ 
+ def normalize(t):
+     """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
+-    \\circ / ^\\circ -> °; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
++    \\circ / ^\\circ -> °; \\times -> ×; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
+     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
+     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
+     t = unicodedata.normalize("NFKC", t)
+     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
++    t = re.sub(r"\\times\s*", "×", t)                                                  # P136b: 50\times -> 50×
+     t = re.sub(r"[$_^{}*]", "", t)
+     return norm_ws(t)
+ 
+@@ -142,9 +143,16 @@ class Run:
+     # ------------------------------------------------------------------------------------------------------------ a-g
+     def validate(self, recs):
+         from jsonschema import Draft202012Validator
+-        val = Draft202012Validator(C.schema("form.json"))
++        form = C.schema("form.json")
++        val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
+         out = []
+         for r in recs:
++            vs = r["rec"].get("variables")
++            for sym, q in (vs.items() if isinstance(vs, dict) else []):          # D12: a symbol's quantity outside the enum -> null, logged
++                if q is not None and q not in qids:
++                    vs[sym] = None
++                    self.count("a", "variables_unmapped (set to null)")
++                    self.note(f"a: {r['eid']}: variables_unmapped {sym!r} -> {q!r}")
+             errs = list(val.iter_errors(r["rec"]))
+             if not errs:
+                 out.append(r); continue
+@@ -198,7 +206,8 @@ class Run:
+     def quotes(self, recs):
+         out = []
+         for r in recs:
+-            if normalize(r["rec"]["quote"]) in normalize(self.text.get(r["eid"], "")):
++            ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
++            if normalize(r["rec"]["quote"]) in normalize(" ".join(self.text.get(e, "") for e in ev)):        # element ids it mentions, texts joined
+                 out.append(r)
+             else:
+                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
+@@ -324,13 +333,48 @@ class Run:
+             self.meas[i] = r
+         return i
+ 
++    def fallbacks(self, recs):
++        """P136b: simulated curves in figures.json for which pass 0 gives no simulation (none, or none whose introduced_in shares an
++        element with the figure while there are several) -> one simulation activity (how inferred), which they take; no run from
++        pass 0 but a reactant_A or deposition_temperature setting -> one run under the recipe (how inferred). Logged."""
++        k, rows = self.key, self.rows_tree
++        self.fig_sim = ""
++        p = C.V2 / "kb" / f"{self.pid}.figures.json"
++        curves = json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []
++
++        def row(**kw):
++            r = {x: "" for x in F.FIELDS}
++            r.update(kw, author=self.pid)
++            return r
++        sims = [r for r in rows if r["type"] == "activity" and r["kind"] == "simulation"]
++        figs = lambda c: {e for e in (f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap")}   # noqa: E731
++        unowned = [c for c in curves if c["kind"] == "simulated" and len(sims) != 1
++                   and len([r for r in sims if set(r["evidence"].split(";")) & figs(c)]) != 1]                       # P136b: no simulation found for it
++        if unowned:
++            rows.append(row(fact_id=f"{k}:sim:inferred", type="activity", kind="simulation", how="inferred", parent=k, label_as_printed="simulation",
++                            statement=f"the simulation behind the simulated curves of figures.json (pass 0 named none)"))
++            self.fig_sim = f"{k}:sim:inferred"                                     # the figures' simulation; the text keeps its own rule
++            if not sims:
++                self.sole_sim = self.fig_sim
++            self.note(f"fallback: simulation activity inferred ({len(unowned)} simulated curves with no simulation from pass 0 for their figure)")
++        if not any(r["type"] == "activity" and r["fact_id"].startswith(f"{k}:run:") for r in rows) and \
++                any(x["rec"].get("type") == "setting" and x["rec"].get("quantity") in ("reactant_A", "deposition_temperature") for x in recs):
++            if not any(r["fact_id"] == f"{k}:recipe" for r in rows):
++                rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",
++                                statement=f"the deposition recipe of {k}"))
++            rows.append(row(fact_id=f"{k}:run:inferred", type="activity", kind="deposition", how="inferred", parent=f"{k}:recipe", label_as_printed="deposition run",
++                            statement=f"the deposition run the settings describe (pass 0 named none)"))
++            self.sole_run = f"{k}:run:inferred"
++            self.note("fallback: run activity inferred (reactant_A / deposition_temperature settings, no run from pass 0)")
++
+     def figures(self):
+-        """P136 1c: kb/<pid>.figures.json, its fields as they are. A simulated curve -> an entity (the run it shows) under the simulation
+-        whose pass-0 introduced_in shares an element with the figure (else the only simulation, else the paper, logged), its model row
+-        (quantity = the curve's y quantity, no value) and the conditions it does not share with its set as settings (model_input); a
+-        measured curve -> its observation row and its own conditions under the measurement activity of the specimen whose introduced_in
+-        shares an element with the figure (else the paper, logged); a set -> its conditions as settings under the set's activity and
+-        one comparison (kind, varied; links = the first curve row as purpose, then the curve entities). Returns (tree rows, fact rows)."""
++        """P136 1c / P136b: kb/<pid>.figures.json, its fields as they are. A curve's row type by its kind: simulated -> model,
++        read_from_figure -> observation. Simulated curves: one entity per distinct conditions dict across the paper (curves with equal
++        conditions share it), under the simulation whose pass-0 introduced_in shares an element with the figure (else the only one);
++        the conditions every such entity has alike go once under the simulation (model_input), the rest under the entity; the model
++        row (quantity = the curve's y quantity, no value) under the entity. Measured curves: the observation row and the curve's
++        conditions under the measurement activity of the specimen whose introduced_in shares an element with the figure (else the
++        paper, logged). A set: one comparison (kind, varied; links = the set's first curve row as purpose, then its entities)."""
+         p = C.V2 / "kb" / f"{self.pid}.figures.json"
+         if not p.exists():
+             self.note("1c: no figures.json")
+@@ -341,7 +385,7 @@ class Run:
+         specs = [r for r in self.rows_tree if r["type"] == "entity"]
+ 
+         def els(fig, panel=""):
+-            return [e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order]
++            return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
+ 
+         def owner(fig, rows, fallback=""):
+             hit = [r["fact_id"] for r in rows if set(r["evidence"].split(";")) & set(els(fig))]
+@@ -353,8 +397,11 @@ class Run:
+             r["author"] = self.pid
+             return r
+ 
++        def cond_key(c):
++            return c.get("quantity", ""), c.get("value"), c.get("value_max"), c.get("unit", "")
++
+         def settings(conds, parent, ev, kind, mentions=""):
+-            for c in conds.values():
++            for c in conds:
+                 q, u = c.get("quantity", ""), unit_symbol(c.get("unit") or "") if c.get("unit") else ""
+                 if q not in L.QUANTITIES or c.get("value") is None:
+                     self.count("1c", "condition without a quantity id or a value"); continue
+@@ -364,55 +411,64 @@ class Run:
+                 facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
+                                  value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
+                 self.count("1c", "setting")
+-        sets = {st["id"]: st for st in Fj.get("sets", [])}
+-        members = collections.defaultdict(list)
+-        first = {}
++        sims_of, ents, members, first = {}, {}, collections.defaultdict(list), {}
++        for cu in Fj.get("curves", []):
++            if cu["kind"] == "simulated":
++                key = tuple(sorted(cond_key(c) for c in (cu.get("conditions") or {}).values()))
++                sim = owner(cu["figure"], sims, self.fig_sim or self.sole_sim)
++                if key not in ents:
++                    ents[key] = dict(id=f"{k}:figrun:{len(ents) + 1}", sim=sim, ev=[], curves=[], conds=list((cu.get("conditions") or {}).values()),
++                                     label=cu.get("series", {}).get("label_raw", ""))
++                ents[key]["ev"] += els(cu["figure"], cu.get("panel", ""))
++                ents[key]["curves"].append(cu)
++        for e in ents.values():                                                 # what every entity of one simulation has alike goes on the simulation
++            sims_of.setdefault(e["sim"], []).append(e)
++        for sim, es in sims_of.items():
++            common = set.intersection(*[{cond_key(c) for c in e["conds"]} for e in es]) if len(es) > 1 else set()
++            if not sim:
++                self.count("1c", "simulated curves under the paper (no simulation)")
++            ev = ";".join(dict.fromkeys(x for e in es for x in e["ev"]))
++            settings([c for c in es[0]["conds"] if cond_key(c) in common], sim or k, ev, "model_input")
++            for e in es:
++                eev = ";".join(dict.fromkeys(e["ev"]))
++                tree.append(row(fact_id=e["id"], type="entity", how="stated", evidence=eev, parent=sim or k, label_as_printed=e["label"] or e["id"],
++                                statement=f"the simulation run of the curves {', '.join(c['id'] for c in e['curves'])}"))
++                settings([c for c in e["conds"] if cond_key(c) not in common], e["id"], eev, "model_input", mentions=e["label"])
++                for cu in e["curves"]:
++                    y = cu["y"]
++                    if y.get("quantity") not in L.QUANTITIES:
++                        self.count("1c", "curve y quantity not an id"); continue
++                    facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
++                                     mentions=cu.get("series", {}).get("label_raw", ""), evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=e["id"]))
++                    first.setdefault(cu.get("set") or "", facts[-1])
++                    members[cu.get("set") or ""].append(e["id"])
++                    self.count("1c", "curve simulated -> model")
+         for cu in Fj.get("curves", []):
+-            ev = ";".join(els(cu["figure"], cu.get("panel", "")))
+-            st = sets.get(cu.get("set") or "")
+-            shared = st["conditions"] if st else {}
+-            own = {q: c for q, c in (cu.get("conditions") or {}).items() if shared.get(q, {}).get("value") != c.get("value")}
+-            y, lab = cu["y"], cu.get("series", {}).get("label_raw", "")
++            if cu["kind"] == "simulated":
++                continue
++            y, ev = cu["y"], ";".join(els(cu["figure"], cu.get("panel", "")))
+             if y.get("quantity") not in L.QUANTITIES:
+                 self.count("1c", "curve y quantity not an id"); continue
+-            if cu["kind"] == "simulated":
+-                sim = owner(cu["figure"], sims, self.sole_sim)
+-                if not sim:
+-                    self.count("1c", "curve parent: paper (no simulation found)")
+-                e = f"{k}:figrun:{cu['id'].split(':', 1)[1].replace('#', '.')}"
+-                tree.append(row(fact_id=e, type="entity", how="stated", evidence=ev, parent=sim or k, label_as_printed=lab or cu["id"],
+-                                statement=f"the simulation run of curve {cu['id']} ({lab or 'no series label'})"))
+-                members[cu.get("set") or ""].append(e)
+-                parent, kind = e, "model_input"
+-                facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
+-                                 mentions=lab, evidence=ev, parent=e))
+-            else:
+-                spec = owner(cu["figure"], specs)
+-                parent, kind = (self.measurement(spec, ""), "stated") if spec else (k, "stated")
+-                if not spec:
+-                    self.count("1c", "curve parent: paper (no specimen found)")
+-                facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
+-                                 mentions=lab, evidence=ev, parent=parent))
++            spec = owner(cu["figure"], specs)
++            parent = self.measurement(spec, "") if spec else k
++            if not spec:
++                self.count("1c", "measured curve under the paper (no specimen found)")
++            facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
++                             mentions=cu.get("series", {}).get("label_raw", ""), evidence=ev, parent=parent))
+             first.setdefault(cu.get("set") or "", facts[-1])
+-            self.count("1c", f"curve {cu['kind']}")
+-            settings(own, parent, ev, kind, mentions=lab)
+-        for sid, st in sets.items():
+-            ev = ";".join(els(st["figure"], st.get("panel", "")))
+-            sim = owner(st["figure"], sims, self.sole_sim)
+-            spec = owner(st["figure"], specs)
+-            act = sim if members[sid] and sim else (self.measurement(spec, "") if spec else "")
+-            if act:
+-                settings(st.get("conditions") or {}, act, ev, "model_input" if act == sim else "stated")
+-            else:
+-                self.count("1c", "set conditions skipped (no activity found)")
+-            if len(members[sid]) >= 2 and sid in first and st.get("varied") in L.QUANTITIES:
++            self.count("1c", f"curve {cu['kind']} -> observation")
++            settings(list((cu.get("conditions") or {}).values()), parent, ev, "stated", mentions=cu.get("series", {}).get("label_raw", ""))
++        self.count("1c", "entities (distinct conditions)", len(ents))
++        for st in Fj.get("sets", []):
++            sid, ms = st["id"], list(dict.fromkeys(members[st["id"]]))
++            if len(ms) >= 2 and sid in first and st.get("varied") in L.QUANTITIES:
+                 first[sid]["_purpose_of"] = sid
+                 tree.append(row(fact_id=f"{k}:figset:{sid.split(':')[-1]}", type="comparison", kind=st["kind"], how="stated", quantity=st["varied"],
+-                                label_as_printed=st.get("label", ""), evidence=ev, parent=k, links="", _members=members[sid], _sid=sid,
+-                                statement=f"the curves of figure set {sid} as a comparison, varying {L.NAMES.get(st['varied'], st['varied'])}"))
++                                label_as_printed=st.get("label", ""), evidence=";".join(els(st["figure"], st.get("panel", ""))), parent=k, links="",
++                                _members=ms, _sid=sid, statement=f"the curves of figure set {sid} as a comparison, varying {L.NAMES.get(st['varied'], st['varied'])}"))
+                 self.count("1c", "comparison")
+             else:
+-                self.count("1c", "set without a comparison (fewer than two curve entities or no varied id)")
++                self.count("1c", "set without a comparison (fewer than two entities or no varied id)")
+         return tree, facts
+ 
+     def parent(self, r):
+@@ -493,12 +549,15 @@ class Run:
+             if not any(f[x] for x in VALUE_KEYS):
+                 out.append(f); continue
+             key = tuple(f[x] for x in DEDUPE_KEY)
+-            if key in seen and f["evidence"] not in seen[key]["evidence"].split(";"):
++            if key in seen and not set(f["evidence"].split(";")) <= set(seen[key]["evidence"].split(";")):
+                 g = seen[key]
+-                g["evidence"] = ";".join(sorted(set(g["evidence"].split(";")) | {f["evidence"]}, key=self.order.get))
++                g["evidence"] = ";".join(sorted(set(g["evidence"].split(";")) | set(f["evidence"].split(";")), key=self.order.get))
+                 self.count("i", "merged")
+                 self.note(f"i: merged {f['evidence']} into {g['evidence']} ({f['quantity']} {f['value'] or f['value_text']})")
+                 continue
++            if key in seen and seen[key]["label_as_printed"] == f["label_as_printed"]:     # P136b: the same row again from the same element(s); a
++                self.count("i", "duplicate dropped")                                          # label that differs stays (D5)
++                continue
+             seen.setdefault(key, f)
+             out.append(f)
+         return out
+@@ -593,6 +652,13 @@ class Run:
+                     break
+                 optional.pop()
+                 self.count("k", "statement_part_left_out")
++            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]) and f["value_text"]:   # P136b: last resort, the printed text left out
++                s = s.replace(f"'{f['value_text']}'", "its value as printed in the element")
++                self.count("k", "statement_value_text_left_out")
++            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):      # P136b: then the printed label and term left out
++                s = s.replace(f" (symbol {f['term']})", " (its symbol as printed)") if f["term"] else s
++                s = s.replace(name, "a quantity named in the element") if name and f["quantity"] == "other" else s
++                self.count("k", "statement_label_left_out")
+             if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):
+                 self.count("k", "statement_copies_text")
+             key = " ".join(words(s))
+@@ -652,6 +718,8 @@ class Run:
+         self.count("f", "kept", len(recs))
+         recs = self.mentions(recs)
+         tree = self.tree()
++        self.fallbacks(recs)
++        tree = self.rows_tree
+         items = []
+         for r in recs:
+             p, why = self.parent(r)
+@@ -733,19 +801,27 @@ def match_key(f):
+     return f["type"], f["quantity"], canon(f), f["value_text"].lower()
+ 
+ 
++def matches(g, c):
++    """A gold row g and a compiled row c match: a shared evidence element and equal match_key; D13: a gold model row without a value
++    matches a model row on a shared element whatever its quantity."""
++    if not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
++        return False
++    if g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"]):
++        return c["type"] == "model"
++    return match_key(g) == match_key(c)
++
++
+ def diff(run):
+-    """Gold pilot/<pid>.facts.csv against the compiled rows: a match shares an evidence element and has equal type, quantity, value,
+-    value in canonical units (canon) and value_text; one gold row per compiled row, first come."""
++    """Gold kb/pilot/<pid>.facts.csv against the compiled rows by matches() (P134 key, canonical units, D13); one gold row per compiled
++    row, first come."""
+     gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+     comp = run.rows
+-    key = match_key
+     free = list(range(len(gold)))
+     matched = collections.Counter()
+     for c in comp:
+-        ce = set(c["evidence"].split(";")) - {""}
+         for j in free:
+             g = gold[j]
+-            if key(g) == key(c) and ce & set(g["evidence"].split(";")):
++            if matches(g, c):
+                 matched[c["type"]] += 1
+                 free.remove(j)
+                 break
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index b8380de..e4c1c7e 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -14,18 +14,45 @@ import common as C
+ INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation and cited work it names.
+ One item per named thing:
+ - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
+-- role: one of specimen, run, simulation, cited_work;
++- role: one of specimen, run, simulation, cited_work. A run is one deposition sequence: a reactant pair at a temperature on a
++  structure. A simulation is a model the paper solves, one item per model. A specimen is a physical sample the paper measures (a
++  coated structure, a film, a substrate piece). A cited work is another publication the paper names;
+ - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
+ - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
+   taken from the element index below.
+ Answer with JSON matching the form."""
+ 
+ 
++def example(pid, form):
++    """P136b: one example list in the pass-0 form, from the gold tree of the first dev paper other than pid (never held-out) that has
++    deposition and simulation activities: at most two items per role (run = a deposition activity, simulation = a simulation
++    activity, specimen = an entity directly under a deposition, cited_work = a cited tree row), name = label_as_printed,
++    introduced_in = the row's evidence; validated against form_pass0.json."""
++    import csv
++    from jsonschema import Draft202012Validator
++    for p in [p for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
++        f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
++        rows = [r for r in csv.DictReader(f.open(encoding="utf-8")) if "#" not in r["fact_id"]] if f.exists() else []
++        R = {r["fact_id"]: r for r in rows}
++        role = lambda r: ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
++                          else "specimen" if r["type"] == "entity" and R.get(r["parent"], {}).get("kind") == "deposition" else "cited_work" if r["type"] == "cited" else "")
++        items, n = [], {}
++        for r in rows:
++            k = role(r)
++            if k and r["label_as_printed"] and r["evidence"] and n.get(k, 0) < 2:
++                n[k] = n.get(k, 0) + 1
++                items.append(dict(name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";")))
++        if {"run", "simulation"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
++            return json.dumps(items, ensure_ascii=False)
++    return "[]"
++
++
+ def jobs(pid):
+     form = C.schema("form_pass0.json")
+     index = "\n".join(f"{r['element_id']}\t{r['kind']}\t{r['locator']}" for r in C.E.load(pid))
+     doc = (C.V2 / "ingest" / "final" / pid / "document.md").read_text(encoding="utf-8")
+     prompt = "\n\n".join([INSTRUCTION, "FORM (JSON Schema):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")),
++                          "EXAMPLE (another paper, in the form):\n" + example(pid, form),
+                           "ELEMENT INDEX (id, kind, locator):\n" + index, "PAPER (document.md):\n" + doc])
+     return [(0, "paper", prompt, C.provider_schema(form), [])]
+ 
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index 3ed5460..f4ed70b 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -27,13 +27,17 @@ RULES = """TYPES (one per record):
+ - model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
+   a definition.
+ - definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
+-- claim: a causal statement, with cause, relation and effect.
++- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and
++  stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation
++  is a claim, never NK.
+ - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
+ - cited: a value or statement the paper attributes to another work (not a setting).
+ 
+ FIELD RULES
+ - Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
+-  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty.
++  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
++  boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
++  recorded from another element; no_knowledge: the element states nothing the form can hold.
+ - quote: words copied verbatim from the element, as few as identify the record; every record has one.
+ - note: at most 20 words, on claims and definitions only.
+ - quantity: an id of the form only when it is the same concept as printed; otherwise "other", and then candidate is required, with
+@@ -45,7 +49,7 @@ FIELD RULES
+ - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
+ - cause, relation, effect: all three or none (claims only).
+ - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
+-  material, substrate, reactant_A, reactant_B and structure is an id of the form.
++  material, substrate, reactant_A, reactant_B and structure is an id of the form; for a reactor or an instrument, the name only.
+ - mentions: only names from the MENTIONS list, exactly as listed."""
+ 
+ 
+@@ -113,6 +117,8 @@ def examples(pid, form):
+                 continue
+             if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
+                 continue
++            if t == "claim" and not all(row[x] for x in ("cause", "relation", "effect", "stance")):     # P136b: the claim example carries all four
++                continue
+             rec, lost = RT.cast(row, props)
+             if t == "definition":
+                 rec["term"] = row["term"]
+diff --git a/psed_v2/kb/pilot/prices.csv b/psed_v2/kb/pilot/prices.csv
+index fb932de..28d436f 100644
+--- a/psed_v2/kb/pilot/prices.csv
++++ b/psed_v2/kb/pilot/prices.csv
+@@ -1,2 +1,3 @@
+ vendor,model,input_per_mtok,cache_hit_per_mtok,output_per_mtok,offpeak_input_per_mtok,offpeak_cache_hit_per_mtok,offpeak_output_per_mtok,offpeak_utc
+ deepseek,deepseek-flash,0.30,0.006,1.20,0.15,0.003,0.60,16:30-00:30
++google,gemini-3.8-flash,0.75,,3.75,,,,
+diff --git a/psed_v2/kb/pilot/vocab.py b/psed_v2/kb/pilot/vocab.py
+index b2ab9f7..e2d8132 100644
+--- a/psed_v2/kb/pilot/vocab.py
++++ b/psed_v2/kb/pilot/vocab.py
+@@ -261,6 +261,7 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'wt%': ('dimensionless', 0.01),
+  'wt. %': ('dimensionless', 0.01),
+  'wt.%': ('dimensionless', 0.01),
++ 'x': ('dimensionless', 1.0),
+  '°': ('angle', 1.0),
+  '°)': ('angle', 1.0),
+  '°C': ('temperature', 1.0),
+@@ -491,6 +492,7 @@ UNIT_ALIAS = {'': '1',
+  'weight %': 'wt%',
+  'wt. %': 'wt%',
+  'wt.%': 'wt%',
++ 'x': '1',
+  '°)': '°',
+  'µOhm cm': 'µΩ·cm',
+  'µmol/cyc': 'µmol',
+@@ -4201,7 +4203,10 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
+                   'type': 'mechanism',
+                   'unit': '',
+                   'values_from': ''},
+- 'normalized_thickness': {'aliases': ['Normalized thickness (-)', 'Normalized deposition thickness', 'Type 1 normalized saturation profile'],
++ 'normalized_thickness': {'aliases': ['Normalized thickness (-)',
++                                      'Normalized deposition thickness',
++                                      'Type 1 normalized saturation profile',
++                                      'normalized thickness'],
+                           'attribute': False,
+                           'category': 'conformality',
+                           'converts_to': {},
+diff --git a/psed_v2/kb/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+index 12d1f5b..2c5c1fb 100644
+--- a/psed_v2/kb/schema/FORM.md
++++ b/psed_v2/kb/schema/FORM.md
+@@ -1,7 +1,7 @@
+ <!-- GENERATED by psed_v2/ontology/export.py; do not edit -->
+ # Extraction form
+ 
+-Ontology version 1, sha256 `23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
++Ontology version 1, sha256 `7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
+ 
+ Out of scope (P133): a statement-only setting or observation (no quantity, value or qualifiers; only method or mentions) is not a form record.
+ 
+diff --git a/psed_v2/kb/schema/form.json b/psed_v2/kb/schema/form.json
+index 2374222..bfa9a4f 100644
+--- a/psed_v2/kb/schema/form.json
++++ b/psed_v2/kb/schema/form.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a",
+  "title": "PSED v2 extraction form: one record",
+- "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
++ "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index 78e5cff..3702997 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form_pass0",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a",
+  "title": "PSED v2 extraction form, pass 0: the things one paper names",
+- "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad).",
++ "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a).",
+  "type": "array",
+  "items": {
+   "type": "object",
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index bb344ae..b446ea3 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a
+ version: 1
+ 
+ base_sources:
+@@ -865,7 +865,7 @@ entries:
+     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
+     qudt_unit: "unit:UNITLESS"
+     qualifiers: [reference]
+-    aliases: ["Normalized thickness (-)", "Normalized deposition thickness", "Type 1 normalized saturation profile"]
++    aliases: ["Normalized thickness (-)", "Normalized deposition thickness", "Type 1 normalized saturation profile", "normalized thickness"]
+     base: {}
+     evidence: ["Yim2020 Fig. 9c", "Yim2020 Fig. 9f", "Yim2020 Fig. 10c", "Yim2020 Fig. 10f", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 12"]
+ 
+diff --git a/psed_v2/ontology/units.yaml b/psed_v2/ontology/units.yaml
+index 6f04fca..7d2e2ac 100644
+--- a/psed_v2/ontology/units.yaml
++++ b/psed_v2/ontology/units.yaml
+@@ -39,7 +39,7 @@ units:
+   - {symbol: "Å/cycle", variants: ["Å/cycle", "A/cycle", "Å/cyc", "Å per cycle", "Angstrom/cycle"], dimension: length_per_cycle, factor: 1.0e-10, qudt: L}
+   - {symbol: pm/cycle, variants: [pm/cycle],                                      dimension: length_per_cycle, factor: 1.0e-12, qudt: L}
+   # dimensionless
+-  - {symbol: "1",   variants: ["1", "", "-", "(-)", "×", "a.u.", "arb. units", "arb.units", "arbitrary units", "dimensionless"], dimension: dimensionless, factor: 1.0, qudt: "1"}
++  - {symbol: "1",   variants: ["1", "", "-", "(-)", "×", "x", "a.u.", "arb. units", "arb.units", "arbitrary units", "dimensionless"], dimension: dimensionless, factor: 1.0, qudt: "1"}
+   - {symbol: "%",   variants: ["%", percent],                                     dimension: dimensionless, factor: 0.01, qudt: "1"}
+   - {symbol: "at.%", variants: ["at.%", "at%", "at. %", "atomic %", "atom %", "atomic percent", "at.-%"], dimension: dimensionless, factor: 0.01, qudt: "1"}
+   - {symbol: "wt%", variants: ["wt%", "wt.%", "wt. %", "weight %"],               dimension: dimensionless, factor: 0.01, qudt: "1"}
