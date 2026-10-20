@@ -557,7 +557,7 @@ class Run:
         finally:
             Q.TREES = trees
             Q._NODES.clear()
-        self.note("j: comparisons skipped (D8): gold has 3")
+        self.note(f"j: comparisons from figures.json (1c): {sum(r['type'] == 'comparison' for r in rows)}")
         self.n_derived = len(out)
         return rows + out
 

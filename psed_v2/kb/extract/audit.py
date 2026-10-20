@@ -50,6 +50,14 @@ def matches(g, c):
     return K.match_key(g) == K.match_key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
 
 
+def same(x, f):
+    """x is the row compile.dedupe kept for f: a definition by its normalized term (P136 1a), any other row by DEDUPE_KEY."""
+    if f["type"] == "definition":
+        t = lambda r: K.normalize(r["term"] or r["label_as_printed"] or r["mentions"].split(";")[0]).lower()   # noqa: E731
+        return x["type"] == "definition" and t(x) == t(f)
+    return all(x[k] == f[k] for k in K.DEDUPE_KEY)
+
+
 def traced_run(pid):
     """compile.Run in a temporary folder, with each record followed: {id(rec): ('drop', step, reason, field) | ('fact', row)}."""
     K.OUT = Path(tempfile.mkdtemp(prefix="audit_"))
@@ -74,7 +82,7 @@ def traced_run(pid):
                 rec = dict(type=f["type"], quantity=f["quantity"], source="figures.json", label_as_printed=f["label_as_printed"])
                 fig_records.append(dict(eid=f["evidence"].split(";")[0], rec=rec, evidence=f["evidence"].split(";")))
                 made[id(f)] = id(rec)
-            g = f if id(f) in kept else next(x for x in out if all(x[k] == f[k] for k in K.DEDUPE_KEY) and f["evidence"] in x["evidence"].split(";"))
+            g = f if id(f) in kept else next(x for x in out if same(x, f) and set(f["evidence"].split(";")) <= set(x["evidence"].split(";")))
             fate[made[id(f)]] = ("fact", g)
         return out
     run.drop, run.fact_row, run.dedupe = drop_t, fact_row_t, dedupe_t
@@ -99,6 +107,8 @@ def ontology_test(g, qids):
 def form_test(g, val, props):
     rec, lost = RT.cast(g, props)
     rec["quote"] = " ".join(g["statement"].split()[:15])
+    if g.get("term") and "term" in props:                                       # P136: the form has term now
+        rec["term"] = g["term"]
     fills = []
     if rec.get("quantity") and not rec.get("label_as_printed"):                 # P135c: gold's filing convention, not expressibility
         rec["label_as_printed"] = rec["quantity"]; fills.append("label_as_printed=quantity id")
