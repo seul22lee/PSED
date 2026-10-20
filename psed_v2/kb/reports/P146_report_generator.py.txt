@@ -146,7 +146,9 @@ for key in sys.argv[2:]:
         rowsL.append(dict(paper=key, kind="panel", id=x["panel"], gold=x["layout"], pass0=y.get("layout") or "(none)", status=st, gold_units=len(x["units"])))
     for t in pp:
         if t not in {x["panel"] for x in pl}:
-            st = "figure stage read nothing" if inv.get(t) in ("map", "plot", "spectrum") else "no data in figures.json"
+            has = {f"fig{x['figure']}{x.get('panel', '')}" for sec in ("values", "derived") for x in Fj.get(sec, [])}
+            st = ("data without a gold binding (peaks / derived)" if t in has else
+                  "figure stage read nothing" if inv.get(t) in ("map", "plot", "spectrum") else "no data in figures.json")   # P146
             rowsL.append(dict(paper=key, kind="panel", id=t, gold=f"({inv.get(t) or 'no inventory entry'})", pass0=pp[t].get("layout"), status=st))
     wr(f"{key}.layouts", rowsL)
     # (C) curves, cells, peaks
