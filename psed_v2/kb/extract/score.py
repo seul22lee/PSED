@@ -103,7 +103,10 @@ def main(argv):
         K.write_csv(R / f"{unit}.{key}.values.csv", ["quantity", "gold_values", "compiled_values", "same_value", "gold", "compiled", "error"], vs)
         st = rd(R / f"{unit}.{key}.stage_type.csv")
         tot = {r["stage"]: r["total"] for r in st}
+        au = rd(C.V2 / "kb" / "compiled" / f"{pid}.audit.csv")
+        pf = collections.Counter(r["parent_filled"] for r in au if r["stage"] in ("T5 mismatch", "T6 matched"))
         summary.append(dict(paper=key, check_dir_problems=len(errs), matched_T6=tot.get("T6 matched", "0"), gold_rows=tot.get("total", ""),
+                            parent_filled_yes=pf["yes"], parent_filled_no=pf["no"],
                             **{f"diff_{d['type']}": f"{d['matched']}/{d['gold']}" for d in table}))
         print(f"{key}: check --dir {len(errs)} problems; T6 {tot.get('T6 matched')}/{tot.get('total')}")
     fields = list(dict.fromkeys(k for s in summary for k in s))

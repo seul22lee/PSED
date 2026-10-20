@@ -43,7 +43,7 @@ import vocab as V  # noqa: E402
 TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
 NO_SLOT = ("links", "inputs", "parent", "figure_ref")
 COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "cast_fills", "no_slot", "same_element_same_type",
-        "same_element_same_type_same_quantity", "parent", "jsonl_record", "compiled_row"]
+        "same_element_same_type_same_quantity", "parent", "parent_filled", "jsonl_record", "compiled_row"]
 REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
 
 
@@ -120,6 +120,8 @@ def form_test(g, val, props):
     if rec.get("quantity") == "other" and "candidate" not in rec:
         rec["candidate"] = dict(definition_quote=g["statement"], unit_as_printed=g["unit"], dimension="dimensionless", symbol=g["label_as_printed"] or "?")
         fills.append("candidate=stub")
+    for k in props:                                                             # P139: every field present, null when the gold has none
+        rec.setdefault(k, None)
     no_slot = [c for c, _ in lost] + [c for c in NO_SLOT if g.get(c)]
     errs = sorted(val.iter_errors(rec), key=lambda e: list(e.absolute_path))
     if not errs:
@@ -163,7 +165,7 @@ def main(arg):
     for g in gold:
         ev = [e for e in g["evidence"].split(";") if e]
         a = {c: g[c] for c in COLS if c in g}
-        a.update(parent="", stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
+        a.update(parent="", parent_filled="", stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
         texts.append(dict(fact_id=g["fact_id"], element_text=" | ".join(f"{e}: {run.text.get(e, '')}" for e in ev)))
         if "#" not in g["fact_id"] or g["type"] in TREE_TYPES:
             a.update(stage="T0 tree", detail=g["type"]); out.append(a); continue
@@ -196,12 +198,14 @@ def main(arg):
             a.update(stage="T6 matched", jsonl_record=rec_json(r), compiled_row=c["fact_id"])
             pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
             a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
+            a["parent_filled"] = "yes" if c.get("_parent_filled") else "no"
         elif facts:
             r, c = facts[0]
             d = differing(g, c)
             a.update(stage="T5 mismatch", detail=d, jsonl_record=rec_json(r), compiled_row=f"{c['fact_id']}: {d}")
             pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
             a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
+            a["parent_filled"] = "yes" if c.get("_parent_filled") else "no"
         elif drops:
             r, (_, step, reason, field) = drops[0]
             a.update(stage="T4 compiler", detail=f"step {step}: {reason}" + (f" ({field})" if field else ""), jsonl_record=rec_json(r))
