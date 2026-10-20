@@ -5,9 +5,11 @@
     python3 psed_v2/extract/compile.py yli18          # then: python3 psed_v2/pilot/check.py --dir psed_v2/compiled
 
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
-are ignored); the latest pass-0 line. Steps, each one drops and logs, never repairs: a schema (form.json), b type rules, c grounding,
-d quote, e units, f species/structure ids, g mentions, h tree and parents, i dedupe, j derived (query layer), k statements,
-l coverage, m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only).
+are ignored); the latest pass-0 line. Steps: a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
+ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
+m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6): a record is dropped only for an enum or
+type violation (after the numeric strings are coerced, C4), a quote not found (after C3), or a pass-0 data id not in figures.json;
+every other finding is logged and the record kept.
 """
 import collections
 import csv
@@ -31,6 +33,8 @@ DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "
 FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action"]
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
+NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
+MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
 
 
 def num_text(v):
@@ -50,9 +54,12 @@ def norm_ws(t):
 
 
 def normalize(t):
-    """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
-    \\circ / ^\\circ -> °; \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
-    t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
+    """D10, the one normalization of steps d, e and f: P148 (C3): markup tags removed, their text kept; U+2212 -> -; thin and no-break
+    spaces -> space; \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5); \\circ / ^\\circ -> °;
+    \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed; casefolded (P140 C1)."""
+    t = MARKUP.sub("", t or "").replace("\u2212", "-")
+    t = re.sub(r"[\u00a0\u2007\u2009\u200a\u202f]", " ", t)
+    t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t)
     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
     t = unicodedata.normalize("NFKC", t)
     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
@@ -143,37 +150,88 @@ class Run:
                 for i, rec in enumerate(a):
                     if isinstance(rec.get("variables"), list):                  # rule 3: the provider's list back to {symbol: quantity}
                         rec["variables"] = {v.get("symbol"): v.get("quantity") for v in rec["variables"] if isinstance(v, dict)}
+                    if "parent" in rec and "about" not in rec:                  # P148: a line written before the form's parent became about
+                        rec["about"] = rec.pop("parent")
+                        self.count("input", "parent read as about (older line)")
                     recs.append(dict(eid=eid, rec=rec, seq=i))
         self.count("input", "records", len(recs))
         return recs
 
     # ------------------------------------------------------------------------------------------------------------ a-g
     def validate(self, recs):
+        """a: D12 (a variable's quantity outside the enum -> null); C4 (P148): a numeric string in a number field (value, value_min,
+        value_max, uncertainty, uncertainty_n, a numeric qualifier) -> the number, logged; C5 (P148): a variable whose quantity is null
+        -> the quantity of the same paper's definition of that term (normalize()d; a term two definitions give different quantities is
+        left null), logged; then form.json: C6 (P148) an enum or type violation drops the record, any other schema error is logged and
+        the record kept."""
         from jsonschema import Draft202012Validator
         form = C.schema("form.json")
         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
-        out = []
+        branch = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)                     # noqa: E731
+        nums = {k_: branch(p).get("type") for k_, p in form["properties"].items() if branch(p).get("type") in ("number", "integer")}
+        qnum = {k_ for k_, p in form["properties"]["qualifiers"]["anyOf"][0]["properties"].items()
+                if p.get("type") == "number" or any(x.get("type") == "number" for x in p.get("anyOf", []))}
         for r in recs:
-            vs = r["rec"].get("variables")
+            rec = r["rec"]
+            vs = rec.get("variables")
             for sym, q in (vs.items() if isinstance(vs, dict) else []):          # D12: a symbol's quantity outside the enum -> null, logged
                 if q is not None and q not in qids:
                     vs[sym] = None
                     self.count("a", "variables_unmapped (set to null)")
                     self.note(f"a: {r['eid']}: variables_unmapped {sym!r} -> {q!r}")
-            for k_ in form["required"]:                                         # P139: a missing field is a null; only an enum/type violation drops
+            for k_, t in nums.items():                                          # C4
+                rec[k_] = self.coerce(r["eid"], k_, rec.get(k_), t)
+            if isinstance(rec.get("qualifiers"), dict):
+                for k_ in qnum & set(rec["qualifiers"]):
+                    rec["qualifiers"][k_] = self.coerce(r["eid"], f"qualifiers.{k_}", rec["qualifiers"][k_], "number")
+        terms = collections.defaultdict(set)                                    # C5: term -> quantity, from the paper's definition records
+        for r in recs:
+            rec = r["rec"]
+            if rec.get("type") == "definition" and isinstance(rec.get("quantity"), str) and rec["quantity"] in qids:
+                for t in {rec.get("term"), rec.get("label_as_printed")} - {None, ""}:
+                    terms[normalize(t)].add(rec["quantity"])
+        for r in recs:
+            vs = r["rec"].get("variables")
+            for sym in [x for x, q in (vs.items() if isinstance(vs, dict) else []) if q is None]:
+                got = terms.get(normalize(sym), set())
+                if len(got) == 1:
+                    vs[sym] = next(iter(got))
+                    self.count("a", "variable filled from a definition (C5)")
+                    self.note(f"a: {r['eid']}: variable {sym!r} -> {vs[sym]} (C5, from the paper's definition)")
+                elif got:
+                    self.count("a", "variable left null: definitions disagree (C5)")
+        out = []
+        for r in recs:
+            for k_ in form["required"]:                                         # P139: a missing field is a null
                 r["rec"].setdefault(k_, None)
             if r["rec"].get("type") is None:
-                self.drop("a", r["eid"], r["rec"], "type null", "type"); continue
+                self.drop("a", r["eid"], r["rec"], "schema:type null", "type"); continue
             errs = list(val.iter_errors(r["rec"]))
-            if not errs:
-                r["rec"] = {k_: (({q: v for q, v in x.items() if v is not None} if k_ == "qualifiers" else x) if isinstance(x, dict) else x)
-                            for k_, x in r["rec"].items() if x is not None}     # P139: null = absent
-                out.append(r); continue
-            e = errs[0]
-            field = ".".join(str(p) for p in e.path) or (e.validator if e.validator not in ("required", "dependentRequired") else e.message.split("'")[1])
-            self.drop("a", r["eid"], r["rec"], f"schema:{e.validator or 'forbidden'}", field)
-            self.count("a_fields", field)
+            hard = [e for e in errs if violation(e)]
+            if hard:
+                e = hard[0]
+                field = ".".join(str(p) for p in e.path) or e.validator
+                self.drop("a", r["eid"], r["rec"], f"schema:{e.validator}", field)
+                self.count("a_fields", field)
+                continue
+            for e in errs:                                                      # C6: not an enum/type violation -> kept, logged
+                field = ".".join(str(p) for p in e.path) or e.validator
+                self.count("a", f"schema {e.validator} on {field} (kept, C6)")
+                self.note(f"a: {r['eid']}: schema {e.validator} on {field} (kept, C6)")
+            r["rec"] = {k_: (({q: v for q, v in x.items() if v is not None} if k_ == "qualifiers" else x) if isinstance(x, dict) else x)
+                        for k_, x in r["rec"].items() if x is not None}         # P139: null = absent
+            out.append(r)
         return out
+
+    def coerce(self, eid, field, v, t):
+        """C4: a numeric string (U+2212 read as -) -> its number (an integer field: an integer), logged; anything else as it is."""
+        if not isinstance(v, str) or not NUMBER.fullmatch(v.strip().replace("\u2212", "-")):
+            return v
+        x = float(v.strip().replace("\u2212", "-"))
+        x = int(x) if t == "integer" and x.is_integer() else x
+        self.count("a", "numeric string coerced (C4)")
+        self.note(f"a: {eid}: {field} {v!r} -> {x!r} (C4)")
+        return x
 
     def type_rules(self, recs):
         out = []                                                                # P136 1a: definitions from every element (D1 dropped)
@@ -202,11 +260,12 @@ class Run:
             if rec.get("relation") and rec["relation"] not in L.RELATIONS:
                 bad.append(("relation", rec["relation"]))
             bad += [("variables", x) for x in (rec.get("variables") or {}).values() if x is not None and x not in L.QUANTITIES]   # P136 2c: null = no entry
-            if bad:
+            if bad:                                                             # C6: form.json validated these ids; a miss here is a bug, kept and logged
                 for field, x in bad:
                     self.unmapped.append(dict(element=eid, field=field, id=x, label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
-                                              candidate="", action="excluded"))
-                self.drop("c", eid, rec, "unresolved_id", bad[0][0]); continue
+                                              candidate="", action="kept (bug: passed form.json)"))
+                self.count("c", "BUG: id not in the vocabulary after form.json (kept)")
+                self.note(f"c: BUG {eid}: {bad} not in the vocabulary after form.json (kept)")
             if q == "other":
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False), action="kept"))
@@ -214,20 +273,33 @@ class Run:
             out.append(r)
         return out
 
+    def scope(self, eid):
+        """C3 (P148): the texts a quote is checked against: the element; a table cell: + the cells of its row and the table's caption;
+        a figure element (caption or panel): + the figures.json series labels of that figure."""
+        out = [self.text.get(eid, "")]
+        m = re.fullmatch(r"(tab\w*?)\.r(\d+)c\d+", eid)
+        if m:
+            out += [self.text[e] for e in self.order if e != eid and re.fullmatch(rf"{re.escape(m.group(1))}\.r{m.group(2)}c\d+", e)]
+            out.append(self.text.get(f"{m.group(1)}.cap", ""))
+        f = re.fullmatch(r"fig(\d+)(?:[a-zA-Z]*|\.cap)", eid)
+        if f:
+            out += self.labels.get(f.group(1), [])
+        return out
+
     def quotes(self, recs):
-        """d (D11): the quote against the texts of the record's element and the element ids it mentions; P146: plus the figures.json
-        series labels of the panels among them."""
+        """d (D11): the quote, normalize()d, in the normalized texts of the record's scope (scope()), contiguous or every token in
+        order (P140 C1); a null quote is not found."""
         self.labels = collections.defaultdict(list)
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         for c in (json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []):
-            for e in (f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap"):
-                if c.get("series", {}).get("label_raw"):
-                    self.labels[e].append(c["series"]["label_raw"])
+            if c.get("series", {}).get("label_raw"):
+                self.labels[str(c["figure"])].append(c["series"]["label_raw"])
         out = []
         for r in recs:
-            ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
-            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join([self.text.get(e, "") for e in ev] + [x for e in ev for x in self.labels.get(e, [])]))   # P146: + series labels
-            if q in txt:
+            q, txt = normalize(r["rec"].get("quote") or ""), normalize(" ".join(self.scope(r["eid"])))
+            if not q:
+                self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
+            elif q in txt:
                 out.append(r)
             elif in_order(q.split(), txt):                                      # P140 C1: every token in order, gaps allowed
                 self.count("d", "quote_noncontiguous (kept)")
@@ -242,10 +314,11 @@ class Run:
             rec = r["rec"]
             if rec.get("unit"):
                 s = unit_symbol(rec["unit"])
-                if s is None:
+                if s is None:                                                   # C6: kept with the unit as printed, logged
                     self.unmapped.append(dict(element=r["eid"], field="unit", id=normalize(rec["unit"]), label_as_printed=rec.get("label_as_printed", ""),
-                                              unit=rec["unit"], candidate="", action="excluded"))
-                    self.drop("e", r["eid"], rec, "unit_unresolved", "unit"); continue
+                                              unit=rec["unit"], candidate="", action="kept (unit as printed)"))
+                    self.count("e", "unit_unresolved (kept as printed)")
+                    s = rec["unit"]
                 r["unit"] = s
             out.append(r)
         return out
@@ -259,10 +332,11 @@ class Run:
                 table = SPECIES_ALIASES[q]
                 hit = next((table[normalize(x).lower()] for x in (rec.get("value_text"), rec.get("label_as_printed"), rec.get("quote"))
                             if x and normalize(x).lower() in table), None)
-                if hit is None:
-                    self.drop("f", r["eid"], rec, "species_unresolved", "value_text")
+                if hit is None:                                                 # C6: kept with its value_text, logged
+                    self.count("f", "species_unresolved (kept)")
                     self.unmapped.append(dict(element=r["eid"], field=q, id=rec.get("value_text", ""), label_as_printed=rec.get("label_as_printed", ""),
-                                              unit="", candidate="", action="excluded"))
+                                              unit="", candidate="", action="kept (value_text as given)"))
+                    out.append(r)
                     continue
                 r["species"] = hit
                 self.count("f", "species_resolved")
@@ -310,10 +384,9 @@ class Run:
             self.p0[it["id"]] = it
             items.append(it)
         role = lambda r: [it for it in items if it.get("role") == r]               # noqa: E731
-        if role("run") or role("specimen"):
-            rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",
-                            evidence=ok_ev([e for it in role("run") + role("specimen") for e in it.get("introduced_in") or []]),
-                            statement=f"the deposition recipe of {k}: the runs and specimens of its first pass"))
+        rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",   # P148: always (C1)
+                        evidence=ok_ev([e for it in role("run") + role("specimen") for e in it.get("introduced_in") or []]) or self.els[0]["element_id"],
+                        statement=f"the deposition recipe of {k}: the runs and specimens of its first pass"))
         for it in role("run"):
             self.node[it["id"]] = (f"{k}:run:{slug(it['id'])}", "run")
             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
@@ -342,11 +415,18 @@ class Run:
         self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "model_run", "series", "cited_work"))
                   + "; identity rows: none (pass 0 carries no identity)")
         self.rows_tree = rows
-        self.meas = {}
+        self.meas, self.films = {}, {}
+        self.up = {r["fact_id"]: r["parent"] for r in rows}                     # P148: a unit row -> its parent row (place())
+        self.under = collections.defaultdict(list)                             # a run / simulation row -> its specimen / model-run rows
+        for nid, role_ in self.node.values():
+            if role_ in ("specimen", "model_run"):
+                self.under[self.up[nid]].append(nid)
         return rows
 
     def measurement(self, ent, method):
-        i = f"{ent}:meas:{method or 'not_stated'}"
+        """<ent>:meas:<method>; P148 (C1): "measurement" when the method is not in facts.MEAS_METHODS."""
+        method = method if method in F.MEAS_METHODS else ""
+        i = f"{ent}:meas:{method or 'measurement'}"
         if i not in self.meas:
             ent_row = next(r for r in self.rows_tree if r["fact_id"] == ent)
             r = {f: "" for f in F.FIELDS}
@@ -355,6 +435,31 @@ class Run:
                      statement=f"the {method.replace('_', ' ') if method else 'unstated'} measurement of the specimen named {ent_row['label_as_printed']!r}")
             self.meas[i] = r
         return i
+
+    def method_activity(self, method):
+        """P148 (C1, retree()): <paper>:method:<method>, a measurement activity under the paper for the paper-wide records of a method."""
+        i = f"{self.key}:method:{method}"
+        if i not in self.meas:
+            r = {f: "" for f in F.FIELDS}
+            r.update(fact_id=i, type="activity", kind="measurement", how="inferred", parent=self.key, author=self.pid,
+                     qualifiers=f"mode={L.METHOD_MODE.get(method, 'not_stated')}", label_as_printed=f"{method.replace('_', ' ')} (method)",
+                     statement=f"the {method.replace('_', ' ')} measurement settings the paper shares")
+            self.meas[i] = r
+        return i
+
+    def film(self, run):
+        """P146: the specimen "film of <run>" of a run the pass-0 units give no specimen (how inferred, logged specimen_created); the
+        one unit the compiler makes (C2)."""
+        if run not in self.films:
+            lab = next((r["label_as_printed"] for r in self.rows_tree if r["fact_id"] == run), run)
+            e = f"{run}:film"
+            self.rows_tree.append({**{x: "" for x in F.FIELDS}, "fact_id": e, "type": "entity", "how": "inferred", "parent": run, "author": self.pid,
+                                   "evidence": next((r["evidence"] for r in self.rows_tree if r["fact_id"] == run), ""),
+                                   "label_as_printed": f"film of {lab}", "statement": f"the film of run {lab} (the run states no specimen)"})
+            self.films[run] = e
+            self.count("h", "specimen_created")
+            self.note(f"h: specimen_created {e}")
+        return self.films[run]
 
     def figures(self):
         """P143b: kb/<pid>.figures.json curves through the pass-0 units' curves field, the curve fields as they are. A curve a model run
@@ -366,9 +471,12 @@ class Run:
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         k, tree, facts = self.key, [], []
         owner, drole = {}, {}
+        known = {x.get("id") for sec in ("curves", "values", "sets", "derived") for x in Fj.get(sec) or []}
         for i, it in self.p0.items():
             for d in (it.get("data") or it.get("curves") or []):               # P146: data = [{id, role}]; P145 ids, curves on older lines
                 cid = d.get("id") if isinstance(d, dict) else d
+                if cid not in known:                                            # C6: the third drop reason
+                    self.drop("1c", i, {"type": "data", "quantity": ""}, "data_id_not_in_figures_json", str(cid)); continue
                 owner.setdefault(cid, []).append(i)
                 drole[(i, cid)] = (d.get("role") if isinstance(d, dict) else None) or ("simulated" if it.get("role") == "model_run" else "measured")
 
@@ -456,20 +564,14 @@ class Run:
         measurement) and has no specimen gets one specimen "film of <run>" (how inferred, logged specimen_created); the results move to
         it (an observation to its measurement activity of the row's method). Structure the pilot tree needs, not a count judgement."""
         runs = {nid for nid, role in self.node.values() if role == "run"}
-        has = {r["parent"] for r in self.rows_tree if r["type"] == "entity"}
-        for run in sorted(runs - has):
+        for run in sorted(runs - set(self.under)):                              # P148: runs with no pass-0 specimen (a film made by place() counts as none)
             res = [f for f in facts if f["type"] in ("observation", "derived", "model") and f["parent"] in (run, "@meas:" + run)]
             if not res:
                 continue
-            lab = next((r["label_as_printed"] for r in self.rows_tree if r["fact_id"] == run), run)
-            e = f"{run}:film"
-            self.rows_tree.append({**{x: "" for x in F.FIELDS}, "fact_id": e, "type": "entity", "how": "inferred", "parent": run, "author": self.pid,
-                                   "evidence": next((r["evidence"] for r in self.rows_tree if r["fact_id"] == run), ""),
-                                   "label_as_printed": f"film of {lab}", "statement": f"the film of run {lab} (the run states no specimen)"})
+            e = self.film(run)
             for f in res:
-                f["parent"] = ("@meas:" + e if f["type"] == "observation" and not f["method"] else self.measurement(e, f["method"])) if f["type"] == "observation" else e
-            self.count("h", "specimen_created")
-            self.note(f"h: specimen_created {e} ({len(res)} result rows moved)")
+                f["parent"] = self.measurement(e, f["method"]) if f["type"] == "observation" else e
+            self.note(f"h: {len(res)} result rows moved to {e}")
 
     def comparisons(self, rows):
         """P143b: comparisons derived from the condition vectors of the experiment units (entities), never asked of the extractor and
@@ -566,25 +668,60 @@ class Run:
                                 emit("grid", [ks[a], ks[b]], sorted(g))
         return out
 
-    def parent(self, r):
-        """P138: the record's own parent: "paper" -> the paper row; a pass-0 id -> its tree row (a result with a value under a specimen
-        -> that specimen's measurement activity by method; P143b: a series is no unit and never a parent); anything else -> the paper
-        row, logged parent_unknown (never empty)."""
+    def place(self, r):
+        """P148 (C1): the row's parent by the pilot rule (kb/pilot/facts.py retree()), from the record's type and method and the unit
+        its about names. A claim, definition, caveat or cited record -> the paper row. about = "paper": a setting, observation, derived
+        or model with a MEAS_METHODS method -> <paper>:method:<method>; the rest -> the recipe (never the paper row). about = a run or a
+        specimen: a setting without a MEAS_METHODS method -> the run's deposition (the specimen itself when the record is about a
+        specimen and several specimens share that deposition); a setting with one, an observation, a derived or a model ->
+        <specimen>:meas:<method> ("measurement" when the method is not in MEAS_METHODS): a run's to its one specimen, to "film of
+        <run>" when it has none (P146), to the deposition's own measurement when it has several (logged). about = a simulation or a
+        model run: a setting -> the simulation (the model run itself when the record is about a model run and several model runs share
+        that simulation); a model without a value -> the simulation; an observation, a derived or a model with a value -> the model run
+        (the simulation when about = the simulation). about null or not a unit id -> the recipe, flagged. A comparison is never a
+        parent. Returns (row id, the rule that placed it)."""
         rec, k = r["rec"], self.key
-        p = rec.get("parent", "")
-        if p == "paper":
-            return k, "paper (record)"
-        if not p:
+        t, recipe = rec["type"], f"{k}:recipe"
+        mm = rec.get("method") if rec.get("method") in F.MEAS_METHODS else ""
+        valued = any(rec.get(x) not in (None, "") for x in VALUE_KEYS)
+        if t in ("claim", "definition", "caveat", "cited"):
+            return k, f"{t} -> paper"
+        a = rec.get("about")
+        if a == "paper":
+            if mm and t in ("setting", "observation", "derived", "model"):
+                return self.method_activity(mm), "about paper, method -> paper method activity"
+            return recipe, "about paper -> recipe"
+        if a not in self.node:
             r["parent_filled"] = True
-            return k, "parent_null (paper)"                                     # P139: filled, flagged
-        if p not in self.node:
-            r["parent_filled"] = True
-            return k, "parent_unknown (paper)"
-        rid, role = self.node[p]
-        result = rec["type"] in ("observation", "derived") and any(rec.get(x) not in (None, "") for x in VALUE_KEYS)
-        if role == "specimen" and result:
-            return self.measurement(rid, rec.get("method", "")), "specimen measurement (record)"
-        return rid, f"{role} (record)"
+            return recipe, f"about {'null' if not a else 'unknown'} -> recipe (flagged)"
+        rid, role = self.node[a]
+        setting_here = t == "setting" and not mm
+        if role in ("run", "specimen"):
+            run = rid if role == "run" else (self.up[rid] if self.node_role(self.up[rid]) == "run" else "")
+            if setting_here:
+                if role == "specimen" and (len(self.under.get(run, [])) > 1 or not run):
+                    return rid, "setting about a specimen sharing its deposition -> specimen"
+                return run, f"setting about a {role} -> deposition"
+            if role == "specimen":
+                return self.measurement(rid, mm), "result about a specimen -> its measurement"
+            sp = self.under.get(rid, [])
+            if len(sp) == 1:
+                return self.measurement(sp[0], mm), "result about a run -> its specimen's measurement"
+            if not sp:
+                return self.measurement(self.film(rid), mm), "result about a run without a specimen -> film measurement"
+            self.note(f"h: {r['eid']}: result about run {a} with {len(sp)} specimens -> the deposition's measurement")
+            return self.measurement(rid, mm), "result about a run with several specimens -> deposition measurement"
+        sim = rid if role == "simulation" else (self.up[rid] if self.node_role(self.up[rid]) == "simulation" else "")
+        if role == "simulation":
+            return rid, f"{t} about a simulation -> simulation"
+        if t == "setting" or (t == "model" and not valued):
+            if sim and not (t == "setting" and len(self.under.get(sim, [])) > 1):
+                return sim, f"{t} about a model run -> simulation"
+            return rid, f"{t} about a model run sharing its simulation -> model run"
+        return rid, f"{t} about a model run -> model run"
+
+    def node_role(self, row_id):
+        return next((role for nid, role in self.node.values() if nid == row_id), "")
 
     # ------------------------------------------------------------------------------------------------------------ rows
     def fact_row(self, r, parent):
@@ -616,7 +753,7 @@ class Run:
         f["_statement"] = rec.get("statement") or rec.get("quote", "")          # P138: the extractor's own words; P139: the quote when null
         if not rec.get("statement"):
             self.count("m", "statement filled from the quote")
-        f["_parent_filled"] = bool(r.get("parent_filled"))
+        f["_parent_filled"] = bool(r.get("parent_filled"))                     # P148: about null or unknown
         f["_links"] = [e for e in rec.get("links") or [] if e in self.order]    # P138: resolved to fact ids after ids()
         f["_quote"] = normalize(rec.get("quote", "")).lower()
         if any(f[x] for x in ("value", "value_min", "value_max")) and not f["data_kind"]:
@@ -802,8 +939,8 @@ class Run:
         tree = self.tree()
         items = []
         for r in recs:
-            p, why = self.parent(r)
-            self.count("h", f"parent: {why}")
+            p, why = self.place(r)
+            self.count("h", f"place: {why}")
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
         fig_tree, fig_facts = self.figures()
@@ -843,6 +980,15 @@ class Run:
         finally:
             EX.HERE = here
         return rows
+
+
+def violation(e):
+    """C6 (P148): a jsonschema error that is an enum or type violation; inside an anyOf (a nullable field), one of a non-null branch."""
+    if e.validator in ("enum", "type", "const"):
+        return True
+    if e.validator == "anyOf":
+        return any(violation(c) for c in e.context if e.validator_value[c.relative_schema_path[0]] != {"type": "null"})
+    return False
 
 
 def in_order(tokens, text):
