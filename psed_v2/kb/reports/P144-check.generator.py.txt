@@ -1,0 +1,60 @@
+"""P144-check (read-only): non-curve figures.json entries per panel, and the fields render.figures() sends."""
+import collections, csv, json, sys
+from pathlib import Path
+V2 = Path("/home/ftk3187/github/PSED/psed_v2"); sys.path.insert(0, str(V2 / "kb" / "extract")); import common as C
+R = V2 / "kb" / "reports"
+out, paths = [], collections.defaultdict(collections.Counter)
+def walk(kind, x, pre=""):
+    if isinstance(x, dict):
+        for k, v in x.items():
+            key = "*" if pre.split(".")[-1] in ("conditions", "conditions_raw", "at", "at_raw") else k
+            walk(kind, v, f"{pre}.{key}" if pre else key)
+    elif isinstance(x, list) and x and isinstance(x[0], dict):
+        walk(kind, x[0], pre + "[]")
+    else:
+        paths[kind][pre] += 1
+panels_listed = []
+for pid in [p for p in C.E.PAPERS if p not in C.HELD_OUT]:
+    key = C.E.PAPERS[pid]
+    F = json.loads((V2 / "kb" / f"{pid}.figures.json").read_text(encoding="utf-8"))
+    for c in F.get("curves", []): walk("curve", c)
+    entries = collections.defaultdict(list)
+    for sec in ("curves", "values", "sets", "derived", "inventory"):
+        for x in F.get(sec) or []:
+            kind = {"curves": "curve", "sets": "set", "derived": "derived", "inventory": "inventory"}.get(sec) or x.get("kind")
+            entries[(str(x["figure"]), x.get("panel", ""))].append((kind, x))
+            if kind != "curve": walk(kind, x)
+    raw = json.loads((V2 / "ingest" / "final" / pid / "figures.json").read_text(encoding="utf-8")) if (V2 / "ingest" / "final" / pid / "figures.json").exists() else {"figures": []}
+    rawp = {(str(f["number"]), p.get("panel", "")): p for f in raw["figures"] for p in f.get("panels", [])}
+    for (fig, pan), es in sorted(entries.items()):
+        kinds = {k for k, _ in es}
+        data_kinds = kinds - {"inventory"}
+        inv = next((x for k, x in es if k == "inventory"), {})
+        grid = any(k == "set" and x.get("kind") == "grid" for k, x in es)
+        not_plain = (data_kinds - {"curve", "derived", "set"}) or grid or (not data_kinds and inv.get("panel_type") in ("map", "plot", "spectrum"))
+        if not not_plain: continue
+        block = [f"===== {key} fig{fig}{pan}: kb/{pid}.figures.json entries ({', '.join(sorted(kinds))}) ====="]
+        block += [json.dumps(x, ensure_ascii=False, indent=1) for k, x in es]
+        if not data_kinds:
+            rp = rawp.get((fig, pan))
+            if rp is not None:
+                walk("raw panel (not imported)", rp)
+                block += [f"----- not imported: the raw panel of ingest/final/{pid}/figures.json (panel dict only; caption and raw_response left out) -----",
+                          json.dumps(rp, ensure_ascii=False, indent=1)]
+        out.append("\n".join(block))
+        panels_listed.append(dict(paper=key, panel=f"fig{fig}{pan}", kinds=";".join(sorted(kinds)), panel_type=inv.get("panel_type", ""),
+                                  imported="yes" if data_kinds else "no", entries=len(es)))
+(R / "P144-check.raw_json.txt").write_text("\n\n".join(out) + "\n", encoding="utf-8")
+SENT_CURVE = {"id", "figure", "panel", "series.label_raw", "x.quantity", "y.quantity", "conditions.*.key_raw", "conditions.*.raw"}
+rows = []
+for kind, cnt in paths.items():
+    for path, n in sorted(cnt.items()):
+        sent = "yes" if kind == "curve" and path in SENT_CURVE else "no"
+        how = {"id": "curve id", "figure": "as fig<n><panel>", "panel": "as fig<n><panel>", "series.label_raw": "series label", "x.quantity": "x", "y.quantity": "y",
+               "conditions.*.key_raw": "conditions as key_raw=raw", "conditions.*.raw": "conditions as key_raw=raw"}.get(path, "") if sent == "yes" else \
+              ("render.figures() reads only the curves" if kind != "curve" else "not rendered")
+        rows.append(dict(entry_kind=kind, field=path, entries_with_field=n, sent=sent, how=how))
+w = csv.DictWriter(open(R / "P144-check.sent_dropped.csv", "w", newline="", encoding="utf-8"), fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+w = csv.DictWriter(open(R / "P144-check.panels.csv", "w", newline="", encoding="utf-8"), fieldnames=list(panels_listed[0])); w.writeheader(); w.writerows(panels_listed)
+print(len(panels_listed), "panels;", collections.Counter((r["entry_kind"], r["sent"]) for r in rows))
+print([ (p["paper"],p["panel"],p["kinds"],p["imported"]) for p in panels_listed])

@@ -1,0 +1,15 @@
+Scope: every panel of the 9 dev papers whose kb/<pid>.figures.json entries are not plain x-y curves: grid cells (values kind cell),
+peaks (values kind peak), grid sets, or a data panel (panel_type map, plot or spectrum) that was not imported (inventory entry only).
+For a panel that was not imported, the raw panel of ingest/final/<pid>/figures.json is shown (the panel dict only; the figure's
+caption and raw_response are left out).
+mat22 fig2 and fig4 (heat maps): 32 cells each. A grid point is a values entry of kind cell: quantity, value (number) or value_text
+(a category such as "Amorphous"), unit, at = {axis quantity id: coordinate} (in canonical units), at_raw = {x, y} (as read),
+conditions (the panel's fixed conditions), set = the grid set id, flags, data_kind read_from_figure, basis printed. The grid set
+(kind grid) carries varied (the two axis quantity ids), varied_raw (the axis labels as printed) and members (the cell ids).
+mat22 fig7b and fig8 (colour-bar heat maps): not imported. Their raw panels have empty series and empty cells: the figure stage read
+no grid points; only the panel type, content (one sentence), x_range, y_range, axis labels and units, series_axis and the fixed
+conditions are stored. Their colour scales exist only in kb/pilot/lists.py COLOUR_PANELS (a hand note). They are not in
+kb/import_panels.csv.
+render.figures() (the pass-0 FIGURES block) reads only figures.json curves: per curve its id, figure+panel, series label_raw,
+x.quantity, y.quantity and conditions as key_raw=raw. It sends no cell, peak, set, derived or inventory entry, so a heat map's grid
+points, their coordinates and values never reach pass 0 (sent / dropped per field: P144-check.sent_dropped.csv).
