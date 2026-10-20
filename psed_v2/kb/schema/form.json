@@ -8,636 +8,820 @@
  "additionalProperties": false,
  "properties": {
   "type": {
-   "enum": [
-    "setting",
-    "observation",
-    "derived",
-    "model",
-    "definition",
-    "claim",
-    "cited",
-    "caveat"
+   "anyOf": [
+    {
+     "enum": [
+      "setting",
+      "observation",
+      "derived",
+      "model",
+      "definition",
+      "claim",
+      "cited",
+      "caveat"
+     ]
+    },
+    {
+     "type": "null"
+    }
    ]
   },
   "quantity": {
    "anyOf": [
     {
-     "enum": [
-      "absorption_coefficient",
-      "adsorption_equilibrium_constant",
-      "annealing_temperature",
-      "aspect_ratio",
-      "atoms_per_cycle",
-      "b_film",
-      "base_pressure",
-      "binding_energy",
-      "body_diameter",
-      "body_thickness",
-      "carrier_density",
-      "carrier_gas",
-      "coated_aspect_ratio",
-      "coating_mass_fraction",
-      "crystallinity",
-      "crystallite_size",
-      "cycle_number",
-      "cycle_time",
-      "delivery_method",
-      "density_relative_to_bulk",
-      "deposited_moles_per_cycle",
-      "deposition_rate",
-      "deposition_temperature",
-      "diffraction_angle",
-      "dimensionless_distance",
-      "distance",
-      "effective_diffusion_coefficient",
-      "element_fraction",
-      "element_ratio",
-      "entry_sides",
-      "equivalent_aspect_ratio",
-      "exposure",
-      "feature_depth",
-      "feature_extent",
-      "feature_width",
-      "fill_fraction",
-      "film_density",
-      "film_thickness",
-      "fit_r2",
-      "front_slope",
-      "gas_flow_rate",
-      "gas_moles_per_cycle",
-      "gas_phase_diffusion_coefficient",
-      "growth_per_cycle",
-      "initial_sticking_coefficient",
-      "knudsen_diffusion_coefficient",
-      "knudsen_number",
-      "mass_gain",
-      "material",
-      "mean_free_path",
-      "mobility",
-      "molar_mass",
-      "molecule_diameter",
-      "moles_deposited",
-      "moles_from_mass_gain",
-      "normalized_thickness",
-      "nucleation_period",
-      "objective_magnification",
-      "p_d",
-      "partial_pressure",
-      "particle_diameter",
-      "penetration_depth",
-      "phase",
-      "phase_fraction",
-      "pillar_layout",
-      "plasma_configuration",
-      "plasma_gas_ratio",
-      "plasma_power",
-      "pore_density",
-      "pore_volume",
-      "porosity",
-      "precursor_purity",
-      "pressure_rate",
-      "pressure_rise",
-      "probe_resolution",
-      "process_mode",
-      "process_pressure",
-      "pulse_time",
-      "purge_time",
-      "raman_shift",
-      "reactant_A",
-      "reactant_B",
-      "reactant_number_density",
-      "reaction_stoichiometry",
-      "reactor",
-      "reactor_type",
-      "recombination_probability",
-      "refractive_index",
-      "resistivity",
-      "roughness",
-      "saturation_density",
-      "saturation_growth_per_cycle",
-      "sheet_resistance",
-      "shell_volume_fraction",
-      "signal_intensity",
-      "source_temperature",
-      "specific_surface_area",
-      "step_coverage",
-      "structure",
-      "substrate",
-      "surface_coverage",
-      "thickness_nonuniformity",
-      "time",
-      "time_to_maximum",
-      "tortuosity",
-      "wall_temperature",
-      "wavelength_range",
-      "other"
+     "anyOf": [
+      {
+       "enum": [
+        "absorption_coefficient",
+        "adsorption_equilibrium_constant",
+        "annealing_temperature",
+        "aspect_ratio",
+        "atoms_per_cycle",
+        "b_film",
+        "base_pressure",
+        "binding_energy",
+        "body_diameter",
+        "body_thickness",
+        "carrier_density",
+        "carrier_gas",
+        "coated_aspect_ratio",
+        "coating_mass_fraction",
+        "crystallinity",
+        "crystallite_size",
+        "cycle_number",
+        "cycle_time",
+        "delivery_method",
+        "density_relative_to_bulk",
+        "deposited_moles_per_cycle",
+        "deposition_rate",
+        "deposition_temperature",
+        "diffraction_angle",
+        "dimensionless_distance",
+        "distance",
+        "effective_diffusion_coefficient",
+        "element_fraction",
+        "element_ratio",
+        "entry_sides",
+        "equivalent_aspect_ratio",
+        "exposure",
+        "feature_depth",
+        "feature_extent",
+        "feature_width",
+        "fill_fraction",
+        "film_density",
+        "film_thickness",
+        "fit_r2",
+        "front_slope",
+        "gas_flow_rate",
+        "gas_moles_per_cycle",
+        "gas_phase_diffusion_coefficient",
+        "growth_per_cycle",
+        "initial_sticking_coefficient",
+        "knudsen_diffusion_coefficient",
+        "knudsen_number",
+        "mass_gain",
+        "material",
+        "mean_free_path",
+        "mobility",
+        "molar_mass",
+        "molecule_diameter",
+        "moles_deposited",
+        "moles_from_mass_gain",
+        "normalized_thickness",
+        "nucleation_period",
+        "objective_magnification",
+        "p_d",
+        "partial_pressure",
+        "particle_diameter",
+        "penetration_depth",
+        "phase",
+        "phase_fraction",
+        "pillar_layout",
+        "plasma_configuration",
+        "plasma_gas_ratio",
+        "plasma_power",
+        "pore_density",
+        "pore_volume",
+        "porosity",
+        "precursor_purity",
+        "pressure_rate",
+        "pressure_rise",
+        "probe_resolution",
+        "process_mode",
+        "process_pressure",
+        "pulse_time",
+        "purge_time",
+        "raman_shift",
+        "reactant_A",
+        "reactant_B",
+        "reactant_number_density",
+        "reaction_stoichiometry",
+        "reactor",
+        "reactor_type",
+        "recombination_probability",
+        "refractive_index",
+        "resistivity",
+        "roughness",
+        "saturation_density",
+        "saturation_growth_per_cycle",
+        "sheet_resistance",
+        "shell_volume_fraction",
+        "signal_intensity",
+        "source_temperature",
+        "specific_surface_area",
+        "step_coverage",
+        "structure",
+        "substrate",
+        "surface_coverage",
+        "thickness_nonuniformity",
+        "time",
+        "time_to_maximum",
+        "tortuosity",
+        "wall_temperature",
+        "wavelength_range",
+        "other"
+       ]
+      },
+      {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "$ref": "#/$defs/quantity_id"
+       }
+      }
      ]
     },
     {
-     "type": "array",
-     "minItems": 1,
-     "items": {
-      "$ref": "#/$defs/quantity_id"
-     }
+     "type": "null"
     }
    ]
   },
   "label_as_printed": {
-   "type": "string",
-   "minLength": 1
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
+    },
+    {
+     "type": "null"
+    }
+   ]
   },
   "qualifiers": {
-   "type": "object",
-   "additionalProperties": false,
-   "properties": {
-    "definition": {
-     "$ref": "#/$defs/definition"
+   "anyOf": [
+    {
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "definition": {
+       "$ref": "#/$defs/definition"
+      },
+      "step": {
+       "enum": [
+        "hold_A",
+        "hold_B",
+        "none",
+        "plasma",
+        "purge_A",
+        "purge_B",
+        "reactant_A",
+        "reactant_B"
+       ]
+      },
+      "species": {
+       "$ref": "#/$defs/species"
+      },
+      "gas": {
+       "$ref": "#/$defs/species"
+      },
+      "element": {
+       "$ref": "#/$defs/element"
+      },
+      "reference_element": {
+       "$ref": "#/$defs/element"
+      },
+      "phase": {
+       "$ref": "#/$defs/species"
+      },
+      "position": {
+       "enum": [
+        "bottom",
+        "entrance",
+        "interface",
+        "local",
+        "outside",
+        "planar",
+        "plateau",
+        "sidewall",
+        "top"
+       ]
+      },
+      "reference": {
+       "enum": [
+        "assumed_saturation",
+        "bulk",
+        "entrance",
+        "maximum",
+        "planar",
+        "plateau",
+        "stated",
+        "top"
+       ]
+      },
+      "level": {
+       "enum": [
+        "50%",
+        "80%",
+        "front_end",
+        "front_start",
+        "maximum"
+       ]
+      },
+      "basis": {
+       "enum": [
+        "AR",
+        "EAR"
+       ]
+      },
+      "surface": {
+       "$ref": "#/$defs/material"
+      },
+      "kind": {
+       "enum": [
+        "default",
+        "estimated",
+        "measured",
+        "option",
+        "set_point",
+        "target"
+       ]
+      },
+      "by": {
+       "enum": [
+        "2H",
+        "H",
+        "d",
+        "lambda",
+        "none",
+        "w"
+       ]
+      },
+      "origin": {
+       "enum": [
+        "entrance",
+        "hole_centre",
+        "nearer_face",
+        "opening_centre",
+        "top_face"
+       ]
+      },
+      "stage": {
+       "enum": [
+        "final",
+        "initial"
+       ]
+      },
+      "stat": {
+       "enum": [
+        "half_range",
+        "maximum",
+        "minimum",
+        "relative_sd",
+        "sd",
+        "tolerance"
+       ]
+      },
+      "between": {
+       "enum": [
+        "items",
+        "pieces",
+        "position",
+        "repeat_measurement",
+        "runs"
+       ]
+      },
+      "n": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "const": "not_stated"
+        }
+       ]
+      },
+      "relative_to": {
+       "enum": [
+        "all_atoms",
+        "all_gases",
+        "crystalline_phases",
+        "final_mass",
+        "initial_mass",
+        "metal_atoms",
+        "not_stated",
+        "reactive_gases",
+        "total_volume"
+       ]
+      },
+      "over": {
+       "enum": [
+        "first_100_cycles",
+        "not_stated",
+        "run",
+        "saturation"
+       ]
+      },
+      "mode": {
+       "enum": [
+        "ex_situ",
+        "in_situ",
+        "not_stated"
+       ]
+      },
+      "x": {
+       "$ref": "#/$defs/quantity_id"
+      },
+      "ratio": {
+       "type": "number"
+      },
+      "specimen_class": {
+       "enum": [
+        "film",
+        "porous_composite"
+       ]
+      },
+      "structure_class": {
+       "enum": [
+        "aerogel_monolith",
+        "har_feature",
+        "lateral_channel",
+        "nanoparticle_compact",
+        "nanopore_membrane",
+        "planar",
+        "porous_body",
+        "structure",
+        "trench",
+        "via_hole"
+       ]
+      }
+     }
     },
-    "step": {
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "value": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "value_min": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "value_max": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "censor": {
+   "anyOf": [
+    {
      "enum": [
-      "hold_A",
-      "hold_B",
-      "none",
-      "plasma",
-      "purge_A",
-      "purge_B",
-      "reactant_A",
-      "reactant_B"
+      "<",
+      "<dl",
+      ">",
+      ">dl"
      ]
     },
-    "species": {
-     "$ref": "#/$defs/species"
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "unit": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
     },
-    "gas": {
-     "$ref": "#/$defs/species"
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "value_text": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
     },
-    "element": {
-     "$ref": "#/$defs/element"
-    },
-    "reference_element": {
-     "$ref": "#/$defs/element"
-    },
-    "phase": {
-     "$ref": "#/$defs/species"
-    },
-    "position": {
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "kind": {
+   "anyOf": [
+    {
      "enum": [
-      "bottom",
-      "entrance",
-      "interface",
-      "local",
-      "outside",
-      "planar",
-      "plateau",
-      "sidewall",
-      "top"
-     ]
-    },
-    "reference": {
-     "enum": [
-      "assumed_saturation",
-      "bulk",
-      "entrance",
-      "maximum",
-      "planar",
-      "plateau",
-      "stated",
-      "top"
-     ]
-    },
-    "level": {
-     "enum": [
-      "50%",
-      "80%",
-      "front_end",
-      "front_start",
-      "maximum"
-     ]
-    },
-    "basis": {
-     "enum": [
-      "AR",
-      "EAR"
-     ]
-    },
-    "surface": {
-     "$ref": "#/$defs/material"
-    },
-    "kind": {
-     "enum": [
-      "default",
-      "estimated",
       "measured",
-      "option",
-      "set_point",
-      "target"
+      "stated",
+      "read_from_figure",
+      "computed_by_authors",
+      "computed_by_kb",
+      "assumed",
+      "model_input",
+      "cited",
+      "simulated"
      ]
     },
-    "by": {
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "method": {
+   "anyOf": [
+    {
      "enum": [
-      "2H",
-      "H",
-      "d",
-      "lambda",
-      "none",
-      "w"
+      "afm",
+      "calculation",
+      "cited",
+      "epma",
+      "eqp",
+      "four_point_probe",
+      "ftir",
+      "giwaxs",
+      "gravimetry",
+      "hall",
+      "infrared_microscopy",
+      "oes",
+      "optical_microscopy",
+      "photograph",
+      "process_monitor",
+      "raman",
+      "rbs",
+      "reflectometry",
+      "schematic",
+      "sem",
+      "sem_eds",
+      "sims",
+      "simulation",
+      "spectroscopic_ellipsometry",
+      "tabulated",
+      "tem",
+      "tem_eds",
+      "tof_erda",
+      "transistor_iv",
+      "two_point_through_thickness",
+      "uv_vis_spectroscopy",
+      "xps",
+      "xrd",
+      "xrr"
      ]
     },
-    "origin": {
-     "enum": [
-      "entrance",
-      "hole_centre",
-      "nearer_face",
-      "opening_centre",
-      "top_face"
-     ]
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mentions": {
+   "anyOf": [
+    {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
     },
-    "stage": {
-     "enum": [
-      "final",
-      "initial"
-     ]
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "quote": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
     },
-    "stat": {
-     "enum": [
-      "half_range",
-      "maximum",
-      "minimum",
-      "relative_sd",
-      "sd",
-      "tolerance"
-     ]
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "uncertainty": {
+   "anyOf": [
+    {
+     "type": "number"
     },
-    "between": {
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "uncertainty_kind": {
+   "anyOf": [
+    {
      "enum": [
-      "items",
+      "fit",
+      "literature",
+      "measurement",
+      "not_stated",
       "pieces",
       "position",
+      "propagated",
       "repeat_measurement",
       "runs"
      ]
     },
-    "n": {
-     "anyOf": [
-      {
-       "type": "number"
-      },
-      {
-       "const": "not_stated"
-      }
-     ]
-    },
-    "relative_to": {
-     "enum": [
-      "all_atoms",
-      "all_gases",
-      "crystalline_phases",
-      "final_mass",
-      "initial_mass",
-      "metal_atoms",
-      "not_stated",
-      "reactive_gases",
-      "total_volume"
-     ]
-    },
-    "over": {
-     "enum": [
-      "first_100_cycles",
-      "not_stated",
-      "run",
-      "saturation"
-     ]
-    },
-    "mode": {
-     "enum": [
-      "ex_situ",
-      "in_situ",
-      "not_stated"
-     ]
-    },
-    "x": {
-     "$ref": "#/$defs/quantity_id"
-    },
-    "ratio": {
-     "type": "number"
-    },
-    "specimen_class": {
-     "enum": [
-      "film",
-      "porous_composite"
-     ]
-    },
-    "structure_class": {
-     "enum": [
-      "aerogel_monolith",
-      "har_feature",
-      "lateral_channel",
-      "nanoparticle_compact",
-      "nanopore_membrane",
-      "planar",
-      "porous_body",
-      "structure",
-      "trench",
-      "via_hole"
-     ]
+    {
+     "type": "null"
     }
-   }
-  },
-  "value": {
-   "type": "number"
-  },
-  "value_min": {
-   "type": "number"
-  },
-  "value_max": {
-   "type": "number"
-  },
-  "censor": {
-   "enum": [
-    "<",
-    "<dl",
-    ">",
-    ">dl"
-   ]
-  },
-  "unit": {
-   "type": "string",
-   "minLength": 1
-  },
-  "value_text": {
-   "type": "string",
-   "minLength": 1
-  },
-  "kind": {
-   "enum": [
-    "measured",
-    "stated",
-    "read_from_figure",
-    "computed_by_authors",
-    "computed_by_kb",
-    "assumed",
-    "model_input",
-    "cited",
-    "simulated"
-   ]
-  },
-  "method": {
-   "enum": [
-    "afm",
-    "calculation",
-    "cited",
-    "epma",
-    "eqp",
-    "four_point_probe",
-    "ftir",
-    "giwaxs",
-    "gravimetry",
-    "hall",
-    "infrared_microscopy",
-    "oes",
-    "optical_microscopy",
-    "photograph",
-    "process_monitor",
-    "raman",
-    "rbs",
-    "reflectometry",
-    "schematic",
-    "sem",
-    "sem_eds",
-    "sims",
-    "simulation",
-    "spectroscopic_ellipsometry",
-    "tabulated",
-    "tem",
-    "tem_eds",
-    "tof_erda",
-    "transistor_iv",
-    "two_point_through_thickness",
-    "uv_vis_spectroscopy",
-    "xps",
-    "xrd",
-    "xrr"
-   ]
-  },
-  "mentions": {
-   "type": "array",
-   "minItems": 1,
-   "items": {
-    "type": "string",
-    "minLength": 1
-   }
-  },
-  "quote": {
-   "type": "string",
-   "minLength": 1
-  },
-  "uncertainty": {
-   "type": "number"
-  },
-  "uncertainty_kind": {
-   "enum": [
-    "fit",
-    "literature",
-    "measurement",
-    "not_stated",
-    "pieces",
-    "position",
-    "propagated",
-    "repeat_measurement",
-    "runs"
    ]
   },
   "uncertainty_n": {
-   "type": "integer"
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
   },
   "cause": {
-   "type": "array",
-   "minItems": 1,
-   "uniqueItems": true,
-   "items": {
-    "$ref": "#/$defs/cause_effect"
-   }
+   "anyOf": [
+    {
+     "type": "array",
+     "minItems": 1,
+     "uniqueItems": true,
+     "items": {
+      "$ref": "#/$defs/cause_effect"
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
   },
   "relation": {
-   "enum": [
-    "increases",
-    "decreases",
-    "limits",
-    "causes",
-    "no_effect",
-    "requires"
+   "anyOf": [
+    {
+     "enum": [
+      "increases",
+      "decreases",
+      "limits",
+      "causes",
+      "no_effect",
+      "requires"
+     ]
+    },
+    {
+     "type": "null"
+    }
    ]
   },
   "effect": {
-   "type": "array",
-   "minItems": 1,
-   "uniqueItems": true,
-   "items": {
-    "$ref": "#/$defs/cause_effect"
-   }
+   "anyOf": [
+    {
+     "type": "array",
+     "minItems": 1,
+     "uniqueItems": true,
+     "items": {
+      "$ref": "#/$defs/cause_effect"
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
   },
   "stance": {
-   "enum": [
-    "asserted",
-    "hedged",
-    "open",
-    "limitation"
+   "anyOf": [
+    {
+     "enum": [
+      "asserted",
+      "hedged",
+      "open",
+      "limitation"
+     ]
+    },
+    {
+     "type": "null"
+    }
    ]
   },
   "note": {
-   "type": "string",
-   "pattern": "^\\S+(\\s+\\S+){0,19}$"
+   "anyOf": [
+    {
+     "type": "string",
+     "pattern": "^\\S+(\\s+\\S+){0,19}$"
+    },
+    {
+     "type": "null"
+    }
+   ]
   },
   "term": {
-   "type": "string",
-   "minLength": 1
-  },
-  "statement": {
-   "type": "string",
-   "pattern": "^\\S+(\\s+\\S+){0,39}$"
-  },
-  "parent": {
-   "type": "string",
-   "minLength": 1
-  },
-  "links": {
-   "type": "array",
-   "minItems": 1,
-   "items": {
-    "type": "string",
-    "minLength": 1
-   }
-  },
-  "variables": {
-   "type": "object",
-   "minProperties": 1,
-   "propertyNames": {
-    "minLength": 1
-   },
-   "additionalProperties": {
-    "anyOf": [
-     {
-      "$ref": "#/$defs/quantity_id"
-     },
-     {
-      "type": "null"
-     }
-    ]
-   }
-  },
-  "candidate": {
-   "type": "object",
-   "additionalProperties": false,
-   "required": [
-    "definition_quote",
-    "unit_as_printed",
-    "dimension",
-    "symbol"
-   ],
-   "properties": {
-    "definition_quote": {
+   "anyOf": [
+    {
      "type": "string",
      "minLength": 1
     },
-    "unit_as_printed": {
-     "type": "string"
-    },
-    "dimension": {
-     "enum": [
-      "amount",
-      "angle",
-      "area",
-      "area_per_mass",
-      "areal_density",
-      "charge_per_area",
-      "count",
-      "current",
-      "density",
-      "diffusivity",
-      "dimensionless",
-      "energy",
-      "energy_per_temperature",
-      "exposure",
-      "flux_per_pressure",
-      "gas_flow",
-      "inverse_amount",
-      "inverse_length",
-      "inverse_pressure",
-      "inverse_sqrt_time",
-      "inverse_time",
-      "length",
-      "length_per_cycle",
-      "length_per_time",
-      "mass",
-      "mobility",
-      "molar_flux",
-      "molar_mass",
-      "number_density",
-      "power",
-      "pressure",
-      "pressure_per_time",
-      "resistance",
-      "resistivity",
-      "signal",
-      "temperature",
-      "time",
-      "time_per_volume",
-      "viscosity",
-      "voltage",
-      "volume",
-      "volume_per_mass",
-      "wavenumber"
-     ]
-    },
-    "symbol": {
-     "type": "string"
+    {
+     "type": "null"
     }
-   }
+   ]
+  },
+  "statement": {
+   "anyOf": [
+    {
+     "type": "string",
+     "pattern": "^\\S+(\\s+\\S+){0,39}$"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "parent": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "links": {
+   "anyOf": [
+    {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "variables": {
+   "anyOf": [
+    {
+     "type": "object",
+     "minProperties": 1,
+     "propertyNames": {
+      "minLength": 1
+     },
+     "additionalProperties": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/quantity_id"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "candidate": {
+   "anyOf": [
+    {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "definition_quote",
+      "unit_as_printed",
+      "dimension",
+      "symbol"
+     ],
+     "properties": {
+      "definition_quote": {
+       "type": "string",
+       "minLength": 1
+      },
+      "unit_as_printed": {
+       "type": "string"
+      },
+      "dimension": {
+       "enum": [
+        "amount",
+        "angle",
+        "area",
+        "area_per_mass",
+        "areal_density",
+        "charge_per_area",
+        "count",
+        "current",
+        "density",
+        "diffusivity",
+        "dimensionless",
+        "energy",
+        "energy_per_temperature",
+        "exposure",
+        "flux_per_pressure",
+        "gas_flow",
+        "inverse_amount",
+        "inverse_length",
+        "inverse_pressure",
+        "inverse_sqrt_time",
+        "inverse_time",
+        "length",
+        "length_per_cycle",
+        "length_per_time",
+        "mass",
+        "mobility",
+        "molar_flux",
+        "molar_mass",
+        "number_density",
+        "power",
+        "pressure",
+        "pressure_per_time",
+        "resistance",
+        "resistivity",
+        "signal",
+        "temperature",
+        "time",
+        "time_per_volume",
+        "viscosity",
+        "voltage",
+        "volume",
+        "volume_per_mass",
+        "wavenumber"
+       ]
+      },
+      "symbol": {
+       "type": "string"
+      }
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
   }
  },
  "required": [
   "type",
-  "quote"
+  "quantity",
+  "label_as_printed",
+  "qualifiers",
+  "value",
+  "value_min",
+  "value_max",
+  "censor",
+  "unit",
+  "value_text",
+  "kind",
+  "method",
+  "mentions",
+  "quote",
+  "uncertainty",
+  "uncertainty_kind",
+  "uncertainty_n",
+  "cause",
+  "relation",
+  "effect",
+  "stance",
+  "note",
+  "term",
+  "statement",
+  "parent",
+  "links",
+  "variables",
+  "candidate"
  ],
  "allOf": [
-  {
-   "if": {
-    "not": {
-     "anyOf": [
-      {
-       "required": [
-        "quantity"
-       ]
-      },
-      {
-       "required": [
-        "value"
-       ]
-      },
-      {
-       "required": [
-        "value_min"
-       ]
-      },
-      {
-       "required": [
-        "value_max"
-       ]
-      },
-      {
-       "required": [
-        "value_text"
-       ]
-      }
-     ]
-    }
-   },
-   "then": {
-    "required": [
-     "statement"
-    ]
-   }
-  },
   {
    "if": {
     "properties": {
@@ -655,7 +839,14 @@
    "then": {
     "properties": {
      "value_text": {
-      "$ref": "#/$defs/material"
+      "anyOf": [
+       {
+        "$ref": "#/$defs/material"
+       },
+       {
+        "type": "null"
+       }
+      ]
      }
     }
    }
@@ -677,7 +868,14 @@
    "then": {
     "properties": {
      "value_text": {
-      "$ref": "#/$defs/species"
+      "anyOf": [
+       {
+        "$ref": "#/$defs/species"
+       },
+       {
+        "type": "null"
+       }
+      ]
      }
     }
    }
@@ -696,7 +894,14 @@
    "then": {
     "properties": {
      "value_text": {
-      "$ref": "#/$defs/structure"
+      "anyOf": [
+       {
+        "$ref": "#/$defs/structure"
+       },
+       {
+        "type": "null"
+       }
+      ]
      }
     }
    }

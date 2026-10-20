@@ -40,6 +40,7 @@ def as_number(x):
 def cast(row, props):
     """facts.csv row -> (form record, [(field, reason)] for the columns the form cannot take)."""
     rec, lost = {}, []
+    props = {k: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p) if len(p.get("anyOf", [])) == 2 else p for k, p in props.items()}   # P139: nullable
     for c, v in row.items():
         if not v or c in X.COMPILER_ONLY:
             continue

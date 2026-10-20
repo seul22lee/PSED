@@ -11,34 +11,34 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 
 | field | allowed values | required when | who fills |
 |---|---|---|---|
-| type | enum, 8 values | always | extractor |
-| quantity | enum, 108 values or list of enum, 107 values (quantity_id) | optional | extractor |
-| label_as_printed | string | optional | extractor |
-| qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
-| value | number | optional | extractor |
-| value_min | number | optional | extractor |
-| value_max | number | optional | extractor |
-| censor | one of `<`, `<dl`, `>`, `>dl` | optional | extractor |
-| unit | string | optional | extractor |
-| value_text | string | enum, 16 values (material) when quantity `material` / `substrate`; enum, 38 values (species) when quantity `reactant_A` / `reactant_B`; enum, 12 values (structure) when quantity `structure` | extractor |
-| kind | enum, 9 values | optional | extractor |
-| method | enum, 34 values | optional | extractor |
-| mentions | list of string | optional | extractor |
-| quote | string | always | extractor |
-| uncertainty | number | optional | extractor |
-| uncertainty_kind | enum, 9 values | optional | extractor |
-| uncertainty_n | integer | optional | extractor |
-| cause | list of enum, 143 values (cause_effect) | optional | extractor; the compiler joins the list with `;` |
-| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | optional | extractor |
-| effect | list of enum, 143 values (cause_effect) | optional | extractor; the compiler joins the list with `;` |
-| stance | one of `asserted`, `hedged`, `open`, `limitation` | optional | extractor |
-| note | string, at most 20 words | optional | extractor |
-| term | string | optional | extractor |
-| statement | string, at most 40 words | required when no quantity, value, value_min, value_max, value_text | extractor |
-| parent | string | optional | extractor |
-| links | list of string | optional | extractor |
-| variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} | optional | extractor |
-| candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) | optional | extractor |
+| type | enum, 8 values or {'type': 'null'} | always | extractor |
+| quantity | enum, 108 values or list of enum, 107 values (quantity_id) or {'type': 'null'} | always | extractor |
+| label_as_printed | string or {'type': 'null'} | always | extractor |
+| qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) or {'type': 'null'} | always | extractor |
+| value | number or {'type': 'null'} | always | extractor |
+| value_min | number or {'type': 'null'} | always | extractor |
+| value_max | number or {'type': 'null'} | always | extractor |
+| censor | one of `<`, `<dl`, `>`, `>dl` or {'type': 'null'} | always | extractor |
+| unit | string or {'type': 'null'} | always | extractor |
+| value_text | string or {'type': 'null'} | always; enum, 16 values (material) or {'type': 'null'} when quantity `material` / `substrate`; enum, 38 values (species) or {'type': 'null'} when quantity `reactant_A` / `reactant_B`; enum, 12 values (structure) or {'type': 'null'} when quantity `structure` | extractor |
+| kind | enum, 9 values or {'type': 'null'} | always | extractor |
+| method | enum, 34 values or {'type': 'null'} | always | extractor |
+| mentions | list of string or {'type': 'null'} | always | extractor |
+| quote | string or {'type': 'null'} | always | extractor |
+| uncertainty | number or {'type': 'null'} | always | extractor |
+| uncertainty_kind | enum, 9 values or {'type': 'null'} | always | extractor |
+| uncertainty_n | integer or {'type': 'null'} | always | extractor |
+| cause | list of enum, 143 values (cause_effect) or {'type': 'null'} | always | extractor; the compiler joins the list with `;` |
+| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` or {'type': 'null'} | always | extractor |
+| effect | list of enum, 143 values (cause_effect) or {'type': 'null'} | always | extractor; the compiler joins the list with `;` |
+| stance | one of `asserted`, `hedged`, `open`, `limitation` or {'type': 'null'} | always | extractor |
+| note | string, at most 20 words or {'type': 'null'} | always | extractor |
+| term | string or {'type': 'null'} | always | extractor |
+| statement | string, at most 40 words or {'type': 'null'} | always | extractor |
+| parent | string or {'type': 'null'} | always | extractor |
+| links | list of string or {'type': 'null'} | always | extractor |
+| variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} or {'type': 'null'} | always | extractor |
+| candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) or {'type': 'null'} | always | extractor |
 | qualifiers.definition | one of `normalized`, `thickness_per_cycle` (definition) | optional | extractor |
 | qualifiers.step | enum, 8 values | optional | extractor |
 | qualifiers.species | enum, 38 values (species) | optional | extractor |
@@ -69,14 +69,14 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | candidate.unit_as_printed | string | required with candidate | extractor |
 | candidate.dimension | enum, 43 values | required with candidate | extractor |
 | candidate.symbol | string | required with candidate | extractor |
-| pass0.id | string | always | extractor, pass 0 |
-| pass0.parent | string | optional | extractor, pass 0 |
-| pass0.name_as_printed | string | always | extractor, pass 0 |
-| pass0.role | one of `specimen`, `run`, `simulation`, `series`, `cited_work` | always | extractor, pass 0 |
-| pass0.structure_class | enum, 10 values | optional | extractor, pass 0 |
-| pass0.specimen_class | one of `film`, `porous_composite` | optional | extractor, pass 0 |
-| pass0.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` | optional | extractor, pass 0 |
-| pass0.introduced_in | list of string | always | extractor, pass 0 |
+| pass0.id | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.parent | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.name_as_printed | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.role | one of `specimen`, `run`, `simulation`, `series`, `cited_work` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.structure_class | enum, 10 values or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.specimen_class | one of `film`, `porous_composite` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.introduced_in | list of string or {'type': 'null'} | always | extractor, pass 0 |
 | fact_id | not in the form |  | compiler |
 | kind | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | order | not in the form (facts.FIELDS column with no form field) |  | nobody |

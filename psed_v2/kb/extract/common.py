@@ -59,8 +59,16 @@ def provider_schema(s, defs=None):
     if defs is None and isinstance(s, dict):
         defs = s.get("$defs", {})
     if isinstance(s, dict):
-        if "anyOf" in s:
-            return {"type": "string"}
+        if "anyOf" in s:                                                        # P139: [X, null] -> X with null in its type (and enum); any other union a string
+            other = [x for x in s["anyOf"] if not (isinstance(x, dict) and x.get("type") == "null")]
+            out = provider_schema(other[0], defs) if len(other) == 1 else {"type": "string"}
+            if len(other) < len(s["anyOf"]):
+                out = dict(out)
+                t = out.get("type", "string")
+                out["type"] = (t if isinstance(t, list) else [t]) + ["null"]
+                if "enum" in out:
+                    out["enum"] = list(out["enum"]) + [None]
+            return out
         if "$ref" in s:
             return provider_schema(defs[s["$ref"].split("/")[-1]], defs)
         if len(s.get("enum", [])) > X.PROVIDER_ENUM_MAX:

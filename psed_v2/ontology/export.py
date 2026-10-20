@@ -255,6 +255,13 @@ def _none(fields):
     return {"properties": {f: False for f in fields}}
 
 
+def nullable(p):
+    """P139: a property that also takes null (the extractor writes null when the field does not apply)."""
+    if p.get("type") == "null" or any(x.get("type") == "null" for x in p.get("anyOf", [])):
+        return p
+    return {"anyOf": [p, {"type": "null"}]}
+
+
 def form_schema(onto, L, F):
     assert set(FORM_TYPES) <= set(L.TYPES) and set(COMPILER_ONLY) <= set(F.FIELDS) and set(FROM_FACTS) <= set(F.FIELDS)
     defs = form_defs(onto)
@@ -294,13 +301,12 @@ def form_schema(onto, L, F):
         "title": "PSED v2 extraction form: one record",
         "description": f"One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version {onto['version']}, sha256 {h}) "
                        f"and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
-        "type": "object", "additionalProperties": False, "properties": props,
-        "required": ["type", "quote"],
-        "allOf": [                                                              # P138: vocabulary and types only; no companion field required or forbidden
-            {"if": {"not": {"anyOf": [{"required": [f]} for f in ["quantity"] + VALUE_FIELDS]}}, "then": {"required": ["statement"]}},
-            {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/material"}}}},
-            {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/species"}}}},
-            {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": {"$ref": "#/$defs/structure"}}}},
+        "type": "object", "additionalProperties": False, "properties": {k: nullable(v) for k, v in props.items()},
+        "required": list(props),                                                # P139: every field present, null when it does not apply
+        "allOf": [                                                              # P138/P139: vocabulary only, no requirement
+            {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/material"})}}},
+            {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/species"})}}},
+            {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/structure"})}}},
         ],
         "$defs": defs,
     }
@@ -308,6 +314,13 @@ def form_schema(onto, L, F):
 
 def pass0_schema(onto, L):
     h = ontology_hash()
+    p0 = {"id": {"type": "string", "minLength": 1},                                                         # P138: short, unique in the paper
+          "parent": {"type": "string", "minLength": 1},                                                     # P138: the item's run, simulation or specimen id
+          "name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
+          "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
+          "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
+          "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
+          "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "urn:psed_v2:schema:form_pass0",
@@ -315,14 +328,7 @@ def pass0_schema(onto, L):
         "title": "PSED v2 extraction form, pass 0: the things one paper names",
         "description": f"One paper = a list of the specimens, runs, simulations and cited works it names (ontology version {onto['version']}, sha256 {h}).",
         "type": "array",
-        "items": {"type": "object", "additionalProperties": False, "required": ["id", "name_as_printed", "role", "introduced_in"],
-                  "properties": {"id": {"type": "string", "minLength": 1},                                   # P138: short, unique in the paper
-                                 "parent": {"type": "string", "minLength": 1},                               # P138: the item's run, simulation or specimen id
-                                 "name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
-                                 "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
-                                 "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
-                                 "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
-                                 "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}},
+        "items": {"type": "object", "additionalProperties": False, "required": list(p0), "properties": {k: nullable(v) for k, v in p0.items()}},   # P139
     }
 
 
@@ -376,9 +382,10 @@ def form_md(form, pass0, onto, F):
             req[d].append(f"required with {f}")
     rows = [(f, _allowed(p), "; ".join(req[f]) or "optional", "extractor" + ("; the compiler joins the list with `;`" if f in JOINED else ""))
             for f, p in form["properties"].items()]
-    for k, p in form["properties"]["qualifiers"]["properties"].items():
+    unnull = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)       # noqa: E731  P139
+    for k, p in unnull(form["properties"]["qualifiers"])["properties"].items():
         rows.append((f"qualifiers.{k}", _allowed(p), "optional", "extractor"))
-    for k, p in form["properties"]["candidate"]["properties"].items():
+    for k, p in unnull(form["properties"]["candidate"])["properties"].items():
         rows.append((f"candidate.{k}", _allowed(p), "required with candidate", "extractor"))
     it = pass0["items"]
     for k, p in it["properties"].items():
