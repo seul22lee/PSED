@@ -11,17 +11,21 @@ import sys
 
 import common as C
 
-INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation, series and cited work it names.
+INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation, model run, series and cited work it names.
 One item per named thing:
 - id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record's parent;
 - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
-- role: one of specimen, run, simulation, series, cited_work. A run is one deposition sequence: a reactant pair at a temperature on
-  a structure. A simulation is one model the paper solves; two solution methods or approximations of the same model are the same
-  simulation. A specimen is a physical sample the paper measures (a coated structure, a film, a substrate piece). A series is a
-  figure's set of runs or specimens that vary one quantity (introduced_in = the figure). A cited work is another publication the
-  paper names;
-- parent: for a specimen, the id of the run that made it; for a series, the id of the simulation, run or specimen it belongs to;
-  null only when the paper gives none;
+- role: one of specimen, run, simulation, model_run, series, cited_work.
+  A run is one deposition the paper performs; samples coated in separate depositions are separate runs even with the same
+  chemistry, temperature and structure; samples coated together share one run.
+  A specimen is one physical sample measured; parent = its run.
+  A simulation is one model; two solution methods or approximations of the same model are the same simulation.
+  A model_run is one set of inputs whose result the paper reports (a curve, a table row); parent = its simulation.
+  A series is a figure's set of specimens or model runs varying one quantity; members = the specimen or model_run ids it compares;
+  parent = the simulation, run or specimen it belongs to (null only when the paper gives none).
+  A cited work is another publication the paper names;
+- parent: as defined per role above; null when the role has none;
+- evidence_quote (runs): the words that say which samples the run made, copied verbatim from the paper;
 - every field is present in every item; null when it does not apply;
 - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
 - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,

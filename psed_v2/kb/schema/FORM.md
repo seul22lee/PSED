@@ -72,11 +72,13 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | pass0.id | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.parent | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.name_as_printed | string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.role | one of `specimen`, `run`, `simulation`, `series`, `cited_work` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.role | one of `specimen`, `run`, `simulation`, `model_run`, `series`, `cited_work` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.structure_class | enum, 10 values or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.specimen_class | one of `film`, `porous_composite` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.introduced_in | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.members | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.evidence_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | fact_id | not in the form |  | compiler |
 | kind | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | order | not in the form (facts.FIELDS column with no form field) |  | nobody |

@@ -16,7 +16,9 @@
    "structure_class",
    "specimen_class",
    "experiment_kind",
-   "introduced_in"
+   "introduced_in",
+   "members",
+   "evidence_quote"
   ],
   "properties": {
    "id": {
@@ -59,6 +61,7 @@
        "specimen",
        "run",
        "simulation",
+       "model_run",
        "series",
        "cited_work"
       ]
@@ -126,6 +129,32 @@
        "type": "string",
        "minLength": 1
       }
+     },
+     {
+      "type": "null"
+     }
+    ]
+   },
+   "members": {
+    "anyOf": [
+     {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     {
+      "type": "null"
+     }
+    ]
+   },
+   "evidence_quote": {
+    "anyOf": [
+     {
+      "type": "string",
+      "minLength": 1
      },
      {
       "type": "null"

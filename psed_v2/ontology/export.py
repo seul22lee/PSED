@@ -197,7 +197,7 @@ COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs"
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
-PASS0_ROLES = ["specimen", "run", "simulation", "series", "cited_work"]   # P138: series = a figure series of runs or specimens differing in one quantity
+PASS0_ROLES = ["specimen", "run", "simulation", "model_run", "series", "cited_work"]   # P142: model_run   # P138: series = a figure series of runs or specimens differing in one quantity
 
 
 def form_field(column):
@@ -320,7 +320,9 @@ def pass0_schema(onto, L):
           "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
           "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
           "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
-          "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}
+          "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "members": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},        # P142: a series' specimen or model-run ids
+          "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "urn:psed_v2:schema:form_pass0",
