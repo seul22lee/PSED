@@ -655,6 +655,35 @@ def check_vocabulary():
     return err
 
 
+def check_gold_vocabulary():
+    """P142: every gold fact row of the papers (kb/pilot/<pid>.facts.csv) against the extraction vocabulary (kb/schema/form.json and
+    units.yaml through vocab): quantity ids (a caveat's ';' list too), units, the value_text of material / substrate / reactant_A /
+    reactant_B / structure, qualifier key=value pairs, cause / effect ids, relation, stance, method, kind. One problem per miss."""
+    form = json.loads((HERE.parent / "schema" / "form.json").read_text(encoding="utf-8"))
+    D = form["$defs"]
+    ce, qids = set(D["cause_effect"]["enum"]), set(D["quantity_id"]["enum"]) | {"other"}
+    vt = {"material": set(D["material"]["enum"]), "substrate": set(D["material"]["enum"]), "reactant_A": set(D["species"]["enum"]),
+          "reactant_B": set(D["species"]["enum"]), "structure": set(D["structure"]["enum"])}
+    err = []
+    for pid in KEYS:
+        for f in rd(HERE / f"{pid}.facts.csv"):
+            if "#" not in f["fact_id"] or f["type"] in ("paper", "activity", "entity", "comparison", "identity"):
+                continue
+            miss = [("quantity", q) for q in filter(None, f["quantity"].split(";")) if q not in qids]
+            if f["unit"] and L.UNIT_ALIAS.get(f["unit"], f["unit"]) not in L.UNIT_BASE:
+                miss.append(("unit", f["unit"]))
+            if f["quantity"] in vt and f["value_text"] and f["value_text"] not in vt[f["quantity"]]:
+                miss.append((f"value_text of {f['quantity']}", f["value_text"]))
+            miss += [("qualifier", x) for x in L.qualifiers_ok(f["qualifiers"])]
+            miss += [(k, x) for k in ("cause", "effect") for x in filter(None, f[k].split(";")) if x not in ce]
+            for k, ok in (("relation", L.RELATIONS), ("stance", L.STANCES), ("method", L.METHODS), ("data_kind", L.KINDS)):
+                if f[k] and f[k] not in ok:
+                    miss.append((k, f[k]))
+            err += [f"{f['fact_id']}: {k} {v!r} is not in the extraction vocabulary (P142)" for k, v in miss]
+    print(f"== gold vocabulary (P142): {len(err)} misses over the gold fact rows of {len(KEYS)} papers")
+    return err
+
+
 def check_mechanisms():
     """P82: a mechanism is not a quantity: no mechanism entry carries a unit, and no fact of the data uses a mechanism id as its quantity."""
     import query as Q
@@ -2120,6 +2149,11 @@ if __name__ == "__main__":
         sys.exit(1 if bad else 0)
     err = check_vocabulary()
     print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")
+    for e in err[:40]:
+        print("  ", e)
+    bad += bool(err)
+    err = check_gold_vocabulary()
+    print(f"== gold vocabulary: {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
         print("  ", e)
     bad += bool(err)
