@@ -27,6 +27,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+DIR = Path(sys.argv[sys.argv.index("--dir") + 1]).resolve() if "--dir" in sys.argv else None   # P134: facts, coverage, experiments from DIR
 import facts as C  # noqa: E402
 import lists as L  # noqa: E402
 import elements  # noqa: E402
@@ -44,9 +45,9 @@ def words(t):
 def check(pid):
     err = []
     els = {r["element_id"]: r for r in rd(HERE / f"{pid}.elements.csv")}
-    rows = rd(HERE / f"{pid}.facts.csv")
+    rows = rd((DIR or HERE) / f"{pid}.facts.csv")
     facts = [r for r in rows if "#" in r["fact_id"]]                 # tree rows (stage 3) have ids without "#"
-    cov = rd(HERE / f"{pid}.coverage.csv")
+    cov = rd((DIR or HERE) / f"{pid}.coverage.csv")
     pts = json.loads((HERE / f"{pid}.points.json").read_text(encoding="utf-8")) if (HERE / f"{pid}.points.json").exists() else {}
     if not facts:
         return ["no facts.csv"], {}
@@ -148,7 +149,7 @@ def check(pid):
             err.append(f"{c['element_id']}: no knowledge without a reason")
     err += check_tree(rows, els)
     if any(r["type"] == "paper" for r in rows):
-        ex = [r for r in rd(HERE / f"{pid}.experiments.csv") if r.get("kind") != "cited"]
+        ex = [r for r in rd((DIR or HERE) / f"{pid}.experiments.csv") if r.get("kind") != "cited"]
         want = {r["fact_id"] for r in rows if r["type"] == "run"} | set(experiment_entities(rows))
         if {r["run"] for r in ex} != want:
             err.append(f"{pid}.experiments.csv: {len(ex)} rows for {len(want)} experiments (rerun experiments.py)")
@@ -2108,6 +2109,15 @@ def check_cases():
 
 if __name__ == "__main__":
     bad = 0
+    for pid, k in (KEYS.items() if DIR else []):                                 # P134: the per-paper check of the papers DIR holds only (no dataset
+        if (DIR / f"{pid}.facts.csv").exists():                                  # checks: no git show, no battery_per_paper.csv rewrite)
+            err, _ = check(pid)
+            print(f"== {k} {pid} ({DIR}): {'OK' if not err else f'{len(err)} problems'}")
+            for e in err[:40]:
+                print("  ", e)
+            bad += bool(err)
+    if DIR:
+        sys.exit(1 if bad else 0)
     err = check_vocabulary()
     print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")
     for e in err[:40]:
