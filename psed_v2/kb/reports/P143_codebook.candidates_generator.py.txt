@@ -1,0 +1,27 @@
+import csv, re, sys, yaml
+from pathlib import Path
+V2 = Path("/home/ftk3187/github/PSED/psed_v2"); sys.path.insert(0, str(V2 / "kb" / "extract")); import common as C
+TERMS = ["Knudsen", "molecular flow", "free molecular", "free-molecular", "transition regime", "transition flow", "continuum", "viscous", "diffusion-limited",
+         "diffusion limited", "reaction-limited", "reaction limited", "recombination-limited", "rate-limiting", "rate limiting", "Langmuir", "irreversible",
+         "reversible", "first-order", "first order", "second-order", "plug flow", "plug-flow", "ballistic", "Markov", "Monte Carlo", "conductance",
+         "sticking", "recombination", "saturation", "mean free path", "Fick", "Clausing", "Thiele", "effective diffusion", "surface diffusion",
+         "gas-phase diffusion", "precursor-limited", "dose-limited", "subsaturat", "steady state", "quasi-steady"]
+rx = re.compile("|".join(re.escape(t) for t in TERMS), re.I)
+rows = []
+def ctx(t, m):
+    w = t[:m.start()].split()[-8:] + [m.group(0)] + t[m.end():].split()[:8]
+    return " ".join(w)
+for p in C.E.PAPERS:
+    if p in C.HELD_OUT: continue
+    for r in csv.DictReader(open(V2 / "kb" / "pilot" / f"{p}.facts.csv", encoding="utf-8")):
+        if r["type"] not in ("model", "caveat"): continue
+        for m in rx.finditer(r["statement"]):
+            rows.append(dict(source=f"gold {r['type']} statement", paper=C.E.PAPERS[p], row=r["fact_id"], term=m.group(0).lower(), context=ctx(r["statement"], m)))
+O = yaml.safe_load(open(V2 / "ontology" / "ontology.yaml", encoding="utf-8"))
+for e in O["entries"]:
+    if e["type"] != "model": continue
+    for m in rx.finditer(e.get("definition", "")):
+        rows.append(dict(source="ontology model definition", paper="", row=e["id"], term=m.group(0).lower(), context=ctx(e["definition"], m)))
+out = V2 / "kb" / "reports" / "P143_codebook.equation_vocabulary_candidates.csv"
+w = csv.DictWriter(open(out, "w", newline="", encoding="utf-8"), fieldnames=["source", "paper", "row", "term", "context"]); w.writeheader(); w.writerows(rows)
+import collections; print(len(rows), collections.Counter(r["term"] for r in rows).most_common(20))
