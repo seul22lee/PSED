@@ -54,6 +54,7 @@ FIELD RULES
   definitions, caveats, cited records and paper-wide settings (reactor, carrier gas).
 - links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
 - statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
+- statement is never null on claim, caveat and cited records (one sentence, your words).
 - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
