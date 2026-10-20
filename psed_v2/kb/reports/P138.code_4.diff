@@ -1,0 +1,186 @@
+commit 36f5f32bb62aaefe0ee8d6b7ea68bacd1d47cf7d
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 23:48:06 2026 -0500
+
+    P138 commit 4: prompts — ontology per quantity, pass-0 ids, parent / links / statement
+    
+    pass 1 jobs(): QUANTITY IDS carry name, aliases, canonical unit and note read from
+    ontology/ontology.yaml; PASS-0 ITEMS carry id, role, name and parent (parent takes the
+    id, mentions the name). RULES: parent, links, statement; candidate and kind as
+    guidance (the form no longer requires them). examples(): statement (the gold's own
+    words) on records without quantity or value; parent "paper" on claim, definition,
+    caveat, cited. P136b type and NK definitions kept.
+    pass 0: id and parent per item, role series defined; example list from the last dev
+    paper in index order other than the one extracted (art19 for both yli18 and yim20: zou23 has no simulation, hei24 no deposition);
+    thinking MEDIUM.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index e4c1c7e..1c1d200 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -11,12 +11,15 @@ import sys
+ 
+ import common as C
+ 
+-INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation and cited work it names.
++INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation, series and cited work it names.
+ One item per named thing:
++- id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record's parent;
+ - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
+ - role: one of specimen, run, simulation, cited_work. A run is one deposition sequence: a reactant pair at a temperature on a
+   structure. A simulation is a model the paper solves, one item per model. A specimen is a physical sample the paper measures (a
+-  coated structure, a film, a substrate piece). A cited work is another publication the paper names;
++  coated structure, a film, a substrate piece). A series is a figure series: several model runs or specimens that differ in one
++  quantity (introduced_in = the figure). A cited work is another publication the paper names;
++- parent: for a specimen, the id of the run that made it; for a series, the id of its simulation, run or specimen;
+ - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
+ - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
+   taken from the element index below.
+@@ -24,24 +27,34 @@ Answer with JSON matching the form."""
+ 
+ 
+ def example(pid, form):
+-    """P136b: one example list in the pass-0 form, from the gold tree of the first dev paper other than pid (never held-out) that has
+-    deposition and simulation activities: at most two items per role (run = a deposition activity, simulation = a simulation
+-    activity, specimen = an entity directly under a deposition, cited_work = a cited tree row), name = label_as_printed,
+-    introduced_in = the row's evidence; validated against form_pass0.json."""
++    """P136b/P138: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid (never
++    held-out) that has deposition and simulation activities: at most two items per role (run = a deposition activity, simulation =
++    a simulation activity, specimen = an entity directly under a deposition, series = a comparison of kind series, cited_work = a
++    cited tree row), id = role letter + number, name = label_as_printed, introduced_in = the row's evidence, parent = the item id of
++    the gold parent (specimen: its deposition; series: the parent of its first member) when that is an item; validated against
++    form_pass0.json."""
+     import csv
+     from jsonschema import Draft202012Validator
+-    for p in [p for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
++    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "series": "ser", "cited_work": "c"}
++    for p in [p for p in reversed(list(C.E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
+         f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
+         rows = [r for r in csv.DictReader(f.open(encoding="utf-8")) if "#" not in r["fact_id"]] if f.exists() else []
+         R = {r["fact_id"]: r for r in rows}
+         role = lambda r: ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
+-                          else "specimen" if r["type"] == "entity" and R.get(r["parent"], {}).get("kind") == "deposition" else "cited_work" if r["type"] == "cited" else "")
+-        items, n = [], {}
++                          else "specimen" if r["type"] == "entity" and R.get(r["parent"], {}).get("kind") == "deposition"
++                          else "series" if r["type"] == "comparison" and r["kind"] == "series" else "cited_work" if r["type"] == "cited" else "")
++        items, n, ids = [], {}, {}
+         for r in rows:
+             k = role(r)
+             if k and r["label_as_printed"] and r["evidence"] and n.get(k, 0) < 2:
+                 n[k] = n.get(k, 0) + 1
+-                items.append(dict(name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";")))
++                ids[r["fact_id"]] = f"{PRE[k]}{n[k]}"
++                gp = r["parent"] if k == "specimen" else next((R[m]["parent"] for m in r["links"].split(";")[1:] if m in R), "") if k == "series" else ""
++                items.append(dict(id=ids[r["fact_id"]], name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";"), _gp=gp))
++        for it in items:
++            gp = it.pop("_gp")
++            if gp in ids:
++                it["parent"] = ids[gp]
+         if {"run", "simulation"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
+             return json.dumps(items, ensure_ascii=False)
+     return "[]"
+@@ -57,7 +70,7 @@ def jobs(pid):
+     return [(0, "paper", prompt, C.provider_schema(form), [])]
+ 
+ 
+-THINKING = {"thinking_level": "LOW"}                                            # user, P133b: as pass 1; recorded in the line and the cache key
++THINKING = {"thinking_level": "MEDIUM"}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key
+ 
+ 
+ def main(arg):
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index f4ed70b..4ecd598 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -5,7 +5,7 @@
+ 
+ Sections: the elements.csv section column (elements.py maps equations into their section); a group whose section is not abs/abstract
+ or s<n> (figures, tables, a table's cells) is unmapped and runs as its own group. Prompt, in this order: the section's elements as
+-"<id>: <text>"; the pass-0 names (the only mentions vocabulary) and the figure/table/equation element ids; the form (schema/form.json,
++"<id>: <text>"; the pass-0 items (id, role, name, parent; P138) and the figure/table/equation element ids; the form (schema/form.json,
+ compact) with the field rules; the kind vocabulary with its ontology glosses (vocab.PHRASES). Response (P133 option 2): {"answers": [{"id", "answer": [record, ...]
+ or "NK:<reason>"}]}; variables as a list of {symbol, quantity}. Prints the tallies; local validation against the full form.json is a count only (the compiler validates, P134).
+ """
+@@ -14,6 +14,8 @@ import json
+ import re
+ import sys
+ 
++import yaml
++
+ import common as C
+ from vocab import MECHANISMS, NAMES, PHRASES
+ 
+@@ -40,17 +42,22 @@ FIELD RULES
+   recorded from another element; no_knowledge: the element states nothing the form can hold.
+ - quote: words copied verbatim from the element, as few as identify the record; every record has one.
+ - note: at most 20 words, on claims and definitions only.
+-- quantity: an id of the form only when it is the same concept as printed; otherwise "other", and then candidate is required, with
+-  the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension and symbol. Examples:
++- quantity: an id of QUANTITY IDS only when it is the same concept as printed (its aliases, unit and note tell you); otherwise
++  "other", with a candidate: the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension
++  and symbol. Examples:
+   "rms thickness error" -> other, not thickness_nonuniformity; "10 min stabilisation" -> other, not time; "c = 0.01" ->
+   initial_sticking_coefficient when the paper's own table says so, never reaction_stoichiometry.
+ - label_as_printed: the paper's own label of the quantity, on every record with a quantity.
+ - kind: on every record with a value, value_min, value_max or value_text.
++- parent: the id (from PASS-0 ITEMS) of the run, simulation, series or specimen the record belongs to; "paper" for claims,
++  definitions, caveats, cited records and paper-wide settings (reactor, carrier gas).
++- links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
++- statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
+ - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
+ - cause, relation, effect: all three or none (claims only).
+ - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
+   material, substrate, reactant_A, reactant_B and structure is an id of the form; for a reactor or an instrument, the name only.
+-- mentions: only names from the MENTIONS list, exactly as listed."""
++- mentions: only names from PASS-0 ITEMS (name as printed), exactly as listed."""
+ 
+ 
+ def container(eid):
+@@ -122,6 +129,10 @@ def examples(pid, form):
+             rec, lost = RT.cast(row, props)
+             if t == "definition":
+                 rec["term"] = row["term"]
++            if not (rec.get("quantity") or any(k in rec for k in ("value", "value_min", "value_max", "value_text"))) and len(row["statement"].split()) <= 40:
++                rec["statement"] = row["statement"]                             # P138: the gold's own-words statement
++            if t in ("claim", "definition", "caveat", "cited"):
++                rec["parent"] = "paper"
+             words = text.get(row["evidence"].split(";")[0], "").split()[:12]
+             if lost or not words:
+                 continue
+@@ -136,13 +147,17 @@ def jobs(pid):
+     if not p0:
+         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
+     items = C.loads_json(p0[-1]["response"])
+-    names = sorted({it["name_as_printed"] for it in items if isinstance(it, dict) and it.get("name_as_printed")})
++    items = [it for it in items if isinstance(it, dict) and it.get("name_as_printed")]
++    p0 = "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it['name_as_printed']} | parent {it.get('parent', '') or '-'}" for it in items)   # P138
+     rows = C.E.load(pid)
+     refs = [r["element_id"] for r in rows if r["kind"] in ("caption", "panel", "equation")]
+     form = C.schema("form.json")
+     text = C.E.texts(pid)
+     kinds = "\n".join(f"- {k}: {PHRASES.get(k, '')}" for k in C.X._pilot()[0].KINDS)
+-    qids = "\n".join(f"{q}: {NAMES.get(q, q)}" for q in form["$defs"]["quantity_id"]["enum"])
++    E = {e["id"]: e for e in yaml.safe_load((C.V2 / "ontology" / "ontology.yaml").read_text(encoding="utf-8"))["entries"]}   # P138: from the ontology
++    qids = "\n".join(f"{q}: {E.get(q, {}).get('name') or NAMES.get(q, q)}" + (f" | aliases: {'; '.join(map(str, E[q].get('aliases') or []))}" if E.get(q, {}).get("aliases") else "")
++                     + (f" | unit: {E[q]['unit']}" if E.get(q, {}).get("unit") else "") + (f" | note: {E[q]['note']}" if E.get(q, {}).get("note") else "")
++                     for q in form["$defs"]["quantity_id"]["enum"])
+     mids = "\n".join(f"{m}: {MECHANISMS[m]['name']}" for m in form["$defs"]["cause_effect"]["enum"] if m in MECHANISMS)
+     ex = examples(pid, form)
+     out = []
+@@ -151,11 +166,12 @@ def jobs(pid):
+         prompt = "\n\n".join([
+             "You extract the knowledge of one section of an ALD paper into records of the form below.",
+             "ELEMENTS:\n" + "\n".join(f"{i}: {text[i]}" for i in ids),
+-            "MENTIONS (the only allowed mentions):\n" + "\n".join(names) + "\nElement ids that may be mentioned: " + ", ".join(refs),
++            "PASS-0 ITEMS (id | role | name as printed | parent): parent takes an id; mentions take a name\n" + p0
++            + "\nElement ids that may be mentioned or linked: " + ", ".join(refs),
+             "FORM (JSON Schema, one record):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")) + "\n\n" + RULES,
+             "EXAMPLES (one record per type, from other papers):\n" + ex,
+             "KIND (how a value is known):\n" + kinds,
+-            "QUANTITY IDS (id: name). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
++            "QUANTITY IDS (id: name | aliases | canonical unit | note). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
+             "must be one of them (cause/effect may also be a mechanism id):\n" + qids,
+             "MECHANISM IDS (id: name), for cause/effect:\n" + mids])
+         out.append((1, sec, prompt, response_schema(form, ids), ids))

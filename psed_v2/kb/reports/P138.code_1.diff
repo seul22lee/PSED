@@ -1,0 +1,852 @@
+commit e894f9e194fb971f344d22fc152727b4fcaed7e0
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 23:45:33 2026 -0500
+
+    P138 commit 1: ontology + units from REVIEW section 2
+    
+    units.yaml: keV, MeV (energy); V, kV (voltage); mW (power); nA (current); C/cm2
+    (charge_per_area); amu, Da (mass); m2, cm2 (area); mL (volume); nm-1; s^-1/2
+    (inverse_sqrt_time); ns; µPa s, Pa s (viscosity); cm3/g; mol m-2 s-1 (molar_flux);
+    m-2 s-1 Pa-1 (flux_per_pressure); s m-3 (time_per_volume); "1 Pa-1" on 1/Pa, "1 m-2"
+    on m-2; "x" and "×" on 1 (already). ontology.yaml: pore_density, tortuosity,
+    pore_volume (quantities, so also cause/effect ids), model_reactant (species, was
+    pending), porous_sphere / porous_slab / porous_cylinder (structures, class
+    porous_body). "gap height" stays out (it collides with held-out gre23's
+    other[gap height], check P78; P136). Header hash 56f5301b.
+    export.py --check passes. Gold check.py: exit 1, one new problem: P55 sentence-only
+    mat22:s5.p13#1 "1 cm2" only in prose (cm2 now a unit); reported, not worked around
+    (R3). Counts: 292 -> 348 unit spellings, 33 -> 43 dimensions.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/pilot/vocab.py b/psed_v2/kb/pilot/vocab.py
+index e2d8132..af1e6d9 100644
+--- a/psed_v2/kb/pilot/vocab.py
++++ b/psed_v2/kb/pilot/vocab.py
+@@ -5,7 +5,10 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  '(-)': ('dimensionless', 1.0),
+  '-': ('dimensionless', 1.0),
+  '1': ('dimensionless', 1.0),
++ '1 Pa-1': ('inverse_pressure', 1.0),
++ '1 m-2': ('areal_density', 1e-18),
+  '1 s-1': ('inverse_time', 1.0),
++ '1/(m2 s Pa)': ('flux_per_pressure', 1.0),
+  '1/Pa': ('inverse_pressure', 1.0),
+  '1/cm': ('wavenumber', 1.0),
+  '1/cm2': ('areal_density', 1e-14),
+@@ -17,8 +20,10 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  '1/m^3': ('number_density', 1.0),
+  '1/mbar': ('inverse_pressure', 0.01),
+  '1/mol': ('inverse_amount', 1.0),
++ '1/nm': ('inverse_length', 1000000000.0),
+  '1/nm2': ('areal_density', 1.0),
+  '1/s': ('inverse_time', 1.0),
++ '1/sqrt(s)': ('inverse_sqrt_time', 1.0),
+  'A': ('length', 0.09999999999999999),
+  'A/cycle': ('length_per_cycle', 0.09999999999999999),
+  'AB cycle': ('count', 1.0),
+@@ -27,6 +32,11 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'ALD cycles': ('count', 1.0),
+  'Angstrom': ('length', 0.09999999999999999),
+  'Angstrom/cycle': ('length_per_cycle', 0.09999999999999999),
++ 'C cm-2': ('charge_per_area', 1.0),
++ 'C cm^-2': ('charge_per_area', 1.0),
++ 'C/cm2': ('charge_per_area', 1.0),
++ 'C/cm^2': ('charge_per_area', 1.0),
++ 'Da': ('mass', 1.6605390666e-24),
+  'J K-1': ('energy_per_temperature', 1.0),
+  'J K^-1': ('energy_per_temperature', 1.0),
+  'J K⁻¹': ('energy_per_temperature', 1.0),
+@@ -34,6 +44,7 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'K': ('temperature', 1.0),
+  'L': ('exposure', 0.000133322),
+  'Langmuir': ('exposure', 0.000133322),
++ 'MeV': ('energy', 1000000.0000000001),
+  'Ohm cm': ('resistivity', 0.01),
+  'Ohm m': ('resistivity', 1.0),
+  'Ohm/sq': ('resistance', 1.0),
+@@ -54,6 +65,7 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'Torr-s': ('exposure', 133.322),
+  'Torr/s': ('pressure_per_time', 133.322),
+  'Torr·s': ('exposure', 133.322),
++ 'V': ('voltage', 1.0),
+  'W': ('power', 1.0),
+  '\\circ C': ('temperature', 1.0),
+  '\\mu m': ('length', 999.9999999999999),
+@@ -62,6 +74,7 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  '\\muΩcm': ('resistivity', 1e-08),
+  '^\\circ C': ('temperature', 1.0),
+  'a.u.': ('dimensionless', 1.0),
++ 'amu': ('mass', 1.6605390666e-24),
+  'angstrom': ('length', 0.09999999999999999),
+  'arb. units': ('dimensionless', 1.0),
+  'arb.units': ('dimensionless', 1.0),
+@@ -85,22 +98,29 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'cm-1': ('wavenumber', 1.0),
+  'cm-2': ('areal_density', 1e-14),
+  'cm-3': ('number_density', 1000000.0),
++ 'cm2': ('area', 0.0001),
+  'cm2 V-1 s-1': ('mobility', 0.0001),
+  'cm2 s-1': ('diffusivity', 0.0001),
+  'cm2/(V·s)': ('mobility', 0.0001),
+  'cm2/Vs': ('mobility', 0.0001),
+  'cm2/s': ('diffusivity', 0.0001),
++ 'cm3 g-1': ('volume_per_mass', 1e-06),
++ 'cm3/g': ('volume_per_mass', 1e-06),
+  'cm^-1': ('wavenumber', 1.0),
+  'cm^-2': ('areal_density', 1e-14),
+  'cm^-3': ('number_density', 1000000.0),
++ 'cm^2': ('area', 0.0001),
+  'cm^2/s': ('diffusivity', 0.0001),
++ 'cm^3/g': ('volume_per_mass', 1e-06),
+  'cm^{-1}': ('wavenumber', 1.0),
+  'cm^{-2}': ('areal_density', 1e-14),
+  'cm^{-3}': ('number_density', 1000000.0),
++ 'cm²': ('area', 0.0001),
+  'cm² V⁻¹ s⁻¹': ('mobility', 0.0001),
+  'cm² s⁻¹': ('diffusivity', 0.0001),
+  'cm²/Vs': ('mobility', 0.0001),
+  'cm²/s': ('diffusivity', 0.0001),
++ 'cm³/g': ('volume_per_mass', 1e-06),
+  'cm⁻²': ('areal_density', 1e-14),
+  'cm⁻³': ('number_density', 1000000.0),
+  'cm⁻¹': ('wavenumber', 1.0),
+@@ -139,6 +159,8 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'hours': ('time', 3600.0),
+  'hr': ('time', 3600.0),
+  'hrs': ('time', 3600.0),
++ 'kV': ('voltage', 1000.0),
++ 'keV': ('energy', 1000.0),
+  'kelvin': ('temperature', 1.0),
+  'kg': ('mass', 1000.0),
+  'kg m-3': ('density', 0.001),
+@@ -151,12 +173,15 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'kg/mol': ('molar_mass', 1000.0),
+  'kg/m³': ('density', 0.001),
+  'kilogram': ('mass', 1000.0),
++ 'kilovolt': ('voltage', 1000.0),
+  'langmuir': ('exposure', 0.000133322),
+  'langmuirs': ('exposure', 0.000133322),
+  'm': ('length', 999999999.9999999),
+  'm-1': ('inverse_length', 1.0),
+  'm-2': ('areal_density', 1e-18),
++ 'm-2 s-1 Pa-1': ('flux_per_pressure', 1.0),
+  'm-3': ('number_density', 1.0),
++ 'm2': ('area', 1.0),
+  'm2 V-1 s-1': ('mobility', 1.0),
+  'm2 g-1': ('area_per_mass', 1.0),
+  'm2 s-1': ('diffusivity', 1.0),
+@@ -166,13 +191,17 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'm2/s': ('diffusivity', 1.0),
+  'm3 g-1': ('volume_per_mass', 1.0),
+  'm3/g': ('volume_per_mass', 1.0),
++ 'mL': ('volume', 1.0),
+  'mOhm cm': ('resistivity', 1e-05),
+  'mTorr': ('pressure', 0.133322),
+  'mTorr min-1': ('pressure_per_time', 0.002222033),
+  'mTorr/min': ('pressure_per_time', 0.002222033),
++ 'mW': ('power', 0.001),
+  'm^-1': ('inverse_length', 1.0),
+  'm^-2': ('areal_density', 1e-18),
++ 'm^-2 s^-1 Pa^-1': ('flux_per_pressure', 1.0),
+  'm^-3': ('number_density', 1.0),
++ 'm^2': ('area', 1.0),
+  'm^2 s^-1': ('diffusivity', 1.0),
+  'm^2/g': ('area_per_mass', 1.0),
+  'm^2/s': ('diffusivity', 1.0),
+@@ -190,22 +219,30 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'micron': ('length', 999.9999999999999),
+  'microns': ('length', 999.9999999999999),
+  'millibar': ('pressure', 100.0),
++ 'milliliter': ('volume', 1.0),
++ 'millilitre': ('volume', 1.0),
+  'millimeter': ('length', 1000000.0),
+  'millimetre': ('length', 1000000.0),
+  'millisecond': ('time', 0.001),
+  'milliseconds': ('time', 0.001),
++ 'milliwatt': ('power', 0.001),
+  'min': ('time', 60.0),
+  'minute': ('time', 60.0),
+  'minutes': ('time', 60.0),
++ 'ml': ('volume', 1.0),
+  'mm': ('length', 1000000.0),
+  'mmol': ('amount', 0.001),
+  'mol': ('amount', 1.0),
++ 'mol m-2 s-1': ('molar_flux', 1.0),
++ 'mol m^-2 s^-1': ('molar_flux', 1.0),
+  'mol-1': ('inverse_amount', 1.0),
++ 'mol/(m2 s)': ('molar_flux', 1.0),
+  'mol^-1': ('inverse_amount', 1.0),
+  'mole': ('amount', 1.0),
+  'mol⁻¹': ('inverse_amount', 1.0),
+  'ms': ('time', 0.001),
+  'mtorr': ('pressure', 0.133322),
++ 'm²': ('area', 1.0),
+  'm² g⁻¹': ('area_per_mass', 1.0),
+  'm² s⁻¹': ('diffusivity', 1.0),
+  'm²/Vs': ('mobility', 1.0),
+@@ -218,22 +255,30 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'm⁻²': ('areal_density', 1e-18),
+  'm⁻³': ('number_density', 1.0),
+  'm⁻¹': ('inverse_length', 1.0),
++ 'nA': ('current', 1.0),
++ 'nanoampere': ('current', 1.0),
+  'nanometer': ('length', 1.0),
+  'nanometers': ('length', 1.0),
+  'nanometre': ('length', 1.0),
++ 'nanosecond': ('time', 1e-09),
++ 'nanoseconds': ('time', 1e-09),
+  'nm': ('length', 1.0),
+  'nm cycle-1': ('length_per_cycle', 1.0),
+  'nm per cycle': ('length_per_cycle', 1.0),
+  'nm per hour': ('length_per_time', 1.0),
++ 'nm-1': ('inverse_length', 1000000000.0),
+  'nm-2': ('areal_density', 1.0),
+  'nm/cyc': ('length_per_cycle', 1.0),
+  'nm/cycle': ('length_per_cycle', 1.0),
+  'nm/h': ('length_per_time', 1.0),
+  'nm/hr': ('length_per_time', 1.0),
+  'nm/s': ('length_per_time', 3599.9999712000003),
++ 'nm^-1': ('inverse_length', 1000000000.0),
+  'nm^-2': ('areal_density', 1.0),
+  'nm^{-2}': ('areal_density', 1.0),
+  'nm⁻²': ('areal_density', 1.0),
++ 'nm⁻¹': ('inverse_length', 1000000000.0),
++ 'ns': ('time', 1e-09),
+  'oC': ('temperature', 1.0),
+  'ohm cm': ('resistivity', 0.01),
+  'ohm m': ('resistivity', 1.0),
+@@ -245,8 +290,14 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'pm': ('length', 0.001),
+  'pm/cycle': ('length_per_cycle', 0.001),
+  's': ('time', 1.0),
++ 's m-3': ('time_per_volume', 1.0),
++ 's m^-3': ('time_per_volume', 1.0),
+  's-1': ('inverse_time', 1.0),
++ 's-1/2': ('inverse_sqrt_time', 1.0),
++ 's/m3': ('time_per_volume', 1.0),
++ 's^(-1/2)': ('inverse_sqrt_time', 1.0),
+  's^-1': ('inverse_time', 1.0),
++ 's^-1/2': ('inverse_sqrt_time', 1.0),
+  'sccm': ('gas_flow', 1.0),
+  'sec': ('time', 1.0),
+  'second': ('time', 1.0),
+@@ -254,8 +305,10 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  's⁻¹': ('inverse_time', 1.0),
+  'torr': ('pressure', 133.322),
+  'uOhm cm': ('resistivity', 1e-08),
++ 'uPa s': ('viscosity', 1e-06),
+  'um': ('length', 999.9999999999999),
+  'umol': ('amount', 1e-06),
++ 'volt': ('voltage', 1.0),
+  'watt': ('power', 1.0),
+  'weight %': ('dimensionless', 0.01),
+  'wt%': ('dimensionless', 0.01),
+@@ -266,6 +319,8 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  '°)': ('angle', 1.0),
+  '°C': ('temperature', 1.0),
+  'µOhm cm': ('resistivity', 1e-08),
++ 'µPa s': ('viscosity', 1e-06),
++ 'µPa·s': ('viscosity', 1e-06),
+  'µm': ('length', 999.9999999999999),
+  'µmol': ('amount', 1e-06),
+  'µmol/cyc': ('amount', 1e-06),
+@@ -288,6 +343,7 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+  'Ωm': ('resistivity', 1.0),
+  'Ω·cm': ('resistivity', 0.01),
+  'Ω·m': ('resistivity', 1.0),
++ 'μPa s': ('viscosity', 1e-06),
+  'μm': ('length', 999.9999999999999),
+  'μmol': ('amount', 1e-06),
+  'μΩcm': ('resistivity', 1e-08),
+@@ -296,13 +352,18 @@ UNIT_BASE = {'': ('dimensionless', 1.0),
+ UNIT_ALIAS = {'': '1',
+  '(-)': '1',
+  '-': '1',
++ '1 Pa-1': '1/Pa',
++ '1 m-2': 'm-2',
+  '1 s-1': '1/s',
++ '1/(m2 s Pa)': 'm-2 s-1 Pa-1',
+  '1/cm': 'cm-1',
+  '1/cm2': 'cm-2',
+  '1/cm^3': '1/cm3',
+  '1/m2': 'm-2',
+  '1/m^3': '1/m3',
++ '1/nm': 'nm-1',
+  '1/nm2': 'nm-2',
++ '1/sqrt(s)': 's^-1/2',
+  'A': 'Å',
+  'A/cycle': 'Å/cycle',
+  'AB cycle': 'cycle',
+@@ -311,6 +372,10 @@ UNIT_ALIAS = {'': '1',
+  'ALD cycles': 'cycle',
+  'Angstrom': 'Å',
+  'Angstrom/cycle': 'Å/cycle',
++ 'C cm-2': 'C/cm2',
++ 'C cm^-2': 'C/cm2',
++ 'C/cm^2': 'C/cm2',
++ 'Da': 'amu',
+  'J K-1': 'J/K',
+  'J K^-1': 'J/K',
+  'J K⁻¹': 'J/K',
+@@ -324,6 +389,7 @@ UNIT_ALIAS = {'': '1',
+  'Pa.s': 'Pa·s',
+  'Pa^-1': '1/Pa',
+  'Pas': 'Pa·s',
++ 'Pa·s': 'Pa s',
+  'Pa⁻¹': '1/Pa',
+  'SCCM': 'sccm',
+  'Torr s': 'Torr·s',
+@@ -357,17 +423,22 @@ UNIT_ALIAS = {'': '1',
+  'cm2 V-1 s-1': 'cm2/(V·s)',
+  'cm2 s-1': 'cm2/s',
+  'cm2/Vs': 'cm2/(V·s)',
++ 'cm3 g-1': 'cm3/g',
+  'cm^-1': 'cm-1',
+  'cm^-2': 'cm-2',
+  'cm^-3': '1/cm3',
++ 'cm^2': 'cm2',
+  'cm^2/s': 'cm2/s',
++ 'cm^3/g': 'cm3/g',
+  'cm^{-1}': 'cm-1',
+  'cm^{-2}': 'cm-2',
+  'cm^{-3}': '1/cm3',
++ 'cm²': 'cm2',
+  'cm² V⁻¹ s⁻¹': 'cm2/(V·s)',
+  'cm² s⁻¹': 'cm2/s',
+  'cm²/Vs': 'cm2/(V·s)',
+  'cm²/s': 'cm2/s',
++ 'cm³/g': 'cm3/g',
+  'cm⁻²': 'cm-2',
+  'cm⁻³': '1/cm3',
+  'cm⁻¹': 'cm-1',
+@@ -408,6 +479,7 @@ UNIT_ALIAS = {'': '1',
+  'kg/m^3': 'kg/m3',
+  'kg/m³': 'kg/m3',
+  'kilogram': 'kg',
++ 'kilovolt': 'kV',
+  'langmuir': 'L',
+  'langmuirs': 'L',
+  'm-1': '1/m',
+@@ -421,7 +493,9 @@ UNIT_ALIAS = {'': '1',
+  'mTorr min-1': 'mTorr/min',
+  'm^-1': '1/m',
+  'm^-2': 'm-2',
++ 'm^-2 s^-1 Pa^-1': 'm-2 s-1 Pa-1',
+  'm^-3': '1/m3',
++ 'm^2': 'm2',
+  'm^2 s^-1': 'm2/s',
+  'm^2/g': 'm2/g',
+  'm^2/s': 'm2/s',
+@@ -437,17 +511,24 @@ UNIT_ALIAS = {'': '1',
+  'micron': 'µm',
+  'microns': 'µm',
+  'millibar': 'mbar',
++ 'milliliter': 'mL',
++ 'millilitre': 'mL',
+  'millimeter': 'mm',
+  'millimetre': 'mm',
+  'millisecond': 'ms',
+  'milliseconds': 'ms',
++ 'milliwatt': 'mW',
+  'minute': 'min',
+  'minutes': 'min',
++ 'ml': 'mL',
++ 'mol m^-2 s^-1': 'mol m-2 s-1',
+  'mol-1': '1/mol',
++ 'mol/(m2 s)': 'mol m-2 s-1',
+  'mol^-1': '1/mol',
+  'mole': 'mol',
+  'mol⁻¹': '1/mol',
+  'mtorr': 'mTorr',
++ 'm²': 'm2',
+  'm² g⁻¹': 'm2/g',
+  'm² s⁻¹': 'm2/s',
+  'm²/Vs': 'm2/(V·s)',
+@@ -459,17 +540,22 @@ UNIT_ALIAS = {'': '1',
+  'm⁻²': 'm-2',
+  'm⁻³': '1/m3',
+  'm⁻¹': '1/m',
++ 'nanoampere': 'nA',
+  'nanometer': 'nm',
+  'nanometers': 'nm',
+  'nanometre': 'nm',
++ 'nanosecond': 'ns',
++ 'nanoseconds': 'ns',
+  'nm cycle-1': 'nm/cycle',
+  'nm per cycle': 'nm/cycle',
+  'nm per hour': 'nm/h',
+  'nm/cyc': 'nm/cycle',
+  'nm/hr': 'nm/h',
++ 'nm^-1': 'nm-1',
+  'nm^-2': 'nm-2',
+  'nm^{-2}': 'nm-2',
+  'nm⁻²': 'nm-2',
++ 'nm⁻¹': 'nm-1',
+  'oC': '°C',
+  'ohm cm': 'Ω·cm',
+  'ohm m': 'Ω·m',
+@@ -478,7 +564,11 @@ UNIT_ALIAS = {'': '1',
+  'percent': '%',
+  'picometer': 'pm',
+  'picometre': 'pm',
++ 's m^-3': 's m-3',
+  's-1': '1/s',
++ 's-1/2': 's^-1/2',
++ 's/m3': 's m-3',
++ 's^(-1/2)': 's^-1/2',
+  's^-1': '1/s',
+  'sec': 's',
+  'second': 's',
+@@ -486,8 +576,10 @@ UNIT_ALIAS = {'': '1',
+  's⁻¹': '1/s',
+  'torr': 'Torr',
+  'uOhm cm': 'µΩ·cm',
++ 'uPa s': 'µPa s',
+  'um': 'µm',
+  'umol': 'µmol',
++ 'volt': 'V',
+  'watt': 'W',
+  'weight %': 'wt%',
+  'wt. %': 'wt%',
+@@ -495,6 +587,7 @@ UNIT_ALIAS = {'': '1',
+  'x': '1',
+  '°)': '°',
+  'µOhm cm': 'µΩ·cm',
++ 'µPa·s': 'µPa s',
+  'µmol/cyc': 'µmol',
+  'µmol/cycle': 'µmol',
+  'µΩ cm': 'µΩ·cm',
+@@ -509,6 +602,7 @@ UNIT_ALIAS = {'': '1',
+  'Ω/□': 'Ω/sq',
+  'Ωcm': 'Ω·cm',
+  'Ωm': 'Ω·m',
++ 'μPa s': 'µPa s',
+  'μm': 'µm',
+  'μmol': 'µmol',
+  'μΩcm': 'µΩ·cm',
+@@ -516,25 +610,31 @@ UNIT_ALIAS = {'': '1',
+ 
+ DIMENSION_OF = {'amount': 'amount',
+  'angle': 'angle',
++ 'area': 'area',
+  'area_per_mass': 'area_per_mass',
+  'areal_density': 'areal_density',
++ 'charge_per_area': 'charge_per_area',
+  'count': 'count',
++ 'current': 'current',
+  'density': 'density',
+  'diffusivity': 'diffusivity',
+  'dimensionless': 'dimensionless',
+  'energy': 'energy',
+  'energy_per_temperature': 'energy_per_temperature',
+  'exposure': 'exposure',
++ 'flux_per_pressure': 'flux_per_pressure',
+  'gas_flow': 'gas_flow',
+  'inverse_amount': 'inverse_amount',
+  'inverse_length': 'inverse_length',
+  'inverse_pressure': 'inverse_pressure',
++ 'inverse_sqrt_time': 'inverse_sqrt_time',
+  'inverse_time': 'inverse_time',
+  'length': 'length',
+  'length_per_cycle': 'length',
+  'length_per_time': 'length_per_time',
+  'mass': 'mass',
+  'mobility': 'mobility',
++ 'molar_flux': 'molar_flux',
+  'molar_mass': 'molar_mass',
+  'number_density': 'number_density',
+  'power': 'power',
+@@ -545,6 +645,10 @@ DIMENSION_OF = {'amount': 'amount',
+  'signal': 'signal',
+  'temperature': 'temperature',
+  'time': 'time',
++ 'time_per_volume': 'time_per_volume',
++ 'viscosity': 'viscosity',
++ 'voltage': 'voltage',
++ 'volume': 'volume',
+  'volume_per_mass': 'volume_per_mass',
+  'wavenumber': 'wavenumber'}
+ 
+@@ -614,6 +718,8 @@ CONCEPTS = ['absorption_coefficient',
+  'plasma_gas_ratio',
+  'plasma_power',
+  'pore_density',
++ 'pore_density',
++ 'pore_volume',
+  'pore_volume',
+  'porosity',
+  'precursor_purity',
+@@ -646,6 +752,7 @@ CONCEPTS = ['absorption_coefficient',
+  'time',
+  'time_to_maximum',
+  'tortuosity',
++ 'tortuosity',
+  'wall_temperature',
+  'wavelength_range']
+ 
+diff --git a/psed_v2/kb/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+index 2c5c1fb..e85f077 100644
+--- a/psed_v2/kb/schema/FORM.md
++++ b/psed_v2/kb/schema/FORM.md
+@@ -1,7 +1,7 @@
+ <!-- GENERATED by psed_v2/ontology/export.py; do not edit -->
+ # Extraction form
+ 
+-Ontology version 1, sha256 `7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
++Ontology version 1, sha256 `56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
+ 
+ Out of scope (P133): a statement-only setting or observation (no quantity, value or qualifiers; only method or mentions) is not a form record.
+ 
+@@ -12,7 +12,7 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | field | allowed values | required when | who fills |
+ |---|---|---|---|
+ | type | enum, 8 values | always | extractor |
+-| quantity | enum, 105 values | required when type setting / observation / derived; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
++| quantity | enum, 108 values | required when type setting / observation / derived; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
+ | label_as_printed | string | required with quantity | extractor |
+ | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
+ | value | number | needs quantity, kind | extractor |
+@@ -28,21 +28,21 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | uncertainty | number | optional | extractor |
+ | uncertainty_kind | enum, 9 values | optional | extractor |
+ | uncertainty_n | integer | optional | extractor |
+-| cause | list of enum, 140 values (cause_effect) | only when type claim; needs relation, effect; required with relation; required with effect | extractor; the compiler joins the list with `;` |
++| cause | list of enum, 143 values (cause_effect) | only when type claim; needs relation, effect; required with relation; required with effect | extractor; the compiler joins the list with `;` |
+ | relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | only when type claim; required with cause; needs cause, effect; required with effect | extractor |
+-| effect | list of enum, 140 values (cause_effect) | only when type claim; required with cause; required with relation; needs cause, relation | extractor; the compiler joins the list with `;` |
++| effect | list of enum, 143 values (cause_effect) | only when type claim; required with cause; required with relation; needs cause, relation | extractor; the compiler joins the list with `;` |
+ | stance | one of `asserted`, `hedged`, `open`, `limitation` | only when type claim | extractor |
+ | note | string, at most 20 words | only when type claim / definition | extractor |
+ | term | string | required when type definition; only when type definition | extractor |
+-| variables | object: symbol -> enum, 104 values (quantity_id) or {'type': 'null'} | only when type definition / model | extractor |
++| variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} | only when type definition / model | extractor |
+ | candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) | required when quantity = `other`; only when quantity = `other` | extractor |
+ | qualifiers.definition | one of `normalized`, `thickness_per_cycle` (definition) | optional | extractor |
+ | qualifiers.step | enum, 8 values | optional | extractor |
+-| qualifiers.species | enum, 37 values (species) | optional | extractor |
+-| qualifiers.gas | enum, 37 values (species) | optional | extractor |
++| qualifiers.species | enum, 38 values (species) | optional | extractor |
++| qualifiers.gas | enum, 38 values (species) | optional | extractor |
+ | qualifiers.element | string matching `^[A-Z][a-z]?$` (element) | optional | extractor |
+ | qualifiers.reference_element | string matching `^[A-Z][a-z]?$` (element) | optional | extractor |
+-| qualifiers.phase | enum, 37 values (species) | optional | extractor |
++| qualifiers.phase | enum, 38 values (species) | optional | extractor |
+ | qualifiers.position | enum, 9 values | optional | extractor |
+ | qualifiers.reference | enum, 8 values | optional | extractor |
+ | qualifiers.level | one of `50%`, `80%`, `front_end`, `front_start`, `maximum` | optional | extractor |
+@@ -58,13 +58,13 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | qualifiers.relative_to | enum, 9 values | optional | extractor |
+ | qualifiers.over | one of `first_100_cycles`, `not_stated`, `run`, `saturation` | optional | extractor |
+ | qualifiers.mode | one of `ex_situ`, `in_situ`, `not_stated` | optional | extractor |
+-| qualifiers.x | enum, 104 values (quantity_id) | optional | extractor |
++| qualifiers.x | enum, 107 values (quantity_id) | optional | extractor |
+ | qualifiers.ratio | number | optional | extractor |
+ | qualifiers.specimen_class | one of `film`, `porous_composite` | optional | extractor |
+ | qualifiers.structure_class | enum, 10 values | optional | extractor |
+ | candidate.definition_quote | string | required with candidate | extractor |
+ | candidate.unit_as_printed | string | required with candidate | extractor |
+-| candidate.dimension | enum, 33 values | required with candidate | extractor |
++| candidate.dimension | enum, 43 values | required with candidate | extractor |
+ | candidate.symbol | string | required with candidate | extractor |
+ | pass0.name_as_printed | string | always | extractor, pass 0 |
+ | pass0.role | one of `specimen`, `run`, `simulation`, `cited_work` | always | extractor, pass 0 |
+diff --git a/psed_v2/kb/schema/form.json b/psed_v2/kb/schema/form.json
+index bfa9a4f..cab335c 100644
+--- a/psed_v2/kb/schema/form.json
++++ b/psed_v2/kb/schema/form.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042",
+  "title": "PSED v2 extraction form: one record",
+- "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
++ "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+@@ -89,6 +89,8 @@
+     "plasma_configuration",
+     "plasma_gas_ratio",
+     "plasma_power",
++    "pore_density",
++    "pore_volume",
+     "porosity",
+     "precursor_purity",
+     "pressure_rate",
+@@ -123,6 +125,7 @@
+     "thickness_nonuniformity",
+     "time",
+     "time_to_maximum",
++    "tortuosity",
+     "wall_temperature",
+     "wavelength_range",
+     "other"
+@@ -516,25 +519,31 @@
+      "enum": [
+       "amount",
+       "angle",
++      "area",
+       "area_per_mass",
+       "areal_density",
++      "charge_per_area",
+       "count",
++      "current",
+       "density",
+       "diffusivity",
+       "dimensionless",
+       "energy",
+       "energy_per_temperature",
+       "exposure",
++      "flux_per_pressure",
+       "gas_flow",
+       "inverse_amount",
+       "inverse_length",
+       "inverse_pressure",
++      "inverse_sqrt_time",
+       "inverse_time",
+       "length",
+       "length_per_cycle",
+       "length_per_time",
+       "mass",
+       "mobility",
++      "molar_flux",
+       "molar_mass",
+       "number_density",
+       "power",
+@@ -545,6 +554,10 @@
+       "signal",
+       "temperature",
+       "time",
++      "time_per_volume",
++      "viscosity",
++      "voltage",
++      "volume",
+       "volume_per_mass",
+       "wavenumber"
+      ]
+@@ -858,6 +871,8 @@
+     "plasma_configuration",
+     "plasma_gas_ratio",
+     "plasma_power",
++    "pore_density",
++    "pore_volume",
+     "porosity",
+     "precursor_purity",
+     "pressure_rate",
+@@ -892,6 +907,7 @@
+     "thickness_nonuniformity",
+     "time",
+     "time_to_maximum",
++    "tortuosity",
+     "wall_temperature",
+     "wavelength_range"
+    ]
+@@ -987,6 +1003,8 @@
+     "plasma_configuration",
+     "plasma_gas_ratio",
+     "plasma_power",
++    "pore_density",
++    "pore_volume",
+     "porosity",
+     "precursor_adsorption",
+     "precursor_purity",
+@@ -1035,6 +1053,7 @@
+     "thiol_groups",
+     "time",
+     "time_to_maximum",
++    "tortuosity",
+     "wall_temperature",
+     "wavelength_range",
+     "xray_reabsorption"
+@@ -1060,6 +1079,7 @@
+     "mo",
+     "mo_ntbu2_nme22",
+     "mocl2o2",
++    "model_reactant",
+     "moo3",
+     "mos2",
+     "n2",
+@@ -1111,6 +1131,9 @@
+     "pillarhall_3",
+     "pillarhall_4",
+     "planar",
++    "porous_cylinder",
++    "porous_slab",
++    "porous_sphere",
+     "si_trench_capped"
+    ]
+   },
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index 3702997..1f0f47a 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form_pass0",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042",
+  "title": "PSED v2 extraction form, pass 0: the things one paper names",
+- "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a).",
++ "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042).",
+  "type": "array",
+  "items": {
+   "type": "object",
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index b446ea3..16d4907 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042
+ version: 1
+ 
+ base_sources:
+@@ -962,6 +962,16 @@ entries:
+     base: {}
+     evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+ 
++  - id: model_reactant
++    type: species
++    origin: extension
++    definition: "A pseudo-species: the generic reactant of a simulation that names no molecule (P138)."
++    kind: molecule
++    formula: ""
++    aliases: [model reactant, reactant A (model)]
++    base: {}
++    evidence: ["hei24 (gold qualifier species=model_reactant, P138)"]
++
+   - id: ticl4
+     type: species
+     origin: extension
+@@ -1344,6 +1354,48 @@ entries:
+     base: {}
+     evidence: [gre23 Table I, gre23 Sec. II A (s8.p1), 'alias ''Final porosity, φ_f (%)'': gre23 tabI.r1c2 (P131b alias audit)']
+ 
++  - id: pore_density
++    type: quantity
++    origin: extension
++    role: condition
++    category: test_structure
++    label: "pore density"
++    name: "pore density"
++    definition: "The number of pores per unit area of a porous membrane's surface."
++    dimension: areal_density
++    unit: "cm-2"
++    aliases: [pore density, pores per cm2]
++    base: {}
++    evidence: ["ela03 s2.p2 (gold, P138)"]
++
++  - id: tortuosity
++    type: quantity
++    origin: extension
++    role: condition
++    category: test_structure
++    label: "tortuosity"
++    name: "tortuosity"
++    definition: "The ratio of the path length through a porous body's pores to the straight distance, a factor on its effective diffusivity."
++    dimension: dimensionless
++    unit: "1"
++    aliases: [tortuosity, τ]
++    base: {}
++    evidence: ["hei24 (gold claim cause, P138)"]
++
++  - id: pore_volume
++    type: quantity
++    origin: extension
++    role: condition
++    category: test_structure
++    label: "pore volume"
++    name: "pore volume"
++    definition: "The volume of the open pores of a porous material per unit mass."
++    dimension: volume_per_mass
++    unit: "cm3/g"
++    aliases: [pore volume, V_p]
++    base: {}
++    evidence: ["hei24 (gold claim cause, P138)"]
++
+   - id: fill_fraction
+     type: quantity
+     origin: extension
+@@ -2066,6 +2118,33 @@ entries:
+     base: {}
+     evidence: ["Werbrouck2021 Fig. 9"]
+ 
++  - id: porous_sphere
++    type: structure
++    origin: extension
++    definition: "A porous body of spherical shape, the reactant entering through its whole surface (a model geometry)."
++    class: porous_body
++    aliases: [porous sphere, sphere]
++    base: {}
++    evidence: ["hei24 (gold structure, P138)"]
++
++  - id: porous_slab
++    type: structure
++    origin: extension
++    definition: "A porous body of slab shape, the reactant entering through its two faces (a model geometry)."
++    class: porous_body
++    aliases: [porous slab, slab]
++    base: {}
++    evidence: ["hei24 (gold structure, P138)"]
++
++  - id: porous_cylinder
++    type: structure
++    origin: extension
++    definition: "A porous body of cylindrical shape, the reactant entering through its curved surface (a model geometry)."
++    class: porous_body
++    aliases: [porous cylinder, cylinder]
++    base: {}
++    evidence: ["hei24 (gold structure, P138)"]
++
+   - id: nanoparticle_compact
+     type: structure
+     origin: extension
+diff --git a/psed_v2/ontology/units.yaml b/psed_v2/ontology/units.yaml
+index 7d2e2ac..fd00c51 100644
+--- a/psed_v2/ontology/units.yaml
++++ b/psed_v2/ontology/units.yaml
+@@ -88,10 +88,10 @@ units:
+   - {symbol: kg/m3, variants: [kg/m3, "kg/m^3", "kg m-3", "kg m^-3", "kg/m³"],    dimension: density, factor: 1.0,   qudt: "L^-3 M"}
+   # areal density
+   - {symbol: nm-2,  variants: [nm-2, "nm^-2", "nm⁻²", "1/nm2", "at/nm2", "at/nm2/cycle", "nm^{-2}"], dimension: areal_density, factor: 1.0e18, qudt: "L^-2"}
+-  - {symbol: m-2,   variants: [m-2, "m^-2", "m⁻²", "1/m2", "m^{-2}"],              dimension: areal_density, factor: 1.0,    qudt: "L^-2"}
++  - {symbol: m-2,   variants: [m-2, "m^-2", "m⁻²", "1/m2", "m^{-2}", "1 m-2"],              dimension: areal_density, factor: 1.0,    qudt: "L^-2"}
+   - {symbol: cm-2,  variants: [cm-2, "cm^-2", "cm⁻²", "1/cm2", "cm^{-2}"],         dimension: areal_density, factor: 1.0e4,  qudt: "L^-2"}
+   # inverse pressure
+-  - {symbol: 1/Pa,  variants: [1/Pa, "Pa-1", "Pa^-1", "Pa⁻¹"],                    dimension: inverse_pressure, factor: 1.0,  qudt: "L M^-1 T^2"}
++  - {symbol: 1/Pa,  variants: [1/Pa, "Pa-1", "Pa^-1", "Pa⁻¹", "1 Pa-1"],                    dimension: inverse_pressure, factor: 1.0,  qudt: "L M^-1 T^2"}
+   - {symbol: 1/mbar, variants: [1/mbar, "mbar-1"],                                dimension: inverse_pressure, factor: 0.01, qudt: "L M^-1 T^2"}
+   # inverse time (P131b: the desorption probability per unit time P_d of yim20, yim22)
+   - {symbol: 1/s,   variants: [1/s, "s-1", "1 s-1", "s^-1", "s⁻¹"],               dimension: inverse_time, factor: 1.0,  qudt: "T^-1"}
+@@ -109,3 +109,24 @@ units:
+   - {symbol: g,     variants: [g, gram, grams],                                    dimension: mass, factor: 1.0e-3, qudt: M}
+   - {symbol: kg,    variants: [kg, kilogram],                                      dimension: mass, factor: 1.0,    qudt: M}
+   - {symbol: mg,    variants: [mg],                                                dimension: mass, factor: 1.0e-6, qudt: M}
++  # P138 (REVIEW section 2): the spellings the dev golds use
++  - {symbol: keV,   variants: [keV],                                               dimension: energy, factor: 1.602176634e-16, qudt: "L^2 M T^-2"}
++  - {symbol: MeV,   variants: [MeV],                                               dimension: energy, factor: 1.602176634e-13, qudt: "L^2 M T^-2"}
++  - {symbol: V,     variants: [V, volt],                                           dimension: voltage, factor: 1.0,    qudt: "L^2 M T^-3 I^-1"}
++  - {symbol: kV,    variants: [kV, kilovolt],                                      dimension: voltage, factor: 1.0e3,  qudt: "L^2 M T^-3 I^-1"}
++  - {symbol: mW,    variants: [mW, milliwatt],                                     dimension: power, factor: 1.0e-3, qudt: "L^2 M T^-3"}
++  - {symbol: nA,    variants: [nA, nanoampere],                                    dimension: current, factor: 1.0e-9, qudt: I}
++  - {symbol: C/cm2, variants: [C/cm2, "C cm-2", "C/cm^2", "C cm^-2"],              dimension: charge_per_area, factor: 1.0e4, qudt: "L^-2 T I"}
++  - {symbol: amu,   variants: [amu, Da],                                           dimension: mass, factor: 1.66053906660e-27, qudt: M}
++  - {symbol: m2,    variants: [m2, "m^2", "m²"],                                   dimension: area, factor: 1.0,    qudt: "L^2"}
++  - {symbol: cm2,   variants: [cm2, "cm^2", "cm²"],                                dimension: area, factor: 1.0e-4, qudt: "L^2"}
++  - {symbol: mL,    variants: [mL, ml, milliliter, millilitre],                    dimension: volume, factor: 1.0e-6, qudt: "L^3"}
++  - {symbol: nm-1,  variants: [nm-1, "nm^-1", "1/nm", "nm⁻¹"],                     dimension: inverse_length, factor: 1.0e9, qudt: "L^-1"}
++  - {symbol: s^-1/2, variants: ["s^-1/2", "s-1/2", "s^(-1/2)", "1/sqrt(s)"],       dimension: inverse_sqrt_time, factor: 1.0, qudt: "T^-1/2"}
++  - {symbol: ns,    variants: [ns, nanosecond, nanoseconds],                       dimension: time, factor: 1.0e-9, qudt: T}
++  - {symbol: "µPa s", variants: ["µPa s", "µPa·s", "uPa s", "μPa s"],              dimension: viscosity, factor: 1.0e-6, qudt: "L^-1 M T^-1"}
++  - {symbol: Pa s,  variants: ["Pa s", "Pa·s"],                                    dimension: viscosity, factor: 1.0,    qudt: "L^-1 M T^-1"}
++  - {symbol: cm3/g, variants: [cm3/g, "cm³/g", "cm^3/g", "cm3 g-1"],               dimension: volume_per_mass, factor: 1.0e-3, qudt: "L^3 M^-1"}
++  - {symbol: mol m-2 s-1, variants: ["mol m-2 s-1", "mol/(m2 s)", "mol m^-2 s^-1"], dimension: molar_flux, factor: 1.0, qudt: "L^-2 T^-1 N"}
++  - {symbol: m-2 s-1 Pa-1, variants: ["m-2 s-1 Pa-1", "1/(m2 s Pa)", "m^-2 s^-1 Pa^-1"], dimension: flux_per_pressure, factor: 1.0, qudt: "L^-1 M^-1 T"}
++  - {symbol: s m-3, variants: ["s m-3", "s/m3", "s m^-3"],                         dimension: time_per_volume, factor: 1.0, qudt: "T L^-3"}

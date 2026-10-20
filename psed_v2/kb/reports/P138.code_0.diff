@@ -1,0 +1,50 @@
+commit 9f243f3dc4828d43c4bfd41566066712988fc06a
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 23:35:25 2026 -0500
+
+    P138 commit 0: rules R1-R3 into CLAUDE.md; revert the P136b statement omission (value text / label / term left out to pass the eight-word check)
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index a6b3abb..0405c49 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -82,6 +82,19 @@ psed_v2/
+ - **`PSED_v2_Plan.md` is edited only by the user, outside Claude Code.** Never modify it.
+   Read it for context; commit and push it only when the user asks.
+ 
++### Standing rules R1-R3 (P138)
++
++- R1 folders: pipeline folders only, `corpus/ ingest/ ontology/ kb/`; root docs (`CLAUDE.md`, `HANDOFF.md`, `PSED_v2_Plan.md`) allowed;
++  no new top-level folder, and no new subfolder that a directive does not name.
++- R2 reports: every unit ends with `kb/reports/<unit>.html`, built by `kb/report.py` from CSV/txt/diff files: rows, not counts
++  (every count has its rows beside it), and a fail -> pass table for every check item that changed.
++- R3 checks: a check failure is reported, never worked around; no wording, statement or id change made to satisfy a check;
++  `kb/pilot/check.py` is never edited to make an output pass.
++- No logic keyed on a paper, an element id or a value.
++- Held-out papers yim22, gre23, mat23: never extracted, never read.
++- A unit is done when its report carries the gold row comparison.
++- Models are pinned by name; the cost is stated before any provider call.
++
+ ### Working rules for Claude Code
+ 
+ These rules go into `CLAUDE.md` so that every session starts from them.
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index dbff4a5..52b26e1 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -652,13 +652,6 @@ class Run:
+                     break
+                 optional.pop()
+                 self.count("k", "statement_part_left_out")
+-            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]) and f["value_text"]:   # P136b: last resort, the printed text left out
+-                s = s.replace(f"'{f['value_text']}'", "its value as printed in the element")
+-                self.count("k", "statement_value_text_left_out")
+-            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):      # P136b: then the printed label and term left out
+-                s = s.replace(f" (symbol {f['term']})", " (its symbol as printed)") if f["term"] else s
+-                s = s.replace(name, "a quantity named in the element") if name and f["quantity"] == "other" else s
+-                self.count("k", "statement_label_left_out")
+             if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):
+                 self.count("k", "statement_copies_text")
+             key = " ".join(words(s))

@@ -1,0 +1,42 @@
+commit f3e752bc978551d986fb82be28de1d5b154124b0
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Tue Oct 20 00:09:27 2026 -0500
+
+    P138 commit 5b: compile derived step logs a query.derive error (cycle -> 1) instead of stopping; audit cast fills statement and splits a caveat's quantity list (expressibility, as P135c)
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index 87e9c11..3e3cf33 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -111,8 +111,12 @@ def form_test(g, val, props):
+     if g.get("term") and "term" in props:                                       # P136: the form has term now
+         rec["term"] = g["term"]
+     fills = []
++    if g.get("statement") and "statement" in props:                            # P138: the form has statement now (own words)
++        rec["statement"] = g["statement"]; fills.append("statement=gold statement")
++    if isinstance(rec.get("quantity"), str) and ";" in rec["quantity"]:        # P138: a caveat's several quantities are a list in the form
++        rec["quantity"] = rec["quantity"].split(";"); fills.append("quantity split into a list")
+     if rec.get("quantity") and not rec.get("label_as_printed"):                 # P135c: gold's filing convention, not expressibility
+-        rec["label_as_printed"] = rec["quantity"]; fills.append("label_as_printed=quantity id")
++        rec["label_as_printed"] = ";".join(rec["quantity"]) if isinstance(rec["quantity"], list) else rec["quantity"]; fills.append("label_as_printed=quantity id")
+     if rec.get("quantity") == "other" and "candidate" not in rec:
+         rec["candidate"] = dict(definition_quote=g["statement"], unit_as_printed=g["unit"], dimension="dimensionless", symbol=g["label_as_printed"] or "?")
+         fills.append("candidate=stub")
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index c647451..9219a58 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -533,7 +533,10 @@ class Run:
+         out, errors = [], collections.Counter()
+         for e in T.entities():
+             for did in L.DERIVED:
+-                d = Q.derive(T, e, did)
++                try:
++                    d = Q.derive(T, e, did)
++                except (KeyError, ValueError) as ex:                            # P138: an input query cannot convert (e.g. cycle -> 1): logged
++                    errors[f"derive raised: {ex}"[:60]] += 1; continue
+                 if "error" in d:
+                     errors[re.sub(r" \(.*|;.*", "", d["error"])] += 1; continue
+                 ins = [u[1] for u in d["inputs"]]

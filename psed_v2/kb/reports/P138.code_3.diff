@@ -1,0 +1,33 @@
+commit fc66cd25e9e9276471091510656c87947b6b717d
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 23:48:06 2026 -0500
+
+    P138 commit 3: figures_import.py parse_value — a power of ten needs a caret or a sign
+    
+    kb/figures_import.py:454 parse_value(): the '10^n' branch read '10' plus any digits
+    as an exponent with an optional caret, so '106 pm' was 10^6, '1000' was 10^0 = 1 and
+    '100 Pa^-1' was 10^0. It now takes a caret, or a sign for the flattened '10-3' form.
+    fit_unit() rule c (:429) and condition() (:587) needed no change: with the number read
+    right, 106 pm reads as pm/cycle and converts to 0.106 nm/cycle, 1000 cycles stays
+    1000, Pa^-1 resolves through units.yaml. Known limit, unchanged: '10-20 nm' (a hyphen
+    range) still reads as 1e-20, the same string delatex makes of 10^{-20}.
+    Regenerated figures.json and reports go in the outputs commit.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/figures_import.py b/psed_v2/kb/figures_import.py
+index ecc77b0..937863f 100644
+--- a/psed_v2/kb/figures_import.py
++++ b/psed_v2/kb/figures_import.py
+@@ -457,9 +457,9 @@ def parse_value(text):
+     m = SCI.match(t)
+     if m:
+         return float(m.group(1)) * 10 ** int(m.group(2)), None, m.group(3)
+-    m = re.match(r"^\s*10\s*\^?\s*\{?([-+]?\d+)\}?\s*(.*?)\s*$", t)                     # '10^-3 Torr'
++    m = re.match(r"^\s*10\s*(?:\^\s*\{?([-+]?\d+)\}?|([-+]\d+))\s*(.*?)\s*$", t)       # '10^-3 Torr', '10-3 Torr' (flattened); P138: a caret or a sign, so '106 pm' and '1000' are numbers
+     if m:
+-        return 10 ** int(m.group(1)), None, m.group(2)
++        return 10 ** int(m.group(1) or m.group(2)), None, m.group(3)
+     m = NUM.match(t)
+     if not m or m.group(1) is None:
+         return None

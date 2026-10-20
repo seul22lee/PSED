@@ -1,142 +1,143 @@
-input: 72 lines; pass 0 = line 50; 22 pass-1 lines for 22 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (figures), 16 (tables), 17 (tabI), 18 (tabu1), 19 (fig1), 20 (fig2), 21 (fig3), 22 (fig4), 23 (fig5), 24 (fig6), 25 (fig7), 26 (tabI), 28 (abstract), 29 (s0), 30 (s1), 31 (s2), 32 (s3), 33 (s4), 34 (s5), 35 (s6), 36 (s7), 37 (s8), 38 (s9), 39 (s10), 40 (s11), 41 (fig1), 42 (fig2), 43 (fig3), 44 (fig4), 45 (fig5), 46 (fig6), 47 (fig7), 48 (tabI), 49 (tabu1)
-a: s3.p5: variables_unmapped 'diffusion model' -> 'reaction_diffusion'
-a: s3.p5: variables_unmapped 'reaction_diffusion' -> 'reaction_diffusion'
-a: s3.p5: variables_unmapped 'model' -> 'reaction_diffusion'
-a: eq1: variables_unmapped 'z_A' -> 'other'
-a: eq2: variables_unmapped 'v_A' -> 'other'
-a: eq3: variables_unmapped 'v_A' -> 'other'
-a: eq3: variables_unmapped 'z_A' -> 'other'
-a: eq4: variables_unmapped 'h' -> 'other'
-a: eq5: variables_unmapped 'h' -> 'other'
-a: eq7: variables_unmapped '\\eta' -> 'other'
+input: 95 lines; pass 0 = line 73; 22 pass-1 lines for 22 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (figures), 16 (tables), 17 (tabI), 18 (tabu1), 19 (fig1), 20 (fig2), 21 (fig3), 22 (fig4), 23 (fig5), 24 (fig6), 25 (fig7), 26 (tabI), 28 (abstract), 29 (s0), 30 (s1), 31 (s2), 32 (s3), 33 (s4), 34 (s5), 35 (s6), 36 (s7), 37 (s8), 38 (s9), 39 (s10), 40 (s11), 41 (fig1), 42 (fig2), 43 (fig3), 44 (fig4), 45 (fig5), 46 (fig6), 47 (fig7), 48 (tabI), 49 (tabu1), 51 (abstract), 52 (s0), 53 (s1), 54 (s2), 55 (s3), 56 (s4), 57 (s5), 58 (s6), 59 (s7), 60 (s8), 61 (s9), 62 (s10), 63 (s11), 64 (fig1), 65 (fig2), 66 (fig3), 67 (fig4), 68 (fig5), 69 (fig6), 70 (fig7), 71 (tabI), 72 (tabu1)
+a: abs.g1: variables_unmapped 'propagation' -> 'reaction_diffusion'
 a: eq10: variables_unmapped 'g' -> 'other'
-a: eq10: variables_unmapped 'R' -> ''
-a: eq10: variables_unmapped 'N_0' -> ''
-a: eq13: variables_unmapped 'Q' -> 'other'
-a: eq16: variables_unmapped 'g' -> 'other'
-a: eq19: variables_unmapped 'D' -> 'other'
-a: eq21: variables_unmapped 'N' -> 'other'
-a: eq22: variables_unmapped 'N' -> 'other'
-a: eq23: variables_unmapped 'D' -> 'other'
-a: eq24: variables_unmapped 'D' -> 'other'
-a: eq25: variables_unmapped 'D' -> 'other'
-a: eq26: variables_unmapped 'D' -> 'other'
-a: eq26: variables_unmapped 'Q' -> 'other'
-a: eq27: variables_unmapped 'D' -> 'other'
-a: eq27: variables_unmapped 'Q' -> 'other'
-a: eq28: variables_unmapped 'Q' -> 'other'
-a: eq30: variables_unmapped 'Q' -> 'other'
-a: eq31: variables_unmapped 'Q' -> 'other'
-a: s8.p11: variables_unmapped 'dN' -> ''
-a: s8.p12: variables_unmapped 'dN' -> ''
-a: s8.p12: variables_unmapped 'F' -> ''
-a: s8.p13: variables_unmapped 'v' -> ''
-a: s8.p13: variables_unmapped 'F' -> ''
-a: eq41: variables_unmapped 'F' -> ''
-a: eq41: variables_unmapped 'N_0' -> ''
-a: eq41: variables_unmapped 'R' -> ''
-a: eq42: variables_unmapped 'dx/dt' -> ''
-a: eq42: variables_unmapped 'F' -> ''
-a: eq42: variables_unmapped 'N_0' -> ''
-a: eq42: variables_unmapped 'R' -> ''
-a: eq43: variables_unmapped 'N_0' -> ''
-a: eq43: variables_unmapped 'R' -> ''
-a: s8.p17: variables_unmapped 'C' -> ''
-a: s8.p17: variables_unmapped 'N_0' -> ''
-a: s8.p17: variables_unmapped 'R' -> ''
-a: s8.p18: variables_unmapped 'C' -> ''
-h: specimen 'Al2O3': own deposition yli18:dep:al2o3 (2 runs share an element of introduced_in)
-h: specimen 'TiO2': own deposition yli18:dep:tio2 (2 runs share an element of introduced_in)
-h: tree from pass 0: 2 runs, 2 specimens, 2 simulations; 16 cited works (mention names only, no row); identity rows: none (pass 0 carries no identity; gold 1)
-fallback: simulation activity inferred (3 simulated curves with no simulation from pass 0 for their figure)
-i: definition 'q': merged s6.p6 into s5.p17;s6.p6
-i: definition 'g': merged s6.p8 into s6.p3;s6.p8
-i: merged s8.p22 into s8.p9;s8.p22 (pulse_time 0.1)
-i: definition 'xp': merged fig1.cap into s8.p5;fig1.cap
-i: merged fig2.cap into s8.p3;fig2.cap (feature_width 0.5)
-i: merged fig2.cap into s8.p3;fig2.cap (feature_extent 0.1)
-i: merged fig3.cap into s8.p3;fig2.cap;fig3.cap (feature_width 0.5)
-i: merged fig3.cap into s8.p3;fig2.cap;fig3.cap (feature_extent 0.1)
-i: merged fig3.cap into s8.p3;fig3.cap (partial_pressure 100)
-i: merged fig3.cap into s8.p3;fig3.cap (molar_mass 0.0749)
-i: merged fig3.cap into s8.p3;fig3.cap (molecule_diameter 591)
-i: merged fig3.cap into s8.p3;fig3.cap (molar_mass 0.028)
-i: merged fig3.cap into s8.p3;fig3.cap (molecule_diameter 374)
-i: merged fig3.cap into s8.p3;fig3.cap (partial_pressure 300)
-i: merged fig3.cap into s8.p3;fig3.cap (saturation_density 5e+18)
-i: merged fig3.cap into s8.p3;fig3.cap (deposition_temperature 500)
-i: merged fig3.cap into s8.p3;fig3.cap (adsorption_equilibrium_constant 100)
-i: merged fig3.cap into s8.p3;fig3.cap (initial_sticking_coefficient 0.01)
-i: merged fig5.cap into s8.p3;fig2.cap;fig3.cap;fig5.cap (feature_width 0.5)
-i: merged fig5.cap into s8.p3;fig2.cap;fig3.cap;fig5.cap (feature_extent 0.1)
-i: merged fig5.cap into s8.p3;fig3.cap;fig5.cap (saturation_density 5e+18)
-i: merged fig5.cap into s8.p3;fig3.cap;fig5.cap (deposition_temperature 500)
-i: merged fig5.cap into s8.p3;fig3.cap;fig5.cap (adsorption_equilibrium_constant 100)
-i: merged fig5.cap into s8.p3;fig3.cap;fig5.cap (initial_sticking_coefficient 0.01)
-i: merged fig5.cap into s8.p9;s8.p22;fig5.cap (pulse_time 0.1)
-i: merged fig5.cap into s8.p3;fig5.cap (saturation_growth_per_cycle 106)
-i: merged fig6.cap into s8.p23;fig6.cap (structure pillarhall_3)
-i: merged fig6.cap into s8.p23;fig6.cap (feature_width 0.5)
-i: merged fig7.cap into s9.p2;fig7.cap (material tio2)
-i: merged fig7.cap into s9.p2;fig7.cap (reactant_A ticl4)
-i: merged fig7.cap into s9.p2;fig7.cap (reactant_B h2o)
-i: merged fig7.cap into s9.p2;fig7.cap (feature_width 0.5)
-i: merged fig7.cap into s9.p2;fig7.cap (feature_depth 1)
-i: merged fig7.cap into fig6.cap;fig7.cap (aspect_ratio 2000)
-i: merged tabI.r1c0 into fig6.cap;tabI.r1c0 (material al2o3)
-i: merged tabI.r2c0 into s9.p2;fig7.cap;tabI.r2c0 (material tio2)
-i: merged tabI.r2c1 into s9.p2;tabI.r2c1 (cycle_number 1000)
-i: definition 'c': merged tabu1.r2c0 into s6.p6;tabu1.r2c0
-i: definition 't': merged tabu1.r2c2 into tabu1.r1c2;tabu1.r2c2
-i: definition 'c': merged tabu1.r3c0 into s6.p6;tabu1.r2c0;tabu1.r3c0
-i: definition 'd': merged tabu1.r4c0 into s7.p5;tabu1.r4c0
-i: definition 'da': merged tabu1.r5c0 into s5.p9;tabu1.r5c0
-i: definition 'da': merged tabu1.r6c0 into s5.p9;tabu1.r5c0;tabu1.r6c0
-i: definition 'w': merged tabu1.r6c2 into fig1.cap;tabu1.r6c2
-i: definition 'dkn': merged tabu1.r8c0 into s5.p10;tabu1.r8c0
-i: definition 'xp': merged tabu1.r8c2 into s8.p5;fig1.cap;tabu1.r8c2
-i: definition 'xs': merged tabu1.r9c2 into s7.p3;tabu1.r9c2
-i: definition 'g': merged tabu1.r12c0 into s6.p3;s6.p8;tabu1.r12c0
-i: definition 'gpc': merged tabu1.r13c0 into s9.p4;tabu1.r13c0
-i: definition 'gpcsat': merged tabu1.r14c0 into s9.p3;tabu1.r14c0
-i: definition 'h': merged tabu1.r16c0 into tabu1.r15c0;tabu1.r16c0
-i: definition 'k': merged tabu1.r17c0 into s9.p4;tabu1.r17c0
-i: definition 'l': merged tabu1.r18c0 into fig1.cap;tabu1.r18c0
-i: definition 'pa': merged tabu1.r24c0 into s9.p4;tabu1.r24c0
-i: definition 'pd': merged tabu1.r26c0 into s6.p6;tabu1.r26c0
-i: definition 'q': merged tabu1.r27c0 into s5.p17;s6.p6;tabu1.r27c0
-i: definition 'q': merged tabu1.r28c0 into s5.p17;s6.p6;tabu1.r27c0;tabu1.r28c0
-j: derived over 10 entities: 8 rows; not derived: {'no fact for S': 10, 'no fact for p': 16, 'E: no fact for p': 10, 'no fact for rho': 20, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 10, 'no fact for dn': 10, 'no fact for mg': 20, 'no fact for t': 12, 'no fact for h2': 10, 'no fact for phi': 10, 'no fact for T': 2, 'lam: no fact for T': 2, 'gpc: n: no fact for gpc': 10, 'no fact for d': 2, 'lam: no fact for d': 2, 'lam: no fact for p': 6}
-j: caveats (query.caveats_of): 11, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
-j: claim nodes (query.claim_nodes): 10 nodes for 11 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 1
-step input: {'records': 375}
-step a: {'variables_unmapped (set to null)': 46, 'schema:forbidden': 10, 'schema:required': 2, 'schema:dependentRequired': 37, 'schema:minLength': 1, 'kept': 325}
-step a_fields: {'variables': 4, 'candidate': 7, 'quantity': 1, 'label_as_printed': 35, 'term': 1, 'relation': 2}
-step b: {'model_with_value (kept)': 51, 'kept': 325}
-step c: {'quantity_other (kept)': 58, 'kept': 325}
-step d: {'quote_not_found': 8, 'kept': 317}
-step e: {'kept': 317}
-step f: {'species_resolved': 15, 'kept': 317}
-step h: {'parent: parent_recipe': 13, 'parent: simulation (named)': 12, 'parent: parent_undecided': 99, 'parent: paper': 153, 'parent: run of the named specimen': 2, 'parent: run (named)': 28, 'parent: measurement of the named specimen': 10}
-step 1c: {'setting': 78, 'curve simulated -> model': 23, 'measured curve under the paper (no specimen found)': 4, 'curve read_from_figure -> observation': 6, 'entities (distinct conditions)': 8, 'set without a comparison (fewer than two entities or no varied id)': 2, 'comparison': 1}
-step i: {'definition merged': 23, 'merged': 34, 'duplicate dropped': 27, 'kept': 340}
-step j: {'derived cycle_time': 8}
-step k: {'statement_part_left_out': 12, 'statement_label_left_out': 6}
+a: s7.p14: variables_unmapped 'approximate model' -> 'other'
+a: eq33: variables_unmapped '\\Delta x_p' -> 'other'
+a: eq38: variables_unmapped 'dN' -> 'other'
+a: eq39: variables_unmapped 'dN' -> 'other'
+a: eq39: variables_unmapped 'F' -> 'other'
+a: eq40: variables_unmapped 'v' -> 'other'
+a: eq40: variables_unmapped 'F' -> 'other'
+a: eq41: variables_unmapped 'F' -> 'other'
+a: eq41: variables_unmapped 'N_0' -> 'other'
+a: eq42: variables_unmapped 'dx/dt' -> 'other'
+a: eq42: variables_unmapped 'F' -> 'other'
+a: eq42: variables_unmapped 'N_0' -> 'other'
+a: eq43: variables_unmapped 'N_0' -> 'other'
+a: eq44: variables_unmapped 'C' -> 'other'
+a: eq44: variables_unmapped 'N_0' -> 'other'
+a: eq45: variables_unmapped 'C' -> 'other'
+g: s9.p3: mention_unmatched ['gpc_sat']
+g: s9.p4: mention_unmatched ['gpc']
+g: s9.p4: mention_unmatched ['p_A']
+g: s9.p4: mention_unmatched ['K']
+g: tabu1.r0c1: mention_unmatched ['Aspect ratio']
+g: tabu1.r0c3: mention_unmatched ['Film thickness (m)']
+g: tabu1.r1c1: mention_unmatched ['Number of metal atoms in a molecule']
+g: tabu1.r1c3: mention_unmatched ['Time (s)']
+g: tabu1.r2c1: mention_unmatched ['Lumped sticking coefficient']
+g: tabu1.r2c3: mention_unmatched ['Temperature (K)']
+g: tabu1.r3c3: mention_unmatched ['Length of the reactant pulse (s)']
+g: tabu1.r4c1: mention_unmatched ['Apparent longitudinal diffusion coefficient']
+g: tabu1.r4c3: mention_unmatched ['Velocity of gas front (m/s)']
+g: tabu1.r5c1: mention_unmatched ['Diameter of molecule A (m)']
+g: tabu1.r5c3: mention_unmatched ['Average speed of molecules A (m/s)']
+g: tabu1.r6c1: mention_unmatched ['Gas-phase diffusion coefficient of molecules A']
+g: tabu1.r6c3: mention_unmatched ['Width of the channel (m)']
+g: tabu1.r7c1: mention_unmatched ['Effective diffusion coefficient']
+g: tabu1.r7c3: mention_unmatched ['Distance from the beginning of the channel (m)']
+g: tabu1.r8c1: mention_unmatched ['Knudsen diffusion coefficient']
+g: tabu1.r8c3: mention_unmatched ['Half-thickness penetration depth (m)']
+g: tabu1.r9c1: mention_unmatched ['Gas flow of the reactant']
+g: tabu1.r9c3: mention_unmatched ['Distance where the linear part of the reactant pressure is zero (m)']
+g: tabu1.r10c1: mention_unmatched ['Adsorption rate']
+g: tabu1.r10c3: mention_unmatched ['Length of the linear part of the pressure distribution (m)']
+g: tabu1.r11c1: mention_unmatched ['Desorption rate']
+g: tabu1.r11c3: mention_unmatched ['Collision rate of molecule A (1/s)']
+g: tabu1.r12c1: mention_unmatched ['Net adsorption rate']
+g: tabu1.r12c3: mention_unmatched ['Error in thickness measurement (m)']
+g: tabu1.r13c1: mention_unmatched ['Film growth per cycle (m)']
+g: tabu1.r13c3: mention_unmatched ['Viscosity of gas (Pa s)']
+g: tabu1.r14c1: mention_unmatched ['Saturation growth in cycle (m)']
+g: tabu1.r14c3: mention_unmatched ['Surface coverage']
+g: tabu1.r15c1: mention_unmatched ['Hydraulic diameter of the channel (m)']
+g: tabu1.r15c3: mention_unmatched ['Equilibrium surface coverage in the Langmuir model']
+g: tabu1.r16c1: mention_unmatched ['Height of the channel (m)']
+g: tabu1.r16c3: mention_unmatched ['Density of the condensed phase']
+g: tabu1.r17c1: mention_unmatched ['Adsorption equilibrium constant (1/Pa)']
+g: tabu1.r17c3: mention_unmatched ['Time constant of adsorption']
+g: tabu1.r18c1: mention_unmatched ['Length of the channel (m)']
+g: tabu1.r19c1: mention_unmatched ['Molar mass of the deposited film']
+g: tabu1.r20c1: mention_unmatched ['Molar mass of reactant A']
+g: tabu1.r21c1: mention_unmatched ['Total number of adsorbed molecules; number of ALD cycles']
+g: tabu1.r22c1: mention_unmatched ['Amount of reactant A']
+g: tabu1.r23c1: mention_unmatched ['Avogadro constant']
+g: tabu1.r24c1: mention_unmatched ['Partial pressure of reactant A (Pa)']
+g: tabu1.r25c1: mention_unmatched ['Input partial pressure of reactant A (Pa)']
+g: tabu1.r26c1: mention_unmatched ['Desorption probability in unit time (1/s)']
+g: tabu1.r27c1: mention_unmatched ['Adsorption density of molecules in saturation']
+g: tabu1.r28c1: mention_unmatched ['Collision rate at unit pressure']
+g: tabu1.r29c1: mention_unmatched ['Gas constant']
+h: tree from pass 0: run 2, simulation 4, specimen 2, series 0, cited_work 16; identity rows: none (pass 0 carries no identity)
+i: merged s8.p23 into s5.p3;s8.p23 (feature_width 0.5)
+i: merged s8.p24 into s8.p23;s8.p24 (cycle_number 500)
+i: merged s9.p2 into s8.p24;s9.p2 (cycle_number 1000)
+i: merged s9.p2 into s8.p21;s9.p2 (reactant_B h2o)
+i: merged s9.p2 into s5.p3;s8.p23;s9.p2 (feature_width 0.5)
+i: merged s9.p2 into s8.p23;s9.p2 (feature_depth 1)
+i: merged fig2.cap into s5.p3;s8.p23;s9.p2;fig2.cap (feature_width 0.5)
+i: merged fig4.cap into s8.p24;s9.p2;fig4.cap (cycle_number 1000)
+i: merged fig4.cap into s8.p24;fig4.cap (pulse_time 0.1)
+i: merged fig4.cap into fig2.cap;fig4.cap (feature_extent 0.1)
+i: merged fig4.cap into s8.p24;fig4.cap (process_pressure 300)
+i: merged fig4.cap into fig2.cap;fig4.cap (deposition_temperature 500)
+i: merged fig4.cap into fig2.cap;fig4.cap (adsorption_equilibrium_constant 100)
+i: merged fig4.cap into fig2.cap;fig4.cap (saturation_growth_per_cycle 106)
+i: merged fig5.cap into fig3.cap;fig5.cap (feature_width 0.5)
+i: merged fig5.cap into fig3.cap;fig5.cap (feature_extent 0.1)
+i: merged fig5.cap into fig3.cap;fig5.cap (molar_mass 0.028)
+i: merged fig5.cap into fig3.cap;fig5.cap (molecule_diameter 374)
+i: merged fig5.cap into fig3.cap;fig5.cap (saturation_density 5e+18)
+i: merged fig5.cap into fig3.cap;fig5.cap (deposition_temperature 500)
+i: merged fig5.cap into fig3.cap;fig5.cap (adsorption_equilibrium_constant 100)
+i: merged fig5.cap into fig3.cap;fig5.cap (initial_sticking_coefficient 0.01)
+i: merged fig5.cap into fig3.cap;fig5.cap (saturation_growth_per_cycle 106)
+i: merged fig6.cap into s8.p23;s8.p24;fig6.cap (cycle_number 500)
+i: merged fig6.cap into s9.p1;fig6.cap (material al2o3)
+i: merged fig6.cap into s8.p21;fig6.cap (reactant_A tma)
+i: merged fig6.cap into s8.p21;s9.p2;fig6.cap (reactant_B h2o)
+i: merged fig6.cap into s5.p3;s8.p23;s9.p2;fig2.cap;fig6.cap (feature_width 0.5)
+i: merged fig6.cap into s8.p23;s9.p2;fig6.cap (feature_depth 1)
+i: merged fig6.cap into s9.p2;fig6.cap (aspect_ratio 2000)
+i: merged fig7.cap into s8.p24;s9.p2;fig4.cap;fig7.cap (cycle_number 1000)
+i: merged fig7.cap into s9.p1;fig7.cap (material tio2)
+i: merged fig7.cap into s5.p3;s8.p23;s9.p2;fig2.cap;fig6.cap;fig7.cap (feature_width 0.5)
+i: merged fig7.cap into s8.p23;s9.p2;fig6.cap;fig7.cap (feature_depth 1)
+i: merged fig7.cap into s8.p23;fig7.cap (aspect_ratio 2000)
+i: merged tabI.r1c0 into s5.p4;tabI.r1c0 (material al2o3)
+i: merged tabI.r2c0 into s5.p4;tabI.r2c0 (material tio2)
+j: derived over 0 entities: 0 rows; not derived: {}
+j: caveats (query.caveats_of): 10, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
+j: claim nodes (query.claim_nodes): 3 nodes for 11 claims; claims without a full triple (query.node_of empty): 8
+j: comparisons from figures.json (1c): 0
+step input: {'records': 401}
+step a: {'variables_unmapped (set to null)': 18, 'schema:required': 9, 'schema:minLength': 1, 'kept': 391}
+step a_fields: {'statement': 9, 'candidate.definition_quote': 1}
+step b: {'model_with_value (kept)': 44, 'kept': 391}
+step c: {'quantity_other (kept)': 78, 'kept': 391}
+step d: {'quote_not_found': 84, 'kept': 307}
+step e: {'kept': 307}
+step f: {'species_resolved': 17, 'kept': 307}
+step g: {'mention_unmatched': 51}
+step h: {'specimen without a run parent (under the recipe)': 2, 'parent: paper (record)': 92, 'parent: simulation (record)': 34, 'parent: run (record)': 20, 'parent: parent_unknown (paper)': 161}
+step m: {'label_as_printed filled with the quantity id': 2, 'links named elements without facts': 7, 'links resolved': 3}
+step 1c: {'curve not in exactly one series (0)': 29}
+step i: {'merged': 37, 'duplicate dropped': 4, 'kept': 266}
+step k: {'statement from the record': 23, 'statement assembled': 243, 'statement_copies_text (reported by check)': 10}
 diff against the gold (type, gold, compiled, matched, precision, recall):
-  model          67  107   59  0.55  0.88
-  setting        63   84   18  0.21  0.29
-  definition     38   95   24  0.25  0.63
-  derived        15   21    7  0.33  0.47
-  claim          13   11    6  0.55  0.46
-  entity         12   10    9  0.90  0.75
-  activity       11   11    6  0.55  0.55
-  caveat          7   11    2  0.18  0.29
-  observation     7    6    2  0.33  0.29
-  cited           5   13    2  0.15  0.40
-  comparison      3    1    1  1.00  0.33
-  paper           1    1    0  0.00  0.00
+  model          67   90   48  0.53  0.72
+  setting        63   54   16  0.30  0.25
+  definition     38   76   25  0.33  0.66
+  derived        15   14    9  0.64  0.60
+  claim          13   11    3  0.27  0.23
+  entity         12    2    2  1.00  0.17
+  activity       11    7    3  0.43  0.27
+  caveat          7   10    2  0.20  0.29
+  observation     7    2    2  1.00  0.29
+  cited           5    9    2  0.22  0.40
+  comparison      3    0    0     -  0.00
   identity        1    0    0     -  0.00
+  paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 5/38
 gold model rows with quantity and value: 15: {'other': 1, 'feature_width': 1, 'feature_extent': 1, 'partial_pressure': 2, 'molar_mass': 2, 'molecule_diameter': 2, 'saturation_density': 1, 'deposition_temperature': 1, 'adsorption_equilibrium_constant': 1, 'initial_sticking_coefficient': 1, 'saturation_growth_per_cycle': 1, 'pulse_time': 1}
-observations: gold 7, compiled 6, matched 2
+observations: gold 7, compiled 2, matched 2

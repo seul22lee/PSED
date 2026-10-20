@@ -1,0 +1,12 @@
+layer,commit,file,what,why / REVIEW rows answered
+0 rules,9f243f3,CLAUDE.md,standing rules R1-R3 and the unit rules,directive section 0
+0 revert,9f243f3,kb/extract/compile.py,P136b statement omission (value text / label / term left out) removed,REVIEW 10 NO CONTENT CHANGE (s8.p14#1 and the six P136b rows); the check now reports them
+1 ontology,e894f9e,ontology/units.yaml,"keV MeV V kV mW nA C/cm2 amu Da m2 cm2 mL nm-1 s^-1/2 ns µPa s Pa s cm3/g mol m-2 s-1 m-2 s-1 Pa-1 s m-3; 1 Pa-1, 1 m-2 variants",REVIEW 2 (every unit row)
+1 ontology,e894f9e,ontology/ontology.yaml,"pore_density, tortuosity, pore_volume, model_reactant, porous_sphere/slab/cylinder; header hash","REVIEW 2 quantity/cause rows; 1c structure ids; gap height left out (gre23 P78 collision)"
+2 form,dd80e02,ontology/export.py -> kb/schema/,"no dependentRequired, no presence allOf; statement, term, parent, links, caveat quantity list; pass0 id, parent, series",REVIEW 3b constraint rows (allOf[0].then 248 gold rows; dependentRequired value_text->kind 73; ...)
+3 figures,fc66cd2,kb/figures_import.py:454,parse_value: 10^n needs a caret or a sign,REVIEW 6a (77 flags -> 3 explained)
+4 prompts,36f5f32,kb/extract/pass1_elements.py,"QUANTITY IDS with name, aliases, unit, note; PASS-0 ITEMS with id/role/parent; RULES parent/links/statement",REVIEW 4c rows marked no
+4 prompts,36f5f32,kb/extract/pass0_paper.py,"id, parent, series; example from art19; thinking MEDIUM",REVIEW 5
+5 compiler,c1f60c6,kb/extract/compile.py,parent/specimen/series heuristics removed; parents from the record; series from pass 0; links; statements; text_key; fills,REVIEW 7 rows marked YES
+5 compiler,c1f60c6,kb/extract/audit.py + score.py,parent column; score.py over any papers,directive section 6
+5b fixes,f3e752b,kb/extract/compile.py + audit.py,derive error logged; audit cast statement and list quantity,found while scoring

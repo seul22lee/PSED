@@ -1,0 +1,678 @@
+commit dd80e0216fe10193307c31f2e9601fb2ea8cd0d6
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 23:46:28 2026 -0500
+
+    P138 commit 2: form — vocabulary and types only
+    
+    form.json: no dependentRequired (quantity->label_as_printed, value*->quantity+kind,
+    uncertainty->value (lost in a P136 comment, gone either way), cause/relation/effect);
+    no allOf presence rules (quantity on setting/observation/derived, claim quantity
+    false, claim fields elsewhere, note, term, variables, candidate required/forbidden).
+    Kept: value_text enums for material/substrate, reactant_A/B, structure. Added:
+    statement (own words, <= 40 words; required when no quantity, value or value_text),
+    term optional, parent (pass-0 id or "paper"), links (element ids), quantity may be an
+    array of quantity ids (caveats). variables stays an object here (the provider gets a
+    list; the compiler maps it). form_pass0.json: id (required), parent (optional: the
+    item's run, simulation or specimen; needed for "the series' parent"), role series.
+    FORM.md: the new conditions described.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+index e85f077..7efcfee 100644
+--- a/psed_v2/kb/schema/FORM.md
++++ b/psed_v2/kb/schema/FORM.md
+@@ -12,30 +12,33 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | field | allowed values | required when | who fills |
+ |---|---|---|---|
+ | type | enum, 8 values | always | extractor |
+-| quantity | enum, 108 values | required when type setting / observation / derived; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
+-| label_as_printed | string | required with quantity | extractor |
++| quantity | enum, 108 values or list of enum, 107 values (quantity_id) | optional | extractor |
++| label_as_printed | string | optional | extractor |
+ | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
+-| value | number | needs quantity, kind | extractor |
+-| value_min | number | needs quantity, kind | extractor |
+-| value_max | number | needs quantity, kind | extractor |
++| value | number | optional | extractor |
++| value_min | number | optional | extractor |
++| value_max | number | optional | extractor |
+ | censor | one of `<`, `<dl`, `>`, `>dl` | optional | extractor |
+ | unit | string | optional | extractor |
+-| value_text | string | forbidden when quantity = `other`; forbidden when quantity = `other`; forbidden when quantity = `other`; needs quantity, kind | extractor |
+-| kind | enum, 9 values | required with value; required with value_min; required with value_max; required with value_text | extractor |
++| value_text | string | enum, 16 values (material) when quantity `material` / `substrate`; enum, 38 values (species) when quantity `reactant_A` / `reactant_B`; enum, 12 values (structure) when quantity `structure` | extractor |
++| kind | enum, 9 values | optional | extractor |
+ | method | enum, 34 values | optional | extractor |
+ | mentions | list of string | optional | extractor |
+ | quote | string | always | extractor |
+ | uncertainty | number | optional | extractor |
+ | uncertainty_kind | enum, 9 values | optional | extractor |
+ | uncertainty_n | integer | optional | extractor |
+-| cause | list of enum, 143 values (cause_effect) | only when type claim; needs relation, effect; required with relation; required with effect | extractor; the compiler joins the list with `;` |
+-| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | only when type claim; required with cause; needs cause, effect; required with effect | extractor |
+-| effect | list of enum, 143 values (cause_effect) | only when type claim; required with cause; required with relation; needs cause, relation | extractor; the compiler joins the list with `;` |
+-| stance | one of `asserted`, `hedged`, `open`, `limitation` | only when type claim | extractor |
+-| note | string, at most 20 words | only when type claim / definition | extractor |
+-| term | string | required when type definition; only when type definition | extractor |
+-| variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} | only when type definition / model | extractor |
+-| candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) | required when quantity = `other`; only when quantity = `other` | extractor |
++| cause | list of enum, 143 values (cause_effect) | optional | extractor; the compiler joins the list with `;` |
++| relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | optional | extractor |
++| effect | list of enum, 143 values (cause_effect) | optional | extractor; the compiler joins the list with `;` |
++| stance | one of `asserted`, `hedged`, `open`, `limitation` | optional | extractor |
++| note | string, at most 20 words | optional | extractor |
++| term | string | optional | extractor |
++| statement | string, at most 40 words | required when no quantity, value, value_min, value_max, value_text | extractor |
++| parent | string | optional | extractor |
++| links | list of string | optional | extractor |
++| variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} | optional | extractor |
++| candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) | optional | extractor |
+ | qualifiers.definition | one of `normalized`, `thickness_per_cycle` (definition) | optional | extractor |
+ | qualifiers.step | enum, 8 values | optional | extractor |
+ | qualifiers.species | enum, 38 values (species) | optional | extractor |
+@@ -66,8 +69,10 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | candidate.unit_as_printed | string | required with candidate | extractor |
+ | candidate.dimension | enum, 43 values | required with candidate | extractor |
+ | candidate.symbol | string | required with candidate | extractor |
++| pass0.id | string | always | extractor, pass 0 |
++| pass0.parent | string | optional | extractor, pass 0 |
+ | pass0.name_as_printed | string | always | extractor, pass 0 |
+-| pass0.role | one of `specimen`, `run`, `simulation`, `cited_work` | always | extractor, pass 0 |
++| pass0.role | one of `specimen`, `run`, `simulation`, `series`, `cited_work` | always | extractor, pass 0 |
+ | pass0.structure_class | enum, 10 values | optional | extractor, pass 0 |
+ | pass0.specimen_class | one of `film`, `porous_composite` | optional | extractor, pass 0 |
+ | pass0.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` | optional | extractor, pass 0 |
+diff --git a/psed_v2/kb/schema/form.json b/psed_v2/kb/schema/form.json
+index cab335c..7f7271c 100644
+--- a/psed_v2/kb/schema/form.json
++++ b/psed_v2/kb/schema/form.json
+@@ -20,115 +20,126 @@
+    ]
+   },
+   "quantity": {
+-   "enum": [
+-    "absorption_coefficient",
+-    "adsorption_equilibrium_constant",
+-    "annealing_temperature",
+-    "aspect_ratio",
+-    "atoms_per_cycle",
+-    "b_film",
+-    "base_pressure",
+-    "binding_energy",
+-    "body_diameter",
+-    "body_thickness",
+-    "carrier_density",
+-    "carrier_gas",
+-    "coated_aspect_ratio",
+-    "coating_mass_fraction",
+-    "crystallinity",
+-    "crystallite_size",
+-    "cycle_number",
+-    "cycle_time",
+-    "delivery_method",
+-    "density_relative_to_bulk",
+-    "deposited_moles_per_cycle",
+-    "deposition_rate",
+-    "deposition_temperature",
+-    "diffraction_angle",
+-    "dimensionless_distance",
+-    "distance",
+-    "effective_diffusion_coefficient",
+-    "element_fraction",
+-    "element_ratio",
+-    "entry_sides",
+-    "equivalent_aspect_ratio",
+-    "exposure",
+-    "feature_depth",
+-    "feature_extent",
+-    "feature_width",
+-    "fill_fraction",
+-    "film_density",
+-    "film_thickness",
+-    "fit_r2",
+-    "front_slope",
+-    "gas_flow_rate",
+-    "gas_moles_per_cycle",
+-    "gas_phase_diffusion_coefficient",
+-    "growth_per_cycle",
+-    "initial_sticking_coefficient",
+-    "knudsen_diffusion_coefficient",
+-    "knudsen_number",
+-    "mass_gain",
+-    "material",
+-    "mean_free_path",
+-    "mobility",
+-    "molar_mass",
+-    "molecule_diameter",
+-    "moles_deposited",
+-    "moles_from_mass_gain",
+-    "normalized_thickness",
+-    "nucleation_period",
+-    "objective_magnification",
+-    "p_d",
+-    "partial_pressure",
+-    "particle_diameter",
+-    "penetration_depth",
+-    "phase",
+-    "phase_fraction",
+-    "pillar_layout",
+-    "plasma_configuration",
+-    "plasma_gas_ratio",
+-    "plasma_power",
+-    "pore_density",
+-    "pore_volume",
+-    "porosity",
+-    "precursor_purity",
+-    "pressure_rate",
+-    "pressure_rise",
+-    "probe_resolution",
+-    "process_mode",
+-    "process_pressure",
+-    "pulse_time",
+-    "purge_time",
+-    "raman_shift",
+-    "reactant_A",
+-    "reactant_B",
+-    "reactant_number_density",
+-    "reaction_stoichiometry",
+-    "reactor",
+-    "reactor_type",
+-    "recombination_probability",
+-    "refractive_index",
+-    "resistivity",
+-    "roughness",
+-    "saturation_density",
+-    "saturation_growth_per_cycle",
+-    "sheet_resistance",
+-    "shell_volume_fraction",
+-    "signal_intensity",
+-    "source_temperature",
+-    "specific_surface_area",
+-    "step_coverage",
+-    "structure",
+-    "substrate",
+-    "surface_coverage",
+-    "thickness_nonuniformity",
+-    "time",
+-    "time_to_maximum",
+-    "tortuosity",
+-    "wall_temperature",
+-    "wavelength_range",
+-    "other"
++   "anyOf": [
++    {
++     "enum": [
++      "absorption_coefficient",
++      "adsorption_equilibrium_constant",
++      "annealing_temperature",
++      "aspect_ratio",
++      "atoms_per_cycle",
++      "b_film",
++      "base_pressure",
++      "binding_energy",
++      "body_diameter",
++      "body_thickness",
++      "carrier_density",
++      "carrier_gas",
++      "coated_aspect_ratio",
++      "coating_mass_fraction",
++      "crystallinity",
++      "crystallite_size",
++      "cycle_number",
++      "cycle_time",
++      "delivery_method",
++      "density_relative_to_bulk",
++      "deposited_moles_per_cycle",
++      "deposition_rate",
++      "deposition_temperature",
++      "diffraction_angle",
++      "dimensionless_distance",
++      "distance",
++      "effective_diffusion_coefficient",
++      "element_fraction",
++      "element_ratio",
++      "entry_sides",
++      "equivalent_aspect_ratio",
++      "exposure",
++      "feature_depth",
++      "feature_extent",
++      "feature_width",
++      "fill_fraction",
++      "film_density",
++      "film_thickness",
++      "fit_r2",
++      "front_slope",
++      "gas_flow_rate",
++      "gas_moles_per_cycle",
++      "gas_phase_diffusion_coefficient",
++      "growth_per_cycle",
++      "initial_sticking_coefficient",
++      "knudsen_diffusion_coefficient",
++      "knudsen_number",
++      "mass_gain",
++      "material",
++      "mean_free_path",
++      "mobility",
++      "molar_mass",
++      "molecule_diameter",
++      "moles_deposited",
++      "moles_from_mass_gain",
++      "normalized_thickness",
++      "nucleation_period",
++      "objective_magnification",
++      "p_d",
++      "partial_pressure",
++      "particle_diameter",
++      "penetration_depth",
++      "phase",
++      "phase_fraction",
++      "pillar_layout",
++      "plasma_configuration",
++      "plasma_gas_ratio",
++      "plasma_power",
++      "pore_density",
++      "pore_volume",
++      "porosity",
++      "precursor_purity",
++      "pressure_rate",
++      "pressure_rise",
++      "probe_resolution",
++      "process_mode",
++      "process_pressure",
++      "pulse_time",
++      "purge_time",
++      "raman_shift",
++      "reactant_A",
++      "reactant_B",
++      "reactant_number_density",
++      "reaction_stoichiometry",
++      "reactor",
++      "reactor_type",
++      "recombination_probability",
++      "refractive_index",
++      "resistivity",
++      "roughness",
++      "saturation_density",
++      "saturation_growth_per_cycle",
++      "sheet_resistance",
++      "shell_volume_fraction",
++      "signal_intensity",
++      "source_temperature",
++      "specific_surface_area",
++      "step_coverage",
++      "structure",
++      "substrate",
++      "surface_coverage",
++      "thickness_nonuniformity",
++      "time",
++      "time_to_maximum",
++      "tortuosity",
++      "wall_temperature",
++      "wavelength_range",
++      "other"
++     ]
++    },
++    {
++     "type": "array",
++     "minItems": 1,
++     "items": {
++      "$ref": "#/$defs/quantity_id"
++     }
++    }
+    ]
+   },
+   "label_as_printed": {
+@@ -481,6 +492,22 @@
+    "type": "string",
+    "minLength": 1
+   },
++  "statement": {
++   "type": "string",
++   "pattern": "^\\S+(\\s+\\S+){0,39}$"
++  },
++  "parent": {
++   "type": "string",
++   "minLength": 1
++  },
++  "links": {
++   "type": "array",
++   "minItems": 1,
++   "items": {
++    "type": "string",
++    "minLength": 1
++   }
++  },
+   "variables": {
+    "type": "object",
+    "minProperties": 1,
+@@ -572,146 +599,43 @@
+   "type",
+   "quote"
+  ],
+- "dependentRequired": {
+-  "quantity": [
+-   "label_as_printed"
+-  ],
+-  "value": [
+-   "quantity",
+-   "kind"
+-  ],
+-  "value_min": [
+-   "quantity",
+-   "kind"
+-  ],
+-  "value_max": [
+-   "quantity",
+-   "kind"
+-  ],
+-  "value_text": [
+-   "quantity",
+-   "kind"
+-  ],
+-  "cause": [
+-   "relation",
+-   "effect"
+-  ],
+-  "relation": [
+-   "cause",
+-   "effect"
+-  ],
+-  "effect": [
+-   "cause",
+-   "relation"
+-  ]
+- },
+  "allOf": [
+   {
+    "if": {
+-    "properties": {
+-     "type": {
+-      "enum": [
+-       "setting",
+-       "observation",
+-       "derived"
+-      ]
+-     }
+-    },
+-    "required": [
+-     "type"
+-    ]
+-   },
+-   "then": {
+-    "required": [
+-     "quantity"
+-    ]
+-   }
+-  },
+-  {
+-   "if": {
+-    "properties": {
+-     "type": {
+-      "const": "claim"
+-     }
+-    },
+-    "required": [
+-     "type"
+-    ]
+-   },
+-   "then": {
+-    "properties": {
+-     "quantity": false
+-    }
+-   },
+-   "else": {
+-    "properties": {
+-     "cause": false,
+-     "relation": false,
+-     "effect": false,
+-     "stance": false
+-    }
+-   }
+-  },
+-  {
+-   "if": {
+-    "properties": {
+-     "type": {
+-      "enum": [
+-       "claim",
+-       "definition"
+-      ]
+-     }
+-    },
+-    "required": [
+-     "type"
+-    ]
+-   },
+-   "else": {
+-    "properties": {
+-     "note": false
++    "not": {
++     "anyOf": [
++      {
++       "required": [
++        "quantity"
++       ]
++      },
++      {
++       "required": [
++        "value"
++       ]
++      },
++      {
++       "required": [
++        "value_min"
++       ]
++      },
++      {
++       "required": [
++        "value_max"
++       ]
++      },
++      {
++       "required": [
++        "value_text"
++       ]
++      }
++     ]
+     }
+-   }
+-  },
+-  {
+-   "if": {
+-    "properties": {
+-     "type": {
+-      "const": "definition"
+-     }
+-    },
+-    "required": [
+-     "type"
+-    ]
+    },
+    "then": {
+     "required": [
+-     "term"
++     "statement"
+     ]
+-   },
+-   "else": {
+-    "properties": {
+-     "term": false
+-    }
+-   }
+-  },
+-  {
+-   "if": {
+-    "properties": {
+-     "type": {
+-      "enum": [
+-       "definition",
+-       "model"
+-      ]
+-     }
+-    },
+-    "required": [
+-     "type"
+-    ]
+-   },
+-   "else": {
+-    "properties": {
+-     "variables": false
+-    }
+    }
+   },
+   {
+@@ -776,28 +700,6 @@
+      }
+     }
+    }
+-  },
+-  {
+-   "if": {
+-    "properties": {
+-     "quantity": {
+-      "const": "other"
+-     }
+-    },
+-    "required": [
+-     "quantity"
+-    ]
+-   },
+-   "then": {
+-    "required": [
+-     "candidate"
+-    ]
+-   },
+-   "else": {
+-    "properties": {
+-     "candidate": false
+-    }
+-   }
+   }
+  ],
+  "$defs": {
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index 1f0f47a..557dcd0 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -9,11 +9,20 @@
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
++   "id",
+    "name_as_printed",
+    "role",
+    "introduced_in"
+   ],
+   "properties": {
++   "id": {
++    "type": "string",
++    "minLength": 1
++   },
++   "parent": {
++    "type": "string",
++    "minLength": 1
++   },
+    "name_as_printed": {
+     "type": "string",
+     "minLength": 1
+@@ -23,6 +32,7 @@
+      "specimen",
+      "run",
+      "simulation",
++     "series",
+      "cited_work"
+     ]
+    },
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 924fc02..5c5a3d8 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -195,9 +195,9 @@ JOINED = ["cause", "effect"]
+ CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
+ COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
+ FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
+-NOTE_WORDS = 20
++NOTE_WORDS, STATEMENT_WORDS = 20, 40
+ PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
+-PASS0_ROLES = ["specimen", "run", "simulation", "cited_work"]
++PASS0_ROLES = ["specimen", "run", "simulation", "series", "cited_work"]   # P138: series = a figure series of runs or specimens differing in one quantity
+ 
+ 
+ def form_field(column):
+@@ -263,7 +263,8 @@ def form_schema(onto, L, F):
+     ids_list = lambda d: {"type": "array", "minItems": 1, "uniqueItems": True, "items": {"$ref": f"#/$defs/{d}"}}   # noqa: E731
+     props = {
+         "type": {"enum": [t for t in L.TYPES if t in FORM_TYPES]},
+-        "quantity": {"enum": defs["quantity_id"]["enum"] + ["other"]},
++        "quantity": {"anyOf": [{"enum": defs["quantity_id"]["enum"] + ["other"]},                     # P138: a caveat may name several
++                               {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/quantity_id"}}]},
+         "label_as_printed": s(),
+         "qualifiers": {"type": "object", "additionalProperties": False, "properties": {k: qualifier_schema(q) for k, q in onto["qualifiers"].items()}},
+         "value": {"type": "number"}, "value_min": {"type": "number"}, "value_max": {"type": "number"},
+@@ -277,6 +278,9 @@ def form_schema(onto, L, F):
+         "stance": {"enum": list(L.STANCES)},
+         "note": _words(NOTE_WORDS),
+         "term": s(),                                                            # P136 2c: a definition's symbol or term as printed
++        "statement": _words(STATEMENT_WORDS),                                   # P138: own words, when the record has no quantity or value
++        "parent": s(),                                                          # P138: a pass-0 id or "paper"
++        "links": {"type": "array", "minItems": 1, "items": s()},                # P138: element ids a claim or caveat rests on
+         "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1},
+                       "additionalProperties": {"anyOf": [{"$ref": "#/$defs/quantity_id"}, {"type": "null"}]}},   # P136 2c: null = no entry
+         "candidate": {"type": "object", "additionalProperties": False, "required": ["definition_quote", "unit_as_printed", "dimension", "symbol"],
+@@ -292,18 +296,11 @@ def form_schema(onto, L, F):
+                        f"and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
+         "type": "object", "additionalProperties": False, "properties": props,
+         "required": ["type", "quote"],
+-        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity", "kind"] for f in VALUE_FIELDS},   # P136 2c: kind with any value **{f: ["value"] for f in UNCERTAINTY_FIELDS},
+-                              **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
+-        "allOf": [
+-            {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
+-            {"if": _is("type", "claim"), "then": _none(["quantity"]), "else": _none(CLAIM_FIELDS)},
+-            {"if": _is("type", ["claim", "definition"]), "else": _none(["note"])},
+-            {"if": _is("type", "definition"), "then": {"required": ["term"]}, "else": _none(["term"])},            # P136 2c
+-            {"if": _is("type", ["definition", "model"]), "else": _none(["variables"])},                              # P136 2c
++        "allOf": [                                                              # P138: vocabulary and types only; no companion field required or forbidden
++            {"if": {"not": {"anyOf": [{"required": [f]} for f in ["quantity"] + VALUE_FIELDS]}}, "then": {"required": ["statement"]}},
+             {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/material"}}}},
+             {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/species"}}}},
+             {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": {"$ref": "#/$defs/structure"}}}},
+-            {"if": _is("quantity", "other"), "then": {"required": ["candidate"]}, "else": _none(["candidate"])},
+         ],
+         "$defs": defs,
+     }
+@@ -318,8 +315,10 @@ def pass0_schema(onto, L):
+         "title": "PSED v2 extraction form, pass 0: the things one paper names",
+         "description": f"One paper = a list of the specimens, runs, simulations and cited works it names (ontology version {onto['version']}, sha256 {h}).",
+         "type": "array",
+-        "items": {"type": "object", "additionalProperties": False, "required": ["name_as_printed", "role", "introduced_in"],
+-                  "properties": {"name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
++        "items": {"type": "object", "additionalProperties": False, "required": ["id", "name_as_printed", "role", "introduced_in"],
++                  "properties": {"id": {"type": "string", "minLength": 1},                                   # P138: short, unique in the paper
++                                 "parent": {"type": "string", "minLength": 1},                               # P138: the item's run, simulation or specimen id
++                                 "name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
+                                  "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
+                                  "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
+                                  "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
+@@ -361,15 +360,17 @@ def form_md(form, pass0, onto, F):
+     for f in form["required"]:
+         req[f].append("always")
+     for r in form["allOf"]:
+-        cond = "type " + " / ".join(r["if"]["properties"]["type"].get("enum", [r["if"]["properties"]["type"].get("const")])) if "type" in r["if"]["properties"] \
+-            else "quantity = `other`"
++        props = r["if"].get("properties", {})
++        key = next(iter(props), "")
++        cond = ("no " + ", ".join(x["required"][0] for x in r["if"]["not"]["anyOf"])) if "not" in r["if"] \
++            else f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")]))       # P138
+         for f in r.get("then", {}).get("required", []):
+             req[f].append(f"required when {cond}")
+         for f, v in r.get("then", {}).get("properties", {}).items():
+-            req[f].append(f"forbidden when {cond}")
++            req[f].append(f"forbidden when {cond}" if v is False else f"{_allowed(v)} when {cond}")
+         for f, v in r.get("else", {}).get("properties", {}).items():
+             req[f].append(f"only when {cond}")
+-    for f, deps in form["dependentRequired"].items():
++    for f, deps in form.get("dependentRequired", {}).items():
+         req[f].append("needs " + ", ".join(deps))
+         for d in deps:
+             req[d].append(f"required with {f}")
