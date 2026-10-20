@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import lists as L  # noqa: E402
 import query as Q  # noqa: E402

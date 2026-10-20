@@ -18,7 +18,7 @@ import collections, csv, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23",
           "10.1021_cm0303080": "ela03", "10.1002_cvde.200390005": "gor03", "10.1063_1.5028178": "yli18",
           "10.1116_1.4903941": "gao15", "10.1021_acs.jpcc.9b08176": "art19",

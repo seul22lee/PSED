@@ -41,7 +41,7 @@ class Tree:
         one derived row per P86 scalar (kind computed_by_kb, inputs = its curve), one observation row per cell or peak (basis printed),
         under their set or under the node <key>:figures when the panel formed no set. The inventory records are kept in self.inventory
         (the map and search read them); they are no rows."""
-        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        p = HERE.parent / f"{pid}.figures.json"
         if not p.exists():
             return
         F = json.loads(p.read_text(encoding="utf-8"))

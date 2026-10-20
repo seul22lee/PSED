@@ -14,7 +14,7 @@ that cases.py shows in Case 8 (cases.py loads this file with runpy, which skips 
 import csv, re
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 
 C = """
 II|Al2O3|TMA/H2O||Macro lateral|100|200|9|SE|50* (D)|67|

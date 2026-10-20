@@ -10,7 +10,7 @@ V2 = "/home/ftk3187/github/PSED/psed_v2/"
 man = {r["paper_id"]: r for r in csv.DictReader(open(V2 + "corpus/manifest.csv", encoding="utf-8"))}
 papers = sorted(p for p, r in man.items() if r["in_scope"] == "yes" and r["pdf_status"] == "ok")
 F = collections.defaultdict(list)
-for r in csv.DictReader(open(V2 + "pilot/figures.csv", encoding="utf-8")):
+for r in csv.DictReader(open(V2 + "kb/pilot/figures.csv", encoding="utf-8")):
     F[r["paper_id"]].append(r)
 MEAS = lambda r: "measured" in r["data_kind"] or "cited" in r["data_kind"]
 def figs(pid, test):
@@ -67,7 +67,7 @@ for pid in papers:
         if rx.search(body): where.append("text")
         row[col] = "; ".join(where) if where else "no"
     rows.append(row)
-w = csv.DictWriter(open(V2 + "pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS)
+w = csv.DictWriter(open(V2 + "kb/pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS)
 w.writeheader(); w.writerows(rows)
 miss = {c: sum(1 for r in rows if r[c] == "no") for c in COLS}
 print(len(rows), "papers x", len(COLS), "quantities"); print(sorted(miss.items(), key=lambda x: -x[1]))
@@ -802,7 +802,7 @@ for r in rows:
     r["limiting_step_exposure"] = h.get("limiting_step_exposure", "not read")
     r["usable_for"] = "; ".join(k for k, v in U.items() if r["paper_id"] in v.split())
     r["read_by_hand"] = "yes" if h else "no"
-w = csv.DictWriter(open(V2 + "pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS + ["limiting_step_exposure", "usable_for", "read_by_hand"])
+w = csv.DictWriter(open(V2 + "kb/pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS + ["limiting_step_exposure", "usable_for", "read_by_hand"])
 w.writeheader(); w.writerows(rows)
 miss = {c: sum(1 for r in rows if r[c] == "no") for c in COLS}
 print("after hand pass, missing:", sorted(miss.items(), key=lambda x: -x[1]))

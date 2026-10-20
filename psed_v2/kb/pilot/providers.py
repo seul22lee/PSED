@@ -20,7 +20,7 @@ import json, os, time, uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
-ENV = Path(__file__).resolve().parent.parent / ".env"
+ENV = Path(__file__).resolve().parent.parent.parent / ".env"
 KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY", "xai": "XAI_API_KEY", "deepseek": "DEEPSEEK_API_KEY"}
 BASE_URL = {"xai": "https://api.x.ai/v1", "deepseek": "https://api.deepseek.com"}
 TRIES, BACKOFF = 5, 2.0

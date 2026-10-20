@@ -24,8 +24,8 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-sys.path.insert(0, str(V2 / "pilot"))
-OUT = V2 / "verify" / "d14" / "alias_audit.csv"
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+OUT = V2 / "kb" / "verify" / "d14" / "alias_audit.csv"
 TYPES = ("setting", "observation", "derived")
 
 
@@ -52,7 +52,7 @@ def audit(onto):
     ambiguous = {fold(a) for a in onto["vocabularies"].get("ambiguous_aliases") or {}}
     pend = pending_forms()
     rows = []
-    for p in sorted(glob.glob(str(V2 / "pilot" / "10.*.facts.csv"))):
+    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "10.*.facts.csv"))):
         pid = Path(p).name[:-len(".facts.csv")]
         texts = None
         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
@@ -124,7 +124,7 @@ def apply(rows, onto):
     for e in onto["entries"]:
         for a in names(e):
             owner[a].add(e["id"])
-    free = {r["label_as_printed"] for p in glob.glob(str(V2 / "pilot" / "*.facts.csv")) for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other"}
+    free = {r["label_as_printed"] for p in glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv")) for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other"}
     add, stopped, amb = collections.defaultdict(dict), [], collections.defaultdict(set)
     batch = collections.defaultdict(set)
     for r in rows:

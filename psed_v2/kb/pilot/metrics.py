@@ -57,14 +57,14 @@ def compactness():
         pj = HERE / f"{pid}.points.json"
         if pj.exists():
             chars += sum(len(json.dumps(v.get("points", []))) for v in json.loads(pj.read_text(encoding="utf-8")).values())
-        src = HERE.parent / "ingest" / "final" / pid / "document.md"
+        src = HERE.parent.parent / "ingest" / "final" / pid / "document.md"
         out[k] = dict(kb_tokens=round(chars / 4), source_tokens=round(tokens(src.read_text(encoding="utf-8")) if src.exists() else 0))
     out["user"] = dict(kb_tokens=round(sum(len("|".join(r.values())) for r in rd(HERE / "user.facts.csv")) / 4), source_tokens=0)
     return out
 
 
 def absorption():
-    rows = rd(HERE.parent / "ontology" / "pilot_map.csv")
+    rows = rd(HERE.parent.parent / "ontology" / "pilot_map.csv")
     c = collections.Counter(r["disposition"] for r in rows if r["kind"] == "quantity")
     return dict(c), len([r for r in rows if r["kind"] == "quantity"])
 

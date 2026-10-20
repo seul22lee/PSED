@@ -39,7 +39,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-sys.path.insert(0, str(V2 / "pilot"))
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
 import lists as L  # noqa: E402
 import vocab as V  # noqa: E402
 from elements import PAPERS  # noqa: E402
@@ -112,7 +112,7 @@ def paper_definitions(pid, with_quantity=True):
     """P89: the paper's definition facts that name a quantity (pilot/<pid>.facts.csv): {normalised term: (quantity, note, fact id)}.
     With with_quantity=False, the terms the paper defines WITHOUT an ontology quantity (D, η, P_d ...): {normalised term: fact id}; a
     label that is such a term is the paper's own symbol and resolves to nothing, never to an ontology guess (P89b)."""
-    p = V2 / "pilot" / f"{pid}.facts.csv"
+    p = V2 / "kb" / "pilot" / f"{pid}.facts.csv"
     out = {}
     if p.exists():
         for r in csv.DictReader(p.open(encoding="utf-8")):
@@ -136,7 +136,7 @@ _FACT_ROWS = {}
 def fact_rows(pid):
     """The paper's facts table (pilot/<pid>.facts.csv) as {fact id: row}, read once (P109: the context of a conversion)."""
     if pid not in _FACT_ROWS:
-        p = V2 / "pilot" / f"{pid}.facts.csv"
+        p = V2 / "kb" / "pilot" / f"{pid}.facts.csv"
         _FACT_ROWS[pid] = {r["fact_id"]: r for r in csv.DictReader(p.open(encoding="utf-8"))} if p.exists() else {}
     return _FACT_ROWS[pid]
 

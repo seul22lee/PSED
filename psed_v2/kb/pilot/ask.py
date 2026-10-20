@@ -28,7 +28,7 @@ import argparse, hashlib, concurrent.futures as cf, csv, datetime, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import concept as CN  # noqa: E402
 import dump as DU  # noqa: E402
@@ -285,7 +285,7 @@ def _percent_of(v, half, raw, sent, pool):
 # How an answer may word a kind: the ontology's phrase table and the SHARED prompt's kind words (measured, read from a figure,
 # computed by the authors, computed from other values, assumed, taken from another work), with the wordings a model derives from
 # them; 'computed here' is the wording of runs stored before P57. Measured and stated are one class (lists.UNMARKED, P57).
-KIND_PHRASES = Path(__file__).resolve().parents[1] / "eval" / "kind_phrases.yaml"            # P102: the wording table, calibrated
+KIND_PHRASES = Path(__file__).resolve().parent / "kind_phrases.yaml"            # P102: the wording table, calibrated
 
 
 def stated_kind_table():

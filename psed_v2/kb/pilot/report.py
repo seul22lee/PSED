@@ -21,7 +21,7 @@ import base64, collections, csv, html, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import elements  # noqa: E402
 import lists as L  # noqa: E402

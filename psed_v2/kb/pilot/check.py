@@ -437,14 +437,14 @@ def check_figures_import():
     kb/import_report.csv equal the records on disk; the kinds and bases of the records are in the ontology's tables."""
     import query as Q, yaml
     err = []
-    KB = HERE.parent / "kb"
-    units = yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]
+    KB = HERE.parent
+    units = yaml.safe_load((HERE.parent.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]
     dim = {}
     for u in units:
         dim[u["symbol"]] = u["dimension"]
     report = {r["paper_id"]: r for r in rd(KB / "import_report.csv")}
     panels = rd(KB / "import_panels.csv")
-    unm = rd(HERE.parent / "ontology" / "unmapped.csv")
+    unm = rd(HERE.parent.parent / "ontology" / "unmapped.csv")
     n_curves = n_sets = n_panels = 0
     for k, T in Q.TREES.items():
         pid = Q.KEY[k]
@@ -554,7 +554,7 @@ def check_figure_derived():
                 tol = max(0.1 * abs(sv), 0.02 * rng)
                 if abs(d["value"] - sv) > tol:
                     probs.append(f"P86 {d['id']} ({d['method']}): derived {Q.g(d['value'], 4)} {d['unit']} against stated {f['value']} {f['unit']} [{f['fact_id']}]; tolerance {Q.g(tol, 3)} {d['unit']}")
-    (HERE.parent / "kb" / "problems.txt").write_text("\n".join(probs) + ("\n" if probs else ""), encoding="utf-8")
+    (HERE.parent / "problems.txt").write_text("\n".join(probs) + ("\n" if probs else ""), encoding="utf-8")
     print(f"== figure derived (P86): {n_checked} derived scalars, {n_pairs} stated counterparts found, {len(probs)} outside tolerance (listed in kb/problems.txt, a finding, not a failure)")
     return []
 
@@ -621,7 +621,7 @@ def check_vocabulary():
     only vocabulary ids."""
     import subprocess
     err = []
-    r = subprocess.run([sys.executable, str(HERE.parent / "ontology" / "export.py"), "--check"], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, str(HERE.parent.parent / "ontology" / "export.py"), "--check"], capture_output=True, text=True)
     if r.returncode:
         err.append(r.stdout.strip() or "vocab.py stale")
     used = collections.defaultdict(set)
@@ -1667,7 +1667,7 @@ def unit_dimensions():
     """{unit symbol or variant: dimension} from ontology/units.yaml (P108)."""
     import yaml
     out = {}
-    for u in yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
+    for u in yaml.safe_load((HERE.parent.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
         for v in [u["symbol"]] + list(u["variants"]):
             out.setdefault(str(v), u["dimension"])
     return out
@@ -1721,7 +1721,7 @@ def check_unit_table():
                 if not ok(f["unit"]):
                     err.append(f"{f['fact_id']}: unit {f['unit']!r} is not in the unit table (P122)")
     for pid in KEYS:
-        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        p = HERE.parent / f"{pid}.figures.json"
         if p.exists():
             d = json.loads(p.read_text(encoding="utf-8"))
             for v in d.get("values", []) + d.get("derived", []):
@@ -1762,7 +1762,7 @@ def check_dimensions():
             if m:
                 err.append(f"{f['fact_id']}: {q} in {f['unit']!r}: {m} (P108)")
     for pid in KEYS:
-        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        p = HERE.parent / f"{pid}.figures.json"
         if not p.exists():
             continue
         d = json.loads(p.read_text(encoding="utf-8"))
@@ -2047,7 +2047,7 @@ def check_conversions():
             n_decl += 1
             err += [f"{q}: converts_to {x!r} is no entry (P109)" for x in (ct.get("target"), ct.get("requires")) if x not in L.ENTRIES]
     for pid, k in KEYS.items():
-        p = HERE.parent / "kb" / f"{pid}.figures.json"
+        p = HERE.parent / f"{pid}.figures.json"
         if not p.exists():
             continue
         T = Q.TREES[k]

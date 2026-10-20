@@ -12,7 +12,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-PILOT = V2 / "pilot"
+PILOT = V2 / "kb" / "pilot"
 sys.path.insert(0, str(PILOT))
 from elements import PAPERS  # noqa: E402
 

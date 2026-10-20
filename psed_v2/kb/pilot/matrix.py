@@ -18,7 +18,7 @@ cols = [c for c in rows[0] if c not in ("paper_id", "year")]
 pc = {r["paper_id"]: r for r in csv.DictReader((HERE / "paper_case.csv").open(encoding="utf-8"))}
 src = (HERE / "paper_case.py").read_text(encoding="utf-8")
 CASES = eval(src[src.index("COLS = [") + len("COLS = "):src.index("]\n\n\ndef figlab") + 1])     # the column list only, no run
-man = {r["paper_id"]: r for r in csv.DictReader((HERE.parent / "corpus/manifest.csv").open(encoding="utf-8"))}
+man = {r["paper_id"]: r for r in csv.DictReader((HERE.parent.parent / "corpus/manifest.csv").open(encoding="utf-8"))}
 for r in rows:
     m = man.get(r["paper_id"], {})
     r["_title"] = m.get("title", "")

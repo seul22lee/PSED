@@ -16,8 +16,8 @@ import os
 import sys
 from pathlib import Path
 
-V2 = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(V2 / "pilot"))
+V2 = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
 sys.path.insert(0, str(V2 / "ingest"))
 sys.path.insert(0, str(V2 / "ontology"))
 import elements as E  # noqa: E402
@@ -28,7 +28,7 @@ MODEL = "gemini-3.8-flash"                                                      
 KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
 HELD_OUT = {"yim22", "gre23", "mat23"}
 HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
-CACHE, RECORDS, SCHEMA = V2 / "cache", V2 / "records", V2 / "schema"
+CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"
 PROVIDER_DROP = {"additionalProperties", "pattern", "uniqueItems", "propertyNames", "minProperties", "dependentRequired", "allOf", "if", "then",
                  "else", "$schema", "$id", "$comment"}   # validation the compiler does against the full form.json (P134)
 

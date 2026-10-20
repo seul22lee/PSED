@@ -13,7 +13,7 @@ import csv, importlib.util, json, re
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V2 = HERE.parent
+V2 = HERE.parent.parent
 rd = lambda p: list(csv.DictReader((HERE / p).open(newline="", encoding="utf-8")))
 MAN = {r["paper_id"]: r for r in csv.DictReader((V2 / "corpus/manifest.csv").open(newline="", encoding="utf-8"))}
 PAPERS = sorted(p for p, r in MAN.items() if r["in_scope"] == "yes" and r["pdf_status"] == "ok")

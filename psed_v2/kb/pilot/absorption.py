@@ -17,7 +17,7 @@ sys.path.insert(0, str(HERE))
 import lists as L  # noqa: E402
 import vocab as V  # noqa: E402
 
-OUT = HERE.parent / "ontology" / "absorption.csv"
+OUT = HERE.parent.parent / "ontology" / "absorption.csv"
 COLS = ["paper", "records", "direct", "alias", "qualifier", "new_pending", "attribute", "dropped", "unmapped"]
 
 

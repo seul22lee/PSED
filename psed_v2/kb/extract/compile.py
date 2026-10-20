@@ -24,7 +24,7 @@ import facts as F  # noqa: E402  (pilot/, on the path through common)
 import lists as L  # noqa: E402
 import vocab as V  # noqa: E402
 
-OUT = C.V2 / "compiled"
+OUT = C.V2 / "kb" / "compiled"
 SPECIES_Q = {"material": L.MATERIALS, "substrate": L.MATERIALS, "reactant_A": list(L.SPECIES), "reactant_B": list(L.SPECIES), "structure": L.STRUCTURES}
 VALUE_KEYS = ("value", "value_min", "value_max", "value_text")
 DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "unit", "qualifiers", "value_text")
@@ -605,7 +605,7 @@ def write_csv(path, fields, rows):
 def diff(run):
     """Gold pilot/<pid>.facts.csv against the compiled rows: a match shares an evidence element and has equal type, quantity, value,
     unit (canonical spelling) and value_text; one gold row per compiled row, first come."""
-    gold = list(csv.DictReader((C.V2 / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
     comp = run.rows
     u = lambda x: V.UNIT_ALIAS.get(x, x)
     key = lambda f: (f["type"], f["quantity"], F.num(f["value"]) if f["value"] else None, u(f["unit"]), f["value_text"].lower())

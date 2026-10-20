@@ -47,7 +47,7 @@ def naming(rows):
     ids = {r["id"] for r in rows}
     by_label = {a: r["id"] for r in rows if r.get("label") and r["id"] in FREE for a in [r["label"]] + (r.get("aliases") or "").split("|") if a}
     use = collections.defaultdict(lambda: collections.defaultdict(list))
-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
+    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
             k = r["fact_id"].split(":")[0]
             els = [e for e in r["evidence"].split(";") if e]
@@ -88,7 +88,7 @@ def experimental():
     """{id: {paper}}: the pending species and structures set on an experimental run, and the methods of any observation."""
     ids = {r["id"]: r["kind"] for r in csv.DictReader((HERE / "pending.csv").open(newline="", encoding="utf-8"))}
     out = collections.defaultdict(set)
-    for r in csv.DictReader((V2 / "pilot" / "experiments.csv").open(newline="", encoding="utf-8")):
+    for r in csv.DictReader((V2 / "kb" / "pilot" / "experiments.csv").open(newline="", encoding="utf-8")):
         if r["run"].split(":")[1] != EXPERIMENT_RUN:
             continue
         for col, v in r.items():
@@ -96,7 +96,7 @@ def experimental():
                 for tok in (col + " " + v).replace("[", " ").replace("]", " ").replace(";", " ").replace("=", " ").replace(",", " ").split():
                     if ids.get(tok) in ("species", "structure"):
                         out[tok].add(r["paper"])
-    for p in glob.glob(str(V2 / "pilot" / "*.facts.csv")):
+    for p in glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv")):
         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
             if r["type"] == "observation" and ids.get(r["method"]) == "method":
                 out[r["method"]].add(r["fact_id"].split(":")[0])
@@ -110,7 +110,7 @@ def candidate(label, rows):
     """P131b: a pending.csv row for the free label other[<label>] (equal up to case), or (None, why) when it cannot be one concept."""
     import export
     recs = []
-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
+    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
         recs += [r for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other" and r["label_as_printed"].lower() == label.lower()]
     if not recs:
         return None, "no other[...] record carries it"

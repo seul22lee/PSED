@@ -19,7 +19,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "ontology"))
+sys.path.insert(0, str(ROOT.parent / "ontology"))
 import export as X  # noqa: E402
 
 OUT = ROOT / "verify" / "d15"

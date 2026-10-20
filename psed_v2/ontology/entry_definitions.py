@@ -15,7 +15,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 V2 = HERE.parent
-sys.path.insert(0, str(V2 / "pilot"))
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
 sys.path.insert(0, str(HERE))
 import elements      # noqa: E402
 from alias_audit import set_field  # noqa: E402
@@ -80,7 +80,7 @@ def main():
                         ev.append(f"quote {key} {el}: {' '.join(sent.split())}")
         plan[eid] = ev
     recs = []                                                                   # base_pressure: the records keyed to it now
-    for p in sorted(glob.glob(str(V2 / "pilot" / "10.*.facts.csv"))):
+    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "10.*.facts.csv"))):
         recs += [r for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "base_pressure"]
     byp = {}
     for r in recs:

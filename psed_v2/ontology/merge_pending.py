@@ -65,7 +65,7 @@ def block(e):
 
 def estimated_evidence():
     out = []
-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
+    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
             if "kind=estimated" in r["qualifiers"].split(";"):
                 out.append(f"{r['fact_id']} ({r['evidence']})")
