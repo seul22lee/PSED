@@ -4,7 +4,9 @@
     python3 psed_v2/kb/report_paper.py <paper key or id> ...      # kb/reports/paper_<pid>.html (gitignored: element text), kb/reports/papers.html
 
 Both trees are loaded by the pilot code (query.Tree: kb/pilot/<pid>.facts.csv and kb/compiled/<pid>.facts.csv), restricted to their
-facts.csv rows. Tree nodes match by evidence overlap (same type), else by label; facts by compile.matches() (the P134 key, canonical
+facts.csv rows. P148: the experiment units (runs, specimens, simulations, model runs) pair by render.pair_units() (gold units vs the
+pass-0 units the compiled tree is built from; one to one, a matched pair first); the other nodes match by evidence overlap (same
+type), else by label; facts by compile.matches() (the P134 key, canonical
 units, D13), one to one; a compiled fact of the same type and quantity on a shared element is a near match ("differs", the fields
 shown). Sections: header, tree with the facts under each node, dropped records that would have matched (kb/compiled/<pid>.audit.csv
 stage T4), elements with gold rows and no record. No model call.
@@ -70,9 +72,30 @@ def differs(g, c):
     return "; ".join(out)
 
 
-def match_nodes(G, Cn):
-    """gold node id -> compiled node id: evidence overlap (same type) first, best first; then equal labels."""
+def unit_pairs(pid, key):
+    """P148: gold unit id -> compiled unit row id, from render.pair_units on the pass-0 units compile.py reads (its input rule); a
+    matched pair first, then the first pass-0 unit of a merged or split component; one to one."""
+    import render
+    run = K.Run(pid)
+    run.read()
+    run.tree()
+    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)])
+    m, used = {}, set()
+    for want in (True, False):
+        for g, ys in pu["pair_of"].items():
+            if g in m or (pu["status_g"][g] == "matched") != want:
+                continue
+            c = next((run.node[y][0] for y in ys if y in run.node and run.node[y][0] not in used), None)
+            if c:
+                m[g] = c; used.add(c)
+    return m
+
+
+def match_nodes(G, Cn, pre=None):
+    """gold node id -> compiled node id: P148 the unit pairs (pre) first; then evidence overlap (same type), best first; then equal
+    labels."""
     pairs = []
+    pre = {g: c for g, c in (pre or {}).items() if any(r["fact_id"] == g for r in G) and any(r["fact_id"] == c for r in Cn)}
     for g in G:
         ge = set(filter(None, g["evidence"].split(";")))
         for c in Cn:
@@ -82,7 +105,7 @@ def match_nodes(G, Cn):
             j = len(ge & ce) / max(len(ge | ce), 1)
             if j > 0:
                 pairs.append((-j, g["fact_id"], c["fact_id"]))
-    m, used = {}, set()
+    m, used = dict(pre), set(pre.values())
     for _, g, c in sorted(pairs):
         if g not in m and c not in used:
             m[g] = c; used.add(c)
@@ -107,7 +130,7 @@ def build(arg):
     Cn = [r for r in comp if r["type"] in NODE and "#" not in r["fact_id"]]
     gf = [r for r in gold if r not in G]
     cf = [r for r in comp if r not in Cn]
-    nm = match_nodes(G, Cn)
+    nm = match_nodes(G, Cn, unit_pairs(pid, key))
     inv = {c: g for g, c in nm.items()}
     CB = {r["fact_id"]: r for r in comp}
     used, fm = set(), {}

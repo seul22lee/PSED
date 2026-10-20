@@ -4,6 +4,11 @@ values per quantity gold vs compiled (query.values on both trees). No provider c
 
     python3 psed_v2/kb/extract/score.py P138 yli18 yim20      # tables to kb/reports/<unit>.<key>.*.csv and kb/reports/<unit>.score.csv
 
+P148: also kb/compiled/score_summary.csv, one row per (paper, section, item): type (gold, compiled, matched, precision, recall per
+record type, compile.diff), check_tree (check.py check_tree errors on the compiled tree, by class: the message with its ids,
+numbers and quoted values masked), drops (dropped.csv by step and reason), about (the pass-1 records by about: a pass-0 unit id,
+"paper", null, unknown), placement (the gold/compiled pairs of compile.diff: the parent's type and kind equal, or the two kinds).
+
 Held-out papers are refused (common.resolve).
 """
 import collections
@@ -22,12 +27,53 @@ def rd(p):
 
 
 def check_dir(pid):
-    """check.py's per-paper check on kb/compiled, every problem (not the printed first 40)."""
+    """check.py's per-paper check on kb/compiled, every problem (not the printed first 40); P148: and the check_tree part of them."""
     code = (f"import sys, json; sys.argv = ['check.py', '--dir', {str(K.OUT)!r}]; sys.path.insert(0, {str(C.V2 / 'kb' / 'pilot')!r}); "
-            f"import check; print(json.dumps(check.check({pid!r})[0]))")
+            f"import check; els = {{r['element_id']: r for r in check.rd(check.HERE / {pid + '.elements.csv'!r})}}; "
+            f"print(json.dumps([check.check({pid!r})[0], check.check_tree(check.rd(check.DIR / {pid + '.facts.csv'!r}), els)]))")
     out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
     import json
     return json.loads(out.stdout.strip().splitlines()[-1])
+
+
+def err_class(e):
+    """P148: a check message as its class: the leading row id dropped; ids, numbers and quoted values masked."""
+    import re
+    t = re.sub(r"^\S+: ", "", e)
+    t = re.sub(r"'[^']*'|\"[^\"]*\"", "'·'", t)
+    return re.sub(r"\b[\w.:#-]*\d[\w.:#-]*\b|\b\w+:[\w.:#-]+", "·", t)
+
+
+def parent_kind(R, fid):
+    p = R.get(R.get(fid, {}).get("parent", ""), {})
+    return f"{p.get('type', 'missing')} {p.get('kind', '')}".strip()
+
+
+def score_rows(key, run, table, tree_errs):
+    """P148: the score_summary.csv rows of one paper (see the module docstring)."""
+    out = [dict(paper=key, section="type", item=d["type"], gold=d["gold"], compiled=d["compiled"], matched=d["matched"],
+                precision=d["precision"], recall=d["recall"], count="") for d in table]
+    row = lambda sec, item, n: dict(paper=key, section=sec, item=item, gold="", compiled="", matched="", precision="", recall="", count=n)   # noqa: E731
+    out += [row("check_tree", c, n) for c, n in collections.Counter(map(err_class, tree_errs)).most_common()]
+    out += [row("drops", f"{s_}:{r_}", n) for (s_, r_), n in collections.Counter((d["step"], d["reason"]) for d in run.dropped).most_common()]
+    ab = collections.Counter()
+    for a in run.answers.values():
+        for rec in (a if isinstance(a, list) else []):
+            x = rec.get("about")
+            ab["paper" if x == "paper" else "null" if not x else "filled (a pass-0 unit)" if x in run.node else "unknown"] += 1
+    out += [row("about", k, n) for k, n in ab.most_common()]
+    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+    G, CR = {g["fact_id"]: g for g in gold}, {c["fact_id"]: c for c in run.rows}
+    free, pk = list(range(len(gold))), collections.Counter()
+    for c in run.rows:                                                          # the pairs of compile.diff: one gold row per compiled row, first come
+        j = next((j for j in free if K.matches(gold[j], c)), None)
+        if j is None:
+            continue
+        free.remove(j)
+        a, b = parent_kind(G, gold[j]["fact_id"]), parent_kind(CR, c["fact_id"])
+        pk["parent kind = gold" if a == b else f"differs: gold {a} / compiled {b}"] += 1
+    out += [row("placement", k, n) for k, n in pk.most_common()]
+    return out
 
 
 def experiments(pid):
@@ -79,7 +125,7 @@ def values(pid, key):
 def main(argv):
     unit, papers = argv[0], argv[1:]
     import audit as A
-    summary = []
+    summary, scores = [], []
     for arg in papers:
         pid, key = C.resolve(arg)
         run = K.Run(pid)
@@ -89,8 +135,9 @@ def main(argv):
             [f"  {d['type']:<12} {d['gold']:>4} {d['compiled']:>4} {d['matched']:>4} {d['precision']:>5} {d['recall']:>5}" for d in table] + extra
         (K.OUT / f"{pid}.compile.log").write_text("\n".join(log) + "\n", encoding="utf-8")
         K.write_csv(R / f"{unit}.{key}.diff.csv", ["type", "gold", "compiled", "matched", "precision", "recall"], table)
-        errs = check_dir(pid)
+        errs, tree_errs = check_dir(pid)
         K.write_csv(R / f"{unit}.{key}.check_dir.csv", ["problem"], [dict(problem=e) for e in errs])
+        scores += score_rows(key, run, table, tree_errs)
         sys.argv = ["audit.py", arg, "--unit", f"{unit}.{key}"]
         out = K.OUT
         try:
@@ -111,6 +158,7 @@ def main(argv):
         print(f"{key}: check --dir {len(errs)} problems; T6 {tot.get('T6 matched')}/{tot.get('total')}")
     fields = list(dict.fromkeys(k for s in summary for k in s))
     K.write_csv(R / f"{unit}.score.csv", fields, summary)
+    K.write_csv(K.OUT / "score_summary.csv", ["paper", "section", "item", "gold", "compiled", "matched", "precision", "recall", "count"], scores)   # P148
     return 0
 
 
