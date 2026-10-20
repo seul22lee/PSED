@@ -1,0 +1,1060 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P143b_codebook</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P143b_codebook</h1>
+<h2>1. Qualifier text: the field and the citation-only list</h2><p>kb/reports/P143b_codebook.qualifier_field.txt</p>
+<pre>P143b section 1: the qualifier text the P143 generator skipped is in the qualifiers block&#x27;s `log` field (21 qualifiers) and `source`
+field (4); `meaning` exists on 4 (species, gas, element, surface, P142b). The codebook now reads: meaning, else log, verbatim.
+Citation only (listed for decision; the codebook leaves their meaning empty): a qualifier whose only text is a `source` citation,
+or whose `log` opens with a list of its own values and a colon (where the values came from, not what they mean):
+step, position, reference, level, basis. Every qualifier&#x27;s fields: P143b_codebook.qualifier_texts.csv.
+Pass-0 prompt: besides the INSTRUCTION, the prompt gains a CURVES block (figures.json curve ids) so the curves field can be filled.
+Pass-1 RULES: the series-name line uses mentions for &quot;about&quot; (the form has no about field).
+compile.py: pass 0 = the latest pass-0 line written before the pass-1 lines in use (the P139 records compile with their P139 pass 0).
+</pre>
+<h2>1. Every qualifier: fields and classification</h2><p>kb/reports/P143b_codebook.qualifier_texts.csv</p>
+<table><tr><th>qualifier</th><th>codebook_text</th><th>source</th><th>log</th><th>meaning</th><th>values</th></tr>
+<tr><td>definition</td><td>log</td><td></td><td>P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)</td><td></td><td>definition ids</td></tr>
+<tr><td>step</td><td>citation</td><td>Cremers Sec. I four steps; Popov Reactant A/B</td><td>plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds</td><td></td><td>[&#x27;reactant_A&#x27;, &#x27;purge_A&#x27;, &#x27;reactant_B&#x27;, &#x27;purge_B&#x27;, &#x27;plasma&#x27;, &#x27;hold_A&#x27;, &#x27;hold_B&#x27;, &#x27;none&#x27;]</td></tr>
+<tr><td>species</td><td>meaning</td><td></td><td></td><td>the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected</td><td>species ids</td></tr>
+<tr><td>gas</td><td>meaning</td><td></td><td></td><td>the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure</td><td>species ids</td></tr>
+<tr><td>element</td><td>meaning</td><td></td><td></td><td>the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy</td><td>element symbols</td></tr>
+<tr><td>reference_element</td><td>log</td><td></td><td>Sec. 18.3: the denominator atom of an element_ratio</td><td></td><td>element symbols</td></tr>
+<tr><td>phase</td><td>log</td><td></td><td>Sec. 18.3: the phase a phase_fraction is of</td><td></td><td>species ids</td></tr>
+<tr><td>position</td><td>citation</td><td>Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top</td><td>local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer</td><td></td><td>[&#x27;planar&#x27;, &#x27;top&#x27;, &#x27;sidewall&#x27;, &#x27;bottom&#x27;, &#x27;local&#x27;, &#x27;entrance&#x27;, &#x27;plateau&#x27;, &#x27;outside&#x27;, &#x27;interface&#x27;]</td></tr>
+<tr><td>reference</td><td>citation</td><td></td><td>plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)</td><td></td><td>[&#x27;top&#x27;, &#x27;planar&#x27;, &#x27;assumed_saturation&#x27;, &#x27;plateau&#x27;, &#x27;entrance&#x27;, &#x27;maximum&#x27;, &#x27;stated&#x27;, &#x27;bulk&#x27;]</td></tr>
+<tr><td>level</td><td>citation</td><td>Cremers PD50%, PD80%</td><td>front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum</td><td></td><td>[&#x27;50%&#x27;, &#x27;80%&#x27;, &#x27;front_start&#x27;, &#x27;front_end&#x27;, &#x27;maximum&#x27;]</td></tr>
+<tr><td>basis</td><td>citation</td><td>Cremers Sec. II G</td><td></td><td></td><td>[&#x27;AR&#x27;, &#x27;EAR&#x27;]</td></tr>
+<tr><td>surface</td><td>meaning</td><td></td><td></td><td>the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3</td><td>material ids</td></tr>
+<tr><td>kind</td><td>log</td><td></td><td>pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures</td><td></td><td>[&#x27;set_point&#x27;, &#x27;measured&#x27;, &#x27;default&#x27;, &#x27;option&#x27;, &#x27;target&#x27;, &#x27;estimated&#x27;]</td></tr>
+<tr><td>by</td><td>log</td><td></td><td>pilot: what a dimensionless distance is divided by</td><td></td><td>[&#x27;H&#x27;, &#x27;2H&#x27;, &#x27;d&#x27;, &#x27;w&#x27;, &#x27;lambda&#x27;, &#x27;none&#x27;]</td></tr>
+<tr><td>origin</td><td>log</td><td></td><td>pilot: where a distance is measured from</td><td></td><td>[&#x27;entrance&#x27;, &#x27;top_face&#x27;, &#x27;hole_centre&#x27;, &#x27;nearer_face&#x27;, &#x27;opening_centre&#x27;]</td></tr>
+<tr><td>stage</td><td>log</td><td></td><td>pilot: before or after the deposition (porosity, channel height)</td><td></td><td>[&#x27;initial&#x27;, &#x27;final&#x27;]</td></tr>
+<tr><td>stat</td><td>log</td><td></td><td>pilot P1: a spread fact&#x27;s statistic</td><td></td><td>[&#x27;sd&#x27;, &#x27;relative_sd&#x27;, &#x27;half_range&#x27;, &#x27;tolerance&#x27;, &#x27;minimum&#x27;, &#x27;maximum&#x27;]</td></tr>
+<tr><td>between</td><td>log</td><td></td><td>pilot P1: what varies between the repeats of a spread</td><td></td><td>[&#x27;runs&#x27;, &#x27;pieces&#x27;, &#x27;position&#x27;, &#x27;repeat_measurement&#x27;, &#x27;items&#x27;]</td></tr>
+<tr><td>n</td><td>log</td><td></td><td>pilot P1: the number of repeats</td><td></td><td>a number or not_stated</td></tr>
+<tr><td>relative_to</td><td>log</td><td></td><td>pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)</td><td></td><td>[&#x27;initial_mass&#x27;, &#x27;final_mass&#x27;, &#x27;all_atoms&#x27;, &#x27;metal_atoms&#x27;, &#x27;crystalline_phases&#x27;, &#x27;total_volume&#x27;, &#x27;reactive_gases&#x27;, &#x27;all_</td></tr>
+<tr><td>over</td><td>log</td><td></td><td>pilot P5: what a per-cycle value is averaged over</td><td></td><td>[&#x27;run&#x27;, &#x27;first_100_cycles&#x27;, &#x27;saturation&#x27;, &#x27;not_stated&#x27;]</td></tr>
+<tr><td>mode</td><td>log</td><td></td><td>pilot P6: a measurement during or after the deposition</td><td></td><td>[&#x27;in_situ&#x27;, &#x27;ex_situ&#x27;, &#x27;not_stated&#x27;]</td></tr>
+<tr><td>x</td><td>log</td><td></td><td>pilot: the abscissa of a curve</td><td></td><td>quantity ids</td></tr>
+<tr><td>ratio</td><td>log</td><td></td><td>pilot P17: the plasma_gas_ratio a keyed setting belongs to</td><td></td><td>a number</td></tr>
+<tr><td>specimen_class</td><td>log</td><td></td><td>Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis</td><td></td><td>[&#x27;film&#x27;, &#x27;porous_composite&#x27;]</td></tr>
+<tr><td>structure_class</td><td>log</td><td></td><td>P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class</td><td></td><td>[&#x27;structure&#x27;, &#x27;planar&#x27;, &#x27;har_feature&#x27;, &#x27;trench&#x27;, &#x27;via_hole&#x27;, &#x27;lateral_channel&#x27;, &#x27;porous_body&#x27;, &#x27;nanoparticle_compact&#x27;, &#x27;</td></tr>
+</table>
+<h2>2. The 8 method lines</h2><p>kb/reports/P143b_codebook.methods8.csv</p>
+<table><tr><th>method</th><th>measurement</th><th>default mode</th><th>definition (start)</th></tr>
+<tr><td>epma</td><td>yes</td><td></td><td>Electron probe microanalysis: an electron microprobe&#x27;s X-ray elemental maps and line scans across a polished cross secti</td></tr>
+<tr><td>ftir</td><td>yes</td><td></td><td>Transmission Fourier transform infrared absorption of surface species on a porous sample during the half-reactions (in s</td></tr>
+<tr><td>infrared_microscopy</td><td>yes</td><td></td><td>Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is</td></tr>
+<tr><td>giwaxs</td><td>yes</td><td></td><td>Grazing-incidence wide-angle X-ray scattering: a 2D diffraction pattern of a thin film at grazing incidence (synchrotron</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>yes</td><td></td><td>UV-visible transmission spectrophotometry of a film on a transparent substrate: transmittance against wavelength, and th</td></tr>
+<tr><td>sims</td><td>yes</td><td></td><td>Secondary ion mass spectrometry depth profiling: elemental concentrations (atoms per cm3) against depth.</td></tr>
+<tr><td>tof_erda</td><td>yes</td><td></td><td>Time-of-flight elastic recoil detection analysis: elemental composition and depth profiles in at.%, hydrogen included, f</td></tr>
+<tr><td>tem_eds</td><td>yes</td><td></td><td>Energy-dispersive X-ray spectroscopy in a (scanning) transmission electron microscope: elemental maps and line integrals</td></tr>
+</table>
+<h2>4. lists.TERMS</h2><p>kb/reports/P143b_codebook.terms.txt</p>
+<pre>run: one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure.
+specimen: one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.
+input entity: a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a deposition activity&#x27;s inputs.
+model run: one set of inputs of a simulation whose result the paper reports (a curve, a table row).
+series / replicate / grid (comparisons): never a parent and never asked of the extractor; the compiler derives them from the condition vectors of the experiment units — series: members differ in exactly one quantity; replicate: in none; grid: in two. A name the authors give such a set (&quot;Series A&quot;) is kept as its label.
+</pre>
+<h2>5. Pass-0 form, instruction and RULES diff</h2><p>kb/reports/P143b_codebook.pass0_form.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 5704976..23115c2 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -11,70 +11,88 @@ import sys
+ 
+ import common as C
+ 
+-INSTRUCTION = &quot;&quot;&quot;You read one ALD paper and list every specimen, run, simulation, model run, series and cited work it names.
+-One item per named thing:
+-- id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record&#x27;s parent;
++INSTRUCTION = &quot;&quot;&quot;You read one ALD paper and list its experiment units: every run, specimen, simulation and model run it reports.
++One item per unit:
++- id: a short id you assign, unique in the paper (r1, s1, sim1, m1, ...); pass 1 uses it as a record&#x27;s parent;
+ - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
+-- role: one of specimen, run, simulation, model_run, series, cited_work.
++- role: one of run, specimen, simulation, model_run.
+   A run is one deposition the paper performs; samples coated in separate depositions are separate runs even with the same
+   chemistry, temperature and structure; samples coated together share one run.
+   A specimen is one physical sample measured; parent = its run.
+   A simulation is one model; two solution methods or approximations of the same model are the same simulation.
+-  A model_run is one set of inputs whose result the paper reports (a curve, a table row); parent = its simulation.
+-  A series is a figure&#x27;s set of specimens or model runs varying one quantity; members = the specimen or model_run ids it compares;
+-  parent = the simulation, run or specimen it belongs to (null only when the paper gives none).
+-  A cited work is another publication the paper names;
++  A model_run is one set of inputs whose result the paper reports (a curve, a table row); parent = its simulation;
+ - parent: as defined per role above; null when the role has none;
+ - evidence_quote (runs): the words that say which samples the run made, copied verbatim from the paper;
++- curves (runs, specimens, model runs): the ids from CURVES below that show this unit; null when none does;
+ - every field is present in every item; null when it does not apply;
+ - structure_class, specimen_class, experiment_kind: only values from the form&#x27;s enums, and only when the paper states them;
+-- introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
++- introduced_in: the id(s) of the element(s) where the unit is first named, then every figure or table element that shows it,
+   taken from the element index below.
++Sets of units (a series in a figure, replicates) and cited works are not items.
+ Answer with JSON matching the form.&quot;&quot;&quot;
+ 
+ 
+ def example(pid, form):
+-    &quot;&quot;&quot;P136b/P138/P139: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid
+-    (never held-out) whose gold has a series comparison: at most two items per role (run = a deposition activity, simulation =
+-    a simulation activity, specimen = an entity directly under a deposition, series = a comparison of kind series, cited_work = a
+-    cited tree row), id = role letter + number, name = label_as_printed, introduced_in = the row&#x27;s evidence, parent = the item id of
+-    the gold parent (specimen: its deposition; series: the parent of its first member) when that is an item; validated against
+-    form_pass0.json.&quot;&quot;&quot;
++    &quot;&quot;&quot;P136b/P138/P139/P143b: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than
++    pid (never held-out) whose gold has runs, specimens, a simulation and model runs: at most two items per role (run = a deposition
++    activity, specimen = an entity with a deposition above it, simulation = a simulation activity, model_run = an entity with a
++    simulation above it), id = role prefix + number, name = label_as_printed, introduced_in = the row&#x27;s evidence, parent = the item id
++    of the nearest deposition (specimen) or simulation (model_run) when that is an item; every field present (null when not given);
++    validated against form_pass0.json.&quot;&quot;&quot;
+     import csv
+     from jsonschema import Draft202012Validator
+-    PRE = {&quot;run&quot;: &quot;r&quot;, &quot;simulation&quot;: &quot;sim&quot;, &quot;specimen&quot;: &quot;s&quot;, &quot;series&quot;: &quot;ser&quot;, &quot;cited_work&quot;: &quot;c&quot;}
++    PRE = {&quot;run&quot;: &quot;r&quot;, &quot;simulation&quot;: &quot;sim&quot;, &quot;specimen&quot;: &quot;s&quot;, &quot;model_run&quot;: &quot;m&quot;}
+     for p in [p for p in reversed(list(C.E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
+         f = C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{p}.facts.csv&quot;
+         rows = [r for r in csv.DictReader(f.open(encoding=&quot;utf-8&quot;)) if &quot;#&quot; not in r[&quot;fact_id&quot;]] if f.exists() else []
+         R = {r[&quot;fact_id&quot;]: r for r in rows}
++
++        def up(r, kind):
++            x = r[&quot;parent&quot;]
++            while x in R:
++                if R[x][&quot;type&quot;] == &quot;activity&quot; and R[x][&quot;kind&quot;] == kind:
++                    return x
++                x = R[x][&quot;parent&quot;]
++            return &quot;&quot;
+         role = lambda r: (&quot;run&quot; if r[&quot;type&quot;] == &quot;activity&quot; and r[&quot;kind&quot;] == &quot;deposition&quot; else &quot;simulation&quot; if r[&quot;type&quot;] == &quot;activity&quot; and r[&quot;kind&quot;] == &quot;simulation&quot;
+-                          else &quot;specimen&quot; if r[&quot;type&quot;] == &quot;entity&quot; and R.get(r[&quot;parent&quot;], {}).get(&quot;kind&quot;) == &quot;deposition&quot;
+-                          else &quot;series&quot; if r[&quot;type&quot;] == &quot;comparison&quot; and r[&quot;kind&quot;] == &quot;series&quot; else &quot;cited_work&quot; if r[&quot;type&quot;] == &quot;cited&quot; else &quot;&quot;)
++                          else &quot;model_run&quot; if r[&quot;type&quot;] == &quot;entity&quot; and up(r, &quot;simulation&quot;) else &quot;specimen&quot; if r[&quot;type&quot;] == &quot;entity&quot; and up(r, &quot;deposition&quot;) else &quot;&quot;)
+         items, n, ids = [], {}, {}
+         for r in rows:
+             k = role(r)
+             if k and r[&quot;label_as_printed&quot;] and r[&quot;evidence&quot;] and n.get(k, 0) &lt; 2:
+                 n[k] = n.get(k, 0) + 1
+                 ids[r[&quot;fact_id&quot;]] = f&quot;{PRE[k]}{n[k]}&quot;
+-                gp = r[&quot;parent&quot;] if k == &quot;specimen&quot; else next((R[m][&quot;parent&quot;] for m in r[&quot;links&quot;].split(&quot;;&quot;)[1:] if m in R), &quot;&quot;) if k == &quot;series&quot; else &quot;&quot;
+-                items.append(dict(id=ids[r[&quot;fact_id&quot;]], name_as_printed=r[&quot;label_as_printed&quot;], role=k, introduced_in=r[&quot;evidence&quot;].split(&quot;;&quot;), _gp=gp))
++                items.append(dict(id=ids[r[&quot;fact_id&quot;]], name_as_printed=r[&quot;label_as_printed&quot;], role=k, introduced_in=r[&quot;evidence&quot;].split(&quot;;&quot;),
++                                  _gp=up(r, &quot;deposition&quot;) if k == &quot;specimen&quot; else up(r, &quot;simulation&quot;) if k == &quot;model_run&quot; else &quot;&quot;))
+         for it in items:
+             gp = it.pop(&quot;_gp&quot;)
+             if gp in ids:
+                 it[&quot;parent&quot;] = ids[gp]
+         items = [{k: it.get(k) for k in form[&quot;items&quot;][&quot;required&quot;]} for it in items]   # P139: every field present, null when not given
+-        if &quot;series&quot; in n and not list(Draft202012Validator(form).iter_errors(items)):
++        if {&quot;run&quot;, &quot;specimen&quot;, &quot;simulation&quot;, &quot;model_run&quot;} &lt;= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
+             return json.dumps(items, ensure_ascii=False)
+     return &quot;[]&quot;
+ 
+ 
++def curves(pid):
++    &quot;&quot;&quot;P143b: the figures.json curves of the paper as &#x27;id | figure panel | kind | series label | x -&gt; y&#x27; lines (for the curves field).&quot;&quot;&quot;
++    p = C.V2 / &quot;kb&quot; / f&quot;{pid}.figures.json&quot;
++    if not p.exists():
++        return &quot;(no figures.json)&quot;
++    F = json.loads(p.read_text(encoding=&quot;utf-8&quot;))
++    return &quot;\n&quot;.join(f&quot;{c[&#x27;id&#x27;]} | fig{c[&#x27;figure&#x27;]}{c.get(&#x27;panel&#x27;, &#x27;&#x27;)} | {c[&#x27;kind&#x27;]} | {c.get(&#x27;series&#x27;, {}).get(&#x27;label_raw&#x27;, &#x27;&#x27;)} | &quot;
++                     f&quot;{c[&#x27;x&#x27;].get(&#x27;quantity&#x27;, &#x27;&#x27;)} -&gt; {c[&#x27;y&#x27;].get(&#x27;quantity&#x27;, &#x27;&#x27;)}&quot; for c in F.get(&quot;curves&quot;, [])) or &quot;(none)&quot;
++
++
+ def jobs(pid):
+     form = C.schema(&quot;form_pass0.json&quot;)
+     index = &quot;\n&quot;.join(f&quot;{r[&#x27;element_id&#x27;]}\t{r[&#x27;kind&#x27;]}\t{r[&#x27;locator&#x27;]}&quot; for r in C.E.load(pid))
+     doc = (C.V2 / &quot;ingest&quot; / &quot;final&quot; / pid / &quot;document.md&quot;).read_text(encoding=&quot;utf-8&quot;)
+     prompt = &quot;\n\n&quot;.join([INSTRUCTION, &quot;FORM (JSON Schema):\n&quot; + json.dumps(form, ensure_ascii=False, separators=(&quot;,&quot;, &quot;:&quot;)),
+                           &quot;EXAMPLE (another paper, in the form):\n&quot; + example(pid, form),
+-                          &quot;ELEMENT INDEX (id, kind, locator):\n&quot; + index, &quot;PAPER (document.md):\n&quot; + doc])
++                          &quot;ELEMENT INDEX (id, kind, locator):\n&quot; + index,
++                          &quot;CURVES (figures.json: id | figure panel | kind | series label | x -&gt; y), for the curves field:\n&quot; + curves(pid),   # P143b
++                          &quot;PAPER (document.md):\n&quot; + doc])
+     return [(0, &quot;paper&quot;, prompt, C.provider_schema(form), [])]
+ 
+ 
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index 0d86eab..14a2403 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -55,6 +55,8 @@ FIELD RULES
+ - links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
+ - statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
+ - statement is never null on claim, caveat and cited records (one sentence, your words).
++- a name the paper gives a set of runs or samples (&quot;Series A&quot;, &quot;set 2&quot;) is a setting of quantity other with label_as_printed = the
++  name and mentions = each member it names; the compiler attaches it.
+ - variables (models and definitions): each symbol -&gt; its quantity id, or null when no id fits.
+ - cause, relation, effect: all three or none (claims only).
+ - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index 1a9c1c5..8671ebd 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -1,9 +1,9 @@
+ {
+  &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;,
+  &quot;$id&quot;: &quot;urn:psed_v2:schema:form_pass0&quot;,
+- &quot;$comment&quot;: &quot;GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 0ff4d085d0746a8bcf52b6ae84b602dfff709d2be18d0d0edb19f37085dd7b52&quot;,
++ &quot;$comment&quot;: &quot;GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 5a38c86ccd1f050a60973418fe78dfe80235c5cb905e6e04b7770d739e5b4c99&quot;,
+  &quot;title&quot;: &quot;PSED v2 extraction form, pass 0: the things one paper names&quot;,
+- &quot;description&quot;: &quot;One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 0ff4d085d0746a8bcf52b6ae84b602dfff709d2be18d0d0edb19f37085dd7b52).&quot;,
++ &quot;description&quot;: &quot;One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 5a38c86ccd1f050a60973418fe78dfe80235c5cb905e6e04b7770d739e5b4c99).&quot;,
+  &quot;type&quot;: &quot;array&quot;,
+  &quot;items&quot;: {
+   &quot;type&quot;: &quot;object&quot;,
+@@ -17,7 +17,7 @@
+    &quot;specimen_class&quot;,
+    &quot;experiment_kind&quot;,
+    &quot;introduced_in&quot;,
+-   &quot;members&quot;,
++   &quot;curves&quot;,
+    &quot;evidence_quote&quot;
+   ],
+   &quot;properties&quot;: {
+@@ -61,9 +61,7 @@
+        &quot;specimen&quot;,
+        &quot;run&quot;,
+        &quot;simulation&quot;,
+-       &quot;model_run&quot;,
+-       &quot;series&quot;,
+-       &quot;cited_work&quot;
++       &quot;model_run&quot;
+       ]
+      },
+      {
+@@ -135,7 +133,7 @@
+      }
+     ]
+    },
+-   &quot;members&quot;: {
++   &quot;curves&quot;: {
+     &quot;anyOf&quot;: [
+      {
+       &quot;type&quot;: &quot;array&quot;,
+</pre>
+<h2>5. comparisons() rows vs gold (yli18, yim20; from the P139 records)</h2><p>kb/reports/P143b_codebook.comparisons.csv</p>
+<table><tr><th>paper</th><th>source</th><th>id</th><th>kind</th><th>varied</th><th>members</th><th>label</th><th>evidence</th><th>member_labels</th><th>compiled_match</th><th>match_by_kind_and_varied</th></tr>
+<tr><td>yli18</td><td>gold</td><td>yli18:cmp:films</td><td>series</td><td>material</td><td>2</td><td>the two measured films</td><td>s8.p21</td><td>Al2O3 film, 500 cycles | TiO2 film, 1000 cycles</td><td>-</td><td>-</td></tr>
+<tr><td>yli18</td><td>gold</td><td>yli18:cmp:sim_tp</td><td>series</td><td>pulse_time</td><td>4</td><td>the pulse-length series</td><td>fig2.cap</td><td>run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s</td><td>-</td><td>-</td></tr>
+<tr><td>yli18</td><td>gold</td><td>yli18:cmp:sim_H</td><td>series</td><td>feature_width</td><td>4</td><td>the channel-height series</td><td>fig4.cap</td><td>run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm</td><td>yli18:cmp:1</td><td>yli18:cmp:1</td></tr>
+<tr><td>yli18</td><td>compiled</td><td>yli18:cmp:1</td><td>series</td><td>feature_width</td><td>3</td><td></td><td>fig4.cap;fig4</td><td>1 μm | 0.5 μm | 0.2 μm</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:A</td><td>series</td><td>pillar_layout</td><td>3</td><td>Series A</td><td>s3.p9;tab1.r1c0</td><td>sample 1 | sample 2 | sample 3</td><td>-</td><td>yim20:cmp:5</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:B</td><td>series</td><td>objective_magnification</td><td>3</td><td>Series B</td><td>s3.p9;tab1.r4c0</td><td>sample 4 | sample 5 | sample 6</td><td>-</td><td>yim20:cmp:4</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:C</td><td>series</td><td>feature_width</td><td>3</td><td>Series C</td><td>s3.p9;tab1.r7c0</td><td>sample 7 | sample 8 | sample 9</td><td>-</td><td>yim20:cmp:3;yim20:cmp:20</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:D</td><td>series</td><td>cycle_number</td><td>3</td><td>Series D</td><td>s3.p9;tab1.r8c0</td><td>sample 10 | sample 11 | sample 8</td><td>-</td><td>yim20:cmp:2;yim20:cmp:19</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:E</td><td>series</td><td>pulse_time</td><td>3</td><td>Series E</td><td>s3.p9;tab1.r13c0</td><td>sample 12 | sample 13 | sample 14</td><td>-</td><td>yim20:cmp:6;yim20:cmp:7;yim20:cmp:22</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:F</td><td>series</td><td>purge_time</td><td>3</td><td>Series F</td><td>s3.p9;tab1.r13c0</td><td>sample 15 | sample 16 | sample 12</td><td>-</td><td>yim20:cmp:23</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:repro</td><td>replicate</td><td></td><td>4</td><td>sample 2, 4, 8, and 12</td><td>fig8.cap;s12.x2;s16.p10;tab2.r7c6</td><td>sample 2 | sample 4 | sample 8 | sample 12</td><td>yim20:cmp:1</td><td>yim20:cmp:1</td></tr>
+<tr><td>yim20</td><td>gold</td><td>yim20:cmp:sims</td><td>series</td><td>feature_width;cycle_number</td><td>10</td><td>model simulations</td><td>s8.p1;s13.p2;fig10.cap</td><td>sim · H 100 nm | sim · H 200 nm | sim · H 500 nm | sim · H 1000 nm | sim · H 2000 nm | sim · N 100 | sim · N 250 | sim · N 1000 | sim · N 2000 | sim · ESI Fig. S10-S12</td><td>yim20:cmp:19;yim20:cmp:20</td><td>-</td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:1</td><td>replicate</td><td></td><td>5</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 2 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:2</td><td>series</td><td>cycle_number</td><td>6</td><td></td><td>s16.p1;fig4.cap;fig4b;fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 11 | 12 | 2 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:3</td><td>series</td><td>feature_width</td><td>7</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 2 | 4 | 7 | 8 | 9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:4</td><td>series</td><td>objective_magnification</td><td>7</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 2 | 4 | 5 | 6 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:5</td><td>series</td><td>pillar_layout</td><td>7</td><td></td><td>fig4.cap;fig4a;fig4b;fig4c;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>1 | 10 | 12 | 2 | 3 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:6</td><td>series</td><td>pulse_time</td><td>6</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r14c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 13 | 2 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:7</td><td>series</td><td>pulse_time</td><td>2</td><td></td><td>fig4.cap;fig4c;fig11.cap;fig11a;tab1.r3c1;tab1.r15c1;tab2.r7c7</td><td>14 | 3</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:8</td><td>grid</td><td>cycle_number;feature_width</td><td>8</td><td></td><td>s16.p1;fig4.cap;fig4b;fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 11 | 12 | 2 | 4 | 7 | 8 | 9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:9</td><td>grid</td><td>cycle_number;objective_magnification</td><td>8</td><td></td><td>s16.p1;fig4.cap;fig4b;fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 11 | 12 | 2 | 4 | 5 | 6 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:10</td><td>grid</td><td>cycle_number;pillar_layout</td><td>8</td><td></td><td>s16.p1;fig4.cap;fig4a;fig4b;fig4c;fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>1 | 10 | 11 | 12 | 2 | 3 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:11</td><td>grid</td><td>cycle_number;pulse_time</td><td>7</td><td></td><td>s16.p1;fig4.cap;fig4b;fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r13c1;tab1.r14c1;tab1.r17c1;tab2.r7c6</td><td>10 | 11 | 12 | 13 | 2 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:12</td><td>grid</td><td>feature_width;objective_magnification</td><td>9</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 2 | 4 | 5 | 6 | 7 | 8 | 9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:13</td><td>grid</td><td>feature_width;pillar_layout</td><td>9</td><td></td><td>fig4.cap;fig4a;fig4b;fig4c;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>1 | 10 | 12 | 2 | 3 | 4 | 7 | 8 | 9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:14</td><td>grid</td><td>feature_width;pulse_time</td><td>8</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r14c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 13 | 2 | 4 | 7 | 8 | 9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:15</td><td>grid</td><td>objective_magnification;pillar_layout</td><td>9</td><td></td><td>fig4.cap;fig4a;fig4b;fig4c;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r17c1;tab2.r7c6</td><td>1 | 10 | 12 | 2 | 3 | 4 | 5 | 6 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:16</td><td>grid</td><td>objective_magnification;pulse_time</td><td>8</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r14c1;tab1.r17c1;tab2.r7c6</td><td>10 | 12 | 13 | 2 | 4 | 5 | 6 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:17</td><td>grid</td><td>pillar_layout;pulse_time</td><td>9</td><td></td><td>fig4.cap;fig4a;fig4b;fig4c;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r14c1;tab1.r15c1;tab1.r17c1;tab2.r7c6;tab2.r7c7</td><td>1 | 10 | 12 | 13 | 14 | 2 | 3 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:18</td><td>grid</td><td>purge_time;purge_time</td><td>7</td><td></td><td>fig4.cap;fig4b;fig7.cap;fig7;fig8.cap;fig8a;fig8b;fig9.cap;fig9a;fig9b;fig9c;fig9d;fig9e;fig9f;fig11.cap;fig11a;fig11b;tab1.r2c1;tab1.r4c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r13c1;tab1.r16c1;tab1.r17c1;tab1.r18c1;tab2.r7c6</td><td>10 | 12 | 15 | 16 | 2 | 4 | 8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:19</td><td>series</td><td>cycle_number</td><td>5</td><td></td><td>fig9.cap;fig9a;fig9d;fig9e;fig9f;fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>100 cycles | 2000 cycles | 500 nm | 250 cycles | 1000 cycles</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:20</td><td>series</td><td>feature_width</td><td>5</td><td></td><td>fig9.cap;fig9a;fig9d;fig9e;fig9f;fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>100 nm | 500 nm | 2000 nm | 200 nm | 1000 nm</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:21</td><td>grid</td><td>cycle_number;feature_width</td><td>9</td><td></td><td>fig9.cap;fig9a;fig9d;fig9e;fig9f;fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>100 cycles | 2000 cycles | 100 nm | 500 nm | 2000 nm | 250 cycles | 1000 cycles | 200 nm | 1000 nm</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:22</td><td>series</td><td>pulse_time</td><td>3</td><td></td><td>fig11.cap;fig11a</td><td>0.1 s | 0.2 s | 0.4 s</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>compiled</td><td>yim20:cmp:23</td><td>series</td><td>purge_time</td><td>3</td><td></td><td>fig11.cap;fig11b</td><td>1 s | 4 s | 10 s</td><td></td><td></td></tr>
+</table>
+<h2>Missing definitions now</h2><p>kb/reports/P143b_codebook.missing.csv</p>
+<table><tr><th>missing</th></tr>
+<tr><td>e. qualifier step: only a citation or value provenance (source / log)</td><td> no meaning</td></tr>
+<tr><td>e. qualifier position: only a citation or value provenance (source / log)</td><td> no meaning</td></tr>
+<tr><td>e. qualifier reference: only a citation or value provenance (source / log)</td><td> no meaning</td></tr>
+<tr><td>e. qualifier level: only a citation or value provenance (source / log)</td><td> no meaning</td></tr>
+<tr><td>e. qualifier basis: only a citation or value provenance (source / log)</td><td> no meaning</td></tr>
+</table>
+<h2>Gold check</h2><p>kb/reports/P143b_codebook.check_gold.txt</p>
+<pre>== vocabulary: 93 quantity ids, 32 methods, 11 materials, 11 structures, 26 qualifier keys in use; 0 pilot ids still to absorb (0 in use); materials to absorb [], structures []
+== vocabulary: OK
+== gold vocabulary (P142): 0 misses over the gold fact rows of the 9 dev papers (held-out excluded)
+== gold vocabulary: OK
+== claims (P54): 372 claims; 36 mechanisms named; 13 named by two or more papers: cvd_growth, desorption, feature_narrowing, gas_diffusion, pillar_effect, plasma_chemistry, residual_water, scan_angle, self_limiting_growth, surface_chemistry, surface_hydroxyl, surface_oxidation, surface_recombination
+== triples (P131): record types per paper, pilot-v6 -&gt; now (fact rows; only the types that changed)
+   yim20: cited 69 -&gt; 70, claim 54 -&gt; 40, model 68 -&gt; 73, observation 153 -&gt; 154
+   mat22: caveat 53 -&gt; 54, claim 62 -&gt; 52, observation 312 -&gt; 313
+   gre23: caveat 50 -&gt; 53, claim 69 -&gt; 57, model 17 -&gt; 18, observation 87 -&gt; 89, setting 86 -&gt; 89
+   ela03: caveat 14 -&gt; 15, cited 14 -&gt; 18, claim 54 -&gt; 37, model 53 -&gt; 57, setting 272 -&gt; 277
+   gor03: unchanged
+   yli18: claim 15 -&gt; 13, model 66 -&gt; 67
+   gao15: caveat 6 -&gt; 7, claim 21 -&gt; 13, observation 42 -&gt; 44, setting 91 -&gt; 92
+   art19: caveat 6 -&gt; 8, claim 21 -&gt; 13, model 20 -&gt; 22
+   yim22: caveat 7 -&gt; 8, claim 93 -&gt; 77, model 206 -&gt; 215
+   hei24: claim 31 -&gt; 20, model 184 -&gt; 189
+   mat23: claim 24 -&gt; 13, model 0 -&gt; 1, observation 49 -&gt; 51
+   zou23: claim 26 -&gt; 19, observation 43 -&gt; 45, setting 45 -&gt; 47
+== triples (P131): 372 claims, 0 without a full triple
+== triples (P131): OK
+== claim nodes (P130): 267 nodes for 267 distinct triples of 374 claims (374 members); 28 nodes asserted in two or more papers, each paper printed once
+== claim nodes (P130): OK
+== sentence-only (P55): 214 items found in statements ({&#x27;species&#x27;: 29, &#x27;number&#x27;: 185}); 213 allowed with a reason; 1 uncovered
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose
+== sentence-only (P55): 1 problems
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)
+== search (P64): 5 probes, tiers 1 concept / 2 claims, values, sets / 3 the rest; check_search: 17 record kinds probed, each hit rendered as one line (P84e)
+== search (P64): OK
+== records (P62): 1425 result records on the experiments, 268 of them curve references, none empty
+== records (P62): OK
+== uncertainty bases (P60): fit 11, instrument 6, literature 3, propagated 1, run_to_run 6, tolerance 4, within_run 8; no basis (the paper does not say) 29: mat22:tab1.r1c1#1 (tab1.r1c1), mat22:tab1.r1c2#1 (tab1.r1c2), mat22:tab1.r1c4#1 (tab1.r1c4), mat22:tab1.r1c6#1 (tab1.r1c6), mat22:tab1.r1c7#1 (tab1.r1c7), mat22:tab1.r2c1#1 (tab1.r2c1), mat22:tab1.r2c2#1 (tab1.r2c2), mat22:tab1.r2c4#1 (tab1.r2c4), mat22:tab1.r2c6#1 (tab1.r2c6), mat22:tab1.r2c7#1 (tab1.r2c7), mat22:tab1.r3c1#1 (tab1.r3c1), mat22:tab1.r3c2#1 (tab1.r3c2), mat22:tab1.r3c4#1 (tab1.r3c4), mat22:tab1.r3c6#1 (tab1.r3c6), mat22:tab1.r3c7#1 (tab1.r3c7), gre23:s6.p8#4 (s6.p8), gre23:s8.p1#4 (s8.p1), gre23:s8.p1#7 (s8.p1), gre23:s8.p1#8 (s8.p1), gre23:s8.p1#9 (s8.p1), gre23:tabI.r1c2#1 (tabI.r1c2), gre23:tabI.r2c2#1 (tabI.r2c2), gre23:tabI.r3c2#1 (tabI.r3c2), gre23:s13.p3#1 (s13.p3), gre23:s13.p3#2 (s13.p3), hei24:s8.x1#2 (s8.x1), hei24:s8.x1#3 (s8.x1), hei24:s8.x1#4 (s8.x1), mat23:s6.p4#3 (s6.p4)
+== uncertainty bases (P60): OK
+== mechanisms (P82): 36 mechanisms, none with a unit or a value
+== mechanisms (P82): OK
+== structure (P78): 10 structure classes, 10 slot entries; 166 specimen and input entities with a structure_class; 273 slot records; 13 body_thickness values checked against feature_depth × entry_sides; residual free labels with a length or area-per-mass unit: 56
+    yim20:s5.p1#7 [chip size]
+    yim20:s7.p3#2 [length of the line]
+    yim20:s7.p3#3 [measurement point interval]
+    yim20:s7.p5#4 [step]
+    yim20:s7.p5#9 [lateral length L]
+    yim20:s7.p5#10 [lateral length L]
+    yim20:fig4.cap#1 [channel length L]
+    yim20:fig6#1 [Z Range]
+    yim20:s11.x1#3 [width of the adsorption front]
+    yim20:fig10.cap#7 [d_A]
+    yim20:fig10.cap#8 [d_B]
+    yim20:s16.p3#2 [nanostep height]
+    yim20:s16.p5#2 [pillar diameter]
+    yim20:s16.p5#3 [interdistance]
+    yim20:s16.p5#4 [membrane bending displacement]
+    yim20:s16.p5#6 [membrane bending displacement]
+    yim20:s16.p7#2 [positioning uncertainty]
+    yim20:s19.p3#4 [hydraulic diameter h]
+    yim20:fig4.cap#2 [channel length L]
+    yim20:fig4.cap#3 [channel length L]
+    yim20:s7.p5#13 [lateral length L]
+    yim20:s7.p5#14 [lateral length L]
+    mat22:s3.p26#3 [parallel-oriented layer thickness]
+    mat22:s5.p15#1 [laser wavelength]
+    gre23:s9.p1#2 [chamber length]
+    gre23:s9.p1#3 [gap height]
+    gre23:s14.p1#3 [denser band width]
+    gre23:s14.p1#4 [near-surface depletion depth]
+    gre23:s14.p10#4 [excess deposition]
+    ela03:s4.p5#1 [scan step]
+    gor03:s10.p1#3 [reactor tube length]
+    gor03:s10.p1#4 [reactor tube diameter]
+    gor03:s10.p2#1 [reaction zone length]
+    gor03:s10.p3#1 [feed-through bore]
+    yli18:s8.p25#4 [line scan step]
+    yli18:s8.p25#5 [scan length]
+    yli18:s8.p25#8 [thickness precision]
+    yli18:tabI.r1c7#1 [rms thickness error]
+    yli18:tabI.r2c7#1 [rms thickness error]
+    yli18:s8.p25#11 [line scan step]
+    yli18:s8.p25#12 [scan length]
+    yli18:s8.p25#15 [thickness precision]
+    gao15:s6.p1#1 [wafer diameter]
+    gao15:s6.p3#2 [polysilicon membrane]
+    gao15:s6.p3#3 [sealing polysilicon]
+    gao15:s6.x1#1 [pillar spacing]
+    gao15:s6.p21#3 [waviness period]
+    gao15:s6.p21#5 [reflectometer reliability limit]
+    gao15:s6.p23#2 [remaining gap height]
+    gao15:s6.p23#3 [remaining gap height]
+    gao15:s6.p23#4 [remaining gap height]
+    art19:s5.p3#3 [spatial resolution]
+    yim22:s13.p5#3 [d(s/N)/dx̃ at x̃50%]
+    mat23:s10.p7#2 [AFM scan size]
+    mat23:s10.p7#3 [AFM scan size]
+    zou23:s10.p2#2 [electron mean free path of Mo]
+== structure (P78): OK
+== cards (P81): 109 concept cards, 1308 (entry, paper) pairs against the page data; counts by home specimen, input, aggregate, set-level, paper, cited, settings, claims, derived
+== cards (P81): OK
+== card–values (P95): 183 (quantity, paper) pairs with values on a card, each against values(result, paper)
+== card–values (P95): OK
+== resolution (P105, P110–P113): 513 calls (30 qualifier phrases of which 10 species, 5 misses, 7 detail ids, papers and search probes), 91,915 tokens; a miss suggests the nearest three, only a malformed call errors
+== resolution (P105): OK
+== card edges (P101): 59 cards with edges, 91 edges
+== card edges (P101): OK
+== grids (P80): 3 grid sets; 45 values(result, paper) calls on grid papers against their ask-v3.1 sizes: atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (1 views); carrier_density 387-&gt;833 (1 views); crystallinity 1657-&gt;1470 (7 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (7 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (1 views); growth_per_cycle 1799-&gt;1230 (7 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (4 views); resistivity 1915-&gt;1175 (7 views); roughness 651-&gt;600 (1 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views)
+== grids (P80): OK
+== homes (P79): 2105 value records with an entry (from the page); 0 homeless
+== homes (P79): OK
+== calls (P75, P119): token budget 40,000 spent after 31 executed calls (40,016 tokens delivered), 80,000 after 75 (80,339); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 119 valid probes; a malformed call is an error call and the question goes on (P124)
+== calls (P75): OK
+== settings tables (P76): 38 settings entries in the data (whatever node, P78a); 197 (entry, paper) pairs with stated conditions; max 1445 tokens per table
+== settings tables (P76): OK
+== set tables (P77): 175 comparison sets, each one call within the budget; 2 with columns collapsed; max 1972 tokens per table
+== set tables (P77): OK
+== battery per paper (P97): yim22 15 calls 10,932 tokens; yim20 14 calls 15,019 tokens; mat22 15 calls 13,886 tokens; gre23 15 calls 11,669 tokens; art19 15 calls 9,292 tokens; ela03 14 calls 9,090 tokens; gor03 13 calls 4,948 tokens; yli18 13 calls 8,421 tokens; gao15 15 calls 9,316 tokens; hei24 14 calls 13,453 tokens; zou23 14 calls 6,725 tokens; mat23 14 calls 9,863 tokens; cross-paper 65 calls 71,935 tokens
+== kinds (P57, P68): 9 kinds with phrases, 9 bases; 240 probe calls, 4779 tool texts scanned; max 5143 tokens per output, 194,647 tokens over the battery
+== kinds (P57, P68): OK
+== map (P70, P97, P120): 225 tokens of at most 800, 8 lines, every number a count; 229 tokens at 58 simulated papers; paper index 1034 tokens at 12 papers, 4938 at 58 simulated (at most 20,000), counts equal the cards&#x27;
+== map (P70): OK
+== caveats (P56): 222 caveats, 222 unique texts (28,880 characters stored once), 753 direct attachments, 2753 facts and entities reached
+== caveats (P56): OK
+== comparability (P53): cross-paper value pairs per output quantity, comparable / not: atoms_per_cycle 3/124; binding_energy 12/0; coated_aspect_ratio 12/238; crystallite_size 0/4; deposition_rate 1211/689; element_fraction 72/34; element_ratio 0/80; fill_fraction 0/6; film_thickness 1882/7312; front_slope 0/416; growth_per_cycle 460/5316; normalized_thickness 24/155; penetration_depth 36/519; resistivity 34/105; roughness 14/0; sheet_resistance 1/0; signal_intensity 0/2; step_coverage 2/0; surface_coverage 408/0; thickness_nonuniformity 0/1
+== comparability (P53): OK
+== bases: 70 quantity ids with values; bases stated on 4 (mass_gain {&#x27;not_stated&#x27;: 3}, phase_fraction {&#x27;not_stated&#x27;: 4}, plasma_gas_ratio {&#x27;reactive_gases&#x27;: 53}, porosity {&#x27;total_volume&#x27;: 6})
+== bases (P52): OK
+== unit table (P122): 348 spellings in 43 dimensions generated from units.yaml; 51 record spellings, 18 derived definitions, 65 default units resolve
+== unit table (P122): OK
+== dimensions (P108): 2763 value records (facts, cells, peaks, derived, curve axes) against units.yaml; 1 entries with definitions
+== dimensions (P108): OK
+== cycle (P106): 3 experiments with a stated hold in 1 paper(s); the hold on the dose line in detail(recipe) and in the pulse_time settings table
+== cycle (P106): OK
+== multi-quantity values (P121, P121b): 36 blocks over 12 papers&#x27; top-3 lists, 6 folded to one line (18 of 36 before P121b); a list call&#x27;s budget is k × 2000 tokens, at most 4×; legends and footer once
+== multi-quantity values (P121): OK
+== compare_runs (P126): report on asks.jsonl (12 records, 3 questions, arms kb, model, text): six sections; synthetic verdicts join and count; anchor columns and one kb × text verdict grid per run (P127)
+== compare_runs (P126): OK
+== report html (P129): fixture 18 records: 3 cards for 3 questions; section 4 = compare_runs 5b/5c (27 rows), badges = 5b; 8 cost cells recomputed from the records and prices.csv; 22,419 characters, no external URL
+== report html (P129): OK
+== paper index (P117): 12 papers, max 864 tokens per index, at most 40 quantity lines; counts equal the concept cards&#x27; (P95 both ways)
+== paper index (P117): OK
+== conversions (P109): 1 entries with converts_to, 73 converted curve series citing their context
+== conversions (P109): OK
+== cases: OK
+== user facts: OK
+== derived values (query layer): OK
+== figures import (P84-P87): 136 ok panels, 429 curves, 84 sets over 12 papers; import report, unmapped.csv and units checked
+== figures import (P84-P87): OK
+== figure derived (P86): 96 derived scalars, 40 stated counterparts found, 1 outside tolerance (listed in kb/problems.txt, a finding, not a failure)
+== metrics (P59)
+   coverage yim20: 568/608 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 28 items in 24 facts
+   coverage mat22: 187/215 elements covered, 28 no knowledge, 0 missed; sentence-only gaps: 62 items in 51 facts
+   coverage gre23: 154/208 elements covered, 54 no knowledge, 0 missed; sentence-only gaps: 63 items in 44 facts
+   coverage ela03: 155/210 elements covered, 55 no knowledge, 0 missed; sentence-only gaps: 7 items in 6 facts
+   coverage gor03: 79/100 elements covered, 21 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage yli18: 215/314 elements covered, 99 no knowledge, 0 missed; sentence-only gaps: 5 items in 4 facts
+   coverage gao15: 61/99 elements covered, 38 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage art19: 56/96 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 7 items in 7 facts
+   coverage yim22: 487/583 elements covered, 96 no knowledge, 0 missed; sentence-only gaps: 4 items in 4 facts
+   coverage hei24: 205/247 elements covered, 42 no knowledge, 0 missed; sentence-only gaps: 6 items in 4 facts
+   coverage mat23: 52/110 elements covered, 58 no knowledge, 0 missed; sentence-only gaps: 16 items in 8 facts
+   coverage zou23: 75/121 elements covered, 46 no knowledge, 0 missed; sentence-only gaps: 26 items in 18 facts
+   compactness: unique content once 194,592 tokens against 164,166 tokens of source text (1.19) · yim20 33,481 of 20,656; mat22 41,252 of 22,257; gre23 18,634 of 16,381; ela03 19,792 of 14,170; gor03 6,028 of 7,364; yli18 7,830 of 10,472; gao15 7,520 of 5,360; art19 7,464 of 9,387; yim22 20,566 of 23,808; hei24 18,348 of 15,672; mat23 6,620 of 8,779; zou23 6,035 of 9,860 · user facts 1,022
+   absorption (81 pilot quantity ids): direct 31, new_entry 27, attribute 9, alias 6, qualifier 4, dropped 2, transform 1, reserved 1
+== yim20 10.1039_d0cp03358h: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 24}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 14, &#x27;covered&#x27;: 68}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 452, &#x27;no knowledge&#x27;: 1}}
+   facts: 763 {&#x27;cited&#x27;: 70, &#x27;setting&#x27;: 206, &#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 73, &#x27;observation&#x27;: 154, &#x27;derived&#x27;: 108, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | quantity other: 41
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 8, &#x27;activity&#x27;: 75, &#x27;cited&#x27;: 22, &#x27;entity&#x27;: 31} | activities: {&#x27;deposition&#x27;: 15, &#x27;simulation&#x27;: 11, &#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 48} | comparisons: {&#x27;series&#x27;: 7, &#x27;replicate&#x27;: 1} | facts directly under the paper: 154 {&#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 1, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 9, &#x27;facts, no values&#x27;: 23}
+   numbers in text reaching a fact: 238/287 (83%)
+   numbers in table reaching a fact: 398/402 (99%)
+== mat22 10.1021_acs.chemmater.2c01154: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 11}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 1}, &#x27;heading&#x27;: {&#x27;covered&#x27;: 1, &#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 17}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 22, &#x27;covered&#x27;: 89}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 64}}
+   facts: 732 {&#x27;claim&#x27;: 52, &#x27;cited&#x27;: 35, &#x27;definition&#x27;: 14, &#x27;model&#x27;: 8, &#x27;observation&#x27;: 313, &#x27;setting&#x27;: 251, &#x27;derived&#x27;: 4, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | quantity other: 38
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 12, &#x27;cited&#x27;: 23, &#x27;activity&#x27;: 249, &#x27;entity&#x27;: 54} | activities: {&#x27;recipe&#x27;: 5, &#x27;deposition&#x27;: 54, &#x27;measurement&#x27;: 189, &#x27;anneal&#x27;: 1} | comparisons: {&#x27;grid&#x27;: 1, &#x27;series&#x27;: 11} | facts directly under the paper: 120 {&#x27;claim&#x27;: 50, &#x27;cited&#x27;: 1, &#x27;definition&#x27;: 14, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 16, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 679/756 (90%)
+   numbers in table reaching a fact: 65/65 (100%)
+== gre23 10.1116_6.0003182: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 8}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 15}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 20}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 39, &#x27;covered&#x27;: 61}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 52}}
+   facts: 396 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 40, &#x27;setting&#x27;: 89, &#x27;definition&#x27;: 16, &#x27;derived&#x27;: 31, &#x27;observation&#x27;: 89, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 18, &#x27;identity&#x27;: 3} | quantity other: 28
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 41, &#x27;cited&#x27;: 17, &#x27;comparison&#x27;: 1, &#x27;entity&#x27;: 18} | activities: {&#x27;deposition&#x27;: 4, &#x27;recipe&#x27;: 1, &#x27;simulation&#x27;: 1, &#x27;measurement&#x27;: 35} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 133 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 3, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 1, &#x27;identity&#x27;: 3} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 14, &#x27;facts, no values&#x27;: 6}
+   numbers in text reaching a fact: 548/599 (91%)
+   numbers in table reaching a fact: 64/64 (100%)
+== ela03 10.1021_cm0303080: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 7}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13, &#x27;no knowledge&#x27;: 1}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21, &#x27;no knowledge&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 80}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 24, &#x27;no knowledge&#x27;: 1}}
+   facts: 469 {&#x27;setting&#x27;: 277, &#x27;claim&#x27;: 37, &#x27;cited&#x27;: 18, &#x27;model&#x27;: 57, &#x27;observation&#x27;: 38, &#x27;definition&#x27;: 10, &#x27;caveat&#x27;: 15, &#x27;derived&#x27;: 17} | quantity other: 39
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 46, &#x27;entity&#x27;: 34, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 8} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 17, &#x27;deposition&#x27;: 14, &#x27;simulation&#x27;: 14} | comparisons: {&#x27;series&#x27;: 8} | facts directly under the paper: 72 {&#x27;claim&#x27;: 37, &#x27;cited&#x27;: 11, &#x27;caveat&#x27;: 15, &#x27;definition&#x27;: 9} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 11, &#x27;facts, no values&#x27;: 10, &#x27;no knowledge&#x27;: 2}
+   numbers in text reaching a fact: 373/561 (66%)
+   numbers in table reaching a fact: 21/21 (100%)
+== gor03 10.1002_cvde.200390005: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 15}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 10}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 8, &#x27;covered&#x27;: 56}}
+   facts: 133 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 8, &#x27;cited&#x27;: 6, &#x27;model&#x27;: 21, &#x27;observation&#x27;: 11, &#x27;derived&#x27;: 10, &#x27;setting&#x27;: 52, &#x27;caveat&#x27;: 7} | quantity other: 15
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 6, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 1} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 5, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 32 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 7, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 2, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 135/206 (66%)
+   numbers in table reaching a fact: 0/0 (0%)
+== yli18 10.1063_1.5028178: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 46}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 11}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 6}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 72}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 41, &#x27;covered&#x27;: 79}}
+   facts: 216 {&#x27;claim&#x27;: 13, &#x27;setting&#x27;: 63, &#x27;derived&#x27;: 15, &#x27;cited&#x27;: 5, &#x27;model&#x27;: 67, &#x27;definition&#x27;: 38, &#x27;observation&#x27;: 7, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 16
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 12, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 6, &#x27;simulation&#x27;: 2} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 62 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 38, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 3, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 92/269 (34%)
+   numbers in table reaching a fact: 15/38 (39%)
+== gao15 10.1116_1.4903941: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 9}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 14}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 28, &#x27;covered&#x27;: 38}}
+   facts: 175 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 8, &#x27;observation&#x27;: 44, &#x27;definition&#x27;: 5, &#x27;setting&#x27;: 92, &#x27;derived&#x27;: 6, &#x27;caveat&#x27;: 7} | quantity other: 10
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 25, &#x27;entity&#x27;: 15, &#x27;cited&#x27;: 4, &#x27;comparison&#x27;: 5} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 15, &#x27;deposition&#x27;: 9} | comparisons: {&#x27;series&#x27;: 5} | facts directly under the paper: 27 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 2, &#x27;definition&#x27;: 5, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 13, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 107/222 (48%)
+   numbers in table reaching a fact: 0/0 (0%)
+== art19 10.1021_acs.jpcc.9b08176: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 14}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 5}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 32}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 7, &#x27;covered&#x27;: 6}}
+   facts: 166 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 14, &#x27;model&#x27;: 22, &#x27;definition&#x27;: 16, &#x27;setting&#x27;: 50, &#x27;observation&#x27;: 36, &#x27;derived&#x27;: 7, &#x27;caveat&#x27;: 8} | quantity other: 5
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 22, &#x27;entity&#x27;: 12, &#x27;cited&#x27;: 9, &#x27;comparison&#x27;: 4} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 16, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 4} | facts directly under the paper: 37 {&#x27;claim&#x27;: 13, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 8} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;facts, no values&#x27;: 4, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 161/234 (69%)
+   numbers in table reaching a fact: 38/38 (100%)
+== yim22 10.1039_d1cp04758b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 31}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 21}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 27, &#x27;covered&#x27;: 88}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 42, &#x27;covered&#x27;: 334}}
+   facts: 517 {&#x27;model&#x27;: 215, &#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62, &#x27;derived&#x27;: 84, &#x27;setting&#x27;: 67} | quantity other: 26
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 7, &#x27;entity&#x27;: 68, &#x27;comparison&#x27;: 15} | activities: {&#x27;simulation&#x27;: 7} | comparisons: {&#x27;series&#x27;: 14, &#x27;replicate&#x27;: 1} | facts directly under the paper: 151 {&#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;stated values only&#x27;: 19, &#x27;facts, no values&#x27;: 4}
+   numbers in text reaching a fact: 201/551 (36%)
+   numbers in table reaching a fact: 194/280 (69%)
+== hei24 10.1039_d3cp05639b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 9}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 16}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 59}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 4, &#x27;covered&#x27;: 88}}
+   facts: 440 {&#x27;model&#x27;: 189, &#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;derived&#x27;: 16, &#x27;setting&#x27;: 172, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 36
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 1, &#x27;entity&#x27;: 83, &#x27;comparison&#x27;: 24} | activities: {&#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 24} | facts directly under the paper: 62 {&#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 31}
+   numbers in text reaching a fact: 132/226 (58%)
+   numbers in table reaching a fact: 31/61 (51%)
+== mat23 10.1116_6.0002993: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 23}}
+   facts: 136 {&#x27;claim&#x27;: 13, &#x27;observation&#x27;: 51, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 6, &#x27;setting&#x27;: 54, &#x27;derived&#x27;: 4, &#x27;identity&#x27;: 2, &#x27;caveat&#x27;: 5} | quantity other: 22
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 30, &#x27;entity&#x27;: 14, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 7} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 27} | comparisons: {&#x27;series&#x27;: 7} | facts directly under the paper: 18 {&#x27;claim&#x27;: 13, &#x27;caveat&#x27;: 5} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 18, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 209/348 (60%)
+   numbers in table reaching a fact: 0/0 (0%)
+== zou23 10.1116_6.0002804: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 34, &#x27;covered&#x27;: 37}}
+   facts: 124 {&#x27;setting&#x27;: 47, &#x27;claim&#x27;: 19, &#x27;observation&#x27;: 45, &#x27;cited&#x27;: 6, &#x27;derived&#x27;: 1, &#x27;caveat&#x27;: 6} | quantity other: 6
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 23, &#x27;entity&#x27;: 8, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 20} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 25 {&#x27;claim&#x27;: 19, &#x27;caveat&#x27;: 6} | claims without links: 0
+   panels: {&#x27;facts, no values&#x27;: 19, &#x27;stated values only&#x27;: 4}
+   numbers in text reaching a fact: 218/303 (72%)
+   numbers in table reaching a fact: 0/0 (0%)
+exit 1
+</pre>
+<h2>kb/schema/CODEBOOK.md, whole</h2><p>kb/schema/CODEBOOK.md</p>
+<pre>&lt;!-- GENERATED by psed_v2/ontology/export.py (P143); do not edit. ontology version 1, sha256 5a38c86ccd1f050a60973418fe78dfe80235c5cb905e6e04b7770d739e5b4c99 --&gt;
+# Codebook
+
+## a. Tree model (sources: kb/pilot/lists.py lines 122-125, NODE_TYPES / ACTIVITY_KINDS / COMPARISON_KINDS / IDENTITY_KINDS; TERMS; kb/pilot/facts.py retree() docstring)
+
+lists.py:
+
+```
+tree rows (stage 3): the paper, activities (something done, with settings: kind from ACTIVITY_KINDS, order when several apply to one
+entity, how stated or inferred) and entities (a physical thing or its state: a specimen, a piece cut from it, a position, a model
+run; how stated or inferred). The tree is physical provenance only: paper -&gt; recipe -&gt; deposition -&gt; entity -&gt; later activities -&gt;
+facts. The authors&#x27; comparison intent is a fact of type comparison (kind, the varied quantity, links = purpose + members), not a parent.
+```
+
+- NODE_TYPES: paper, activity, entity
+- ACTIVITY_KINDS: recipe, deposition, anneal, plasma_treatment, measurement, simulation
+- COMPARISON_KINDS: series, grid, replicate
+- IDENTITY_KINDS: different, not_stated, same
+
+facts.py retree() (the placement rule):
+
+```
+Rebuild a paper&#x27;s stage-3 tree under the activity/entity model from the old placement (process, runs, groups):
+paper -&gt; recipe activity (the old process) -&gt; deposition activities -&gt; entities -&gt; measurement activities -&gt; facts.
+  deps:  {dep_id: dict(statement, label, how, evidence[, parent, kind])}: the deposition (or other) activities to create; parent
+         defaults to the recipe.
+  ents:  {old_run_id: dict(dep, ent, parent, statement, label, how, evidence[, via])}: each old run maps to an activity `dep`
+         (its settings go there) and, unless ent is None (the run was itself a deposition), to an entity `ent` under `parent`
+         (a deposition or another entity: a piece); `via` = (activity id, kind) puts the run&#x27;s measurement activities under a
+         later treatment activity of the entity (an anneal).
+  sims:  {old_run_id: dict(act, ent, parent, statement, label, evidence)}: a simulation activity with its model-run entity.
+  group_facts_to: {group_id: node_id}: facts under that group move to the node (a group&#x27;s shared inputs to a simulation activity,
+         a cell group&#x27;s ratio setting to its deposition); drop_groups: group rows deleted (their members merged into one entity).
+  extra: rows to add as (id, type, statement, parent, kw).
+A setting with a measurement method, or any observation, derived or model fact under a run, goes under the entity&#x27;s
+measurement activity of that method (&lt;key&gt;:meas:&lt;entity&gt;:&lt;method&gt;; &quot;measurement&quot; when the fact names none); a setting without
+one goes to the run&#x27;s activity, or to the entity itself when several entities share that activity (the per-sample settings of
+one run that coated three samples: an entity&#x27;s own settings are its properties and count in its condition vector). Shared settings and observations under the old process with a measurement method go to
+&lt;key&gt;:method:&lt;method&gt; (a measurement activity under the paper); the rest stay in the recipe. Group rows survive with
+parent = paper and links = purpose + members (old member runs mapped to their entities or activities); the old process and run
+rows are deleted.
+```
+
+Terms:
+
+- **run**: one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure. (lists.py TERMS)
+- **specimen**: one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run. (lists.py TERMS)
+- **input entity**: a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a deposition activity&#x27;s inputs. (lists.py TERMS)
+- **model run**: one set of inputs of a simulation whose result the paper reports (a curve, a table row). (lists.py TERMS)
+- **series / replicate / grid (comparisons)**: never a parent and never asked of the extractor; the compiler derives them from the condition vectors of the experiment units — series: members differ in exactly one quantity; replicate: in none; grid: in two. A name the authors give such a set (&quot;Series A&quot;) is kept as its label. (lists.py TERMS)
+- **piece**: &quot;a piece cut from it&quot; (lists.py); &quot;a deposition or another entity: a piece&quot; (facts.py retree())
+- **measurement activity**: &quot;goes under the entity&#x27;s measurement activity of that method (&lt;key&gt;:meas:&lt;entity&gt;:&lt;method&gt;; &quot;measurement&quot; when the fact names none)&quot; (facts.py retree())
+- **simulation**: &quot;a simulation activity with its model-run entity&quot; (facts.py retree())
+
+## b. Layouts (source: ontology/export.py P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS: P143 definitions)
+
+Table layouts:
+
+- **row_per_unit**: Each row is one experiment unit (a run, a specimen or a model run); the columns are its conditions and results.
+- **column_per_unit**: Each column is one experiment unit; the rows are its conditions and results.
+- **cell_per_unit**: Each cell is one experiment unit: its row and column headers are its conditions, the cell holds its result.
+- **not_units**: The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values).
+
+Panel layouts:
+
+- **curve_per_unit**: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- **panel_one_unit**: The whole panel is one experiment unit; its curves are several results of one measurement or one model run. Example: an EDS panel = one specimen, its curves one measurement&#x27;s results per element.
+- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+
+## c. Record types, stances, NK reasons, the equation rule (sources: kb/extract/pass1_elements.py RULES; kb/pilot/lists.py STANCES and its comment; P143 equation rule in ontology/export.py)
+
+Record types:
+
+- setting: a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).
+- observation: a measured result on a specimen.
+- derived: a number the authors computed from their data (fit parameters, values derived in a table).
+- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
+  a definition.
+- definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
+- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and
+  stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation
+  is a claim, never NK.
+- caveat: a limitation or assumption the authors state about their own method or data (not a claim).
+- cited: a value or statement the paper attributes to another work (not a setting).
+
+Stances (asserted, hedged, open, limitation): &quot;likely&quot;, &quot;may&quot; -&gt; hedged; &quot;cannot be excluded&quot;, &quot;further work&quot; -&gt; open; a stated shortcoming of the study or method -&gt; limitation; asserted: stated as a finding, without hedging words (P143b)
+
+
+NK reasons:
+
+- Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
+  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
+  boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
+  recorded from another element; no_knowledge: the element states nothing the form can hold.
+
+Equation rule:
+
+- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
+  a definition.
+- variables (models and definitions): each symbol -&gt; its quantity id, or null when no id fits.
+- Symbol meanings come from the paper&#x27;s symbol table and the paragraphs around the equation. (P143)
+
+## d. Quantities (sources: ontology/ontology.yaml entries; kb/pilot/lists.py SETTING_QUANTITIES, SUBSTANCE_SCOPED, DEFAULT_DEFINITION)
+
+| id | name | definition | aliases | canonical unit | dimension | note | role | setting-only | substance-scoped | default definition key |
+|---|---|---|---|---|---|---|---|---|---|---|
+| process_mode | process mode | Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: three types of ALD processes). | ALDMethod |  | categorical |  | condition |  |  |  |
+| material | material | The material being deposited; value is a species id. | MaterialDeposited; Material; Deposited material; Film (process) |  | categorical |  | condition | yes |  |  |
+| reactant_A | reactant A | The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I &#x27;Reactant A&#x27;); value is a species id. | Precursor; Reactant A; first reactant |  | categorical |  | condition |  |  |  |
+| reactant_B | reactant B | The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I &#x27;Reactant B&#x27;); value is a species id. | CoReactant; Reactant B; second reactant |  | categorical |  | condition |  |  |  |
+| carrier_gas | carrier gas | The inert gas in which the reactants are entrained and which purges the reactor between reactant pulses (Cremers 2019, Sec. II C; Popov 2025, Sec. I); value is a species id. | CarrierGas; carrier gas |  | categorical |  | condition | yes |  |  |
+| reactor | reactor | Name and manufacturer of the reactor, as one string. | Reactor |  | categorical |  | condition | yes |  |  |
+| delivery_method | delivery method | Method of delivering the precursor and co-reactant to the reaction chamber. | DeliveryMethod |  | categorical |  | condition |  |  |  |
+| crystallinity | crystallinity | Whether the film is amorphous or crystalline. | Crystallinity |  | categorical |  | output |  |  |  |
+| reactor_type | reactor | Reactor class by working pressure regime: pump-type, flow-type or atmospheric-pressure (Cremers 2019, Sec. II C, Fig. 3). | ALD reactor types |  | categorical |  | condition | yes |  |  |
+| plasma_configuration | plasma configuration | Plasma configuration of a PE-ALD process: capacitive, inductive, remote or radical enhanced (Cremers 2019, Table IV). | plasma configuration |  | categorical |  | condition |  |  |  |
+| structure | structure | The test structure or substrate on which conformality is quantified (Cremers 2019, Sec. III, Table I &#x27;Structure&#x27;; Tables II-IV &#x27;Substrate&#x27;); value is a structure id. | Substrate; Structure; LHAR type |  | categorical |  | condition | yes |  |  |
+| deposition_temperature | temperature | The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column &#x27;T&#x27;). | Deposition temperature; substrate temperature; Temperature (°C); T (°C); Temperature (K) | °C | temperature |  | condition | yes |  |  |
+| process_pressure | pressure | The total pressure within the reactor during deposition. | process pressure; Chamber pressure; Pressure (mbar); total pressure; gas pressure | Pa | pressure |  | condition | yes |  |  |
+| growth_per_cycle | growth per cycle | The amount of material deposited on the surface after each ALD cycle, here expressed as thickness per cycle (Cremers 2019, Sec. I). | GrowthPerCycle; growth per cycle; GPC; Thickness/cycles S/N (nm); SI/N (GPCI); SIIb/N (GPCIIb); Film growth per cycle | nm/cycle | length_per_cycle |  | output |  |  | over=run |
+| nucleation_period | nucleation period | Number of initial ALD cycles before steady growth, measured in cycles. | nucleationPeriod | cycle | count |  | output |  |  |  |
+| pulse_time | pulse | Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time. | DosingTime; pulse time; Pulse length (s); Length of the reactant pulse; TMA pulse; plasma pulse length; pulse length; t_1 | s | time |  | condition | yes | yes |  |
+| purge_time | purge | Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I). | PurgeTime; purge time; Purge; pump time | s | time |  | condition | yes |  |  |
+| refractive_index | refractive index | Refractive index of the film. | RefractiveIndex | 1 | dimensionless |  | output |  |  |  |
+| absorption_coefficient | absorption coefficient | Optical absorption coefficient of the film: attenuation of light intensity per unit length. | AbsorptionCoefficient | 1/m | inverse_length |  | output |  |  |  |
+| resistivity | resistivity | Electrical resistivity of the film. | Resistivity | Ω·m | resistivity |  | output |  |  |  |
+| carrier_density | carrier concentration | Number of charge carriers per unit volume of the film. | CarrierDensity; majority carrier (hole) concentration | 1/m3 | number_density |  | output |  |  |  |
+| mobility | carrier mobility | Carrier mobility in the film. | Mobility; Hall mobility | m2/(V·s) | mobility |  | output |  |  |  |
+| thickness_nonuniformity | nonuniformity | Relative variation of film thickness between positions along a planar substrate; a uniform film has equal thickness at each position along a planar substrate (Cremers 2019, Sec. II A). | Variation | 1 | dimensionless |  | output |  |  |  |
+| aspect_ratio | aspect ratio | Aspect ratio of the structure, AR = L/w, with L the depth and w the width of the structure (Cremers 2019, Sec. II G, Eq. 11). | AspectRatio; aspect ratio; Max. AR; structural aspect ratio; L/d | 1 | dimensionless |  | condition |  |  |  |
+| coated_aspect_ratio | coated aspect ratio | The (equivalent) aspect ratio reached by the coating: equal to that of the structure for complete coverage, otherwise calculated from PD50% (Cremers 2019, Sec. II H; Tables II-IV). | coated EAR; coated (E)AR; x̃50% | 1 | dimensionless |  | output |  |  |  |
+| film_density | film density | Mass density of the film. | FilmDensity; film density; Density of the condensed phase; rho | g/cm3 | density |  | output |  |  |  |
+| partial_pressure | partial pressure | Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3). | Partial pressure of reactant A; Input partial pressure of reactant A; Pressure pA (Pa); pA0 (Pa); pO (mbar); Partial pressure of active species; p_A0; p_i; vapour pressure | Pa | pressure |  | condition |  | yes |  |
+| exposure | exposure | The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D). | reactant exposure; Pt | Pa·s | exposure |  | condition |  | yes |  |
+| source_temperature | source temperature | Temperature at which the precursor source (bubbler, canister) is held (Popov 2025, Sec. IV). | source temperature | °C | temperature |  | condition | yes | yes |  |
+| film_thickness | thickness | Thickness of the deposited film at a position; as a function of depth into the structure it is the thickness profile (Cremers 2019, Sec. II H, Fig. 7). | Film thickness (nm); Film thickness S (nm); Thickness (nm); film thickness; Thickness outside SI (nm); Initial thickness SIIb (nm); interface layer thickness; onset of steady growth | nm | length |  | output |  |  |  |
+| penetration_depth | penetration depth | The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b). | PD50%; x50% (PD50%); Penetration depth xp (µm); Half-thickness penetration depth; 50% thickness penetration depth; x_50% (PD^50%) | µm | length |  | output |  |  |  |
+| equivalent_aspect_ratio | equivalent aspect ratio | The aspect ratio of a hypothetical cylindrical hole that would require the same reactant exposure dose as the feature of interest (Cremers 2019, Sec. II G). Recorded as reported, never computed. | EAR; equivalent aspect ratio | 1 | dimensionless |  | condition |  |  |  |
+| step_coverage | step coverage | The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a). | step coverage; SC | 1 | dimensionless |  | output |  |  |  |
+| initial_sticking_coefficient | initial sticking coefficient | The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5). | initial sticking coefficient; lumped sticking coefficient; cTMA; cH2O; sticking coefficient; c; c_ext | 1 | dimensionless |  | model_parameter |  |  |  |
+| recombination_probability | recombination probability | The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII). | recombination probability; recombination coefficient | 1 | dimensionless |  | model_parameter |  |  |  |
+| surface_coverage | surface coverage | The fraction of covered surface sites, θ (Cremers 2019, Sec. II E, Eqs. 5-9). | Surface coverage (θ); Surface coverage; fraction of covered sites | 1 | dimensionless |  | output |  |  |  |
+| feature_width | feature width | The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole. | Design channel height H (nm); Channel height (nm); Height of the channel; H (nm); LHAR H (µm); opening height; channel gap height; minor axis; h; pore diameter (nm); targeted channel height H; Design channel height H; LHAR H; d_pore; channel height; H (channel height) | µm | length | For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent). | condition |  |  |  |
+| feature_depth | feature depth | The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure. | L (mm); Length of the channel; Lateral length of the channel (mm); channel length L; lateral length L; l/2; cavity length; channel length; L (channel length) | µm | length | For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent). | condition |  |  |  |
+| feature_extent | feature extent | The length z of the feature along the third dimension, perpendicular to w and L (Cremers 2019, Sec. II G, Fig. 6): channel width of a lateral structure, trench length of a vertical trench. | Width of the channel; channel width W; major axis; channel width; W (channel width) | µm | length | For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent). | condition |  |  |  |
+| cycle_number | cycles | Number of ALD cycles applied in a deposition. | ALD cycles N; Number of cycles; Cycles; number of ALD cycles; ALD cycles | cycle | count |  | condition | yes |  |  |
+| plasma_power | plasma power | Power delivered to the plasma source during the plasma step (the RF power of Cremers 2019, Sec. IV C). | plasma power; Power (W); RF power | W | power |  | condition |  |  |  |
+| gas_flow_rate | gas flow | Flow rate of a gas into the reactor. | Flow (sccm); flow rate; gas flow | sccm | gas_flow |  | condition | yes | yes |  |
+| normalized_thickness | normalized thickness | Film thickness divided by a reference thickness: the thickness at the feature entrance, on the planar surface, or an assumed saturated thickness. | Normalized thickness (-); Normalized deposition thickness; Type 1 normalized saturation profile; normalized thickness | 1 | dimensionless |  | output |  |  |  |
+| adsorption_equilibrium_constant | adsorption equilibrium constant | Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13). | Adsorption equilibrium constant; K (Pa-1); Adsorption equilibrium constant (1/Pa) | 1/Pa | inverse_pressure |  | model_parameter |  |  |  |
+| saturation_growth_per_cycle | saturation growth per cycle | The equilibrium thickness of layer growth in one cycle at saturation, i.e. at high reactant exposure (Ylilammi 2018, Eq. 46); a model parameter, distinct from the observed growth_per_cycle. | Saturation growth in cycle; gpcsat (pm); Saturation growth in cycle (nm) | nm/cycle | length_per_cycle |  | model_parameter |  |  |  |
+| distance | distance from the entrance | Position along the direction of reactant diffusion, measured from the feature entrance, positive inward and negative outside the feature. | Distance inside the channel x (µm); Distance x (µm); Location x (µm); Location (µm); Depth (m); Distance [µm]; Distance from the beginning of the channel | µm | length |  | coordinate |  |  |  |
+| dimensionless_distance | depth over height | Distance from the feature entrance divided by the feature width, x/w (Yim 2020: x̃ = x/H). | Dimensionless distance x̃; dimensionless distance | 1 | dimensionless |  | coordinate |  |  |  |
+| time | time in the pulse | Time elapsed since the start of a reactant pulse. | Time (s); time t | s | time |  | coordinate |  |  |  |
+| precursor_purity | purity | Purity of a reagent as supplied, as a percentage (gre23: DEZ min. 95%; mat22: the Mo precursor and the plasma gases). | purity; min. 95%; 99.5% | % | dimensionless |  | condition | yes | yes |  |
+| plasma_gas_ratio | H2 flow ratio | The flow of one feed gas of the plasma step over the summed flows of the reactive feed gases (mat22 Eq. 1: the H2 flow ratio H2/(H2 + H2S)); relative_to all_gases divides by the whole feed including the carrier (a transform). | H2 flow ratio; H2 ratio | 1 | dimensionless |  | condition | yes | yes | relative_to=reactive_gases |
+| cycle_time | cycle time | The duration of one ALD cycle: the sum of its pulse, hold and purge times. | cycle time; one full ALD cycle takes | s | time |  | condition | yes |  |  |
+| substrate | substrate | The material of the growth surface, a species id (Cremers 2019 Table VII column &#x27;Surface&#x27;; proposal substrate_material accepted in Sec. 18.9); the stack behind it (an oxide on silicon, a foil) stays in the setting&#x27;s statement. | growth surface |  | categorical |  | condition | yes |  |  |
+| mass_gain | mass gain | Mass gained by a specimen in a deposition, relative to its initial or final mass (the relative_to qualifier), as a percentage. | mass gain; Mass gain (%) | % | dimensionless |  | output |  |  | relative_to=initial_mass |
+| moles_deposited | moles deposited per run | Moles of film material deposited in one run, from the deposited moles per cycle times the cycle number (a transform; gre23 mass balance). | moles deposited | mmol | amount |  | output |  |  |  |
+| moles_from_mass_gain | moles from mass gain | Moles of film material deposited in one run from the gravimetric mass gain and the material&#x27;s molar mass (a transform; the second route of gre23&#x27;s mass balance). | moles from mass gain | mmol | amount |  | output |  |  |  |
+| deposited_moles_per_cycle | solid deposited per cycle | Moles of solid deposited per ALD cycle, from the pressure trace of the reactant half-reaction (gre23 Δn_s, Eq. 2). | Δn_s; solid deposited per cycle | µmol | amount |  | output |  |  |  |
+| atoms_per_cycle | metal atoms per cycle | Metal atoms deposited per unit area per cycle, the amount-based growth per cycle (Cremers 2019 Sec. I allows the GPC as an areal density; proposal mass-based growth per cycle accepted in Sec. 18.9); from the thickness GPC and the film density, or from a pressure trace. | atoms per cycle; metal atoms per cycle; Mo atoms deposited per cycle | nm-2 | areal_density |  | output |  |  | over=run |
+| coating_mass_fraction | coating mass fraction | The coating&#x27;s share of the coated specimen&#x27;s mass: mass gain / (1 + mass gain) with the gain relative to the initial mass (a transform; not a phase fraction). | coating mass fraction | % | dimensionless |  | output |  |  |  |
+| shell_volume_fraction | coating volume fraction | The coating&#x27;s share of a porous compact&#x27;s volume for spherical particles of the stated diameter and coating thickness (a transform). | coating volume fraction | % | dimensionless |  | output |  |  |  |
+| deposition_rate | thickness per hour | Film thickness grown per hour: the growth per cycle over the cycle time (a transform). | deposition rate; thickness per hour | nm/h | length_per_time |  | output |  |  |  |
+| gas_moles_per_cycle | gas released per cycle | Moles of gas released per ALD cycle in a half-reaction, from the pressure rise in a closed chamber (gre23 Δn_g, Eq. 1). | Δn_g; gas released per cycle | µmol | amount |  | output |  |  |  |
+| reaction_stoichiometry | gas-to-solid ratio | Moles of gas released per mole of solid deposited in a half-reaction: the gas-to-solid ratio ȳ of gre23 (x ligands released per precursor). | ȳ; gas-to-solid ratio; x; ȳ (printed ν̄ in the text layer) | 1 | dimensionless |  | output |  |  |  |
+| pressure_rise | pressure rise | The rise of chamber pressure during a reactant hold in a closed chamber, δp of gre23; with level maximum its peak value. | δp; pressure rise; δp_max; δp maximum | Torr | pressure |  | output |  |  |  |
+| pressure_rate | terminal pressure slope | The slope of the chamber pressure at the end of a reactant hold, the terminal slope TS of gre23: positive for gas-producing processes, negative when leaks dominate. | TS; terminal slope; terminal pressure slope | mTorr/min | pressure_per_time |  | output |  |  |  |
+| time_to_maximum | time to pressure maximum | The time from the start of a reactant hold to the pressure maximum, t_max of gre23. | t_max; time to pressure maximum; time to δp maximum | min | time |  | output |  |  |  |
+| porosity | porosity | The pore volume fraction of a porous body, before (stage initial) or after (stage final) the deposition, relative to the total volume. | porosity; φ_i; φ_f; Final porosity, φ_f (%) | % | dimensionless |  | output |  |  | relative_to=total_volume |
+| pore_density | pore density | The number of pores per unit area of a porous membrane&#x27;s surface. | pore density; pores per cm2 | cm-2 | areal_density |  | condition |  |  |  |
+| tortuosity | tortuosity | The ratio of the path length through a porous body&#x27;s pores to the straight distance, a factor on its effective diffusivity. | tortuosity; τ | 1 | dimensionless |  | condition |  |  |  |
+| pore_volume | pore volume | The volume of the open pores of a porous material per unit mass. | pore volume; V_p | cm3/g | volume_per_mass |  | condition |  |  |  |
+| fill_fraction | channel filled | The share of a channel&#x27;s height filled by the film on its two walls at the end of a run (yim20: 2 S_IIb / H). | channel filled; coated length fraction | % | dimensionless |  | output |  |  |  |
+| roughness | roughness | Root-mean-square surface roughness of the film from AFM (mat22 Rq). | Rq; roughness; RMS roughness; root-mean-square roughness | nm | length |  | output |  |  |  |
+| binding_energy | binding energy | The binding energy of an XPS core-level component of the film, which names its chemical state. | BE; binding energy; Mo 3d5/2 BE; S 2p3/2 BE; BE shift below S2-; Ga 2p3/2; S 2s | eV | energy |  | output |  |  |  |
+| crystallite_size | crystallite size | The coherent crystallite size of a phase from the width of its diffraction peaks (gre23, Rietveld) or from microscopy (mat22). | crystallite size; grain size; nanocrystallite width; corundum grain size; ZnO (zincite) Crystallite size (nm); Zn (metallic) Crystallite size (nm) | nm | length |  | output |  |  |  |
+| sheet_resistance | sheet resistance | Resistivity over film thickness, the resistance of a square of the film (a transform; mat22 measures it by four-point probe and reports resistivity). | sheet resistance; R_sheet | Ω/sq | resistance |  | output |  |  |  |
+| density_relative_to_bulk | density relative to bulk | The film&#x27;s mass density over the bulk density of the same material, as a percentage (a transform). | ρ/ρ_bulk; density relative to bulk | % | dimensionless |  | output |  |  |  |
+| phase | phase | Whether a named phase (the species qualifier) was detected in the film by the stated method: detected or not detected (P15). | phase |  | categorical |  | output |  |  |  |
+| annealing_temperature | anneal temperature | The temperature of a post-deposition anneal (one pilot paper; Sec. 7 keeps it native, so stored as an attribute until a second paper needs it). | annealing temperature; T_anneal; annealing temperature in air | °C | temperature |  | condition | yes |  |  |
+| saturation_density | saturation density | Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs). | q; saturation density; q_sat; S_Hf; S_O; Γ; σ | nm-2 | areal_density |  | model_parameter |  |  |  |
+| probe_resolution | probe spot | The lateral size of a measurement probe: the reflectometer spot (yim20) or the EDS line width (gre23) (an instrument setting, Sec. 4). | spot size; spot | µm | length |  | condition | yes |  |  |
+| objective_magnification | objective | The magnification of the reflectometer objective (yim20 ×5, ×10, ×50) (an instrument setting, Sec. 4). | objective; magnification; Reflectometer magnification | 1 | dimensionless |  | condition | yes |  |  |
+| pillar_layout | pillar layout | The named pillar layout of a PillarHall chip design (yim20 v1a, v1b, v2a) (an equipment detail, Sec. 4). | pillar layout |  | categorical |  | condition | yes |  |  |
+| raman_shift | Raman shift | The abscissa of a Raman spectrum (a signal axis, Sec. 4). | Raman shift; Raman shift (cm-1) | cm-1 | wavenumber |  | coordinate |  |  |  |
+| knudsen_number | Knudsen number | The mean free path of the reactant over the characteristic size of the feature (the channel height, the pore or particle diameter): Kn &gt;&gt; 1 is Knudsen (free-molecular) flow (Cremers 2019 Sec. V C; yim20 Sec. D). Promoted from &#x27;derived dimensionless groups&#x27; (Sec. 4) by decision D2. | Knudsen number; Kn | 1 | dimensionless |  | condition |  |  |  |
+| mean_free_path | mean free path | The mean free path of a reactant molecule in the gas at the deposition temperature and its partial pressure, k_B T / (sqrt(2) pi d^2 p) (yim20 Sec. D). Promoted from &#x27;molecule properties&#x27; (Sec. 4) by decision D2. | mean free path; λ | µm | length |  | condition |  |  |  |
+| front_slope | front slope | The slope of a saturation profile at its half-thickness point, as thickness per cycle or as normalized thickness per unit of dimensionless distance (yim20 Table 1); an attribute of a profile, stored as data, not a concept (Sec. 18.7). | Slope dθ/dx̃; Slope d(S/N)/dx̃; front slope | 1 | dimensionless |  | output |  |  |  |
+| fit_r2 | fit R² | The coefficient of determination of a fit (yim20 Table 1, the linear fit of the front); fit quality, an attribute of a value, not a concept (Sec. 18.7). | R2; R²; Linear fitting residual R2; Linear fitting residual R^2 | 1 | dimensionless |  | output |  |  |  |
+| signal_intensity | signal | A detector signal against position or energy (an EDS, Raman, XPS or X-ray count or an arbitrary-unit intensity); a signal without a quantity (Sec. 4), stored as the trace it is, not a concept (Sec. 18.7). | Intensity; a.u.; counts; Intensity (Arb. units); Intensity (Normalized to Si); Intensity [a.u.]; Normalized X-ray counts (Zn) |  | signal |  | output |  |  |  |
+| element_fraction | element fraction | The atomic fraction of an element among all atoms of the film counted by the stated method, in at.% (the former composition entry, Sec. 18.3). | at.%; at. %; atomic percent; H content; O content; N content; C content; H (at. %); C (at. %); N (at. %); O (at. %); C after sputtering; O after sputtering | at.% | dimensionless |  | output |  |  |  |
+| element_ratio | element ratio | Atoms of an element per atom of a reference element in the film, as the stated method sees it (mat22&#x27;s S/Mo stoichiometry x in MoSx; H per metal atom), a unitless ratio (Sec. 18.3; absorbs h_per_metal). | S/Mo; S/W; S/Mo ratio; stoichiometry; S/Mo ratio (RBS); S/Mo ratio (XPS); XPS S/Mo ratio | 1 | dimensionless |  | output |  |  |  |
+| phase_fraction | phase fraction | The weight fraction of a named phase (the phase qualifier) among the phases the stated method sees, in wt%; by XRD Rietveld refinement only the crystalline part is counted (relative_to crystalline_phases), which gre23 does not state (not_stated) (Sec. 18.3). | wt%; Wt. %; weight percent; ZnO (zincite) Wt. % | wt% | dimensionless |  | output |  |  | relative_to=crystalline_phases |
+| body_thickness | body thickness | The full thickness of a porous body or membrane between its faces; with two entry sides it is twice the diffusion length L, the depth Cremers measures from the entrance (Cremers 2019 Sec. II G; gre23 Sec. II A: the NPC thickness 2L, L half of it since precursor enters through both faces). Slot of the porous_body class; transform body_thickness = feature_depth × entry_sides. | body thickness; compact thickness; NPC thickness; membrane thickness; film thickness (µm) | mm | length |  | condition |  |  |  |
+| entry_sides | entry sides | Through how many faces of a porous body the reactant enters: one (a body sealed on one side, a feature closed at the bottom) or two (a free-standing compact or membrane open on both faces); the diffusion length L is the body thickness divided by this count (gre23 Sec. II A: L is half the NPC thickness since precursor enters through both the top and the bottom face; Cremers 2019 Sec. II G: L measured from the entrance along the diffusion). Slot of the porous_body class. | entry faces; number of entry sides; faces open to the reactant |  | categorical |  | condition |  |  |  |
+| particle_diameter | particle diameter | The diameter of the particles of a particle compact or bed; the pores between them have about this size, so it stands in for the pore diameter w (Cremers 2019 Sec. II G: the smallest opening; gre23 Sec. II A: d_NP = 100 nm from the powder&#x27;s specific surface area). Slot of the porous_body class. | particle diameter; NP diameter; nanoparticle diameter; d_NP | nm | length |  | condition |  |  |  |
+| specific_surface_area | specific surface area | The surface area of a powder or porous body per unit mass, as measured by gas adsorption (BET); with the material density it gives the particle diameter (gre23 Sec. II A: s = 15 m2/g, the maker&#x27;s BET specification of the BMA15 powder). Slot of the porous_body class. | specific surface area; BET area; BET specific surface area; surface area per mass | m2/g | area_per_mass |  | condition |  |  |  |
+| body_diameter | body diameter | The lateral size of a porous body perpendicular to the diffusion direction: the diameter of a compact or a die (gre23 Sec. II A: pressed in an 11.4 mm die, final NPC diameter 11.43 mm by calipers). Slot of the porous_body class. | body diameter; compact diameter; die diameter; NPC diameter; membrane diameter; diameter | mm | length |  | condition |  |  |  |
+| diffraction_angle | diffraction angle | The diffraction angle 2θ of an X-ray diffractogram: the abscissa of a diffraction pattern, on which the peaks of a phase are read as printed (P84: a peak coordinate). | 2θ (deg.); 2θ (°); diffraction angle; 2theta | ° | angle |  | coordinate |  |  |  |
+| molar_mass | molar mass | The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies. | M_A; M_B; MA; molar mass; reactant molar mass; molar mass of reactant A | g/mol | molar_mass |  | condition |  |  |  |
+| molecule_diameter | molecule diameter | The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density). | d_B; molecular diameter; diameter of molecule A; d_TMA; d_TiCl4 | pm | length |  | condition |  |  |  |
+| knudsen_diffusion_coefficient | knudsen diffusion coefficient | The Knudsen diffusion coefficient D_Kn of the reactant in a feature or pore: wall collisions alone set it, D_Kn = (d_h/3)(8RT/(πM))^1/2 with the hydraulic diameter d_h and the molar mass M; a model parameter of the diffusion-reaction models, varied through the pressure and the geometry. | D_Kn; DKn; Knudsen diffusion coefficient | m2/s | diffusivity |  | model_parameter |  |  |  |
+| effective_diffusion_coefficient | effective diffusion coefficient | The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models. | D_eff; Deff; D_e; De; effective diffusion coefficient | m2/s | diffusivity |  | model_parameter |  |  |  |
+| gas_phase_diffusion_coefficient | gas phase diffusion coefficient | The gas-phase (molecular, bulk) diffusion coefficient D_A of the reactant in the carrier gas, set by intermolecular collisions and so by the total pressure; the continuum limit of the Bosanquet interpolation; a model parameter of the diffusion-reaction models. | D_mi; Dmi; gas-phase diffusion coefficient; molecular diffusion coefficient | m2/s | diffusivity |  | model_parameter |  |  |  |
+| reactant_number_density | reactant number density | The number of reactant molecules per unit gas volume n (n_P0 at the surface of a porous body), the concentration variable of Heikkinen 2024&#x27;s diffusion-reaction equation; a model output along the depth and a model input at the surface. Converts to the partial pressure by the ideal gas law p = n·k_B·T given the temperature (P109). | n_P; n_P0; reactant number density; volumetric reactant number density; number density of the reactant | 1/m3 | number_density |  | output |  |  |  |
+| b_film | metal atoms per film formula unit | b_film is the number of metal atoms in the formula unit of the deposited film | b_film |  | dimensionless |  | model_parameter |  |  |  |
+| wall_temperature | reactor wall temperature | temperature at which the reactor or chamber walls are held during deposition, as distinct from the substrate or table temperature | wall temperature | °C | temperature |  | condition |  |  |  |
+| wavelength_range | measurement wavelength range | wavelength interval covered by an optical measurement (reflectometry, transmittance) | wavelength range | nm | length |  | condition |  |  |  |
+| base_pressure | reactor base pressure | lowest pressure the pumped reactor reaches with no gas flowing (ultimate vacuum), stated before deposition | base pressure | Torr | pressure |  | condition |  |  |  |
+| p_d | desorption probability (per unit time) | desorption probability, P_d | P_d | 1/s | inverse_time |  | model_parameter |  |  |  |
+
+## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)
+
+| key | meaning (meaning, else log) | values | source | log (citation only) |
+|---|---|---|---|---|
+| definition | P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized \| thickness_per_cycle) | definition ids |  |  |
+| step |  | reactant_A; purge_A; reactant_B; purge_B; plasma; hold_A; hold_B; none | Cremers Sec. I four steps; Popov Reactant A/B | plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds |
+| species | the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected | species ids |  |  |
+| gas | the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure | species ids |  |  |
+| element | the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy | element symbols |  |  |
+| reference_element | Sec. 18.3: the denominator atom of an element_ratio | element symbols |  |  |
+| phase | Sec. 18.3: the phase a phase_fraction is of | species ids |  |  |
+| position |  | planar; top; sidewall; bottom; local; entrance; plateau; outside; interface | Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top | local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer |
+| reference |  | top; planar; assumed_saturation; plateau; entrance; maximum; stated; bulk |  | plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8) |
+| level |  | 50%; 80%; front_start; front_end; maximum | Cremers PD50%, PD80% | front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum |
+| basis |  | AR; EAR | Cremers Sec. II G |  |
+| surface | the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3 | material ids |  |  |
+| kind | pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures | set_point; measured; default; option; target; estimated |  |  |
+| by | pilot: what a dimensionless distance is divided by | H; 2H; d; w; lambda; none |  |  |
+| origin | pilot: where a distance is measured from | entrance; top_face; hole_centre; nearer_face; opening_centre |  |  |
+| stage | pilot: before or after the deposition (porosity, channel height) | initial; final |  |  |
+| stat | pilot P1: a spread fact&#x27;s statistic | sd; relative_sd; half_range; tolerance; minimum; maximum |  |  |
+| between | pilot P1: what varies between the repeats of a spread | runs; pieces; position; repeat_measurement; items |  |  |
+| n | pilot P1: the number of repeats | a number or not_stated |  |  |
+| relative_to | pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51) | initial_mass; final_mass; all_atoms; metal_atoms; crystalline_phases; total_volume; reactive_gases; all_gases; not_stated |  |  |
+| over | pilot P5: what a per-cycle value is averaged over | run; first_100_cycles; saturation; not_stated |  |  |
+| mode | pilot P6: a measurement during or after the deposition | in_situ; ex_situ; not_stated |  |  |
+| x | pilot: the abscissa of a curve | quantity ids |  |  |
+| ratio | pilot P17: the plasma_gas_ratio a keyed setting belongs to | a number |  |  |
+| specimen_class | Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis | film; porous_composite |  |  |
+| structure_class | P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class | structure; planar; har_feature; trench; via_hole; lateral_channel; porous_body; nanoparticle_compact; aerogel_monolith; nanopore_membrane |  |  |
+
+Tying rules:
+
+- a spread fact (stat=) without between= and n= (P1) (check.py:339)
+- … without relative_to= (what it is a fraction of; P4) (check.py:318)
+- … without …= (its definition key; P5) (check.py:316)
+- … setting without species= or gas=: which substance it is about lives only in prose (P50) (check.py:94)
+- element_ratio without element= and reference_element= (atoms of what per atom of what; P52) (check.py:320)
+- element_fraction without element= (P52) (check.py:322)
+
+## f. Species, structures, methods, mechanisms, models, kinds (source: ontology/ontology.yaml)
+
+Species and materials:
+
+| id | name | formula | kind | aliases |
+|---|---|---|---|---|
+| tma | TMA | Al(CH3)3 | molecule | TMA; trimethylaluminum; trimethylaluminium; Al(CH3)3; AlMe3; Me3Al; (CH3)3Al |
+| model_reactant | model reactant |  | molecule | model reactant; reactant A (model) |
+| ticl4 | TiCl4 | TiCl4 | molecule | TiCl4; titanium tetrachloride; titanium(IV) chloride |
+| h2o | H2O | H2O | molecule | H2O; water; water vapor |
+| o2 | O2 | O2 | molecule | O2; oxygen; molecular oxygen |
+| o_atom | atomic O | O | atom | atomic O; oxygen radicals; atomic oxygen; O radicals; O atoms |
+| n2 | N2 | N2 | molecule | N2; nitrogen; molecular nitrogen |
+| al2o3 | Al2O3 | Al2O3 | material | Al2O3; alumina; aluminum oxide; aluminium oxide |
+| tio2 | TiO2 | TiO2 | material | TiO2; titania; titanium dioxide; titanium oxide; titanium(IV) oxide |
+| mo_ntbu2_nme22 | Mo(NtBu)2(NMe2)2 | Mo(NtBu)2(NMe2)2 | molecule | Mo(NtBu)2(NMe2)2; (NtBu)2(NMe2)2Mo; bis(tert-butylimido)bis(dimethylamido)molybdenum |
+| w_ntbu2_nme22 | W(tBuN)2(Me2N)2 | W(NtBu)2(NMe2)2 | molecule | W(tBuN)2(Me2N)2; (tBuN)2(Me2N)2W; W(NtBu)2(NMe2)2; bis(tert-butylimido)bis(dimethylamido)tungsten |
+| tdmat | TDMAT | Ti(NMe2)4 | molecule | TDMAT; Ti(NMe2)4; tetrakis(dimethylamido)titanium |
+| dez | DEZ | Zn(C2H5)2 | molecule | DEZ; diethylzinc; ZnEt2; Zn(C2H5)2; Et2Zn |
+| h2s | H2S | H2S | molecule | H2S; hydrogen sulfide; hydrogen sulphide |
+| h2 | H2 | H2 | molecule | H2; hydrogen; molecular hydrogen |
+| ar | argon | Ar | molecule | argon |
+| air | air | air | molecule | air; ambient air |
+| mos2 | MoS2 | MoS2 | material | MoS2; MoSx; molybdenum disulfide; molybdenum sulfide; molybdenum disulphide |
+| ws2 | WS2 | WS2 | material | WS2; tungsten disulfide; tungsten sulfide; tungsten disulphide |
+| tis2 | TiS2 | TiS2 | material | TiS2; titanium disulfide; titanium sulfide; titanium disulphide |
+| zno | ZnO | ZnO | material | ZnO; zincite; zinc oxide |
+| mo | metallic Mo | Mo | material | metallic Mo; Mo metal; molybdenum metal; metallic molybdenum |
+| zn | metallic Zn | Zn | material | metallic Zn; Zn metal; zinc metal; metallic zinc |
+| moo3 | MoO3 | MoO3 | material | MoO3; molybdenum trioxide; molybdenum oxide |
+| si | Si | Si | material | Si; silicon; Si(100); silicon wafer; polysilicon |
+| sio2 | SiO2 | SiO2 | material | SiO2; silicon dioxide; thermal SiO2; fused SiO2; silica; SiO2/Si |
+| glassy_carbon | glassy carbon | C | material | glassy carbon; glassy-carbon |
+| pet | PET | PET | material | PET; poly(ethylene terephthalate); Melinex ST504; PET foil; PET substrate |
+| sicl4 | SiCl4 | SiCl4 | molecule | SiCl4 |
+| hfo2 | HfO2 | HfO2 | material | HfO2; hafnium dioxide; hafnium oxide; hafnia |
+| hf_nme2_4 | Hf(NMe2)4 | Hf(NMe2)4 | molecule | Hf(NMe2)4; TDMAH; hafnium dimethylamide; tetrakis(dimethylamido)hafnium; hafnium dialkylamide |
+| bdeas | BDEAS | BDEAS | molecule | BDEAS; SiH2(N(C2H5)2)2; SiH2(NEt2)2; bis(diethylamino)silane |
+| tdmacph | TDMACpH | TDMACpH | molecule | TDMACpH; HfCp(N(CH3)2)3; HfCp(NMe2)3 |
+| ga2s3 | Ga2S3 | Ga2S3 | material | Ga2S3; gallium sulfide; gallium(III) sulfide |
+| gasx | GaSx | GaSx | material | GaSx; amorphous gallium sulfide |
+| ga2_nme2_6 | Ga2(NMe2)6 | Ga2(NMe2)6 | molecule | Ga2(NMe2)6; hexakis(dimethylamido)digallium; hexakis(dimethyl amido)digallium |
+| mocl2o2 | MoCl2O2 | MoCl2O2 | molecule | MoCl2O2; molybdenum dichloride dioxide; Mo-oxychloride |
+| h_atom | atomic hydrogen | atomic hydrogen | molecule | atomic hydrogen; hydrogen atoms |
+
+Structures:
+
+| id | class | aliases |
+|---|---|---|
+| pillarhall_3 | lateral_channel | PillarHall-3; PillarHall prototype 3; Microscopic rectangular PillarHall-3; PillarHall 3rd generation |
+| macroscopic_lateral_trench | lateral_channel | macroscopic, lateral trench; macroscopic test structures |
+| planar | planar | planar substrate; planar |
+| porous_sphere | porous_body | porous sphere; sphere |
+| porous_slab | porous_body | porous slab; slab |
+| porous_cylinder | porous_body | porous cylinder; cylinder |
+| nanoparticle_compact | nanoparticle_compact | nanoparticle compact; NPC; Al2O3 nanoparticle compact; nanoparticle compacts; NPCs |
+| anodic_alumina_membrane | nanopore_membrane |  |
+| etched_hole_array | via_hole | etched holes; elliptical holes |
+| pillarhall_1 | lateral_channel | microscopic LHAR; LHAR test structure; microscopic LHAR structure; PillarHall prototype 1 |
+| pillarhall_4 | lateral_channel | PillarHall-4; PillarHall LHAR generation 4; LHAR4; LHAR4-ADVANCED; PillarHall 4th generation |
+| si_trench_capped | trench | SiO2-capped Si trench; HAR trench; narrow trench; Si trenches |
+
+Methods:
+
+| id | class | definition | measurement | default mode |
+|---|---|---|---|---|
+| epma | eds | Electron probe microanalysis: an electron microprobe&#x27;s X-ray elemental maps and line scans across a polished cross section (comparable in kind with SEM-EDS line scans: class eds). | True |  |
+| ftir | ir_spectroscopy | Transmission Fourier transform infrared absorption of surface species on a porous sample during the half-reactions (in situ). | True |  |
+| infrared_microscopy | optical_image | Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is transparent in the infrared). | True |  |
+| giwaxs | xrd | Grazing-incidence wide-angle X-ray scattering: a 2D diffraction pattern of a thin film at grazing incidence (synchrotron), azimuthally integrated to a 1D XRD profile; phases, texture (preferred orientation) and crystallite size. | True |  |
+| uv_vis_spectroscopy | optical_spectroscopy | UV-visible transmission spectrophotometry of a film on a transparent substrate: transmittance against wavelength, and the Tauc plot for the optical band gap. | True |  |
+| sims | sims | Secondary ion mass spectrometry depth profiling: elemental concentrations (atoms per cm3) against depth. | True |  |
+| tof_erda | ion_beam | Time-of-flight elastic recoil detection analysis: elemental composition and depth profiles in at.%, hydrogen included, from a heavy-ion beam. | True |  |
+| tem_eds | eds | Energy-dispersive X-ray spectroscopy in a (scanning) transmission electron microscope: elemental maps and line integrals of a cross-section. | True |  |
+| reflectometry | optical_thickness | Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot. | True | ex_situ |
+| spectroscopic_ellipsometry | optical_thickness | Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier). | True |  |
+| xrr | xrr | X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve. | True |  |
+| optical_microscopy | optical_image | Optical microscope images. | True | ex_situ |
+| sem | electron_image | Scanning electron microscopy images. | True | ex_situ |
+| sem_eds | eds | Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans. | True | ex_situ |
+| tem | electron_image | Transmission electron microscopy images of a cross-section. | True | ex_situ |
+| afm | afm | Atomic force microscopy: topography and roughness. | True | ex_situ |
+| oes | plasma_spectroscopy | Optical emission spectroscopy of the plasma. | True | in_situ |
+| eqp | plasma_spectroscopy | Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma. | True |  |
+| xps | xps | X-ray photoelectron spectroscopy: surface composition and chemical states. | True | ex_situ |
+| raman | raman | Raman spectroscopy: phonon modes, used for crystallinity and phase. | True | ex_situ |
+| xrd | xrd | X-ray diffraction: crystalline phases, phase fractions and crystallite sizes. | True | ex_situ |
+| rbs | ion_beam | Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition. | True | ex_situ |
+| four_point_probe | four_point_probe | Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane). | True | ex_situ |
+| two_point_through_thickness | two_point_through_thickness | Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness. | True | ex_situ |
+| hall | hall | Hall measurement in the van der Pauw geometry: carrier density and mobility. | True | ex_situ |
+| transistor_iv | transistor_iv | Current-voltage characteristics of a field-effect transistor made from the film. | True | ex_situ |
+| process_monitor | process_monitor | The reactor&#x27;s own gauges and thermocouples: pressure and temperature traces during the process. | True | in_situ |
+| gravimetry | gravimetry | Weighing before and after deposition. | True | ex_situ |
+| photograph | optical_image | A photograph of the specimen. | True | ex_situ |
+| simulation | simulation | A value produced by a model run (not a measurement). | False |  |
+| calculation | calculation | A value computed from other values (not a measurement). | False |  |
+| cited | cited | A value taken from another work (not a measurement). | False |  |
+| schematic | schematic | A drawing: a value or statement read from a schematic (not a measurement). | False |  |
+| tabulated | tabulated | A value stated in a table without a method (not a measurement). | False |  |
+
+Mechanisms:
+
+| id | name | definition | aliases |
+|---|---|---|---|
+| residual_water | residual water | Water left in the reactor or adsorbed on surfaces after the purge, which re-adsorbs on the walls or reacts in the following step. | residual H2O; re-adsorbed water; water re-adsorption |
+| surface_hydroxyl | surface OH | The density of hydroxyl groups on the growth surface, which sets the uptake of the metal precursor. | surface OH; OH coverage; chemisorbed OH |
+| desorption | desorption | Loss of adsorbed species (water, metal-containing species) from the surface during a long purge. | desorption; desorbs |
+| self_limiting_growth | self-limiting growth | Saturation of each half-reaction once the surface sites are used up, the defining feature of ALD. | self-limiting; saturation |
+| surface_chemistry | surface chemistry | The surface reactions of the precursor and the co-reactant, which set uptake and composition. | surface chemistry |
+| excess_sulfur | excess sulfur | Sulfur taken up beyond the MoS2 stoichiometry from an H2S-based plasma, which blocks crystallization. | excess S; S-rich |
+| fin_growth | fin growth | Growth of vertical fins (out-of-plane flakes) on a crystalline film, which raises roughness and surface area. | fin formation; fins |
+| metallic_zinc | metallic Zn deposition | Deposition of metallic zinc alongside ZnO from diethylzinc decomposition at large exposures or high temperature. | Zn deposition; metallic Zn deposition |
+| plasma_chemistry | plasma chemistry | The species of the H2S/H2/Ar plasma (atomic H, sulfur species, ions), set by its feed, which strip ligands and deliver sulfur. | plasma chemistry; plasma species |
+| hydrogen_incorporation | hydrogen incorporation | Hydrogen from the plasma built into the film, at sulfur vacancies or as thiol groups, acting as a dopant. | H incorporation; incorporated H |
+| sulfur_vacancy | sulfur vacancies | Missing sulfur atoms in the MoS2 lattice, a source of carriers. | S vacancies; S vacancy |
+| thiol_groups | thiol groups | S-H groups on the film&#x27;s surface and edges, whose density follows the H2 flow ratio. | -SH groups; thiol |
+| edge_reactivity | edge reactivity | The reactivity of crystallite edges, tuned by their S and S-H coverage. | edge reactivity; reactive edges |
+| surface_oxidation | surface oxidation | Oxidation of the film surface in air after deposition, strongest on rough, edge-rich films. | surface oxidation; oxidation in air |
+| precursor_adsorption | precursor adsorption | The density of adsorbed metal precursor per cycle, which governs the growth per cycle. | adsorption density; adsorption sites |
+| membrane_sagging | membrane sagging | Bending of the channel&#x27;s roof membrane between the pillars, which narrows the channel locally. | membrane bending; roof sag |
+| channel_plugging | channel plugging | Closure of a channel entrance by the growing film, which stops further penetration. | plugged entry; plugging |
+| feature_narrowing | feature narrowing | The growing film narrows the feature (a channel or a pore), raising the aspect ratio the process sees and shrinking the surface area. | channel narrowing; pore narrowing; shrinking surface area |
+| pillar_effect | pillar effect | Growth and transport disturbed by the pillars that hold up the channel roof. | pillars affect growth |
+| entrance_nanostep | entrance nanostep | A step at the channel entrance that lowers the local channel height. | nanostep |
+| native_oxide | native oxide | The native silicon oxide under the film, included in an optical thickness. | native silicon oxide; native oxide |
+| optical_model | optical model | The optical model of the reflectometer fit, whose mismatch with the real stack gives a systematic thickness error. | optical model |
+| scan_angle | scan angle | Deviation of the scan line from the normal to the channel entrance, which stretches the measured profile. | cosine error |
+| interaction_volume | interaction volume | The depth of the electron-beam interaction volume in EDS, deeper than a thin film. | X-ray interaction volume |
+| scan_averaging | scan averaging | Averaging repeated line scans to suppress noise. | averaging repeated scans |
+| channel_length | channel length | The lateral length of the channel, which does not change the saturation profile. Superseded (P82): the length of a lateral channel is the depth L, feature_depth; the claim that named this mechanism names feature_depth. |  |
+| run_variation | run-to-run variation | Differences between independent runs of the same process. | run-to-run variation; reproducibility |
+| gas_diffusion | gas diffusion | Transport of the reactant through the pores or the channel by gas-phase diffusion (Knudsen diffusion in narrow features). | Knudsen diffusion; reactant diffusivity |
+| gas_generation | gas generation | Release of gaseous by-products (ethane) by the surface reaction, which raises the chamber pressure. | gas-producing processes; ethane release |
+| leak | leak | A leak or valve seating effect that lowers the chamber pressure during a hold. | leak-dominated; leak rates |
+| reaction_diffusion | reaction-diffusion | The coupled reaction and diffusion of the reactant into a porous body, which sets how far and how evenly it coats. | reaction-diffusion; diffusion-reaction |
+| percolation | percolation | A coating that forms a connected network through the compact, so that current can cross it. | percolating network |
+| cracks | cracks | Cracks in the compact, which change its measured resistivity. | cracking |
+| side_reaction | non-self-limiting reaction | Non-self-limiting reactions at large exposures, such as precursor decomposition. | non-self-limiting growth |
+| cvd_growth | CVD-like growth | Gas-phase reaction of the two reactants (CVD-like growth) when the purge leaves one of them behind. | CVD; gas-phase reaction |
+| xray_reabsorption | X-ray reabsorption | Absorption of one element&#x27;s X-ray emission by another in EDS, which distorts normalized signals. | reabsorption |
+| surface_recombination | surface recombination | Loss of plasma radicals by recombination on the growth surface (probability r per collision), which makes the radical density fall exponentially into a high-aspect-ratio feature and limits how far a plasma ALD film penetrates. | surface recombination; radical recombination; recombination of plasma radicals |
+
+Models:
+
+| id | name | definition |
+|---|---|---|
+| ylilammi_diffusion_reaction | Ylilammi diffusion-reaction model | One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1). |
+| gordon_plug_flow | Gordon plug-flow model | Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1). |
+| yanguas_gil_markov_chain | Yanguas-Gil Markov chain model | Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2). |
+| arts_slope | Arts slope relation | Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3). |
+
+Kinds:
+
+| id | phrase |
+|---|---|
+| measured | measured |
+| stated | stated by the paper |
+| read_from_figure | read from a figure |
+| computed_by_authors | computed by the paper&#x27;s authors |
+| computed_by_kb | computed by this knowledge base, not by the paper&#x27;s authors |
+| assumed | assumed by this knowledge base&#x27;s user |
+| model_input | a model input |
+| cited | cited from another work |
+| simulated | simulated by the paper&#x27;s authors |
+
+## g. Value rules (source: kb/pilot/check.py messages)
+
+- uncertainty … without a kind from lists.UNCERTAINTY_KINDS (P2) (check.py:335)
+- &#x27;…&#x27; stored as a plain value (a bound or a stat=minimum/maximum; P12) (check.py:325)
+- range …–… is not a range its statement prints (P14) (check.py:329)
+- phase without species= or with value_text not in lists.PHASE_VALUES (P15) (check.py:333)
+- a film thickness setting that is not a target (thickness is a result; P18) (check.py:331)
+
+## h. Units (source: ontology/units.yaml)
+
+| symbol | dimension | variants |
+|---|---|---|
+| pm | length | pm; picometer; picometre |
+| Å | length | Å; A; angstrom; Angstrom; Å |
+| nm | length | nm; nanometer; nanometre; nanometers |
+| µm | length | µm; μm; \mum; um; micrometer; micrometre; micron; microns; \mu m |
+| mm | length | mm; millimeter; millimetre |
+| cm | length | cm; centimeter; centimetre |
+| m | length | m; meter; metre |
+| ms | time | ms; millisecond; milliseconds |
+| s | time | s; sec; second; seconds |
+| min | time | min; minute; minutes |
+| h | time | h; hr; hrs; hour; hours |
+| °C | temperature | °C; degC; oC; ^\circ C; \circ C; ℃; deg C |
+| K | temperature | K; kelvin |
+| Pa | pressure | Pa; pascal |
+| hPa | pressure | hPa |
+| mbar | pressure | mbar; millibar |
+| bar | pressure | bar |
+| Torr | pressure | Torr; torr |
+| mTorr | pressure | mTorr; mtorr |
+| Pa·s | exposure | Pa·s; Pa s; Pas; Pa*s; Pa.s |
+| Torr·s | exposure | Torr·s; Torr s; Torr-s; Torr*s |
+| L | exposure | L; Langmuir; langmuir; langmuirs |
+| nm/cycle | length_per_cycle | nm/cycle; nm per cycle; nm/cyc; nm cycle-1 |
+| Å/cycle | length_per_cycle | Å/cycle; A/cycle; Å/cyc; Å per cycle; Angstrom/cycle |
+| pm/cycle | length_per_cycle | pm/cycle |
+| 1 | dimensionless | 1; ; -; (-); ×; x; a.u.; arb. units; arb.units; arbitrary units; dimensionless |
+| % | dimensionless | %; percent |
+| at.% | dimensionless | at.%; at%; at. %; atomic %; atom %; atomic percent; at.-% |
+| wt% | dimensionless | wt%; wt.%; wt. %; weight % |
+|  | signal | counts; counts/s; cps; counts per second |
+| cycle | count | cycle; cycles; ALD cycles; ALD cycle; AB cycles; AB cycle; cyc |
+| Ω·m | resistivity | Ω·m; Ω m; Ohm m; ohm m; Ωm |
+| Ω·cm | resistivity | Ω·cm; Ω cm; Ω-cm; Ohm cm; ohm cm; Ωcm |
+| mΩ·cm | resistivity | mΩ·cm; mΩ cm; mOhm cm; mΩcm |
+| µΩ·cm | resistivity | µΩ·cm; µΩ cm; μΩcm; µΩcm; uOhm cm; µOhm cm; \muΩcm |
+| Ω/sq | resistance | Ω/sq; Ω/□; Ohm/sq; ohm/sq; Ω/square |
+| cm-1 | wavenumber | cm-1; cm^-1; cm⁻¹; 1/cm; cm$^{-1}$; cm^{-1} |
+| eV | energy | eV; electronvolt |
+| m2/s | diffusivity | m2/s; m²/s; m^2/s; m2 s-1; m² s⁻¹; m^2 s^-1 |
+| cm2/s | diffusivity | cm2/s; cm²/s; cm^2/s; cm2 s-1; cm² s⁻¹ |
+| m2/g | area_per_mass | m2/g; m²/g; m^2/g; m2 g-1; m² g⁻¹ |
+| m3/g | volume_per_mass | m3/g; m³/g; m^3/g; m3 g-1 |
+| 1/m3 | number_density | 1/m3; m-3; m^-3; m⁻³; 1/m^3; m^{-3} |
+| 1/cm3 | number_density | 1/cm3; cm-3; cm^-3; cm⁻³; 1/cm^3; atoms/cm3; atoms/cm^3; cm^{-3} |
+| 1/m | inverse_length | 1/m; m-1; m^-1; m⁻¹; m^{-1} |
+| mol | amount | mol; mole |
+| mmol | amount | mmol |
+| µmol | amount | µmol; μmol; \mumol; umol; µmol/cyc; µmol/cycle |
+| Pa/s | pressure_per_time | Pa/s |
+| mTorr/min | pressure_per_time | mTorr/min; mTorr min-1 |
+| Torr/s | pressure_per_time | Torr/s |
+| nm/h | length_per_time | nm/h; nm/hr; nm per hour |
+| nm/s | length_per_time | nm/s |
+| sccm | gas_flow | sccm; SCCM |
+| W | power | W; watt |
+| g/cm3 | density | g/cm3; g/cm^3; g cm-3; g/cm³; g cm^-3 |
+| kg/m3 | density | kg/m3; kg/m^3; kg m-3; kg m^-3; kg/m³ |
+| nm-2 | areal_density | nm-2; nm^-2; nm⁻²; 1/nm2; at/nm2; at/nm2/cycle; nm^{-2} |
+| m-2 | areal_density | m-2; m^-2; m⁻²; 1/m2; m^{-2}; 1 m-2 |
+| cm-2 | areal_density | cm-2; cm^-2; cm⁻²; 1/cm2; cm^{-2} |
+| 1/Pa | inverse_pressure | 1/Pa; Pa-1; Pa^-1; Pa⁻¹; 1 Pa-1 |
+| 1/mbar | inverse_pressure | 1/mbar; mbar-1 |
+| 1/s | inverse_time | 1/s; s-1; 1 s-1; s^-1; s⁻¹ |
+| m2/(V·s) | mobility | m2/(V·s); m2/Vs; m²/Vs; m2 V-1 s-1 |
+| cm2/(V·s) | mobility | cm2/(V·s); cm2/Vs; cm²/Vs; cm2 V-1 s-1; cm² V⁻¹ s⁻¹ |
+| ° | angle | °; deg; deg.; degree; degrees; °) |
+| g/mol | molar_mass | g/mol; g mol-1; g mol^-1; g mol⁻¹; g mol^{-1} |
+| kg/mol | molar_mass | kg/mol; kg mol-1; kg mol^-1; kg mol⁻¹ |
+| 1/mol | inverse_amount | 1/mol; mol-1; mol^-1; mol⁻¹ |
+| J/K | energy_per_temperature | J/K; J K-1; J K^-1; J K⁻¹ |
+| g | mass | g; gram; grams |
+| kg | mass | kg; kilogram |
+| mg | mass | mg |
+| keV | energy | keV |
+| MeV | energy | MeV |
+| V | voltage | V; volt |
+| kV | voltage | kV; kilovolt |
+| mW | power | mW; milliwatt |
+| nA | current | nA; nanoampere |
+| C/cm2 | charge_per_area | C/cm2; C cm-2; C/cm^2; C cm^-2 |
+| amu | mass | amu; Da |
+| m2 | area | m2; m^2; m² |
+| cm2 | area | cm2; cm^2; cm² |
+| mL | volume | mL; ml; milliliter; millilitre |
+| nm-1 | inverse_length | nm-1; nm^-1; 1/nm; nm⁻¹ |
+| s^-1/2 | inverse_sqrt_time | s^-1/2; s-1/2; s^(-1/2); 1/sqrt(s) |
+| ns | time | ns; nanosecond; nanoseconds |
+| µPa s | viscosity | µPa s; µPa·s; uPa s; μPa s |
+| Pa s | viscosity | Pa s; Pa·s |
+| cm3/g | volume_per_mass | cm3/g; cm³/g; cm^3/g; cm3 g-1 |
+| mol m-2 s-1 | molar_flux | mol m-2 s-1; mol/(m2 s); mol m^-2 s^-1 |
+| m-2 s-1 Pa-1 | flux_per_pressure | m-2 s-1 Pa-1; 1/(m2 s Pa); m^-2 s^-1 Pa^-1 |
+| s m-3 | time_per_volume | s m-3; s/m3; s m^-3 |
+
+## Missing definitions (anything the generator could not fill)
+
+- e. qualifier step: only a citation or value provenance (source / log), no meaning
+- e. qualifier position: only a citation or value provenance (source / log), no meaning
+- e. qualifier reference: only a citation or value provenance (source / log), no meaning
+- e. qualifier level: only a citation or value provenance (source / log), no meaning
+- e. qualifier basis: only a citation or value provenance (source / log), no meaning
+</pre>
+</body></html>

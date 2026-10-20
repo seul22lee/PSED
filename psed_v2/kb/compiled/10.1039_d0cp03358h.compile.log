@@ -1,39 +1,32 @@
-input: 84 lines; pass 0 = line 43; 41 pass-1 lines for 41 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (s12), 16 (s13), 17 (s14), 18 (s15), 19 (s16), 20 (s17), 21 (s18), 22 (s19), 23 (s20), 24 (s21), 25 (s22), 26 (s23), 27 (s24), 28 (fig1), 29 (fig2), 30 (fig3), 31 (fig4), 32 (fig5), 33 (fig6), 34 (fig7), 35 (fig8), 36 (fig9), 37 (fig10), 38 (fig11), 39 (tab1), 40 (tab2), 41 (tabu1), 42 (tabu2)
+input: 85 lines; pass 0 = line 43; 41 pass-1 lines for 41 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (s12), 16 (s13), 17 (s14), 18 (s15), 19 (s16), 20 (s17), 21 (s18), 22 (s19), 23 (s20), 24 (s21), 25 (s22), 26 (s23), 27 (s24), 28 (fig1), 29 (fig2), 30 (fig3), 31 (fig4), 32 (fig5), 33 (fig6), 34 (fig7), 35 (fig8), 36 (fig9), 37 (fig10), 38 (fig11), 39 (tab1), 40 (tab2), 41 (tabu1), 42 (tabu2)
 a: s3.p5: variables_unmapped 'ξ̃' -> 'other'
 g: s14.x1: mention_unmatched ['Table 1', 'Fig. 11b']
 g: s14.x1: mention_unmatched ['Table 1', 'Fig. 11b']
 g: s18.p3: mention_unmatched ['c3']
 g: s18.p3: mention_unmatched ['c3']
-h: tree from pass 0: run 1, simulation 1, specimen 16, series 6, cited_work 5; identity rows: none (pass 0 carries no identity)
-1c: fallback series figset:fig8b for figure set yim20:cmp:fig8b (no pass-0 series names the figure)
-1c: fallback series figset:fig10a for figure set yim20:cmp:fig10a (no pass-0 series names the figure)
-1c: fallback series figset:fig10b for figure set yim20:cmp:fig10b (no pass-0 series names the figure)
-1c: fallback series figset:fig10c for figure set yim20:cmp:fig10c (no pass-0 series names the figure)
-1c: fallback series figset:fig10d for figure set yim20:cmp:fig10d (no pass-0 series names the figure)
-1c: fallback series figset:fig10e for figure set yim20:cmp:fig10e (no pass-0 series names the figure)
-1c: fallback series figset:fig10f for figure set yim20:cmp:fig10f (no pass-0 series names the figure)
+h: tree from pass 0: run 1, simulation 1, specimen 16, model_run 0, series 6, cited_work 5; identity rows: none (pass 0 carries no identity)
+1c: fallback: 58 curves no pass-0 unit names -> 17 entities under the paper row
 i: merged s5.p1 into abs.g2;s5.p1 (substrate si)
 i: merged s5.p2 into s5.p1;s5.p2 (feature_width 500)
 i: merged s6.p1 into abs.g3;s6.p1 (material al2o3)
 i: merged s6.p1 into s2.p13;s6.p1 (deposition_temperature 300)
 i: merged s6.p1 into abs.g3;s6.p1 (reactant_A tma)
 i: merged s6.p1 into abs.g3;s6.p1 (reactant_B h2o)
+i: merged s6.p2 into abs.g2;s5.p1;s6.p2 (substrate si)
 i: merged s7.p2 into s5.p1;s5.p2;s7.p2 (feature_width 500)
 i: merged s10.x1 into abs.g3;s6.p1;s10.x1 (material al2o3)
 i: merged s10.x3 into abs.g3;s6.p1;s10.x1;s10.x3 (material al2o3)
 i: merged s19.p3 into s2.p13;s6.p1;s19.p3 (deposition_temperature 300)
-i: merged fig7.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap (material al2o3)
 i: merged fig8.cap into s6.p1;fig8.cap (cycle_number 500)
 i: merged fig8.cap into s12.x1;fig8.cap (feature_width 500)
-i: merged fig9.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap;fig9.cap (material al2o3)
+i: merged fig9.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig9.cap (material al2o3)
 i: merged fig9.cap into s2.p13;s6.p1;s19.p3;fig9.cap (deposition_temperature 300)
-i: merged fig9.cap into s6.p1;fig8.cap;fig9.cap (cycle_number 500)
-i: merged fig11.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap;fig9.cap;fig11.cap (material al2o3)
+i: merged fig11.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig9.cap;fig11.cap (material al2o3)
 i: merged fig11.cap into s2.p13;s6.p1;s19.p3;fig9.cap;fig11.cap (deposition_temperature 300)
 i: merged fig11.cap into s12.x1;fig8.cap;fig11.cap (feature_width 500)
-i: merged fig11a into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap;fig9.cap;fig11.cap;fig11a (material al2o3)
-i: merged fig11b into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap;fig9.cap;fig11.cap;fig11a;fig11b (material al2o3)
-i: merged tab1.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig7.cap;fig9.cap;fig11.cap;fig11a;fig11b;tab1.cap (material al2o3)
+i: merged fig11a into fig7.cap;fig11a (material al2o3)
+i: merged fig11b into fig7.cap;fig11a;fig11b (material al2o3)
+i: merged tab1.cap into abs.g3;s6.p1;s10.x1;s10.x3;fig9.cap;fig11.cap;tab1.cap (material al2o3)
 i: merged tab1.cap into s2.p13;s6.p1;s19.p3;fig9.cap;fig11.cap;tab1.cap (deposition_temperature 300)
 i: merged tab1.r1c4 into fig4a;tab1.r1c4 (pillar_layout v1a)
 i: merged tab1.r2c4 into fig4b;tab1.r2c4 (pillar_layout v1b)
@@ -54,19 +47,10 @@ i: definition ('yim20', 'a', 'a'): merged tabu1.r1c0 into tabu1.r0c0;tabu1.r1c0
 i: definition ('yim20', 'ctma', 'ctma'): merged tabu1.r2c0 into tab2.cap;tabu1.r2c0
 i: definition ('yim20', 'ch2o', 'ch2o'): merged tabu1.r3c0 into tab2.cap;tabu1.r3c0
 i: definition ('yim20', 'd', 'd'): merged tabu1.r8c0 into tabu1.r5c0;tabu1.r8c0
-i: merged fig10b;fig10.cap into fig10.cap;fig10a;fig10b (cycle_number 500)
-i: merged fig10b;fig10.cap into fig10.cap;fig10a;fig10b (deposition_temperature 300)
-i: merged fig10c;fig10.cap into fig10.cap;fig10a;fig10b;fig10c (cycle_number 500)
-i: merged fig10c;fig10.cap into fig10.cap;fig10a;fig10b;fig10c (deposition_temperature 300)
-i: merged fig10d;fig10.cap into fig10.cap;fig10a;fig10b;fig10c;fig10d (deposition_temperature 300)
-i: merged fig10e;fig10.cap into fig10.cap;fig10d;fig10e (feature_width 0.5)
-i: merged fig10e;fig10.cap into fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e (deposition_temperature 300)
-i: merged fig10f;fig10.cap into fig10.cap;fig10d;fig10e;fig10f (feature_width 0.5)
-i: merged fig10f;fig10.cap into fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f (deposition_temperature 300)
-j: derived over 48 entities: 47 rows; not derived: {'no fact for S': 33, 'no fact for rho': 48, 'stated: yim20:tab1.r1c9#1 0.1 nm': 1, 'no fact for H': 63, 'no fact for rb': 48, 'no fact for dn': 48, 'no fact for mg': 96, 'no fact for h2': 48, 'no fact for phi': 48, 'no fact for d': 17, 'lam: no fact for d': 17, 'stated: yim20:tab1.r2c9#1 0.0993 nm': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm': 1, 'stated: yim20:tab1.r8c9#1 0.0934 nm': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm': 1, 'derive raised: cannot convert cycle to 1': 6, 'stated: yim20:tab1.r10c9#1 0.097 nm': 1, 'stated: yim20:tab1.r12c9#1 0.0947 nm': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm': 1, 'n: no fact for gpc': 32, 'gpc: no fact for n': 32, 'gpc: n: no fact for gpc': 32, 'no fact for t': 93, 'E: no fact for t': 31, 'no fact for T': 31, 'lam: no fact for T': 31}
+j: derived over 33 entities: 52 rows; not derived: {'no fact for H': 56, 'no fact for rho': 33, 'stated: yim20:tab1.r1c9#1 0.1 nm': 1, 'no fact for rb': 33, 'no fact for dn': 33, 'no fact for mg': 66, 'no fact for h2': 33, 'no fact for phi': 33, 'no fact for d': 31, 'lam: no fact for d': 31, 'stated: yim20:tab1.r2c9#1 0.0993 nm': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm': 1, 'stated: yim20:tab1.r8c9#1 0.0934 nm': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm': 1, 'derive raised: cannot convert cycle to 1': 4, 'stated: yim20:tab1.r10c9#1 0.097 nm': 1, 'stated: yim20:tab1.r12c9#1 0.0947 nm': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm': 1, 'no fact for t': 45, 'E: no fact for t': 17, 'n: no fact for gpc': 17, 'gpc: no fact for n': 17, 'no fact for T': 2, 'lam: no fact for T': 2, 'gpc: n: no fact for gpc': 17, 'no fact for S': 10}
 j: caveats (query.caveats_of): 3, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 31 nodes for 34 claims; claims without a full triple (query.node_of empty): 2
-j: comparisons from figures.json (1c): 13
+j: comparisons from figures.json (1c): 23
 step input: {'records': 549}
 step a: {'variables_unmapped (set to null)': 1, 'schema:anyOf': 3, 'kept': 546}
 step a_fields: {'qualifiers': 3}
@@ -76,26 +60,27 @@ step d: {'quote_noncontiguous (kept)': 4, 'quote_not_found': 72, 'kept': 474}
 step e: {'unit_unresolved': 1, 'kept': 473}
 step f: {'species_resolved': 25, 'kept': 473}
 step g: {'mention_unmatched': 6}
-step h: {'parent: paper (record)': 138, 'parent: run (record)': 50, 'parent: series parent (record)': 9, 'parent: specimen measurement (record)': 146, 'parent: specimen (record)': 96, 'parent: series (record)': 10, 'parent: parent_null (paper)': 3, 'parent: parent_unknown (paper)': 2, 'parent: simulation (record)': 19}
-step m: {'label_as_printed filled with the quantity id': 12, 'statement filled from the quote': 433, 'links resolved': 16, 'links named elements without facts': 10}
-step 1c: {'fallback series (figure set without a pass-0 series)': 7, 'curve not in exactly one series (0)': 3, 'curve not in exactly one series (2)': 18, 'series varied from the figure set (0 conditions differ)': 7, 'series entities': 32, 'curve -> observation': 7, 'setting': 44, "row type from the curve's kind (fallback series)": 34, 'curve -> model': 30}
-step i: {'merged': 47, 'definition merged': 4, 'kept': 503}
-step j: {'derived_needs_outside_fact': 47, 'derived growth_per_cycle{kind=target;over=run}': 14, 'derived cycle_time': 17, 'derived deposition_rate': 16}
-step k: {'statement from the record': 431, 'statement_copies_text (reported by check)': 95, 'statement assembled': 119}
+step h: {'parent: paper (record)': 138, 'parent: run (record)': 50, 'parent: parent_unknown (paper)': 21, 'parent: specimen measurement (record)': 146, 'parent: specimen (record)': 96, 'parent: parent_null (paper)': 3, 'parent: simulation (record)': 19}
+step m: {'label_as_printed filled with the quantity id': 12, 'statement filled from the quote': 433, 'links resolved': 21, 'links named elements without facts': 5}
+step 1c: {'curve -> observation': 28, 'setting': 41, 'curve -> model': 30, 'fallback: curves no unit names': 58, "fallback entities under the paper (row type from the curve's kind)": 17}
+step i: {'merged': 37, 'definition merged': 4, 'kept': 531}
+step n: {'comparison replicate': 1, 'comparison series': 10, 'comparison grid': 12}
+step j: {'derived_needs_outside_fact': 46, 'derived growth_per_cycle{kind=target;over=run}': 14, 'derived cycle_time': 22, 'derived deposition_rate': 16}
+step k: {'statement from the record': 432, 'statement_copies_text (reported by check)': 97, 'statement assembled': 151}
 diff against the gold (type, gold, compiled, matched, precision, recall):
-  setting       206  198  125  0.63  0.61
-  observation   154   52   47  0.90  0.31
-  derived       108  170   88  0.52  0.81
+  setting       206  205  127  0.62  0.62
+  observation   154   73   68  0.93  0.44
+  derived       108  175   88  0.50  0.81
   cited          92   32   24  0.75  0.26
-  activity       75   39   38  0.97  0.51
+  activity       75   50   43  0.86  0.57
   model          73   34   33  0.97  0.45
   definition     66   27    6  0.22  0.09
   caveat         45    3    1  0.33  0.02
   claim          40   34   20  0.59  0.50
-  entity         31   48   25  0.52  0.81
-  comparison      8   13    2  0.15  0.25
-  identity        1    0    0     -  0.00
+  entity         31   33   25  0.76  0.81
+  comparison      8   23    1  0.04  0.12
   paper           1    1    1  1.00  1.00
+  identity        1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 0/66
 gold model rows with quantity and value: 20: {'other': 10, 'deposition_temperature': 1, 'pulse_time': 1, 'partial_pressure': 2, 'b_film': 1, 'growth_per_cycle': 1, 'saturation_density': 1, 'initial_sticking_coefficient': 1, 'p_d': 1, 'film_density': 1}
-observations: gold 154, compiled 52, matched 47
+observations: gold 154, compiled 73, matched 68

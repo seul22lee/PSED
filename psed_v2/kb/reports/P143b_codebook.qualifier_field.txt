@@ -1,0 +1,8 @@
+P143b section 1: the qualifier text the P143 generator skipped is in the qualifiers block's `log` field (21 qualifiers) and `source`
+field (4); `meaning` exists on 4 (species, gas, element, surface, P142b). The codebook now reads: meaning, else log, verbatim.
+Citation only (listed for decision; the codebook leaves their meaning empty): a qualifier whose only text is a `source` citation,
+or whose `log` opens with a list of its own values and a colon (where the values came from, not what they mean):
+step, position, reference, level, basis. Every qualifier's fields: P143b_codebook.qualifier_texts.csv.
+Pass-0 prompt: besides the INSTRUCTION, the prompt gains a CURVES block (figures.json curve ids) so the curves field can be filled.
+Pass-1 RULES: the series-name line uses mentions for "about" (the form has no about field).
+compile.py: pass 0 = the latest pass-0 line written before the pass-1 lines in use (the P139 records compile with their P139 pass 0).

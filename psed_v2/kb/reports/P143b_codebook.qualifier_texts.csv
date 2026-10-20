@@ -1,0 +1,27 @@
+qualifier,codebook_text,source,log,meaning,values
+definition,log,,P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle),,definition ids
+step,citation,Cremers Sec. I four steps; Popov Reactant A/B,"plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds",,"['reactant_A', 'purge_A', 'reactant_B', 'purge_B', 'plasma', 'hold_A', 'hold_B', 'none']"
+species,meaning,,,"the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected",species ids
+gas,meaning,,,"the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure",species ids
+element,meaning,,,"the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy",element symbols
+reference_element,log,,Sec. 18.3: the denominator atom of an element_ratio,,element symbols
+phase,log,,Sec. 18.3: the phase a phase_fraction is of,,species ids
+position,citation,"Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top","local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer",,"['planar', 'top', 'sidewall', 'bottom', 'local', 'entrance', 'plateau', 'outside', 'interface']"
+reference,citation,,"plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)",,"['top', 'planar', 'assumed_saturation', 'plateau', 'entrance', 'maximum', 'stated', 'bulk']"
+level,citation,"Cremers PD50%, PD80%","front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum",,"['50%', '80%', 'front_start', 'front_end', 'maximum']"
+basis,citation,Cremers Sec. II G,,,"['AR', 'EAR']"
+surface,meaning,,,the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3,material ids
+kind,log,,"pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures",,"['set_point', 'measured', 'default', 'option', 'target', 'estimated']"
+by,log,,pilot: what a dimensionless distance is divided by,,"['H', '2H', 'd', 'w', 'lambda', 'none']"
+origin,log,,pilot: where a distance is measured from,,"['entrance', 'top_face', 'hole_centre', 'nearer_face', 'opening_centre']"
+stage,log,,"pilot: before or after the deposition (porosity, channel height)",,"['initial', 'final']"
+stat,log,,pilot P1: a spread fact's statistic,,"['sd', 'relative_sd', 'half_range', 'tolerance', 'minimum', 'maximum']"
+between,log,,pilot P1: what varies between the repeats of a spread,,"['runs', 'pieces', 'position', 'repeat_measurement', 'items']"
+n,log,,pilot P1: the number of repeats,,a number or not_stated
+relative_to,log,,"pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)",,"['initial_mass', 'final_mass', 'all_atoms', 'metal_atoms', 'crystalline_phases', 'total_volume', 'reactive_gases', 'all_"
+over,log,,pilot P5: what a per-cycle value is averaged over,,"['run', 'first_100_cycles', 'saturation', 'not_stated']"
+mode,log,,pilot P6: a measurement during or after the deposition,,"['in_situ', 'ex_situ', 'not_stated']"
+x,log,,pilot: the abscissa of a curve,,quantity ids
+ratio,log,,pilot P17: the plasma_gas_ratio a keyed setting belongs to,,a number
+specimen_class,log,,Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis,,"['film', 'porous_composite']"
+structure_class,log,,P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class,,"['structure', 'planar', 'har_feature', 'trench', 'via_hole', 'lateral_channel', 'porous_body', 'nanoparticle_compact', '"
