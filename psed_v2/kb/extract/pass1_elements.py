@@ -5,7 +5,7 @@
 
 Sections: the elements.csv section column (elements.py maps equations into their section); a group whose section is not abs/abstract
 or s<n> (figures, tables, a table's cells) is unmapped and runs as its own group. Prompt, in this order: the section's elements as
-"<id>: <text>"; the pass-0 names (the only mentions vocabulary) and the figure/table/equation element ids; the form (schema/form.json,
+"<id>: <text>"; the pass-0 items (id, role, name, parent; P138) and the figure/table/equation element ids; the form (schema/form.json,
 compact) with the field rules; the kind vocabulary with its ontology glosses (vocab.PHRASES). Response (P133 option 2): {"answers": [{"id", "answer": [record, ...]
 or "NK:<reason>"}]}; variables as a list of {symbol, quantity}. Prints the tallies; local validation against the full form.json is a count only (the compiler validates, P134).
 """
@@ -13,6 +13,8 @@ import collections
 import json
 import re
 import sys
+
+import yaml
 
 import common as C
 from vocab import MECHANISMS, NAMES, PHRASES
@@ -40,17 +42,22 @@ FIELD RULES
   recorded from another element; no_knowledge: the element states nothing the form can hold.
 - quote: words copied verbatim from the element, as few as identify the record; every record has one.
 - note: at most 20 words, on claims and definitions only.
-- quantity: an id of the form only when it is the same concept as printed; otherwise "other", and then candidate is required, with
-  the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension and symbol. Examples:
+- quantity: an id of QUANTITY IDS only when it is the same concept as printed (its aliases, unit and note tell you); otherwise
+  "other", with a candidate: the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension
+  and symbol. Examples:
   "rms thickness error" -> other, not thickness_nonuniformity; "10 min stabilisation" -> other, not time; "c = 0.01" ->
   initial_sticking_coefficient when the paper's own table says so, never reaction_stoichiometry.
 - label_as_printed: the paper's own label of the quantity, on every record with a quantity.
 - kind: on every record with a value, value_min, value_max or value_text.
+- parent: the id (from PASS-0 ITEMS) of the run, simulation, series or specimen the record belongs to; "paper" for claims,
+  definitions, caveats, cited records and paper-wide settings (reactor, carrier gas).
+- links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
+- statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
 - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
   material, substrate, reactant_A, reactant_B and structure is an id of the form; for a reactor or an instrument, the name only.
-- mentions: only names from the MENTIONS list, exactly as listed."""
+- mentions: only names from PASS-0 ITEMS (name as printed), exactly as listed."""
 
 
 def container(eid):
@@ -122,6 +129,10 @@ def examples(pid, form):
             rec, lost = RT.cast(row, props)
             if t == "definition":
                 rec["term"] = row["term"]
+            if not (rec.get("quantity") or any(k in rec for k in ("value", "value_min", "value_max", "value_text"))) and len(row["statement"].split()) <= 40:
+                rec["statement"] = row["statement"]                             # P138: the gold's own-words statement
+            if t in ("claim", "definition", "caveat", "cited"):
+                rec["parent"] = "paper"
             words = text.get(row["evidence"].split(";")[0], "").split()[:12]
             if lost or not words:
                 continue
@@ -136,13 +147,17 @@ def jobs(pid):
     if not p0:
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
     items = C.loads_json(p0[-1]["response"])
-    names = sorted({it["name_as_printed"] for it in items if isinstance(it, dict) and it.get("name_as_printed")})
+    items = [it for it in items if isinstance(it, dict) and it.get("name_as_printed")]
+    p0 = "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it['name_as_printed']} | parent {it.get('parent', '') or '-'}" for it in items)   # P138
     rows = C.E.load(pid)
     refs = [r["element_id"] for r in rows if r["kind"] in ("caption", "panel", "equation")]
     form = C.schema("form.json")
     text = C.E.texts(pid)
     kinds = "\n".join(f"- {k}: {PHRASES.get(k, '')}" for k in C.X._pilot()[0].KINDS)
-    qids = "\n".join(f"{q}: {NAMES.get(q, q)}" for q in form["$defs"]["quantity_id"]["enum"])
+    E = {e["id"]: e for e in yaml.safe_load((C.V2 / "ontology" / "ontology.yaml").read_text(encoding="utf-8"))["entries"]}   # P138: from the ontology
+    qids = "\n".join(f"{q}: {E.get(q, {}).get('name') or NAMES.get(q, q)}" + (f" | aliases: {'; '.join(map(str, E[q].get('aliases') or []))}" if E.get(q, {}).get("aliases") else "")
+                     + (f" | unit: {E[q]['unit']}" if E.get(q, {}).get("unit") else "") + (f" | note: {E[q]['note']}" if E.get(q, {}).get("note") else "")
+                     for q in form["$defs"]["quantity_id"]["enum"])
     mids = "\n".join(f"{m}: {MECHANISMS[m]['name']}" for m in form["$defs"]["cause_effect"]["enum"] if m in MECHANISMS)
     ex = examples(pid, form)
     out = []
@@ -151,11 +166,12 @@ def jobs(pid):
         prompt = "\n\n".join([
             "You extract the knowledge of one section of an ALD paper into records of the form below.",
             "ELEMENTS:\n" + "\n".join(f"{i}: {text[i]}" for i in ids),
-            "MENTIONS (the only allowed mentions):\n" + "\n".join(names) + "\nElement ids that may be mentioned: " + ", ".join(refs),
+            "PASS-0 ITEMS (id | role | name as printed | parent): parent takes an id; mentions take a name\n" + p0
+            + "\nElement ids that may be mentioned or linked: " + ", ".join(refs),
             "FORM (JSON Schema, one record):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")) + "\n\n" + RULES,
             "EXAMPLES (one record per type, from other papers):\n" + ex,
             "KIND (how a value is known):\n" + kinds,
-            "QUANTITY IDS (id: name). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
+            "QUANTITY IDS (id: name | aliases | canonical unit | note). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
             "must be one of them (cause/effect may also be a mechanism id):\n" + qids,
             "MECHANISM IDS (id: name), for cause/effect:\n" + mids])
         out.append((1, sec, prompt, response_schema(form, ids), ids))

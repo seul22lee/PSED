@@ -11,12 +11,15 @@ import sys
 
 import common as C
 
-INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation and cited work it names.
+INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation, series and cited work it names.
 One item per named thing:
+- id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record's parent;
 - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
 - role: one of specimen, run, simulation, cited_work. A run is one deposition sequence: a reactant pair at a temperature on a
   structure. A simulation is a model the paper solves, one item per model. A specimen is a physical sample the paper measures (a
-  coated structure, a film, a substrate piece). A cited work is another publication the paper names;
+  coated structure, a film, a substrate piece). A series is a figure series: several model runs or specimens that differ in one
+  quantity (introduced_in = the figure). A cited work is another publication the paper names;
+- parent: for a specimen, the id of the run that made it; for a series, the id of its simulation, run or specimen;
 - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
 - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
   taken from the element index below.
@@ -24,24 +27,34 @@ Answer with JSON matching the form."""
 
 
 def example(pid, form):
-    """P136b: one example list in the pass-0 form, from the gold tree of the first dev paper other than pid (never held-out) that has
-    deposition and simulation activities: at most two items per role (run = a deposition activity, simulation = a simulation
-    activity, specimen = an entity directly under a deposition, cited_work = a cited tree row), name = label_as_printed,
-    introduced_in = the row's evidence; validated against form_pass0.json."""
+    """P136b/P138: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid (never
+    held-out) that has deposition and simulation activities: at most two items per role (run = a deposition activity, simulation =
+    a simulation activity, specimen = an entity directly under a deposition, series = a comparison of kind series, cited_work = a
+    cited tree row), id = role letter + number, name = label_as_printed, introduced_in = the row's evidence, parent = the item id of
+    the gold parent (specimen: its deposition; series: the parent of its first member) when that is an item; validated against
+    form_pass0.json."""
     import csv
     from jsonschema import Draft202012Validator
-    for p in [p for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
+    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "series": "ser", "cited_work": "c"}
+    for p in [p for p in reversed(list(C.E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
         f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
         rows = [r for r in csv.DictReader(f.open(encoding="utf-8")) if "#" not in r["fact_id"]] if f.exists() else []
         R = {r["fact_id"]: r for r in rows}
         role = lambda r: ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
-                          else "specimen" if r["type"] == "entity" and R.get(r["parent"], {}).get("kind") == "deposition" else "cited_work" if r["type"] == "cited" else "")
-        items, n = [], {}
+                          else "specimen" if r["type"] == "entity" and R.get(r["parent"], {}).get("kind") == "deposition"
+                          else "series" if r["type"] == "comparison" and r["kind"] == "series" else "cited_work" if r["type"] == "cited" else "")
+        items, n, ids = [], {}, {}
         for r in rows:
             k = role(r)
             if k and r["label_as_printed"] and r["evidence"] and n.get(k, 0) < 2:
                 n[k] = n.get(k, 0) + 1
-                items.append(dict(name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";")))
+                ids[r["fact_id"]] = f"{PRE[k]}{n[k]}"
+                gp = r["parent"] if k == "specimen" else next((R[m]["parent"] for m in r["links"].split(";")[1:] if m in R), "") if k == "series" else ""
+                items.append(dict(id=ids[r["fact_id"]], name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";"), _gp=gp))
+        for it in items:
+            gp = it.pop("_gp")
+            if gp in ids:
+                it["parent"] = ids[gp]
         if {"run", "simulation"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
             return json.dumps(items, ensure_ascii=False)
     return "[]"
@@ -57,7 +70,7 @@ def jobs(pid):
     return [(0, "paper", prompt, C.provider_schema(form), [])]
 
 
-THINKING = {"thinking_level": "LOW"}                                            # user, P133b: as pass 1; recorded in the line and the cache key
+THINKING = {"thinking_level": "MEDIUM"}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key
 
 
 def main(arg):
