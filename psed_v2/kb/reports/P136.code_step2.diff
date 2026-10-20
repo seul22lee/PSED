@@ -1,0 +1,525 @@
+commit 999203bdead15ca74302665832b7fb752862e37d
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 22:14:47 2026 -0500
+
+    P136 step 2: ontology + form
+    
+    2a feature_width/feature_depth/feature_extent: lateral-channel aliases (channel height,
+       H (channel height); channel length, L (channel length); channel width, W (channel
+       width)) and a note on each. "gap height" left out: the held-out gre23 gold files
+       other[gap height], and check.py P78 would then ask to re-key held-out gold.
+    2b units.yaml same_dimension {length_per_cycle: length}; export.unit_tables computes
+       both on one base; lists.convert compares through DIMENSION_OF.
+    2c form: term (required on definitions); variables on definition and model, values a
+       quantity id or null; value_text enum by quantity (material/substrate -> material,
+       reactant_A/B -> species, structure -> the ontology's structure ids); kind required
+       with any value field; quote without the 15-word cap; description paths kb/pilot/.
+    compile.py: a null variable is not an unresolved id.
+    Ontology hash 23c7643e (was 6f0cea60); vocab.py +9/-4; export.py --check and
+    check.py on the gold pass.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 67c50aa..929bcf9 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -182,7 +182,7 @@ class Run:
+             bad += [("cause/effect", x) for x in L.variables_ok(";".join(rec.get("cause", []) + rec.get("effect", [])))]
+             if rec.get("relation") and rec["relation"] not in L.RELATIONS:
+                 bad.append(("relation", rec["relation"]))
+-            bad += [("variables", x) for x in (rec.get("variables") or {}).values() if x not in L.QUANTITIES]
++            bad += [("variables", x) for x in (rec.get("variables") or {}).values() if x is not None and x not in L.QUANTITIES]   # P136 2c: null = no entry
+             if bad:
+                 for field, x in bad:
+                     self.unmapped.append(dict(element=eid, field=field, id=x, label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
+diff --git a/psed_v2/kb/pilot/lists.py b/psed_v2/kb/pilot/lists.py
+index 5d9c0a4..6ee1dc9 100644
+--- a/psed_v2/kb/pilot/lists.py
++++ b/psed_v2/kb/pilot/lists.py
+@@ -170,7 +170,7 @@ def convert(v, from_unit, to_unit):
+     if {a, b} == {"°C", "K"}:
+         return v + 273.15 if b == "K" else v - 273.15
+     (da, fa), (db, fb) = UNIT_BASE[a], UNIT_BASE[b]
+-    if da != db:
++    if DIMENSION_OF.get(da, da) != DIMENSION_OF.get(db, db):                    # P136 2b: length_per_cycle converts with length
+         raise ValueError(f"cannot convert {a} to {b}")
+     return v * fa / fb
+ 
+diff --git a/psed_v2/kb/pilot/vocab.py b/psed_v2/kb/pilot/vocab.py
+index 65c9432..b2ab9f7 100644
+--- a/psed_v2/kb/pilot/vocab.py
++++ b/psed_v2/kb/pilot/vocab.py
+@@ -529,7 +529,7 @@ DIMENSION_OF = {'amount': 'amount',
+  'inverse_pressure': 'inverse_pressure',
+  'inverse_time': 'inverse_time',
+  'length': 'length',
+- 'length_per_cycle': 'length_per_cycle',
++ 'length_per_cycle': 'length',
+  'length_per_time': 'length_per_time',
+  'mass': 'mass',
+  'mobility': 'mobility',
+@@ -2896,7 +2896,9 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
+                                'channel length L',
+                                'lateral length L',
+                                'l/2',
+-                               'cavity length'],
++                               'cavity length',
++                               'channel length',
++                               'L (channel length)'],
+                    'attribute': False,
+                    'category': 'test_structure',
+                    'converts_to': {},
+@@ -2918,7 +2920,7 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
+                    'type': 'quantity',
+                    'unit': 'µm',
+                    'values_from': ''},
+- 'feature_extent': {'aliases': ['Width of the channel', 'channel width W', 'major axis'],
++ 'feature_extent': {'aliases': ['Width of the channel', 'channel width W', 'major axis', 'channel width', 'W (channel width)'],
+                     'attribute': False,
+                     'category': 'test_structure',
+                     'converts_to': {},
+@@ -2975,7 +2977,9 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
+                                'targeted channel height H',
+                                'Design channel height H',
+                                'LHAR H',
+-                               'd_pore'],
++                               'd_pore',
++                               'channel height',
++                               'H (channel height)'],
+                    'attribute': False,
+                    'category': 'test_structure',
+                    'converts_to': {},
+diff --git a/psed_v2/kb/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+index 9c438c6..12d1f5b 100644
+--- a/psed_v2/kb/schema/FORM.md
++++ b/psed_v2/kb/schema/FORM.md
+@@ -1,7 +1,7 @@
+ <!-- GENERATED by psed_v2/ontology/export.py; do not edit -->
+ # Extraction form
+ 
+-Ontology version 1, sha256 `6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
++Ontology version 1, sha256 `23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper's named things). Per-type rules are if/then on `type` in the schema.
+ 
+ Out of scope (P133): a statement-only setting or observation (no quantity, value or qualifiers; only method or mentions) is not a form record.
+ 
+@@ -15,25 +15,26 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | quantity | enum, 105 values | required when type setting / observation / derived; forbidden when type claim; needs label_as_printed; required with value; required with value_min; required with value_max; required with value_text | extractor |
+ | label_as_printed | string | required with quantity | extractor |
+ | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) | optional | extractor |
+-| value | number | needs quantity; required with uncertainty; required with uncertainty_kind; required with uncertainty_n | extractor |
+-| value_min | number | needs quantity | extractor |
+-| value_max | number | needs quantity | extractor |
++| value | number | needs quantity, kind | extractor |
++| value_min | number | needs quantity, kind | extractor |
++| value_max | number | needs quantity, kind | extractor |
+ | censor | one of `<`, `<dl`, `>`, `>dl` | optional | extractor |
+ | unit | string | optional | extractor |
+-| value_text | string | needs quantity | extractor |
+-| kind | enum, 9 values | optional | extractor |
++| value_text | string | forbidden when quantity = `other`; forbidden when quantity = `other`; forbidden when quantity = `other`; needs quantity, kind | extractor |
++| kind | enum, 9 values | required with value; required with value_min; required with value_max; required with value_text | extractor |
+ | method | enum, 34 values | optional | extractor |
+ | mentions | list of string | optional | extractor |
+-| quote | string, at most 15 words | always | extractor |
+-| uncertainty | number | needs value | extractor |
+-| uncertainty_kind | enum, 9 values | needs value | extractor |
+-| uncertainty_n | integer | needs value | extractor |
++| quote | string | always | extractor |
++| uncertainty | number | optional | extractor |
++| uncertainty_kind | enum, 9 values | optional | extractor |
++| uncertainty_n | integer | optional | extractor |
+ | cause | list of enum, 140 values (cause_effect) | only when type claim; needs relation, effect; required with relation; required with effect | extractor; the compiler joins the list with `;` |
+ | relation | one of `increases`, `decreases`, `limits`, `causes`, `no_effect`, `requires` | only when type claim; required with cause; needs cause, effect; required with effect | extractor |
+ | effect | list of enum, 140 values (cause_effect) | only when type claim; required with cause; required with relation; needs cause, relation | extractor; the compiler joins the list with `;` |
+ | stance | one of `asserted`, `hedged`, `open`, `limitation` | only when type claim | extractor |
+ | note | string, at most 20 words | only when type claim / definition | extractor |
+-| variables | object: symbol -> enum, 104 values (quantity_id) | only when type definition | extractor |
++| term | string | required when type definition; only when type definition | extractor |
++| variables | object: symbol -> enum, 104 values (quantity_id) or {'type': 'null'} | only when type definition / model | extractor |
+ | candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) | required when quantity = `other`; only when quantity = `other` | extractor |
+ | qualifiers.definition | one of `normalized`, `thickness_per_cycle` (definition) | optional | extractor |
+ | qualifiers.step | enum, 8 values | optional | extractor |
+@@ -85,6 +86,5 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
+ | author | not in the form |  | compiler |
+ | sized_by | not in the form |  | compiler |
+ | figure_ref | not in the form |  | compiler |
+-| term | not in the form (facts.FIELDS column with no form field) |  | nobody |
+ | data_kind | facts.FIELDS column; the form's `kind` |  | extractor |
+ | definition_note | facts.FIELDS column; the form's `note` |  | extractor |
+diff --git a/psed_v2/kb/schema/form.json b/psed_v2/kb/schema/form.json
+index 61f0ba0..2374222 100644
+--- a/psed_v2/kb/schema/form.json
++++ b/psed_v2/kb/schema/form.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad",
+  "title": "PSED v2 extraction form: one record",
+- "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b) and pilot/lists.py; fields from pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
++ "description": "One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+@@ -415,7 +415,7 @@
+   },
+   "quote": {
+    "type": "string",
+-   "pattern": "^\\S+(\\s+\\S+){0,14}$"
++   "minLength": 1
+   },
+   "uncertainty": {
+    "type": "number"
+@@ -474,6 +474,10 @@
+    "type": "string",
+    "pattern": "^\\S+(\\s+\\S+){0,19}$"
+   },
++  "term": {
++   "type": "string",
++   "minLength": 1
++  },
+   "variables": {
+    "type": "object",
+    "minProperties": 1,
+@@ -481,7 +485,14 @@
+     "minLength": 1
+    },
+    "additionalProperties": {
+-    "$ref": "#/$defs/quantity_id"
++    "anyOf": [
++     {
++      "$ref": "#/$defs/quantity_id"
++     },
++     {
++      "type": "null"
++     }
++    ]
+    }
+   },
+   "candidate": {
+@@ -553,25 +564,20 @@
+    "label_as_printed"
+   ],
+   "value": [
+-   "quantity"
++   "quantity",
++   "kind"
+   ],
+   "value_min": [
+-   "quantity"
++   "quantity",
++   "kind"
+   ],
+   "value_max": [
+-   "quantity"
++   "quantity",
++   "kind"
+   ],
+   "value_text": [
+-   "quantity"
+-  ],
+-  "uncertainty": [
+-   "value"
+-  ],
+-  "uncertainty_kind": [
+-   "value"
+-  ],
+-  "uncertainty_n": [
+-   "value"
++   "quantity",
++   "kind"
+   ],
+   "cause": [
+    "relation",
+@@ -664,12 +670,100 @@
+      "type"
+     ]
+    },
++   "then": {
++    "required": [
++     "term"
++    ]
++   },
++   "else": {
++    "properties": {
++     "term": false
++    }
++   }
++  },
++  {
++   "if": {
++    "properties": {
++     "type": {
++      "enum": [
++       "definition",
++       "model"
++      ]
++     }
++    },
++    "required": [
++     "type"
++    ]
++   },
+    "else": {
+     "properties": {
+      "variables": false
+     }
+    }
+   },
++  {
++   "if": {
++    "properties": {
++     "quantity": {
++      "enum": [
++       "material",
++       "substrate"
++      ]
++     }
++    },
++    "required": [
++     "quantity"
++    ]
++   },
++   "then": {
++    "properties": {
++     "value_text": {
++      "$ref": "#/$defs/material"
++     }
++    }
++   }
++  },
++  {
++   "if": {
++    "properties": {
++     "quantity": {
++      "enum": [
++       "reactant_A",
++       "reactant_B"
++      ]
++     }
++    },
++    "required": [
++     "quantity"
++    ]
++   },
++   "then": {
++    "properties": {
++     "value_text": {
++      "$ref": "#/$defs/species"
++     }
++    }
++   }
++  },
++  {
++   "if": {
++    "properties": {
++     "quantity": {
++      "const": "structure"
++     }
++    },
++    "required": [
++     "quantity"
++    ]
++   },
++   "then": {
++    "properties": {
++     "value_text": {
++      "$ref": "#/$defs/structure"
++     }
++    }
++   }
++  },
+   {
+    "if": {
+     "properties": {
+@@ -1007,6 +1101,19 @@
+     "zno"
+    ]
+   },
++  "structure": {
++   "enum": [
++    "anodic_alumina_membrane",
++    "etched_hole_array",
++    "macroscopic_lateral_trench",
++    "nanoparticle_compact",
++    "pillarhall_1",
++    "pillarhall_3",
++    "pillarhall_4",
++    "planar",
++    "si_trench_capped"
++   ]
++  },
+   "definition": {
+    "enum": [
+     "normalized",
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index 54d9a16..78e5cff 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -1,9 +1,9 @@
+ {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psed_v2:schema:form_pass0",
+- "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b",
++ "$comment": "GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad",
+  "title": "PSED v2 extraction form, pass 0: the things one paper names",
+- "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 6f0cea60cd475c3362cb678738afa21fd8af6e276bfbca225b05f0d6dafc828b).",
++ "description": "One paper = a list of the specimens, runs, simulations and cited works it names (ontology version 1, sha256 23c7643ec1bf821e992363155445c560d7bc432a0208139311adc555a200adad).",
+  "type": "array",
+  "items": {
+   "type": "object",
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index f221096..924fc02 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -1,10 +1,10 @@
+ #!/usr/bin/env python3
+-"""ontology.yaml + pilot_map.csv -> psed_v2/pilot/vocab.py, the pilot's generated vocabularies (P49: one vocabulary source).
++"""ontology.yaml + pilot_map.csv -> psed_v2/kb/pilot/vocab.py, the pilot's generated vocabularies (P49: one vocabulary source).
+ 
+     python3 psed_v2/ontology/export.py            # write vocab.py, print the counts and the pilot ids still to absorb
+     python3 psed_v2/ontology/export.py --check    # exit 1 when vocab.py on disk differs from what the ontology gives
+ 
+-P132: it also writes the extraction form, psed_v2/schema/form.json, form_pass0.json and FORM.md (form_files; --check covers them).
++P132: it also writes the extraction form, psed_v2/kb/schema/form.json, form_pass0.json and FORM.md (form_files; --check covers them).
+ 
+ pilot_map.csv is the disposition table of every pilot id (quantity, material, structure or method): direct (the id is an entry),
+ alias (another entry's id), qualifier (an entry plus qualifiers), transform (the output of a transform), new_entry (an entry made
+@@ -71,11 +71,12 @@ def qualifier_values(q, species=(), materials=(), definitions=()):
+ def unit_tables(onto):
+     """P122: lists.UNIT_BASE, UNIT_ALIAS and DIMENSION_OF from ontology/units.yaml: every symbol and variant -> (dimension, factor relative
+     to the dimension's canonical unit: the ontology's units: block, else the row with factor 1, else the first row); every variant -> its
+-    symbol; every dimension -> itself. Never hand-edited again."""
+-    rows = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]
++    symbol; every dimension -> itself, or (P136 2b, units.yaml same_dimension) to the dimension it converts into. Never hand-edited again."""
++    doc = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))
++    rows, same = doc["units"], doc.get("same_dimension") or {}                  # P136 2b: a dimension converting into another's base
+     by_dim = {}
+     for u in rows:
+-        by_dim.setdefault(u["dimension"], []).append(u)
++        by_dim.setdefault(same.get(u["dimension"], u["dimension"]), []).append(u)
+     canon = {}
+     for dim, us in by_dim.items():
+         want = str((onto.get("units", {}).get(dim) or {}).get("canonical", "")).split(" ")[0]
+@@ -84,12 +85,12 @@ def unit_tables(onto):
+         canon[dim] = float(row["factor"])
+     base, alias = {}, {}
+     for u in rows:
+-        fac = float(u["factor"]) / canon[u["dimension"]]
++        fac = float(u["factor"]) / canon[same.get(u["dimension"], u["dimension"])]
+         for v in [u["symbol"]] + list(u["variants"]):
+             base.setdefault(str(v), (u["dimension"], fac))
+             if str(v) != str(u["symbol"]):
+                 alias.setdefault(str(v), str(u["symbol"]))
+-    return base, alias, {d: d for d in by_dim}
++    return base, alias, {**{d: d for d in by_dim}, **same}
+ 
+ 
+ def pending_entry(r):
+@@ -194,7 +195,7 @@ JOINED = ["cause", "effect"]
+ CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
+ COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
+ FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
+-QUOTE_WORDS, NOTE_WORDS = 15, 20
++NOTE_WORDS = 20
+ PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
+ PASS0_ROLES = ["specimen", "run", "simulation", "cited_work"]
+ 
+@@ -227,6 +228,7 @@ def form_defs(onto):
+             "cause_effect": {"enum": sorted(ids("quantity", "categorical") + ids("mechanism"))},
+             "species": {"enum": ids("species")},
+             "material": {"enum": sorted(e["id"] for e in live if e["type"] == "species" and e.get("kind") == "material")},
++            "structure": {"enum": ids("structure")},                            # P136 2c: the value_text of a structure setting
+             "definition": {"enum": sorted({d["id"] for e in live for d in (e.get("definitions") or [])})},
+             "element": {"type": "string", "pattern": "^[A-Z][a-z]?$"}}          # the ontology has no element list: the form of a symbol
+ 
+@@ -269,12 +271,14 @@ def form_schema(onto, L, F):
+         "unit": s(), "value_text": s(),
+         "kind": {"enum": list(L.KINDS)}, "method": {"enum": list(L.METHODS)},
+         "mentions": {"type": "array", "minItems": 1, "items": s()},
+-        "quote": _words(QUOTE_WORDS),
++        "quote": s(),                                                           # P136 2c: no word cap; the compiler's substring check grounds it
+         "uncertainty": {"type": "number"}, "uncertainty_kind": {"enum": sorted(L.UNCERTAINTY_KINDS)}, "uncertainty_n": {"type": "integer"},
+         "cause": ids_list("cause_effect"), "relation": {"enum": list(L.RELATIONS)}, "effect": ids_list("cause_effect"),
+         "stance": {"enum": list(L.STANCES)},
+         "note": _words(NOTE_WORDS),
+-        "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1}, "additionalProperties": {"$ref": "#/$defs/quantity_id"}},
++        "term": s(),                                                            # P136 2c: a definition's symbol or term as printed
++        "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1},
++                      "additionalProperties": {"anyOf": [{"$ref": "#/$defs/quantity_id"}, {"type": "null"}]}},   # P136 2c: null = no entry
+         "candidate": {"type": "object", "additionalProperties": False, "required": ["definition_quote", "unit_as_printed", "dimension", "symbol"],
+                       "properties": {"definition_quote": s(), "unit_as_printed": {"type": "string"}, "dimension": {"enum": dims}, "symbol": {"type": "string"}}},
+     }
+@@ -285,16 +289,20 @@ def form_schema(onto, L, F):
+         "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}",
+         "title": "PSED v2 extraction form: one record",
+         "description": f"One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version {onto['version']}, sha256 {h}) "
+-                       f"and pilot/lists.py; fields from pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
++                       f"and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
+         "type": "object", "additionalProperties": False, "properties": props,
+         "required": ["type", "quote"],
+-        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity"] for f in VALUE_FIELDS}, **{f: ["value"] for f in UNCERTAINTY_FIELDS},
++        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity", "kind"] for f in VALUE_FIELDS},   # P136 2c: kind with any value **{f: ["value"] for f in UNCERTAINTY_FIELDS},
+                               **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
+         "allOf": [
+             {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
+             {"if": _is("type", "claim"), "then": _none(["quantity"]), "else": _none(CLAIM_FIELDS)},
+             {"if": _is("type", ["claim", "definition"]), "else": _none(["note"])},
+-            {"if": _is("type", "definition"), "else": _none(["variables"])},
++            {"if": _is("type", "definition"), "then": {"required": ["term"]}, "else": _none(["term"])},            # P136 2c
++            {"if": _is("type", ["definition", "model"]), "else": _none(["variables"])},                              # P136 2c
++            {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/material"}}}},
++            {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/species"}}}},
++            {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": {"$ref": "#/$defs/structure"}}}},
+             {"if": _is("quantity", "other"), "then": {"required": ["candidate"]}, "else": _none(["candidate"])},
+         ],
+         "$defs": defs,
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index 9f9a97e..bb344ae 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -759,7 +759,8 @@ entries:
+     unit: "µm"
+     qudt_quantity_kind: "quantitykind:Length"
+     qudt_unit: "unit:MicroM"
+-    aliases: [Design channel height H (nm), Channel height (nm), Height of the channel, H (nm), LHAR H (µm), opening height, channel gap height, minor axis, h, pore diameter (nm), targeted channel height H, Design channel height H, LHAR H, d_pore]
++    aliases: [Design channel height H (nm), Channel height (nm), Height of the channel, H (nm), LHAR H (µm), opening height, channel gap height, minor axis, h, pore diameter (nm), targeted channel height H, Design channel height H, LHAR H, d_pore, channel height, H (channel height)]
++    note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
+     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
+     evidence: [Yim2020 Table 1, Yim2020 Table 2, Yim2020 Fig. 9, Yim2020 Fig. 10, Ylilammi2018 Table I, Ylilammi2018 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''minor axis'': gor03 s8.p1 (P131b alias audit)', 'alias ''h'': art19 s4.p10 (P131b alias audit)', 'alias ''pore diameter (nm)'': ela03 tab1.r1c4 (P131b alias audit)', 'alias ''targeted channel height H'': yim20 s5.p1 (P131b alias audit)', 'alias ''Design channel height H'': yim20 tab1.r1c3 (P131b alias audit)', 'alias ''LHAR H'': yim20 tab2.r6c2 (P131b alias audit)', 'alias ''H'': yim22 tab1.r10c1; yli18 s5.p3 (P131b alias audit)', 'alias ''d_pore'': hei24 fig5.cap (P131b alias audit)']
+ 
+@@ -776,7 +777,8 @@ entries:
+     unit: "µm"
+     qudt_quantity_kind: "quantitykind:Length"
+     qudt_unit: "unit:MicroM"
+-    aliases: [L (mm), Length of the channel, Lateral length of the channel (mm), channel length L, lateral length L, l/2, cavity length]
++    aliases: [L (mm), Length of the channel, Lateral length of the channel (mm), channel length L, lateral length L, l/2, cavity length, channel length, L (channel length)]
++    note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
+     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
+     evidence: [Yim2020 Fig. 8a, Yim2020 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''l/2'': ela03 s5.p4 (P131b alias audit)', 'alias ''cavity length'': gao15 abs.g2 (P131b alias audit)']
+ 
+@@ -793,7 +795,8 @@ entries:
+     unit: "µm"
+     qudt_quantity_kind: "quantitykind:Length"
+     qudt_unit: "unit:MicroM"
+-    aliases: [Width of the channel, channel width W, major axis]
++    aliases: [Width of the channel, channel width W, major axis, channel width, W (channel width)]
++    note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
+     base: {source: cremers_2019, section: "Sec. II G, Fig. 6"}
+     evidence: [Ylilammi2018 Figs. 2-5, Werbrouck2021 Sec. II D, 'alias ''major axis'': gor03 s8.p1 (P131b alias audit)']
+ 
+diff --git a/psed_v2/ontology/units.yaml b/psed_v2/ontology/units.yaml
+index d435b08..6f04fca 100644
+--- a/psed_v2/ontology/units.yaml
++++ b/psed_v2/ontology/units.yaml
+@@ -4,6 +4,8 @@
+ # this table, and a unit resolves only when its dimension equals the resolved quantity's (else dimension_mismatch).
+ # Variants are matched after normalisation: LaTeX commands and braces removed ($^{-1}$ -> -1, \mu -> µ), μ (Greek mu) -> µ (micro),
+ # superscript digits and minus folded, spaces and dots dropped, case kept for symbols that differ by case (mTorr, mbar, Pa).
++# P136 2b: dimensions that convert into another one's base unit; per cycle is a count, so nm/cycle converts to nm and back.
++same_dimension: {length_per_cycle: length}
+ units:
+   # length
+   - {symbol: pm,   variants: [pm, picometer, picometre],                         dimension: length, factor: 1.0e-12, qudt: L}

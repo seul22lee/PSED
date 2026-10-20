@@ -1,0 +1,15 @@
+step,file,lines,why,audit rows it targets
+1a,kb/extract/compile.py,type_rules + dedupe,definitions from every element; deduped on normalized term,T4 definition_outside_equation (9)
+1b,kb/extract/compile.py,normalize(),\circ / ^\circ -> °,T4 s8.p21 unit (2)
+1c,kb/extract/compile.py,figures() + run(),figures.json curves/sets -> entities; model/observation rows; settings; comparisons,"T3 fig3/fig5/fig6/fig7; T3q pulse_time, feature_width, cycle_number; T5 fig2; comparison 3"
+1d,kb/extract/compile.py + audit.py,canon() match_key() differing(),values compared in the canonical unit,T5 74.9 g/mol; 5 nm-2
+2a,ontology/ontology.yaml,feature_width/depth/extent,lateral-channel aliases and a note (gap height left out: held-out gre23 gold),"T5 fig2.cap/fig6.cap, T3q s5.p3, reverse s5.p3/tabI/s9.p2/fig6-7"
+2b,ontology/units.yaml + export.py + kb/pilot/lists.py,same_dimension,length_per_cycle converts with length,"T5 tabI.r1c6, r2c6, fig2.cap sat_gpc"
+2c,ontology/export.py -> kb/schema/,form_schema,"term; variables on definition/model with null; value_text enums; kind with value; quote no cap; paths",T4 variables (16+2); species_unresolved; quote pattern; check kind_missing
+2c,kb/extract/compile.py,ground(),a null variable is not an unresolved id,T4 variables
+3a,kb/extract/pass1_elements.py,RULES,type definitions; quantity rule; kind; variables null; value_text ids,T3/T3q type confusions
+3b,kb/extract/pass1_elements.py,examples(),one example per type from other dev papers' gold,T3/T3q
+3c,-,-,no change: harness complete; model chose NK (P136.3c_sections.csv),abs/s3/s10 claims
+3d,-,-,no flag: cache key hashes prompt + schema + thinking,-
+3,kb/extract/pass0_paper.py,INSTRUCTION,introduced_in lists figure/table elements too,1c parents
+5,kb/extract/audit.py + compile.py,same() + term + log,audit follows definition merges; term in T2 cast; log text,-
