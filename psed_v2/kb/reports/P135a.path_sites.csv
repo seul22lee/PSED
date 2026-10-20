@@ -1,0 +1,53 @@
+file,line,old,new
+psed_v2/kb/pilot/ask.py,31,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/ask.py,288,"KIND_PHRASES = Path(__file__).resolve().parents[1] / ""eval"" / ""kind_phrases.yaml""            # P102: the wording table, calibrated","KIND_PHRASES = Path(__file__).resolve().parent / ""kind_phrases.yaml""            # P102: the wording table, calibrated"
+psed_v2/kb/pilot/cases.py,19,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/cremers.py,17,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/elements.py,21,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/paper_case.py,16,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/report.py,24,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/tools.py,10,V2 = HERE.parent,V2 = HERE.parent.parent
+psed_v2/kb/pilot/query.py,44,"p = HERE.parent / ""kb"" / f""{pid}.figures.json""","p = HERE.parent / f""{pid}.figures.json"""
+psed_v2/kb/pilot/metrics.py,60,"src = HERE.parent / ""ingest"" / ""final"" / pid / ""document.md""","src = HERE.parent.parent / ""ingest"" / ""final"" / pid / ""document.md"""
+psed_v2/kb/pilot/metrics.py,67,"rows = rd(HERE.parent / ""ontology"" / ""pilot_map.csv"")","rows = rd(HERE.parent.parent / ""ontology"" / ""pilot_map.csv"")"
+psed_v2/kb/pilot/absorption.py,20,"OUT = HERE.parent / ""ontology"" / ""absorption.csv""","OUT = HERE.parent.parent / ""ontology"" / ""absorption.csv"""
+psed_v2/kb/pilot/matrix.py,21,"man = {r[""paper_id""]: r for r in csv.DictReader((HERE.parent / ""corpus/manifest.csv"").open(encoding=""utf-8""))}","man = {r[""paper_id""]: r for r in csv.DictReader((HERE.parent.parent / ""corpus/manifest.csv"").open(encoding=""utf-8""))}"
+psed_v2/kb/pilot/providers.py,23,"ENV = Path(__file__).resolve().parent.parent / "".env""","ENV = Path(__file__).resolve().parent.parent.parent / "".env"""
+psed_v2/kb/pilot/quantity_matrix.py,13,"for r in csv.DictReader(open(V2 + ""pilot/figures.csv"", encoding=""utf-8"")):","for r in csv.DictReader(open(V2 + ""kb/pilot/figures.csv"", encoding=""utf-8"")):"
+psed_v2/kb/pilot/quantity_matrix.py,70,"w = csv.DictWriter(open(V2 + ""pilot/quantity_matrix.csv"", ""w"", newline="""", encoding=""utf-8""), fieldnames=[""paper_id"", ""year""] + COLS)","w = csv.DictWriter(open(V2 + ""kb/pilot/quantity_matrix.csv"", ""w"", newline="""", encoding=""utf-8""), fieldnames=[""paper_id"", ""year""] + COLS)"
+psed_v2/kb/pilot/quantity_matrix.py,805,"w = csv.DictWriter(open(V2 + ""pilot/quantity_matrix.csv"", ""w"", newline="""", encoding=""utf-8""), fieldnames=[""paper_id"", ""year""] + COLS + [""limiting_step_exposure"", ""usable_for"", ""read_by_hand""])","w = csv.DictWriter(open(V2 + ""kb/pilot/quantity_matrix.csv"", ""w"", newline="""", encoding=""utf-8""), fieldnames=[""paper_id"", ""year""] + COLS + [""limiting_step_exposure"", ""usable_for"", ""read_by_hand""])"
+psed_v2/kb/pilot/check.py,440,"KB = HERE.parent / ""kb""",KB = HERE.parent
+psed_v2/kb/pilot/check.py,441,"units = yaml.safe_load((HERE.parent / ""ontology"" / ""units.yaml"").read_text(encoding=""utf-8""))[""units""]","units = yaml.safe_load((HERE.parent.parent / ""ontology"" / ""units.yaml"").read_text(encoding=""utf-8""))[""units""]"
+psed_v2/kb/pilot/check.py,447,"unm = rd(HERE.parent / ""ontology"" / ""unmapped.csv"")","unm = rd(HERE.parent.parent / ""ontology"" / ""unmapped.csv"")"
+psed_v2/kb/pilot/check.py,624,"r = subprocess.run([sys.executable, str(HERE.parent / ""ontology"" / ""export.py""), ""--check""], capture_output=True, text=True)","r = subprocess.run([sys.executable, str(HERE.parent.parent / ""ontology"" / ""export.py""), ""--check""], capture_output=True, text=True)"
+psed_v2/kb/pilot/check.py,1670,"for u in yaml.safe_load((HERE.parent / ""ontology"" / ""units.yaml"").read_text(encoding=""utf-8""))[""units""]:","for u in yaml.safe_load((HERE.parent.parent / ""ontology"" / ""units.yaml"").read_text(encoding=""utf-8""))[""units""]:"
+psed_v2/kb/pilot/check.py,557,"(HERE.parent / ""kb"" / ""problems.txt"").write_text(""\n"".join(probs) + (""\n"" if probs else """"), encoding=""utf-8"")","(HERE.parent / ""problems.txt"").write_text(""\n"".join(probs) + (""\n"" if probs else """"), encoding=""utf-8"")"
+psed_v2/kb/pilot/check.py,1724,"p = HERE.parent / ""kb"" / f""{pid}.figures.json""","p = HERE.parent / f""{pid}.figures.json"""
+psed_v2/kb/pilot/check.py,1765,"p = HERE.parent / ""kb"" / f""{pid}.figures.json""","p = HERE.parent / f""{pid}.figures.json"""
+psed_v2/kb/pilot/check.py,2050,"p = HERE.parent / ""kb"" / f""{pid}.figures.json""","p = HERE.parent / f""{pid}.figures.json"""
+psed_v2/kb/extract/common.py,19,V2 = Path(__file__).resolve().parent.parent,V2 = Path(__file__).resolve().parent.parent.parent
+psed_v2/kb/extract/common.py,20,"sys.path.insert(0, str(V2 / ""pilot""))","sys.path.insert(0, str(V2 / ""kb"" / ""pilot""))"
+psed_v2/kb/extract/common.py,31,"CACHE, RECORDS, SCHEMA = V2 / ""cache"", V2 / ""records"", V2 / ""schema""","CACHE, RECORDS, SCHEMA = V2 / ""kb"" / ""cache"", V2 / ""kb"" / ""records"", V2 / ""kb"" / ""schema"""
+psed_v2/kb/extract/compile.py,27,"OUT = C.V2 / ""compiled""","OUT = C.V2 / ""kb"" / ""compiled"""
+psed_v2/kb/extract/compile.py,608,"gold = list(csv.DictReader((C.V2 / ""pilot"" / f""{run.pid}.facts.csv"").open(encoding=""utf-8"")))","gold = list(csv.DictReader((C.V2 / ""kb"" / ""pilot"" / f""{run.pid}.facts.csv"").open(encoding=""utf-8"")))"
+psed_v2/kb/extract/form_roundtrip.py,22,"sys.path.insert(0, str(ROOT / ""ontology""))","sys.path.insert(0, str(ROOT.parent / ""ontology""))"
+psed_v2/ontology/export.py,27,"OUT = HERE.parent / ""pilot"" / ""vocab.py""","OUT = HERE.parent / ""kb"" / ""pilot"" / ""vocab.py"""
+psed_v2/ontology/export.py,188,"SCHEMA = HERE.parent / ""schema""","SCHEMA = HERE.parent / ""kb"" / ""schema"""
+psed_v2/ontology/export.py,218,"sys.path.insert(0, str(HERE.parent / ""pilot""))","sys.path.insert(0, str(HERE.parent / ""kb"" / ""pilot""))"
+psed_v2/ontology/alias_audit.py,27,"sys.path.insert(0, str(V2 / ""pilot""))","sys.path.insert(0, str(V2 / ""kb"" / ""pilot""))"
+psed_v2/ontology/alias_audit.py,55,"for p in sorted(glob.glob(str(V2 / ""pilot"" / ""10.*.facts.csv""))):","for p in sorted(glob.glob(str(V2 / ""kb"" / ""pilot"" / ""10.*.facts.csv""))):"
+psed_v2/ontology/alias_audit.py,127,"free = {r[""label_as_printed""] for p in glob.glob(str(V2 / ""pilot"" / ""*.facts.csv"")) for r in csv.DictReader(open(p, newline="""", encoding=""utf-8"")) if r[""quantity""] == ""other""}","free = {r[""label_as_printed""] for p in glob.glob(str(V2 / ""kb"" / ""pilot"" / ""*.facts.csv"")) for r in csv.DictReader(open(p, newline="""", encoding=""utf-8"")) if r[""quantity""] == ""other""}"
+psed_v2/ontology/alias_audit.py,28,"OUT = V2 / ""verify"" / ""d14"" / ""alias_audit.csv""","OUT = V2 / ""kb"" / ""verify"" / ""d14"" / ""alias_audit.csv"""
+psed_v2/ontology/entry_definitions.py,18,"sys.path.insert(0, str(V2 / ""pilot""))","sys.path.insert(0, str(V2 / ""kb"" / ""pilot""))"
+psed_v2/ontology/entry_definitions.py,83,"for p in sorted(glob.glob(str(V2 / ""pilot"" / ""10.*.facts.csv""))):","for p in sorted(glob.glob(str(V2 / ""kb"" / ""pilot"" / ""10.*.facts.csv""))):"
+psed_v2/ontology/merge_pending.py,68,"for p in sorted(glob.glob(str(V2 / ""pilot"" / ""*.facts.csv""))):","for p in sorted(glob.glob(str(V2 / ""kb"" / ""pilot"" / ""*.facts.csv""))):"
+psed_v2/ontology/pending_decide.py,50,"for p in sorted(glob.glob(str(V2 / ""pilot"" / ""*.facts.csv""))):","for p in sorted(glob.glob(str(V2 / ""kb"" / ""pilot"" / ""*.facts.csv""))):"
+psed_v2/ontology/pending_decide.py,91,"for r in csv.DictReader((V2 / ""pilot"" / ""experiments.csv"").open(newline="""", encoding=""utf-8"")):","for r in csv.DictReader((V2 / ""kb"" / ""pilot"" / ""experiments.csv"").open(newline="""", encoding=""utf-8"")):"
+psed_v2/ontology/pending_decide.py,99,"for p in glob.glob(str(V2 / ""pilot"" / ""*.facts.csv"")):","for p in glob.glob(str(V2 / ""kb"" / ""pilot"" / ""*.facts.csv"")):"
+psed_v2/ontology/pending_decide.py,113,"for p in sorted(glob.glob(str(V2 / ""pilot"" / ""*.facts.csv""))):","for p in sorted(glob.glob(str(V2 / ""kb"" / ""pilot"" / ""*.facts.csv""))):"
+psed_v2/kb/figures_import.py,42,"sys.path.insert(0, str(V2 / ""pilot""))","sys.path.insert(0, str(V2 / ""kb"" / ""pilot""))"
+psed_v2/kb/figures_import.py,115,"p = V2 / ""pilot"" / f""{pid}.facts.csv""","p = V2 / ""kb"" / ""pilot"" / f""{pid}.facts.csv"""
+psed_v2/kb/figures_import.py,139,"p = V2 / ""pilot"" / f""{pid}.facts.csv""","p = V2 / ""kb"" / ""pilot"" / f""{pid}.facts.csv"""
+psed_v2/kb/figures_agreement.py,15,"PILOT = V2 / ""pilot""","PILOT = V2 / ""kb"" / ""pilot"""
+.gitignore,73,psed_v2/pilot/runs/,psed_v2/kb/pilot/runs/
+.gitignore,77,psed_v2/cache/,psed_v2/kb/cache/

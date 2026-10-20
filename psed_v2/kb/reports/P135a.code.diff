@@ -1,0 +1,1811 @@
+commit 63e12e7970f7551ed077334d655f357faf3a17c9
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Mon Oct 19 21:37:26 2026 -0500
+
+    P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/
+    
+    git mv only, plus the path sites that the move breaks (52 sites, listed in
+    kb/reports/P135a.path_sites.csv): pilot/ -> kb/pilot/, extract/ schema/ records/
+    compiled/ verify/ -> kb/, scripts/*.py -> kb/extract/, eval/kind_phrases.yaml ->
+    kb/pilot/; cache/ (gitignored) moved with mv. .gitignore lines 73 and 77, CLAUDE.md
+    Layout. kb/report.py (R2): renders (title, file) pairs as tables / <pre>.
+    check.py:720 (git show pilot-v6:psed_v2/pilot/...) and the frozen scripts in
+    kb/verify/d12-d14 are left as they are. check.py output identical before and after.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .gitignore                                         |  4 +--
+ psed_v2/CLAUDE.md                                  | 16 ++++++----
+ .../compiled/10.1063_1.5028178.compile.log         |  0
+ .../compiled/10.1063_1.5028178.coverage.csv        |  0
+ .../compiled/10.1063_1.5028178.dropped.csv         |  0
+ .../compiled/10.1063_1.5028178.experiments.csv     |  0
+ .../{ => kb}/compiled/10.1063_1.5028178.facts.csv  |  0
+ .../compiled/10.1063_1.5028178.summary.csv         |  0
+ .../compiled/10.1063_1.5028178.unmapped.csv        |  0
+ psed_v2/{ => kb}/extract/common.py                 |  6 ++--
+ psed_v2/{ => kb}/extract/compile.py                |  4 +--
+ psed_v2/{scripts => kb/extract}/form_roundtrip.py  |  2 +-
+ psed_v2/{ => kb}/extract/pass0_paper.py            |  0
+ psed_v2/{ => kb}/extract/pass1_elements.py         |  0
+ psed_v2/{scripts => kb/extract}/statement_only.py  |  0
+ psed_v2/kb/figures_agreement.py                    |  2 +-
+ psed_v2/kb/figures_import.py                       |  6 ++--
+ psed_v2/{ => kb}/pilot/.gitignore                  |  0
+ .../pilot/10.1002_cvde.200390005.coverage.csv      |  0
+ .../pilot/10.1002_cvde.200390005.elements.csv      |  0
+ .../pilot/10.1002_cvde.200390005.experiments.csv   |  0
+ .../pilot/10.1002_cvde.200390005.facts.csv         |  0
+ .../{ => kb}/pilot/10.1002_cvde.200390005.facts.py |  0
+ .../10.1021_acs.chemmater.2c01154.coverage.csv     |  0
+ .../10.1021_acs.chemmater.2c01154.elements.csv     |  0
+ .../10.1021_acs.chemmater.2c01154.experiments.csv  |  0
+ .../pilot/10.1021_acs.chemmater.2c01154.facts.csv  |  0
+ .../pilot/10.1021_acs.chemmater.2c01154.facts.py   |  0
+ .../10.1021_acs.chemmater.2c01154.points.json      |  0
+ .../pilot/10.1021_acs.jpcc.9b08176.coverage.csv    |  0
+ .../pilot/10.1021_acs.jpcc.9b08176.elements.csv    |  0
+ .../pilot/10.1021_acs.jpcc.9b08176.experiments.csv |  0
+ .../pilot/10.1021_acs.jpcc.9b08176.facts.csv       |  0
+ .../pilot/10.1021_acs.jpcc.9b08176.facts.py        |  0
+ .../{ => kb}/pilot/10.1021_cm0303080.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1021_cm0303080.elements.csv  |  0
+ .../pilot/10.1021_cm0303080.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1021_cm0303080.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1021_cm0303080.facts.py  |  0
+ .../{ => kb}/pilot/10.1021_cm0303080.points.json   |  0
+ .../{ => kb}/pilot/10.1039_d0cp03358h.coverage.csv |  0
+ .../{ => kb}/pilot/10.1039_d0cp03358h.elements.csv |  0
+ .../pilot/10.1039_d0cp03358h.experiments.csv       |  0
+ .../{ => kb}/pilot/10.1039_d0cp03358h.facts.csv    |  0
+ psed_v2/{ => kb}/pilot/10.1039_d0cp03358h.facts.py |  0
+ .../{ => kb}/pilot/10.1039_d0cp03358h.points.json  |  0
+ .../{ => kb}/pilot/10.1039_d1cp04758b.coverage.csv |  0
+ .../{ => kb}/pilot/10.1039_d1cp04758b.elements.csv |  0
+ .../pilot/10.1039_d1cp04758b.experiments.csv       |  0
+ .../{ => kb}/pilot/10.1039_d1cp04758b.facts.csv    |  0
+ psed_v2/{ => kb}/pilot/10.1039_d1cp04758b.facts.py |  0
+ .../{ => kb}/pilot/10.1039_d3cp05639b.coverage.csv |  0
+ .../{ => kb}/pilot/10.1039_d3cp05639b.elements.csv |  0
+ .../pilot/10.1039_d3cp05639b.experiments.csv       |  0
+ .../{ => kb}/pilot/10.1039_d3cp05639b.facts.csv    |  0
+ psed_v2/{ => kb}/pilot/10.1039_d3cp05639b.facts.py |  0
+ .../{ => kb}/pilot/10.1063_1.5028178.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1063_1.5028178.elements.csv  |  0
+ .../pilot/10.1063_1.5028178.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1063_1.5028178.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1063_1.5028178.facts.py  |  0
+ .../{ => kb}/pilot/10.1116_1.4903941.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1116_1.4903941.elements.csv  |  0
+ .../pilot/10.1116_1.4903941.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1116_1.4903941.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1116_1.4903941.facts.py  |  0
+ .../{ => kb}/pilot/10.1116_6.0002804.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1116_6.0002804.elements.csv  |  0
+ .../pilot/10.1116_6.0002804.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0002804.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0002804.facts.py  |  0
+ .../{ => kb}/pilot/10.1116_6.0002993.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1116_6.0002993.elements.csv  |  0
+ .../pilot/10.1116_6.0002993.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0002993.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0002993.facts.py  |  0
+ .../{ => kb}/pilot/10.1116_6.0003182.coverage.csv  |  0
+ .../{ => kb}/pilot/10.1116_6.0003182.elements.csv  |  0
+ .../pilot/10.1116_6.0003182.experiments.csv        |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0003182.facts.csv |  0
+ psed_v2/{ => kb}/pilot/10.1116_6.0003182.facts.py  |  0
+ .../{ => kb}/pilot/10.1116_6.0003182.points.json   |  0
+ psed_v2/{ => kb}/pilot/absorption.py               |  2 +-
+ psed_v2/{ => kb}/pilot/ask.py                      |  4 +--
+ psed_v2/{ => kb}/pilot/battery_per_paper.csv       |  0
+ psed_v2/{ => kb}/pilot/case_decisions.csv          |  0
+ psed_v2/{ => kb}/pilot/cases.py                    |  2 +-
+ psed_v2/{ => kb}/pilot/check.py                    | 18 +++++------
+ psed_v2/{ => kb}/pilot/compare_runs.py             |  0
+ psed_v2/{ => kb}/pilot/concept.py                  |  0
+ psed_v2/{ => kb}/pilot/cremers.py                  |  2 +-
+ psed_v2/{ => kb}/pilot/cremers_conformality.csv    |  0
+ psed_v2/{ => kb}/pilot/cremers_new_rows.csv        |  0
+ psed_v2/{ => kb}/pilot/cremers_parameters.csv      |  0
+ psed_v2/{ => kb}/pilot/cremers_profiles.csv        |  0
+ psed_v2/{ => kb}/pilot/cremers_source_checks.csv   |  0
+ .../pilot/cremers_values_hand_obtained.csv         |  0
+ psed_v2/{ => kb}/pilot/cremers_wanted_pdfs.csv     |  0
+ psed_v2/{ => kb}/pilot/dump.py                     |  0
+ psed_v2/{ => kb}/pilot/elements.py                 |  2 +-
+ psed_v2/{ => kb}/pilot/eval_calibrate.py           |  0
+ psed_v2/{ => kb}/pilot/experiments.csv             |  0
+ psed_v2/{ => kb}/pilot/experiments.py              |  0
+ psed_v2/{ => kb}/pilot/exposure_ear.csv            |  0
+ psed_v2/{ => kb}/pilot/facts.py                    |  0
+ psed_v2/{ => kb}/pilot/figures.csv                 |  0
+ psed_v2/{ => kb}/pilot/figures_agreement.csv       |  0
+ psed_v2/{ => kb}/pilot/forest.py                   |  0
+ psed_v2/{ => kb}/pilot/gpc_temperature.csv         |  0
+ psed_v2/{ => kb}/pilot/homeless.py                 |  0
+ psed_v2/{eval => kb/pilot}/kind_phrases.yaml       |  0
+ psed_v2/{ => kb}/pilot/lists.py                    |  0
+ psed_v2/{ => kb}/pilot/matrix.py                   |  2 +-
+ psed_v2/{ => kb}/pilot/metrics.py                  |  4 +--
+ psed_v2/{ => kb}/pilot/narrowing.csv               |  0
+ psed_v2/{ => kb}/pilot/paper_case.csv              |  0
+ psed_v2/{ => kb}/pilot/paper_case.py               |  2 +-
+ psed_v2/{ => kb}/pilot/papers.csv                  |  0
+ psed_v2/{ => kb}/pilot/points.json                 |  0
+ psed_v2/{ => kb}/pilot/prices.csv                  |  0
+ psed_v2/{ => kb}/pilot/problems.csv                |  0
+ psed_v2/{ => kb}/pilot/providers.py                |  2 +-
+ psed_v2/{ => kb}/pilot/quantity_matrix.csv         |  0
+ psed_v2/{ => kb}/pilot/quantity_matrix.py          |  6 ++--
+ psed_v2/{ => kb}/pilot/query.py                    |  2 +-
+ psed_v2/{ => kb}/pilot/questions.csv               |  0
+ psed_v2/{ => kb}/pilot/questions.py                |  0
+ psed_v2/{ => kb}/pilot/recheck.json                |  0
+ psed_v2/{ => kb}/pilot/recombination.csv           |  0
+ psed_v2/{ => kb}/pilot/report.py                   |  2 +-
+ psed_v2/{ => kb}/pilot/report_html.py              |  0
+ psed_v2/{ => kb}/pilot/run_metrics.py              |  0
+ psed_v2/{ => kb}/pilot/search_probes.csv           |  0
+ psed_v2/{ => kb}/pilot/sentence_only.py            |  0
+ psed_v2/{ => kb}/pilot/sentence_only_allow.csv     |  0
+ psed_v2/{ => kb}/pilot/serve.py                    |  0
+ psed_v2/{ => kb}/pilot/sticking_reported.csv       |  0
+ psed_v2/{ => kb}/pilot/tools.py                    |  2 +-
+ psed_v2/{ => kb}/pilot/user.facts.csv              |  0
+ psed_v2/{ => kb}/pilot/user_facts.py               |  0
+ psed_v2/{ => kb}/pilot/v1_points.json              |  0
+ psed_v2/{ => kb}/pilot/v1_points_check.csv         |  0
+ psed_v2/{ => kb}/pilot/values_sizes_baseline.csv   |  0
+ psed_v2/{ => kb}/pilot/vocab.py                    |  0
+ psed_v2/{ => kb}/records/10.1063_1.5028178.jsonl   |  0
+ psed_v2/kb/report.py                               | 37 ++++++++++++++++++++++
+ psed_v2/{ => kb}/schema/FORM.md                    |  0
+ psed_v2/{ => kb}/schema/form.json                  |  0
+ psed_v2/{ => kb}/schema/form_pass0.json            |  0
+ psed_v2/{ => kb}/verify/ask-v4/check.txt           |  0
+ psed_v2/{ => kb}/verify/ask-v4/git.txt             |  0
+ psed_v2/{ => kb}/verify/ask-v4/handoff_tail.txt    |  0
+ psed_v2/{ => kb}/verify/ask-v4/ontology.txt        |  0
+ psed_v2/{ => kb}/verify/ask-v4/pilot.html          |  0
+ psed_v2/{ => kb}/verify/ask-v4/problems_tail.txt   |  0
+ psed_v2/{ => kb}/verify/ask-v4/samples.json        |  0
+ psed_v2/{ => kb}/verify/ask-v4/samples.txt         |  0
+ psed_v2/{ => kb}/verify/ask-v4/sizes.csv           |  0
+ psed_v2/{ => kb}/verify/d10/check.txt              |  0
+ psed_v2/{ => kb}/verify/d10/git.txt                |  0
+ psed_v2/{ => kb}/verify/d10/prompt_size.txt        |  0
+ psed_v2/{ => kb}/verify/d10/samples.txt            |  0
+ psed_v2/{ => kb}/verify/d10/units_added.txt        |  0
+ psed_v2/{ => kb}/verify/d11/check.txt              |  0
+ psed_v2/{ => kb}/verify/d11/git.txt                |  0
+ psed_v2/{ => kb}/verify/d11/samples.txt            |  0
+ psed_v2/{ => kb}/verify/d12/check.txt              |  0
+ .../{ => kb}/verify/d12/fixture/check_fixture.py   |  0
+ psed_v2/{ => kb}/verify/d12/fixture/fix_a.jsonl    |  0
+ psed_v2/{ => kb}/verify/d12/fixture/fix_b.jsonl    |  0
+ .../{ => kb}/verify/d12/fixture/make_fixture.py    |  0
+ psed_v2/{ => kb}/verify/d12/fixture/verdicts.csv   |  0
+ psed_v2/{ => kb}/verify/d12/fixture_report.html    |  0
+ psed_v2/{ => kb}/verify/d12/fixture_report.md      |  0
+ psed_v2/{ => kb}/verify/d12/prompt_size.txt        |  0
+ psed_v2/{ => kb}/verify/d13/check.txt              |  0
+ psed_v2/{ => kb}/verify/d13/counts.md              |  0
+ psed_v2/{ => kb}/verify/d13/counts.py              |  0
+ psed_v2/{ => kb}/verify/d13/nodes_top3.txt         |  0
+ psed_v2/{ => kb}/verify/d13/prompt_size.txt        |  0
+ psed_v2/{ => kb}/verify/d13/removed.csv            |  0
+ psed_v2/{ => kb}/verify/d13/removed_retyped.py     |  0
+ psed_v2/{ => kb}/verify/d13/retyped.csv            |  0
+ psed_v2/{ => kb}/verify/d14/REPORT.md              |  0
+ psed_v2/{ => kb}/verify/d14/alias_audit.csv        |  0
+ psed_v2/{ => kb}/verify/d14/decisions.md           |  0
+ psed_v2/{ => kb}/verify/d14/five_entries.py        |  0
+ psed_v2/{ => kb}/verify/d14/ontology_v1.txt        |  0
+ psed_v2/{ => kb}/verify/d15/roundtrip.csv          |  0
+ psed_v2/{ => kb}/verify/d15/roundtrip_summary.txt  |  0
+ psed_v2/{ => kb}/verify/d15/statement_only.csv     |  0
+ .../{ => kb}/verify/d15/statement_only_summary.txt |  0
+ psed_v2/{ => kb}/verify/d8/allowlist_removed.txt   |  0
+ psed_v2/{ => kb}/verify/d8/battery_per_paper.csv   |  0
+ psed_v2/{ => kb}/verify/d8/check.txt               |  0
+ .../{ => kb}/verify/d8/external_ids_coverage.txt   |  0
+ psed_v2/{ => kb}/verify/d8/git.txt                 |  0
+ psed_v2/{ => kb}/verify/d8/import_before_after.csv |  0
+ .../{ => kb}/verify/d8/kind_check_calibration.md   |  0
+ psed_v2/{ => kb}/verify/d8/map_58_simulation.txt   |  0
+ psed_v2/{ => kb}/verify/d8/pending_decisions.csv   |  0
+ psed_v2/{ => kb}/verify/d8/samples.txt             |  0
+ psed_v2/{ => kb}/verify/d9/battery_per_paper.csv   |  0
+ psed_v2/{ => kb}/verify/d9/check.txt               |  0
+ psed_v2/{ => kb}/verify/d9/git.txt                 |  0
+ psed_v2/{ => kb}/verify/d9/import_before_after.csv |  0
+ .../{ => kb}/verify/d9/kind_check_calibration.md   |  0
+ psed_v2/{ => kb}/verify/d9/p108_corrections.csv    |  0
+ psed_v2/{ => kb}/verify/d9/samples.txt             |  0
+ .../verify/figures-12/answers_figures.json         |  0
+ .../figures_trunc/10.1002_cvde.200390005.json      |  0
+ .../10.1021_acs.chemmater.2c01154.json             |  0
+ .../figures_trunc/10.1021_acs.jpcc.9b08176.json    |  0
+ .../figures_trunc/10.1021_cm0303080.json           |  0
+ .../figures_trunc/10.1039_d0cp03358h.json          |  0
+ .../figures_trunc/10.1039_d1cp04758b.json          |  0
+ .../figures_trunc/10.1039_d3cp05639b.json          |  0
+ .../figures_trunc/10.1063_1.5028178.json           |  0
+ .../figures_trunc/10.1116_1.4903941.json           |  0
+ .../figures_trunc/10.1116_6.0002804.json           |  0
+ .../figures_trunc/10.1116_6.0002993.json           |  0
+ .../figures_trunc/10.1116_6.0003182.json           |  0
+ psed_v2/{ => kb}/verify/figures-12/git.txt         |  0
+ psed_v2/{ => kb}/verify/figures-12/repeat.txt      |  0
+ psed_v2/{ => kb}/verify/figures-12/summary.csv     |  0
+ psed_v2/{ => kb}/verify/figures-12/tokens.txt      |  0
+ psed_v2/{ => kb}/verify/kb-12/check.txt            |  0
+ psed_v2/{ => kb}/verify/kb-12/git.txt              |  0
+ .../{ => kb}/verify/kb-12/import_before_after.csv  |  0
+ psed_v2/{ => kb}/verify/kb-12/papers.csv           |  0
+ psed_v2/{ => kb}/verify/kb-12/pending_added.csv    |  0
+ psed_v2/{ => kb}/verify/kb-12/probe.txt            |  0
+ psed_v2/{ => kb}/verify/kb-12/samples.txt          |  0
+ psed_v2/{ => kb}/verify/kb-12/unmapped.csv         |  0
+ psed_v2/{ => kb}/verify/kb-fig3/check.txt          |  0
+ .../{ => kb}/verify/kb-fig3/figures_agreement.csv  |  0
+ psed_v2/{ => kb}/verify/kb-fig3/git.txt            |  0
+ psed_v2/{ => kb}/verify/kb-fig3/import_report.csv  |  0
+ psed_v2/{ => kb}/verify/kb-fig3/pending_added.csv  |  0
+ psed_v2/{ => kb}/verify/kb-fig3/regression.md      |  0
+ psed_v2/{ => kb}/verify/kb-fig3/samples.txt        |  0
+ psed_v2/{ => kb}/verify/kb-fig3/unmapped.csv       |  0
+ psed_v2/ontology/alias_audit.py                    |  8 ++---
+ psed_v2/ontology/entry_definitions.py              |  4 +--
+ psed_v2/ontology/export.py                         |  6 ++--
+ psed_v2/ontology/merge_pending.py                  |  2 +-
+ psed_v2/ontology/pending_decide.py                 |  8 ++---
+ 247 files changed, 98 insertions(+), 59 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 6cfda76..144bda9 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -70,8 +70,8 @@ psed_v2/ontology/sources/
+ 
+ 
+ # psed_v2 pilot: model answers (ask.py, serve.py) and the API keys
+-psed_v2/pilot/runs/
++psed_v2/kb/pilot/runs/
+ psed_v2/.env
+ 
+ # P133: extraction cache (one file per provider call; records/ is tracked)
+-psed_v2/cache/
++psed_v2/kb/cache/
+diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 39f4c5f..a6b3abb 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -22,7 +22,7 @@ psed_v2/
+   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
+   corpus/CORPUS.md          # tracked: how the corpus was built: counts, PDF sources, open questions
+   HANDOFF.md                # tracked: state of the work, standing rules, how to run; also the one text file of pilot/ (facts plan, pipeline decisions, case candidates, Cremers notes and ideas)
+-  pilot/                    # tracked, flat: pre-pipeline exploration (replaces gold/, cases/, facts/, schema_pilot/); per-paper files named <paper_id>.*
++  kb/pilot/                 # tracked, flat (P135a: was pilot/): pre-pipeline exploration (replaces gold/, cases/, facts/, schema_pilot/); per-paper files named <paper_id>.*
+                             #   lists.py (the rules; its vocabularies are vocab.py, generated by ontology/export.py from ontology.yaml and ontology/pilot_map.csv), check.py (the one check,
+                             #   with sentence_only.py and metrics.py), report.py -> reports/pilot.html (gitignored)
+                             #   facts layer on three papers: elements.py -> <paper_id>.elements.csv; facts.py (helpers, column spec); <paper_id>.facts.py -> .facts.csv, .coverage.csv, .points.json
+@@ -48,13 +48,15 @@ psed_v2/
+   ingest/regression.py      # tracked: the output against answers/ (known real errors kept, no known not-error newly flagged, repairs intact)
+   ingest/reports/           # gitignored: papers.html, review_body.html and glyph_evidence/ (crops behind glyph_codes.json)
+   ingest/INGEST.md, ERRORS.md, NUMBERS.md, CHANGELOG.md # tracked: the pipeline per item; the errors and known limits; the numbers; the history pointer
+-  extract/ (tracked: common.py, pass0_paper.py, pass1_elements.py; P133), records/<paper_id>.jsonl (tracked: one line per provider call, append-only), cache/ (gitignored: one file per call)
+-  extract/compile.py        # tracked (P134): records/<paper_id>.jsonl -> compiled/; no provider call; diff against the pilot gold in .compile.log
+-  compiled/<paper_id>.*     # tracked: facts.csv, coverage.csv, experiments.csv, dropped.csv, unmapped.csv, compile.log, summary.csv (with the ontology hash); check: pilot/check.py --dir compiled
+-  schema/form.json          # tracked: generated by ontology/export.py: the extraction form (one record); form_pass0.json, FORM.md
+-  ontology/ontology.yaml, ontology/units.yaml # tracked: the ontology and the unit table (export.py -> pilot/vocab.py, schema/)
++  kb/extract/ (tracked: common.py, pass0_paper.py, pass1_elements.py; P133; form_roundtrip.py, statement_only.py), kb/records/<paper_id>.jsonl (tracked: one line per provider call, append-only), kb/cache/ (gitignored: one file per call)
++  kb/extract/compile.py     # tracked (P134): kb/records/<paper_id>.jsonl -> kb/compiled/; no provider call; diff against the pilot gold in .compile.log
++  kb/compiled/<paper_id>.*  # tracked: facts.csv, coverage.csv, experiments.csv, dropped.csv, unmapped.csv, compile.log, summary.csv (with the ontology hash); check: kb/pilot/check.py --dir kb/compiled
++  kb/schema/form.json       # tracked: generated by ontology/export.py: the extraction form (one record); form_pass0.json, FORM.md
++  ontology/ontology.yaml, ontology/units.yaml # tracked: the ontology and the unit table (export.py -> kb/pilot/vocab.py, kb/schema/)
+   kb/<paper_id>.figures.json # tracked: the figure records imported by rule (kb/figures_import.py)
+-                            # from P134, facts.csv is produced by extract/compile.py; pilot/<paper_id>.facts.py stays the gold
++  kb/verify/                # tracked: frozen evidence of past units (d8-d15, ask-v4, kb-12, kb-fig3, figures-12)
++  kb/report.py, kb/reports/<unit>.html # tracked: one self-contained HTML report per unit (R2)
++                            # from P134, facts.csv is produced by kb/extract/compile.py; kb/pilot/<paper_id>.facts.py stays the gold
+ ```
+ 
+ ## Environments
+diff --git a/psed_v2/compiled/10.1063_1.5028178.compile.log b/psed_v2/kb/compiled/10.1063_1.5028178.compile.log
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.compile.log
+rename to psed_v2/kb/compiled/10.1063_1.5028178.compile.log
+diff --git a/psed_v2/compiled/10.1063_1.5028178.coverage.csv b/psed_v2/kb/compiled/10.1063_1.5028178.coverage.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.coverage.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.coverage.csv
+diff --git a/psed_v2/compiled/10.1063_1.5028178.dropped.csv b/psed_v2/kb/compiled/10.1063_1.5028178.dropped.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.dropped.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.dropped.csv
+diff --git a/psed_v2/compiled/10.1063_1.5028178.experiments.csv b/psed_v2/kb/compiled/10.1063_1.5028178.experiments.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.experiments.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.experiments.csv
+diff --git a/psed_v2/compiled/10.1063_1.5028178.facts.csv b/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.facts.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+diff --git a/psed_v2/compiled/10.1063_1.5028178.summary.csv b/psed_v2/kb/compiled/10.1063_1.5028178.summary.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.summary.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.summary.csv
+diff --git a/psed_v2/compiled/10.1063_1.5028178.unmapped.csv b/psed_v2/kb/compiled/10.1063_1.5028178.unmapped.csv
+similarity index 100%
+rename from psed_v2/compiled/10.1063_1.5028178.unmapped.csv
+rename to psed_v2/kb/compiled/10.1063_1.5028178.unmapped.csv
+diff --git a/psed_v2/extract/common.py b/psed_v2/kb/extract/common.py
+similarity index 97%
+rename from psed_v2/extract/common.py
+rename to psed_v2/kb/extract/common.py
+index 4871ca2..15495e1 100644
+--- a/psed_v2/extract/common.py
++++ b/psed_v2/kb/extract/common.py
+@@ -16,8 +16,8 @@ import os
+ import sys
+ from pathlib import Path
+ 
+-V2 = Path(__file__).resolve().parent.parent
+-sys.path.insert(0, str(V2 / "pilot"))
++V2 = Path(__file__).resolve().parent.parent.parent
++sys.path.insert(0, str(V2 / "kb" / "pilot"))
+ sys.path.insert(0, str(V2 / "ingest"))
+ sys.path.insert(0, str(V2 / "ontology"))
+ import elements as E  # noqa: E402
+@@ -28,7 +28,7 @@ MODEL = "gemini-3.8-flash"
+ KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
+ HELD_OUT = {"yim22", "gre23", "mat23"}
+ HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
+-CACHE, RECORDS, SCHEMA = V2 / "cache", V2 / "records", V2 / "schema"
++CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"
+ PROVIDER_DROP = {"additionalProperties", "pattern", "uniqueItems", "propertyNames", "minProperties", "dependentRequired", "allOf", "if", "then",
+                  "else", "$schema", "$id", "$comment"}   # validation the compiler does against the full form.json (P134)
+ 
+diff --git a/psed_v2/extract/compile.py b/psed_v2/kb/extract/compile.py
+similarity index 99%
+rename from psed_v2/extract/compile.py
+rename to psed_v2/kb/extract/compile.py
+index 57e4505..61457d8 100644
+--- a/psed_v2/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -24,7 +24,7 @@ import facts as F  # noqa: E402  (pilot/, on the path through common)
+ import lists as L  # noqa: E402
+ import vocab as V  # noqa: E402
+ 
+-OUT = C.V2 / "compiled"
++OUT = C.V2 / "kb" / "compiled"
+ SPECIES_Q = {"material": L.MATERIALS, "substrate": L.MATERIALS, "reactant_A": list(L.SPECIES), "reactant_B": list(L.SPECIES), "structure": L.STRUCTURES}
+ VALUE_KEYS = ("value", "value_min", "value_max", "value_text")
+ DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "unit", "qualifiers", "value_text")
+@@ -605,7 +605,7 @@ def write_csv(path, fields, rows):
+ def diff(run):
+     """Gold pilot/<pid>.facts.csv against the compiled rows: a match shares an evidence element and has equal type, quantity, value,
+     unit (canonical spelling) and value_text; one gold row per compiled row, first come."""
+-    gold = list(csv.DictReader((C.V2 / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
++    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+     comp = run.rows
+     u = lambda x: V.UNIT_ALIAS.get(x, x)
+     key = lambda f: (f["type"], f["quantity"], F.num(f["value"]) if f["value"] else None, u(f["unit"]), f["value_text"].lower())
+diff --git a/psed_v2/scripts/form_roundtrip.py b/psed_v2/kb/extract/form_roundtrip.py
+similarity index 99%
+rename from psed_v2/scripts/form_roundtrip.py
+rename to psed_v2/kb/extract/form_roundtrip.py
+index 1d90ba9..3dbf3d0 100644
+--- a/psed_v2/scripts/form_roundtrip.py
++++ b/psed_v2/kb/extract/form_roundtrip.py
+@@ -19,7 +19,7 @@ from pathlib import Path
+ from jsonschema import Draft202012Validator
+ 
+ ROOT = Path(__file__).resolve().parent.parent
+-sys.path.insert(0, str(ROOT / "ontology"))
++sys.path.insert(0, str(ROOT.parent / "ontology"))
+ import export as X  # noqa: E402
+ 
+ OUT = ROOT / "verify" / "d15"
+diff --git a/psed_v2/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+similarity index 100%
+rename from psed_v2/extract/pass0_paper.py
+rename to psed_v2/kb/extract/pass0_paper.py
+diff --git a/psed_v2/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+similarity index 100%
+rename from psed_v2/extract/pass1_elements.py
+rename to psed_v2/kb/extract/pass1_elements.py
+diff --git a/psed_v2/scripts/statement_only.py b/psed_v2/kb/extract/statement_only.py
+similarity index 100%
+rename from psed_v2/scripts/statement_only.py
+rename to psed_v2/kb/extract/statement_only.py
+diff --git a/psed_v2/kb/figures_agreement.py b/psed_v2/kb/figures_agreement.py
+index d0e9b3d..14015f0 100644
+--- a/psed_v2/kb/figures_agreement.py
++++ b/psed_v2/kb/figures_agreement.py
+@@ -12,7 +12,7 @@ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+ V2 = HERE.parent
+-PILOT = V2 / "pilot"
++PILOT = V2 / "kb" / "pilot"
+ sys.path.insert(0, str(PILOT))
+ from elements import PAPERS  # noqa: E402
+ 
+diff --git a/psed_v2/kb/figures_import.py b/psed_v2/kb/figures_import.py
+index 590c3a3..ecc77b0 100644
+--- a/psed_v2/kb/figures_import.py
++++ b/psed_v2/kb/figures_import.py
+@@ -39,7 +39,7 @@ import yaml
+ 
+ HERE = Path(__file__).resolve().parent
+ V2 = HERE.parent
+-sys.path.insert(0, str(V2 / "pilot"))
++sys.path.insert(0, str(V2 / "kb" / "pilot"))
+ import lists as L  # noqa: E402
+ import vocab as V  # noqa: E402
+ from elements import PAPERS  # noqa: E402
+@@ -112,7 +112,7 @@ def paper_definitions(pid, with_quantity=True):
+     """P89: the paper's definition facts that name a quantity (pilot/<pid>.facts.csv): {normalised term: (quantity, note, fact id)}.
+     With with_quantity=False, the terms the paper defines WITHOUT an ontology quantity (D, η, P_d ...): {normalised term: fact id}; a
+     label that is such a term is the paper's own symbol and resolves to nothing, never to an ontology guess (P89b)."""
+-    p = V2 / "pilot" / f"{pid}.facts.csv"
++    p = V2 / "kb" / "pilot" / f"{pid}.facts.csv"
+     out = {}
+     if p.exists():
+         for r in csv.DictReader(p.open(encoding="utf-8")):
+@@ -136,7 +136,7 @@ _FACT_ROWS = {}
+ def fact_rows(pid):
+     """The paper's facts table (pilot/<pid>.facts.csv) as {fact id: row}, read once (P109: the context of a conversion)."""
+     if pid not in _FACT_ROWS:
+-        p = V2 / "pilot" / f"{pid}.facts.csv"
++        p = V2 / "kb" / "pilot" / f"{pid}.facts.csv"
+         _FACT_ROWS[pid] = {r["fact_id"]: r for r in csv.DictReader(p.open(encoding="utf-8"))} if p.exists() else {}
+     return _FACT_ROWS[pid]
+ 
+diff --git a/psed_v2/pilot/.gitignore b/psed_v2/kb/pilot/.gitignore
+similarity index 100%
+rename from psed_v2/pilot/.gitignore
+rename to psed_v2/kb/pilot/.gitignore
+diff --git a/psed_v2/pilot/10.1002_cvde.200390005.coverage.csv b/psed_v2/kb/pilot/10.1002_cvde.200390005.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1002_cvde.200390005.coverage.csv
+rename to psed_v2/kb/pilot/10.1002_cvde.200390005.coverage.csv
+diff --git a/psed_v2/pilot/10.1002_cvde.200390005.elements.csv b/psed_v2/kb/pilot/10.1002_cvde.200390005.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1002_cvde.200390005.elements.csv
+rename to psed_v2/kb/pilot/10.1002_cvde.200390005.elements.csv
+diff --git a/psed_v2/pilot/10.1002_cvde.200390005.experiments.csv b/psed_v2/kb/pilot/10.1002_cvde.200390005.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1002_cvde.200390005.experiments.csv
+rename to psed_v2/kb/pilot/10.1002_cvde.200390005.experiments.csv
+diff --git a/psed_v2/pilot/10.1002_cvde.200390005.facts.csv b/psed_v2/kb/pilot/10.1002_cvde.200390005.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1002_cvde.200390005.facts.csv
+rename to psed_v2/kb/pilot/10.1002_cvde.200390005.facts.csv
+diff --git a/psed_v2/pilot/10.1002_cvde.200390005.facts.py b/psed_v2/kb/pilot/10.1002_cvde.200390005.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1002_cvde.200390005.facts.py
+rename to psed_v2/kb/pilot/10.1002_cvde.200390005.facts.py
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.coverage.csv b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.coverage.csv
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.coverage.csv
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.elements.csv b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.elements.csv
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.elements.csv
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.experiments.csv b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.experiments.csv
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.experiments.csv
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.facts.csv b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.facts.csv
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.facts.csv
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.facts.py b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.facts.py
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.facts.py
+diff --git a/psed_v2/pilot/10.1021_acs.chemmater.2c01154.points.json b/psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.points.json
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.chemmater.2c01154.points.json
+rename to psed_v2/kb/pilot/10.1021_acs.chemmater.2c01154.points.json
+diff --git a/psed_v2/pilot/10.1021_acs.jpcc.9b08176.coverage.csv b/psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.jpcc.9b08176.coverage.csv
+rename to psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.coverage.csv
+diff --git a/psed_v2/pilot/10.1021_acs.jpcc.9b08176.elements.csv b/psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.jpcc.9b08176.elements.csv
+rename to psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.elements.csv
+diff --git a/psed_v2/pilot/10.1021_acs.jpcc.9b08176.experiments.csv b/psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.jpcc.9b08176.experiments.csv
+rename to psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.experiments.csv
+diff --git a/psed_v2/pilot/10.1021_acs.jpcc.9b08176.facts.csv b/psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.jpcc.9b08176.facts.csv
+rename to psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.facts.csv
+diff --git a/psed_v2/pilot/10.1021_acs.jpcc.9b08176.facts.py b/psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1021_acs.jpcc.9b08176.facts.py
+rename to psed_v2/kb/pilot/10.1021_acs.jpcc.9b08176.facts.py
+diff --git a/psed_v2/pilot/10.1021_cm0303080.coverage.csv b/psed_v2/kb/pilot/10.1021_cm0303080.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.coverage.csv
+rename to psed_v2/kb/pilot/10.1021_cm0303080.coverage.csv
+diff --git a/psed_v2/pilot/10.1021_cm0303080.elements.csv b/psed_v2/kb/pilot/10.1021_cm0303080.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.elements.csv
+rename to psed_v2/kb/pilot/10.1021_cm0303080.elements.csv
+diff --git a/psed_v2/pilot/10.1021_cm0303080.experiments.csv b/psed_v2/kb/pilot/10.1021_cm0303080.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.experiments.csv
+rename to psed_v2/kb/pilot/10.1021_cm0303080.experiments.csv
+diff --git a/psed_v2/pilot/10.1021_cm0303080.facts.csv b/psed_v2/kb/pilot/10.1021_cm0303080.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.facts.csv
+rename to psed_v2/kb/pilot/10.1021_cm0303080.facts.csv
+diff --git a/psed_v2/pilot/10.1021_cm0303080.facts.py b/psed_v2/kb/pilot/10.1021_cm0303080.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.facts.py
+rename to psed_v2/kb/pilot/10.1021_cm0303080.facts.py
+diff --git a/psed_v2/pilot/10.1021_cm0303080.points.json b/psed_v2/kb/pilot/10.1021_cm0303080.points.json
+similarity index 100%
+rename from psed_v2/pilot/10.1021_cm0303080.points.json
+rename to psed_v2/kb/pilot/10.1021_cm0303080.points.json
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.coverage.csv b/psed_v2/kb/pilot/10.1039_d0cp03358h.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.coverage.csv
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.coverage.csv
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.elements.csv b/psed_v2/kb/pilot/10.1039_d0cp03358h.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.elements.csv
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.elements.csv
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.experiments.csv b/psed_v2/kb/pilot/10.1039_d0cp03358h.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.experiments.csv
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.experiments.csv
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.facts.csv b/psed_v2/kb/pilot/10.1039_d0cp03358h.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.facts.csv
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.facts.csv
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.facts.py b/psed_v2/kb/pilot/10.1039_d0cp03358h.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.facts.py
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.facts.py
+diff --git a/psed_v2/pilot/10.1039_d0cp03358h.points.json b/psed_v2/kb/pilot/10.1039_d0cp03358h.points.json
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d0cp03358h.points.json
+rename to psed_v2/kb/pilot/10.1039_d0cp03358h.points.json
+diff --git a/psed_v2/pilot/10.1039_d1cp04758b.coverage.csv b/psed_v2/kb/pilot/10.1039_d1cp04758b.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d1cp04758b.coverage.csv
+rename to psed_v2/kb/pilot/10.1039_d1cp04758b.coverage.csv
+diff --git a/psed_v2/pilot/10.1039_d1cp04758b.elements.csv b/psed_v2/kb/pilot/10.1039_d1cp04758b.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d1cp04758b.elements.csv
+rename to psed_v2/kb/pilot/10.1039_d1cp04758b.elements.csv
+diff --git a/psed_v2/pilot/10.1039_d1cp04758b.experiments.csv b/psed_v2/kb/pilot/10.1039_d1cp04758b.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d1cp04758b.experiments.csv
+rename to psed_v2/kb/pilot/10.1039_d1cp04758b.experiments.csv
+diff --git a/psed_v2/pilot/10.1039_d1cp04758b.facts.csv b/psed_v2/kb/pilot/10.1039_d1cp04758b.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d1cp04758b.facts.csv
+rename to psed_v2/kb/pilot/10.1039_d1cp04758b.facts.csv
+diff --git a/psed_v2/pilot/10.1039_d1cp04758b.facts.py b/psed_v2/kb/pilot/10.1039_d1cp04758b.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d1cp04758b.facts.py
+rename to psed_v2/kb/pilot/10.1039_d1cp04758b.facts.py
+diff --git a/psed_v2/pilot/10.1039_d3cp05639b.coverage.csv b/psed_v2/kb/pilot/10.1039_d3cp05639b.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d3cp05639b.coverage.csv
+rename to psed_v2/kb/pilot/10.1039_d3cp05639b.coverage.csv
+diff --git a/psed_v2/pilot/10.1039_d3cp05639b.elements.csv b/psed_v2/kb/pilot/10.1039_d3cp05639b.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d3cp05639b.elements.csv
+rename to psed_v2/kb/pilot/10.1039_d3cp05639b.elements.csv
+diff --git a/psed_v2/pilot/10.1039_d3cp05639b.experiments.csv b/psed_v2/kb/pilot/10.1039_d3cp05639b.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d3cp05639b.experiments.csv
+rename to psed_v2/kb/pilot/10.1039_d3cp05639b.experiments.csv
+diff --git a/psed_v2/pilot/10.1039_d3cp05639b.facts.csv b/psed_v2/kb/pilot/10.1039_d3cp05639b.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d3cp05639b.facts.csv
+rename to psed_v2/kb/pilot/10.1039_d3cp05639b.facts.csv
+diff --git a/psed_v2/pilot/10.1039_d3cp05639b.facts.py b/psed_v2/kb/pilot/10.1039_d3cp05639b.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1039_d3cp05639b.facts.py
+rename to psed_v2/kb/pilot/10.1039_d3cp05639b.facts.py
+diff --git a/psed_v2/pilot/10.1063_1.5028178.coverage.csv b/psed_v2/kb/pilot/10.1063_1.5028178.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1063_1.5028178.coverage.csv
+rename to psed_v2/kb/pilot/10.1063_1.5028178.coverage.csv
+diff --git a/psed_v2/pilot/10.1063_1.5028178.elements.csv b/psed_v2/kb/pilot/10.1063_1.5028178.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1063_1.5028178.elements.csv
+rename to psed_v2/kb/pilot/10.1063_1.5028178.elements.csv
+diff --git a/psed_v2/pilot/10.1063_1.5028178.experiments.csv b/psed_v2/kb/pilot/10.1063_1.5028178.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1063_1.5028178.experiments.csv
+rename to psed_v2/kb/pilot/10.1063_1.5028178.experiments.csv
+diff --git a/psed_v2/pilot/10.1063_1.5028178.facts.csv b/psed_v2/kb/pilot/10.1063_1.5028178.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1063_1.5028178.facts.csv
+rename to psed_v2/kb/pilot/10.1063_1.5028178.facts.csv
+diff --git a/psed_v2/pilot/10.1063_1.5028178.facts.py b/psed_v2/kb/pilot/10.1063_1.5028178.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1063_1.5028178.facts.py
+rename to psed_v2/kb/pilot/10.1063_1.5028178.facts.py
+diff --git a/psed_v2/pilot/10.1116_1.4903941.coverage.csv b/psed_v2/kb/pilot/10.1116_1.4903941.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_1.4903941.coverage.csv
+rename to psed_v2/kb/pilot/10.1116_1.4903941.coverage.csv
+diff --git a/psed_v2/pilot/10.1116_1.4903941.elements.csv b/psed_v2/kb/pilot/10.1116_1.4903941.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_1.4903941.elements.csv
+rename to psed_v2/kb/pilot/10.1116_1.4903941.elements.csv
+diff --git a/psed_v2/pilot/10.1116_1.4903941.experiments.csv b/psed_v2/kb/pilot/10.1116_1.4903941.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_1.4903941.experiments.csv
+rename to psed_v2/kb/pilot/10.1116_1.4903941.experiments.csv
+diff --git a/psed_v2/pilot/10.1116_1.4903941.facts.csv b/psed_v2/kb/pilot/10.1116_1.4903941.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_1.4903941.facts.csv
+rename to psed_v2/kb/pilot/10.1116_1.4903941.facts.csv
+diff --git a/psed_v2/pilot/10.1116_1.4903941.facts.py b/psed_v2/kb/pilot/10.1116_1.4903941.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1116_1.4903941.facts.py
+rename to psed_v2/kb/pilot/10.1116_1.4903941.facts.py
+diff --git a/psed_v2/pilot/10.1116_6.0002804.coverage.csv b/psed_v2/kb/pilot/10.1116_6.0002804.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002804.coverage.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002804.coverage.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002804.elements.csv b/psed_v2/kb/pilot/10.1116_6.0002804.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002804.elements.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002804.elements.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002804.experiments.csv b/psed_v2/kb/pilot/10.1116_6.0002804.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002804.experiments.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002804.experiments.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002804.facts.csv b/psed_v2/kb/pilot/10.1116_6.0002804.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002804.facts.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002804.facts.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002804.facts.py b/psed_v2/kb/pilot/10.1116_6.0002804.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002804.facts.py
+rename to psed_v2/kb/pilot/10.1116_6.0002804.facts.py
+diff --git a/psed_v2/pilot/10.1116_6.0002993.coverage.csv b/psed_v2/kb/pilot/10.1116_6.0002993.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002993.coverage.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002993.coverage.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002993.elements.csv b/psed_v2/kb/pilot/10.1116_6.0002993.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002993.elements.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002993.elements.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002993.experiments.csv b/psed_v2/kb/pilot/10.1116_6.0002993.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002993.experiments.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002993.experiments.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002993.facts.csv b/psed_v2/kb/pilot/10.1116_6.0002993.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002993.facts.csv
+rename to psed_v2/kb/pilot/10.1116_6.0002993.facts.csv
+diff --git a/psed_v2/pilot/10.1116_6.0002993.facts.py b/psed_v2/kb/pilot/10.1116_6.0002993.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0002993.facts.py
+rename to psed_v2/kb/pilot/10.1116_6.0002993.facts.py
+diff --git a/psed_v2/pilot/10.1116_6.0003182.coverage.csv b/psed_v2/kb/pilot/10.1116_6.0003182.coverage.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.coverage.csv
+rename to psed_v2/kb/pilot/10.1116_6.0003182.coverage.csv
+diff --git a/psed_v2/pilot/10.1116_6.0003182.elements.csv b/psed_v2/kb/pilot/10.1116_6.0003182.elements.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.elements.csv
+rename to psed_v2/kb/pilot/10.1116_6.0003182.elements.csv
+diff --git a/psed_v2/pilot/10.1116_6.0003182.experiments.csv b/psed_v2/kb/pilot/10.1116_6.0003182.experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.experiments.csv
+rename to psed_v2/kb/pilot/10.1116_6.0003182.experiments.csv
+diff --git a/psed_v2/pilot/10.1116_6.0003182.facts.csv b/psed_v2/kb/pilot/10.1116_6.0003182.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.facts.csv
+rename to psed_v2/kb/pilot/10.1116_6.0003182.facts.csv
+diff --git a/psed_v2/pilot/10.1116_6.0003182.facts.py b/psed_v2/kb/pilot/10.1116_6.0003182.facts.py
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.facts.py
+rename to psed_v2/kb/pilot/10.1116_6.0003182.facts.py
+diff --git a/psed_v2/pilot/10.1116_6.0003182.points.json b/psed_v2/kb/pilot/10.1116_6.0003182.points.json
+similarity index 100%
+rename from psed_v2/pilot/10.1116_6.0003182.points.json
+rename to psed_v2/kb/pilot/10.1116_6.0003182.points.json
+diff --git a/psed_v2/pilot/absorption.py b/psed_v2/kb/pilot/absorption.py
+similarity index 97%
+rename from psed_v2/pilot/absorption.py
+rename to psed_v2/kb/pilot/absorption.py
+index bf91e09..18ac488 100644
+--- a/psed_v2/pilot/absorption.py
++++ b/psed_v2/kb/pilot/absorption.py
+@@ -17,7 +17,7 @@ sys.path.insert(0, str(HERE))
+ import lists as L  # noqa: E402
+ import vocab as V  # noqa: E402
+ 
+-OUT = HERE.parent / "ontology" / "absorption.csv"
++OUT = HERE.parent.parent / "ontology" / "absorption.csv"
+ COLS = ["paper", "records", "direct", "alias", "qualifier", "new_pending", "attribute", "dropped", "unmapped"]
+ 
+ 
+diff --git a/psed_v2/pilot/ask.py b/psed_v2/kb/pilot/ask.py
+similarity index 99%
+rename from psed_v2/pilot/ask.py
+rename to psed_v2/kb/pilot/ask.py
+index 8e3f214..bee790d 100644
+--- a/psed_v2/pilot/ask.py
++++ b/psed_v2/kb/pilot/ask.py
+@@ -28,7 +28,7 @@ import argparse, hashlib, concurrent.futures as cf, csv, datetime, json, re, sys
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ sys.path.insert(0, str(HERE))
+ import concept as CN  # noqa: E402
+ import dump as DU  # noqa: E402
+@@ -285,7 +285,7 @@ def _percent_of(v, half, raw, sent, pool):
+ # How an answer may word a kind: the ontology's phrase table and the SHARED prompt's kind words (measured, read from a figure,
+ # computed by the authors, computed from other values, assumed, taken from another work), with the wordings a model derives from
+ # them; 'computed here' is the wording of runs stored before P57. Measured and stated are one class (lists.UNMARKED, P57).
+-KIND_PHRASES = Path(__file__).resolve().parents[1] / "eval" / "kind_phrases.yaml"            # P102: the wording table, calibrated
++KIND_PHRASES = Path(__file__).resolve().parent / "kind_phrases.yaml"            # P102: the wording table, calibrated
+ 
+ 
+ def stated_kind_table():
+diff --git a/psed_v2/pilot/battery_per_paper.csv b/psed_v2/kb/pilot/battery_per_paper.csv
+similarity index 100%
+rename from psed_v2/pilot/battery_per_paper.csv
+rename to psed_v2/kb/pilot/battery_per_paper.csv
+diff --git a/psed_v2/pilot/case_decisions.csv b/psed_v2/kb/pilot/case_decisions.csv
+similarity index 100%
+rename from psed_v2/pilot/case_decisions.csv
+rename to psed_v2/kb/pilot/case_decisions.csv
+diff --git a/psed_v2/pilot/cases.py b/psed_v2/kb/pilot/cases.py
+similarity index 99%
+rename from psed_v2/pilot/cases.py
+rename to psed_v2/kb/pilot/cases.py
+index 2ce9c25..6db16a2 100644
+--- a/psed_v2/pilot/cases.py
++++ b/psed_v2/kb/pilot/cases.py
+@@ -16,7 +16,7 @@ from pathlib import Path
+ from PIL import Image
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ E = html.escape
+ 
+ Y, M, W = "10.1063_1.5028178", "10.1039_d0cp03358h", "10.1116_6.0001094"
+diff --git a/psed_v2/pilot/check.py b/psed_v2/kb/pilot/check.py
+similarity index 99%
+rename from psed_v2/pilot/check.py
+rename to psed_v2/kb/pilot/check.py
+index 7eb79bc..642ec8f 100644
+--- a/psed_v2/pilot/check.py
++++ b/psed_v2/kb/pilot/check.py
+@@ -437,14 +437,14 @@ def check_figures_import():
+     kb/import_report.csv equal the records on disk; the kinds and bases of the records are in the ontology's tables."""
+     import query as Q, yaml
+     err = []
+-    KB = HERE.parent / "kb"
+-    units = yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]
++    KB = HERE.parent
++    units = yaml.safe_load((HERE.parent.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]
+     dim = {}
+     for u in units:
+         dim[u["symbol"]] = u["dimension"]
+     report = {r["paper_id"]: r for r in rd(KB / "import_report.csv")}
+     panels = rd(KB / "import_panels.csv")
+-    unm = rd(HERE.parent / "ontology" / "unmapped.csv")
++    unm = rd(HERE.parent.parent / "ontology" / "unmapped.csv")
+     n_curves = n_sets = n_panels = 0
+     for k, T in Q.TREES.items():
+         pid = Q.KEY[k]
+@@ -554,7 +554,7 @@ def check_figure_derived():
+                 tol = max(0.1 * abs(sv), 0.02 * rng)
+                 if abs(d["value"] - sv) > tol:
+                     probs.append(f"P86 {d['id']} ({d['method']}): derived {Q.g(d['value'], 4)} {d['unit']} against stated {f['value']} {f['unit']} [{f['fact_id']}]; tolerance {Q.g(tol, 3)} {d['unit']}")
+-    (HERE.parent / "kb" / "problems.txt").write_text("\n".join(probs) + ("\n" if probs else ""), encoding="utf-8")
++    (HERE.parent / "problems.txt").write_text("\n".join(probs) + ("\n" if probs else ""), encoding="utf-8")
+     print(f"== figure derived (P86): {n_checked} derived scalars, {n_pairs} stated counterparts found, {len(probs)} outside tolerance (listed in kb/problems.txt, a finding, not a failure)")
+     return []
+ 
+@@ -621,7 +621,7 @@ def check_vocabulary():
+     only vocabulary ids."""
+     import subprocess
+     err = []
+-    r = subprocess.run([sys.executable, str(HERE.parent / "ontology" / "export.py"), "--check"], capture_output=True, text=True)
++    r = subprocess.run([sys.executable, str(HERE.parent.parent / "ontology" / "export.py"), "--check"], capture_output=True, text=True)
+     if r.returncode:
+         err.append(r.stdout.strip() or "vocab.py stale")
+     used = collections.defaultdict(set)
+@@ -1667,7 +1667,7 @@ def unit_dimensions():
+     """{unit symbol or variant: dimension} from ontology/units.yaml (P108)."""
+     import yaml
+     out = {}
+-    for u in yaml.safe_load((HERE.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
++    for u in yaml.safe_load((HERE.parent.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
+         for v in [u["symbol"]] + list(u["variants"]):
+             out.setdefault(str(v), u["dimension"])
+     return out
+@@ -1721,7 +1721,7 @@ def check_unit_table():
+                 if not ok(f["unit"]):
+                     err.append(f"{f['fact_id']}: unit {f['unit']!r} is not in the unit table (P122)")
+     for pid in KEYS:
+-        p = HERE.parent / "kb" / f"{pid}.figures.json"
++        p = HERE.parent / f"{pid}.figures.json"
+         if p.exists():
+             d = json.loads(p.read_text(encoding="utf-8"))
+             for v in d.get("values", []) + d.get("derived", []):
+@@ -1762,7 +1762,7 @@ def check_dimensions():
+             if m:
+                 err.append(f"{f['fact_id']}: {q} in {f['unit']!r}: {m} (P108)")
+     for pid in KEYS:
+-        p = HERE.parent / "kb" / f"{pid}.figures.json"
++        p = HERE.parent / f"{pid}.figures.json"
+         if not p.exists():
+             continue
+         d = json.loads(p.read_text(encoding="utf-8"))
+@@ -2047,7 +2047,7 @@ def check_conversions():
+             n_decl += 1
+             err += [f"{q}: converts_to {x!r} is no entry (P109)" for x in (ct.get("target"), ct.get("requires")) if x not in L.ENTRIES]
+     for pid, k in KEYS.items():
+-        p = HERE.parent / "kb" / f"{pid}.figures.json"
++        p = HERE.parent / f"{pid}.figures.json"
+         if not p.exists():
+             continue
+         T = Q.TREES[k]
+diff --git a/psed_v2/pilot/compare_runs.py b/psed_v2/kb/pilot/compare_runs.py
+similarity index 100%
+rename from psed_v2/pilot/compare_runs.py
+rename to psed_v2/kb/pilot/compare_runs.py
+diff --git a/psed_v2/pilot/concept.py b/psed_v2/kb/pilot/concept.py
+similarity index 100%
+rename from psed_v2/pilot/concept.py
+rename to psed_v2/kb/pilot/concept.py
+diff --git a/psed_v2/pilot/cremers.py b/psed_v2/kb/pilot/cremers.py
+similarity index 99%
+rename from psed_v2/pilot/cremers.py
+rename to psed_v2/kb/pilot/cremers.py
+index a93da6b..9c723d6 100644
+--- a/psed_v2/pilot/cremers.py
++++ b/psed_v2/kb/pilot/cremers.py
+@@ -14,7 +14,7 @@ that cases.py shows in Case 8 (cases.py loads this file with runpy, which skips
+ import csv, re
+ from pathlib import Path
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ 
+ C = """
+ II|Al2O3|TMA/H2O||Macro lateral|100|200|9|SE|50* (D)|67|
+diff --git a/psed_v2/pilot/cremers_conformality.csv b/psed_v2/kb/pilot/cremers_conformality.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_conformality.csv
+rename to psed_v2/kb/pilot/cremers_conformality.csv
+diff --git a/psed_v2/pilot/cremers_new_rows.csv b/psed_v2/kb/pilot/cremers_new_rows.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_new_rows.csv
+rename to psed_v2/kb/pilot/cremers_new_rows.csv
+diff --git a/psed_v2/pilot/cremers_parameters.csv b/psed_v2/kb/pilot/cremers_parameters.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_parameters.csv
+rename to psed_v2/kb/pilot/cremers_parameters.csv
+diff --git a/psed_v2/pilot/cremers_profiles.csv b/psed_v2/kb/pilot/cremers_profiles.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_profiles.csv
+rename to psed_v2/kb/pilot/cremers_profiles.csv
+diff --git a/psed_v2/pilot/cremers_source_checks.csv b/psed_v2/kb/pilot/cremers_source_checks.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_source_checks.csv
+rename to psed_v2/kb/pilot/cremers_source_checks.csv
+diff --git a/psed_v2/pilot/cremers_values_hand_obtained.csv b/psed_v2/kb/pilot/cremers_values_hand_obtained.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_values_hand_obtained.csv
+rename to psed_v2/kb/pilot/cremers_values_hand_obtained.csv
+diff --git a/psed_v2/pilot/cremers_wanted_pdfs.csv b/psed_v2/kb/pilot/cremers_wanted_pdfs.csv
+similarity index 100%
+rename from psed_v2/pilot/cremers_wanted_pdfs.csv
+rename to psed_v2/kb/pilot/cremers_wanted_pdfs.csv
+diff --git a/psed_v2/pilot/dump.py b/psed_v2/kb/pilot/dump.py
+similarity index 100%
+rename from psed_v2/pilot/dump.py
+rename to psed_v2/kb/pilot/dump.py
+diff --git a/psed_v2/pilot/elements.py b/psed_v2/kb/pilot/elements.py
+similarity index 99%
+rename from psed_v2/pilot/elements.py
+rename to psed_v2/kb/pilot/elements.py
+index fbe87a9..9a0d521 100644
+--- a/psed_v2/pilot/elements.py
++++ b/psed_v2/kb/pilot/elements.py
+@@ -18,7 +18,7 @@ import collections, csv, json, re, sys
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22", "10.1116_6.0003182": "gre23",
+           "10.1021_cm0303080": "ela03", "10.1002_cvde.200390005": "gor03", "10.1063_1.5028178": "yli18",
+           "10.1116_1.4903941": "gao15", "10.1021_acs.jpcc.9b08176": "art19",
+diff --git a/psed_v2/pilot/eval_calibrate.py b/psed_v2/kb/pilot/eval_calibrate.py
+similarity index 100%
+rename from psed_v2/pilot/eval_calibrate.py
+rename to psed_v2/kb/pilot/eval_calibrate.py
+diff --git a/psed_v2/pilot/experiments.csv b/psed_v2/kb/pilot/experiments.csv
+similarity index 100%
+rename from psed_v2/pilot/experiments.csv
+rename to psed_v2/kb/pilot/experiments.csv
+diff --git a/psed_v2/pilot/experiments.py b/psed_v2/kb/pilot/experiments.py
+similarity index 100%
+rename from psed_v2/pilot/experiments.py
+rename to psed_v2/kb/pilot/experiments.py
+diff --git a/psed_v2/pilot/exposure_ear.csv b/psed_v2/kb/pilot/exposure_ear.csv
+similarity index 100%
+rename from psed_v2/pilot/exposure_ear.csv
+rename to psed_v2/kb/pilot/exposure_ear.csv
+diff --git a/psed_v2/pilot/facts.py b/psed_v2/kb/pilot/facts.py
+similarity index 100%
+rename from psed_v2/pilot/facts.py
+rename to psed_v2/kb/pilot/facts.py
+diff --git a/psed_v2/pilot/figures.csv b/psed_v2/kb/pilot/figures.csv
+similarity index 100%
+rename from psed_v2/pilot/figures.csv
+rename to psed_v2/kb/pilot/figures.csv
+diff --git a/psed_v2/pilot/figures_agreement.csv b/psed_v2/kb/pilot/figures_agreement.csv
+similarity index 100%
+rename from psed_v2/pilot/figures_agreement.csv
+rename to psed_v2/kb/pilot/figures_agreement.csv
+diff --git a/psed_v2/pilot/forest.py b/psed_v2/kb/pilot/forest.py
+similarity index 100%
+rename from psed_v2/pilot/forest.py
+rename to psed_v2/kb/pilot/forest.py
+diff --git a/psed_v2/pilot/gpc_temperature.csv b/psed_v2/kb/pilot/gpc_temperature.csv
+similarity index 100%
+rename from psed_v2/pilot/gpc_temperature.csv
+rename to psed_v2/kb/pilot/gpc_temperature.csv
+diff --git a/psed_v2/pilot/homeless.py b/psed_v2/kb/pilot/homeless.py
+similarity index 100%
+rename from psed_v2/pilot/homeless.py
+rename to psed_v2/kb/pilot/homeless.py
+diff --git a/psed_v2/eval/kind_phrases.yaml b/psed_v2/kb/pilot/kind_phrases.yaml
+similarity index 100%
+rename from psed_v2/eval/kind_phrases.yaml
+rename to psed_v2/kb/pilot/kind_phrases.yaml
+diff --git a/psed_v2/pilot/lists.py b/psed_v2/kb/pilot/lists.py
+similarity index 100%
+rename from psed_v2/pilot/lists.py
+rename to psed_v2/kb/pilot/lists.py
+diff --git a/psed_v2/pilot/matrix.py b/psed_v2/kb/pilot/matrix.py
+similarity index 99%
+rename from psed_v2/pilot/matrix.py
+rename to psed_v2/kb/pilot/matrix.py
+index 6a785de..0e76a02 100644
+--- a/psed_v2/pilot/matrix.py
++++ b/psed_v2/kb/pilot/matrix.py
+@@ -18,7 +18,7 @@ cols = [c for c in rows[0] if c not in ("paper_id", "year")]
+ pc = {r["paper_id"]: r for r in csv.DictReader((HERE / "paper_case.csv").open(encoding="utf-8"))}
+ src = (HERE / "paper_case.py").read_text(encoding="utf-8")
+ CASES = eval(src[src.index("COLS = [") + len("COLS = "):src.index("]\n\n\ndef figlab") + 1])     # the column list only, no run
+-man = {r["paper_id"]: r for r in csv.DictReader((HERE.parent / "corpus/manifest.csv").open(encoding="utf-8"))}
++man = {r["paper_id"]: r for r in csv.DictReader((HERE.parent.parent / "corpus/manifest.csv").open(encoding="utf-8"))}
+ for r in rows:
+     m = man.get(r["paper_id"], {})
+     r["_title"] = m.get("title", "")
+diff --git a/psed_v2/pilot/metrics.py b/psed_v2/kb/pilot/metrics.py
+similarity index 97%
+rename from psed_v2/pilot/metrics.py
+rename to psed_v2/kb/pilot/metrics.py
+index 8bc5d78..448a088 100644
+--- a/psed_v2/pilot/metrics.py
++++ b/psed_v2/kb/pilot/metrics.py
+@@ -57,14 +57,14 @@ def compactness():
+         pj = HERE / f"{pid}.points.json"
+         if pj.exists():
+             chars += sum(len(json.dumps(v.get("points", []))) for v in json.loads(pj.read_text(encoding="utf-8")).values())
+-        src = HERE.parent / "ingest" / "final" / pid / "document.md"
++        src = HERE.parent.parent / "ingest" / "final" / pid / "document.md"
+         out[k] = dict(kb_tokens=round(chars / 4), source_tokens=round(tokens(src.read_text(encoding="utf-8")) if src.exists() else 0))
+     out["user"] = dict(kb_tokens=round(sum(len("|".join(r.values())) for r in rd(HERE / "user.facts.csv")) / 4), source_tokens=0)
+     return out
+ 
+ 
+ def absorption():
+-    rows = rd(HERE.parent / "ontology" / "pilot_map.csv")
++    rows = rd(HERE.parent.parent / "ontology" / "pilot_map.csv")
+     c = collections.Counter(r["disposition"] for r in rows if r["kind"] == "quantity")
+     return dict(c), len([r for r in rows if r["kind"] == "quantity"])
+ 
+diff --git a/psed_v2/pilot/narrowing.csv b/psed_v2/kb/pilot/narrowing.csv
+similarity index 100%
+rename from psed_v2/pilot/narrowing.csv
+rename to psed_v2/kb/pilot/narrowing.csv
+diff --git a/psed_v2/pilot/paper_case.csv b/psed_v2/kb/pilot/paper_case.csv
+similarity index 100%
+rename from psed_v2/pilot/paper_case.csv
+rename to psed_v2/kb/pilot/paper_case.csv
+diff --git a/psed_v2/pilot/paper_case.py b/psed_v2/kb/pilot/paper_case.py
+similarity index 99%
+rename from psed_v2/pilot/paper_case.py
+rename to psed_v2/kb/pilot/paper_case.py
+index f9505c6..5c3c8e3 100644
+--- a/psed_v2/pilot/paper_case.py
++++ b/psed_v2/kb/pilot/paper_case.py
+@@ -13,7 +13,7 @@ import csv, importlib.util, json, re
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ rd = lambda p: list(csv.DictReader((HERE / p).open(newline="", encoding="utf-8")))
+ MAN = {r["paper_id"]: r for r in csv.DictReader((V2 / "corpus/manifest.csv").open(newline="", encoding="utf-8"))}
+ PAPERS = sorted(p for p, r in MAN.items() if r["in_scope"] == "yes" and r["pdf_status"] == "ok")
+diff --git a/psed_v2/pilot/papers.csv b/psed_v2/kb/pilot/papers.csv
+similarity index 100%
+rename from psed_v2/pilot/papers.csv
+rename to psed_v2/kb/pilot/papers.csv
+diff --git a/psed_v2/pilot/points.json b/psed_v2/kb/pilot/points.json
+similarity index 100%
+rename from psed_v2/pilot/points.json
+rename to psed_v2/kb/pilot/points.json
+diff --git a/psed_v2/pilot/prices.csv b/psed_v2/kb/pilot/prices.csv
+similarity index 100%
+rename from psed_v2/pilot/prices.csv
+rename to psed_v2/kb/pilot/prices.csv
+diff --git a/psed_v2/pilot/problems.csv b/psed_v2/kb/pilot/problems.csv
+similarity index 100%
+rename from psed_v2/pilot/problems.csv
+rename to psed_v2/kb/pilot/problems.csv
+diff --git a/psed_v2/pilot/providers.py b/psed_v2/kb/pilot/providers.py
+similarity index 99%
+rename from psed_v2/pilot/providers.py
+rename to psed_v2/kb/pilot/providers.py
+index 6aff962..faf3bb6 100644
+--- a/psed_v2/pilot/providers.py
++++ b/psed_v2/kb/pilot/providers.py
+@@ -20,7 +20,7 @@ import json, os, time, uuid
+ from dataclasses import dataclass, field
+ from pathlib import Path
+ 
+-ENV = Path(__file__).resolve().parent.parent / ".env"
++ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+ KEYS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GOOGLE_API_KEY", "xai": "XAI_API_KEY", "deepseek": "DEEPSEEK_API_KEY"}
+ BASE_URL = {"xai": "https://api.x.ai/v1", "deepseek": "https://api.deepseek.com"}
+ TRIES, BACKOFF = 5, 2.0
+diff --git a/psed_v2/pilot/quantity_matrix.csv b/psed_v2/kb/pilot/quantity_matrix.csv
+similarity index 100%
+rename from psed_v2/pilot/quantity_matrix.csv
+rename to psed_v2/kb/pilot/quantity_matrix.csv
+diff --git a/psed_v2/pilot/quantity_matrix.py b/psed_v2/kb/pilot/quantity_matrix.py
+similarity index 99%
+rename from psed_v2/pilot/quantity_matrix.py
+rename to psed_v2/kb/pilot/quantity_matrix.py
+index ee972ac..eca1520 100644
+--- a/psed_v2/pilot/quantity_matrix.py
++++ b/psed_v2/kb/pilot/quantity_matrix.py
+@@ -10,7 +10,7 @@ V2 = "/home/ftk3187/github/PSED/psed_v2/"
+ man = {r["paper_id"]: r for r in csv.DictReader(open(V2 + "corpus/manifest.csv", encoding="utf-8"))}
+ papers = sorted(p for p, r in man.items() if r["in_scope"] == "yes" and r["pdf_status"] == "ok")
+ F = collections.defaultdict(list)
+-for r in csv.DictReader(open(V2 + "pilot/figures.csv", encoding="utf-8")):
++for r in csv.DictReader(open(V2 + "kb/pilot/figures.csv", encoding="utf-8")):
+     F[r["paper_id"]].append(r)
+ MEAS = lambda r: "measured" in r["data_kind"] or "cited" in r["data_kind"]
+ def figs(pid, test):
+@@ -67,7 +67,7 @@ for pid in papers:
+         if rx.search(body): where.append("text")
+         row[col] = "; ".join(where) if where else "no"
+     rows.append(row)
+-w = csv.DictWriter(open(V2 + "pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS)
++w = csv.DictWriter(open(V2 + "kb/pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS)
+ w.writeheader(); w.writerows(rows)
+ miss = {c: sum(1 for r in rows if r[c] == "no") for c in COLS}
+ print(len(rows), "papers x", len(COLS), "quantities"); print(sorted(miss.items(), key=lambda x: -x[1]))
+@@ -802,7 +802,7 @@ for r in rows:
+     r["limiting_step_exposure"] = h.get("limiting_step_exposure", "not read")
+     r["usable_for"] = "; ".join(k for k, v in U.items() if r["paper_id"] in v.split())
+     r["read_by_hand"] = "yes" if h else "no"
+-w = csv.DictWriter(open(V2 + "pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS + ["limiting_step_exposure", "usable_for", "read_by_hand"])
++w = csv.DictWriter(open(V2 + "kb/pilot/quantity_matrix.csv", "w", newline="", encoding="utf-8"), fieldnames=["paper_id", "year"] + COLS + ["limiting_step_exposure", "usable_for", "read_by_hand"])
+ w.writeheader(); w.writerows(rows)
+ miss = {c: sum(1 for r in rows if r[c] == "no") for c in COLS}
+ print("after hand pass, missing:", sorted(miss.items(), key=lambda x: -x[1]))
+diff --git a/psed_v2/pilot/query.py b/psed_v2/kb/pilot/query.py
+similarity index 99%
+rename from psed_v2/pilot/query.py
+rename to psed_v2/kb/pilot/query.py
+index 22d7ef4..9e55c08 100644
+--- a/psed_v2/pilot/query.py
++++ b/psed_v2/kb/pilot/query.py
+@@ -41,7 +41,7 @@ class Tree:
+         one derived row per P86 scalar (kind computed_by_kb, inputs = its curve), one observation row per cell or peak (basis printed),
+         under their set or under the node <key>:figures when the panel formed no set. The inventory records are kept in self.inventory
+         (the map and search read them); they are no rows."""
+-        p = HERE.parent / "kb" / f"{pid}.figures.json"
++        p = HERE.parent / f"{pid}.figures.json"
+         if not p.exists():
+             return
+         F = json.loads(p.read_text(encoding="utf-8"))
+diff --git a/psed_v2/pilot/questions.csv b/psed_v2/kb/pilot/questions.csv
+similarity index 100%
+rename from psed_v2/pilot/questions.csv
+rename to psed_v2/kb/pilot/questions.csv
+diff --git a/psed_v2/pilot/questions.py b/psed_v2/kb/pilot/questions.py
+similarity index 100%
+rename from psed_v2/pilot/questions.py
+rename to psed_v2/kb/pilot/questions.py
+diff --git a/psed_v2/pilot/recheck.json b/psed_v2/kb/pilot/recheck.json
+similarity index 100%
+rename from psed_v2/pilot/recheck.json
+rename to psed_v2/kb/pilot/recheck.json
+diff --git a/psed_v2/pilot/recombination.csv b/psed_v2/kb/pilot/recombination.csv
+similarity index 100%
+rename from psed_v2/pilot/recombination.csv
+rename to psed_v2/kb/pilot/recombination.csv
+diff --git a/psed_v2/pilot/report.py b/psed_v2/kb/pilot/report.py
+similarity index 99%
+rename from psed_v2/pilot/report.py
+rename to psed_v2/kb/pilot/report.py
+index 4db57b4..c3b3f42 100644
+--- a/psed_v2/pilot/report.py
++++ b/psed_v2/kb/pilot/report.py
+@@ -21,7 +21,7 @@ import base64, collections, csv, html, json, re, sys
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ sys.path.insert(0, str(HERE))
+ import elements  # noqa: E402
+ import lists as L  # noqa: E402
+diff --git a/psed_v2/pilot/report_html.py b/psed_v2/kb/pilot/report_html.py
+similarity index 100%
+rename from psed_v2/pilot/report_html.py
+rename to psed_v2/kb/pilot/report_html.py
+diff --git a/psed_v2/pilot/run_metrics.py b/psed_v2/kb/pilot/run_metrics.py
+similarity index 100%
+rename from psed_v2/pilot/run_metrics.py
+rename to psed_v2/kb/pilot/run_metrics.py
+diff --git a/psed_v2/pilot/search_probes.csv b/psed_v2/kb/pilot/search_probes.csv
+similarity index 100%
+rename from psed_v2/pilot/search_probes.csv
+rename to psed_v2/kb/pilot/search_probes.csv
+diff --git a/psed_v2/pilot/sentence_only.py b/psed_v2/kb/pilot/sentence_only.py
+similarity index 100%
+rename from psed_v2/pilot/sentence_only.py
+rename to psed_v2/kb/pilot/sentence_only.py
+diff --git a/psed_v2/pilot/sentence_only_allow.csv b/psed_v2/kb/pilot/sentence_only_allow.csv
+similarity index 100%
+rename from psed_v2/pilot/sentence_only_allow.csv
+rename to psed_v2/kb/pilot/sentence_only_allow.csv
+diff --git a/psed_v2/pilot/serve.py b/psed_v2/kb/pilot/serve.py
+similarity index 100%
+rename from psed_v2/pilot/serve.py
+rename to psed_v2/kb/pilot/serve.py
+diff --git a/psed_v2/pilot/sticking_reported.csv b/psed_v2/kb/pilot/sticking_reported.csv
+similarity index 100%
+rename from psed_v2/pilot/sticking_reported.csv
+rename to psed_v2/kb/pilot/sticking_reported.csv
+diff --git a/psed_v2/pilot/tools.py b/psed_v2/kb/pilot/tools.py
+similarity index 99%
+rename from psed_v2/pilot/tools.py
+rename to psed_v2/kb/pilot/tools.py
+index db72c1b..70d98ab9 100644
+--- a/psed_v2/pilot/tools.py
++++ b/psed_v2/kb/pilot/tools.py
+@@ -7,7 +7,7 @@ from collections import Counter
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+-V2 = HERE.parent
++V2 = HERE.parent.parent
+ sys.path.insert(0, str(HERE))
+ import lists as L  # noqa: E402
+ import query as Q  # noqa: E402
+diff --git a/psed_v2/pilot/user.facts.csv b/psed_v2/kb/pilot/user.facts.csv
+similarity index 100%
+rename from psed_v2/pilot/user.facts.csv
+rename to psed_v2/kb/pilot/user.facts.csv
+diff --git a/psed_v2/pilot/user_facts.py b/psed_v2/kb/pilot/user_facts.py
+similarity index 100%
+rename from psed_v2/pilot/user_facts.py
+rename to psed_v2/kb/pilot/user_facts.py
+diff --git a/psed_v2/pilot/v1_points.json b/psed_v2/kb/pilot/v1_points.json
+similarity index 100%
+rename from psed_v2/pilot/v1_points.json
+rename to psed_v2/kb/pilot/v1_points.json
+diff --git a/psed_v2/pilot/v1_points_check.csv b/psed_v2/kb/pilot/v1_points_check.csv
+similarity index 100%
+rename from psed_v2/pilot/v1_points_check.csv
+rename to psed_v2/kb/pilot/v1_points_check.csv
+diff --git a/psed_v2/pilot/values_sizes_baseline.csv b/psed_v2/kb/pilot/values_sizes_baseline.csv
+similarity index 100%
+rename from psed_v2/pilot/values_sizes_baseline.csv
+rename to psed_v2/kb/pilot/values_sizes_baseline.csv
+diff --git a/psed_v2/pilot/vocab.py b/psed_v2/kb/pilot/vocab.py
+similarity index 100%
+rename from psed_v2/pilot/vocab.py
+rename to psed_v2/kb/pilot/vocab.py
+diff --git a/psed_v2/records/10.1063_1.5028178.jsonl b/psed_v2/kb/records/10.1063_1.5028178.jsonl
+similarity index 100%
+rename from psed_v2/records/10.1063_1.5028178.jsonl
+rename to psed_v2/kb/records/10.1063_1.5028178.jsonl
+diff --git a/psed_v2/kb/report.py b/psed_v2/kb/report.py
+new file mode 100644
+index 0000000..9b97c31
+--- /dev/null
++++ b/psed_v2/kb/report.py
+@@ -0,0 +1,37 @@
++#!/usr/bin/env python3
++"""R2: one self-contained HTML page per unit from (title, file) pairs: a .csv becomes a table, any other file a <pre>.
++
++    python3 psed_v2/kb/report.py psed_v2/kb/reports/P135a.html "Mapping=psed_v2/kb/reports/P135a.mapping.csv" "Check diff=psed_v2/kb/reports/P135a.check.diff"
++"""
++import csv
++import html
++import sys
++from pathlib import Path
++
++STYLE = "body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}"
++
++
++def section(title, path):
++    p = Path(path)
++    out = [f"<h2>{html.escape(title)}</h2><p>{html.escape(str(p))}</p>"]
++    if p.suffix == ".csv":
++        rows = list(csv.reader(p.open(newline="", encoding="utf-8")))
++        if rows:
++            out.append("<table><tr>" + "".join(f"<th>{html.escape(c)}</th>" for c in rows[0]) + "</tr>")
++            out += ["<tr>" + "".join(f"<td>{html.escape(c)}</td>" for c in r) + "</tr>" for r in rows[1:]]
++            out.append("</table>")
++    else:
++        out.append(f"<pre>{html.escape(p.read_text(encoding='utf-8'))}</pre>")
++    return "\n".join(out)
++
++
++def main(argv):
++    out, pairs = Path(argv[0]), [a.split("=", 1) for a in argv[1:]]
++    body = "\n".join(section(t, p) for t, p in pairs)
++    out.write_text(f"<!doctype html><html><head><meta charset='utf-8'><title>{html.escape(out.stem)}</title><style>{STYLE}</style></head>"
++                   f"<body><h1>{html.escape(out.stem)}</h1>\n{body}\n</body></html>\n", encoding="utf-8")
++    print(f"{out}: {len(pairs)} sections")
++
++
++if __name__ == "__main__":
++    main(sys.argv[1:])
+diff --git a/psed_v2/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+similarity index 100%
+rename from psed_v2/schema/FORM.md
+rename to psed_v2/kb/schema/FORM.md
+diff --git a/psed_v2/schema/form.json b/psed_v2/kb/schema/form.json
+similarity index 100%
+rename from psed_v2/schema/form.json
+rename to psed_v2/kb/schema/form.json
+diff --git a/psed_v2/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+similarity index 100%
+rename from psed_v2/schema/form_pass0.json
+rename to psed_v2/kb/schema/form_pass0.json
+diff --git a/psed_v2/verify/ask-v4/check.txt b/psed_v2/kb/verify/ask-v4/check.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/check.txt
+rename to psed_v2/kb/verify/ask-v4/check.txt
+diff --git a/psed_v2/verify/ask-v4/git.txt b/psed_v2/kb/verify/ask-v4/git.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/git.txt
+rename to psed_v2/kb/verify/ask-v4/git.txt
+diff --git a/psed_v2/verify/ask-v4/handoff_tail.txt b/psed_v2/kb/verify/ask-v4/handoff_tail.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/handoff_tail.txt
+rename to psed_v2/kb/verify/ask-v4/handoff_tail.txt
+diff --git a/psed_v2/verify/ask-v4/ontology.txt b/psed_v2/kb/verify/ask-v4/ontology.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/ontology.txt
+rename to psed_v2/kb/verify/ask-v4/ontology.txt
+diff --git a/psed_v2/verify/ask-v4/pilot.html b/psed_v2/kb/verify/ask-v4/pilot.html
+similarity index 100%
+rename from psed_v2/verify/ask-v4/pilot.html
+rename to psed_v2/kb/verify/ask-v4/pilot.html
+diff --git a/psed_v2/verify/ask-v4/problems_tail.txt b/psed_v2/kb/verify/ask-v4/problems_tail.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/problems_tail.txt
+rename to psed_v2/kb/verify/ask-v4/problems_tail.txt
+diff --git a/psed_v2/verify/ask-v4/samples.json b/psed_v2/kb/verify/ask-v4/samples.json
+similarity index 100%
+rename from psed_v2/verify/ask-v4/samples.json
+rename to psed_v2/kb/verify/ask-v4/samples.json
+diff --git a/psed_v2/verify/ask-v4/samples.txt b/psed_v2/kb/verify/ask-v4/samples.txt
+similarity index 100%
+rename from psed_v2/verify/ask-v4/samples.txt
+rename to psed_v2/kb/verify/ask-v4/samples.txt
+diff --git a/psed_v2/verify/ask-v4/sizes.csv b/psed_v2/kb/verify/ask-v4/sizes.csv
+similarity index 100%
+rename from psed_v2/verify/ask-v4/sizes.csv
+rename to psed_v2/kb/verify/ask-v4/sizes.csv
+diff --git a/psed_v2/verify/d10/check.txt b/psed_v2/kb/verify/d10/check.txt
+similarity index 100%
+rename from psed_v2/verify/d10/check.txt
+rename to psed_v2/kb/verify/d10/check.txt
+diff --git a/psed_v2/verify/d10/git.txt b/psed_v2/kb/verify/d10/git.txt
+similarity index 100%
+rename from psed_v2/verify/d10/git.txt
+rename to psed_v2/kb/verify/d10/git.txt
+diff --git a/psed_v2/verify/d10/prompt_size.txt b/psed_v2/kb/verify/d10/prompt_size.txt
+similarity index 100%
+rename from psed_v2/verify/d10/prompt_size.txt
+rename to psed_v2/kb/verify/d10/prompt_size.txt
+diff --git a/psed_v2/verify/d10/samples.txt b/psed_v2/kb/verify/d10/samples.txt
+similarity index 100%
+rename from psed_v2/verify/d10/samples.txt
+rename to psed_v2/kb/verify/d10/samples.txt
+diff --git a/psed_v2/verify/d10/units_added.txt b/psed_v2/kb/verify/d10/units_added.txt
+similarity index 100%
+rename from psed_v2/verify/d10/units_added.txt
+rename to psed_v2/kb/verify/d10/units_added.txt
+diff --git a/psed_v2/verify/d11/check.txt b/psed_v2/kb/verify/d11/check.txt
+similarity index 100%
+rename from psed_v2/verify/d11/check.txt
+rename to psed_v2/kb/verify/d11/check.txt
+diff --git a/psed_v2/verify/d11/git.txt b/psed_v2/kb/verify/d11/git.txt
+similarity index 100%
+rename from psed_v2/verify/d11/git.txt
+rename to psed_v2/kb/verify/d11/git.txt
+diff --git a/psed_v2/verify/d11/samples.txt b/psed_v2/kb/verify/d11/samples.txt
+similarity index 100%
+rename from psed_v2/verify/d11/samples.txt
+rename to psed_v2/kb/verify/d11/samples.txt
+diff --git a/psed_v2/verify/d12/check.txt b/psed_v2/kb/verify/d12/check.txt
+similarity index 100%
+rename from psed_v2/verify/d12/check.txt
+rename to psed_v2/kb/verify/d12/check.txt
+diff --git a/psed_v2/verify/d12/fixture/check_fixture.py b/psed_v2/kb/verify/d12/fixture/check_fixture.py
+similarity index 100%
+rename from psed_v2/verify/d12/fixture/check_fixture.py
+rename to psed_v2/kb/verify/d12/fixture/check_fixture.py
+diff --git a/psed_v2/verify/d12/fixture/fix_a.jsonl b/psed_v2/kb/verify/d12/fixture/fix_a.jsonl
+similarity index 100%
+rename from psed_v2/verify/d12/fixture/fix_a.jsonl
+rename to psed_v2/kb/verify/d12/fixture/fix_a.jsonl
+diff --git a/psed_v2/verify/d12/fixture/fix_b.jsonl b/psed_v2/kb/verify/d12/fixture/fix_b.jsonl
+similarity index 100%
+rename from psed_v2/verify/d12/fixture/fix_b.jsonl
+rename to psed_v2/kb/verify/d12/fixture/fix_b.jsonl
+diff --git a/psed_v2/verify/d12/fixture/make_fixture.py b/psed_v2/kb/verify/d12/fixture/make_fixture.py
+similarity index 100%
+rename from psed_v2/verify/d12/fixture/make_fixture.py
+rename to psed_v2/kb/verify/d12/fixture/make_fixture.py
+diff --git a/psed_v2/verify/d12/fixture/verdicts.csv b/psed_v2/kb/verify/d12/fixture/verdicts.csv
+similarity index 100%
+rename from psed_v2/verify/d12/fixture/verdicts.csv
+rename to psed_v2/kb/verify/d12/fixture/verdicts.csv
+diff --git a/psed_v2/verify/d12/fixture_report.html b/psed_v2/kb/verify/d12/fixture_report.html
+similarity index 100%
+rename from psed_v2/verify/d12/fixture_report.html
+rename to psed_v2/kb/verify/d12/fixture_report.html
+diff --git a/psed_v2/verify/d12/fixture_report.md b/psed_v2/kb/verify/d12/fixture_report.md
+similarity index 100%
+rename from psed_v2/verify/d12/fixture_report.md
+rename to psed_v2/kb/verify/d12/fixture_report.md
+diff --git a/psed_v2/verify/d12/prompt_size.txt b/psed_v2/kb/verify/d12/prompt_size.txt
+similarity index 100%
+rename from psed_v2/verify/d12/prompt_size.txt
+rename to psed_v2/kb/verify/d12/prompt_size.txt
+diff --git a/psed_v2/verify/d13/check.txt b/psed_v2/kb/verify/d13/check.txt
+similarity index 100%
+rename from psed_v2/verify/d13/check.txt
+rename to psed_v2/kb/verify/d13/check.txt
+diff --git a/psed_v2/verify/d13/counts.md b/psed_v2/kb/verify/d13/counts.md
+similarity index 100%
+rename from psed_v2/verify/d13/counts.md
+rename to psed_v2/kb/verify/d13/counts.md
+diff --git a/psed_v2/verify/d13/counts.py b/psed_v2/kb/verify/d13/counts.py
+similarity index 100%
+rename from psed_v2/verify/d13/counts.py
+rename to psed_v2/kb/verify/d13/counts.py
+diff --git a/psed_v2/verify/d13/nodes_top3.txt b/psed_v2/kb/verify/d13/nodes_top3.txt
+similarity index 100%
+rename from psed_v2/verify/d13/nodes_top3.txt
+rename to psed_v2/kb/verify/d13/nodes_top3.txt
+diff --git a/psed_v2/verify/d13/prompt_size.txt b/psed_v2/kb/verify/d13/prompt_size.txt
+similarity index 100%
+rename from psed_v2/verify/d13/prompt_size.txt
+rename to psed_v2/kb/verify/d13/prompt_size.txt
+diff --git a/psed_v2/verify/d13/removed.csv b/psed_v2/kb/verify/d13/removed.csv
+similarity index 100%
+rename from psed_v2/verify/d13/removed.csv
+rename to psed_v2/kb/verify/d13/removed.csv
+diff --git a/psed_v2/verify/d13/removed_retyped.py b/psed_v2/kb/verify/d13/removed_retyped.py
+similarity index 100%
+rename from psed_v2/verify/d13/removed_retyped.py
+rename to psed_v2/kb/verify/d13/removed_retyped.py
+diff --git a/psed_v2/verify/d13/retyped.csv b/psed_v2/kb/verify/d13/retyped.csv
+similarity index 100%
+rename from psed_v2/verify/d13/retyped.csv
+rename to psed_v2/kb/verify/d13/retyped.csv
+diff --git a/psed_v2/verify/d14/REPORT.md b/psed_v2/kb/verify/d14/REPORT.md
+similarity index 100%
+rename from psed_v2/verify/d14/REPORT.md
+rename to psed_v2/kb/verify/d14/REPORT.md
+diff --git a/psed_v2/verify/d14/alias_audit.csv b/psed_v2/kb/verify/d14/alias_audit.csv
+similarity index 100%
+rename from psed_v2/verify/d14/alias_audit.csv
+rename to psed_v2/kb/verify/d14/alias_audit.csv
+diff --git a/psed_v2/verify/d14/decisions.md b/psed_v2/kb/verify/d14/decisions.md
+similarity index 100%
+rename from psed_v2/verify/d14/decisions.md
+rename to psed_v2/kb/verify/d14/decisions.md
+diff --git a/psed_v2/verify/d14/five_entries.py b/psed_v2/kb/verify/d14/five_entries.py
+similarity index 100%
+rename from psed_v2/verify/d14/five_entries.py
+rename to psed_v2/kb/verify/d14/five_entries.py
+diff --git a/psed_v2/verify/d14/ontology_v1.txt b/psed_v2/kb/verify/d14/ontology_v1.txt
+similarity index 100%
+rename from psed_v2/verify/d14/ontology_v1.txt
+rename to psed_v2/kb/verify/d14/ontology_v1.txt
+diff --git a/psed_v2/verify/d15/roundtrip.csv b/psed_v2/kb/verify/d15/roundtrip.csv
+similarity index 100%
+rename from psed_v2/verify/d15/roundtrip.csv
+rename to psed_v2/kb/verify/d15/roundtrip.csv
+diff --git a/psed_v2/verify/d15/roundtrip_summary.txt b/psed_v2/kb/verify/d15/roundtrip_summary.txt
+similarity index 100%
+rename from psed_v2/verify/d15/roundtrip_summary.txt
+rename to psed_v2/kb/verify/d15/roundtrip_summary.txt
+diff --git a/psed_v2/verify/d15/statement_only.csv b/psed_v2/kb/verify/d15/statement_only.csv
+similarity index 100%
+rename from psed_v2/verify/d15/statement_only.csv
+rename to psed_v2/kb/verify/d15/statement_only.csv
+diff --git a/psed_v2/verify/d15/statement_only_summary.txt b/psed_v2/kb/verify/d15/statement_only_summary.txt
+similarity index 100%
+rename from psed_v2/verify/d15/statement_only_summary.txt
+rename to psed_v2/kb/verify/d15/statement_only_summary.txt
+diff --git a/psed_v2/verify/d8/allowlist_removed.txt b/psed_v2/kb/verify/d8/allowlist_removed.txt
+similarity index 100%
+rename from psed_v2/verify/d8/allowlist_removed.txt
+rename to psed_v2/kb/verify/d8/allowlist_removed.txt
+diff --git a/psed_v2/verify/d8/battery_per_paper.csv b/psed_v2/kb/verify/d8/battery_per_paper.csv
+similarity index 100%
+rename from psed_v2/verify/d8/battery_per_paper.csv
+rename to psed_v2/kb/verify/d8/battery_per_paper.csv
+diff --git a/psed_v2/verify/d8/check.txt b/psed_v2/kb/verify/d8/check.txt
+similarity index 100%
+rename from psed_v2/verify/d8/check.txt
+rename to psed_v2/kb/verify/d8/check.txt
+diff --git a/psed_v2/verify/d8/external_ids_coverage.txt b/psed_v2/kb/verify/d8/external_ids_coverage.txt
+similarity index 100%
+rename from psed_v2/verify/d8/external_ids_coverage.txt
+rename to psed_v2/kb/verify/d8/external_ids_coverage.txt
+diff --git a/psed_v2/verify/d8/git.txt b/psed_v2/kb/verify/d8/git.txt
+similarity index 100%
+rename from psed_v2/verify/d8/git.txt
+rename to psed_v2/kb/verify/d8/git.txt
+diff --git a/psed_v2/verify/d8/import_before_after.csv b/psed_v2/kb/verify/d8/import_before_after.csv
+similarity index 100%
+rename from psed_v2/verify/d8/import_before_after.csv
+rename to psed_v2/kb/verify/d8/import_before_after.csv
+diff --git a/psed_v2/verify/d8/kind_check_calibration.md b/psed_v2/kb/verify/d8/kind_check_calibration.md
+similarity index 100%
+rename from psed_v2/verify/d8/kind_check_calibration.md
+rename to psed_v2/kb/verify/d8/kind_check_calibration.md
+diff --git a/psed_v2/verify/d8/map_58_simulation.txt b/psed_v2/kb/verify/d8/map_58_simulation.txt
+similarity index 100%
+rename from psed_v2/verify/d8/map_58_simulation.txt
+rename to psed_v2/kb/verify/d8/map_58_simulation.txt
+diff --git a/psed_v2/verify/d8/pending_decisions.csv b/psed_v2/kb/verify/d8/pending_decisions.csv
+similarity index 100%
+rename from psed_v2/verify/d8/pending_decisions.csv
+rename to psed_v2/kb/verify/d8/pending_decisions.csv
+diff --git a/psed_v2/verify/d8/samples.txt b/psed_v2/kb/verify/d8/samples.txt
+similarity index 100%
+rename from psed_v2/verify/d8/samples.txt
+rename to psed_v2/kb/verify/d8/samples.txt
+diff --git a/psed_v2/verify/d9/battery_per_paper.csv b/psed_v2/kb/verify/d9/battery_per_paper.csv
+similarity index 100%
+rename from psed_v2/verify/d9/battery_per_paper.csv
+rename to psed_v2/kb/verify/d9/battery_per_paper.csv
+diff --git a/psed_v2/verify/d9/check.txt b/psed_v2/kb/verify/d9/check.txt
+similarity index 100%
+rename from psed_v2/verify/d9/check.txt
+rename to psed_v2/kb/verify/d9/check.txt
+diff --git a/psed_v2/verify/d9/git.txt b/psed_v2/kb/verify/d9/git.txt
+similarity index 100%
+rename from psed_v2/verify/d9/git.txt
+rename to psed_v2/kb/verify/d9/git.txt
+diff --git a/psed_v2/verify/d9/import_before_after.csv b/psed_v2/kb/verify/d9/import_before_after.csv
+similarity index 100%
+rename from psed_v2/verify/d9/import_before_after.csv
+rename to psed_v2/kb/verify/d9/import_before_after.csv
+diff --git a/psed_v2/verify/d9/kind_check_calibration.md b/psed_v2/kb/verify/d9/kind_check_calibration.md
+similarity index 100%
+rename from psed_v2/verify/d9/kind_check_calibration.md
+rename to psed_v2/kb/verify/d9/kind_check_calibration.md
+diff --git a/psed_v2/verify/d9/p108_corrections.csv b/psed_v2/kb/verify/d9/p108_corrections.csv
+similarity index 100%
+rename from psed_v2/verify/d9/p108_corrections.csv
+rename to psed_v2/kb/verify/d9/p108_corrections.csv
+diff --git a/psed_v2/verify/d9/samples.txt b/psed_v2/kb/verify/d9/samples.txt
+similarity index 100%
+rename from psed_v2/verify/d9/samples.txt
+rename to psed_v2/kb/verify/d9/samples.txt
+diff --git a/psed_v2/verify/figures-12/answers_figures.json b/psed_v2/kb/verify/figures-12/answers_figures.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/answers_figures.json
+rename to psed_v2/kb/verify/figures-12/answers_figures.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1002_cvde.200390005.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1002_cvde.200390005.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1002_cvde.200390005.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1002_cvde.200390005.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1021_acs.chemmater.2c01154.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1021_acs.chemmater.2c01154.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1021_acs.chemmater.2c01154.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1021_acs.chemmater.2c01154.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1021_acs.jpcc.9b08176.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1021_acs.jpcc.9b08176.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1021_acs.jpcc.9b08176.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1021_acs.jpcc.9b08176.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1021_cm0303080.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1021_cm0303080.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1021_cm0303080.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1021_cm0303080.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1039_d0cp03358h.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d0cp03358h.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1039_d0cp03358h.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d0cp03358h.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1039_d1cp04758b.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d1cp04758b.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1039_d1cp04758b.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d1cp04758b.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1039_d3cp05639b.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d3cp05639b.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1039_d3cp05639b.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1039_d3cp05639b.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1063_1.5028178.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1063_1.5028178.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1063_1.5028178.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1063_1.5028178.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1116_1.4903941.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1116_1.4903941.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1116_1.4903941.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1116_1.4903941.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1116_6.0002804.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0002804.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1116_6.0002804.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0002804.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1116_6.0002993.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0002993.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1116_6.0002993.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0002993.json
+diff --git a/psed_v2/verify/figures-12/figures_trunc/10.1116_6.0003182.json b/psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0003182.json
+similarity index 100%
+rename from psed_v2/verify/figures-12/figures_trunc/10.1116_6.0003182.json
+rename to psed_v2/kb/verify/figures-12/figures_trunc/10.1116_6.0003182.json
+diff --git a/psed_v2/verify/figures-12/git.txt b/psed_v2/kb/verify/figures-12/git.txt
+similarity index 100%
+rename from psed_v2/verify/figures-12/git.txt
+rename to psed_v2/kb/verify/figures-12/git.txt
+diff --git a/psed_v2/verify/figures-12/repeat.txt b/psed_v2/kb/verify/figures-12/repeat.txt
+similarity index 100%
+rename from psed_v2/verify/figures-12/repeat.txt
+rename to psed_v2/kb/verify/figures-12/repeat.txt
+diff --git a/psed_v2/verify/figures-12/summary.csv b/psed_v2/kb/verify/figures-12/summary.csv
+similarity index 100%
+rename from psed_v2/verify/figures-12/summary.csv
+rename to psed_v2/kb/verify/figures-12/summary.csv
+diff --git a/psed_v2/verify/figures-12/tokens.txt b/psed_v2/kb/verify/figures-12/tokens.txt
+similarity index 100%
+rename from psed_v2/verify/figures-12/tokens.txt
+rename to psed_v2/kb/verify/figures-12/tokens.txt
+diff --git a/psed_v2/verify/kb-12/check.txt b/psed_v2/kb/verify/kb-12/check.txt
+similarity index 100%
+rename from psed_v2/verify/kb-12/check.txt
+rename to psed_v2/kb/verify/kb-12/check.txt
+diff --git a/psed_v2/verify/kb-12/git.txt b/psed_v2/kb/verify/kb-12/git.txt
+similarity index 100%
+rename from psed_v2/verify/kb-12/git.txt
+rename to psed_v2/kb/verify/kb-12/git.txt
+diff --git a/psed_v2/verify/kb-12/import_before_after.csv b/psed_v2/kb/verify/kb-12/import_before_after.csv
+similarity index 100%
+rename from psed_v2/verify/kb-12/import_before_after.csv
+rename to psed_v2/kb/verify/kb-12/import_before_after.csv
+diff --git a/psed_v2/verify/kb-12/papers.csv b/psed_v2/kb/verify/kb-12/papers.csv
+similarity index 100%
+rename from psed_v2/verify/kb-12/papers.csv
+rename to psed_v2/kb/verify/kb-12/papers.csv
+diff --git a/psed_v2/verify/kb-12/pending_added.csv b/psed_v2/kb/verify/kb-12/pending_added.csv
+similarity index 100%
+rename from psed_v2/verify/kb-12/pending_added.csv
+rename to psed_v2/kb/verify/kb-12/pending_added.csv
+diff --git a/psed_v2/verify/kb-12/probe.txt b/psed_v2/kb/verify/kb-12/probe.txt
+similarity index 100%
+rename from psed_v2/verify/kb-12/probe.txt
+rename to psed_v2/kb/verify/kb-12/probe.txt
+diff --git a/psed_v2/verify/kb-12/samples.txt b/psed_v2/kb/verify/kb-12/samples.txt
+similarity index 100%
+rename from psed_v2/verify/kb-12/samples.txt
+rename to psed_v2/kb/verify/kb-12/samples.txt
+diff --git a/psed_v2/verify/kb-12/unmapped.csv b/psed_v2/kb/verify/kb-12/unmapped.csv
+similarity index 100%
+rename from psed_v2/verify/kb-12/unmapped.csv
+rename to psed_v2/kb/verify/kb-12/unmapped.csv
+diff --git a/psed_v2/verify/kb-fig3/check.txt b/psed_v2/kb/verify/kb-fig3/check.txt
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/check.txt
+rename to psed_v2/kb/verify/kb-fig3/check.txt
+diff --git a/psed_v2/verify/kb-fig3/figures_agreement.csv b/psed_v2/kb/verify/kb-fig3/figures_agreement.csv
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/figures_agreement.csv
+rename to psed_v2/kb/verify/kb-fig3/figures_agreement.csv
+diff --git a/psed_v2/verify/kb-fig3/git.txt b/psed_v2/kb/verify/kb-fig3/git.txt
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/git.txt
+rename to psed_v2/kb/verify/kb-fig3/git.txt
+diff --git a/psed_v2/verify/kb-fig3/import_report.csv b/psed_v2/kb/verify/kb-fig3/import_report.csv
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/import_report.csv
+rename to psed_v2/kb/verify/kb-fig3/import_report.csv
+diff --git a/psed_v2/verify/kb-fig3/pending_added.csv b/psed_v2/kb/verify/kb-fig3/pending_added.csv
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/pending_added.csv
+rename to psed_v2/kb/verify/kb-fig3/pending_added.csv
+diff --git a/psed_v2/verify/kb-fig3/regression.md b/psed_v2/kb/verify/kb-fig3/regression.md
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/regression.md
+rename to psed_v2/kb/verify/kb-fig3/regression.md
+diff --git a/psed_v2/verify/kb-fig3/samples.txt b/psed_v2/kb/verify/kb-fig3/samples.txt
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/samples.txt
+rename to psed_v2/kb/verify/kb-fig3/samples.txt
+diff --git a/psed_v2/verify/kb-fig3/unmapped.csv b/psed_v2/kb/verify/kb-fig3/unmapped.csv
+similarity index 100%
+rename from psed_v2/verify/kb-fig3/unmapped.csv
+rename to psed_v2/kb/verify/kb-fig3/unmapped.csv
+diff --git a/psed_v2/ontology/alias_audit.py b/psed_v2/ontology/alias_audit.py
+index f1fe81d..b27bc07 100644
+--- a/psed_v2/ontology/alias_audit.py
++++ b/psed_v2/ontology/alias_audit.py
+@@ -24,8 +24,8 @@ import yaml
+ 
+ HERE = Path(__file__).resolve().parent
+ V2 = HERE.parent
+-sys.path.insert(0, str(V2 / "pilot"))
+-OUT = V2 / "verify" / "d14" / "alias_audit.csv"
++sys.path.insert(0, str(V2 / "kb" / "pilot"))
++OUT = V2 / "kb" / "verify" / "d14" / "alias_audit.csv"
+ TYPES = ("setting", "observation", "derived")
+ 
+ 
+@@ -52,7 +52,7 @@ def audit(onto):
+     ambiguous = {fold(a) for a in onto["vocabularies"].get("ambiguous_aliases") or {}}
+     pend = pending_forms()
+     rows = []
+-    for p in sorted(glob.glob(str(V2 / "pilot" / "10.*.facts.csv"))):
++    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "10.*.facts.csv"))):
+         pid = Path(p).name[:-len(".facts.csv")]
+         texts = None
+         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
+@@ -124,7 +124,7 @@ def apply(rows, onto):
+     for e in onto["entries"]:
+         for a in names(e):
+             owner[a].add(e["id"])
+-    free = {r["label_as_printed"] for p in glob.glob(str(V2 / "pilot" / "*.facts.csv")) for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other"}
++    free = {r["label_as_printed"] for p in glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv")) for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other"}
+     add, stopped, amb = collections.defaultdict(dict), [], collections.defaultdict(set)
+     batch = collections.defaultdict(set)
+     for r in rows:
+diff --git a/psed_v2/ontology/entry_definitions.py b/psed_v2/ontology/entry_definitions.py
+index dc19890..e85a1d1 100644
+--- a/psed_v2/ontology/entry_definitions.py
++++ b/psed_v2/ontology/entry_definitions.py
+@@ -15,7 +15,7 @@ import yaml
+ 
+ HERE = Path(__file__).resolve().parent
+ V2 = HERE.parent
+-sys.path.insert(0, str(V2 / "pilot"))
++sys.path.insert(0, str(V2 / "kb" / "pilot"))
+ sys.path.insert(0, str(HERE))
+ import elements      # noqa: E402
+ from alias_audit import set_field  # noqa: E402
+@@ -80,7 +80,7 @@ def main():
+                         ev.append(f"quote {key} {el}: {' '.join(sent.split())}")
+         plan[eid] = ev
+     recs = []                                                                   # base_pressure: the records keyed to it now
+-    for p in sorted(glob.glob(str(V2 / "pilot" / "10.*.facts.csv"))):
++    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "10.*.facts.csv"))):
+         recs += [r for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "base_pressure"]
+     byp = {}
+     for r in recs:
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 4a2af9d..f221096 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -24,7 +24,7 @@ from pathlib import Path
+ import yaml
+ 
+ HERE = Path(__file__).resolve().parent
+-OUT = HERE.parent / "pilot" / "vocab.py"
++OUT = HERE.parent / "kb" / "pilot" / "vocab.py"
+ HEADER = '"""GENERATED by psed_v2/ontology/export.py from ontology.yaml and pilot_map.csv; do not edit. lists.py imports it."""\n'
+ 
+ 
+@@ -185,7 +185,7 @@ def build(onto, pmap):
+ 
+ # P132: the extraction form, generated from ontology.yaml + units.yaml + facts.FIELDS + lists.* (nothing hand-written in the schema):
+ # schema/form.json (one record), schema/form_pass0.json (one paper's named things) and schema/FORM.md (one table, one row per field)
+-SCHEMA = HERE.parent / "schema"
++SCHEMA = HERE.parent / "kb" / "schema"
+ FORM_TYPES = ["setting", "observation", "derived", "model", "definition", "claim", "cited", "caveat"]   # lists.TYPES without bridge, comparison, identity
+ VALUE_TYPES = ["setting", "observation", "derived"]                            # quantity required; other types (P133: model too): required once a value is given
+ VALUE_FIELDS = ["value", "value_min", "value_max", "value_text"]
+@@ -215,7 +215,7 @@ def _words(n):
+ 
+ 
+ def _pilot():
+-    sys.path.insert(0, str(HERE.parent / "pilot"))
++    sys.path.insert(0, str(HERE.parent / "kb" / "pilot"))
+     import lists as L, facts as F                                               # after vocab.py is written: lists imports it
+     return L, F
+ 
+diff --git a/psed_v2/ontology/merge_pending.py b/psed_v2/ontology/merge_pending.py
+index 7cf208e..45b2029 100644
+--- a/psed_v2/ontology/merge_pending.py
++++ b/psed_v2/ontology/merge_pending.py
+@@ -65,7 +65,7 @@ def block(e):
+ 
+ def estimated_evidence():
+     out = []
+-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
++    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
+         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
+             if "kind=estimated" in r["qualifiers"].split(";"):
+                 out.append(f"{r['fact_id']} ({r['evidence']})")
+diff --git a/psed_v2/ontology/pending_decide.py b/psed_v2/ontology/pending_decide.py
+index 967a65f..18ba4bc 100644
+--- a/psed_v2/ontology/pending_decide.py
++++ b/psed_v2/ontology/pending_decide.py
+@@ -47,7 +47,7 @@ def naming(rows):
+     ids = {r["id"] for r in rows}
+     by_label = {a: r["id"] for r in rows if r.get("label") and r["id"] in FREE for a in [r["label"]] + (r.get("aliases") or "").split("|") if a}
+     use = collections.defaultdict(lambda: collections.defaultdict(list))
+-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
++    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
+         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
+             k = r["fact_id"].split(":")[0]
+             els = [e for e in r["evidence"].split(";") if e]
+@@ -88,7 +88,7 @@ def experimental():
+     """{id: {paper}}: the pending species and structures set on an experimental run, and the methods of any observation."""
+     ids = {r["id"]: r["kind"] for r in csv.DictReader((HERE / "pending.csv").open(newline="", encoding="utf-8"))}
+     out = collections.defaultdict(set)
+-    for r in csv.DictReader((V2 / "pilot" / "experiments.csv").open(newline="", encoding="utf-8")):
++    for r in csv.DictReader((V2 / "kb" / "pilot" / "experiments.csv").open(newline="", encoding="utf-8")):
+         if r["run"].split(":")[1] != EXPERIMENT_RUN:
+             continue
+         for col, v in r.items():
+@@ -96,7 +96,7 @@ def experimental():
+                 for tok in (col + " " + v).replace("[", " ").replace("]", " ").replace(";", " ").replace("=", " ").replace(",", " ").split():
+                     if ids.get(tok) in ("species", "structure"):
+                         out[tok].add(r["paper"])
+-    for p in glob.glob(str(V2 / "pilot" / "*.facts.csv")):
++    for p in glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv")):
+         for r in csv.DictReader(open(p, newline="", encoding="utf-8")):
+             if r["type"] == "observation" and ids.get(r["method"]) == "method":
+                 out[r["method"]].add(r["fact_id"].split(":")[0])
+@@ -110,7 +110,7 @@ def candidate(label, rows):
+     """P131b: a pending.csv row for the free label other[<label>] (equal up to case), or (None, why) when it cannot be one concept."""
+     import export
+     recs = []
+-    for p in sorted(glob.glob(str(V2 / "pilot" / "*.facts.csv"))):
++    for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "*.facts.csv"))):
+         recs += [r for r in csv.DictReader(open(p, newline="", encoding="utf-8")) if r["quantity"] == "other" and r["label_as_printed"].lower() == label.lower()]
+     if not recs:
+         return None, "no other[...] record carries it"

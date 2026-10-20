@@ -1,0 +1,9 @@
+file,lines,reason
+pilot/ extract/ schema/ records/ compiled/ verify/ (git mv),renames only,R1: every kb-stage folder under kb/
+scripts/*.py -> kb/extract/,renames only,R1: no top-level scripts/
+eval/kind_phrases.yaml -> kb/pilot/,rename only,R1: no top-level eval/; read only by kb/pilot/ask.py
+cache/ -> kb/cache/,mv (gitignored),R1
+kb/pilot/*.py kb/extract/*.py ontology/*.py kb/figures_*.py,52 sites (P135a.path_sites.csv),paths broken by the move
+.gitignore,73 and 77,pilot/runs and cache moved
+CLAUDE.md,Layout block,new paths
+kb/report.py,new (39 lines),R2 report renderer
