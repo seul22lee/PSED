@@ -1,0 +1,4 @@
+layer,commit,file,what,why (evidence)
+form,77c8cd9,ontology/export.py -> kb/schema; kb/extract/common.py; form_roundtrip.py,"every field required and nullable; statement rule deleted; provider schema keeps required + nullable (type lists); qualifiers keys stay optional","P138 audits: optional fields left empty (parent 57, definition quantity 12; P136b label 35; P134 kind 21)"
+prompts,4a2cdf9,kb/extract/pass0_paper.py; pass1_elements.py,"series role on the role line; simulation = one model; series parent required (nullable); example from zou23 (series); every field present","P138: yli18 0 series, yim20 6 series without parent"
+compiler,fdfd3be,kb/extract/compile.py; audit.py; score.py,"null = absent; drop only on enum/type; fills (statement <- quote, parent null -> paper flagged); count ~ dimensionless; one fallback: unnamed figure set -> series under the paper (row type from curve kind, logged); audit parent_filled",directive 1 and 3

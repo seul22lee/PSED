@@ -1,61 +1,70 @@
 metric,value
 ontology_hash,56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042
-lines_used,1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42
-lines_ignored,
-facts,513
-tree_rows,58
-derived_by_kb,10
-dropped,69
-unmapped,46
-step_input:records,639
-step_a:schema:required,23
+lines_used,43;44;45;46;47;48;49;50;51;52;53;54;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74;75;76;77;78;79;80;81;82;83;84
+lines_ignored,2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42
+facts,546
+tree_rows,101
+derived_by_kb,47
+dropped,80
+unmapped,25
+step_input:records,549
+step_a:variables_unmapped (set to null),1
 step_a:schema:anyOf,3
-step_a:kept,613
-step_a_fields:statement,23
-step_a_fields:qualifiers.n,3
-step_b:model_with_value (kept),1
+step_a:kept,546
+step_a_fields:qualifiers,3
 step_b:statement_only (kept: P138 form),3
-step_b:kept,613
-step_c:quantity_other (kept),44
-step_c:kept,613
-step_d:quote_not_found,41
-step_d:kept,572
+step_b:kept,546
+step_c:quantity_other (kept),24
+step_c:kept,546
+step_d:quote_not_found,76
+step_d:kept,470
 step_e:unit_unresolved,1
-step_e:kept,571
-step_f:species_resolved,30
-step_f:species_unresolved,1
-step_f:kept,570
-step_g:mention_unmatched,13
-step_h:parent: paper (record),180
-step_h:parent: run (record),12
-step_h:parent: parent_unknown (paper),152
-step_h:parent: specimen (record),84
-step_h:parent: specimen measurement (record),142
-step_m:label_as_printed filled with the quantity id,196
-step_m:links resolved,12
-step_m:links named elements without facts,7
-step_1c:curve not in exactly one series (0),37
+step_e:kept,469
+step_f:species_resolved,25
+step_f:kept,469
+step_g:mention_unmatched,6
+step_h:parent: paper (record),134
+step_h:parent: run (record),50
+step_h:parent: series parent (record),9
+step_h:parent: specimen measurement (record),146
+step_h:parent: specimen (record),96
+step_h:parent: series (record),10
+step_h:parent: parent_null (paper),3
+step_h:parent: parent_unknown (paper),2
+step_h:parent: simulation (record),19
+step_m:label_as_printed filled with the quantity id,12
+step_m:statement filled from the quote,430
+step_m:links resolved,14
+step_m:links named elements without facts,10
+step_1c:fallback series (figure set without a pass-0 series),7
+step_1c:curve not in exactly one series (0),3
 step_1c:curve not in exactly one series (2),18
-step_1c:series without a parent (its curves left out),6
-step_i:merged,59
-step_i:definition merged,8
-step_i:kept,503
-step_j:derived_needs_outside_fact,21
-step_j:derived cycle_time,5
-step_j:derived deposition_rate,5
-step_k:statement from the record,34
-step_k:statement assembled,479
-step_k:statement_copies_text (reported by check),6
-diff:setting,gold 206 compiled 176 matched 88 P 0.50 R 0.43
-diff:observation,gold 154 compiled 73 matched 62 P 0.85 R 0.40
-diff:derived,gold 108 compiled 112 matched 84 P 0.75 R 0.78
-diff:cited,gold 92 compiled 28 matched 19 P 0.68 R 0.21
-diff:activity,gold 75 compiled 35 matched 35 P 1.00 R 0.47
-diff:model,gold 73 compiled 2 matched 2 P 1.00 R 0.03
-diff:definition,gold 66 compiled 96 matched 22 P 0.23 R 0.33
-diff:caveat,gold 45 compiled 4 matched 1 P 0.25 R 0.02
-diff:claim,gold 40 compiled 22 matched 13 P 0.59 R 0.33
-diff:entity,gold 31 compiled 16 matched 15 P 0.94 R 0.48
-diff:comparison,gold 8 compiled 6 matched 0 P 0.00 R 0.00
-diff:paper,gold 1 compiled 1 matched 1 P 1.00 R 1.00
+step_1c:series varied from the figure set (0 conditions differ),7
+step_1c:series entities,32
+step_1c:curve -> observation,7
+step_1c:setting,44
+step_1c:row type from the curve's kind (fallback series),34
+step_1c:curve -> model,30
+step_i:merged,47
+step_i:definition merged,4
+step_i:kept,499
+step_j:derived_needs_outside_fact,47
+step_j:derived growth_per_cycle{kind=target;over=run},14
+step_j:derived cycle_time,17
+step_j:derived deposition_rate,16
+step_k:statement from the record,427
+step_k:statement_copies_text (reported by check),94
+step_k:statement assembled,119
+diff:setting,gold 206 compiled 197 matched 125 P 0.63 R 0.61
+diff:observation,gold 154 compiled 51 matched 47 P 0.92 R 0.31
+diff:derived,gold 108 compiled 170 matched 88 P 0.52 R 0.81
+diff:cited,gold 92 compiled 32 matched 24 P 0.75 R 0.26
+diff:activity,gold 75 compiled 39 matched 38 P 0.97 R 0.51
+diff:model,gold 73 compiled 33 matched 33 P 1.00 R 0.45
+diff:definition,gold 66 compiled 27 matched 6 P 0.22 R 0.09
+diff:caveat,gold 45 compiled 3 matched 1 P 0.33 R 0.02
+diff:claim,gold 40 compiled 33 matched 20 P 0.61 R 0.50
+diff:entity,gold 31 compiled 48 matched 25 P 0.52 R 0.81
+diff:comparison,gold 8 compiled 13 matched 2 P 0.15 R 0.25
 diff:identity,gold 1 compiled 0 matched 0 P - R 0.00
+diff:paper,gold 1 compiled 1 matched 1 P 1.00 R 1.00

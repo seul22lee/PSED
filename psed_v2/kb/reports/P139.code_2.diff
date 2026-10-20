@@ -1,0 +1,257 @@
+commit fdfd3be9e0e40989423c9c24bbc7a7a6c9f243a7
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Tue Oct 20 03:47:28 2026 -0500
+
+    P139 compiler: null = absent, fills, count ~ dimensionless, one figure-set fallback
+    
+    validate(): a missing field is a null; a record drops only on an enum/type violation
+    (and type null, logged); after validation null = absent. Fills: statement <- quote when
+    null (logged), parent null -> paper row (parent_null, flagged per row), label <- quantity
+    id, kind <- stated (P138). canon(): count compares as dimensionless. figures(): the one
+    fallback, logged: a figures.json set that no pass-0 series names becomes a series under
+    the paper row (how inferred); its entities and curve rows are built, the row type from
+    the curve's kind (logged), nothing else inferred. Null-safe pass-0 fields.
+    audit.py: parent_filled column (yes/no, T5/T6 rows); the cast fills every field with null.
+    score.py: parent_filled counts in the summary.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index 3e3cf33..9ee4255 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -43,7 +43,7 @@ import vocab as V  # noqa: E402
+ TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
+ NO_SLOT = ("links", "inputs", "parent", "figure_ref")
+ COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "cast_fills", "no_slot", "same_element_same_type",
+-        "same_element_same_type_same_quantity", "parent", "jsonl_record", "compiled_row"]
++        "same_element_same_type_same_quantity", "parent", "parent_filled", "jsonl_record", "compiled_row"]
+ REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
+ 
+ 
+@@ -120,6 +120,8 @@ def form_test(g, val, props):
+     if rec.get("quantity") == "other" and "candidate" not in rec:
+         rec["candidate"] = dict(definition_quote=g["statement"], unit_as_printed=g["unit"], dimension="dimensionless", symbol=g["label_as_printed"] or "?")
+         fills.append("candidate=stub")
++    for k in props:                                                             # P139: every field present, null when the gold has none
++        rec.setdefault(k, None)
+     no_slot = [c for c, _ in lost] + [c for c in NO_SLOT if g.get(c)]
+     errs = sorted(val.iter_errors(rec), key=lambda e: list(e.absolute_path))
+     if not errs:
+@@ -163,7 +165,7 @@ def main(arg):
+     for g in gold:
+         ev = [e for e in g["evidence"].split(";") if e]
+         a = {c: g[c] for c in COLS if c in g}
+-        a.update(parent="", stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
++        a.update(parent="", parent_filled="", stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
+         texts.append(dict(fact_id=g["fact_id"], element_text=" | ".join(f"{e}: {run.text.get(e, '')}" for e in ev)))
+         if "#" not in g["fact_id"] or g["type"] in TREE_TYPES:
+             a.update(stage="T0 tree", detail=g["type"]); out.append(a); continue
+@@ -196,12 +198,14 @@ def main(arg):
+             a.update(stage="T6 matched", jsonl_record=rec_json(r), compiled_row=c["fact_id"])
+             pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
+             a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
++            a["parent_filled"] = "yes" if c.get("_parent_filled") else "no"
+         elif facts:
+             r, c = facts[0]
+             d = differing(g, c)
+             a.update(stage="T5 mismatch", detail=d, jsonl_record=rec_json(r), compiled_row=f"{c['fact_id']}: {d}")
+             pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
+             a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
++            a["parent_filled"] = "yes" if c.get("_parent_filled") else "no"
+         elif drops:
+             r, (_, step, reason, field) = drops[0]
+             a.update(stage="T4 compiler", detail=f"step {step}: {reason}" + (f" ({field})" if field else ""), jsonl_record=rec_json(r))
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 9219a58..627e98c 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -153,8 +153,14 @@ class Run:
+                     vs[sym] = None
+                     self.count("a", "variables_unmapped (set to null)")
+                     self.note(f"a: {r['eid']}: variables_unmapped {sym!r} -> {q!r}")
++            for k_ in form["required"]:                                         # P139: a missing field is a null; only an enum/type violation drops
++                r["rec"].setdefault(k_, None)
++            if r["rec"].get("type") is None:
++                self.drop("a", r["eid"], r["rec"], "type null", "type"); continue
+             errs = list(val.iter_errors(r["rec"]))
+             if not errs:
++                r["rec"] = {k_: (({q: v for q, v in x.items() if v is not None} if k_ == "qualifiers" else x) if isinstance(x, dict) else x)
++                            for k_, x in r["rec"].items() if x is not None}     # P139: null = absent
+                 out.append(r); continue
+             e = errs[0]
+             field = ".".join(str(p) for p in e.path) or (e.validator if e.validator not in ("required", "dependentRequired") else e.message.split("'")[1])
+@@ -247,7 +253,8 @@ class Run:
+     def mentions(self, recs):
+         self.names = {}                                                         # name as printed -> pass-0 item
+         for it in self.pass0:
+-            self.names.setdefault(it["name_as_printed"], it)
++            if it.get("name_as_printed"):
++                self.names.setdefault(it["name_as_printed"], it)
+         for r in recs:
+             ms = [m for m in r["rec"].get("mentions") or [] if m not in self.order]   # an element id (the prompt lists them) goes to figure_ref
+             r["refs"] = [m for m in r["rec"].get("mentions") or [] if m in self.order]
+@@ -283,32 +290,32 @@ class Run:
+                 continue
+             self.p0[it["id"]] = it
+             items.append(it)
+-        role = lambda r: [it for it in items if it["role"] == r]               # noqa: E731
++        role = lambda r: [it for it in items if it.get("role") == r]               # noqa: E731
+         if role("run") or role("specimen"):
+             rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",
+-                            evidence=ok_ev([e for it in role("run") + role("specimen") for e in it["introduced_in"]]),
++                            evidence=ok_ev([e for it in role("run") + role("specimen") for e in it.get("introduced_in") or []]),
+                             statement=f"the deposition recipe of {k}: the runs and specimens of its first pass"))
+         for it in role("run"):
+             self.node[it["id"]] = (f"{k}:run:{slug(it['id'])}", "run")
+-            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how="stated", evidence=ok_ev(it["introduced_in"]),
+-                            parent=f"{k}:recipe", label_as_printed=it["name_as_printed"], statement=f"deposition run {it['id']} ({it['name_as_printed']!r})"))
++            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
++                            parent=f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"], statement=f"deposition run {it['id']} ({it.get('name_as_printed')!r})"))
+         for it in role("simulation"):
+             self.node[it["id"]] = (f"{k}:sim:{slug(it['id'])}", "simulation")
+-            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="simulation", how="stated", evidence=ok_ev(it["introduced_in"]),
+-                            parent=k, label_as_printed=it["name_as_printed"], statement=f"simulation {it['id']} ({it['name_as_printed']!r})"))
++            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="simulation", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
++                            parent=k, label_as_printed=it.get("name_as_printed") or it["id"], statement=f"simulation {it['id']} ({it.get('name_as_printed')!r})"))
+         for it in role("specimen"):
+             par = self.node.get(it.get("parent", ""), ("", ""))
+             if par[1] != "run":
+                 self.count("h", "specimen without a run parent (under the recipe)")
+             self.node[it["id"]] = (f"{k}:ent:{slug(it['id'])}", "specimen")
+             q = ";".join(f"{a}={it[a]}" for a in ("specimen_class", "structure_class") if it.get(a))
+-            rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="stated", evidence=ok_ev(it["introduced_in"]), qualifiers=q,
+-                            parent=par[0] if par[1] == "run" else f"{k}:recipe", label_as_printed=it["name_as_printed"],
+-                            statement=f"specimen {it['id']} ({it['name_as_printed']!r})"))
++            rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="stated", evidence=ok_ev(it.get("introduced_in") or []), qualifiers=q,
++                            parent=par[0] if par[1] == "run" else f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"],
++                            statement=f"specimen {it['id']} ({it.get('name_as_printed')!r})"))
+         for it in role("series"):
+             self.node[it["id"]] = (f"{k}:series:{slug(it['id'])}", "series")
+-            rows.append(row(fact_id=self.node[it["id"]][0], type="comparison", kind="series", how="stated", evidence=ok_ev(it["introduced_in"]),
+-                            parent=k, label_as_printed=it["name_as_printed"], statement=f"series {it['id']} ({it['name_as_printed']!r})"))
++            rows.append(row(fact_id=self.node[it["id"]][0], type="comparison", kind="series", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
++                            parent=k, label_as_printed=it.get("name_as_printed") or it["id"], statement=f"series {it['id']} ({it.get('name_as_printed')!r})"))
+         self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "series", "cited_work"))
+                   + "; identity rows: none (pass 0 carries no identity)")
+         self.rows_tree = rows
+@@ -342,7 +349,7 @@ class Run:
+         p = C.V2 / "kb" / f"{self.pid}.figures.json"
+         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+         k, tree, facts = self.key, [], []
+-        series = {i: it for i, it in self.p0.items() if it["role"] == "series"}
++        series = {i: it for i, it in self.p0.items() if it.get("role") == "series"}
+ 
+         def els(fig, panel=""):
+             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
+@@ -368,9 +375,24 @@ class Run:
+                                  value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
+                 self.count("1c", "setting")
+         sets = {st["id"]: st for st in Fj.get("sets", [])}
++        named = dict(series)
++        fallback = {}
++        for st in Fj.get("sets", []):                                           # P139: the one fallback: a figure set no pass-0 series names
++            if any(set(it.get("introduced_in") or []) & set(els(st["figure"], st.get("panel", ""))) for it in named.values()):
++                continue
++            fid = f"figset:{st['id'].split(':')[-1]}"
++            fallback[st["id"]] = fid
++            series[fid] = dict(id=fid, role="series", introduced_in=els(st["figure"], st.get("panel", "")), parent=None, _fallback=True)
++            self.node[fid] = (f"{k}:series:{slug(fid)}", "series")
++            tree.append(row(fact_id=self.node[fid][0], type="comparison", kind="series", how="inferred", evidence=";".join(els(st["figure"], st.get("panel", ""))),
++                            parent=k, label_as_printed=st.get("label", "") or fid, statement=f"figure set {st['id']}: no pass-0 series names its figure (fallback)"))
++            self.note(f"1c: fallback series {fid} for figure set {st['id']} (no pass-0 series names the figure)")
++            self.count("1c", "fallback series (figure set without a pass-0 series)")
+         by_series = collections.defaultdict(list)
+         for cu in Fj.get("curves", []):
+-            hit = [sid for sid, it in series.items() if set(it["introduced_in"]) & set(els(cu["figure"], cu.get("panel", "")))]
++            hit = [sid for sid, it in named.items() if set(it.get("introduced_in") or []) & set(els(cu["figure"], cu.get("panel", "")))]
++            if not hit and cu.get("set") in fallback:
++                hit = [fallback[cu["set"]]]
+             if len(hit) != 1:
+                 self.count("1c", f"curve not in exactly one series ({len(hit)})"); continue
+             by_series[hit[0]].append(cu)
+@@ -378,6 +400,8 @@ class Run:
+         for sid, it in series.items():
+             cid = self.node[sid][0]
+             base, brole = self.series_base(sid)
++            if it.get("_fallback"):
++                base, brole = k, "paper"                                        # P139: under the paper row; its row type comes from the curve's kind (logged)
+             curves = by_series.get(sid, [])
+             if not base:
+                 self.count("1c", "series without a parent (its curves left out)")
+@@ -403,7 +427,9 @@ class Run:
+                     if y.get("quantity") not in L.QUANTITIES:
+                         self.count("1c", "curve y quantity not an id"); continue
+                     ev = ";".join(els(cu["figure"], cu.get("panel", "")))
+-                    if brole == "simulation":
++                    if brole == "paper":
++                        self.count("1c", "row type from the curve's kind (fallback series)")
++                    if brole == "simulation" or (brole == "paper" and cu["kind"] == "simulated"):
+                         facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
+                                          mentions=cu.get("series", {}).get("label_raw", ""), evidence=ev, parent=e["id"]))
+                     else:
+@@ -417,7 +443,7 @@ class Run:
+             varied = differ[0] if len(differ) == 1 else next((sets[cu["set"]]["varied"] for cu in curves if cu.get("set") in sets), "")
+             if len(differ) != 1:
+                 self.count("1c", f"series varied from the figure set ({len(differ)} conditions differ)")
+-            crow = next(r for r in self.rows_tree if r["fact_id"] == cid)
++            crow = next(r for r in self.rows_tree + tree if r["fact_id"] == cid)
+             crow["quantity"] = varied if varied in L.QUANTITIES else ""
+             self.count("1c", "series entities", len(ents))
+         return tree, facts
+@@ -430,7 +456,11 @@ class Run:
+         p = rec.get("parent", "")
+         if p == "paper":
+             return k, "paper (record)"
++        if not p:
++            r["parent_filled"] = True
++            return k, "parent_null (paper)"                                     # P139: filled, flagged
+         if p not in self.node:
++            r["parent_filled"] = True
+             return k, "parent_unknown (paper)"
+         rid, role = self.node[p]
+         result = rec["type"] in ("observation", "derived") and any(rec.get(x) not in (None, "") for x in VALUE_KEYS)
+@@ -470,7 +500,10 @@ class Run:
+             vs = rec.get("variables") or {}
+             f["term"] = rec.get("term") or "|".join(s for s, q in vs.items() if q == f["quantity"])
+         f["evidence"], f["parent"], f["author"] = r["eid"], parent, self.pid
+-        f["_statement"] = rec.get("statement", "")                             # P138: the extractor's own words, used by statements()
++        f["_statement"] = rec.get("statement") or rec.get("quote", "")          # P138: the extractor's own words; P139: the quote when null
++        if not rec.get("statement"):
++            self.count("m", "statement filled from the quote")
++        f["_parent_filled"] = bool(r.get("parent_filled"))
+         f["_links"] = [e for e in rec.get("links") or [] if e in self.order]    # P138: resolved to fact ids after ids()
+         f["_quote"] = normalize(rec.get("quote", "")).lower()
+         if any(f[x] for x in ("value", "value_min", "value_max")) and not f["data_kind"]:
+@@ -672,7 +705,7 @@ class Run:
+             for e in f["evidence"].split(";"):
+                 on[e].append(f["fact_id"])
+         for f in items:                                                         # P138: links (element ids) -> the fact ids on those elements
+-            if f["_links"]:
++            if f.get("_links"):
+                 f["links"] = ";".join(dict.fromkeys(i for e in f["_links"] for i in on[e] if i != f["fact_id"]))
+                 self.count("m", "links resolved" if f["links"] else "links named elements without facts")
+             if f.get("_kind_filled"):
+@@ -750,6 +783,7 @@ def canon(f):
+                 pass
+     if u in V.UNIT_BASE:
+         dim, fac = V.UNIT_BASE[u]
++        dim = "dimensionless" if dim == "count" else dim                       # P139: a count compares as a number
+         return dim, float(f"{v * fac:.6g}")
+     return f["value"], f["unit"]
+ 
+diff --git a/psed_v2/kb/extract/score.py b/psed_v2/kb/extract/score.py
+index d4cc28e..f940c40 100644
+--- a/psed_v2/kb/extract/score.py
++++ b/psed_v2/kb/extract/score.py
+@@ -103,7 +103,10 @@ def main(argv):
+         K.write_csv(R / f"{unit}.{key}.values.csv", ["quantity", "gold_values", "compiled_values", "same_value", "gold", "compiled", "error"], vs)
+         st = rd(R / f"{unit}.{key}.stage_type.csv")
+         tot = {r["stage"]: r["total"] for r in st}
++        au = rd(C.V2 / "kb" / "compiled" / f"{pid}.audit.csv")
++        pf = collections.Counter(r["parent_filled"] for r in au if r["stage"] in ("T5 mismatch", "T6 matched"))
+         summary.append(dict(paper=key, check_dir_problems=len(errs), matched_T6=tot.get("T6 matched", "0"), gold_rows=tot.get("total", ""),
++                            parent_filled_yes=pf["yes"], parent_filled_no=pf["no"],
+                             **{f"diff_{d['type']}": f"{d['matched']}/{d['gold']}" for d in table}))
+         print(f"{key}: check --dir {len(errs)} problems; T6 {tot.get('T6 matched')}/{tot.get('total')}")
+     fields = list(dict.fromkeys(k for s in summary for k in s))

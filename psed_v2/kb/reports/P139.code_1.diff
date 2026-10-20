@@ -1,0 +1,118 @@
+commit 4a2cdf9f97f9bcf5e4a052ffd71529caec69d52f
+Author: Seul Lee <ftk3187@athena.athena.research.northwestern.edu>
+Date:   Tue Oct 20 03:47:27 2026 -0500
+
+    P139 prompts: pass-0 series role and definitions, every field present
+    
+    pass 0: role list gains series; a simulation is one model (two solution methods or
+    approximations of one model are the same simulation); a series is a figure's runs or
+    specimens varying one quantity, parent required (null only when the paper gives none);
+    every field present. Example: the last dev paper whose gold has a series comparison
+    (zou23), every field present. Thinking stays MEDIUM.
+    pass 1: "every field present; null when it does not apply"; examples carry every field;
+    the response's variables list nullable; TYPES() reads the enum inside the nullable type.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 1c1d200..f3df86a 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -15,11 +15,14 @@ INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation
+ One item per named thing:
+ - id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record's parent;
+ - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
+-- role: one of specimen, run, simulation, cited_work. A run is one deposition sequence: a reactant pair at a temperature on a
+-  structure. A simulation is a model the paper solves, one item per model. A specimen is a physical sample the paper measures (a
+-  coated structure, a film, a substrate piece). A series is a figure series: several model runs or specimens that differ in one
+-  quantity (introduced_in = the figure). A cited work is another publication the paper names;
+-- parent: for a specimen, the id of the run that made it; for a series, the id of its simulation, run or specimen;
++- role: one of specimen, run, simulation, series, cited_work. A run is one deposition sequence: a reactant pair at a temperature on
++  a structure. A simulation is one model the paper solves; two solution methods or approximations of the same model are the same
++  simulation. A specimen is a physical sample the paper measures (a coated structure, a film, a substrate piece). A series is a
++  figure's set of runs or specimens that vary one quantity (introduced_in = the figure). A cited work is another publication the
++  paper names;
++- parent: for a specimen, the id of the run that made it; for a series, the id of the simulation, run or specimen it belongs to;
++  null only when the paper gives none;
++- every field is present in every item; null when it does not apply;
+ - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
+ - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
+   taken from the element index below.
+@@ -27,8 +30,8 @@ Answer with JSON matching the form."""
+ 
+ 
+ def example(pid, form):
+-    """P136b/P138: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid (never
+-    held-out) that has deposition and simulation activities: at most two items per role (run = a deposition activity, simulation =
++    """P136b/P138/P139: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid
++    (never held-out) whose gold has a series comparison: at most two items per role (run = a deposition activity, simulation =
+     a simulation activity, specimen = an entity directly under a deposition, series = a comparison of kind series, cited_work = a
+     cited tree row), id = role letter + number, name = label_as_printed, introduced_in = the row's evidence, parent = the item id of
+     the gold parent (specimen: its deposition; series: the parent of its first member) when that is an item; validated against
+@@ -55,7 +58,8 @@ def example(pid, form):
+             gp = it.pop("_gp")
+             if gp in ids:
+                 it["parent"] = ids[gp]
+-        if {"run", "simulation"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
++        items = [{k: it.get(k) for k in form["items"]["required"]} for it in items]   # P139: every field present, null when not given
++        if "series" in n and not list(Draft202012Validator(form).iter_errors(items)):
+             return json.dumps(items, ensure_ascii=False)
+     return "[]"
+ 
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index 4ecd598..69783a8 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -36,6 +36,7 @@ RULES = """TYPES (one per record):
+ - cited: a value or statement the paper attributes to another work (not a setting).
+ 
+ FIELD RULES
++- Every field of a record is present; write null when it does not apply.
+ - Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
+   boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
+   boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
+@@ -87,8 +88,9 @@ def response_schema(form, ids):
+     the records apply, else records is empty); the record is the provider form, its variables written as a list of {symbol, quantity}
+     (the compiler maps it back to the object)."""
+     rec = C.provider_schema(form)
+-    var = form["properties"]["variables"]["additionalProperties"]
+-    rec["properties"]["variables"] = {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
++    vobj = next(x for x in form["properties"]["variables"]["anyOf"] if x.get("type") == "object")   # P139: the nullable object's object branch
++    var = vobj["additionalProperties"]
++    rec["properties"]["variables"] = {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
+         "symbol": {"type": "string", "minLength": 1}, "quantity": C.provider_schema(var, form["$defs"])}}}
+     item = {"type": "object", "required": ["id", "nk", "records"], "properties": {"id": {"type": "string", "enum": ids},
+             "nk": {"type": "string", "enum": ["none"] + NK_FORM}, "duplicate_of": {"type": "string"}, "records": {"type": "array", "items": rec}}}
+@@ -105,6 +107,11 @@ def answers(resp):
+     return out
+ 
+ 
++def TYPES(form):
++    """The record types of the form (P139: the enum inside the nullable type)."""
++    return next(x for x in form["properties"]["type"]["anyOf"] if "enum" in x)["enum"]
++
++
+ def examples(pid, form):
+     """P136 3b: one example record per type, from the gold facts.csv of the dev papers other than pid (never a held-out paper): the
+     first row of the type (with a quantity where the type takes one) that, cast into the form (form_roundtrip.cast; term kept; quote =
+@@ -120,7 +127,7 @@ def examples(pid, form):
+         text = C.E.texts(p)
+         for row in _csv.DictReader(f.open(encoding="utf-8")):
+             t = row["type"]
+-            if t in out or t not in form["properties"]["type"]["enum"] or "#" not in row["fact_id"]:
++            if t in out or t not in TYPES(form) or "#" not in row["fact_id"]:
+                 continue
+             if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
+                 continue
+@@ -137,9 +144,10 @@ def examples(pid, form):
+             if lost or not words:
+                 continue
+             rec["quote"] = " ".join(words)
++            rec = {k: rec.get(k) for k in form["required"]}                     # P139: every field present, null when it does not apply
+             if not list(val.iter_errors(rec)):
+                 out[t] = rec
+-    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in form["properties"]["type"]["enum"] if t in out)
++    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in TYPES(form) if t in out)
+ 
+ 
+ def jobs(pid):
