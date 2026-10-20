@@ -15,11 +15,14 @@ INSTRUCTION = """You read one ALD paper and list every specimen, run, simulation
 One item per named thing:
 - id: a short id you assign, unique in the paper (r1, s1, sim1, ser1, c1, ...); pass 1 uses it as a record's parent;
 - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
-- role: one of specimen, run, simulation, cited_work. A run is one deposition sequence: a reactant pair at a temperature on a
-  structure. A simulation is a model the paper solves, one item per model. A specimen is a physical sample the paper measures (a
-  coated structure, a film, a substrate piece). A series is a figure series: several model runs or specimens that differ in one
-  quantity (introduced_in = the figure). A cited work is another publication the paper names;
-- parent: for a specimen, the id of the run that made it; for a series, the id of its simulation, run or specimen;
+- role: one of specimen, run, simulation, series, cited_work. A run is one deposition sequence: a reactant pair at a temperature on
+  a structure. A simulation is one model the paper solves; two solution methods or approximations of the same model are the same
+  simulation. A specimen is a physical sample the paper measures (a coated structure, a film, a substrate piece). A series is a
+  figure's set of runs or specimens that vary one quantity (introduced_in = the figure). A cited work is another publication the
+  paper names;
+- parent: for a specimen, the id of the run that made it; for a series, the id of the simulation, run or specimen it belongs to;
+  null only when the paper gives none;
+- every field is present in every item; null when it does not apply;
 - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
 - introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
   taken from the element index below.
@@ -27,8 +30,8 @@ Answer with JSON matching the form."""
 
 
 def example(pid, form):
-    """P136b/P138: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid (never
-    held-out) that has deposition and simulation activities: at most two items per role (run = a deposition activity, simulation =
+    """P136b/P138/P139: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than pid
+    (never held-out) whose gold has a series comparison: at most two items per role (run = a deposition activity, simulation =
     a simulation activity, specimen = an entity directly under a deposition, series = a comparison of kind series, cited_work = a
     cited tree row), id = role letter + number, name = label_as_printed, introduced_in = the row's evidence, parent = the item id of
     the gold parent (specimen: its deposition; series: the parent of its first member) when that is an item; validated against
@@ -55,7 +58,8 @@ def example(pid, form):
             gp = it.pop("_gp")
             if gp in ids:
                 it["parent"] = ids[gp]
-        if {"run", "simulation"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
+        items = [{k: it.get(k) for k in form["items"]["required"]} for it in items]   # P139: every field present, null when not given
+        if "series" in n and not list(Draft202012Validator(form).iter_errors(items)):
             return json.dumps(items, ensure_ascii=False)
     return "[]"
 

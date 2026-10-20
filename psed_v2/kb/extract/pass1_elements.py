@@ -36,6 +36,7 @@ RULES = """TYPES (one per record):
 - cited: a value or statement the paper attributes to another work (not a setting).
 
 FIELD RULES
+- Every field of a record is present; write null when it does not apply.
 - Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
   boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
   boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
@@ -87,8 +88,9 @@ def response_schema(form, ids):
     the records apply, else records is empty); the record is the provider form, its variables written as a list of {symbol, quantity}
     (the compiler maps it back to the object)."""
     rec = C.provider_schema(form)
-    var = form["properties"]["variables"]["additionalProperties"]
-    rec["properties"]["variables"] = {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
+    vobj = next(x for x in form["properties"]["variables"]["anyOf"] if x.get("type") == "object")   # P139: the nullable object's object branch
+    var = vobj["additionalProperties"]
+    rec["properties"]["variables"] = {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
         "symbol": {"type": "string", "minLength": 1}, "quantity": C.provider_schema(var, form["$defs"])}}}
     item = {"type": "object", "required": ["id", "nk", "records"], "properties": {"id": {"type": "string", "enum": ids},
             "nk": {"type": "string", "enum": ["none"] + NK_FORM}, "duplicate_of": {"type": "string"}, "records": {"type": "array", "items": rec}}}
@@ -103,6 +105,11 @@ def answers(resp):
             nk = a.get("nk", "none")
             out[a["id"]] = a.get("records") or [] if nk == "none" else f"NK:{nk}" + (f":{a.get('duplicate_of', '')}" if nk == "duplicate" else "")
     return out
+
+
+def TYPES(form):
+    """The record types of the form (P139: the enum inside the nullable type)."""
+    return next(x for x in form["properties"]["type"]["anyOf"] if "enum" in x)["enum"]
 
 
 def examples(pid, form):
@@ -120,7 +127,7 @@ def examples(pid, form):
         text = C.E.texts(p)
         for row in _csv.DictReader(f.open(encoding="utf-8")):
             t = row["type"]
-            if t in out or t not in form["properties"]["type"]["enum"] or "#" not in row["fact_id"]:
+            if t in out or t not in TYPES(form) or "#" not in row["fact_id"]:
                 continue
             if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
                 continue
@@ -137,9 +144,10 @@ def examples(pid, form):
             if lost or not words:
                 continue
             rec["quote"] = " ".join(words)
+            rec = {k: rec.get(k) for k in form["required"]}                     # P139: every field present, null when it does not apply
             if not list(val.iter_errors(rec)):
                 out[t] = rec
-    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in form["properties"]["type"]["enum"] if t in out)
+    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in TYPES(form) if t in out)
 
 
 def jobs(pid):
