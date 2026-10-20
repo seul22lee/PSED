@@ -1,0 +1,12 @@
+(U) gold units (render.gold_units: run = deposition activity; specimen = entity with a deposition above it; simulation = simulation
+activity; model_run = entity with a simulation above it) vs the pass-0 units, per role: linked by evidence overlap (gold evidence vs
+introduced_in), then, for units still unlinked, by equal normalized name; outcome per connected group: matched, merged (n gold -> 1),
+split (1 gold -> n), missing, extra. evidence_quote: normalize() substring of the paper's element texts, else tokens in order, else not found.
+(L) pass-0 layouts vs the layouts the gold tree implies (render.gold_layouts): a table's cells -> the gold entity above each fact
+citing them (one per row = row_per_unit, one per column = column_per_unit, one per cell = cell_per_unit, none = not_units, else
+mixed); a panel's curves -> their gold entities (query.Tree binding, P88): all distinct = curve_per_unit, all one = panel_one_unit,
+map cells = point_per_unit, none bound = unbound. Every non-matching row is listed.
+(C) every figures.json curve: the gold entity it is bound to, the pass-0 unit(s) whose curves name it; agrees = the claiming unit is
+paired in (U) with that gold entity; differs = paired with another; unassigned = no unit names it; double-assigned = two or more do.
+Calls: 3 (approved ~$0.45); cost at the prices.csv row.
+Note: gold_curve_units imports query.py, which builds the trees of all 12 papers (held-out ones included), as compile.py's derived step does.

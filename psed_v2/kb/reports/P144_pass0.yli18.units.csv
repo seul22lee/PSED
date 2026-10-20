@@ -1,0 +1,29 @@
+paper,role,outcome,gold,gold_ids,pass0_id,pass0_name,parent,evidence_quote,quote_check,curves
+yli18,run,missing,Al2O3 run,yli18:dep:al2o3,,,,,,0
+yli18,run,missing,TiO2 run,yli18:dep:tio2,,,,,,0
+yli18,run,extra,,,r1,Al2O3 ALD,,Al2O3 was grown with the same process as in Gao (2015) from trimethylaluminum (TMA) and water (H2O) at 300°C,not found,0
+yli18,run,extra,,,r2,TiO2 ALD,,TiO2 from titanium tetrachloride (TiCl4) and H2O at 110°C,not found,0
+yli18,specimen,matched,"Al2O3 film, 500 cycles",yli18:ent:al2o3,s1,Al2O3 film,r1,The measured (circles) and calculated (line) thickness profiles of a 500 cycle deposition process of Al2O3 from Al(CH3)3 and H2O in PillarHall® prototype 3,found,1
+yli18,specimen,matched,"TiO2 film, 1000 cycles",yli18:ent:tio2,s2,TiO2 film,r2,The measured (circles) and calculated (line) thickness profiles of a 1000 cycle deposition process of TiO2 from TiCl4 and H2O.,found,1
+yli18,simulation,matched,diffusion-reaction model,yli18:sim,sim2,Gordon model,,"This is called the Gordon model (Gordon, 2003).",found,0
+yli18,simulation,missing,Gordon model,yli18:sim:gordon,,,,,,0
+yli18,simulation,extra,,,sim1,diffusion model,,"A diffusion model, developed in this work, is used for studying the propagation of ALD growth in narrow channels.",found,0
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m3,0.1 s numerical,sim1,Circles indicate the fully numerical solution of the growth equations.,tokens in order,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m4,0.1 s appr,sim1,Lines indicate the approximate model,found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m5,0.05 s numerical,sim1,Pulse time= 0.05 s,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m6,0.05 s appr,sim1,Pulse time= 0.05 s appr,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m7,0.02 s numerical,sim1,Pulse time= 0.02 s,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m8,0.02 s appr,sim1,Pulse time= 0.02 s appr,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m9,0.01 s numerical,sim1,Pulse time= 0.01 s,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m10,0.01 s appr,sim1,Pulse time= 0.01 s appr,not found,2
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m11,x_t,sim1,The locations of points x_t and x_s of the 0.1 s pulse are marked.,found,1
+yli18,model_run,merged+split,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,m12,x_s,sim1,The locations of points x_t and x_s of the 0.1 s pulse are marked.,found,1
+yli18,model_run,merged+split,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,m13,H = 2 μm,sim1,"original channel heights are H = 2, 1, 0.5, or 0.2 μm",found,1
+yli18,model_run,merged+split,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,m14,1 μm,sim1,"original channel heights are H = 2, 1, 0.5, or 0.2 μm",found,1
+yli18,model_run,merged+split,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,m15,0.5 μm,sim1,"original channel heights are H = 2, 1, 0.5, or 0.2 μm",found,1
+yli18,model_run,merged+split,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,m16,0.2 μm,sim1,"original channel heights are H = 2, 1, 0.5, or 0.2 μm",found,1
+yli18,model_run,split,Fig. 5 models,yli18:simrun:fig5,m17,Gordon model,sim2,dashed line the Gordon model,found,1
+yli18,model_run,split,Fig. 5 models,yli18:simrun:fig5,m18,Approximation,sim1,solid line the analytical approximate solution,found,1
+yli18,model_run,split,Fig. 5 models,yli18:simrun:fig5,m19,Numerical,sim1,Circles represent the fully numerical solution,found,1
+yli18,model_run,extra,,,m1,Al2O3 fit,sim1,calculated (line) thickness profiles of a 500 cycle deposition process of Al2O3,found,1
+yli18,model_run,extra,,,m2,TiO2 fit,sim1,calculated (line) thickness profiles of a 1000 cycle deposition process of TiO2,found,1

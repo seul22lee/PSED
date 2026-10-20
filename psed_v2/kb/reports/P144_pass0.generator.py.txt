@@ -1,0 +1,121 @@
+"""P144 report tables (read-only): per paper (U) units, (L) layouts, (C) curves, tokens and cost -> kb/reports/P144_pass0.*.csv."""
+import collections, csv, json, re, sys
+from pathlib import Path
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "extract"))
+import common as C   # noqa: E402
+import compile as K  # noqa: E402
+import render        # noqa: E402
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+import ask           # noqa: E402
+
+R = V2 / "kb" / "reports"
+norm = lambda t: re.sub(r"\W+", " ", (t or "").lower()).strip()   # noqa: E731
+
+
+def wr(name, rows, fields=None):
+    rows = list(rows)
+    fields = fields or list(dict.fromkeys(k for r in rows for k in r)) or ["(none)"]
+    with (R / f"P144_pass0.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader(); w.writerows(rows)
+
+
+summary, calls = [], []
+for key in sys.argv[1:]:
+    pid, _ = C.resolve(key)
+    line = C.lines(pid, 0)[-1]
+    obj = C.loads_json(line["response"])
+    units = obj.get("units") or []
+    u = line["usage"]
+    calls.append(dict(paper=key, input_tokens=u["input_tokens"], output_tokens=u["output_tokens"],
+                      cost_usd=f"{ask.cost_of('google:gemini-3.8-flash', {'input': u['input_tokens'], 'output': u['output_tokens']}):.3f}"))
+    text = K.normalize(" ".join(C.E.texts(pid).values()))
+    # (U)
+    G = render.gold_units(pid)
+    rowsU, cntU = [], collections.Counter()
+    pair_of = {}
+    for role in ("run", "specimen", "simulation", "model_run"):
+        g = [x for x in G if x["role"] == role]
+        p = [x for x in units if x.get("role") == role]
+        parent = {("g", i): ("g", i) for i in range(len(g))} | {("p", j): ("p", j) for j in range(len(p))}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]; x = parent[x]
+            return x
+        linked = set()
+        for i, a in enumerate(g):
+            for j, b in enumerate(p):
+                if set(a["evidence"]) & set(b.get("introduced_in") or []):
+                    parent[find(("g", i))] = find(("p", j)); linked |= {("g", i), ("p", j)}
+        for i, a in enumerate(g):
+            for j, b in enumerate(p):
+                if ("g", i) not in linked and ("p", j) not in linked and norm(a["name"]) and norm(a["name"]) == norm(b.get("name_as_printed")):
+                    parent[find(("g", i))] = find(("p", j))
+        comps = collections.defaultdict(lambda: ([], []))
+        for i in range(len(g)):
+            comps[find(("g", i))][0].append(g[i])
+        for j in range(len(p)):
+            comps[find(("p", j))][1].append(p[j])
+        for gs, ps in comps.values():
+            kind = ("matched" if len(gs) == 1 and len(ps) == 1 else "missing" if not ps else "extra" if not gs else
+                    "merged" if len(ps) == 1 else "split" if len(gs) == 1 else "merged+split")
+            cntU[(role, kind)] += 1
+            for x in gs:
+                pair_of[x["gid"]] = [y["id"] for y in ps]
+            for y in ps or [{}]:
+                q = y.get("evidence_quote")
+                found = "" if not y else "null" if not q else "found" if K.normalize(q) in text else "tokens in order" if K.in_order(K.normalize(q).split(), text) else "not found"
+                rowsU.append(dict(paper=key, role=role, outcome=kind, gold=" | ".join(f"{x['name'] or x['gid']}" for x in gs), gold_ids=";".join(x["gid"] for x in gs),
+                                  pass0_id=y.get("id", ""), pass0_name=y.get("name_as_printed", ""), parent=y.get("parent") or "",
+                                  evidence_quote=y.get("evidence_quote") or "", quote_check=found, curves=len(y.get("curves") or [])))
+    wr(f"{key}.units", rowsU)
+    # (L)
+    tl, pl = render.gold_layouts(pid, key)
+    pt = {x.get("table"): x for x in obj.get("table_layouts") or []}
+    pp = {x.get("panel"): x for x in obj.get("panel_layouts") or []}
+    rowsL = []
+    for t in tl:
+        x = pt.get(t["table"], {})
+        rowsL.append(dict(paper=key, kind="table", id=t["table"], gold=t["layout"], pass0=x.get("layout") or "(none)",
+                          agree="yes" if x.get("layout") == t["layout"] else "no", pass0_units=len(x.get("units") or []), gold_units=len(t["units"])))
+    for t in pt:
+        if t not in {x["table"] for x in tl}:
+            rowsL.append(dict(paper=key, kind="table", id=t, gold="(no such table)", pass0=pt[t].get("layout"), agree="no"))
+    for x in pl:
+        y = pp.get(x["panel"], {})
+        rowsL.append(dict(paper=key, kind="panel", id=x["panel"], gold=x["layout"], pass0=y.get("layout") or "(none)",
+                          agree="yes" if y.get("layout") == x["layout"] else "no", pass0_units=1 if y.get("unit") else "", gold_units=len(x["units"])))
+    for t in pp:
+        if t not in {x["panel"] for x in pl}:
+            rowsL.append(dict(paper=key, kind="panel", id=t, gold="(no curves in figures.json)", pass0=pp[t].get("layout"), agree="no"))
+    wr(f"{key}.layouts", rowsL)
+    # (C)
+    gc = render.gold_curve_units(key)
+    claim = collections.defaultdict(list)
+    for y in units:
+        for c in y.get("curves") or []:
+            claim[c].append(y["id"])
+    Fj = json.loads((V2 / "kb" / f"{pid}.figures.json").read_text(encoding="utf-8"))
+    rowsC, cntC = [], collections.Counter()
+    for c in Fj.get("curves", []):
+        ge, ps = gc.get(c["id"], ""), claim.get(c["id"], [])
+        st = ("double-assigned" if len(ps) > 1 else "unassigned" if not ps else
+              "agrees" if ge and ps[0] in pair_of.get(ge, []) else "gold entity unbound" if not ge else "differs")
+        cntC[st] += 1
+        rowsC.append(dict(paper=key, curve=c["id"], panel=f"fig{c['figure']}{c.get('panel', '')}", kind=c["kind"], gold_entity=ge, pass0_units=";".join(ps), status=st))
+    for c in claim:
+        if c not in {x["id"] for x in Fj.get("curves", [])}:
+            rowsC.append(dict(paper=key, curve=c, status="claimed id not in figures.json", pass0_units=";".join(claim[c]))); cntC["claimed id not in figures.json"] += 1
+    wr(f"{key}.curves", rowsC)
+    summary.append(dict(paper=key, **{f"U {r} {k}": cntU[(r, k)] for r in ("run", "specimen", "simulation", "model_run") for k in ("matched", "merged", "split", "missing", "extra") if cntU[(r, k)]},
+                        L_disagreements=sum(1 for x in rowsL if x["agree"] == "no"), L_rows=len(rowsL),
+                        **{f"C {k}": v for k, v in cntC.items()}, curves=len(Fj.get("curves", [])),
+                        quotes=dict(collections.Counter(x["quote_check"] for x in rowsU if x["pass0_id"] and x["role"] == "run"))))
+wr("summary", summary)
+wr("calls", calls)
+for s in summary:
+    print(s)
+print(calls)
