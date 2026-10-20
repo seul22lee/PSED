@@ -116,28 +116,43 @@ def fields_by_type(form):
     return out
 
 
-def record_schema(form):
-    """P148-cost: the provider schema of one record: a oneOf over the record types, each branch keyed by its type (a one-value enum,
-    never null) and listing only that type's fields (fields_by_type), every one required and nullable; variables as a list of
-    {symbol, quantity} (the compiler maps it back to the object)."""
+def variables_schema(form):
+    """The provider's variables: a list of {symbol, quantity} (the compiler maps it back to the form's object)."""
     vobj = next(x for x in form["properties"]["variables"]["anyOf"] if x.get("type") == "object")   # P139: the nullable object's object branch
-    var = {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
+    return {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
         "symbol": {"type": "string", "minLength": 1}, "quantity": C.provider_schema(vobj["additionalProperties"], form["$defs"])}}}
-    out = []
+
+
+SHARED = ("qualifiers",)                                                        # P148-cost2: defined once in $defs, referenced from every branch
+
+
+def record_schema(form):
+    """P148-cost: the provider schema of one record by type, each branch keyed by its type (a one-value enum, never null) and listing
+    only that type's fields (fields_by_type), every one required and nullable. P148-cost2: the branches joined by anyOf (a top-level
+    oneOf drew a bare 400); the SHARED fields written once under $defs and referenced as #/$defs/<field> (provider_schema() inlines
+    every $ref, P133, so the reference is put in after it). Returns (record schema, $defs)."""
+    var, defs, out = variables_schema(form), {k: C.provider_schema(form["properties"][k], form["$defs"]) for k in SHARED}, []
     for t, fs in fields_by_type(form).items():
-        props = {k: ({"type": "string", "enum": [t]} if k == "type" else var if k == "variables" else C.provider_schema(form["properties"][k], form["$defs"]))
-                 for k in fs}
+        props = {k: ({"type": "string", "enum": [t]} if k == "type" else var if k == "variables" else {"$ref": f"#/$defs/{k}"} if k in SHARED
+                     else C.provider_schema(form["properties"][k], form["$defs"])) for k in fs}
         out.append({"type": "object", "required": fs, "properties": props})
-    return {"oneOf": out}
+    return {"anyOf": out}, defs
 
 
-def response_schema(form, ids):
+def flat_schema(form):
+    """The P139 record: the whole provider form, every field required and nullable, variables as the list."""
+    rec = C.provider_schema(form)
+    rec["properties"]["variables"] = variables_schema(form)
+    return rec
+
+
+def response_schema(form, ids, flat=False):
     """{"answers": [{"id", "nk", "duplicate_of", "records"}]} (user, P133: element ids are values, not keys; no union: nk = none means
-    the records apply, else records is empty); P148-cost: the record is record_schema() (a oneOf by type)."""
-    rec = record_schema(form)
+    the records apply, else records is empty); the record is record_schema() (by type, P148-cost2), or with flat the P139 record."""
+    rec, defs = (flat_schema(form), {}) if flat else record_schema(form)
     item = {"type": "object", "required": ["id", "nk", "records"], "properties": {"id": {"type": "string", "enum": ids},
             "nk": {"type": "string", "enum": ["none"] + NK_FORM}, "duplicate_of": {"type": "string"}, "records": {"type": "array", "items": rec}}}
-    return {"type": "object", "required": ["answers"], "properties": {"answers": {"type": "array", "items": item}}}
+    return {"type": "object", "required": ["answers"], "properties": {"answers": {"type": "array", "items": item}}, **({"$defs": defs} if defs else {})}
 
 
 def answers(resp):
@@ -274,22 +289,24 @@ def prefix(pid, form):
                          + "\nElement ids that may be linked: " + ", ".join(refs)]) + "\n\n"
 
 
-def jobs(pid):
-    """[(1, group, prompt, response schema, element ids, prefix)]: prompt = the prefix, then the group's ELEMENTS (render.group)."""
+def jobs(pid, flat=True):
+    """[(1, group, prompt, response schema, element ids, prefix)]: prompt = the prefix, then the group's ELEMENTS (render.group);
+    flat (the default, P148-cost2): the P139 record schema, accepted with the cached prefix; flat=False: record_schema() by type,
+    rejected (400) as a oneOf and as an anyOf with $defs."""
     form = C.schema("form.json")
     pre = prefix(pid, form)
     text, rows = C.E.texts(pid), C.E.load(pid)
     out = []
     for sec, rs in groups(pid)[0].items():
         ids = [r["element_id"] for r in rs]
-        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, rs, text, rows), response_schema(form, ids), ids, pre))
+        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, rs, text, rows), response_schema(form, ids, flat), ids, pre))
     return out
 
 
 def main(arg):
     from jsonschema import Draft202012Validator
     pid, key = C.resolve(arg)
-    js = jobs(pid)
+    js = jobs(pid, flat="--schema=typed" not in sys.argv)                      # P148-cost2: flat (P139) by default; the by-type schema drew a 400
     only = [a for a in sys.argv[2:] if not a.startswith("--")]
     if only:                                                                    # optional: only these groups
         js = [j for j in js if j[1] in only]
