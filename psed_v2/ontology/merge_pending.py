@@ -80,7 +80,7 @@ def main():
     text = (HERE / "ontology.yaml").read_text(encoding="utf-8")
     onto = yaml.safe_load(text)
     have = {e["id"]: e for e in onto["entries"]}
-    have.update({m["id"]: dict(m, type="method") for m in onto["vocabularies"]["measurement_method"]})
+    # P142b: the measurement methods are entries now (the vocabularies block is gone)
     new, skipped, conflicts = [], [], []
     for r in rows:
         if r["status"] != "accepted":

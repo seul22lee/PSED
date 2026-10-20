@@ -135,8 +135,9 @@ def build(onto, pmap):
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
-    methods = list(voc["measurement_method"]) + [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"]) for e in onto["entries"] if e["type"] == "method"] \
-        + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]   # P131b: merged methods are entries
+    methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""))
+               for e in onto["entries"] if e["type"] == "method"] \
+        + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]   # P131b; P142b: methods are entries only
     defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
     families = {}

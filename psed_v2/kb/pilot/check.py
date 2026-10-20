@@ -656,7 +656,7 @@ def check_vocabulary():
 
 
 def check_gold_vocabulary():
-    """P142: every gold fact row of the papers (kb/pilot/<pid>.facts.csv) against the extraction vocabulary (kb/schema/form.json and
+    """P142: every gold fact row of the dev papers (P142b: common.HELD_OUT never read; kb/pilot/<pid>.facts.csv) against the extraction vocabulary (kb/schema/form.json and
     units.yaml through vocab): quantity ids (a caveat's ';' list too), units, the value_text of material / substrate / reactant_A /
     reactant_B / structure, qualifier key=value pairs, cause / effect ids, relation, stance, method, kind. One problem per miss."""
     form = json.loads((HERE.parent / "schema" / "form.json").read_text(encoding="utf-8"))
@@ -664,8 +664,11 @@ def check_gold_vocabulary():
     ce, qids = set(D["cause_effect"]["enum"]), set(D["quantity_id"]["enum"]) | {"other"}
     vt = {"material": set(D["material"]["enum"]), "substrate": set(D["material"]["enum"]), "reactant_A": set(D["species"]["enum"]),
           "reactant_B": set(D["species"]["enum"]), "structure": set(D["structure"]["enum"])}
+    sys.path.insert(0, str(HERE.parent / "extract"))
+    import common                                                               # P142b: the held-out golds are never read (common.HELD_OUT)
+    dev = [pid for pid in KEYS if pid not in common.HELD_OUT]
     err = []
-    for pid in KEYS:
+    for pid in dev:
         for f in rd(HERE / f"{pid}.facts.csv"):
             if "#" not in f["fact_id"] or f["type"] in ("paper", "activity", "entity", "comparison", "identity"):
                 continue
@@ -680,7 +683,7 @@ def check_gold_vocabulary():
                 if f[k] and f[k] not in ok:
                     miss.append((k, f[k]))
             err += [f"{f['fact_id']}: {k} {v!r} is not in the extraction vocabulary (P142)" for k, v in miss]
-    print(f"== gold vocabulary (P142): {len(err)} misses over the gold fact rows of {len(KEYS)} papers")
+    print(f"== gold vocabulary (P142): {len(err)} misses over the gold fact rows of the {len(dev)} dev papers (held-out excluded)")
     return err
 
 
