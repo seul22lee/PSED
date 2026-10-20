@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P148-cost2</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P148-cost2</h1>
+<h2>Probes</h2><p>kb/reports/P148-cost2.probe.txt</p>
+<pre>P148-cost2: two probes, one at a time, yli18 group s7+s8+s9 (84 element ids, 18,557 chars), fixed prefix (83,405 chars) as Gemini
+cached content, thinking LOW, gemini-3.8-flash.
+
+Probe 1, the flat P139 record schema (8,412 chars with the id enum) + the cached prefix: ACCEPTED (2 min 11 s).
+  usage: prompt_token_count 31,187, of it cached_content_token_count 24,484 (the prefix: 3.41 chars/token), uncached 6,703;
+  output (incl. thinking) 24,332; P139 on s7 + s8 + s9 (3 calls): 8,040 + 10,652 + 3,029 = 21,721.
+  92 records: model 46, setting 31, claim 5, caveat 5, definition 3, derived 2; NK no_knowledge 28, boilerplate 5, duplicate 1;
+  elements missing 0; fields missing in a record: none.
+  Cost (ask.cost_of, prices.csv): $0.098; the prefix registration at most $0.018 more (24,484 tokens at the input price).
+  So the P148-cost 400 was not the cached content: the cache works with response_json_schema and thinking LOW.
+
+Probe 2, the by-type schema with anyOf in place of oneOf, qualifiers written once under $defs and referenced as
+#/$defs/qualifiers from the 8 branches (24,890 chars; 45,401 with qualifiers inlined): REJECTED, 400 INVALID_ARGUMENT (bare,
+&quot;Request contains an invalid argument.&quot;). Nothing appended to records. Which part is refused (the anyOf of object branches, the
+$defs/$ref, or the size) is not stated and was not probed further.
+provider_schema() leaves no $ref: it inlines every one (P133, after a bare 400); record_schema() puts the $ref in after it.
+
+Billed schema input: not determinable. Probe 2 has no usage to compare. In probe 1 the uncached 6,703 tokens are the group
+(18,557 chars / 3.41 = 5,448) plus 1,255: less than the flat schema would be at the same ratio (8,412 / 3.41 = 2,467).
+
+pass1_elements.py now defaults to the flat schema; --schema=typed sends the by-type one.
+</pre>
+<h2>Probe rows</h2><p>kb/reports/P148-cost2.probes.csv</p>
+<table><tr><th>probe</th><th>schema_chars</th><th>accepted</th><th>prompt_token_count</th><th>cache_read</th><th>uncached</th><th>output</th><th>records</th><th>by_type</th><th>fields_missing</th><th>usd_call</th><th>usd_prefix_registration_max</th></tr>
+<tr><td>1 flat P139 schema + cached prefix</td><td>8412</td><td>yes</td><td>31187</td><td>24484</td><td>6703</td><td>24332</td><td>92</td><td>model=46;setting=31;caveat=5;claim=5;definition=3;derived=2</td><td>none</td><td>0.0981</td><td>0.0184</td></tr>
+<tr><td>2 by type, anyOf, qualifiers in $defs ($ref kept)</td><td>25636</td><td>no: 400 INVALID_ARGUMENT (bare)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>0</td><td>0.0184</td></tr>
+</table>
+<h2>Projected cost of 44 calls, flat schema</h2><p>kb/reports/P148-cost2.projection.csv</p>
+<table><tr><th>item</th><th>basis</th><th>tokens</th><th>usd_per_mtok</th><th>usd</th></tr>
+<tr><td>cached prefix reads</td><td>44 calls x prefix (chars / 3.41)</td><td>1113403</td><td>0.075</td><td>0.084</td></tr>
+<tr><td>prefix registration, upper bound (input price)</td><td>3 prefixes</td><td>75746</td><td>0.75</td><td>0.057</td></tr>
+<tr><td>prefix storage, at most 0.25 h each</td><td>3 prefixes x 0.25 h</td><td>18937</td><td>0.5</td><td>0.009</td></tr>
+<tr><td>uncached input: group elements + per-call overhead</td><td>group chars / 3.41 + 44 x 1255</td><td>124131</td><td>0.75</td><td>0.093</td></tr>
+<tr><td>output, low: P139 mean per call x 82 calls</td><td>82 x 2.8k</td><td>229600</td><td>3.75</td><td>0.861</td></tr>
+<tr><td>output, high: probe 1 output per group char</td><td>234671 chars x 1.31</td><td>307701</td><td>3.75</td><td>1.154</td></tr>
+</table>
+</body></html>
