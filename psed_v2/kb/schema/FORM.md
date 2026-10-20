@@ -35,7 +35,7 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | note | string, at most 20 words or {'type': 'null'} | always | extractor |
 | term | string or {'type': 'null'} | always | extractor |
 | statement | string, at most 40 words or {'type': 'null'} | always | extractor |
-| parent | string or {'type': 'null'} | always | extractor |
+| about | string or {'type': 'null'} | always | extractor |
 | links | list of string or {'type': 'null'} | always | extractor |
 | variables | object: symbol -> enum, 107 values (quantity_id) or {'type': 'null'} or {'type': 'null'} | always | extractor |
 | candidate | object, keys closed (4: definition_quote, unit_as_printed, dimension, symbol) or {'type': 'null'} | always | extractor |

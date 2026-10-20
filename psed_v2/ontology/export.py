@@ -287,7 +287,7 @@ def form_schema(onto, L, F):
         "note": _words(NOTE_WORDS),
         "term": s(),                                                            # P136 2c: a definition's symbol or term as printed
         "statement": _words(STATEMENT_WORDS),                                   # P138: own words, when the record has no quantity or value
-        "parent": s(),                                                          # P138: a pass-0 id or "paper"
+        "about": s(),                                                           # P148 (was parent, P138): the PASS-0 UNITS id the record is about, or "paper"
         "links": {"type": "array", "minItems": 1, "items": s()},                # P138: element ids a claim or caveat rests on
         "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1},
                       "additionalProperties": {"anyOf": [{"$ref": "#/$defs/quantity_id"}, {"type": "null"}]}},   # P136 2c: null = no entry
