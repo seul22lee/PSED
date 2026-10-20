@@ -38,14 +38,14 @@ i: merged fig6.cap into s8.p23;fig6.cap (feature_depth 1)
 i: merged fig6.cap into s8.p23;fig6.cap (aspect_ratio 2000)
 i: merged fig7.cap into s8.p24;s9.p2;fig7.cap (cycle_number 1000)
 i: merged fig7.cap into s8.p21;s9.p2;fig7.cap (material tio2)
-i: definition ('thickness error', 'thickness error is the rms value of the difference between the measured and fitted thickness values.'): merged tabI.cap into s10.p2;tabI.cap
+i: definition ('yli18', 'thickness error', 'thickness error is the rms value of the difference between the measured and fitted thickness values.'): merged tabI.cap into s10.p2;tabI.cap
 i: merged tabI.r1c1 into s8.p23;s8.p24;fig6.cap;tabI.r1c1 (cycle_number 500)
 i: merged tabI.r2c1 into s8.p24;s9.p2;fig7.cap;tabI.r2c1 (cycle_number 1000)
-i: definition ('t', 't'): merged tabu1.r2c2 into tabu1.r1c2;tabu1.r2c2
-i: definition ('c', 'c'): merged tabu1.r3c0 into tabu1.r2c0;tabu1.r3c0
-i: definition ('da', 'da'): merged tabu1.r6c0 into tabu1.r5c0;tabu1.r6c0
-i: definition ('h', 'h'): merged tabu1.r16c0 into tabu1.r15c0;tabu1.r16c0
-i: definition ('q', 'q'): merged tabu1.r28c0 into tabu1.r27c0;tabu1.r28c0
+i: definition ('yli18', 't', 't'): merged tabu1.r2c2 into tabu1.r1c2;tabu1.r2c2
+i: definition ('yli18', 'c', 'c'): merged tabu1.r3c0 into tabu1.r2c0;tabu1.r3c0
+i: definition ('yli18', 'da', 'da'): merged tabu1.r6c0 into tabu1.r5c0;tabu1.r6c0
+i: definition ('yli18', 'h', 'h'): merged tabu1.r16c0 into tabu1.r15c0;tabu1.r16c0
+i: definition ('yli18', 'q', 'q'): merged tabu1.r28c0 into tabu1.r27c0;tabu1.r28c0
 i: merged fig4;fig4.cap into s8.p9;fig4.cap;fig4 (cycle_number 1000)
 i: merged fig4;fig4.cap into s8.p9;fig4.cap;fig4 (pulse_time 0.1)
 j: derived over 8 entities: 5 rows; not derived: {'no fact for p': 10, 'E: no fact for p': 8, 'no fact for rho': 16, 'n: no fact for gpc': 8, 'gpc: no fact for n': 8, 'no fact for H': 9, 'no fact for dn': 8, 'no fact for mg': 16, 'no fact for t': 12, 'no fact for h2': 8, 'no fact for phi': 8, 'lam: no fact for p': 2, 'gpc: n: no fact for gpc': 8, 'no fact for S': 6, 'no fact for T': 4, 'lam: no fact for T': 4, 'no fact for d': 2, 'lam: no fact for d': 2}
@@ -57,18 +57,18 @@ step a: {'schema:anyOf': 1, 'kept': 290}
 step a_fields: {'cause': 1}
 step b: {'model_with_value (kept)': 30, 'kept': 290}
 step c: {'quantity_other (kept)': 43, 'kept': 290}
-step d: {'quote_not_found': 27, 'kept': 263}
-step e: {'unit_unresolved': 7, 'kept': 256}
-step f: {'species_resolved': 13, 'kept': 256}
+step d: {'quote_not_found': 23, 'quote_noncontiguous (kept)': 4, 'kept': 267}
+step e: {'unit_unresolved': 7, 'kept': 260}
+step f: {'species_resolved': 13, 'kept': 260}
 step g: {'mention_unmatched': 9}
-step h: {'parent: paper (record)': 95, 'parent: simulation (record)': 76, 'parent: series parent (record)': 2, 'parent: series (record)': 1, 'parent: run (record)': 46, 'parent: specimen measurement (record)': 3, 'parent: specimen (record)': 6, 'parent: parent_null (paper)': 27}
-step m: {'label_as_printed filled with the quantity id': 10, 'statement filled from the quote': 239, 'links resolved': 12, 'links named elements without facts': 4}
+step h: {'parent: paper (record)': 95, 'parent: simulation (record)': 80, 'parent: series parent (record)': 2, 'parent: series (record)': 1, 'parent: run (record)': 46, 'parent: specimen measurement (record)': 3, 'parent: specimen (record)': 6, 'parent: parent_null (paper)': 27}
+step m: {'label_as_printed filled with the quantity id': 10, 'statement filled from the quote': 243, 'links resolved': 13, 'links named elements without facts': 4}
 step 1c: {'fallback series (figure set without a pass-0 series)': 2, 'curve not in exactly one series (0)': 7, 'setting': 26, 'curve -> model': 18, 'series entities': 6, "row type from the curve's kind (fallback series)": 18, 'series varied from the figure set (0 conditions differ)': 2, 'curve -> observation': 4}
-step i: {'merged': 32, 'definition merged': 6, 'kept': 266}
+step i: {'merged': 32, 'definition merged': 6, 'kept': 270}
 step j: {'derived feature_width{stage=final}': 1, 'derived cycle_time': 4}
-step k: {'statement from the record': 220, 'statement_copies_text (reported by check)': 90, 'statement assembled': 51}
+step k: {'statement from the record': 224, 'statement_copies_text (reported by check)': 94, 'statement assembled': 51}
 diff against the gold (type, gold, compiled, matched, precision, recall):
-  model          67   83   57  0.69  0.85
+  model          67   87   58  0.67  0.87
   setting        63   85   29  0.34  0.46
   definition     38   52   23  0.44  0.61
   derived        15   20    9  0.45  0.60
