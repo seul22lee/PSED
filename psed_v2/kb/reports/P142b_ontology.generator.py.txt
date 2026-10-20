@@ -1,0 +1,83 @@
+"""P142 ontology report tables (read-only): kb/reports/P142b_ontology.*.csv."""
+import collections, csv, json, re, subprocess, sys
+from pathlib import Path
+import yaml
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+import vocab as V   # noqa: E402
+import lists as L   # noqa: E402
+import elements     # noqa: E402
+
+R = V2 / "kb" / "reports"
+HELD = set()
+
+
+def wr(name, rows, fields=None):
+    rows = list(rows)
+    fields = fields or list(dict.fromkeys(k for r in rows for k in r)) or ["(none)"]
+    with (R / f"P142b_ontology.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows)
+
+
+def s(v):
+    return "; ".join(map(str, v)) if isinstance(v, list) else ("" if v is None else json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else str(v))
+
+
+# c. the whole ontology
+O = yaml.safe_load((V2 / "ontology" / "ontology.yaml").read_text(encoding="utf-8"))
+U = yaml.safe_load((V2 / "ontology" / "units.yaml").read_text(encoding="utf-8"))
+E = O["entries"]
+wr("c_quantities", [dict(id=e["id"], type=e["type"], name=e.get("name", ""), definition=e.get("definition", ""), unit=e.get("unit", ""), dimension=e.get("dimension", ""),
+                         aliases=s(e.get("aliases", [])), note=e.get("note", ""), role=e.get("role", ""), origin=e.get("origin", ""), replaced_by=e.get("replaced_by", ""))
+                    for e in E if e["type"] in ("quantity", "categorical")])
+wr("c_species", [dict(id=e["id"], formula=e.get("formula", ""), name=e.get("name", ""), kind=e.get("kind", ""), aliases=s(e.get("aliases", [])), definition=e.get("definition", ""))
+                 for e in E if e["type"] == "species"])
+wr("c_structures", [dict(id=e["id"], **{"class": e.get("class", "")}, aliases=s(e.get("aliases", [])), definition=e.get("definition", "")) for e in E if e["type"] == "structure"])
+wr("c_methods", [dict(id=m, **{"class": V.METHOD_CLASS.get(m, "")}, definition=V.METHOD_DEFINITION.get(m, ""), measurement=("yes (" + L.METHOD_MODE[m] + ")") if m in L.METHOD_MODE else "",
+                      ontology_entry="yes" if any(e["id"] == m and e["type"] == "method" for e in E) else "") for m in V.METHODS])
+wr("c_mechanisms", [dict(id=e["id"], name=e.get("name", ""), definition=e.get("definition", ""), aliases=s(e.get("aliases", []))) for e in E if e["type"] == "mechanism"])
+wr("c_models", [dict(id=e["id"], name=e.get("name", ""), definition=e.get("definition", "")) for e in E if e["type"] == "model"])
+wr("c_qualifiers", [dict(key=k, values=s(q.get("values")), meaning=" | ".join(str(q[x]) for x in ("definition", "meaning", "source", "log") if q.get(x))) for k, q in O["qualifiers"].items()])
+wr("c_units", [dict(symbol=u["symbol"], dimension=u["dimension"], factor=u["factor"], variants=s(u["variants"])) for u in U["units"]])
+empty = [dict(id=e["id"], type=e["type"]) for e in E if not str(e.get("definition", "")).strip()]
+wr("c_empty_definitions", empty, ["id", "type"])
+
+# d. ids per gold paper
+sys.path.insert(0, str(V2 / "kb" / "extract")); import common as CM
+P = [p for p in elements.PAPERS if p not in CM.HELD_OUT]   # P142b: the 9 dev golds only
+use = collections.defaultdict(collections.Counter)
+for pid in P:
+    for f in csv.DictReader((V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")):
+        for q in filter(None, f["quantity"].split(";")):
+            use[("quantity", q)][pid] += 1
+        if f["quantity"] in ("material", "substrate", "reactant_A", "reactant_B", "structure") and f["value_text"]:
+            use[("species/structure", f["value_text"])][pid] += 1
+        for part in filter(None, f["qualifiers"].replace("|", ";").split(";")):
+            k, _, v = part.partition("=")
+            if k in ("species", "gas", "phase", "surface"):
+                use[("species/structure", v)][pid] += 1
+            if k in ("structure_class",):
+                use[("structure_class", v)][pid] += 1
+            use[("qualifier", k)][pid] += 1
+        for k in ("cause", "effect"):
+            for x in filter(None, f[k].split(";")):
+                use[("mechanism" if x in V.MECHANISMS else "quantity", x)][pid] += 1
+        if f["method"]:
+            use[("method", f["method"])][pid] += 1
+        if f["unit"]:
+            use[("unit", L.UNIT_ALIAS.get(f["unit"], f["unit"]))][pid] += 1
+ids = [("quantity", e["id"]) for e in E if e["type"] in ("quantity", "categorical")] + [("species/structure", e["id"]) for e in E if e["type"] in ("species", "structure")] + \
+      [("mechanism", e["id"]) for e in E if e["type"] == "mechanism"] + [("method", m) for m in V.METHODS] + [("qualifier", k) for k in O["qualifiers"]] + \
+      [("unit", u["symbol"]) for u in U["units"]]
+keys = {k: elements.PAPERS[k] + (" (held-out)" if k in HELD else "") for k in P}
+rows = []
+for kind, i in ids:
+    c = use.get((kind, str(i)), collections.Counter())
+    rows.append(dict(kind=kind, id=i, papers_using=sum(1 for p in P if c[p]), **{keys[p]: c[p] or "" for p in P}))
+wr("d_usage_per_paper", rows, ["kind", "id", "papers_using"] + [keys[p] for p in P])
+print(json.dumps(dict(empty_definitions=len(empty),
+                      unused=sum(1 for r in rows if r["papers_using"] == 0))))

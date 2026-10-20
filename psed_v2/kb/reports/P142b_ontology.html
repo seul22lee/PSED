@@ -1,0 +1,1096 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P142b_ontology</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P142b_ontology</h1>
+<h2>vocab.py identity check</h2><p>kb/reports/P142b_ontology.vocab_identity.txt</p>
+<pre>vocab.py identity check (kb/pilot/vocab.py generated before and after, compared table by table)
+
+Item 2 alone (methods moved from vocabularies.measurement_method into 27 method entries; export.py reads method entries only):
+  METHODS            identical (34 ids)
+  METHOD_CLASS       identical
+  METHOD_DEFINITION  identical
+  ENTRIES            +27 keys: the moved methods (ENTRIES lists every entry; the 8 method entries were already in it)
+  REPLACED           +1 key: electrical -&gt; [four_point_probe, two_point_through_thickness, hall, transistor_iv]
+                     (the block carried replaced_by; REPLACED lists every entry with replaced_by; read nowhere else)
+  Not identical as asked: ENTRIES and REPLACED change because they index every entry. Keeping them identical would need the
+  methods excluded by id, which the rules do not allow.
+
+Item 1 (the P142 MPa / L unit rows removed):
+  UNIT_BASE   -MPa, l, liter, litre, megapascal
+  UNIT_ALIAS  -l, liter, litre, megapascal
+  &quot;L&quot; was already the symbol of Langmuir (exposure, units.yaml line 36); the P142 litre row&#x27;s &quot;L&quot; never took effect (first
+  spelling wins), only l / litre / liter did. Removed with the rest.
+
+Items 3 and 4:
+  ENTRIES     name of arts_slope, gordon_plug_flow, yanguas_gil_markov_chain, ylilammi_diffusion_reaction
+  qualifier meanings are not exported to vocab.py (no table changes)
+</pre>
+<h2>Qualifier meanings (drafts for approval)</h2><p>kb/reports/P142b_ontology.meanings.csv</p>
+<table><tr><th>qualifier</th><th>meaning (draft for approval)</th><th>gold use in the 9 dev papers (quantity: rows)</th></tr>
+<tr><td>species</td><td>the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected</td><td>pulse_time 93, initial_sticking_coefficient 42, exposure 32, partial_pressure 29, molar_mass 12, recombination_probability 10, phase 7, precursor_purity 7</td></tr>
+<tr><td>gas</td><td>the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure</td><td>plasma_gas_ratio 54, gas_flow_rate 31, other 3, partial_pressure 2, carrier_gas 1, annealing_temperature 1</td></tr>
+<tr><td>element</td><td>the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy</td><td>element_ratio 49, element_fraction 26, signal_intensity 10, binding_energy 10, atoms_per_cycle 3</td></tr>
+<tr><td>surface</td><td>the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3</td><td>recombination_probability 10</td></tr>
+</table>
+<h2>Section d: ids x the 9 dev golds (papers_using 0 means used by no dev gold)</h2><p>kb/reports/P142b_ontology.d_usage_per_paper.csv</p>
+<table><tr><th>kind</th><th>id</th><th>papers_using</th><th>yim20</th><th>mat22</th><th>ela03</th><th>gor03</th><th>yli18</th><th>gao15</th><th>art19</th><th>hei24</th><th>zou23</th></tr>
+<tr><td>quantity</td><td>process_mode</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>material</td><td>8</td><td>1</td><td>7</td><td>14</td><td>1</td><td>3</td><td>10</td><td>10</td><td></td><td>3</td></tr>
+<tr><td>quantity</td><td>reactant_A</td><td>8</td><td>1</td><td>4</td><td>14</td><td>1</td><td>2</td><td>11</td><td>4</td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>reactant_B</td><td>8</td><td>1</td><td>5</td><td>14</td><td>1</td><td>2</td><td>1</td><td>1</td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>carrier_gas</td><td>6</td><td>1</td><td></td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>reactor</td><td>8</td><td>6</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>delivery_method</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>crystallinity</td><td>2</td><td></td><td>52</td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>quantity</td><td>reactor_type</td><td>2</td><td></td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>plasma_configuration</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>structure</td><td>9</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>9</td><td>74</td><td>2</td></tr>
+<tr><td>quantity</td><td>deposition_temperature</td><td>9</td><td>8</td><td>77</td><td>3</td><td>2</td><td>4</td><td>14</td><td>2</td><td>16</td><td>18</td></tr>
+<tr><td>quantity</td><td>process_pressure</td><td>8</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td><td>3</td><td>2</td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>growth_per_cycle</td><td>6</td><td>63</td><td>45</td><td></td><td>1</td><td>1</td><td></td><td></td><td>2</td><td>14</td></tr>
+<tr><td>quantity</td><td>nucleation_period</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>pulse_time</td><td>9</td><td>41</td><td>2</td><td>55</td><td>2</td><td>11</td><td>3</td><td>13</td><td>3</td><td>2</td></tr>
+<tr><td>quantity</td><td>purge_time</td><td>7</td><td>39</td><td>2</td><td>25</td><td>2</td><td>4</td><td>2</td><td></td><td></td><td>3</td></tr>
+<tr><td>quantity</td><td>refractive_index</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>absorption_coefficient</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>resistivity</td><td>2</td><td></td><td>48</td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td></tr>
+<tr><td>quantity</td><td>carrier_density</td><td>1</td><td></td><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>mobility</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>thickness_nonuniformity</td><td>2</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>aspect_ratio</td><td>7</td><td>9</td><td></td><td>9</td><td>8</td><td>3</td><td>9</td><td>2</td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>coated_aspect_ratio</td><td>4</td><td>19</td><td></td><td></td><td></td><td>1</td><td>10</td><td>14</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>composition</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>film_density</td><td>3</td><td>3</td><td>5</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>partial_pressure</td><td>6</td><td>3</td><td></td><td>12</td><td>3</td><td>11</td><td></td><td></td><td>7</td><td>1</td></tr>
+<tr><td>quantity</td><td>exposure</td><td>4</td><td>1</td><td></td><td>7</td><td>24</td><td></td><td></td><td></td><td>34</td><td></td></tr>
+<tr><td>quantity</td><td>source_temperature</td><td>2</td><td></td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>film_thickness</td><td>8</td><td>98</td><td>35</td><td>5</td><td>3</td><td>13</td><td>18</td><td>8</td><td></td><td>9</td></tr>
+<tr><td>quantity</td><td>penetration_depth</td><td>7</td><td>42</td><td></td><td>10</td><td>1</td><td>11</td><td>17</td><td>6</td><td>49</td><td></td></tr>
+<tr><td>quantity</td><td>equivalent_aspect_ratio</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>step_coverage</td><td>4</td><td></td><td></td><td>7</td><td>10</td><td></td><td></td><td>1</td><td></td><td>4</td></tr>
+<tr><td>quantity</td><td>initial_sticking_coefficient</td><td>6</td><td>15</td><td></td><td>23</td><td>4</td><td>7</td><td></td><td>3</td><td>17</td><td></td></tr>
+<tr><td>quantity</td><td>recombination_probability</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>surface_coverage</td><td>5</td><td></td><td></td><td>16</td><td>1</td><td>5</td><td></td><td>1</td><td>59</td><td></td></tr>
+<tr><td>quantity</td><td>feature_width</td><td>7</td><td>50</td><td></td><td>42</td><td>2</td><td>11</td><td>22</td><td>2</td><td>15</td><td></td></tr>
+<tr><td>quantity</td><td>feature_depth</td><td>7</td><td>1</td><td></td><td>11</td><td>1</td><td>4</td><td>2</td><td>1</td><td>20</td><td></td></tr>
+<tr><td>quantity</td><td>feature_extent</td><td>2</td><td></td><td></td><td></td><td>2</td><td>2</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>cycle_number</td><td>8</td><td>37</td><td>45</td><td>23</td><td>4</td><td>7</td><td>2</td><td>4</td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>plasma_power</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>gas_flow_rate</td><td>7</td><td>2</td><td>25</td><td>1</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>normalized_thickness</td><td>5</td><td>21</td><td></td><td>16</td><td></td><td>5</td><td>3</td><td>13</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>adsorption_equilibrium_constant</td><td>1</td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>saturation_growth_per_cycle</td><td>1</td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>distance</td><td>3</td><td>3</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>dimensionless_distance</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>time</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>precursor_purity</td><td>2</td><td></td><td>4</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>plasma_gas_ratio</td><td>1</td><td></td><td>92</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>cycle_time</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>substrate</td><td>8</td><td>1</td><td>8</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td>4</td></tr>
+<tr><td>quantity</td><td>mass_gain</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>moles_deposited</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>moles_from_mass_gain</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>deposited_moles_per_cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>atoms_per_cycle</td><td>2</td><td></td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>coating_mass_fraction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>shell_volume_fraction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>deposition_rate</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>gas_moles_per_cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>reaction_stoichiometry</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pressure_rise</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pressure_rate</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>time_to_maximum</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>porosity</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>quantity</td><td>pore_density</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>tortuosity</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>pore_volume</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>fill_fraction</td><td>2</td><td>6</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>roughness</td><td>3</td><td>2</td><td>12</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>binding_energy</td><td>1</td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>crystallite_size</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>sheet_resistance</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>density_relative_to_bulk</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>phase</td><td>2</td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>annealing_temperature</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>saturation_density</td><td>5</td><td>2</td><td></td><td>1</td><td>3</td><td>2</td><td></td><td></td><td>13</td><td></td></tr>
+<tr><td>quantity</td><td>probe_resolution</td><td>6</td><td>7</td><td>2</td><td>1</td><td></td><td>2</td><td>5</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>objective_magnification</td><td>3</td><td>18</td><td></td><td></td><td></td><td>2</td><td>5</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pillar_layout</td><td>1</td><td>20</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>raman_shift</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>knudsen_number</td><td>1</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>mean_free_path</td><td>4</td><td>3</td><td></td><td>1</td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>front_slope</td><td>2</td><td>43</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>quantity</td><td>fit_r2</td><td>1</td><td>17</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>signal_intensity</td><td>3</td><td>4</td><td>17</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>element_fraction</td><td>2</td><td></td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td>17</td></tr>
+<tr><td>quantity</td><td>element_ratio</td><td>1</td><td></td><td>60</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>phase_fraction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>h_per_metal</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>body_thickness</td><td>1</td><td></td><td></td><td>35</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>entry_sides</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>particle_diameter</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>specific_surface_area</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td><td></td></tr>
+<tr><td>quantity</td><td>body_diameter</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>diffraction_angle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>molar_mass</td><td>3</td><td></td><td></td><td></td><td>2</td><td>4</td><td></td><td></td><td>14</td><td></td></tr>
+<tr><td>quantity</td><td>molecule_diameter</td><td>1</td><td></td><td></td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>knudsen_diffusion_coefficient</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>effective_diffusion_coefficient</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>gas_phase_diffusion_coefficient</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>reactant_number_density</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>quantity</td><td>b_film</td><td>2</td><td>1</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>wall_temperature</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>wavelength_range</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>base_pressure</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>p_d</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tma</td><td>5</td><td>34</td><td></td><td>24</td><td></td><td>22</td><td>7</td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>model_reactant</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>48</td><td></td></tr>
+<tr><td>species/structure</td><td>ticl4</td><td>2</td><td></td><td></td><td></td><td></td><td>7</td><td>6</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>h2o</td><td>5</td><td>26</td><td></td><td>28</td><td>6</td><td>5</td><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>o2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>o_atom</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>n2</td><td>5</td><td>3</td><td></td><td>1</td><td>1</td><td>6</td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>al2o3</td><td>5</td><td>1</td><td></td><td>6</td><td></td><td>1</td><td>5</td><td>5</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tio2</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td>4</td><td>4</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mo_ntbu2_nme22</td><td>1</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>w_ntbu2_nme22</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tdmat</td><td>2</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>dez</td><td>1</td><td></td><td></td><td>36</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>h2s</td><td>1</td><td></td><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>h2</td><td>2</td><td></td><td>65</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>ar</td><td>2</td><td></td><td>10</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>air</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mos2</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ws2</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tis2</td><td>1</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>zno</td><td>1</td><td></td><td></td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mo</td><td>2</td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>species/structure</td><td>zn</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>moo3</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>si</td><td>6</td><td>1</td><td></td><td></td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>sio2</td><td>4</td><td></td><td>4</td><td>1</td><td></td><td></td><td></td><td>9</td><td></td><td>2</td></tr>
+<tr><td>species/structure</td><td>glassy_carbon</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pet</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_3</td><td>3</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>macroscopic_lateral_trench</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>planar</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>porous_sphere</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>38</td><td></td></tr>
+<tr><td>species/structure</td><td>porous_slab</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>29</td><td></td></tr>
+<tr><td>species/structure</td><td>porous_cylinder</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>species/structure</td><td>nanoparticle_compact</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>sicl4</td><td>1</td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>anodic_alumina_membrane</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>hfo2</td><td>2</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>4</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>hf_nme2_4</td><td>1</td><td></td><td></td><td></td><td>14</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>etched_hole_array</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>bdeas</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tdmacph</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_4</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ga2s3</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>gasx</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ga2_nme2_6</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mocl2o2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>species/structure</td><td>h_atom</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>species/structure</td><td>si_trench_capped</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mechanism</td><td>residual_water</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_hydroxyl</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>desorption</td><td>2</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>self_limiting_growth</td><td>6</td><td>1</td><td>1</td><td>2</td><td>2</td><td></td><td>1</td><td></td><td></td><td>3</td></tr>
+<tr><td>mechanism</td><td>surface_chemistry</td><td>8</td><td>1</td><td>1</td><td></td><td>1</td><td>3</td><td>2</td><td>1</td><td>1</td><td>3</td></tr>
+<tr><td>mechanism</td><td>excess_sulfur</td><td>1</td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>fin_growth</td><td>1</td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>metallic_zinc</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>plasma_chemistry</td><td>1</td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>hydrogen_incorporation</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>sulfur_vacancy</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>thiol_groups</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>edge_reactivity</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_oxidation</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>precursor_adsorption</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>membrane_sagging</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>channel_plugging</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>feature_narrowing</td><td>3</td><td>1</td><td></td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>pillar_effect</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>entrance_nanostep</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>native_oxide</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>optical_model</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>scan_angle</td><td>2</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>interaction_volume</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>scan_averaging</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>channel_length</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>run_variation</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>gas_diffusion</td><td>7</td><td>1</td><td></td><td>11</td><td>3</td><td>5</td><td>2</td><td></td><td>7</td><td>1</td></tr>
+<tr><td>mechanism</td><td>gas_generation</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>leak</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>reaction_diffusion</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>percolation</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>cracks</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>side_reaction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>cvd_growth</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mechanism</td><td>xray_reabsorption</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_recombination</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10</td><td></td><td>2</td></tr>
+<tr><td>method</td><td>afm</td><td>2</td><td>10</td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>calculation</td><td>8</td><td>113</td><td>5</td><td>18</td><td>12</td><td>15</td><td>6</td><td>9</td><td>4</td><td></td></tr>
+<tr><td>method</td><td>cited</td><td>8</td><td>70</td><td>18</td><td>10</td><td>6</td><td>5</td><td>8</td><td>14</td><td></td><td>6</td></tr>
+<tr><td>method</td><td>epma</td><td>1</td><td></td><td></td><td>29</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>eqp</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>four_point_probe</td><td>2</td><td></td><td>49</td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td></tr>
+<tr><td>method</td><td>ftir</td><td>1</td><td></td><td></td><td>14</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>giwaxs</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>gravimetry</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>hall</td><td>1</td><td></td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>infrared_microscopy</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>21</td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>oes</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>optical_microscopy</td><td>4</td><td>8</td><td></td><td></td><td></td><td>2</td><td>5</td><td>16</td><td></td><td></td></tr>
+<tr><td>method</td><td>photograph</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>process_monitor</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>method</td><td>raman</td><td>1</td><td></td><td>58</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>rbs</td><td>2</td><td></td><td>25</td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>reflectometry</td><td>4</td><td>160</td><td></td><td></td><td></td><td>21</td><td>23</td><td>26</td><td></td><td></td></tr>
+<tr><td>method</td><td>schematic</td><td>2</td><td>7</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>sem</td><td>5</td><td></td><td>8</td><td>12</td><td>17</td><td></td><td>5</td><td></td><td></td><td>1</td></tr>
+<tr><td>method</td><td>sem_eds</td><td>1</td><td>18</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>sims</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>method</td><td>simulation</td><td>5</td><td>62</td><td></td><td>26</td><td></td><td>22</td><td></td><td>1</td><td>166</td><td></td></tr>
+<tr><td>method</td><td>spectroscopic_ellipsometry</td><td>2</td><td></td><td>62</td><td></td><td></td><td></td><td></td><td></td><td></td><td>15</td></tr>
+<tr><td>method</td><td>tabulated</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>tem</td><td>2</td><td></td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>method</td><td>tem_eds</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>method</td><td>tof_erda</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td></tr>
+<tr><td>method</td><td>transistor_iv</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>two_point_through_thickness</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>uv_vis_spectroscopy</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>xps</td><td>1</td><td></td><td>84</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>xrd</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>method</td><td>xrr</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>qualifier</td><td>definition</td><td>1</td><td>33</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>step</td><td>9</td><td>69</td><td>29</td><td>65</td><td>4</td><td>13</td><td>5</td><td>13</td><td>2</td><td>6</td></tr>
+<tr><td>qualifier</td><td>species</td><td>9</td><td>59</td><td>15</td><td>67</td><td>18</td><td>33</td><td>3</td><td>15</td><td>48</td><td>4</td></tr>
+<tr><td>qualifier</td><td>gas</td><td>7</td><td>2</td><td>81</td><td>1</td><td>1</td><td>3</td><td></td><td>2</td><td></td><td>2</td></tr>
+<tr><td>qualifier</td><td>element</td><td>3</td><td>3</td><td>83</td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td></tr>
+<tr><td>qualifier</td><td>reference_element</td><td>1</td><td></td><td>49</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>phase</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>position</td><td>8</td><td>67</td><td>2</td><td>2</td><td>1</td><td>2</td><td>2</td><td>8</td><td></td><td>17</td></tr>
+<tr><td>qualifier</td><td>reference</td><td>6</td><td>32</td><td>1</td><td>14</td><td></td><td>2</td><td>1</td><td>12</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>level</td><td>6</td><td>20</td><td></td><td>1</td><td></td><td>5</td><td>16</td><td>10</td><td>33</td><td></td></tr>
+<tr><td>qualifier</td><td>basis</td><td>1</td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>surface</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>kind</td><td>7</td><td>1</td><td>12</td><td></td><td>2</td><td></td><td>10</td><td>1</td><td>11</td><td>2</td></tr>
+<tr><td>qualifier</td><td>by</td><td>1</td><td>34</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>origin</td><td>1</td><td>19</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>stage</td><td>4</td><td></td><td></td><td>2</td><td>4</td><td></td><td></td><td></td><td>2</td><td>1</td></tr>
+<tr><td>qualifier</td><td>stat</td><td>4</td><td>6</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td>3</td><td></td></tr>
+<tr><td>qualifier</td><td>between</td><td>3</td><td>6</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>n</td><td>3</td><td>6</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>relative_to</td><td>2</td><td></td><td>55</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>qualifier</td><td>over</td><td>4</td><td>50</td><td>39</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td>10</td></tr>
+<tr><td>qualifier</td><td>mode</td><td>8</td><td>48</td><td>194</td><td>17</td><td>5</td><td>6</td><td>15</td><td>16</td><td></td><td>20</td></tr>
+<tr><td>qualifier</td><td>x</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>ratio</td><td>1</td><td></td><td>21</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>specimen_class</td><td>8</td><td>17</td><td>54</td><td>14</td><td>4</td><td>2</td><td>14</td><td>8</td><td></td><td>8</td></tr>
+<tr><td>qualifier</td><td>structure_class</td><td>8</td><td>21</td><td>54</td><td>21</td><td>5</td><td>3</td><td>15</td><td>8</td><td></td><td>8</td></tr>
+<tr><td>unit</td><td>pm</td><td>2</td><td>4</td><td></td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Å</td><td>1</td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm</td><td>9</td><td>89</td><td>40</td><td>36</td><td>2</td><td>8</td><td>33</td><td>9</td><td>10</td><td>5</td></tr>
+<tr><td>unit</td><td>µm</td><td>8</td><td>47</td><td>1</td><td>48</td><td>5</td><td>12</td><td>19</td><td>2</td><td>19</td><td></td></tr>
+<tr><td>unit</td><td>mm</td><td>5</td><td>8</td><td></td><td></td><td>1</td><td>2</td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm</td><td>2</td><td></td><td></td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m</td><td>2</td><td>6</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>ms</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>s</td><td>9</td><td>71</td><td>6</td><td>67</td><td>4</td><td>13</td><td>5</td><td>14</td><td>2</td><td>6</td></tr>
+<tr><td>unit</td><td>min</td><td>3</td><td></td><td>1</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>h</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>°C</td><td>8</td><td>7</td><td>71</td><td>7</td><td>3</td><td>2</td><td>10</td><td>1</td><td></td><td>11</td></tr>
+<tr><td>unit</td><td>K</td><td>2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>11</td><td></td></tr>
+<tr><td>unit</td><td>Pa</td><td>3</td><td>4</td><td></td><td></td><td></td><td>5</td><td></td><td></td><td>6</td><td></td></tr>
+<tr><td>unit</td><td>hPa</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td>3</td></tr>
+<tr><td>unit</td><td>mbar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>bar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr</td><td>4</td><td></td><td>2</td><td>12</td><td>3</td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mTorr</td><td>2</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa·s</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr·s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>L</td><td>2</td><td></td><td></td><td>2</td><td>7</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/cycle</td><td>4</td><td>32</td><td></td><td></td><td>1</td><td>3</td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>unit</td><td>Å/cycle</td><td>1</td><td></td><td>33</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>pm/cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1</td><td>1</td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>%</td><td>5</td><td>7</td><td>6</td><td>4</td><td>5</td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>unit</td><td>at.%</td><td>2</td><td></td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>unit</td><td>wt%</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Ω·m</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Ω·cm</td><td>1</td><td></td><td>41</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mΩ·cm</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µΩ·cm</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>unit</td><td>Ω/sq</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm-1</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>eV</td><td>1</td><td></td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2/s</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2/s</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2/g</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>unit</td><td>m3/g</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>unit</td><td>1/m3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td><td></td></tr>
+<tr><td>unit</td><td>1/cm3</td><td>2</td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>unit</td><td>1/m</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td><td></td></tr>
+<tr><td>unit</td><td>mol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mmol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µmol</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mTorr/min</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/h</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>sccm</td><td>7</td><td>1</td><td>25</td><td>1</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td>2</td></tr>
+<tr><td>unit</td><td>W</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>unit</td><td>g/cm3</td><td>1</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kg/m3</td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm-2</td><td>6</td><td>1</td><td>3</td><td>1</td><td>3</td><td>1</td><td></td><td></td><td>9</td><td></td></tr>
+<tr><td>unit</td><td>m-2</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm-2</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/Pa</td><td>2</td><td>2</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/mbar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/s</td><td>2</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2/(V·s)</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2/(V·s)</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>°</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>g/mol</td><td>3</td><td></td><td></td><td></td><td>1</td><td>2</td><td></td><td></td><td>9</td><td></td></tr>
+<tr><td>unit</td><td>kg/mol</td><td>1</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/mol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>J/K</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>g</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kg</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mg</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>keV</td><td>3</td><td>1</td><td></td><td>1</td><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>MeV</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>V</td><td>1</td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kV</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mW</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nA</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>C/cm2</td><td>1</td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>amu</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mL</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm-1</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>s^-1/2</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>ns</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µPa s</td><td>1</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa s</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>22</td><td></td></tr>
+<tr><td>unit</td><td>cm3/g</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>unit</td><td>mol m-2 s-1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m-2 s-1 Pa-1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>s m-3</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>Methods (all ontology entries now)</h2><p>kb/reports/P142b_ontology.c_methods.csv</p>
+<table><tr><th>id</th><th>class</th><th>definition</th><th>measurement</th><th>ontology_entry</th></tr>
+<tr><td>afm</td><td>afm</td><td>Atomic force microscopy: topography and roughness.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>calculation</td><td>calculation</td><td>A value computed from other values (not a measurement).</td><td></td><td>yes</td></tr>
+<tr><td>cited</td><td>cited</td><td>A value taken from another work (not a measurement).</td><td></td><td>yes</td></tr>
+<tr><td>epma</td><td>eds</td><td>Electron probe microanalysis: an electron microprobe&#x27;s X-ray elemental maps and line scans across a polished cross section (comparable in kind with SEM-EDS line scans: class eds).</td><td></td><td>yes</td></tr>
+<tr><td>eqp</td><td>plasma_spectroscopy</td><td>Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma.</td><td></td><td>yes</td></tr>
+<tr><td>four_point_probe</td><td>four_point_probe</td><td>Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane).</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>ftir</td><td>ir_spectroscopy</td><td>Transmission Fourier transform infrared absorption of surface species on a porous sample during the half-reactions (in situ).</td><td></td><td>yes</td></tr>
+<tr><td>giwaxs</td><td>xrd</td><td>Grazing-incidence wide-angle X-ray scattering: a 2D diffraction pattern of a thin film at grazing incidence (synchrotron), azimuthally integrated to a 1D XRD profile; phases, texture (preferred orientation) and crystallite size.</td><td></td><td>yes</td></tr>
+<tr><td>gravimetry</td><td>gravimetry</td><td>Weighing before and after deposition.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>hall</td><td>hall</td><td>Hall measurement in the van der Pauw geometry: carrier density and mobility.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>infrared_microscopy</td><td>optical_image</td><td>Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is transparent in the infrared).</td><td></td><td>yes</td></tr>
+<tr><td>oes</td><td>plasma_spectroscopy</td><td>Optical emission spectroscopy of the plasma.</td><td>yes (in_situ)</td><td>yes</td></tr>
+<tr><td>optical_microscopy</td><td>optical_image</td><td>Optical microscope images.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>photograph</td><td>optical_image</td><td>A photograph of the specimen.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>process_monitor</td><td>process_monitor</td><td>The reactor&#x27;s own gauges and thermocouples: pressure and temperature traces during the process.</td><td>yes (in_situ)</td><td>yes</td></tr>
+<tr><td>raman</td><td>raman</td><td>Raman spectroscopy: phonon modes, used for crystallinity and phase.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>rbs</td><td>ion_beam</td><td>Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>reflectometry</td><td>optical_thickness</td><td>Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>schematic</td><td>schematic</td><td>A drawing: a value or statement read from a schematic (not a measurement).</td><td></td><td>yes</td></tr>
+<tr><td>sem</td><td>electron_image</td><td>Scanning electron microscopy images.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>sem_eds</td><td>eds</td><td>Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>sims</td><td>sims</td><td>Secondary ion mass spectrometry depth profiling: elemental concentrations (atoms per cm3) against depth.</td><td></td><td>yes</td></tr>
+<tr><td>simulation</td><td>simulation</td><td>A value produced by a model run (not a measurement).</td><td></td><td>yes</td></tr>
+<tr><td>spectroscopic_ellipsometry</td><td>optical_thickness</td><td>Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).</td><td></td><td>yes</td></tr>
+<tr><td>tabulated</td><td>tabulated</td><td>A value stated in a table without a method (not a measurement).</td><td></td><td>yes</td></tr>
+<tr><td>tem</td><td>electron_image</td><td>Transmission electron microscopy images of a cross-section.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>tem_eds</td><td>eds</td><td>Energy-dispersive X-ray spectroscopy in a (scanning) transmission electron microscope: elemental maps and line integrals of a cross-section.</td><td></td><td>yes</td></tr>
+<tr><td>tof_erda</td><td>ion_beam</td><td>Time-of-flight elastic recoil detection analysis: elemental composition and depth profiles in at.%, hydrogen included, from a heavy-ion beam.</td><td></td><td>yes</td></tr>
+<tr><td>transistor_iv</td><td>transistor_iv</td><td>Current-voltage characteristics of a field-effect transistor made from the film.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>two_point_through_thickness</td><td>two_point_through_thickness</td><td>Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>optical_spectroscopy</td><td>UV-visible transmission spectrophotometry of a film on a transparent substrate: transmittance against wavelength, and the Tauc plot for the optical band gap.</td><td></td><td>yes</td></tr>
+<tr><td>xps</td><td>xps</td><td>X-ray photoelectron spectroscopy: surface composition and chemical states.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>xrd</td><td>xrd</td><td>X-ray diffraction: crystalline phases, phase fractions and crystallite sizes.</td><td>yes (ex_situ)</td><td>yes</td></tr>
+<tr><td>xrr</td><td>xrr</td><td>X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve.</td><td></td><td>yes</td></tr>
+</table>
+<h2>Models</h2><p>kb/reports/P142b_ontology.c_models.csv</p>
+<table><tr><th>id</th><th>name</th><th>definition</th></tr>
+<tr><td>ylilammi_diffusion_reaction</td><td>Ylilammi diffusion-reaction model</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td></tr>
+<tr><td>gordon_plug_flow</td><td>Gordon plug-flow model</td><td>Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1).</td></tr>
+<tr><td>yanguas_gil_markov_chain</td><td>Yanguas-Gil Markov chain model</td><td>Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2).</td></tr>
+<tr><td>arts_slope</td><td>Arts slope relation</td><td>Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3).</td></tr>
+</table>
+<h2>Qualifiers</h2><p>kb/reports/P142b_ontology.c_qualifiers.csv</p>
+<table><tr><th>key</th><th>values</th><th>meaning</th></tr>
+<tr><td>definition</td><td>definition ids</td><td>P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)</td></tr>
+<tr><td>step</td><td>reactant_A; purge_A; reactant_B; purge_B; plasma; hold_A; hold_B; none</td><td>Cremers Sec. I four steps; Popov Reactant A/B | plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds</td></tr>
+<tr><td>species</td><td>species ids</td><td>the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected</td></tr>
+<tr><td>gas</td><td>species ids</td><td>the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure</td></tr>
+<tr><td>element</td><td>element symbols</td><td>the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy</td></tr>
+<tr><td>reference_element</td><td>element symbols</td><td>Sec. 18.3: the denominator atom of an element_ratio</td></tr>
+<tr><td>phase</td><td>species ids</td><td>Sec. 18.3: the phase a phase_fraction is of</td></tr>
+<tr><td>position</td><td>planar; top; sidewall; bottom; local; entrance; plateau; outside; interface</td><td>Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top | local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer</td></tr>
+<tr><td>reference</td><td>top; planar; assumed_saturation; plateau; entrance; maximum; stated; bulk</td><td>plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)</td></tr>
+<tr><td>level</td><td>50%; 80%; front_start; front_end; maximum</td><td>Cremers PD50%, PD80% | front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum</td></tr>
+<tr><td>basis</td><td>AR; EAR</td><td>Cremers Sec. II G</td></tr>
+<tr><td>surface</td><td>material ids</td><td>the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3</td></tr>
+<tr><td>kind</td><td>set_point; measured; default; option; target; estimated</td><td>pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures</td></tr>
+<tr><td>by</td><td>H; 2H; d; w; lambda; none</td><td>pilot: what a dimensionless distance is divided by</td></tr>
+<tr><td>origin</td><td>entrance; top_face; hole_centre; nearer_face; opening_centre</td><td>pilot: where a distance is measured from</td></tr>
+<tr><td>stage</td><td>initial; final</td><td>pilot: before or after the deposition (porosity, channel height)</td></tr>
+<tr><td>stat</td><td>sd; relative_sd; half_range; tolerance; minimum; maximum</td><td>pilot P1: a spread fact&#x27;s statistic</td></tr>
+<tr><td>between</td><td>runs; pieces; position; repeat_measurement; items</td><td>pilot P1: what varies between the repeats of a spread</td></tr>
+<tr><td>n</td><td>a number or not_stated</td><td>pilot P1: the number of repeats</td></tr>
+<tr><td>relative_to</td><td>initial_mass; final_mass; all_atoms; metal_atoms; crystalline_phases; total_volume; reactive_gases; all_gases; not_stated</td><td>pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)</td></tr>
+<tr><td>over</td><td>run; first_100_cycles; saturation; not_stated</td><td>pilot P5: what a per-cycle value is averaged over</td></tr>
+<tr><td>mode</td><td>in_situ; ex_situ; not_stated</td><td>pilot P6: a measurement during or after the deposition</td></tr>
+<tr><td>x</td><td>quantity ids</td><td>pilot: the abscissa of a curve</td></tr>
+<tr><td>ratio</td><td>a number</td><td>pilot P17: the plasma_gas_ratio a keyed setting belongs to</td></tr>
+<tr><td>specimen_class</td><td>film; porous_composite</td><td>Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis</td></tr>
+<tr><td>structure_class</td><td>structure; planar; har_feature; trench; via_hole; lateral_channel; porous_body; nanoparticle_compact; aerogel_monolith; nanopore_membrane</td><td>P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class</td></tr>
+</table>
+<h2>Gold check</h2><p>kb/reports/P142b_ontology.check_gold.txt</p>
+<pre>== vocabulary: 93 quantity ids, 32 methods, 11 materials, 11 structures, 26 qualifier keys in use; 0 pilot ids still to absorb (0 in use); materials to absorb [], structures []
+== vocabulary: OK
+== gold vocabulary (P142): 0 misses over the gold fact rows of the 9 dev papers (held-out excluded)
+== gold vocabulary: OK
+== claims (P54): 372 claims; 36 mechanisms named; 13 named by two or more papers: cvd_growth, desorption, feature_narrowing, gas_diffusion, pillar_effect, plasma_chemistry, residual_water, scan_angle, self_limiting_growth, surface_chemistry, surface_hydroxyl, surface_oxidation, surface_recombination
+== triples (P131): record types per paper, pilot-v6 -&gt; now (fact rows; only the types that changed)
+   yim20: cited 69 -&gt; 70, claim 54 -&gt; 40, model 68 -&gt; 73, observation 153 -&gt; 154
+   mat22: caveat 53 -&gt; 54, claim 62 -&gt; 52, observation 312 -&gt; 313
+   gre23: caveat 50 -&gt; 53, claim 69 -&gt; 57, model 17 -&gt; 18, observation 87 -&gt; 89, setting 86 -&gt; 89
+   ela03: caveat 14 -&gt; 15, cited 14 -&gt; 18, claim 54 -&gt; 37, model 53 -&gt; 57, setting 272 -&gt; 277
+   gor03: unchanged
+   yli18: claim 15 -&gt; 13, model 66 -&gt; 67
+   gao15: caveat 6 -&gt; 7, claim 21 -&gt; 13, observation 42 -&gt; 44, setting 91 -&gt; 92
+   art19: caveat 6 -&gt; 8, claim 21 -&gt; 13, model 20 -&gt; 22
+   yim22: caveat 7 -&gt; 8, claim 93 -&gt; 77, model 206 -&gt; 215
+   hei24: claim 31 -&gt; 20, model 184 -&gt; 189
+   mat23: claim 24 -&gt; 13, model 0 -&gt; 1, observation 49 -&gt; 51
+   zou23: claim 26 -&gt; 19, observation 43 -&gt; 45, setting 45 -&gt; 47
+== triples (P131): 372 claims, 0 without a full triple
+== triples (P131): OK
+== claim nodes (P130): 267 nodes for 267 distinct triples of 374 claims (374 members); 28 nodes asserted in two or more papers, each paper printed once
+== claim nodes (P130): OK
+== sentence-only (P55): 214 items found in statements ({&#x27;species&#x27;: 29, &#x27;number&#x27;: 185}); 213 allowed with a reason; 1 uncovered
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose
+== sentence-only (P55): 1 problems
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)
+== search (P64): 5 probes, tiers 1 concept / 2 claims, values, sets / 3 the rest; check_search: 17 record kinds probed, each hit rendered as one line (P84e)
+== search (P64): OK
+== records (P62): 1425 result records on the experiments, 268 of them curve references, none empty
+== records (P62): OK
+== uncertainty bases (P60): fit 11, instrument 6, literature 3, propagated 1, run_to_run 6, tolerance 4, within_run 8; no basis (the paper does not say) 29: mat22:tab1.r1c1#1 (tab1.r1c1), mat22:tab1.r1c2#1 (tab1.r1c2), mat22:tab1.r1c4#1 (tab1.r1c4), mat22:tab1.r1c6#1 (tab1.r1c6), mat22:tab1.r1c7#1 (tab1.r1c7), mat22:tab1.r2c1#1 (tab1.r2c1), mat22:tab1.r2c2#1 (tab1.r2c2), mat22:tab1.r2c4#1 (tab1.r2c4), mat22:tab1.r2c6#1 (tab1.r2c6), mat22:tab1.r2c7#1 (tab1.r2c7), mat22:tab1.r3c1#1 (tab1.r3c1), mat22:tab1.r3c2#1 (tab1.r3c2), mat22:tab1.r3c4#1 (tab1.r3c4), mat22:tab1.r3c6#1 (tab1.r3c6), mat22:tab1.r3c7#1 (tab1.r3c7), gre23:s6.p8#4 (s6.p8), gre23:s8.p1#4 (s8.p1), gre23:s8.p1#7 (s8.p1), gre23:s8.p1#8 (s8.p1), gre23:s8.p1#9 (s8.p1), gre23:tabI.r1c2#1 (tabI.r1c2), gre23:tabI.r2c2#1 (tabI.r2c2), gre23:tabI.r3c2#1 (tabI.r3c2), gre23:s13.p3#1 (s13.p3), gre23:s13.p3#2 (s13.p3), hei24:s8.x1#2 (s8.x1), hei24:s8.x1#3 (s8.x1), hei24:s8.x1#4 (s8.x1), mat23:s6.p4#3 (s6.p4)
+== uncertainty bases (P60): OK
+== mechanisms (P82): 36 mechanisms, none with a unit or a value
+== mechanisms (P82): OK
+== structure (P78): 10 structure classes, 10 slot entries; 166 specimen and input entities with a structure_class; 273 slot records; 13 body_thickness values checked against feature_depth × entry_sides; residual free labels with a length or area-per-mass unit: 56
+    yim20:s5.p1#7 [chip size]
+    yim20:s7.p3#2 [length of the line]
+    yim20:s7.p3#3 [measurement point interval]
+    yim20:s7.p5#4 [step]
+    yim20:s7.p5#9 [lateral length L]
+    yim20:s7.p5#10 [lateral length L]
+    yim20:fig4.cap#1 [channel length L]
+    yim20:fig6#1 [Z Range]
+    yim20:s11.x1#3 [width of the adsorption front]
+    yim20:fig10.cap#7 [d_A]
+    yim20:fig10.cap#8 [d_B]
+    yim20:s16.p3#2 [nanostep height]
+    yim20:s16.p5#2 [pillar diameter]
+    yim20:s16.p5#3 [interdistance]
+    yim20:s16.p5#4 [membrane bending displacement]
+    yim20:s16.p5#6 [membrane bending displacement]
+    yim20:s16.p7#2 [positioning uncertainty]
+    yim20:s19.p3#4 [hydraulic diameter h]
+    yim20:fig4.cap#2 [channel length L]
+    yim20:fig4.cap#3 [channel length L]
+    yim20:s7.p5#13 [lateral length L]
+    yim20:s7.p5#14 [lateral length L]
+    mat22:s3.p26#3 [parallel-oriented layer thickness]
+    mat22:s5.p15#1 [laser wavelength]
+    gre23:s9.p1#2 [chamber length]
+    gre23:s9.p1#3 [gap height]
+    gre23:s14.p1#3 [denser band width]
+    gre23:s14.p1#4 [near-surface depletion depth]
+    gre23:s14.p10#4 [excess deposition]
+    ela03:s4.p5#1 [scan step]
+    gor03:s10.p1#3 [reactor tube length]
+    gor03:s10.p1#4 [reactor tube diameter]
+    gor03:s10.p2#1 [reaction zone length]
+    gor03:s10.p3#1 [feed-through bore]
+    yli18:s8.p25#4 [line scan step]
+    yli18:s8.p25#5 [scan length]
+    yli18:s8.p25#8 [thickness precision]
+    yli18:tabI.r1c7#1 [rms thickness error]
+    yli18:tabI.r2c7#1 [rms thickness error]
+    yli18:s8.p25#11 [line scan step]
+    yli18:s8.p25#12 [scan length]
+    yli18:s8.p25#15 [thickness precision]
+    gao15:s6.p1#1 [wafer diameter]
+    gao15:s6.p3#2 [polysilicon membrane]
+    gao15:s6.p3#3 [sealing polysilicon]
+    gao15:s6.x1#1 [pillar spacing]
+    gao15:s6.p21#3 [waviness period]
+    gao15:s6.p21#5 [reflectometer reliability limit]
+    gao15:s6.p23#2 [remaining gap height]
+    gao15:s6.p23#3 [remaining gap height]
+    gao15:s6.p23#4 [remaining gap height]
+    art19:s5.p3#3 [spatial resolution]
+    yim22:s13.p5#3 [d(s/N)/dx̃ at x̃50%]
+    mat23:s10.p7#2 [AFM scan size]
+    mat23:s10.p7#3 [AFM scan size]
+    zou23:s10.p2#2 [electron mean free path of Mo]
+== structure (P78): OK
+== cards (P81): 109 concept cards, 1308 (entry, paper) pairs against the page data; counts by home specimen, input, aggregate, set-level, paper, cited, settings, claims, derived
+== cards (P81): OK
+== card–values (P95): 183 (quantity, paper) pairs with values on a card, each against values(result, paper)
+== card–values (P95): OK
+== resolution (P105, P110–P113): 513 calls (30 qualifier phrases of which 10 species, 5 misses, 7 detail ids, papers and search probes), 91,915 tokens; a miss suggests the nearest three, only a malformed call errors
+== resolution (P105): OK
+== card edges (P101): 59 cards with edges, 91 edges
+== card edges (P101): OK
+== grids (P80): 3 grid sets; 45 values(result, paper) calls on grid papers against their ask-v3.1 sizes: atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (1 views); carrier_density 387-&gt;833 (1 views); crystallinity 1657-&gt;1470 (7 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (7 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (1 views); growth_per_cycle 1799-&gt;1230 (7 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (4 views); resistivity 1915-&gt;1175 (7 views); roughness 651-&gt;600 (1 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views)
+== grids (P80): OK
+== homes (P79): 2105 value records with an entry (from the page); 0 homeless
+== homes (P79): OK
+== calls (P75, P119): token budget 40,000 spent after 31 executed calls (40,016 tokens delivered), 80,000 after 75 (80,339); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 119 valid probes; a malformed call is an error call and the question goes on (P124)
+== calls (P75): OK
+== settings tables (P76): 38 settings entries in the data (whatever node, P78a); 197 (entry, paper) pairs with stated conditions; max 1445 tokens per table
+== settings tables (P76): OK
+== set tables (P77): 175 comparison sets, each one call within the budget; 2 with columns collapsed; max 1972 tokens per table
+== set tables (P77): OK
+== battery per paper (P97): yim22 15 calls 10,932 tokens; yim20 14 calls 15,019 tokens; mat22 15 calls 13,886 tokens; gre23 15 calls 11,669 tokens; art19 15 calls 9,292 tokens; ela03 14 calls 9,090 tokens; gor03 13 calls 4,948 tokens; yli18 13 calls 8,421 tokens; gao15 15 calls 9,316 tokens; hei24 14 calls 13,453 tokens; zou23 14 calls 6,725 tokens; mat23 14 calls 9,863 tokens; cross-paper 65 calls 71,935 tokens
+== kinds (P57, P68): 9 kinds with phrases, 9 bases; 240 probe calls, 4779 tool texts scanned; max 5143 tokens per output, 194,647 tokens over the battery
+== kinds (P57, P68): OK
+== map (P70, P97, P120): 225 tokens of at most 800, 8 lines, every number a count; 229 tokens at 58 simulated papers; paper index 1034 tokens at 12 papers, 4938 at 58 simulated (at most 20,000), counts equal the cards&#x27;
+== map (P70): OK
+== caveats (P56): 222 caveats, 222 unique texts (28,880 characters stored once), 753 direct attachments, 2753 facts and entities reached
+== caveats (P56): OK
+== comparability (P53): cross-paper value pairs per output quantity, comparable / not: atoms_per_cycle 3/124; binding_energy 12/0; coated_aspect_ratio 12/238; crystallite_size 0/4; deposition_rate 1211/689; element_fraction 72/34; element_ratio 0/80; fill_fraction 0/6; film_thickness 1882/7312; front_slope 0/416; growth_per_cycle 460/5316; normalized_thickness 24/155; penetration_depth 36/519; resistivity 34/105; roughness 14/0; sheet_resistance 1/0; signal_intensity 0/2; step_coverage 2/0; surface_coverage 408/0; thickness_nonuniformity 0/1
+== comparability (P53): OK
+== bases: 70 quantity ids with values; bases stated on 4 (mass_gain {&#x27;not_stated&#x27;: 3}, phase_fraction {&#x27;not_stated&#x27;: 4}, plasma_gas_ratio {&#x27;reactive_gases&#x27;: 53}, porosity {&#x27;total_volume&#x27;: 6})
+== bases (P52): OK
+== unit table (P122): 348 spellings in 43 dimensions generated from units.yaml; 51 record spellings, 18 derived definitions, 65 default units resolve
+== unit table (P122): OK
+== dimensions (P108): 2763 value records (facts, cells, peaks, derived, curve axes) against units.yaml; 1 entries with definitions
+== dimensions (P108): OK
+== cycle (P106): 3 experiments with a stated hold in 1 paper(s); the hold on the dose line in detail(recipe) and in the pulse_time settings table
+== cycle (P106): OK
+== multi-quantity values (P121, P121b): 36 blocks over 12 papers&#x27; top-3 lists, 6 folded to one line (18 of 36 before P121b); a list call&#x27;s budget is k × 2000 tokens, at most 4×; legends and footer once
+== multi-quantity values (P121): OK
+== compare_runs (P126): report on asks.jsonl (12 records, 3 questions, arms kb, model, text): six sections; synthetic verdicts join and count; anchor columns and one kb × text verdict grid per run (P127)
+== compare_runs (P126): OK
+== report html (P129): fixture 18 records: 3 cards for 3 questions; section 4 = compare_runs 5b/5c (27 rows), badges = 5b; 8 cost cells recomputed from the records and prices.csv; 22,419 characters, no external URL
+== report html (P129): OK
+== paper index (P117): 12 papers, max 864 tokens per index, at most 40 quantity lines; counts equal the concept cards&#x27; (P95 both ways)
+== paper index (P117): OK
+== conversions (P109): 1 entries with converts_to, 73 converted curve series citing their context
+== conversions (P109): OK
+== cases: OK
+== user facts: OK
+== derived values (query layer): OK
+== figures import (P84-P87): 136 ok panels, 429 curves, 84 sets over 12 papers; import report, unmapped.csv and units checked
+== figures import (P84-P87): OK
+== figure derived (P86): 96 derived scalars, 40 stated counterparts found, 1 outside tolerance (listed in kb/problems.txt, a finding, not a failure)
+== metrics (P59)
+   coverage yim20: 568/608 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 28 items in 24 facts
+   coverage mat22: 187/215 elements covered, 28 no knowledge, 0 missed; sentence-only gaps: 62 items in 51 facts
+   coverage gre23: 154/208 elements covered, 54 no knowledge, 0 missed; sentence-only gaps: 63 items in 44 facts
+   coverage ela03: 155/210 elements covered, 55 no knowledge, 0 missed; sentence-only gaps: 7 items in 6 facts
+   coverage gor03: 79/100 elements covered, 21 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage yli18: 215/314 elements covered, 99 no knowledge, 0 missed; sentence-only gaps: 5 items in 4 facts
+   coverage gao15: 61/99 elements covered, 38 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage art19: 56/96 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 7 items in 7 facts
+   coverage yim22: 487/583 elements covered, 96 no knowledge, 0 missed; sentence-only gaps: 4 items in 4 facts
+   coverage hei24: 205/247 elements covered, 42 no knowledge, 0 missed; sentence-only gaps: 6 items in 4 facts
+   coverage mat23: 52/110 elements covered, 58 no knowledge, 0 missed; sentence-only gaps: 16 items in 8 facts
+   coverage zou23: 75/121 elements covered, 46 no knowledge, 0 missed; sentence-only gaps: 26 items in 18 facts
+   compactness: unique content once 194,592 tokens against 164,166 tokens of source text (1.19) · yim20 33,481 of 20,656; mat22 41,252 of 22,257; gre23 18,634 of 16,381; ela03 19,792 of 14,170; gor03 6,028 of 7,364; yli18 7,830 of 10,472; gao15 7,520 of 5,360; art19 7,464 of 9,387; yim22 20,566 of 23,808; hei24 18,348 of 15,672; mat23 6,620 of 8,779; zou23 6,035 of 9,860 · user facts 1,022
+   absorption (81 pilot quantity ids): direct 31, new_entry 27, attribute 9, alias 6, qualifier 4, dropped 2, transform 1, reserved 1
+== yim20 10.1039_d0cp03358h: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 24}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 14, &#x27;covered&#x27;: 68}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 452, &#x27;no knowledge&#x27;: 1}}
+   facts: 763 {&#x27;cited&#x27;: 70, &#x27;setting&#x27;: 206, &#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 73, &#x27;observation&#x27;: 154, &#x27;derived&#x27;: 108, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | quantity other: 41
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 8, &#x27;activity&#x27;: 75, &#x27;cited&#x27;: 22, &#x27;entity&#x27;: 31} | activities: {&#x27;deposition&#x27;: 15, &#x27;simulation&#x27;: 11, &#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 48} | comparisons: {&#x27;series&#x27;: 7, &#x27;replicate&#x27;: 1} | facts directly under the paper: 154 {&#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 1, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 9, &#x27;facts, no values&#x27;: 23}
+   numbers in text reaching a fact: 238/287 (83%)
+   numbers in table reaching a fact: 398/402 (99%)
+== mat22 10.1021_acs.chemmater.2c01154: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 11}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 1}, &#x27;heading&#x27;: {&#x27;covered&#x27;: 1, &#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 17}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 22, &#x27;covered&#x27;: 89}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 64}}
+   facts: 732 {&#x27;claim&#x27;: 52, &#x27;cited&#x27;: 35, &#x27;definition&#x27;: 14, &#x27;model&#x27;: 8, &#x27;observation&#x27;: 313, &#x27;setting&#x27;: 251, &#x27;derived&#x27;: 4, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | quantity other: 38
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 12, &#x27;cited&#x27;: 23, &#x27;activity&#x27;: 249, &#x27;entity&#x27;: 54} | activities: {&#x27;recipe&#x27;: 5, &#x27;deposition&#x27;: 54, &#x27;measurement&#x27;: 189, &#x27;anneal&#x27;: 1} | comparisons: {&#x27;grid&#x27;: 1, &#x27;series&#x27;: 11} | facts directly under the paper: 120 {&#x27;claim&#x27;: 50, &#x27;cited&#x27;: 1, &#x27;definition&#x27;: 14, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 16, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 679/756 (90%)
+   numbers in table reaching a fact: 65/65 (100%)
+== gre23 10.1116_6.0003182: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 8}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 15}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 20}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 39, &#x27;covered&#x27;: 61}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 52}}
+   facts: 396 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 40, &#x27;setting&#x27;: 89, &#x27;definition&#x27;: 16, &#x27;derived&#x27;: 31, &#x27;observation&#x27;: 89, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 18, &#x27;identity&#x27;: 3} | quantity other: 28
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 41, &#x27;cited&#x27;: 17, &#x27;comparison&#x27;: 1, &#x27;entity&#x27;: 18} | activities: {&#x27;deposition&#x27;: 4, &#x27;recipe&#x27;: 1, &#x27;simulation&#x27;: 1, &#x27;measurement&#x27;: 35} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 133 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 3, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 1, &#x27;identity&#x27;: 3} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 14, &#x27;facts, no values&#x27;: 6}
+   numbers in text reaching a fact: 548/599 (91%)
+   numbers in table reaching a fact: 64/64 (100%)
+== ela03 10.1021_cm0303080: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 7}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13, &#x27;no knowledge&#x27;: 1}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21, &#x27;no knowledge&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 80}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 24, &#x27;no knowledge&#x27;: 1}}
+   facts: 469 {&#x27;setting&#x27;: 277, &#x27;claim&#x27;: 37, &#x27;cited&#x27;: 18, &#x27;model&#x27;: 57, &#x27;observation&#x27;: 38, &#x27;definition&#x27;: 10, &#x27;caveat&#x27;: 15, &#x27;derived&#x27;: 17} | quantity other: 39
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 46, &#x27;entity&#x27;: 34, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 8} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 17, &#x27;deposition&#x27;: 14, &#x27;simulation&#x27;: 14} | comparisons: {&#x27;series&#x27;: 8} | facts directly under the paper: 72 {&#x27;claim&#x27;: 37, &#x27;cited&#x27;: 11, &#x27;caveat&#x27;: 15, &#x27;definition&#x27;: 9} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 11, &#x27;facts, no values&#x27;: 10, &#x27;no knowledge&#x27;: 2}
+   numbers in text reaching a fact: 373/561 (66%)
+   numbers in table reaching a fact: 21/21 (100%)
+== gor03 10.1002_cvde.200390005: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 15}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 10}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 8, &#x27;covered&#x27;: 56}}
+   facts: 133 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 8, &#x27;cited&#x27;: 6, &#x27;model&#x27;: 21, &#x27;observation&#x27;: 11, &#x27;derived&#x27;: 10, &#x27;setting&#x27;: 52, &#x27;caveat&#x27;: 7} | quantity other: 15
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 6, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 1} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 5, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 32 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 7, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 2, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 135/206 (66%)
+   numbers in table reaching a fact: 0/0 (0%)
+== yli18 10.1063_1.5028178: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 46}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 11}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 6}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 72}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 41, &#x27;covered&#x27;: 79}}
+   facts: 216 {&#x27;claim&#x27;: 13, &#x27;setting&#x27;: 63, &#x27;derived&#x27;: 15, &#x27;cited&#x27;: 5, &#x27;model&#x27;: 67, &#x27;definition&#x27;: 38, &#x27;observation&#x27;: 7, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 16
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 12, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 6, &#x27;simulation&#x27;: 2} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 62 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 38, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 3, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 92/269 (34%)
+   numbers in table reaching a fact: 15/38 (39%)
+== gao15 10.1116_1.4903941: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 9}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 14}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 28, &#x27;covered&#x27;: 38}}
+   facts: 175 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 8, &#x27;observation&#x27;: 44, &#x27;definition&#x27;: 5, &#x27;setting&#x27;: 92, &#x27;derived&#x27;: 6, &#x27;caveat&#x27;: 7} | quantity other: 10
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 25, &#x27;entity&#x27;: 15, &#x27;cited&#x27;: 4, &#x27;comparison&#x27;: 5} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 15, &#x27;deposition&#x27;: 9} | comparisons: {&#x27;series&#x27;: 5} | facts directly under the paper: 27 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 2, &#x27;definition&#x27;: 5, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 13, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 107/222 (48%)
+   numbers in table reaching a fact: 0/0 (0%)
+== art19 10.1021_acs.jpcc.9b08176: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 14}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 5}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 32}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 7, &#x27;covered&#x27;: 6}}
+   facts: 166 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 14, &#x27;model&#x27;: 22, &#x27;definition&#x27;: 16, &#x27;setting&#x27;: 50, &#x27;observation&#x27;: 36, &#x27;derived&#x27;: 7, &#x27;caveat&#x27;: 8} | quantity other: 5
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 22, &#x27;entity&#x27;: 12, &#x27;cited&#x27;: 9, &#x27;comparison&#x27;: 4} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 16, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 4} | facts directly under the paper: 37 {&#x27;claim&#x27;: 13, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 8} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;facts, no values&#x27;: 4, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 161/234 (69%)
+   numbers in table reaching a fact: 38/38 (100%)
+== yim22 10.1039_d1cp04758b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 31}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 21}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 27, &#x27;covered&#x27;: 88}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 42, &#x27;covered&#x27;: 334}}
+   facts: 517 {&#x27;model&#x27;: 215, &#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62, &#x27;derived&#x27;: 84, &#x27;setting&#x27;: 67} | quantity other: 26
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 7, &#x27;entity&#x27;: 68, &#x27;comparison&#x27;: 15} | activities: {&#x27;simulation&#x27;: 7} | comparisons: {&#x27;series&#x27;: 14, &#x27;replicate&#x27;: 1} | facts directly under the paper: 151 {&#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;stated values only&#x27;: 19, &#x27;facts, no values&#x27;: 4}
+   numbers in text reaching a fact: 201/551 (36%)
+   numbers in table reaching a fact: 194/280 (69%)
+== hei24 10.1039_d3cp05639b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 9}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 16}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 59}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 4, &#x27;covered&#x27;: 88}}
+   facts: 440 {&#x27;model&#x27;: 189, &#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;derived&#x27;: 16, &#x27;setting&#x27;: 172, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 36
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 1, &#x27;entity&#x27;: 83, &#x27;comparison&#x27;: 24} | activities: {&#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 24} | facts directly under the paper: 62 {&#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 31}
+   numbers in text reaching a fact: 132/226 (58%)
+   numbers in table reaching a fact: 31/61 (51%)
+== mat23 10.1116_6.0002993: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 23}}
+   facts: 136 {&#x27;claim&#x27;: 13, &#x27;observation&#x27;: 51, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 6, &#x27;setting&#x27;: 54, &#x27;derived&#x27;: 4, &#x27;identity&#x27;: 2, &#x27;caveat&#x27;: 5} | quantity other: 22
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 30, &#x27;entity&#x27;: 14, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 7} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 27} | comparisons: {&#x27;series&#x27;: 7} | facts directly under the paper: 18 {&#x27;claim&#x27;: 13, &#x27;caveat&#x27;: 5} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 18, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 209/348 (60%)
+   numbers in table reaching a fact: 0/0 (0%)
+== zou23 10.1116_6.0002804: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 34, &#x27;covered&#x27;: 37}}
+   facts: 124 {&#x27;setting&#x27;: 47, &#x27;claim&#x27;: 19, &#x27;observation&#x27;: 45, &#x27;cited&#x27;: 6, &#x27;derived&#x27;: 1, &#x27;caveat&#x27;: 6} | quantity other: 6
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 23, &#x27;entity&#x27;: 8, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 20} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 25 {&#x27;claim&#x27;: 19, &#x27;caveat&#x27;: 6} | claims without links: 0
+   panels: {&#x27;facts, no values&#x27;: 19, &#x27;stated values only&#x27;: 4}
+   numbers in text reaching a fact: 218/303 (72%)
+   numbers in table reaching a fact: 0/0 (0%)
+exit 1
+</pre>
+<h2>Diff (ontology.yaml, units.yaml, export.py, merge_pending.py, check.py)</h2><p>kb/reports/P142b_ontology.diff</p>
+<pre>diff --git a/psed_v2/kb/pilot/check.py b/psed_v2/kb/pilot/check.py
+index dce7960..f8ebda2 100644
+--- a/psed_v2/kb/pilot/check.py
++++ b/psed_v2/kb/pilot/check.py
+@@ -656,7 +656,7 @@ def check_vocabulary():
+ 
+ 
+ def check_gold_vocabulary():
+-    &quot;&quot;&quot;P142: every gold fact row of the papers (kb/pilot/&lt;pid&gt;.facts.csv) against the extraction vocabulary (kb/schema/form.json and
++    &quot;&quot;&quot;P142: every gold fact row of the dev papers (P142b: common.HELD_OUT never read; kb/pilot/&lt;pid&gt;.facts.csv) against the extraction vocabulary (kb/schema/form.json and
+     units.yaml through vocab): quantity ids (a caveat&#x27;s &#x27;;&#x27; list too), units, the value_text of material / substrate / reactant_A /
+     reactant_B / structure, qualifier key=value pairs, cause / effect ids, relation, stance, method, kind. One problem per miss.&quot;&quot;&quot;
+     form = json.loads((HERE.parent / &quot;schema&quot; / &quot;form.json&quot;).read_text(encoding=&quot;utf-8&quot;))
+@@ -664,8 +664,11 @@ def check_gold_vocabulary():
+     ce, qids = set(D[&quot;cause_effect&quot;][&quot;enum&quot;]), set(D[&quot;quantity_id&quot;][&quot;enum&quot;]) | {&quot;other&quot;}
+     vt = {&quot;material&quot;: set(D[&quot;material&quot;][&quot;enum&quot;]), &quot;substrate&quot;: set(D[&quot;material&quot;][&quot;enum&quot;]), &quot;reactant_A&quot;: set(D[&quot;species&quot;][&quot;enum&quot;]),
+           &quot;reactant_B&quot;: set(D[&quot;species&quot;][&quot;enum&quot;]), &quot;structure&quot;: set(D[&quot;structure&quot;][&quot;enum&quot;])}
++    sys.path.insert(0, str(HERE.parent / &quot;extract&quot;))
++    import common                                                               # P142b: the held-out golds are never read (common.HELD_OUT)
++    dev = [pid for pid in KEYS if pid not in common.HELD_OUT]
+     err = []
+-    for pid in KEYS:
++    for pid in dev:
+         for f in rd(HERE / f&quot;{pid}.facts.csv&quot;):
+             if &quot;#&quot; not in f[&quot;fact_id&quot;] or f[&quot;type&quot;] in (&quot;paper&quot;, &quot;activity&quot;, &quot;entity&quot;, &quot;comparison&quot;, &quot;identity&quot;):
+                 continue
+@@ -680,7 +683,7 @@ def check_gold_vocabulary():
+                 if f[k] and f[k] not in ok:
+                     miss.append((k, f[k]))
+             err += [f&quot;{f[&#x27;fact_id&#x27;]}: {k} {v!r} is not in the extraction vocabulary (P142)&quot; for k, v in miss]
+-    print(f&quot;== gold vocabulary (P142): {len(err)} misses over the gold fact rows of {len(KEYS)} papers&quot;)
++    print(f&quot;== gold vocabulary (P142): {len(err)} misses over the gold fact rows of the {len(dev)} dev papers (held-out excluded)&quot;)
+     return err
+ 
+ 
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 1166cec..1ccad0d 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -135,8 +135,9 @@ def build(onto, pmap):
+                              aliases=list(e.get(&quot;aliases&quot;, [])), material_class=e.get(&quot;material_class&quot;, &quot;&quot;), ligand_class=e.get(&quot;ligand_class&quot;, &quot;&quot;))
+                for e in live if e[&quot;type&quot;] == &quot;species&quot;}
+     structures = {e[&quot;id&quot;]: dict(cls=e.get(&quot;class&quot;, &quot;&quot;), aliases=list(e.get(&quot;aliases&quot;, []))) for e in live if e[&quot;type&quot;] == &quot;structure&quot;}
+-    methods = list(voc[&quot;measurement_method&quot;]) + [dict(id=e[&quot;id&quot;], **{&quot;class&quot;: e.get(&quot;class&quot;) or e[&quot;id&quot;]}, definition=e[&quot;definition&quot;]) for e in onto[&quot;entries&quot;] if e[&quot;type&quot;] == &quot;method&quot;] \
+-        + [dict(id=r[&quot;id&quot;], **{&quot;class&quot;: r.get(&quot;class&quot;) or r[&quot;id&quot;]}, definition=r[&quot;definition&quot;], pending=r.get(&quot;status&quot;, &quot;pending&quot;) != &quot;accepted&quot;) for r in pend if r[&quot;kind&quot;] == &quot;method&quot;]   # P131b: merged methods are entries
++    methods = [dict(id=e[&quot;id&quot;], **{&quot;class&quot;: e.get(&quot;class&quot;) or e[&quot;id&quot;]}, definition=e[&quot;definition&quot;], replaced_by=e.get(&quot;replaced_by&quot;, &quot;&quot;))
++               for e in onto[&quot;entries&quot;] if e[&quot;type&quot;] == &quot;method&quot;] \
++        + [dict(id=r[&quot;id&quot;], **{&quot;class&quot;: r.get(&quot;class&quot;) or r[&quot;id&quot;]}, definition=r[&quot;definition&quot;], pending=r.get(&quot;status&quot;, &quot;pending&quot;) != &quot;accepted&quot;) for r in pend if r[&quot;kind&quot;] == &quot;method&quot;]   # P131b; P142b: methods are entries only
+     defs = {d[&quot;id&quot;] for e in live for d in (e.get(&quot;definitions&quot;) or [])}
+     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s[&quot;kind&quot;] == &quot;material&quot;], defs) for k, q in onto[&quot;qualifiers&quot;].items()}
+     families = {}
+diff --git a/psed_v2/ontology/merge_pending.py b/psed_v2/ontology/merge_pending.py
+index 45b2029..01b1ac5 100644
+--- a/psed_v2/ontology/merge_pending.py
++++ b/psed_v2/ontology/merge_pending.py
+@@ -80,7 +80,7 @@ def main():
+     text = (HERE / &quot;ontology.yaml&quot;).read_text(encoding=&quot;utf-8&quot;)
+     onto = yaml.safe_load(text)
+     have = {e[&quot;id&quot;]: e for e in onto[&quot;entries&quot;]}
+-    have.update({m[&quot;id&quot;]: dict(m, type=&quot;method&quot;) for m in onto[&quot;vocabularies&quot;][&quot;measurement_method&quot;]})
++    # P142b: the measurement methods are entries now (the vocabularies block is gone)
+     new, skipped, conflicts = [], [], []
+     for r in rows:
+         if r[&quot;status&quot;] != &quot;accepted&quot;:
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index a493795..f41e494 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): fc4f53c3ede6d76eba7a2ec9808bac885057020a7899ea9093bb0161d35fafad
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 0ff4d085d0746a8bcf52b6ae84b602dfff709d2be18d0d0edb19f37085dd7b52
+ version: 1
+ 
+ base_sources:
+@@ -2484,6 +2484,7 @@ entries:
+   # ---------------------------------------------------------------- models
+   - id: ylilammi_diffusion_reaction
+     type: model
++    name: &quot;Ylilammi diffusion-reaction model&quot;                     # P142b
+     origin: base
+     category: models
+     definition: &quot;One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).&quot;
+@@ -2495,6 +2496,7 @@ entries:
+ 
+   - id: gordon_plug_flow
+     type: model
++    name: &quot;Gordon plug-flow model&quot;                     # P142b
+     origin: base
+     category: models
+     definition: &quot;Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1).&quot;
+@@ -2506,6 +2508,7 @@ entries:
+ 
+   - id: yanguas_gil_markov_chain
+     type: model
++    name: &quot;Yanguas-Gil Markov chain model&quot;                     # P142b
+     origin: base
+     category: models
+     definition: &quot;Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2).&quot;
+@@ -2517,6 +2520,7 @@ entries:
+ 
+   - id: arts_slope
+     type: model
++    name: &quot;Arts slope relation&quot;                     # P142b
+     origin: extension
+     category: models
+     definition: &quot;Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3).&quot;
+@@ -2927,6 +2931,215 @@ entries:
+     deviation: {type: added, reason: &#x27;P98 rule c, papers zou23; merged from pending.csv (P131b)&#x27;}
+     evidence: [zou23 fig10.cap fig10a fig10b fig10c fig10d fig10e fig10f s11.p6 s11.p9]
+ 
++  # P142b: the measurement methods, moved from vocabularies.measurement_method (content unchanged; measurement / mode from lists.METHOD_MODE)
++  - id: reflectometry
++    type: method
++    class: optical_thickness
++    definition: &#x27;Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: spectroscopic_ellipsometry
++    type: method
++    class: optical_thickness
++    definition: &#x27;Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).&#x27;
++    measurement: yes
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: xrr
++    type: method
++    class: xrr
++    definition: &#x27;X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve.&#x27;
++    measurement: yes
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: optical_microscopy
++    type: method
++    class: optical_image
++    definition: &#x27;Optical microscope images.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: sem
++    type: method
++    class: electron_image
++    definition: &#x27;Scanning electron microscopy images.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: sem_eds
++    type: method
++    class: eds
++    definition: &#x27;Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: tem
++    type: method
++    class: electron_image
++    definition: &#x27;Transmission electron microscopy images of a cross-section.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: afm
++    type: method
++    class: afm
++    definition: &#x27;Atomic force microscopy: topography and roughness.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: oes
++    type: method
++    class: plasma_spectroscopy
++    definition: &#x27;Optical emission spectroscopy of the plasma.&#x27;
++    measurement: yes
++    mode: in_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: eqp
++    type: method
++    class: plasma_spectroscopy
++    definition: &#x27;Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma.&#x27;
++    measurement: yes
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: xps
++    type: method
++    class: xps
++    definition: &#x27;X-ray photoelectron spectroscopy: surface composition and chemical states.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: raman
++    type: method
++    class: raman
++    definition: &#x27;Raman spectroscopy: phonon modes, used for crystallinity and phase.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: xrd
++    type: method
++    class: xrd
++    definition: &#x27;X-ray diffraction: crystalline phases, phase fractions and crystallite sizes.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: rbs
++    type: method
++    class: ion_beam
++    definition: &#x27;Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: electrical
++    type: method
++    class: electrical
++    definition: &#x27;An electrical measurement whose geometry the paper does not separate; re-split in Sec. 18.4 because a four-point value on a film and a two-point through-thickness value on a porous composite are not comparable.&#x27;
++    measurement: yes
++    replaced_by: [four_point_probe, two_point_through_thickness, hall, transistor_iv]
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: four_point_probe
++    type: method
++    class: four_point_probe
++    definition: &#x27;Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane).&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: two_point_through_thickness
++    type: method
++    class: two_point_through_thickness
++    definition: &#x27;Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: hall
++    type: method
++    class: hall
++    definition: &#x27;Hall measurement in the van der Pauw geometry: carrier density and mobility.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: transistor_iv
++    type: method
++    class: transistor_iv
++    definition: &#x27;Current-voltage characteristics of a field-effect transistor made from the film.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: process_monitor
++    type: method
++    class: process_monitor
++    definition: &#x27;The reactor&#x27;&#x27;s own gauges and thermocouples: pressure and temperature traces during the process.&#x27;
++    measurement: yes
++    mode: in_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: gravimetry
++    type: method
++    class: gravimetry
++    definition: &#x27;Weighing before and after deposition.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: photograph
++    type: method
++    class: optical_image
++    definition: &#x27;A photograph of the specimen.&#x27;
++    measurement: yes
++    mode: ex_situ
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: simulation
++    type: method
++    class: simulation
++    definition: &#x27;A value produced by a model run (not a measurement).&#x27;
++    measurement: no
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: calculation
++    type: method
++    class: calculation
++    definition: &#x27;A value computed from other values (not a measurement).&#x27;
++    measurement: no
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: cited
++    type: method
++    class: cited
++    definition: &#x27;A value taken from another work (not a measurement).&#x27;
++    measurement: no
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: schematic
++    type: method
++    class: schematic
++    definition: &#x27;A drawing: a value or statement read from a schematic (not a measurement).&#x27;
++    measurement: no
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
++  - id: tabulated
++    type: method
++    class: tabulated
++    definition: &#x27;A value stated in a table without a method (not a measurement).&#x27;
++    measurement: no
++    origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
++
+   - id: si_trench_capped
+     type: structure
+     label: SiO2-capped Si trench
+@@ -3135,16 +3348,16 @@ transforms:   # Sec. 9; the pilot&#x27;s derived quantities (lists.DERIVED computes t
+ qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
+   definition: {values: definition ids, log: &quot;P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)&quot;}
+   step:      {values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: &quot;Cremers Sec. I four steps; Popov Reactant A/B&quot;, log: &quot;plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds&quot;}
+-  species:   {values: species ids}
+-  gas:       {values: species ids}
+-  element:   {values: element symbols}
++  species:   {meaning: &quot;the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected&quot;, values: species ids}
++  gas:       {meaning: &quot;the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure&quot;, values: species ids}
++  element:   {meaning: &quot;the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy&quot;, values: element symbols}
+   reference_element: {values: element symbols, log: &quot;Sec. 18.3: the denominator atom of an element_ratio&quot;}
+   phase:     {values: species ids, log: &quot;Sec. 18.3: the phase a phase_fraction is of&quot;}
+   position:  {values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: &quot;Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top&quot;, log: &quot;local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer&quot;}
+   reference: {values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: &quot;plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)&quot;}
+   level:     {values: [&quot;50%&quot;, &quot;80%&quot;, front_start, front_end, maximum], source: &quot;Cremers PD50%, PD80%&quot;, log: &quot;front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum&quot;}
+   basis:     {values: [AR, EAR], source: &quot;Cremers Sec. II G&quot;}
+-  surface:   {values: material ids}
++  surface:   {meaning: &quot;the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3&quot;, values: material ids}
+   kind:      {values: [set_point, measured, default, option, target, estimated], log: &quot;pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures&quot;, evidence: [&#x27;gre23:s9.p6#12 (s9.p6;s12.p6)&#x27;, &#x27;gre23:s9.p6#13 (s9.p6)&#x27;]}
+   by:        {values: [H, 2H, d, w, lambda, none], log: &quot;pilot: what a dimensionless distance is divided by&quot;}
+   origin:    {values: [entrance, top_face, hole_centre, nearer_face, opening_centre], log: &quot;pilot: where a distance is measured from&quot;}
+@@ -3232,34 +3445,6 @@ vocabularies:
+   entry_sides:       [one, two]                                               # P78: the values of the entry_sides categorical
+   material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
+   n_elements:        [element, binary, ternary, quaternary]
+-  measurement_method:   # id, class (values of one class are mutually comparable, Sec. 18.4), definition; the pilot&#x27;s method column uses these ids
+-    - {id: reflectometry, class: optical_thickness, definition: &quot;Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot.&quot;}
+-    - {id: spectroscopic_ellipsometry, class: optical_thickness, definition: &quot;Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).&quot;}
+-    - {id: xrr, class: xrr, definition: &quot;X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve.&quot;}
+-    - {id: optical_microscopy, class: optical_image, definition: &quot;Optical microscope images.&quot;}
+-    - {id: sem, class: electron_image, definition: &quot;Scanning electron microscopy images.&quot;}
+-    - {id: sem_eds, class: eds, definition: &quot;Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans.&quot;}
+-    - {id: tem, class: electron_image, definition: &quot;Transmission electron microscopy images of a cross-section.&quot;}
+-    - {id: afm, class: afm, definition: &quot;Atomic force microscopy: topography and roughness.&quot;}
+-    - {id: oes, class: plasma_spectroscopy, definition: &quot;Optical emission spectroscopy of the plasma.&quot;}
+-    - {id: eqp, class: plasma_spectroscopy, definition: &quot;Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma.&quot;}
+-    - {id: xps, class: xps, definition: &quot;X-ray photoelectron spectroscopy: surface composition and chemical states.&quot;}
+-    - {id: raman, class: raman, definition: &quot;Raman spectroscopy: phonon modes, used for crystallinity and phase.&quot;}
+-    - {id: xrd, class: xrd, definition: &quot;X-ray diffraction: crystalline phases, phase fractions and crystallite sizes.&quot;}
+-    - {id: rbs, class: ion_beam, definition: &quot;Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition.&quot;}
+-    - {id: electrical, class: electrical, replaced_by: [four_point_probe, two_point_through_thickness, hall, transistor_iv], definition: &quot;An electrical measurement whose geometry the paper does not separate; re-split in Sec. 18.4 because a four-point value on a film and a two-point through-thickness value on a porous composite are not comparable.&quot;}
+-    - {id: four_point_probe, class: four_point_probe, definition: &quot;Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane).&quot;}
+-    - {id: two_point_through_thickness, class: two_point_through_thickness, definition: &quot;Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness.&quot;}
+-    - {id: hall, class: hall, definition: &quot;Hall measurement in the van der Pauw geometry: carrier density and mobility.&quot;}
+-    - {id: transistor_iv, class: transistor_iv, definition: &quot;Current-voltage characteristics of a field-effect transistor made from the film.&quot;}
+-    - {id: process_monitor, class: process_monitor, definition: &quot;The reactor&#x27;s own gauges and thermocouples: pressure and temperature traces during the process.&quot;}
+-    - {id: gravimetry, class: gravimetry, definition: &quot;Weighing before and after deposition.&quot;}
+-    - {id: photograph, class: optical_image, definition: &quot;A photograph of the specimen.&quot;}
+-    - {id: simulation, class: simulation, definition: &quot;A value produced by a model run (not a measurement).&quot;}
+-    - {id: calculation, class: calculation, definition: &quot;A value computed from other values (not a measurement).&quot;}
+-    - {id: cited, class: cited, definition: &quot;A value taken from another work (not a measurement).&quot;}
+-    - {id: schematic, class: schematic, definition: &quot;A drawing: a value or statement read from a schematic (not a measurement).&quot;}
+-    - {id: tabulated, class: tabulated, definition: &quot;A value stated in a table without a method (not a measurement).&quot;}
+   categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
+                            plasma_configuration, reactor_type, reactor, delivery_method, substrate, entry_sides]
+   categorical_outputs:    [crystallinity, phase]
+diff --git a/psed_v2/ontology/units.yaml b/psed_v2/ontology/units.yaml
+index af0c117..fd00c51 100644
+--- a/psed_v2/ontology/units.yaml
++++ b/psed_v2/ontology/units.yaml
+@@ -130,6 +130,3 @@ units:
+   - {symbol: mol m-2 s-1, variants: [&quot;mol m-2 s-1&quot;, &quot;mol/(m2 s)&quot;, &quot;mol m^-2 s^-1&quot;], dimension: molar_flux, factor: 1.0, qudt: &quot;L^-2 T^-1 N&quot;}
+   - {symbol: m-2 s-1 Pa-1, variants: [&quot;m-2 s-1 Pa-1&quot;, &quot;1/(m2 s Pa)&quot;, &quot;m^-2 s^-1 Pa^-1&quot;], dimension: flux_per_pressure, factor: 1.0, qudt: &quot;L^-1 M^-1 T&quot;}
+   - {symbol: s m-3, variants: [&quot;s m-3&quot;, &quot;s/m3&quot;, &quot;s m^-3&quot;],                         dimension: time_per_volume, factor: 1.0, qudt: &quot;T L^-3&quot;}
+-  # P142 (gold vocabulary check): spellings of gre23&#x27;s gold
+-  - {symbol: MPa,   variants: [MPa, megapascal],                                   dimension: pressure, factor: 1.0e6, qudt: &quot;L^-1 M T^-2&quot;}
+-  - {symbol: L,     variants: [L, l, litre, liter],                                dimension: volume, factor: 1.0e-3, qudt: &quot;L^3&quot;}
+</pre>
+</body></html>

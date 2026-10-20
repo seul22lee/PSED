@@ -1,0 +1,21 @@
+vocab.py identity check (kb/pilot/vocab.py generated before and after, compared table by table)
+
+Item 2 alone (methods moved from vocabularies.measurement_method into 27 method entries; export.py reads method entries only):
+  METHODS            identical (34 ids)
+  METHOD_CLASS       identical
+  METHOD_DEFINITION  identical
+  ENTRIES            +27 keys: the moved methods (ENTRIES lists every entry; the 8 method entries were already in it)
+  REPLACED           +1 key: electrical -> [four_point_probe, two_point_through_thickness, hall, transistor_iv]
+                     (the block carried replaced_by; REPLACED lists every entry with replaced_by; read nowhere else)
+  Not identical as asked: ENTRIES and REPLACED change because they index every entry. Keeping them identical would need the
+  methods excluded by id, which the rules do not allow.
+
+Item 1 (the P142 MPa / L unit rows removed):
+  UNIT_BASE   -MPa, l, liter, litre, megapascal
+  UNIT_ALIAS  -l, liter, litre, megapascal
+  "L" was already the symbol of Langmuir (exposure, units.yaml line 36); the P142 litre row's "L" never took effect (first
+  spelling wins), only l / litre / liter did. Removed with the rest.
+
+Items 3 and 4:
+  ENTRIES     name of arts_slope, gordon_plug_flow, yanguas_gil_markov_chain, ylilammi_diffusion_reaction
+  qualifier meanings are not exported to vocab.py (no table changes)
