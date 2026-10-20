@@ -158,6 +158,7 @@ def jobs(pid):
     if not p0:
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
     items = C.loads_json(p0[-1]["response"])
+    items = (items.get("units") or []) if isinstance(items, dict) else items     # P144: pass 0 is {units, table_layouts, panel_layouts}
     items = [it for it in items if isinstance(it, dict) and it.get("name_as_printed")]
     p0 = "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it['name_as_printed']} | parent {it.get('parent', '') or '-'}" for it in items)   # P138
     rows = C.E.load(pid)

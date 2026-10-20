@@ -123,7 +123,9 @@ class Run:
         for g in self.groups:
             if g not in latest:
                 self.note(f"input: group {g} has no pass-1 line")
-        self.pass0 = C.loads_json(lines[p0 - 1]["response"])
+        p0obj = C.loads_json(lines[p0 - 1]["response"])
+        self.pass0 = (p0obj.get("units") or []) if isinstance(p0obj, dict) else p0obj    # P144: {units, table_layouts, panel_layouts}
+        self.layouts = {k: (p0obj.get(k) or []) for k in ("table_layouts", "panel_layouts")} if isinstance(p0obj, dict) else {}
         self.answers = {}                                                       # element id -> [record] | "NK:..."
         for g, rs in self.groups.items():
             if g not in latest:
@@ -347,9 +349,8 @@ class Run:
         """P143b: kb/<pid>.figures.json curves through the pass-0 units' curves field, the curve fields as they are. A curve a model run
         names -> a model row (y quantity, no value) under that model run's entity, its conditions as model_input settings there; a curve
         a specimen names -> an observation row under the specimen's measurement activity, its conditions as settings of the specimen;
-        a curve a run names -> one entity per distinct conditions under the run (its specimens), an observation row under the entity's
-        measurement activity, the conditions as the entity's settings. The one fallback, logged: a curve no unit names -> one entity per
-        distinct conditions under the paper row, the row type from the curve's kind. Returns (tree rows, fact rows)."""
+        P144: a curve a run names -> an observation row under the run's measurement activity, its conditions as settings of the run (no
+        entity is made); a curve no unit names -> logged and left out (no fallback). Returns (tree rows, fact rows)."""
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         k, tree, facts = self.key, [], []
@@ -390,7 +391,7 @@ class Run:
                              data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
                              evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent))
             self.count("1c", f"curve -> {typ}")
-        by_run, unowned = collections.defaultdict(list), []
+        unowned = []
         for cu in Fj.get("curves", []):
             own = [i for i in owner.get(cu["id"], []) if i in self.node]
             if len(own) != 1:
@@ -408,33 +409,15 @@ class Run:
             elif role == "specimen":
                 settings(conds, nid, ev, "stated", lab)
                 result(cu, "@meas:" + nid, "observation")
-            elif role == "run":
-                by_run[nid].append(cu)
+            elif role == "run":                                                 # P144: no entity made under the run
+                settings(conds, nid, ev, "stated", lab)
+                result(cu, "@meas:" + nid, "observation")
             else:
                 self.count("1c", f"curve named by a {role} (left out)")
 
-        def per_conditions(curves, base, typ_of, label):
-            ents = {}
-            for cu in curves:
-                key = tuple(sorted(ckey(c) for c in (cu.get("conditions") or {}).values()))
-                ents.setdefault(key, dict(id=f"{base}:c{len(ents) + 1}" if base != k else f"{k}:fig:c{len(ents) + 1}", conds=list((cu.get("conditions") or {}).values()), curves=[]))["curves"].append(cu)
-            for e in ents.values():
-                eev = ";".join(dict.fromkeys(x for cu in e["curves"] for x in els(cu["figure"], cu.get("panel", ""))))
-                lab = e["curves"][0].get("series", {}).get("label_raw", "")
-                tree.append(row(fact_id=e["id"], type="entity", how="inferred", evidence=eev, parent=base, label_as_printed=lab or e["id"],
-                                statement=f"{label} with the conditions of curves {', '.join(c['id'] for c in e['curves'])}"))
-                settings(e["conds"], e["id"], eev, "stated", lab)
-                for cu in e["curves"]:
-                    typ = typ_of(cu)
-                    result(cu, e["id"] if typ == "model" else "@meas:" + e["id"], typ)
-            return len(ents)
-        for nid, curves in by_run.items():
-            self.count("1c", "run specimens from curves", per_conditions(curves, nid, lambda cu: "observation", "a specimen of the run"))
-        if unowned:
-            n = per_conditions(unowned, k, lambda cu: "model" if cu["kind"] == "simulated" else "observation", "a unit no pass-0 item names (fallback)")
-            self.count("1c", "fallback: curves no unit names", len(unowned))
-            self.count("1c", "fallback entities under the paper (row type from the curve's kind)", n)
-            self.note(f"1c: fallback: {len(unowned)} curves no pass-0 unit names -> {n} entities under the paper row")
+        if unowned:                                                             # P144: no fallback
+            self.count("1c", "curves no unit names (left out)", len(unowned))
+            self.note(f"1c: {len(unowned)} curves no pass-0 unit names, left out: " + ", ".join(c["id"] for c in unowned))
         return tree, facts
 
     def comparisons(self, rows):

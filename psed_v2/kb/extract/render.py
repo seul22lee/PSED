@@ -1,0 +1,231 @@
+#!/usr/bin/env python3
+"""P144: the input a pass sees, rendered once for pass 0 (and pass 1 later). No model call.
+
+    python3 psed_v2/kb/extract/render.py yli18          # prints the pass-0 input sizes
+
+Parts: CODEBOOK.md whole; document.md whole; TABLES (each table's markdown as ingested, then its cell-id map "r<i>c<j> = <element
+id>"); FIGURES (each figure's caption id, panel ids, its figures.json curves as "curve id | panel | series label | x | y | conditions",
+no point data); the element index; the example: the gold units and layouts of another dev paper in the pass-0 form, with the text of
+the table rows and captions they come from beside them. gold_units() and gold_layouts() derive the gold side; the P144 report uses them.
+"""
+import collections
+import csv
+import json
+import re
+
+import common as C
+
+E = C.E
+
+
+def codebook():
+    return (C.SCHEMA / "CODEBOOK.md").read_text(encoding="utf-8")
+
+
+def document(pid):
+    return (C.V2 / "ingest" / "final" / pid / "document.md").read_text(encoding="utf-8")
+
+
+def _tables(pid):
+    """[(table id, caption id or '', markdown)] in elements.py order (numbered tab<n>, then unnumbered tabu<k>)."""
+    st = json.loads((C.V2 / "ingest" / "final" / pid / "structure.json").read_text(encoding="utf-8"))
+    out, k = [], 0
+    for c in st["captions"]:
+        if c["kind"] == "table" and c.get("number"):
+            out.append((f"tab{c['number']}", f"tab{c['number']}.cap", c.get("table") or ""))
+    for c in st["captions"]:
+        if c["kind"] == "table" and not c.get("number") and c.get("table"):
+            k += 1
+            out.append((f"tabu{k}", "", c["table"]))
+    return out
+
+
+def tables(pid):
+    ids = {r["element_id"] for r in E.load(pid)}
+    parts = []
+    for tid, cap, md in _tables(pid):
+        cells = []
+        for i, line in enumerate(E.table_lines(md)):
+            for j, cell in enumerate([x.strip() for x in line.strip().strip("|").split("|")]):
+                if cell and f"{tid}.r{i}c{j}" in ids:
+                    cells.append(f"r{i}c{j} = {tid}.r{i}c{j}")
+        parts.append(f"TABLE {tid}" + (f" (caption {cap})" if cap in ids else "") + "\n" + md.strip() + "\ncell ids: " + ", ".join(cells))
+    return "\n\n".join(parts) or "(no tables)"
+
+
+def _figures_json(pid):
+    p = C.V2 / "kb" / f"{pid}.figures.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+def figures(pid):
+    rows = E.load(pid)
+    text = E.texts(pid)
+    Fj = _figures_json(pid)
+    by_fig = collections.defaultdict(list)
+    for c in Fj.get("curves", []):
+        by_fig[str(c["figure"])].append(c)
+    parts = []
+    for r in rows:
+        if r["kind"] != "caption" or not r["element_id"].startswith("fig"):
+            continue
+        n = r["element_id"][3:].split(".")[0]
+        panels = [x["element_id"] for x in rows if x["kind"] == "panel" and re.fullmatch(rf"fig{n}[a-z]*", x["element_id"])]
+        lines = [f"FIGURE fig{n}: caption {r['element_id']}: {text[r['element_id']]}", "panels: " + ", ".join(panels)]
+        for c in by_fig.get(n, []):
+            conds = "; ".join(f"{v.get('key_raw', q)}={v.get('raw', '')}" for q, v in (c.get("conditions") or {}).items())
+            lines.append(f"{c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
+                         f"{c['y'].get('quantity', '')} | {conds}")
+        parts.append("\n".join(lines))
+    return "\n\n".join(parts) or "(no figures)"
+
+
+def index(pid):
+    return "\n".join(f"{r['element_id']}\t{r['kind']}\t{r['locator']}" for r in E.load(pid))
+
+
+# ---------------------------------------------------------------------------------------------------------------- the gold side
+def _gold(pid):
+    return list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
+
+
+def gold_units(pid):
+    """The gold tree's experiment units: run = a deposition activity; specimen = an entity with a deposition above it; simulation = a
+    simulation activity; model_run = an entity with a simulation above it. [dict(gid, role, name, evidence, parent gid)]."""
+    rows = [r for r in _gold(pid) if "#" not in r["fact_id"]]
+    R = {r["fact_id"]: r for r in rows}
+
+    def up(r, kind):
+        x = r["parent"]
+        while x in R:
+            if R[x]["type"] == "activity" and R[x]["kind"] == kind:
+                return x
+            x = R[x]["parent"]
+        return ""
+    out = []
+    for r in rows:
+        role = ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
+                else "model_run" if r["type"] == "entity" and up(r, "simulation") else "specimen" if r["type"] == "entity" and up(r, "deposition") else "")
+        if role:
+            out.append(dict(gid=r["fact_id"], role=role, name=r["label_as_printed"], evidence=[e for e in r["evidence"].split(";") if e],
+                            parent=up(r, "deposition") if role == "specimen" else up(r, "simulation") if role == "model_run" else ""))
+    return out
+
+
+def gold_curve_units(key):
+    """{figures.json curve id: gold entity id} from the pilot tree (query.Tree binds a curve to the entity whose facts name its panel and
+    series, P88). Note: importing query builds the trees of every paper of the index."""
+    import query as Q
+    T = Q.TREES[key]
+    return {cid: T.byid[cid]["links"] for cid in T.curves if T.byid.get(cid, {}).get("links")}
+
+
+def gold_layouts(pid, key):
+    """The layouts the gold tree implies. Table: the gold entity (nearest entity above a fact) of every cell a fact cites; one entity
+    per row, two or more rows -> row_per_unit; one per column -> column_per_unit; one per cell -> cell_per_unit; no entity -> not_units;
+    else mixed. Panel: its curves' gold entities (gold_curve_units); all distinct -> curve_per_unit; all one -> panel_one_unit; map cells
+    -> point_per_unit; no entity -> unbound."""
+    G = _gold(pid)
+    R = {r["fact_id"]: r for r in G}
+
+    def ent(fid):
+        x = R[fid]["parent"]
+        while x in R:
+            if R[x]["type"] == "entity":
+                return x
+            x = R[x]["parent"]
+        return ""
+    cell = collections.defaultdict(set)
+    for f in G:
+        if "#" not in f["fact_id"]:
+            continue
+        for e in f["evidence"].split(";"):
+            m = re.fullmatch(r"(tabu?\w+?)\.r(\d+)c(\d+)", e)
+            if m:
+                cell[(m.group(1), int(m.group(2)), int(m.group(3)))].add(ent(f["fact_id"]))
+    tl = []
+    for tid, _, _ in _tables(pid):
+        cs = {(i, j): es - {""} for (t, i, j), es in cell.items() if t == tid}
+        withe = {k: v for k, v in cs.items() if v}
+        if not withe:
+            layout = "not_units"
+        else:
+            rows_ = collections.defaultdict(set)
+            cols_ = collections.defaultdict(set)
+            for (i, j), es in withe.items():
+                rows_[i] |= es; cols_[j] |= es
+            if all(len(v) == 1 for v in rows_.values()) and len({next(iter(v)) for v in rows_.values()}) >= 2:
+                layout = "row_per_unit"
+            elif all(len(v) == 1 for v in cols_.values()) and len({next(iter(v)) for v in cols_.values()}) >= 2:
+                layout = "column_per_unit"
+            elif all(len(v) == 1 for v in withe.values()) and len({next(iter(v)) for v in withe.values()}) == len(withe) >= 2:
+                layout = "cell_per_unit"
+            else:
+                layout = "mixed"
+        tl.append(dict(table=tid, layout=layout, units=sorted({e for v in withe.values() for e in v}) if withe else []))
+    cu = gold_curve_units(key)
+    Fj = _figures_json(pid)
+    by_panel = collections.defaultdict(list)
+    for c in Fj.get("curves", []):
+        by_panel[f"fig{c['figure']}{c.get('panel', '')}"].append(c["id"])
+    cells = {f"fig{v['figure']}{v.get('panel', '')}" for v in Fj.get("values", []) if v.get("kind") == "cell"}
+    pl = []
+    for panel in sorted(set(by_panel) | cells):
+        es = [cu.get(c, "") for c in by_panel.get(panel, [])]
+        bound = [e for e in es if e]
+        layout = ("point_per_unit" if panel in cells else "unbound" if not bound else "panel_one_unit" if len(set(bound)) == 1 and len(es) > 1
+                  else "curve_per_unit" if len(set(bound)) == len(bound) else "mixed")
+        pl.append(dict(panel=panel, layout=layout, units=sorted(set(bound))))
+    return tl, pl
+
+
+def example(pid, form):
+    """One example in the pass-0 form: the gold units and layouts of the last dev paper in index order other than pid (never held-out)
+    whose gold has runs, specimens, a simulation and model runs; ids role prefix + number; curves from gold_curve_units; every field
+    present (null when the gold has none); then SOURCES: each unit's first evidence element with its text (a table row's cells joined,
+    a caption), at most 40 words. Validated against form_pass0.json."""
+    from jsonschema import Draft202012Validator
+    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m"}
+    for p in [p for p in reversed(list(E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
+        U = gold_units(p)
+        if not {"run", "specimen", "simulation", "model_run"} <= {u["role"] for u in U}:
+            continue
+        key = E.PAPERS[p]
+        n, ids = collections.Counter(), {}
+        for u in U:
+            n[u["role"]] += 1
+            ids[u["gid"]] = f"{PRE[u['role']]}{n[u['role']]}"
+        cu = gold_curve_units(key)
+        curves = collections.defaultdict(list)
+        for c, e in cu.items():
+            curves[e].append(c)
+        unit_item = lambda u: {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] or None, "parent": ids.get(u["parent"]),
+                               "introduced_in": u["evidence"] or None, "evidence_quote": None, "curves": curves.get(u["gid"]) or None,
+                               "structure_class": None, "specimen_class": None, "experiment_kind": None}
+        tl, pl = gold_layouts(p, key)
+        obj = {"units": [unit_item(u) for u in U],
+               "table_layouts": [{"table": t["table"], "layout": t["layout"], "unit_name_cells": None, "units": [ids[x] for x in t["units"] if x in ids] or None}
+                                 for t in tl if t["layout"] != "mixed"] or None,
+               "panel_layouts": [{"panel": x["panel"], "layout": x["layout"], "unit": ids.get(x["units"][0]) if x["layout"] == "panel_one_unit" and x["units"] else None,
+                                  "axis_quantities": None, "value_quantity": None} for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit")] or None}
+        errs = list(Draft202012Validator(form).iter_errors(obj))
+        if errs:
+            continue
+        text = E.texts(p)
+
+        def src(e):
+            m = re.fullmatch(r"(tabu?\w+?)\.r(\d+)c\d+", e)
+            t = " | ".join(text[x] for x in sorted(text, key=lambda x: x) if m and re.fullmatch(rf"{m.group(1)}\.r{m.group(2)}c\d+", x)) if m else text.get(e, "")
+            return " ".join(t.split()[:40])
+        sources = "\n".join(f"{ids[u['gid']]} <- {u['evidence'][0]}: {src(u['evidence'][0])}" for u in U if u["evidence"])
+        return f"(paper {key})\n" + json.dumps(obj, ensure_ascii=False) + "\nSOURCES (the element each unit comes from):\n" + sources
+    return "(no example)"
+
+
+if __name__ == "__main__":
+    import sys
+    pid, key = C.resolve(sys.argv[1])
+    form = C.schema("form_pass0.json")
+    for name, t in (("codebook", codebook()), ("document", document(pid)), ("tables", tables(pid)), ("figures", figures(pid)), ("index", index(pid)),
+                    ("example", example(pid, form))):
+        print(f"{name}: {len(t)} chars, ~{len(t) // 4} tokens")

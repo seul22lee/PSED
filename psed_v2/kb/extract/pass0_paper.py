@@ -1,98 +1,58 @@
 #!/usr/bin/env python3
-"""P133 pass 0: one call per paper, the things it names (specimens, runs, simulations, cited works), against schema/form_pass0.json.
+"""P133/P144 pass 0: one call per paper: its experiment units, the layout of each table and of each figure panel, against
+kb/schema/form_pass0.json.
 
-    ~/miniconda3/bin/conda run -n psed310 python psed_v2/extract/pass0_paper.py yli18
+    ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/pass0_paper.py yli18 [--plan]
 
-Prompt: the instruction, the pass-0 form, the element index of pilot/<pid>.elements.csv (id, kind, locator: the ids introduced_in
-names) and the whole ingest/final/<pid>/document.md. Writes one line (pass 0, section "paper") to records/<pid>.jsonl.
+Prompt (P144, kb/extract/render.py): the instruction (TERMS and the layout definitions quoted from their sources), CODEBOOK.md whole,
+the example (another dev paper's gold units and layouts with their sources), TABLES (markdown + cell ids), FIGURES (captions, panel
+ids, figures.json curves), the element index, document.md whole. The provider schema (form_pass0.json) constrains the response.
+Writes one line (pass 0, section "paper") to kb/records/<pid>.jsonl.
 """
-import json
 import sys
 
 import common as C
-
-INSTRUCTION = """You read one ALD paper and list its experiment units: every run, specimen, simulation and model run it reports.
-One item per unit:
-- id: a short id you assign, unique in the paper (r1, s1, sim1, m1, ...); pass 1 uses it as a record's parent;
-- name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
-- role: one of run, specimen, simulation, model_run.
-  A run is one deposition the paper performs; samples coated in separate depositions are separate runs even with the same
-  chemistry, temperature and structure; samples coated together share one run.
-  A specimen is one physical sample measured; parent = its run.
-  A simulation is one model; two solution methods or approximations of the same model are the same simulation.
-  A model_run is one set of inputs whose result the paper reports (a curve, a table row); parent = its simulation;
-- parent: as defined per role above; null when the role has none;
-- evidence_quote (runs): the words that say which samples the run made, copied verbatim from the paper;
-- curves (runs, specimens, model runs): the ids from CURVES below that show this unit; null when none does;
-- every field is present in every item; null when it does not apply;
-- structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
-- introduced_in: the id(s) of the element(s) where the unit is first named, then every figure or table element that shows it,
-  taken from the element index below.
-Sets of units (a series in a figure, replicates) and cited works are not items.
-Answer with JSON matching the form."""
+import render
+from lists import TERMS
+from export import P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS
 
 
-def example(pid, form):
-    """P136b/P138/P139/P143b: one example list in the pass-0 form, from the gold tree of the last dev paper in index order other than
-    pid (never held-out) whose gold has runs, specimens, a simulation and model runs: at most two items per role (run = a deposition
-    activity, specimen = an entity with a deposition above it, simulation = a simulation activity, model_run = an entity with a
-    simulation above it), id = role prefix + number, name = label_as_printed, introduced_in = the row's evidence, parent = the item id
-    of the nearest deposition (specimen) or simulation (model_run) when that is an item; every field present (null when not given);
-    validated against form_pass0.json."""
-    import csv
-    from jsonschema import Draft202012Validator
-    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m"}
-    for p in [p for p in reversed(list(C.E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
-        f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
-        rows = [r for r in csv.DictReader(f.open(encoding="utf-8")) if "#" not in r["fact_id"]] if f.exists() else []
-        R = {r["fact_id"]: r for r in rows}
+def instruction():
+    """P144: the terms and layouts quoted from lists.TERMS and ontology/export.py (P143), the rules of the directive added."""
+    terms = "\n".join(f"- {k}: {v}" for k, v in TERMS.items())
+    tables = "\n".join(f"- {k}: {d}" for k, d in P143_TABLE_LAYOUTS)
+    panels = "\n".join(f"- {k}: {d} Example: {ex}." for k, d, ex in P143_PANEL_LAYOUTS)
+    return f"""You read one ALD paper and list its experiment units, the layout of each of its tables and the layout of each figure panel.
 
-        def up(r, kind):
-            x = r["parent"]
-            while x in R:
-                if R[x]["type"] == "activity" and R[x]["kind"] == kind:
-                    return x
-                x = R[x]["parent"]
-            return ""
-        role = lambda r: ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
-                          else "model_run" if r["type"] == "entity" and up(r, "simulation") else "specimen" if r["type"] == "entity" and up(r, "deposition") else "")
-        items, n, ids = [], {}, {}
-        for r in rows:
-            k = role(r)
-            if k and r["label_as_printed"] and r["evidence"] and n.get(k, 0) < 2:
-                n[k] = n.get(k, 0) + 1
-                ids[r["fact_id"]] = f"{PRE[k]}{n[k]}"
-                items.append(dict(id=ids[r["fact_id"]], name_as_printed=r["label_as_printed"], role=k, introduced_in=r["evidence"].split(";"),
-                                  _gp=up(r, "deposition") if k == "specimen" else up(r, "simulation") if k == "model_run" else ""))
-        for it in items:
-            gp = it.pop("_gp")
-            if gp in ids:
-                it["parent"] = ids[gp]
-        items = [{k: it.get(k) for k in form["items"]["required"]} for it in items]   # P139: every field present, null when not given
-        if {"run", "specimen", "simulation", "model_run"} <= set(n) and not list(Draft202012Validator(form).iter_errors(items)):
-            return json.dumps(items, ensure_ascii=False)
-    return "[]"
+TERMS (from the codebook):
+{terms}
 
+UNITS: one item per run, specimen, simulation and model run.
+- role: run, specimen, simulation or model_run; parent: a specimen's run, a model run's simulation; null otherwise.
+- list every run even when several share all conditions; list a shared run once when the paper says the samples were coated together.
+- evidence_quote is copied from the paper: the words that say which samples a run made (for a specimen or a model run, the words
+  that name it).
+- curves: the figures.json curve ids (FIGURES below) whose results belong to this unit; null when none.
+- introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).
+- structure_class, specimen_class, experiment_kind: only values of the form's enums, only when the paper states them.
 
-def curves(pid):
-    """P143b: the figures.json curves of the paper as 'id | figure panel | kind | series label | x -> y' lines (for the curves field)."""
-    p = C.V2 / "kb" / f"{pid}.figures.json"
-    if not p.exists():
-        return "(no figures.json)"
-    F = json.loads(p.read_text(encoding="utf-8"))
-    return "\n".join(f"{c['id']} | fig{c['figure']}{c.get('panel', '')} | {c['kind']} | {c.get('series', {}).get('label_raw', '')} | "
-                     f"{c['x'].get('quantity', '')} -> {c['y'].get('quantity', '')}" for c in F.get("curves", [])) or "(none)"
+TABLE LAYOUTS (one per table of TABLES below):
+{tables}
+- unit_name_cells: the cell ids that name the units; units: the unit ids in the order the table gives them.
+
+PANEL LAYOUTS (one per figure panel of FIGURES below):
+{panels}
+- unit: the one unit of a panel_one_unit panel; axis_quantities and value_quantity: the quantity ids of a point_per_unit panel.
+
+Every field is present; null when it does not apply. Answer with JSON matching the form."""
 
 
 def jobs(pid):
     form = C.schema("form_pass0.json")
-    index = "\n".join(f"{r['element_id']}\t{r['kind']}\t{r['locator']}" for r in C.E.load(pid))
-    doc = (C.V2 / "ingest" / "final" / pid / "document.md").read_text(encoding="utf-8")
-    prompt = "\n\n".join([INSTRUCTION, "FORM (JSON Schema):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")),
-                          "EXAMPLE (another paper, in the form):\n" + example(pid, form),
-                          "ELEMENT INDEX (id, kind, locator):\n" + index,
-                          "CURVES (figures.json: id | figure panel | kind | series label | x -> y), for the curves field:\n" + curves(pid),   # P143b
-                          "PAPER (document.md):\n" + doc])
+    prompt = "\n\n".join([instruction(), "CODEBOOK:\n" + render.codebook(), "EXAMPLE (another paper's gold, in the form):\n" + render.example(pid, form),
+                          "TABLES (markdown, then cell ids):\n" + render.tables(pid), "FIGURES (caption, panels, curves: id | panel | series label | x | y | "
+                          "conditions):\n" + render.figures(pid), "ELEMENT INDEX (id, kind, locator):\n" + render.index(pid),
+                          "PAPER (document.md):\n" + render.document(pid)])
     return [(0, "paper", prompt, C.provider_schema(form), [])]
 
 
@@ -102,14 +62,18 @@ THINKING = {"thinking_level": "MEDIUM"}                                         
 def main(arg):
     pid, key = C.resolve(arg)
     if "--plan" in sys.argv:                                                    # the planned call only, no call
-        C.plan(pid, jobs(pid), THINKING)
+        js = jobs(pid)
+        C.plan(pid, js, THINKING)
+        print(f"{key}: prompt {len(js[0][2])} chars, ~{len(js[0][2]) // 4} tokens")
         return 0
     out, _ = C.run(pid, jobs(pid), THINKING)
-    items = C.loads_json(out[0]["response"])
+    obj = C.loads_json(out[0]["response"])
+    units = (obj or {}).get("units") or [] if isinstance(obj, dict) else []
     roles = {}
-    for it in items if isinstance(items, list) else []:
+    for it in units:
         roles[it.get("role", "?")] = roles.get(it.get("role", "?"), 0) + 1
-    print(f"{key} pass 0: {len(items) if isinstance(items, list) else 'not a list'} items, by role {roles}")
+    print(f"{key} pass 0: {len(units)} units, by role {roles}; table layouts {len((obj or {}).get('table_layouts') or [])}, "
+          f"panel layouts {len((obj or {}).get('panel_layouts') or [])}")
     return 0
 
 

@@ -69,16 +69,25 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | candidate.unit_as_printed | string | required with candidate | extractor |
 | candidate.dimension | enum, 43 values | required with candidate | extractor |
 | candidate.symbol | string | required with candidate | extractor |
-| pass0.id | string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.parent | string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.name_as_printed | string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.role | one of `specimen`, `run`, `simulation`, `model_run` or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.structure_class | enum, 10 values or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.specimen_class | one of `film`, `porous_composite` or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.introduced_in | list of string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.curves | list of string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.evidence_quote | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.id | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.parent | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.name_as_printed | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.role | one of `specimen`, `run`, `simulation`, `model_run` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.structure_class | enum, 10 values or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.specimen_class | one of `film`, `porous_composite` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.introduced_in | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.curves | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.evidence_quote | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.table_layouts.table | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.table_layouts.layout | one of `row_per_unit`, `column_per_unit`, `cell_per_unit`, `not_units` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.table_layouts.unit_name_cells | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.table_layouts.units | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.panel_layouts.panel | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.panel_layouts.layout | one of `curve_per_unit`, `panel_one_unit`, `point_per_unit` or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.panel_layouts.unit | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.panel_layouts.axis_quantities | list of enum, 107 values (quantity_id) or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.panel_layouts.value_quantity | enum, 107 values (quantity_id) or {'type': 'null'} | always | extractor, pass 0 |
 | fact_id | not in the form |  | compiler |
 | kind | not in the form (facts.FIELDS column with no form field) |  | nobody |
 | order | not in the form (facts.FIELDS column with no form field) |  | nobody |
