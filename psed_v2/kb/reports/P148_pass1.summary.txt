@@ -1,0 +1,27 @@
+P148 D: pass 1 for yli18, yim20, mat22 with the codebook prefix, `about` and the pilot placement rule.
+
+Run: 44 pass-1 lines, gemini-3.8-flash, thinking LOW, the flat P139 record schema (P148-cost2), the fixed prefix (codebook, rules,
+examples, pass-0 units) registered once per paper as Gemini cached content and deleted after the run. 43 calls made on
+2026-10-20 22:32-22:56 UTC; yli18 s7+s8+s9 came from the cache (the P148-cost2 probe-1 line, the same request).
+Groups: consecutive sections merged under 6k tokens (P148-cost): yli18 12, yim20 18, mat22 14 (were 22, 41, 19).
+Tokens: input 1,210,158 of which 1,131,918 read from the cached prefix (93.5%); output 284,413 (incl. thinking).
+Cost (ask.cost_of, prices.csv: $0.75 input, $0.075 cached, $3.75 output per Mtok): $1.210 for the 44 lines ($1.112 for the 43
+calls of this run); plus the three prefix registrations (~75k tokens; at most $0.057 at the input price) and storage (< $0.01).
+Projected in P148-cost2: $1.10-1.40.
+
+The two user corrections of P148 (compile.py, commit 8a96f37):
+- no run-level measurement node: a result about a run (a record, or a curve the run owns) goes to the run's one pass-0 specimen,
+  else to "film of <run>" (P146: the run-level specimen is the compiler's), also when the run has several specimens; no
+  measurement activity has a run as its parent (checked: 0 in each compiled tree).
+- every form.json error drops the record, the reason schema:<validator>: 1 drop (yim20, schema:enum). The pass1_elements
+  tallies "records failing form.json" (yli18 14, yim20 21, mat22 0) count before the compiler's numeric coercion (C4) and
+  D12 (a variable's quantity outside the enum -> null).
+
+Score (kb/extract/score.py; matched = audit T6, the P134 match): yli18 144 -> 145 / 243 gold rows, yim20 366 -> 443 / 900,
+mat22 299 / 1071 (no earlier pass 1); check --dir problems yli18 198 -> 137, yim20 385 -> 248, mat22 454. Before = P140.
+Drops: quote_not_found yli18 4, yim20 22, mat22 96; schema:enum yim20 1. about: a pass-0 unit 709, "paper" 481, unknown 7, null 0.
+
+Equations (your question): yli18 s7+s8+s9 (the section group with the most equations): 30 of 30 equation elements give exactly
+one model record each (group_records, group_equations). Over all of yli18: 46 of 46 equations give one model each; the model
+records beyond the gold (126 compiled, 67 gold) come from captions (46 records on 4 captions: 6, 13, 13, 14), panels (14 on 3)
+and paragraphs (16 on 3, one paragraph with 13) (models_by_kind).
