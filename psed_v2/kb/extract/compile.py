@@ -58,7 +58,7 @@ def normalize(t):
     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
     t = re.sub(r"\\times\s*", "×", t)                                                  # P136b: 50\times -> 50×
     t = re.sub(r"[$_^{}*]", "", t)
-    return norm_ws(t)
+    return norm_ws(t).casefold()                                                # P140 C1: casefolded (no unit spelling collides; checked)
 
 
 UNIT_SYMBOL = {normalize(a): V.UNIT_ALIAS.get(a, a) for a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS) if V.UNIT_ALIAS.get(a, a) in V.UNIT_BASE}
@@ -211,7 +211,11 @@ class Run:
         out = []
         for r in recs:
             ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
-            if normalize(r["rec"]["quote"]) in normalize(" ".join(self.text.get(e, "") for e in ev)):        # element ids it mentions, texts joined
+            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join(self.text.get(e, "") for e in ev))   # element ids it mentions, texts joined
+            if q in txt:
+                out.append(r)
+            elif in_order(q.split(), txt):                                      # P140 C1: every token in order, gaps allowed
+                self.count("d", "quote_noncontiguous (kept)")
                 out.append(r)
             else:
                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
@@ -692,6 +696,7 @@ class Run:
             p, why = self.parent(r)
             self.count("h", f"parent: {why}")
             items.append(self.fact_row(r, p))
+            items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
         fig_tree, fig_facts = self.figures()
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
@@ -733,13 +738,24 @@ class Run:
         return rows
 
 
+def in_order(tokens, text):
+    """P140 C1: every token occurs in text, each after the previous one."""
+    i = 0
+    for t in tokens:
+        j = text.find(t, i)
+        if j < 0:
+            return False
+        i = j + len(t)
+    return bool(tokens)
+
+
 def text_key(f):
     """P138: the dedupe key of a claim, caveat or definition (with the quote; a definition also by its normalized term), else None."""
     if f["type"] == "definition":
         t = normalize(f["term"] or f["label_as_printed"] or f["mentions"].split(";")[0]).lower()
-        return ("definition", t, f.get("_quote", "")) if t else None
+        return ("definition", f["parent"], t, f.get("_quote", "")) if t else None      # P140 C2: the parent too
     if f["type"] in ("claim", "caveat"):
-        return (f["type"], f["cause"], f["relation"], f["effect"], f.get("_quote", ""))
+        return (f["type"], f["parent"], f["cause"], f["relation"], f["effect"], f.get("_quote", ""))
     return None
 
 
