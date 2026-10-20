@@ -9,8 +9,10 @@ Per gold row of kb/pilot/<pid>.facts.csv the first stage test that fails:
   T1 ontology  quantity not in the form's quantity enum; unit not in units.yaml (vocab.UNIT_ALIAS / UNIT_BASE); value_text of a
                species/structure quantity not among its ids
   T2 form      the row cast into a form record (form_roundtrip.cast; quote = the first 15 words of the statement) fails form.json
-               (first error); gold columns with no form slot go to no_slot and are not a failure
-  T3 prompt    no record of the 22 lines in use (compile.py input rule) on an evidence element with the gold type (and quantity)
+               (first error; P135c: a quantity without label_as_printed gets the quantity id, quantity other without candidate a stub
+               candidate, both listed in cast_fills); gold columns with no form slot go to no_slot and are not a failure
+  T3 prompt    no record of the 22 lines in use (compile.py input rule) on an evidence element with the gold type
+  T3q          such records exist, none with the gold quantity (P135c)
   T4 compiler  the matching record was dropped (compile.py step, reason, field)
   T5 mismatch  the matching record reached facts.csv but the P134 match (type, quantity, value, unit, value_text) fails
   T6 matched
@@ -38,7 +40,8 @@ import vocab as V  # noqa: E402
 TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
 NO_SLOT = ("links", "inputs", "parent", "figure_ref")
 MATCH = ("type", "quantity", "value", "unit", "value_text")
-COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "no_slot", "jsonl_record", "compiled_row"]
+COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "cast_fills", "no_slot", "same_element_same_type",
+        "same_element_same_type_same_quantity", "jsonl_record", "compiled_row"]
 REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
 
 
@@ -96,12 +99,18 @@ def ontology_test(g, qids):
 def form_test(g, val, props):
     rec, lost = RT.cast(g, props)
     rec["quote"] = " ".join(g["statement"].split()[:15])
+    fills = []
+    if rec.get("quantity") and not rec.get("label_as_printed"):                 # P135c: gold's filing convention, not expressibility
+        rec["label_as_printed"] = rec["quantity"]; fills.append("label_as_printed=quantity id")
+    if rec.get("quantity") == "other" and "candidate" not in rec:
+        rec["candidate"] = dict(definition_quote=g["statement"], unit_as_printed=g["unit"], dimension="dimensionless", symbol=g["label_as_printed"] or "?")
+        fills.append("candidate=stub")
     no_slot = [c for c, _ in lost] + [c for c in NO_SLOT if g.get(c)]
     errs = sorted(val.iter_errors(rec), key=lambda e: list(e.absolute_path))
     if not errs:
-        return "", no_slot
+        return "", no_slot, fills
     field, reason = RT.explain(errs[0], rec)
-    return f"{field}: {reason}", no_slot
+    return f"{field}: {reason}", no_slot, fills
 
 
 def rec_json(r):
@@ -144,7 +153,7 @@ def main(arg):
     for g in gold:
         ev = [e for e in g["evidence"].split(";") if e]
         a = {c: g[c] for c in COLS if c in g}
-        a.update(stage="", detail="", no_slot="", jsonl_record="", compiled_row="")
+        a.update(stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
         texts.append(dict(fact_id=g["fact_id"], element_text=" | ".join(f"{e}: {run.text.get(e, '')}" for e in ev)))
         if "#" not in g["fact_id"] or g["type"] in TREE_TYPES:
             a.update(stage="T0 tree", detail=g["type"]); out.append(a); continue
@@ -153,12 +162,17 @@ def main(arg):
         o = ontology_test(g, qids)
         if o:
             a.update(stage="T1 ontology", detail=o); out.append(a); continue
-        err, no_slot = form_test(g, val, props)
-        a["no_slot"] = ";".join(no_slot)
+        err, no_slot, fills = form_test(g, val, props)
+        a["no_slot"], a["cast_fills"] = ";".join(no_slot), ";".join(fills)
         if err:
             a.update(stage="T2 form", detail=err); out.append(a); continue
         on_el = [r for r in records if r["eid"] in ev]
-        hits = [r for r in on_el if r["rec"].get("type") == g["type"] and (not g["quantity"] or r["rec"].get("quantity") == g["quantity"])]
+        typed = [r for r in on_el if r["rec"].get("type") == g["type"]]
+        hits = [r for r in typed if not g["quantity"] or r["rec"].get("quantity") == g["quantity"]]
+        a.update(same_element_same_type=len(typed), same_element_same_type_same_quantity=len(hits))
+        if typed and not hits:
+            a.update(stage="T3q", detail=f"quantities of the {len(typed)} {g['type']} records: {dict(collections.Counter(r['rec'].get('quantity', '') for r in typed))}")
+            out.append(a); continue
         if not hits:
             a.update(stage="T3 prompt", detail=f"{len(on_el)} records on the evidence elements, of types {dict(collections.Counter(r['rec'].get('type') for r in on_el))}")
             out.append(a); continue
@@ -201,12 +215,16 @@ def main(arg):
         for s in stages:
             w.writerow([s] + [st[(s, t)] for t in types] + [sum(st[(s, t)] for t in types)])
         w.writerow(["total"] + [sum(st[(s, t)] for s in stages) for t in types] + [len(out)])
-    for name, stage in (("t2_errors", "T2 form"), ("t4_reasons", "T4 compiler"), ("t3_prompt", "T3 prompt")):
-        c = collections.Counter(a["detail"] if stage != "T3 prompt" else a["type"] for a in out if a["stage"] == stage)
+    for name, stage in (("t2_errors", "T2 form"), ("t4_reasons", "T4 compiler")):
+        c = collections.Counter(a["detail"] for a in out if a["stage"] == stage)
         with (R / f"P135b.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
-            w.writerow(["detail" if stage != "T3 prompt" else "type", "rows"])
+            w.writerow(["detail", "rows"])
             w.writerows(c.most_common())
+    with (R / "P135b.t3_split.csv").open("w", newline="", encoding="utf-8") as fh:  # P135c: T3 (no record of the type) vs T3q (no record with the quantity)
+        w = csv.writer(fh)
+        w.writerow(["type", "T3 prompt", "T3q"])
+        w.writerows([t, st[("T3 prompt", t)], st[("T3q", t)]] for t in types if st[("T3 prompt", t)] or st[("T3q", t)])
     print(f"{key_}: {len(out)} gold rows, {len(rev)} compiled facts without a gold match")
     return 0
 
