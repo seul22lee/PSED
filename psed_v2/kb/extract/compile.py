@@ -7,9 +7,9 @@
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
 are ignored); the latest pass-0 line. Steps: a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
 ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
-m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6): a record is dropped only for an enum or
-type violation (after the numeric strings are coerced, C4), a quote not found (after C3), or a pass-0 data id not in figures.json;
-every other finding is logged and the record kept.
+m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
+dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
+found (after C3), or a pass-0 data id not in figures.json; every other finding is logged and the record kept.
 """
 import collections
 import csv
@@ -162,8 +162,8 @@ class Run:
         """a: D12 (a variable's quantity outside the enum -> null); C4 (P148): a numeric string in a number field (value, value_min,
         value_max, uncertainty, uncertainty_n, a numeric qualifier) -> the number, logged; C5 (P148): a variable whose quantity is null
         -> the quantity of the same paper's definition of that term (normalize()d; a term two definitions give different quantities is
-        left null), logged; then form.json: C6 (P148) an enum or type violation drops the record, any other schema error is logged and
-        the record kept."""
+        left null), logged; then form.json: C6 (P148, corrected in P148 D) every error drops the record, the reason
+        schema:<validator> (inside a nullable anyOf, the validator of its non-null branch)."""
         from jsonschema import Draft202012Validator
         form = C.schema("form.json")
         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
@@ -207,17 +207,12 @@ class Run:
             if r["rec"].get("type") is None:
                 self.drop("a", r["eid"], r["rec"], "schema:type null", "type"); continue
             errs = list(val.iter_errors(r["rec"]))
-            hard = [e for e in errs if violation(e)]
-            if hard:
-                e = hard[0]
+            if errs:                                                            # P148 D: every form.json error drops
+                e = errs[0]
                 field = ".".join(str(p) for p in e.path) or e.validator
-                self.drop("a", r["eid"], r["rec"], f"schema:{e.validator}", field)
+                self.drop("a", r["eid"], r["rec"], f"schema:{leaf(e)}", field)
                 self.count("a_fields", field)
                 continue
-            for e in errs:                                                      # C6: not an enum/type violation -> kept, logged
-                field = ".".join(str(p) for p in e.path) or e.validator
-                self.count("a", f"schema {e.validator} on {field} (kept, C6)")
-                self.note(f"a: {r['eid']}: schema {e.validator} on {field} (kept, C6)")
             r["rec"] = {k_: (({q: v for q, v in x.items() if v is not None} if k_ == "qualifiers" else x) if isinstance(x, dict) else x)
                         for k_, x in r["rec"].items() if x is not None}         # P139: null = absent
             out.append(r)
@@ -447,6 +442,16 @@ class Run:
             self.meas[i] = r
         return i
 
+    def run_entity(self, run):
+        """P148 D (user: no run-level measurement node; P146: the run-level specimen is the compiler's): the specimen a result about a
+        run goes to: the run's one pass-0 specimen, else (none or several) its "film of <run>". Returns (entity, which)."""
+        sp = self.under.get(run, [])
+        if len(sp) == 1:
+            return sp[0], "its specimen"
+        if sp:
+            self.count("h", "film of a run with several specimens")
+        return self.film(run), "film" if not sp else "film (several specimens)"
+
     def film(self, run):
         """P146: the specimen "film of <run>" of a run the pass-0 units give no specimen (how inferred, logged specimen_created); the
         one unit the compiler makes (C2)."""
@@ -560,15 +565,16 @@ class Run:
         return tree, facts
 
     def specimens_for_runs(self, facts):
-        """P146: a run that carries result rows directly (an observation, a derived or a model row whose parent is the run or the run's
-        measurement) and has no specimen gets one specimen "film of <run>" (how inferred, logged specimen_created); the results move to
-        it (an observation to its measurement activity of the row's method). Structure the pilot tree needs, not a count judgement."""
+        """P146: the result rows a run carries directly (an observation, a derived or a model row whose parent is the run or the run's
+        measurement) move to a specimen: P148 D run_entity() (the run's one specimen, else "film of <run>", how inferred, logged
+        specimen_created); an observation to that specimen's measurement activity of the row's method. No measurement node under a
+        run. Structure the pilot tree needs, not a count judgement."""
         runs = {nid for nid, role in self.node.values() if role == "run"}
-        for run in sorted(runs - set(self.under)):                              # P148: runs with no pass-0 specimen (a film made by place() counts as none)
+        for run in sorted(runs):
             res = [f for f in facts if f["type"] in ("observation", "derived", "model") and f["parent"] in (run, "@meas:" + run)]
             if not res:
                 continue
-            e = self.film(run)
+            e = self.run_entity(run)[0]
             for f in res:
                 f["parent"] = self.measurement(e, f["method"]) if f["type"] == "observation" else e
             self.note(f"h: {len(res)} result rows moved to {e}")
@@ -674,8 +680,8 @@ class Run:
         or model with a MEAS_METHODS method -> <paper>:method:<method>; the rest -> the recipe (never the paper row). about = a run or a
         specimen: a setting without a MEAS_METHODS method -> the run's deposition (the specimen itself when the record is about a
         specimen and several specimens share that deposition); a setting with one, an observation, a derived or a model ->
-        <specimen>:meas:<method> ("measurement" when the method is not in MEAS_METHODS): a run's to its one specimen, to "film of
-        <run>" when it has none (P146), to the deposition's own measurement when it has several (logged). about = a simulation or a
+        <specimen>:meas:<method> ("measurement" when the method is not in MEAS_METHODS): a run's to run_entity() (P148 D: no
+        measurement node under a run). about = a simulation or a
         model run: a setting -> the simulation (the model run itself when the record is about a model run and several model runs share
         that simulation); a model without a value -> the simulation; an observation, a derived or a model with a value -> the model run
         (the simulation when about = the simulation). about null or not a unit id -> the recipe, flagged. A comparison is never a
@@ -704,13 +710,8 @@ class Run:
                 return run, f"setting about a {role} -> deposition"
             if role == "specimen":
                 return self.measurement(rid, mm), "result about a specimen -> its measurement"
-            sp = self.under.get(rid, [])
-            if len(sp) == 1:
-                return self.measurement(sp[0], mm), "result about a run -> its specimen's measurement"
-            if not sp:
-                return self.measurement(self.film(rid), mm), "result about a run without a specimen -> film measurement"
-            self.note(f"h: {r['eid']}: result about run {a} with {len(sp)} specimens -> the deposition's measurement")
-            return self.measurement(rid, mm), "result about a run with several specimens -> deposition measurement"
+            ent, why = self.run_entity(rid)
+            return self.measurement(ent, mm), f"result about a run -> {why} measurement"
         sim = rid if role == "simulation" else (self.up[rid] if self.node_role(self.up[rid]) == "simulation" else "")
         if role == "simulation":
             return rid, f"{t} about a simulation -> simulation"
@@ -982,13 +983,13 @@ class Run:
         return rows
 
 
-def violation(e):
-    """C6 (P148): a jsonschema error that is an enum or type violation; inside an anyOf (a nullable field), one of a non-null branch."""
-    if e.validator in ("enum", "type", "const"):
-        return True
+def leaf(e):
+    """P148 D: the validator that names a form.json error; inside an anyOf (a nullable field) the one of its non-null branch."""
     if e.validator == "anyOf":
-        return any(violation(c) for c in e.context if e.validator_value[c.relative_schema_path[0]] != {"type": "null"})
-    return False
+        subs = [c for c in e.context if e.validator_value[c.relative_schema_path[0]] != {"type": "null"}]
+        if subs:
+            return leaf(subs[0])
+    return e.validator
 
 
 def in_order(tokens, text):
