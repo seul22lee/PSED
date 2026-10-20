@@ -457,9 +457,9 @@ def parse_value(text):
     m = SCI.match(t)
     if m:
         return float(m.group(1)) * 10 ** int(m.group(2)), None, m.group(3)
-    m = re.match(r"^\s*10\s*\^?\s*\{?([-+]?\d+)\}?\s*(.*?)\s*$", t)                     # '10^-3 Torr'
+    m = re.match(r"^\s*10\s*(?:\^\s*\{?([-+]?\d+)\}?|([-+]\d+))\s*(.*?)\s*$", t)       # '10^-3 Torr', '10-3 Torr' (flattened); P138: a caret or a sign, so '106 pm' and '1000' are numbers
     if m:
-        return 10 ** int(m.group(1)), None, m.group(2)
+        return 10 ** int(m.group(1) or m.group(2)), None, m.group(3)
     m = NUM.match(t)
     if not m or m.group(1) is None:
         return None
