@@ -5,7 +5,11 @@ Provider: google-genai (conda env psed310), the client and the tolerant JSON par
 pipeline/figures/figure_extract.py); MODEL fixed, temperature 0, provider-side structured output (response_json_schema). The
 provider schema is the form with the keywords the provider does not take removed (PROVIDER_DROP); enums are kept.
 Key: GOOGLE_API_KEY, from the environment or psed_v2/.env (figures.load_env; never printed, never written).
-Cache: cache/<pid>/<pass>_<section>_<prompt_hash>_<model>.json (gitignored); a hit makes no call and appends nothing.
+Cache: cache/<pid>/<pass>_<section>_<prompt_hash>_<model>.json (gitignored); a hit makes no call and appends nothing. The key is
+the hash of the full request (prompt, response schema, thinking) whether or not a prefix is sent as cached content.
+P148: a job may carry a fixed prefix (the start of its prompt): before the first call of a run the prefix is registered once as
+Gemini cached content (caches.create, TTL CONTENT_TTL), every call of the run references it and sends only the rest of its prompt;
+the cached content is deleted when the run ends. The line records cache_read_tokens (usage_metadata.cached_content_token_count).
 Records: records/<pid>.jsonl (tracked), one line per call made, append-only.
 One retry on a transport error; a second failure, or any other error, stops the run.
 """
@@ -27,6 +31,7 @@ from figures import client_for, load_env, loads_json  # noqa: E402,F401
 MODEL = "gemini-3.8-flash"                                                       # user, P133: pinned (gemini-2.5-flash 404s)
 KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
 HELD_OUT = {"yim22", "gre23", "mat23"}
+CONTENT_TTL = "3600s"                                                           # P148: the cached prefix lives at most an hour (deleted at the end of the run)
 HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
 CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"
 PROVIDER_DROP = {"additionalProperties", "pattern", "uniqueItems", "propertyNames", "minProperties", "dependentRequired", "allOf", "if", "then",
@@ -92,7 +97,7 @@ def cache_path(pid, pass_, section, h):
 
 
 def plan(pid, jobs, thinking=None):
-    """jobs: [(pass, section, prompt, rschema, element_ids)] -> prints the planned calls; stops when the key is missing."""
+    """jobs: [(pass, section, prompt, rschema, element_ids[, prefix])] -> prints the planned calls; stops when the key is missing."""
     todo = [j for j in jobs if not cache_path(pid, j[0], j[1], request_hash(j[2], j[3], thinking)).exists()]
     load_env()
     print(f"{pid}: {len(jobs)} planned calls ({len(jobs) - len(todo)} cached, {len(todo)} to call), model {MODEL}")
@@ -106,11 +111,23 @@ def _transport(e):
                                                                                          "RemoteProtocolError", "ReadError")
 
 
-def call(client, prompt, rschema, thinking=None):
-    """One structured call -> (raw text, usage, request_ts); one retry on a transport error. thinking: e.g. {"thinking_level": "MINIMAL"}."""
+def cached_prefix(client, pid, prefix):
+    """P148: the prefix registered as Gemini cached content -> its name."""
+    from google.genai import types
+    try:
+        c = client.caches.create(model=MODEL, config=types.CreateCachedContentConfig(
+            contents=[types.Content(role="user", parts=[types.Part(text=prefix)])], ttl=CONTENT_TTL, display_name=f"psed-{E.PAPERS.get(pid, pid)}-prefix"))
+    except Exception as e:
+        raise Stop(f"cached content not created ({type(e).__name__}): {str(e)[:300]}")
+    return c.name
+
+
+def call(client, prompt, rschema, thinking=None, cached=None):
+    """One structured call -> (raw text, usage, request_ts); one retry on a transport error. thinking: e.g. {"thinking_level": "MINIMAL"}.
+    P148: cached = the name of the cached content holding the prompt's prefix (prompt is then the rest)."""
     from google.genai import types
     cfg = types.GenerateContentConfig(temperature=0, response_mime_type="application/json", response_json_schema=rschema,
-                                      thinking_config=types.ThinkingConfig(**thinking) if thinking else None)
+                                      thinking_config=types.ThinkingConfig(**thinking) if thinking else None, cached_content=cached)
     for attempt in (1, 2):
         ts = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
         try:
@@ -124,7 +141,8 @@ def call(client, prompt, rschema, thinking=None):
             raise Stop(f"provider error ({type(e).__name__}): {str(e)[:300]}")
         u = r.usage_metadata
         return r.text or "", dict(input_tokens=u.prompt_token_count or 0,
-                                  output_tokens=(u.candidates_token_count or 0) + (u.thoughts_token_count or 0)), ts
+                                  output_tokens=(u.candidates_token_count or 0) + (u.thoughts_token_count or 0),
+                                  cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
 def run(pid, jobs, thinking=None):
@@ -132,24 +150,37 @@ def run(pid, jobs, thinking=None):
     thinking (P133, pass 1): the provider's thinking setting, recorded in the line; None = the model's default (pass 0)."""
     todo = plan(pid, jobs, thinking)
     client = client_for("google", os.environ[KEY_ENV]) if todo else None
-    out, made = [], 0
-    for pass_, section, prompt, rschema, ids in jobs:
-        h = request_hash(prompt, rschema, thinking)
-        cp = cache_path(pid, pass_, section, h)
-        if cp.exists():
-            out.append(json.loads(cp.read_text(encoding="utf-8")))
-            continue
-        text, usage, ts = call(client, prompt, rschema, thinking)
-        made += 1
-        line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
-                    request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), response=text)
-        cp.parent.mkdir(parents=True, exist_ok=True)
-        cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")
-        RECORDS.mkdir(exist_ok=True)
-        with (RECORDS / f"{pid}.jsonl").open("a", encoding="utf-8") as f:
-            f.write(json.dumps(line, ensure_ascii=False) + "\n")
-        out.append(line)
-    print(f"{pid}: {made} calls made, {len(jobs) - made} from the cache")
+    out, made, names = [], 0, {}                                                # P148: prefix hash -> cached content name
+    try:
+        for job in jobs:
+            pass_, section, prompt, rschema, ids = job[:5]
+            pre = job[5] if len(job) > 5 else ""
+            assert prompt.startswith(pre)
+            h = request_hash(prompt, rschema, thinking)
+            cp = cache_path(pid, pass_, section, h)
+            if cp.exists():
+                out.append(json.loads(cp.read_text(encoding="utf-8")))
+                continue
+            ph = hashlib.sha256(pre.encode("utf-8")).hexdigest() if pre else ""
+            if pre and ph not in names:
+                names[ph] = cached_prefix(client, pid, pre)
+            text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
+            made += 1
+            line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
+                        request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), response=text)
+            cp.parent.mkdir(parents=True, exist_ok=True)
+            cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")
+            RECORDS.mkdir(exist_ok=True)
+            with (RECORDS / f"{pid}.jsonl").open("a", encoding="utf-8") as f:
+                f.write(json.dumps(line, ensure_ascii=False) + "\n")
+            out.append(line)
+    finally:
+        for name in names.values():                                             # P148: no stored prefix outlives the run
+            try:
+                client.caches.delete(name=name)
+            except Exception as e:
+                print(f"{pid}: cached content {name} not deleted ({type(e).__name__}); it expires after {CONTENT_TTL}")
+    print(f"{pid}: {made} calls made, {len(jobs) - made} from the cache" + (f"; prefix cached once ({len(names)} cached content)" if names else ""))
     return out, made
 
 

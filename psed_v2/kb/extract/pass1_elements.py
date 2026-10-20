@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """P133 pass 1: one call per section of pilot/<pid>.elements.csv; every element answered with form records or NK:<reason>.
 
-    ~/miniconda3/bin/conda run -n psed310 python psed_v2/extract/pass1_elements.py yli18     # after pass0_paper.py
+    ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/pass1_elements.py yli18 [--plan]     # after pass0_paper.py
 
 Sections: the elements.csv section column (elements.py maps equations into their section); a group whose section is not abs/abstract
-or s<n> (figures, tables, a table's cells) is unmapped and runs as its own group. Prompt, in this order: the section's elements as
-"<id>: <text>"; the pass-0 items (id, role, name, parent; P138) and the figure/table/equation element ids; the form (schema/form.json,
-compact) with the field rules; the kind vocabulary with its ontology glosses (vocab.PHRASES). Response (P133 option 2): {"answers": [{"id", "answer": [record, ...]
-or "NK:<reason>"}]}; variables as a list of {symbol, quantity}. Prints the tallies; local validation against the full form.json is a count only (the compiler validates, P134).
+or s<n> (figures, tables, a table's cells) is unmapped and runs as its own group. P148 prompt: a fixed prefix, the same for every
+group of a paper and sent as Gemini cached content (common.run): the instruction line, CODEBOOK.md whole (in place of form.json; the
+provider schema still constrains the response), RULES (only what the codebook does not say), EXAMPLES (one gold record per type and
+element kind, from the other dev papers), PASS-0 UNITS (id | role | name | parent | data, from the latest pass-0 line); then the
+group's elements as render.group() writes them (the blocks pass 0 uses). Response (P133 option 2): {"answers": [{"id", "nk",
+"duplicate_of", "records"}]}; variables as a list of {symbol, quantity}. Prints the tallies; local validation against the full
+form.json is a count only (the compiler validates, P134).
 """
 import collections
 import json
@@ -17,51 +20,40 @@ import sys
 import yaml
 
 import common as C
-from vocab import MECHANISMS, NAMES, PHRASES
+import render
+from lists import NK_REASONS
 
 NK = ["citation_line", "boilerplate", "no_knowledge"]
-NK_FORM = ["citation_line", "boilerplate", "duplicate", "no_knowledge"]      # the nk enum of the response (duplicate: duplicate_of names the element)
+NK_FORM = list(NK_REASONS)                                                     # P148: the nk enum of the response, from the codebook's NK reasons
 MAPPED = re.compile(r"^(abs|abstract|s\d+)$")
-RULES = """TYPES (one per record):
-- setting: a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).
-- observation: a measured result on a specimen.
-- derived: a number the authors computed from their data (fit parameters, values derived in a table).
-- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
-  a definition.
-- definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
-- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and
-  stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation
-  is a claim, never NK.
-- caveat: a limitation or assumption the authors state about their own method or data (not a claim).
-- cited: a value or statement the paper attributes to another work (not a setting).
-
-FIELD RULES
+INTRO = "You extract the knowledge of an ALD paper, one group of its elements per request, into records of the response form."
+RULES = """RULES (what the codebook does not say)
+Answer
+- Answer every element id of ELEMENTS once: nk = none with its records, or nk = one of the codebook's NK reasons with records empty
+  (duplicate: duplicate_of = the element id it repeats).
+Fields
 - Every field of a record is present; write null when it does not apply.
-- Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
-  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
-  boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
-  recorded from another element; no_knowledge: the element states nothing the form can hold.
 - quote: words copied verbatim from the element, as few as identify the record; every record has one.
+- about: the PASS-0 UNITS id of the run, specimen, simulation or model run the record is about; "paper" when it is about none of them.
 - note: at most 20 words, on claims and definitions only.
-- quantity: an id of QUANTITY IDS only when it is the same concept as printed (its aliases, unit and note tell you); otherwise
-  "other", with a candidate: the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension
-  and symbol. Examples:
-  "rms thickness error" -> other, not thickness_nonuniformity; "10 min stabilisation" -> other, not time; "c = 0.01" ->
+- quantity, a qualifier's quantity, variables[].quantity and each cause/effect item: an id of the codebook's quantities (d); cause and
+  effect may also be a mechanism id (f).
+- quantity: an id only when it is the same concept as printed (its aliases, unit and note tell you); otherwise "other", with a
+  candidate: the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension and symbol.
+  Examples: "rms thickness error" -> other, not thickness_nonuniformity; "10 min stabilisation" -> other, not time; "c = 0.01" ->
   initial_sticking_coefficient when the paper's own table says so, never reaction_stoichiometry.
 - label_as_printed: the paper's own label of the quantity, on every record with a quantity.
 - kind: on every record with a value, value_min, value_max or value_text.
-- parent: the id (from PASS-0 ITEMS) of the run, simulation, series or specimen the record belongs to; "paper" for claims,
-  definitions, caveats, cited records and paper-wide settings (reactor, carrier gas).
 - links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
 - statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
 - statement is never null on claim, caveat and cited records (one sentence, your words).
 - a name the paper gives a set of runs or samples ("Series A", "set 2") is a setting of quantity other with label_as_printed = the
   name and mentions = each member it names; the compiler attaches it.
-- variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
-  material, substrate, reactant_A, reactant_B and structure is an id of the form; for a reactor or an instrument, the name only.
-- mentions: only names from PASS-0 ITEMS (name as printed), exactly as listed."""
+  material, substrate, reactant_A, reactant_B and structure is an id of the codebook's species, materials and structures (f); for
+  a reactor or an instrument, the name only.
+- mentions: only names from PASS-0 UNITS (name as printed), exactly as listed."""
 
 
 def container(eid):
@@ -115,78 +107,133 @@ def TYPES(form):
     return next(x for x in form["properties"]["type"]["anyOf"] if "enum" in x)["enum"]
 
 
+EXAMPLE_KINDS = {"abstract": "paragraph", "paragraph": "paragraph", "table_cell": "table cell", "caption": "caption", "equation": "equation"}
+
+
+def _about(R, units, fid):
+    """The gold unit a gold row is about: the first run, specimen, simulation or model run (render.gold_units) above it; "paper"
+    when none."""
+    i = R.get(fid, {}).get("parent", "")
+    while i in R:
+        if i in units:
+            return i
+        i = R[i]["parent"]
+    return "paper"
+
+
+def _quote(row, text, check):
+    """A quote for a gold row from its first evidence element's text (render.strip_markup), never its first words: a table cell or
+    an equation whole; else the sentence that holds the row's value, label or term as printed (cut to 8 words either side of it when
+    longer than 25 words), else the sentence sharing the most words with the gold statement; kept only when check() (the compiler's
+    D11 on the element) passes and it has at most 40 words."""
+    e = row["evidence"].split(";")[0]
+    t = render.strip_markup(text.get(e, "")).strip()
+    if re.fullmatch(r"(tab\w*\.r\d+c\d+|eq\d+)", e):
+        return t if t and check(e, t) else None
+    sents = [x.strip() for x in re.split(r"(?<=[.!?])\s+(?=[A-Z(])", t) if x.strip()]
+    keys = [k.lower() for k in (row["value"], row["label_as_printed"], row["term"], row["value_text"]) if k]
+    q = None
+    for sent in sents:
+        hit = next((k for k in keys if k in sent.lower()), None)
+        if hit:
+            w = sent.split()
+            at = next((n for n in range(len(w)) if hit in " ".join(w[n:n + len(hit.split()) + 1]).lower()), 0)
+            q = " ".join(w[max(0, at - 8):at + 9]) if len(w) > 25 else sent
+            break
+    if q is None:
+        words = lambda x: set(re.findall(r"[a-z0-9]+", x.lower()))             # noqa: E731
+        best = max(sents, key=lambda x: len(words(row["statement"]) & words(x)), default="")
+        q = best if best and words(row["statement"]) & words(best) else None
+    return q if q and len(q.split()) <= 40 and check(e, q) else None
+
+
 def examples(pid, form):
-    """P136 3b: one example record per type, from the gold facts.csv of the dev papers other than pid (never a held-out paper): the
-    first row of the type (with a quantity where the type takes one) that, cast into the form (form_roundtrip.cast; term kept; quote =
-    the first 12 words of its first evidence element), validates against form.json. Rendered as JSON, one line per type."""
+    """P148 (A3): one example record per record type and element kind (paragraph, table cell, caption, equation), from the gold
+    facts.csv of the dev papers other than pid (never a held-out paper), in paper order: the first row of that type whose first
+    evidence element is of that kind (a quantity and its label as printed where the type takes one; when no row of the type and kind
+    has both, a second pass takes one without them, a setting, observation or derived still with a quantity; a claim with all four
+    claim fields) that, cast into
+    the form (form_roundtrip.cast; term kept), validates against form.json; about = the gold unit it is about (_about; an
+    observation or derived example names one), quote = _quote() (the compiler's D11 check). Rendered as JSON, one line each, with the paper, the type and the element kind."""
     import csv as _csv
     from jsonschema import Draft202012Validator
+    import compile as K
     import form_roundtrip as RT
     val, props, out = Draft202012Validator(form), form["properties"], {}
-    for p in [p for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
+    for strict, p in [(st, p) for st in (True, False) for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
         f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
         if not f.exists():
             continue
-        text = C.E.texts(p)
-        for row in _csv.DictReader(f.open(encoding="utf-8")):
-            t = row["type"]
-            if t in out or t not in TYPES(form) or "#" not in row["fact_id"]:
+        text, kinds = C.E.texts(p), {r["element_id"]: r["kind"] for r in C.E.load(p)}
+        rows = list(_csv.DictReader(f.open(encoding="utf-8")))
+        R = {r["fact_id"]: r for r in rows}
+        units = {u["gid"] for u in render.gold_units(p)}
+
+        def check(e, q):
+            return K.normalize(q) in K.normalize(text.get(e, ""))
+        for row in rows:
+            t, ek = row["type"], EXAMPLE_KINDS.get(kinds.get(row["evidence"].split(";")[0], ""))
+            if (t, ek) in out or ek is None or t not in TYPES(form) or "#" not in row["fact_id"]:
                 continue
-            if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
+            if strict and t in ("setting", "observation", "derived", "model", "definition") and not (row["quantity"] and row["label_as_printed"]):
+                continue                                                        # P148: a quantity with its label as printed (RULES); else a second pass
+            if t in ("setting", "observation", "derived") and not row["quantity"]:
                 continue
             if t == "claim" and not all(row[x] for x in ("cause", "relation", "effect", "stance")):     # P136b: the claim example carries all four
                 continue
             rec, lost = RT.cast(row, props)
+            if lost:
+                continue
             if t == "definition":
                 rec["term"] = row["term"]
             if not (rec.get("quantity") or any(k in rec for k in ("value", "value_min", "value_max", "value_text"))) and len(row["statement"].split()) <= 40:
                 rec["statement"] = row["statement"]                             # P138: the gold's own-words statement
-            if t in ("claim", "definition", "caveat", "cited"):
-                rec["parent"] = "paper"
-            words = text.get(row["evidence"].split(";")[0], "").split()[:12]
-            if lost or not words:
+            rec["about"] = "paper" if t in ("claim", "definition", "caveat", "cited") else _about(R, units, row["fact_id"])
+            if t in ("observation", "derived") and rec["about"] == "paper":       # a result example names its unit
                 continue
-            rec["quote"] = " ".join(words)
+            q = _quote(row, text, check)
+            if not q:
+                continue
+            rec["quote"] = q
             rec = {k: rec.get(k) for k in form["required"]}                     # P139: every field present, null when it does not apply
             if not list(val.iter_errors(rec)):
-                out[t] = rec
-    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in TYPES(form) if t in out)
+                out[(t, ek)] = (C.E.PAPERS[p], rec)
+    order = [(t, k) for t in TYPES(form) for k in dict.fromkeys(EXAMPLE_KINDS.values()) if (t, k) in out]
+    return "\n".join(f"- {t} / {k} ({out[(t, k)][0]}): " + json.dumps(out[(t, k)][1], ensure_ascii=False) for t, k in order)
 
 
-def jobs(pid):
+def units_block(pid):
+    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | parent | data (id:role ...)."""
     p0 = C.lines(pid, 0)
     if not p0:
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
-    items = C.loads_json(p0[-1]["response"])
-    items = (items.get("units") or []) if isinstance(items, dict) else items     # P144: pass 0 is {units, table_layouts, panel_layouts}
-    items = [it for it in items if isinstance(it, dict) and it.get("name_as_printed")]
-    p0 = "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it['name_as_printed']} | parent {it.get('parent', '') or '-'}" for it in items)   # P138
+    obj = C.loads_json(p0[-1]["response"])
+    items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
+    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
+    return "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
+                     for it in items if isinstance(it, dict))
+
+
+def prefix(pid, form):
+    """P148 (A1): the fixed prefix of every group of the paper, in this order: the instruction line, CODEBOOK.md whole, RULES,
+    EXAMPLES, PASS-0 UNITS (with the caption, panel and equation ids a link may name)."""
     rows = C.E.load(pid)
     refs = [r["element_id"] for r in rows if r["kind"] in ("caption", "panel", "equation")]
+    return "\n\n".join([INTRO, "CODEBOOK:\n" + render.codebook(), RULES,
+                         "EXAMPLES (one gold record per type and element kind, from other papers; their about ids are those papers' units):\n" + examples(pid, form),
+                         "PASS-0 UNITS (id | role | name | parent | data id:role): about takes an id; mentions take a name\n" + units_block(pid)
+                         + "\nElement ids that may be linked: " + ", ".join(refs)]) + "\n\n"
+
+
+def jobs(pid):
+    """[(1, group, prompt, response schema, element ids, prefix)]: prompt = the prefix, then the group's ELEMENTS (render.group)."""
     form = C.schema("form.json")
-    text = C.E.texts(pid)
-    kinds = "\n".join(f"- {k}: {PHRASES.get(k, '')}" for k in C.X._pilot()[0].KINDS)
-    E = {e["id"]: e for e in yaml.safe_load((C.V2 / "ontology" / "ontology.yaml").read_text(encoding="utf-8"))["entries"]}   # P138: from the ontology
-    qids = "\n".join(f"{q}: {E.get(q, {}).get('name') or NAMES.get(q, q)}" + (f" | aliases: {'; '.join(map(str, E[q].get('aliases') or []))}" if E.get(q, {}).get("aliases") else "")
-                     + (f" | unit: {E[q]['unit']}" if E.get(q, {}).get("unit") else "") + (f" | note: {E[q]['note']}" if E.get(q, {}).get("note") else "")
-                     for q in form["$defs"]["quantity_id"]["enum"])
-    mids = "\n".join(f"{m}: {MECHANISMS[m]['name']}" for m in form["$defs"]["cause_effect"]["enum"] if m in MECHANISMS)
-    ex = examples(pid, form)
+    pre = prefix(pid, form)
+    text, rows = C.E.texts(pid), C.E.load(pid)
     out = []
     for sec, rs in groups(pid)[0].items():
         ids = [r["element_id"] for r in rs]
-        prompt = "\n\n".join([
-            "You extract the knowledge of one section of an ALD paper into records of the form below.",
-            "ELEMENTS:\n" + "\n".join(f"{i}: {text[i]}" for i in ids),
-            "PASS-0 ITEMS (id | role | name as printed | parent): parent takes an id; mentions take a name\n" + p0
-            + "\nElement ids that may be mentioned or linked: " + ", ".join(refs),
-            "FORM (JSON Schema, one record):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")) + "\n\n" + RULES,
-            "EXAMPLES (one record per type, from other papers):\n" + ex,
-            "KIND (how a value is known):\n" + kinds,
-            "QUANTITY IDS (id: name | aliases | canonical unit | note). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
-            "must be one of them (cause/effect may also be a mechanism id):\n" + qids,
-            "MECHANISM IDS (id: name), for cause/effect:\n" + mids])
-        out.append((1, sec, prompt, response_schema(form, ids), ids))
+        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, rs, text, rows), response_schema(form, ids), ids, pre))
     return out
 
 
@@ -202,6 +249,9 @@ def main(arg):
           f"unpaired: {', '.join(groups(pid)[1]) or 'none'}")
     if "--plan" in sys.argv:                                                    # the planned calls only, no call
         C.plan(pid, js, THINKING)
+        pre, rest = len(js[0][5]) if js else 0, [len(j[2]) - len(j[5]) for j in js]
+        print(f"{key}: prefix {pre} chars (~{pre // 4} tokens at 4 chars/token), sent once as cached content; group parts {sum(rest)} chars in all, "
+              f"largest {max(rest, default=0)} ({max(js, key=lambda j: len(j[2]) - len(j[5]))[1] if js else '-'})")
         return 0
     out, _ = C.run(pid, js, THINKING)
     val = Draft202012Validator(C.schema("form.json"))
@@ -227,8 +277,8 @@ def main(arg):
                     bad += any(True for _ in val.iter_errors(rec))
     print(f"{key} pass 1: {nrec} records by type {dict(types.most_common())}; NK {dict(nk.most_common())}; elements missing {missing}; "
           f"records failing form.json {bad}; unparsed responses {unparsed or 'none'}")
-    tin = sum(x["usage"]["input_tokens"] for x in C.lines(pid)); tout = sum(x["usage"]["output_tokens"] for x in C.lines(pid))
-    print(f"{key} records/{pid}.jsonl: {len(C.lines(pid))} lines, tokens in {tin} out {tout}")
+    tin, tout, tcr = (sum(x["usage"].get(k, 0) for x in out) for k in ("input_tokens", "output_tokens", "cache_read_tokens"))
+    print(f"{key} this run: {len(out)} lines, tokens in {tin} (cache read {tcr}) out {tout}")
     return 0
 
 

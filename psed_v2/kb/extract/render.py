@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""P144: the input a pass sees, rendered once for pass 0 (and pass 1 later). No model call.
+"""P144: the input a pass sees, rendered for pass 0 and (P148) pass 1. No model call.
 
     python3 psed_v2/kb/extract/render.py yli18          # prints the pass-0 input sizes
 
@@ -9,6 +9,7 @@ label | x | y | conditions" (no point data), cells "cell id | panel | at coordin
 conditions", peaks "peak id | panel | quantity = value | unit | label | conditions", sets "set id | panel | kind | varied | members",
 derived "derived id | panel | quantity = value unit | from | method"); the element index; the example: the gold units and layouts of another dev paper in the pass-0 form, with the text of
 the table rows and captions they come from beside them. gold_units() and gold_layouts() derive the gold side; the P144 report uses them.
+P148: table() and figure() are the per-table and per-figure blocks of TABLES and FIGURES; group() renders one pass-1 group with them.
 """
 import collections
 import csv
@@ -42,17 +43,19 @@ def _tables(pid):
     return out
 
 
+def table(tid, cap, md, ids):
+    """One table: "TABLE <id> (caption <id>)", its markdown as ingested, its cell-id map (P148: one block, shared by pass 0 and pass 1)."""
+    cells = []
+    for i, line in enumerate(E.table_lines(md)):
+        for j, cell in enumerate([x.strip() for x in line.strip().strip("|").split("|")]):
+            if cell and f"{tid}.r{i}c{j}" in ids:
+                cells.append(f"r{i}c{j} = {tid}.r{i}c{j}")
+    return f"TABLE {tid}" + (f" (caption {cap})" if cap in ids else "") + "\n" + md.strip() + "\ncell ids: " + ", ".join(cells)
+
+
 def tables(pid):
     ids = {r["element_id"] for r in E.load(pid)}
-    parts = []
-    for tid, cap, md in _tables(pid):
-        cells = []
-        for i, line in enumerate(E.table_lines(md)):
-            for j, cell in enumerate([x.strip() for x in line.strip().strip("|").split("|")]):
-                if cell and f"{tid}.r{i}c{j}" in ids:
-                    cells.append(f"r{i}c{j} = {tid}.r{i}c{j}")
-        parts.append(f"TABLE {tid}" + (f" (caption {cap})" if cap in ids else "") + "\n" + md.strip() + "\ncell ids: " + ", ".join(cells))
-    return "\n\n".join(parts) or "(no tables)"
+    return "\n\n".join(table(tid, cap, md, ids) for tid, cap, md in _tables(pid)) or "(no tables)"
 
 
 def _figures_json(pid):
@@ -60,9 +63,8 @@ def _figures_json(pid):
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 
-def figures(pid):
-    rows = E.load(pid)
-    text = E.texts(pid)
+def _by_figure(pid):
+    """figures.json entries by figure number: (curves, values, sets, derived)."""
     Fj = _figures_json(pid)
     by_fig, vals, sets, der = (collections.defaultdict(list) for _ in range(4))
     for c in Fj.get("curves", []):
@@ -70,32 +72,81 @@ def figures(pid):
     for sec, d in (("values", vals), ("sets", sets), ("derived", der)):
         for x in Fj.get(sec) or []:
             d[str(x["figure"])].append(x)
-    parts = []
-    for r in rows:
-        if r["kind"] != "caption" or not r["element_id"].startswith("fig"):
-            continue
-        n = r["element_id"][3:].split(".")[0]
-        panels = [x["element_id"] for x in rows if x["kind"] == "panel" and re.fullmatch(rf"fig{n}[a-z]*", x["element_id"])]
-        lines = [f"FIGURE fig{n}: caption {r['element_id']}: {text[r['element_id']]}", "panels: " + ", ".join(panels)]
-        for c in by_fig.get(n, []):
-            lines.append(f"curve {c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
-                         f"{c['y'].get('quantity', '')} | {_conds(c)}")
-        for v in vals.get(n, []):                                               # P145: cells and peaks
-            if v.get("kind") == "cell":
-                at = "; ".join(f"{q}={x}" for q, x in (v.get("at") or {}).items())
-                lines.append(f"cell {v['id']} | fig{n}{v.get('panel', '')} | at {at} | {v.get('quantity', '')} = "
-                             f"{v['value'] if v.get('value') is not None else v.get('value_text', '')} | {v.get('unit', '')} | {_conds(v)}")
-            else:
-                lines.append(f"{v.get('kind', 'value')} {v['id']} | fig{n}{v.get('panel', '')} | {v.get('quantity', '')} = {v.get('value')} | {v.get('unit', '')} | "
-                             f"label {v.get('label', '')} | {_conds(v)}")
-        for st in sets.get(n, []):                                              # P145: sets (series, grid) with their members
-            lines.append(f"set {st['id']} | fig{n}{st.get('panel', '')} | {st['kind']} | varied {st.get('varied', '')} ({st.get('varied_raw', '')}) | "
-                         f"members {', '.join(st.get('members') or [])}")
-        for d in der.get(n, []):                                                # P145: derived entries
-            lines.append(f"derived {d['id']} | fig{n}{d.get('panel', '')} | {d.get('quantity', '')} = {d.get('value')} {d.get('unit', '')} | "
-                         f"from {d.get('source', '')} | {d.get('method', '')}")
-        parts.append("\n".join(lines))
-    return "\n\n".join(parts) or "(no figures)"
+    return by_fig, vals, sets, der
+
+
+def figures(pid):
+    rows = E.load(pid)
+    text = E.texts(pid)
+    F = _by_figure(pid)
+    return "\n\n".join(figure(r["element_id"], text[r["element_id"]], rows, F) for r in rows
+                        if r["kind"] == "caption" and r["element_id"].startswith("fig")) or "(no figures)"
+
+
+def figure(cap, captext, rows, F):
+    """One figure: its caption id and text, its panel ids, every figures.json entry of it (P148: one block, shared by pass 0 and
+    pass 1)."""
+    by_fig, vals, sets, der = F
+    n = cap[3:].split(".")[0]
+    panels = [x["element_id"] for x in rows if x["kind"] == "panel" and re.fullmatch(rf"fig{n}[a-z]*", x["element_id"])]
+    lines = [f"FIGURE fig{n}: caption {cap}: {captext}", "panels: " + ", ".join(panels)]
+    for c in by_fig.get(n, []):
+        lines.append(f"curve {c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
+                     f"{c['y'].get('quantity', '')} | {_conds(c)}")
+    for v in vals.get(n, []):                                               # P145: cells and peaks
+        if v.get("kind") == "cell":
+            at = "; ".join(f"{q}={x}" for q, x in (v.get("at") or {}).items())
+            lines.append(f"cell {v['id']} | fig{n}{v.get('panel', '')} | at {at} | {v.get('quantity', '')} = "
+                         f"{v['value'] if v.get('value') is not None else v.get('value_text', '')} | {v.get('unit', '')} | {_conds(v)}")
+        else:
+            lines.append(f"{v.get('kind', 'value')} {v['id']} | fig{n}{v.get('panel', '')} | {v.get('quantity', '')} = {v.get('value')} | {v.get('unit', '')} | "
+                         f"label {v.get('label', '')} | {_conds(v)}")
+    for st in sets.get(n, []):                                              # P145: sets (series, grid) with their members
+        lines.append(f"set {st['id']} | fig{n}{st.get('panel', '')} | {st['kind']} | varied {st.get('varied', '')} ({st.get('varied_raw', '')}) | "
+                     f"members {', '.join(st.get('members') or [])}")
+    for d in der.get(n, []):                                                # P145: derived entries
+        lines.append(f"derived {d['id']} | fig{n}{d.get('panel', '')} | {d.get('quantity', '')} = {d.get('value')} {d.get('unit', '')} | "
+                     f"from {d.get('source', '')} | {d.get('method', '')}")
+    return "\n".join(lines)
+
+
+def strip_markup(t):
+    """P148 (A2, C3): markup tags removed, their text kept (<sup>2</sup> -> 2; an autolink <https://...> is not a tag), ** removed."""
+    return re.sub(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>", "", t).replace("**", "")
+
+
+EQ_REF = r"(?:Eqs?\.?|Equations?)\s*\(?\s*{n}\s*\)?(?!\d)"                       # a paragraph that mentions printed equation n
+
+
+def group(pid, key, rows, text, all_rows=None):
+    """P148 (A2): one pass-1 group as the model reads it; the same table() and figure() blocks as pass 0. A section group: every
+    element "id: text" (markup stripped). A table group: its caption "id: text", the table's markdown as ingested, the cell-id map
+    and the legend line. A figure group: the figure block (caption id and text, panel ids, the figures.json entries, no points).
+    An equation group: the equation "id: text", the paragraphs of its section that mention it, the symbol tables (tabu*) of the
+    paper when there are any."""
+    all_rows = all_rows or E.load(pid)
+    line = lambda e: f"{e}: {strip_markup(text[e])}"                            # noqa: E731
+    head = key.split(".")[0]
+    if head.startswith("tab"):
+        tb = {tid: (cap, md) for tid, cap, md in _tables(pid)}
+        cap, md = tb[head]
+        ids = {r["element_id"] for r in all_rows}
+        caps = [line(r["element_id"]) for r in rows if r["kind"] == "caption"]
+        return "\n".join(caps + [table(head, cap, md, ids), "r = row, c = column, r0 = header"])
+    if re.fullmatch(r"fig\d+", head):
+        cap = next(r["element_id"] for r in rows if r["kind"] == "caption")
+        return figure(cap, strip_markup(text[cap]), all_rows, _by_figure(pid))
+    if re.fullmatch(r"eq\d+", head):
+        r0 = rows[0]
+        m = re.search(r"printed \((\d+)\)", r0["locator"])
+        num = m.group(1) if m else head[2:]
+        paras = [r["element_id"] for r in all_rows if r["section"] == r0["section"] and r["kind"] == "paragraph"
+                 and re.search(EQ_REF.format(n=num), text[r["element_id"]])]
+        ids = {r["element_id"] for r in all_rows}
+        sym = [table(tid, cap, md, ids) for tid, cap, md in _tables(pid) if tid.startswith("tabu")]
+        return "\n".join([line(r["element_id"]) for r in rows] + (["paragraphs that mention it:"] + [line(e) for e in paras] if paras else [])
+                         + (["symbol table:", *sym, "r = row, c = column, r0 = header"] if sym else []))
+    return "\n".join(line(r["element_id"]) for r in rows)
 
 
 def _conds(x):

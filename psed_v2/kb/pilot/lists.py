@@ -126,6 +126,28 @@ def variables_ok(s):
 NODE_TYPES = ["paper", "activity", "entity"]
 ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
 COMPARISON_KINDS = ["series", "grid", "replicate"]
+# P148: the record types, the NK reasons and the equation rule (moved from kb/extract/pass1_elements.py RULES, text unchanged); CODEBOOK.md
+# reads them (ontology/export.py), the pass-1 prompt carries them through the codebook only
+RECORD_TYPES = {
+    "setting": "a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).",
+    "observation": "a measured result on a specimen.",
+    "derived": "a number the authors computed from their data (fit parameters, values derived in a table).",
+    "model": "an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not "
+             "a definition.",
+    "definition": "a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.",
+    "claim": "a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and "
+             "stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an "
+             "interpretation is a claim, never NK.",
+    "caveat": "a limitation or assumption the authors state about their own method or data (not a claim).",
+    "cited": "a value or statement the paper attributes to another work (not a setting).",
+}
+NK_REASONS = {
+    "boilerplate": "headings, author lines, acknowledgements",
+    "citation_line": "a reference-list entry",
+    "duplicate": "a statement already recorded from another element (duplicate_of = the element id it repeats)",
+    "no_knowledge": "the element states nothing the form can hold",
+}
+EQUATION_VARIABLES = "variables (models and definitions): each symbol -> its quantity id, or null when no id fits."   # with RECORD_TYPES["model"]
 # P143b (user-approved): the tree terms; CODEBOOK.md reads this dict (ontology/export.py)
 TERMS = {
     "run": "one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption "

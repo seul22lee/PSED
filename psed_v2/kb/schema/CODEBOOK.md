@@ -68,36 +68,32 @@ Panel layouts:
 - **panel_one_unit**: The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only). Example: an EDS panel = one specimen, its curves one measurement's results per element.
 - **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
 
-## c. Record types, stances, NK reasons, the equation rule (sources: kb/extract/pass1_elements.py RULES; kb/pilot/lists.py STANCES and its comment; P143 equation rule in ontology/export.py)
+## c. Record types, stances, NK reasons, the equation rule (sources: kb/pilot/lists.py RECORD_TYPES, NK_REASONS, EQUATION_VARIABLES, STANCES and its comment; P143 equation rule in ontology/export.py)
 
 Record types:
 
 - setting: a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).
 - observation: a measured result on a specimen.
 - derived: a number the authors computed from their data (fit parameters, values derived in a table).
-- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
-  a definition.
+- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not a definition.
 - definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
-- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and
-  stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation
-  is a claim, never NK.
+- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation is a claim, never NK.
 - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
 - cited: a value or statement the paper attributes to another work (not a setting).
 
 Stances (asserted, hedged, open, limitation): "likely", "may" -> hedged; "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation; asserted: stated as a finding, without hedging words (P143b)
 
 
-NK reasons:
+NK reasons (an element that holds no knowledge):
 
-- Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
-  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
-  boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
-  recorded from another element; no_knowledge: the element states nothing the form can hold.
+- boilerplate: headings, author lines, acknowledgements
+- citation_line: a reference-list entry
+- duplicate: a statement already recorded from another element (duplicate_of = the element id it repeats)
+- no_knowledge: the element states nothing the form can hold
 
 Equation rule:
 
-- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
-  a definition.
+- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not a definition.
 - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - Symbol meanings come from the paper's symbol table and the paragraphs around the equation. (P143)
 
