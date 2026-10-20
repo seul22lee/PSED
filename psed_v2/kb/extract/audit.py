@@ -17,6 +17,8 @@ Per gold row of kb/pilot/<pid>.facts.csv the first stage test that fails:
   T5 mismatch  the matching record reached facts.csv but the P134 match (type, quantity, value in canonical units, value_text) fails
   (P136: the rows compile.py builds from figures.json count as records of their evidence elements)
   T6 matched
+  parent (P138, T5/T6 rows): the compiled row's parent class (type kind) against the gold row's: correct, wrong, or paper (the
+  compiled row sits on the paper where the gold's does not)
 Several matching records: the first that reached facts.csv decides (T6 if any matches, else T5), else the first dropped (T4).
 The compiler is re-run in memory (outputs to a temporary folder) so that each record is followed to its drop or its fact row.
 Writes kb/compiled/<pid>.audit.csv (gold side) and .audit_reverse.csv (compiled facts no gold row matches); the element text goes
@@ -41,7 +43,7 @@ import vocab as V  # noqa: E402
 TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
 NO_SLOT = ("links", "inputs", "parent", "figure_ref")
 COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "cast_fills", "no_slot", "same_element_same_type",
-        "same_element_same_type_same_quantity", "jsonl_record", "compiled_row"]
+        "same_element_same_type_same_quantity", "parent", "jsonl_record", "compiled_row"]
 REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
 
 
@@ -52,9 +54,8 @@ def matches(g, c):
 
 def same(x, f):
     """x is the row compile.dedupe kept for f: a definition by its normalized term (P136 1a), any other row by DEDUPE_KEY."""
-    if f["type"] == "definition":
-        t = lambda r: K.normalize(r["term"] or r["label_as_printed"] or r["mentions"].split(";")[0]).lower()   # noqa: E731
-        return x["type"] == "definition" and t(x) == t(f)
+    if K.text_key(f) is not None:                                               # P138: claims, caveats, definitions keyed with the quote
+        return K.text_key(x) == K.text_key(f)
     return all(x[k] == f[k] for k in K.DEDUPE_KEY)
 
 
@@ -140,18 +141,25 @@ def differing(g, c):
     return "; ".join(out) or "evidence shares no element"
 
 
+def parent_class(rows, fid):
+    """The (type, kind) of a row's parent ('paper' for the paper row)."""
+    p = rows.get(rows.get(fid, {}).get("parent", ""), {})
+    return "paper" if p.get("type") == "paper" else f"{p.get('type', '')} {p.get('kind', '')}".strip() or "none"
+
+
 def main(arg):
     pid, key_ = C.resolve(arg)
     form = C.schema("form.json")
-    val, props, qids = Draft202012Validator(form), form["properties"], set(form["properties"]["quantity"]["enum"])
+    val, props, qids = Draft202012Validator(form), form["properties"], set(form["$defs"]["quantity_id"]["enum"]) | {"other"}
     gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
     run, records, fate, rows = traced_run(pid)
     comp = [r for r in rows if "#" in r["fact_id"]]
+    CR, GR = {r["fact_id"]: r for r in rows}, {r["fact_id"]: r for r in gold}
     out, texts, matched_c = [], [], set()
     for g in gold:
         ev = [e for e in g["evidence"].split(";") if e]
         a = {c: g[c] for c in COLS if c in g}
-        a.update(stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
+        a.update(parent="", stage="", detail="", cast_fills="", no_slot="", same_element_same_type="", same_element_same_type_same_quantity="", jsonl_record="", compiled_row="")
         texts.append(dict(fact_id=g["fact_id"], element_text=" | ".join(f"{e}: {run.text.get(e, '')}" for e in ev)))
         if "#" not in g["fact_id"] or g["type"] in TREE_TYPES:
             a.update(stage="T0 tree", detail=g["type"]); out.append(a); continue
@@ -182,10 +190,14 @@ def main(arg):
             r, c = good[0]
             matched_c.add(c["fact_id"])
             a.update(stage="T6 matched", jsonl_record=rec_json(r), compiled_row=c["fact_id"])
+            pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
+            a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
         elif facts:
             r, c = facts[0]
             d = differing(g, c)
             a.update(stage="T5 mismatch", detail=d, jsonl_record=rec_json(r), compiled_row=f"{c['fact_id']}: {d}")
+            pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])
+            a["parent"] = "paper" if pc == "paper" and pg != "paper" else "correct" if pc == pg else f"wrong ({pc} vs gold {pg})"
         elif drops:
             r, (_, step, reason, field) = drops[0]
             a.update(stage="T4 compiler", detail=f"step {step}: {reason}" + (f" ({field})" if field else ""), jsonl_record=rec_json(r))
