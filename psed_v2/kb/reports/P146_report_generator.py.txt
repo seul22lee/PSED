@@ -155,7 +155,8 @@ for key in sys.argv[2:]:
         for c in data_of(y):
             claim[c].append(y["id"])
     items = [(c["id"], f"fig{c['figure']}{c.get('panel', '')}", "curve") for c in Fj.get("curves", [])] + \
-            [(v["id"], f"fig{v['figure']}{v.get('panel', '')}", v.get("kind", "value")) for v in Fj.get("values", [])]
+            [(v["id"], f"fig{v['figure']}{v.get('panel', '')}", v.get("kind", "value")) for v in Fj.get("values", [])] + \
+            [(d["id"], f"fig{d['figure']}{d.get('panel', '')}", "derived") for d in Fj.get("derived", [])]          # P146: derived entries too
     rowsC, cntC, status_d = [], collections.Counter(), {}
     for cid, panel, kind in items:
         ge, ps = gc.get(cid, ""), claim.get(cid, [])

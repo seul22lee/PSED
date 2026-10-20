@@ -1,0 +1,20 @@
+paper,role,outcome,paired_by,gold,gold_ids,gold_shape,pass0_id,pass0_name,parent,evidence_quote,quote_check,data
+yli18,run,missing,,Al2O3 run,yli18:dep:al2o3,,,,,,,
+yli18,run,missing,,TiO2 run,yli18:dep:tio2,,,,,,,
+yli18,run,extra,,,,,run_al2o3,Al2O3,,"For Al2O3 growth, the AlMe3 pulse and purge times were 0.1 and 4.0 s, respectively, followed by 0.1 and 4.0 s H2O pulse and purge steps. This reaction sequence was repeated for 500 cycles, leading approximately to 50 nm film.",found,0
+yli18,run,extra,,,,,run_tio2,TiO2,,"In the TiO2 growth, the reactant pulse and purge times were also 0.1 and 4.0 s, respectively. In the TiO2 deposition, the number of pulse sequences was 1000 resulting in approximately 50 nm film thickness.",found,0
+yli18,specimen,matched,data,"Al2O3 film, 500 cycles",yli18:ent:al2o3,,specimen_al2o3,Al2O3,run_al2o3,The measured (circles) and calculated (line) thickness profiles of a 500 cycle deposition process of Al2O3 from Al(CH3)3 and H2O in PillarHall® prototype 3 with a nominal channel gap height of 0.5 µm.,found,2
+yli18,specimen,matched,data,"TiO2 film, 1000 cycles",yli18:ent:tio2,,specimen_tio2,TiO2,run_tio2,The measured (circles) and calculated (line) thickness profiles of a 1000 cycle deposition process of TiO2 from TiCl4 and H2O.,found,2
+yli18,simulation,missing,,diffusion-reaction model,yli18:sim,,,,,,,
+yli18,simulation,matched,name,Gordon model,yli18:sim:gordon,,sim_gordon,Gordon model,,"In the Gordon model for ALD conformality, it is assumed that the gas enters the rectangular channel (height H ≪ width W) as a front with a constant concentration without any gas diffusion in the propagation direction (x-axis).",not found,0
+yli18,simulation,extra,,,,,sim_ylilammi,diffusion model,,"A diffusion model, developed in this work, is used for studying the propagation of ALD growth in narrow channels.",found,0
+yli18,model_run,matched,data,"run, pulse 0.1 s",yli18:simrun:tp0.1,,mr_tp_0_1s,0.1 s,sim_ylilammi,The locations of points xt and xs of the 0.1 s pulse are marked.,found,6
+yli18,model_run,matched,data,"run, pulse 0.05 s",yli18:simrun:tp0.05,,mr_tp_0_05s,0.05 s,sim_ylilammi,Pulse time= 0.05 s,not found,4
+yli18,model_run,matched,data,"run, pulse 0.02 s",yli18:simrun:tp0.02,,mr_tp_0_02s,0.02 s,sim_ylilammi,Pulse time= 0.02 s,not found,4
+yli18,model_run,matched,data,"run, pulse 0.01 s",yli18:simrun:tp0.01,,mr_tp_0_01s,0.01 s,sim_ylilammi,Pulse time= 0.01 s,not found,4
+yli18,model_run,matched,data,"run, H 2 µm",yli18:simrun:H2,,mr_fig4_h2,2 µm,sim_ylilammi,"when the original channel heights are H = 2, 1, 0.5, or 0.2 µm.",found,1
+yli18,model_run,matched,data,"run, H 1 µm",yli18:simrun:H1,,mr_fig4_h1,1 µm,sim_ylilammi,"H = 2, 1, 0.5, or 0.2 µm",found,1
+yli18,model_run,matched,data,"run, H 0.5 µm",yli18:simrun:H0.5,,mr_fig4_h05,0.5 µm,sim_ylilammi,"H = 2, 1, 0.5, or 0.2 µm",found,1
+yli18,model_run,matched,data,"run, H 0.2 µm",yli18:simrun:H0.2,,mr_fig4_h02,0.2 µm,sim_ylilammi,"In the last case, the channel entrance is completely plugged up.",found,1
+yli18,model_run,split,data,Fig. 5 models,yli18:simrun:fig5,,mr_fig5_ylilammi,Approximation,sim_ylilammi,"Circles represent the fully numerical solution, the solid line the analytical approximate solution and the dashed line the Gordon model.",found,2
+yli18,model_run,split,data,Fig. 5 models,yli18:simrun:fig5,,mr_fig5_gordon,Gordon model,sim_gordon,the dashed line the Gordon model,found,1
