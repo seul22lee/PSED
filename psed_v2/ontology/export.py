@@ -195,9 +195,9 @@ JOINED = ["cause", "effect"]                                                    
 CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
 COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
-NOTE_WORDS = 20
+NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
-PASS0_ROLES = ["specimen", "run", "simulation", "cited_work"]
+PASS0_ROLES = ["specimen", "run", "simulation", "series", "cited_work"]   # P138: series = a figure series of runs or specimens differing in one quantity
 
 
 def form_field(column):
@@ -263,7 +263,8 @@ def form_schema(onto, L, F):
     ids_list = lambda d: {"type": "array", "minItems": 1, "uniqueItems": True, "items": {"$ref": f"#/$defs/{d}"}}   # noqa: E731
     props = {
         "type": {"enum": [t for t in L.TYPES if t in FORM_TYPES]},
-        "quantity": {"enum": defs["quantity_id"]["enum"] + ["other"]},
+        "quantity": {"anyOf": [{"enum": defs["quantity_id"]["enum"] + ["other"]},                     # P138: a caveat may name several
+                               {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/quantity_id"}}]},
         "label_as_printed": s(),
         "qualifiers": {"type": "object", "additionalProperties": False, "properties": {k: qualifier_schema(q) for k, q in onto["qualifiers"].items()}},
         "value": {"type": "number"}, "value_min": {"type": "number"}, "value_max": {"type": "number"},
@@ -277,6 +278,9 @@ def form_schema(onto, L, F):
         "stance": {"enum": list(L.STANCES)},
         "note": _words(NOTE_WORDS),
         "term": s(),                                                            # P136 2c: a definition's symbol or term as printed
+        "statement": _words(STATEMENT_WORDS),                                   # P138: own words, when the record has no quantity or value
+        "parent": s(),                                                          # P138: a pass-0 id or "paper"
+        "links": {"type": "array", "minItems": 1, "items": s()},                # P138: element ids a claim or caveat rests on
         "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1},
                       "additionalProperties": {"anyOf": [{"$ref": "#/$defs/quantity_id"}, {"type": "null"}]}},   # P136 2c: null = no entry
         "candidate": {"type": "object", "additionalProperties": False, "required": ["definition_quote", "unit_as_printed", "dimension", "symbol"],
@@ -292,18 +296,11 @@ def form_schema(onto, L, F):
                        f"and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
         "type": "object", "additionalProperties": False, "properties": props,
         "required": ["type", "quote"],
-        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity", "kind"] for f in VALUE_FIELDS},   # P136 2c: kind with any value **{f: ["value"] for f in UNCERTAINTY_FIELDS},
-                              **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
-        "allOf": [
-            {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
-            {"if": _is("type", "claim"), "then": _none(["quantity"]), "else": _none(CLAIM_FIELDS)},
-            {"if": _is("type", ["claim", "definition"]), "else": _none(["note"])},
-            {"if": _is("type", "definition"), "then": {"required": ["term"]}, "else": _none(["term"])},            # P136 2c
-            {"if": _is("type", ["definition", "model"]), "else": _none(["variables"])},                              # P136 2c
+        "allOf": [                                                              # P138: vocabulary and types only; no companion field required or forbidden
+            {"if": {"not": {"anyOf": [{"required": [f]} for f in ["quantity"] + VALUE_FIELDS]}}, "then": {"required": ["statement"]}},
             {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/material"}}}},
             {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/species"}}}},
             {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": {"$ref": "#/$defs/structure"}}}},
-            {"if": _is("quantity", "other"), "then": {"required": ["candidate"]}, "else": _none(["candidate"])},
         ],
         "$defs": defs,
     }
@@ -318,8 +315,10 @@ def pass0_schema(onto, L):
         "title": "PSED v2 extraction form, pass 0: the things one paper names",
         "description": f"One paper = a list of the specimens, runs, simulations and cited works it names (ontology version {onto['version']}, sha256 {h}).",
         "type": "array",
-        "items": {"type": "object", "additionalProperties": False, "required": ["name_as_printed", "role", "introduced_in"],
-                  "properties": {"name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
+        "items": {"type": "object", "additionalProperties": False, "required": ["id", "name_as_printed", "role", "introduced_in"],
+                  "properties": {"id": {"type": "string", "minLength": 1},                                   # P138: short, unique in the paper
+                                 "parent": {"type": "string", "minLength": 1},                               # P138: the item's run, simulation or specimen id
+                                 "name_as_printed": {"type": "string", "minLength": 1}, "role": {"enum": PASS0_ROLES},
                                  "structure_class": {"enum": [c["id"] for c in onto["structure_classes"]]},
                                  "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
                                  "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
@@ -361,15 +360,17 @@ def form_md(form, pass0, onto, F):
     for f in form["required"]:
         req[f].append("always")
     for r in form["allOf"]:
-        cond = "type " + " / ".join(r["if"]["properties"]["type"].get("enum", [r["if"]["properties"]["type"].get("const")])) if "type" in r["if"]["properties"] \
-            else "quantity = `other`"
+        props = r["if"].get("properties", {})
+        key = next(iter(props), "")
+        cond = ("no " + ", ".join(x["required"][0] for x in r["if"]["not"]["anyOf"])) if "not" in r["if"] \
+            else f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")]))       # P138
         for f in r.get("then", {}).get("required", []):
             req[f].append(f"required when {cond}")
         for f, v in r.get("then", {}).get("properties", {}).items():
-            req[f].append(f"forbidden when {cond}")
+            req[f].append(f"forbidden when {cond}" if v is False else f"{_allowed(v)} when {cond}")
         for f, v in r.get("else", {}).get("properties", {}).items():
             req[f].append(f"only when {cond}")
-    for f, deps in form["dependentRequired"].items():
+    for f, deps in form.get("dependentRequired", {}).items():
         req[f].append("needs " + ", ".join(deps))
         for d in deps:
             req[d].append(f"required with {f}")

@@ -20,115 +20,126 @@
    ]
   },
   "quantity": {
-   "enum": [
-    "absorption_coefficient",
-    "adsorption_equilibrium_constant",
-    "annealing_temperature",
-    "aspect_ratio",
-    "atoms_per_cycle",
-    "b_film",
-    "base_pressure",
-    "binding_energy",
-    "body_diameter",
-    "body_thickness",
-    "carrier_density",
-    "carrier_gas",
-    "coated_aspect_ratio",
-    "coating_mass_fraction",
-    "crystallinity",
-    "crystallite_size",
-    "cycle_number",
-    "cycle_time",
-    "delivery_method",
-    "density_relative_to_bulk",
-    "deposited_moles_per_cycle",
-    "deposition_rate",
-    "deposition_temperature",
-    "diffraction_angle",
-    "dimensionless_distance",
-    "distance",
-    "effective_diffusion_coefficient",
-    "element_fraction",
-    "element_ratio",
-    "entry_sides",
-    "equivalent_aspect_ratio",
-    "exposure",
-    "feature_depth",
-    "feature_extent",
-    "feature_width",
-    "fill_fraction",
-    "film_density",
-    "film_thickness",
-    "fit_r2",
-    "front_slope",
-    "gas_flow_rate",
-    "gas_moles_per_cycle",
-    "gas_phase_diffusion_coefficient",
-    "growth_per_cycle",
-    "initial_sticking_coefficient",
-    "knudsen_diffusion_coefficient",
-    "knudsen_number",
-    "mass_gain",
-    "material",
-    "mean_free_path",
-    "mobility",
-    "molar_mass",
-    "molecule_diameter",
-    "moles_deposited",
-    "moles_from_mass_gain",
-    "normalized_thickness",
-    "nucleation_period",
-    "objective_magnification",
-    "p_d",
-    "partial_pressure",
-    "particle_diameter",
-    "penetration_depth",
-    "phase",
-    "phase_fraction",
-    "pillar_layout",
-    "plasma_configuration",
-    "plasma_gas_ratio",
-    "plasma_power",
-    "pore_density",
-    "pore_volume",
-    "porosity",
-    "precursor_purity",
-    "pressure_rate",
-    "pressure_rise",
-    "probe_resolution",
-    "process_mode",
-    "process_pressure",
-    "pulse_time",
-    "purge_time",
-    "raman_shift",
-    "reactant_A",
-    "reactant_B",
-    "reactant_number_density",
-    "reaction_stoichiometry",
-    "reactor",
-    "reactor_type",
-    "recombination_probability",
-    "refractive_index",
-    "resistivity",
-    "roughness",
-    "saturation_density",
-    "saturation_growth_per_cycle",
-    "sheet_resistance",
-    "shell_volume_fraction",
-    "signal_intensity",
-    "source_temperature",
-    "specific_surface_area",
-    "step_coverage",
-    "structure",
-    "substrate",
-    "surface_coverage",
-    "thickness_nonuniformity",
-    "time",
-    "time_to_maximum",
-    "tortuosity",
-    "wall_temperature",
-    "wavelength_range",
-    "other"
+   "anyOf": [
+    {
+     "enum": [
+      "absorption_coefficient",
+      "adsorption_equilibrium_constant",
+      "annealing_temperature",
+      "aspect_ratio",
+      "atoms_per_cycle",
+      "b_film",
+      "base_pressure",
+      "binding_energy",
+      "body_diameter",
+      "body_thickness",
+      "carrier_density",
+      "carrier_gas",
+      "coated_aspect_ratio",
+      "coating_mass_fraction",
+      "crystallinity",
+      "crystallite_size",
+      "cycle_number",
+      "cycle_time",
+      "delivery_method",
+      "density_relative_to_bulk",
+      "deposited_moles_per_cycle",
+      "deposition_rate",
+      "deposition_temperature",
+      "diffraction_angle",
+      "dimensionless_distance",
+      "distance",
+      "effective_diffusion_coefficient",
+      "element_fraction",
+      "element_ratio",
+      "entry_sides",
+      "equivalent_aspect_ratio",
+      "exposure",
+      "feature_depth",
+      "feature_extent",
+      "feature_width",
+      "fill_fraction",
+      "film_density",
+      "film_thickness",
+      "fit_r2",
+      "front_slope",
+      "gas_flow_rate",
+      "gas_moles_per_cycle",
+      "gas_phase_diffusion_coefficient",
+      "growth_per_cycle",
+      "initial_sticking_coefficient",
+      "knudsen_diffusion_coefficient",
+      "knudsen_number",
+      "mass_gain",
+      "material",
+      "mean_free_path",
+      "mobility",
+      "molar_mass",
+      "molecule_diameter",
+      "moles_deposited",
+      "moles_from_mass_gain",
+      "normalized_thickness",
+      "nucleation_period",
+      "objective_magnification",
+      "p_d",
+      "partial_pressure",
+      "particle_diameter",
+      "penetration_depth",
+      "phase",
+      "phase_fraction",
+      "pillar_layout",
+      "plasma_configuration",
+      "plasma_gas_ratio",
+      "plasma_power",
+      "pore_density",
+      "pore_volume",
+      "porosity",
+      "precursor_purity",
+      "pressure_rate",
+      "pressure_rise",
+      "probe_resolution",
+      "process_mode",
+      "process_pressure",
+      "pulse_time",
+      "purge_time",
+      "raman_shift",
+      "reactant_A",
+      "reactant_B",
+      "reactant_number_density",
+      "reaction_stoichiometry",
+      "reactor",
+      "reactor_type",
+      "recombination_probability",
+      "refractive_index",
+      "resistivity",
+      "roughness",
+      "saturation_density",
+      "saturation_growth_per_cycle",
+      "sheet_resistance",
+      "shell_volume_fraction",
+      "signal_intensity",
+      "source_temperature",
+      "specific_surface_area",
+      "step_coverage",
+      "structure",
+      "substrate",
+      "surface_coverage",
+      "thickness_nonuniformity",
+      "time",
+      "time_to_maximum",
+      "tortuosity",
+      "wall_temperature",
+      "wavelength_range",
+      "other"
+     ]
+    },
+    {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "$ref": "#/$defs/quantity_id"
+     }
+    }
    ]
   },
   "label_as_printed": {
@@ -481,6 +492,22 @@
    "type": "string",
    "minLength": 1
   },
+  "statement": {
+   "type": "string",
+   "pattern": "^\\S+(\\s+\\S+){0,39}$"
+  },
+  "parent": {
+   "type": "string",
+   "minLength": 1
+  },
+  "links": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
   "variables": {
    "type": "object",
    "minProperties": 1,
@@ -572,146 +599,43 @@
   "type",
   "quote"
  ],
- "dependentRequired": {
-  "quantity": [
-   "label_as_printed"
-  ],
-  "value": [
-   "quantity",
-   "kind"
-  ],
-  "value_min": [
-   "quantity",
-   "kind"
-  ],
-  "value_max": [
-   "quantity",
-   "kind"
-  ],
-  "value_text": [
-   "quantity",
-   "kind"
-  ],
-  "cause": [
-   "relation",
-   "effect"
-  ],
-  "relation": [
-   "cause",
-   "effect"
-  ],
-  "effect": [
-   "cause",
-   "relation"
-  ]
- },
  "allOf": [
   {
    "if": {
-    "properties": {
-     "type": {
-      "enum": [
-       "setting",
-       "observation",
-       "derived"
-      ]
-     }
-    },
-    "required": [
-     "type"
-    ]
+    "not": {
+     "anyOf": [
+      {
+       "required": [
+        "quantity"
+       ]
+      },
+      {
+       "required": [
+        "value"
+       ]
+      },
+      {
+       "required": [
+        "value_min"
+       ]
+      },
+      {
+       "required": [
+        "value_max"
+       ]
+      },
+      {
+       "required": [
+        "value_text"
+       ]
+      }
+     ]
+    }
    },
    "then": {
     "required": [
-     "quantity"
+     "statement"
     ]
-   }
-  },
-  {
-   "if": {
-    "properties": {
-     "type": {
-      "const": "claim"
-     }
-    },
-    "required": [
-     "type"
-    ]
-   },
-   "then": {
-    "properties": {
-     "quantity": false
-    }
-   },
-   "else": {
-    "properties": {
-     "cause": false,
-     "relation": false,
-     "effect": false,
-     "stance": false
-    }
-   }
-  },
-  {
-   "if": {
-    "properties": {
-     "type": {
-      "enum": [
-       "claim",
-       "definition"
-      ]
-     }
-    },
-    "required": [
-     "type"
-    ]
-   },
-   "else": {
-    "properties": {
-     "note": false
-    }
-   }
-  },
-  {
-   "if": {
-    "properties": {
-     "type": {
-      "const": "definition"
-     }
-    },
-    "required": [
-     "type"
-    ]
-   },
-   "then": {
-    "required": [
-     "term"
-    ]
-   },
-   "else": {
-    "properties": {
-     "term": false
-    }
-   }
-  },
-  {
-   "if": {
-    "properties": {
-     "type": {
-      "enum": [
-       "definition",
-       "model"
-      ]
-     }
-    },
-    "required": [
-     "type"
-    ]
-   },
-   "else": {
-    "properties": {
-     "variables": false
-    }
    }
   },
   {
@@ -774,28 +698,6 @@
      "value_text": {
       "$ref": "#/$defs/structure"
      }
-    }
-   }
-  },
-  {
-   "if": {
-    "properties": {
-     "quantity": {
-      "const": "other"
-     }
-    },
-    "required": [
-     "quantity"
-    ]
-   },
-   "then": {
-    "required": [
-     "candidate"
-    ]
-   },
-   "else": {
-    "properties": {
-     "candidate": false
     }
    }
   }
