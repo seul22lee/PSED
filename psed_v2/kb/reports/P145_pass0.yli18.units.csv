@@ -1,0 +1,19 @@
+paper,role,outcome,paired_by,gold,gold_ids,gold_shape,pass0_id,pass0_name,parent,evidence_quote,quote_check,data
+yli18,run,missing,,Al2O3 run,yli18:dep:al2o3,,,,,,,
+yli18,run,missing,,TiO2 run,yli18:dep:tio2,,,,,,,
+yli18,run,extra,,,,,r1,Al2O3 growth,,Al2O3 was grown with the same process as in Gao (2015) from trimethylaluminum (TMA) and water (H2O) at 300 °C,not found,0
+yli18,run,extra,,,,,r2,TiO2 deposition,,TiO2 from titanium tetrachloride (TiCl4) and H2O at 110 °C.,not found,0
+yli18,specimen,matched,evidence,"Al2O3 film, 500 cycles",yli18:ent:al2o3,,s1,Al2O3,r1,500 cycle deposition process of \text{Al}_2\text{O}_3 from \text{Al}(\text{CH}_3)_3 and \text{H}_2\text{O} in PillarHall® prototype 3,found,2
+yli18,specimen,matched,evidence,"TiO2 film, 1000 cycles",yli18:ent:tio2,,s2,TiO2,r2,1000 cycle deposition process of \text{TiO}_2 from \text{TiCl}_4 and \text{H}_2\text{O},found,2
+yli18,simulation,missing,,diffusion-reaction model,yli18:sim,,,,,,,
+yli18,simulation,missing,,Gordon model,yli18:sim:gordon,,,,,,,
+yli18,simulation,extra,,,,,sim1,diffusion model,,"A diffusion model, developed in this work, is used for studying the propagation of ALD growth in narrow channels.",found,0
+yli18,model_run,merged+split,evidence,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,,m1,0.1 s pulse,sim1,The locations of points x_t and x_s of the 0.1 s pulse are marked.,found,6
+yli18,model_run,merged+split,evidence,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,,m2,0.05 s pulse,sim1,Pulse time= 0.05 s,not found,4
+yli18,model_run,merged+split,evidence,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,,m3,0.02 s pulse,sim1,Pulse time= 0.02 s,not found,4
+yli18,model_run,merged+split,evidence,"run, pulse 0.1 s | run, pulse 0.05 s | run, pulse 0.02 s | run, pulse 0.01 s",yli18:simrun:tp0.1;yli18:simrun:tp0.05;yli18:simrun:tp0.02;yli18:simrun:tp0.01,,m4,0.01 s pulse,sim1,Pulse time= 0.01 s,not found,4
+yli18,model_run,merged+split,evidence,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,,m5,H = 2 μm,sim1,"when the original channel heights are H = 2, 1, 0.5, or 0.2 \mu\text{m}",found,1
+yli18,model_run,merged+split,evidence,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,,m6,H = 1 μm,sim1,"when the original channel heights are H = 2, 1, 0.5, or 0.2 \mu\text{m}",found,1
+yli18,model_run,merged+split,evidence,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,,m7,H = 0.5 μm,sim1,"when the original channel heights are H = 2, 1, 0.5, or 0.2 \mu\text{m}",found,1
+yli18,model_run,merged+split,evidence,"run, H 2 µm | run, H 1 µm | run, H 0.5 µm | run, H 0.2 µm",yli18:simrun:H2;yli18:simrun:H1;yli18:simrun:H0.5;yli18:simrun:H0.2,,m8,H = 0.2 μm,sim1,"when the original channel heights are H = 2, 1, 0.5, or 0.2 \mu\text{m}",found,1
+yli18,model_run,matched,evidence,Fig. 5 models,yli18:simrun:fig5,,m9,one reactant pulse,sim1,Comparison of the penetration depth given by different models in one reactant pulse.,found,3
