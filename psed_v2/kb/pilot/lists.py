@@ -128,13 +128,16 @@ ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measure
 COMPARISON_KINDS = ["series", "grid", "replicate"]
 # P143b (user-approved): the tree terms; CODEBOOK.md reads this dict (ontology/export.py)
 TERMS = {
-    "run": "one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with "
-           "the same chemistry, temperature and structure.",
+    "run": "one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption "
+           "(\"deposited at … using … cycles\", \"films grown on glassy carbon\"), a table row, a grid point. A stated deposition is a run even "
+           "when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; "
+           "separate depositions are separate runs even with the same chemistry, temperature and structure.",   # P146 (user)
     "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
                     "deposition activity's inputs.",
-    "model run": "one set of inputs of a simulation whose result the paper reports (a curve, a table row); two solution methods or "
-                 "approximations of one model with the same inputs are one model run (its curves differ in method, not in inputs).",   # P145
+    "simulation": "one model. The paper's own model and a model it compares against are separate simulations.",   # P146 (user)
+    "model run": "one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same "
+                 "inputs are one model run.",   # P146 (user)
     "fitted or simulated curve of a specimen": "a curve fitted or simulated to match a measured specimen is a result of that specimen, "
                                                 "not a model run.",   # P145
     "series / replicate / grid (comparisons)": "never a parent and never asked of the extractor; the compiler derives them from the "

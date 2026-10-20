@@ -313,6 +313,9 @@ def form_schema(onto, L, F):
     }
 
 
+P0_NOT_NULL = {("units", "evidence_quote")}                                     # P146: never null
+
+
 def pass0_schema(onto, L):
     h = ontology_hash()
     p0 = {"id": {"type": "string", "minLength": 1},                                                         # P138: short, unique in the paper
@@ -322,7 +325,9 @@ def pass0_schema(onto, L):
           "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
           "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
           "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-          "data": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},           # P145 (was curves): figures.json curve, cell and peak ids of the unit
+          "data": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": False, "required": ["id", "role"],   # P146: id + role
+                                                              "properties": {"id": {"type": "string", "minLength": 1},
+                                                                             "role": {"enum": ["measured", "fitted", "simulated"]}}}},
           "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
     qid = {"$ref": "#/$defs/quantity_id"}
@@ -340,7 +345,10 @@ def pass0_schema(onto, L):
                        f"(ontology version {onto['version']}, sha256 {h}).",
         "type": "object", "additionalProperties": False, "required": ["units", "table_layouts", "panel_layouts"],          # P144
         "properties": {name: nullable({"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(fields),
-                                                                   "properties": {k: nullable(v) for k, v in fields.items()}}})
+                                                                   "properties": {k: (v if (name, k) in P0_NOT_NULL else nullable(v)) for k, v in fields.items()},
+                                                                   **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
+                                                                                  "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}}]}   # P146
+                                                                      if name == "units" else {})}})
                        for name, fields in (("units", p0), ("table_layouts", tl), ("panel_layouts", pl))},
     }
 
@@ -438,8 +446,8 @@ P143_PANEL_LAYOUTS = [
     ("curve_per_unit", "Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names.",
      "one curve per model run (Ylilammi Fig. 4)"),
     ("panel_one_unit", "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel "
-                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element, the same inputs solved "
-                       "several ways (P145).",
+                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the "
+                       "solution-method sentence lives in TERMS model run only).",
      "an EDS panel = one specimen, its curves one measurement's results per element"),
     ("point_per_unit", "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid "
                        "point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145).",
@@ -450,7 +458,6 @@ P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the
 P143_TERMS = {                                                                  # P143b: quoted where lists.TERMS has none
     "piece": [("lists", "a piece cut from it"), ("retree", "a deposition or another entity: a piece")],
     "measurement activity": [("retree", "goes under the entity's measurement activity of that method (<key>:meas:<entity>:<method>; \"measurement\" when the fact names none)")],
-    "simulation": [("retree", "a simulation activity with its model-run entity")],
 }
 
 

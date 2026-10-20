@@ -30,9 +30,12 @@ TERMS (from the codebook):
 UNITS: one item per run, specimen, simulation and model run.
 - role: run, specimen, simulation or model_run; parent: a specimen's run, a model run's simulation; null otherwise.
 - list every run even when several share all conditions; list a shared run once when the paper says the samples were coated together.
-- evidence_quote is copied from the paper: the words that say which samples a run made (for a specimen or a model run, the words
-  that name it).
-- data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit; null when none.
+- evidence_quote (every unit, never null) is copied from the paper: the words that state the deposition of a run, that name a
+  specimen, a simulation or a model run.
+- parent: never null on a specimen (its run) or a model run (its simulation).
+- data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit, each with its role from
+  the caption: measured (read from a specimen), fitted (a line fitted or simulated to match that specimen's measurement) or
+  simulated (a model run's result); null when none.
 - a unit established by a table row or a grid point: introduced_in = that row's name cell / that cell id, evidence_quote = the
   cell's text.
 - introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).

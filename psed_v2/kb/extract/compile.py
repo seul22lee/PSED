@@ -51,12 +51,15 @@ def norm_ws(t):
 
 def normalize(t):
     """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
-    \\circ / ^\\circ -> °; \\times -> ×; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
+    \\circ / ^\\circ -> °; \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
     t = unicodedata.normalize("NFKC", t)
     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
     t = re.sub(r"\\times\s*", "×", t)                                                  # P136b: 50\times -> 50×
+    t = t.replace("\u25e6", "°")                                                     # P146: ◦C, ° C, deg C -> °C
+    t = re.sub(r"°\s+([CFK])\b", r"°\1", t)
+    t = re.sub(r"\bdeg\.?\s*C\b", "°C", t)
     t = re.sub(r"[$_^{}*]", "", t)
     return norm_ws(t).casefold()                                                # P140 C1: casefolded (no unit spelling collides; checked)
 
@@ -212,10 +215,18 @@ class Run:
         return out
 
     def quotes(self, recs):
+        """d (D11): the quote against the texts of the record's element and the element ids it mentions; P146: plus the figures.json
+        series labels of the panels among them."""
+        self.labels = collections.defaultdict(list)
+        p = C.V2 / "kb" / f"{self.pid}.figures.json"
+        for c in (json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []):
+            for e in (f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap"):
+                if c.get("series", {}).get("label_raw"):
+                    self.labels[e].append(c["series"]["label_raw"])
         out = []
         for r in recs:
             ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
-            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join(self.text.get(e, "") for e in ev))   # element ids it mentions, texts joined
+            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join([self.text.get(e, "") for e in ev] + [x for e in ev for x in self.labels.get(e, [])]))   # P146: + series labels
             if q in txt:
                 out.append(r)
             elif in_order(q.split(), txt):                                      # P140 C1: every token in order, gaps allowed
@@ -354,10 +365,12 @@ class Run:
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         k, tree, facts = self.key, [], []
-        owner = {}
+        owner, drole = {}, {}
         for i, it in self.p0.items():
-            for cid in (it.get("data") or it.get("curves") or []):             # P145: data (curve, cell, peak ids); curves on older lines
+            for d in (it.get("data") or it.get("curves") or []):               # P146: data = [{id, role}]; P145 ids, curves on older lines
+                cid = d.get("id") if isinstance(d, dict) else d
                 owner.setdefault(cid, []).append(i)
+                drole[(i, cid)] = (d.get("role") if isinstance(d, dict) else None) or ("simulated" if it.get("role") == "model_run" else "measured")
 
         def els(fig, panel=""):
             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
@@ -403,23 +416,24 @@ class Run:
             conds = list((cu.get("conditions") or {}).values())
             ev = ";".join(els(cu["figure"], cu.get("panel", "")))
             lab = cu.get("series", {}).get("label_raw", "")
-            if role == "model_run":
-                settings(conds, nid, ev, "model_input", lab)
-                result(cu, nid, "model")
-            elif role == "specimen":
-                settings(conds, nid, ev, "stated", lab)
-                result(cu, "@meas:" + nid, "observation")
-            elif role == "run":                                                 # P144: no entity made under the run
-                settings(conds, nid, ev, "stated", lab)
+            dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
+            if role not in ("model_run", "specimen", "run"):
+                self.count("1c", f"curve named by a {role} (left out)"); continue
+            settings(conds, nid, ev, "model_input" if role == "model_run" else "stated", lab)
+            if dr == "measured":
                 result(cu, "@meas:" + nid, "observation")
             else:
-                self.count("1c", f"curve named by a {role} (left out)")
+                result(cu, nid, "model")
+                if dr == "fitted":
+                    facts[-1]["data_kind"] = "computed_by_authors"
+            self.count("1c", f"data role {dr}")
 
         for v in Fj.get("values", []):                                          # P145: a cell or a peak a unit names
             own = [i for i in owner.get(v["id"], []) if i in self.node]
             if len(own) != 1:
                 self.count("1c", f"{v.get('kind', 'value')} not named by exactly one unit (left out)"); continue
             nid, role = self.node[own[0]]
+            dr = drole[(own[0], v["id"])]
             ev = ";".join(els(v["figure"], v.get("panel", "")))
             at = [dict(quantity=q, value=x, value_max=None, key_raw=q, unit=L.ENTRIES.get(q, {}).get("unit", "")) for q, x in (v.get("at") or {}).items()]
             settings(at + list((v.get("conditions") or {}).values()), nid, ev, "model_input" if role == "model_run" else "stated", v.get("label", ""))
@@ -427,15 +441,35 @@ class Run:
             if q not in L.QUANTITIES:
                 self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
             u = unit_symbol(v.get("unit") or "") if v.get("unit") else ""
-            facts.append(row(type="model" if role == "model_run" else "observation", quantity=q, label_as_printed=v.get("label") or q,
+            facts.append(row(type="observation" if dr == "measured" else "model", quantity=q, label_as_printed=v.get("label") or q,
                              value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=v.get("value_text") or "", unit=u or "",
-                             data_kind="simulated" if role == "model_run" else "read_from_figure", evidence=ev,
-                             parent=nid if role == "model_run" else "@meas:" + nid))
+                             data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
+                             parent="@meas:" + nid if dr == "measured" else nid))
             self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
         if unowned:                                                             # P144: no fallback
             self.count("1c", "curves no unit names (left out)", len(unowned))
             self.note(f"1c: {len(unowned)} curves no pass-0 unit names, left out: " + ", ".join(c["id"] for c in unowned))
         return tree, facts
+
+    def specimens_for_runs(self, facts):
+        """P146: a run that carries result rows directly (an observation, a derived or a model row whose parent is the run or the run's
+        measurement) and has no specimen gets one specimen "film of <run>" (how inferred, logged specimen_created); the results move to
+        it (an observation to its measurement activity of the row's method). Structure the pilot tree needs, not a count judgement."""
+        runs = {nid for nid, role in self.node.values() if role == "run"}
+        has = {r["parent"] for r in self.rows_tree if r["type"] == "entity"}
+        for run in sorted(runs - has):
+            res = [f for f in facts if f["type"] in ("observation", "derived", "model") and f["parent"] in (run, "@meas:" + run)]
+            if not res:
+                continue
+            lab = next((r["label_as_printed"] for r in self.rows_tree if r["fact_id"] == run), run)
+            e = f"{run}:film"
+            self.rows_tree.append({**{x: "" for x in F.FIELDS}, "fact_id": e, "type": "entity", "how": "inferred", "parent": run, "author": self.pid,
+                                   "evidence": next((r["evidence"] for r in self.rows_tree if r["fact_id"] == run), ""),
+                                   "label_as_printed": f"film of {lab}", "statement": f"the film of run {lab} (the run states no specimen)"})
+            for f in res:
+                f["parent"] = ("@meas:" + e if f["type"] == "observation" and not f["method"] else self.measurement(e, f["method"])) if f["type"] == "observation" else e
+            self.count("h", "specimen_created")
+            self.note(f"h: specimen_created {e} ({len(res)} result rows moved)")
 
     def comparisons(self, rows):
         """P143b: comparisons derived from the condition vectors of the experiment units (entities), never asked of the extractor and
@@ -773,6 +807,7 @@ class Run:
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
         fig_tree, fig_facts = self.figures()
+        self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
