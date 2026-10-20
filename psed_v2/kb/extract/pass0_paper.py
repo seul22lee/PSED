@@ -16,7 +16,8 @@ One item per named thing:
 - name_as_printed: the name exactly as the paper prints it (copied, never rewritten or invented);
 - role: one of specimen, run, simulation, cited_work;
 - structure_class, specimen_class, experiment_kind: only values from the form's enums, and only when the paper states them;
-- introduced_in: the id(s) of the element(s) where the thing is first named, taken from the element index below.
+- introduced_in: the id(s) of the element(s) where the thing is first named, then every figure or table element that shows it,
+  taken from the element index below.
 Answer with JSON matching the form."""
 
 

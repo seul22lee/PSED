@@ -20,16 +20,32 @@ from vocab import MECHANISMS, NAMES, PHRASES
 NK = ["citation_line", "boilerplate", "no_knowledge"]
 NK_FORM = ["citation_line", "boilerplate", "duplicate", "no_knowledge"]      # the nk enum of the response (duplicate: duplicate_of names the element)
 MAPPED = re.compile(r"^(abs|abstract|s\d+)$")
-RULES = """FIELD RULES
+RULES = """TYPES (one per record):
+- setting: a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).
+- observation: a measured result on a specimen.
+- derived: a number the authors computed from their data (fit parameters, values derived in a table).
+- model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
+  a definition.
+- definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
+- claim: a causal statement, with cause, relation and effect.
+- caveat: a limitation or assumption the authors state about their own method or data (not a claim).
+- cited: a value or statement the paper attributes to another work (not a setting).
+
+FIELD RULES
 - Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
   boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty.
-- quote: at most 15 words copied verbatim from the element; every record has one.
+- quote: words copied verbatim from the element, as few as identify the record; every record has one.
 - note: at most 20 words, on claims and definitions only.
-- quantity: an id of the form; "other" only when no id fits, and then candidate is required, with the paper's own definition copied
-  verbatim (never written by you), the unit as printed, its dimension and symbol.
+- quantity: an id of the form only when it is the same concept as printed; otherwise "other", and then candidate is required, with
+  the paper's own definition copied verbatim (never written by you), the unit as printed, its dimension and symbol. Examples:
+  "rms thickness error" -> other, not thickness_nonuniformity; "10 min stabilisation" -> other, not time; "c = 0.01" ->
+  initial_sticking_coefficient when the paper's own table says so, never reaction_stoichiometry.
 - label_as_printed: the paper's own label of the quantity, on every record with a quantity.
+- kind: on every record with a value, value_min, value_max or value_text.
+- variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
-- value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted.
+- value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
+  material, substrate, reactant_A, reactant_B and structure is an id of the form.
 - mentions: only names from the MENTIONS list, exactly as listed."""
 
 
@@ -78,6 +94,37 @@ def answers(resp):
     return out
 
 
+def examples(pid, form):
+    """P136 3b: one example record per type, from the gold facts.csv of the dev papers other than pid (never a held-out paper): the
+    first row of the type (with a quantity where the type takes one) that, cast into the form (form_roundtrip.cast; term kept; quote =
+    the first 12 words of its first evidence element), validates against form.json. Rendered as JSON, one line per type."""
+    import csv as _csv
+    from jsonschema import Draft202012Validator
+    import form_roundtrip as RT
+    val, props, out = Draft202012Validator(form), form["properties"], {}
+    for p in [p for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
+        f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
+        if not f.exists():
+            continue
+        text = C.E.texts(p)
+        for row in _csv.DictReader(f.open(encoding="utf-8")):
+            t = row["type"]
+            if t in out or t not in form["properties"]["type"]["enum"] or "#" not in row["fact_id"]:
+                continue
+            if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
+                continue
+            rec, lost = RT.cast(row, props)
+            if t == "definition":
+                rec["term"] = row["term"]
+            words = text.get(row["evidence"].split(";")[0], "").split()[:12]
+            if lost or not words:
+                continue
+            rec["quote"] = " ".join(words)
+            if not list(val.iter_errors(rec)):
+                out[t] = rec
+    return "\n".join(f"- {t}: " + json.dumps(out[t], ensure_ascii=False) for t in form["properties"]["type"]["enum"] if t in out)
+
+
 def jobs(pid):
     p0 = C.lines(pid, 0)
     if not p0:
@@ -91,6 +138,7 @@ def jobs(pid):
     kinds = "\n".join(f"- {k}: {PHRASES.get(k, '')}" for k in C.X._pilot()[0].KINDS)
     qids = "\n".join(f"{q}: {NAMES.get(q, q)}" for q in form["$defs"]["quantity_id"]["enum"])
     mids = "\n".join(f"{m}: {MECHANISMS[m]['name']}" for m in form["$defs"]["cause_effect"]["enum"] if m in MECHANISMS)
+    ex = examples(pid, form)
     out = []
     for sec, rs in groups(pid)[0].items():
         ids = [r["element_id"] for r in rs]
@@ -99,6 +147,7 @@ def jobs(pid):
             "ELEMENTS:\n" + "\n".join(f"{i}: {text[i]}" for i in ids),
             "MENTIONS (the only allowed mentions):\n" + "\n".join(names) + "\nElement ids that may be mentioned: " + ", ".join(refs),
             "FORM (JSON Schema, one record):\n" + json.dumps(form, ensure_ascii=False, separators=(",", ":")) + "\n\n" + RULES,
+            "EXAMPLES (one record per type, from other papers):\n" + ex,
             "KIND (how a value is known):\n" + kinds,
             "QUANTITY IDS (id: name). quantity must be one of them or \"other\"; qualifier x, variables[].quantity and each cause/effect item "
             "must be one of them (cause/effect may also be a mechanism id):\n" + qids,
