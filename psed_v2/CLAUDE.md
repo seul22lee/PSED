@@ -82,6 +82,19 @@ psed_v2/
 - **`PSED_v2_Plan.md` is edited only by the user, outside Claude Code.** Never modify it.
   Read it for context; commit and push it only when the user asks.
 
+### Standing rules R1-R3 (P138)
+
+- R1 folders: pipeline folders only, `corpus/ ingest/ ontology/ kb/`; root docs (`CLAUDE.md`, `HANDOFF.md`, `PSED_v2_Plan.md`) allowed;
+  no new top-level folder, and no new subfolder that a directive does not name.
+- R2 reports: every unit ends with `kb/reports/<unit>.html`, built by `kb/report.py` from CSV/txt/diff files: rows, not counts
+  (every count has its rows beside it), and a fail -> pass table for every check item that changed.
+- R3 checks: a check failure is reported, never worked around; no wording, statement or id change made to satisfy a check;
+  `kb/pilot/check.py` is never edited to make an output pass.
+- No logic keyed on a paper, an element id or a value.
+- Held-out papers yim22, gre23, mat23: never extracted, never read.
+- A unit is done when its report carries the gold row comparison.
+- Models are pinned by name; the cost is stated before any provider call.
+
 ### Working rules for Claude Code
 
 These rules go into `CLAUDE.md` so that every session starts from them.

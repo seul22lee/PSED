@@ -652,13 +652,6 @@ class Run:
                     break
                 optional.pop()
                 self.count("k", "statement_part_left_out")
-            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]) and f["value_text"]:   # P136b: last resort, the printed text left out
-                s = s.replace(f"'{f['value_text']}'", "its value as printed in the element")
-                self.count("k", "statement_value_text_left_out")
-            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):      # P136b: then the printed label and term left out
-                s = s.replace(f" (symbol {f['term']})", " (its symbol as printed)") if f["term"] else s
-                s = s.replace(name, "a quantity named in the element") if name and f["quantity"] == "other" else s
-                self.count("k", "statement_label_left_out")
             if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):
                 self.count("k", "statement_copies_text")
             key = " ".join(words(s))
