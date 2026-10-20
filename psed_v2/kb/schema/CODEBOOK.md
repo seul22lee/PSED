@@ -46,7 +46,8 @@ Terms:
 - **run**: one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure. (lists.py TERMS)
 - **specimen**: one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run. (lists.py TERMS)
 - **input entity**: a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a deposition activity's inputs. (lists.py TERMS)
-- **model run**: one set of inputs of a simulation whose result the paper reports (a curve, a table row). (lists.py TERMS)
+- **model run**: one set of inputs of a simulation whose result the paper reports (a curve, a table row); two solution methods or approximations of one model with the same inputs are one model run (its curves differ in method, not in inputs). (lists.py TERMS)
+- **fitted or simulated curve of a specimen**: a curve fitted or simulated to match a measured specimen is a result of that specimen, not a model run. (lists.py TERMS)
 - **series / replicate / grid (comparisons)**: never a parent and never asked of the extractor; the compiler derives them from the condition vectors of the experiment units — series: members differ in exactly one quantity; replicate: in none; grid: in two. A name the authors give such a set ("Series A") is kept as its label. (lists.py TERMS)
 - **piece**: "a piece cut from it" (lists.py); "a deposition or another entity: a piece" (facts.py retree())
 - **measurement activity**: "goes under the entity's measurement activity of that method (<key>:meas:<entity>:<method>; "measurement" when the fact names none)" (facts.py retree())
@@ -64,8 +65,8 @@ Table layouts:
 Panel layouts:
 
 - **curve_per_unit**: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
-- **panel_one_unit**: The whole panel is one experiment unit; its curves are several results of one measurement or one model run. Example: an EDS panel = one specimen, its curves one measurement's results per element.
-- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+- **panel_one_unit**: The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element, the same inputs solved several ways (P145). Example: an EDS panel = one specimen, its curves one measurement's results per element.
+- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
 
 ## c. Record types, stances, NK reasons, the equation rule (sources: kb/extract/pass1_elements.py RULES; kb/pilot/lists.py STANCES and its comment; P143 equation rule in ontology/export.py)
 

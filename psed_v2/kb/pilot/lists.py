@@ -133,7 +133,10 @@ TERMS = {
     "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
                     "deposition activity's inputs.",
-    "model run": "one set of inputs of a simulation whose result the paper reports (a curve, a table row).",
+    "model run": "one set of inputs of a simulation whose result the paper reports (a curve, a table row); two solution methods or "
+                 "approximations of one model with the same inputs are one model run (its curves differ in method, not in inputs).",   # P145
+    "fitted or simulated curve of a specimen": "a curve fitted or simulated to match a measured specimen is a result of that specimen, "
+                                                "not a model run.",   # P145
     "series / replicate / grid (comparisons)": "never a parent and never asked of the extractor; the compiler derives them from the "
         "condition vectors of the experiment units — series: members differ in exactly one quantity; replicate: in none; grid: in two. "
         "A name the authors give such a set (\"Series A\") is kept as its label.",

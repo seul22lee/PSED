@@ -322,7 +322,7 @@ def pass0_schema(onto, L):
           "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
           "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
           "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-          "curves": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},         # P143b: the figures.json curve ids that show the unit
+          "data": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},           # P145 (was curves): figures.json curve, cell and peak ids of the unit
           "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
     qid = {"$ref": "#/$defs/quantity_id"}
@@ -437,9 +437,12 @@ P143_TABLE_LAYOUTS = [
 P143_PANEL_LAYOUTS = [
     ("curve_per_unit", "Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names.",
      "one curve per model run (Ylilammi Fig. 4)"),
-    ("panel_one_unit", "The whole panel is one experiment unit; its curves are several results of one measurement or one model run.",
+    ("panel_one_unit", "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel "
+                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element, the same inputs solved "
+                       "several ways (P145).",
      "an EDS panel = one specimen, its curves one measurement's results per element"),
-    ("point_per_unit", "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result.",
+    ("point_per_unit", "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid "
+                       "point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145).",
      "a heat map whose grid points are runs (axes = conditions, colour = result)"),
 ]
 P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the paragraphs around the equation."

@@ -32,7 +32,9 @@ UNITS: one item per run, specimen, simulation and model run.
 - list every run even when several share all conditions; list a shared run once when the paper says the samples were coated together.
 - evidence_quote is copied from the paper: the words that say which samples a run made (for a specimen or a model run, the words
   that name it).
-- curves: the figures.json curve ids (FIGURES below) whose results belong to this unit; null when none.
+- data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit; null when none.
+- a unit established by a table row or a grid point: introduced_in = that row's name cell / that cell id, evidence_quote = the
+  cell's text.
 - introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).
 - structure_class, specimen_class, experiment_kind: only values of the form's enums, only when the paper states them.
 

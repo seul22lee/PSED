@@ -4,8 +4,10 @@
     python3 psed_v2/kb/extract/render.py yli18          # prints the pass-0 input sizes
 
 Parts: CODEBOOK.md whole; document.md whole; TABLES (each table's markdown as ingested, then its cell-id map "r<i>c<j> = <element
-id>"); FIGURES (each figure's caption id, panel ids, its figures.json curves as "curve id | panel | series label | x | y | conditions",
-no point data); the element index; the example: the gold units and layouts of another dev paper in the pass-0 form, with the text of
+id>"); FIGURES (each figure's caption id, panel ids and every figures.json entry of it, one line each, P145: curves "curve id | panel | series
+label | x | y | conditions" (no point data), cells "cell id | panel | at coordinates | quantity = value or value_text | unit |
+conditions", peaks "peak id | panel | quantity = value | unit | label | conditions", sets "set id | panel | kind | varied | members",
+derived "derived id | panel | quantity = value unit | from | method"); the element index; the example: the gold units and layouts of another dev paper in the pass-0 form, with the text of
 the table rows and captions they come from beside them. gold_units() and gold_layouts() derive the gold side; the P144 report uses them.
 """
 import collections
@@ -62,9 +64,12 @@ def figures(pid):
     rows = E.load(pid)
     text = E.texts(pid)
     Fj = _figures_json(pid)
-    by_fig = collections.defaultdict(list)
+    by_fig, vals, sets, der = (collections.defaultdict(list) for _ in range(4))
     for c in Fj.get("curves", []):
         by_fig[str(c["figure"])].append(c)
+    for sec, d in (("values", vals), ("sets", sets), ("derived", der)):
+        for x in Fj.get(sec) or []:
+            d[str(x["figure"])].append(x)
     parts = []
     for r in rows:
         if r["kind"] != "caption" or not r["element_id"].startswith("fig"):
@@ -73,11 +78,28 @@ def figures(pid):
         panels = [x["element_id"] for x in rows if x["kind"] == "panel" and re.fullmatch(rf"fig{n}[a-z]*", x["element_id"])]
         lines = [f"FIGURE fig{n}: caption {r['element_id']}: {text[r['element_id']]}", "panels: " + ", ".join(panels)]
         for c in by_fig.get(n, []):
-            conds = "; ".join(f"{v.get('key_raw', q)}={v.get('raw', '')}" for q, v in (c.get("conditions") or {}).items())
-            lines.append(f"{c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
-                         f"{c['y'].get('quantity', '')} | {conds}")
+            lines.append(f"curve {c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
+                         f"{c['y'].get('quantity', '')} | {_conds(c)}")
+        for v in vals.get(n, []):                                               # P145: cells and peaks
+            if v.get("kind") == "cell":
+                at = "; ".join(f"{q}={x}" for q, x in (v.get("at") or {}).items())
+                lines.append(f"cell {v['id']} | fig{n}{v.get('panel', '')} | at {at} | {v.get('quantity', '')} = "
+                             f"{v['value'] if v.get('value') is not None else v.get('value_text', '')} | {v.get('unit', '')} | {_conds(v)}")
+            else:
+                lines.append(f"{v.get('kind', 'value')} {v['id']} | fig{n}{v.get('panel', '')} | {v.get('quantity', '')} = {v.get('value')} | {v.get('unit', '')} | "
+                             f"label {v.get('label', '')} | {_conds(v)}")
+        for st in sets.get(n, []):                                              # P145: sets (series, grid) with their members
+            lines.append(f"set {st['id']} | fig{n}{st.get('panel', '')} | {st['kind']} | varied {st.get('varied', '')} ({st.get('varied_raw', '')}) | "
+                         f"members {', '.join(st.get('members') or [])}")
+        for d in der.get(n, []):                                                # P145: derived entries
+            lines.append(f"derived {d['id']} | fig{n}{d.get('panel', '')} | {d.get('quantity', '')} = {d.get('value')} {d.get('unit', '')} | "
+                         f"from {d.get('source', '')} | {d.get('method', '')}")
         parts.append("\n".join(lines))
     return "\n\n".join(parts) or "(no figures)"
+
+
+def _conds(x):
+    return "; ".join(f"{v.get('key_raw', q)}={v.get('raw', '')}" for q, v in (x.get("conditions") or {}).items())
 
 
 def index(pid):
@@ -91,24 +113,34 @@ def _gold(pid):
 
 def gold_units(pid):
     """The gold tree's experiment units: run = a deposition activity; specimen = an entity with a deposition above it; simulation = a
-    simulation activity; model_run = an entity with a simulation above it. [dict(gid, role, name, evidence, parent gid)]."""
+    simulation activity; model_run = an entity with a simulation above it. P145: a simulation under another simulation is collapsed
+    into the top one (its model runs go to the top simulation; the top one is flagged gold_shape); a unit whose evidence is in no
+    element of the paper is esi_only. [dict(gid, role, name, evidence, parent gid, esi_only, gold_shape)]."""
     rows = [r for r in _gold(pid) if "#" not in r["fact_id"]]
     R = {r["fact_id"]: r for r in rows}
+    els = {r["element_id"] for r in E.load(pid)}
 
-    def up(r, kind):
-        x = r["parent"]
+    def ups(r, kind):
+        out, x = [], r["parent"]
         while x in R:
             if R[x]["type"] == "activity" and R[x]["kind"] == kind:
-                return x
+                out.append(x)
             x = R[x]["parent"]
-        return ""
-    out = []
+        return out
+    out, collapsed = [], collections.Counter()
     for r in rows:
+        sims, deps = ups(r, "simulation"), ups(r, "deposition")
+        if r["type"] == "activity" and r["kind"] == "simulation" and sims:
+            collapsed[sims[-1]] += 1
+            continue
         role = ("run" if r["type"] == "activity" and r["kind"] == "deposition" else "simulation" if r["type"] == "activity" and r["kind"] == "simulation"
-                else "model_run" if r["type"] == "entity" and up(r, "simulation") else "specimen" if r["type"] == "entity" and up(r, "deposition") else "")
+                else "model_run" if r["type"] == "entity" and sims else "specimen" if r["type"] == "entity" and deps else "")
         if role:
-            out.append(dict(gid=r["fact_id"], role=role, name=r["label_as_printed"], evidence=[e for e in r["evidence"].split(";") if e],
-                            parent=up(r, "deposition") if role == "specimen" else up(r, "simulation") if role == "model_run" else ""))
+            ev = [e for e in r["evidence"].split(";") if e]
+            out.append(dict(gid=r["fact_id"], role=role, name=r["label_as_printed"], evidence=ev,
+                            parent=deps[0] if role == "specimen" else sims[-1] if role == "model_run" else "", esi_only=bool(ev) and not (set(ev) & els)))
+    for u in out:
+        u["gold_shape"] = f"{collapsed[u['gid']]} nested simulation(s) collapsed" if collapsed.get(u["gid"]) else ""
     return out
 
 
@@ -147,22 +179,24 @@ def gold_layouts(pid, key):
     for tid, _, _ in _tables(pid):
         cs = {(i, j): es - {""} for (t, i, j), es in cell.items() if t == tid}
         withe = {k: v for k, v in cs.items() if v}
+        minority = []
         if not withe:
             layout = "not_units"
-        else:
-            rows_ = collections.defaultdict(set)
-            cols_ = collections.defaultdict(set)
-            for (i, j), es in withe.items():
-                rows_[i] |= es; cols_[j] |= es
-            if all(len(v) == 1 for v in rows_.values()) and len({next(iter(v)) for v in rows_.values()}) >= 2:
-                layout = "row_per_unit"
-            elif all(len(v) == 1 for v in cols_.values()) and len({next(iter(v)) for v in cols_.values()}) >= 2:
-                layout = "column_per_unit"
-            elif all(len(v) == 1 for v in withe.values()) and len({next(iter(v)) for v in withe.values()}) == len(withe) >= 2:
-                layout = "cell_per_unit"
-            else:
-                layout = "mixed"
-        tl.append(dict(table=tid, layout=layout, units=sorted({e for v in withe.values() for e in v}) if withe else []))
+        else:                                                                   # P145: the majority layout, the cells that do not fit it listed
+            one = {k: next(iter(v)) for k, v in withe.items() if len(v) == 1}
+            by_r, by_c = collections.defaultdict(collections.Counter), collections.defaultdict(collections.Counter)
+            for (i, j), e in one.items():
+                by_r[i][e] += 1; by_c[j][e] += 1
+            fit = {"row_per_unit": {k for k, e in one.items() if by_r[k[0]].most_common(1)[0][0] == e},
+                   "column_per_unit": {k for k, e in one.items() if by_c[k[1]].most_common(1)[0][0] == e},
+                   "cell_per_unit": {k for k, e in one.items() if sum(1 for x in one.values() if x == e) == 1}}
+            if len(set(one.values())) < 2:
+                fit = {"row_per_unit": set(one)}
+            layout = max(fit, key=lambda x: (len(fit[x]), x == "row_per_unit"))
+            minority = sorted(f"{tid}.r{i}c{j}" for (i, j) in withe if (i, j) not in fit[layout])
+            if minority:
+                layout += " (majority)"
+        tl.append(dict(table=tid, layout=layout, units=sorted({e for v in withe.values() for e in v}) if withe else [], minority_cells=minority))
     cu = gold_curve_units(key)
     Fj = _figures_json(pid)
     by_panel = collections.defaultdict(list)
@@ -200,12 +234,12 @@ def example(pid, form):
         for c, e in cu.items():
             curves[e].append(c)
         unit_item = lambda u: {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] or None, "parent": ids.get(u["parent"]),
-                               "introduced_in": u["evidence"] or None, "evidence_quote": None, "curves": curves.get(u["gid"]) or None,
+                               "introduced_in": u["evidence"] or None, "evidence_quote": None, "data": curves.get(u["gid"]) or None,
                                "structure_class": None, "specimen_class": None, "experiment_kind": None}
         tl, pl = gold_layouts(p, key)
         obj = {"units": [unit_item(u) for u in U],
-               "table_layouts": [{"table": t["table"], "layout": t["layout"], "unit_name_cells": None, "units": [ids[x] for x in t["units"] if x in ids] or None}
-                                 for t in tl if t["layout"] != "mixed"] or None,
+               "table_layouts": [{"table": t["table"], "layout": t["layout"].split()[0], "unit_name_cells": None, "units": [ids[x] for x in t["units"] if x in ids] or None}
+                                 for t in tl if not t["minority_cells"]] or None,
                "panel_layouts": [{"panel": x["panel"], "layout": x["layout"], "unit": ids.get(x["units"][0]) if x["layout"] == "panel_one_unit" and x["units"] else None,
                                   "axis_quantities": None, "value_quantity": None} for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit")] or None}
         errs = list(Draft202012Validator(form).iter_errors(obj))

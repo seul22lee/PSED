@@ -356,7 +356,7 @@ class Run:
         k, tree, facts = self.key, [], []
         owner = {}
         for i, it in self.p0.items():
-            for cid in it.get("curves") or []:
+            for cid in (it.get("data") or it.get("curves") or []):             # P145: data (curve, cell, peak ids); curves on older lines
                 owner.setdefault(cid, []).append(i)
 
         def els(fig, panel=""):
@@ -415,6 +415,23 @@ class Run:
             else:
                 self.count("1c", f"curve named by a {role} (left out)")
 
+        for v in Fj.get("values", []):                                          # P145: a cell or a peak a unit names
+            own = [i for i in owner.get(v["id"], []) if i in self.node]
+            if len(own) != 1:
+                self.count("1c", f"{v.get('kind', 'value')} not named by exactly one unit (left out)"); continue
+            nid, role = self.node[own[0]]
+            ev = ";".join(els(v["figure"], v.get("panel", "")))
+            at = [dict(quantity=q, value=x, value_max=None, key_raw=q, unit=L.ENTRIES.get(q, {}).get("unit", "")) for q, x in (v.get("at") or {}).items()]
+            settings(at + list((v.get("conditions") or {}).values()), nid, ev, "model_input" if role == "model_run" else "stated", v.get("label", ""))
+            q = v.get("quantity") or ""
+            if q not in L.QUANTITIES:
+                self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
+            u = unit_symbol(v.get("unit") or "") if v.get("unit") else ""
+            facts.append(row(type="model" if role == "model_run" else "observation", quantity=q, label_as_printed=v.get("label") or q,
+                             value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=v.get("value_text") or "", unit=u or "",
+                             data_kind="simulated" if role == "model_run" else "read_from_figure", evidence=ev,
+                             parent=nid if role == "model_run" else "@meas:" + nid))
+            self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
         if unowned:                                                             # P144: no fallback
             self.count("1c", "curves no unit names (left out)", len(unowned))
             self.note(f"1c: {len(unowned)} curves no pass-0 unit names, left out: " + ", ".join(c["id"] for c in unowned))

@@ -77,7 +77,7 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | pass0.units.specimen_class | one of `film`, `porous_composite` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.experiment_kind | one of `sample`, `in_situ_run`, `plasma_measurement`, `cited` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.introduced_in | list of string or {'type': 'null'} | always | extractor, pass 0 |
-| pass0.units.curves | list of string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.data | list of string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.evidence_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.table_layouts.table | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.table_layouts.layout | one of `row_per_unit`, `column_per_unit`, `cell_per_unit`, `not_units` or {'type': 'null'} | always | extractor, pass 0 |
