@@ -533,7 +533,10 @@ class Run:
         out, errors = [], collections.Counter()
         for e in T.entities():
             for did in L.DERIVED:
-                d = Q.derive(T, e, did)
+                try:
+                    d = Q.derive(T, e, did)
+                except (KeyError, ValueError) as ex:                            # P138: an input query cannot convert (e.g. cycle -> 1): logged
+                    errors[f"derive raised: {ex}"[:60]] += 1; continue
                 if "error" in d:
                     errors[re.sub(r" \(.*|;.*", "", d["error"])] += 1; continue
                 ins = [u[1] for u in d["inputs"]]

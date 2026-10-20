@@ -111,8 +111,12 @@ def form_test(g, val, props):
     if g.get("term") and "term" in props:                                       # P136: the form has term now
         rec["term"] = g["term"]
     fills = []
+    if g.get("statement") and "statement" in props:                            # P138: the form has statement now (own words)
+        rec["statement"] = g["statement"]; fills.append("statement=gold statement")
+    if isinstance(rec.get("quantity"), str) and ";" in rec["quantity"]:        # P138: a caveat's several quantities are a list in the form
+        rec["quantity"] = rec["quantity"].split(";"); fills.append("quantity split into a list")
     if rec.get("quantity") and not rec.get("label_as_printed"):                 # P135c: gold's filing convention, not expressibility
-        rec["label_as_printed"] = rec["quantity"]; fills.append("label_as_printed=quantity id")
+        rec["label_as_printed"] = ";".join(rec["quantity"]) if isinstance(rec["quantity"], list) else rec["quantity"]; fills.append("label_as_printed=quantity id")
     if rec.get("quantity") == "other" and "candidate" not in rec:
         rec["candidate"] = dict(definition_quote=g["statement"], unit_as_printed=g["unit"], dimension="dimensionless", symbol=g["label_as_printed"] or "?")
         fills.append("candidate=stub")
