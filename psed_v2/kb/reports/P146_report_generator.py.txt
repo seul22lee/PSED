@@ -1,0 +1,212 @@
+"""P145 report tables (read-only): per paper (U) units, (L) layouts, (C) data, cells-based units, ESI-only gold units, the experiment
+graph -> kb/reports/<unit>.*.csv / .graph.json. Usage: p145report.py <unit> <paper> ..."""
+import collections, csv, json, re, sys
+from pathlib import Path
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "extract"))
+import common as C   # noqa: E402
+import compile as K  # noqa: E402
+import render        # noqa: E402
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+import ask           # noqa: E402
+import lists as LISTS  # noqa: E402
+
+R = V2 / "kb" / "reports"
+UNIT = sys.argv[1]
+norm = lambda t: re.sub(r"\W+", " ", (t or "").lower()).strip()   # noqa: E731
+
+
+def wr(name, rows, fields=None):
+    rows = list(rows)
+    fields = fields or list(dict.fromkeys(k for r in rows for k in r)) or ["(none)"]
+    with (R / f"{UNIT}.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader(); w.writerows(rows)
+
+
+summary, calls = [], []
+for key in sys.argv[2:]:
+    pid, _ = C.resolve(key)
+    line = C.lines(pid, 0)[-1]
+    obj = C.loads_json(line["response"])
+    units = obj.get("units") or []
+    data_of = lambda y: [d.get("id") if isinstance(d, dict) else d for d in (y.get("data") or y.get("curves") or [])]   # noqa: E731  P146: [{id, role}]
+    role_of = {(y["id"], d.get("id")): d.get("role", "") for y in units for d in (y.get("data") or []) if isinstance(d, dict)}
+    u = line["usage"]
+    calls.append(dict(paper=key, input_tokens=u["input_tokens"], output_tokens=u["output_tokens"],
+                      cost_usd=f"{ask.cost_of('google:gemini-3.8-flash', {'input': u['input_tokens'], 'output': u['output_tokens']}):.3f}"))
+    text = K.normalize(" ".join(C.E.texts(pid).values()))
+    Fj = json.loads((V2 / "kb" / f"{pid}.figures.json").read_text(encoding="utf-8"))
+    cells = {v["id"] for v in Fj.get("values", []) if v.get("kind") == "cell"}
+    gc = render.gold_curve_units(key)
+    bound = collections.defaultdict(set)
+    for c, e in gc.items():
+        bound[e].add(c)
+    G = render.gold_units(pid)
+    gold_rows = list(csv.DictReader(open(V2 / "kb" / "pilot" / f"{pid}.facts.csv", encoding="utf-8")))
+    GR = {r["fact_id"]: r for r in gold_rows}
+    under = collections.defaultdict(set)                                        # a gold run: itself and the entities below it
+    for r in gold_rows:
+        x = r["parent"]
+        while x in GR:
+            if GR[x]["type"] == "activity" and GR[x]["kind"] == "deposition":
+                under[x].add(r["parent"]); break
+            x = GR[x]["parent"]
+    conds = collections.defaultdict(dict)                                       # gold run -> {quantity: canonical value} of its settings
+    for r in gold_rows:
+        if r["type"] == "setting" and r["value"] and r["quantity"]:
+            for run, nodes in under.items():
+                if r["parent"] == run or r["parent"] in nodes:
+                    conds[run].setdefault(r["quantity"], K.canon(r))
+    vals = {v["id"]: v for v in json.loads((V2 / "kb" / f"{pid}.figures.json").read_text(encoding="utf-8")).get("values", [])}
+
+    def at_match(g, y):
+        """P146: a pass-0 unit's cell coordinates against the gold run's condition settings (same quantity ids, canonical values)."""
+        if g["role"] != "run":
+            return False
+        for c in data_of(y):
+            at = (vals.get(c) or {}).get("at") or {}
+            if at and all(conds[g["gid"]].get(q) == K.canon(dict(value=str(x), unit=LISTS.ENTRIES.get(q, {}).get("unit", ""), quantity=q))
+                          for q, x in at.items()):
+                return True
+        return False
+    esi = [g for g in G if g["esi_only"]]
+    G = [g for g in G if not g["esi_only"]]
+    # (U)
+    rowsU, cntU, pair_of, status_g, status_p, links = [], collections.Counter(), {}, {}, {}, []
+    for role in ("run", "specimen", "simulation", "model_run"):
+        g = [x for x in G if x["role"] == role]
+        p = [x for x in units if x.get("role") == role]
+        parent = {("g", i): ("g", i) for i in range(len(g))} | {("p", j): ("p", j) for j in range(len(p))}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]; x = parent[x]
+            return x
+        how = {}
+        linked = set()
+        for stage, test in (("data", lambda a, b: bound.get(a["gid"], set()) & set(data_of(b))),        # P146: data first, then cell coordinates
+                            ("cell coordinates", at_match),
+                            ("evidence", lambda a, b: set(a["evidence"]) & set(b.get("introduced_in") or [])),
+                            ("name", lambda a, b: norm(a["name"]) and norm(a["name"]) == norm(b.get("name_as_printed")))):
+            for i, a in enumerate(g):
+                for j, b in enumerate(p):
+                    if ("g", i) in linked or ("p", j) in linked:                # P146: a unit linked at an earlier stage is not linked again
+                        continue
+                    if test(a, b):
+                        parent[find(("g", i))] = find(("p", j)); how[(i, j)] = stage
+            linked |= {x for ij in how for x in (("g", ij[0]), ("p", ij[1]))}
+        comps = collections.defaultdict(lambda: ([], []))
+        for i in range(len(g)):
+            comps[find(("g", i))][0].append((i, g[i]))
+        for j in range(len(p)):
+            comps[find(("p", j))][1].append((j, p[j]))
+        for gs, ps in comps.values():
+            kind = ("matched" if len(gs) == 1 and len(ps) == 1 else "missing" if not ps else "extra" if not gs else
+                    "merged" if len(ps) == 1 else "split" if len(gs) == 1 else "merged+split")
+            cntU[(role, kind)] += 1
+            for _, x in gs:
+                pair_of[x["gid"]] = [y["id"] for _, y in ps]; status_g[x["gid"]] = kind
+            for _, y in ps:
+                status_p[y["id"]] = kind
+                links += [(y["id"], x["gid"]) for _, x in gs]
+            stages = sorted({how[(i, j)] for i, _ in gs for j, _ in ps if (i, j) in how})
+            for _, y in ps or [(None, {})]:
+                q = y.get("evidence_quote")
+                found = "" if not y else "null" if not q else "found" if K.normalize(q) in text else "tokens in order" if K.in_order(K.normalize(q).split(), text) else "not found"
+                rowsU.append(dict(paper=key, role=role, outcome=kind, paired_by=";".join(stages), gold=" | ".join(x["name"] or x["gid"] for _, x in gs),
+                                  gold_ids=";".join(x["gid"] for _, x in gs), gold_shape=";".join(x["gold_shape"] for _, x in gs if x["gold_shape"]),
+                                  pass0_id=y.get("id", ""), pass0_name=y.get("name_as_printed", ""), parent=y.get("parent") or "",
+                                  evidence_quote=y.get("evidence_quote") or "", quote_check=found, data=len(data_of(y)) if y else ""))
+    wr(f"{key}.units", rowsU)
+    wr(f"{key}.esi_only", [dict(paper=key, gid=x["gid"], role=x["role"], name=x["name"], evidence=";".join(x["evidence"])) for x in esi],
+       ["paper", "gid", "role", "name", "evidence"])
+    cellunits = [dict(paper=key, unit=y["id"], role=y.get("role"), name=y.get("name_as_printed"), cells=";".join(c for c in data_of(y) if c in cells),
+                      table_cells=";".join(e for e in y.get("introduced_in") or [] if re.fullmatch(r"tabu?\w+?\.r\d+c\d+", e)))
+                 for y in units if set(data_of(y)) & cells or any(re.fullmatch(r"tabu?\w+?\.r\d+c\d+", e) for e in y.get("introduced_in") or [])]
+    wr(f"{key}.cell_units", cellunits, ["paper", "unit", "role", "name", "cells", "table_cells"])
+    # (L)
+    tl, pl = render.gold_layouts(pid, key)
+    pt = {x.get("table"): x for x in obj.get("table_layouts") or []}
+    pp = {x.get("panel"): x for x in obj.get("panel_layouts") or []}
+    inv = {f"fig{x['figure']}{x.get('panel', '')}": x.get("panel_type", "") for x in Fj.get("inventory", [])}
+    rowsL = []
+    for t in tl:
+        x = pt.get(t["table"], {})
+        ok = x.get("layout") == t["layout"].split()[0]
+        rowsL.append(dict(paper=key, kind="table", id=t["table"], gold=t["layout"], pass0=x.get("layout") or "(none)", status="agree" if ok else "disagree",
+                          minority_cells=";".join(t["minority_cells"]), pass0_units=len(x.get("units") or []), gold_units=len(t["units"])))
+    for t in pt:
+        if t not in {x["table"] for x in tl}:
+            rowsL.append(dict(paper=key, kind="table", id=t, gold="(no such table)", pass0=pt[t].get("layout"), status="disagree"))
+    for x in pl:
+        y = pp.get(x["panel"], {})
+        st = "agree" if y.get("layout") == x["layout"] else "gold unbound" if x["layout"] == "unbound" else "disagree"
+        rowsL.append(dict(paper=key, kind="panel", id=x["panel"], gold=x["layout"], pass0=y.get("layout") or "(none)", status=st, gold_units=len(x["units"])))
+    for t in pp:
+        if t not in {x["panel"] for x in pl}:
+            st = "figure stage read nothing" if inv.get(t) in ("map", "plot", "spectrum") else "no data in figures.json"
+            rowsL.append(dict(paper=key, kind="panel", id=t, gold=f"({inv.get(t) or 'no inventory entry'})", pass0=pp[t].get("layout"), status=st))
+    wr(f"{key}.layouts", rowsL)
+    # (C) curves, cells, peaks
+    claim = collections.defaultdict(list)
+    for y in units:
+        for c in data_of(y):
+            claim[c].append(y["id"])
+    items = [(c["id"], f"fig{c['figure']}{c.get('panel', '')}", "curve") for c in Fj.get("curves", [])] + \
+            [(v["id"], f"fig{v['figure']}{v.get('panel', '')}", v.get("kind", "value")) for v in Fj.get("values", [])]
+    rowsC, cntC, status_d = [], collections.Counter(), {}
+    for cid, panel, kind in items:
+        ge, ps = gc.get(cid, ""), claim.get(cid, [])
+        st = ("double-assigned" if len(ps) > 1 else "unassigned" if not ps else
+              "agrees" if ge and ps[0] in pair_of.get(ge, []) else "gold entity unbound" if not ge else "differs")
+        cntC[(kind, st)] += 1
+        status_d[cid] = st
+        rowsC.append(dict(paper=key, id=cid, kind=kind, panel=panel, gold_entity=ge, pass0_units=";".join(ps),
+                          data_role=";".join(role_of.get((u_, cid), "") for u_ in ps), status=st))
+    known = {i for i, _, _ in items}
+    for c in claim:
+        if c not in known:
+            rowsC.append(dict(paper=key, id=c, status="claimed id not in figures.json", pass0_units=";".join(claim[c]))); cntC[("?", "claimed id not in figures.json")] += 1
+    wr(f"{key}.data", rowsC)
+    # the experiment graph
+    Gall = render.gold_units(pid)
+    name = lambda r, n: f"{r} {n}".strip()                                      # noqa: E731
+    left = [dict(id="paper", parent="", label=f"paper {key}", status="")]
+    if any(x["role"] in ("run", "specimen") for x in Gall):
+        left.append(dict(id="recipe", parent="paper", label="recipe", status=""))
+    for x in Gall:
+        par = {"run": "recipe", "simulation": "paper"}.get(x["role"]) or x["parent"] or ("recipe" if x["role"] == "specimen" else "paper")
+        left.append(dict(id=x["gid"], parent=par, label=name(x["role"], x["name"] or x["gid"]) + (" [gold shape]" if x["gold_shape"] else ""),
+                         status="esi_only" if x["esi_only"] else status_g.get(x["gid"], "")))
+        for c in sorted(bound.get(x["gid"], [])):
+            left.append(dict(id="d:" + c, parent=x["gid"], label=c.split(":", 1)[-1], status=status_d.get(c, "")))
+    for t in tl:
+        left.append(dict(id="t:" + t["table"], parent="recipe" if any(n["id"] == "recipe" for n in left) else "paper",
+                         label=f"table {t['table']}: {t['layout']} · {len(t['units'])} units", status=""))
+    right = [dict(id="paper", parent="", label=f"paper {key}", status="")]
+    if any(y.get("role") in ("run", "specimen") for y in units):
+        right.append(dict(id="recipe", parent="paper", label="recipe", status=""))
+    ids = {y["id"] for y in units}
+    for y in units:
+        r = y.get("role")
+        par = {"run": "recipe", "simulation": "paper"}.get(r) or (y.get("parent") if y.get("parent") in ids else "recipe" if r == "specimen" else "paper")
+        right.append(dict(id=y["id"], parent=par, label=name(r, y.get("name_as_printed") or y["id"]), status=status_p.get(y["id"], "")))
+        for c in data_of(y):
+            right.append(dict(id="d:" + y["id"] + ":" + c, parent=y["id"], label=c.split(":", 1)[-1], status=status_d.get(c, "")))
+    for t, x in pt.items():
+        right.append(dict(id="t:" + str(t), parent="recipe" if any(n["id"] == "recipe" for n in right) else "paper",
+                          label=f"table {t}: {x.get('layout')} · {len(x.get('units') or [])} units", status=""))
+    glinks = [[a, b] for a, b in links] + [["d:" + y["id"] + ":" + c, "d:" + c] for y in units for c in data_of(y) if status_d.get(c) == "agrees"]
+    (R / f"{UNIT}.{key}.graph.json").write_text(json.dumps(dict(left=left, right=right, links=glinks), ensure_ascii=False), encoding="utf-8")
+    summary.append(dict(paper=key, **{f"U {r} {k}": cntU[(r, k)] for r in ("run", "specimen", "simulation", "model_run")
+                                      for k in ("matched", "merged", "split", "merged+split", "missing", "extra") if cntU[(r, k)]},
+                        esi_only=len(esi), cell_units=len(cellunits),
+                        L_disagree=sum(1 for x in rowsL if x["status"] == "disagree"), L_not_compared=sum(1 for x in rowsL if x["status"] not in ("agree", "disagree")),
+                        L_rows=len(rowsL), **{f"C {k} {s}": v for (k, s), v in sorted(cntC.items())}))
+wr("summary", summary)
+wr("calls", calls)
+for s in summary:
+    print(s)
+print(calls)

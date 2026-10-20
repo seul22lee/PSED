@@ -1,0 +1,315 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 47696ed..15a30e2 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -51,12 +51,15 @@ def norm_ws(t):
+ 
+ def normalize(t):
+     """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
+-    \\circ / ^\\circ -> °; \\times -> ×; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
++    \\circ / ^\\circ -> °; \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
+     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
+     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
+     t = unicodedata.normalize("NFKC", t)
+     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
+     t = re.sub(r"\\times\s*", "×", t)                                                  # P136b: 50\times -> 50×
++    t = t.replace("\u25e6", "°")                                                     # P146: ◦C, ° C, deg C -> °C
++    t = re.sub(r"°\s+([CFK])\b", r"°\1", t)
++    t = re.sub(r"\bdeg\.?\s*C\b", "°C", t)
+     t = re.sub(r"[$_^{}*]", "", t)
+     return norm_ws(t).casefold()                                                # P140 C1: casefolded (no unit spelling collides; checked)
+ 
+@@ -212,10 +215,18 @@ class Run:
+         return out
+ 
+     def quotes(self, recs):
++        """d (D11): the quote against the texts of the record's element and the element ids it mentions; P146: plus the figures.json
++        series labels of the panels among them."""
++        self.labels = collections.defaultdict(list)
++        p = C.V2 / "kb" / f"{self.pid}.figures.json"
++        for c in (json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []):
++            for e in (f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap"):
++                if c.get("series", {}).get("label_raw"):
++                    self.labels[e].append(c["series"]["label_raw"])
+         out = []
+         for r in recs:
+             ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
+-            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join(self.text.get(e, "") for e in ev))   # element ids it mentions, texts joined
++            q, txt = normalize(r["rec"]["quote"]), normalize(" ".join([self.text.get(e, "") for e in ev] + [x for e in ev for x in self.labels.get(e, [])]))   # P146: + series labels
+             if q in txt:
+                 out.append(r)
+             elif in_order(q.split(), txt):                                      # P140 C1: every token in order, gaps allowed
+@@ -354,10 +365,12 @@ class Run:
+         p = C.V2 / "kb" / f"{self.pid}.figures.json"
+         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+         k, tree, facts = self.key, [], []
+-        owner = {}
++        owner, drole = {}, {}
+         for i, it in self.p0.items():
+-            for cid in (it.get("data") or it.get("curves") or []):             # P145: data (curve, cell, peak ids); curves on older lines
++            for d in (it.get("data") or it.get("curves") or []):               # P146: data = [{id, role}]; P145 ids, curves on older lines
++                cid = d.get("id") if isinstance(d, dict) else d
+                 owner.setdefault(cid, []).append(i)
++                drole[(i, cid)] = (d.get("role") if isinstance(d, dict) else None) or ("simulated" if it.get("role") == "model_run" else "measured")
+ 
+         def els(fig, panel=""):
+             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
+@@ -403,23 +416,24 @@ class Run:
+             conds = list((cu.get("conditions") or {}).values())
+             ev = ";".join(els(cu["figure"], cu.get("panel", "")))
+             lab = cu.get("series", {}).get("label_raw", "")
+-            if role == "model_run":
+-                settings(conds, nid, ev, "model_input", lab)
+-                result(cu, nid, "model")
+-            elif role == "specimen":
+-                settings(conds, nid, ev, "stated", lab)
+-                result(cu, "@meas:" + nid, "observation")
+-            elif role == "run":                                                 # P144: no entity made under the run
+-                settings(conds, nid, ev, "stated", lab)
++            dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
++            if role not in ("model_run", "specimen", "run"):
++                self.count("1c", f"curve named by a {role} (left out)"); continue
++            settings(conds, nid, ev, "model_input" if role == "model_run" else "stated", lab)
++            if dr == "measured":
+                 result(cu, "@meas:" + nid, "observation")
+             else:
+-                self.count("1c", f"curve named by a {role} (left out)")
++                result(cu, nid, "model")
++                if dr == "fitted":
++                    facts[-1]["data_kind"] = "computed_by_authors"
++            self.count("1c", f"data role {dr}")
+ 
+         for v in Fj.get("values", []):                                          # P145: a cell or a peak a unit names
+             own = [i for i in owner.get(v["id"], []) if i in self.node]
+             if len(own) != 1:
+                 self.count("1c", f"{v.get('kind', 'value')} not named by exactly one unit (left out)"); continue
+             nid, role = self.node[own[0]]
++            dr = drole[(own[0], v["id"])]
+             ev = ";".join(els(v["figure"], v.get("panel", "")))
+             at = [dict(quantity=q, value=x, value_max=None, key_raw=q, unit=L.ENTRIES.get(q, {}).get("unit", "")) for q, x in (v.get("at") or {}).items()]
+             settings(at + list((v.get("conditions") or {}).values()), nid, ev, "model_input" if role == "model_run" else "stated", v.get("label", ""))
+@@ -427,16 +441,36 @@ class Run:
+             if q not in L.QUANTITIES:
+                 self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
+             u = unit_symbol(v.get("unit") or "") if v.get("unit") else ""
+-            facts.append(row(type="model" if role == "model_run" else "observation", quantity=q, label_as_printed=v.get("label") or q,
++            facts.append(row(type="observation" if dr == "measured" else "model", quantity=q, label_as_printed=v.get("label") or q,
+                              value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=v.get("value_text") or "", unit=u or "",
+-                             data_kind="simulated" if role == "model_run" else "read_from_figure", evidence=ev,
+-                             parent=nid if role == "model_run" else "@meas:" + nid))
++                             data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
++                             parent="@meas:" + nid if dr == "measured" else nid))
+             self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
+         if unowned:                                                             # P144: no fallback
+             self.count("1c", "curves no unit names (left out)", len(unowned))
+             self.note(f"1c: {len(unowned)} curves no pass-0 unit names, left out: " + ", ".join(c["id"] for c in unowned))
+         return tree, facts
+ 
++    def specimens_for_runs(self, facts):
++        """P146: a run that carries result rows directly (an observation, a derived or a model row whose parent is the run or the run's
++        measurement) and has no specimen gets one specimen "film of <run>" (how inferred, logged specimen_created); the results move to
++        it (an observation to its measurement activity of the row's method). Structure the pilot tree needs, not a count judgement."""
++        runs = {nid for nid, role in self.node.values() if role == "run"}
++        has = {r["parent"] for r in self.rows_tree if r["type"] == "entity"}
++        for run in sorted(runs - has):
++            res = [f for f in facts if f["type"] in ("observation", "derived", "model") and f["parent"] in (run, "@meas:" + run)]
++            if not res:
++                continue
++            lab = next((r["label_as_printed"] for r in self.rows_tree if r["fact_id"] == run), run)
++            e = f"{run}:film"
++            self.rows_tree.append({**{x: "" for x in F.FIELDS}, "fact_id": e, "type": "entity", "how": "inferred", "parent": run, "author": self.pid,
++                                   "evidence": next((r["evidence"] for r in self.rows_tree if r["fact_id"] == run), ""),
++                                   "label_as_printed": f"film of {lab}", "statement": f"the film of run {lab} (the run states no specimen)"})
++            for f in res:
++                f["parent"] = ("@meas:" + e if f["type"] == "observation" and not f["method"] else self.measurement(e, f["method"])) if f["type"] == "observation" else e
++            self.count("h", "specimen_created")
++            self.note(f"h: specimen_created {e} ({len(res)} result rows moved)")
++
+     def comparisons(self, rows):
+         """P143b: comparisons derived from the condition vectors of the experiment units (entities), never asked of the extractor and
+         never a parent. A unit's vector: the settings (quantity, qualifiers -> value in canonical units, else value_text) on the unit and
+@@ -773,6 +807,7 @@ class Run:
+             items.append(self.fact_row(r, p))
+             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
+         fig_tree, fig_facts = self.figures()
++        self.specimens_for_runs(items + fig_facts)                              # P146
+         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
+         for f in fig_facts:
+             if f["parent"].startswith("@meas:"):
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index cab4804..769cb03 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -30,9 +30,12 @@ TERMS (from the codebook):
+ UNITS: one item per run, specimen, simulation and model run.
+ - role: run, specimen, simulation or model_run; parent: a specimen's run, a model run's simulation; null otherwise.
+ - list every run even when several share all conditions; list a shared run once when the paper says the samples were coated together.
+-- evidence_quote is copied from the paper: the words that say which samples a run made (for a specimen or a model run, the words
+-  that name it).
+-- data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit; null when none.
++- evidence_quote (every unit, never null) is copied from the paper: the words that state the deposition of a run, that name a
++  specimen, a simulation or a model run.
++- parent: never null on a specimen (its run) or a model run (its simulation).
++- data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit, each with its role from
++  the caption: measured (read from a specimen), fitted (a line fitted or simulated to match that specimen's measurement) or
++  simulated (a model run's result); null when none.
+ - a unit established by a table row or a grid point: introduced_in = that row's name cell / that cell id, evidence_quote = the
+   cell's text.
+ - introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).
+diff --git a/psed_v2/kb/pilot/lists.py b/psed_v2/kb/pilot/lists.py
+index 3cf40e3..d6e51b9 100644
+--- a/psed_v2/kb/pilot/lists.py
++++ b/psed_v2/kb/pilot/lists.py
+@@ -128,13 +128,16 @@ ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measure
+ COMPARISON_KINDS = ["series", "grid", "replicate"]
+ # P143b (user-approved): the tree terms; CODEBOOK.md reads this dict (ontology/export.py)
+ TERMS = {
+-    "run": "one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with "
+-           "the same chemistry, temperature and structure.",
++    "run": "one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption "
++           "(\"deposited at … using … cycles\", \"films grown on glassy carbon\"), a table row, a grid point. A stated deposition is a run even "
++           "when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; "
++           "separate depositions are separate runs even with the same chemistry, temperature and structure.",   # P146 (user)
+     "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
+     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
+                     "deposition activity's inputs.",
+-    "model run": "one set of inputs of a simulation whose result the paper reports (a curve, a table row); two solution methods or "
+-                 "approximations of one model with the same inputs are one model run (its curves differ in method, not in inputs).",   # P145
++    "simulation": "one model. The paper's own model and a model it compares against are separate simulations.",   # P146 (user)
++    "model run": "one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same "
++                 "inputs are one model run.",   # P146 (user)
+     "fitted or simulated curve of a specimen": "a curve fitted or simulated to match a measured specimen is a result of that specimen, "
+                                                 "not a model run.",   # P145
+     "series / replicate / grid (comparisons)": "never a parent and never asked of the extractor; the compiler derives them from the "
+diff --git a/psed_v2/kb/schema/form_pass0.json b/psed_v2/kb/schema/form_pass0.json
+index f86d635..ed23f7b 100644
+--- a/psed_v2/kb/schema/form_pass0.json
++++ b/psed_v2/kb/schema/form_pass0.json
+@@ -263,8 +263,25 @@
+           "type": "array",
+           "minItems": 1,
+           "items": {
+-           "type": "string",
+-           "minLength": 1
++           "type": "object",
++           "additionalProperties": false,
++           "required": [
++            "id",
++            "role"
++           ],
++           "properties": {
++            "id": {
++             "type": "string",
++             "minLength": 1
++            },
++            "role": {
++             "enum": [
++              "measured",
++              "fitted",
++              "simulated"
++             ]
++            }
++           }
+           }
+          },
+          {
+@@ -273,17 +290,35 @@
+         ]
+        },
+        "evidence_quote": {
+-        "anyOf": [
+-         {
+-          "type": "string",
+-          "minLength": 1
++        "type": "string",
++        "minLength": 1
++       }
++      },
++      "allOf": [
++       {
++        "if": {
++         "properties": {
++          "role": {
++           "enum": [
++            "specimen",
++            "model_run"
++           ]
++          }
+          },
+-         {
+-          "type": "null"
++         "required": [
++          "role"
++         ]
++        },
++        "then": {
++         "properties": {
++          "parent": {
++           "type": "string",
++           "minLength": 1
++          }
+          }
+-        ]
++        }
+        }
+-      }
++      ]
+      }
+     },
+     {
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 05f39a5..c8ed094 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -313,6 +313,9 @@ def form_schema(onto, L, F):
+     }
+ 
+ 
++P0_NOT_NULL = {("units", "evidence_quote")}                                     # P146: never null
++
++
+ def pass0_schema(onto, L):
+     h = ontology_hash()
+     p0 = {"id": {"type": "string", "minLength": 1},                                                         # P138: short, unique in the paper
+@@ -322,7 +325,9 @@ def pass0_schema(onto, L):
+           "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
+           "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
+           "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+-          "data": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},           # P145 (was curves): figures.json curve, cell and peak ids of the unit
++          "data": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": False, "required": ["id", "role"],   # P146: id + role
++                                                              "properties": {"id": {"type": "string", "minLength": 1},
++                                                                             "role": {"enum": ["measured", "fitted", "simulated"]}}}},
+           "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
+     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+     qid = {"$ref": "#/$defs/quantity_id"}
+@@ -340,7 +345,10 @@ def pass0_schema(onto, L):
+                        f"(ontology version {onto['version']}, sha256 {h}).",
+         "type": "object", "additionalProperties": False, "required": ["units", "table_layouts", "panel_layouts"],          # P144
+         "properties": {name: nullable({"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(fields),
+-                                                                   "properties": {k: nullable(v) for k, v in fields.items()}}})
++                                                                   "properties": {k: (v if (name, k) in P0_NOT_NULL else nullable(v)) for k, v in fields.items()},
++                                                                   **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
++                                                                                  "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}}]}   # P146
++                                                                      if name == "units" else {})}})
+                        for name, fields in (("units", p0), ("table_layouts", tl), ("panel_layouts", pl))},
+     }
+ 
+@@ -438,8 +446,8 @@ P143_PANEL_LAYOUTS = [
+     ("curve_per_unit", "Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names.",
+      "one curve per model run (Ylilammi Fig. 4)"),
+     ("panel_one_unit", "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel "
+-                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element, the same inputs solved "
+-                       "several ways (P145).",
++                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the "
++                       "solution-method sentence lives in TERMS model run only).",
+      "an EDS panel = one specimen, its curves one measurement's results per element"),
+     ("point_per_unit", "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid "
+                        "point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145).",
+@@ -450,7 +458,6 @@ P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the
+ P143_TERMS = {                                                                  # P143b: quoted where lists.TERMS has none
+     "piece": [("lists", "a piece cut from it"), ("retree", "a deposition or another entity: a piece")],
+     "measurement activity": [("retree", "goes under the entity's measurement activity of that method (<key>:meas:<entity>:<method>; \"measurement\" when the fact names none)")],
+-    "simulation": [("retree", "a simulation activity with its model-run entity")],
+ }
+ 
+ 
