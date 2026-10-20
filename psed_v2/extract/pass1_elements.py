@@ -33,11 +33,23 @@ RULES = """FIELD RULES
 - mentions: only names from the MENTIONS list, exactly as listed."""
 
 
+def container(eid):
+    """The figure, table or equation an element id belongs to, from the id as elements.py writes it: fig<n>.cap, fig<n>, fig<n><panel>
+    -> fig<n>; tab<x>.cap, tab<x>.r<i>c<j>, tabu<k>.r<i>c<j> -> tab<x> / tabu<k>; eq<n> -> eq<n>."""
+    head = eid.split(".")[0]
+    return re.sub(r"^(fig\d+)[a-z]+$", r"\1", head)
+
+
 def groups(pid):
+    """P133b: a section group per mapped section (abstract, s<n>); an element with no section mapping goes to its container (one group
+    per figure: caption + panels; per table: caption + cells; an equation alone). Returns (groups, unpaired): unpaired lists the
+    containers that have a caption and no body, or a body and no caption."""
     g = collections.OrderedDict()
     for r in C.E.load(pid):
-        g.setdefault(r["section"], []).append(r)
-    return g
+        g.setdefault(r["section"] if MAPPED.match(r["section"]) else container(r["element_id"]), []).append(r)
+    unpaired = [k for k, rs in g.items() if not MAPPED.match(k) and not k.startswith("eq")
+                and len({r["kind"] == "caption" for r in rs}) == 1]
+    return g, unpaired
 
 
 THINKING = {"thinking_level": "LOW"}                                            # user, P133: the lowest the model takes (MINIMAL: 400 on gemini-3.8-flash); recorded in the line
@@ -80,7 +92,7 @@ def jobs(pid):
     qids = "\n".join(f"{q}: {NAMES.get(q, q)}" for q in form["$defs"]["quantity_id"]["enum"])
     mids = "\n".join(f"{m}: {MECHANISMS[m]['name']}" for m in form["$defs"]["cause_effect"]["enum"] if m in MECHANISMS)
     out = []
-    for sec, rs in groups(pid).items():
+    for sec, rs in groups(pid)[0].items():
         ids = [r["element_id"] for r in rs]
         prompt = "\n\n".join([
             "You extract the knowledge of one section of an ALD paper into records of the form below.",
@@ -99,10 +111,15 @@ def main(arg):
     from jsonschema import Draft202012Validator
     pid, key = C.resolve(arg)
     js = jobs(pid)
-    if len(sys.argv) > 2:                                                       # optional: only these sections
-        js = [j for j in js if j[1] in sys.argv[2:]]
+    only = [a for a in sys.argv[2:] if not a.startswith("--")]
+    if only:                                                                    # optional: only these groups
+        js = [j for j in js if j[1] in only]
     unmapped = [j[1] for j in js if not MAPPED.match(j[1])]
-    print(f"{key} pass 1: {len(js)} sections ({', '.join(j[1] for j in js)}); unmapped groups: {', '.join(unmapped) or 'none'}")
+    print(f"{key} pass 1: {len(js)} groups ({', '.join(j[1] for j in js)}); figure/table/equation groups: {', '.join(unmapped) or 'none'}; "
+          f"unpaired: {', '.join(groups(pid)[1]) or 'none'}")
+    if "--plan" in sys.argv:                                                    # the planned calls only, no call
+        C.plan(pid, js, THINKING)
+        return 0
     out, _ = C.run(pid, js, THINKING)
     val = Draft202012Validator(C.schema("form.json"))
     types, nk, missing, bad, nrec, unparsed = collections.Counter(), collections.Counter(), 0, 0, 0, []

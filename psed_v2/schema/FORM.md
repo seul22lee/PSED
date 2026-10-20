@@ -7,6 +7,8 @@ Out of scope (P133): a statement-only setting or observation (no quantity, value
 
 Provider schema (P133, extract/common.py): an enum longer than 50 values is sent as a plain string, its ids listed in the prompt; form.json keeps the enum and the compiler validates against it (P134).
 
+Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n>); an element with no section mapping goes to its container: one group per figure (caption + panels), per table (caption + cells), per equation.
+
 | field | allowed values | required when | who fills |
 |---|---|---|---|
 | type | enum, 8 values | always | extractor |

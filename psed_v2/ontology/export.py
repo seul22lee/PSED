@@ -389,6 +389,8 @@ def form_md(form, pass0, onto, F):
            "Out of scope (P133): a statement-only setting or observation (no quantity, value or qualifiers; only method or mentions) is not a form record.", "",
            f"Provider schema (P133, extract/common.py): an enum longer than {PROVIDER_ENUM_MAX} values is sent as a plain string, its ids listed in the prompt; "
            "form.json keeps the enum and the compiler validates against it (P134).", "",
+           "Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n>); an element with no section mapping goes to its "
+           "container: one group per figure (caption + panels), per table (caption + cells), per equation.", "",
            "| field | allowed values | required when | who fills |", "|---|---|---|---|"]
     out += [f"| {' | '.join(esc(x) for x in r)} |" for r in rows]
     return "\n".join(out) + "\n"

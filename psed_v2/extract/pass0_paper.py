@@ -7,6 +7,7 @@ Prompt: the instruction, the pass-0 form, the element index of pilot/<pid>.eleme
 names) and the whole ingest/final/<pid>/document.md. Writes one line (pass 0, section "paper") to records/<pid>.jsonl.
 """
 import json
+import sys
 
 import common as C
 
@@ -28,9 +29,15 @@ def jobs(pid):
     return [(0, "paper", prompt, C.provider_schema(form), [])]
 
 
+THINKING = {"thinking_level": "LOW"}                                            # user, P133b: as pass 1; recorded in the line and the cache key
+
+
 def main(arg):
     pid, key = C.resolve(arg)
-    out, _ = C.run(pid, jobs(pid))
+    if "--plan" in sys.argv:                                                    # the planned call only, no call
+        C.plan(pid, jobs(pid), THINKING)
+        return 0
+    out, _ = C.run(pid, jobs(pid), THINKING)
     items = C.loads_json(out[0]["response"])
     roles = {}
     for it in items if isinstance(items, list) else []:
