@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P148-cost</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P148-cost</h1>
+<h2>Probe (one call, rejected)</h2><p>kb/reports/P148-cost.probe.txt</p>
+<pre>P148-cost probe: one pass-1 call, yli18 group s7+s8+s9 (84 element ids, 18,557 chars), the new oneOf response schema (8 branches,
+46,145 chars), the fixed prefix (83,405 chars) as Gemini cached content, thinking LOW, gemini-3.8-flash.
+
+Estimated before the call: ~$0.10 (prefix ~27k tokens registered and read once, ~6k group tokens + the schema uncached, output ~22k
+tokens as the P139 lines on s7, s8, s9: 8,040 + 10,652 + 3,029 = 21,721).
+
+Outcome: REJECTED. caches.create succeeded (the prefix was registered; deleted in common.run&#x27;s finally), then generate_content:
+  400 INVALID_ARGUMENT. {&#x27;error&#x27;: {&#x27;code&#x27;: 400, &#x27;message&#x27;: &#x27;Request contains an invalid argument.&#x27;, &#x27;status&#x27;: &#x27;INVALID_ARGUMENT&#x27;}}
+No line appended to kb/records/10.1063_1.5028178.jsonl; nothing in kb/cache/. Output tokens, missing fields, records by type: none
+(no response).
+
+Which part was rejected is not stated (a bare 400). The request had two parts never sent before: the top-level oneOf and
+cached_content. Google&#x27;s pages, read 2026-10-20 (no call):
+- ai.google.dev/gemini-api/docs/structured-output: supported keywords listed are type, title, description, properties, required,
+  additionalProperties, enum, format, minimum, maximum, items, prefixItems, minItems, maxItems; oneOf is not mentioned; anyOf is
+  used in an example (&quot;showcases anyOf for conditional schemas&quot;); &quot;Very large or deeply nested schemas may be rejected.&quot;
+- ai.google.dev/gemini-api/docs/caching: Gemini 3.8 Flash implicit caching, minimum 4,096 input tokens; explicit caching is for
+  &quot;supported Gemini 3 and 2.5 models&quot; (3.8 Flash not named; caches.create accepted it here).
+Cost of the probe: the prefix registration (~27k tokens; at most ~$0.02 at the input price) and seconds of storage; a rejected
+call is not billed.
+</pre>
+<h2>Calls per paper before and after merging</h2><p>kb/reports/P148-cost.calls.csv</p>
+<table><tr><th>paper</th><th>calls_before</th><th>calls_after</th><th>prefix_chars</th><th>prefix_est_tokens</th><th>group_chars</th><th>schema_chars</th></tr>
+<tr><td>yli18</td><td>22</td><td>12</td><td>83405</td><td>26905</td><td>56583</td><td>46794</td></tr>
+<tr><td>yim20</td><td>41</td><td>18</td><td>86799</td><td>28000</td><td>93030</td><td>49630</td></tr>
+<tr><td>mat22</td><td>19</td><td>14</td><td>87827</td><td>28331</td><td>85058</td><td>45993</td></tr>
+</table>
+<h2>Groups after merging</h2><p>kb/reports/P148-cost.groups.csv</p>
+<table><tr><th>paper</th><th>group</th><th>kind</th><th>sections_merged</th><th>element_ids</th><th>group_chars</th><th>est_tokens</th></tr>
+<tr><td>yli18</td><td>abstract+s0+s1+s2+s3+s4+s5+s6</td><td>section</td><td>8</td><td>73</td><td>13849</td><td>4467</td></tr>
+<tr><td>yli18</td><td>s7+s8+s9</td><td>section</td><td>3</td><td>84</td><td>18557</td><td>5986</td></tr>
+<tr><td>yli18</td><td>s10+s11</td><td>section</td><td>2</td><td>22</td><td>4108</td><td>1325</td></tr>
+<tr><td>yli18</td><td>fig1</td><td>container</td><td>1</td><td>2</td><td>322</td><td>104</td></tr>
+<tr><td>yli18</td><td>fig2</td><td>container</td><td>1</td><td>2</td><td>2947</td><td>951</td></tr>
+<tr><td>yli18</td><td>fig3</td><td>container</td><td>1</td><td>2</td><td>3265</td><td>1053</td></tr>
+<tr><td>yli18</td><td>fig4</td><td>container</td><td>1</td><td>2</td><td>1637</td><td>528</td></tr>
+<tr><td>yli18</td><td>fig5</td><td>container</td><td>1</td><td>2</td><td>1459</td><td>471</td></tr>
+<tr><td>yli18</td><td>fig6</td><td>container</td><td>1</td><td>2</td><td>1017</td><td>328</td></tr>
+<tr><td>yli18</td><td>fig7</td><td>container</td><td>1</td><td>2</td><td>848</td><td>274</td></tr>
+<tr><td>yli18</td><td>tabI</td><td>container</td><td>1</td><td>25</td><td>1415</td><td>456</td></tr>
+<tr><td>yli18</td><td>tabu1</td><td>container</td><td>1</td><td>96</td><td>7159</td><td>2309</td></tr>
+<tr><td>yim20</td><td>abstract+s0+s1+s2+s3+s4+s5+s6</td><td>section</td><td>8</td><td>41</td><td>18213</td><td>5875</td></tr>
+<tr><td>yim20</td><td>s7+s8+s9+s10+s11+s12+s13+s14+s15</td><td>section</td><td>9</td><td>30</td><td>12812</td><td>4133</td></tr>
+<tr><td>yim20</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>section</td><td>9</td><td>39</td><td>18291</td><td>5900</td></tr>
+<tr><td>yim20</td><td>fig1</td><td>container</td><td>1</td><td>4</td><td>522</td><td>168</td></tr>
+<tr><td>yim20</td><td>fig2</td><td>container</td><td>1</td><td>5</td><td>347</td><td>112</td></tr>
+<tr><td>yim20</td><td>fig3</td><td>container</td><td>1</td><td>3</td><td>1192</td><td>385</td></tr>
+<tr><td>yim20</td><td>fig4</td><td>container</td><td>1</td><td>4</td><td>422</td><td>136</td></tr>
+<tr><td>yim20</td><td>fig5</td><td>container</td><td>1</td><td>3</td><td>644</td><td>208</td></tr>
+<tr><td>yim20</td><td>fig6</td><td>container</td><td>1</td><td>2</td><td>431</td><td>139</td></tr>
+<tr><td>yim20</td><td>fig7</td><td>container</td><td>1</td><td>2</td><td>1236</td><td>399</td></tr>
+<tr><td>yim20</td><td>fig8</td><td>container</td><td>1</td><td>3</td><td>1657</td><td>535</td></tr>
+<tr><td>yim20</td><td>fig9</td><td>container</td><td>1</td><td>7</td><td>4669</td><td>1506</td></tr>
+<tr><td>yim20</td><td>fig10</td><td>container</td><td>1</td><td>7</td><td>6009</td><td>1938</td></tr>
+<tr><td>yim20</td><td>fig11</td><td>container</td><td>1</td><td>3</td><td>2410</td><td>777</td></tr>
+<tr><td>yim20</td><td>tab1</td><td>container</td><td>1</td><td>306</td><td>14340</td><td>4626</td></tr>
+<tr><td>yim20</td><td>tab2</td><td>container</td><td>1</td><td>67</td><td>3675</td><td>1185</td></tr>
+<tr><td>yim20</td><td>tabu1</td><td>container</td><td>1</td><td>22</td><td>1639</td><td>529</td></tr>
+<tr><td>yim20</td><td>tabu2</td><td>container</td><td>1</td><td>60</td><td>4521</td><td>1458</td></tr>
+<tr><td>mat22</td><td>abstract+s1+s2</td><td>section</td><td>3</td><td>25</td><td>8869</td><td>2861</td></tr>
+<tr><td>mat22</td><td>s3</td><td>section</td><td>1</td><td>62</td><td>38748</td><td>12499</td></tr>
+<tr><td>mat22</td><td>s4+s5+s6+s7</td><td>section</td><td>4</td><td>36</td><td>16865</td><td>5440</td></tr>
+<tr><td>mat22</td><td>fig1</td><td>container</td><td>1</td><td>5</td><td>1001</td><td>323</td></tr>
+<tr><td>mat22</td><td>fig2</td><td>container</td><td>1</td><td>2</td><td>5549</td><td>1790</td></tr>
+<tr><td>mat22</td><td>fig3</td><td>container</td><td>1</td><td>3</td><td>353</td><td>114</td></tr>
+<tr><td>mat22</td><td>fig4</td><td>container</td><td>1</td><td>2</td><td>4553</td><td>1469</td></tr>
+<tr><td>mat22</td><td>fig5</td><td>container</td><td>1</td><td>3</td><td>1879</td><td>606</td></tr>
+<tr><td>mat22</td><td>fig6</td><td>container</td><td>1</td><td>3</td><td>699</td><td>225</td></tr>
+<tr><td>mat22</td><td>fig7</td><td>container</td><td>1</td><td>3</td><td>1761</td><td>568</td></tr>
+<tr><td>mat22</td><td>fig8</td><td>container</td><td>1</td><td>2</td><td>289</td><td>93</td></tr>
+<tr><td>mat22</td><td>fig9</td><td>container</td><td>1</td><td>3</td><td>1327</td><td>428</td></tr>
+<tr><td>mat22</td><td>tab1</td><td>container</td><td>1</td><td>33</td><td>1433</td><td>462</td></tr>
+<tr><td>mat22</td><td>tab2</td><td>container</td><td>1</td><td>33</td><td>1732</td><td>559</td></tr>
+</table>
+<h2>Fields per record type (REVIEW 1a rule)</h2><p>kb/reports/P148-cost.fields_by_type.csv</p>
+<table><tr><th>type</th><th>n</th><th>fields</th><th>beyond_1a</th><th>not_sent</th></tr>
+<tr><td>setting</td><td>18</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;value_text;kind;method;mentions;quote;statement;about;links;candidate</td><td>candidate;quote</td><td>uncertainty;uncertainty_kind;uncertainty_n;cause;relation;effect;stance;note;term;variables</td></tr>
+<tr><td>observation</td><td>21</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;value_text;kind;method;mentions;quote;uncertainty;uncertainty_kind;uncertainty_n;statement;about;links;candidate</td><td>candidate;quote</td><td>cause;relation;effect;stance;note;term;variables</td></tr>
+<tr><td>derived</td><td>18</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;kind;method;mentions;quote;uncertainty;uncertainty_kind;statement;about;candidate</td><td>candidate;quote</td><td>value_text;uncertainty_n;cause;relation;effect;stance;note;term;links;variables</td></tr>
+<tr><td>model</td><td>18</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;kind;method;mentions;quote;statement;about;links;variables;candidate</td><td>candidate;quote;variables</td><td>value_text;uncertainty;uncertainty_kind;uncertainty_n;cause;relation;effect;stance;note;term</td></tr>
+<tr><td>definition</td><td>14</td><td>type;quantity;label_as_printed;qualifiers;unit;method;mentions;quote;note;term;statement;about;variables;candidate</td><td>candidate;quote;variables</td><td>value;value_min;value_max;censor;value_text;kind;uncertainty;uncertainty_kind;uncertainty_n;cause;relation;effect;stance;links</td></tr>
+<tr><td>claim</td><td>21</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;kind;method;mentions;quote;cause;relation;effect;stance;statement;about;links;candidate</td><td>candidate;quote</td><td>value_text;uncertainty;uncertainty_kind;uncertainty_n;note;term;variables</td></tr>
+<tr><td>cited</td><td>20</td><td>type;quantity;label_as_printed;qualifiers;value;value_min;value_max;censor;unit;value_text;kind;method;mentions;quote;uncertainty;uncertainty_kind;statement;about;links;candidate</td><td>candidate;quote</td><td>uncertainty_n;cause;relation;effect;stance;note;term;variables</td></tr>
+<tr><td>caveat</td><td>9</td><td>type;quantity;qualifiers;mentions;quote;statement;about;links;candidate</td><td>candidate;quote</td><td>label_as_printed;value;value_min;value_max;censor;unit;value_text;kind;method;uncertainty;uncertainty_kind;uncertainty_n;cause;relation;effect;stance;note;term;variables</td></tr>
+</table>
+<h2>Projected cost of 44 calls</h2><p>kb/reports/P148-cost.projection.csv</p>
+<table><tr><th>item</th><th>basis</th><th>tokens</th><th>usd_per_mtok</th><th>usd</th></tr>
+<tr><td>cached prefix reads</td><td>44 calls x prefix</td><td>1223494</td><td>0.075</td><td>0.092</td></tr>
+<tr><td>prefix registration, upper bound (input price)</td><td>3 x prefix</td><td>83236</td><td>0.75</td><td>0.062</td></tr>
+<tr><td>prefix storage, at most 0.25 h each</td><td>3 x prefix x 0.25 h</td><td>20809</td><td>0.5</td><td>0.010</td></tr>
+<tr><td>group elements, uncached</td><td>all groups</td><td>75700</td><td>0.75</td><td>0.057</td></tr>
+<tr><td>response schema, if counted as input (unknown)</td><td>44 calls x schema</td><td>704426</td><td>0.75</td><td>0.528</td></tr>
+<tr><td>output, low (0.6 x P139 per call)</td><td>82 x 2.8k x 0.6</td><td>137760</td><td>3.75</td><td>0.517</td></tr>
+<tr><td>output, high (as P139)</td><td>82 x 2.8k</td><td>229600</td><td>3.75</td><td>0.861</td></tr>
+</table>
+<h2>prices.csv</h2><p>kb/pilot/prices.csv</p>
+<table><tr><th>vendor</th><th>model</th><th>input_per_mtok</th><th>cache_hit_per_mtok</th><th>output_per_mtok</th><th>offpeak_input_per_mtok</th><th>offpeak_cache_hit_per_mtok</th><th>offpeak_output_per_mtok</th><th>offpeak_utc</th><th>source</th></tr>
+<tr><td>deepseek</td><td>deepseek-flash</td><td>0.30</td><td>0.006</td><td>1.20</td><td>0.15</td><td>0.003</td><td>0.60</td><td>16:30-00:30</td><td></td></tr>
+<tr><td>google</td><td>gemini-3.8-flash</td><td>0.75</td><td>0.075</td><td>3.75</td><td></td><td></td><td></td><td></td><td>ai.google.dev/gemini-api/docs/pricing (last updated 2026-10-19 UTC), paid tier: input $0.75, context caching $0.075, output incl. thinking $3.75 per 1M tokens through 2026-12-31 ($1.50 / $0.15 / $7.50 from 2027-01-01); caching storage $0.50 per 1M tokens per hour; P148-cost, user to confirm</td></tr>
+</table>
+</body></html>

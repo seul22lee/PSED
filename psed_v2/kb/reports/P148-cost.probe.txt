@@ -1,0 +1,20 @@
+P148-cost probe: one pass-1 call, yli18 group s7+s8+s9 (84 element ids, 18,557 chars), the new oneOf response schema (8 branches,
+46,145 chars), the fixed prefix (83,405 chars) as Gemini cached content, thinking LOW, gemini-3.8-flash.
+
+Estimated before the call: ~$0.10 (prefix ~27k tokens registered and read once, ~6k group tokens + the schema uncached, output ~22k
+tokens as the P139 lines on s7, s8, s9: 8,040 + 10,652 + 3,029 = 21,721).
+
+Outcome: REJECTED. caches.create succeeded (the prefix was registered; deleted in common.run's finally), then generate_content:
+  400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'Request contains an invalid argument.', 'status': 'INVALID_ARGUMENT'}}
+No line appended to kb/records/10.1063_1.5028178.jsonl; nothing in kb/cache/. Output tokens, missing fields, records by type: none
+(no response).
+
+Which part was rejected is not stated (a bare 400). The request had two parts never sent before: the top-level oneOf and
+cached_content. Google's pages, read 2026-10-20 (no call):
+- ai.google.dev/gemini-api/docs/structured-output: supported keywords listed are type, title, description, properties, required,
+  additionalProperties, enum, format, minimum, maximum, items, prefixItems, minItems, maxItems; oneOf is not mentioned; anyOf is
+  used in an example ("showcases anyOf for conditional schemas"); "Very large or deeply nested schemas may be rejected."
+- ai.google.dev/gemini-api/docs/caching: Gemini 3.8 Flash implicit caching, minimum 4,096 input tokens; explicit caching is for
+  "supported Gemini 3 and 2.5 models" (3.8 Flash not named; caches.create accepted it here).
+Cost of the probe: the prefix registration (~27k tokens; at most ~$0.02 at the input price) and seconds of storage; a rejected
+call is not billed.

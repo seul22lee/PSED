@@ -26,6 +26,8 @@ from lists import NK_REASONS
 NK = ["citation_line", "boilerplate", "no_knowledge"]
 NK_FORM = list(NK_REASONS)                                                     # P148: the nk enum of the response, from the codebook's NK reasons
 MAPPED = re.compile(r"^(abs|abstract|s\d+)$")
+MERGE_TOKENS, TOKEN_CHARS = 6000, 3.1                                           # P148-cost: merge sections up to 6k tokens; 3.1 chars/token measured on the P146 pass-0 lines (3.00-3.26)
+FORM_ONLY = {"quote": None, "candidate": "quantity", "variables": ("model", "definition")}   # P148-cost: form fields no gold column holds
 INTRO = "You extract the knowledge of an ALD paper, one group of its elements per request, into records of the response form."
 RULES = """RULES (what the codebook does not say)
 Answer
@@ -63,30 +65,76 @@ def container(eid):
     return re.sub(r"^(fig\d+)[a-z]+$", r"\1", head)
 
 
+def is_section(key):
+    """A section group: every part of its name (P148-cost: merged sections are joined with +) is abs/abstract or s<n>."""
+    return all(MAPPED.match(x) for x in key.split("+"))
+
+
 def groups(pid):
     """P133b: a section group per mapped section (abstract, s<n>); an element with no section mapping goes to its container (one group
-    per figure: caption + panels; per table: caption + cells; an equation alone). Returns (groups, unpaired): unpaired lists the
-    containers that have a caption and no body, or a body and no caption."""
+    per figure: caption + panels; per table: caption + cells; an equation alone). P148-cost: consecutive section groups are merged
+    (names joined with +) while their element text, as render.group() writes it, stays under MERGE_TOKENS (at TOKEN_CHARS chars per
+    token); a section over the limit stays alone; tables, figures and equations stay their own groups. Returns (groups, unpaired):
+    unpaired lists the containers that have a caption and no body, or a body and no caption."""
     g = collections.OrderedDict()
     for r in C.E.load(pid):
         g.setdefault(r["section"] if MAPPED.match(r["section"]) else container(r["element_id"]), []).append(r)
     unpaired = [k for k, rs in g.items() if not MAPPED.match(k) and not k.startswith("eq")
                 and len({r["kind"] == "caption" for r in rs}) == 1]
-    return g, unpaired
+    text = C.E.texts(pid)
+    size = lambda rs: sum(len(f"{r['element_id']}: {render.strip_markup(text[r['element_id']])}") + 1 for r in rs)   # noqa: E731
+    out, cur = collections.OrderedDict(), None
+    for k, rs in g.items():
+        if MAPPED.match(k) and cur is not None and size(out[cur] + rs) < MERGE_TOKENS * TOKEN_CHARS:
+            out[f"{cur}+{k}"] = out.pop(cur) + rs
+            cur = f"{cur}+{k}"
+            continue
+        out[k] = list(rs)
+        cur = k if MAPPED.match(k) else None
+    return out, unpaired
 
 
 THINKING = {"thinking_level": "LOW"}                                            # user, P133: the lowest the model takes (MINIMAL: 400 on gemini-3.8-flash); recorded in the line
 
 
+def fields_by_type(form):
+    """P148-cost: the form fields each record type uses, by the REVIEW §1a rule (kb/reports/review/1a_fields_by_type.csv): the
+    facts.csv columns with a non-empty value in a row of that type in any dev gold (held-out papers never read), each as its form
+    field (parent -> about); plus the form fields no gold column holds where the rules need them (FORM_ONLY): quote on every type,
+    candidate where quantity is, variables on models and definitions. {type: [field, ...]} in the form's field order."""
+    import csv as _csv
+    used = collections.defaultdict(set)
+    for p in [p for p in C.E.PAPERS if p not in C.HELD_OUT]:
+        f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
+        for row in (_csv.DictReader(f.open(encoding="utf-8")) if f.exists() else []):
+            if "#" in row["fact_id"]:
+                used[row["type"]] |= {"about" if c == "parent" else C.X.form_field(c) for c, v in row.items() if v}
+    out = {}
+    for t in TYPES(form):
+        u = used[t] | {"type", "quote"} | ({"candidate"} if "quantity" in used[t] else set()) | ({"variables"} if t in FORM_ONLY["variables"] else set())
+        out[t] = [k for k in form["required"] if k in u]
+    return out
+
+
+def record_schema(form):
+    """P148-cost: the provider schema of one record: a oneOf over the record types, each branch keyed by its type (a one-value enum,
+    never null) and listing only that type's fields (fields_by_type), every one required and nullable; variables as a list of
+    {symbol, quantity} (the compiler maps it back to the object)."""
+    vobj = next(x for x in form["properties"]["variables"]["anyOf"] if x.get("type") == "object")   # P139: the nullable object's object branch
+    var = {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
+        "symbol": {"type": "string", "minLength": 1}, "quantity": C.provider_schema(vobj["additionalProperties"], form["$defs"])}}}
+    out = []
+    for t, fs in fields_by_type(form).items():
+        props = {k: ({"type": "string", "enum": [t]} if k == "type" else var if k == "variables" else C.provider_schema(form["properties"][k], form["$defs"]))
+                 for k in fs}
+        out.append({"type": "object", "required": fs, "properties": props})
+    return {"oneOf": out}
+
+
 def response_schema(form, ids):
     """{"answers": [{"id", "nk", "duplicate_of", "records"}]} (user, P133: element ids are values, not keys; no union: nk = none means
-    the records apply, else records is empty); the record is the provider form, its variables written as a list of {symbol, quantity}
-    (the compiler maps it back to the object)."""
-    rec = C.provider_schema(form)
-    vobj = next(x for x in form["properties"]["variables"]["anyOf"] if x.get("type") == "object")   # P139: the nullable object's object branch
-    var = vobj["additionalProperties"]
-    rec["properties"]["variables"] = {"type": ["array", "null"], "minItems": 1, "items": {"type": "object", "required": ["symbol", "quantity"], "properties": {
-        "symbol": {"type": "string", "minLength": 1}, "quantity": C.provider_schema(var, form["$defs"])}}}
+    the records apply, else records is empty); P148-cost: the record is record_schema() (a oneOf by type)."""
+    rec = record_schema(form)
     item = {"type": "object", "required": ["id", "nk", "records"], "properties": {"id": {"type": "string", "enum": ids},
             "nk": {"type": "string", "enum": ["none"] + NK_FORM}, "duplicate_of": {"type": "string"}, "records": {"type": "array", "items": rec}}}
     return {"type": "object", "required": ["answers"], "properties": {"answers": {"type": "array", "items": item}}}
@@ -154,12 +202,13 @@ def examples(pid, form):
     has both, a second pass takes one without them, a setting, observation or derived still with a quantity; a claim with all four
     claim fields) that, cast into
     the form (form_roundtrip.cast; term kept), validates against form.json; about = the gold unit it is about (_about; an
-    observation or derived example names one), quote = _quote() (the compiler's D11 check). Rendered as JSON, one line each, with the paper, the type and the element kind."""
+    observation or derived example names one), quote = _quote() (the compiler's D11 check). Rendered as JSON with the type's fields
+    only (fields_by_type), one line each, with the paper, the type and the element kind."""
     import csv as _csv
     from jsonschema import Draft202012Validator
     import compile as K
     import form_roundtrip as RT
-    val, props, out = Draft202012Validator(form), form["properties"], {}
+    val, props, out, fbt = Draft202012Validator(form), form["properties"], {}, fields_by_type(form)
     for strict, p in [(st, p) for st in (True, False) for p in C.E.PAPERS if p != pid and p not in C.HELD_OUT]:
         f = C.V2 / "kb" / "pilot" / f"{p}.facts.csv"
         if not f.exists():
@@ -197,7 +246,7 @@ def examples(pid, form):
             rec["quote"] = q
             rec = {k: rec.get(k) for k in form["required"]}                     # P139: every field present, null when it does not apply
             if not list(val.iter_errors(rec)):
-                out[(t, ek)] = (C.E.PAPERS[p], rec)
+                out[(t, ek)] = (C.E.PAPERS[p], {k: rec[k] for k in fbt[t]})       # P148-cost: the type's fields only (the response schema's)
     order = [(t, k) for t in TYPES(form) for k in dict.fromkeys(EXAMPLE_KINDS.values()) if (t, k) in out]
     return "\n".join(f"- {t} / {k} ({out[(t, k)][0]}): " + json.dumps(out[(t, k)][1], ensure_ascii=False) for t, k in order)
 
@@ -244,7 +293,7 @@ def main(arg):
     only = [a for a in sys.argv[2:] if not a.startswith("--")]
     if only:                                                                    # optional: only these groups
         js = [j for j in js if j[1] in only]
-    unmapped = [j[1] for j in js if not MAPPED.match(j[1])]
+    unmapped = [j[1] for j in js if not is_section(j[1])]
     print(f"{key} pass 1: {len(js)} groups ({', '.join(j[1] for j in js)}); figure/table/equation groups: {', '.join(unmapped) or 'none'}; "
           f"unpaired: {', '.join(groups(pid)[1]) or 'none'}")
     if "--plan" in sys.argv:                                                    # the planned calls only, no call
@@ -274,6 +323,8 @@ def main(arg):
                     types[rec.get("type", "?") if isinstance(rec, dict) else "?"] += 1
                     if isinstance(rec, dict) and isinstance(rec.get("variables"), list):   # the provider's list back to the form's object
                         rec = {**rec, "variables": {v.get("symbol"): v.get("quantity") for v in rec["variables"] if isinstance(v, dict)}}
+                    if isinstance(rec, dict):                                   # P148-cost: a field the type does not use is null
+                        rec = {**{k: None for k in C.schema("form.json")["required"]}, **rec}
                     bad += any(True for _ in val.iter_errors(rec))
     print(f"{key} pass 1: {nrec} records by type {dict(types.most_common())}; NK {dict(nk.most_common())}; elements missing {missing}; "
           f"records failing form.json {bad}; unparsed responses {unparsed or 'none'}")
