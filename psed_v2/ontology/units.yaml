@@ -88,10 +88,10 @@ units:
   - {symbol: kg/m3, variants: [kg/m3, "kg/m^3", "kg m-3", "kg m^-3", "kg/m³"],    dimension: density, factor: 1.0,   qudt: "L^-3 M"}
   # areal density
   - {symbol: nm-2,  variants: [nm-2, "nm^-2", "nm⁻²", "1/nm2", "at/nm2", "at/nm2/cycle", "nm^{-2}"], dimension: areal_density, factor: 1.0e18, qudt: "L^-2"}
-  - {symbol: m-2,   variants: [m-2, "m^-2", "m⁻²", "1/m2", "m^{-2}"],              dimension: areal_density, factor: 1.0,    qudt: "L^-2"}
+  - {symbol: m-2,   variants: [m-2, "m^-2", "m⁻²", "1/m2", "m^{-2}", "1 m-2"],              dimension: areal_density, factor: 1.0,    qudt: "L^-2"}
   - {symbol: cm-2,  variants: [cm-2, "cm^-2", "cm⁻²", "1/cm2", "cm^{-2}"],         dimension: areal_density, factor: 1.0e4,  qudt: "L^-2"}
   # inverse pressure
-  - {symbol: 1/Pa,  variants: [1/Pa, "Pa-1", "Pa^-1", "Pa⁻¹"],                    dimension: inverse_pressure, factor: 1.0,  qudt: "L M^-1 T^2"}
+  - {symbol: 1/Pa,  variants: [1/Pa, "Pa-1", "Pa^-1", "Pa⁻¹", "1 Pa-1"],                    dimension: inverse_pressure, factor: 1.0,  qudt: "L M^-1 T^2"}
   - {symbol: 1/mbar, variants: [1/mbar, "mbar-1"],                                dimension: inverse_pressure, factor: 0.01, qudt: "L M^-1 T^2"}
   # inverse time (P131b: the desorption probability per unit time P_d of yim20, yim22)
   - {symbol: 1/s,   variants: [1/s, "s-1", "1 s-1", "s^-1", "s⁻¹"],               dimension: inverse_time, factor: 1.0,  qudt: "T^-1"}
@@ -109,3 +109,24 @@ units:
   - {symbol: g,     variants: [g, gram, grams],                                    dimension: mass, factor: 1.0e-3, qudt: M}
   - {symbol: kg,    variants: [kg, kilogram],                                      dimension: mass, factor: 1.0,    qudt: M}
   - {symbol: mg,    variants: [mg],                                                dimension: mass, factor: 1.0e-6, qudt: M}
+  # P138 (REVIEW section 2): the spellings the dev golds use
+  - {symbol: keV,   variants: [keV],                                               dimension: energy, factor: 1.602176634e-16, qudt: "L^2 M T^-2"}
+  - {symbol: MeV,   variants: [MeV],                                               dimension: energy, factor: 1.602176634e-13, qudt: "L^2 M T^-2"}
+  - {symbol: V,     variants: [V, volt],                                           dimension: voltage, factor: 1.0,    qudt: "L^2 M T^-3 I^-1"}
+  - {symbol: kV,    variants: [kV, kilovolt],                                      dimension: voltage, factor: 1.0e3,  qudt: "L^2 M T^-3 I^-1"}
+  - {symbol: mW,    variants: [mW, milliwatt],                                     dimension: power, factor: 1.0e-3, qudt: "L^2 M T^-3"}
+  - {symbol: nA,    variants: [nA, nanoampere],                                    dimension: current, factor: 1.0e-9, qudt: I}
+  - {symbol: C/cm2, variants: [C/cm2, "C cm-2", "C/cm^2", "C cm^-2"],              dimension: charge_per_area, factor: 1.0e4, qudt: "L^-2 T I"}
+  - {symbol: amu,   variants: [amu, Da],                                           dimension: mass, factor: 1.66053906660e-27, qudt: M}
+  - {symbol: m2,    variants: [m2, "m^2", "m²"],                                   dimension: area, factor: 1.0,    qudt: "L^2"}
+  - {symbol: cm2,   variants: [cm2, "cm^2", "cm²"],                                dimension: area, factor: 1.0e-4, qudt: "L^2"}
+  - {symbol: mL,    variants: [mL, ml, milliliter, millilitre],                    dimension: volume, factor: 1.0e-6, qudt: "L^3"}
+  - {symbol: nm-1,  variants: [nm-1, "nm^-1", "1/nm", "nm⁻¹"],                     dimension: inverse_length, factor: 1.0e9, qudt: "L^-1"}
+  - {symbol: s^-1/2, variants: ["s^-1/2", "s-1/2", "s^(-1/2)", "1/sqrt(s)"],       dimension: inverse_sqrt_time, factor: 1.0, qudt: "T^-1/2"}
+  - {symbol: ns,    variants: [ns, nanosecond, nanoseconds],                       dimension: time, factor: 1.0e-9, qudt: T}
+  - {symbol: "µPa s", variants: ["µPa s", "µPa·s", "uPa s", "μPa s"],              dimension: viscosity, factor: 1.0e-6, qudt: "L^-1 M T^-1"}
+  - {symbol: Pa s,  variants: ["Pa s", "Pa·s"],                                    dimension: viscosity, factor: 1.0,    qudt: "L^-1 M T^-1"}
+  - {symbol: cm3/g, variants: [cm3/g, "cm³/g", "cm^3/g", "cm3 g-1"],               dimension: volume_per_mass, factor: 1.0e-3, qudt: "L^3 M^-1"}
+  - {symbol: mol m-2 s-1, variants: ["mol m-2 s-1", "mol/(m2 s)", "mol m^-2 s^-1"], dimension: molar_flux, factor: 1.0, qudt: "L^-2 T^-1 N"}
+  - {symbol: m-2 s-1 Pa-1, variants: ["m-2 s-1 Pa-1", "1/(m2 s Pa)", "m^-2 s^-1 Pa^-1"], dimension: flux_per_pressure, factor: 1.0, qudt: "L^-1 M^-1 T"}
+  - {symbol: s m-3, variants: ["s m-3", "s/m3", "s m^-3"],                         dimension: time_per_volume, factor: 1.0, qudt: "T L^-3"}

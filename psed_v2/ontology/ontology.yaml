@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 7a72429b6591825341640a80802404c2fab6fab429180bf862ab875c2adfab7a
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 56f5301bf982045ca13befb8f3f054d68fe3a8ed2b2a66a21f60248ee18ff042
 version: 1
 
 base_sources:
@@ -962,6 +962,16 @@ entries:
     base: {}
     evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
 
+  - id: model_reactant
+    type: species
+    origin: extension
+    definition: "A pseudo-species: the generic reactant of a simulation that names no molecule (P138)."
+    kind: molecule
+    formula: ""
+    aliases: [model reactant, reactant A (model)]
+    base: {}
+    evidence: ["hei24 (gold qualifier species=model_reactant, P138)"]
+
   - id: ticl4
     type: species
     origin: extension
@@ -1343,6 +1353,48 @@ entries:
     aliases: [porosity, φ_i, φ_f, 'Final porosity, φ_f (%)']
     base: {}
     evidence: [gre23 Table I, gre23 Sec. II A (s8.p1), 'alias ''Final porosity, φ_f (%)'': gre23 tabI.r1c2 (P131b alias audit)']
+
+  - id: pore_density
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "pore density"
+    name: "pore density"
+    definition: "The number of pores per unit area of a porous membrane's surface."
+    dimension: areal_density
+    unit: "cm-2"
+    aliases: [pore density, pores per cm2]
+    base: {}
+    evidence: ["ela03 s2.p2 (gold, P138)"]
+
+  - id: tortuosity
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "tortuosity"
+    name: "tortuosity"
+    definition: "The ratio of the path length through a porous body's pores to the straight distance, a factor on its effective diffusivity."
+    dimension: dimensionless
+    unit: "1"
+    aliases: [tortuosity, τ]
+    base: {}
+    evidence: ["hei24 (gold claim cause, P138)"]
+
+  - id: pore_volume
+    type: quantity
+    origin: extension
+    role: condition
+    category: test_structure
+    label: "pore volume"
+    name: "pore volume"
+    definition: "The volume of the open pores of a porous material per unit mass."
+    dimension: volume_per_mass
+    unit: "cm3/g"
+    aliases: [pore volume, V_p]
+    base: {}
+    evidence: ["hei24 (gold claim cause, P138)"]
 
   - id: fill_fraction
     type: quantity
@@ -2065,6 +2117,33 @@ entries:
     aliases: ["planar substrate", "planar"]
     base: {}
     evidence: ["Werbrouck2021 Fig. 9"]
+
+  - id: porous_sphere
+    type: structure
+    origin: extension
+    definition: "A porous body of spherical shape, the reactant entering through its whole surface (a model geometry)."
+    class: porous_body
+    aliases: [porous sphere, sphere]
+    base: {}
+    evidence: ["hei24 (gold structure, P138)"]
+
+  - id: porous_slab
+    type: structure
+    origin: extension
+    definition: "A porous body of slab shape, the reactant entering through its two faces (a model geometry)."
+    class: porous_body
+    aliases: [porous slab, slab]
+    base: {}
+    evidence: ["hei24 (gold structure, P138)"]
+
+  - id: porous_cylinder
+    type: structure
+    origin: extension
+    definition: "A porous body of cylindrical shape, the reactant entering through its curved surface (a model geometry)."
+    class: porous_body
+    aliases: [porous cylinder, cylinder]
+    base: {}
+    evidence: ["hei24 (gold structure, P138)"]
 
   - id: nanoparticle_compact
     type: structure
