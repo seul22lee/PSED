@@ -213,6 +213,160 @@ def gold_layouts(pid, key):
     return tl, pl
 
 
+def _data_ids(y):
+    return [d.get("id") if isinstance(d, dict) else d for d in (y.get("data") or y.get("curves") or [])]
+
+
+def gold_run_conditions(pid):
+    """{gold run id: {quantity: value}}: the settings on the run and on the entities below it (canonical units; value_text for a
+    categorical value)."""
+    import compile as K
+    rows = _gold(pid)
+    R = {r["fact_id"]: r for r in rows}
+
+    def run_of(i):
+        while i in R:
+            if R[i]["type"] == "activity" and R[i]["kind"] == "deposition":
+                return i
+            i = R[i]["parent"]
+        return ""
+    out = collections.defaultdict(dict)
+    for r in rows:
+        if r["type"] == "setting" and r["quantity"] and (r["value"] or r["value_text"]):
+            run = run_of(r["parent"])
+            if run:
+                out[run].setdefault(r["quantity"], K.canon(r) if r["value"] else r["value_text"].lower())
+    return out
+
+
+def unit_conditions(y, values):
+    """A pass-0 unit's conditions from the figures.json cells its data names: the cell's at coordinates (canonical units of the
+    quantity entry) and the cell's conditions (a range kept as (low, high))."""
+    import compile as K
+    import lists as L
+    out = {}
+    for c in _data_ids(y):
+        v = values.get(c) or {}
+        for q, x in (v.get("at") or {}).items():
+            out.setdefault(q, K.canon(dict(value=str(x), unit=L.ENTRIES.get(q, {}).get("unit", ""), quantity=q)))
+        for q, cd in (v.get("conditions") or {}).items():
+            if cd.get("value") is None:
+                continue
+            lo = K.canon(dict(value=str(cd["value"]), unit=cd.get("unit") or "", quantity=q))
+            hi = K.canon(dict(value=str(cd["value_max"]), unit=cd.get("unit") or "", quantity=q)) if cd.get("value_max") is not None else None
+            out.setdefault(q, (lo, hi) if hi else lo)
+    return out
+
+
+def _agree(u, g):
+    """A unit's condition (a canonical value, or a (low, high) range of canonical values) against a gold run's value."""
+    try:
+        if isinstance(u, tuple) and u and isinstance(u[0], tuple):              # a range
+            lo, hi = u
+            return lo[0] == g[0] and float(lo[1]) <= float(g[1]) <= float(hi[1])
+        if isinstance(u, tuple) and isinstance(g, tuple):
+            return u[0] == g[0] and abs(float(u[1]) - float(g[1])) <= 1e-6 * max(abs(float(g[1])), 1e-30)
+        return u == g
+    except (TypeError, ValueError, IndexError):
+        return False
+
+
+def pair_units(pid, key, units):
+    """P145-P147: gold units vs pass-0 units, per role, in stages; a unit linked at one stage is not linked again:
+      data      a pass-0 unit whose data names a curve the gold binds to an entity (gold_curve_units) pairs with that entity;
+      cell      P147: a pass-0 unit with figures.json cells pairs with the gold run whose every condition setting agrees with the
+                unit's conditions or is absent from them (unit_conditions, gold_run_conditions); one to one, the best match first (the
+                most agreeing conditions), so several gold runs at one grid point never merge into one unit;
+      evidence  gold evidence and introduced_in share an element;
+      tree      P147 (replaces equal names): a gold run and a pass-0 run pair when a specimen of one is paired with a specimen of the
+                other; a gold simulation and a pass-0 simulation when one of their model runs is; both directions.
+    ESI-only gold units are left out (listed apart). Returns dict(comps={role: [(gold units, pass-0 units, stages)]}, esi, pair_of,
+    status_g, status_p, links)."""
+    gc = gold_curve_units(key)
+    bound = collections.defaultdict(set)
+    for c, e in gc.items():
+        bound[e].add(c)
+    G = gold_units(pid)
+    esi = [g for g in G if g["esi_only"]]
+    G = [g for g in G if not g["esi_only"]]
+    Fj = _figures_json(pid)
+    values = {v["id"]: v for v in Fj.get("values", [])}
+    gcond = gold_run_conditions(pid)
+    P = [y for y in units if y.get("role") in ("run", "specimen", "simulation", "model_run")]
+    edges, linked_g, linked_p = [], set(), set()
+
+    def link(g, y, stage):
+        edges.append((g["gid"], y["id"], stage))
+    for stage in ("data", "cell", "evidence"):
+        new_g, new_p = set(), set()
+        if stage == "cell":
+            cand = []
+            for g in G:
+                if g["role"] != "run" or g["gid"] in linked_g:
+                    continue
+                gv = gcond.get(g["gid"], {})
+                for y in P:
+                    if y["role"] != "run" or y["id"] in linked_p:
+                        continue
+                    uv = unit_conditions(y, values)
+                    if not uv or not any(q in gv for q in uv):
+                        continue
+                    if all(q not in uv or _agree(uv[q], gv[q]) for q in gv):
+                        cand.append((-sum(1 for q in gv if q in uv), g["gid"], y["id"], g, y))
+            for _, gi, yi, g, y in sorted(cand, key=lambda x: (x[0], x[1], x[2])):
+                if gi not in new_g and yi not in new_p:
+                    link(g, y, "cell"); new_g.add(gi); new_p.add(yi)
+        else:
+            for g in G:
+                if g["gid"] in linked_g:
+                    continue
+                for y in P:
+                    if y["id"] in linked_p or y["role"] != g["role"]:
+                        continue
+                    hit = (bound.get(g["gid"], set()) & set(_data_ids(y))) if stage == "data" else (set(g["evidence"]) & set(y.get("introduced_in") or []))
+                    if hit:
+                        link(g, y, stage); new_g.add(g["gid"]); new_p.add(y["id"])
+        linked_g |= new_g; linked_p |= new_p
+    # tree: parents through paired children
+    gpar = {g["gid"]: g["parent"] for g in G}
+    ppar = {y["id"]: y.get("parent") for y in P}
+    Gb, Pb = {g["gid"]: g for g in G}, {y["id"]: y for y in P}
+    for gi, yi, st in list(edges):
+        a, b = gpar.get(gi), ppar.get(yi)
+        if a in Gb and b in Pb and Gb[a]["role"] == Pb[b]["role"] and a not in linked_g and b not in linked_p:
+            link(Gb[a], Pb[b], "tree"); linked_g.add(a); linked_p.add(b)
+    # components per role
+    parent = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]
+        return x
+    for gi, yi, _ in edges:
+        parent[find(("g", gi))] = find(("p", yi))
+    comps = collections.defaultdict(list)
+    groups = collections.defaultdict(lambda: ([], [], set()))
+    for g in G:
+        groups[find(("g", g["gid"]))][0].append(g)
+    for y in P:
+        groups[find(("p", y["id"]))][1].append(y)
+    for gi, yi, st in edges:
+        groups[find(("g", gi))][2].add(st)
+    pair_of, status_g, status_p, links = {}, {}, {}, []
+    for gs, ps, sts in groups.values():
+        role = (gs or ps)[0]["role"]
+        kind = ("matched" if len(gs) == 1 and len(ps) == 1 else "missing" if not ps else "extra" if not gs else
+                "merged" if len(ps) == 1 else "split" if len(gs) == 1 else "merged+split")
+        comps[role].append((gs, ps, sorted(sts), kind))
+        for g in gs:
+            pair_of[g["gid"]] = [y["id"] for y in ps]; status_g[g["gid"]] = kind
+        for y in ps:
+            status_p[y["id"]] = kind
+            links += [(y["id"], g["gid"]) for g in gs]
+    return dict(comps=comps, esi=esi, pair_of=pair_of, status_g=status_g, status_p=status_p, links=links, bound=bound, gc=gc)
+
+
 def example(pid, form):
     """One example in the pass-0 form: the gold units and layouts of the last dev paper in index order other than pid (never held-out)
     whose gold has runs, specimens, a simulation and model runs; ids role prefix + number; curves from gold_curve_units; every field
