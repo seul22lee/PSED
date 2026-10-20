@@ -1,0 +1,215 @@
+#!/usr/bin/env python3
+"""P135b: where the pipeline loses each gold row of one paper. No provider call; no fix.
+
+    python3 psed_v2/kb/extract/audit.py yli18
+
+Per gold row of kb/pilot/<pid>.facts.csv the first stage test that fails:
+  T0 tree      a tree row (no '#' in fact_id, or type paper/activity/entity/comparison/identity); a setting with no quantity, value
+               or value_text is stage judgment
+  T1 ontology  quantity not in the form's quantity enum; unit not in units.yaml (vocab.UNIT_ALIAS / UNIT_BASE); value_text of a
+               species/structure quantity not among its ids
+  T2 form      the row cast into a form record (form_roundtrip.cast; quote = the first 15 words of the statement) fails form.json
+               (first error); gold columns with no form slot go to no_slot and are not a failure
+  T3 prompt    no record of the 22 lines in use (compile.py input rule) on an evidence element with the gold type (and quantity)
+  T4 compiler  the matching record was dropped (compile.py step, reason, field)
+  T5 mismatch  the matching record reached facts.csv but the P134 match (type, quantity, value, unit, value_text) fails
+  T6 matched
+Several matching records: the first that reached facts.csv decides (T6 if any matches, else T5), else the first dropped (T4).
+The compiler is re-run in memory (outputs to a temporary folder) so that each record is followed to its drop or its fact row.
+Writes kb/compiled/<pid>.audit.csv (gold side) and .audit_reverse.csv (compiled facts no gold row matches); the element text goes
+only to the gitignored kb/reports/<unit>.text.csv (paper text stays out of git).
+"""
+import collections
+import csv
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
+
+import common as C
+import compile as K
+import form_roundtrip as RT
+
+import lists as L  # noqa: E402  (kb/pilot/, on the path through common)
+import vocab as V  # noqa: E402
+
+TREE_TYPES = {"paper", "activity", "entity", "comparison", "identity"}
+NO_SLOT = ("links", "inputs", "parent", "figure_ref")
+MATCH = ("type", "quantity", "value", "unit", "value_text")
+COLS = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "stage", "detail", "no_slot", "jsonl_record", "compiled_row"]
+REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence", "nearest_gold", "why"]
+
+
+def key(f):
+    """The P134 match key (compile.diff)."""
+    return (f["type"], f["quantity"], K.F.num(f["value"]) if f["value"] else None, V.UNIT_ALIAS.get(f["unit"], f["unit"]), f["value_text"].lower())
+
+
+def matches(g, c):
+    return key(g) == key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
+
+
+def traced_run(pid):
+    """compile.Run in a temporary folder, with each record followed: {id(rec): ('drop', step, reason, field) | ('fact', row)}."""
+    K.OUT = Path(tempfile.mkdtemp(prefix="audit_"))
+    run = K.Run(pid)
+    fate, made = {}, {}
+    drop, fact_row, dedupe = run.drop, run.fact_row, run.dedupe
+
+    def drop_t(step, eid, rec, reason, field=""):
+        fate.setdefault(id(rec), ("drop", step, reason, field))
+        return drop(step, eid, rec, reason, field)
+
+    def fact_row_t(r, parent):
+        f = fact_row(r, parent)
+        made[id(f)] = id(r["rec"])
+        return f
+
+    def dedupe_t(items):
+        out = dedupe(items)
+        kept = {id(f) for f in out}
+        for f in items:                                                         # a merged row: its record lives on in the row it merged into
+            g = f if id(f) in kept else next(x for x in out if all(x[k] == f[k] for k in K.DEDUPE_KEY) and f["evidence"] in x["evidence"].split(";"))
+            fate[made[id(f)]] = ("fact", g)
+        return out
+    run.drop, run.fact_row, run.dedupe = drop_t, fact_row_t, dedupe_t
+    records = run.read()                                                        # the records as compile.py reads them (variables mapped)
+    run.read = lambda: records
+    rows = run.run()
+    return run, records, fate, rows
+
+
+def ontology_test(g, qids):
+    bad = []
+    for q in filter(None, g["quantity"].split(";")):
+        if q not in qids:
+            bad.append(f"quantity {q} not in the form enum")
+    if g["unit"] and V.UNIT_ALIAS.get(g["unit"], g["unit"]) not in V.UNIT_BASE:
+        bad.append(f"unit {g['unit']!r} not in units.yaml")
+    if g["quantity"] in K.SPECIES_Q and g["value_text"] and g["value_text"] not in K.SPECIES_Q[g["quantity"]]:
+        bad.append(f"{g['quantity']} {g['value_text']!r} not an id")
+    return "; ".join(bad)
+
+
+def form_test(g, val, props):
+    rec, lost = RT.cast(g, props)
+    rec["quote"] = " ".join(g["statement"].split()[:15])
+    no_slot = [c for c, _ in lost] + [c for c in NO_SLOT if g.get(c)]
+    errs = sorted(val.iter_errors(rec), key=lambda e: list(e.absolute_path))
+    if not errs:
+        return "", no_slot
+    field, reason = RT.explain(errs[0], rec)
+    return f"{field}: {reason}", no_slot
+
+
+def rec_json(r):
+    return json.dumps(dict(element=r["eid"], **r["rec"]), ensure_ascii=False)
+
+
+def differing(g, c):
+    out = []
+    for k in MATCH:
+        a, b = g[k], c[k]
+        if k == "value":
+            ga, cb = K.F.num(a) if a else None, K.F.num(b) if b else None
+            if ga != cb:
+                conv = ""
+                to = L.UNITS.get(g["quantity"], g["unit"])
+                try:
+                    x = L.convert(ga, g["unit"], to) if ga is not None else None
+                    y = L.convert(cb, c["unit"], to) if cb is not None else None
+                    conv = f" (in {to}: {x:g} vs {y:g}, {'equal' if x is not None and y is not None and abs(x - y) <= 1e-9 * max(abs(x), 1) else 'differ'})" \
+                        if x is not None and y is not None else ""
+                except (KeyError, ValueError) as e:
+                    conv = f" (no conversion: {e})"
+                out.append(f"value {a!r} vs {b!r}{conv}")
+        elif k == "unit":
+            if V.UNIT_ALIAS.get(a, a) != V.UNIT_ALIAS.get(b, b):
+                out.append(f"unit {a!r} vs {b!r}")
+        elif (a.lower() if k == "value_text" else a) != (b.lower() if k == "value_text" else b):
+            out.append(f"{k} {a!r} vs {b!r}")
+    return "; ".join(out) or "evidence shares no element"
+
+
+def main(arg):
+    pid, key_ = C.resolve(arg)
+    form = C.schema("form.json")
+    val, props, qids = Draft202012Validator(form), form["properties"], set(form["properties"]["quantity"]["enum"])
+    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
+    run, records, fate, rows = traced_run(pid)
+    comp = [r for r in rows if "#" in r["fact_id"]]
+    out, texts, matched_c = [], [], set()
+    for g in gold:
+        ev = [e for e in g["evidence"].split(";") if e]
+        a = {c: g[c] for c in COLS if c in g}
+        a.update(stage="", detail="", no_slot="", jsonl_record="", compiled_row="")
+        texts.append(dict(fact_id=g["fact_id"], element_text=" | ".join(f"{e}: {run.text.get(e, '')}" for e in ev)))
+        if "#" not in g["fact_id"] or g["type"] in TREE_TYPES:
+            a.update(stage="T0 tree", detail=g["type"]); out.append(a); continue
+        if g["type"] == "setting" and not (g["quantity"] or g["value"] or g["value_text"]):
+            a.update(stage="T0 judgment", detail="setting without quantity, value or value_text"); out.append(a); continue
+        o = ontology_test(g, qids)
+        if o:
+            a.update(stage="T1 ontology", detail=o); out.append(a); continue
+        err, no_slot = form_test(g, val, props)
+        a["no_slot"] = ";".join(no_slot)
+        if err:
+            a.update(stage="T2 form", detail=err); out.append(a); continue
+        on_el = [r for r in records if r["eid"] in ev]
+        hits = [r for r in on_el if r["rec"].get("type") == g["type"] and (not g["quantity"] or r["rec"].get("quantity") == g["quantity"])]
+        if not hits:
+            a.update(stage="T3 prompt", detail=f"{len(on_el)} records on the evidence elements, of types {dict(collections.Counter(r['rec'].get('type') for r in on_el))}")
+            out.append(a); continue
+        facts = [(r, fate[id(r["rec"])][1]) for r in hits if fate.get(id(r["rec"]), ("",))[0] == "fact"]
+        drops = [(r, fate[id(r["rec"])]) for r in hits if fate.get(id(r["rec"]), ("",))[0] == "drop"]
+        good = [(r, c) for r, c in facts if matches(g, c)]
+        if good:
+            r, c = good[0]
+            matched_c.add(c["fact_id"])
+            a.update(stage="T6 matched", jsonl_record=rec_json(r), compiled_row=c["fact_id"])
+        elif facts:
+            r, c = facts[0]
+            d = differing(g, c)
+            a.update(stage="T5 mismatch", detail=d, jsonl_record=rec_json(r), compiled_row=f"{c['fact_id']}: {d}")
+        elif drops:
+            r, (_, step, reason, field) = drops[0]
+            a.update(stage="T4 compiler", detail=f"step {step}: {reason}" + (f" ({field})" if field else ""), jsonl_record=rec_json(r))
+        else:
+            a.update(stage="T4 compiler", detail="record neither dropped nor in facts.csv", jsonl_record=rec_json(hits[0]))
+        out.append(a)
+    rev = []
+    for c in comp:
+        if c["fact_id"] in matched_c or any(matches(g, c) for g in gold if "#" in g["fact_id"]):
+            continue
+        same = [g for g in gold if "#" in g["fact_id"] and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))]
+        near = sorted(same, key=lambda g: (g["type"] != c["type"], g["quantity"] != c["quantity"]))
+        rev.append(dict({k: c[k] for k in REV[:7]}, nearest_gold=near[0]["fact_id"] if near else "",
+                        why=differing(near[0], c) if near else "no gold row on this element"))
+    D = C.V2 / "kb" / "compiled"
+    K.write_csv(D / f"{pid}.audit.csv", COLS, out)
+    K.write_csv(D / f"{pid}.audit_reverse.csv", REV, rev)
+    R = C.V2 / "kb" / "reports"
+    K.write_csv(R / "P135b.text.csv", ["fact_id", "element_text"], texts)            # gitignored: paper text
+    st = collections.Counter((a["stage"], a["type"]) for a in out)
+    types = sorted({a["type"] for a in out}, key=lambda t: -sum(v for (s, ty), v in st.items() if ty == t))
+    stages = sorted({a["stage"] for a in out})
+    with (R / "P135b.stage_type.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["stage"] + types + ["total"])
+        for s in stages:
+            w.writerow([s] + [st[(s, t)] for t in types] + [sum(st[(s, t)] for t in types)])
+        w.writerow(["total"] + [sum(st[(s, t)] for s in stages) for t in types] + [len(out)])
+    for name, stage in (("t2_errors", "T2 form"), ("t4_reasons", "T4 compiler"), ("t3_prompt", "T3 prompt")):
+        c = collections.Counter(a["detail"] if stage != "T3 prompt" else a["type"] for a in out if a["stage"] == stage)
+        with (R / f"P135b.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+            w = csv.writer(fh)
+            w.writerow(["detail" if stage != "T3 prompt" else "type", "rows"])
+            w.writerows(c.most_common())
+    print(f"{key_}: {len(out)} gold rows, {len(rev)} compiled facts without a gold match")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(C.main(main))

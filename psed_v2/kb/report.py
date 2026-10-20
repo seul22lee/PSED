@@ -8,7 +8,7 @@ import html
 import sys
 from pathlib import Path
 
-STYLE = "body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}"
+STYLE = "body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}"
 
 
 def section(title, path):
