@@ -198,7 +198,7 @@ COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs"
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
-PASS0_ROLES = ["specimen", "run", "simulation", "model_run", "series", "cited_work"]   # P142: model_run   # P138: series = a figure series of runs or specimens differing in one quantity
+PASS0_ROLES = ["specimen", "run", "simulation", "model_run"]   # P142: model_run; P143b (user): experiment units only, no series, no cited_work   # P138: series = a figure series of runs or specimens differing in one quantity
 
 
 def form_field(column):
@@ -322,7 +322,7 @@ def pass0_schema(onto, L):
           "specimen_class": {"enum": list(L.SPECIMEN_CLASSES)},
           "experiment_kind": {"enum": list(onto["vocabularies"]["experiment_kind"])},
           "introduced_in": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-          "members": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},        # P142: a series' specimen or model-run ids
+          "curves": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},         # P143b: the figures.json curve ids that show the unit
           "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -433,14 +433,10 @@ P143_PANEL_LAYOUTS = [
 ]
 P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the paragraphs around the equation."
 # term -> [(source key, verbatim phrase)]; [] = no written definition in lists.py's tree comment or facts.retree()'s docstring
-P143_TERMS = {
-    "run": [], "specimen": [],
+P143_TERMS = {                                                                  # P143b: quoted where lists.TERMS has none
     "piece": [("lists", "a piece cut from it"), ("retree", "a deposition or another entity: a piece")],
-    "input entity": [],
     "measurement activity": [("retree", "goes under the entity's measurement activity of that method (<key>:meas:<entity>:<method>; \"measurement\" when the fact names none)")],
     "simulation": [("retree", "a simulation activity with its model-run entity")],
-    "model run": [("lists", "a model run"), ("retree", "a simulation activity with its model-run entity")],
-    "series": [], "replicate": [], "grid": [],
 }
 
 
@@ -450,6 +446,20 @@ def _cell(x):
 
 def _table(head, rows):
     return ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)] + ["| " + " | ".join(_cell(c) for c in r) + " |" for r in rows]
+
+
+def qualifier_text(q):
+    """P143b: a qualifier's written text: ('meaning', meaning) when that field is set; else ('log', log) when the log says what the
+    qualifier is; ('citation', '') when its only text is a source citation, or a log that opens with a list of its own values and a
+    colon (where the values came from, not what they mean)."""
+    if q.get("meaning"):
+        return "meaning", q["meaning"]
+    log = str(q.get("log", "") or "")
+    vals = [str(v) for v in q.get("values")] if isinstance(q.get("values"), list) else []
+    head = log.split(":")[0]
+    if log and not (vals and ":" in log and all(x.strip() in vals for x in head.split(","))):
+        return "log", log
+    return "citation", ""
 
 
 def codebook(onto, L):
@@ -471,19 +481,17 @@ def codebook(onto, L):
     tree_comment = [x.lstrip("# ").rstrip() for x in ll[i:j]]
     retree = ast.get_docstring(next(n for n in ast.walk(ast.parse(facts_txt)) if isinstance(n, ast.FunctionDef) and n.name == "retree"))
     out += [f"## a. Tree model (sources: kb/pilot/lists.py lines {i + 1}-{j}, NODE_TYPES / ACTIVITY_KINDS / COMPARISON_KINDS / IDENTITY_KINDS; "
-            "kb/pilot/facts.py retree() docstring)", "", "lists.py:", "", "```", *tree_comment, "```", "",
+            "TERMS; kb/pilot/facts.py retree() docstring)", "", "lists.py:", "", "```", *tree_comment, "```", "",
             f"- NODE_TYPES: {', '.join(L.NODE_TYPES)}", f"- ACTIVITY_KINDS: {', '.join(L.ACTIVITY_KINDS)}",
             f"- COMPARISON_KINDS: {', '.join(L.COMPARISON_KINDS)}", f"- IDENTITY_KINDS: {', '.join(sorted(L.IDENTITY_KINDS))}", "",
             "facts.py retree() (the placement rule):", "", "```", *retree.splitlines(), "```", "", "Terms:", ""]
     src = {"lists": " ".join(tree_comment), "retree": " ".join(retree.split())}
+    for term, text in L.TERMS.items():                                         # P143b: lists.TERMS (user-approved)
+        out.append(f"- **{term}**: {text} (lists.py TERMS)")
     for term, phrases in P143_TERMS.items():
         for k, ph in phrases:
             assert " ".join(ph.split()) in src[k], f"P143 term {term}: phrase not in {k}"
-        if phrases:
-            out.append(f"- **{term}**: " + "; ".join(f"\"{ph}\" ({'lists.py' if k == 'lists' else 'facts.py retree()'})" for k, ph in phrases))
-        else:
-            out.append(f"- **{term}**: missing definition: {term}")
-            missing.append(f"a. tree term: {term}")
+        out.append(f"- **{term}**: " + "; ".join(f"\"{ph}\" ({'lists.py' if k == 'lists' else 'facts.py retree()'})" for k, ph in phrases))
     # b. layouts
     out += ["", "## b. Layouts (source: ontology/export.py P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS: P143 definitions)", "", "Table layouts:", ""]
     out += [f"- **{k}**: {d}" for k, d in P143_TABLE_LAYOUTS]
@@ -494,7 +502,9 @@ def codebook(onto, L):
     t1 = next(n for n in range(t0 + 1, len(rl)) if not rl[n].strip())
     nk0 = next(n for n, x in enumerate(rl) if "boilerplate: headings" in x)
     model = [x for x in rl[t0 + 1:t1]]
-    stance_comment = re.search(r"# a claim's stance, from the paper's own wording \((.*?)\)\n", lists_txt.replace("\n#   ", " ")).group(1)
+    flat = lists_txt.replace("\n#   ", " ")                                       # P143b: the comment, the asserted line included
+    m_ = re.search(r"# a claim's stance, from the paper's own wording \((.*?limitation)\)( asserted: [^\n]*)?\n", flat)
+    stance_comment = m_.group(1) + ("; " + m_.group(2).strip() if m_.group(2) else "")
     out += ["", "## c. Record types, stances, NK reasons, the equation rule (sources: kb/extract/pass1_elements.py RULES; kb/pilot/lists.py "
             "STANCES and its comment; P143 equation rule in ontology/export.py)", "", "Record types:", "", *rl[t0 + 1:t1], "",
             f"Stances ({', '.join(L.STANCES)}): {stance_comment}", ""]
@@ -524,10 +534,11 @@ def codebook(onto, L):
     out += ["", "## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)", ""]
     qr = []
     for k, q in onto["qualifiers"].items():
-        qr.append([k, q.get("meaning", ""), q.get("values", ""), q.get("log", "") or q.get("source", "")])
-        if not q.get("meaning"):
-            missing.append(f"e. qualifier {k}: meaning")
-    out += _table(["key", "meaning", "values", "log / source"], qr)
+        kind_, text = qualifier_text(q)
+        qr.append([k, text, q.get("values", ""), q.get("source", ""), q.get("log", "") if kind_ == "citation" else ""])
+        if kind_ == "citation":
+            missing.append(f"e. qualifier {k}: only a citation or value provenance (source / log), no meaning")
+    out += _table(["key", "meaning (meaning, else log)", "values", "source", "log (citation only)"], qr)
 
     def msg(pattern, tag):
         for n, x in enumerate(check_lines, 1):

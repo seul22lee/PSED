@@ -114,6 +114,8 @@ class Run:
             elif x["pass"] == 1:
                 latest[x["section"]] = n
         used = {latest[g] for g in self.groups if g in latest}
+        before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
+        p0 = before[-1] if before else p0                                       # P143b: the pass-0 line the pass-1 lines in use were written against
         ignored = [n for n, x in enumerate(lines, 1) if x["pass"] == 1 and n not in used]
         self.lines_used, self.lines_ignored = sorted(used | {p0}), ignored
         self.note(f"input: {len(lines)} lines; pass 0 = line {p0}; {len(used)} pass-1 lines for {len(self.groups)} groups; ignored lines "
@@ -274,8 +276,8 @@ class Run:
     def tree(self):
         """P138: the tree from the pass-0 items by their ids: the paper; a recipe when there is a run or a specimen; a run -> a
         deposition under the recipe; a simulation -> a simulation activity under the paper; a specimen -> an entity under the run its
-        parent names (else under the recipe, logged); a series -> a comparison (kind series) under the paper, filled by figures();
-        a cited work has no row. self.node: pass-0 id -> (row id, role)."""
+        parent names (else under the recipe, logged); P143b: a model run -> an entity under the simulation its parent names (else
+        under the paper, logged); series and cited works are no units (no row). self.node: pass-0 id -> (row id, role)."""
         k, rows = self.key, []
         ok_ev = lambda ids: ";".join(sorted({i for i in ids if i in self.order}, key=self.order.get))   # noqa: E731
 
@@ -316,11 +318,15 @@ class Run:
             rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="stated", evidence=ok_ev(it.get("introduced_in") or []), qualifiers=q,
                             parent=par[0] if par[1] == "run" else f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"],
                             statement=f"specimen {it['id']} ({it.get('name_as_printed')!r})"))
-        for it in role("series"):
-            self.node[it["id"]] = (f"{k}:series:{slug(it['id'])}", "series")
-            rows.append(row(fact_id=self.node[it["id"]][0], type="comparison", kind="series", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
-                            parent=k, label_as_printed=it.get("name_as_printed") or it["id"], statement=f"series {it['id']} ({it.get('name_as_printed')!r})"))
-        self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "series", "cited_work"))
+        for it in role("model_run"):                                           # P143b
+            par = self.node.get(it.get("parent", ""), ("", ""))
+            if par[1] != "simulation":
+                self.count("h", "model run without a simulation parent (under the paper)")
+            self.node[it["id"]] = (f"{k}:mrun:{slug(it['id'])}", "model_run")
+            rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
+                            parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
+                            statement=f"model run {it['id']} ({it.get('name_as_printed')!r})"))
+        self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "model_run", "series", "cited_work"))
                   + "; identity rows: none (pass 0 carries no identity)")
         self.rows_tree = rows
         self.meas = {}
@@ -337,23 +343,20 @@ class Run:
             self.meas[i] = r
         return i
 
-    def series_base(self, sid):
-        """The row a series' entities hang under: its pass-0 parent's row (a simulation, a run or a specimen), else ''."""
-        it = self.p0.get(sid, {})
-        return self.node.get(it.get("parent", ""), ("", ""))
-
     def figures(self):
-        """P138: kb/<pid>.figures.json curves through the pass-0 series: a curve belongs to the series whose introduced_in names its
-        figure (fig<n>, fig<n><panel> or fig<n>.cap); its fields as they are. Under the series' parent row (base): one entity per
-        distinct conditions dict of the series' curves; the conditions all of them share go once on the base, the rest on the entity.
-        A curve is a model row (under its entity) when the base is a simulation, an observation row (under the entity's measurement
-        activity) when it is a run or a specimen; never from the curve's kind. The series comparison: quantity = the one condition
-        that differs among its entities (else the figure set's varied, logged), links = the first curve row (purpose), then the
-        entities. A curve no series names, or a series without a parent, is logged and left out. Returns (tree rows, fact rows)."""
+        """P143b: kb/<pid>.figures.json curves through the pass-0 units' curves field, the curve fields as they are. A curve a model run
+        names -> a model row (y quantity, no value) under that model run's entity, its conditions as model_input settings there; a curve
+        a specimen names -> an observation row under the specimen's measurement activity, its conditions as settings of the specimen;
+        a curve a run names -> one entity per distinct conditions under the run (its specimens), an observation row under the entity's
+        measurement activity, the conditions as the entity's settings. The one fallback, logged: a curve no unit names -> one entity per
+        distinct conditions under the paper row, the row type from the curve's kind. Returns (tree rows, fact rows)."""
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         k, tree, facts = self.key, [], []
-        series = {i: it for i, it in self.p0.items() if it.get("role") == "series"}
+        owner = {}
+        for i, it in self.p0.items():
+            for cid in it.get("curves") or []:
+                owner.setdefault(cid, []).append(i)
 
         def els(fig, panel=""):
             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
@@ -378,84 +381,161 @@ class Run:
                 facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
                                  value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
                 self.count("1c", "setting")
-        sets = {st["id"]: st for st in Fj.get("sets", [])}
-        named = dict(series)
-        fallback = {}
-        for st in Fj.get("sets", []):                                           # P139: the one fallback: a figure set no pass-0 series names
-            if any(set(it.get("introduced_in") or []) & set(els(st["figure"], st.get("panel", ""))) for it in named.values()):
-                continue
-            fid = f"figset:{st['id'].split(':')[-1]}"
-            fallback[st["id"]] = fid
-            series[fid] = dict(id=fid, role="series", introduced_in=els(st["figure"], st.get("panel", "")), parent=None, _fallback=True)
-            self.node[fid] = (f"{k}:series:{slug(fid)}", "series")
-            tree.append(row(fact_id=self.node[fid][0], type="comparison", kind="series", how="inferred", evidence=";".join(els(st["figure"], st.get("panel", ""))),
-                            parent=k, label_as_printed=st.get("label", "") or fid, statement=f"figure set {st['id']}: no pass-0 series names its figure (fallback)"))
-            self.note(f"1c: fallback series {fid} for figure set {st['id']} (no pass-0 series names the figure)")
-            self.count("1c", "fallback series (figure set without a pass-0 series)")
-        by_series = collections.defaultdict(list)
+
+        def result(cu, parent, typ):
+            y = cu["y"]
+            if y.get("quantity") not in L.QUANTITIES:
+                self.count("1c", "curve y quantity not an id"); return
+            facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"],
+                             data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
+                             evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent))
+            self.count("1c", f"curve -> {typ}")
+        by_run, unowned = collections.defaultdict(list), []
         for cu in Fj.get("curves", []):
-            hit = [sid for sid, it in named.items() if set(it.get("introduced_in") or []) & set(els(cu["figure"], cu.get("panel", "")))]
-            if not hit and cu.get("set") in fallback:
-                hit = [fallback[cu["set"]]]
-            if len(hit) != 1:
-                self.count("1c", f"curve not in exactly one series ({len(hit)})"); continue
-            by_series[hit[0]].append(cu)
-        self.purpose, self.series_members = {}, {}
-        for sid, it in series.items():
-            cid = self.node[sid][0]
-            base, brole = self.series_base(sid)
-            if it.get("_fallback"):
-                base, brole = k, "paper"                                        # P139: under the paper row; its row type comes from the curve's kind (logged)
-            curves = by_series.get(sid, [])
-            if not base:
-                self.count("1c", "series without a parent (its curves left out)")
-                self.series_members[cid] = []
-                continue
+            own = [i for i in owner.get(cu["id"], []) if i in self.node]
+            if len(own) != 1:
+                if own:
+                    self.count("1c", "curve named by several units (left out)")
+                    continue
+                unowned.append(cu); continue
+            nid, role = self.node[own[0]]
+            conds = list((cu.get("conditions") or {}).values())
+            ev = ";".join(els(cu["figure"], cu.get("panel", "")))
+            lab = cu.get("series", {}).get("label_raw", "")
+            if role == "model_run":
+                settings(conds, nid, ev, "model_input", lab)
+                result(cu, nid, "model")
+            elif role == "specimen":
+                settings(conds, nid, ev, "stated", lab)
+                result(cu, "@meas:" + nid, "observation")
+            elif role == "run":
+                by_run[nid].append(cu)
+            else:
+                self.count("1c", f"curve named by a {role} (left out)")
+
+        def per_conditions(curves, base, typ_of, label):
             ents = {}
             for cu in curves:
                 key = tuple(sorted(ckey(c) for c in (cu.get("conditions") or {}).values()))
-                ents.setdefault(key, dict(id=f"{cid}:e{len(ents) + 1}", conds=list((cu.get("conditions") or {}).values()), curves=[]))["curves"].append(cu)
-            common = set.intersection(*[{ckey(c) for c in e["conds"]} for e in ents.values()]) if len(ents) > 1 else set()
-            kind = "model_input" if brole == "simulation" else "stated"
-            sev = ";".join(dict.fromkeys(x for cu in curves for x in els(cu["figure"], cu.get("panel", ""))))
-            if ents:
-                settings([c for c in next(iter(ents.values()))["conds"] if ckey(c) in common], base, sev, kind)
+                ents.setdefault(key, dict(id=f"{base}:c{len(ents) + 1}" if base != k else f"{k}:fig:c{len(ents) + 1}", conds=list((cu.get("conditions") or {}).values()), curves=[]))["curves"].append(cu)
             for e in ents.values():
                 eev = ";".join(dict.fromkeys(x for cu in e["curves"] for x in els(cu["figure"], cu.get("panel", ""))))
                 lab = e["curves"][0].get("series", {}).get("label_raw", "")
-                tree.append(row(fact_id=e["id"], type="entity", how="stated", evidence=eev, parent=base, label_as_printed=lab or e["id"],
-                                statement=f"the {'run' if brole == 'simulation' else 'specimen'} of series {sid} with the conditions of curves {', '.join(c['id'] for c in e['curves'])}"))
-                settings([c for c in e["conds"] if ckey(c) not in common], e["id"], eev, kind, mentions=lab)
+                tree.append(row(fact_id=e["id"], type="entity", how="inferred", evidence=eev, parent=base, label_as_printed=lab or e["id"],
+                                statement=f"{label} with the conditions of curves {', '.join(c['id'] for c in e['curves'])}"))
+                settings(e["conds"], e["id"], eev, "stated", lab)
                 for cu in e["curves"]:
-                    y = cu["y"]
-                    if y.get("quantity") not in L.QUANTITIES:
-                        self.count("1c", "curve y quantity not an id"); continue
-                    ev = ";".join(els(cu["figure"], cu.get("panel", "")))
-                    if brole == "paper":
-                        self.count("1c", "row type from the curve's kind (fallback series)")
-                    if brole == "simulation" or (brole == "paper" and cu["kind"] == "simulated"):
-                        facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
-                                         mentions=cu.get("series", {}).get("label_raw", ""), evidence=ev, parent=e["id"]))
-                    else:
-                        facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
-                                         mentions=cu.get("series", {}).get("label_raw", ""), evidence=ev, parent="@meas:" + e["id"]))
-                    self.purpose.setdefault(cid, facts[-1])
-                    self.count("1c", f"curve -> {facts[-1]['type']}")
-            self.series_members[cid] = [e["id"] for e in ents.values()]
-            differ = [q for q in {c[0] for e in ents.values() for c in (ckey(x) for x in e["conds"])}
-                      if len({tuple(sorted(ckey(x) for x in e["conds"] if x.get("quantity") == q)) for e in ents.values()}) > 1]
-            varied = differ[0] if len(differ) == 1 else next((sets[cu["set"]]["varied"] for cu in curves if cu.get("set") in sets), "")
-            if len(differ) != 1:
-                self.count("1c", f"series varied from the figure set ({len(differ)} conditions differ)")
-            crow = next(r for r in self.rows_tree + tree if r["fact_id"] == cid)
-            crow["quantity"] = varied if varied in L.QUANTITIES else ""
-            self.count("1c", "series entities", len(ents))
+                    typ = typ_of(cu)
+                    result(cu, e["id"] if typ == "model" else "@meas:" + e["id"], typ)
+            return len(ents)
+        for nid, curves in by_run.items():
+            self.count("1c", "run specimens from curves", per_conditions(curves, nid, lambda cu: "observation", "a specimen of the run"))
+        if unowned:
+            n = per_conditions(unowned, k, lambda cu: "model" if cu["kind"] == "simulated" else "observation", "a unit no pass-0 item names (fallback)")
+            self.count("1c", "fallback: curves no unit names", len(unowned))
+            self.count("1c", "fallback entities under the paper (row type from the curve's kind)", n)
+            self.note(f"1c: fallback: {len(unowned)} curves no pass-0 unit names -> {n} entities under the paper row")
         return tree, facts
+
+    def comparisons(self, rows):
+        """P143b: comparisons derived from the condition vectors of the experiment units (entities), never asked of the extractor and
+        never a parent. A unit's vector: the settings (quantity, qualifiers -> value in canonical units, else value_text) on the unit and
+        on the activities and entities above it, measurement activities excepted. Units are compared within one top activity under the
+        paper (a recipe or a simulation) and only with units of the same vector keys. replicate: two or more units with equal vectors;
+        series: two or more units equal except in one quantity, which takes two or more values; grid: three or more units equal except
+        in two quantities, each taking two or more values. A comparison: kind, quantity (the varied ids), links = a result row of its
+        first member as purpose, then the members; label = the label_as_printed of a series-name setting (quantity other, no value,
+        mentions naming two or more of the members), when one names exactly these members or a subset of them."""
+        R_ = {r["fact_id"]: r for r in rows}
+        kids = collections.defaultdict(list)
+        for r in rows:
+            kids[r["parent"]].append(r)
+
+        def chain(i):
+            out = []
+            while i in R_:
+                out.append(R_[i]); i = R_[i]["parent"]
+            return out
+
+        def top(i):
+            c = chain(i)                                                        # the unit, ..., the paper: the row under the paper, unless that is the unit
+            return c[-2]["fact_id"] if len(c) >= 3 else self.key
+
+        def vector(e):
+            v = {}
+            for a in chain(e):
+                if a["type"] == "paper" or (a["type"] == "activity" and a["kind"] == "measurement"):
+                    continue
+                for f in kids[a["fact_id"]]:
+                    if f["type"] == "setting" and f["quantity"] and f["quantity"] != "other" and "#" in f["fact_id"]:
+                        v.setdefault((f["quantity"], f["qualifiers"]), canon(f) if f["value"] else f["value_text"].lower())
+            return v
+
+        def purpose(e):
+            for a in [e] + [x["fact_id"] for x in kids[e] if x["type"] == "activity"]:
+                for f in kids[a]:
+                    if "#" in f["fact_id"] and f["type"] in ("observation", "model"):
+                        return f["fact_id"]
+            return next((f["fact_id"] for f in kids[e] if "#" in f["fact_id"] and f["type"] == "setting"), "")
+        units = [r["fact_id"] for r in rows if r["type"] == "entity"]
+        fam = collections.defaultdict(list)
+        for u in units:
+            fam[top(u)].append(u)
+        out, seen = [], set()
+        labels = [f for f in rows if f["type"] == "setting" and f["quantity"] == "other" and not (f["value"] or f["value_text"]) and ";" in f["mentions"]]
+        name2node = {it.get("name_as_printed"): self.node[i][0] for i, it in self.p0.items() if i in self.node}
+
+        def emit(kind, varied, members):
+            key = (kind, tuple(sorted(members)))
+            if key in seen or len(members) < 2:
+                return
+            seen.add(key)
+            ev = sorted({e for m in members for e in R_[m]["evidence"].split(";") if e}, key=lambda e: self.order.get(e, 0))
+            lab = ""
+            for f in labels:
+                named = {name2node.get(x) for x in f["mentions"].split(";")} - {None}
+                if len(named) >= 2 and named <= set(members):
+                    lab = f["label_as_printed"]; self.count("n", "comparison labelled from a series-name setting"); break
+            pr = purpose(members[0])
+            out.append({**{x: "" for x in F.FIELDS}, "fact_id": f"{self.key}:cmp:{len(out) + 1}", "type": "comparison", "kind": kind, "how": "inferred",
+                        "quantity": ";".join(q for q, _ in varied), "qualifiers": "", "evidence": ";".join(ev), "parent": self.key, "author": self.pid,
+                        "links": ";".join(([pr] if pr else []) + members), "label_as_printed": lab,
+                        "statement": f"{kind} of {len(members)} units" + (f" varying {', '.join(q for q, _ in varied)}" if varied else " with equal conditions")})
+            self.count("n", f"comparison {kind}")
+        for t, us in fam.items():
+            V_ = {u: vector(u) for u in us}
+            groups = collections.defaultdict(list)
+            for u in us:
+                if V_[u]:
+                    groups[tuple(sorted(V_[u].items(), key=str))].append(u)
+            for g in groups.values():
+                emit("replicate", [], sorted(g))
+            keysets = collections.defaultdict(list)
+            for u in us:
+                if V_[u]:
+                    keysets[tuple(sorted(V_[u], key=str))].append(u)
+            for ks, members in keysets.items():
+                for q in ks:
+                    part = collections.defaultdict(list)
+                    for u in members:
+                        part[tuple((x, V_[u][x]) for x in ks if x != q)].append(u)
+                    for g in part.values():
+                        if len({str(V_[u][q]) for u in g}) >= 2:
+                            emit("series", [q], sorted(g))
+                for a in range(len(ks)):
+                    for b in range(a + 1, len(ks)):
+                        part = collections.defaultdict(list)
+                        for u in members:
+                            part[tuple((x, V_[u][x]) for x in ks if x not in (ks[a], ks[b]))].append(u)
+                        for g in part.values():
+                            if len(g) >= 3 and len({str(V_[u][ks[a]]) for u in g}) >= 2 and len({str(V_[u][ks[b]]) for u in g}) >= 2:
+                                emit("grid", [ks[a], ks[b]], sorted(g))
+        return out
 
     def parent(self, r):
         """P138: the record's own parent: "paper" -> the paper row; a pass-0 id -> its tree row (a result with a value under a specimen
-        -> that specimen's measurement activity by method; a setting under a series -> the series' parent row, a result under a series
-        -> the comparison); anything else -> the paper row, logged parent_unknown (never empty)."""
+        -> that specimen's measurement activity by method; P143b: a series is no unit and never a parent); anything else -> the paper
+        row, logged parent_unknown (never empty)."""
         rec, k = r["rec"], self.key
         p = rec.get("parent", "")
         if p == "paper":
@@ -470,11 +550,6 @@ class Run:
         result = rec["type"] in ("observation", "derived") and any(rec.get(x) not in (None, "") for x in VALUE_KEYS)
         if role == "specimen" and result:
             return self.measurement(rid, rec.get("method", "")), "specimen measurement (record)"
-        if role == "series":
-            if rec["type"] == "setting":
-                base = self.series_base(p)[0]
-                return (base, "series parent (record)") if base else (k, "series without a parent (paper)")
-            return rid, "series (record)"
         return rid, f"{role} (record)"
 
     # ------------------------------------------------------------------------------------------------------------ rows
@@ -716,11 +791,8 @@ class Run:
             if f.get("_kind_filled"):
                 self.count("m", "kind_filled (stated)")
                 self.note(f"m: {f['fact_id']}: kind_filled stated")
-        for c in tree:                                                          # P138: a series: its purpose row, then its entities
-            if c["type"] == "comparison":
-                pr = self.purpose.get(c["fact_id"])
-                c["links"] = ";".join(([pr["fact_id"]] if pr else []) + self.series_members.get(c["fact_id"], []))
-        rows = tree + list(self.meas.values()) + items                         # tree holds the series entities (rows_tree)
+        rows = tree + list(self.meas.values()) + items                         # tree holds the figure entities (rows_tree)
+        rows = rows + self.comparisons(rows)                                    # P143b: from the condition vectors
         rows = self.derived(rows)
         rows = self.statements(rows)
         self.coverage(rows)

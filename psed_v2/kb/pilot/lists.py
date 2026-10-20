@@ -118,6 +118,7 @@ def variables_ok(s):
     """'a;b' of entry ids (quantities) or mechanism ids -> list of problems."""
     return [t for t in s.split(";") if t and not (t in QUANTITIES and t != "other") and t not in MECHANISMS]   # a claim's stance, from the paper's own wording ("likely", "may" -> hedged;
 #   "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation)
+#   asserted: stated as a finding, without hedging words (P143b)
 # tree rows (stage 3): the paper, activities (something done, with settings: kind from ACTIVITY_KINDS, order when several apply to one
 # entity, how stated or inferred) and entities (a physical thing or its state: a specimen, a piece cut from it, a position, a model
 # run; how stated or inferred). The tree is physical provenance only: paper -> recipe -> deposition -> entity -> later activities ->
@@ -125,6 +126,18 @@ def variables_ok(s):
 NODE_TYPES = ["paper", "activity", "entity"]
 ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
 COMPARISON_KINDS = ["series", "grid", "replicate"]
+# P143b (user-approved): the tree terms; CODEBOOK.md reads this dict (ontology/export.py)
+TERMS = {
+    "run": "one deposition the paper performs; specimens coated together share one run; separate depositions are separate runs even with "
+           "the same chemistry, temperature and structure.",
+    "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
+    "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
+                    "deposition activity's inputs.",
+    "model run": "one set of inputs of a simulation whose result the paper reports (a curve, a table row).",
+    "series / replicate / grid (comparisons)": "never a parent and never asked of the extractor; the compiler derives them from the "
+        "condition vectors of the experiment units — series: members differ in exactly one quantity; replicate: in none; grid: in two. "
+        "A name the authors give such a set (\"Series A\") is kept as its label.",
+}
 HOW = ["stated", "inferred"]
 DATA_KINDS = list(KINDS)                              # the stored kinds (vocab.KINDS, Sec. 18.5); the phrases are vocab.PHRASES
 

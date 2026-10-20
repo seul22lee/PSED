@@ -55,6 +55,8 @@ FIELD RULES
 - links (claims and caveats): the element ids of the evidence the claim or caveat rests on.
 - statement: one sentence in your own words when the record carries no quantity and no value (never a copy of the element).
 - statement is never null on claim, caveat and cited records (one sentence, your words).
+- a name the paper gives a set of runs or samples ("Series A", "set 2") is a setting of quantity other with label_as_printed = the
+  name and mentions = each member it names; the compiler attaches it.
 - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
