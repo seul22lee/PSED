@@ -1,0 +1,1039 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P142_ontology</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P142_ontology</h1>
+<h2>a. Gold vocabulary misses before fixing</h2><p>kb/reports/P142_ontology.a_misses_before.csv</p>
+<table><tr><th>gold_row</th><th>miss</th></tr>
+<tr><td>gre23:s8.p1#5</td><td>unit &#x27;MPa&#x27; is not in the extraction vocabulary (P142)</td></tr>
+<tr><td>gre23:s9.p5#1</td><td>unit &#x27;l&#x27; is not in the extraction vocabulary (P142)</td></tr>
+</table>
+<h2>a. Changes made now</h2><p>kb/reports/P142_ontology.a_changes_now.csv</p>
+<table><tr><th>file</th><th>entry</th><th>field</th><th>old</th><th>new</th><th>motivated_by</th></tr>
+<tr><td>ontology/units.yaml</td><td>MPa</td><td>(new unit row)</td><td></td><td>MPa: pressure, factor 1e6, variants MPa, megapascal</td><td>gre23:s8.p1#5 (held-out gold; quantity other)</td></tr>
+<tr><td>ontology/units.yaml</td><td>L</td><td>(new unit row)</td><td></td><td>L: volume, factor 1e-3, variants L, l, litre, liter</td><td>gre23:s9.p5#1 (held-out gold; quantity other)</td></tr>
+<tr><td>ontology/ontology.yaml</td><td>(header)</td><td>sha256 line</td><td>56f5301b...</td><td>fc4f53c3...</td><td>the two unit rows</td></tr>
+<tr><td>kb/pilot/check.py</td><td>check_gold_vocabulary()</td><td>(new check)</td><td></td><td>every gold fact row against the extraction vocabulary</td><td>P142 item 1</td></tr>
+</table>
+<h2>b. Every ontology change since tag ontology-v1 (per commit, entry, field)</h2><p>kb/reports/P142_ontology.b_changes_since_v1.csv</p>
+<table><tr><th>unit</th><th>commit</th><th>file</th><th>entry</th><th>field</th><th>old</th><th>new</th><th>motivated_by</th></tr>
+<tr><td>P132</td><td>1f20974</td><td>ontology.yaml</td><td>base_pressure</td><td>deviation</td><td>{&quot;type&quot;: &quot;added&quot;, &quot;reason&quot;: &quot;P98 rule a, papers ela03 mat22; merged from pending.csv (P131b)&quot;}</td><td>{&quot;type&quot;: &quot;added&quot;, &quot;reason&quot;: &quot;P98 rule a, papers mat22; merged from pending.csv (P131b)&quot;}</td><td></td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_depth</td><td>aliases</td><td>L (mm); Length of the channel; Lateral length of the channel (mm); channel length L; lateral length L; l/2; cavity length</td><td>L (mm); Length of the channel; Lateral length of the channel (mm); channel length L; lateral length L; l/2; cavity length; channel length; L (channel length)</td><td>Yim2020 Fig. 8a; Yim2020 Fig. 4; Ylilammi2018 Fig. 6; Ylilammi2018 Fig. 7; Werbrouck2021 Sec. II D; alias &#x27;l/2&#x27;: ela03 s5.p4 (P131b alias audit); alias &#x27;cavity length&#x27;: gao15 abs.g2 (P131b alias audit</td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_depth</td><td>note</td><td></td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>Yim2020 Fig. 8a; Yim2020 Fig. 4; Ylilammi2018 Fig. 6; Ylilammi2018 Fig. 7; Werbrouck2021 Sec. II D; alias &#x27;l/2&#x27;: ela03 s5.p4 (P131b alias audit); alias &#x27;cavity length&#x27;: gao15 abs.g2 (P131b alias audit</td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_extent</td><td>aliases</td><td>Width of the channel; channel width W; major axis</td><td>Width of the channel; channel width W; major axis; channel width; W (channel width)</td><td>Ylilammi2018 Figs. 2-5; Werbrouck2021 Sec. II D; alias &#x27;major axis&#x27;: gor03 s8.p1 (P131b alias audit)</td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_extent</td><td>note</td><td></td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>Ylilammi2018 Figs. 2-5; Werbrouck2021 Sec. II D; alias &#x27;major axis&#x27;: gor03 s8.p1 (P131b alias audit)</td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_width</td><td>aliases</td><td>Design channel height H (nm); Channel height (nm); Height of the channel; H (nm); LHAR H (µm); opening height; channel gap height; minor axis; h; pore diameter (nm); targeted channel height H; Design channel height H; LHAR H; d_pore</td><td>Design channel height H (nm); Channel height (nm); Height of the channel; H (nm); LHAR H (µm); opening height; channel gap height; minor axis; h; pore diameter (nm); targeted channel height H; Design channel height H; LHAR H; d_pore; channel height; H (channel height)</td><td>Yim2020 Table 1; Yim2020 Table 2; Yim2020 Fig. 9; Yim2020 Fig. 10; Ylilammi2018 Table I; Ylilammi2018 Fig. 4; Ylilammi2018 Fig. 6; Ylilammi2018 Fig. 7; Werbrouck2021 Sec. II D; alias &#x27;minor axis&#x27;: gor</td></tr>
+<tr><td>P136</td><td>999203b</td><td>ontology.yaml</td><td>feature_width</td><td>note</td><td></td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>Yim2020 Table 1; Yim2020 Table 2; Yim2020 Fig. 9; Yim2020 Fig. 10; Ylilammi2018 Table I; Ylilammi2018 Fig. 4; Ylilammi2018 Fig. 6; Ylilammi2018 Fig. 7; Werbrouck2021 Sec. II D; alias &#x27;minor axis&#x27;: gor</td></tr>
+<tr><td>P136</td><td>999203b</td><td>units.yaml</td><td>same_dimension</td><td>same_dimension</td><td></td><td>{&quot;length_per_cycle&quot;: &quot;length&quot;}</td><td>P136 2b: yli18 tabI.r1c6, r2c6, fig2.cap (growth per cycle in pm)</td></tr>
+<tr><td>P136b</td><td>74dfb19</td><td>ontology.yaml</td><td>normalized_thickness</td><td>aliases</td><td>Normalized thickness (-); Normalized deposition thickness; Type 1 normalized saturation profile</td><td>Normalized thickness (-); Normalized deposition thickness; Type 1 normalized saturation profile; normalized thickness</td><td>Yim2020 Fig. 9c; Yim2020 Fig. 9f; Yim2020 Fig. 10c; Yim2020 Fig. 10f; Werbrouck2021 Fig. 11; Werbrouck2021 Fig. 12</td></tr>
+<tr><td>P136b</td><td>74dfb19</td><td>units.yaml</td><td>1</td><td>variants / fields</td><td>{&quot;symbol&quot;: &quot;1&quot;, &quot;variants&quot;: [&quot;1&quot;, &quot;&quot;, &quot;-&quot;, &quot;(-)&quot;, &quot;×&quot;, &quot;a.u.&quot;, &quot;arb. units&quot;, &quot;arb.units&quot;, &quot;arbitrary units&quot;, &quot;dimensionless&quot;], &quot;dimension&quot;: &quot;dimensionless&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;1&quot;}</td><td>{&quot;symbol&quot;: &quot;1&quot;, &quot;variants&quot;: [&quot;1&quot;, &quot;&quot;, &quot;-&quot;, &quot;(-)&quot;, &quot;×&quot;, &quot;x&quot;, &quot;a.u.&quot;, &quot;arb. units&quot;, &quot;arb.units&quot;, &quot;arbitrary units&quot;, &quot;dimensionless&quot;], &quot;dimension&quot;: &quot;dimensionless&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;1&quot;}</td><td></td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>model_reactant</td><td>(new entry)</td><td></td><td>model reactant; reactant A (model)</td><td>hei24 (gold qualifier species=model_reactant, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>pore_density</td><td>(new entry)</td><td></td><td>pore density; pores per cm2</td><td>ela03 s2.p2 (gold, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>pore_volume</td><td>(new entry)</td><td></td><td>pore volume; V_p</td><td>hei24 (gold claim cause, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>porous_cylinder</td><td>(new entry)</td><td></td><td>porous cylinder; cylinder</td><td>hei24 (gold structure, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>porous_slab</td><td>(new entry)</td><td></td><td>porous slab; slab</td><td>hei24 (gold structure, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>porous_sphere</td><td>(new entry)</td><td></td><td>porous sphere; sphere</td><td>hei24 (gold structure, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>ontology.yaml</td><td>tortuosity</td><td>(new entry)</td><td></td><td>tortuosity; τ</td><td>hei24 (gold claim cause, P138)</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>1/Pa</td><td>variants / fields</td><td>{&quot;symbol&quot;: &quot;1/Pa&quot;, &quot;variants&quot;: [&quot;1/Pa&quot;, &quot;Pa-1&quot;, &quot;Pa^-1&quot;, &quot;Pa⁻¹&quot;], &quot;dimension&quot;: &quot;inverse_pressure&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L M^-1 T^2&quot;}</td><td>{&quot;symbol&quot;: &quot;1/Pa&quot;, &quot;variants&quot;: [&quot;1/Pa&quot;, &quot;Pa-1&quot;, &quot;Pa^-1&quot;, &quot;Pa⁻¹&quot;, &quot;1 Pa-1&quot;], &quot;dimension&quot;: &quot;inverse_pressure&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L M^-1 T^2&quot;}</td><td>yim20 yim20:tabu2.r4c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>C/cm2</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;C/cm2&quot;, &quot;variants&quot;: [&quot;C/cm2&quot;, &quot;C cm-2&quot;, &quot;C/cm^2&quot;, &quot;C cm^-2&quot;], &quot;dimension&quot;: &quot;charge_per_area&quot;, &quot;factor&quot;: &quot;1.0e4&quot;, &quot;qudt&quot;: &quot;L^-2 T I&quot;}</td><td>ela03 ela03:tab1.r1c3#1; ela03 ela03:tab1.r2c3#1; ela03 ela03:tab1.r3c3#1; ela03 ela03:tab1.r1c3#1; ela03 ela03:tab1.r2c3#1; ela03 ela03:tab1.r3c3#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>MeV</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;MeV&quot;, &quot;variants&quot;: [&quot;MeV&quot;], &quot;dimension&quot;: &quot;energy&quot;, &quot;factor&quot;: 1.602176634e-13, &quot;qudt&quot;: &quot;L^2 M T^-2&quot;}</td><td>mat22 mat22:s5.p17#1; mat22 mat22:s5.p17#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>Pa s</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;Pa s&quot;, &quot;variants&quot;: [&quot;Pa s&quot;, &quot;Pa·s&quot;], &quot;dimension&quot;: &quot;viscosity&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^-1 M T^-1&quot;}</td><td></td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>V</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;V&quot;, &quot;variants&quot;: [&quot;V&quot;, &quot;volt&quot;], &quot;dimension&quot;: &quot;voltage&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^2 M T^-3 I^-1&quot;}</td><td>ela03 ela03:tab1.r1c1#1; ela03 ela03:tab1.r2c1#1; ela03 ela03:tab1.r3c1#1; ela03 ela03:tab1.r1c1#1; ela03 ela03:tab1.r2c1#1; ela03 ela03:tab1.r3c1#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>amu</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;amu&quot;, &quot;variants&quot;: [&quot;amu&quot;, &quot;Da&quot;], &quot;dimension&quot;: &quot;mass&quot;, &quot;factor&quot;: 1.6605390666e-27, &quot;qudt&quot;: &quot;M&quot;}</td><td>ela03 ela03:s5.p34#2; ela03 ela03:s5.p34#2</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>cm2</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;cm2&quot;, &quot;variants&quot;: [&quot;cm2&quot;, &quot;cm^2&quot;, &quot;cm²&quot;], &quot;dimension&quot;: &quot;area&quot;, &quot;factor&quot;: 0.0001, &quot;qudt&quot;: &quot;L^2&quot;}</td><td>gor03 gor03:s10.p2#2; gor03 gor03:s10.p2#2</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>cm3/g</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;cm3/g&quot;, &quot;variants&quot;: [&quot;cm3/g&quot;, &quot;cm³/g&quot;, &quot;cm^3/g&quot;, &quot;cm3 g-1&quot;], &quot;dimension&quot;: &quot;volume_per_mass&quot;, &quot;factor&quot;: 0.001, &quot;qudt&quot;: &quot;L^3 M^-1&quot;}</td><td>hei24 hei24:s10.p2#3; hei24 hei24:s10.p2#3</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>kV</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;kV&quot;, &quot;variants&quot;: [&quot;kV&quot;, &quot;kilovolt&quot;], &quot;dimension&quot;: &quot;voltage&quot;, &quot;factor&quot;: &quot;1.0e3&quot;, &quot;qudt&quot;: &quot;L^2 M T^-3 I^-1&quot;}</td><td>mat22 mat22:s5.p14#1; mat22 mat22:s5.p18#1; mat22 mat22:s5.p14#1; mat22 mat22:s5.p18#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>keV</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;keV&quot;, &quot;variants&quot;: [&quot;keV&quot;], &quot;dimension&quot;: &quot;energy&quot;, &quot;factor&quot;: 1.602176634e-16, &quot;qudt&quot;: &quot;L^2 M T^-2&quot;}</td><td>yim20 yim20:s7.p2#2; ela03 ela03:s3.p32#1; gor03 gor03:s10.p7#4; gor03 gor03:s10.p7#11; gor03 gor03:s10.p7#12; gor03 gor03:s10.p7#13; yim20 yim20:s7.p2#2; ela03 ela03:s3.p32#1; gor03 gor03:s10.p7#4; gor03 gor03:s10.p7#11; gor03 gor03:s10.p7#12; gor03 gor03:s10.p7#13</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>m-2</td><td>variants / fields</td><td>{&quot;symbol&quot;: &quot;m-2&quot;, &quot;variants&quot;: [&quot;m-2&quot;, &quot;m^-2&quot;, &quot;m⁻²&quot;, &quot;1/m2&quot;, &quot;m^{-2}&quot;], &quot;dimension&quot;: &quot;areal_density&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^-2&quot;}</td><td>{&quot;symbol&quot;: &quot;m-2&quot;, &quot;variants&quot;: [&quot;m-2&quot;, &quot;m^-2&quot;, &quot;m⁻²&quot;, &quot;1/m2&quot;, &quot;m^{-2}&quot;, &quot;1 m-2&quot;], &quot;dimension&quot;: &quot;areal_density&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^-2&quot;}</td><td>yim20 yim20:tabu2.r16c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>m-2 s-1 Pa-1</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;m-2 s-1 Pa-1&quot;, &quot;variants&quot;: [&quot;m-2 s-1 Pa-1&quot;, &quot;1/(m2 s Pa)&quot;, &quot;m^-2 s^-1 Pa^-1&quot;], &quot;dimension&quot;: &quot;flux_per_pressure&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^-1 M^-1 T&quot;}</td><td>yim20 yim20:tabu2.r15c0#1; yim20 yim20:tabu2.r15c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>m2</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;m2&quot;, &quot;variants&quot;: [&quot;m2&quot;, &quot;m^2&quot;, &quot;m²&quot;], &quot;dimension&quot;: &quot;area&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^2&quot;}</td><td>yim20 yim20:tabu1.r1c0#1; yim20 yim20:tabu1.r1c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>mL</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;mL&quot;, &quot;variants&quot;: [&quot;mL&quot;, &quot;ml&quot;, &quot;milliliter&quot;, &quot;millilitre&quot;], &quot;dimension&quot;: &quot;volume&quot;, &quot;factor&quot;: 1e-06, &quot;qudt&quot;: &quot;L^3&quot;}</td><td>gor03 gor03:s10.p4#1; gor03 gor03:s10.p4#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>mW</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;mW&quot;, &quot;variants&quot;: [&quot;mW&quot;, &quot;milliwatt&quot;], &quot;dimension&quot;: &quot;power&quot;, &quot;factor&quot;: 0.001, &quot;qudt&quot;: &quot;L^2 M T^-3&quot;}</td><td>mat22 mat22:s5.p15#2; mat22 mat22:s5.p15#2</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>mol m-2 s-1</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;mol m-2 s-1&quot;, &quot;variants&quot;: [&quot;mol m-2 s-1&quot;, &quot;mol/(m2 s)&quot;, &quot;mol m^-2 s^-1&quot;], &quot;dimension&quot;: &quot;molar_flux&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;L^-2 T^-1 N&quot;}</td><td>yim20 yim20:tabu1.r10c0#1; yim20 yim20:tabu1.r10c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>nA</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;nA&quot;, &quot;variants&quot;: [&quot;nA&quot;, &quot;nanoampere&quot;], &quot;dimension&quot;: &quot;current&quot;, &quot;factor&quot;: 1e-09, &quot;qudt&quot;: &quot;I&quot;}</td><td>ela03 ela03:s3.p32#2; ela03 ela03:s3.p32#2</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>nm-1</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;nm-1&quot;, &quot;variants&quot;: [&quot;nm-1&quot;, &quot;nm^-1&quot;, &quot;1/nm&quot;, &quot;nm⁻¹&quot;], &quot;dimension&quot;: &quot;inverse_length&quot;, &quot;factor&quot;: &quot;1.0e9&quot;, &quot;qudt&quot;: &quot;L^-1&quot;}</td><td>ela03 ela03:s5.p17#1; ela03 ela03:s5.p16#6; ela03 ela03:s5.p17#1; ela03 ela03:s5.p16#6</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>ns</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;ns&quot;, &quot;variants&quot;: [&quot;ns&quot;, &quot;nanosecond&quot;, &quot;nanoseconds&quot;], &quot;dimension&quot;: &quot;time&quot;, &quot;factor&quot;: 1e-09, &quot;qudt&quot;: &quot;T&quot;}</td><td>yli18 yli18:s6.p1#2; yli18 yli18:s6.p1#2</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>s m-3</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;s m-3&quot;, &quot;variants&quot;: [&quot;s m-3&quot;, &quot;s/m3&quot;, &quot;s m^-3&quot;], &quot;dimension&quot;: &quot;time_per_volume&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;T L^-3&quot;}</td><td>yim20 yim20:tabu2.r17c0#1; yim20 yim20:tabu2.r18c0#1; yim20 yim20:tabu2.r17c0#1; yim20 yim20:tabu2.r18c0#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>s^-1/2</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;s^-1/2&quot;, &quot;variants&quot;: [&quot;s^-1/2&quot;, &quot;s-1/2&quot;, &quot;s^(-1/2)&quot;, &quot;1/sqrt(s)&quot;], &quot;dimension&quot;: &quot;inverse_sqrt_time&quot;, &quot;factor&quot;: 1.0, &quot;qudt&quot;: &quot;T^-1/2&quot;}</td><td>ela03 ela03:s4.p9#2; ela03 ela03:s5.x1#1; ela03 ela03:s4.p9#2; ela03 ela03:s5.x1#1</td></tr>
+<tr><td>P138</td><td>e894f9e</td><td>units.yaml</td><td>µPa s</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;µPa s&quot;, &quot;variants&quot;: [&quot;µPa s&quot;, &quot;µPa·s&quot;, &quot;uPa s&quot;, &quot;μPa s&quot;], &quot;dimension&quot;: &quot;viscosity&quot;, &quot;factor&quot;: 1e-06, &quot;qudt&quot;: &quot;L^-1 M T^-1&quot;}</td><td>yli18 yli18:s5.p15#1; yli18 yli18:s5.p15#3; yli18 yli18:s5.p15#1; yli18 yli18:s5.p15#3</td></tr>
+<tr><td>P142</td><td>84ce28d</td><td>units.yaml</td><td>L</td><td>variants / fields</td><td>{&quot;symbol&quot;: &quot;L&quot;, &quot;variants&quot;: [&quot;L&quot;, &quot;Langmuir&quot;, &quot;langmuir&quot;, &quot;langmuirs&quot;], &quot;dimension&quot;: &quot;exposure&quot;, &quot;factor&quot;: 0.000133322, &quot;qudt&quot;: &quot;L^-1 M T^-1&quot;}</td><td>{&quot;symbol&quot;: &quot;L&quot;, &quot;variants&quot;: [&quot;L&quot;, &quot;l&quot;, &quot;litre&quot;, &quot;liter&quot;], &quot;dimension&quot;: &quot;volume&quot;, &quot;factor&quot;: 0.001, &quot;qudt&quot;: &quot;L^3&quot;}</td><td></td></tr>
+<tr><td>P142</td><td>84ce28d</td><td>units.yaml</td><td>MPa</td><td>(new unit row)</td><td></td><td>{&quot;symbol&quot;: &quot;MPa&quot;, &quot;variants&quot;: [&quot;MPa&quot;, &quot;megapascal&quot;], &quot;dimension&quot;: &quot;pressure&quot;, &quot;factor&quot;: &quot;1.0e6&quot;, &quot;qudt&quot;: &quot;L^-1 M T^-2&quot;}</td><td></td></tr>
+</table>
+<h2>c. Quantities and categoricals</h2><p>kb/reports/P142_ontology.c_quantities.csv</p>
+<table><tr><th>id</th><th>type</th><th>name</th><th>definition</th><th>unit</th><th>dimension</th><th>aliases</th><th>note</th><th>role</th><th>origin</th><th>replaced_by</th></tr>
+<tr><td>process_mode</td><td>categorical</td><td>process mode</td><td>Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: three types of ALD processes).</td><td></td><td>categorical</td><td>ALDMethod</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>material</td><td>categorical</td><td>material</td><td>The material being deposited; value is a species id.</td><td></td><td>categorical</td><td>MaterialDeposited; Material; Deposited material; Film (process)</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>reactant_A</td><td>categorical</td><td>reactant A</td><td>The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I &#x27;Reactant A&#x27;); value is a species id.</td><td></td><td>categorical</td><td>Precursor; Reactant A; first reactant</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>reactant_B</td><td>categorical</td><td>reactant B</td><td>The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I &#x27;Reactant B&#x27;); value is a species id.</td><td></td><td>categorical</td><td>CoReactant; Reactant B; second reactant</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>carrier_gas</td><td>categorical</td><td>carrier gas</td><td>The inert gas in which the reactants are entrained and which purges the reactor between reactant pulses (Cremers 2019, Sec. II C; Popov 2025, Sec. I); value is a species id.</td><td></td><td>categorical</td><td>CarrierGas; carrier gas</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>reactor</td><td>categorical</td><td>reactor</td><td>Name and manufacturer of the reactor, as one string.</td><td></td><td>categorical</td><td>Reactor</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>delivery_method</td><td>categorical</td><td>delivery method</td><td>Method of delivering the precursor and co-reactant to the reaction chamber.</td><td></td><td>categorical</td><td>DeliveryMethod</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>crystallinity</td><td>categorical</td><td>crystallinity</td><td>Whether the film is amorphous or crystalline.</td><td></td><td>categorical</td><td>Crystallinity</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>reactor_type</td><td>categorical</td><td>reactor</td><td>Reactor class by working pressure regime: pump-type, flow-type or atmospheric-pressure (Cremers 2019, Sec. II C, Fig. 3).</td><td></td><td>categorical</td><td>ALD reactor types</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>plasma_configuration</td><td>categorical</td><td>plasma configuration</td><td>Plasma configuration of a PE-ALD process: capacitive, inductive, remote or radical enhanced (Cremers 2019, Table IV).</td><td></td><td>categorical</td><td>plasma configuration</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>structure</td><td>categorical</td><td>structure</td><td>The test structure or substrate on which conformality is quantified (Cremers 2019, Sec. III, Table I &#x27;Structure&#x27;; Tables II-IV &#x27;Substrate&#x27;); value is a structure id.</td><td></td><td>categorical</td><td>Substrate; Structure; LHAR type</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>temperature</td><td>The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column &#x27;T&#x27;).</td><td>°C</td><td>temperature</td><td>Deposition temperature; substrate temperature; Temperature (°C); T (°C); Temperature (K)</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>process_pressure</td><td>quantity</td><td>pressure</td><td>The total pressure within the reactor during deposition.</td><td>Pa</td><td>pressure</td><td>process pressure; Chamber pressure; Pressure (mbar); total pressure; gas pressure</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>growth_per_cycle</td><td>quantity</td><td>growth per cycle</td><td>The amount of material deposited on the surface after each ALD cycle, here expressed as thickness per cycle (Cremers 2019, Sec. I).</td><td>nm/cycle</td><td>length_per_cycle</td><td>GrowthPerCycle; growth per cycle; GPC; Thickness/cycles S/N (nm); SI/N (GPCI); SIIb/N (GPCIIb); Film growth per cycle</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>nucleation_period</td><td>quantity</td><td>nucleation period</td><td>Number of initial ALD cycles before steady growth, measured in cycles.</td><td>cycle</td><td>count</td><td>nucleationPeriod</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>pulse</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>s</td><td>time</td><td>DosingTime; pulse time; Pulse length (s); Length of the reactant pulse; TMA pulse; plasma pulse length; pulse length; t_1</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>purge_time</td><td>quantity</td><td>purge</td><td>Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I).</td><td>s</td><td>time</td><td>PurgeTime; purge time; Purge; pump time</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>refractive_index</td><td>quantity</td><td>refractive index</td><td>Refractive index of the film.</td><td>1</td><td>dimensionless</td><td>RefractiveIndex</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>absorption_coefficient</td><td>quantity</td><td>absorption coefficient</td><td>Optical absorption coefficient of the film: attenuation of light intensity per unit length.</td><td>1/m</td><td>inverse_length</td><td>AbsorptionCoefficient</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>resistivity</td><td>quantity</td><td>resistivity</td><td>Electrical resistivity of the film.</td><td>Ω·m</td><td>resistivity</td><td>Resistivity</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>carrier_density</td><td>quantity</td><td>carrier concentration</td><td>Number of charge carriers per unit volume of the film.</td><td>1/m3</td><td>number_density</td><td>CarrierDensity; majority carrier (hole) concentration</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>mobility</td><td>quantity</td><td>carrier mobility</td><td>Carrier mobility in the film.</td><td>m2/(V·s)</td><td>mobility</td><td>Mobility; Hall mobility</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>thickness_nonuniformity</td><td>quantity</td><td>nonuniformity</td><td>Relative variation of film thickness between positions along a planar substrate; a uniform film has equal thickness at each position along a planar substrate (Cremers 2019, Sec. II A).</td><td>1</td><td>dimensionless</td><td>Variation</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>aspect_ratio</td><td>quantity</td><td>aspect ratio</td><td>Aspect ratio of the structure, AR = L/w, with L the depth and w the width of the structure (Cremers 2019, Sec. II G, Eq. 11).</td><td>1</td><td>dimensionless</td><td>AspectRatio; aspect ratio; Max. AR; structural aspect ratio; L/d</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>coated_aspect_ratio</td><td>quantity</td><td>coated aspect ratio</td><td>The (equivalent) aspect ratio reached by the coating: equal to that of the structure for complete coverage, otherwise calculated from PD50% (Cremers 2019, Sec. II H; Tables II-IV).</td><td>1</td><td>dimensionless</td><td>coated EAR; coated (E)AR; x̃50%</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>composition</td><td>quantity</td><td>composition</td><td>Atomic fraction of an element in the deposited film.</td><td>1</td><td>dimensionless</td><td>ChemicalComposition</td><td></td><td>output</td><td>base</td><td>element_fraction</td></tr>
+<tr><td>film_density</td><td>quantity</td><td>film density</td><td>Mass density of the film.</td><td>g/cm3</td><td>density</td><td>FilmDensity; film density; Density of the condensed phase; rho</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>partial pressure</td><td>Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3).</td><td>Pa</td><td>pressure</td><td>Partial pressure of reactant A; Input partial pressure of reactant A; Pressure pA (Pa); pA0 (Pa); pO (mbar); Partial pressure of active species; p_A0; p_i; vapour pressure</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>exposure</td><td>quantity</td><td>exposure</td><td>The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D).</td><td>Pa·s</td><td>exposure</td><td>reactant exposure; Pt</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>source_temperature</td><td>quantity</td><td>source temperature</td><td>Temperature at which the precursor source (bubbler, canister) is held (Popov 2025, Sec. IV).</td><td>°C</td><td>temperature</td><td>source temperature</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>thickness</td><td>Thickness of the deposited film at a position; as a function of depth into the structure it is the thickness profile (Cremers 2019, Sec. II H, Fig. 7).</td><td>nm</td><td>length</td><td>Film thickness (nm); Film thickness S (nm); Thickness (nm); film thickness; Thickness outside SI (nm); Initial thickness SIIb (nm); interface layer thickness; onset of steady growth</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>penetration_depth</td><td>quantity</td><td>penetration depth</td><td>The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b).</td><td>µm</td><td>length</td><td>PD50%; x50% (PD50%); Penetration depth xp (µm); Half-thickness penetration depth; 50% thickness penetration depth; x_50% (PD^50%)</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>equivalent_aspect_ratio</td><td>quantity</td><td>equivalent aspect ratio</td><td>The aspect ratio of a hypothetical cylindrical hole that would require the same reactant exposure dose as the feature of interest (Cremers 2019, Sec. II G). Recorded as reported, never computed.</td><td>1</td><td>dimensionless</td><td>EAR; equivalent aspect ratio</td><td></td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>step_coverage</td><td>quantity</td><td>step coverage</td><td>The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a).</td><td>1</td><td>dimensionless</td><td>step coverage; SC</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>initial_sticking_coefficient</td><td>quantity</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td>1</td><td>dimensionless</td><td>initial sticking coefficient; lumped sticking coefficient; cTMA; cH2O; sticking coefficient; c; c_ext</td><td></td><td>model_parameter</td><td>base</td><td></td></tr>
+<tr><td>recombination_probability</td><td>quantity</td><td>recombination probability</td><td>The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII).</td><td>1</td><td>dimensionless</td><td>recombination probability; recombination coefficient</td><td></td><td>model_parameter</td><td>base</td><td></td></tr>
+<tr><td>surface_coverage</td><td>quantity</td><td>surface coverage</td><td>The fraction of covered surface sites, θ (Cremers 2019, Sec. II E, Eqs. 5-9).</td><td>1</td><td>dimensionless</td><td>Surface coverage (θ); Surface coverage; fraction of covered sites</td><td></td><td>output</td><td>base</td><td></td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td>µm</td><td>length</td><td>Design channel height H (nm); Channel height (nm); Height of the channel; H (nm); LHAR H (µm); opening height; channel gap height; minor axis; h; pore diameter (nm); targeted channel height H; Design channel height H; LHAR H; d_pore; channel height; H (channel height)</td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>feature_depth</td><td>quantity</td><td>feature depth</td><td>The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure.</td><td>µm</td><td>length</td><td>L (mm); Length of the channel; Lateral length of the channel (mm); channel length L; lateral length L; l/2; cavity length; channel length; L (channel length)</td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>feature_extent</td><td>quantity</td><td>feature extent</td><td>The length z of the feature along the third dimension, perpendicular to w and L (Cremers 2019, Sec. II G, Fig. 6): channel width of a lateral structure, trench length of a vertical trench.</td><td>µm</td><td>length</td><td>Width of the channel; channel width W; major axis; channel width; W (channel width)</td><td>For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent).</td><td>condition</td><td>base</td><td></td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>cycles</td><td>Number of ALD cycles applied in a deposition.</td><td>cycle</td><td>count</td><td>ALD cycles N; Number of cycles; Cycles; number of ALD cycles; ALD cycles</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>plasma_power</td><td>quantity</td><td>plasma power</td><td>Power delivered to the plasma source during the plasma step (the RF power of Cremers 2019, Sec. IV C).</td><td>W</td><td>power</td><td>plasma power; Power (W); RF power</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>gas_flow_rate</td><td>quantity</td><td>gas flow</td><td>Flow rate of a gas into the reactor.</td><td>sccm</td><td>gas_flow</td><td>Flow (sccm); flow rate; gas flow</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>normalized_thickness</td><td>quantity</td><td>normalized thickness</td><td>Film thickness divided by a reference thickness: the thickness at the feature entrance, on the planar surface, or an assumed saturated thickness.</td><td>1</td><td>dimensionless</td><td>Normalized thickness (-); Normalized deposition thickness; Type 1 normalized saturation profile; normalized thickness</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>adsorption_equilibrium_constant</td><td>quantity</td><td>adsorption equilibrium constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>1/Pa</td><td>inverse_pressure</td><td>Adsorption equilibrium constant; K (Pa-1); Adsorption equilibrium constant (1/Pa)</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td>saturation growth per cycle</td><td>The equilibrium thickness of layer growth in one cycle at saturation, i.e. at high reactant exposure (Ylilammi 2018, Eq. 46); a model parameter, distinct from the observed growth_per_cycle.</td><td>nm/cycle</td><td>length_per_cycle</td><td>Saturation growth in cycle; gpcsat (pm); Saturation growth in cycle (nm)</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>distance</td><td>quantity</td><td>distance from the entrance</td><td>Position along the direction of reactant diffusion, measured from the feature entrance, positive inward and negative outside the feature.</td><td>µm</td><td>length</td><td>Distance inside the channel x (µm); Distance x (µm); Location x (µm); Location (µm); Depth (m); Distance [µm]; Distance from the beginning of the channel</td><td></td><td>coordinate</td><td>extension</td><td></td></tr>
+<tr><td>dimensionless_distance</td><td>quantity</td><td>depth over height</td><td>Distance from the feature entrance divided by the feature width, x/w (Yim 2020: x̃ = x/H).</td><td>1</td><td>dimensionless</td><td>Dimensionless distance x̃; dimensionless distance</td><td></td><td>coordinate</td><td>extension</td><td></td></tr>
+<tr><td>time</td><td>quantity</td><td>time in the pulse</td><td>Time elapsed since the start of a reactant pulse.</td><td>s</td><td>time</td><td>Time (s); time t</td><td></td><td>coordinate</td><td>extension</td><td></td></tr>
+<tr><td>precursor_purity</td><td>quantity</td><td>purity</td><td>Purity of a reagent as supplied, as a percentage (gre23: DEZ min. 95%; mat22: the Mo precursor and the plasma gases).</td><td>%</td><td>dimensionless</td><td>purity; min. 95%; 99.5%</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>plasma_gas_ratio</td><td>quantity</td><td>H2 flow ratio</td><td>The flow of one feed gas of the plasma step over the summed flows of the reactive feed gases (mat22 Eq. 1: the H2 flow ratio H2/(H2 + H2S)); relative_to all_gases divides by the whole feed including the carrier (a transform).</td><td>1</td><td>dimensionless</td><td>H2 flow ratio; H2 ratio</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>cycle_time</td><td>quantity</td><td>cycle time</td><td>The duration of one ALD cycle: the sum of its pulse, hold and purge times.</td><td>s</td><td>time</td><td>cycle time; one full ALD cycle takes</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>substrate</td><td>categorical</td><td>substrate</td><td>The material of the growth surface, a species id (Cremers 2019 Table VII column &#x27;Surface&#x27;; proposal substrate_material accepted in Sec. 18.9); the stack behind it (an oxide on silicon, a foil) stays in the setting&#x27;s statement.</td><td></td><td>categorical</td><td>growth surface</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>mass gain</td><td>Mass gained by a specimen in a deposition, relative to its initial or final mass (the relative_to qualifier), as a percentage.</td><td>%</td><td>dimensionless</td><td>mass gain; Mass gain (%)</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>moles_deposited</td><td>quantity</td><td>moles deposited per run</td><td>Moles of film material deposited in one run, from the deposited moles per cycle times the cycle number (a transform; gre23 mass balance).</td><td>mmol</td><td>amount</td><td>moles deposited</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>moles_from_mass_gain</td><td>quantity</td><td>moles from mass gain</td><td>Moles of film material deposited in one run from the gravimetric mass gain and the material&#x27;s molar mass (a transform; the second route of gre23&#x27;s mass balance).</td><td>mmol</td><td>amount</td><td>moles from mass gain</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>quantity</td><td>solid deposited per cycle</td><td>Moles of solid deposited per ALD cycle, from the pressure trace of the reactant half-reaction (gre23 Δn_s, Eq. 2).</td><td>µmol</td><td>amount</td><td>Δn_s; solid deposited per cycle</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>atoms_per_cycle</td><td>quantity</td><td>metal atoms per cycle</td><td>Metal atoms deposited per unit area per cycle, the amount-based growth per cycle (Cremers 2019 Sec. I allows the GPC as an areal density; proposal mass-based growth per cycle accepted in Sec. 18.9); from the thickness GPC and the film density, or from a pressure trace.</td><td>nm-2</td><td>areal_density</td><td>atoms per cycle; metal atoms per cycle; Mo atoms deposited per cycle</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>coating_mass_fraction</td><td>quantity</td><td>coating mass fraction</td><td>The coating&#x27;s share of the coated specimen&#x27;s mass: mass gain / (1 + mass gain) with the gain relative to the initial mass (a transform; not a phase fraction).</td><td>%</td><td>dimensionless</td><td>coating mass fraction</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>shell_volume_fraction</td><td>quantity</td><td>coating volume fraction</td><td>The coating&#x27;s share of a porous compact&#x27;s volume for spherical particles of the stated diameter and coating thickness (a transform).</td><td>%</td><td>dimensionless</td><td>coating volume fraction</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>deposition_rate</td><td>quantity</td><td>thickness per hour</td><td>Film thickness grown per hour: the growth per cycle over the cycle time (a transform).</td><td>nm/h</td><td>length_per_time</td><td>deposition rate; thickness per hour</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>gas_moles_per_cycle</td><td>quantity</td><td>gas released per cycle</td><td>Moles of gas released per ALD cycle in a half-reaction, from the pressure rise in a closed chamber (gre23 Δn_g, Eq. 1).</td><td>µmol</td><td>amount</td><td>Δn_g; gas released per cycle</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>gas-to-solid ratio</td><td>Moles of gas released per mole of solid deposited in a half-reaction: the gas-to-solid ratio ȳ of gre23 (x ligands released per precursor).</td><td>1</td><td>dimensionless</td><td>ȳ; gas-to-solid ratio; x; ȳ (printed ν̄ in the text layer)</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>pressure rise</td><td>The rise of chamber pressure during a reactant hold in a closed chamber, δp of gre23; with level maximum its peak value.</td><td>Torr</td><td>pressure</td><td>δp; pressure rise; δp_max; δp maximum</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td>terminal pressure slope</td><td>The slope of the chamber pressure at the end of a reactant hold, the terminal slope TS of gre23: positive for gas-producing processes, negative when leaks dominate.</td><td>mTorr/min</td><td>pressure_per_time</td><td>TS; terminal slope; terminal pressure slope</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>time to pressure maximum</td><td>The time from the start of a reactant hold to the pressure maximum, t_max of gre23.</td><td>min</td><td>time</td><td>t_max; time to pressure maximum; time to δp maximum</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>porosity</td><td>quantity</td><td>porosity</td><td>The pore volume fraction of a porous body, before (stage initial) or after (stage final) the deposition, relative to the total volume.</td><td>%</td><td>dimensionless</td><td>porosity; φ_i; φ_f; Final porosity, φ_f (%)</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>pore_density</td><td>quantity</td><td>pore density</td><td>The number of pores per unit area of a porous membrane&#x27;s surface.</td><td>cm-2</td><td>areal_density</td><td>pore density; pores per cm2</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>tortuosity</td><td>quantity</td><td>tortuosity</td><td>The ratio of the path length through a porous body&#x27;s pores to the straight distance, a factor on its effective diffusivity.</td><td>1</td><td>dimensionless</td><td>tortuosity; τ</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>pore_volume</td><td>quantity</td><td>pore volume</td><td>The volume of the open pores of a porous material per unit mass.</td><td>cm3/g</td><td>volume_per_mass</td><td>pore volume; V_p</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>fill_fraction</td><td>quantity</td><td>channel filled</td><td>The share of a channel&#x27;s height filled by the film on its two walls at the end of a run (yim20: 2 S_IIb / H).</td><td>%</td><td>dimensionless</td><td>channel filled; coated length fraction</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>roughness</td><td>quantity</td><td>roughness</td><td>Root-mean-square surface roughness of the film from AFM (mat22 Rq).</td><td>nm</td><td>length</td><td>Rq; roughness; RMS roughness; root-mean-square roughness</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>binding_energy</td><td>quantity</td><td>binding energy</td><td>The binding energy of an XPS core-level component of the film, which names its chemical state.</td><td>eV</td><td>energy</td><td>BE; binding energy; Mo 3d5/2 BE; S 2p3/2 BE; BE shift below S2-; Ga 2p3/2; S 2s</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>crystallite size</td><td>The coherent crystallite size of a phase from the width of its diffraction peaks (gre23, Rietveld) or from microscopy (mat22).</td><td>nm</td><td>length</td><td>crystallite size; grain size; nanocrystallite width; corundum grain size; ZnO (zincite) Crystallite size (nm); Zn (metallic) Crystallite size (nm)</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>sheet_resistance</td><td>quantity</td><td>sheet resistance</td><td>Resistivity over film thickness, the resistance of a square of the film (a transform; mat22 measures it by four-point probe and reports resistivity).</td><td>Ω/sq</td><td>resistance</td><td>sheet resistance; R_sheet</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>density_relative_to_bulk</td><td>quantity</td><td>density relative to bulk</td><td>The film&#x27;s mass density over the bulk density of the same material, as a percentage (a transform).</td><td>%</td><td>dimensionless</td><td>ρ/ρ_bulk; density relative to bulk</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>phase</td><td>categorical</td><td>phase</td><td>Whether a named phase (the species qualifier) was detected in the film by the stated method: detected or not detected (P15).</td><td></td><td>categorical</td><td>phase</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>annealing_temperature</td><td>quantity</td><td>anneal temperature</td><td>The temperature of a post-deposition anneal (one pilot paper; Sec. 7 keeps it native, so stored as an attribute until a second paper needs it).</td><td>°C</td><td>temperature</td><td>annealing temperature; T_anneal; annealing temperature in air</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>saturation_density</td><td>quantity</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td>nm-2</td><td>areal_density</td><td>q; saturation density; q_sat; S_Hf; S_O; Γ; σ</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>probe_resolution</td><td>quantity</td><td>probe spot</td><td>The lateral size of a measurement probe: the reflectometer spot (yim20) or the EDS line width (gre23) (an instrument setting, Sec. 4).</td><td>µm</td><td>length</td><td>spot size; spot</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>objective_magnification</td><td>quantity</td><td>objective</td><td>The magnification of the reflectometer objective (yim20 ×5, ×10, ×50) (an instrument setting, Sec. 4).</td><td>1</td><td>dimensionless</td><td>objective; magnification; Reflectometer magnification</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>pillar_layout</td><td>categorical</td><td>pillar layout</td><td>The named pillar layout of a PillarHall chip design (yim20 v1a, v1b, v2a) (an equipment detail, Sec. 4).</td><td></td><td>categorical</td><td>pillar layout</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>raman_shift</td><td>quantity</td><td>Raman shift</td><td>The abscissa of a Raman spectrum (a signal axis, Sec. 4).</td><td>cm-1</td><td>wavenumber</td><td>Raman shift; Raman shift (cm-1)</td><td></td><td>coordinate</td><td>extension</td><td></td></tr>
+<tr><td>knudsen_number</td><td>quantity</td><td>Knudsen number</td><td>The mean free path of the reactant over the characteristic size of the feature (the channel height, the pore or particle diameter): Kn &gt;&gt; 1 is Knudsen (free-molecular) flow (Cremers 2019 Sec. V C; yim20 Sec. D). Promoted from &#x27;derived dimensionless groups&#x27; (Sec. 4) by decision D2.</td><td>1</td><td>dimensionless</td><td>Knudsen number; Kn</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>mean_free_path</td><td>quantity</td><td>mean free path</td><td>The mean free path of a reactant molecule in the gas at the deposition temperature and its partial pressure, k_B T / (sqrt(2) pi d^2 p) (yim20 Sec. D). Promoted from &#x27;molecule properties&#x27; (Sec. 4) by decision D2.</td><td>µm</td><td>length</td><td>mean free path; λ</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>front_slope</td><td>quantity</td><td>front slope</td><td>The slope of a saturation profile at its half-thickness point, as thickness per cycle or as normalized thickness per unit of dimensionless distance (yim20 Table 1); an attribute of a profile, stored as data, not a concept (Sec. 18.7).</td><td>1</td><td>dimensionless</td><td>Slope dθ/dx̃; Slope d(S/N)/dx̃; front slope</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>fit_r2</td><td>quantity</td><td>fit R²</td><td>The coefficient of determination of a fit (yim20 Table 1, the linear fit of the front); fit quality, an attribute of a value, not a concept (Sec. 18.7).</td><td>1</td><td>dimensionless</td><td>R2; R²; Linear fitting residual R2; Linear fitting residual R^2</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>signal</td><td>A detector signal against position or energy (an EDS, Raman, XPS or X-ray count or an arbitrary-unit intensity); a signal without a quantity (Sec. 4), stored as the trace it is, not a concept (Sec. 18.7).</td><td></td><td>signal</td><td>Intensity; a.u.; counts; Intensity (Arb. units); Intensity (Normalized to Si); Intensity [a.u.]; Normalized X-ray counts (Zn)</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>element_fraction</td><td>quantity</td><td>element fraction</td><td>The atomic fraction of an element among all atoms of the film counted by the stated method, in at.% (the former composition entry, Sec. 18.3).</td><td>at.%</td><td>dimensionless</td><td>at.%; at. %; atomic percent; H content; O content; N content; C content; H (at. %); C (at. %); N (at. %); O (at. %); C after sputtering; O after sputtering</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>element ratio</td><td>Atoms of an element per atom of a reference element in the film, as the stated method sees it (mat22&#x27;s S/Mo stoichiometry x in MoSx; H per metal atom), a unitless ratio (Sec. 18.3; absorbs h_per_metal).</td><td>1</td><td>dimensionless</td><td>S/Mo; S/W; S/Mo ratio; stoichiometry; S/Mo ratio (RBS); S/Mo ratio (XPS); XPS S/Mo ratio</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>phase fraction</td><td>The weight fraction of a named phase (the phase qualifier) among the phases the stated method sees, in wt%; by XRD Rietveld refinement only the crystalline part is counted (relative_to crystalline_phases), which gre23 does not state (not_stated) (Sec. 18.3).</td><td>wt%</td><td>dimensionless</td><td>wt%; Wt. %; weight percent; ZnO (zincite) Wt. %</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>h_per_metal</td><td>quantity</td><td>H per metal atom</td><td>Hydrogen atoms per metal atom of the film, computed from the H at.% and the S/Mo ratio (the pilot&#x27;s derived quantity); absorbed into element_ratio{element=H, reference_element=the metal} (Sec. 18.3).</td><td>1</td><td>dimensionless</td><td></td><td></td><td>output</td><td>extension</td><td>element_ratio</td></tr>
+<tr><td>body_thickness</td><td>quantity</td><td>body thickness</td><td>The full thickness of a porous body or membrane between its faces; with two entry sides it is twice the diffusion length L, the depth Cremers measures from the entrance (Cremers 2019 Sec. II G; gre23 Sec. II A: the NPC thickness 2L, L half of it since precursor enters through both faces). Slot of the porous_body class; transform body_thickness = feature_depth × entry_sides.</td><td>mm</td><td>length</td><td>body thickness; compact thickness; NPC thickness; membrane thickness; film thickness (µm)</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>entry sides</td><td>Through how many faces of a porous body the reactant enters: one (a body sealed on one side, a feature closed at the bottom) or two (a free-standing compact or membrane open on both faces); the diffusion length L is the body thickness divided by this count (gre23 Sec. II A: L is half the NPC thickness since precursor enters through both the top and the bottom face; Cremers 2019 Sec. II G: L measured from the entrance along the diffusion). Slot of the porous_body class.</td><td></td><td>categorical</td><td>entry faces; number of entry sides; faces open to the reactant</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>particle diameter</td><td>The diameter of the particles of a particle compact or bed; the pores between them have about this size, so it stands in for the pore diameter w (Cremers 2019 Sec. II G: the smallest opening; gre23 Sec. II A: d_NP = 100 nm from the powder&#x27;s specific surface area). Slot of the porous_body class.</td><td>nm</td><td>length</td><td>particle diameter; NP diameter; nanoparticle diameter; d_NP</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>specific surface area</td><td>The surface area of a powder or porous body per unit mass, as measured by gas adsorption (BET); with the material density it gives the particle diameter (gre23 Sec. II A: s = 15 m2/g, the maker&#x27;s BET specification of the BMA15 powder). Slot of the porous_body class.</td><td>m2/g</td><td>area_per_mass</td><td>specific surface area; BET area; BET specific surface area; surface area per mass</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>body_diameter</td><td>quantity</td><td>body diameter</td><td>The lateral size of a porous body perpendicular to the diffusion direction: the diameter of a compact or a die (gre23 Sec. II A: pressed in an 11.4 mm die, final NPC diameter 11.43 mm by calipers). Slot of the porous_body class.</td><td>mm</td><td>length</td><td>body diameter; compact diameter; die diameter; NPC diameter; membrane diameter; diameter</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>diffraction_angle</td><td>quantity</td><td>diffraction angle</td><td>The diffraction angle 2θ of an X-ray diffractogram: the abscissa of a diffraction pattern, on which the peaks of a phase are read as printed (P84: a peak coordinate).</td><td>°</td><td>angle</td><td>2θ (deg.); 2θ (°); diffraction angle; 2theta</td><td></td><td>coordinate</td><td>extension</td><td></td></tr>
+<tr><td>molar_mass</td><td>quantity</td><td>molar mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>g/mol</td><td>molar_mass</td><td>M_A; M_B; MA; molar mass; reactant molar mass; molar mass of reactant A</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>molecule_diameter</td><td>quantity</td><td>molecule diameter</td><td>The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density).</td><td>pm</td><td>length</td><td>d_B; molecular diameter; diameter of molecule A; d_TMA; d_TiCl4</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>knudsen diffusion coefficient</td><td>The Knudsen diffusion coefficient D_Kn of the reactant in a feature or pore: wall collisions alone set it, D_Kn = (d_h/3)(8RT/(πM))^1/2 with the hydraulic diameter d_h and the molar mass M; a model parameter of the diffusion-reaction models, varied through the pressure and the geometry.</td><td>m2/s</td><td>diffusivity</td><td>D_Kn; DKn; Knudsen diffusion coefficient</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>effective_diffusion_coefficient</td><td>quantity</td><td>effective diffusion coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.</td><td>m2/s</td><td>diffusivity</td><td>D_eff; Deff; D_e; De; effective diffusion coefficient</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>gas phase diffusion coefficient</td><td>The gas-phase (molecular, bulk) diffusion coefficient D_A of the reactant in the carrier gas, set by intermolecular collisions and so by the total pressure; the continuum limit of the Bosanquet interpolation; a model parameter of the diffusion-reaction models.</td><td>m2/s</td><td>diffusivity</td><td>D_mi; Dmi; gas-phase diffusion coefficient; molecular diffusion coefficient</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>reactant_number_density</td><td>quantity</td><td>reactant number density</td><td>The number of reactant molecules per unit gas volume n (n_P0 at the surface of a porous body), the concentration variable of Heikkinen 2024&#x27;s diffusion-reaction equation; a model output along the depth and a model input at the surface. Converts to the partial pressure by the ideal gas law p = n·k_B·T given the temperature (P109).</td><td>1/m3</td><td>number_density</td><td>n_P; n_P0; reactant number density; volumetric reactant number density; number density of the reactant</td><td></td><td>output</td><td>extension</td><td></td></tr>
+<tr><td>b_film</td><td>quantity</td><td>metal atoms per film formula unit</td><td>b_film is the number of metal atoms in the formula unit of the deposited film</td><td></td><td>dimensionless</td><td>b_film</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+<tr><td>wall_temperature</td><td>quantity</td><td>reactor wall temperature</td><td>temperature at which the reactor or chamber walls are held during deposition, as distinct from the substrate or table temperature</td><td>°C</td><td>temperature</td><td>wall temperature</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>wavelength_range</td><td>quantity</td><td>measurement wavelength range</td><td>wavelength interval covered by an optical measurement (reflectometry, transmittance)</td><td>nm</td><td>length</td><td>wavelength range</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>base_pressure</td><td>quantity</td><td>reactor base pressure</td><td>lowest pressure the pumped reactor reaches with no gas flowing (ultimate vacuum), stated before deposition</td><td>Torr</td><td>pressure</td><td>base pressure</td><td></td><td>condition</td><td>extension</td><td></td></tr>
+<tr><td>p_d</td><td>quantity</td><td>desorption probability (per unit time)</td><td>desorption probability, P_d</td><td>1/s</td><td>inverse_time</td><td>P_d</td><td></td><td>model_parameter</td><td>extension</td><td></td></tr>
+</table>
+<h2>c. Species and materials</h2><p>kb/reports/P142_ontology.c_species.csv</p>
+<table><tr><th>id</th><th>formula</th><th>name</th><th>kind</th><th>aliases</th><th>definition</th></tr>
+<tr><td>tma</td><td>Al(CH3)3</td><td></td><td>molecule</td><td>TMA; trimethylaluminum; trimethylaluminium; Al(CH3)3; AlMe3; Me3Al; (CH3)3Al</td><td>Trimethylaluminum, the aluminum reactant of the Al2O3 processes in the gold papers.</td></tr>
+<tr><td>model_reactant</td><td></td><td></td><td>molecule</td><td>model reactant; reactant A (model)</td><td>A pseudo-species: the generic reactant of a simulation that names no molecule (P138).</td></tr>
+<tr><td>ticl4</td><td>TiCl4</td><td></td><td>molecule</td><td>TiCl4; titanium tetrachloride; titanium(IV) chloride</td><td>Titanium tetrachloride, the titanium reactant of the TiO2 process in Ylilammi 2018.</td></tr>
+<tr><td>h2o</td><td>H2O</td><td></td><td>molecule</td><td>H2O; water; water vapor</td><td>Water, the second reactant of the thermal processes in the gold papers.</td></tr>
+<tr><td>o2</td><td>O2</td><td></td><td>molecule</td><td>O2; oxygen; molecular oxygen</td><td>Molecular oxygen; with process_mode = plasma it is the plasma gas of the TMA/O2 plasma process.</td></tr>
+<tr><td>o_atom</td><td>O</td><td></td><td>atom</td><td>atomic O; oxygen radicals; atomic oxygen; O radicals; O atoms</td><td>Atomic oxygen, the active plasma species to which the fitted partial pressure is attributed.</td></tr>
+<tr><td>n2</td><td>N2</td><td></td><td>molecule</td><td>N2; nitrogen; molecular nitrogen</td><td>Nitrogen, used as carrier and purge gas.</td></tr>
+<tr><td>al2o3</td><td>Al2O3</td><td></td><td>material</td><td>Al2O3; alumina; aluminum oxide; aluminium oxide</td><td>Aluminum oxide film.</td></tr>
+<tr><td>tio2</td><td>TiO2</td><td></td><td>material</td><td>TiO2; titania; titanium dioxide; titanium oxide; titanium(IV) oxide</td><td>Titanium dioxide film.</td></tr>
+<tr><td>mo_ntbu2_nme22</td><td>Mo(NtBu)2(NMe2)2</td><td></td><td>molecule</td><td>Mo(NtBu)2(NMe2)2; (NtBu)2(NMe2)2Mo; bis(tert-butylimido)bis(dimethylamido)molybdenum</td><td>Bis(tert-butylimido)bis(dimethylamido)molybdenum(VI), the molybdenum reactant of the MoS2 plasma process of mat22 (Popov 2025 Table I writes it Mo(NtBu)2(NMe2)2; ligand class amides/imides, Popov Fig. 8).</td></tr>
+<tr><td>w_ntbu2_nme22</td><td>W(NtBu)2(NMe2)2</td><td></td><td>molecule</td><td>W(tBuN)2(Me2N)2; (tBuN)2(Me2N)2W; W(NtBu)2(NMe2)2; bis(tert-butylimido)bis(dimethylamido)tungsten</td><td>Bis(tert-butylimido)bis(dimethylamido)tungsten(VI), the tungsten reactant of the WS2 plasma process mat22 reproduces from its ref. 52 (Popov 2025 Table I writes it W(tBuN)2(Me2N)2; ligand class amides/imides, Popov Fig. 8).</td></tr>
+<tr><td>tdmat</td><td>Ti(NMe2)4</td><td></td><td>molecule</td><td>TDMAT; Ti(NMe2)4; tetrakis(dimethylamido)titanium</td><td>Tetrakis(dimethylamido)titanium(IV), the titanium reactant of the TiS2 processes mat22 reproduces from its refs. 53 and 80 (ligand class amides/imides, Popov 2025 Fig. 8).</td></tr>
+<tr><td>dez</td><td>Zn(C2H5)2</td><td></td><td>molecule</td><td>DEZ; diethylzinc; ZnEt2; Zn(C2H5)2; Et2Zn</td><td>Diethylzinc, the zinc reactant of the ZnO process of gre23 (Popov 2025 Table I writes it ZnEt2; ligand class alkyls, Popov Fig. 8).</td></tr>
+<tr><td>h2s</td><td>H2S</td><td></td><td>molecule</td><td>H2S; hydrogen sulfide; hydrogen sulphide</td><td>Hydrogen sulfide, the sulfur source of the metal sulfide processes of mat22 (in the H2S/H2/Ar plasma feed, or the thermal co-reactant).</td></tr>
+<tr><td>h2</td><td>H2</td><td></td><td>molecule</td><td>H2; hydrogen; molecular hydrogen</td><td>Molecular hydrogen, added to the plasma feed of mat22; its share of the H2S + H2 flow is the H2 flow ratio.</td></tr>
+<tr><td>ar</td><td>Ar</td><td></td><td>molecule</td><td>argon</td><td>Argon, carrier and purge gas of mat22 and part of its plasma feed.</td></tr>
+<tr><td>air</td><td>air</td><td></td><td>molecule</td><td>air; ambient air</td><td>Ambient air, the atmosphere in which mat22 annealed films (a gas mixture, kept as one species for the gas qualifier).</td></tr>
+<tr><td>mos2</td><td>MoS2</td><td></td><td>material</td><td>MoS2; MoSx; molybdenum disulfide; molybdenum sulfide; molybdenum disulphide</td><td>Molybdenum disulfide film; the MoSx films of mat22 with their stoichiometry given by element_ratio.</td></tr>
+<tr><td>ws2</td><td>WS2</td><td></td><td>material</td><td>WS2; tungsten disulfide; tungsten sulfide; tungsten disulphide</td><td>Tungsten disulfide film.</td></tr>
+<tr><td>tis2</td><td>TiS2</td><td></td><td>material</td><td>TiS2; titanium disulfide; titanium sulfide; titanium disulphide</td><td>Titanium disulfide film.</td></tr>
+<tr><td>zno</td><td>ZnO</td><td></td><td>material</td><td>ZnO; zincite; zinc oxide</td><td>Zinc oxide film (zincite).</td></tr>
+<tr><td>mo</td><td>Mo</td><td></td><td>material</td><td>metallic Mo; Mo metal; molybdenum metal; metallic molybdenum</td><td>Metallic molybdenum, a phase found by XPS in the highest-ratio films of mat22.</td></tr>
+<tr><td>zn</td><td>Zn</td><td></td><td>material</td><td>metallic Zn; Zn metal; zinc metal; metallic zinc</td><td>Metallic zinc, a phase found by XRD in the 160 °C compact of gre23.</td></tr>
+<tr><td>moo3</td><td>MoO3</td><td></td><td>material</td><td>MoO3; molybdenum trioxide; molybdenum oxide</td><td>Molybdenum trioxide, the Mo6+ oxide seen by XPS on air-exposed MoSx films of mat22.</td></tr>
+<tr><td>si</td><td>Si</td><td></td><td>material</td><td>Si; silicon; Si(100); silicon wafer; polysilicon</td><td>Silicon: the growth surface of native-oxide silicon wafers and of the all-silicon PillarHall chips of yim20.</td></tr>
+<tr><td>sio2</td><td>SiO2</td><td></td><td>material</td><td>SiO2; silicon dioxide; thermal SiO2; fused SiO2; silica; SiO2/Si</td><td>Silicon dioxide: thermal oxide on silicon wafers or fused silica, the growth surface of most mat22 films.</td></tr>
+<tr><td>glassy_carbon</td><td>C</td><td></td><td>material</td><td>glassy carbon; glassy-carbon</td><td>Glassy carbon, the substrate of the mat22 films measured by RBS and ERD (Table 1).</td></tr>
+<tr><td>pet</td><td>PET</td><td></td><td>material</td><td>PET; poly(ethylene terephthalate); Melinex ST504; PET foil; PET substrate</td><td>Poly(ethylene terephthalate) foil (Melinex ST504), the plastic substrate of the mat22 film of Fig. 1d; a polymer outside Popov&#x27;s material classes.</td></tr>
+<tr><td>sicl4</td><td>SiCl4</td><td>sicl4</td><td>molecule</td><td>SiCl4</td><td>Silicon tetrachloride SiCl4, the silicon precursor of SiO2 ALD with water (formula SiCl4; aliases SiCl4, silicon tetrachloride).</td></tr>
+<tr><td>hfo2</td><td>HfO2</td><td>hfo2</td><td>material</td><td>HfO2; hafnium dioxide; hafnium oxide; hafnia</td><td>Hafnium dioxide HfO2, the film of hafnium amide / water ALD (formula HfO2; aliases HfO2, hafnium dioxide, hafnium oxide, hafnia).</td></tr>
+<tr><td>hf_nme2_4</td><td>Hf(NMe2)4</td><td>hf nme2 4</td><td>molecule</td><td>Hf(NMe2)4; TDMAH; hafnium dimethylamide; tetrakis(dimethylamido)hafnium; hafnium dialkylamide</td><td>Tetrakis(dimethylamido)hafnium Hf(NMe2)4, the hafnium precursor of HfO2 ALD with water (formula Hf(N(CH3)2)4; aliases TDMAH, hafnium dimethylamide).</td></tr>
+<tr><td>bdeas</td><td>BDEAS</td><td>bdeas</td><td>molecule</td><td>BDEAS; SiH2(N(C2H5)2)2; SiH2(NEt2)2; bis(diethylamino)silane</td><td>Bis(diethylamino)silane SiH2(N(C2H5)2)2 (BDEAS), the silicon precursor of plasma ALD SiO2 (formula SiH2(NEt2)2; aliases BDEAS, bis(diethylamino)silane).</td></tr>
+<tr><td>tdmacph</td><td>TDMACpH</td><td>tdmacph</td><td>molecule</td><td>TDMACpH; HfCp(N(CH3)2)3; HfCp(NMe2)3</td><td>HfCp(N(CH3)2)3 (TDMACpH), cyclopentadienyl-tris(dimethylamido)hafnium, the hafnium precursor of plasma ALD HfO2 (formula HfCp(NMe2)3; aliases TDMACpH).</td></tr>
+<tr><td>ga2s3</td><td>Ga2S3</td><td>ga2s3</td><td>material</td><td>Ga2S3; gallium sulfide; gallium(III) sulfide</td><td>Gallium(III) sulfide Ga2S3, the film of the PE-ALD process of Mathew 2023 (crystalline, cubic, (111)-oriented); formula Ga2S3.</td></tr>
+<tr><td>gasx</td><td>GaSx</td><td>gasx</td><td>material</td><td>GaSx; amorphous gallium sulfide</td><td>Amorphous, sulfur-deficient gallium sulfide GaSx (S/Ga about 0.5 to 1.2), the film of the thermal Ga2(NMe2)6/H2S ALD process (Meng 2014; Mathew 2023); formula GaSx.</td></tr>
+<tr><td>ga2_nme2_6</td><td>Ga2(NMe2)6</td><td>ga2 nme2 6</td><td>molecule</td><td>Ga2(NMe2)6; hexakis(dimethylamido)digallium; hexakis(dimethyl amido)digallium</td><td>Hexakis(dimethylamido)digallium Ga2(NMe2)6, the gallium precursor of the thermal and plasma-enhanced gallium sulfide ALD processes (formula Ga2(N(CH3)2)6).</td></tr>
+<tr><td>mocl2o2</td><td>MoCl2O2</td><td>mocl2o2</td><td>molecule</td><td>MoCl2O2; molybdenum dichloride dioxide; Mo-oxychloride</td><td>Molybdenum dichloride dioxide MoCl2O2, the molybdenum precursor of the hot-wire-assisted Mo ALD process (formula MoCl2O2, solid, vessel at 75 degrees C).</td></tr>
+<tr><td>h_atom</td><td>atomic hydrogen</td><td>h atom</td><td>molecule</td><td>atomic hydrogen; hydrogen atoms</td><td>Atomic hydrogen (at-H), the reducing coreactant made by dissociating H2 on a heated tungsten filament (hot-wire ALD); formula H.</td></tr>
+</table>
+<h2>c. Structures</h2><p>kb/reports/P142_ontology.c_structures.csv</p>
+<table><tr><th>id</th><th>class</th><th>aliases</th><th>definition</th></tr>
+<tr><td>pillarhall_3</td><td>lateral_channel</td><td>PillarHall-3; PillarHall prototype 3; Microscopic rectangular PillarHall-3; PillarHall 3rd generation</td><td>Microscopic all-silicon lateral high-aspect-ratio channel under a polysilicon membrane supported by pillars, PillarHall 3rd generation prototype (Yim 2020, Sec. C.A; Ylilammi 2018, Sec. I).</td></tr>
+<tr><td>macroscopic_lateral_trench</td><td>lateral_channel</td><td>macroscopic, lateral trench; macroscopic test structures</td><td>Macroscopic lateral rectangular hole made by stacking two pieces of Si with a spacer in between (Werbrouck 2021, Fig. 3).</td></tr>
+<tr><td>planar</td><td>planar</td><td>planar substrate; planar</td><td>Planar substrate without a 3D feature.</td></tr>
+<tr><td>porous_sphere</td><td>porous_body</td><td>porous sphere; sphere</td><td>A porous body of spherical shape, the reactant entering through its whole surface (a model geometry).</td></tr>
+<tr><td>porous_slab</td><td>porous_body</td><td>porous slab; slab</td><td>A porous body of slab shape, the reactant entering through its two faces (a model geometry).</td></tr>
+<tr><td>porous_cylinder</td><td>porous_body</td><td>porous cylinder; cylinder</td><td>A porous body of cylindrical shape, the reactant entering through its curved surface (a model geometry).</td></tr>
+<tr><td>nanoparticle_compact</td><td>nanoparticle_compact</td><td>nanoparticle compact; NPC; Al2O3 nanoparticle compact; nanoparticle compacts; NPCs</td><td>A pressed compact of Al2O3 nanoparticles (NPC): a macroscopic porous body whose pores the reactants enter from both faces (gre23, Sec. II A, Fig. 1).</td></tr>
+<tr><td>anodic_alumina_membrane</td><td>nanopore_membrane</td><td></td><td>A free-standing anodic alumina (AA) membrane: a hexagonal close-packed array of uniform cylindrical nanopores open on both faces, made by anodizing aluminium.</td></tr>
+<tr><td>etched_hole_array</td><td>via_hole</td><td>etched holes; elliptical holes</td><td>An array of elliptical holes etched into a silicon wafer (0.17 by 0.30 µm, 7.3 µm deep), the step-coverage test structure of Gordon 2003.</td></tr>
+<tr><td>pillarhall_1</td><td>lateral_channel</td><td>microscopic LHAR; LHAR test structure; microscopic LHAR structure; PillarHall prototype 1</td><td>The first microscopic silicon lateral high-aspect-ratio (LHAR) test structure: a lateral cavity 200-1000 nm high and 20-5000 um long inside silicon under a polysilicon membrane on oxide pillars, with a central port; the PillarHall prototype 1 of Gao 2015.</td></tr>
+<tr><td>pillarhall_4</td><td>lateral_channel</td><td>PillarHall-4; PillarHall LHAR generation 4; LHAR4; LHAR4-ADVANCED; PillarHall 4th generation</td><td>PillarHall LHAR generation 4 (LHAR4): the microscopic lateral high-aspect-ratio channel under a polysilicon membrane on silicon pillars, 500 nm nominal gap, with a larger pillar spacing than generation 3; variants LHAR4-ADVANCED trench W90 L1020 and the LHAR4 small chip (vS1, vS2).</td></tr>
+<tr><td>si_trench_capped</td><td>trench</td><td>SiO2-capped Si trench; HAR trench; narrow trench; Si trenches</td><td>Vertical trenches etched in silicon with an SiO2 capping layer on which the film grows, aspect ratios 2:1 to 10:1, the conformality test structure of van der Zouw 2023.</td></tr>
+</table>
+<h2>c. Methods (vocab; ontology_entry marks the 8 that are ontology entries)</h2><p>kb/reports/P142_ontology.c_methods.csv</p>
+<table><tr><th>id</th><th>class</th><th>definition</th><th>measurement</th><th>ontology_entry</th></tr>
+<tr><td>afm</td><td>afm</td><td>Atomic force microscopy: topography and roughness.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>calculation</td><td>calculation</td><td>A value computed from other values (not a measurement).</td><td></td><td></td></tr>
+<tr><td>cited</td><td>cited</td><td>A value taken from another work (not a measurement).</td><td></td><td></td></tr>
+<tr><td>epma</td><td>eds</td><td>Electron probe microanalysis: an electron microprobe&#x27;s X-ray elemental maps and line scans across a polished cross section (comparable in kind with SEM-EDS line scans: class eds).</td><td></td><td>yes</td></tr>
+<tr><td>eqp</td><td>plasma_spectroscopy</td><td>Electrostatic quadrupole plasma analyser: ion energies and masses in the plasma.</td><td></td><td></td></tr>
+<tr><td>four_point_probe</td><td>four_point_probe</td><td>Four-point probe sheet resistance of a film, turned into resistivity with the film thickness (in-plane).</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>ftir</td><td>ir_spectroscopy</td><td>Transmission Fourier transform infrared absorption of surface species on a porous sample during the half-reactions (in situ).</td><td></td><td>yes</td></tr>
+<tr><td>giwaxs</td><td>xrd</td><td>Grazing-incidence wide-angle X-ray scattering: a 2D diffraction pattern of a thin film at grazing incidence (synchrotron), azimuthally integrated to a 1D XRD profile; phases, texture (preferred orientation) and crystallite size.</td><td></td><td>yes</td></tr>
+<tr><td>gravimetry</td><td>gravimetry</td><td>Weighing before and after deposition.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>hall</td><td>hall</td><td>Hall measurement in the van der Pauw geometry: carrier density and mobility.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>infrared_microscopy</td><td>optical_image</td><td>Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is transparent in the infrared).</td><td></td><td>yes</td></tr>
+<tr><td>oes</td><td>plasma_spectroscopy</td><td>Optical emission spectroscopy of the plasma.</td><td>yes (in_situ)</td><td></td></tr>
+<tr><td>optical_microscopy</td><td>optical_image</td><td>Optical microscope images.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>photograph</td><td>optical_image</td><td>A photograph of the specimen.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>process_monitor</td><td>process_monitor</td><td>The reactor&#x27;s own gauges and thermocouples: pressure and temperature traces during the process.</td><td>yes (in_situ)</td><td></td></tr>
+<tr><td>raman</td><td>raman</td><td>Raman spectroscopy: phonon modes, used for crystallinity and phase.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>rbs</td><td>ion_beam</td><td>Rutherford backscattering spectrometry (with elastic recoil detection for H): areal atomic densities and composition.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>reflectometry</td><td>optical_thickness</td><td>Spectroscopic reflectometry: film thickness from the reflectance spectrum at a spot.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>schematic</td><td>schematic</td><td>A drawing: a value or statement read from a schematic (not a measurement).</td><td></td><td></td></tr>
+<tr><td>sem</td><td>electron_image</td><td>Scanning electron microscopy images.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>sem_eds</td><td>eds</td><td>Energy-dispersive X-ray spectroscopy in a scanning electron microscope: elemental maps and line scans.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>sims</td><td>sims</td><td>Secondary ion mass spectrometry depth profiling: elemental concentrations (atoms per cm3) against depth.</td><td></td><td>yes</td></tr>
+<tr><td>simulation</td><td>simulation</td><td>A value produced by a model run (not a measurement).</td><td></td><td></td></tr>
+<tr><td>spectroscopic_ellipsometry</td><td>optical_thickness</td><td>Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).</td><td></td><td></td></tr>
+<tr><td>tabulated</td><td>tabulated</td><td>A value stated in a table without a method (not a measurement).</td><td></td><td></td></tr>
+<tr><td>tem</td><td>electron_image</td><td>Transmission electron microscopy images of a cross-section.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>tem_eds</td><td>eds</td><td>Energy-dispersive X-ray spectroscopy in a (scanning) transmission electron microscope: elemental maps and line integrals of a cross-section.</td><td></td><td>yes</td></tr>
+<tr><td>tof_erda</td><td>ion_beam</td><td>Time-of-flight elastic recoil detection analysis: elemental composition and depth profiles in at.%, hydrogen included, from a heavy-ion beam.</td><td></td><td>yes</td></tr>
+<tr><td>transistor_iv</td><td>transistor_iv</td><td>Current-voltage characteristics of a field-effect transistor made from the film.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>two_point_through_thickness</td><td>two_point_through_thickness</td><td>Two-contact resistance through the thickness of a body between blanket electrodes on its faces, turned into volume resistivity with the electrode area and the thickness.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>optical_spectroscopy</td><td>UV-visible transmission spectrophotometry of a film on a transparent substrate: transmittance against wavelength, and the Tauc plot for the optical band gap.</td><td></td><td>yes</td></tr>
+<tr><td>xps</td><td>xps</td><td>X-ray photoelectron spectroscopy: surface composition and chemical states.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>xrd</td><td>xrd</td><td>X-ray diffraction: crystalline phases, phase fractions and crystallite sizes.</td><td>yes (ex_situ)</td><td></td></tr>
+<tr><td>xrr</td><td>xrr</td><td>X-ray reflectivity: thickness, density and roughness from the specular reflectivity curve.</td><td></td><td></td></tr>
+</table>
+<h2>c. Mechanisms</h2><p>kb/reports/P142_ontology.c_mechanisms.csv</p>
+<table><tr><th>id</th><th>name</th><th>definition</th><th>aliases</th></tr>
+<tr><td>residual_water</td><td>residual water</td><td>Water left in the reactor or adsorbed on surfaces after the purge, which re-adsorbs on the walls or reacts in the following step.</td><td>residual H2O; re-adsorbed water; water re-adsorption</td></tr>
+<tr><td>surface_hydroxyl</td><td>surface OH</td><td>The density of hydroxyl groups on the growth surface, which sets the uptake of the metal precursor.</td><td>surface OH; OH coverage; chemisorbed OH</td></tr>
+<tr><td>desorption</td><td>desorption</td><td>Loss of adsorbed species (water, metal-containing species) from the surface during a long purge.</td><td>desorption; desorbs</td></tr>
+<tr><td>self_limiting_growth</td><td>self-limiting growth</td><td>Saturation of each half-reaction once the surface sites are used up, the defining feature of ALD.</td><td>self-limiting; saturation</td></tr>
+<tr><td>surface_chemistry</td><td>surface chemistry</td><td>The surface reactions of the precursor and the co-reactant, which set uptake and composition.</td><td>surface chemistry</td></tr>
+<tr><td>excess_sulfur</td><td>excess sulfur</td><td>Sulfur taken up beyond the MoS2 stoichiometry from an H2S-based plasma, which blocks crystallization.</td><td>excess S; S-rich</td></tr>
+<tr><td>fin_growth</td><td>fin growth</td><td>Growth of vertical fins (out-of-plane flakes) on a crystalline film, which raises roughness and surface area.</td><td>fin formation; fins</td></tr>
+<tr><td>metallic_zinc</td><td>metallic Zn deposition</td><td>Deposition of metallic zinc alongside ZnO from diethylzinc decomposition at large exposures or high temperature.</td><td>Zn deposition; metallic Zn deposition</td></tr>
+<tr><td>plasma_chemistry</td><td>plasma chemistry</td><td>The species of the H2S/H2/Ar plasma (atomic H, sulfur species, ions), set by its feed, which strip ligands and deliver sulfur.</td><td>plasma chemistry; plasma species</td></tr>
+<tr><td>hydrogen_incorporation</td><td>hydrogen incorporation</td><td>Hydrogen from the plasma built into the film, at sulfur vacancies or as thiol groups, acting as a dopant.</td><td>H incorporation; incorporated H</td></tr>
+<tr><td>sulfur_vacancy</td><td>sulfur vacancies</td><td>Missing sulfur atoms in the MoS2 lattice, a source of carriers.</td><td>S vacancies; S vacancy</td></tr>
+<tr><td>thiol_groups</td><td>thiol groups</td><td>S-H groups on the film&#x27;s surface and edges, whose density follows the H2 flow ratio.</td><td>-SH groups; thiol</td></tr>
+<tr><td>edge_reactivity</td><td>edge reactivity</td><td>The reactivity of crystallite edges, tuned by their S and S-H coverage.</td><td>edge reactivity; reactive edges</td></tr>
+<tr><td>surface_oxidation</td><td>surface oxidation</td><td>Oxidation of the film surface in air after deposition, strongest on rough, edge-rich films.</td><td>surface oxidation; oxidation in air</td></tr>
+<tr><td>precursor_adsorption</td><td>precursor adsorption</td><td>The density of adsorbed metal precursor per cycle, which governs the growth per cycle.</td><td>adsorption density; adsorption sites</td></tr>
+<tr><td>membrane_sagging</td><td>membrane sagging</td><td>Bending of the channel&#x27;s roof membrane between the pillars, which narrows the channel locally.</td><td>membrane bending; roof sag</td></tr>
+<tr><td>channel_plugging</td><td>channel plugging</td><td>Closure of a channel entrance by the growing film, which stops further penetration.</td><td>plugged entry; plugging</td></tr>
+<tr><td>feature_narrowing</td><td>feature narrowing</td><td>The growing film narrows the feature (a channel or a pore), raising the aspect ratio the process sees and shrinking the surface area.</td><td>channel narrowing; pore narrowing; shrinking surface area</td></tr>
+<tr><td>pillar_effect</td><td>pillar effect</td><td>Growth and transport disturbed by the pillars that hold up the channel roof.</td><td>pillars affect growth</td></tr>
+<tr><td>entrance_nanostep</td><td>entrance nanostep</td><td>A step at the channel entrance that lowers the local channel height.</td><td>nanostep</td></tr>
+<tr><td>native_oxide</td><td>native oxide</td><td>The native silicon oxide under the film, included in an optical thickness.</td><td>native silicon oxide; native oxide</td></tr>
+<tr><td>optical_model</td><td>optical model</td><td>The optical model of the reflectometer fit, whose mismatch with the real stack gives a systematic thickness error.</td><td>optical model</td></tr>
+<tr><td>scan_angle</td><td>scan angle</td><td>Deviation of the scan line from the normal to the channel entrance, which stretches the measured profile.</td><td>cosine error</td></tr>
+<tr><td>interaction_volume</td><td>interaction volume</td><td>The depth of the electron-beam interaction volume in EDS, deeper than a thin film.</td><td>X-ray interaction volume</td></tr>
+<tr><td>scan_averaging</td><td>scan averaging</td><td>Averaging repeated line scans to suppress noise.</td><td>averaging repeated scans</td></tr>
+<tr><td>channel_length</td><td>channel length</td><td>The lateral length of the channel, which does not change the saturation profile. Superseded (P82): the length of a lateral channel is the depth L, feature_depth; the claim that named this mechanism names feature_depth.</td><td></td></tr>
+<tr><td>run_variation</td><td>run-to-run variation</td><td>Differences between independent runs of the same process.</td><td>run-to-run variation; reproducibility</td></tr>
+<tr><td>gas_diffusion</td><td>gas diffusion</td><td>Transport of the reactant through the pores or the channel by gas-phase diffusion (Knudsen diffusion in narrow features).</td><td>Knudsen diffusion; reactant diffusivity</td></tr>
+<tr><td>gas_generation</td><td>gas generation</td><td>Release of gaseous by-products (ethane) by the surface reaction, which raises the chamber pressure.</td><td>gas-producing processes; ethane release</td></tr>
+<tr><td>leak</td><td>leak</td><td>A leak or valve seating effect that lowers the chamber pressure during a hold.</td><td>leak-dominated; leak rates</td></tr>
+<tr><td>reaction_diffusion</td><td>reaction-diffusion</td><td>The coupled reaction and diffusion of the reactant into a porous body, which sets how far and how evenly it coats.</td><td>reaction-diffusion; diffusion-reaction</td></tr>
+<tr><td>percolation</td><td>percolation</td><td>A coating that forms a connected network through the compact, so that current can cross it.</td><td>percolating network</td></tr>
+<tr><td>cracks</td><td>cracks</td><td>Cracks in the compact, which change its measured resistivity.</td><td>cracking</td></tr>
+<tr><td>side_reaction</td><td>non-self-limiting reaction</td><td>Non-self-limiting reactions at large exposures, such as precursor decomposition.</td><td>non-self-limiting growth</td></tr>
+<tr><td>cvd_growth</td><td>CVD-like growth</td><td>Gas-phase reaction of the two reactants (CVD-like growth) when the purge leaves one of them behind.</td><td>CVD; gas-phase reaction</td></tr>
+<tr><td>xray_reabsorption</td><td>X-ray reabsorption</td><td>Absorption of one element&#x27;s X-ray emission by another in EDS, which distorts normalized signals.</td><td>reabsorption</td></tr>
+<tr><td>surface_recombination</td><td>surface recombination</td><td>Loss of plasma radicals by recombination on the growth surface (probability r per collision), which makes the radical density fall exponentially into a high-aspect-ratio feature and limits how far a plasma ALD film penetrates.</td><td>surface recombination; radical recombination; recombination of plasma radicals</td></tr>
+</table>
+<h2>c. Models</h2><p>kb/reports/P142_ontology.c_models.csv</p>
+<table><tr><th>id</th><th>name</th><th>definition</th></tr>
+<tr><td>ylilammi_diffusion_reaction</td><td></td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td></tr>
+<tr><td>gordon_plug_flow</td><td></td><td>Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1).</td></tr>
+<tr><td>yanguas_gil_markov_chain</td><td></td><td>Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2).</td></tr>
+<tr><td>arts_slope</td><td></td><td>Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3).</td></tr>
+</table>
+<h2>c. Qualifiers</h2><p>kb/reports/P142_ontology.c_qualifiers.csv</p>
+<table><tr><th>key</th><th>values</th><th>meaning</th></tr>
+<tr><td>definition</td><td>definition ids</td><td>P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)</td></tr>
+<tr><td>step</td><td>reactant_A; purge_A; reactant_B; purge_B; plasma; hold_A; hold_B; none</td><td>Cremers Sec. I four steps; Popov Reactant A/B | plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds</td></tr>
+<tr><td>species</td><td>species ids</td><td></td></tr>
+<tr><td>gas</td><td>species ids</td><td></td></tr>
+<tr><td>element</td><td>element symbols</td><td></td></tr>
+<tr><td>reference_element</td><td>element symbols</td><td>Sec. 18.3: the denominator atom of an element_ratio</td></tr>
+<tr><td>phase</td><td>species ids</td><td>Sec. 18.3: the phase a phase_fraction is of</td></tr>
+<tr><td>position</td><td>planar; top; sidewall; bottom; local; entrance; plateau; outside; interface</td><td>Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top | local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer</td></tr>
+<tr><td>reference</td><td>top; planar; assumed_saturation; plateau; entrance; maximum; stated; bulk</td><td>plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)</td></tr>
+<tr><td>level</td><td>50%; 80%; front_start; front_end; maximum</td><td>Cremers PD50%, PD80% | front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum</td></tr>
+<tr><td>basis</td><td>AR; EAR</td><td>Cremers Sec. II G</td></tr>
+<tr><td>surface</td><td>material ids</td><td></td></tr>
+<tr><td>kind</td><td>set_point; measured; default; option; target; estimated</td><td>pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures</td></tr>
+<tr><td>by</td><td>H; 2H; d; w; lambda; none</td><td>pilot: what a dimensionless distance is divided by</td></tr>
+<tr><td>origin</td><td>entrance; top_face; hole_centre; nearer_face; opening_centre</td><td>pilot: where a distance is measured from</td></tr>
+<tr><td>stage</td><td>initial; final</td><td>pilot: before or after the deposition (porosity, channel height)</td></tr>
+<tr><td>stat</td><td>sd; relative_sd; half_range; tolerance; minimum; maximum</td><td>pilot P1: a spread fact&#x27;s statistic</td></tr>
+<tr><td>between</td><td>runs; pieces; position; repeat_measurement; items</td><td>pilot P1: what varies between the repeats of a spread</td></tr>
+<tr><td>n</td><td>a number or not_stated</td><td>pilot P1: the number of repeats</td></tr>
+<tr><td>relative_to</td><td>initial_mass; final_mass; all_atoms; metal_atoms; crystalline_phases; total_volume; reactive_gases; all_gases; not_stated</td><td>pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)</td></tr>
+<tr><td>over</td><td>run; first_100_cycles; saturation; not_stated</td><td>pilot P5: what a per-cycle value is averaged over</td></tr>
+<tr><td>mode</td><td>in_situ; ex_situ; not_stated</td><td>pilot P6: a measurement during or after the deposition</td></tr>
+<tr><td>x</td><td>quantity ids</td><td>pilot: the abscissa of a curve</td></tr>
+<tr><td>ratio</td><td>a number</td><td>pilot P17: the plasma_gas_ratio a keyed setting belongs to</td></tr>
+<tr><td>specimen_class</td><td>film; porous_composite</td><td>Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis</td></tr>
+<tr><td>structure_class</td><td>structure; planar; har_feature; trench; via_hole; lateral_channel; porous_body; nanoparticle_compact; aerogel_monolith; nanopore_membrane</td><td>P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class</td></tr>
+</table>
+<h2>c. Units</h2><p>kb/reports/P142_ontology.c_units.csv</p>
+<table><tr><th>symbol</th><th>dimension</th><th>factor</th><th>variants</th></tr>
+<tr><td>pm</td><td>length</td><td>1e-12</td><td>pm; picometer; picometre</td></tr>
+<tr><td>Å</td><td>length</td><td>1e-10</td><td>Å; A; angstrom; Angstrom; Å</td></tr>
+<tr><td>nm</td><td>length</td><td>1e-09</td><td>nm; nanometer; nanometre; nanometers</td></tr>
+<tr><td>µm</td><td>length</td><td>1e-06</td><td>µm; μm; \mum; um; micrometer; micrometre; micron; microns; \mu m</td></tr>
+<tr><td>mm</td><td>length</td><td>0.001</td><td>mm; millimeter; millimetre</td></tr>
+<tr><td>cm</td><td>length</td><td>0.01</td><td>cm; centimeter; centimetre</td></tr>
+<tr><td>m</td><td>length</td><td>1.0</td><td>m; meter; metre</td></tr>
+<tr><td>ms</td><td>time</td><td>0.001</td><td>ms; millisecond; milliseconds</td></tr>
+<tr><td>s</td><td>time</td><td>1.0</td><td>s; sec; second; seconds</td></tr>
+<tr><td>min</td><td>time</td><td>60.0</td><td>min; minute; minutes</td></tr>
+<tr><td>h</td><td>time</td><td>3600.0</td><td>h; hr; hrs; hour; hours</td></tr>
+<tr><td>°C</td><td>temperature</td><td>1.0</td><td>°C; degC; oC; ^\circ C; \circ C; ℃; deg C</td></tr>
+<tr><td>K</td><td>temperature</td><td>1.0</td><td>K; kelvin</td></tr>
+<tr><td>Pa</td><td>pressure</td><td>1.0</td><td>Pa; pascal</td></tr>
+<tr><td>hPa</td><td>pressure</td><td>100.0</td><td>hPa</td></tr>
+<tr><td>mbar</td><td>pressure</td><td>100.0</td><td>mbar; millibar</td></tr>
+<tr><td>bar</td><td>pressure</td><td>1.0e5</td><td>bar</td></tr>
+<tr><td>Torr</td><td>pressure</td><td>133.322</td><td>Torr; torr</td></tr>
+<tr><td>mTorr</td><td>pressure</td><td>0.133322</td><td>mTorr; mtorr</td></tr>
+<tr><td>Pa·s</td><td>exposure</td><td>1.0</td><td>Pa·s; Pa s; Pas; Pa*s; Pa.s</td></tr>
+<tr><td>Torr·s</td><td>exposure</td><td>133.322</td><td>Torr·s; Torr s; Torr-s; Torr*s</td></tr>
+<tr><td>L</td><td>exposure</td><td>0.000133322</td><td>L; Langmuir; langmuir; langmuirs</td></tr>
+<tr><td>nm/cycle</td><td>length_per_cycle</td><td>1e-09</td><td>nm/cycle; nm per cycle; nm/cyc; nm cycle-1</td></tr>
+<tr><td>Å/cycle</td><td>length_per_cycle</td><td>1e-10</td><td>Å/cycle; A/cycle; Å/cyc; Å per cycle; Angstrom/cycle</td></tr>
+<tr><td>pm/cycle</td><td>length_per_cycle</td><td>1e-12</td><td>pm/cycle</td></tr>
+<tr><td>1</td><td>dimensionless</td><td>1.0</td><td>1; ; -; (-); ×; x; a.u.; arb. units; arb.units; arbitrary units; dimensionless</td></tr>
+<tr><td>%</td><td>dimensionless</td><td>0.01</td><td>%; percent</td></tr>
+<tr><td>at.%</td><td>dimensionless</td><td>0.01</td><td>at.%; at%; at. %; atomic %; atom %; atomic percent; at.-%</td></tr>
+<tr><td>wt%</td><td>dimensionless</td><td>0.01</td><td>wt%; wt.%; wt. %; weight %</td></tr>
+<tr><td></td><td>signal</td><td>1.0</td><td>counts; counts/s; cps; counts per second</td></tr>
+<tr><td>cycle</td><td>count</td><td>1.0</td><td>cycle; cycles; ALD cycles; ALD cycle; AB cycles; AB cycle; cyc</td></tr>
+<tr><td>Ω·m</td><td>resistivity</td><td>1.0</td><td>Ω·m; Ω m; Ohm m; ohm m; Ωm</td></tr>
+<tr><td>Ω·cm</td><td>resistivity</td><td>0.01</td><td>Ω·cm; Ω cm; Ω-cm; Ohm cm; ohm cm; Ωcm</td></tr>
+<tr><td>mΩ·cm</td><td>resistivity</td><td>1e-05</td><td>mΩ·cm; mΩ cm; mOhm cm; mΩcm</td></tr>
+<tr><td>µΩ·cm</td><td>resistivity</td><td>1e-08</td><td>µΩ·cm; µΩ cm; μΩcm; µΩcm; uOhm cm; µOhm cm; \muΩcm</td></tr>
+<tr><td>Ω/sq</td><td>resistance</td><td>1.0</td><td>Ω/sq; Ω/□; Ohm/sq; ohm/sq; Ω/square</td></tr>
+<tr><td>cm-1</td><td>wavenumber</td><td>100.0</td><td>cm-1; cm^-1; cm⁻¹; 1/cm; cm$^{-1}$; cm^{-1}</td></tr>
+<tr><td>eV</td><td>energy</td><td>1.602176634e-19</td><td>eV; electronvolt</td></tr>
+<tr><td>m2/s</td><td>diffusivity</td><td>1.0</td><td>m2/s; m²/s; m^2/s; m2 s-1; m² s⁻¹; m^2 s^-1</td></tr>
+<tr><td>cm2/s</td><td>diffusivity</td><td>0.0001</td><td>cm2/s; cm²/s; cm^2/s; cm2 s-1; cm² s⁻¹</td></tr>
+<tr><td>m2/g</td><td>area_per_mass</td><td>1.0e3</td><td>m2/g; m²/g; m^2/g; m2 g-1; m² g⁻¹</td></tr>
+<tr><td>m3/g</td><td>volume_per_mass</td><td>1.0e3</td><td>m3/g; m³/g; m^3/g; m3 g-1</td></tr>
+<tr><td>1/m3</td><td>number_density</td><td>1.0</td><td>1/m3; m-3; m^-3; m⁻³; 1/m^3; m^{-3}</td></tr>
+<tr><td>1/cm3</td><td>number_density</td><td>1.0e6</td><td>1/cm3; cm-3; cm^-3; cm⁻³; 1/cm^3; atoms/cm3; atoms/cm^3; cm^{-3}</td></tr>
+<tr><td>1/m</td><td>inverse_length</td><td>1.0</td><td>1/m; m-1; m^-1; m⁻¹; m^{-1}</td></tr>
+<tr><td>mol</td><td>amount</td><td>1.0</td><td>mol; mole</td></tr>
+<tr><td>mmol</td><td>amount</td><td>0.001</td><td>mmol</td></tr>
+<tr><td>µmol</td><td>amount</td><td>1e-06</td><td>µmol; μmol; \mumol; umol; µmol/cyc; µmol/cycle</td></tr>
+<tr><td>Pa/s</td><td>pressure_per_time</td><td>1.0</td><td>Pa/s</td></tr>
+<tr><td>mTorr/min</td><td>pressure_per_time</td><td>0.002222033</td><td>mTorr/min; mTorr min-1</td></tr>
+<tr><td>Torr/s</td><td>pressure_per_time</td><td>133.322</td><td>Torr/s</td></tr>
+<tr><td>nm/h</td><td>length_per_time</td><td>2.7777778e-13</td><td>nm/h; nm/hr; nm per hour</td></tr>
+<tr><td>nm/s</td><td>length_per_time</td><td>1e-09</td><td>nm/s</td></tr>
+<tr><td>sccm</td><td>gas_flow</td><td>1.0</td><td>sccm; SCCM</td></tr>
+<tr><td>W</td><td>power</td><td>1.0</td><td>W; watt</td></tr>
+<tr><td>g/cm3</td><td>density</td><td>1.0e3</td><td>g/cm3; g/cm^3; g cm-3; g/cm³; g cm^-3</td></tr>
+<tr><td>kg/m3</td><td>density</td><td>1.0</td><td>kg/m3; kg/m^3; kg m-3; kg m^-3; kg/m³</td></tr>
+<tr><td>nm-2</td><td>areal_density</td><td>1.0e18</td><td>nm-2; nm^-2; nm⁻²; 1/nm2; at/nm2; at/nm2/cycle; nm^{-2}</td></tr>
+<tr><td>m-2</td><td>areal_density</td><td>1.0</td><td>m-2; m^-2; m⁻²; 1/m2; m^{-2}; 1 m-2</td></tr>
+<tr><td>cm-2</td><td>areal_density</td><td>1.0e4</td><td>cm-2; cm^-2; cm⁻²; 1/cm2; cm^{-2}</td></tr>
+<tr><td>1/Pa</td><td>inverse_pressure</td><td>1.0</td><td>1/Pa; Pa-1; Pa^-1; Pa⁻¹; 1 Pa-1</td></tr>
+<tr><td>1/mbar</td><td>inverse_pressure</td><td>0.01</td><td>1/mbar; mbar-1</td></tr>
+<tr><td>1/s</td><td>inverse_time</td><td>1.0</td><td>1/s; s-1; 1 s-1; s^-1; s⁻¹</td></tr>
+<tr><td>m2/(V·s)</td><td>mobility</td><td>1.0</td><td>m2/(V·s); m2/Vs; m²/Vs; m2 V-1 s-1</td></tr>
+<tr><td>cm2/(V·s)</td><td>mobility</td><td>0.0001</td><td>cm2/(V·s); cm2/Vs; cm²/Vs; cm2 V-1 s-1; cm² V⁻¹ s⁻¹</td></tr>
+<tr><td>°</td><td>angle</td><td>0.017453292519943295</td><td>°; deg; deg.; degree; degrees; °)</td></tr>
+<tr><td>g/mol</td><td>molar_mass</td><td>0.001</td><td>g/mol; g mol-1; g mol^-1; g mol⁻¹; g mol^{-1}</td></tr>
+<tr><td>kg/mol</td><td>molar_mass</td><td>1.0</td><td>kg/mol; kg mol-1; kg mol^-1; kg mol⁻¹</td></tr>
+<tr><td>1/mol</td><td>inverse_amount</td><td>1.0</td><td>1/mol; mol-1; mol^-1; mol⁻¹</td></tr>
+<tr><td>J/K</td><td>energy_per_temperature</td><td>1.0</td><td>J/K; J K-1; J K^-1; J K⁻¹</td></tr>
+<tr><td>g</td><td>mass</td><td>0.001</td><td>g; gram; grams</td></tr>
+<tr><td>kg</td><td>mass</td><td>1.0</td><td>kg; kilogram</td></tr>
+<tr><td>mg</td><td>mass</td><td>1e-06</td><td>mg</td></tr>
+<tr><td>keV</td><td>energy</td><td>1.602176634e-16</td><td>keV</td></tr>
+<tr><td>MeV</td><td>energy</td><td>1.602176634e-13</td><td>MeV</td></tr>
+<tr><td>V</td><td>voltage</td><td>1.0</td><td>V; volt</td></tr>
+<tr><td>kV</td><td>voltage</td><td>1.0e3</td><td>kV; kilovolt</td></tr>
+<tr><td>mW</td><td>power</td><td>0.001</td><td>mW; milliwatt</td></tr>
+<tr><td>nA</td><td>current</td><td>1e-09</td><td>nA; nanoampere</td></tr>
+<tr><td>C/cm2</td><td>charge_per_area</td><td>1.0e4</td><td>C/cm2; C cm-2; C/cm^2; C cm^-2</td></tr>
+<tr><td>amu</td><td>mass</td><td>1.6605390666e-27</td><td>amu; Da</td></tr>
+<tr><td>m2</td><td>area</td><td>1.0</td><td>m2; m^2; m²</td></tr>
+<tr><td>cm2</td><td>area</td><td>0.0001</td><td>cm2; cm^2; cm²</td></tr>
+<tr><td>mL</td><td>volume</td><td>1e-06</td><td>mL; ml; milliliter; millilitre</td></tr>
+<tr><td>nm-1</td><td>inverse_length</td><td>1.0e9</td><td>nm-1; nm^-1; 1/nm; nm⁻¹</td></tr>
+<tr><td>s^-1/2</td><td>inverse_sqrt_time</td><td>1.0</td><td>s^-1/2; s-1/2; s^(-1/2); 1/sqrt(s)</td></tr>
+<tr><td>ns</td><td>time</td><td>1e-09</td><td>ns; nanosecond; nanoseconds</td></tr>
+<tr><td>µPa s</td><td>viscosity</td><td>1e-06</td><td>µPa s; µPa·s; uPa s; μPa s</td></tr>
+<tr><td>Pa s</td><td>viscosity</td><td>1.0</td><td>Pa s; Pa·s</td></tr>
+<tr><td>cm3/g</td><td>volume_per_mass</td><td>0.001</td><td>cm3/g; cm³/g; cm^3/g; cm3 g-1</td></tr>
+<tr><td>mol m-2 s-1</td><td>molar_flux</td><td>1.0</td><td>mol m-2 s-1; mol/(m2 s); mol m^-2 s^-1</td></tr>
+<tr><td>m-2 s-1 Pa-1</td><td>flux_per_pressure</td><td>1.0</td><td>m-2 s-1 Pa-1; 1/(m2 s Pa); m^-2 s^-1 Pa^-1</td></tr>
+<tr><td>s m-3</td><td>time_per_volume</td><td>1.0</td><td>s m-3; s/m3; s m^-3</td></tr>
+<tr><td>MPa</td><td>pressure</td><td>1.0e6</td><td>MPa; megapascal</td></tr>
+<tr><td>L</td><td>volume</td><td>0.001</td><td>L; l; litre; liter</td></tr>
+</table>
+<h2>c. Entries with an empty definition</h2><p>kb/reports/P142_ontology.c_empty_definitions.csv</p>
+<table><tr><th>id</th><th>type</th></tr>
+</table>
+<h2>d. Ids per gold paper (papers_using 0 means used by no gold)</h2><p>kb/reports/P142_ontology.d_usage_per_paper.csv</p>
+<table><tr><th>kind</th><th>id</th><th>papers_using</th><th>yim20</th><th>mat22</th><th>gre23 (held-out)</th><th>ela03</th><th>gor03</th><th>yli18</th><th>gao15</th><th>art19</th><th>yim22 (held-out)</th><th>hei24</th><th>mat23 (held-out)</th><th>zou23</th></tr>
+<tr><td>quantity</td><td>process_mode</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>material</td><td>10</td><td>1</td><td>7</td><td>1</td><td>14</td><td>1</td><td>3</td><td>10</td><td>10</td><td></td><td></td><td>7</td><td>3</td></tr>
+<tr><td>quantity</td><td>reactant_A</td><td>10</td><td>1</td><td>4</td><td>1</td><td>14</td><td>1</td><td>2</td><td>11</td><td>4</td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>reactant_B</td><td>10</td><td>1</td><td>5</td><td>1</td><td>14</td><td>1</td><td>2</td><td>1</td><td>1</td><td></td><td></td><td>2</td><td>1</td></tr>
+<tr><td>quantity</td><td>carrier_gas</td><td>8</td><td>1</td><td></td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>reactor</td><td>10</td><td>6</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>delivery_method</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>crystallinity</td><td>4</td><td></td><td>52</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td>3</td></tr>
+<tr><td>quantity</td><td>reactor_type</td><td>2</td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>plasma_configuration</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>structure</td><td>11</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>9</td><td></td><td>74</td><td>1</td><td>2</td></tr>
+<tr><td>quantity</td><td>deposition_temperature</td><td>12</td><td>8</td><td>77</td><td>47</td><td>3</td><td>2</td><td>4</td><td>14</td><td>2</td><td>22</td><td>16</td><td>18</td><td>18</td></tr>
+<tr><td>quantity</td><td>process_pressure</td><td>10</td><td>4</td><td>2</td><td></td><td>1</td><td>1</td><td>1</td><td>3</td><td>2</td><td>6</td><td></td><td>2</td><td>1</td></tr>
+<tr><td>quantity</td><td>growth_per_cycle</td><td>9</td><td>63</td><td>45</td><td>11</td><td></td><td>1</td><td>1</td><td></td><td></td><td>14</td><td>2</td><td>14</td><td>14</td></tr>
+<tr><td>quantity</td><td>nucleation_period</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>pulse_time</td><td>12</td><td>41</td><td>2</td><td>3</td><td>55</td><td>2</td><td>11</td><td>3</td><td>13</td><td>20</td><td>3</td><td>2</td><td>2</td></tr>
+<tr><td>quantity</td><td>purge_time</td><td>9</td><td>39</td><td>2</td><td>15</td><td>25</td><td>2</td><td>4</td><td>2</td><td></td><td></td><td></td><td>2</td><td>3</td></tr>
+<tr><td>quantity</td><td>refractive_index</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>absorption_coefficient</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>resistivity</td><td>3</td><td></td><td>48</td><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td></tr>
+<tr><td>quantity</td><td>carrier_density</td><td>1</td><td></td><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>mobility</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>thickness_nonuniformity</td><td>2</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>aspect_ratio</td><td>8</td><td>9</td><td></td><td>5</td><td>9</td><td>8</td><td>3</td><td>9</td><td>2</td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>coated_aspect_ratio</td><td>6</td><td>19</td><td></td><td>3</td><td></td><td></td><td>1</td><td>10</td><td>14</td><td>33</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>composition</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>film_density</td><td>4</td><td>3</td><td>5</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>18</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>partial_pressure</td><td>9</td><td>3</td><td></td><td>3</td><td>12</td><td>3</td><td>11</td><td></td><td></td><td>42</td><td>7</td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>exposure</td><td>5</td><td>1</td><td></td><td>15</td><td>7</td><td>24</td><td></td><td></td><td></td><td></td><td>34</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>source_temperature</td><td>3</td><td></td><td>1</td><td>2</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>film_thickness</td><td>11</td><td>98</td><td>35</td><td>8</td><td>5</td><td>3</td><td>13</td><td>18</td><td>8</td><td>52</td><td></td><td>14</td><td>9</td></tr>
+<tr><td>quantity</td><td>penetration_depth</td><td>8</td><td>42</td><td></td><td></td><td>10</td><td>1</td><td>11</td><td>17</td><td>6</td><td>8</td><td>49</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>equivalent_aspect_ratio</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>step_coverage</td><td>5</td><td></td><td></td><td>1</td><td>7</td><td>10</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>quantity</td><td>initial_sticking_coefficient</td><td>7</td><td>15</td><td></td><td></td><td>23</td><td>4</td><td>7</td><td></td><td>3</td><td>39</td><td>17</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>recombination_probability</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>surface_coverage</td><td>7</td><td></td><td></td><td>1</td><td>16</td><td>1</td><td>5</td><td></td><td>1</td><td>7</td><td>59</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>feature_width</td><td>9</td><td>50</td><td></td><td>4</td><td>42</td><td>2</td><td>11</td><td>22</td><td>2</td><td>22</td><td>15</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>feature_depth</td><td>9</td><td>1</td><td></td><td>3</td><td>11</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>20</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>feature_extent</td><td>3</td><td></td><td></td><td></td><td></td><td>2</td><td>2</td><td></td><td></td><td>7</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>cycle_number</td><td>11</td><td>37</td><td>45</td><td>3</td><td>23</td><td>4</td><td>7</td><td>2</td><td>4</td><td>13</td><td></td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>plasma_power</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>gas_flow_rate</td><td>8</td><td>2</td><td>25</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>quantity</td><td>normalized_thickness</td><td>7</td><td>21</td><td></td><td></td><td>16</td><td></td><td>5</td><td>3</td><td>13</td><td>4</td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>adsorption_equilibrium_constant</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>saturation_growth_per_cycle</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>distance</td><td>4</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>dimensionless_distance</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>time</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>precursor_purity</td><td>3</td><td></td><td>4</td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>plasma_gas_ratio</td><td>1</td><td></td><td>92</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>cycle_time</td><td>3</td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>quantity</td><td>substrate</td><td>10</td><td>1</td><td>8</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td>3</td><td>4</td></tr>
+<tr><td>quantity</td><td>mass_gain</td><td>1</td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>moles_deposited</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>moles_from_mass_gain</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>deposited_moles_per_cycle</td><td>1</td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>atoms_per_cycle</td><td>2</td><td></td><td>3</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>coating_mass_fraction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>shell_volume_fraction</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>deposition_rate</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>gas_moles_per_cycle</td><td>1</td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>reaction_stoichiometry</td><td>1</td><td></td><td></td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pressure_rise</td><td>1</td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pressure_rate</td><td>1</td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>time_to_maximum</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>porosity</td><td>2</td><td></td><td></td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pore_density</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>tortuosity</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pore_volume</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>fill_fraction</td><td>3</td><td>6</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>roughness</td><td>4</td><td>2</td><td>12</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>quantity</td><td>binding_energy</td><td>2</td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td></td></tr>
+<tr><td>quantity</td><td>crystallite_size</td><td>2</td><td></td><td>1</td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>sheet_resistance</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>density_relative_to_bulk</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>phase</td><td>4</td><td></td><td>6</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>1</td></tr>
+<tr><td>quantity</td><td>annealing_temperature</td><td>2</td><td></td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>saturation_density</td><td>6</td><td>2</td><td></td><td></td><td>1</td><td>3</td><td>2</td><td></td><td></td><td>20</td><td>13</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>probe_resolution</td><td>7</td><td>7</td><td>2</td><td>1</td><td>1</td><td></td><td>2</td><td>5</td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>objective_magnification</td><td>3</td><td>18</td><td></td><td></td><td></td><td></td><td>2</td><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>pillar_layout</td><td>1</td><td>20</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>raman_shift</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>knudsen_number</td><td>2</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>41</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>mean_free_path</td><td>5</td><td>3</td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td>1</td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>front_slope</td><td>3</td><td>43</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>48</td><td>2</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>fit_r2</td><td>1</td><td>17</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>signal_intensity</td><td>4</td><td>4</td><td>17</td><td>10</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>element_fraction</td><td>3</td><td></td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td>17</td></tr>
+<tr><td>quantity</td><td>element_ratio</td><td>2</td><td></td><td>60</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td></td></tr>
+<tr><td>quantity</td><td>phase_fraction</td><td>1</td><td></td><td></td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>h_per_metal</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>body_thickness</td><td>2</td><td></td><td></td><td>2</td><td>35</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>entry_sides</td><td>2</td><td></td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>particle_diameter</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>specific_surface_area</td><td>2</td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>body_diameter</td><td>2</td><td></td><td></td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>diffraction_angle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>molar_mass</td><td>4</td><td></td><td></td><td></td><td></td><td>2</td><td>4</td><td></td><td></td><td>41</td><td>14</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>molecule_diameter</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>7</td><td></td><td></td><td>18</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>knudsen_diffusion_coefficient</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>effective_diffusion_coefficient</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>gas_phase_diffusion_coefficient</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>reactant_number_density</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td></tr>
+<tr><td>quantity</td><td>b_film</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>quantity</td><td>wall_temperature</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>quantity</td><td>wavelength_range</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>quantity</td><td>base_pressure</td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>p_d</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>9</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tma</td><td>7</td><td>34</td><td></td><td>1</td><td>24</td><td></td><td>22</td><td>7</td><td>1</td><td>78</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>model_reactant</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>48</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ticl4</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>7</td><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>h2o</td><td>6</td><td>26</td><td></td><td>7</td><td>28</td><td>6</td><td>5</td><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>o2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>o_atom</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>n2</td><td>7</td><td>3</td><td></td><td>2</td><td>1</td><td>1</td><td>6</td><td></td><td></td><td>24</td><td></td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>al2o3</td><td>7</td><td>1</td><td></td><td>2</td><td>6</td><td></td><td>1</td><td>5</td><td>5</td><td>5</td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tio2</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>4</td><td>4</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mo_ntbu2_nme22</td><td>1</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>w_ntbu2_nme22</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tdmat</td><td>2</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>dez</td><td>2</td><td></td><td></td><td>13</td><td>36</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>h2s</td><td>2</td><td></td><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>species/structure</td><td>h2</td><td>2</td><td></td><td>65</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>species/structure</td><td>ar</td><td>2</td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>air</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mos2</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ws2</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tis2</td><td>1</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>zno</td><td>2</td><td></td><td></td><td>7</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>mo</td><td>2</td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>species/structure</td><td>zn</td><td>1</td><td></td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>moo3</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>si</td><td>7</td><td>1</td><td></td><td></td><td></td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>species/structure</td><td>sio2</td><td>6</td><td></td><td>4</td><td>6</td><td>1</td><td></td><td></td><td></td><td>9</td><td></td><td></td><td>2</td><td>2</td></tr>
+<tr><td>species/structure</td><td>glassy_carbon</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pet</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_3</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>macroscopic_lateral_trench</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>planar</td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td></tr>
+<tr><td>species/structure</td><td>porous_sphere</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>38</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>porous_slab</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>29</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>porous_cylinder</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>nanoparticle_compact</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>sicl4</td><td>1</td><td></td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>anodic_alumina_membrane</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>hfo2</td><td>2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>hf_nme2_4</td><td>1</td><td></td><td></td><td></td><td></td><td>14</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>etched_hole_array</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>bdeas</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>tdmacph</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>pillarhall_4</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>species/structure</td><td>ga2s3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>species/structure</td><td>gasx</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>species/structure</td><td>ga2_nme2_6</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>species/structure</td><td>mocl2o2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>species/structure</td><td>h_atom</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>species/structure</td><td>si_trench_capped</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mechanism</td><td>residual_water</td><td>2</td><td>1</td><td></td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_hydroxyl</td><td>2</td><td>2</td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>desorption</td><td>4</td><td>1</td><td></td><td>4</td><td></td><td></td><td>1</td><td></td><td></td><td>5</td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>self_limiting_growth</td><td>8</td><td>1</td><td>1</td><td>3</td><td>2</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td>2</td><td>3</td></tr>
+<tr><td>mechanism</td><td>surface_chemistry</td><td>10</td><td>1</td><td>1</td><td></td><td></td><td>1</td><td>3</td><td>2</td><td>1</td><td>2</td><td>1</td><td>3</td><td>3</td></tr>
+<tr><td>mechanism</td><td>excess_sulfur</td><td>1</td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>fin_growth</td><td>1</td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>metallic_zinc</td><td>1</td><td></td><td></td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>plasma_chemistry</td><td>2</td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td></tr>
+<tr><td>mechanism</td><td>hydrogen_incorporation</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>sulfur_vacancy</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>thiol_groups</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>edge_reactivity</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_oxidation</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>mechanism</td><td>precursor_adsorption</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>membrane_sagging</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>channel_plugging</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>feature_narrowing</td><td>5</td><td>1</td><td></td><td>1</td><td>1</td><td></td><td></td><td>1</td><td></td><td>4</td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>pillar_effect</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>entrance_nanostep</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>native_oxide</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>optical_model</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>scan_angle</td><td>2</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>interaction_volume</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>scan_averaging</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>channel_length</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>run_variation</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>gas_diffusion</td><td>9</td><td>1</td><td></td><td>1</td><td>11</td><td>3</td><td>5</td><td>2</td><td></td><td>5</td><td>7</td><td></td><td>1</td></tr>
+<tr><td>mechanism</td><td>gas_generation</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>leak</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>reaction_diffusion</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>percolation</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>cracks</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>side_reaction</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>cvd_growth</td><td>2</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mechanism</td><td>xray_reabsorption</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>mechanism</td><td>surface_recombination</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>10</td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>method</td><td>afm</td><td>3</td><td>10</td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td></tr>
+<tr><td>method</td><td>calculation</td><td>11</td><td>113</td><td>5</td><td>19</td><td>18</td><td>12</td><td>15</td><td>6</td><td>9</td><td>84</td><td>4</td><td>2</td><td></td></tr>
+<tr><td>method</td><td>cited</td><td>11</td><td>70</td><td>18</td><td>30</td><td>10</td><td>6</td><td>5</td><td>8</td><td>14</td><td>4</td><td></td><td>6</td><td>6</td></tr>
+<tr><td>method</td><td>epma</td><td>1</td><td></td><td></td><td></td><td>29</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>eqp</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>four_point_probe</td><td>2</td><td></td><td>49</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td></tr>
+<tr><td>method</td><td>ftir</td><td>1</td><td></td><td></td><td></td><td>14</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>giwaxs</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td></td></tr>
+<tr><td>method</td><td>gravimetry</td><td>1</td><td></td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>hall</td><td>1</td><td></td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>infrared_microscopy</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>21</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>oes</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>optical_microscopy</td><td>4</td><td>8</td><td></td><td></td><td></td><td></td><td>2</td><td>5</td><td>16</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>photograph</td><td>2</td><td></td><td>2</td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>process_monitor</td><td>3</td><td></td><td>1</td><td>32</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>method</td><td>raman</td><td>1</td><td></td><td>58</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>rbs</td><td>2</td><td></td><td>25</td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>reflectometry</td><td>4</td><td>160</td><td></td><td></td><td></td><td></td><td>21</td><td>23</td><td>26</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>schematic</td><td>3</td><td>7</td><td>1</td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>sem</td><td>7</td><td></td><td>8</td><td>2</td><td>12</td><td>17</td><td></td><td>5</td><td></td><td></td><td></td><td>5</td><td>1</td></tr>
+<tr><td>method</td><td>sem_eds</td><td>2</td><td>18</td><td></td><td>26</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>sims</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>method</td><td>simulation</td><td>6</td><td>62</td><td></td><td></td><td>26</td><td></td><td>22</td><td></td><td>1</td><td>78</td><td>166</td><td></td><td></td></tr>
+<tr><td>method</td><td>spectroscopic_ellipsometry</td><td>3</td><td></td><td>62</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>21</td><td>15</td></tr>
+<tr><td>method</td><td>tabulated</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>tem</td><td>2</td><td></td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>method</td><td>tem_eds</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>method</td><td>tof_erda</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td></tr>
+<tr><td>method</td><td>transistor_iv</td><td>1</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>two_point_through_thickness</td><td>1</td><td></td><td></td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>method</td><td>uv_vis_spectroscopy</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td></tr>
+<tr><td>method</td><td>xps</td><td>3</td><td></td><td>84</td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td><td></td></tr>
+<tr><td>method</td><td>xrd</td><td>4</td><td></td><td>1</td><td>25</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>2</td></tr>
+<tr><td>method</td><td>xrr</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>2</td></tr>
+<tr><td>qualifier</td><td>definition</td><td>2</td><td>33</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>13</td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>step</td><td>12</td><td>69</td><td>29</td><td>20</td><td>65</td><td>4</td><td>13</td><td>5</td><td>13</td><td>13</td><td>2</td><td>4</td><td>6</td></tr>
+<tr><td>qualifier</td><td>species</td><td>12</td><td>59</td><td>15</td><td>27</td><td>67</td><td>18</td><td>33</td><td>3</td><td>15</td><td>83</td><td>48</td><td>5</td><td>4</td></tr>
+<tr><td>qualifier</td><td>gas</td><td>9</td><td>2</td><td>81</td><td>2</td><td>1</td><td>1</td><td>3</td><td></td><td>2</td><td>24</td><td></td><td></td><td>2</td></tr>
+<tr><td>qualifier</td><td>element</td><td>5</td><td>3</td><td>83</td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>12</td></tr>
+<tr><td>qualifier</td><td>reference_element</td><td>2</td><td></td><td>49</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>qualifier</td><td>phase</td><td>1</td><td></td><td></td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>position</td><td>11</td><td>67</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>8</td><td>13</td><td></td><td>18</td><td>17</td></tr>
+<tr><td>qualifier</td><td>reference</td><td>7</td><td>32</td><td>1</td><td></td><td>14</td><td></td><td>2</td><td>1</td><td>12</td><td>15</td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>level</td><td>8</td><td>20</td><td></td><td>2</td><td>1</td><td></td><td>5</td><td>16</td><td>10</td><td>3</td><td>33</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>basis</td><td>2</td><td>16</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>surface</td><td>2</td><td></td><td></td><td>6</td><td></td><td></td><td></td><td></td><td>10</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>kind</td><td>10</td><td>1</td><td>12</td><td>2</td><td></td><td>2</td><td></td><td>10</td><td>1</td><td>14</td><td>11</td><td>3</td><td>2</td></tr>
+<tr><td>qualifier</td><td>by</td><td>2</td><td>34</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>14</td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>origin</td><td>1</td><td>19</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>stage</td><td>5</td><td></td><td></td><td>5</td><td>2</td><td>4</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td>1</td></tr>
+<tr><td>qualifier</td><td>stat</td><td>6</td><td>6</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td>3</td><td>1</td><td></td></tr>
+<tr><td>qualifier</td><td>between</td><td>4</td><td>6</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>n</td><td>4</td><td>6</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>relative_to</td><td>3</td><td></td><td>55</td><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>over</td><td>6</td><td>50</td><td>39</td><td>5</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>7</td><td>10</td></tr>
+<tr><td>qualifier</td><td>mode</td><td>10</td><td>48</td><td>194</td><td>35</td><td>17</td><td>5</td><td>6</td><td>15</td><td>16</td><td></td><td></td><td>27</td><td>20</td></tr>
+<tr><td>qualifier</td><td>x</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>ratio</td><td>1</td><td></td><td>21</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>qualifier</td><td>specimen_class</td><td>10</td><td>17</td><td>54</td><td>15</td><td>14</td><td>4</td><td>2</td><td>14</td><td>8</td><td></td><td></td><td>14</td><td>8</td></tr>
+<tr><td>qualifier</td><td>structure_class</td><td>10</td><td>21</td><td>54</td><td>17</td><td>21</td><td>5</td><td>3</td><td>15</td><td>8</td><td></td><td></td><td>14</td><td>8</td></tr>
+<tr><td>unit</td><td>pm</td><td>3</td><td>4</td><td></td><td></td><td></td><td></td><td>6</td><td></td><td></td><td>12</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Å</td><td>1</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm</td><td>12</td><td>89</td><td>40</td><td>13</td><td>36</td><td>2</td><td>8</td><td>33</td><td>9</td><td>1</td><td>10</td><td>13</td><td>5</td></tr>
+<tr><td>unit</td><td>µm</td><td>11</td><td>47</td><td>1</td><td>1</td><td>48</td><td>5</td><td>12</td><td>19</td><td>2</td><td>14</td><td>19</td><td>2</td><td></td></tr>
+<tr><td>unit</td><td>mm</td><td>7</td><td>8</td><td></td><td>10</td><td></td><td>1</td><td>2</td><td>1</td><td>1</td><td>6</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm</td><td>3</td><td></td><td></td><td>1</td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m</td><td>2</td><td>6</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>ms</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>s</td><td>12</td><td>71</td><td>6</td><td>7</td><td>67</td><td>4</td><td>13</td><td>5</td><td>14</td><td>13</td><td>2</td><td>8</td><td>6</td></tr>
+<tr><td>unit</td><td>min</td><td>4</td><td></td><td>1</td><td>7</td><td>2</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>h</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>°C</td><td>11</td><td>7</td><td>71</td><td>28</td><td>7</td><td>3</td><td>2</td><td>10</td><td>1</td><td>5</td><td></td><td>17</td><td>11</td></tr>
+<tr><td>unit</td><td>K</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>9</td><td>11</td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa</td><td>4</td><td>4</td><td></td><td></td><td></td><td></td><td>5</td><td></td><td></td><td>25</td><td>6</td><td></td><td></td></tr>
+<tr><td>unit</td><td>hPa</td><td>4</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td>4</td><td>3</td></tr>
+<tr><td>unit</td><td>mbar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>bar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr</td><td>5</td><td></td><td>2</td><td>5</td><td>12</td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mTorr</td><td>3</td><td></td><td>2</td><td>3</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa·s</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr·s</td><td>1</td><td></td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>L</td><td>3</td><td></td><td></td><td>1</td><td>2</td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/cycle</td><td>6</td><td>32</td><td></td><td></td><td></td><td>1</td><td>3</td><td></td><td></td><td>1</td><td></td><td>10</td><td>4</td></tr>
+<tr><td>unit</td><td>Å/cycle</td><td>2</td><td></td><td>33</td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>pm/cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1</td><td>1</td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>%</td><td>8</td><td>7</td><td>6</td><td>11</td><td>4</td><td>5</td><td></td><td></td><td></td><td>2</td><td>3</td><td>4</td><td></td></tr>
+<tr><td>unit</td><td>at.%</td><td>2</td><td></td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>unit</td><td>wt%</td><td>1</td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cycle</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Ω·m</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Ω·cm</td><td>2</td><td></td><td>41</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mΩ·cm</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µΩ·cm</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>unit</td><td>Ω/sq</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm-1</td><td>1</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>eV</td><td>2</td><td></td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td><td></td></tr>
+<tr><td>unit</td><td>m2/s</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2/s</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2/g</td><td>2</td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td></tr>
+<tr><td>unit</td><td>m3/g</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/m3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>8</td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/cm3</td><td>2</td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>unit</td><td>1/m</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td><td></td><td></td></tr>
+<tr><td>unit</td><td>mol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mmol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µmol</td><td>2</td><td></td><td></td><td>6</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mTorr/min</td><td>1</td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Torr/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/h</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm/s</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>sccm</td><td>8</td><td>1</td><td>25</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>unit</td><td>W</td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td></td></tr>
+<tr><td>unit</td><td>g/cm3</td><td>2</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kg/m3</td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm-2</td><td>7</td><td>1</td><td>3</td><td></td><td>1</td><td>3</td><td>1</td><td></td><td></td><td>11</td><td>9</td><td></td><td></td></tr>
+<tr><td>unit</td><td>m-2</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm-2</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/Pa</td><td>3</td><td>2</td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/mbar</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/s</td><td>4</td><td>2</td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td>9</td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2/(V·s)</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2/(V·s)</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>°</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>unit</td><td>g/mol</td><td>4</td><td></td><td></td><td></td><td></td><td>1</td><td>2</td><td></td><td></td><td>25</td><td>9</td><td></td><td></td></tr>
+<tr><td>unit</td><td>kg/mol</td><td>1</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>1/mol</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>J/K</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>g</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kg</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mg</td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>keV</td><td>3</td><td>1</td><td></td><td></td><td>1</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>MeV</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>V</td><td>1</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>kV</td><td>1</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mW</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nA</td><td>2</td><td></td><td></td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>C/cm2</td><td>1</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>amu</td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m2</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm2</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>mL</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>nm-1</td><td>2</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td></tr>
+<tr><td>unit</td><td>s^-1/2</td><td>1</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>ns</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>µPa s</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>Pa s</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>22</td><td></td><td></td></tr>
+<tr><td>unit</td><td>cm3/g</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>unit</td><td>mol m-2 s-1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>m-2 s-1 Pa-1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>s m-3</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>MPa</td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>unit</td><td>L</td><td>3</td><td></td><td></td><td>1</td><td>2</td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>Gold check after the changes</h2><p>kb/reports/P142_ontology.check_gold.txt</p>
+<pre>== vocabulary: 93 quantity ids, 32 methods, 11 materials, 11 structures, 26 qualifier keys in use; 0 pilot ids still to absorb (0 in use); materials to absorb [], structures []
+== vocabulary: OK
+== gold vocabulary (P142): 0 misses over the gold fact rows of 12 papers
+== gold vocabulary: OK
+== claims (P54): 372 claims; 36 mechanisms named; 13 named by two or more papers: cvd_growth, desorption, feature_narrowing, gas_diffusion, pillar_effect, plasma_chemistry, residual_water, scan_angle, self_limiting_growth, surface_chemistry, surface_hydroxyl, surface_oxidation, surface_recombination
+== triples (P131): record types per paper, pilot-v6 -&gt; now (fact rows; only the types that changed)
+   yim20: cited 69 -&gt; 70, claim 54 -&gt; 40, model 68 -&gt; 73, observation 153 -&gt; 154
+   mat22: caveat 53 -&gt; 54, claim 62 -&gt; 52, observation 312 -&gt; 313
+   gre23: caveat 50 -&gt; 53, claim 69 -&gt; 57, model 17 -&gt; 18, observation 87 -&gt; 89, setting 86 -&gt; 89
+   ela03: caveat 14 -&gt; 15, cited 14 -&gt; 18, claim 54 -&gt; 37, model 53 -&gt; 57, setting 272 -&gt; 277
+   gor03: unchanged
+   yli18: claim 15 -&gt; 13, model 66 -&gt; 67
+   gao15: caveat 6 -&gt; 7, claim 21 -&gt; 13, observation 42 -&gt; 44, setting 91 -&gt; 92
+   art19: caveat 6 -&gt; 8, claim 21 -&gt; 13, model 20 -&gt; 22
+   yim22: caveat 7 -&gt; 8, claim 93 -&gt; 77, model 206 -&gt; 215
+   hei24: claim 31 -&gt; 20, model 184 -&gt; 189
+   mat23: claim 24 -&gt; 13, model 0 -&gt; 1, observation 49 -&gt; 51
+   zou23: claim 26 -&gt; 19, observation 43 -&gt; 45, setting 45 -&gt; 47
+== triples (P131): 372 claims, 0 without a full triple
+== triples (P131): OK
+== claim nodes (P130): 267 nodes for 267 distinct triples of 374 claims (374 members); 28 nodes asserted in two or more papers, each paper printed once
+== claim nodes (P130): OK
+== sentence-only (P55): 214 items found in statements ({&#x27;species&#x27;: 29, &#x27;number&#x27;: 185}); 213 allowed with a reason; 1 uncovered
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose
+== sentence-only (P55): 1 problems
+   mat22:s5.p13#1: number &#x27;1 cm2&#x27; only in prose (structure it, or allow it in sentence_only_allow.csv with a reason)
+== search (P64): 5 probes, tiers 1 concept / 2 claims, values, sets / 3 the rest; check_search: 17 record kinds probed, each hit rendered as one line (P84e)
+== search (P64): OK
+== records (P62): 1425 result records on the experiments, 268 of them curve references, none empty
+== records (P62): OK
+== uncertainty bases (P60): fit 11, instrument 6, literature 3, propagated 1, run_to_run 6, tolerance 4, within_run 8; no basis (the paper does not say) 29: mat22:tab1.r1c1#1 (tab1.r1c1), mat22:tab1.r1c2#1 (tab1.r1c2), mat22:tab1.r1c4#1 (tab1.r1c4), mat22:tab1.r1c6#1 (tab1.r1c6), mat22:tab1.r1c7#1 (tab1.r1c7), mat22:tab1.r2c1#1 (tab1.r2c1), mat22:tab1.r2c2#1 (tab1.r2c2), mat22:tab1.r2c4#1 (tab1.r2c4), mat22:tab1.r2c6#1 (tab1.r2c6), mat22:tab1.r2c7#1 (tab1.r2c7), mat22:tab1.r3c1#1 (tab1.r3c1), mat22:tab1.r3c2#1 (tab1.r3c2), mat22:tab1.r3c4#1 (tab1.r3c4), mat22:tab1.r3c6#1 (tab1.r3c6), mat22:tab1.r3c7#1 (tab1.r3c7), gre23:s6.p8#4 (s6.p8), gre23:s8.p1#4 (s8.p1), gre23:s8.p1#7 (s8.p1), gre23:s8.p1#8 (s8.p1), gre23:s8.p1#9 (s8.p1), gre23:tabI.r1c2#1 (tabI.r1c2), gre23:tabI.r2c2#1 (tabI.r2c2), gre23:tabI.r3c2#1 (tabI.r3c2), gre23:s13.p3#1 (s13.p3), gre23:s13.p3#2 (s13.p3), hei24:s8.x1#2 (s8.x1), hei24:s8.x1#3 (s8.x1), hei24:s8.x1#4 (s8.x1), mat23:s6.p4#3 (s6.p4)
+== uncertainty bases (P60): OK
+== mechanisms (P82): 36 mechanisms, none with a unit or a value
+== mechanisms (P82): OK
+== structure (P78): 10 structure classes, 10 slot entries; 166 specimen and input entities with a structure_class; 273 slot records; 13 body_thickness values checked against feature_depth × entry_sides; residual free labels with a length or area-per-mass unit: 56
+    yim20:s5.p1#7 [chip size]
+    yim20:s7.p3#2 [length of the line]
+    yim20:s7.p3#3 [measurement point interval]
+    yim20:s7.p5#4 [step]
+    yim20:s7.p5#9 [lateral length L]
+    yim20:s7.p5#10 [lateral length L]
+    yim20:fig4.cap#1 [channel length L]
+    yim20:fig6#1 [Z Range]
+    yim20:s11.x1#3 [width of the adsorption front]
+    yim20:fig10.cap#7 [d_A]
+    yim20:fig10.cap#8 [d_B]
+    yim20:s16.p3#2 [nanostep height]
+    yim20:s16.p5#2 [pillar diameter]
+    yim20:s16.p5#3 [interdistance]
+    yim20:s16.p5#4 [membrane bending displacement]
+    yim20:s16.p5#6 [membrane bending displacement]
+    yim20:s16.p7#2 [positioning uncertainty]
+    yim20:s19.p3#4 [hydraulic diameter h]
+    yim20:fig4.cap#2 [channel length L]
+    yim20:fig4.cap#3 [channel length L]
+    yim20:s7.p5#13 [lateral length L]
+    yim20:s7.p5#14 [lateral length L]
+    mat22:s3.p26#3 [parallel-oriented layer thickness]
+    mat22:s5.p15#1 [laser wavelength]
+    gre23:s9.p1#2 [chamber length]
+    gre23:s9.p1#3 [gap height]
+    gre23:s14.p1#3 [denser band width]
+    gre23:s14.p1#4 [near-surface depletion depth]
+    gre23:s14.p10#4 [excess deposition]
+    ela03:s4.p5#1 [scan step]
+    gor03:s10.p1#3 [reactor tube length]
+    gor03:s10.p1#4 [reactor tube diameter]
+    gor03:s10.p2#1 [reaction zone length]
+    gor03:s10.p3#1 [feed-through bore]
+    yli18:s8.p25#4 [line scan step]
+    yli18:s8.p25#5 [scan length]
+    yli18:s8.p25#8 [thickness precision]
+    yli18:tabI.r1c7#1 [rms thickness error]
+    yli18:tabI.r2c7#1 [rms thickness error]
+    yli18:s8.p25#11 [line scan step]
+    yli18:s8.p25#12 [scan length]
+    yli18:s8.p25#15 [thickness precision]
+    gao15:s6.p1#1 [wafer diameter]
+    gao15:s6.p3#2 [polysilicon membrane]
+    gao15:s6.p3#3 [sealing polysilicon]
+    gao15:s6.x1#1 [pillar spacing]
+    gao15:s6.p21#3 [waviness period]
+    gao15:s6.p21#5 [reflectometer reliability limit]
+    gao15:s6.p23#2 [remaining gap height]
+    gao15:s6.p23#3 [remaining gap height]
+    gao15:s6.p23#4 [remaining gap height]
+    art19:s5.p3#3 [spatial resolution]
+    yim22:s13.p5#3 [d(s/N)/dx̃ at x̃50%]
+    mat23:s10.p7#2 [AFM scan size]
+    mat23:s10.p7#3 [AFM scan size]
+    zou23:s10.p2#2 [electron mean free path of Mo]
+== structure (P78): OK
+== cards (P81): 109 concept cards, 1308 (entry, paper) pairs against the page data; counts by home specimen, input, aggregate, set-level, paper, cited, settings, claims, derived
+== cards (P81): OK
+== card–values (P95): 183 (quantity, paper) pairs with values on a card, each against values(result, paper)
+== card–values (P95): OK
+== resolution (P105, P110–P113): 513 calls (30 qualifier phrases of which 10 species, 5 misses, 7 detail ids, papers and search probes), 91,915 tokens; a miss suggests the nearest three, only a malformed call errors
+== resolution (P105): OK
+== card edges (P101): 59 cards with edges, 91 edges
+== card edges (P101): OK
+== grids (P80): 3 grid sets; 45 values(result, paper) calls on grid papers against their ask-v3.1 sizes: atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (1 views); carrier_density 387-&gt;833 (1 views); crystallinity 1657-&gt;1470 (7 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (7 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (1 views); growth_per_cycle 1799-&gt;1230 (7 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (4 views); resistivity 1915-&gt;1175 (7 views); roughness 651-&gt;600 (1 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views); atoms_per_cycle 409-&gt;587 (0 views); binding_energy 517-&gt;1047 (0 views); carrier_density 387-&gt;833 (0 views); crystallinity 1657-&gt;1470 (0 views); crystallite_size 335-&gt;476 (0 views); element_fraction 633-&gt;797 (0 views); element_ratio 1935-&gt;1270 (0 views); film_density 467-&gt;684 (0 views); film_thickness 1355-&gt;1763 (0 views); growth_per_cycle 1799-&gt;1230 (0 views); mobility 0-&gt;483 (0 views); phase 611-&gt;568 (0 views); resistivity 1915-&gt;1175 (0 views); roughness 651-&gt;600 (0 views); signal_intensity 862-&gt;30 (0 views)
+== grids (P80): OK
+== homes (P79): 2105 value records with an entry (from the page); 0 homeless
+== homes (P79): OK
+== calls (P75, P119): token budget 40,000 spent after 31 executed calls (40,016 tokens delivered), 80,000 after 75 (80,339); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 119 valid probes; a malformed call is an error call and the question goes on (P124)
+== calls (P75): OK
+== settings tables (P76): 38 settings entries in the data (whatever node, P78a); 197 (entry, paper) pairs with stated conditions; max 1445 tokens per table
+== settings tables (P76): OK
+== set tables (P77): 175 comparison sets, each one call within the budget; 2 with columns collapsed; max 1972 tokens per table
+== set tables (P77): OK
+== battery per paper (P97): yim22 15 calls 10,932 tokens; yim20 14 calls 15,029 tokens; mat22 15 calls 13,924 tokens; gre23 15 calls 11,669 tokens; art19 15 calls 9,265 tokens; ela03 14 calls 9,111 tokens; gor03 13 calls 4,986 tokens; yli18 13 calls 8,459 tokens; gao15 15 calls 9,316 tokens; hei24 14 calls 13,403 tokens; zou23 14 calls 6,725 tokens; mat23 14 calls 9,863 tokens; cross-paper 65 calls 71,935 tokens
+== kinds (P57, P68): 9 kinds with phrases, 9 bases; 240 probe calls, 4772 tool texts scanned; max 5143 tokens per output, 194,715 tokens over the battery
+== kinds (P57, P68): OK
+== map (P70, P97, P120): 225 tokens of at most 800, 8 lines, every number a count; 229 tokens at 58 simulated papers; paper index 1034 tokens at 12 papers, 4938 at 58 simulated (at most 20,000), counts equal the cards&#x27;
+== map (P70): OK
+== caveats (P56): 222 caveats, 222 unique texts (28,880 characters stored once), 753 direct attachments, 2753 facts and entities reached
+== caveats (P56): OK
+== comparability (P53): cross-paper value pairs per output quantity, comparable / not: atoms_per_cycle 3/124; binding_energy 12/0; coated_aspect_ratio 12/238; crystallite_size 0/4; deposition_rate 1211/689; element_fraction 72/34; element_ratio 0/80; fill_fraction 0/6; film_thickness 1882/7312; front_slope 0/416; growth_per_cycle 460/5316; normalized_thickness 24/155; penetration_depth 36/519; resistivity 34/105; roughness 14/0; sheet_resistance 1/0; signal_intensity 0/2; step_coverage 2/0; surface_coverage 408/0; thickness_nonuniformity 0/1
+== comparability (P53): OK
+== bases: 70 quantity ids with values; bases stated on 4 (mass_gain {&#x27;not_stated&#x27;: 3}, phase_fraction {&#x27;not_stated&#x27;: 4}, plasma_gas_ratio {&#x27;reactive_gases&#x27;: 53}, porosity {&#x27;total_volume&#x27;: 6})
+== bases (P52): OK
+== unit table (P122): 353 spellings in 43 dimensions generated from units.yaml; 51 record spellings, 18 derived definitions, 65 default units resolve
+== unit table (P122): OK
+== dimensions (P108): 2763 value records (facts, cells, peaks, derived, curve axes) against units.yaml; 1 entries with definitions
+== dimensions (P108): OK
+== cycle (P106): 3 experiments with a stated hold in 1 paper(s); the hold on the dose line in detail(recipe) and in the pulse_time settings table
+== cycle (P106): OK
+== multi-quantity values (P121, P121b): 36 blocks over 12 papers&#x27; top-3 lists, 6 folded to one line (18 of 36 before P121b); a list call&#x27;s budget is k × 2000 tokens, at most 4×; legends and footer once
+== multi-quantity values (P121): OK
+== compare_runs (P126): report on asks.jsonl (12 records, 3 questions, arms kb, model, text): six sections; synthetic verdicts join and count; anchor columns and one kb × text verdict grid per run (P127)
+== compare_runs (P126): OK
+== report html (P129): fixture 18 records: 3 cards for 3 questions; section 4 = compare_runs 5b/5c (27 rows), badges = 5b; 8 cost cells recomputed from the records and prices.csv; 22,419 characters, no external URL
+== report html (P129): OK
+== paper index (P117): 12 papers, max 864 tokens per index, at most 40 quantity lines; counts equal the concept cards&#x27; (P95 both ways)
+== paper index (P117): OK
+== conversions (P109): 1 entries with converts_to, 73 converted curve series citing their context
+== conversions (P109): OK
+== cases: OK
+== user facts: OK
+== derived values (query layer): OK
+== figures import (P84-P87): 136 ok panels, 429 curves, 84 sets over 12 papers; import report, unmapped.csv and units checked
+== figures import (P84-P87): OK
+== figure derived (P86): 96 derived scalars, 40 stated counterparts found, 1 outside tolerance (listed in kb/problems.txt, a finding, not a failure)
+== metrics (P59)
+   coverage yim20: 568/608 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 28 items in 24 facts
+   coverage mat22: 187/215 elements covered, 28 no knowledge, 0 missed; sentence-only gaps: 62 items in 51 facts
+   coverage gre23: 154/208 elements covered, 54 no knowledge, 0 missed; sentence-only gaps: 63 items in 44 facts
+   coverage ela03: 155/210 elements covered, 55 no knowledge, 0 missed; sentence-only gaps: 7 items in 6 facts
+   coverage gor03: 79/100 elements covered, 21 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage yli18: 215/314 elements covered, 99 no knowledge, 0 missed; sentence-only gaps: 5 items in 4 facts
+   coverage gao15: 61/99 elements covered, 38 no knowledge, 0 missed; sentence-only gaps: 0 items in 0 facts
+   coverage art19: 56/96 elements covered, 40 no knowledge, 0 missed; sentence-only gaps: 7 items in 7 facts
+   coverage yim22: 487/583 elements covered, 96 no knowledge, 0 missed; sentence-only gaps: 4 items in 4 facts
+   coverage hei24: 205/247 elements covered, 42 no knowledge, 0 missed; sentence-only gaps: 6 items in 4 facts
+   coverage mat23: 52/110 elements covered, 58 no knowledge, 0 missed; sentence-only gaps: 16 items in 8 facts
+   coverage zou23: 75/121 elements covered, 46 no knowledge, 0 missed; sentence-only gaps: 26 items in 18 facts
+   compactness: unique content once 194,592 tokens against 164,166 tokens of source text (1.19) · yim20 33,481 of 20,656; mat22 41,252 of 22,257; gre23 18,634 of 16,381; ela03 19,792 of 14,170; gor03 6,028 of 7,364; yli18 7,830 of 10,472; gao15 7,520 of 5,360; art19 7,464 of 9,387; yim22 20,566 of 23,808; hei24 18,348 of 15,672; mat23 6,620 of 8,779; zou23 6,035 of 9,860 · user facts 1,022
+   absorption (81 pilot quantity ids): direct 31, new_entry 27, attribute 9, alias 6, qualifier 4, dropped 2, transform 1, reserved 1
+== yim20 10.1039_d0cp03358h: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 24}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 14, &#x27;covered&#x27;: 68}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 452, &#x27;no knowledge&#x27;: 1}}
+   facts: 763 {&#x27;cited&#x27;: 70, &#x27;setting&#x27;: 206, &#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 73, &#x27;observation&#x27;: 154, &#x27;derived&#x27;: 108, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | quantity other: 41
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 8, &#x27;activity&#x27;: 75, &#x27;cited&#x27;: 22, &#x27;entity&#x27;: 31} | activities: {&#x27;deposition&#x27;: 15, &#x27;simulation&#x27;: 11, &#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 48} | comparisons: {&#x27;series&#x27;: 7, &#x27;replicate&#x27;: 1} | facts directly under the paper: 154 {&#x27;claim&#x27;: 40, &#x27;definition&#x27;: 66, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 1, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 45} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 9, &#x27;facts, no values&#x27;: 23}
+   numbers in text reaching a fact: 238/287 (83%)
+   numbers in table reaching a fact: 398/402 (99%)
+== mat22 10.1021_acs.chemmater.2c01154: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 11}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 1}, &#x27;heading&#x27;: {&#x27;covered&#x27;: 1, &#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 17}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 22, &#x27;covered&#x27;: 89}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 64}}
+   facts: 732 {&#x27;claim&#x27;: 52, &#x27;cited&#x27;: 35, &#x27;definition&#x27;: 14, &#x27;model&#x27;: 8, &#x27;observation&#x27;: 313, &#x27;setting&#x27;: 251, &#x27;derived&#x27;: 4, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | quantity other: 38
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;comparison&#x27;: 12, &#x27;cited&#x27;: 23, &#x27;activity&#x27;: 249, &#x27;entity&#x27;: 54} | activities: {&#x27;recipe&#x27;: 5, &#x27;deposition&#x27;: 54, &#x27;measurement&#x27;: 189, &#x27;anneal&#x27;: 1} | comparisons: {&#x27;grid&#x27;: 1, &#x27;series&#x27;: 11} | facts directly under the paper: 120 {&#x27;claim&#x27;: 50, &#x27;cited&#x27;: 1, &#x27;definition&#x27;: 14, &#x27;caveat&#x27;: 54, &#x27;identity&#x27;: 1} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 16, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 679/756 (90%)
+   numbers in table reaching a fact: 65/65 (100%)
+== gre23 10.1116_6.0003182: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 8}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 15}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 20}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 39, &#x27;covered&#x27;: 61}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 52}}
+   facts: 396 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 40, &#x27;setting&#x27;: 89, &#x27;definition&#x27;: 16, &#x27;derived&#x27;: 31, &#x27;observation&#x27;: 89, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 18, &#x27;identity&#x27;: 3} | quantity other: 28
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 41, &#x27;cited&#x27;: 17, &#x27;comparison&#x27;: 1, &#x27;entity&#x27;: 18} | activities: {&#x27;deposition&#x27;: 4, &#x27;recipe&#x27;: 1, &#x27;simulation&#x27;: 1, &#x27;measurement&#x27;: 35} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 133 {&#x27;claim&#x27;: 57, &#x27;cited&#x27;: 3, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 53, &#x27;model&#x27;: 1, &#x27;identity&#x27;: 3} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 14, &#x27;facts, no values&#x27;: 6}
+   numbers in text reaching a fact: 548/599 (91%)
+   numbers in table reaching a fact: 64/64 (100%)
+== ela03 10.1021_cm0303080: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 7}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 13, &#x27;no knowledge&#x27;: 1}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 6}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21, &#x27;no knowledge&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 80}, &#x27;table_cell&#x27;: {&#x27;covered&#x27;: 24, &#x27;no knowledge&#x27;: 1}}
+   facts: 469 {&#x27;setting&#x27;: 277, &#x27;claim&#x27;: 37, &#x27;cited&#x27;: 18, &#x27;model&#x27;: 57, &#x27;observation&#x27;: 38, &#x27;definition&#x27;: 10, &#x27;caveat&#x27;: 15, &#x27;derived&#x27;: 17} | quantity other: 39
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 46, &#x27;entity&#x27;: 34, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 8} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 17, &#x27;deposition&#x27;: 14, &#x27;simulation&#x27;: 14} | comparisons: {&#x27;series&#x27;: 8} | facts directly under the paper: 72 {&#x27;claim&#x27;: 37, &#x27;cited&#x27;: 11, &#x27;caveat&#x27;: 15, &#x27;definition&#x27;: 9} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 11, &#x27;facts, no values&#x27;: 10, &#x27;no knowledge&#x27;: 2}
+   numbers in text reaching a fact: 373/561 (66%)
+   numbers in table reaching a fact: 21/21 (100%)
+== gor03 10.1002_cvde.200390005: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 15}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 10}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 2}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 8, &#x27;covered&#x27;: 56}}
+   facts: 133 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 8, &#x27;cited&#x27;: 6, &#x27;model&#x27;: 21, &#x27;observation&#x27;: 11, &#x27;derived&#x27;: 10, &#x27;setting&#x27;: 52, &#x27;caveat&#x27;: 7} | quantity other: 15
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 6, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 1} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 5, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 1} | facts directly under the paper: 32 {&#x27;claim&#x27;: 18, &#x27;definition&#x27;: 7, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 2, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 135/206 (66%)
+   numbers in table reaching a fact: 0/0 (0%)
+== yli18 10.1063_1.5028178: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4, &#x27;no knowledge&#x27;: 1}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 46}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 11}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 6}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 72}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 41, &#x27;covered&#x27;: 79}}
+   facts: 216 {&#x27;claim&#x27;: 13, &#x27;setting&#x27;: 63, &#x27;derived&#x27;: 15, &#x27;cited&#x27;: 5, &#x27;model&#x27;: 67, &#x27;definition&#x27;: 38, &#x27;observation&#x27;: 7, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 16
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 11, &#x27;entity&#x27;: 12, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 6, &#x27;simulation&#x27;: 2} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 62 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 38, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 3, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 92/269 (34%)
+   numbers in table reaching a fact: 15/38 (39%)
+== gao15 10.1116_1.4903941: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 9}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 14}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 28, &#x27;covered&#x27;: 38}}
+   facts: 175 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 8, &#x27;observation&#x27;: 44, &#x27;definition&#x27;: 5, &#x27;setting&#x27;: 92, &#x27;derived&#x27;: 6, &#x27;caveat&#x27;: 7} | quantity other: 10
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 25, &#x27;entity&#x27;: 15, &#x27;cited&#x27;: 4, &#x27;comparison&#x27;: 5} | activities: {&#x27;recipe&#x27;: 1, &#x27;measurement&#x27;: 15, &#x27;deposition&#x27;: 9} | comparisons: {&#x27;series&#x27;: 5} | facts directly under the paper: 27 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 2, &#x27;definition&#x27;: 5, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;stated values only&#x27;: 13, &#x27;facts, no values&#x27;: 1}
+   numbers in text reaching a fact: 107/222 (48%)
+   numbers in table reaching a fact: 0/0 (0%)
+== art19 10.1021_acs.jpcc.9b08176: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 6}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 14}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 5}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 32}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 7, &#x27;covered&#x27;: 6}}
+   facts: 166 {&#x27;claim&#x27;: 13, &#x27;cited&#x27;: 14, &#x27;model&#x27;: 22, &#x27;definition&#x27;: 16, &#x27;setting&#x27;: 50, &#x27;observation&#x27;: 36, &#x27;derived&#x27;: 7, &#x27;caveat&#x27;: 8} | quantity other: 5
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 22, &#x27;entity&#x27;: 12, &#x27;cited&#x27;: 9, &#x27;comparison&#x27;: 4} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 4, &#x27;measurement&#x27;: 16, &#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 4} | facts directly under the paper: 37 {&#x27;claim&#x27;: 13, &#x27;definition&#x27;: 16, &#x27;caveat&#x27;: 8} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 1, &#x27;facts, no values&#x27;: 4, &#x27;stated values only&#x27;: 1}
+   numbers in text reaching a fact: 161/234 (69%)
+   numbers in table reaching a fact: 38/38 (100%)
+== yim22 10.1039_d1cp04758b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 3}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 2, &#x27;covered&#x27;: 8}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 31}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 21}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 27, &#x27;covered&#x27;: 88}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 42, &#x27;covered&#x27;: 334}}
+   facts: 517 {&#x27;model&#x27;: 215, &#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62, &#x27;derived&#x27;: 84, &#x27;setting&#x27;: 67} | quantity other: 26
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 7, &#x27;entity&#x27;: 68, &#x27;comparison&#x27;: 15} | activities: {&#x27;simulation&#x27;: 7} | comparisons: {&#x27;series&#x27;: 14, &#x27;replicate&#x27;: 1} | facts directly under the paper: 151 {&#x27;claim&#x27;: 77, &#x27;caveat&#x27;: 8, &#x27;cited&#x27;: 4, &#x27;definition&#x27;: 62} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;stated values only&#x27;: 19, &#x27;facts, no values&#x27;: 4}
+   numbers in text reaching a fact: 201/551 (36%)
+   numbers in table reaching a fact: 194/280 (69%)
+== hei24 10.1039_d3cp05639b: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 9}, &#x27;equation&#x27;: {&#x27;covered&#x27;: 13}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 16}, &#x27;panel&#x27;: {&#x27;no knowledge&#x27;: 3, &#x27;covered&#x27;: 32}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 18, &#x27;covered&#x27;: 59}, &#x27;table_cell&#x27;: {&#x27;no knowledge&#x27;: 4, &#x27;covered&#x27;: 88}}
+   facts: 440 {&#x27;model&#x27;: 189, &#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;derived&#x27;: 16, &#x27;setting&#x27;: 172, &#x27;identity&#x27;: 1, &#x27;caveat&#x27;: 7} | quantity other: 36
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 1, &#x27;entity&#x27;: 83, &#x27;comparison&#x27;: 24} | activities: {&#x27;simulation&#x27;: 1} | comparisons: {&#x27;series&#x27;: 24} | facts directly under the paper: 62 {&#x27;claim&#x27;: 20, &#x27;definition&#x27;: 35, &#x27;caveat&#x27;: 7} | claims without links: 0
+   panels: {&#x27;no knowledge&#x27;: 3, &#x27;facts, no values&#x27;: 1, &#x27;stated values only&#x27;: 31}
+   numbers in text reaching a fact: 132/226 (58%)
+   numbers in table reaching a fact: 31/61 (51%)
+== mat23 10.1116_6.0002993: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;no knowledge&#x27;: 1, &#x27;covered&#x27;: 4}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 4}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 21}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 45, &#x27;covered&#x27;: 23}}
+   facts: 136 {&#x27;claim&#x27;: 13, &#x27;observation&#x27;: 51, &#x27;model&#x27;: 1, &#x27;cited&#x27;: 6, &#x27;setting&#x27;: 54, &#x27;derived&#x27;: 4, &#x27;identity&#x27;: 2, &#x27;caveat&#x27;: 5} | quantity other: 22
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 30, &#x27;entity&#x27;: 14, &#x27;cited&#x27;: 3, &#x27;comparison&#x27;: 7} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 27} | comparisons: {&#x27;series&#x27;: 7} | facts directly under the paper: 18 {&#x27;claim&#x27;: 13, &#x27;caveat&#x27;: 5} | claims without links: 0
+   panels: {&#x27;stated values only&#x27;: 18, &#x27;facts, no values&#x27;: 3}
+   numbers in text reaching a fact: 209/348 (60%)
+   numbers in table reaching a fact: 0/0 (0%)
+== zou23 10.1116_6.0002804: OK
+   elements: {&#x27;abstract&#x27;: {&#x27;covered&#x27;: 5}, &#x27;caption&#x27;: {&#x27;covered&#x27;: 10}, &#x27;heading&#x27;: {&#x27;no knowledge&#x27;: 12}, &#x27;panel&#x27;: {&#x27;covered&#x27;: 23}, &#x27;paragraph&#x27;: {&#x27;no knowledge&#x27;: 34, &#x27;covered&#x27;: 37}}
+   facts: 124 {&#x27;setting&#x27;: 47, &#x27;claim&#x27;: 19, &#x27;observation&#x27;: 45, &#x27;cited&#x27;: 6, &#x27;derived&#x27;: 1, &#x27;caveat&#x27;: 6} | quantity other: 6
+   tree rows: {&#x27;paper&#x27;: 1, &#x27;activity&#x27;: 23, &#x27;entity&#x27;: 8, &#x27;cited&#x27;: 5, &#x27;comparison&#x27;: 3} | activities: {&#x27;recipe&#x27;: 1, &#x27;deposition&#x27;: 2, &#x27;measurement&#x27;: 20} | comparisons: {&#x27;series&#x27;: 3} | facts directly under the paper: 25 {&#x27;claim&#x27;: 19, &#x27;caveat&#x27;: 6} | claims without links: 0
+   panels: {&#x27;facts, no values&#x27;: 19, &#x27;stated values only&#x27;: 4}
+   numbers in text reaching a fact: 218/303 (72%)
+   numbers in table reaching a fact: 0/0 (0%)
+exit 1
+</pre>
+</body></html>

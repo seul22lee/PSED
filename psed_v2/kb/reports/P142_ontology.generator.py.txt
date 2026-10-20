@@ -1,0 +1,131 @@
+"""P142 ontology report tables (read-only): kb/reports/P142_ontology.*.csv."""
+import collections, csv, json, re, subprocess, sys
+from pathlib import Path
+import yaml
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+import vocab as V   # noqa: E402
+import lists as L   # noqa: E402
+import elements     # noqa: E402
+
+R = V2 / "kb" / "reports"
+HELD = {"10.1039_d1cp04758b", "10.1116_6.0003182", "10.1116_6.0002993"}
+
+
+def wr(name, rows, fields=None):
+    rows = list(rows)
+    fields = fields or list(dict.fromkeys(k for r in rows for k in r)) or ["(none)"]
+    with (R / f"P142_ontology.{name}.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows)
+
+
+def s(v):
+    return "; ".join(map(str, v)) if isinstance(v, list) else ("" if v is None else json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else str(v))
+
+
+# a. misses before and changes now
+before = (Path(sys.argv[1]).read_text(encoding="utf-8").splitlines())
+wr("a_misses_before", [dict(gold_row=m.split(": ")[0], miss=m.split(": ", 1)[1]) for m in before if m], ["gold_row", "miss"])
+wr("a_changes_now", [
+    dict(file="ontology/units.yaml", entry="MPa", field="(new unit row)", old="", new="MPa: pressure, factor 1e6, variants MPa, megapascal", motivated_by="gre23:s8.p1#5 (held-out gold; quantity other)"),
+    dict(file="ontology/units.yaml", entry="L", field="(new unit row)", old="", new="L: volume, factor 1e-3, variants L, l, litre, liter", motivated_by="gre23:s9.p5#1 (held-out gold; quantity other)"),
+    dict(file="ontology/ontology.yaml", entry="(header)", field="sha256 line", old="56f5301b...", new="fc4f53c3...", motivated_by="the two unit rows"),
+    dict(file="kb/pilot/check.py", entry="check_gold_vocabulary()", field="(new check)", old="", new="every gold fact row against the extraction vocabulary", motivated_by="P142 item 1")])
+
+# b. every change since tag ontology-v1, per commit, per entry / field
+commits = subprocess.run(["git", "log", "--reverse", "--format=%h %s", "ontology-v1..HEAD", "--", "ontology/ontology.yaml", "ontology/units.yaml"],
+                         capture_output=True, text=True, cwd=V2).stdout.splitlines()
+review2 = collections.defaultdict(list)
+for r in csv.DictReader((R / "review" / "2_ontology_vs_gold.csv").open(encoding="utf-8")):
+    review2[r["value"]].append(f"{r['paper']} {r['fact_id']}")
+
+
+def load(ref, f):
+    out = subprocess.run(["git", "show", f"{ref}:psed_v2/ontology/{f}"], capture_output=True, text=True, cwd=V2).stdout
+    return yaml.safe_load(out) if out else {}
+
+
+rows = []
+for line in commits:
+    h, subj = line.split(" ", 1)
+    unit = re.match(r"(P\d+\w*)", subj).group(1) if re.match(r"P\d+", subj) else subj[:20]
+    a, b = load(f"{h}^", "ontology.yaml"), load(h, "ontology.yaml")
+    ea, eb = {e["id"]: e for e in a.get("entries", [])}, {e["id"]: e for e in b.get("entries", [])}
+    for i in sorted(set(ea) | set(eb)):
+        x, y = ea.get(i, {}), eb.get(i, {})
+        for f in sorted(set(x) | set(y)):
+            if x.get(f) != y.get(f):
+                rows.append(dict(unit=unit, commit=h, file="ontology.yaml", entry=i, field=f if x and y else ("(new entry)" if y else "(removed)"),
+                                 old=s(x.get(f))[:300], new=s(y.get(f))[:300], motivated_by=s(y.get("evidence") if f in ("aliases", "note") or not x else "")[:200]))
+                if not (x and y):
+                    break
+    for k in sorted(set(a) | set(b)):
+        if k != "entries" and a.get(k) != b.get(k):
+            rows.append(dict(unit=unit, commit=h, file="ontology.yaml", entry=f"(top-level {k})", field=k, old=s(a.get(k))[:200], new=s(b.get(k))[:200], motivated_by=""))
+    ua, ub = load(f"{h}^", "units.yaml"), load(h, "units.yaml")
+    ra, rb = {u["symbol"]: u for u in ua.get("units", [])}, {u["symbol"]: u for u in ub.get("units", [])}
+    for sym in sorted(set(ra) | set(rb), key=str):
+        if ra.get(sym) != rb.get(sym):
+            rows.append(dict(unit=unit, commit=h, file="units.yaml", entry=str(sym), field="(new unit row)" if sym not in ra else "variants / fields",
+                             old=s(ra.get(sym))[:200], new=s(rb.get(sym))[:200], motivated_by="; ".join(review2.get(str(sym), []) + [x for v in (rb.get(sym) or {}).get("variants", []) for x in review2.get(str(v), [])])[:300]))
+    if ua.get("same_dimension") != ub.get("same_dimension"):
+        rows.append(dict(unit=unit, commit=h, file="units.yaml", entry="same_dimension", field="same_dimension", old=s(ua.get("same_dimension")), new=s(ub.get("same_dimension")), motivated_by="P136 2b: yli18 tabI.r1c6, r2c6, fig2.cap (growth per cycle in pm)"))
+wr("b_changes_since_v1", rows, ["unit", "commit", "file", "entry", "field", "old", "new", "motivated_by"])
+
+# c. the whole ontology
+O = yaml.safe_load((V2 / "ontology" / "ontology.yaml").read_text(encoding="utf-8"))
+U = yaml.safe_load((V2 / "ontology" / "units.yaml").read_text(encoding="utf-8"))
+E = O["entries"]
+wr("c_quantities", [dict(id=e["id"], type=e["type"], name=e.get("name", ""), definition=e.get("definition", ""), unit=e.get("unit", ""), dimension=e.get("dimension", ""),
+                         aliases=s(e.get("aliases", [])), note=e.get("note", ""), role=e.get("role", ""), origin=e.get("origin", ""), replaced_by=e.get("replaced_by", ""))
+                    for e in E if e["type"] in ("quantity", "categorical")])
+wr("c_species", [dict(id=e["id"], formula=e.get("formula", ""), name=e.get("name", ""), kind=e.get("kind", ""), aliases=s(e.get("aliases", [])), definition=e.get("definition", ""))
+                 for e in E if e["type"] == "species"])
+wr("c_structures", [dict(id=e["id"], **{"class": e.get("class", "")}, aliases=s(e.get("aliases", [])), definition=e.get("definition", "")) for e in E if e["type"] == "structure"])
+wr("c_methods", [dict(id=m, **{"class": V.METHOD_CLASS.get(m, "")}, definition=V.METHOD_DEFINITION.get(m, ""), measurement=("yes (" + L.METHOD_MODE[m] + ")") if m in L.METHOD_MODE else "",
+                      ontology_entry="yes" if any(e["id"] == m and e["type"] == "method" for e in E) else "") for m in V.METHODS])
+wr("c_mechanisms", [dict(id=e["id"], name=e.get("name", ""), definition=e.get("definition", ""), aliases=s(e.get("aliases", []))) for e in E if e["type"] == "mechanism"])
+wr("c_models", [dict(id=e["id"], name=e.get("name", ""), definition=e.get("definition", "")) for e in E if e["type"] == "model"])
+wr("c_qualifiers", [dict(key=k, values=s(q.get("values")), meaning=" | ".join(str(q[x]) for x in ("definition", "meaning", "source", "log") if q.get(x))) for k, q in O["qualifiers"].items()])
+wr("c_units", [dict(symbol=u["symbol"], dimension=u["dimension"], factor=u["factor"], variants=s(u["variants"])) for u in U["units"]])
+empty = [dict(id=e["id"], type=e["type"]) for e in E if not str(e.get("definition", "")).strip()]
+wr("c_empty_definitions", empty, ["id", "type"])
+
+# d. ids per gold paper
+P = list(elements.PAPERS)
+use = collections.defaultdict(collections.Counter)
+for pid in P:
+    for f in csv.DictReader((V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")):
+        for q in filter(None, f["quantity"].split(";")):
+            use[("quantity", q)][pid] += 1
+        if f["quantity"] in ("material", "substrate", "reactant_A", "reactant_B", "structure") and f["value_text"]:
+            use[("species/structure", f["value_text"])][pid] += 1
+        for part in filter(None, f["qualifiers"].replace("|", ";").split(";")):
+            k, _, v = part.partition("=")
+            if k in ("species", "gas", "phase", "surface"):
+                use[("species/structure", v)][pid] += 1
+            if k in ("structure_class",):
+                use[("structure_class", v)][pid] += 1
+            use[("qualifier", k)][pid] += 1
+        for k in ("cause", "effect"):
+            for x in filter(None, f[k].split(";")):
+                use[("mechanism" if x in V.MECHANISMS else "quantity", x)][pid] += 1
+        if f["method"]:
+            use[("method", f["method"])][pid] += 1
+        if f["unit"]:
+            use[("unit", L.UNIT_ALIAS.get(f["unit"], f["unit"]))][pid] += 1
+ids = [("quantity", e["id"]) for e in E if e["type"] in ("quantity", "categorical")] + [("species/structure", e["id"]) for e in E if e["type"] in ("species", "structure")] + \
+      [("mechanism", e["id"]) for e in E if e["type"] == "mechanism"] + [("method", m) for m in V.METHODS] + [("qualifier", k) for k in O["qualifiers"]] + \
+      [("unit", u["symbol"]) for u in U["units"]]
+keys = {k: elements.PAPERS[k] + (" (held-out)" if k in HELD else "") for k in P}
+rows = []
+for kind, i in ids:
+    c = use.get((kind, str(i)), collections.Counter())
+    rows.append(dict(kind=kind, id=i, papers_using=sum(1 for p in P if c[p]), **{keys[p]: c[p] or "" for p in P}))
+wr("d_usage_per_paper", rows, ["kind", "id", "papers_using"] + [keys[p] for p in P])
+print(json.dumps(dict(changes_since_v1=len(list(csv.DictReader((R / "P142_ontology.b_changes_since_v1.csv").open()))), empty_definitions=len(empty),
+                      unused=sum(1 for r in rows if r["papers_using"] == 0))))
