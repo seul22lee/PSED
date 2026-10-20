@@ -4,6 +4,8 @@
 # this table, and a unit resolves only when its dimension equals the resolved quantity's (else dimension_mismatch).
 # Variants are matched after normalisation: LaTeX commands and braces removed ($^{-1}$ -> -1, \mu -> µ), μ (Greek mu) -> µ (micro),
 # superscript digits and minus folded, spaces and dots dropped, case kept for symbols that differ by case (mTorr, mbar, Pa).
+# P136 2b: dimensions that convert into another one's base unit; per cycle is a count, so nm/cycle converts to nm and back.
+same_dimension: {length_per_cycle: length}
 units:
   # length
   - {symbol: pm,   variants: [pm, picometer, picometre],                         dimension: length, factor: 1.0e-12, qudt: L}

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""ontology.yaml + pilot_map.csv -> psed_v2/pilot/vocab.py, the pilot's generated vocabularies (P49: one vocabulary source).
+"""ontology.yaml + pilot_map.csv -> psed_v2/kb/pilot/vocab.py, the pilot's generated vocabularies (P49: one vocabulary source).
 
     python3 psed_v2/ontology/export.py            # write vocab.py, print the counts and the pilot ids still to absorb
     python3 psed_v2/ontology/export.py --check    # exit 1 when vocab.py on disk differs from what the ontology gives
 
-P132: it also writes the extraction form, psed_v2/schema/form.json, form_pass0.json and FORM.md (form_files; --check covers them).
+P132: it also writes the extraction form, psed_v2/kb/schema/form.json, form_pass0.json and FORM.md (form_files; --check covers them).
 
 pilot_map.csv is the disposition table of every pilot id (quantity, material, structure or method): direct (the id is an entry),
 alias (another entry's id), qualifier (an entry plus qualifiers), transform (the output of a transform), new_entry (an entry made
@@ -71,11 +71,12 @@ def qualifier_values(q, species=(), materials=(), definitions=()):
 def unit_tables(onto):
     """P122: lists.UNIT_BASE, UNIT_ALIAS and DIMENSION_OF from ontology/units.yaml: every symbol and variant -> (dimension, factor relative
     to the dimension's canonical unit: the ontology's units: block, else the row with factor 1, else the first row); every variant -> its
-    symbol; every dimension -> itself. Never hand-edited again."""
-    rows = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]
+    symbol; every dimension -> itself, or (P136 2b, units.yaml same_dimension) to the dimension it converts into. Never hand-edited again."""
+    doc = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))
+    rows, same = doc["units"], doc.get("same_dimension") or {}                  # P136 2b: a dimension converting into another's base
     by_dim = {}
     for u in rows:
-        by_dim.setdefault(u["dimension"], []).append(u)
+        by_dim.setdefault(same.get(u["dimension"], u["dimension"]), []).append(u)
     canon = {}
     for dim, us in by_dim.items():
         want = str((onto.get("units", {}).get(dim) or {}).get("canonical", "")).split(" ")[0]
@@ -84,12 +85,12 @@ def unit_tables(onto):
         canon[dim] = float(row["factor"])
     base, alias = {}, {}
     for u in rows:
-        fac = float(u["factor"]) / canon[u["dimension"]]
+        fac = float(u["factor"]) / canon[same.get(u["dimension"], u["dimension"])]
         for v in [u["symbol"]] + list(u["variants"]):
             base.setdefault(str(v), (u["dimension"], fac))
             if str(v) != str(u["symbol"]):
                 alias.setdefault(str(v), str(u["symbol"]))
-    return base, alias, {d: d for d in by_dim}
+    return base, alias, {**{d: d for d in by_dim}, **same}
 
 
 def pending_entry(r):
@@ -194,7 +195,7 @@ JOINED = ["cause", "effect"]                                                    
 CLAIM_FIELDS = ["cause", "relation", "effect", "stance"]
 COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs", "author", "figure_ref", "basis", "sized_by"]
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
-QUOTE_WORDS, NOTE_WORDS = 15, 20
+NOTE_WORDS = 20
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 PASS0_ROLES = ["specimen", "run", "simulation", "cited_work"]
 
@@ -227,6 +228,7 @@ def form_defs(onto):
             "cause_effect": {"enum": sorted(ids("quantity", "categorical") + ids("mechanism"))},
             "species": {"enum": ids("species")},
             "material": {"enum": sorted(e["id"] for e in live if e["type"] == "species" and e.get("kind") == "material")},
+            "structure": {"enum": ids("structure")},                            # P136 2c: the value_text of a structure setting
             "definition": {"enum": sorted({d["id"] for e in live for d in (e.get("definitions") or [])})},
             "element": {"type": "string", "pattern": "^[A-Z][a-z]?$"}}          # the ontology has no element list: the form of a symbol
 
@@ -269,12 +271,14 @@ def form_schema(onto, L, F):
         "unit": s(), "value_text": s(),
         "kind": {"enum": list(L.KINDS)}, "method": {"enum": list(L.METHODS)},
         "mentions": {"type": "array", "minItems": 1, "items": s()},
-        "quote": _words(QUOTE_WORDS),
+        "quote": s(),                                                           # P136 2c: no word cap; the compiler's substring check grounds it
         "uncertainty": {"type": "number"}, "uncertainty_kind": {"enum": sorted(L.UNCERTAINTY_KINDS)}, "uncertainty_n": {"type": "integer"},
         "cause": ids_list("cause_effect"), "relation": {"enum": list(L.RELATIONS)}, "effect": ids_list("cause_effect"),
         "stance": {"enum": list(L.STANCES)},
         "note": _words(NOTE_WORDS),
-        "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1}, "additionalProperties": {"$ref": "#/$defs/quantity_id"}},
+        "term": s(),                                                            # P136 2c: a definition's symbol or term as printed
+        "variables": {"type": "object", "minProperties": 1, "propertyNames": {"minLength": 1},
+                      "additionalProperties": {"anyOf": [{"$ref": "#/$defs/quantity_id"}, {"type": "null"}]}},   # P136 2c: null = no entry
         "candidate": {"type": "object", "additionalProperties": False, "required": ["definition_quote", "unit_as_printed", "dimension", "symbol"],
                       "properties": {"definition_quote": s(), "unit_as_printed": {"type": "string"}, "dimension": {"enum": dims}, "symbol": {"type": "string"}}},
     }
@@ -285,16 +289,20 @@ def form_schema(onto, L, F):
         "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}",
         "title": "PSED v2 extraction form: one record",
         "description": f"One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version {onto['version']}, sha256 {h}) "
-                       f"and pilot/lists.py; fields from pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
+                       f"and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only {', '.join(COMPILER_ONLY)}.",
         "type": "object", "additionalProperties": False, "properties": props,
         "required": ["type", "quote"],
-        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity"] for f in VALUE_FIELDS}, **{f: ["value"] for f in UNCERTAINTY_FIELDS},
+        "dependentRequired": {"quantity": ["label_as_printed"], **{f: ["quantity", "kind"] for f in VALUE_FIELDS},   # P136 2c: kind with any value **{f: ["value"] for f in UNCERTAINTY_FIELDS},
                               **{f: [g for g in ("cause", "relation", "effect") if g != f] for f in ("cause", "relation", "effect")}},
         "allOf": [
             {"if": _is("type", VALUE_TYPES), "then": {"required": ["quantity"]}},
             {"if": _is("type", "claim"), "then": _none(["quantity"]), "else": _none(CLAIM_FIELDS)},
             {"if": _is("type", ["claim", "definition"]), "else": _none(["note"])},
-            {"if": _is("type", "definition"), "else": _none(["variables"])},
+            {"if": _is("type", "definition"), "then": {"required": ["term"]}, "else": _none(["term"])},            # P136 2c
+            {"if": _is("type", ["definition", "model"]), "else": _none(["variables"])},                              # P136 2c
+            {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/material"}}}},
+            {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": {"$ref": "#/$defs/species"}}}},
+            {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": {"$ref": "#/$defs/structure"}}}},
             {"if": _is("quantity", "other"), "then": {"required": ["candidate"]}, "else": _none(["candidate"])},
         ],
         "$defs": defs,

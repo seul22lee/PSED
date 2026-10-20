@@ -182,7 +182,7 @@ class Run:
             bad += [("cause/effect", x) for x in L.variables_ok(";".join(rec.get("cause", []) + rec.get("effect", [])))]
             if rec.get("relation") and rec["relation"] not in L.RELATIONS:
                 bad.append(("relation", rec["relation"]))
-            bad += [("variables", x) for x in (rec.get("variables") or {}).values() if x not in L.QUANTITIES]
+            bad += [("variables", x) for x in (rec.get("variables") or {}).values() if x is not None and x not in L.QUANTITIES]   # P136 2c: null = no entry
             if bad:
                 for field, x in bad:
                     self.unmapped.append(dict(element=eid, field=field, id=x, label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),

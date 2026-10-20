@@ -170,7 +170,7 @@ def convert(v, from_unit, to_unit):
     if {a, b} == {"°C", "K"}:
         return v + 273.15 if b == "K" else v - 273.15
     (da, fa), (db, fb) = UNIT_BASE[a], UNIT_BASE[b]
-    if da != db:
+    if DIMENSION_OF.get(da, da) != DIMENSION_OF.get(db, db):                    # P136 2b: length_per_cycle converts with length
         raise ValueError(f"cannot convert {a} to {b}")
     return v * fa / fb
 
