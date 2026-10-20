@@ -1,0 +1,36 @@
+decision,where (kb/extract/compile.py),what,rows affected on yli18 P136b (compile.log),exists only because the form lacks a field
+input rule,read() 113-140,latest pass-1 line per current group; latest pass-0 line; ignored lines logged,23 lines used (49 ignored),
+variables list -> object,read() ~136,provider list of {symbol quantity} mapped back,all records with variables,"YES: provider schema has no object of open keys"
+D12,validate() 151,variables quantity outside the enum -> null,46,
+step a schema,validate() 144,form.json validation,50 dropped,
+D1 (removed P136 1a),type_rules() 165,definitions from equations only (removed),0,
+model_with_value,type_rules() 171,logged and kept,51,
+statement_only,type_rules() 173,setting/observation without quantity dropped,0 (form already rejects at a),
+grounding,ground() 177,ids resolve in vocab; quantity other -> unmapped (kept),0 dropped; 58 other kept,
+D11 quote,quotes() 206-209,quote substring of normalize(element + mentioned element ids),8 dropped,
+D10 normalize,normalize() 52,"\text \mathrm \circ \mu μ \times $ _ ^ { } * NFKC whitespace",used by d e f,
+D4 units,units() 216 + unit_symbol() 67,unit -> canonical spelling via normalize; u prefix -> µ,0 dropped,
+D6 species,species() 230 + alias_table() 74,value_text id by exact alias match on value_text / label / quote,15 resolved,
+D6 gold shape,fact_row() 523,species/structure settings: type setting; kind empty,15,"YES: gold convention (no kind on species settings)"
+g mentions,mentions() 249-260,names -> pass-0 items; element ids -> figure_ref,0 unmatched,"YES: no field for figure/table references in the form"
+tree from pass 0,tree() 265-330,paper / recipe / runs / specimens (own deposition when no run shares introduced_in) / simulations,1 paper; 2 runs; 2 specimens; 2 simulations,"YES: no parent / node fields in the form"
+specimen own deposition,tree() 306,a specimen with no run sharing an introduced_in element gets its own deposition activity,2,"YES: no specimen->run link in the form"
+fallbacks,fallbacks() 336,inferred simulation for simulated curves with no pass-0 simulation for their figure; inferred run when pass 0 names none,1 simulation inferred,"YES: no figure->simulation link"
+figures (1c / P136b),figures() 370,entities per distinct conditions; shared conditions on the simulation; curve rows; comparisons,8 entities; 78 settings; 23 model; 6 observation; 1 comparison,"YES (comparisons, members, links)"
+measurement activity,measurement() 325,"<entity>:meas:<method>, mode from METHOD_MODE",per value naming one specimen,"YES: no activity field"
+parent: paper,parent() 479,claim / definition / caveat / cited under the paper (gold shape),153,"YES: parent"
+parent: mention_unmatched,parent() 481,empty parent,0,"YES: parent"
+parent: simulation,parent() 488,model_input or model -> named simulation else the only one,12,"YES: parent"
+parent: setting (D9),parent() 494-502,named run; else the specimen's run; else the only run; else the recipe,28 named; 2 specimen run; 13 recipe,"YES: parent"
+parent: measurement,parent() 504,a value naming one specimen -> its measurement activity,10,"YES: parent"
+parent_undecided,parent() end,empty parent,99,"YES: parent"
+D3 dedupe values,dedupe() 531,equal DEDUPE_KEY from different elements -> one row; evidence joined,34 merged,
+1a dedupe definitions,dedupe() 544,definitions by normalized term,23 merged,"YES: no definition id / term identity in the form"
+same-element duplicates,dedupe() 559,same row with same label from the same element(s) dropped (D5 kept),27 dropped,
+fact ids,ids() 565,<key>:<first element>#<n>,all facts,"YES: fact_id"
+j derived,derived() 574,lists.DERIVED via query.derive per entity when every input is a compiled fact,8 rows (cycle_time),
+j caveats / claim nodes,derived(),query.caveats_of / claim_nodes counted only,11 caveats (0 links); 10 nodes,"YES: links"
+k statements,statements() 623-667,statement from fields; optional parts / value text / label / term left out on an eight-word repeat; collision suffix,12 parts + 6 label/term left out,"YES: statement (compiler-only column)"
+l coverage,coverage() 671,covered / no knowledge / uncovered,all elements,
+D13 / 1d match,canon() 779 match_key() 799 matches() 804 diff() 814,canonical units; model without value matches on element + type,diff and audit only,
+experiments.csv,run() (EX.write),pilot experiments.py on the compiled tree (for check.py),10 runs,

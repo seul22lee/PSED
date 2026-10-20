@@ -1,0 +1,5 @@
+item,value,where
+cache key,sha256(prompt + response schema (sorted JSON) + thinking JSON when set),kb/extract/common.py request_hash()
+cache path,kb/cache/<pid>/<pass>_<section>_<hash16>_<model>.json,kb/extract/common.py cache_path()
+not in the key,"model name (in the path, not the hash); ontology hash (only through the prompt/schema text)",common.py
+prices.csv gemini row,"{""vendor"": ""google"", ""model"": ""gemini-3.8-flash"", ""input_per_mtok"": ""0.75"", ""cache_hit_per_mtok"": """", ""output_per_mtok"": ""3.75"", ""offpeak_input_per_mtok"": """", ""offpeak_cache_hit_per_mtok"": """", ""offpeak_output_per_mtok"": """", ""offpeak_utc"": """"}","third-party listings found by web search on 2026-10-19: anotherwrapper.com/llm-pricing/gemini-3.8-flash, llmgateway.io/models/gemini-3.8-flash, eesel.ai/blog/gemini-3-8-flash-pricing (introductory); pricepertoken.com lists 0.375 / 1.88; not Google's page"

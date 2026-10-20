@@ -1,0 +1,428 @@
+"""P137-review generator (scratchpad, not repo code): writes kb/reports/review/*.csv|txt. Read-only on everything else. No API call."""
+import collections, csv, json, re, statistics, subprocess, sys, tempfile
+from pathlib import Path
+
+V2 = Path("/home/ftk3187/github/PSED/psed_v2")
+sys.path.insert(0, str(V2 / "kb" / "extract"))
+import common as C                       # noqa: E402
+import compile as K                      # noqa: E402
+import pass1_elements as P1              # noqa: E402
+import pass0_paper as P0                 # noqa: E402
+import form_roundtrip as RT              # noqa: E402
+import lists as L                        # noqa: E402
+import vocab as V                        # noqa: E402
+from jsonschema import Draft202012Validator  # noqa: E402
+
+OUT = V2 / "kb" / "reports" / "review"
+OUT.mkdir(parents=True, exist_ok=True)
+DEV = [p for p in C.E.PAPERS if p not in C.HELD_OUT]
+KEY = C.E.PAPERS
+YLI = "10.1063_1.5028178"
+TREE = {"paper", "activity", "entity", "comparison", "identity"}
+
+
+def rd(p):
+    return list(csv.DictReader(open(p, encoding="utf-8"))) if Path(p).exists() else []
+
+
+def wr(name, rows, fields=None):
+    rows = list(rows)
+    fields = fields or (list(rows[0]) if rows else ["(no rows)"])
+    with (OUT / name).open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows)
+
+
+GOLD = {p: rd(V2 / "kb" / "pilot" / f"{p}.facts.csv") for p in DEV}
+FORM, FORM0 = C.schema("form.json"), C.schema("form_pass0.json")
+COUNTS = {}
+
+# ------------------------------------------------------------------------------------------- 1 gold conventions
+rows = []
+for p, G in GOLD.items():
+    by = collections.defaultdict(collections.Counter)
+    for r in G:
+        for c, v in r.items():
+            if v:
+                by[r["type"]][c] += 1
+    for t, cnt in by.items():
+        n = sum(1 for r in G if r["type"] == t)
+        for c in G[0].keys():
+            rows.append(dict(paper=KEY[p], type=t, rows=n, column=c, nonempty=cnt[c]))
+COUNTS["1a fields by type"] = wr("1a_fields_by_type.csv", rows)
+rows = []
+for p, G in GOLD.items():
+    for (t, k), n in sorted(collections.Counter((r["type"], r["kind"]) for r in G if "#" not in r["fact_id"] or r["type"] in TREE).items()):
+        rows.append(dict(paper=KEY[p], type=t, kind=k, rows=n))
+COUNTS["1b tree rows"] = wr("1b_tree_rows.csv", rows)
+rows = []
+for p, G in GOLD.items():
+    c = collections.Counter()
+    for r in G:
+        if "#" not in r["fact_id"] or r["type"] in TREE:
+            continue
+        for q in filter(None, r["quantity"].split(";")):
+            c[("quantity", q)] += 1
+        for f in ("unit", "data_kind", "relation", "stance", "method"):
+            if r[f]:
+                c[(f, r[f])] += 1
+        if r["quantity"] in K.SPECIES_Q and r["value_text"]:
+            c[(f"value_text[{r['quantity']}]", r["value_text"])] += 1
+        for part in filter(None, r["qualifiers"].split(";")):
+            c[("qualifier", part)] += 1
+        for f in ("cause", "effect"):
+            for x in filter(None, r[f].split(";")):
+                c[(f, x)] += 1
+    rows += [dict(paper=KEY[p], field=f, value=v, rows=n) for (f, v), n in sorted(c.items())]
+COUNTS["1c vocabulary used"] = wr("1c_vocabulary_used.csv", rows)
+
+# ------------------------------------------------------------------------------------------- 2 ontology vs gold
+qenum = set(FORM["properties"]["quantity"]["enum"])
+ce = set(FORM["$defs"]["cause_effect"]["enum"])
+rows = []
+for p, G in GOLD.items():
+    for r in G:
+        if "#" not in r["fact_id"] or r["type"] in TREE:
+            continue
+        miss = []
+        for q in filter(None, r["quantity"].split(";")):
+            if q not in qenum:
+                miss.append(("quantity", q, "not in the form's quantity enum"))
+        if r["unit"] and V.UNIT_ALIAS.get(r["unit"], r["unit"]) not in V.UNIT_BASE:
+            miss.append(("unit", r["unit"], "not in units.yaml / vocab.UNIT_ALIAS"))
+        if r["quantity"] in K.SPECIES_Q and r["value_text"] and r["value_text"] not in K.SPECIES_Q[r["quantity"]]:
+            miss.append(("value_text", r["value_text"], f"not a {r['quantity']} id"))
+        miss += [("qualifier", x, "not in its enum (lists.qualifiers_ok)") for x in L.qualifiers_ok(r["qualifiers"])]
+        for f in ("cause", "effect"):
+            miss += [(f, x, "not in cause_effect") for x in filter(None, r[f].split(";")) if x not in ce]
+        if r["relation"] and r["relation"] not in L.RELATIONS:
+            miss.append(("relation", r["relation"], "not in RELATIONS"))
+        if r["stance"] and r["stance"] not in L.STANCES:
+            miss.append(("stance", r["stance"], "not in STANCES"))
+        rows += [dict(paper=KEY[p], fact_id=r["fact_id"], type=r["type"], field=f, value=v, rule=why) for f, v, why in miss]
+COUNTS["2 ontology misses"] = wr("2_ontology_vs_gold.csv", rows, ["paper", "fact_id", "type", "field", "value", "rule"])
+
+
+# ------------------------------------------------------------------------------------------- 3 form vs gold, constraints
+def cast(r):
+    rec, lost = RT.cast(r, FORM["properties"])
+    rec["quote"] = " ".join(r["statement"].split()[:15]) or "-"
+    if r.get("term"):
+        rec["term"] = r["term"]
+    if rec.get("quantity") and not rec.get("label_as_printed"):
+        rec["label_as_printed"] = rec["quantity"]
+    if rec.get("quantity") == "other" and "candidate" not in rec:
+        rec["candidate"] = dict(definition_quote=r["statement"] or "-", unit_as_printed=r["unit"], dimension="dimensionless", symbol=r["label_as_printed"] or "?")
+    return rec
+
+
+def ckey(e):
+    """A jsonschema error -> the constraint it hits, in the scheme of the constraint table."""
+    sp = [str(x) for x in e.schema_path]
+    if e.validator == "required":
+        if sp[0] == "allOf":
+            return f"allOf[{sp[1]}].{sp[2]}"
+        missing = re.findall(r"'([^']+)'", e.message)[0]
+        return f"required:{'.'.join([x for x in sp[:-1] if x != 'properties'] + [missing])}"
+    if e.validator == "dependentRequired":
+        a = re.findall(r"'([^']+)'", e.message)
+        return f"dependentRequired:{a[1]}->{a[0]}"
+    if sp and sp[0] == "allOf":
+        return f"allOf[{sp[1]}].{sp[2]}"
+    path = ".".join(x for x in sp[:-1] if x not in ("properties", "items", "additionalProperties", "$ref") and not x.isdigit())
+    v = e.validator if e.validator != "False schema" and e.schema is not False else "forbidden"
+    return f"{v}:{path}"
+
+
+def constraints(schema, name):
+    out = []
+    for f in schema.get("required", []):
+        out.append(dict(schema=name, constraint=f"required:{f}", kind="required", detail=f"{f} always"))
+    for k, vs in schema.get("dependentRequired", {}).items():
+        for v in vs:
+            out.append(dict(schema=name, constraint=f"dependentRequired:{k}->{v}", kind="dependentRequired", detail=f"{v} required with {k}"))
+    for i, a in enumerate(schema.get("allOf", [])):
+        for br in ("then", "else"):
+            if br in a:
+                out.append(dict(schema=name, constraint=f"allOf[{i}].{br}", kind="allOf if-then", detail=f"if {json.dumps(a['if'])} {br} {json.dumps(a[br])}"[:300]))
+
+    def walk(s, path):
+        if not isinstance(s, dict):
+            return
+        if s.get("additionalProperties") is False:
+            out.append(dict(schema=name, constraint=f"additionalProperties:{path}", kind="additionalProperties", detail=f"no keys outside {sorted(s.get('properties', {}))}"[:300]))
+        for kw in ("pattern", "minLength", "minItems", "uniqueItems", "minProperties", "enum", "type"):
+            if kw in s and path:
+                out.append(dict(schema=name, constraint=f"{kw}:{path}", kind=kw, detail=(f"{len(s[kw])} values" if kw == "enum" else str(s[kw]))[:200]))
+        for k, sub in (s.get("properties") or {}).items():
+            walk(sub, f"{path}.{k}" if path else k)
+        if isinstance(s.get("items"), dict):
+            walk(s["items"], path)
+        if isinstance(s.get("additionalProperties"), dict):
+            walk(s["additionalProperties"], path)
+    walk(schema, "")
+    return out
+
+
+val = Draft202012Validator(FORM)
+rows, gold_hits = [], collections.Counter()
+for p, G in GOLD.items():
+    for r in G:
+        if "#" not in r["fact_id"] or r["type"] in TREE or r["type"] not in FORM["properties"]["type"]["enum"]:
+            continue
+        rec = cast(r)
+        errs = sorted(val.iter_errors(rec), key=lambda e: list(e.absolute_path))
+        for e in errs:
+            k = ckey(e)
+            gold_hits[k] += 1
+            rows.append(dict(paper=KEY[p], fact_id=r["fact_id"], type=r["type"], constraint=k, path=".".join(map(str, e.absolute_path)), message=e.message[:200]))
+COUNTS["3a form errors on gold"] = wr("3a_form_vs_gold.csv", rows, ["paper", "fact_id", "type", "constraint", "path", "message"])
+run = K.Run(YLI)
+recs = run.read()
+drop_hits, drop_rows = collections.Counter(), []
+for r in recs:
+    rec = json.loads(json.dumps(r["rec"]))
+    vs = rec.get("variables")
+    for s_, q in (vs.items() if isinstance(vs, dict) else []):
+        if q is not None and q not in set(FORM["$defs"]["quantity_id"]["enum"]):
+            vs[s_] = None
+    errs = list(val.iter_errors(rec))
+    if errs:
+        k = ckey(errs[0])
+        drop_hits[k] += 1
+        drop_rows.append(dict(element=r["eid"], type=rec.get("type", ""), quantity=rec.get("quantity", ""), constraint=k, message=errs[0].message[:200]))
+wr("3b_step_a_drops_yli18.csv", drop_rows, ["element", "type", "quantity", "constraint", "message"])
+cons = constraints(FORM, "form.json")
+known = {c["constraint"] for c in cons}
+for k in set(drop_hits) | set(gold_hits):
+    if k not in known:
+        cons.append(dict(schema="form.json", constraint=k, kind="(from errors)", detail="hit by an error, not in the walk"))
+for c in cons:
+    c.update(yli18_P136b_step_a_drops=drop_hits[c["constraint"]], gold_rows_rejected_9=gold_hits[c["constraint"]])
+L0 = [json.loads(x) for x in (V2 / "kb" / "records" / f"{YLI}.jsonl").read_text().splitlines()]
+p0 = [x for x in L0 if x["pass"] == 0]
+val0 = Draft202012Validator(FORM0)
+hits0 = collections.Counter()
+for x, unit in zip(p0, ["P134", "P136", "P136b"]):
+    for e in val0.iter_errors(json.loads(x["response"])):
+        hits0[(ckey(e), unit)] += 1
+cons0 = constraints(FORM0.get("items", {}), "form_pass0.json (items)")
+for c in cons0:
+    for unit in ("P134", "P136", "P136b"):
+        c[f"pass0_errors_{unit}"] = hits0[(c["constraint"], unit)]
+COUNTS["3b constraints form.json"] = wr("3b_constraints_form.csv", cons, ["schema", "constraint", "kind", "detail", "yli18_P136b_step_a_drops", "gold_rows_rejected_9"])
+COUNTS["3c constraints form_pass0.json"] = wr("3c_constraints_form_pass0.csv", cons0)
+
+# ------------------------------------------------------------------------------------------- 4 prompt
+(OUT / "4a_prompt_text.txt").write_text("== kb/extract/pass0_paper.py INSTRUCTION ==\n" + P0.INSTRUCTION + "\n\n== kb/extract/pass1_elements.py RULES ==\n" + P1.RULES + "\n", encoding="utf-8")
+js = P1.jobs(YLI)
+overhead = min(len(j[2]) - len("\n".join(f"{i}: {run.text[i]}" for i in j[4])) for j in js)
+rows = []
+for p in DEV:
+    g, unp = P1.groups(p)
+    tx = C.E.texts(p)
+    tok = [round((overhead + len("\n".join(f"{r['element_id']}: {tx.get(r['element_id'], '')}" for r in rs))) / 4) for rs in g.values()]
+    ids = [r["element_id"] for rs in g.values() for r in rs]
+    rows.append(dict(paper=KEY[p], groups=len(g), elements=len(ids), elements_in_two_groups=len(ids) - len(set(ids)), unpaired=";".join(unp),
+                     tokens_min=min(tok), tokens_median=int(statistics.median(tok)), tokens_max=max(tok),
+                     method=f"(prompt overhead {overhead} chars measured on yli18 + the group's 'id: text' lines) / 4"))
+COUNTS["4b grouping"] = wr("4b_grouping.csv", rows)
+reach = [
+    ("quantity ids", "yes", "QUANTITY IDS block (id: NAMES[id]) and the form enum", "kb/extract/pass1_elements.py jobs()"),
+    ("quantity names", "yes", "QUANTITY IDS block, vocab.NAMES", "pass1_elements.py jobs()"),
+    ("quantity labels (vocab.LABELS)", "no", "", ""),
+    ("entry definitions", "no", "", ""),
+    ("entry aliases", "no", "", ""),
+    ("entry notes", "no", "", ""),
+    ("canonical units per quantity", "no", "", ""),
+    ("units.yaml spellings", "no", "", ""),
+    ("species / material / structure ids", "yes", "form.json $defs enums inside the FORM block", "pass1_elements.py jobs(): json.dumps(form)"),
+    ("species names / aliases / formulas", "no", "", ""),
+    ("qualifier keys and values", "yes", "form.json qualifiers properties", "jobs(): json.dumps(form)"),
+    ("kinds with phrases", "yes", "KIND block (vocab.PHRASES)", "jobs()"),
+    ("mechanism ids and names", "yes", "MECHANISM IDS block", "jobs()"),
+    ("methods", "yes", "form.json method enum", "jobs()"),
+    ("examples (one per type, other dev papers' gold)", "yes", "EXAMPLES block", "pass1_elements.py examples()"),
+    ("pass 0: names as printed", "yes", "MENTIONS block (sorted name_as_printed of the latest pass-0 line)", "jobs()"),
+    ("pass 0: roles, classes, introduced_in", "no", "", ""),
+    ("element ids of figures/tables/equations", "yes", "'Element ids that may be mentioned'", "jobs()"),
+]
+COUNTS["4c what reaches the prompt"] = wr("4c_prompt_reach.csv", [dict(item=a, reaches=b, how=c, where=d) for a, b, c, d in reach])
+
+# ------------------------------------------------------------------------------------------- 5 pass 0
+runs = {u: json.loads(x["response"]) for x, u in zip(p0, ["P134", "P136", "P136b"])}
+names = list(dict.fromkeys(it["name_as_printed"] for u in runs for it in runs[u]))
+rows = []
+for n in names:
+    row = dict(name_as_printed=n)
+    for u, items in runs.items():
+        it = next((i for i in items if i["name_as_printed"] == n), None)
+        row[u] = "" if it is None else f"{it['role']} | {it.get('specimen_class', '')} | {it.get('structure_class', '')} | {it.get('experiment_kind', '')} | {';'.join(it['introduced_in'])}"
+    rows.append(row)
+COUNTS["5 pass-0 names"] = wr("5_pass0_side_by_side.csv", rows, ["name_as_printed", "P134", "P136", "P136b"])
+(OUT / "5_form_pass0.json.txt").write_text(json.dumps(FORM0, indent=1, ensure_ascii=False), encoding="utf-8")
+
+# ------------------------------------------------------------------------------------------- 6 figures.json
+SITES = "kb/figures_import.py:587 condition(); :454 parse_value(); :429 fit_unit() (rule c: a per-cycle entry printed in a length unit); :443 entry_unit_row(); :423 convert()"
+rows, kinds, sets_rows, kind_rows = [], [], [], []
+for p in DEV:
+    fp = V2 / "kb" / f"{p}.figures.json"
+    if not fp.exists():
+        continue
+    Fj = json.loads(fp.read_text(encoding="utf-8"))
+    G = GOLD[p]
+    for c in Fj.get("curves", []):
+        for q, cd in (c.get("conditions") or {}).items():
+            raw = cd.get("raw", "")
+            m = re.match(r"^\s*([-+]?\d+\.?\d*(?:[eE][-+]?\d+)?)\s*(?:[×x]\s*10\s*\^?\s*\{?([-+]?\d+)\}?)?\s*(.*?)\s*$", str(raw))
+            flag = ""
+            if cd.get("value") is None:
+                flag = ""
+            elif not m:
+                flag = "raw has no leading number"
+            else:
+                n = float(m.group(1)) * (10 ** int(m.group(2)) if m.group(2) else 1)
+                ru = K.unit_symbol(m.group(3)) if m.group(3) else ""
+                su = K.unit_symbol(cd.get("unit") or "") if cd.get("unit") else ""
+                if cd.get("unit") and su is None:
+                    flag = f"stored unit {cd['unit']!r} not in units.yaml"
+                elif ru is None:
+                    flag = f"raw unit {m.group(3)!r} not in units.yaml"
+                else:
+                    try:
+                        exp = L.convert(n, ru or su or "", su or ru or "")
+                        if abs(exp - cd["value"]) > 1e-6 * max(abs(exp), 1e-30):
+                            flag = f"stored {cd['value']:g} {su} != {n:g} {ru or '(no unit)'} converted ({exp:g})"
+                    except (KeyError, ValueError) as e:
+                        flag = f"raw {n:g} {ru or '(no unit)'} not convertible to {su or '(no unit)'} ({e})"
+            if flag:
+                rows.append(dict(paper=KEY[p], curve=c["id"], quantity=q, key_raw=cd.get("key_raw", ""), raw=raw, value=cd.get("value"), unit=cd.get("unit", ""), flag=flag, code_sites=SITES))
+    for fig, n in sorted(collections.Counter((c["figure"], c.get("panel", ""), c["kind"]) for c in Fj.get("curves", [])).items()):
+        kinds.append(dict(paper=KEY[p], figure=fig[0], panel=fig[1], kind=fig[2], curves=n))
+    for st in Fj.get("sets", []):
+        sets_rows.append(dict(paper=KEY[p], set=st["id"], figure=st["figure"], panel=st.get("panel", ""), kind=st["kind"], varied=st.get("varied", ""), varied_raw=st.get("varied_raw", ""), members=len(st["members"])))
+    for c in Fj.get("curves", []):
+        els = {f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap"}
+        gt = collections.Counter(r["type"] for r in G if r["type"] in ("model", "observation") and set(r["evidence"].split(";")) & els)
+        want = "model" if c["kind"] == "simulated" else "observation"
+        if gt and want not in gt:
+            kind_rows.append(dict(paper=KEY[p], curve=c["id"], curve_kind=c["kind"], gold_types_on_panel=dict(gt), rule="curve kind disagrees with every gold model/observation row on the panel"))
+COUNTS["6a condition flags"] = wr("6a_figures_condition_flags.csv", rows, ["paper", "curve", "quantity", "key_raw", "raw", "value", "unit", "flag", "code_sites"])
+COUNTS["6b kind per figure"] = wr("6b_figures_kind_per_figure.csv", kinds)
+COUNTS["6c sets"] = wr("6c_figures_sets.csv", sets_rows)
+COUNTS["6d curve kind vs gold"] = wr("6d_figures_kind_vs_gold.csv", kind_rows, ["paper", "curve", "curve_kind", "gold_types_on_panel", "rule"])
+
+# ------------------------------------------------------------------------------------------- 8 check --dir (full list) and 10 R3
+def check_rows(d):
+    code = (f"import sys; sys.argv=['check.py','--dir',{str(d)!r}]; sys.path.insert(0,{str(V2 / 'kb' / 'pilot')!r}); import check; "
+            f"import json; print(json.dumps(check.check({YLI!r})[0]))")
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    return json.loads(r.stdout.strip().splitlines()[-1])
+
+
+def cls(e):
+    return re.sub(r"yli18:[^\s:,']*", "<id>", re.sub(r"'[^']*'", "<v>", re.sub(r"\d+(\.\d+)?", "<n>", e.split(": ", 1)[-1] if e.startswith("yli18:") else e)))
+
+
+rows = []
+errs_now = check_rows(V2 / "kb" / "compiled")
+for e in errs_now:
+    rows.append(dict(cls=cls(e), row=e.split(": ", 1)[0] if e.startswith("yli18:") else "", problem=e))
+COUNTS["8 check --dir failures"] = wr("8_check_dir_failures.csv", sorted(rows, key=lambda r: r["cls"]), ["cls", "row", "problem"])
+states = {"P134": ("1c31172", "psed_v2/compiled"), "P136": ("1fd8c1e", "psed_v2/kb/compiled"), "P136b": ("e4478a8", "psed_v2/kb/compiled")}
+errs = {}
+for u, (ref, path) in states.items():
+    d = Path(tempfile.mkdtemp(prefix=f"r3_{u}_"))
+    for f in ("facts.csv", "coverage.csv", "experiments.csv"):
+        b = subprocess.run(["git", "show", f"{ref}:{path}/{YLI}.{f}"], capture_output=True, cwd=V2).stdout
+        (d / f"{YLI}.{f}").write_bytes(b)
+    errs[u] = check_rows(d)
+RESP = [  # (class pattern, the change that removed it, content change?)
+    (r"value without data_kind", "P136 2c: form requires kind with any value field (extractor fills it)", "content"),
+    (r"setting under nothing", "P134 D9 / P136b fallbacks: settings to the run or the recipe", "content (parent rule)"),
+    (r"observation under nothing|tree: roots", "P136/P136b parent rules and fallbacks", "content (parent rule)"),
+    (r"claim without links", "-", "-"),
+    (r"statement repeats eight words", "P136b step k: printed value text, label and term left out of the statement", "NO CONTENT CHANGE (statement wording only)"),
+    (r"same as", "P136b dedupe: the same row from the same element dropped", "rows removed, no value changed"),
+    (r"entity without a deposition", "P136b fallbacks: inferred simulation / run", "content (tree rows added)"),
+    (r"observation with the setting quantity", "P136 prompt 3a: setting includes measurement setup", "content (re-extraction)"),
+    (r"species= or gas=", "-", "-"),
+]
+rows = []
+for a, b in (("P134", "P136"), ("P136", "P136b")):
+    ca, cb = collections.Counter(cls(e) for e in errs[a]), collections.Counter(cls(e) for e in errs[b])
+    for c in sorted(set(ca) | set(cb)):
+        if ca[c] > cb[c]:
+            resp = next(((x, y) for pat, x, y in RESP if re.search(pat, c)), ("(not attributed)", ""))
+            items = [e for e in errs[a] if cls(e) == c]
+            for e in items:
+                still = e in errs[b]
+                rows.append(dict(transition=f"{a}->{b}", cls=c, count_before=ca[c], count_after=cb[c], item=e, same_item_after="yes" if still else "no",
+                                 change=resp[0], content=resp[1]))
+rows.sort(key=lambda r: (not r["content"].startswith("NO CONTENT"), r["transition"], r["cls"]))
+COUNTS["10 R3 fail->pass"] = wr("10_r3_fail_to_pass.csv", rows, ["transition", "cls", "count_before", "count_after", "item", "same_item_after", "change", "content"])
+wr("10_check_counts.csv", [dict(state=u, ref=states[u][0], problems=len(errs[u])) for u in states])
+
+# ------------------------------------------------------------------------------------------- 9 harness
+P136b = [(n, x) for n, x in enumerate(L0, 1) if n >= 51 and x["pass"] == 1]
+occ = collections.defaultdict(list)
+for n, x in P136b:
+    for eid, recs_ in P1.answers(C.loads_json(x["response"])).items():
+        if isinstance(recs_, list):
+            for r in recs_:
+                k = json.dumps({f: r.get(f) for f in ("type", "quantity", "value", "value_min", "value_max", "unit", "value_text", "qualifiers")}, sort_keys=True)
+                occ[k].append((n, x["section"], eid))
+rows = []
+for k, o in occ.items():
+    if len(o) < 2:
+        continue
+    lines, secs, els = {a for a, _, _ in o}, {b for _, b, _ in o}, [c for _, _, c in o]
+    scope = "within line" if len(lines) == 1 else ("across lines, one section" if len(secs) == 1 else "across sections")
+    rows.append(dict(scope=scope, record_key=k, copies=len(o), lines=";".join(map(str, sorted(lines))), sections=";".join(sorted(secs)), elements=";".join(els)))
+COUNTS["9a duplicate records"] = wr("9a_duplicates_P136b.csv", sorted(rows, key=lambda r: r["scope"]), ["scope", "record_key", "copies", "lines", "sections", "elements"])
+rows = []
+for p in DEV:
+    g, _ = P1.groups(p)
+    seen = collections.defaultdict(list)
+    for sec, rs in g.items():
+        for r in rs:
+            seen[r["element_id"]].append(sec)
+    rows += [dict(paper=KEY[p], element=e, groups=";".join(s)) for e, s in seen.items() if len(s) > 1]
+COUNTS["9b group overlap"] = wr("9b_group_overlap.csv", rows, ["paper", "element", "groups"])
+rows = [dict(item="cache key", value="sha256(prompt + response schema (sorted JSON) + thinking JSON when set)", where="kb/extract/common.py request_hash()"),
+        dict(item="cache path", value="kb/cache/<pid>/<pass>_<section>_<hash16>_<model>.json", where="kb/extract/common.py cache_path()"),
+        dict(item="not in the key", value="model name (in the path, not the hash); ontology hash (only through the prompt/schema text)", where="common.py")]
+pr = next(r for r in rd(V2 / "kb" / "pilot" / "prices.csv") if r["model"] == "gemini-3.8-flash")
+rows.append(dict(item="prices.csv gemini row", value=json.dumps(pr), where="third-party listings found by web search on 2026-10-19: anotherwrapper.com/llm-pricing/gemini-3.8-flash, llmgateway.io/models/gemini-3.8-flash, eesel.ai/blog/gemini-3-8-flash-pricing (introductory); pricepertoken.com lists 0.375 / 1.88; not Google's page"))
+COUNTS["9c cache and prices"] = wr("9c_cache_and_prices.csv", rows)
+sys.path.insert(0, str(V2 / "kb" / "pilot"))
+import ask  # noqa: E402
+rows = [dict(line=n, pass_=x["pass"], section=x["section"], elements=len(x["element_ids"]), input_tokens=x["usage"]["input_tokens"], output_tokens=x["usage"]["output_tokens"],
+             cost_usd=f"{ask.cost_of('google:gemini-3.8-flash', {'input': x['usage']['input_tokens'], 'output': x['usage']['output_tokens']}):.4f}")
+        for n, x in enumerate(L0, 1) if n >= 50]
+COUNTS["9d calls per group"] = wr("9d_calls_per_group_P136b.csv", rows)
+
+# ------------------------------------------------------------------------------------------- 11 folder state
+tracked = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=V2).stdout.split()
+rows = [dict(file=f, issue="outside corpus/ ingest/ ontology/ kb/") for f in tracked if f.split("/")[0] not in ("corpus", "ingest", "ontology", "kb")]
+ign = subprocess.run(["git", "ls-files", "-ci", "--exclude-standard"], capture_output=True, text=True, cwd=V2).stdout.split()
+rows += [dict(file=f, issue="tracked but matched by .gitignore") for f in ign]
+rows += [dict(file=f, issue="compiled Python tracked") for f in tracked if f.endswith(".pyc") or "__pycache__" in f]
+STALE = re.compile(r"psed_v2/(pilot|extract|schema|records|compiled|verify|scripts|eval|cache)/|(?<![\w/])(pilot|extract|schema|records|compiled)/(?=[\w<])")
+for f in tracked:
+    if f.startswith(("kb/verify/", "kb/reports/")) or not f.endswith((".py", ".md", ".json", ".txt", ".yaml")):
+        continue
+    try:
+        lines = (V2 / f).read_text(encoding="utf-8").splitlines()
+    except (UnicodeDecodeError, FileNotFoundError):
+        continue
+    for i, line in enumerate(lines, 1):
+        m = STALE.search(line)
+        if m and "kb/" + m.group(0).split("psed_v2/")[-1] not in line:
+            rows.append(dict(file=f"{f}:{i}", issue=f"stale path string {m.group(0)!r}"))
+COUNTS["11 folder state"] = wr("11_folder_state.csv", rows, ["file", "issue"])
+
+wr("00_counts.csv", [dict(section=k, rows=v) for k, v in COUNTS.items()])
+print(json.dumps(COUNTS, indent=0))

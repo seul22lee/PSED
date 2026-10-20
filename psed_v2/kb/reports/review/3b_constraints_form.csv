@@ -1,0 +1,96 @@
+schema,constraint,kind,detail,yli18_P136b_step_a_drops,gold_rows_rejected_9
+form.json,required:type,required,type always,0,0
+form.json,required:quote,required,quote always,0,0
+form.json,dependentRequired:quantity->label_as_printed,dependentRequired,label_as_printed required with quantity,35,0
+form.json,dependentRequired:value->quantity,dependentRequired,quantity required with value,0,0
+form.json,dependentRequired:value->kind,dependentRequired,kind required with value,0,0
+form.json,dependentRequired:value_min->quantity,dependentRequired,quantity required with value_min,0,0
+form.json,dependentRequired:value_min->kind,dependentRequired,kind required with value_min,0,0
+form.json,dependentRequired:value_max->quantity,dependentRequired,quantity required with value_max,0,0
+form.json,dependentRequired:value_max->kind,dependentRequired,kind required with value_max,0,0
+form.json,dependentRequired:value_text->quantity,dependentRequired,quantity required with value_text,0,0
+form.json,dependentRequired:value_text->kind,dependentRequired,kind required with value_text,0,73
+form.json,dependentRequired:cause->relation,dependentRequired,relation required with cause,2,0
+form.json,dependentRequired:cause->effect,dependentRequired,effect required with cause,0,0
+form.json,dependentRequired:relation->cause,dependentRequired,cause required with relation,0,0
+form.json,dependentRequired:relation->effect,dependentRequired,effect required with relation,0,0
+form.json,dependentRequired:effect->cause,dependentRequired,cause required with effect,0,0
+form.json,dependentRequired:effect->relation,dependentRequired,relation required with effect,0,0
+form.json,allOf[0].then,allOf if-then,"if {""properties"": {""type"": {""enum"": [""setting"", ""observation"", ""derived""]}}, ""required"": [""type""]} then {""required"": [""quantity""]}",1,248
+form.json,allOf[1].then,allOf if-then,"if {""properties"": {""type"": {""const"": ""claim""}}, ""required"": [""type""]} then {""properties"": {""quantity"": false}}",0,5
+form.json,allOf[1].else,allOf if-then,"if {""properties"": {""type"": {""const"": ""claim""}}, ""required"": [""type""]} else {""properties"": {""cause"": false, ""relation"": false, ""effect"": false, ""stance"": false}}",0,0
+form.json,allOf[2].else,allOf if-then,"if {""properties"": {""type"": {""enum"": [""claim"", ""definition""]}}, ""required"": [""type""]} else {""properties"": {""note"": false}}",0,0
+form.json,allOf[3].then,allOf if-then,"if {""properties"": {""type"": {""const"": ""definition""}}, ""required"": [""type""]} then {""required"": [""term""]}",0,55
+form.json,allOf[3].else,allOf if-then,"if {""properties"": {""type"": {""const"": ""definition""}}, ""required"": [""type""]} else {""properties"": {""term"": false}}",0,0
+form.json,allOf[4].else,allOf if-then,"if {""properties"": {""type"": {""enum"": [""definition"", ""model""]}}, ""required"": [""type""]} else {""properties"": {""variables"": false}}",4,0
+form.json,allOf[5].then,allOf if-then,"if {""properties"": {""quantity"": {""enum"": [""material"", ""substrate""]}}, ""required"": [""quantity""]} then {""properties"": {""value_text"": {""$ref"": ""#/$defs/material""}}}",0,0
+form.json,allOf[6].then,allOf if-then,"if {""properties"": {""quantity"": {""enum"": [""reactant_A"", ""reactant_B""]}}, ""required"": [""quantity""]} then {""properties"": {""value_text"": {""$ref"": ""#/$defs/species""}}}",0,0
+form.json,allOf[7].then,allOf if-then,"if {""properties"": {""quantity"": {""const"": ""structure""}}, ""required"": [""quantity""]} then {""properties"": {""value_text"": {""$ref"": ""#/$defs/structure""}}}",0,70
+form.json,allOf[8].then,allOf if-then,"if {""properties"": {""quantity"": {""const"": ""other""}}, ""required"": [""quantity""]} then {""required"": [""candidate""]}",1,0
+form.json,allOf[8].else,allOf if-then,"if {""properties"": {""quantity"": {""const"": ""other""}}, ""required"": [""quantity""]} else {""properties"": {""candidate"": false}}",6,0
+form.json,additionalProperties:,additionalProperties,"no keys outside ['candidate', 'cause', 'censor', 'effect', 'kind', 'label_as_printed', 'mentions', 'method', 'note', 'qualifiers', 'quantity', 'quote', 'relation', 'stance', 'term', 'type', 'uncertainty', 'uncertainty_kind', 'uncertainty_n', 'unit', 'value', 'value_max', 'value_min', 'value_text', '",0,0
+form.json,enum:type,enum,8 values,0,0
+form.json,enum:quantity,enum,105 values,0,13
+form.json,minLength:label_as_printed,minLength,1,0,0
+form.json,type:label_as_printed,type,string,0,0
+form.json,additionalProperties:qualifiers,additionalProperties,"no keys outside ['basis', 'between', 'by', 'definition', 'element', 'gas', 'kind', 'level', 'mode', 'n', 'origin', 'over', 'phase', 'position', 'ratio', 'reference', 'reference_element', 'relative_to', 'species', 'specimen_class', 'stage', 'stat', 'step', 'structure_class', 'surface', 'x']",0,0
+form.json,type:qualifiers,type,object,0,0
+form.json,enum:qualifiers.step,enum,8 values,0,0
+form.json,enum:qualifiers.position,enum,9 values,0,0
+form.json,enum:qualifiers.reference,enum,8 values,0,0
+form.json,enum:qualifiers.level,enum,5 values,0,0
+form.json,enum:qualifiers.basis,enum,2 values,0,0
+form.json,enum:qualifiers.kind,enum,6 values,0,0
+form.json,enum:qualifiers.by,enum,6 values,0,0
+form.json,enum:qualifiers.origin,enum,5 values,0,0
+form.json,enum:qualifiers.stage,enum,2 values,0,0
+form.json,enum:qualifiers.stat,enum,6 values,0,0
+form.json,enum:qualifiers.between,enum,5 values,0,0
+form.json,enum:qualifiers.relative_to,enum,9 values,0,0
+form.json,enum:qualifiers.over,enum,4 values,0,0
+form.json,enum:qualifiers.mode,enum,3 values,0,0
+form.json,type:qualifiers.ratio,type,number,0,0
+form.json,enum:qualifiers.specimen_class,enum,2 values,0,0
+form.json,enum:qualifiers.structure_class,enum,10 values,0,0
+form.json,type:value,type,number,0,0
+form.json,type:value_min,type,number,0,0
+form.json,type:value_max,type,number,0,0
+form.json,enum:censor,enum,4 values,0,0
+form.json,minLength:unit,minLength,1,0,0
+form.json,type:unit,type,string,0,0
+form.json,minLength:value_text,minLength,1,0,0
+form.json,type:value_text,type,string,0,0
+form.json,enum:kind,enum,9 values,0,0
+form.json,enum:method,enum,34 values,0,0
+form.json,minItems:mentions,minItems,1,0,0
+form.json,type:mentions,type,array,0,0
+form.json,minLength:mentions,minLength,1,0,0
+form.json,type:mentions,type,string,0,0
+form.json,minLength:quote,minLength,1,0,0
+form.json,type:quote,type,string,0,0
+form.json,type:uncertainty,type,number,0,0
+form.json,enum:uncertainty_kind,enum,9 values,0,0
+form.json,type:uncertainty_n,type,integer,0,1
+form.json,minItems:cause,minItems,1,0,0
+form.json,uniqueItems:cause,uniqueItems,True,0,0
+form.json,type:cause,type,array,0,0
+form.json,enum:relation,enum,6 values,0,0
+form.json,minItems:effect,minItems,1,0,0
+form.json,uniqueItems:effect,uniqueItems,True,0,0
+form.json,type:effect,type,array,0,0
+form.json,enum:stance,enum,4 values,0,0
+form.json,pattern:note,pattern,"^\S+(\s+\S+){0,19}$",0,0
+form.json,type:note,type,string,0,0
+form.json,minLength:term,minLength,1,1,0
+form.json,type:term,type,string,0,0
+form.json,minProperties:variables,minProperties,1,0,0
+form.json,type:variables,type,object,0,0
+form.json,additionalProperties:candidate,additionalProperties,"no keys outside ['definition_quote', 'dimension', 'symbol', 'unit_as_printed']",0,0
+form.json,type:candidate,type,object,0,0
+form.json,minLength:candidate.definition_quote,minLength,1,0,0
+form.json,type:candidate.definition_quote,type,string,0,0
+form.json,type:candidate.unit_as_printed,type,string,0,0
+form.json,enum:candidate.dimension,enum,33 values,0,0
+form.json,type:candidate.symbol,type,string,0,0
+form.json,enum:qualifiers.species,(from errors),"hit by an error, not in the walk",0,48
+form.json,enum:cause,(from errors),"hit by an error, not in the walk",0,2

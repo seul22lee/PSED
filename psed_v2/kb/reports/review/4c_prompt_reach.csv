@@ -1,0 +1,19 @@
+item,reaches,how,where
+quantity ids,yes,QUANTITY IDS block (id: NAMES[id]) and the form enum,kb/extract/pass1_elements.py jobs()
+quantity names,yes,"QUANTITY IDS block, vocab.NAMES",pass1_elements.py jobs()
+quantity labels (vocab.LABELS),no,,
+entry definitions,no,,
+entry aliases,no,,
+entry notes,no,,
+canonical units per quantity,no,,
+units.yaml spellings,no,,
+species / material / structure ids,yes,form.json $defs enums inside the FORM block,pass1_elements.py jobs(): json.dumps(form)
+species names / aliases / formulas,no,,
+qualifier keys and values,yes,form.json qualifiers properties,jobs(): json.dumps(form)
+kinds with phrases,yes,KIND block (vocab.PHRASES),jobs()
+mechanism ids and names,yes,MECHANISM IDS block,jobs()
+methods,yes,form.json method enum,jobs()
+"examples (one per type, other dev papers' gold)",yes,EXAMPLES block,pass1_elements.py examples()
+pass 0: names as printed,yes,MENTIONS block (sorted name_as_printed of the latest pass-0 line),jobs()
+"pass 0: roles, classes, introduced_in",no,,
+element ids of figures/tables/equations,yes,'Element ids that may be mentioned',jobs()

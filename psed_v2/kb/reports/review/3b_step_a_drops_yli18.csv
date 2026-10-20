@@ -1,0 +1,51 @@
+element,type,quantity,constraint,message
+s3.p5,claim,,allOf[4].else,False schema does not allow {'diffusion model': None}
+s3.p5,claim,,allOf[4].else,False schema does not allow {'adsorption_equilibrium_constant': 'adsorption_equilibrium_constant'}
+s3.p5,claim,,allOf[4].else,False schema does not allow {'reaction_diffusion': None}
+s3.p5,model,,allOf[8].else,"False schema does not allow {'definition_quote': 'diffusion model', 'unit_as_printed': 'dimensionless', 'dimension': 'dimensionless', 'symbol': 'model'}"
+s3.p5,model,,allOf[8].else,"False schema does not allow {'definition_quote': 'Gordon plug flow model', 'unit_as_printed': 'dimensionless', 'dimension': 'dimensionless', 'symbol': 'Gordon'}"
+s3.p5,setting,,allOf[0].then,'quantity' is a required property
+s5.p8,definition,,allOf[8].else,"False schema does not allow {'definition_quote': 'average speed of A molecules', 'unit_as_printed': 'm/s', 'dimension': 'length_per_time', 'symbol': 'v_A'}"
+s5.p12,definition,,allOf[8].else,"False schema does not allow {'definition_quote': 'hydraulic diameter of a rectangular channel of height H and width W', 'unit_as_printed': 'm', 'dimension': 'length', 'symbol': 'h'}"
+s5.p15,cited,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s5.p15,cited,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s5.p16,derived,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s5.p16,derived,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s6.p10,claim,,minLength:term,'' is too short
+s7.p14,claim,,dependentRequired:cause->relation,'relation' is a dependency of 'cause'
+s7.p21,claim,,dependentRequired:cause->relation,'relation' is a dependency of 'cause'
+s8.p15,model,other,allOf[8].then,'candidate' is a required property
+s8.p21,setting,reactant_A,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p21,setting,reactant_B,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p21,setting,deposition_temperature,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p21,setting,reactant_A,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p21,setting,reactant_B,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p21,setting,deposition_temperature,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p23,setting,cycle_number,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,pulse_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,purge_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,pulse_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,purge_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,cycle_number,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,observation,film_thickness,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,pulse_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,purge_time,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,setting,cycle_number,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s8.p24,observation,film_thickness,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+s9.p5,claim,,allOf[8].else,"False schema does not allow {'definition_quote': 'n/a', 'unit_as_printed': '', 'dimension': 'dimensionless', 'symbol': 'n/a'}"
+fig2.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig3.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,molar_mass,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,molar_mass,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig4.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,molar_mass,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,molar_mass,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,molecule_diameter,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,model,partial_pressure,dependentRequired:quantity->label_as_printed,'label_as_printed' is a dependency of 'quantity'
+fig5.cap,claim,,allOf[4].else,False schema does not allow {'D_K': 'knudsen_diffusion_coefficient'}
+tabI.cap,definition,,allOf[8].else,"False schema does not allow {'definition_quote': 'Thickness error is the rms value of the difference between the measured and fitted thickness values.', 'unit_as_printed': 'nm', 'dimension': 'length',"
