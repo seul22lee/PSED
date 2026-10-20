@@ -51,11 +51,12 @@ def norm_ws(t):
 
 def normalize(t):
     """D10, the one normalization of steps d, e and f: \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5);
-    \\circ / ^\\circ -> °; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
+    \\circ / ^\\circ -> °; \\times -> ×; $ _ ^ { } and markdown * dropped; whitespace collapsed. Case is kept (step f lowers it)."""
     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t or "")
     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
     t = unicodedata.normalize("NFKC", t)
     t = re.sub(r"\\mu\s*", "µ", t).replace("\u03bc", "µ")
+    t = re.sub(r"\\times\s*", "×", t)                                                  # P136b: 50\times -> 50×
     t = re.sub(r"[$_^{}*]", "", t)
     return norm_ws(t)
 
@@ -142,9 +143,16 @@ class Run:
     # ------------------------------------------------------------------------------------------------------------ a-g
     def validate(self, recs):
         from jsonschema import Draft202012Validator
-        val = Draft202012Validator(C.schema("form.json"))
+        form = C.schema("form.json")
+        val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
         out = []
         for r in recs:
+            vs = r["rec"].get("variables")
+            for sym, q in (vs.items() if isinstance(vs, dict) else []):          # D12: a symbol's quantity outside the enum -> null, logged
+                if q is not None and q not in qids:
+                    vs[sym] = None
+                    self.count("a", "variables_unmapped (set to null)")
+                    self.note(f"a: {r['eid']}: variables_unmapped {sym!r} -> {q!r}")
             errs = list(val.iter_errors(r["rec"]))
             if not errs:
                 out.append(r); continue
@@ -198,7 +206,8 @@ class Run:
     def quotes(self, recs):
         out = []
         for r in recs:
-            if normalize(r["rec"]["quote"]) in normalize(self.text.get(r["eid"], "")):
+            ev = [r["eid"]] + [m for m in r["rec"].get("mentions") or [] if m in self.order and m != r["eid"]]   # D11: the record's element and the
+            if normalize(r["rec"]["quote"]) in normalize(" ".join(self.text.get(e, "") for e in ev)):        # element ids it mentions, texts joined
                 out.append(r)
             else:
                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
@@ -324,13 +333,48 @@ class Run:
             self.meas[i] = r
         return i
 
+    def fallbacks(self, recs):
+        """P136b: simulated curves in figures.json for which pass 0 gives no simulation (none, or none whose introduced_in shares an
+        element with the figure while there are several) -> one simulation activity (how inferred), which they take; no run from
+        pass 0 but a reactant_A or deposition_temperature setting -> one run under the recipe (how inferred). Logged."""
+        k, rows = self.key, self.rows_tree
+        self.fig_sim = ""
+        p = C.V2 / "kb" / f"{self.pid}.figures.json"
+        curves = json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []
+
+        def row(**kw):
+            r = {x: "" for x in F.FIELDS}
+            r.update(kw, author=self.pid)
+            return r
+        sims = [r for r in rows if r["type"] == "activity" and r["kind"] == "simulation"]
+        figs = lambda c: {e for e in (f"fig{c['figure']}{c.get('panel', '')}", f"fig{c['figure']}", f"fig{c['figure']}.cap")}   # noqa: E731
+        unowned = [c for c in curves if c["kind"] == "simulated" and len(sims) != 1
+                   and len([r for r in sims if set(r["evidence"].split(";")) & figs(c)]) != 1]                       # P136b: no simulation found for it
+        if unowned:
+            rows.append(row(fact_id=f"{k}:sim:inferred", type="activity", kind="simulation", how="inferred", parent=k, label_as_printed="simulation",
+                            statement=f"the simulation behind the simulated curves of figures.json (pass 0 named none)"))
+            self.fig_sim = f"{k}:sim:inferred"                                     # the figures' simulation; the text keeps its own rule
+            if not sims:
+                self.sole_sim = self.fig_sim
+            self.note(f"fallback: simulation activity inferred ({len(unowned)} simulated curves with no simulation from pass 0 for their figure)")
+        if not any(r["type"] == "activity" and r["fact_id"].startswith(f"{k}:run:") for r in rows) and \
+                any(x["rec"].get("type") == "setting" and x["rec"].get("quantity") in ("reactant_A", "deposition_temperature") for x in recs):
+            if not any(r["fact_id"] == f"{k}:recipe" for r in rows):
+                rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",
+                                statement=f"the deposition recipe of {k}"))
+            rows.append(row(fact_id=f"{k}:run:inferred", type="activity", kind="deposition", how="inferred", parent=f"{k}:recipe", label_as_printed="deposition run",
+                            statement=f"the deposition run the settings describe (pass 0 named none)"))
+            self.sole_run = f"{k}:run:inferred"
+            self.note("fallback: run activity inferred (reactant_A / deposition_temperature settings, no run from pass 0)")
+
     def figures(self):
-        """P136 1c: kb/<pid>.figures.json, its fields as they are. A simulated curve -> an entity (the run it shows) under the simulation
-        whose pass-0 introduced_in shares an element with the figure (else the only simulation, else the paper, logged), its model row
-        (quantity = the curve's y quantity, no value) and the conditions it does not share with its set as settings (model_input); a
-        measured curve -> its observation row and its own conditions under the measurement activity of the specimen whose introduced_in
-        shares an element with the figure (else the paper, logged); a set -> its conditions as settings under the set's activity and
-        one comparison (kind, varied; links = the first curve row as purpose, then the curve entities). Returns (tree rows, fact rows)."""
+        """P136 1c / P136b: kb/<pid>.figures.json, its fields as they are. A curve's row type by its kind: simulated -> model,
+        read_from_figure -> observation. Simulated curves: one entity per distinct conditions dict across the paper (curves with equal
+        conditions share it), under the simulation whose pass-0 introduced_in shares an element with the figure (else the only one);
+        the conditions every such entity has alike go once under the simulation (model_input), the rest under the entity; the model
+        row (quantity = the curve's y quantity, no value) under the entity. Measured curves: the observation row and the curve's
+        conditions under the measurement activity of the specimen whose introduced_in shares an element with the figure (else the
+        paper, logged). A set: one comparison (kind, varied; links = the set's first curve row as purpose, then its entities)."""
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         if not p.exists():
             self.note("1c: no figures.json")
@@ -341,7 +385,7 @@ class Run:
         specs = [r for r in self.rows_tree if r["type"] == "entity"]
 
         def els(fig, panel=""):
-            return [e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order]
+            return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
 
         def owner(fig, rows, fallback=""):
             hit = [r["fact_id"] for r in rows if set(r["evidence"].split(";")) & set(els(fig))]
@@ -353,8 +397,11 @@ class Run:
             r["author"] = self.pid
             return r
 
+        def cond_key(c):
+            return c.get("quantity", ""), c.get("value"), c.get("value_max"), c.get("unit", "")
+
         def settings(conds, parent, ev, kind, mentions=""):
-            for c in conds.values():
+            for c in conds:
                 q, u = c.get("quantity", ""), unit_symbol(c.get("unit") or "") if c.get("unit") else ""
                 if q not in L.QUANTITIES or c.get("value") is None:
                     self.count("1c", "condition without a quantity id or a value"); continue
@@ -364,55 +411,64 @@ class Run:
                 facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
                                  value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
                 self.count("1c", "setting")
-        sets = {st["id"]: st for st in Fj.get("sets", [])}
-        members = collections.defaultdict(list)
-        first = {}
+        sims_of, ents, members, first = {}, {}, collections.defaultdict(list), {}
         for cu in Fj.get("curves", []):
-            ev = ";".join(els(cu["figure"], cu.get("panel", "")))
-            st = sets.get(cu.get("set") or "")
-            shared = st["conditions"] if st else {}
-            own = {q: c for q, c in (cu.get("conditions") or {}).items() if shared.get(q, {}).get("value") != c.get("value")}
-            y, lab = cu["y"], cu.get("series", {}).get("label_raw", "")
+            if cu["kind"] == "simulated":
+                key = tuple(sorted(cond_key(c) for c in (cu.get("conditions") or {}).values()))
+                sim = owner(cu["figure"], sims, self.fig_sim or self.sole_sim)
+                if key not in ents:
+                    ents[key] = dict(id=f"{k}:figrun:{len(ents) + 1}", sim=sim, ev=[], curves=[], conds=list((cu.get("conditions") or {}).values()),
+                                     label=cu.get("series", {}).get("label_raw", ""))
+                ents[key]["ev"] += els(cu["figure"], cu.get("panel", ""))
+                ents[key]["curves"].append(cu)
+        for e in ents.values():                                                 # what every entity of one simulation has alike goes on the simulation
+            sims_of.setdefault(e["sim"], []).append(e)
+        for sim, es in sims_of.items():
+            common = set.intersection(*[{cond_key(c) for c in e["conds"]} for e in es]) if len(es) > 1 else set()
+            if not sim:
+                self.count("1c", "simulated curves under the paper (no simulation)")
+            ev = ";".join(dict.fromkeys(x for e in es for x in e["ev"]))
+            settings([c for c in es[0]["conds"] if cond_key(c) in common], sim or k, ev, "model_input")
+            for e in es:
+                eev = ";".join(dict.fromkeys(e["ev"]))
+                tree.append(row(fact_id=e["id"], type="entity", how="stated", evidence=eev, parent=sim or k, label_as_printed=e["label"] or e["id"],
+                                statement=f"the simulation run of the curves {', '.join(c['id'] for c in e['curves'])}"))
+                settings([c for c in e["conds"] if cond_key(c) not in common], e["id"], eev, "model_input", mentions=e["label"])
+                for cu in e["curves"]:
+                    y = cu["y"]
+                    if y.get("quantity") not in L.QUANTITIES:
+                        self.count("1c", "curve y quantity not an id"); continue
+                    facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
+                                     mentions=cu.get("series", {}).get("label_raw", ""), evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=e["id"]))
+                    first.setdefault(cu.get("set") or "", facts[-1])
+                    members[cu.get("set") or ""].append(e["id"])
+                    self.count("1c", "curve simulated -> model")
+        for cu in Fj.get("curves", []):
+            if cu["kind"] == "simulated":
+                continue
+            y, ev = cu["y"], ";".join(els(cu["figure"], cu.get("panel", "")))
             if y.get("quantity") not in L.QUANTITIES:
                 self.count("1c", "curve y quantity not an id"); continue
-            if cu["kind"] == "simulated":
-                sim = owner(cu["figure"], sims, self.sole_sim)
-                if not sim:
-                    self.count("1c", "curve parent: paper (no simulation found)")
-                e = f"{k}:figrun:{cu['id'].split(':', 1)[1].replace('#', '.')}"
-                tree.append(row(fact_id=e, type="entity", how="stated", evidence=ev, parent=sim or k, label_as_printed=lab or cu["id"],
-                                statement=f"the simulation run of curve {cu['id']} ({lab or 'no series label'})"))
-                members[cu.get("set") or ""].append(e)
-                parent, kind = e, "model_input"
-                facts.append(row(type="model", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="simulated",
-                                 mentions=lab, evidence=ev, parent=e))
-            else:
-                spec = owner(cu["figure"], specs)
-                parent, kind = (self.measurement(spec, ""), "stated") if spec else (k, "stated")
-                if not spec:
-                    self.count("1c", "curve parent: paper (no specimen found)")
-                facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
-                                 mentions=lab, evidence=ev, parent=parent))
+            spec = owner(cu["figure"], specs)
+            parent = self.measurement(spec, "") if spec else k
+            if not spec:
+                self.count("1c", "measured curve under the paper (no specimen found)")
+            facts.append(row(type="observation", quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], data_kind="read_from_figure",
+                             mentions=cu.get("series", {}).get("label_raw", ""), evidence=ev, parent=parent))
             first.setdefault(cu.get("set") or "", facts[-1])
-            self.count("1c", f"curve {cu['kind']}")
-            settings(own, parent, ev, kind, mentions=lab)
-        for sid, st in sets.items():
-            ev = ";".join(els(st["figure"], st.get("panel", "")))
-            sim = owner(st["figure"], sims, self.sole_sim)
-            spec = owner(st["figure"], specs)
-            act = sim if members[sid] and sim else (self.measurement(spec, "") if spec else "")
-            if act:
-                settings(st.get("conditions") or {}, act, ev, "model_input" if act == sim else "stated")
-            else:
-                self.count("1c", "set conditions skipped (no activity found)")
-            if len(members[sid]) >= 2 and sid in first and st.get("varied") in L.QUANTITIES:
+            self.count("1c", f"curve {cu['kind']} -> observation")
+            settings(list((cu.get("conditions") or {}).values()), parent, ev, "stated", mentions=cu.get("series", {}).get("label_raw", ""))
+        self.count("1c", "entities (distinct conditions)", len(ents))
+        for st in Fj.get("sets", []):
+            sid, ms = st["id"], list(dict.fromkeys(members[st["id"]]))
+            if len(ms) >= 2 and sid in first and st.get("varied") in L.QUANTITIES:
                 first[sid]["_purpose_of"] = sid
                 tree.append(row(fact_id=f"{k}:figset:{sid.split(':')[-1]}", type="comparison", kind=st["kind"], how="stated", quantity=st["varied"],
-                                label_as_printed=st.get("label", ""), evidence=ev, parent=k, links="", _members=members[sid], _sid=sid,
-                                statement=f"the curves of figure set {sid} as a comparison, varying {L.NAMES.get(st['varied'], st['varied'])}"))
+                                label_as_printed=st.get("label", ""), evidence=";".join(els(st["figure"], st.get("panel", ""))), parent=k, links="",
+                                _members=ms, _sid=sid, statement=f"the curves of figure set {sid} as a comparison, varying {L.NAMES.get(st['varied'], st['varied'])}"))
                 self.count("1c", "comparison")
             else:
-                self.count("1c", "set without a comparison (fewer than two curve entities or no varied id)")
+                self.count("1c", "set without a comparison (fewer than two entities or no varied id)")
         return tree, facts
 
     def parent(self, r):
@@ -493,11 +549,14 @@ class Run:
             if not any(f[x] for x in VALUE_KEYS):
                 out.append(f); continue
             key = tuple(f[x] for x in DEDUPE_KEY)
-            if key in seen and f["evidence"] not in seen[key]["evidence"].split(";"):
+            if key in seen and not set(f["evidence"].split(";")) <= set(seen[key]["evidence"].split(";")):
                 g = seen[key]
-                g["evidence"] = ";".join(sorted(set(g["evidence"].split(";")) | {f["evidence"]}, key=self.order.get))
+                g["evidence"] = ";".join(sorted(set(g["evidence"].split(";")) | set(f["evidence"].split(";")), key=self.order.get))
                 self.count("i", "merged")
                 self.note(f"i: merged {f['evidence']} into {g['evidence']} ({f['quantity']} {f['value'] or f['value_text']})")
+                continue
+            if key in seen and seen[key]["label_as_printed"] == f["label_as_printed"]:     # P136b: the same row again from the same element(s); a
+                self.count("i", "duplicate dropped")                                          # label that differs stays (D5)
                 continue
             seen.setdefault(key, f)
             out.append(f)
@@ -593,6 +652,13 @@ class Run:
                     break
                 optional.pop()
                 self.count("k", "statement_part_left_out")
+            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]) and f["value_text"]:   # P136b: last resort, the printed text left out
+                s = s.replace(f"'{f['value_text']}'", "its value as printed in the element")
+                self.count("k", "statement_value_text_left_out")
+            if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):      # P136b: then the printed label and term left out
+                s = s.replace(f" (symbol {f['term']})", " (its symbol as printed)") if f["term"] else s
+                s = s.replace(name, "a quantity named in the element") if name and f["quantity"] == "other" else s
+                self.count("k", "statement_label_left_out")
             if copies(s, [self.text.get(e, "") for e in f["evidence"].split(";")]):
                 self.count("k", "statement_copies_text")
             key = " ".join(words(s))
@@ -652,6 +718,8 @@ class Run:
         self.count("f", "kept", len(recs))
         recs = self.mentions(recs)
         tree = self.tree()
+        self.fallbacks(recs)
+        tree = self.rows_tree
         items = []
         for r in recs:
             p, why = self.parent(r)
@@ -733,19 +801,27 @@ def match_key(f):
     return f["type"], f["quantity"], canon(f), f["value_text"].lower()
 
 
+def matches(g, c):
+    """A gold row g and a compiled row c match: a shared evidence element and equal match_key; D13: a gold model row without a value
+    matches a model row on a shared element whatever its quantity."""
+    if not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
+        return False
+    if g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"]):
+        return c["type"] == "model"
+    return match_key(g) == match_key(c)
+
+
 def diff(run):
-    """Gold pilot/<pid>.facts.csv against the compiled rows: a match shares an evidence element and has equal type, quantity, value,
-    value in canonical units (canon) and value_text; one gold row per compiled row, first come."""
+    """Gold kb/pilot/<pid>.facts.csv against the compiled rows by matches() (P134 key, canonical units, D13); one gold row per compiled
+    row, first come."""
     gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
     comp = run.rows
-    key = match_key
     free = list(range(len(gold)))
     matched = collections.Counter()
     for c in comp:
-        ce = set(c["evidence"].split(";")) - {""}
         for j in free:
             g = gold[j]
-            if key(g) == key(c) and ce & set(g["evidence"].split(";")):
+            if matches(g, c):
                 matched[c["type"]] += 1
                 free.remove(j)
                 break

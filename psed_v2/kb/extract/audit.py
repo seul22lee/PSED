@@ -46,8 +46,8 @@ REV = ["fact_id", "type", "quantity", "value", "unit", "value_text", "evidence",
 
 
 def matches(g, c):
-    """The P134 match with the P136 1d value comparison (compile.match_key: canonical units)."""
-    return K.match_key(g) == K.match_key(c) and set(g["evidence"].split(";")) & set(c["evidence"].split(";"))
+    """compile.matches: the P134 match with canonical units (1d) and D13."""
+    return K.matches(g, c)
 
 
 def same(x, f):
@@ -166,7 +166,8 @@ def main(arg):
             a.update(stage="T2 form", detail=err); out.append(a); continue
         on_el = [r for r in records if (set(r.get("evidence") or [r["eid"]]) & set(ev))]
         typed = [r for r in on_el if r["rec"].get("type") == g["type"]]
-        hits = [r for r in typed if not g["quantity"] or r["rec"].get("quantity") == g["quantity"]]
+        valueless_model = g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"])   # D13
+        hits = [r for r in typed if not g["quantity"] or valueless_model or r["rec"].get("quantity") == g["quantity"]]
         a.update(same_element_same_type=len(typed), same_element_same_type_same_quantity=len(hits))
         if typed and not hits:
             a.update(stage="T3q", detail=f"quantities of the {len(typed)} {g['type']} records: {dict(collections.Counter(r['rec'].get('quantity', '') for r in typed))}")

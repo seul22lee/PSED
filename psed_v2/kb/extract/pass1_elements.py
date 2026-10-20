@@ -27,13 +27,17 @@ RULES = """TYPES (one per record):
 - model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not
   a definition.
 - definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
-- claim: a causal statement, with cause, relation and effect.
+- claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and
+  stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation
+  is a claim, never NK.
 - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
 - cited: a value or statement the paper attributes to another work (not a setting).
 
 FIELD RULES
 - Answer every element id below, once: nk = none with its records, or, when the element holds no knowledge, nk = citation_line,
-  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty.
+  boilerplate, duplicate (duplicate_of = the element id it repeats) or no_knowledge, with records empty:
+  boilerplate: headings, author lines, acknowledgements; citation_line: a reference-list entry; duplicate: a statement already
+  recorded from another element; no_knowledge: the element states nothing the form can hold.
 - quote: words copied verbatim from the element, as few as identify the record; every record has one.
 - note: at most 20 words, on claims and definitions only.
 - quantity: an id of the form only when it is the same concept as printed; otherwise "other", and then candidate is required, with
@@ -45,7 +49,7 @@ FIELD RULES
 - variables (models and definitions): each symbol -> its quantity id, or null when no id fits.
 - cause, relation, effect: all three or none (claims only).
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
-  material, substrate, reactant_A, reactant_B and structure is an id of the form.
+  material, substrate, reactant_A, reactant_B and structure is an id of the form; for a reactor or an instrument, the name only.
 - mentions: only names from the MENTIONS list, exactly as listed."""
 
 
@@ -112,6 +116,8 @@ def examples(pid, form):
             if t in out or t not in form["properties"]["type"]["enum"] or "#" not in row["fact_id"]:
                 continue
             if t in ("setting", "observation", "derived", "model", "definition") and not row["quantity"]:
+                continue
+            if t == "claim" and not all(row[x] for x in ("cause", "relation", "effect", "stance")):     # P136b: the claim example carries all four
                 continue
             rec, lost = RT.cast(row, props)
             if t == "definition":
