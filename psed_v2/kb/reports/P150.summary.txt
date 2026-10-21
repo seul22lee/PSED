@@ -1,0 +1,18 @@
+P150: two fixes, then the knowledge-graph pages. Zero provider calls; the P148 records recompiled (score.py P150), gold untouched.
+
+X1 (P150 X1 commit): ontology.yaml vocabularies.crystallinity [amorphous, crystalline, polycrystalline] (header hash updated);
+  form.json value_text enum now includes polycrystalline: the mat22 s3.p4 record no longer drops. Codebook c, cited: "An element
+  that states the paper's own value and a literature value yields both an observation (or setting) and a cited record" (text
+  only, takes effect at the next extraction).
+X2 (P150 X2 commit): the quote scope of a figure element adds the figures.json cell and peak texts and labels of its panel
+  (value_text, label, value and at coordinates as printed; the figure's for a caption or a one-panel figure).
+  mat22 quote_not_found 96 -> 55; matched gold rows 294 -> 326 (+32: the fig2 crystallinity observations, match_changed);
+  check problems 433 -> 475 (same statement / same as +42: the kept fig2 records repeat the figures.json rows' statements).
+  yli18 145 / 243 and yim20 443 / 900 unchanged.
+
+Graph pages (kb/graph_page.py): kb/reports/graph_<pid>.html, one per paper, compiled and gold from facts.csv by the same code;
+  kb/reports/graph_index.html and graph_counts.csv: node and edge counts by kind, gold vs compiled. Edges as the P150 directive
+  lists them (PSED_v2_Plan.md has no section 0; ontology/CRITERIA.md section 9 defines qualified_by between ontology entries):
+  belongs_to, evidence (listed, tooltip only), inputs, links, cause, effect, qualified_by (fact -> the quantity id it states, an
+  x= quantity, a species= / gas= species, a species-valued value_text). Checked in headless Chromium: no script error; the
+  layout, the click panel, the gold toggle, the ontology toggle and the search work.

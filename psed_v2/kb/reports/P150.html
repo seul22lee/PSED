@@ -1,0 +1,285 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P150</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P150</h1>
+<h2>Summary</h2><p>kb/reports/P150.summary.txt</p>
+<pre>P150: two fixes, then the knowledge-graph pages. Zero provider calls; the P148 records recompiled (score.py P150), gold untouched.
+
+X1 (P150 X1 commit): ontology.yaml vocabularies.crystallinity [amorphous, crystalline, polycrystalline] (header hash updated);
+  form.json value_text enum now includes polycrystalline: the mat22 s3.p4 record no longer drops. Codebook c, cited: &quot;An element
+  that states the paper&#x27;s own value and a literature value yields both an observation (or setting) and a cited record&quot; (text
+  only, takes effect at the next extraction).
+X2 (P150 X2 commit): the quote scope of a figure element adds the figures.json cell and peak texts and labels of its panel
+  (value_text, label, value and at coordinates as printed; the figure&#x27;s for a caption or a one-panel figure).
+  mat22 quote_not_found 96 -&gt; 55; matched gold rows 294 -&gt; 326 (+32: the fig2 crystallinity observations, match_changed);
+  check problems 433 -&gt; 475 (same statement / same as +42: the kept fig2 records repeat the figures.json rows&#x27; statements).
+  yli18 145 / 243 and yim20 443 / 900 unchanged.
+
+Graph pages (kb/graph_page.py): kb/reports/graph_&lt;pid&gt;.html, one per paper, compiled and gold from facts.csv by the same code;
+  kb/reports/graph_index.html and graph_counts.csv: node and edge counts by kind, gold vs compiled. Edges as the P150 directive
+  lists them (PSED_v2_Plan.md has no section 0; ontology/CRITERIA.md section 9 defines qualified_by between ontology entries):
+  belongs_to, evidence (listed, tooltip only), inputs, links, cause, effect, qualified_by (fact -&gt; the quantity id it states, an
+  x= quantity, a species= / gas= species, a species-valued value_text). Checked in headless Chromium: no script error; the
+  layout, the click panel, the gold toggle, the ontology toggle and the search work.
+</pre>
+<h2>Score moved, P149 to P150</h2><p>kb/reports/P150.score_moved.csv</p>
+<table><tr><th>paper</th><th>gold_rows</th><th>matched_P149</th><th>matched_P150</th><th>check_dir_P149</th><th>check_dir_P150</th></tr>
+<tr><td>yli18</td><td>243</td><td>145</td><td>145</td><td>139</td><td>139</td></tr>
+<tr><td>yim20</td><td>900</td><td>443</td><td>443</td><td>248</td><td>248</td></tr>
+<tr><td>mat22</td><td>1071</td><td>294</td><td>326</td><td>433</td><td>475</td></tr>
+</table>
+<h2>Gold rows whose match changed</h2><p>kb/reports/P150.match_changed.csv</p>
+<table><tr><th>paper</th><th>gold_row</th><th>type</th><th>quantity</th><th>value</th><th>evidence</th><th>P149</th><th>P150</th></tr>
+<tr><td>mat22</td><td>mat22:fig4#3</td><td>observation</td><td>element_ratio</td><td>2.0</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#4</td><td>observation</td><td>element_ratio</td><td>1.9</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#5</td><td>observation</td><td>element_ratio</td><td>2.1</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#6</td><td>observation</td><td>element_ratio</td><td>2.2</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#7</td><td>observation</td><td>element_ratio</td><td>1.9</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#8</td><td>observation</td><td>element_ratio</td><td>2.3</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#9</td><td>observation</td><td>element_ratio</td><td>2.8</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#10</td><td>observation</td><td>element_ratio</td><td>2.7</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#11</td><td>observation</td><td>element_ratio</td><td>2.5</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#12</td><td>observation</td><td>element_ratio</td><td>2.2</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#13</td><td>observation</td><td>element_ratio</td><td>2.1</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#14</td><td>observation</td><td>element_ratio</td><td>1.9</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#15</td><td>observation</td><td>element_ratio</td><td>1.3</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#16</td><td>observation</td><td>element_ratio</td><td>3.1</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#17</td><td>observation</td><td>element_ratio</td><td>3.0</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#18</td><td>observation</td><td>element_ratio</td><td>2.5</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#19</td><td>observation</td><td>element_ratio</td><td>2.2</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#20</td><td>observation</td><td>element_ratio</td><td>1.9</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#21</td><td>observation</td><td>element_ratio</td><td>1.3</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#22</td><td>observation</td><td>element_ratio</td><td>3.6</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#23</td><td>observation</td><td>element_ratio</td><td>3.5</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#24</td><td>observation</td><td>element_ratio</td><td>3.0</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#25</td><td>observation</td><td>element_ratio</td><td>2.1</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#26</td><td>observation</td><td>element_ratio</td><td>1.9</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#27</td><td>observation</td><td>element_ratio</td><td>1.3</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#28</td><td>observation</td><td>element_ratio</td><td>4.6</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#29</td><td>observation</td><td>element_ratio</td><td>3.6</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#30</td><td>observation</td><td>element_ratio</td><td>2.2</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#31</td><td>observation</td><td>element_ratio</td><td>1.8</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#32</td><td>observation</td><td>element_ratio</td><td>1.4</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#33</td><td>observation</td><td>element_ratio</td><td>7.3</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#34</td><td>observation</td><td>element_ratio</td><td>2.0</td><td>fig4</td><td>T4 compiler: step d: quote_not_found (quote)</td><td>T6 matched</td></tr>
+</table>
+<h2>Check classes that changed</h2><p>kb/reports/P150.check_changed.csv</p>
+<table><tr><th>paper</th><th>check_class</th><th>P149</th><th>P150</th><th>change</th></tr>
+<tr><td>mat22</td><td>same statement as ·</td><td>132</td><td>152</td><td>132 -&gt; 152</td></tr>
+<tr><td>mat22</td><td>same as ·</td><td>105</td><td>127</td><td>105 -&gt; 127</td></tr>
+</table>
+<h2>Graph node and edge counts, gold vs compiled</h2><p>kb/reports/graph_counts.csv</p>
+<table><tr><th>paper</th><th>element</th><th>kind</th><th>gold</th><th>compiled</th></tr>
+<tr><td>yli18</td><td>node</td><td>paper</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>node</td><td>recipe</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>node</td><td>deposition</td><td>2</td><td>2</td></tr>
+<tr><td>yli18</td><td>node</td><td>simulation</td><td>2</td><td>2</td></tr>
+<tr><td>yli18</td><td>node</td><td>specimen</td><td>3</td><td>2</td></tr>
+<tr><td>yli18</td><td>node</td><td>model run</td><td>9</td><td>10</td></tr>
+<tr><td>yli18</td><td>node</td><td>measurement</td><td>6</td><td>5</td></tr>
+<tr><td>yli18</td><td>node</td><td>comparison</td><td>3</td><td>2</td></tr>
+<tr><td>yli18</td><td>node</td><td>claim</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>node</td><td>setting</td><td>16</td><td>17</td></tr>
+<tr><td>yli18</td><td>node</td><td>definition</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>node</td><td>model</td><td>13</td><td>15</td></tr>
+<tr><td>yli18</td><td>node</td><td>caveat</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>node</td><td>derived</td><td>4</td><td>14</td></tr>
+<tr><td>yli18</td><td>node</td><td>observation</td><td>2</td><td>4</td></tr>
+<tr><td>yli18</td><td>node</td><td>quantity</td><td>37</td><td>39</td></tr>
+<tr><td>yli18</td><td>node</td><td>species</td><td>8</td><td>8</td></tr>
+<tr><td>yli18</td><td>node</td><td>mechanism</td><td>3</td><td>3</td></tr>
+<tr><td>yli18</td><td>edge</td><td>evidence</td><td>357</td><td>316</td></tr>
+<tr><td>yli18</td><td>edge</td><td>belongs_to</td><td>67</td><td>77</td></tr>
+<tr><td>yli18</td><td>edge</td><td>links</td><td>33</td><td>41</td></tr>
+<tr><td>yli18</td><td>edge</td><td>qualified_by</td><td>137</td><td>251</td></tr>
+<tr><td>yli18</td><td>edge</td><td>cause</td><td>7</td><td>7</td></tr>
+<tr><td>yli18</td><td>edge</td><td>effect</td><td>6</td><td>7</td></tr>
+<tr><td>yli18</td><td>edge</td><td>inputs</td><td>2</td><td>26</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>belongs_to</td><td>242</td><td>384</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>cause</td><td>13</td><td>10</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>effect</td><td>13</td><td>10</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>evidence</td><td>474</td><td>660</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>inputs</td><td>6</td><td>30</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>links</td><td>54</td><td>223</td></tr>
+<tr><td>yli18</td><td>edge (rows)</td><td>qualified_by</td><td>184</td><td>367</td></tr>
+<tr><td>yli18</td><td>node</td><td>cited</td><td>2</td><td>0</td></tr>
+<tr><td>yli18</td><td>node</td><td>identity</td><td>1</td><td>0</td></tr>
+<tr><td>yim20</td><td>node</td><td>paper</td><td>1</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>recipe</td><td>1</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>deposition</td><td>15</td><td>12</td></tr>
+<tr><td>yim20</td><td>node</td><td>simulation</td><td>11</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>specimen</td><td>21</td><td>16</td></tr>
+<tr><td>yim20</td><td>node</td><td>model run</td><td>10</td><td>9</td></tr>
+<tr><td>yim20</td><td>node</td><td>measurement</td><td>48</td><td>35</td></tr>
+<tr><td>yim20</td><td>node</td><td>comparison</td><td>8</td><td>12</td></tr>
+<tr><td>yim20</td><td>node</td><td>claim</td><td>1</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>setting</td><td>51</td><td>58</td></tr>
+<tr><td>yim20</td><td>node</td><td>definition</td><td>1</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>cited</td><td>45</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>model</td><td>16</td><td>11</td></tr>
+<tr><td>yim20</td><td>node</td><td>caveat</td><td>1</td><td>1</td></tr>
+<tr><td>yim20</td><td>node</td><td>observation</td><td>36</td><td>35</td></tr>
+<tr><td>yim20</td><td>node</td><td>derived</td><td>66</td><td>45</td></tr>
+<tr><td>yim20</td><td>node</td><td>quantity</td><td>42</td><td>50</td></tr>
+<tr><td>yim20</td><td>node</td><td>species</td><td>6</td><td>8</td></tr>
+<tr><td>yim20</td><td>node</td><td>mechanism</td><td>17</td><td>5</td></tr>
+<tr><td>yim20</td><td>edge</td><td>evidence</td><td>1525</td><td>1055</td></tr>
+<tr><td>yim20</td><td>edge</td><td>belongs_to</td><td>284</td><td>239</td></tr>
+<tr><td>yim20</td><td>edge</td><td>links</td><td>131</td><td>130</td></tr>
+<tr><td>yim20</td><td>edge</td><td>qualified_by</td><td>454</td><td>462</td></tr>
+<tr><td>yim20</td><td>edge</td><td>cause</td><td>32</td><td>13</td></tr>
+<tr><td>yim20</td><td>edge</td><td>effect</td><td>10</td><td>7</td></tr>
+<tr><td>yim20</td><td>edge</td><td>inputs</td><td>119</td><td>50</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>belongs_to</td><td>851</td><td>748</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>cause</td><td>57</td><td>20</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>effect</td><td>42</td><td>18</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>evidence</td><td>2305</td><td>1322</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>inputs</td><td>165</td><td>58</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>links</td><td>226</td><td>238</td></tr>
+<tr><td>yim20</td><td>edge (rows)</td><td>qualified_by</td><td>624</td><td>701</td></tr>
+<tr><td>yim20</td><td>node</td><td>identity</td><td>1</td><td>0</td></tr>
+<tr><td>mat22</td><td>node</td><td>paper</td><td>1</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>recipe</td><td>5</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>deposition</td><td>54</td><td>42</td></tr>
+<tr><td>mat22</td><td>node</td><td>specimen</td><td>54</td><td>42</td></tr>
+<tr><td>mat22</td><td>node</td><td>measurement</td><td>189</td><td>100</td></tr>
+<tr><td>mat22</td><td>node</td><td>comparison</td><td>12</td><td>18</td></tr>
+<tr><td>mat22</td><td>node</td><td>claim</td><td>2</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>cited</td><td>47</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>model</td><td>5</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>observation</td><td>184</td><td>96</td></tr>
+<tr><td>mat22</td><td>node</td><td>setting</td><td>71</td><td>48</td></tr>
+<tr><td>mat22</td><td>node</td><td>caveat</td><td>1</td><td>1</td></tr>
+<tr><td>mat22</td><td>node</td><td>derived</td><td>4</td><td>4</td></tr>
+<tr><td>mat22</td><td>node</td><td>mechanism</td><td>11</td><td>9</td></tr>
+<tr><td>mat22</td><td>node</td><td>quantity</td><td>36</td><td>38</td></tr>
+<tr><td>mat22</td><td>node</td><td>species</td><td>16</td><td>11</td></tr>
+<tr><td>mat22</td><td>edge</td><td>evidence</td><td>1281</td><td>698</td></tr>
+<tr><td>mat22</td><td>edge</td><td>belongs_to</td><td>630</td><td>355</td></tr>
+<tr><td>mat22</td><td>edge</td><td>links</td><td>254</td><td>218</td></tr>
+<tr><td>mat22</td><td>edge</td><td>cause</td><td>20</td><td>12</td></tr>
+<tr><td>mat22</td><td>edge</td><td>effect</td><td>17</td><td>12</td></tr>
+<tr><td>mat22</td><td>edge</td><td>qualified_by</td><td>537</td><td>309</td></tr>
+<tr><td>mat22</td><td>edge</td><td>inputs</td><td>4</td><td>5</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>belongs_to</td><td>1069</td><td>620</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>cause</td><td>71</td><td>36</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>effect</td><td>60</td><td>35</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>evidence</td><td>1772</td><td>1083</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>inputs</td><td>4</td><td>14</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>links</td><td>486</td><td>878</td></tr>
+<tr><td>mat22</td><td>edge (rows)</td><td>qualified_by</td><td>652</td><td>454</td></tr>
+<tr><td>mat22</td><td>node</td><td>activity</td><td>1</td><td>0</td></tr>
+<tr><td>mat22</td><td>node</td><td>definition</td><td>1</td><td>0</td></tr>
+<tr><td>mat22</td><td>node</td><td>identity</td><td>1</td><td>0</td></tr>
+</table>
+<h2>score_summary after X1 and X2</h2><p>kb/compiled/score_summary.csv</p>
+<table><tr><th>paper</th><th>section</th><th>item</th><th>gold</th><th>compiled</th><th>matched</th><th>precision</th><th>recall</th><th>count</th></tr>
+<tr><td>yli18</td><td>type</td><td>model</td><td>67</td><td>126</td><td>61</td><td>0.48</td><td>0.91</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>setting</td><td>63</td><td>123</td><td>37</td><td>0.30</td><td>0.59</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>definition</td><td>38</td><td>54</td><td>23</td><td>0.43</td><td>0.61</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>derived</td><td>15</td><td>28</td><td>7</td><td>0.25</td><td>0.47</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>claim</td><td>13</td><td>15</td><td>8</td><td>0.53</td><td>0.62</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>entity</td><td>12</td><td>12</td><td>6</td><td>0.50</td><td>0.50</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>activity</td><td>11</td><td>10</td><td>4</td><td>0.40</td><td>0.36</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>observation</td><td>7</td><td>6</td><td>2</td><td>0.33</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>caveat</td><td>7</td><td>8</td><td>2</td><td>0.25</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>cited</td><td>5</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>comparison</td><td>3</td><td>2</td><td>1</td><td>0.50</td><td>0.33</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>205</td></tr>
+<tr><td>yli18</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>80</td></tr>
+<tr><td>yli18</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>138</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>6</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity measurement / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity simulation / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>type</td><td>setting</td><td>206</td><td>214</td><td>123</td><td>0.57</td><td>0.60</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>observation</td><td>154</td><td>101</td><td>80</td><td>0.79</td><td>0.52</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>derived</td><td>108</td><td>142</td><td>99</td><td>0.70</td><td>0.92</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>cited</td><td>92</td><td>32</td><td>27</td><td>0.84</td><td>0.29</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>activity</td><td>75</td><td>49</td><td>47</td><td>0.96</td><td>0.63</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>model</td><td>73</td><td>51</td><td>45</td><td>0.88</td><td>0.62</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>definition</td><td>66</td><td>97</td><td>24</td><td>0.25</td><td>0.36</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>caveat</td><td>45</td><td>5</td><td>3</td><td>0.60</td><td>0.07</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>claim</td><td>40</td><td>20</td><td>15</td><td>0.75</td><td>0.38</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>entity</td><td>31</td><td>25</td><td>25</td><td>1.00</td><td>0.81</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>comparison</td><td>8</td><td>12</td><td>1</td><td>0.08</td><td>0.12</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>9</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>varies setting other &#x27;·&#x27; among its members; give it an id in lists.py</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>setting under · (paper), not under an activity or an entity (a comparison holds no setting)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>penetration_depth measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>roughness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>observation under · (activity recipe), not under a measurement activity or a comparison</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>22</td></tr>
+<tr><td>yim20</td><td>drops</td><td>a:schema:enum</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>316</td></tr>
+<tr><td>yim20</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>259</td></tr>
+<tr><td>yim20</td><td>about</td><td>unknown</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yim20</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>377</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold observation / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>47</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>26</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity simulation / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>18</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold derived / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison replicate / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>type</td><td>observation</td><td>313</td><td>161</td><td>109</td><td>0.68</td><td>0.35</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>setting</td><td>251</td><td>202</td><td>126</td><td>0.62</td><td>0.50</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>activity</td><td>249</td><td>143</td><td>133</td><td>0.93</td><td>0.53</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>cited</td><td>58</td><td>11</td><td>6</td><td>0.55</td><td>0.10</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>entity</td><td>54</td><td>42</td><td>42</td><td>1.00</td><td>0.78</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>caveat</td><td>54</td><td>1</td><td>1</td><td>1.00</td><td>0.02</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>claim</td><td>52</td><td>37</td><td>27</td><td>0.73</td><td>0.52</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>definition</td><td>14</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>comparison</td><td>12</td><td>18</td><td>7</td><td>0.39</td><td>0.58</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>model</td><td>8</td><td>1</td><td>1</td><td>1.00</td><td>0.12</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>derived</td><td>4</td><td>4</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>34</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (what it is a fraction of; ·)</td><td></td><td></td><td></td><td></td><td></td><td>34</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>29</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>&#x27;·&#x27; stored as a plain value (a bound or a stat=minimum/maximum; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>carrier_density measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a film thickness setting that is not a target (thickness is a result; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>resistivity measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>mobility measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>element_ratio measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>55</td></tr>
+<tr><td>mat22</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>188</td></tr>
+<tr><td>mat22</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>142</td></tr>
+<tr><td>mat22</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>417</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>10</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison grid / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+</table>
+</body></html>
