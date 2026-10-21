@@ -126,7 +126,8 @@ def variables_ok(s):
 NODE_TYPES = ["paper", "activity", "entity"]
 ACTIVITY_KINDS = ["recipe", "deposition", "anneal", "plasma_treatment", "measurement", "simulation"]
 COMPARISON_KINDS = ["series", "grid", "replicate"]
-# P148: the record types, the NK reasons and the equation rule (moved from kb/extract/pass1_elements.py RULES, text unchanged); CODEBOOK.md
+# P148: the record types, the NK reasons and the equation rule (moved from kb/extract/pass1_elements.py RULES, text unchanged; P149 (user):
+# definition and cited always carry a quantity); CODEBOOK.md
 # reads them (ontology/export.py), the pass-1 prompt carries them through the codebook only
 RECORD_TYPES = {
     "setting": "a condition the authors chose, including the measurement setup (objective, resolution, scan length, precision).",
@@ -134,12 +135,14 @@ RECORD_TYPES = {
     "derived": "a number the authors computed from their data (fit parameters, values derived in a table).",
     "model": "an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not "
              "a definition.",
-    "definition": "a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.",
+    "definition": "a symbol or term the paper defines; term = the symbol as printed; quantity = the entry it stands for, else other with a "
+                  "candidate; never null (P149).",
     "claim": "a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and "
              "stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an "
              "interpretation is a claim, never NK.",
     "caveat": "a limitation or assumption the authors state about their own method or data (not a claim).",
-    "cited": "a value or statement the paper attributes to another work (not a setting).",
+    "cited": "a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else "
+             "other with a candidate; never null (P149).",
 }
 NK_REASONS = {
     "boilerplate": "headings, author lines, acknowledgements",
