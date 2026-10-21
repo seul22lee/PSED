@@ -91,6 +91,13 @@ def alias_table(ids, entries):
 
 
 SPECIES_ALIASES = {q: alias_table(ids, L.SPECIES if q != "structure" else L.ENTRIES) for q, ids in SPECIES_Q.items()}
+CATEGORICAL_ALIASES = {q: {normalize(a).lower(): v for v in vs for a in [v] + V.VALUE_ALIASES.get(q, {}).get(v, [])}
+                       for q, vs in V.FORM_CATEGORICAL_VALUES.items()}           # P149 F3: crystallinity's value ids and their value_aliases
+
+
+def categorical(q, text):
+    """P149 F3: the value id of a FORM_CATEGORICALS quantity a value_text stands for (normalize()d, any case), else None."""
+    return CATEGORICAL_ALIASES.get(q, {}).get(normalize(text or "").lower())
 
 
 class Run:
@@ -184,6 +191,11 @@ class Run:
             if isinstance(rec.get("qualifiers"), dict):
                 for k_ in qnum & set(rec["qualifiers"]):
                     rec["qualifiers"][k_] = self.coerce(r["eid"], f"qualifiers.{k_}", rec["qualifiers"][k_], "number")
+            hit = categorical(rec.get("quantity"), rec.get("value_text")) if isinstance(rec.get("quantity"), str) and rec.get("value_text") else None
+            if hit and hit != rec["value_text"]:                                # P149 F3: the value id, before form.json's enum
+                self.count("a", f"{rec['quantity']} value_text resolved (F3)")
+                self.note(f"a: {r['eid']}: {rec['quantity']} value_text {rec['value_text']!r} -> {hit!r} (F3)")
+                rec["value_text"] = hit
         terms = collections.defaultdict(set)                                    # C5: term -> quantity, from the paper's definition records
         for r in recs:
             rec = r["rec"]
@@ -554,8 +566,13 @@ class Run:
             if q not in L.QUANTITIES:
                 self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
             u = unit_symbol(v.get("unit") or "") if v.get("unit") else ""
+            vt = v.get("value_text") or ""
+            if q in CATEGORICAL_ALIASES and vt:                                 # P149 F3: a cell's value_text resolved to the value id
+                hit = categorical(q, vt)
+                self.count("1c", f"{q} value_text resolved (F3)" if hit else f"{q} value_text not in its value set (kept as printed)")
+                vt = hit or vt
             facts.append(row(type="observation" if dr == "measured" else "model", quantity=q, label_as_printed=v.get("label") or q,
-                             value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=v.get("value_text") or "", unit=u or "",
+                             value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=vt, unit=u or "",
                              data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
                              parent="@meas:" + nid if dr == "measured" else nid))
             self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")

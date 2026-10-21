@@ -176,6 +176,7 @@ def build(onto, pmap):
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78
         CATEGORICAL_VALUES={k: [str(x) for x in voc[k]] for k in voc.get("categorical_conditions", []) if isinstance(voc.get(k), list)},   # the categoricals with a fixed value list
+        FORM_CATEGORICAL_VALUES={k: [str(x) for x in voc[k]] for k in FORM_CATEGORICALS},   # P149 F3: their value_text in form.json, resolved by the compiler
         AMBIGUOUS_ALIASES={a: [str(x) for x in v] for a, v in voc.get("ambiguous_aliases", {}).items()},
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
@@ -198,6 +199,7 @@ COMPILER_ONLY = ["evidence", "fact_id", "statement", "parent", "links", "inputs"
 FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  # facts.FIELDS column -> form field where the names differ
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
+FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
 PASS0_ROLES = ["specimen", "run", "simulation", "model_run"]   # P142: model_run; P143b (user): experiment units only, no series, no cited_work   # P138: series = a figure series of runs or specimens differing in one quantity
 
 
@@ -308,6 +310,8 @@ def form_schema(onto, L, F):
             {"if": _is("quantity", ["material", "substrate"]), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/material"})}}},
             {"if": _is("quantity", ["reactant_A", "reactant_B"]), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/species"})}}},
             {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/structure"})}}},
+            *[{"if": _is("quantity", q), "then": {"properties": {"value_text": nullable({"enum": [str(x) for x in onto["vocabularies"][q]]})}}}
+              for q in FORM_CATEGORICALS],                                      # P149 F3
         ],
         "$defs": defs,
     }

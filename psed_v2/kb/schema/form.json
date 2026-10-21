@@ -905,6 +905,35 @@
      }
     }
    }
+  },
+  {
+   "if": {
+    "properties": {
+     "quantity": {
+      "const": "crystallinity"
+     }
+    },
+    "required": [
+     "quantity"
+    ]
+   },
+   "then": {
+    "properties": {
+     "value_text": {
+      "anyOf": [
+       {
+        "enum": [
+         "amorphous",
+         "crystalline"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    }
+   }
   }
  ],
  "$defs": {

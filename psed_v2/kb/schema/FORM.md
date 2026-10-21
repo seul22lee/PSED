@@ -20,7 +20,7 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | value_max | number or {'type': 'null'} | always | extractor |
 | censor | one of `<`, `<dl`, `>`, `>dl` or {'type': 'null'} | always | extractor |
 | unit | string or {'type': 'null'} | always | extractor |
-| value_text | string or {'type': 'null'} | always; enum, 16 values (material) or {'type': 'null'} when quantity `material` / `substrate`; enum, 38 values (species) or {'type': 'null'} when quantity `reactant_A` / `reactant_B`; enum, 12 values (structure) or {'type': 'null'} when quantity `structure` | extractor |
+| value_text | string or {'type': 'null'} | always; enum, 16 values (material) or {'type': 'null'} when quantity `material` / `substrate`; enum, 38 values (species) or {'type': 'null'} when quantity `reactant_A` / `reactant_B`; enum, 12 values (structure) or {'type': 'null'} when quantity `structure`; one of `amorphous`, `crystalline` or {'type': 'null'} when quantity `crystallinity` | extractor |
 | kind | enum, 9 values or {'type': 'null'} | always | extractor |
 | method | enum, 34 values or {'type': 'null'} | always | extractor |
 | mentions | list of string or {'type': 'null'} | always | extractor |
