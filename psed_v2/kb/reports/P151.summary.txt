@@ -1,0 +1,25 @@
+P151: conditions from pass 1 only; the dimensionless unit; experiment-card pages. Zero provider calls; the P148 records recompiled
+(score.py P151), paper pages rebuilt, gold untouched.
+
+C1 (compile.py figures()): figures.json gives data rows only: a curve, cell or peak is the result row of the unit whose pass-0 data
+  names it (measured -> observation under the specimen's measurement; fitted -> model under the specimen; simulated -> model under
+  the model run), points_ref = the figures.json id. The settings() path (figures.json conditions and cell at coordinates -> setting
+  rows) and its logs are gone; so is P149 F2 (no figure setting is left to merge). Setting rows removed: yli18 79, yim20 55, mat22
+  95 (and 4 / 6 / 41 that F2 had merged into records): c1_removed. Comparisons now run on pass-1 conditions.
+C2: the join was kb/pilot/experiments.py text(): censor + value + " " + unit, with the compiler's unit "1" for dimensionless
+  values (the gold leaves it empty): 0.01 1, 50 1, 2000 1, 2 1 (read as 0.011, 501, 20001, 21); "100 1/Pa" is 100 per pascal
+  (adsorption_equilibrium_constant), a real unit, kept with its space. Fixed at both ends: compile.py writes "1" / "-" as an empty
+  unit (dimless()); experiments.py never appends a dimensionless unit, and prints a value's text before its points_ref. No value
+  string ever held a unit (facts.csv value columns are numeric in every row). Changed: 222 compiled fact rows unit "1" -> ""
+  (c2_facts_unit; 40 of them are rows C1 removed), 239 experiments.csv cells (c2_experiment_cells; 38 in rows or columns C1 removed).
+
+Score (matched gold rows; before = P150): yli18 145 -> 138, yim20 443 -> 425, mat22 326 -> 273. Every lost match is a gold setting
+  (match_changed_summary): 64 with figure evidence that matched a figures.json condition row, 14 mat22 settings on other elements.
+  check --dir problems: yli18 139 -> 159, yim20 248 -> 306, mat22 475 -> 263 (check_changed).
+
+Cards (kb/graph_page.py -> graph_<pid>.html; the P150 force graph is now graph_facts_<pid>.html): one card per experiments.csv
+  entity row, gold left, compiled right, paired by render.pair_units (a gold specimen whose deposition pairs with a pass-0 run whose
+  card is "film of <run>" pairs with the film). Per paper: gold / compiled / paired cards and differing cells in graph_cards.csv.
+  A paired compiled card sits opposite its gold card inside the gold block (gold comparison frame or gold deposition / simulation
+  box); compiled cards with no gold card follow in their own compiled frames and boxes. Checked in headless Chromium: no script
+  error; search, block collapse and the gold / compiled toggle work.

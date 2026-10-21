@@ -1,0 +1,1011 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P151</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P151</h1><h2>Card pages</h2><ul><li><a href='graph_10.1063_1.5028178.html'>graph_10.1063_1.5028178.html</a> (yli18) · <a href='graph_facts_10.1063_1.5028178.html'>graph_facts_10.1063_1.5028178.html</a></li><li><a href='graph_10.1039_d0cp03358h.html'>graph_10.1039_d0cp03358h.html</a> (yim20) · <a href='graph_facts_10.1039_d0cp03358h.html'>graph_facts_10.1039_d0cp03358h.html</a></li><li><a href='graph_10.1021_acs.chemmater.2c01154.html'>graph_10.1021_acs.chemmater.2c01154.html</a> (mat22) · <a href='graph_facts_10.1021_acs.chemmater.2c01154.html'>graph_facts_10.1021_acs.chemmater.2c01154.html</a></li></ul><p><a href='graph_index.html'>graph_index.html</a></p>
+<h2>Summary</h2><p>kb/reports/P151.summary.txt</p>
+<pre>P151: conditions from pass 1 only; the dimensionless unit; experiment-card pages. Zero provider calls; the P148 records recompiled
+(score.py P151), paper pages rebuilt, gold untouched.
+
+C1 (compile.py figures()): figures.json gives data rows only: a curve, cell or peak is the result row of the unit whose pass-0 data
+  names it (measured -&gt; observation under the specimen&#x27;s measurement; fitted -&gt; model under the specimen; simulated -&gt; model under
+  the model run), points_ref = the figures.json id. The settings() path (figures.json conditions and cell at coordinates -&gt; setting
+  rows) and its logs are gone; so is P149 F2 (no figure setting is left to merge). Setting rows removed: yli18 79, yim20 55, mat22
+  95 (and 4 / 6 / 41 that F2 had merged into records): c1_removed. Comparisons now run on pass-1 conditions.
+C2: the join was kb/pilot/experiments.py text(): censor + value + &quot; &quot; + unit, with the compiler&#x27;s unit &quot;1&quot; for dimensionless
+  values (the gold leaves it empty): 0.01 1, 50 1, 2000 1, 2 1 (read as 0.011, 501, 20001, 21); &quot;100 1/Pa&quot; is 100 per pascal
+  (adsorption_equilibrium_constant), a real unit, kept with its space. Fixed at both ends: compile.py writes &quot;1&quot; / &quot;-&quot; as an empty
+  unit (dimless()); experiments.py never appends a dimensionless unit, and prints a value&#x27;s text before its points_ref. No value
+  string ever held a unit (facts.csv value columns are numeric in every row). Changed: 222 compiled fact rows unit &quot;1&quot; -&gt; &quot;&quot;
+  (c2_facts_unit; 40 of them are rows C1 removed), 239 experiments.csv cells (c2_experiment_cells; 38 in rows or columns C1 removed).
+
+Score (matched gold rows; before = P150): yli18 145 -&gt; 138, yim20 443 -&gt; 425, mat22 326 -&gt; 273. Every lost match is a gold setting
+  (match_changed_summary): 64 with figure evidence that matched a figures.json condition row, 14 mat22 settings on other elements.
+  check --dir problems: yli18 139 -&gt; 159, yim20 248 -&gt; 306, mat22 475 -&gt; 263 (check_changed).
+
+Cards (kb/graph_page.py -&gt; graph_&lt;pid&gt;.html; the P150 force graph is now graph_facts_&lt;pid&gt;.html): one card per experiments.csv
+  entity row, gold left, compiled right, paired by render.pair_units (a gold specimen whose deposition pairs with a pass-0 run whose
+  card is &quot;film of &lt;run&gt;&quot; pairs with the film). Per paper: gold / compiled / paired cards and differing cells in graph_cards.csv.
+  A paired compiled card sits opposite its gold card inside the gold block (gold comparison frame or gold deposition / simulation
+  box); compiled cards with no gold card follow in their own compiled frames and boxes. Checked in headless Chromium: no script
+  error; search, block collapse and the gold / compiled toggle work.
+</pre>
+<h2>Pages</h2><p>kb/reports/graph_cards.csv</p>
+<table><tr><th>paper</th><th>cards_gold</th><th>cards_compiled</th><th>paired</th><th>gold_without_counterpart</th><th>compiled_without_counterpart</th><th>differing_condition_cells</th><th>differing_result_cells</th></tr>
+<tr><td>yli18</td><td>11</td><td>12</td><td>11</td><td>0</td><td>1</td><td>105</td><td>88</td></tr>
+<tr><td>yim20</td><td>31</td><td>25</td><td>25</td><td>6</td><td>0</td><td>590</td><td>325</td></tr>
+<tr><td>mat22</td><td>54</td><td>42</td><td>34</td><td>20</td><td>8</td><td>2754</td><td>113</td></tr>
+</table>
+<h2>C1 setting rows removed per paper</h2><p>kb/reports/P151.c1_removed_counts.csv</p>
+<table><tr><th>paper</th><th>setting_rows_removed</th><th>merged_into_records_before</th></tr>
+<tr><td>yli18</td><td>79</td><td>4</td></tr>
+<tr><td>yim20</td><td>55</td><td>6</td></tr>
+<tr><td>mat22</td><td>95</td><td>41</td></tr>
+</table>
+<h2>C1 the rows</h2><p>kb/reports/P151.c1_removed.csv</p>
+<table><tr><th>paper</th><th>fact_id</th><th>quantity</th><th>qualifiers</th><th>value</th><th>unit</th><th>data_kind</th><th>evidence</th><th>parent</th><th>how</th></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#6</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#7</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#8</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#9</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#10</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#11</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#12</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#13</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#14</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#15</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_1s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#16</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#17</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#18</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#19</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#20</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#21</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#22</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#23</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#24</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#25</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_05s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#26</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#27</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#28</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#29</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#30</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#31</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#32</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#33</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#34</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#35</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_02s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#36</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#37</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#38</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#39</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#40</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#41</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#42</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#43</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#44</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#45</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig2.cap;fig2;fig3.cap;fig3</td><td>yli18:mrun:mr_tp_0_01s</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#3</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h2</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#4</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h2</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#5</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h2</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#7</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h1</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#8</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h1</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#9</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h1</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#10</td><td>feature_width</td><td></td><td>1</td><td>µm</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h1</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#12</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h05</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#13</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h05</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#14</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h05</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#15</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h05</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#17</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h02</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#18</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h02</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#19</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h02</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig4#20</td><td>feature_width</td><td></td><td>0.2</td><td>µm</td><td>model_input</td><td>fig4;fig4.cap</td><td>yli18:mrun:mr_fig4_h02</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#1</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#2</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#3</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#4</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#5</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#6</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#7</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#8</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#9</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#10</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#11</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_gordon</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#13</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#14</td><td>feature_extent</td><td></td><td>100</td><td>µm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#15</td><td>partial_pressure</td><td></td><td>300</td><td>Pa</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#16</td><td>molar_mass</td><td></td><td>28</td><td>g/mol</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#17</td><td>molecule_diameter</td><td></td><td>374</td><td>pm</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#18</td><td>saturation_density</td><td></td><td>5</td><td>nm-2</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#19</td><td>deposition_temperature</td><td></td><td>226.85</td><td>°C</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#20</td><td>adsorption_equilibrium_constant</td><td></td><td>100</td><td>1/Pa</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#21</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#22</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig5#23</td><td>saturation_growth_per_cycle</td><td></td><td>0.106</td><td>nm/cycle</td><td>model_input</td><td>fig5;fig5.cap</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig6#5</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>stated</td><td>fig6;fig6.cap</td><td>yli18:ent:specimen_al2o3</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>yli18:fig7#3</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>stated</td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>row in facts.csv</td></tr>
+<tr><td>yli18</td><td>(merged, F2)</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td></td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>merged into the record on fig7.cap</td></tr>
+<tr><td>yli18</td><td>(merged, F2)</td><td>feature_depth</td><td></td><td>1</td><td>mm</td><td></td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>merged into the record on fig7.cap</td></tr>
+<tr><td>yli18</td><td>(merged, F2)</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td></td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>merged into the record on fig7.cap;fig7</td></tr>
+<tr><td>yli18</td><td>(merged, F2)</td><td>feature_depth</td><td></td><td>1</td><td>mm</td><td></td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>merged into the record on fig7.cap;fig7</td></tr>
+<tr><td>yim20</td><td>yim20:fig8b#7</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>stated</td><td>fig8b;fig8.cap</td><td>yim20:ent:sample_2</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig8b#9</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>stated</td><td>fig8b;fig8.cap</td><td>yim20:ent:sample_4</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig8.cap#4</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>stated</td><td>fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_8</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig8.cap#5</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>stated</td><td>fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_8</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig8b#12</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>stated</td><td>fig8b;fig8.cap</td><td>yim20:ent:sample_12</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig8b#13</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>stated</td><td>fig8b;fig8.cap</td><td>yim20:ent:sample_12</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#5</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_7</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#6</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_7</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#7</td><td>feature_width</td><td></td><td>0.1</td><td>µm</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_7</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9.cap#3</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig9.cap;fig9a;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_8</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#10</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_9</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#11</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_9</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9a#12</td><td>feature_width</td><td></td><td>2</td><td>µm</td><td>stated</td><td>fig9a;fig9.cap</td><td>yim20:ent:sample_9</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9.cap#4</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>stated</td><td>fig9.cap;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_10</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9.cap#5</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig9.cap;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_10</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9.cap#6</td><td>cycle_number</td><td></td><td>250</td><td>cycle</td><td>stated</td><td>fig9.cap;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_10</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig9.cap#7</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig9.cap;fig9d;fig9e;fig9f</td><td>yim20:ent:sample_11</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#18</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#19</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#20</td><td>feature_width</td><td></td><td>0.1</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#21</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h200</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#22</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h200</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#23</td><td>feature_width</td><td></td><td>0.2</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h200</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#24</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_h500_n500</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#25</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_h500_n500</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#26</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_h500_n500</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#27</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#28</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#29</td><td>feature_width</td><td></td><td>1</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#30</td><td>cycle_number</td><td></td><td>500</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#31</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#32</td><td>feature_width</td><td></td><td>2</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10a;fig10b;fig10c</td><td>yim20:mrun:mr_h2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#33</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#34</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#35</td><td>cycle_number</td><td></td><td>100</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n100</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#36</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n250</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#37</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n250</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#38</td><td>cycle_number</td><td></td><td>250</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n250</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#39</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#40</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#41</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n1000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#42</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#43</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#44</td><td>cycle_number</td><td></td><td>2000</td><td>cycle</td><td>model_input</td><td>fig10.cap;fig10d;fig10e;fig10f</td><td>yim20:mrun:mr_n2000</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11.cap#3</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig11.cap;fig11a;fig11b</td><td>yim20:ent:sample_12</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11a#4</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>stated</td><td>fig11a;fig11.cap</td><td>yim20:ent:sample_12</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11a#6</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig11a;fig11.cap</td><td>yim20:ent:sample_13</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11a#7</td><td>pulse_time</td><td></td><td>0.2</td><td>s</td><td>stated</td><td>fig11a;fig11.cap</td><td>yim20:ent:sample_13</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11a#9</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig11a;fig11.cap</td><td>yim20:ent:sample_14</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11a#10</td><td>pulse_time</td><td></td><td>0.4</td><td>s</td><td>stated</td><td>fig11a;fig11.cap</td><td>yim20:ent:sample_14</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11b#4</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig11b;fig11.cap</td><td>yim20:ent:sample_15</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11b#5</td><td>purge_time</td><td></td><td>1</td><td>s</td><td>stated</td><td>fig11b;fig11.cap</td><td>yim20:ent:sample_15</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11b#7</td><td>purge_time</td><td></td><td>4</td><td>s</td><td>stated</td><td>fig11b;fig11.cap</td><td>yim20:ent:sample_12</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11b#9</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig11b;fig11.cap</td><td>yim20:ent:sample_16</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>yim20:fig11b#10</td><td>purge_time</td><td></td><td>10</td><td>s</td><td>stated</td><td>fig11b;fig11.cap</td><td>yim20:ent:sample_16</td><td>row in facts.csv</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>feature_width</td><td></td><td>500</td><td>nm</td><td></td><td>fig9d;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td></td><td>fig9d;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>feature_width</td><td></td><td>500</td><td>nm</td><td></td><td>fig9e;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap;fig9.cap;fig9d</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td></td><td>fig9e;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap;fig9.cap;fig9d</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>feature_width</td><td></td><td>500</td><td>nm</td><td></td><td>fig9f;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap;fig9.cap;fig9d;fig9e</td></tr>
+<tr><td>yim20</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>1000</td><td>cycle</td><td></td><td>fig9f;fig9.cap</td><td>yim20:ent:sample_11</td><td>merged into the record on fig5.cap;fig9.cap;fig9d;fig9e</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#2</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_1</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#3</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_1</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#4</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_6</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#5</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_6</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#6</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_14</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#7</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_14</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#8</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_19</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#9</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_19</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#10</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_24</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#11</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_30</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#12</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4;fig7.cap;fig7a</td><td>mat22:run:run_grid_30</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#13</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_1</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#14</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_2</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#15</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_2</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#16</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_2</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#17</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_3</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#18</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_3</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#19</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_3</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#20</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_4</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#21</td><td>deposition_temperature</td><td></td><td>50</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_4</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#22</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_4</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#23</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_5</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#24</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_5</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#25</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_5</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#26</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_6</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#27</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_7</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#28</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_7</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#29</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_7</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#30</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_8</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#31</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_8</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#32</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_8</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#33</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_9</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#34</td><td>deposition_temperature</td><td></td><td>300</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_9</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#35</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_9</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#36</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_10</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#37</td><td>deposition_temperature</td><td></td><td>350</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_10</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#38</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_10</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#39</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_11</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#40</td><td>deposition_temperature</td><td></td><td>450</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_11</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#41</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_11</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#42</td><td>plasma_gas_ratio</td><td></td><td>0.35</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_12</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#43</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_12</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#44</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_12</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#45</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_13</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#46</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_13</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#47</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_13</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#48</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_14</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#49</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_15</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#50</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_15</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#51</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_15</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#52</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_16</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#53</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_16</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#54</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_16</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#55</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_17</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#56</td><td>deposition_temperature</td><td></td><td>350</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_17</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#57</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_17</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#58</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_18</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#59</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_18</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#60</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_18</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#61</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_19</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#62</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_20</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#63</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_20</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#64</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_20</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#65</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_21</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#66</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_21</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#67</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_21</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#68</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_22</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#69</td><td>deposition_temperature</td><td></td><td>50</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_22</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#70</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_22</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#71</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_23</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#72</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_23</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#73</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_23</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#74</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_24</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#75</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_25</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#76</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_25</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#77</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_25</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#78</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_26</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#79</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_26</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#80</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_26</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#81</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_27</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#82</td><td>deposition_temperature</td><td></td><td>350</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_27</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#83</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_27</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#84</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_28</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#85</td><td>deposition_temperature</td><td></td><td>450</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_28</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#86</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_28</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#87</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_29</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#88</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_29</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#89</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_29</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#90</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_30</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#91</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_31</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#92</td><td>deposition_temperature</td><td></td><td>200</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_31</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#93</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_31</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#94</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_32</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#95</td><td>deposition_temperature</td><td></td><td>250</td><td>°C</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_32</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#96</td><td>cycle_number</td><td></td><td>100-140</td><td>cycle</td><td>stated</td><td>fig2.cap;fig2;fig4.cap;fig4</td><td>mat22:run:run_grid_32</td><td>row in facts.csv</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig7a;fig7.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig1b;fig1.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig1b;fig1.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig2;fig2.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig4;fig4.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>cycle_number</td><td></td><td>140</td><td>cycle</td><td></td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>merged into the record on fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>150</td><td>°C</td><td></td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>merged into the record on s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td></td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>merged into the record on s3.x7</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td></td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>merged into the record on s3.x7;fig9.cap;fig9b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td></td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>merged into the record on s3.x7;fig9.cap;fig9b</td></tr>
+<tr><td>mat22</td><td>(merged, F2)</td><td>deposition_temperature</td><td></td><td>100</td><td>°C</td><td></td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>merged into the record on s3.x7;fig9.cap;fig9b</td></tr>
+</table>
+<h2>C2 compiled fact rows whose unit changed</h2><p>kb/reports/P151.c2_facts_unit.csv</p>
+<table><tr><th>paper</th><th>fact_id_P150</th><th>type</th><th>quantity</th><th>qualifiers</th><th>value</th><th>unit_P150</th><th>unit_P151</th><th>fact_id_P151</th></tr>
+<tr><td>yli18</td><td>yli18:s5.p3#3</td><td>setting</td><td>aspect_ratio</td><td></td><td>2-10000</td><td>1</td><td></td><td>yli18:s5.p3#3</td></tr>
+<tr><td>yli18</td><td>yli18:s5.p18#1</td><td>setting</td><td>b_film</td><td>phase=al2o3</td><td>2</td><td>1</td><td></td><td>yli18:s5.p18#1</td></tr>
+<tr><td>yli18</td><td>yli18:s5.p18#2</td><td>setting</td><td>b_film</td><td>phase=tio2</td><td>1</td><td>1</td><td></td><td>yli18:s5.p18#2</td></tr>
+<tr><td>yli18</td><td>yli18:s8.p3#12</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td></td><td>yli18:s8.p3#12</td></tr>
+<tr><td>yli18</td><td>yli18:s8.p23#5</td><td>derived</td><td>aspect_ratio</td><td></td><td>2000</td><td>1</td><td></td><td>yli18:s8.p23#5</td></tr>
+<tr><td>yli18</td><td>yli18:s8.p25#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yli18:s8.p25#1</td></tr>
+<tr><td>yli18</td><td>yli18:s9.p2#3</td><td>derived</td><td>aspect_ratio</td><td></td><td>2000</td><td>1</td><td></td><td>yli18:s9.p2#3</td></tr>
+<tr><td>yli18</td><td>yli18:fig5.cap#12</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td></td><td>yli18:fig5.cap#12</td></tr>
+<tr><td>yli18</td><td>yli18:fig6.cap#3</td><td>setting</td><td>aspect_ratio</td><td></td><td>2000</td><td>1</td><td></td><td>yli18:fig6.cap#3</td></tr>
+<tr><td>yli18</td><td>yli18:fig7.cap#3</td><td>derived</td><td>aspect_ratio</td><td>basis=AR</td><td>2000</td><td>1</td><td></td><td>yli18:fig7.cap#3</td></tr>
+<tr><td>yli18</td><td>yli18:tabI.r1c4#1</td><td>derived</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.00572</td><td>1</td><td></td><td>yli18:tabI.r1c4#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabI.r2c4#1</td><td>derived</td><td>initial_sticking_coefficient</td><td>species=ticl4</td><td>0.1</td><td>1</td><td></td><td>yli18:tabI.r2c4#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabu1.r0c0#1</td><td>definition</td><td>aspect_ratio</td><td></td><td>-</td><td>1</td><td></td><td>yli18:tabu1.r0c0#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabu1.r1c0#1</td><td>definition</td><td>b_film</td><td></td><td>-</td><td>1</td><td></td><td>yli18:tabu1.r1c0#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabu1.r2c0#1</td><td>definition</td><td>initial_sticking_coefficient</td><td></td><td>-</td><td>1</td><td></td><td>yli18:tabu1.r2c0#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabu1.r14c2#1</td><td>definition</td><td>surface_coverage</td><td></td><td>-</td><td>1</td><td></td><td>yli18:tabu1.r14c2#1</td></tr>
+<tr><td>yli18</td><td>yli18:tabu1.r15c2#1</td><td>definition</td><td>other</td><td></td><td>-</td><td>1</td><td></td><td>yli18:tabu1.r15c2#1</td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#14</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#24</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#34</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:fig2.cap#44</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:fig5#9</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:fig5#21</td><td>setting</td><td>initial_sticking_coefficient</td><td></td><td>0.01</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yim20</td><td>yim20:abs.g2#2</td><td>setting</td><td>aspect_ratio</td><td></td><td>10000</td><td>1</td><td></td><td>yim20:abs.g2#2</td></tr>
+<tr><td>yim20</td><td>yim20:s19.p2#1</td><td>definition</td><td>knudsen_number</td><td></td><td>-</td><td>1</td><td></td><td>yim20:s19.p2#1</td></tr>
+<tr><td>yim20</td><td>yim20:s19.p3#2</td><td>derived</td><td>knudsen_number</td><td>species=tma</td><td>40</td><td>1</td><td></td><td>yim20:s19.p3#2</td></tr>
+<tr><td>yim20</td><td>yim20:s19.p3#3</td><td>derived</td><td>knudsen_number</td><td>species=h2o</td><td>100</td><td>1</td><td></td><td>yim20:s19.p3#3</td></tr>
+<tr><td>yim20</td><td>yim20:fig1.cap#3</td><td>cited</td><td>aspect_ratio</td><td></td><td>200</td><td>1</td><td></td><td>yim20:fig1.cap#3</td></tr>
+<tr><td>yim20</td><td>yim20:fig2.cap#1</td><td>definition</td><td>dimensionless_distance</td><td>by=H</td><td>-</td><td>1</td><td></td><td>yim20:fig2.cap#1</td></tr>
+<tr><td>yim20</td><td>yim20:fig2.cap#2</td><td>definition</td><td>other</td><td></td><td>-</td><td>1</td><td></td><td>yim20:fig2.cap#2</td></tr>
+<tr><td>yim20</td><td>yim20:fig7#1</td><td>setting</td><td>objective_magnification</td><td></td><td>5</td><td>1</td><td></td><td>yim20:fig7#1</td></tr>
+<tr><td>yim20</td><td>yim20:fig7#3</td><td>setting</td><td>objective_magnification</td><td></td><td>10</td><td>1</td><td></td><td>yim20:fig7#3</td></tr>
+<tr><td>yim20</td><td>yim20:fig7#5</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:fig7#5</td></tr>
+<tr><td>yim20</td><td>yim20:fig9f#1</td><td>observation</td><td>normalized_thickness</td><td>position=plateau;reference=plateau</td><td>0.995</td><td>1</td><td></td><td>yim20:fig9f#1</td></tr>
+<tr><td>yim20</td><td>yim20:fig9f#2</td><td>observation</td><td>normalized_thickness</td><td>position=plateau;reference=plateau</td><td>0.978</td><td>1</td><td></td><td>yim20:fig9f#2</td></tr>
+<tr><td>yim20</td><td>yim20:fig9f#3</td><td>observation</td><td>normalized_thickness</td><td>position=plateau;reference=plateau</td><td>0.975</td><td>1</td><td></td><td>yim20:fig9f#3</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#10</td><td>model</td><td>b_film</td><td></td><td>2</td><td>1</td><td></td><td>yim20:fig10.cap#10</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#11</td><td>model</td><td>other</td><td>species=tma</td><td>1</td><td>1</td><td></td><td>yim20:fig10.cap#11</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#16</td><td>model</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.012</td><td>1</td><td></td><td>yim20:fig10.cap#16</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r1c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r1c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r1c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>280</td><td>1</td><td></td><td>yim20:tab1.r1c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r1c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.013</td><td>1</td><td></td><td>yim20:tab1.r1c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r1c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.983</td><td>1</td><td></td><td>yim20:tab1.r1c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r2c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r2c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r2c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>280</td><td>1</td><td></td><td>yim20:tab1.r2c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r2c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.011</td><td>1</td><td></td><td>yim20:tab1.r2c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r2c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.991</td><td>1</td><td></td><td>yim20:tab1.r2c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r3c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r3c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r3c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>220</td><td>1</td><td></td><td>yim20:tab1.r3c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r3c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.018</td><td>1</td><td></td><td>yim20:tab1.r3c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r3c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.997</td><td>1</td><td></td><td>yim20:tab1.r3c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r4c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r4c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r4c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>208</td><td>1</td><td></td><td>yim20:tab1.r4c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r4c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.019</td><td>1</td><td></td><td>yim20:tab1.r4c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r4c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.993</td><td>1</td><td></td><td>yim20:tab1.r4c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r5c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>10</td><td>1</td><td></td><td>yim20:tab1.r5c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r5c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>208</td><td>1</td><td></td><td>yim20:tab1.r5c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r5c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.015</td><td>1</td><td></td><td>yim20:tab1.r5c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r5c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.998</td><td>1</td><td></td><td>yim20:tab1.r5c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r6c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>5</td><td>1</td><td></td><td>yim20:tab1.r6c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r6c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>214</td><td>1</td><td></td><td>yim20:tab1.r6c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r6c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.0083</td><td>1</td><td></td><td>yim20:tab1.r6c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r6c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.998</td><td>1</td><td></td><td>yim20:tab1.r6c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r7c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r7c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r7c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>100</td><td>1</td><td></td><td>yim20:tab1.r7c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r7c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.005</td><td>1</td><td></td><td>yim20:tab1.r7c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r7c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.995</td><td>1</td><td></td><td>yim20:tab1.r7c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r8c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r8c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r8c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>214</td><td>1</td><td></td><td>yim20:tab1.r8c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r8c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.019</td><td>1</td><td></td><td>yim20:tab1.r8c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r8c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.993</td><td>1</td><td></td><td>yim20:tab1.r8c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r9c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r9c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r9c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>188</td><td>1</td><td></td><td>yim20:tab1.r9c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r9c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.047</td><td>1</td><td></td><td>yim20:tab1.r9c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r9c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.995</td><td>1</td><td></td><td>yim20:tab1.r9c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r10c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r10c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r10c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>230</td><td>1</td><td></td><td>yim20:tab1.r10c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r10c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.021</td><td>1</td><td></td><td>yim20:tab1.r10c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r10c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.982</td><td>1</td><td></td><td>yim20:tab1.r10c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r12c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r12c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r12c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>190</td><td>1</td><td></td><td>yim20:tab1.r12c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r12c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.01</td><td>1</td><td></td><td>yim20:tab1.r12c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r12c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.996</td><td>1</td><td></td><td>yim20:tab1.r12c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r13c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r13c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r13c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>192</td><td>1</td><td></td><td>yim20:tab1.r13c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r13c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.021</td><td>1</td><td></td><td>yim20:tab1.r13c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r13c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.971</td><td>1</td><td></td><td>yim20:tab1.r13c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r14c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r14c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r14c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>266</td><td>1</td><td></td><td>yim20:tab1.r14c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r14c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.014</td><td>1</td><td></td><td>yim20:tab1.r14c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r14c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.996</td><td>1</td><td></td><td>yim20:tab1.r14c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r15c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r15c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r15c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>386</td><td>1</td><td></td><td>yim20:tab1.r15c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r15c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.0044</td><td>1</td><td></td><td>yim20:tab1.r15c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r15c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.996</td><td>1</td><td></td><td>yim20:tab1.r15c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r16c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r16c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r16c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>198</td><td>1</td><td></td><td>yim20:tab1.r16c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r16c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.016</td><td>1</td><td></td><td>yim20:tab1.r16c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r16c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.983</td><td>1</td><td></td><td>yim20:tab1.r16c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r18c6#1</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>yim20:tab1.r18c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r18c12#1</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>218</td><td>1</td><td></td><td>yim20:tab1.r18c12#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r18c14#1</td><td>derived</td><td>front_slope</td><td>definition=normalized</td><td>-0.018</td><td>1</td><td></td><td>yim20:tab1.r18c14#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab1.r18c15#1</td><td>derived</td><td>fit_r2</td><td></td><td>0.999</td><td>1</td><td></td><td>yim20:tab1.r18c15#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r1c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.1</td><td>1</td><td></td><td>yim20:tab2.r1c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r2c3#1</td><td>cited</td><td>aspect_ratio</td><td></td><td>100</td><td>1</td><td></td><td>yim20:tab2.r2c3#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r2c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.02</td><td>1</td><td></td><td>yim20:tab2.r2c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r3c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.001</td><td>1</td><td></td><td>yim20:tab2.r3c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r3c7#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=h2o</td><td>0.0001</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r4c3#1</td><td>cited</td><td>aspect_ratio</td><td></td><td>2000</td><td>1</td><td></td><td>yim20:tab2.r4c3#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r4c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.00572</td><td>1</td><td></td><td>yim20:tab2.r4c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r5c3#1</td><td>cited</td><td>aspect_ratio</td><td></td><td>10000</td><td>1</td><td></td><td>yim20:tab2.r5c3#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r5c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.0005-0.002</td><td>1</td><td></td><td>yim20:tab2.r5c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r5c7#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=h2o</td><td>8e-05-0.0002</td><td>1</td><td></td><td>yim20:tab2.r5c7#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r6c6#1</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.0001</td><td>1</td><td></td><td>yim20:tab2.r6c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r7c6#1</td><td>derived</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.004</td><td>1</td><td></td><td>yim20:tab2.r7c6#1</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r7c7#1</td><td>derived</td><td>initial_sticking_coefficient</td><td>species=h2o</td><td>0.0003</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r5c0#1</td><td>definition</td><td>knudsen_number</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r5c0#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r5c1#1</td><td>definition</td><td>knudsen_number</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r5c1#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r25c0#1</td><td>definition</td><td>dimensionless_distance</td><td>by=H</td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r25c0#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r25c1#1</td><td>definition</td><td>dimensionless_distance</td><td>by=H</td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r25c1#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r28c0#1</td><td>definition</td><td>surface_coverage</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r28c0#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r28c1#1</td><td>definition</td><td>surface_coverage</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r28c1#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r29c0#1</td><td>definition</td><td>dimensionless_distance</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r29c0#1</td></tr>
+<tr><td>yim20</td><td>yim20:tabu2.r29c1#1</td><td>definition</td><td>dimensionless_distance</td><td></td><td>-</td><td>1</td><td></td><td>yim20:tabu2.r29c1#1</td></tr>
+<tr><td>mat22</td><td>mat22:eq1#1</td><td>model</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>-</td><td>1</td><td></td><td>mat22:eq1#1</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p8#2</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.8</td><td>1</td><td></td><td>mat22:s3.p8#2</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p10#3</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.2</td><td>1</td><td></td><td>mat22:s3.p10#3</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p46#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=W;species=ws2</td><td>4</td><td>1</td><td></td><td>mat22:s3.p46#1</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p46#2</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=W;species=ws2</td><td>2.1</td><td>1</td><td></td><td>mat22:s3.p46#2</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p48#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.5</td><td>1</td><td></td><td>mat22:s3.p48#1</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p8#3</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td></td><td>mat22:s5.p8#3</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p8#5</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td></td><td>mat22:s5.p8#5</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p15#2</td><td>setting</td><td>objective_magnification</td><td></td><td>50</td><td>1</td><td></td><td>mat22:s5.p15#2</td></tr>
+<tr><td>mat22</td><td>mat22:fig1c#2</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.8</td><td>1</td><td></td><td>mat22:fig1c#2</td></tr>
+<tr><td>mat22</td><td>mat22:fig1d#4</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.8</td><td>1</td><td></td><td>mat22:fig1d#4</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.8</td><td>1</td><td></td><td>mat22:fig4#1</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#2</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.1</td><td>1</td><td></td><td>mat22:fig4#2</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#3</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.6</td><td>1</td><td></td><td>mat22:fig4#3</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#4</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2</td><td>1</td><td></td><td>mat22:fig4#4</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#5</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.1</td><td>1</td><td></td><td>mat22:fig4#5</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#6</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.3</td><td>1</td><td></td><td>mat22:fig4#6</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#7</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.7</td><td>1</td><td></td><td>mat22:fig4#7</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#8</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3</td><td>1</td><td></td><td>mat22:fig4#8</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#9</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.5</td><td>1</td><td></td><td>mat22:fig4#9</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#10</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>4.6</td><td>1</td><td></td><td>mat22:fig4#10</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#11</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>7.3</td><td>1</td><td></td><td>mat22:fig4#11</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#12</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.5</td><td>1</td><td></td><td>mat22:fig4#12</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#13</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.2</td><td>1</td><td></td><td>mat22:fig4#13</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#14</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.2</td><td>1</td><td></td><td>mat22:fig4#13</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#15</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.5</td><td>1</td><td></td><td>mat22:fig4#12</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#16</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3</td><td>1</td><td></td><td>mat22:fig4#8</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#17</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.6</td><td>1</td><td></td><td>mat22:fig4#3</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#18</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.1</td><td>1</td><td></td><td>mat22:fig4#5</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#19</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.2</td><td>1</td><td></td><td>mat22:fig4#13</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#20</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.1</td><td>1</td><td></td><td>mat22:fig4#5</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#21</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.2</td><td>1</td><td></td><td>mat22:fig4#13</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#22</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:fig4#22</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#23</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:fig4#22</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#24</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:fig4#22</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#25</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:fig4#22</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#26</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:fig4#22</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#27</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.8</td><td>1</td><td></td><td>mat22:fig4#27</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#28</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2</td><td>1</td><td></td><td>mat22:fig4#4</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#29</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.3</td><td>1</td><td></td><td>mat22:fig4#29</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#30</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.3</td><td>1</td><td></td><td>mat22:fig4#29</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#31</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.3</td><td>1</td><td></td><td>mat22:fig4#29</td></tr>
+<tr><td>mat22</td><td>mat22:fig4#32</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.4</td><td>1</td><td></td><td>mat22:fig4#32</td></tr>
+<tr><td>mat22</td><td>mat22:fig6.cap#3</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.65</td><td>1</td><td></td><td>mat22:fig6.cap#3</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#1</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0</td><td>1</td><td></td><td>mat22:fig7a#1</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#2</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.2</td><td>1</td><td></td><td>mat22:fig7a#2</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#3</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.5</td><td>1</td><td></td><td>mat22:fig7a#3</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#4</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.65</td><td>1</td><td></td><td>mat22:fig7a#4</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#5</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.8</td><td>1</td><td></td><td>mat22:fig7a#5</td></tr>
+<tr><td>mat22</td><td>mat22:fig7a#6</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.94</td><td>1</td><td></td><td>mat22:fig7a#6</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r1c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.2</td><td>1</td><td></td><td>mat22:tab1.r1c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r1c1#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.7</td><td>1</td><td></td><td>mat22:tab1.r1c1#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r1c2#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>3.4</td><td>1</td><td></td><td>mat22:tab1.r1c2#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r2c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.65</td><td>1</td><td></td><td>mat22:tab1.r2c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r2c1#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.1</td><td>1</td><td></td><td>mat22:tab1.r2c1#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r2c2#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>2.1</td><td>1</td><td></td><td>mat22:tab1.r2c2#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r3c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=reactive_gases</td><td>0.8</td><td>1</td><td></td><td>mat22:tab1.r3c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r3c1#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.8</td><td>1</td><td></td><td>mat22:tab1.r3c1#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab1.r3c2#1</td><td>observation</td><td>element_ratio</td><td>element=S;reference_element=Mo</td><td>1.9</td><td>1</td><td></td><td>mat22:tab1.r3c2#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r1c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0</td><td>1</td><td></td><td>mat22:tab2.r1c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r2c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.2</td><td>1</td><td></td><td>mat22:tab2.r2c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r3c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.35</td><td>1</td><td></td><td>mat22:tab2.r3c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r4c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.5</td><td>1</td><td></td><td>mat22:tab2.r4c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r5c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.65</td><td>1</td><td></td><td>mat22:tab2.r5c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r6c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.8</td><td>1</td><td></td><td>mat22:tab2.r6c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:tab2.r7c0#1</td><td>setting</td><td>plasma_gas_ratio</td><td>relative_to=reactive_gases;species=h2</td><td>0.94</td><td>1</td><td></td><td>mat22:tab2.r7c0#1</td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#3</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#5</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#7</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#9</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#10</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#12</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#14</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#17</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#20</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#23</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#27</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#30</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#33</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#36</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#39</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.2</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#42</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.35</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#45</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#49</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#52</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#55</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.5</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#58</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#62</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#65</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.65</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#68</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#71</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#75</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#78</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#81</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#84</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.8</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#87</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#91</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:fig2.cap#94</td><td>setting</td><td>plasma_gas_ratio</td><td></td><td>0.94</td><td>1</td><td>(row gone: C1)</td><td></td></tr>
+</table>
+<h2>C2 experiments.csv cells that changed</h2><p>kb/reports/P151.c2_experiment_cells.csv</p>
+<table><tr><th>paper</th><th>run</th><th>column</th><th>P150</th><th>P151</th></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_al2o3</td><td>setting:aspect_ratio</td><td>2000 1</td><td>2000</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_al2o3</td><td>result:aspect_ratio</td><td>2000 1</td><td>2000</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_al2o3</td><td>result:initial_sticking_coefficient[species=tma]</td><td>0.00572 1</td><td>0.00572</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_tio2</td><td>setting:aspect_ratio</td><td>2–10000 1</td><td>2–10000</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_tio2</td><td>result:aspect_ratio</td><td>2000 1</td><td>2000</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_tio2</td><td>result:aspect_ratio[basis=AR]</td><td>2000 1</td><td>2000</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_tio2</td><td>result:initial_sticking_coefficient[species=ticl4]</td><td>0.1 1</td><td>0.1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_1s</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_1s</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_1s</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_05s</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_05s</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_05s</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_02s</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_02s</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_02s</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_01s</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_01s</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_01s</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h2</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h2</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h1</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h1</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h05</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h05</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h02</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h02</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>setting:b_film[phase=al2o3]</td><td>2 1</td><td>2</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>setting:b_film[phase=tio2]</td><td>1 1</td><td>1</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>result:initial_sticking_coefficient</td><td>0.01 1</td><td>0.01</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_gordon</td><td>setting:initial_sticking_coefficient</td><td>0.01 1</td><td>(run gone)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>280 1</td><td>280</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>result:fit_r2</td><td>0.983 1</td><td>0.983</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>result:front_slope[definition=normalized]</td><td>-0.013 1</td><td>-0.013</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>280 1</td><td>280</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>result:fit_r2</td><td>0.991 1</td><td>0.991</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>result:front_slope[definition=normalized]</td><td>-0.011 1</td><td>-0.011</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>220 1</td><td>220</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>result:fit_r2</td><td>0.997 1</td><td>0.997</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>result:front_slope[definition=normalized]</td><td>-0.018 1</td><td>-0.018</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>208 1</td><td>208</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>result:fit_r2</td><td>0.993 1</td><td>0.993</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>result:front_slope[definition=normalized]</td><td>-0.019 1</td><td>-0.019</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>208 1</td><td>208</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>result:fit_r2</td><td>0.998 1</td><td>0.998</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>result:front_slope[definition=normalized]</td><td>-0.015 1</td><td>-0.015</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>214 1</td><td>214</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>result:fit_r2</td><td>0.998 1</td><td>0.998</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>result:front_slope[definition=normalized]</td><td>-0.0083 1</td><td>-0.0083</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>100 1</td><td>100</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>result:fit_r2</td><td>0.995 1</td><td>0.995</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>result:front_slope[definition=normalized]</td><td>-0.005 1</td><td>-0.005</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>214 1</td><td>214</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>result:fit_r2</td><td>0.993 1</td><td>0.993</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>result:front_slope[definition=normalized]</td><td>-0.019 1</td><td>-0.019</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>result:normalized_thickness[position=plateau;reference=plateau]</td><td>0.978 1</td><td>0.978</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>188 1</td><td>188</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>result:fit_r2</td><td>0.995 1</td><td>0.995</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>result:front_slope[definition=normalized]</td><td>-0.047 1</td><td>-0.047</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>230 1</td><td>230</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>result:fit_r2</td><td>0.982 1</td><td>0.982</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>result:front_slope[definition=normalized]</td><td>-0.021 1</td><td>-0.021</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>result:normalized_thickness[position=plateau;reference=plateau]</td><td>0.995 1</td><td>0.995</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>190 1</td><td>190</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>result:fit_r2</td><td>0.996 1</td><td>0.996</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>result:front_slope[definition=normalized]</td><td>-0.01 1</td><td>-0.01</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>result:normalized_thickness[position=plateau;reference=plateau]</td><td>0.975 1</td><td>0.975</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>192 1</td><td>192</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>result:fit_r2</td><td>0.971 1</td><td>0.971</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>result:front_slope[definition=normalized]</td><td>-0.021 1</td><td>-0.021</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>266 1</td><td>266</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>result:fit_r2</td><td>0.996 1</td><td>0.996</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>result:front_slope[definition=normalized]</td><td>-0.014 1</td><td>-0.014</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>386 1</td><td>386</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>result:fit_r2</td><td>0.996 1</td><td>0.996</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>result:front_slope[definition=normalized]</td><td>-0.0044 1</td><td>-0.0044</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>198 1</td><td>198</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>result:fit_r2</td><td>0.983 1</td><td>0.983</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>result:front_slope[definition=normalized]</td><td>-0.016 1</td><td>-0.016</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>setting:aspect_ratio</td><td>&gt;10000 1</td><td>&gt;10000</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>setting:objective_magnification</td><td>5 1; 10 1; 50 1</td><td>5; 10; 50</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>result:coated_aspect_ratio[basis=AR;level=50%]</td><td>218 1</td><td>218</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>result:fit_r2</td><td>0.999 1</td><td>0.999</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>result:front_slope[definition=normalized]</td><td>-0.018 1</td><td>-0.018</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>setting:plasma_gas_ratio</td><td>0 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0 1</td><td>0</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3.6 1</td><td>3.6</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>setting:plasma_gas_ratio</td><td>0.65 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.65 1</td><td>0.65</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.1 1</td><td>2.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1d:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1d:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3a:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.9 1</td><td>1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>setting:plasma_gas_ratio</td><td>0.94 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.94 1</td><td>0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.3 1</td><td>1.3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.5 1</td><td>0.5</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3 1</td><td>3</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.2 1</td><td>0.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3.7 1; 3.4 1</td><td>3.7; 3.4</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.65 1</td><td>0.65</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.1 1; 2.1 1</td><td>2.1; 2.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.8 1; 1.9 1</td><td>1.8; 1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>setting:plasma_gas_ratio</td><td>0.65 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.2 1</td><td>2.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3b:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0.2 1</td><td>0.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td>0.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film</td><td>result:element_ratio[element=S;reference_element=W;species=ws2]</td><td>2.1 1</td><td>2.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>setting:plasma_gas_ratio</td><td>0 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.8 1</td><td>2.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>setting:plasma_gas_ratio</td><td>0 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3.1 1</td><td>3.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2 1</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.1 1</td><td>2.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.3 1</td><td>2.3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.7 1</td><td>2.7</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3 1</td><td>3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.2 1</td><td>0.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3.5 1</td><td>3.5</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>4.6 1</td><td>4.6</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>setting:plasma_gas_ratio</td><td>0.2 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>7.3 1</td><td>7.3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>setting:plasma_gas_ratio</td><td>0.35 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.5 1</td><td>2.5</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.2 1</td><td>2.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.2 1</td><td>2.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.5 1</td><td>2.5</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>3.6 1</td><td>3.6</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>setting:plasma_gas_ratio</td><td>0.65 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.1 1</td><td>2.1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>setting:plasma_gas_ratio</td><td>0.65 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2.2 1</td><td>2.2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.9 1</td><td>1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.9 1</td><td>1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.9 1</td><td>1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.9 1</td><td>1.9</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.8 1</td><td>1.8</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>setting:plasma_gas_ratio</td><td>0.8 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>2 1</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>setting:plasma_gas_ratio</td><td>0.94 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.3 1</td><td>1.3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>setting:plasma_gas_ratio</td><td>0.94 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.3 1</td><td>1.3</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>setting:plasma_gas_ratio</td><td>0.94 1</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>result:element_ratio[element=S;reference_element=Mo]</td><td>1.4 1</td><td>1.4</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0 1; 0.2 1; 0.35 1; 0.5 1; 0.65 1; 0.8 1; 0.94 1</td><td>0; 0.2; 0.35; 0.5; 0.65; 0.8; 0.94</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b:film</td><td>setting:plasma_gas_ratio[gas=h2;relative_to=reactive_gases]</td><td>0.65 1</td><td>0.65</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c:film</td><td>setting:plasma_gas_ratio[relative_to=reactive_gases;species=h2]</td><td>0.5 1</td><td>0.5</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c:film</td><td>setting:plasma_gas_ratio</td><td>0.5 1</td><td>0.5</td></tr>
+</table>
+<h2>Score before and after</h2><p>kb/reports/P151.score_moved.csv</p>
+<table><tr><th>paper</th><th>gold_rows</th><th>matched_P150</th><th>matched_P151</th><th>check_dir_P150</th><th>check_dir_P151</th></tr>
+<tr><td>yli18</td><td>243</td><td>145</td><td>138</td><td>139</td><td>159</td></tr>
+<tr><td>yim20</td><td>900</td><td>443</td><td>425</td><td>248</td><td>306</td></tr>
+<tr><td>mat22</td><td>1071</td><td>326</td><td>273</td><td>475</td><td>263</td></tr>
+</table>
+<h2>Matches changed, summary</h2><p>kb/reports/P151.match_changed_summary.csv</p>
+<table><tr><th>paper</th><th>type</th><th>change</th><th>evidence</th><th>rows</th></tr>
+<tr><td>mat22</td><td>setting</td><td>lost</td><td>fig evidence</td><td>39</td></tr>
+<tr><td>mat22</td><td>setting</td><td>lost</td><td>other evidence</td><td>14</td></tr>
+<tr><td>yim20</td><td>setting</td><td>lost</td><td>fig evidence</td><td>18</td></tr>
+<tr><td>yli18</td><td>setting</td><td>lost</td><td>fig evidence</td><td>7</td></tr>
+</table>
+<h2>Matches changed, rows</h2><p>kb/reports/P151.match_changed.csv</p>
+<table><tr><th>paper</th><th>gold_row</th><th>type</th><th>quantity</th><th>value</th><th>unit</th><th>evidence</th><th>P150</th><th>P151</th></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#5</td><td>setting</td><td>cycle_number</td><td>1000</td><td></td><td>fig4.cap</td><td>T6 matched</td><td>T3 prompt: 11 records on the evidence elements, of types {&#x27;model&#x27;: 10, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#6</td><td>setting</td><td>feature_width</td><td>1</td><td>µm</td><td>fig4.cap;fig4</td><td>T6 matched</td><td>T3 prompt: 13 records on the evidence elements, of types {&#x27;model&#x27;: 12, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#7</td><td>setting</td><td>cycle_number</td><td>1000</td><td></td><td>fig4.cap</td><td>T6 matched</td><td>T3 prompt: 11 records on the evidence elements, of types {&#x27;model&#x27;: 10, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#8</td><td>setting</td><td>feature_width</td><td>0.5</td><td>µm</td><td>fig4.cap;fig4</td><td>T6 matched</td><td>T3 prompt: 13 records on the evidence elements, of types {&#x27;model&#x27;: 12, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#9</td><td>setting</td><td>cycle_number</td><td>1000</td><td></td><td>fig4.cap</td><td>T6 matched</td><td>T3 prompt: 11 records on the evidence elements, of types {&#x27;model&#x27;: 10, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#10</td><td>setting</td><td>feature_width</td><td>0.2</td><td>µm</td><td>fig4.cap;fig4</td><td>T6 matched</td><td>T3 prompt: 13 records on the evidence elements, of types {&#x27;model&#x27;: 12, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yli18</td><td>yli18:fig4.cap#11</td><td>setting</td><td>cycle_number</td><td>1000</td><td></td><td>fig4.cap</td><td>T6 matched</td><td>T3 prompt: 11 records on the evidence elements, of types {&#x27;model&#x27;: 10, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#17</td><td>setting</td><td>feature_width</td><td>100</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#18</td><td>setting</td><td>cycle_number</td><td>500</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#19</td><td>setting</td><td>feature_width</td><td>200</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#20</td><td>setting</td><td>cycle_number</td><td>500</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#21</td><td>setting</td><td>feature_width</td><td>500</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#22</td><td>setting</td><td>cycle_number</td><td>500</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#23</td><td>setting</td><td>feature_width</td><td>1000</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#24</td><td>setting</td><td>cycle_number</td><td>500</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#25</td><td>setting</td><td>feature_width</td><td>2000</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#26</td><td>setting</td><td>cycle_number</td><td>500</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#27</td><td>setting</td><td>feature_width</td><td>500</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#28</td><td>setting</td><td>cycle_number</td><td>100</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#29</td><td>setting</td><td>feature_width</td><td>500</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#30</td><td>setting</td><td>cycle_number</td><td>250</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#31</td><td>setting</td><td>feature_width</td><td>500</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#32</td><td>setting</td><td>cycle_number</td><td>1000</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#33</td><td>setting</td><td>feature_width</td><td>500</td><td>nm</td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#34</td><td>setting</td><td>cycle_number</td><td>2000</td><td></td><td>fig10.cap</td><td>T6 matched</td><td>T3 prompt: 47 records on the evidence elements, of types {&#x27;model&#x27;: 47}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#34</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4;s3.p35;s3.p37;s3.p38</td><td>T6 matched</td><td>T3 prompt: 99 records on the evidence elements, of types {&#x27;observation&#x27;: 98, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#35</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4;s3.p38</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#37</td><td>setting</td><td>plasma_gas_ratio</td><td>0.50</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#38</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#39</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4;s3.p35;s3.p7</td><td>T6 matched</td><td>T3 prompt: 98 records on the evidence elements, of types {&#x27;claim&#x27;: 1, &#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#40</td><td>setting</td><td>plasma_gas_ratio</td><td>0</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#41</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#42</td><td>setting</td><td>plasma_gas_ratio</td><td>0.35</td><td></td><td>fig2;fig4;s3.p32</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#43</td><td>setting</td><td>plasma_gas_ratio</td><td>0.50</td><td></td><td>fig2;fig4;s3.p32</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#44</td><td>setting</td><td>plasma_gas_ratio</td><td>0.65</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#45</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#46</td><td>setting</td><td>plasma_gas_ratio</td><td>0.94</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#47</td><td>setting</td><td>plasma_gas_ratio</td><td>0</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#48</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#49</td><td>setting</td><td>plasma_gas_ratio</td><td>0.50</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#50</td><td>setting</td><td>plasma_gas_ratio</td><td>0.65</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#51</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#52</td><td>setting</td><td>plasma_gas_ratio</td><td>0.94</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#53</td><td>setting</td><td>plasma_gas_ratio</td><td>0</td><td></td><td>fig2;fig4;s3.p4;fig1a</td><td>T6 matched</td><td>T3q: quantities of the 2 setting records: {&#x27;deposition_temperature&#x27;: 1, &#x27;cycle_number</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#55</td><td>setting</td><td>plasma_gas_ratio</td><td>0.50</td><td></td><td>fig2;fig4;s3.p4;fig1a</td><td>T6 matched</td><td>T3q: quantities of the 2 setting records: {&#x27;deposition_temperature&#x27;: 1, &#x27;cycle_number</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#57</td><td>setting</td><td>plasma_gas_ratio</td><td>0.94</td><td></td><td>fig2;fig4;fig1a</td><td>T6 matched</td><td>T3q: quantities of the 2 setting records: {&#x27;deposition_temperature&#x27;: 1, &#x27;cycle_number</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#58</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#59</td><td>setting</td><td>plasma_gas_ratio</td><td>0.50</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#60</td><td>setting</td><td>plasma_gas_ratio</td><td>0.65</td><td></td><td>fig2;fig4;s3.p34</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#62</td><td>setting</td><td>plasma_gas_ratio</td><td>0.94</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#63</td><td>setting</td><td>plasma_gas_ratio</td><td>0.20</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#64</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#65</td><td>setting</td><td>deposition_temperature</td><td>450</td><td>°C</td><td>fig2;fig4;s3.p35;s3.p37;s3.p38</td><td>T6 matched</td><td>T3 prompt: 99 records on the evidence elements, of types {&#x27;observation&#x27;: 98, &#x27;claim&#x27;: 1}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#66</td><td>setting</td><td>deposition_temperature</td><td>450</td><td>°C</td><td>fig2;fig4;s3.p38</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#68</td><td>setting</td><td>deposition_temperature</td><td>350</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#69</td><td>setting</td><td>deposition_temperature</td><td>350</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#70</td><td>setting</td><td>deposition_temperature</td><td>300</td><td>°C</td><td>fig2;fig4;s3.p35;s3.p7</td><td>T6 matched</td><td>T3 prompt: 98 records on the evidence elements, of types {&#x27;claim&#x27;: 1, &#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#71</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#72</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#73</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4;s3.p32</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#74</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4;s3.p32</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#75</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#76</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#77</td><td>setting</td><td>deposition_temperature</td><td>250</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#78</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#79</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#80</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#81</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#82</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#83</td><td>setting</td><td>deposition_temperature</td><td>200</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#88</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#89</td><td>setting</td><td>plasma_gas_ratio</td><td>0.80</td><td></td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#91</td><td>setting</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#92</td><td>setting</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#93</td><td>setting</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>fig2;fig4;s3.p34</td><td>T6 matched</td><td>T3 prompt: 97 records on the evidence elements, of types {&#x27;observation&#x27;: 97}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#95</td><td>setting</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#96</td><td>setting</td><td>deposition_temperature</td><td>50</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+<tr><td>mat22</td><td>mat22:fig2#97</td><td>setting</td><td>deposition_temperature</td><td>50</td><td>°C</td><td>fig2;fig4</td><td>T6 matched</td><td>T3 prompt: 96 records on the evidence elements, of types {&#x27;observation&#x27;: 96}</td></tr>
+</table>
+<h2>Check classes changed</h2><p>kb/reports/P151.check_changed.csv</p>
+<table><tr><th>paper</th><th>check_class</th><th>P150</th><th>P151</th><th>change</th></tr>
+<tr><td>yli18</td><td>statement repeats eight words of · in a row</td><td>60</td><td>58</td><td>60 -&gt; 58</td></tr>
+<tr><td>yli18</td><td>same statement as ·</td><td>48</td><td>47</td><td>48 -&gt; 47</td></tr>
+<tr><td>yli18</td><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (·)</td><td>0</td><td>29</td><td>pass -&gt; fail</td></tr>
+<tr><td>yli18</td><td>partial_pressure setting without species= or gas=: which substance it is about lives only in prose (·)</td><td>6</td><td>0</td><td>fail -&gt; pass</td></tr>
+<tr><td>yim20</td><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (·)</td><td>0</td><td>58</td><td>pass -&gt; fail</td></tr>
+<tr><td>mat22</td><td>same statement as ·</td><td>152</td><td>83</td><td>152 -&gt; 83</td></tr>
+<tr><td>mat22</td><td>same as ·</td><td>127</td><td>17</td><td>127 -&gt; 17</td></tr>
+<tr><td>mat22</td><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (·)</td><td>0</td><td>63</td><td>pass -&gt; fail</td></tr>
+<tr><td>mat22</td><td>plasma_gas_ratio without relative_to= (what it is a fraction of; ·)</td><td>34</td><td>2</td><td>34 -&gt; 2</td></tr>
+<tr><td>mat22</td><td>plasma_gas_ratio setting without species= or gas=: which substance it is about lives only in prose (·)</td><td>34</td><td>2</td><td>34 -&gt; 2</td></tr>
+<tr><td>mat22</td><td>plasma_gas_ratio without relative_to= (its definition key; ·)</td><td>34</td><td>2</td><td>34 -&gt; 2</td></tr>
+</table>
+<h2>score_summary after C1 and C2</h2><p>kb/compiled/score_summary.csv</p>
+<table><tr><th>paper</th><th>section</th><th>item</th><th>gold</th><th>compiled</th><th>matched</th><th>precision</th><th>recall</th><th>count</th></tr>
+<tr><td>yli18</td><td>type</td><td>model</td><td>67</td><td>125</td><td>61</td><td>0.49</td><td>0.91</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>setting</td><td>63</td><td>44</td><td>30</td><td>0.68</td><td>0.48</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>definition</td><td>38</td><td>54</td><td>23</td><td>0.43</td><td>0.61</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>derived</td><td>15</td><td>27</td><td>7</td><td>0.26</td><td>0.47</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>claim</td><td>13</td><td>15</td><td>8</td><td>0.53</td><td>0.62</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>entity</td><td>12</td><td>12</td><td>6</td><td>0.50</td><td>0.50</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>activity</td><td>11</td><td>10</td><td>4</td><td>0.40</td><td>0.36</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>caveat</td><td>7</td><td>8</td><td>2</td><td>0.25</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>observation</td><td>7</td><td>6</td><td>2</td><td>0.33</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>cited</td><td>5</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>comparison</td><td>3</td><td>1</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>205</td></tr>
+<tr><td>yli18</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>80</td></tr>
+<tr><td>yli18</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>130</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>6</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity measurement / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity simulation / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>type</td><td>setting</td><td>206</td><td>159</td><td>105</td><td>0.66</td><td>0.51</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>observation</td><td>154</td><td>101</td><td>80</td><td>0.79</td><td>0.52</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>derived</td><td>108</td><td>137</td><td>99</td><td>0.72</td><td>0.92</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>cited</td><td>92</td><td>31</td><td>27</td><td>0.87</td><td>0.29</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>activity</td><td>75</td><td>49</td><td>47</td><td>0.96</td><td>0.63</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>model</td><td>73</td><td>51</td><td>45</td><td>0.88</td><td>0.62</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>definition</td><td>66</td><td>97</td><td>24</td><td>0.25</td><td>0.36</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>caveat</td><td>45</td><td>5</td><td>3</td><td>0.60</td><td>0.07</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>claim</td><td>40</td><td>20</td><td>15</td><td>0.75</td><td>0.38</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>entity</td><td>31</td><td>25</td><td>25</td><td>1.00</td><td>0.81</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>comparison</td><td>8</td><td>10</td><td>1</td><td>0.10</td><td>0.12</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>9</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>varies setting other &#x27;·&#x27; among its members; give it an id in lists.py</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>setting under · (paper), not under an activity or an entity (a comparison holds no setting)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>penetration_depth measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>roughness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>observation under · (activity recipe), not under a measurement activity or a comparison</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>22</td></tr>
+<tr><td>yim20</td><td>drops</td><td>a:schema:enum</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>316</td></tr>
+<tr><td>yim20</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>259</td></tr>
+<tr><td>yim20</td><td>about</td><td>unknown</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yim20</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>377</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold observation / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>47</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>26</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold derived / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison replicate / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>type</td><td>observation</td><td>313</td><td>161</td><td>109</td><td>0.68</td><td>0.35</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>setting</td><td>251</td><td>107</td><td>67</td><td>0.63</td><td>0.27</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>activity</td><td>249</td><td>143</td><td>133</td><td>0.93</td><td>0.53</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>cited</td><td>58</td><td>11</td><td>6</td><td>0.55</td><td>0.10</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>caveat</td><td>54</td><td>1</td><td>1</td><td>1.00</td><td>0.02</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>entity</td><td>54</td><td>42</td><td>42</td><td>1.00</td><td>0.78</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>claim</td><td>52</td><td>37</td><td>27</td><td>0.73</td><td>0.52</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>definition</td><td>14</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>comparison</td><td>12</td><td>7</td><td>2</td><td>0.29</td><td>0.17</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>model</td><td>8</td><td>1</td><td>1</td><td>1.00</td><td>0.12</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>derived</td><td>4</td><td>4</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>29</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>&#x27;·&#x27; stored as a plain value (a bound or a stat=minimum/maximum; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>carrier_density measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a film thickness setting that is not a target (thickness is a result; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (what it is a fraction of; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>resistivity measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>mobility measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>element_ratio measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>55</td></tr>
+<tr><td>mat22</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>188</td></tr>
+<tr><td>mat22</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>142</td></tr>
+<tr><td>mat22</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>353</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>10</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison grid / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+</table>
+</body></html>
