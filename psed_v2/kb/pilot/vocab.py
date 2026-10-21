@@ -7247,7 +7247,7 @@ CATEGORICAL_VALUES = {'entry_sides': ['one', 'two'],
  'process_mode': ['thermal', 'ozone', 'plasma'],
  'reactor_type': ['pump_type', 'flow_type', 'atmospheric']}
 
-FORM_CATEGORICAL_VALUES = {'crystallinity': ['amorphous', 'crystalline']}
+FORM_CATEGORICAL_VALUES = {'crystallinity': ['amorphous', 'crystalline', 'polycrystalline']}
 
 AMBIGUOUS_ALIASES = {'AR': ['aspect_ratio', 'ar'],
  'L': ['body_thickness', 'feature_depth'],

@@ -142,7 +142,8 @@ RECORD_TYPES = {
              "interpretation is a claim, never NK.",
     "caveat": "a limitation or assumption the authors state about their own method or data (not a claim).",
     "cited": "a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else "
-             "other with a candidate; never null (P149).",
+             "other with a candidate; never null (P149). An element that states the paper's own value and a literature value yields both an "
+             "observation (or setting) and a cited record (P150).",
 }
 NK_REASONS = {
     "boilerplate": "headings, author lines, acknowledgements",
