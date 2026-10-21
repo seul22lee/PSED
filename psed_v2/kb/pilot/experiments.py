@@ -40,7 +40,7 @@ def key(f):
 
 def text(f):
     """The value as one string: censor+value+unit, min–max unit, or the value_text."""
-    unit = f" {f['unit']}" if f["unit"] else ""
+    unit = f" {f['unit']}" if f["unit"] not in ("", "1", "-") else ""          # P151 C2: the dimensionless unit is never appended
     if f["value"]:
         return f["censor"] + f["value"] + unit
     if f["value_min"] and f["value_max"]:
@@ -118,7 +118,7 @@ def table(pid, paper):
         res = collections.defaultdict(list)
         for f in below(e["fact_id"]):
             if f["type"] in RESULT_TYPES and f["quantity"] and (text(f) or f["points_ref"]):
-                res[key(f)].append(f["points_ref"] or text(f))
+                res[key(f)].append(text(f) or f["points_ref"])                  # P151: a value prints as its value; a curve as its points_ref
         if not any(f["type"] in RESULT_TYPES for f in below(e["fact_id"])):
             continue                              # an experiment is an entity with observations (valued or not)
         chain = above(e["fact_id"])
@@ -151,7 +151,7 @@ def table(pid, paper):
         cells = collections.defaultdict(list)
         for f in fs:
             if f["quantity"] and (text(f) or f["points_ref"]):
-                cells[("setting:" if is_setting(f["quantity"]) else "result:") + key(f)].append(f["points_ref"] or text(f))
+                cells[("setting:" if is_setting(f["quantity"]) else "result:") + key(f)].append(text(f) or f["points_ref"])
         for k, vs in cells.items():
             rec[k] = "; ".join(dict.fromkeys(vs))
         out.append(rec)

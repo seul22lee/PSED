@@ -81,6 +81,11 @@ def unit_symbol(u):
     return UNIT_SYMBOL.get(n) or UNIT_SYMBOL.get(re.sub(r"^u(?=[A-Za-z])", "µ", n))
 
 
+def dimless(u):
+    """P151 C2: the dimensionless unit ("1", "-", "") is written as an empty unit."""
+    return "" if u in ("1", "-", "") else u
+
+
 def alias_table(ids, entries):
     """{normalized alias lowercased: id} over the ids and their vocab aliases."""
     out = {}
@@ -335,7 +340,7 @@ class Run:
                                               unit=rec["unit"], candidate="", action="kept (unit as printed)"))
                     self.count("e", "unit_unresolved (kept as printed)")
                     s = rec["unit"]
-                r["unit"] = s
+                r["unit"] = dimless(s)                                          # P151 C2
             out.append(r)
         return out
 
@@ -488,11 +493,12 @@ class Run:
         return self.films[run]
 
     def figures(self):
-        """P143b: kb/<pid>.figures.json curves through the pass-0 units' curves field, the curve fields as they are. A curve a model run
-        names -> a model row (y quantity, no value) under that model run's entity, its conditions as model_input settings there; a curve
-        a specimen names -> an observation row under the specimen's measurement activity, its conditions as settings of the specimen;
-        P144: a curve a run names -> an observation row under the run's measurement activity, its conditions as settings of the run (no
-        entity is made); a curve no unit names -> logged and left out (no fallback). Returns (tree rows, fact rows)."""
+        """P143b: kb/<pid>.figures.json data through the pass-0 units' data field. P151 C1 (user): data rows only, never a setting: a
+        curve, cell or peak becomes the result row of the unit whose data names it, by its data role (P146): measured -> an observation
+        under the specimen's measurement, fitted -> a model row under the specimen (computed_by_authors), simulated -> a model row under
+        the model run; points_ref = the figures.json id. A unit's conditions are the pass-1 records about it (the figures.json
+        conditions and a cell's at coordinates make no row). Data no unit names -> logged and left out (no fallback). Returns (tree
+        rows, fact rows)."""
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         k, tree, facts = self.key, [], []
@@ -515,28 +521,13 @@ class Run:
             r["author"] = self.pid
             return r
 
-        def ckey(c):
-            return c.get("quantity", ""), c.get("value"), c.get("value_max"), c.get("unit", "")
-
-        def settings(conds, parent, ev, kind, mentions=""):
-            for c in conds:
-                q, u = c.get("quantity", ""), unit_symbol(c.get("unit") or "") if c.get("unit") else ""
-                if q not in L.QUANTITIES or c.get("value") is None:
-                    self.count("1c", "condition without a quantity id or a value"); continue
-                if u is None:
-                    self.count("1c", "condition unit unresolved"); continue
-                lo, hi = (num_text(c["value"]), num_text(c["value_max"])) if c.get("value_max") is not None else ("", "")
-                facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
-                                 value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent, _unit=parent))
-                self.count("1c", "setting")
-
         def result(cu, parent, typ):
             y = cu["y"]
             if y.get("quantity") not in L.QUANTITIES:
                 self.count("1c", "curve y quantity not an id"); return
             facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"],
                              data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
-                             evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent))
+                             evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent, points_ref=cu["id"]))
             self.count("1c", f"curve -> {typ}")
         unowned = []
         for cu in Fj.get("curves", []):
@@ -547,13 +538,9 @@ class Run:
                     continue
                 unowned.append(cu); continue
             nid, role = self.node[own[0]]
-            conds = list((cu.get("conditions") or {}).values())
-            ev = ";".join(els(cu["figure"], cu.get("panel", "")))
-            lab = cu.get("series", {}).get("label_raw", "")
             dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
             if role not in ("model_run", "specimen", "run"):
                 self.count("1c", f"curve named by a {role} (left out)"); continue
-            settings(conds, nid, ev, "model_input" if role == "model_run" else "stated", lab)
             if dr == "measured":
                 result(cu, "@meas:" + nid, "observation")
             else:
@@ -569,12 +556,10 @@ class Run:
             nid, role = self.node[own[0]]
             dr = drole[(own[0], v["id"])]
             ev = ";".join(els(v["figure"], v.get("panel", "")))
-            at = [dict(quantity=q, value=x, value_max=None, key_raw=q, unit=L.ENTRIES.get(q, {}).get("unit", "")) for q, x in (v.get("at") or {}).items()]
-            settings(at + list((v.get("conditions") or {}).values()), nid, ev, "model_input" if role == "model_run" else "stated", v.get("label", ""))
             q = v.get("quantity") or ""
             if q not in L.QUANTITIES:
                 self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
-            u = unit_symbol(v.get("unit") or "") if v.get("unit") else ""
+            u = dimless(unit_symbol(v.get("unit") or "") if v.get("unit") else "")
             vt = v.get("value_text") or ""
             if q in CATEGORICAL_ALIASES and vt:                                 # P149 F3: a cell's value_text resolved to the value id
                 hit = categorical(q, vt)
@@ -583,7 +568,7 @@ class Run:
             facts.append(row(type="observation" if dr == "measured" else "model", quantity=q, label_as_printed=v.get("label") or q,
                              value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=vt, unit=u or "",
                              data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
-                             parent="@meas:" + nid if dr == "measured" else nid))
+                             parent="@meas:" + nid if dr == "measured" else nid, points_ref=v["id"]))
             self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
         if unowned:                                                             # P144: no fallback
             self.count("1c", "curves no unit names (left out)", len(unowned))
@@ -788,28 +773,6 @@ class Run:
             f["_kind_filled"] = True
         return f
 
-    def merge_figure_settings(self, items, figs):
-        """P149 F2: a setting from a caption or paragraph record and a setting from figures.json (1c) with the same quantity, the same
-        value in canonical units (canon()) and the same unit (the record's about unit; the unit that owns the figures.json entry)
-        are one row: the record's, its evidence joined with the figures.json row's, its parent the placement rule's (place()).
-        Returns the figures.json rows left; each merge is logged (self.merges)."""
-        self.merges, by = [], {}
-        for f in items:
-            if f["type"] == "setting" and f["value"] and f.get("_unit") and self.kind_of.get(f["evidence"].split(";")[0]) in ("caption", "paragraph"):
-                by.setdefault((f["quantity"], canon(f), f["_unit"]), f)
-        out = []
-        for g in figs:
-            f = by.get((g["quantity"], canon(g), g.get("_unit"))) if g["type"] == "setting" and g["value"] and g.get("_unit") else None
-            if f is None:
-                out.append(g); continue
-            before = f["evidence"]
-            f["evidence"] = ";".join(sorted(set(f["evidence"].split(";")) | set(g["evidence"].split(";")), key=lambda e: self.order.get(e, 10 ** 9)))
-            self.merges.append(dict(paper=self.key, quantity=f["quantity"], value=f["value"], unit=f["unit"], unit_row=g["_unit"], record_evidence=before,
-                                    figure_evidence=g["evidence"], figure_parent=g["parent"], kept_parent=f["parent"], evidence=f["evidence"]))
-            self.count("i", "figures.json setting merged into a record (F2)")
-            self.note(f"i: F2 merged figures.json setting {g['quantity']}={g['value']} {g['unit']} ({g['evidence']}, under {g['parent']}) into the record on {before} (under {f['parent']})")
-        return out
-
     def dedupe(self, items):
         """i (D3): equal DEDUPE_KEY from different elements -> one record, evidence = all element ids in element order. Value records
         only; P136 1a: a definition by its normalized term (term, else label_as_printed, else the first mention)."""
@@ -992,14 +955,12 @@ class Run:
             self.count("h", f"place: {why}")
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
-            items[-1]["_unit"] = self.node.get(r["rec"].get("about"), ("",))[0]   # P149 F2: the row of the unit the record is about
         fig_tree, fig_facts = self.figures()
         self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
                 f["parent"] = self.measurement(f["parent"][6:], "")
-        fig_facts = self.merge_figure_settings(items, fig_facts)               # P149 F2
         items = self.dedupe(items + fig_facts)
         self.count("i", "kept", len(items))
         items = self.ids(items)
