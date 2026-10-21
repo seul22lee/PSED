@@ -506,7 +506,7 @@ class Run:
                     self.count("1c", "condition unit unresolved"); continue
                 lo, hi = (num_text(c["value"]), num_text(c["value_max"])) if c.get("value_max") is not None else ("", "")
                 facts.append(row(type="setting", quantity=q, label_as_printed=c.get("key_raw", "") or q, value="" if hi else f"{c['value']:.6g}",
-                                 value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent))
+                                 value_min=lo, value_max=hi, unit=u, data_kind=kind, mentions=mentions, evidence=ev, parent=parent, _unit=parent))
                 self.count("1c", "setting")
 
         def result(cu, parent, typ):
@@ -762,6 +762,28 @@ class Run:
             f["_kind_filled"] = True
         return f
 
+    def merge_figure_settings(self, items, figs):
+        """P149 F2: a setting from a caption or paragraph record and a setting from figures.json (1c) with the same quantity, the same
+        value in canonical units (canon()) and the same unit (the record's about unit; the unit that owns the figures.json entry)
+        are one row: the record's, its evidence joined with the figures.json row's, its parent the placement rule's (place()).
+        Returns the figures.json rows left; each merge is logged (self.merges)."""
+        self.merges, by = [], {}
+        for f in items:
+            if f["type"] == "setting" and f["value"] and f.get("_unit") and self.kind_of.get(f["evidence"].split(";")[0]) in ("caption", "paragraph"):
+                by.setdefault((f["quantity"], canon(f), f["_unit"]), f)
+        out = []
+        for g in figs:
+            f = by.get((g["quantity"], canon(g), g.get("_unit"))) if g["type"] == "setting" and g["value"] and g.get("_unit") else None
+            if f is None:
+                out.append(g); continue
+            before = f["evidence"]
+            f["evidence"] = ";".join(sorted(set(f["evidence"].split(";")) | set(g["evidence"].split(";")), key=lambda e: self.order.get(e, 10 ** 9)))
+            self.merges.append(dict(paper=self.key, quantity=f["quantity"], value=f["value"], unit=f["unit"], unit_row=g["_unit"], record_evidence=before,
+                                    figure_evidence=g["evidence"], figure_parent=g["parent"], kept_parent=f["parent"], evidence=f["evidence"]))
+            self.count("i", "figures.json setting merged into a record (F2)")
+            self.note(f"i: F2 merged figures.json setting {g['quantity']}={g['value']} {g['unit']} ({g['evidence']}, under {g['parent']}) into the record on {before} (under {f['parent']})")
+        return out
+
     def dedupe(self, items):
         """i (D3): equal DEDUPE_KEY from different elements -> one record, evidence = all element ids in element order. Value records
         only; P136 1a: a definition by its normalized term (term, else label_as_printed, else the first mention)."""
@@ -944,12 +966,14 @@ class Run:
             self.count("h", f"place: {why}")
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
+            items[-1]["_unit"] = self.node.get(r["rec"].get("about"), ("",))[0]   # P149 F2: the row of the unit the record is about
         fig_tree, fig_facts = self.figures()
         self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
                 f["parent"] = self.measurement(f["parent"][6:], "")
+        fig_facts = self.merge_figure_settings(items, fig_facts)               # P149 F2
         items = self.dedupe(items + fig_facts)
         self.count("i", "kept", len(items))
         items = self.ids(items)
