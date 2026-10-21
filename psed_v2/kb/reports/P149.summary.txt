@@ -1,0 +1,34 @@
+P149: three fixes, three diagnoses. Zero provider calls; the P148 records recompiled (score.py P149), gold untouched.
+
+F1 (3fae3c8) codebook c: definition and cited records always carry a quantity: the entry the term or value stands for, else other
+  with a candidate; never null. Text only (lists.RECORD_TYPES -> CODEBOOK.md, f1_codebook.diff); takes effect at the next
+  extraction. Note: the prompt's cited/paragraph example (a gold row) has quantity null; it changes with the examples, not here.
+F2 (P149 compile, merge_figure_settings): a caption/paragraph setting and a figures.json setting with the same quantity, canonical
+  value and unit (the record's about unit = the unit owning the figures.json entry) are one row, the record's, evidence joined,
+  parent by place(). 51 merges: yli18 4, yim20 6, mat22 41 (f2_merges).
+  Effect: mat22 matched 299 -> 294. The 5 gold rows lost (match_changed) are deposition_temperature settings the gold keeps once
+  per figure panel (fig1b x4, fig9b): each matched its own figures.json row before; now one row per unit carries all the panels'
+  evidence and the P134 match is one gold row per compiled row. mat22 check problems 454 -> 433 (same statement / same as -21);
+  yli18 137 -> 139 (statement repeats eight words +2: the merged rows now cite the figure panel, whose text holds the caption).
+F3 (5308b1e): crystallinity's value set = the 9 dev golds' value_text: amorphous (15), crystalline (20) (mat22, zou23); no
+  polycrystalline in any dev gold. ontology.yaml already lists exactly this set (vocabularies.crystallinity), so it is unchanged;
+  export.py FORM_CATEGORICALS = [crystallinity] -> form.json value_text enum when quantity = crystallinity; the compiler resolves
+  value_text to the id before form.json and on figures.json cells: mat22 fig2, 32 cells Amorphous/Crystalline -> amorphous /
+  crystalline (they matched before too: the match lowercases value_text). One pass-1 record, mat22 s3.p4 "polycrystalline", now
+  drops as schema:enum: add polycrystalline to the set if you approve. Other closed categoricals (<= 10 distinct gold values):
+  listed in f3_value_sets, not changed.
+
+D1 caveats (yim20 s16, mat22 s5). Not truncated: both groups' responses parse and answer every element (39/39, 36/36); the finish
+  reason is not recorded in the line (common.call keeps text and usage). yim20 group s16+...+s24: 7,705 output tokens vs its
+  largest group tab1 55,469; mat22 s4+...+s7: 11,063 vs s3 17,890. yim20 s16: 11 elements, 8 with records: observation 3, setting
+  2, caveat 2, derived 2, claim 1; NK no_knowledge 2, boilerplate 1. Gold caveats on s16: 18 rows on 8 elements; a caveat record on
+  the element in 5 of the 25 row-element pairs; there the records are observations (19), settings (6), derived (2), claims (2).
+  mat22 s5: 19 elements: 44 settings, 1 caveat; gold caveats 24 rows on 14 elements; 1 pair with a caveat record, 8 NK no_knowledge.
+D2 cited. yli18 s5: 5 gold cited rows on 5 elements, no cited record (settings 9, claim 1, NK 2); 2 of the 5 elements also carry a
+  gold observation or setting. mat22 s3: 29 gold cited rows on 15 elements, 2 cited records (observations 25, settings 16, claims 8,
+  NK 7); 10 of the 15 elements carry a gold cited row and a gold observation or setting.
+D3 mat22 quote_not_found 96: panel 91, paragraph 5. Causes (by rule, d3_causes): 60 panel quotes are text of the figure's
+  figures.json cells (the group shows them; the quote scope has the panel text and curve series labels, not cells); 26 panel
+  quotes are a paragraph's text; 5 not in the paper's text; 2 in document.md but in no element; 2 match on alphanumerics only;
+  1 mostly the element's tokens. normalize() on both sides: 0 of 96 match (D11 already applies it to both).
+  15 rows side by side (quote, element text): kb/reports/P149.text.html (gitignored: element text).

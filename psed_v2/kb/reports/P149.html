@@ -1,0 +1,521 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P149</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P149</h1>
+<h2>Summary</h2><p>kb/reports/P149.summary.txt</p>
+<pre>P149: three fixes, three diagnoses. Zero provider calls; the P148 records recompiled (score.py P149), gold untouched.
+
+F1 (3fae3c8) codebook c: definition and cited records always carry a quantity: the entry the term or value stands for, else other
+  with a candidate; never null. Text only (lists.RECORD_TYPES -&gt; CODEBOOK.md, f1_codebook.diff); takes effect at the next
+  extraction. Note: the prompt&#x27;s cited/paragraph example (a gold row) has quantity null; it changes with the examples, not here.
+F2 (P149 compile, merge_figure_settings): a caption/paragraph setting and a figures.json setting with the same quantity, canonical
+  value and unit (the record&#x27;s about unit = the unit owning the figures.json entry) are one row, the record&#x27;s, evidence joined,
+  parent by place(). 51 merges: yli18 4, yim20 6, mat22 41 (f2_merges).
+  Effect: mat22 matched 299 -&gt; 294. The 5 gold rows lost (match_changed) are deposition_temperature settings the gold keeps once
+  per figure panel (fig1b x4, fig9b): each matched its own figures.json row before; now one row per unit carries all the panels&#x27;
+  evidence and the P134 match is one gold row per compiled row. mat22 check problems 454 -&gt; 433 (same statement / same as -21);
+  yli18 137 -&gt; 139 (statement repeats eight words +2: the merged rows now cite the figure panel, whose text holds the caption).
+F3 (5308b1e): crystallinity&#x27;s value set = the 9 dev golds&#x27; value_text: amorphous (15), crystalline (20) (mat22, zou23); no
+  polycrystalline in any dev gold. ontology.yaml already lists exactly this set (vocabularies.crystallinity), so it is unchanged;
+  export.py FORM_CATEGORICALS = [crystallinity] -&gt; form.json value_text enum when quantity = crystallinity; the compiler resolves
+  value_text to the id before form.json and on figures.json cells: mat22 fig2, 32 cells Amorphous/Crystalline -&gt; amorphous /
+  crystalline (they matched before too: the match lowercases value_text). One pass-1 record, mat22 s3.p4 &quot;polycrystalline&quot;, now
+  drops as schema:enum: add polycrystalline to the set if you approve. Other closed categoricals (&lt;= 10 distinct gold values):
+  listed in f3_value_sets, not changed.
+
+D1 caveats (yim20 s16, mat22 s5). Not truncated: both groups&#x27; responses parse and answer every element (39/39, 36/36); the finish
+  reason is not recorded in the line (common.call keeps text and usage). yim20 group s16+...+s24: 7,705 output tokens vs its
+  largest group tab1 55,469; mat22 s4+...+s7: 11,063 vs s3 17,890. yim20 s16: 11 elements, 8 with records: observation 3, setting
+  2, caveat 2, derived 2, claim 1; NK no_knowledge 2, boilerplate 1. Gold caveats on s16: 18 rows on 8 elements; a caveat record on
+  the element in 5 of the 25 row-element pairs; there the records are observations (19), settings (6), derived (2), claims (2).
+  mat22 s5: 19 elements: 44 settings, 1 caveat; gold caveats 24 rows on 14 elements; 1 pair with a caveat record, 8 NK no_knowledge.
+D2 cited. yli18 s5: 5 gold cited rows on 5 elements, no cited record (settings 9, claim 1, NK 2); 2 of the 5 elements also carry a
+  gold observation or setting. mat22 s3: 29 gold cited rows on 15 elements, 2 cited records (observations 25, settings 16, claims 8,
+  NK 7); 10 of the 15 elements carry a gold cited row and a gold observation or setting.
+D3 mat22 quote_not_found 96: panel 91, paragraph 5. Causes (by rule, d3_causes): 60 panel quotes are text of the figure&#x27;s
+  figures.json cells (the group shows them; the quote scope has the panel text and curve series labels, not cells); 26 panel
+  quotes are a paragraph&#x27;s text; 5 not in the paper&#x27;s text; 2 in document.md but in no element; 2 match on alphanumerics only;
+  1 mostly the element&#x27;s tokens. normalize() on both sides: 0 of 96 match (D11 already applies it to both).
+  15 rows side by side (quote, element text): kb/reports/P149.text.html (gitignored: element text).
+</pre>
+<h2>Score moved (matched gold rows, check problems)</h2><p>kb/reports/P149.score_moved.csv</p>
+<table><tr><th>paper</th><th>gold_rows</th><th>matched_P148</th><th>matched_P149</th><th>check_dir_P148</th><th>check_dir_P149</th></tr>
+<tr><td>yli18</td><td>243</td><td>145</td><td>145</td><td>137</td><td>139</td></tr>
+<tr><td>yim20</td><td>900</td><td>443</td><td>443</td><td>248</td><td>248</td></tr>
+<tr><td>mat22</td><td>1071</td><td>299</td><td>294</td><td>454</td><td>433</td></tr>
+</table>
+<h2>score_summary rows that changed, P148 to P149</h2><p>kb/reports/P149.score_change.csv</p>
+<table><tr><th>paper</th><th>section</th><th>item</th><th>P148</th><th>P149</th></tr>
+<tr><td>mat22</td><td>drops</td><td>a:schema:enum</td><td>-</td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>parent kind = gold</td><td>356</td><td>354</td></tr>
+<tr><td>mat22</td><td>type</td><td>activity</td><td>103/249 c113</td><td>102/249 c112</td></tr>
+<tr><td>mat22</td><td>type</td><td>observation</td><td>77/313 c120</td><td>77/313 c119</td></tr>
+<tr><td>mat22</td><td>type</td><td>setting</td><td>127/251 c233</td><td>126/251 c202</td></tr>
+<tr><td>yim20</td><td>type</td><td>setting</td><td>123/206 c216</td><td>123/206 c214</td></tr>
+<tr><td>yli18</td><td>type</td><td>setting</td><td>37/63 c125</td><td>37/63 c123</td></tr>
+</table>
+<h2>Gold rows whose match changed</h2><p>kb/reports/P149.match_changed.csv</p>
+<table><tr><th>paper</th><th>gold_row</th><th>type</th><th>quantity</th><th>value</th><th>evidence</th><th>P148</th><th>P149</th><th>P149_detail</th></tr>
+<tr><td>mat22</td><td>mat22:fig1b#15</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>fig1b</td><td>T6 matched</td><td>T3 prompt</td><td>4 records on the evidence elements, of types {&#x27;observation&#x27;: 4}</td></tr>
+<tr><td>mat22</td><td>mat22:fig1b#16</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>fig1b</td><td>T6 matched</td><td>T3 prompt</td><td>4 records on the evidence elements, of types {&#x27;observation&#x27;: 4}</td></tr>
+<tr><td>mat22</td><td>mat22:fig1b#17</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>fig1b</td><td>T6 matched</td><td>T3 prompt</td><td>4 records on the evidence elements, of types {&#x27;observation&#x27;: 4}</td></tr>
+<tr><td>mat22</td><td>mat22:fig1b#18</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>fig1b</td><td>T6 matched</td><td>T3 prompt</td><td>4 records on the evidence elements, of types {&#x27;observation&#x27;: 4}</td></tr>
+<tr><td>mat22</td><td>mat22:fig9b#7</td><td>setting</td><td>deposition_temperature</td><td>100</td><td>fig9b</td><td>T6 matched</td><td>T3 prompt</td><td>8 records on the evidence elements, of types {&#x27;observation&#x27;: 8}</td></tr>
+</table>
+<h2>Check classes that changed (fail to pass table)</h2><p>kb/reports/P149.check_changed.csv</p>
+<table><tr><th>paper</th><th>check_class</th><th>P148</th><th>P149</th><th>change</th></tr>
+<tr><td>yli18</td><td>statement repeats eight words of · in a row</td><td>58</td><td>60</td><td>58 -&gt; 60</td></tr>
+<tr><td>mat22</td><td>same statement as ·</td><td>143</td><td>132</td><td>143 -&gt; 132</td></tr>
+<tr><td>mat22</td><td>same as ·</td><td>115</td><td>105</td><td>115 -&gt; 105</td></tr>
+</table>
+<h2>F1 codebook diff</h2><p>kb/reports/P149.f1_codebook.diff</p>
+<pre>diff --git a/psed_v2/kb/schema/CODEBOOK.md b/psed_v2/kb/schema/CODEBOOK.md
+index 9701bdc..01ee57f 100644
+--- a/psed_v2/kb/schema/CODEBOOK.md
++++ b/psed_v2/kb/schema/CODEBOOK.md
+@@ -76,10 +76,10 @@ Record types:
+ - observation: a measured result on a specimen.
+ - derived: a number the authors computed from their data (fit parameters, values derived in a table).
+ - model: an equation or a model statement; quantity = what the equation gives, variables = its symbols. An equation is a model, not a definition.
+-- definition: a symbol or term the paper defines; term = the symbol as printed, quantity = the entry it stands for when one exists.
++- definition: a symbol or term the paper defines; term = the symbol as printed; quantity = the entry it stands for, else other with a candidate; never null (P149).
+ - claim: a causal statement or an interpretation of results, with cause and effect (ids of the cause/effect enum), relation and stance; see the claim example below. An abstract, introduction or conclusion paragraph that states a result or an interpretation is a claim, never NK.
+ - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
+-- cited: a value or statement the paper attributes to another work (not a setting).
++- cited: a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else other with a candidate; never null (P149).
+ 
+ Stances (asserted, hedged, open, limitation): &quot;likely&quot;, &quot;may&quot; -&gt; hedged; &quot;cannot be excluded&quot;, &quot;further work&quot; -&gt; open; a stated shortcoming of the study or method -&gt; limitation; asserted: stated as a finding, without hedging words (P143b)
+ 
+</pre>
+<h2>F2 merges</h2><p>kb/reports/P149.f2_merges.csv</p>
+<table><tr><th>paper</th><th>quantity</th><th>value</th><th>unit</th><th>unit_row</th><th>record_evidence</th><th>figure_evidence</th><th>figure_parent</th><th>kept_parent</th><th>evidence</th></tr>
+<tr><td>yli18</td><td>feature_width</td><td>0.5</td><td>µm</td><td>yli18:ent:specimen_tio2</td><td>fig7.cap</td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>yli18:run:run_tio2</td><td>fig7.cap;fig7</td></tr>
+<tr><td>yli18</td><td>feature_depth</td><td>1</td><td>mm</td><td>yli18:ent:specimen_tio2</td><td>fig7.cap</td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>yli18:run:run_tio2</td><td>fig7.cap;fig7</td></tr>
+<tr><td>yli18</td><td>feature_width</td><td>0.5</td><td>µm</td><td>yli18:ent:specimen_tio2</td><td>fig7.cap;fig7</td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>yli18:run:run_tio2</td><td>fig7.cap;fig7</td></tr>
+<tr><td>yli18</td><td>feature_depth</td><td>1</td><td>mm</td><td>yli18:ent:specimen_tio2</td><td>fig7.cap;fig7</td><td>fig7;fig7.cap</td><td>yli18:ent:specimen_tio2</td><td>yli18:run:run_tio2</td><td>fig7.cap;fig7</td></tr>
+<tr><td>yim20</td><td>feature_width</td><td>500</td><td>nm</td><td>yim20:ent:sample_11</td><td>fig5.cap</td><td>fig9d;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d</td></tr>
+<tr><td>yim20</td><td>cycle_number</td><td>1000</td><td>cycle</td><td>yim20:ent:sample_11</td><td>fig5.cap</td><td>fig9d;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d</td></tr>
+<tr><td>yim20</td><td>feature_width</td><td>500</td><td>nm</td><td>yim20:ent:sample_11</td><td>fig5.cap;fig9.cap;fig9d</td><td>fig9e;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e</td></tr>
+<tr><td>yim20</td><td>cycle_number</td><td>1000</td><td>cycle</td><td>yim20:ent:sample_11</td><td>fig5.cap;fig9.cap;fig9d</td><td>fig9e;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e</td></tr>
+<tr><td>yim20</td><td>feature_width</td><td>500</td><td>nm</td><td>yim20:ent:sample_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e</td><td>fig9f;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e;fig9f</td></tr>
+<tr><td>yim20</td><td>cycle_number</td><td>1000</td><td>cycle</td><td>yim20:ent:sample_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e</td><td>fig9f;fig9.cap</td><td>yim20:ent:sample_11</td><td>yim20:run:run_11</td><td>fig5.cap;fig9.cap;fig9d;fig9e;fig9f</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig5.cap</td><td>fig7a;fig7.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig7.cap;fig7a</td><td>fig1b;fig1.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td><td>fig1b;fig1.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig5.cap;fig7.cap;fig7a</td><td>fig2;fig2.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig5.cap;fig7.cap;fig7a</td><td>fig4;fig4.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5a;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig7.cap;fig7a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig1.cap;fig1b;fig2.cap;fig2;fig4.cap;fig4;fig5.cap;fig5a;fig5b;fig7.cap;fig7a</td></tr>
+<tr><td>mat22</td><td>cycle_number</td><td>140</td><td>cycle</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td><td>fig5b;fig5.cap</td><td>mat22:run:run_grid_24</td><td>mat22:run:run_grid_24</td><td>fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>150</td><td>°C</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td><td>fig9a;fig9.cap</td><td>mat22:run:unit_ws2_150c</td><td>mat22:run:unit_ws2_150c</td><td>s3.x7;fig9.cap;fig9a</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7</td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td></tr>
+<tr><td>mat22</td><td>deposition_temperature</td><td>100</td><td>°C</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td><td>fig9b;fig9.cap</td><td>mat22:run:unit_tis2_100c</td><td>mat22:run:unit_tis2_100c</td><td>s3.x7;fig9.cap;fig9b</td></tr>
+</table>
+<h2>F3 value sets of the categorical quantities (dev golds)</h2><p>kb/reports/P149.f3_value_sets.csv</p>
+<table><tr><th>quantity</th><th>distinct_gold_values</th><th>gold_values</th><th>papers</th><th>ontology_list</th><th>status</th></tr>
+<tr><td>process_mode</td><td>0</td><td></td><td></td><td>thermal;ozone;plasma</td><td>no gold value_text</td></tr>
+<tr><td>material</td><td>9</td><td>al2o3=14;zno=8;tio2=7;tis2=4;sio2=3;hfo2=3;ws2=2;mo=2;mos2=1</td><td>art19;ela03;gao15;gor03;mat22;yim20;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>reactant_A</td><td>11</td><td>tma=14;dez=8;ticl4=6;tdmat=3;mo_ntbu2_nme22=1;w_ntbu2_nme22=1;sicl4=1;hf_nme2_4=1;bdeas=1;tdmacph=1;mocl2o2=1</td><td>art19;ela03;gao15;gor03;mat22;yim20;yli18;zou23</td><td>-</td><td>open (&gt; 10)</td></tr>
+<tr><td>reactant_B</td><td>4</td><td>h2o=19;h2s=4;o_atom=1;h_atom=1</td><td>art19;ela03;gao15;gor03;mat22;yim20;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>carrier_gas</td><td>1</td><td>n2=5</td><td>ela03;gao15;gor03;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>reactor</td><td>9</td><td>Picosun R-150=4;home-built=2;single-wafer cross-flow hot-wall=1;Oxford Instruments OpAL=1;Oxford Instruments FlexAL PEALD=1;viscous-flow ALD reactor (home-built, ref. 37)=1;Harvard flow tube reactor=1;Oxford Instruments FlexAL=1;home-built hot-wall HWALD reactor=1</td><td>art19;ela03;gao15;gor03;mat22;yim20;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>delivery_method</td><td>0</td><td></td><td></td><td>-</td><td>no gold value_text</td></tr>
+<tr><td>crystallinity</td><td>2</td><td>crystalline=20;amorphous=15</td><td>mat22;zou23</td><td>amorphous;crystalline</td><td>F3: form enum (changed)</td></tr>
+<tr><td>reactor_type</td><td>1</td><td>flow_type=2</td><td>ela03;gor03</td><td>pump_type;flow_type;atmospheric</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>plasma_configuration</td><td>0</td><td></td><td></td><td>capacitive;inductive;remote;radical_enhanced</td><td>no gold value_text</td></tr>
+<tr><td>structure</td><td>10</td><td>porous_sphere=38;porous_slab=29;pillarhall_4=8;pillarhall_3=3;porous_cylinder=3;planar=2;anodic_alumina_membrane=1;etched_hole_array=1;pillarhall_1=1;si_trench_capped=1</td><td>art19;ela03;gao15;gor03;hei24;mat22;yim20;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>substrate</td><td>5</td><td>si=6;sio2=6;glassy_carbon=3;pet=1;al2o3=1</td><td>art19;ela03;gao15;gor03;mat22;yim20;yli18;zou23</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>phase</td><td>1</td><td>detected=7</td><td>mat22;zou23</td><td>detected;not detected</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>pillar_layout</td><td>3</td><td>v1b=13;v2a=2;v1a=1</td><td>yim20</td><td>-</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+<tr><td>entry_sides</td><td>1</td><td>two=1</td><td>ela03</td><td>one;two</td><td>closed (&lt;= 10), listed, not changed</td></tr>
+</table>
+<h2>D1 the two groups</h2><p>kb/reports/P149.d1_group.csv</p>
+<table><tr><th>paper</th><th>section</th><th>group</th><th>elements</th><th>answered</th><th>finish_reason</th><th>response_parses</th><th>output_tokens</th><th>largest_group</th><th>largest_output_tokens</th><th>records</th></tr>
+<tr><td>yim20</td><td>s16</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>39</td><td>39</td><td>not recorded (common.call keeps the text and usage only)</td><td>yes</td><td>7705</td><td>tab1</td><td>55469</td><td>30</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s4+s5+s6+s7</td><td>36</td><td>36</td><td>not recorded (common.call keeps the text and usage only)</td><td>yes</td><td>11063</td><td>s3</td><td>17890</td><td>50</td></tr>
+</table>
+<h2>D1 every element of yim20 s16 and mat22 s5</h2><p>kb/reports/P149.d1_elements.csv</p>
+<table><tr><th>paper</th><th>section</th><th>element</th><th>kind</th><th>group</th><th>answer</th><th>by_type</th></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.h</td><td>heading</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>NK:boilerplate</td><td></td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p1</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p2</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p3</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>observation=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p4</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>setting=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p5</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>2 records</td><td>observation=2</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p6</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>claim=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p7</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>setting=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p8</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>caveat=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p9</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>1 records</td><td>caveat=1</td></tr>
+<tr><td>yim20</td><td>s16</td><td>s16.p10</td><td>paragraph</td><td>s16+s17+s18+s19+s20+s21+s22+s23+s24</td><td>2 records</td><td>derived=2</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.h</td><td>heading</td><td>s4+s5+s6+s7</td><td>NK:boilerplate</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p1</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>6 records</td><td>setting=5;caveat=1</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p2</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>4 records</td><td>setting=4</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p3</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>2 records</td><td>setting=2</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p4</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>5 records</td><td>setting=5</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p5</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>1 records</td><td>setting=1</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p6</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>11 records</td><td>setting=11</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p7</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>3 records</td><td>setting=3</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p8</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>6 records</td><td>setting=6</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p9</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p10</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p11</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p12</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p13</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>NK:no_knowledge</td><td></td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p14</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>1 records</td><td>setting=1</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p15</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>2 records</td><td>setting=2</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p16</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>2 records</td><td>setting=2</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p17</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>1 records</td><td>setting=1</td></tr>
+<tr><td>mat22</td><td>s5</td><td>s5.p18</td><td>paragraph</td><td>s4+s5+s6+s7</td><td>1 records</td><td>setting=1</td></tr>
+</table>
+<h2>D1 gold caveat rows and the records on their elements</h2><p>kb/reports/P149.d1_gold_caveats.csv</p>
+<table><tr><th>paper</th><th>gold_caveat</th><th>gold_quantity</th><th>element</th><th>pass1</th><th>record_types</th><th>caveat_record</th><th>quotes</th></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#6</td><td></td><td>s16.p4</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] tolerance for the oxide thickness that defines the channel height was ±10, 20, and 30 nm for 100, 500, and 2000 nm design channel heights, respectively</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#6</td><td></td><td>s16.p3</td><td>1 records</td><td>observation</td><td>no</td><td>[observation] at the entrance into the LHAR channel in PillarHall-3, there is a nanostep of ca. 2 to 5 nm in height</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#6</td><td></td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#7</td><td></td><td>s16.p4</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] tolerance for the oxide thickness that defines the channel height was ±10, 20, and 30 nm for 100, 500, and 2000 nm design channel heights, respectively</td></tr>
+<tr><td>yim20</td><td>yim20:s3.p9#8</td><td>film_thickness;growth_per_cycle</td><td>s16.p7</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] We estimate this positioning uncertainty to be on the order of 2 μm</td></tr>
+<tr><td>yim20</td><td>yim20:s3.p9#8</td><td>film_thickness;growth_per_cycle</td><td>s16.p8</td><td>1 records</td><td>caveat</td><td>yes</td><td>[caveat] By changing the reference, the measured film thickness could change by some nanometers for a film of ca. 50 nm.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p7#5</td><td>film_thickness;growth_per_cycle</td><td>s16.p7</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] We estimate this positioning uncertainty to be on the order of 2 μm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p7#5</td><td>film_thickness;growth_per_cycle</td><td>s16.p8</td><td>1 records</td><td>caveat</td><td>yes</td><td>[caveat] By changing the reference, the measured film thickness could change by some nanometers for a film of ca. 50 nm.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p8#4</td><td>film_thickness;growth_per_cycle</td><td>s16.p8</td><td>1 records</td><td>caveat</td><td>yes</td><td>[caveat] By changing the reference, the measured film thickness could change by some nanometers for a film of ca. 50 nm.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p7#6</td><td>penetration_depth</td><td>s16.p7</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] We estimate this positioning uncertainty to be on the order of 2 μm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#8</td><td>penetration_depth</td><td>s16.p4</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] tolerance for the oxide thickness that defines the channel height was ±10, 20, and 30 nm for 100, 500, and 2000 nm design channel heights, respectively</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p4#8</td><td>penetration_depth</td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p10#6</td><td>penetration_depth;film_thickness;front_slope</td><td>s16.p10</td><td>2 records</td><td>derived;derived</td><td>no</td><td>[derived] the standard deviation of PD50% and the slope at PD50% were 19.4 μm and 0.0003  nm, respectively. | [derived] The standard deviation of the initial film thickness in Region IIb was 2.8 nm.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#9</td><td>growth_per_cycle;film_thickness</td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#9</td><td>growth_per_cycle;film_thickness</td><td>s16.p3</td><td>1 records</td><td>observation</td><td>no</td><td>[observation] at the entrance into the LHAR channel in PillarHall-3, there is a nanostep of ca. 2 to 5 nm in height</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#10</td><td>penetration_depth;coated_aspect_ratio;front_slope</td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s13.x1#7</td><td></td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s10.p1#6</td><td></td><td>s16.p6</td><td>1 records</td><td>claim</td><td>no</td><td>[claim] those with a design channel height of 500 nm and pillar layout v1b succeeded best in reproducing the design target and are expected to provide the most reliable saturation profile measurements.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p6#2</td><td></td><td>s16.p6</td><td>1 records</td><td>claim</td><td>no</td><td>[claim] those with a design channel height of 500 nm and pillar layout v1b succeeded best in reproducing the design target and are expected to provide the most reliable saturation profile measurements.</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#11</td><td></td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#11</td><td></td><td>s16.p3</td><td>1 records</td><td>observation</td><td>no</td><td>[observation] at the entrance into the LHAR channel in PillarHall-3, there is a nanostep of ca. 2 to 5 nm in height</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#12</td><td></td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s16.p5#13</td><td></td><td>s16.p5</td><td>2 records</td><td>observation;observation</td><td>no</td><td>[observation] the membrane bent to a displacement of ca. 25 nm (Fig. S13a, ESI†) | [observation] The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>yim20</td><td>yim20:s14.p1#5</td><td>pulse_time</td><td>s16.p9</td><td>1 records</td><td>caveat</td><td>yes</td><td>[caveat] Moreover, at the beginning of ALD processes, a small deviation may occur in the reactant dose when a reactant bottle of an initially equilibrated vapor pressure is taken into use</td></tr>
+<tr><td>yim20</td><td>yim20:s6.p1#17</td><td></td><td>s16.p9</td><td>1 records</td><td>caveat</td><td>yes</td><td>[caveat] Moreover, at the beginning of ALD processes, a small deviation may occur in the reactant dose when a reactant bottle of an initially equilibrated vapor pressure is taken into use</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p1#6</td><td></td><td>s5.p1</td><td>6 records</td><td>setting;setting;setting;setting;setting;caveat</td><td>yes</td><td>[setting] Oxford Instruments FlexAL PEALD reactor | [setting] 13.56 MHz remote inductively coupled plasma (ICP) source | [setting] remote inductively coupled plasma (ICP) source | [setting] reaching a base pressure of 10-6 Torr. | [setting] The reactor walls can be heated up to 150 °C. | [caveat] Due to limited thermal contact between the table and the substrate at the low operating pressures (see below), the actual substrate temperature was lower than the table temperature.86 For consistency within the article and preceding literature, table temperatures are used throughout this article.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p7#42</td><td></td><td>s5.p7</td><td>3 records</td><td>setting;setting;setting</td><td>no</td><td>[setting] either 100 (450 °C) | [setting] 120 (50 °C, 300 °C, and 350 °C) | [setting] 140 (100–250 °C).</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p7#43</td><td></td><td>s5.p7</td><td>3 records</td><td>setting;setting;setting</td><td>no</td><td>[setting] either 100 (450 °C) | [setting] 120 (50 °C, 300 °C, and 350 °C) | [setting] 140 (100–250 °C).</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p51#5</td><td></td><td>s5.p4</td><td>5 records</td><td>setting;setting;setting;setting;setting</td><td>no</td><td>[setting] H2S (99.5% purity) | [setting] H2 (99.999%) | [setting] Ar (99.999%) | [setting] kept constant at 50 sccm, resulting in approximately 6 mTorr pressure in the chamber. | [setting] approximately 6 mTorr pressure in the chamber.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p4#8</td><td></td><td>s5.p4</td><td>5 records</td><td>setting;setting;setting;setting;setting</td><td>no</td><td>[setting] H2S (99.5% purity) | [setting] H2 (99.999%) | [setting] Ar (99.999%) | [setting] kept constant at 50 sccm, resulting in approximately 6 mTorr pressure in the chamber. | [setting] approximately 6 mTorr pressure in the chamber.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p53#8</td><td>plasma_gas_ratio</td><td>s5.p4</td><td>5 records</td><td>setting;setting;setting;setting;setting</td><td>no</td><td>[setting] H2S (99.5% purity) | [setting] H2 (99.999%) | [setting] Ar (99.999%) | [setting] kept constant at 50 sccm, resulting in approximately 6 mTorr pressure in the chamber. | [setting] approximately 6 mTorr pressure in the chamber.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p4#9</td><td></td><td>s5.p4</td><td>5 records</td><td>setting;setting;setting;setting;setting</td><td>no</td><td>[setting] H2S (99.5% purity) | [setting] H2 (99.999%) | [setting] Ar (99.999%) | [setting] kept constant at 50 sccm, resulting in approximately 6 mTorr pressure in the chamber. | [setting] approximately 6 mTorr pressure in the chamber.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p4#9</td><td></td><td>s5.p6</td><td>11 records</td><td>setting;setting;setting;setting;setting;setting;setting;setting;setting;setting;setting</td><td>no</td><td>[setting] (1) 6 s dose of Mo(NtBu)2(NMe2)2 precursor | [setting] (2) purging for 10 s (of which 6 s with 300 sccm Ar flow into the chamber and 4 s pumping the chamber with no flow) | [setting] 300 sccm Ar flow into the chamber | [setting] (3) H2S/H2/Ar plasma for 20 s (100 W ICP power) | [setting] 100 W ICP power | [setting] (4) purging for 6 s with 300 sccm Ar flow. | [setting] Mo(NtBu)2(NMe2)2 (98% Strem Chemicals) | [setting] heated to 50 °C in an external canister | [setting] supplied with 50 sccm Ar flow | [setting] total length of one ALD cycle was 51 s. | [setting] chamber pressure was set to 200 mTorr during the Mo(NtBu)2(NMe2)2 pulse</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p4#10</td><td></td><td>s5.p4</td><td>5 records</td><td>setting;setting;setting;setting;setting</td><td>no</td><td>[setting] H2S (99.5% purity) | [setting] H2 (99.999%) | [setting] Ar (99.999%) | [setting] kept constant at 50 sccm, resulting in approximately 6 mTorr pressure in the chamber. | [setting] approximately 6 mTorr pressure in the chamber.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p16#6</td><td></td><td>s5.p16</td><td>2 records</td><td>setting;setting</td><td>no</td><td>[setting] 400 μm diameter spot on the sample. | [setting] binding energy of 284.8 eV for C 1s peak of adventitious carbon.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p17#3</td><td></td><td>s5.p17</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] using a 2 MeV He+ beam.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p21#6</td><td></td><td>s5.p17</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] using a 2 MeV He+ beam.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p14#4</td><td></td><td>s5.p14</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] SEM (Zeiss Sigma) using an acceleration voltage of 3 kV</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p18#3</td><td></td><td>s5.p18</td><td>1 records</td><td>setting</td><td>no</td><td>[setting] JEOL ARM 200F instrument operated at 200 kV.</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p10#3</td><td></td><td>s5.p10</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p10#4</td><td></td><td>s5.p10</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p11#3</td><td></td><td>s5.p11</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p11#4</td><td></td><td>s5.p11</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p9#5</td><td></td><td>s5.p9</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p36#4</td><td></td><td>s5.p13</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p13#2</td><td></td><td>s5.p13</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s5.p13#2</td><td></td><td>s5.p2</td><td>4 records</td><td>setting;setting;setting;setting</td><td>no</td><td>[setting] Silicon (100) substrates with a 450 nm thermally grown SiO2 layer on top to enhance optical contrast (Siegert Wafer) were used for most of the depositions. | [setting] 450 nm thermally grown SiO2 layer | [setting] Si substrates with 90 nm of thermal SiO2 was used for the transistor characterization. | [setting] PET foil (Melinex ST504 from DuPont Teijin Films, 125 μm thickness)</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p13#3</td><td></td><td>s5.p13</td><td>NK:no_knowledge</td><td></td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p6#7</td><td></td><td>s5.p2</td><td>4 records</td><td>setting;setting;setting;setting</td><td>no</td><td>[setting] Silicon (100) substrates with a 450 nm thermally grown SiO2 layer on top to enhance optical contrast (Siegert Wafer) were used for most of the depositions. | [setting] 450 nm thermally grown SiO2 layer | [setting] Si substrates with 90 nm of thermal SiO2 was used for the transistor characterization. | [setting] PET foil (Melinex ST504 from DuPont Teijin Films, 125 μm thickness)</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p15#3</td><td></td><td>s5.p15</td><td>2 records</td><td>setting;setting</td><td>no</td><td>[setting] Laser power was estimated as 0.6 mW on the sample | [setting] 50× objective</td></tr>
+<tr><td>mat22</td><td>mat22:s5.p16#7</td><td></td><td>s5.p16</td><td>2 records</td><td>setting;setting</td><td>no</td><td>[setting] 400 μm diameter spot on the sample. | [setting] binding energy of 284.8 eV for C 1s peak of adventitious carbon.</td></tr>
+</table>
+<h2>D2 gold cited rows and the records on their elements</h2><p>kb/reports/P149.d2_cited.csv</p>
+<table><tr><th>paper</th><th>gold_cited</th><th>gold_quantity</th><th>gold_value</th><th>element</th><th>pass1</th><th>record_types</th><th>cited_record</th><th>gold_types_on_element</th><th>also_gold_observation_or_setting</th><th>quotes</th></tr>
+<tr><td>yli18</td><td>yli18:s5.p1#1</td><td></td><td></td><td>s5.p1</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:s5.p1#1</td><td></td><td></td><td>s5.p2</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>yli18</td><td>yli18:s5.p3#5</td><td></td><td></td><td>s5.p3</td><td>4 records</td><td>setting;setting;setting;claim</td><td>no</td><td>cited;claim;derived;setting</td><td>yes</td><td>[setting] typical gap height of 500 nm | [setting] The length of the fabricated channels varied from 1  \mu\text{m}  to 5 mm | [setting] aspect ratio in the range from 2:1 to 10 000:1 | [claim] It turned out that the penetration depth does not depend on the length of the channel when it is long enough.</td></tr>
+<tr><td>yli18</td><td>yli18:s5.p15#1</td><td>other</td><td>12.55</td><td>s5.p15</td><td>2 records</td><td>setting;setting</td><td>no</td><td>caveat;cited;claim;derived;model</td><td>no</td><td>[setting] gives a molecular diameter  $d_A = 418 \text{ pm}$ | [setting] For nitrogen at 11 °C,  $\eta = 17.07 \mu\text{Pa s}$  and  $d_B = 374 \text{ pm}$</td></tr>
+<tr><td>yli18</td><td>yli18:s5.p15#3</td><td>other</td><td>17.07</td><td>s5.p15</td><td>2 records</td><td>setting;setting</td><td>no</td><td>caveat;cited;claim;derived;model</td><td>no</td><td>[setting] gives a molecular diameter  $d_A = 418 \text{ pm}$ | [setting] For nitrogen at 11 °C,  $\eta = 17.07 \mu\text{Pa s}$  and  $d_B = 374 \text{ pm}$</td></tr>
+<tr><td>yli18</td><td>yli18:s5.p16#1</td><td></td><td></td><td>s5.p16</td><td>2 records</td><td>setting;setting</td><td>no</td><td>caveat;cited;setting</td><td>yes</td><td>[setting] d_{\text{TMA}} = 591$  pm | [setting] d_{\text{TiCl}_4} = 703.9$  pm</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p16#5</td><td>binding_energy</td><td>229.3</td><td>s3.p16</td><td>3 records</td><td>observation;observation;observation</td><td>no</td><td>caveat;cited;observation</td><td>yes</td><td>[observation] the Mo 3d5/2 BEs were 228.9 eV (Mo(4-δ)+), 229.6 eV (Mo4+), 231.1 eV (Mo5+), and 232.9 eV (Mo6+) | [observation] 232.9 eV (Mo6+) | [observation] for the highest H2 flow ratio of 0.94, an intense doublet at a BE below that of Mo4+ was identified, which was assigned to metallic Mo.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p16#6</td><td>binding_energy</td><td>232.7</td><td>s3.p16</td><td>3 records</td><td>observation;observation;observation</td><td>no</td><td>caveat;cited;observation</td><td>yes</td><td>[observation] the Mo 3d5/2 BEs were 228.9 eV (Mo(4-δ)+), 229.6 eV (Mo4+), 231.1 eV (Mo5+), and 232.9 eV (Mo6+) | [observation] 232.9 eV (Mo6+) | [observation] for the highest H2 flow ratio of 0.94, an intense doublet at a BE below that of Mo4+ was identified, which was assigned to metallic Mo.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p18#4</td><td></td><td></td><td>s3.p18</td><td>2 records</td><td>observation;observation</td><td>no</td><td>caveat;cited;definition;observation</td><td>yes</td><td>[observation] in an a-MoS3,0 film grown at a H2 flow ratio of 0.50, the S 2p3/2 BEs of the two species were 161.9 and 163.1 eV | [observation] and 163.1 eV</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p19#4</td><td>film_density</td><td>5.06</td><td>s3.p19</td><td>3 records</td><td>setting;setting;cited</td><td>yes</td><td>caveat;cited;definition;observation;setting</td><td>yes</td><td>[setting] Composition of ~50 nm thick MoSx films deposited at 150 °C | [setting] deposited at 150 °C | [cited] Bulk density of MoS2 is 5.06 g/cm3.66</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p23#1</td><td></td><td></td><td>s3.p23</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p23#2</td><td></td><td></td><td>s3.p23</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p23#2</td><td></td><td></td><td>s3.p24</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited;model</td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p25#3</td><td></td><td></td><td>s3.p25</td><td>1 records</td><td>claim</td><td>no</td><td>cited;claim;model</td><td>no</td><td>[claim] Therefore, formation of a new MoS2 layer on top of a basal plane is slow compared to vertical growth of fins, which explains why the fins grow faster than the basal planes in the vertical direction.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p30#3</td><td></td><td></td><td>s3.p30</td><td>2 records</td><td>observation;observation</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[observation] number of Mo atoms deposited per cycle more than doubled from 0.6 to 1.6 at/nm2/cycle when increasing the H2 flow ratio from 0.20 to 0.65 | [observation] to 1.6 at/nm2/cycle</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p31#2</td><td></td><td></td><td>s3.p31</td><td>1 records</td><td>claim</td><td>no</td><td>caveat;cited;claim</td><td>no</td><td>[claim] Second, increased roughness at higher H2 flow ratios and deposition temperatures results in an increase of surface area as well as the amount of reactive fin edges. This, in turn, leads to an increase in GPC with increasing number of ALD cycles due to fin formation and growth.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p37#4</td><td></td><td></td><td>s3.p37</td><td>1 records</td><td>claim</td><td>no</td><td>caveat;cited;claim;observation;setting</td><td>yes</td><td>[claim] Thus, our process provides a simple, low-temperature route to highly doped p-type  $\text{MoS}_2$  films.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p38#3</td><td>carrier_density</td><td></td><td>s3.p38</td><td>1 records</td><td>observation</td><td>no</td><td>caveat;cited;claim;observation;setting</td><td>yes</td><td>[observation] applying the highest  $\text{H}_2$  flow ratio of 0.94 resulted in extremely high carrier concentrations on the order of  $10^{22}\text{ cm}^{-3}$</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p40#1</td><td></td><td></td><td>s3.p40</td><td>NK:no_knowledge</td><td></td><td>no</td><td>caveat;cited;observation;setting</td><td>yes</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:s3.p43#4</td><td></td><td></td><td>s3.p43</td><td>2 records</td><td>setting;setting</td><td>no</td><td>caveat;cited;observation;setting</td><td>yes</td><td>[setting] film was prepared at the lowest deposition temperature of 100 °C using a H2 flow ratio of 0.80. | [setting] H2 flow ratio of 0.80.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p45#2</td><td>plasma_gas_ratio</td><td>0</td><td>s3.p45</td><td>1 records</td><td>claim</td><td>no</td><td>cited;claim</td><td>no</td><td>[claim] Besides MoS2, we found that the H2 flow ratio is an important parameter for low-temperature PEALD of TMDCs in general, enabling deposition of several materials in crystalline form at lower temperatures than has been achieved so far.</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p46#1</td><td>deposition_temperature</td><td>300</td><td>s3.p46</td><td>3 records</td><td>observation;observation;observation</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[observation] films deposited at 150 °C without H2 were highly S-rich (WS4.0 by XPS) | [observation] crystalline WS2.1 films with a resistivity of 4 Ω cm | [observation] resistivity of 4 Ω cm</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p48#1</td><td>deposition_temperature</td><td>150</td><td>s3.p48</td><td>2 records</td><td>setting;setting</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[setting] modifying the reported PEALD process to use a H2 flow ratio of 0.50, we were able to deposit TiS2 films at 100 °C | [setting] deposit TiS2 films at 100 °C</td></tr>
+<tr><td>mat22</td><td>mat22:s3.p48#2</td><td>deposition_temperature</td><td></td><td>s3.p48</td><td>2 records</td><td>setting;setting</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[setting] modifying the reported PEALD process to use a H2 flow ratio of 0.50, we were able to deposit TiS2 films at 100 °C | [setting] deposit TiS2 films at 100 °C</td></tr>
+<tr><td>mat22</td><td>mat22:refs:35</td><td></td><td></td><td>s3.p23</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:refs:36</td><td></td><td></td><td>s3.p23</td><td>NK:no_knowledge</td><td></td><td>no</td><td>cited</td><td>no</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:refs:36</td><td></td><td></td><td>s3.p31</td><td>1 records</td><td>claim</td><td>no</td><td>caveat;cited;claim</td><td>no</td><td>[claim] Second, increased roughness at higher H2 flow ratios and deposition temperatures results in an increase of surface area as well as the amount of reactive fin edges. This, in turn, leads to an increase in GPC with increasing number of ALD cycles due to fin formation and growth.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:52</td><td></td><td></td><td>s3.p25</td><td>1 records</td><td>claim</td><td>no</td><td>cited;claim;model</td><td>no</td><td>[claim] Therefore, formation of a new MoS2 layer on top of a basal plane is slow compared to vertical growth of fins, which explains why the fins grow faster than the basal planes in the vertical direction.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:52</td><td></td><td></td><td>s3.p30</td><td>2 records</td><td>observation;observation</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[observation] number of Mo atoms deposited per cycle more than doubled from 0.6 to 1.6 at/nm2/cycle when increasing the H2 flow ratio from 0.20 to 0.65 | [observation] to 1.6 at/nm2/cycle</td></tr>
+<tr><td>mat22</td><td>mat22:refs:52</td><td></td><td></td><td>s3.p45</td><td>1 records</td><td>claim</td><td>no</td><td>cited;claim</td><td>no</td><td>[claim] Besides MoS2, we found that the H2 flow ratio is an important parameter for low-temperature PEALD of TMDCs in general, enabling deposition of several materials in crystalline form at lower temperatures than has been achieved so far.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:52</td><td></td><td></td><td>s3.p46</td><td>3 records</td><td>observation;observation;observation</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[observation] films deposited at 150 °C without H2 were highly S-rich (WS4.0 by XPS) | [observation] crystalline WS2.1 films with a resistivity of 4 Ω cm | [observation] resistivity of 4 Ω cm</td></tr>
+<tr><td>mat22</td><td>mat22:refs:53</td><td></td><td></td><td>s3.p48</td><td>2 records</td><td>setting;setting</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[setting] modifying the reported PEALD process to use a H2 flow ratio of 0.50, we were able to deposit TiS2 films at 100 °C | [setting] deposit TiS2 films at 100 °C</td></tr>
+<tr><td>mat22</td><td>mat22:refs:63</td><td></td><td></td><td>s3.p16</td><td>3 records</td><td>observation;observation;observation</td><td>no</td><td>caveat;cited;observation</td><td>yes</td><td>[observation] the Mo 3d5/2 BEs were 228.9 eV (Mo(4-δ)+), 229.6 eV (Mo4+), 231.1 eV (Mo5+), and 232.9 eV (Mo6+) | [observation] 232.9 eV (Mo6+) | [observation] for the highest H2 flow ratio of 0.94, an intense doublet at a BE below that of Mo4+ was identified, which was assigned to metallic Mo.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:64</td><td></td><td></td><td>s3.p18</td><td>2 records</td><td>observation;observation</td><td>no</td><td>caveat;cited;definition;observation</td><td>yes</td><td>[observation] in an a-MoS3,0 film grown at a H2 flow ratio of 0.50, the S 2p3/2 BEs of the two species were 161.9 and 163.1 eV | [observation] and 163.1 eV</td></tr>
+<tr><td>mat22</td><td>mat22:refs:66</td><td></td><td></td><td>s3.p19</td><td>3 records</td><td>setting;setting;cited</td><td>yes</td><td>caveat;cited;definition;observation;setting</td><td>yes</td><td>[setting] Composition of ~50 nm thick MoSx films deposited at 150 °C | [setting] deposited at 150 °C | [cited] Bulk density of MoS2 is 5.06 g/cm3.66</td></tr>
+<tr><td>mat22</td><td>mat22:refs:69</td><td></td><td></td><td>s3.p37</td><td>1 records</td><td>claim</td><td>no</td><td>caveat;cited;claim;observation;setting</td><td>yes</td><td>[claim] Thus, our process provides a simple, low-temperature route to highly doped p-type  $\text{MoS}_2$  films.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:70</td><td></td><td></td><td>s3.p38</td><td>1 records</td><td>observation</td><td>no</td><td>caveat;cited;claim;observation;setting</td><td>yes</td><td>[observation] applying the highest  $\text{H}_2$  flow ratio of 0.94 resulted in extremely high carrier concentrations on the order of  $10^{22}\text{ cm}^{-3}$</td></tr>
+<tr><td>mat22</td><td>mat22:refs:72</td><td></td><td></td><td>s3.p40</td><td>NK:no_knowledge</td><td></td><td>no</td><td>caveat;cited;observation;setting</td><td>yes</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:refs:78</td><td></td><td></td><td>s3.p43</td><td>2 records</td><td>setting;setting</td><td>no</td><td>caveat;cited;observation;setting</td><td>yes</td><td>[setting] film was prepared at the lowest deposition temperature of 100 °C using a H2 flow ratio of 0.80. | [setting] H2 flow ratio of 0.80.</td></tr>
+<tr><td>mat22</td><td>mat22:refs:80</td><td></td><td></td><td>s3.p48</td><td>2 records</td><td>setting;setting</td><td>no</td><td>cited;claim;observation;setting</td><td>yes</td><td>[setting] modifying the reported PEALD process to use a H2 flow ratio of 0.50, we were able to deposit TiS2 films at 100 °C | [setting] deposit TiS2 films at 100 °C</td></tr>
+</table>
+<h2>D3 mat22 quote_not_found by element kind</h2><p>kb/reports/P149.d3_by_kind.csv</p>
+<table><tr><th>kind</th><th>drops</th></tr>
+<tr><td>panel</td><td>91</td></tr>
+<tr><td>paragraph</td><td>5</td></tr>
+</table>
+<h2>D3 causes</h2><p>kb/reports/P149.d3_causes.csv</p>
+<table><tr><th>cause</th><th>drops</th><th>kinds</th></tr>
+<tr><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>60</td><td>panel=60</td></tr>
+<tr><td>in another element (paragraph)</td><td>26</td><td>panel=26</td></tr>
+<tr><td>not in the paper&#x27;s text</td><td>5</td><td>panel=5</td></tr>
+<tr><td>in document.md, in no element</td><td>2</td><td>paragraph=2</td></tr>
+<tr><td>alphanumerics match (spacing or symbols)</td><td>2</td><td>paragraph=2</td></tr>
+<tr><td>most tokens in the element (edited or joined)</td><td>1</td><td>paragraph=1</td></tr>
+</table>
+<h2>D3 rows (quote only; element text in P149.text.html, gitignored)</h2><p>kb/reports/P149.d3_rows.csv</p>
+<table><tr><th>element</th><th>kind</th><th>type</th><th>quantity</th><th>cause</th><th>token_share</th><th>other_element</th><th>quote</th></tr>
+<tr><td>s3.p3</td><td>paragraph</td><td>definition</td><td>plasma_gas_ratio</td><td>in document.md, in no element</td><td>0.69</td><td></td><td>The fraction of H2 in the plasma feed gas, that is H2 flow ratio, is defined by the gas flow rates as shown in eq 1.</td></tr>
+<tr><td>s3.p15</td><td>paragraph</td><td>claim</td><td></td><td>in document.md, in no element</td><td>0.94</td><td></td><td>The highest BE doublet is attributed to Mo6+ (MoO3) as a result of post-deposition oxidation in air.57</td></tr>
+<tr><td>s4.p1</td><td>paragraph</td><td>observation</td><td>resistivity</td><td>most tokens in the element (edited or joined)</td><td>0.83</td><td></td><td>low resistivities of 0.1–1 Ω cm.</td></tr>
+<tr><td>s4.p2</td><td>paragraph</td><td>observation</td><td>carrier_density</td><td>alphanumerics match (spacing or symbols)</td><td>0.80</td><td></td><td>reaching up to 1021 cm-3.</td></tr>
+<tr><td>s5.p2</td><td>paragraph</td><td>setting</td><td>body_thickness</td><td>alphanumerics match (spacing or symbols)</td><td>0.91</td><td></td><td>PET foil (Melinex ST504 from DuPont Teijin Films, 125 μm thickness)</td></tr>
+<tr><td>fig1b</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>E¹₂g</td></tr>
+<tr><td>fig1b</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p4</td><td>A₁g</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.0; deposition_temperature=150.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.0; deposition_temperature=200.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.0; deposition_temperature=250.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=50.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=100.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=150.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=200.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=250.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=300.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=350.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.2; deposition_temperature=450.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.35; deposition_temperature=250.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.5; deposition_temperature=100.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.5; deposition_temperature=150.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.5; deposition_temperature=200.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.5; deposition_temperature=250.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.5; deposition_temperature=350.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.65; deposition_temperature=100.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.65; deposition_temperature=150.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.65; deposition_temperature=200.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.65; deposition_temperature=250.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=50.0 | crystallinity = Amorphous</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=100.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=150.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=200.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=250.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=350.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.8; deposition_temperature=450.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.94; deposition_temperature=100.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.94; deposition_temperature=150.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.94; deposition_temperature=200.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig2</td><td>panel</td><td>observation</td><td>crystallinity</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.43</td><td></td><td>at plasma_gas_ratio=0.94; deposition_temperature=250.0 | crystallinity = Crystalline</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>2.8</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>3.1</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>3.6</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s5.p14</td><td>2.0</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p46</td><td>2.1</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>2.3</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p16</td><td>2.7</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>3.0</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s5.p1</td><td>3.5</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>4.6</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>7.3</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>2.5</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p32</td><td>2.2</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p32</td><td>2.2</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>2.5</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>3.0</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>3.6</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p46</td><td>2.1</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p32</td><td>2.2</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p46</td><td>2.1</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p32</td><td>2.2</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>1.9</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>1.9</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>1.9</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>1.9</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p18</td><td>1.9</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p11</td><td>1.8</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in another element (paragraph)</td><td>0.00</td><td>s5.p14</td><td>2.0</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>1.3</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>1.3</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>1.3</td></tr>
+<tr><td>fig4</td><td>panel</td><td>observation</td><td>element_ratio</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>1.4</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 228.6</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 235.8</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 232.7</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 229.40000000000003</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 233.5</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 229.40000000000003</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 226.6</td></tr>
+<tr><td>fig5a</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 226.0</td></tr>
+<tr><td>fig5b</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 161.2</td></tr>
+<tr><td>fig5b</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 164.6</td></tr>
+<tr><td>fig5b</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 163.4</td></tr>
+<tr><td>fig5b</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 163.4</td></tr>
+<tr><td>fig5b</td><td>panel</td><td>observation</td><td>binding_energy</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>binding_energy = 162.2</td></tr>
+<tr><td>fig7a</td><td>panel</td><td>derived</td><td>growth_per_cycle</td><td>not in the paper&#x27;s text</td><td>0.00</td><td></td><td>growth_per_cycle = 0.06653571428571428 nm/cycle</td></tr>
+<tr><td>fig7a</td><td>panel</td><td>derived</td><td>growth_per_cycle</td><td>not in the paper&#x27;s text</td><td>0.00</td><td></td><td>growth_per_cycle = 0.06414285714285714 nm/cycle</td></tr>
+<tr><td>fig7a</td><td>panel</td><td>derived</td><td>growth_per_cycle</td><td>not in the paper&#x27;s text</td><td>0.00</td><td></td><td>growth_per_cycle = 0.08046428571428571 nm/cycle</td></tr>
+<tr><td>fig7a</td><td>panel</td><td>derived</td><td>growth_per_cycle</td><td>not in the paper&#x27;s text</td><td>0.00</td><td></td><td>growth_per_cycle = 0.10725 nm/cycle</td></tr>
+<tr><td>fig7a</td><td>panel</td><td>derived</td><td>growth_per_cycle</td><td>not in the paper&#x27;s text</td><td>0.00</td><td></td><td>growth_per_cycle = 0.14614285714285713 nm/cycle</td></tr>
+<tr><td>fig9a</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>ZA(M)</td></tr>
+<tr><td>fig9a</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>LA(M)</td></tr>
+<tr><td>fig9a</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>2LA(M)</td></tr>
+<tr><td>fig9a</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>E¹₂g(Γ)</td></tr>
+<tr><td>fig9a</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in the figure&#x27;s figures.json cells (not in the quote scope)</td><td>0.00</td><td></td><td>A₁g(Γ)</td></tr>
+<tr><td>fig9b</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in another element (paragraph)</td><td>0.00</td><td>s2.p4</td><td>Eg</td></tr>
+<tr><td>fig9b</td><td>panel</td><td>observation</td><td>raman_shift</td><td>in another element (paragraph)</td><td>0.00</td><td>s3.p4</td><td>A₁g</td></tr>
+</table>
+<h2>score_summary after F2 and F3</h2><p>kb/compiled/score_summary.csv</p>
+<table><tr><th>paper</th><th>section</th><th>item</th><th>gold</th><th>compiled</th><th>matched</th><th>precision</th><th>recall</th><th>count</th></tr>
+<tr><td>yli18</td><td>type</td><td>model</td><td>67</td><td>126</td><td>61</td><td>0.48</td><td>0.91</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>setting</td><td>63</td><td>123</td><td>37</td><td>0.30</td><td>0.59</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>definition</td><td>38</td><td>54</td><td>23</td><td>0.43</td><td>0.61</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>derived</td><td>15</td><td>28</td><td>7</td><td>0.25</td><td>0.47</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>claim</td><td>13</td><td>15</td><td>8</td><td>0.53</td><td>0.62</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>entity</td><td>12</td><td>12</td><td>6</td><td>0.50</td><td>0.50</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>activity</td><td>11</td><td>10</td><td>4</td><td>0.40</td><td>0.36</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>caveat</td><td>7</td><td>8</td><td>2</td><td>0.25</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>observation</td><td>7</td><td>6</td><td>2</td><td>0.33</td><td>0.29</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>cited</td><td>5</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>comparison</td><td>3</td><td>2</td><td>1</td><td>0.50</td><td>0.33</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>4</td></tr>
+<tr><td>yli18</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>205</td></tr>
+<tr><td>yli18</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>80</td></tr>
+<tr><td>yli18</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>138</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>6</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity measurement / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity simulation / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yli18</td><td>placement</td><td>differs: gold activity recipe / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>type</td><td>setting</td><td>206</td><td>214</td><td>123</td><td>0.57</td><td>0.60</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>observation</td><td>154</td><td>101</td><td>80</td><td>0.79</td><td>0.52</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>derived</td><td>108</td><td>142</td><td>99</td><td>0.70</td><td>0.92</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>cited</td><td>92</td><td>32</td><td>27</td><td>0.84</td><td>0.29</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>activity</td><td>75</td><td>49</td><td>47</td><td>0.96</td><td>0.63</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>model</td><td>73</td><td>51</td><td>45</td><td>0.88</td><td>0.62</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>definition</td><td>66</td><td>97</td><td>24</td><td>0.25</td><td>0.36</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>caveat</td><td>45</td><td>5</td><td>3</td><td>0.60</td><td>0.07</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>claim</td><td>40</td><td>20</td><td>15</td><td>0.75</td><td>0.38</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>entity</td><td>31</td><td>25</td><td>25</td><td>1.00</td><td>0.81</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>comparison</td><td>8</td><td>12</td><td>1</td><td>0.08</td><td>0.12</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>yim20</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>9</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>varies setting other &#x27;·&#x27; among its members; give it an id in lists.py</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>setting under · (paper), not under an activity or an entity (a comparison holds no setting)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>penetration_depth measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>roughness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>check_tree</td><td>observation under · (activity recipe), not under a measurement activity or a comparison</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>22</td></tr>
+<tr><td>yim20</td><td>drops</td><td>a:schema:enum</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>316</td></tr>
+<tr><td>yim20</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>259</td></tr>
+<tr><td>yim20</td><td>about</td><td>unknown</td><td></td><td></td><td></td><td></td><td></td><td>7</td></tr>
+<tr><td>yim20</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>377</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold observation / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>47</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>26</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity simulation / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>18</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity simulation</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold cited / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold derived / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold entity / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>placement</td><td>differs: gold comparison replicate / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>type</td><td>observation</td><td>313</td><td>119</td><td>77</td><td>0.65</td><td>0.25</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>setting</td><td>251</td><td>202</td><td>126</td><td>0.62</td><td>0.50</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>activity</td><td>249</td><td>112</td><td>102</td><td>0.91</td><td>0.41</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>cited</td><td>58</td><td>11</td><td>6</td><td>0.55</td><td>0.10</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>caveat</td><td>54</td><td>1</td><td>1</td><td>1.00</td><td>0.02</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>entity</td><td>54</td><td>42</td><td>42</td><td>1.00</td><td>0.78</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>claim</td><td>52</td><td>37</td><td>27</td><td>0.73</td><td>0.52</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>definition</td><td>14</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>comparison</td><td>12</td><td>18</td><td>7</td><td>0.39</td><td>0.58</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>model</td><td>8</td><td>1</td><td>1</td><td>1.00</td><td>0.12</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>derived</td><td>4</td><td>4</td><td>0</td><td>0.00</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>identity</td><td>1</td><td>0</td><td>0</td><td>-</td><td>0.00</td><td></td></tr>
+<tr><td>mat22</td><td>type</td><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td><td></td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>34</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>plasma_gas_ratio without relative_to= (what it is a fraction of; ·)</td><td></td><td></td><td></td><td></td><td></td><td>34</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>claim without links</td><td></td><td></td><td></td><td></td><td></td><td>29</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>film_thickness measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>&#x27;·&#x27; stored as a plain value (a bound or a stat=minimum/maximum; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>carrier_density measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a film thickness setting that is not a target (thickness is a result; ·)</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>a spread fact (stat=) without between= and n= (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>growth_per_cycle without over= (its definition key; ·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>resistivity measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>range ·–· is not a range its statement prints (·)</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>mobility measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>check_tree</td><td>element_ratio measured on the paper&#x27;s method activity ·, not on an entity</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>drops</td><td>d:quote_not_found</td><td></td><td></td><td></td><td></td><td></td><td>96</td></tr>
+<tr><td>mat22</td><td>drops</td><td>a:schema:enum</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>about</td><td>filled (a pass-0 unit)</td><td></td><td></td><td></td><td></td><td></td><td>188</td></tr>
+<tr><td>mat22</td><td>about</td><td>paper</td><td></td><td></td><td></td><td></td><td></td><td>142</td></tr>
+<tr><td>mat22</td><td>placement</td><td>parent kind = gold</td><td></td><td></td><td></td><td></td><td></td><td>354</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold paper / compiled entity</td><td></td><td></td><td></td><td></td><td></td><td>10</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold entity / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>8</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold cited / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity deposition / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>5</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison grid / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>3</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity recipe / compiled paper</td><td></td><td></td><td></td><td></td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity deposition</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold activity measurement / compiled activity recipe</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>placement</td><td>differs: gold comparison series / compiled activity measurement</td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+</table>
+</body></html>
