@@ -282,15 +282,19 @@ class Run:
 
     def scope(self, eid):
         """C3 (P148): the texts a quote is checked against: the element; a table cell: + the cells of its row and the table's caption;
-        a figure element (caption or panel): + the figures.json series labels of that figure."""
+        a figure element (caption or panel): + the figures.json series labels of that figure; P150 X2: + the texts and labels of the
+        figures.json cells and peaks of the panel (of the whole figure for a caption or a one-panel figure): value_text, label, the
+        value and the at coordinates as printed."""
         out = [self.text.get(eid, "")]
         m = re.fullmatch(r"(tab\w*?)\.r(\d+)c\d+", eid)
         if m:
             out += [self.text[e] for e in self.order if e != eid and re.fullmatch(rf"{re.escape(m.group(1))}\.r{m.group(2)}c\d+", e)]
             out.append(self.text.get(f"{m.group(1)}.cap", ""))
-        f = re.fullmatch(r"fig(\d+)(?:[a-zA-Z]*|\.cap)", eid)
+        f = re.fullmatch(r"fig(\d+)([a-zA-Z]*|\.cap)", eid)
         if f:
             out += self.labels.get(f.group(1), [])
+            panel = f.group(2) if f.group(2) != ".cap" else ""
+            out += [t for (n, pn), ts in self.cells.items() if n == f.group(1) and (not panel or pn == panel) for t in ts]   # P150 X2
         return out
 
     def quotes(self, recs):
@@ -298,9 +302,14 @@ class Run:
         order (P140 C1); a null quote is not found."""
         self.labels = collections.defaultdict(list)
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
-        for c in (json.loads(p.read_text(encoding="utf-8")).get("curves", []) if p.exists() else []):
+        Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+        for c in Fj.get("curves", []):
             if c.get("series", {}).get("label_raw"):
                 self.labels[str(c["figure"])].append(c["series"]["label_raw"])
+        self.cells = collections.defaultdict(list)                              # P150 X2: (figure, panel) -> cell and peak texts
+        for v in Fj.get("values", []):
+            self.cells[(str(v["figure"]), v.get("panel", ""))] += [str(x) for x in (v.get("value_text"), v.get("label"), v.get("value_raw", v.get("value")),
+                                                                                    *(v.get("at_raw") or {}).values()) if x not in (None, "")]
         out = []
         for r in recs:
             q, txt = normalize(r["rec"].get("quote") or ""), normalize(" ".join(self.scope(r["eid"])))
