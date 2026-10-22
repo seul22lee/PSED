@@ -257,11 +257,11 @@ def check_tree(rows, els):
             out += own(ch["fact_id"])
         return out
 
-    def vector(i):                                                      # the condition vector of a node: settings of the non-measurement activities and entities at or above it
+    def vector(i):                                                      # the condition vector of a node: settings (P152: and model inputs) of the non-measurement activities and entities at or above it
         out = []
         for a in [i] + above(i):
             if (R[a]["type"] == "activity" and R[a]["kind"] != "measurement") or R[a]["type"] == "entity":
-                out += [f for f in own(a) if f["type"] == "setting" and f["quantity"]]
+                out += [f for f in own(a) if (f["type"] == "setting" or (f["type"] == "model" and f["data_kind"] == "model_input")) and f["quantity"]]
         return out
     for r in rows:
         i = r["fact_id"]

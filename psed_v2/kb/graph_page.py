@@ -18,6 +18,14 @@ framed and boxed the same way. A condition or result cell of a paired card is ma
 quantity [qualifiers] (only) or another value (differs, compared in canonical units). Claims and caveats are boxes listing an arrow
 to each card their links reach; definitions and cited facts one collapsed list; the experiments.csv rows of both trees as tables.
 The inline script only toggles gold / compiled, searches, and collapses a block (R2's no-script rule is waived for graph_*.html).
+P152: a condition is experiments.is_condition() (a setting or a model input); results leave model inputs out. Each card has a
+checkbox; the ticked cards (gold or compiled, any number) fill the side panel with one table, rows = every quantity [qualifiers]
+any of them carries (conditions at their nearest level, then results), columns = the cards, cell = value + unit, value_text,
+"curve <id>" or "—"; a row's values converted to the first card's unit when convertible (lists.convert on a unit table embedded in
+the page), else printed as stored; cells unlike the row's first card marked. Under it the plots of their figures.json data
+(card data: compiled points_ref rows, gold query curve binding), one per (x quantity, y quantity): two or more cards overlaid
+(legend = card label, units converted as in the table), one card a small plot; cells as a labelled grid, peaks as markers.
+Clicking a card with nothing ticked shows its conditions and its plots in the side panel. No pair is precomputed.
 
 P150 fact graph:
 Nodes: the tree rows (paper; activities by kind: recipe, deposition, measurement, simulation, other; entities: specimen, or model
@@ -327,7 +335,7 @@ class Tree:
             r = self.R[h]
             if r["type"] == "paper" or (r["type"] == "activity" and r["kind"] == "measurement"):
                 continue
-            fs = [f for f in self.kids[h] if "#" in f["fact_id"] and f["type"] == "setting"]
+            fs = [f for f in self.kids[h] if "#" in f["fact_id"] and EXP.is_condition(f)]                # P152 A1: settings and model inputs
             if fs:
                 where = "entity's own" if h == e else (f"{r['kind']}: {r['label_as_printed'] or h}" if r["type"] == "activity" else f"{r['type']}: {r['label_as_printed'] or h}")
                 out.append((where, fs))
@@ -339,7 +347,7 @@ class Tree:
             for c in self.kids[stack.pop()]:
                 if c["type"] == "entity":
                     continue
-                if "#" in c["fact_id"] and c["type"] in RESULT_TYPES:
+                if "#" in c["fact_id"] and c["type"] in RESULT_TYPES and not EXP.is_condition(c):
                     out.append(c)
                 stack.append(c["fact_id"])
         return out
@@ -388,7 +396,8 @@ def card_html(T, side, e, other=None, other_T=None, tags=()):
         tip = f" title='other side: {html.escape('; '.join(sorted(theirs[k])))}'" if cls == "diff" else ""
         return f"<li class='{cls}'{tip}>{html.escape(k)} = {html.escape(fact_text(f))}</li>"
     acts = " · ".join(f"{k}: {html.escape(T.R[a]['label_as_printed'] or a)}" for k in ("deposition", "simulation") for a in [T.act(e, k)] if a)
-    h = [f"<div class='card{'' if other else ' lone'}' id='{side}:{html.escape(e)}'><h4>{html.escape(r['label_as_printed'] or e)} "
+    h = [f"<div class='card{'' if other else ' lone'}' id='{side}:{html.escape(e)}' data-c='{side}:{html.escape(e)}'><h4>"
+         f"<input type='checkbox' class='pick' title='select for comparison'> {html.escape(r['label_as_printed'] or e)} "
          f"<span class='tag'>({T.kind(e)}{'' if other else '; no counterpart'})</span></h4><div class='tag'>{html.escape(e)}</div>",
          f"<div>{acts or 'no deposition or simulation above'}</div><div class='grp'>conditions</div>"]
     for where, fs in T.conditions(e):
@@ -407,6 +416,164 @@ def card_diffs(G, Cm, g, c):
     gc, gr = G.vec(g)
     cc, cr = Cm.vec(c)
     return (sum(1 for k in set(gc) | set(cc) if gc.get(k) != cc.get(k)), sum(1 for k in set(gr) | set(cr) if gr.get(k) != cr.get(k)))
+
+
+# ---------------------------------------------------------------------------------------------------------------- P152 comparison
+def fact_val(f):
+    """A fact for the page script: its text as printed, and the numbers and unit the script converts."""
+    def num(x):
+        try:
+            return float(x) if x not in ("", None) else None
+        except ValueError:
+            return None
+    return dict(t=fact_text(f), v=num(f["value"]), lo=num(f["value_min"]), hi=num(f["value_max"]), c=f["censor"],
+                u="" if f["unit"] in ("1", "-") else f["unit"])
+
+
+def card_payload(T, side):
+    """{side:entity: card} for the script: conditions [where, quantity key, value] nearest first, results [key, value], data ids."""
+    return {f"{side}:{e}": dict(side="gold" if side == "g" else "compiled", label=T.R[e]["label_as_printed"] or e, kind=T.kind(e),
+                                cond=[[where, fact_key(f), fact_val(f)] for where, fs in T.conditions(e) for f in fs],
+                                res=[[fact_key(f), fact_val(f)] for f in T.results(e)], data=[i for i, _, _ in T.data_of.get(e, [])])
+            for e in T.cards}
+
+
+def fig_payload(Fj, ids):
+    """{figures.json id: plot item}: a curve (x, y quantity and unit, points, series label), a cell (its two coordinate quantities, from
+    at / at_raw, and its printed value) or a peak (its quantity, unit, position and label)."""
+    curves = {x["id"]: x for x in Fj.get("curves") or []}
+    vals = {x["id"]: x for x in Fj.get("values") or []}
+    out = {}
+    for i in ids:
+        if i in curves:
+            c = curves[i]
+            out[i] = dict(k="curve", fig=f"fig{c['figure']}{c.get('panel') or ''}", xq=c["x"]["quantity"], xu=c["x"]["unit"], yq=c["y"]["quantity"],
+                          yu=c["y"]["unit"], pts=[p for p in c.get("points") or [] if None not in p[:2]], s=(c.get("series") or {}).get("label_raw", ""))
+        elif i in vals and vals[i]["kind"] == "peak":
+            v = vals[i]
+            out[i] = dict(k="peak", fig=f"fig{v['figure']}{v.get('panel') or ''}", xq=v["quantity"], xu=v["unit"], x=v["value"], t=v.get("label") or "")
+        elif i in vals and vals[i]["kind"] == "cell":
+            v = vals[i]
+            at, raw = v.get("at") or {}, v.get("at_raw") or {}
+            xq = next((k for k in at if at[k] == raw.get("x")), next(iter(at), ""))
+            yq = next((k for k in at if k != xq and at[k] == raw.get("y")), next((k for k in at if k != xq), ""))
+            text = v.get("value_text") or (f"{K.num_text(v['value'])} {v.get('unit') or ''}".strip() if v.get("value") is not None else "")
+            out[i] = dict(k="cell", fig=f"fig{v['figure']}{v.get('panel') or ''}", xq=xq, xu="", yq=yq, yu="", x=at.get(xq), y=at.get(yq), t=text, q=v["quantity"])
+    return out
+
+
+def unit_table(units):
+    """{unit: [dimension, factor, canonical unit]} for the units on the page (lists.UNIT_ALIAS, UNIT_BASE, DIMENSION_OF): the
+    script's convert() is lists.convert() on this table."""
+    out = {}
+    for u in units:
+        a = L.UNIT_ALIAS.get(u, u)
+        if a in L.UNIT_BASE:
+            d, f = L.UNIT_BASE[a]
+            out[u] = [L.DIMENSION_OF.get(d, d), f, a]
+    return out
+
+
+SIDE_STYLE = ("body{margin-right:46vw}#side{position:fixed;top:0;right:0;width:45vw;height:100vh;overflow:auto;box-sizing:border-box;"
+              "border-left:1px solid #999;background:#fff;padding:8px}#side table{margin:4px 0 12px 0}#side td.diff{background:#f6c0c0}"
+              "#side td.miss{color:#999}#side .part th{background:#eee}.card{cursor:pointer}.card.picked{outline:3px solid #2a78d6}"
+              ".plot{display:inline-block;vertical-align:top;margin:0 8px 10px 0}.plot h5{margin:2px 0;font-size:12px}"
+              ".lg,.note{font-size:11px}.lg span{display:inline-block;width:10px;height:10px;margin:0 3px 0 8px;vertical-align:middle}")
+COMPARE_SCRIPT = r"""
+const P=JSON.parse(document.getElementById('cards').textContent),CARDS=P.cards,FIG=P.figs,U=P.units;
+const side=document.getElementById('side');
+const COL=['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#6250d6','#e34948'],OTHER='#8a8984';
+let picked=[],slot={},focus=null;
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function conv(v,f,t){if(v==null)return null;if(f===t)return v;const A=U[f],B=U[t];if(!A||!B)return null;if(A[2]===B[2])return v;
+  if(A[2]==='°C'&&B[2]==='K')return v+273.15;if(A[2]==='K'&&B[2]==='°C')return v-273.15;if(A[0]!==B[0])return null;return v*A[1]/B[1];}
+function fmt(x){return String(+x.toPrecision(6));}
+function colour(id){return slot[id]<COL.length?COL[slot[id]]:OTHER;}
+function label(id){const c=CARDS[id];return (c.side==='gold'?'G ':'C ')+c.label;}
+// a value in the row unit ru: converted when convertible (lists.convert), else as printed; k = the key two cells are compared by
+function cellv(v,ru){const nums=[v.v,v.lo,v.hi];
+  if(nums.every(x=>x==null))return{t:v.t,k:v.t.toLowerCase()};
+  const ok=ru!=null&&nums.every(x=>x==null||conv(x,v.u,ru)!=null),u=ok?ru:v.u,c=nums.map(x=>x==null?null:(ok?conv(x,v.u,ru):x));
+  const k=v.c+c.map(x=>x==null?'':fmt(x)).join('/')+'|'+(U[u]?U[u][2]:u);
+  if(!ok||v.u===ru)return{t:v.t,k};
+  const us=U[ru]&&U[ru][2]==='1'?'':' '+ru;
+  return{t:(c[0]!=null?v.c+fmt(c[0]):c[1]!=null&&c[2]!=null?v.c+fmt(c[1])+'–'+fmt(c[2]):v.c+fmt(c[1]??c[2]))+us,k,orig:v.t};}
+function per(ids,part){const keys=[],m={};
+  for(const id of ids){const r={};
+    if(part==='cond'){for(const[w,k,v]of CARDS[id].cond){if(!(k in r))r[k]={w,vals:[]};if(r[k].w===w)r[k].vals.push(v);}}   // the nearest level that carries it
+    else for(const[k,v]of CARDS[id].res)(r[k]=r[k]||{vals:[]}).vals.push(v);
+    m[id]=r;for(const k in r)if(!keys.includes(k))keys.push(k);}
+  return{keys,m};}
+function table(ids){
+  let h='<table><tr><th>quantity [qualifiers]</th>'+ids.map(id=>'<th><a href="#'+esc(id)+'">'+esc(label(id))+'</a></th>').join('')+'</tr>';
+  for(const[part,name]of[['cond','conditions'],['res','results']]){const{keys,m}=per(ids,part);
+    h+='<tr class="part"><th colspan="'+(ids.length+1)+'">'+name+' ('+keys.length+')</th></tr>';
+    for(const k of keys){const first=ids.find(id=>m[id][k]);const v0=m[first][k].vals.find(v=>v.v!=null||v.lo!=null||v.hi!=null);
+      const ru=v0?v0.u:null;let ref=null;h+='<tr><th>'+esc(k)+'</th>';
+      for(const id of ids){const x=m[id][k];if(!x){h+='<td class="miss">—</td>';continue;}
+        const cs=x.vals.map(v=>cellv(v,ru)),key=cs.map(c=>c.k).sort().join(';');if(ref===null)ref=key;
+        const tip=cs.filter(c=>c.orig).map(c=>'as printed: '+c.orig).join('; ');
+        h+='<td class="'+(key!==ref?'diff':'')+'"'+(tip?' title="'+esc(tip)+'"':'')+'>'+cs.map(c=>esc(c.t)).join('; ')+'</td>';}
+      h+='</tr>';}}
+  return h+'</table>';}
+function groups(ids){const G=new Map();
+  for(const id of ids)for(const fid of CARDS[id].data){const f=FIG[fid];if(!f)continue;const key=f.k==='peak'?f.xq+'|':f.xq+'|'+f.yq;
+    if(!G.has(key))G.set(key,{xq:f.xq,yq:f.k==='peak'?'':f.yq,items:[],cards:[]});const g=G.get(key);g.items.push({id,fid,f});if(!g.cards.includes(id))g.cards.push(id);}
+  return[...G.values()];}
+function nice(a,b){if(a===b){a-=Math.abs(a)*.1||1;b+=Math.abs(b)*.1||1;}const raw=(b-a)/5,s=Math.pow(10,Math.floor(Math.log10(raw))),e=raw/s,
+  st=s*(e<1.5?1:e<3?2:e<7?5:10),t=[];for(let x=Math.ceil(a/st)*st;x<=b+st*1e-9;x+=st)t.push(+x.toPrecision(12));return{a,b,t};}
+function plot(g,big){
+  const W=big?470:330,H=big?290:210,m={l:58,r:14,t:10,b:40},xu=g.items[0].f.xu||'',yu=(g.items.find(i=>i.f.yu!=null)||{f:{}}).f.yu||'';
+  const notes=[],X=[],Y=[];
+  const cx=(f,x)=>{const v=conv(x,f.xu||'',xu);if(v==null&&(f.xu||'')!==xu)notes.push(f.fig+' x as printed ('+(f.xu||'no unit')+')');return v??x;};
+  const cy=(f,y)=>{const v=conv(y,f.yu||'',yu);if(v==null&&(f.yu||'')!==yu)notes.push(f.fig+' y as printed ('+(f.yu||'no unit')+')');return v??y;};
+  const items=g.items.map(it=>{const f=it.f;
+    if(f.k==='curve')return{...it,p:f.pts.map(p=>[cx(f,p[0]),cy(f,p[1])])};
+    if(f.k==='cell')return{...it,p:[[cx(f,f.x),cy(f,f.y)]]};
+    return{...it,p:[[cx(f,f.x),null]]};});
+  for(const it of items)for(const[x,y]of it.p){if(x!=null)X.push(x);if(y!=null)Y.push(y);}
+  if(!X.length)return'';
+  const sx=nice(Math.min(...X),Math.max(...X)),sy=Y.length?nice(Math.min(...Y),Math.max(...Y)):{a:0,b:1,t:[]};
+  const px=x=>m.l+(x-sx.a)/(sx.b-sx.a)*(W-m.l-m.r),py=y=>H-m.b-(y-sy.a)/(sy.b-sy.a)*(H-m.t-m.b);
+  let s='<svg width="'+W+'" height="'+H+'" font-family="monospace" font-size="10">';
+  for(const t of sx.t)s+='<line x1="'+px(t)+'" x2="'+px(t)+'" y1="'+m.t+'" y2="'+(H-m.b)+'" stroke="#ececec"/><text x="'+px(t)+'" y="'+(H-m.b+12)+'" text-anchor="middle" fill="#52514e">'+fmt(t)+'</text>';
+  for(const t of sy.t)s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+py(t)+'" y2="'+py(t)+'" stroke="#ececec"/><text x="'+(m.l-4)+'" y="'+(py(t)+3)+'" text-anchor="end" fill="#52514e">'+fmt(t)+'</text>';
+  s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+(H-m.b)+'" y2="'+(H-m.b)+'" stroke="#999"/><line x1="'+m.l+'" x2="'+m.l+'" y1="'+m.t+'" y2="'+(H-m.b)+'" stroke="#999"/>';
+  s+='<text x="'+((m.l+W-m.r)/2)+'" y="'+(H-6)+'" text-anchor="middle" fill="#0b0b0b">'+esc(g.xq+(xu?' ('+xu+')':''))+'</text>';
+  if(g.yq)s+='<text transform="rotate(-90 12 '+((m.t+H-m.b)/2)+')" x="12" y="'+((m.t+H-m.b)/2)+'" text-anchor="middle" fill="#0b0b0b">'+esc(g.yq+(yu?' ('+yu+')':''))+'</text>';
+  const placed=[];                                            // peak labels closer than 12 px step down a row
+  for(const it of items){const c=colour(it.id),tip=esc(label(it.id)+' · '+it.fid+(it.f.s?' · '+it.f.s:'')),k=g.cards.indexOf(it.id);
+    if(it.f.k==='curve'){s+='<polyline fill="none" stroke="'+c+'" stroke-width="2" points="'+it.p.map(p=>px(p[0])+','+py(p[1])).join(' ')+'"><title>'+tip+'</title></polyline>';
+      if(it.p.length<=40)for(const p of it.p)s+='<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="3" fill="'+c+'" stroke="#fff"><title>'+tip+': '+fmt(p[0])+', '+fmt(p[1])+'</title></circle>';}
+    else if(it.f.k==='cell'){const[x,y]=it.p[0];s+='<circle cx="'+px(x)+'" cy="'+py(y)+'" r="4" fill="'+c+'" stroke="#fff"><title>'+tip+': '+esc(it.f.t)+'</title></circle>'
+      +'<text x="'+(px(x)>m.l+.75*(W-m.l-m.r)?px(x)-6:px(x)+6)+'" y="'+(py(y)-4+11*k)+'" text-anchor="'+(px(x)>m.l+.75*(W-m.l-m.r)?'end':'start')+'" fill="#0b0b0b">'+esc(it.f.t)+'</text>';}
+    else{const x=px(it.p[0][0]),ly=m.t+28+44*placed.filter(q=>Math.abs(q-x)<12).length;placed.push(x);
+      s+='<line x1="'+x+'" x2="'+x+'" y1="'+(H-m.b)+'" y2="'+(m.t+30)+'" stroke="'+c+'" stroke-width="2"><title>'+tip+': '+fmt(it.p[0][0])+' '+esc(it.f.t)+'</title></line>'
+      +'<text transform="rotate(-90 '+(x-3)+' '+ly+')" x="'+(x-3)+'" y="'+ly+'" fill="#0b0b0b">'+esc(it.f.t)+'</text>';}}
+  s+='</svg>';
+  const figs=[...new Set(g.items.map(i=>i.fid))];
+  const lg=g.cards.length>1?'<div class="lg">'+g.cards.map(id=>'<span style="background:'+colour(id)+'"></span>'+esc(label(id))).join('')+'</div>':'<div class="lg">'+esc(label(g.cards[0]))+'</div>';
+  return'<div class="plot"><h5>'+esc(g.yq?g.yq+' vs '+g.xq:'peaks: '+g.xq)+'</h5>'+s+lg+'<div class="lg">'+esc(figs.join(', '))+'</div>'
+    +([...new Set(notes)].length?'<div class="lg">'+esc([...new Set(notes)].join('; '))+'</div>':'')+'</div>';}
+function plots(ids){const gs=groups(ids);if(!gs.length)return'<p>No figures.json data on '+(ids.length>1?'these cards':'this card')+'.</p>';
+  return gs.filter(g=>g.cards.length>1).map(g=>plot(g,true)).join('')+gs.filter(g=>g.cards.length===1).map(g=>plot(g,false)).join('');}
+function render(){
+  document.querySelectorAll('.card[data-c]').forEach(el=>el.classList.toggle('picked',picked.includes(el.dataset.c)));
+  if(picked.length){side.innerHTML='<b>'+picked.length+' card(s) selected</b> <button id="clr">clear</button>'
+    +'<p class="note">Rows: every quantity [qualifiers] a selected card carries (a condition at its nearest level); cells converted to the first card\'s unit where convertible (hover for the value as printed); <span style="background:#f6c0c0">differs</span> from the first card that has the row; — = the card has no such row.</p>'
+    +table(picked)+'<h4>Data plots</h4>'+plots(picked);document.getElementById('clr').onclick=()=>{picked=[];slot={};document.querySelectorAll('.pick').forEach(b=>b.checked=false);render();};return;}
+  if(!focus||!CARDS[focus]){side.innerHTML='<p>Tick cards to compare them (one table, overlaid plots), or click a card for its conditions and data.</p>';return;}
+  const c=CARDS[focus];slot={[focus]:0};
+  let h='<b>'+esc(label(focus))+'</b> <span class="tag">('+esc(c.kind)+', '+esc(focus)+')</span><h4>Conditions</h4>',w=null;
+  for(const[where,k,v]of c.cond){if(where!==w){h+=(w===null?'':'</ul>')+'<div class="grp">'+esc(where)+'</div><ul>';w=where;}h+='<li>'+esc(k)+' = '+esc(v.t)+'</li>';}
+  h+=(w===null?'<p>none</p>':'</ul>')+'<h4>Data plots</h4>'+plots([focus]);side.innerHTML=h;slot={};}
+document.querySelectorAll('.card[data-c]').forEach(el=>{
+  el.querySelector('.pick').addEventListener('change',ev=>{const id=el.dataset.c;
+    if(ev.target.checked){if(!picked.includes(id)){picked.push(id);const used=new Set(Object.values(slot));let k=0;while(used.has(k))k++;slot[id]=k;}}
+    else{picked=picked.filter(x=>x!==id);delete slot[id];}render();});
+  el.addEventListener('click',ev=>{if(ev.target.closest('input,a,button'))return;focus=el.dataset.c;if(!picked.length)render();});});
+render();
+"""
 
 
 def cards_page(pid, key):
@@ -519,18 +686,25 @@ def cards_page(pid, key):
     stats = dict(paper=key, cards_gold=len(G.cards), cards_compiled=len(Cm.cards), paired=len(pairs), gold_without_counterpart=len(G.cards) - len(pairs),
                  compiled_without_counterpart=len(Cm.cards) - len(pairs), differing_condition_cells=dc, differing_result_cells=dr)
     tbl = lambda T, d: REP.section(f"experiments.csv ({d})", (V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv")   # noqa: E731
-    doc = (f"<!doctype html><html><head><meta charset='utf-8'><title>cards {key}</title><style>{REP.STYLE}{CARD_STYLE}</style></head><body>"
+    cards = {**card_payload(G, "g"), **card_payload(Cm, "c")}
+    figs = fig_payload(Fj, dict.fromkeys(i for c in cards.values() for i in c["data"]))
+    units = unit_table({v["u"] for c in cards.values() for v in [x[-1] for x in c["cond"] + c["res"]]}
+                       | {f.get(a) or "" for f in figs.values() for a in ("xu", "yu")})
+    payload = json.dumps(dict(cards=cards, figs=figs, units=units), ensure_ascii=False).replace("</", "<\\/")
+    doc = (f"<!doctype html><html><head><meta charset='utf-8'><title>cards {key}</title><style>{REP.STYLE}{CARD_STYLE}{SIDE_STYLE}</style></head><body>"
+           f"<div id='side'></div>"
            f"<h1>Experiment cards: {key} ({pid})</h1><p>Left gold (kb/pilot), right compiled (kb/compiled). {stats['cards_gold']} gold cards, "
            f"{stats['cards_compiled']} compiled, {stats['paired']} paired (render.pair_units); differing cells: conditions {dc}, results {dr} "
            f"(<span class='diff'>differs</span>, <span class='only'>only on this side</span>; hover a red cell for the other side's value). "
-           f"Click a block title to collapse it. <a href='graph_facts_{pid}.html'>fact graph</a></p>"
+           f"Click a block title to collapse it. Tick cards to compare them in the side panel (one table by quantity, overlaid plots of their "
+           f"figures.json data); click a card alone for its conditions and data. <a href='graph_facts_{pid}.html'>fact graph</a></p>"
            f"<p><button onclick=\"mode('')\">both</button> <button onclick=\"mode('gold-only')\">gold</button> <button onclick=\"mode('comp-only')\">compiled</button> "
            f"<label>search <input id='q' placeholder='label, id, quantity'></label></p>"
            f"<div class='row'><div class='gside side-h'>gold</div><div class='cside side-h'>compiled</div></div>{''.join(blocks)}"
            f"<h2>Claims and caveats</h2><div class='row'><div class='gside'>{claims(G, 'g')}</div><div class='cside'>{claims(Cm, 'c')}</div></div>"
            f"<h2>Paper-level facts</h2><div class='row'><div class='gside'>{paper_list(G)}</div><div class='cside'>{paper_list(Cm)}</div></div>"
            f"<div class='row'><div class='gside'>{tbl(G, 'gold')}</div><div class='cside'>{tbl(Cm, 'compiled')}</div></div>"
-           f"<script>{CARD_SCRIPT}</script></body></html>\n")
+           f"<script type='application/json' id='cards'>{payload}</script><script>{CARD_SCRIPT}{COMPARE_SCRIPT}</script></body></html>\n")
     (R / f"graph_{pid}.html").write_text(doc, encoding="utf-8")
     return stats
 

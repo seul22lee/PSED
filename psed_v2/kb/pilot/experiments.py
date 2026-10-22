@@ -8,7 +8,8 @@ observation, derived or model fact).
 Columns: paper, run (the entity id), label, kind (entity), how (stated or inferred), parent, group (the groups or comparisons the entity
 or an activity above it belongs to), group_label, purpose (their purpose facts) and claims (claim ids linked to the entity, to an
 activity above it, to a fact of theirs or to its groups); then one column per setting of its condition vector, setting:<quantity>
-[<qualifiers>] (quantity other: setting:other:<label_as_printed>): the settings of the non-measurement activities above the entity,
+[<qualifiers>] (quantity other: setting:other:<label_as_printed>): the conditions (settings, and since P152 model rows with data_kind
+model_input, is_condition()) of the non-measurement activities above the entity,
 the nearest activity's value first; several distinct values at one activity are joined with "; "; a value is censor+value+unit, min–max
 unit or the value_text; then one column per result, result:<quantity>[<qualifiers>]: the observation, derived and model facts under
 the entity (its measurement and later activities, not a piece cut from it) that carry a value, a range, a value_text or points, each
@@ -55,6 +56,12 @@ def quals(s):
 
 
 MEAS = {"measurement"}
+
+
+def is_condition(f):
+    """P152 A1: a condition row: a setting, or a model row with data_kind model_input (a model's input, inherited by the runs below its
+    activity exactly as a recipe setting is by its runs)."""
+    return f["type"] == "setting" or (f["type"] == "model" and f["data_kind"] == "model_input")
 
 
 def table(pid, paper):
@@ -109,7 +116,7 @@ def table(pid, paper):
     use = collections.Counter()
     for f in rows:
         if "#" in f["fact_id"] and f["quantity"] and f["type"] in ("setting",) + RESULT_TYPES:
-            use[(f["quantity"], f["type"] == "setting")] += 1
+            use[(f["quantity"], is_condition(f))] += 1
     is_setting = lambda qn: use[(qn, True)] >= use[(qn, False)]
     out = []
     for e in rows:
@@ -117,10 +124,10 @@ def table(pid, paper):
             continue
         res = collections.defaultdict(list)
         for f in below(e["fact_id"]):
-            if f["type"] in RESULT_TYPES and f["quantity"] and (text(f) or f["points_ref"]):
+            if f["type"] in RESULT_TYPES and not is_condition(f) and f["quantity"] and (text(f) or f["points_ref"]):
                 res[key(f)].append(text(f) or f["points_ref"])                  # P151: a value prints as its value; a curve as its points_ref
         if not any(f["type"] in RESULT_TYPES for f in below(e["fact_id"])):
-            continue                              # an experiment is an entity with observations (valued or not)
+            continue                              # an experiment is an entity with observations (valued or not; as check.experiment_entities counts them)
         chain = above(e["fact_id"])
         mine = {e["fact_id"]} | set(chain)
         gs = [g for g in groups if set(g["links"].split(";")[1:]) & mine]
@@ -133,7 +140,7 @@ def table(pid, paper):
                 continue
             level = collections.defaultdict(list)
             for f in own(x):
-                if f["type"] == "setting" and f["quantity"]:
+                if is_condition(f) and f["quantity"]:
                     level[key(f)].append(f)
             for k, fs in level.items():
                 if "setting:" + k not in rec:
