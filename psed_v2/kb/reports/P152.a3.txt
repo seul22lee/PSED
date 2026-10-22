@@ -1,0 +1,14 @@
+A3 (replaced mid-unit): qualifiers of the records vs the gold, for pulse_time, purge_time, partial_pressure, gas_flow_rate, molecule_diameter, molar_mass. No change made.
+
+Keys by quantity: a3_keys.csv. gold = kb/pilot/<pid>.facts.csv fact rows of the quantity (a key counted per row that carries it);
+compiled records = the pass-1 records compile.py reads (the latest line per group), a key counted when its value is not null or empty;
+(none) = no key. Records holding a key the gold never uses for that quantity: a3_extra_keys.csv (43 records), with their quotes.
+
+form.json (kb/schema/form.json): qualifiers is one of the record's required fields (every field is required: True); its value is anyOf [object, null]. The object has 26 keys and no required list: every key inside qualifiers is optional; additionalProperties False (no other key allowed).
+
+Codebook section e as sent: kb/schema/CODEBOOK.md at commit 7d14907 (the P148 D records). Shown to be the sent text: the pass-1
+prefix rebuilt with it (pass1_elements.prefix) has the prefix_hash stored on the P148 D lines of yli18, yim20 and mat22 (d08e1e098651,
+1e24647a68df, 1c6911a52d42); with today's CODEBOOK.md (changed in P149 F1 and P150 X1) it does not. The rows, as sent:
+| step | which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific). | reactant_A; purge_A; reactant_B; purge_B; plasma; hold_A; hold_B; none | Cremers Sec. I four steps; Popov Reactant A/B |  |
+| species | the substance a value is about (a species id): the reactant whose pulse time, exposure, partial pressure, sticking coefficient or molar mass it is, or the phase detected | species ids |  |  |
+| gas | the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure | species ids |  |  |

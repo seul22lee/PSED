@@ -1,0 +1,31 @@
+P152: model inputs as conditions; fig4.cap diagnosed; qualifier keys vs gold; card comparison by quantity axis. Zero provider calls;
+the P148 records recompiled (score.py P152), card pages rebuilt (graph_page.py), gold untouched (no kb/pilot data file written).
+Done criterion: A1 in experiments.py and check.py with the three papers recompiled, A2 and A3 answered from the records, the card
+pages compare ticked cards by quantity with their figures.json plots, and this report carries the gold row comparison.
+
+A1 (experiments.is_condition(): a setting, or a model row with data_kind model_input): experiments.py table() puts model inputs in the
+  condition vector (inherited from the simulation by its model runs, as recipe settings are by their runs) and out of the results;
+  check.py vector() counts them; graph_page.py cards use the same predicate. The test for "an entity is an experiment" is unchanged
+  (it agrees with check.py experiment_entities; no entity of the six trees has only model inputs below it). query.Tree.vector is
+  not touched (not named).
+  Condition cells added (a1_counts, rows in a1_cells): yli18 gold +118 (84 -> 202), compiled +194 (90 -> 284; 9 cells changed, 22
+  model-input result cells left the results); yim20 gold +181 (457 -> 637; 1 result cell left), compiled +162 (387 -> 549); mat22
+  0 (no model inputs in either tree). Gold experiments.csv in kb/pilot is not rewritten; the gold numbers are the in-memory table.
+  yli18 Fig. 4 model-run cards (a1_fig4_cards): gold H2, H1, H0.5, H0.2: 8 -> 23 conditions each; compiled mr_fig4_h2, _h1, _h05,
+  _h02: 6 -> 31 each (the sim_ylilammi parameter block, inherited; their own feature_width [stage=initial]).
+A2: no; only H of the parameter block is on fig4.cap in the line compile reads (line 129); an extraction gap (a2).
+A3 (replaced mid-unit): qualifier keys gold vs compiled records for six quantities (a3_keys); 43 records hold keys the gold never uses
+  for their quantity (a3_extra_keys, with quotes), e.g. pulse_time stage / stat / structure_class in 19 / 19 / 17 records where the gold
+  uses step and species only; purge_time records use species (14) where the gold uses step (40). form.json: every key inside
+  qualifiers is optional (no required list; additionalProperties false); qualifiers itself is a required field that may be null.
+  Codebook e rows for step, species, gas as sent (CODEBOOK.md at 7d14907, matched by prefix_hash) in a3.txt.
+Score: unchanged (score_moved): matched gold rows yli18 138/243, yim20 425/900, mat22 273/1071; check --dir 159 / 306 / 263, the same
+  problems; gold check 0 / 0 / 0. No check item changed (check_changed has no rows).
+Cards (B1-B3, graph_<pid>.html): a checkbox on every card; ticked cards (gold or compiled) fill the side panel with one table (rows =
+  every quantity [qualifiers] any of them carries, conditions at their nearest level then results; columns = the cards; units converted
+  to the first card's unit where lists.convert can; cells unlike the row's first card marked; "—" where a card has no such row) and
+  the plots of their figures.json data by (x quantity, y quantity), overlaid when two or more cards share a pair; cells as a labelled
+  grid, peaks as markers. A card clicked with nothing ticked shows its conditions and plots. One inline script, no CDN. Checked in
+  headless Chromium on the three pages: no script error; yli18's four compiled Fig. 4 cards give one table (6 cells marked) and one
+  overlaid film_thickness vs distance plot of fig4#c1-c4; mat22 cells and peaks drawn. Differing condition cells per paper move with
+  A1 (cards: yli18 105 -> 286, yim20 590 -> 760).

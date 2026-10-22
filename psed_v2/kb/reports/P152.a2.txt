@@ -1,0 +1,14 @@
+A2 yli18 fig4.cap: is the parameter block among the pass-1 records? No, apart from H. An extraction gap, not fixed here.
+
+The line compile.py reads for group fig4 is line 129 (P148 D; compile takes the latest pass-1 line of each group). It holds 7 records
+on fig4.cap (a2_fig4cap_records.csv): cycle_number 1000 cycle and pulse_time 0.1 s (about sim_ylilammi); feature_width H = 2, 1, 0.5,
+0.2 um, one per model run (about mr_fig4_h2, mr_fig4_h1, mr_fig4_h05, mr_fig4_h02); one claim. Of H, W, pA0, MA, dA, MB, dB, pB, q,
+T, K, c, gpcsat only H is there. The five earlier fig4 lines (22, 44, 67, 90, 113; not read) did record most of the block on
+fig4.cap (a2_fig4cap_lines.csv).
+
+So no dedupe path drops fig4.cap: the compiled block rows (a2_block_rows.csv) are built from s8.p3, fig2.cap, fig3.cap and fig5.cap
+records only. Those under sim_ylilammi carry s8.p3;fig2.cap;fig3.cap (or a subset): dedupe (DEDUPE_KEY: type, parent, quantity,
+value, range, unit, qualifiers, value_text) merged records of equal key and joined their evidence. The fig5.cap records are about
+mr_fig5_ylilammi, a different parent, so they stay separate rows under that model run. The evidence string
+s8.p3;fig2.cap;fig3.cap;fig5.cap named in the directive is not in the current compiled output (it is in the P136b output, gone since
+P138; earlier outputs are not re-audited).
