@@ -43,6 +43,9 @@ h: tree from pass 0: run 2, simulation 2, specimen 2, model_run 10, series 0, ci
 i: merged s8.p22 into s8.p9;s8.p22 (pulse_time 0.1)
 i: merged s8.p24 into s8.p23;s8.p24 (cycle_number 500)
 i: merged s9.p2 into s8.p24;s9.p2 (cycle_number 1000)
+i: definition ('yli18', 'xp', 'the penetration depth of the ald film growth is xp.'): merged fig1.cap into s5.p7;fig1.cap
+i: definition ('yli18', 'w', 'the width of the channel in the z-direction is w.'): merged fig1.cap into s5.p7;fig1.cap
+i: definition ('yli18', 'l', 'the length in the x-direction is l.'): merged fig1.cap into s5.p7;fig1.cap
 i: merged fig2.cap into s8.p3;fig2.cap (feature_width 0.5)
 i: merged fig2.cap into s8.p3;fig2.cap (feature_extent 0.1)
 i: merged fig2.cap into s8.p3;fig2.cap (molar_mass 0.0749)
@@ -69,10 +72,12 @@ i: merged fig4.cap into s8.p9;fig4.cap (cycle_number 1000)
 i: merged fig6.cap into s8.p23;s8.p24;fig6.cap (cycle_number 500)
 i: merged fig6.cap into s8.p21;fig6.cap (material al2o3)
 i: merged fig6.cap into s8.p21;fig6.cap (reactant_A tma)
+i: merged fig6.cap into s8.p21;fig6.cap (reactant_B h2o)
 i: merged fig6.cap into s8.p23;fig6.cap (structure pillarhall_3)
 i: merged fig6.cap into s8.p23;fig6.cap (feature_depth 1)
 i: merged fig7.cap into s8.p24;s9.p2;fig7.cap (cycle_number 1000)
 i: merged fig7.cap into s8.p21;fig7.cap (material tio2)
+i: merged fig7.cap into s8.p21;fig7.cap (reactant_A ticl4)
 i: merged fig7.cap into s8.p21;fig7.cap (reactant_B h2o)
 i: merged fig7.cap into s9.p2;fig7.cap (feature_depth 1)
 i: merged tabI.r1c0 into s8.p21;fig6.cap;tabI.r1c0 (material al2o3)
@@ -95,20 +100,20 @@ step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definit
 step a_p158: {'P158 rule 1 (predates the freeze, kept)': 12}
 step b: {'model_with_value (kept)': 76, 'kept': 285}
 step c: {'quantity_other never (kept)': 30, 'kept': 285}
-step d: {'quote_not_found': 4, 'kept': 281}
-step e: {'unit_unresolved (kept as printed)': 12, 'kept': 281}
-step f: {'species_resolved': 14, 'kept': 281}
-step h: {'place: claim -> paper': 15, 'place: about paper -> recipe': 8, 'place: definition -> paper': 60, 'place: model about a simulation -> simulation': 88, 'place: setting about a simulation -> simulation': 6, 'place: caveat -> paper': 8, 'place: setting about a run -> deposition': 41, 'place: result about a run -> its specimen measurement': 2, 'place: about paper, method -> paper method activity': 2, 'place: model about a model run -> model run': 32, 'place: result about a specimen -> its measurement': 15, 'place: setting about a specimen -> deposition': 4}
-step m: {'statement filled from the quote': 228, 'label_as_printed filled with the quantity id': 5, 'links resolved': 20}
+step d: {'quote_not_found': 2, 'kept': 283}
+step e: {'unit_unresolved (kept as printed)': 12, 'kept': 283}
+step f: {'species_resolved': 16, 'kept': 283}
+step h: {'place: claim -> paper': 15, 'place: about paper -> recipe': 8, 'place: definition -> paper': 60, 'place: model about a simulation -> simulation': 88, 'place: setting about a simulation -> simulation': 6, 'place: caveat -> paper': 8, 'place: setting about a run -> deposition': 43, 'place: result about a run -> its specimen measurement': 2, 'place: about paper, method -> paper method activity': 2, 'place: model about a model run -> model run': 32, 'place: result about a specimen -> its measurement': 15, 'place: setting about a specimen -> deposition': 4}
+step m: {'statement filled from the quote': 230, 'label_as_printed filled with the quantity id': 5, 'links resolved': 20}
 step 1c: {'curve -> model': 27, 'data role simulated': 25, 'data role fitted': 2, 'curve -> observation': 2, 'data role measured': 2}
-step i: {'merged': 39, 'definition merged': 6, 'kept': 265}
+step i: {'merged': 41, 'definition merged': 9, 'kept': 262}
 step n: {'comparison replicate': 1}
 step j: {'derived feature_width{stage=final}': 3, 'derived cycle_time': 11}
-step k: {'statement from the record': 236, 'statement_copies_text (reported by check)': 57, 'statement assembled': 43}
+step k: {'statement from the record': 233, 'statement_copies_text (reported by check)': 54, 'statement assembled': 43}
 diff against the gold:
   model          67  125   61  0.49  0.91
-  setting        63   44   30  0.68  0.48
-  definition     38   54   23  0.43  0.61
+  setting        63   44   31  0.70  0.49
+  definition     38   51   23  0.45  0.61
   derived        15   27    7  0.26  0.47
   claim          13   15    8  0.53  0.62
   entity         12   12    6  0.50  0.50

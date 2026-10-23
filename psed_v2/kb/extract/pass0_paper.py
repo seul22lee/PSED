@@ -9,6 +9,8 @@ the example (another dev paper's gold units and layouts with their sources), TAB
 ids, figures.json curves), the element index, document.md whole. The provider schema (form_pass0.json) constrains the response.
 Writes one line (pass 0, section "paper") to kb/records/<pid>.jsonl.
 """
+import collections
+import json
 import sys
 
 import common as C
@@ -64,8 +66,46 @@ def jobs(pid):
 THINKING = {"thinking_level": "MEDIUM"}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key
 
 
+def consistency(pid, obj):
+    """P160 B, part of every pass-0 run: for each panel whose pass-0 layout is curve_per_unit (point_per_unit), the curves (the points of
+    its curves and its cells) of kb/<pid>.figures.json against the pass-0 units whose data name an item of that panel; a panel with fewer
+    units than curves (points) is flagged "layout says one unit per curve; units missing"."""
+    p = C.V2 / "kb" / f"{pid}.figures.json"
+    Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    panel = lambda i: str(i).split(":", 1)[-1].split("#")[0]                    # noqa: E731  'ela03:fig5a#c1' -> 'fig5a'
+    curves, points = collections.Counter(), collections.Counter()
+    for c in Fj.get("curves", []):
+        k = f"fig{c['figure']}{c.get('panel', '')}"
+        curves[k] += 1
+        points[k] += len(c.get("points") or [])
+    for v in Fj.get("values", []):
+        if v.get("kind") == "cell":
+            points[f"fig{v['figure']}{v.get('panel', '')}"] += 1
+    units = collections.defaultdict(set)
+    for u in (obj.get("units") or []) if isinstance(obj, dict) else []:
+        for d in u.get("data") or []:
+            units[panel(d.get("id") if isinstance(d, dict) else d)].add(u.get("id"))
+    out = []
+    for x in (obj.get("panel_layouts") or []) if isinstance(obj, dict) else []:
+        lay = x.get("layout")
+        if lay not in ("curve_per_unit", "point_per_unit"):
+            continue
+        want = curves[x["panel"]] if lay == "curve_per_unit" else points[x["panel"]]
+        n = len(units[x["panel"]])
+        out.append(dict(panel=x["panel"], layout=lay, figures_json=want, what="curves" if lay == "curve_per_unit" else "points", units=n,
+                        unit_ids=";".join(sorted(units[x["panel"]])),
+                        flag="layout says one unit per curve; units missing" if n < want else ("more units than curves" if n > want else "")))
+    return out
+
+
 def main(arg):
     pid, key = C.resolve(arg)
+    if "--check" in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
+        lines = [json.loads(x) for x in (C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+        rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
+        for r in rows:
+            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units {r['flag']}")
+        return 0
     if "--plan" in sys.argv:                                                    # the planned call only, no call
         js = jobs(pid)
         C.plan(pid, js, THINKING)
@@ -79,6 +119,9 @@ def main(arg):
         roles[it.get("role", "?")] = roles.get(it.get("role", "?"), 0) + 1
     print(f"{key} pass 0: {len(units)} units, by role {roles}; table layouts {len((obj or {}).get('table_layouts') or [])}, "
           f"panel layouts {len((obj or {}).get('panel_layouts') or [])}")
+    for r in consistency(pid, obj or {}):                                       # P160 B: one unit per curve (point) where the layout says so
+        if r["flag"]:
+            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units: {r['flag']}")
     return 0
 
 

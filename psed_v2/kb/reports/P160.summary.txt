@@ -1,0 +1,20 @@
+P160, round 2 turn 2: 19 provider calls (ela03 pass 1), $0.29 (+ at most $0.02 for the cached prefix); 0 for hei24 pass 0 (cache) and 0 for
+gor03 (stopped: 402 RESOURCE_EXHAUSTED, prepayment credits depleted, before any call).
+A (0 calls). The 18 ela03 pass-0 quotes compile.normalize() did not find: 17 formatting, 1 paraphrase (run_zno_ar5000: the piece after its
+  "..." is reworded), 0 not in the paper. Classes (decided by code, both sides): dash (LaTeX "--" for an en dash), spacing (before , . ; : )
+  and around °), latex command (\approx \sim \gg \ll), math-symbol spacing (\sim 1 prints ~1), ellipsis (pieces in order). The four
+  normalizer classes are now in compile.normalize() (D10, the one normalizer of steps d-f); superscript and tilde were tested and not needed,
+  not added. Re-check: 17 found, the paraphrase not found (A_recheck). On the way: litre l and Langmuir L shared the casefolded key "l"
+  since P158; unit_symbol() now takes the spelling itself first and a key under two symbols resolves nothing.
+B (0 calls). pass0_paper.py consistency(): every curve_per_unit (point_per_unit) panel, its figures.json curves (points) against the pass-0
+  units naming it; printed after every pass-0 run, --check for the latest line. Flagged: yli18 3, yim20 0, mat22 1, ela03 5, hei24 31 of 32,
+  gor03 0 (B_consistency).
+C (0 calls). The pass-0 instruction already has the rule (curve_per_unit: "Each curve is one experiment unit ... one curve per model run";
+  point_per_unit: "list every point as a run"): nothing added; the model ignored it on hei24. Instruction sha256 7eb057c2.
+D (0 calls). hei24 pass 0 re-run: the request equals P159's (request hash 9afddd82), so the cache answered: the same 1 unit, nothing appended.
+E. ela03 pass 1: 19 groups, 247 records (7 failing form.json). gor03 not run (credits). Compiled and scored ela03 (first time): T6 165 / 561
+  gold rows, check.py --dir 152. The normalizer change recompiled the round-1 papers: 16 records no longer dropped for quote_not_found;
+  yli18 setting 30 -> 31 / 63, check 159 -> 156; yim20 T6 425 -> 430, derived 99 -> 101, observation 80 -> 81, cited 27 -> 28, check
+  306 -> 318 (+10 statement copies, +3 same statement, +1 placement, +1 spread: the kept records' statements; reported, not patched);
+  mat22 unchanged. Round-1 audit PASS; export.py --check 15 of 15. grow.py not run.
+Next: credits for gor03 pass 1 (6 calls); hei24 pass 1 and grow.py add / propose.

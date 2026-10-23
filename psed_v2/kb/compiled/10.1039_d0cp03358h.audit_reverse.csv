@@ -1,6 +1,6 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
 yim20:abs.g1#1,claim,,,,,abs.g1,yim20:abs.g1#2,type 'cited' vs 'claim'
-yim20:abs.g2#2,setting,aspect_ratio,10000,,,abs.g2;fig1.cap,yim20:s5.p2#1,"value '' '' vs '10000' '' (canonical None vs ('dimensionless', 10000.0))"
+yim20:abs.g2#2,setting,aspect_ratio,10000,,,abs.g2;s5.p2;fig1.cap,yim20:s5.p2#1,"value '' '' vs '10000' '' (canonical None vs ('dimensionless', 10000.0))"
 yim20:abs.g4#1,claim,,,,,abs.g4,,no gold row on this element
 yim20:s2.p2#2,definition,initial_sticking_coefficient,,,,s2.p2,yim20:s2.p2#3,quantity 'exposure' vs 'initial_sticking_coefficient'
 yim20:s2.p3#1,definition,step_coverage,,,,s2.p3,yim20:s2.p3#2,quantity '' vs 'step_coverage'
@@ -14,16 +14,20 @@ yim20:s7.p1#1,setting,other,,,,s7.p1,yim20:s7.p1#1,quantity '' vs 'other'
 yim20:s7.p4#1,setting,other,,µm,,s7.p4,yim20:s7.p4#1,quantity '' vs 'other'
 yim20:s7.p5#2,setting,other,198,µm,,s7.p5,yim20:s7.p5#4,"value '2' 'µm' vs '198' 'µm' (canonical ('length', 2000.0) vs ('length', 198000.0))"
 yim20:s7.p5#3,setting,other,398,µm,,s7.p5,yim20:s7.p5#4,"value '2' 'µm' vs '398' 'µm' (canonical ('length', 2000.0) vs ('length', 398000.0))"
-yim20:s7.p5#6,setting,feature_depth,,mm,,s7.p5,yim20:s7.p5#1,quantity 'wavelength_range' vs 'feature_depth'
+yim20:s7.p5#5,setting,objective_magnification,50,,,s7.p5,yim20:s7.p5#1,"quantity 'wavelength_range' vs 'objective_magnification'; value '' 'nm' vs '50' '' (canonical None vs ('dimensionless', 50.0))"
+yim20:s7.p5#9,setting,feature_depth,,mm,,s7.p5,yim20:s7.p5#1,quantity 'wavelength_range' vs 'feature_depth'
 yim20:s8.p1#2,caveat,,,,,s8.p1,yim20:s8.p1#8,quantity 'film_thickness;growth_per_cycle;normalized_thickness' vs ''
 yim20:s10.p2#1,observation,film_thickness,,,,s10.p2,yim20:s10.x2#5,quantity '' vs 'film_thickness'
 yim20:s10.x3#1,observation,roughness,,,,s10.x3,yim20:s10.x3#1,quantity '' vs 'roughness'
+yim20:s11.x1#2,setting,probe_resolution,5,µm,,s11.x1,yim20:s7.p5#5,"value '' 'µm' vs '5' 'µm' (canonical None vs ('length', 5000.0))"
 yim20:s12.x2#1,observation,film_thickness,,,,s12.x2,yim20:s12.x2#1,quantity '' vs 'film_thickness'
 yim20:s14.x1#1,claim,,,,,s14.x1,yim20:fig11b#1,type 'observation' vs 'claim'
 yim20:s16.p3#1,observation,feature_width,,nm,,s16.p3,yim20:s16.p3#2,quantity 'other' vs 'feature_width'
+yim20:s16.p4#1,setting,feature_width,,nm,,s16.p4,yim20:s16.p4#1,"type 'observation' vs 'setting'; value '10' 'nm' vs '' 'nm' (canonical ('length', 10.0) vs None)"
 yim20:s16.p7#1,setting,other,2,µm,,s16.p7,yim20:s16.p7#2,type 'observation' vs 'setting'
 yim20:s16.p8#1,caveat,,,,,s16.p8,yim20:s3.p9#8,quantity 'film_thickness;growth_per_cycle' vs ''
-yim20:s19.p3#1,derived,feature_width,1,µm,,s19.p3,yim20:s19.p3#1,"quantity 'mean_free_path' vs 'feature_width'; value '40' 'µm' vs '1' 'µm' (canonical ('length', 40000.0) vs ('length', 1000.0))"
+yim20:s16.p10#1,derived,film_thickness,,nm,,s16.p10,yim20:s16.p10#4,"value '2.8' 'nm' vs '' 'nm' (canonical ('length', 2.8) vs None)"
+yim20:s19.p3#3,derived,feature_width,1,µm,,s19.p3,yim20:s19.p3#1,"quantity 'mean_free_path' vs 'feature_width'; value '40' 'µm' vs '1' 'µm' (canonical ('length', 40000.0) vs ('length', 1000.0))"
 yim20:fig1.cap#2,definition,feature_depth,,,,fig1.cap,yim20:s2.p4#1,quantity '' vs 'feature_depth'
 yim20:fig2.cap#2,definition,other,,,,fig2.cap,yim20:s3.p2#2,quantity '' vs 'other'
 yim20:fig3.cap#2,definition,front_slope,,,,fig3.cap,yim20:s3.p6#1,quantity '' vs 'front_slope'

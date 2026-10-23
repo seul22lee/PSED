@@ -55,10 +55,15 @@ def norm_ws(t):
     return re.sub(r"\s+", " ", t or "").strip()
 
 
+LATEX_SYMBOL = {"approx": "≈", "sim": "~", "gg": "≫", "ll": "≪", "pm": "±", "leq": "≤", "geq": "≥", "le": "≤", "ge": "≥", "cdot": "·"}   # P160
+
+
 def normalize(t):
     """D10, the one normalization of steps d, e and f: P148 (C3): markup tags removed, their text kept; U+2212 -> -; thin and no-break
     spaces -> space; \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5); \\circ / ^\\circ -> °;
-    \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed; casefolded (P140 C1)."""
+    \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; P160 (the ela03 pass-0 quotes): a LaTeX -- / --- and a
+    unicode dash -> -, \\approx \\sim \\gg \\ll \\pm \\le(q) \\ge(q) \\cdot -> their symbol, no space around a math symbol, before , . ; : ) % or after
+    (, none around °; whitespace collapsed; casefolded (P140 C1)."""
     t = MARKUP.sub("", t or "").replace("\u2212", "-")
     t = re.sub(r"[\u00a0\u2007\u2009\u200a\u202f]", " ", t)
     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t)
@@ -70,15 +75,28 @@ def normalize(t):
     t = re.sub(r"°\s+([CFK])\b", r"°\1", t)
     t = re.sub(r"\bdeg\.?\s*C\b", "°C", t)
     t = re.sub(r"[$_^{}*]", "", t)
+    t = re.sub(r"-{2,3}|[‐-―]", "-", t)                              # P160 (A, confirmed): a LaTeX -- / --- and a unicode dash -> -
+    t = re.sub(r"\\(approx|sim|gg|ll|pm|leq|geq|le|ge|cdot)(?![a-z])", lambda m: LATEX_SYMBOL[m.group(1)], t)   # P160: a LaTeX relation as printed
+    t = re.sub(r"\s*([≈~≫≪±×·≤≥])\s*", r"\1", t)                               # P160: no space around a math symbol (\sim 1 prints ∼1)
+    t = re.sub(r"\s*°\s*", "°", re.sub(r"\s+(?=[,.;:)%])|(?<=\()\s+", "", t))   # P160: no space before , . ; : ) % or after (, none around °
     return norm_ws(t).casefold()                                                # P140 C1: casefolded (no unit spelling collides; checked)
 
 
-UNIT_SYMBOL = {normalize(a): V.UNIT_ALIAS.get(a, a) for a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS) if V.UNIT_ALIAS.get(a, a) in V.UNIT_BASE}
+_UNIT_KEYS = collections.defaultdict(set)
+for _a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS):
+    if V.UNIT_ALIAS.get(_a, _a) in V.UNIT_BASE:
+        _UNIT_KEYS[normalize(_a)].add(V.UNIT_ALIAS.get(_a, _a))
+UNIT_SYMBOL = {k: next(iter(v)) for k, v in _UNIT_KEYS.items() if len(v) == 1}   # P160: a key that names two symbols (L Langmuir, l litre) resolves nothing
+UNIT_AMBIGUOUS = {k: sorted(v) for k, v in _UNIT_KEYS.items() if len(v) > 1}
 
 
 def unit_symbol(u):
-    """The canonical spelling of a unit (vocab.UNIT_ALIAS), matched after normalize(); a 'u' prefix reads as µ (D4); None when units.yaml
-    does not know it."""
+    """The canonical spelling of a unit (vocab.UNIT_ALIAS): the spelling itself when units.yaml has it (P160: case kept, L is not l), else
+    matched after normalize() unless that key names two symbols (UNIT_AMBIGUOUS); a 'u' prefix reads as µ (D4); None when units.yaml does
+    not know it."""
+    u_ = str(u).strip()
+    if u_ in V.UNIT_BASE or u_ in V.UNIT_ALIAS:
+        return V.UNIT_ALIAS.get(u_, u_)
     n = normalize(u)
     return UNIT_SYMBOL.get(n) or UNIT_SYMBOL.get(re.sub(r"^u(?=[A-Za-z])", "µ", n))
 

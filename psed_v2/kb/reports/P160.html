@@ -1,0 +1,606 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P160</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P160</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P160.summary.txt</p>
+<pre>P160, round 2 turn 2: 19 provider calls (ela03 pass 1), $0.29 (+ at most $0.02 for the cached prefix); 0 for hei24 pass 0 (cache) and 0 for
+gor03 (stopped: 402 RESOURCE_EXHAUSTED, prepayment credits depleted, before any call).
+A (0 calls). The 18 ela03 pass-0 quotes compile.normalize() did not find: 17 formatting, 1 paraphrase (run_zno_ar5000: the piece after its
+  &quot;...&quot; is reworded), 0 not in the paper. Classes (decided by code, both sides): dash (LaTeX &quot;--&quot; for an en dash), spacing (before , . ; : )
+  and around °), latex command (\approx \sim \gg \ll), math-symbol spacing (\sim 1 prints ~1), ellipsis (pieces in order). The four
+  normalizer classes are now in compile.normalize() (D10, the one normalizer of steps d-f); superscript and tilde were tested and not needed,
+  not added. Re-check: 17 found, the paraphrase not found (A_recheck). On the way: litre l and Langmuir L shared the casefolded key &quot;l&quot;
+  since P158; unit_symbol() now takes the spelling itself first and a key under two symbols resolves nothing.
+B (0 calls). pass0_paper.py consistency(): every curve_per_unit (point_per_unit) panel, its figures.json curves (points) against the pass-0
+  units naming it; printed after every pass-0 run, --check for the latest line. Flagged: yli18 3, yim20 0, mat22 1, ela03 5, hei24 31 of 32,
+  gor03 0 (B_consistency).
+C (0 calls). The pass-0 instruction already has the rule (curve_per_unit: &quot;Each curve is one experiment unit ... one curve per model run&quot;;
+  point_per_unit: &quot;list every point as a run&quot;): nothing added; the model ignored it on hei24. Instruction sha256 7eb057c2.
+D (0 calls). hei24 pass 0 re-run: the request equals P159&#x27;s (request hash 9afddd82), so the cache answered: the same 1 unit, nothing appended.
+E. ela03 pass 1: 19 groups, 247 records (7 failing form.json). gor03 not run (credits). Compiled and scored ela03 (first time): T6 165 / 561
+  gold rows, check.py --dir 152. The normalizer change recompiled the round-1 papers: 16 records no longer dropped for quote_not_found;
+  yli18 setting 30 -&gt; 31 / 63, check 159 -&gt; 156; yim20 T6 425 -&gt; 430, derived 99 -&gt; 101, observation 80 -&gt; 81, cited 27 -&gt; 28, check
+  306 -&gt; 318 (+10 statement copies, +3 same statement, +1 placement, +1 spread: the kept records&#x27; statements; reported, not patched);
+  mat22 unchanged. Round-1 audit PASS; export.py --check 15 of 15. grow.py not run.
+Next: credits for gor03 pass 1 (6 calls); hei24 pass 1 and grow.py add / propose.
+</pre>
+<h2>A. The 18 ela03 pass-0 quotes not found: closest passage and verdict</h2><p>psed_v2/kb/reports/P160.A_quotes.csv</p>
+<table><tr><th>unit</th><th>role</th><th>quote</th><th>closest_passage</th><th>overlap</th><th>verdict</th><th>cls</th></tr>
+<tr><td>run_al2o3_sem_1s</td><td>run</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four different experiments were performed using ALD timing sequences</td><td>0.67</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_al2o3_sem_3s</td><td>run</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four different experiments were performed using ALD timing sequences</td><td>0.67</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_al2o3_sem_10s</td><td>run</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four different experiments were performed using ALD timing sequences</td><td>0.67</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_al2o3_sem_30s</td><td>run</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four different experiments were performed using ALD timing sequences</td><td>0.67</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_zno_1s</td><td>run</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four AA membrane samples were coated in separate experiments using ALD timing sequences</td><td>0.74</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_zno_3s</td><td>run</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four AA membrane samples were coated in separate experiments using ALD timing sequences</td><td>0.74</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_zno_10s</td><td>run</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four AA membrane samples were coated in separate experiments using ALD timing sequences</td><td>0.74</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_zno_30s</td><td>run</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>a deposition temperature of  $177^\circ\text{C}$ . Four AA membrane samples were coated in separate experiments using ALD timing sequences</td><td>0.74</td><td>formatting</td><td>dash; spacing</td></tr>
+<tr><td>run_zno_d19</td><td>run</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>AA membranes with  $L = 50 \mu\text{m}$  and pore diameters of  $d = 19, 46$ , and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD,</td><td>0.94</td><td>formatting</td><td>spacing</td></tr>
+<tr><td>run_zno_d46</td><td>run</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>AA membranes with  $L = 50 \mu\text{m}$  and pore diameters of  $d = 19, 46$ , and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD,</td><td>0.94</td><td>formatting</td><td>spacing</td></tr>
+<tr><td>run_zno_d65</td><td>run</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>AA membranes with  $L = 50 \mu\text{m}$  and pore diameters of  $d = 19, 46$ , and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD,</td><td>0.94</td><td>formatting</td><td>spacing</td></tr>
+<tr><td>run_zno_ar5000</td><td>run</td><td>This AA membrane had dimensions d = 19 nm and L = 92 µm yielding an aspect ratio L/d ≈ 5000... The membrane was coated using 19 ZnO ALD cycles with exposure times of 120 s and reactant pressures of 5 Torr at a deposition temperature of 177 °C.</td><td>and (b) relative ZnO coverage for AA membrane with an aspect ratio  $L/d \approx 5000$  following 19 AB cycles of ZnO ALD.
+
+was coated using 19 ZnO ALD cycles with exposure times of 120 s and reactant pressures of 5 Torr at a deposition temperature of 177 °C. The</td><td>0.71</td><td>paraphrase</td><td></td></tr>
+<tr><td>spec_zno_ar5000</td><td>specimen</td><td>Zn elemental distribution map measured by EPMA and (b) relative ZnO coverage for AA membrane with an aspect ratio L/d ≈ 5000 following 19 AB cycles of ZnO ALD.</td><td>Zn elemental distribution map measured by EPMA and (b) relative ZnO coverage for AA membrane with an aspect ratio  $L/d \approx 5000$  following 19 AB cycles of ZnO ALD.</td><td>0.97</td><td>formatting</td><td>latex command</td></tr>
+<tr><td>run_ftir_al2o3</td><td>run</td><td>The hydroxyl-terminated Al2O3 surface was then subjected to successive, small TMA exposures at a substrate temperature of 177 °C using a TMA pressure of ~1 × 10^-3 Torr and various exposure times.</td><td>The hydroxyl-terminated  $\text{Al}_2\text{O}_3$  surface was then subjected to successive, small TMA exposures at a substrate temperature of 177 °C using a TMA pressure of  $\sim 1 \times 10^{-3}$  Torr and various exposure</td><td>0.94</td><td>formatting</td><td>latex command; math-symbol spacing</td></tr>
+<tr><td>run_ftir_sio2</td><td>run</td><td>The hydroxyl-terminated SiO2 surface was subjected to progressive SiCl4 exposures using a SiCl4 pressure of ~1 Torr and various exposure times at 427 °C.</td><td>The hydroxyl-terminated  $\text{SiO}_2$  surface was subjected to progressive  $\text{SiCl}_4$  exposures using a  $\text{SiCl}_4$  pressure of  $\sim 1$  Torr and various exposure times at 427</td><td>0.92</td><td>formatting</td><td>latex command; math-symbol spacing</td></tr>
+<tr><td>spec_ftir_sio2</td><td>specimen</td><td>Loss in hydroxyl feature measured by FTIR spectroscopy during ... (b) SiO2 ALD versus SiCl4 exposure time.</td><td>(its pieces, in order)</td><td>1.00</td><td>formatting</td><td>ellipsis (the quote elides text)</td></tr>
+<tr><td>sim_diff_limited</td><td>model_run</td><td>Plot (a) for S ≫ H uses d = 65 nm, L = 50 µm, S = 7 × 10^-3, and H = 2.7 × 10^-5.</td><td>Plot (a) for  $S \gg H$  uses  $d = 65$  nm,  $L = 50$   $\mu\text{m}$ ,  $S = 7 \times 10^{-3}$ , and  $H = 2.7</td><td>0.81</td><td>formatting</td><td>latex command; math-symbol spacing; spacing</td></tr>
+<tr><td>sim_react_limited</td><td>model_run</td><td>Plot (b) for S ≪ H uses d = 65 nm, L = 0.5 µm, S = 1 × 10^-4, and H = 2.7 × 10^-1.</td><td>and  $H = 2.7 \times 10^{-5}$ . Plot (b) for  $S \ll H$  uses  $d = 65$  nm,  $L = 0.5$   $\mu\text{m}$ ,  $S = 1</td><td>0.81</td><td>formatting</td><td>latex command; math-symbol spacing; spacing</td></tr>
+</table>
+<h2>A. Re-checked with the new normalizer</h2><p>psed_v2/kb/reports/P160.A_recheck.csv</p>
+<table><tr><th>unit</th><th>verdict</th><th>cls</th><th>before</th><th>now</th></tr>
+<tr><td>run_al2o3_sem_1s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_al2o3_sem_3s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_al2o3_sem_10s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_al2o3_sem_30s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_1s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_3s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_10s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_30s</td><td>formatting</td><td>dash; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_d19</td><td>formatting</td><td>spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_d46</td><td>formatting</td><td>spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_d65</td><td>formatting</td><td>spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_zno_ar5000</td><td>paraphrase</td><td></td><td>not found</td><td>not found</td></tr>
+<tr><td>spec_zno_ar5000</td><td>formatting</td><td>latex command</td><td>not found</td><td>found</td></tr>
+<tr><td>run_ftir_al2o3</td><td>formatting</td><td>latex command; math-symbol spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>run_ftir_sio2</td><td>formatting</td><td>latex command; math-symbol spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>spec_ftir_sio2</td><td>formatting</td><td>ellipsis (the quote elides text)</td><td>not found</td><td>found (its pieces, in order)</td></tr>
+<tr><td>sim_diff_limited</td><td>formatting</td><td>latex command; math-symbol spacing; spacing</td><td>not found</td><td>found</td></tr>
+<tr><td>sim_react_limited</td><td>formatting</td><td>latex command; math-symbol spacing; spacing</td><td>not found</td><td>found</td></tr>
+</table>
+<h2>A. compile.py diff (normalize, unit_symbol)</h2><p>psed_v2/kb/reports/P160.code_compile.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 49e2e86..baaa036 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -55,10 +55,15 @@ def norm_ws(t):
+     return re.sub(r&quot;\s+&quot;, &quot; &quot;, t or &quot;&quot;).strip()
+ 
+ 
++LATEX_SYMBOL = {&quot;approx&quot;: &quot;≈&quot;, &quot;sim&quot;: &quot;~&quot;, &quot;gg&quot;: &quot;≫&quot;, &quot;ll&quot;: &quot;≪&quot;, &quot;pm&quot;: &quot;±&quot;, &quot;leq&quot;: &quot;≤&quot;, &quot;geq&quot;: &quot;≥&quot;, &quot;le&quot;: &quot;≤&quot;, &quot;ge&quot;: &quot;≥&quot;, &quot;cdot&quot;: &quot;·&quot;}   # P160
++
++
+ def normalize(t):
+     &quot;&quot;&quot;D10, the one normalization of steps d, e and f: P148 (C3): markup tags removed, their text kept; U+2212 -&gt; -; thin and no-break
+     spaces -&gt; space; \\text{..} / \\mathrm{..} -&gt; content; unicode NFKC; μ (U+03BC) and \\mu -&gt; µ (U+00B5); \\circ / ^\\circ -&gt; °;
+-    \\times -&gt; ×; ◦C / ° C / deg C -&gt; °C (P146); $ _ ^ { } and markdown * dropped; whitespace collapsed; casefolded (P140 C1).&quot;&quot;&quot;
++    \\times -&gt; ×; ◦C / ° C / deg C -&gt; °C (P146); $ _ ^ { } and markdown * dropped; P160 (the ela03 pass-0 quotes): a LaTeX -- / --- and a
++    unicode dash -&gt; -, \\approx \\sim \\gg \\ll \\pm \\le(q) \\ge(q) \\cdot -&gt; their symbol, no space around a math symbol, before , . ; : ) % or after
++    (, none around °; whitespace collapsed; casefolded (P140 C1).&quot;&quot;&quot;
+     t = MARKUP.sub(&quot;&quot;, t or &quot;&quot;).replace(&quot;\u2212&quot;, &quot;-&quot;)
+     t = re.sub(r&quot;[\u00a0\u2007\u2009\u200a\u202f]&quot;, &quot; &quot;, t)
+     t = re.sub(r&quot;\\(?:text|mathrm)\{([^{}]*)\}&quot;, r&quot;\1&quot;, t)
+@@ -70,15 +75,28 @@ def normalize(t):
+     t = re.sub(r&quot;°\s+([CFK])\b&quot;, r&quot;°\1&quot;, t)
+     t = re.sub(r&quot;\bdeg\.?\s*C\b&quot;, &quot;°C&quot;, t)
+     t = re.sub(r&quot;[$_^{}*]&quot;, &quot;&quot;, t)
++    t = re.sub(r&quot;-{2,3}|[‐-―]&quot;, &quot;-&quot;, t)                              # P160 (A, confirmed): a LaTeX -- / --- and a unicode dash -&gt; -
++    t = re.sub(r&quot;\\(approx|sim|gg|ll|pm|leq|geq|le|ge|cdot)(?![a-z])&quot;, lambda m: LATEX_SYMBOL[m.group(1)], t)   # P160: a LaTeX relation as printed
++    t = re.sub(r&quot;\s*([≈~≫≪±×·≤≥])\s*&quot;, r&quot;\1&quot;, t)                               # P160: no space around a math symbol (\sim 1 prints ∼1)
++    t = re.sub(r&quot;\s*°\s*&quot;, &quot;°&quot;, re.sub(r&quot;\s+(?=[,.;:)%])|(?&lt;=\()\s+&quot;, &quot;&quot;, t))   # P160: no space before , . ; : ) % or after (, none around °
+     return norm_ws(t).casefold()                                                # P140 C1: casefolded (no unit spelling collides; checked)
+ 
+ 
+-UNIT_SYMBOL = {normalize(a): V.UNIT_ALIAS.get(a, a) for a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS) if V.UNIT_ALIAS.get(a, a) in V.UNIT_BASE}
++_UNIT_KEYS = collections.defaultdict(set)
++for _a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS):
++    if V.UNIT_ALIAS.get(_a, _a) in V.UNIT_BASE:
++        _UNIT_KEYS[normalize(_a)].add(V.UNIT_ALIAS.get(_a, _a))
++UNIT_SYMBOL = {k: next(iter(v)) for k, v in _UNIT_KEYS.items() if len(v) == 1}   # P160: a key that names two symbols (L Langmuir, l litre) resolves nothing
++UNIT_AMBIGUOUS = {k: sorted(v) for k, v in _UNIT_KEYS.items() if len(v) &gt; 1}
+ 
+ 
+ def unit_symbol(u):
+-    &quot;&quot;&quot;The canonical spelling of a unit (vocab.UNIT_ALIAS), matched after normalize(); a &#x27;u&#x27; prefix reads as µ (D4); None when units.yaml
+-    does not know it.&quot;&quot;&quot;
++    &quot;&quot;&quot;The canonical spelling of a unit (vocab.UNIT_ALIAS): the spelling itself when units.yaml has it (P160: case kept, L is not l), else
++    matched after normalize() unless that key names two symbols (UNIT_AMBIGUOUS); a &#x27;u&#x27; prefix reads as µ (D4); None when units.yaml does
++    not know it.&quot;&quot;&quot;
++    u_ = str(u).strip()
++    if u_ in V.UNIT_BASE or u_ in V.UNIT_ALIAS:
++        return V.UNIT_ALIAS.get(u_, u_)
+     n = normalize(u)
+     return UNIT_SYMBOL.get(n) or UNIT_SYMBOL.get(re.sub(r&quot;^u(?=[A-Za-z])&quot;, &quot;µ&quot;, n))
+ 
+</pre>
+<h2>B. Pass-0 consistency, six papers</h2><p>psed_v2/kb/reports/P160.B_consistency.csv</p>
+<table><tr><th>paper</th><th>pass0_line</th><th>form_version</th><th>panel</th><th>layout</th><th>figures_json</th><th>what</th><th>units</th><th>unit_ids</th><th>flag</th></tr>
+<tr><td>yli18</td><td>122</td><td></td><td>fig2</td><td>curve_per_unit</td><td>10</td><td>curves</td><td>4</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>yli18</td><td>122</td><td></td><td>fig3</td><td>curve_per_unit</td><td>8</td><td>curves</td><td>4</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>yli18</td><td>122</td><td></td><td>fig4</td><td>curve_per_unit</td><td>4</td><td>curves</td><td>4</td><td>mr_fig4_h02;mr_fig4_h05;mr_fig4_h1;mr_fig4_h2</td><td></td></tr>
+<tr><td>yli18</td><td>122</td><td></td><td>fig5</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>2</td><td>mr_fig5_gordon;mr_fig5_ylilammi</td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig7</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_4;sample_5;sample_6</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig8b</td><td>curve_per_unit</td><td>4</td><td>curves</td><td>4</td><td>sample_12;sample_2;sample_4;sample_8</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_7;sample_8;sample_9</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig9d</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_10;sample_11;sample_8</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig9e</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_10;sample_11;sample_8</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig9f</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_10;sample_11;sample_8</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10a</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10b</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10c</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10d</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10e</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig10f</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>5</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_12;sample_13;sample_14</td><td></td></tr>
+<tr><td>yim20</td><td>88</td><td></td><td>fig11b</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sample_12;sample_15;sample_16</td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig1a</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>0</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig1b</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>1</td><td>run_grid_24</td><td>more units than curves</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig2</td><td>point_per_unit</td><td>64</td><td>points</td><td>32</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig4</td><td>point_per_unit</td><td>32</td><td>points</td><td>32</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig5a</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>1</td><td>run_grid_24</td><td>more units than curves</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig5b</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>1</td><td>run_grid_24</td><td>more units than curves</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig6a</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>0</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig7a</td><td>curve_per_unit</td><td>6</td><td>curves</td><td>6</td><td>run_grid_1;run_grid_14;run_grid_19;run_grid_24;run_grid_30;run_grid_6</td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>points</td><td>0</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig8</td><td>point_per_unit</td><td>0</td><td>points</td><td>0</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig9a</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>1</td><td>unit_ws2_150c</td><td>more units than curves</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>fig9b</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>1</td><td>unit_tis2_100c</td><td>more units than curves</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig5a</td><td>curve_per_unit</td><td>4</td><td>curves</td><td>4</td><td>spec_zno_10s;spec_zno_1s;spec_zno_30s;spec_zno_3s</td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig5b</td><td>point_per_unit</td><td>4</td><td>points</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig6a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>spec_zno_d19;spec_zno_d46;spec_zno_d65</td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig6b</td><td>point_per_unit</td><td>4</td><td>points</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sim_al2o3_10s;sim_al2o3_1s;sim_al2o3_3s</td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig9b</td><td>point_per_unit</td><td>4</td><td>points</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig10a</td><td>curve_per_unit</td><td>4</td><td>curves</td><td>4</td><td>sim_zno_10s;sim_zno_1s;sim_zno_30s;sim_zno_3s</td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig10b</td><td>point_per_unit</td><td>19</td><td>points</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>3</td><td>sim_zno_d19;sim_zno_d46;sim_zno_d65</td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig11b</td><td>point_per_unit</td><td>4</td><td>points</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>fig13</td><td>curve_per_unit</td><td>4</td><td>curves</td><td>4</td><td>sim_pred_p001;sim_pred_p01;sim_pred_p1;sim_pred_p10</td><td></td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig2a</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig2b</td><td>curve_per_unit</td><td>3</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig3</td><td>curve_per_unit</td><td>9</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig4</td><td>curve_per_unit</td><td>0</td><td>curves</td><td>0</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5a</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5b</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5c</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5d</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5e</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5f</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5g</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5h</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5i</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5j</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5k</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig5l</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6a</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6b</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6c</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6d</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6e</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6f</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6g</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6h</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6i</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6j</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6k</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig6l</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig7a</td><td>curve_per_unit</td><td>9</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig7b</td><td>curve_per_unit</td><td>9</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig8a</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>fig8b</td><td>curve_per_unit</td><td>5</td><td>curves</td><td>0</td><td></td><td>layout says one unit per curve; units missing</td></tr>
+<tr><td>gor03</td><td>2</td><td>P158</td><td>fig3</td><td>curve_per_unit</td><td>1</td><td>curves</td><td>1</td><td>model_run_predicted_exposure</td><td></td></tr>
+</table>
+<h2>B. pass0_paper.py diff</h2><p>psed_v2/kb/reports/P160.code_pass0.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 769cb03..fb6dd79 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -9,6 +9,8 @@ the example (another dev paper&#x27;s gold units and layouts with their sources), TAB
+ ids, figures.json curves), the element index, document.md whole. The provider schema (form_pass0.json) constrains the response.
+ Writes one line (pass 0, section &quot;paper&quot;) to kb/records/&lt;pid&gt;.jsonl.
+ &quot;&quot;&quot;
++import collections
++import json
+ import sys
+ 
+ import common as C
+@@ -64,8 +66,46 @@ def jobs(pid):
+ THINKING = {&quot;thinking_level&quot;: &quot;MEDIUM&quot;}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key
+ 
+ 
++def consistency(pid, obj):
++    &quot;&quot;&quot;P160 B, part of every pass-0 run: for each panel whose pass-0 layout is curve_per_unit (point_per_unit), the curves (the points of
++    its curves and its cells) of kb/&lt;pid&gt;.figures.json against the pass-0 units whose data name an item of that panel; a panel with fewer
++    units than curves (points) is flagged &quot;layout says one unit per curve; units missing&quot;.&quot;&quot;&quot;
++    p = C.V2 / &quot;kb&quot; / f&quot;{pid}.figures.json&quot;
++    Fj = json.loads(p.read_text(encoding=&quot;utf-8&quot;)) if p.exists() else {}
++    panel = lambda i: str(i).split(&quot;:&quot;, 1)[-1].split(&quot;#&quot;)[0]                    # noqa: E731  &#x27;ela03:fig5a#c1&#x27; -&gt; &#x27;fig5a&#x27;
++    curves, points = collections.Counter(), collections.Counter()
++    for c in Fj.get(&quot;curves&quot;, []):
++        k = f&quot;fig{c[&#x27;figure&#x27;]}{c.get(&#x27;panel&#x27;, &#x27;&#x27;)}&quot;
++        curves[k] += 1
++        points[k] += len(c.get(&quot;points&quot;) or [])
++    for v in Fj.get(&quot;values&quot;, []):
++        if v.get(&quot;kind&quot;) == &quot;cell&quot;:
++            points[f&quot;fig{v[&#x27;figure&#x27;]}{v.get(&#x27;panel&#x27;, &#x27;&#x27;)}&quot;] += 1
++    units = collections.defaultdict(set)
++    for u in (obj.get(&quot;units&quot;) or []) if isinstance(obj, dict) else []:
++        for d in u.get(&quot;data&quot;) or []:
++            units[panel(d.get(&quot;id&quot;) if isinstance(d, dict) else d)].add(u.get(&quot;id&quot;))
++    out = []
++    for x in (obj.get(&quot;panel_layouts&quot;) or []) if isinstance(obj, dict) else []:
++        lay = x.get(&quot;layout&quot;)
++        if lay not in (&quot;curve_per_unit&quot;, &quot;point_per_unit&quot;):
++            continue
++        want = curves[x[&quot;panel&quot;]] if lay == &quot;curve_per_unit&quot; else points[x[&quot;panel&quot;]]
++        n = len(units[x[&quot;panel&quot;]])
++        out.append(dict(panel=x[&quot;panel&quot;], layout=lay, figures_json=want, what=&quot;curves&quot; if lay == &quot;curve_per_unit&quot; else &quot;points&quot;, units=n,
++                        unit_ids=&quot;;&quot;.join(sorted(units[x[&quot;panel&quot;]])),
++                        flag=&quot;layout says one unit per curve; units missing&quot; if n &lt; want else (&quot;more units than curves&quot; if n &gt; want else &quot;&quot;)))
++    return out
++
++
+ def main(arg):
+     pid, key = C.resolve(arg)
++    if &quot;--check&quot; in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
++        lines = [json.loads(x) for x in (C.RECORDS / f&quot;{pid}.jsonl&quot;).read_text(encoding=&quot;utf-8&quot;).splitlines() if x.strip()]
++        rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x[&quot;pass&quot;] == 0)[&quot;response&quot;]))
++        for r in rows:
++            print(f&quot;{key} {r[&#x27;panel&#x27;]} {r[&#x27;layout&#x27;]}: {r[&#x27;figures_json&#x27;]} {r[&#x27;what&#x27;]}, {r[&#x27;units&#x27;]} units {r[&#x27;flag&#x27;]}&quot;)
++        return 0
+     if &quot;--plan&quot; in sys.argv:                                                    # the planned call only, no call
+         js = jobs(pid)
+         C.plan(pid, js, THINKING)
+@@ -79,6 +119,9 @@ def main(arg):
+         roles[it.get(&quot;role&quot;, &quot;?&quot;)] = roles.get(it.get(&quot;role&quot;, &quot;?&quot;), 0) + 1
+     print(f&quot;{key} pass 0: {len(units)} units, by role {roles}; table layouts {len((obj or {}).get(&#x27;table_layouts&#x27;) or [])}, &quot;
+           f&quot;panel layouts {len((obj or {}).get(&#x27;panel_layouts&#x27;) or [])}&quot;)
++    for r in consistency(pid, obj or {}):                                       # P160 B: one unit per curve (point) where the layout says so
++        if r[&quot;flag&quot;]:
++            print(f&quot;{key} {r[&#x27;panel&#x27;]} {r[&#x27;layout&#x27;]}: {r[&#x27;figures_json&#x27;]} {r[&#x27;what&#x27;]}, {r[&#x27;units&#x27;]} units: {r[&#x27;flag&#x27;]}&quot;)
+     return 0
+ 
+ 
+</pre>
+<h2>C. The pass-0 instruction</h2><p>psed_v2/kb/reports/P160.C_instruction.txt</p>
+<pre>pass-0 instruction (the prompt before &#x27;PAPER (document.md):&#x27;), kb/extract/pass0_paper.py jobs():
+instruction_sha256: 7eb057c24c439bbabd0ff955419cff1d97b581e389adca0b8685cddce7ef1862
+instruction_chars: 128529
+request_hash_now: 9afddd82b8de1de9d87d7410a8d9ca43719b4742ec6637b1408ec1ac30091ed6
+request_hash_P159_line: 9afddd82b8de1de9d87d7410a8d9ca43719b4742ec6637b1408ec1ac30091ed6
+identical: True
+
+What the pass-0 instruction says today about runs, model runs and the per-curve / per-point layouts (verbatim):
+
+- run: one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption (&quot;deposited at … using … cycles&quot;, &quot;films grown on glassy carbon&quot;), a table row, a grid point. A stated deposition is a run even when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure.
+- model run: one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same inputs are one model run.
+UNITS: one item per run, specimen, simulation and model run.
+- curve_per_unit: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- panel_one_unit: The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only). Example: an EDS panel = one specimen, its curves one measurement&#x27;s results per element.
+- point_per_unit: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+- **curve_per_unit**: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+
+Verdict (C): a per-curve rule is present (&#x27;Each curve is one experiment unit ... one curve per model run&#x27;; &#x27;list every point as a run&#x27;): nothing added; the model ignored it on hei24 (31 of 32 curve_per_unit panels without a unit, B).
+</pre>
+<h2>D. hei24 pass 0 re-run (cache)</h2><p>psed_v2/kb/reports/P160.D_hei24_run.txt</p>
+<pre>10.1039_d3cp05639b: 1 planned calls (1 cached, 0 to call), model gemini-3.8-flash
+10.1039_d3cp05639b: 0 calls made, 1 from the cache
+hei24 pass 0: 1 units, by role {&#x27;simulation&#x27;: 1}; table layouts 4, panel layouts 35
+hei24 fig2a curve_per_unit: 3 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig2b curve_per_unit: 3 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig3 curve_per_unit: 9 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5a curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5b curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5c curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5d curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5e curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5f curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5g curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5h curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5i curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5j curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5k curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig5l curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6a curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6b curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6c curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6d curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6e curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6f curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6g curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6h curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6i curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6j curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6k curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig6l curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig7a curve_per_unit: 9 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig7b curve_per_unit: 9 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig8a curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+hei24 fig8b curve_per_unit: 5 curves, 0 units: layout says one unit per curve; units missing
+</pre>
+<h2>D. hei24 units vs gold (the P159 response)</h2><p>psed_v2/kb/reports/P160.D_hei24_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>pass0_id</th><th>pass0_name</th><th>pass0_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>pass0_data</th></tr>
+<tr><td>hei24</td><td>simulation</td><td>missing</td><td></td><td>hei24:sim</td><td>porous-particle model</td><td></td><td>s3.h;s4.h;tab1.cap;tab2.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>simulation</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_dr</td><td>diffusion–reaction model</td><td></td><td>abs.g1;s1.p1</td><td>This work presents a diffusion–reaction model for atomic layer deposition (ALD)</td><td>found</td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:sphere</td><td>baseline run, sphere</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3;fig5a;fig6a;fig5c;fig6c;fig5e;fig6e;fig5k;fig6k</td><td>hei24:fig2a#c1;hei24:fig2b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:cylinder</td><td>baseline run, cylinder</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3</td><td>hei24:fig2a#c2;hei24:fig2b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:slab</td><td>baseline run, slab</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3;fig5b;fig6b;fig5d;fig6d;fig5f;fig6f;fig5l;fig6l</td><td>hei24:fig2a#c3;hei24:fig2b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:sphere:1e5</td><td>Fig. 3 run, sphere, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:sphere:1e4</td><td>Fig. 3 run, sphere, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:cylinder:1e5</td><td>Fig. 3 run, cylinder, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:cylinder:1e4</td><td>Fig. 3 run, cylinder, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:slab:1e5</td><td>Fig. 3 run, slab, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:slab:1e4</td><td>Fig. 3 run, slab, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:1e5</td><td>Fig. 4 runs, 1e5 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:5e4</td><td>Fig. 4 runs, 5e4 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:1e4</td><td>Fig. 4 runs, 1e4 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:1</td><td>Fig. 5(a) run, τ/ε 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c1;hei24:fig6a#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:3</td><td>Fig. 5(a) run, τ/ε 3</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c3;hei24:fig6a#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:4</td><td>Fig. 5(a) run, τ/ε 4</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c4;hei24:fig6a#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:5</td><td>Fig. 5(a) run, τ/ε 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c5;hei24:fig6a#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:1</td><td>Fig. 5(b) run, τ/ε 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c1;hei24:fig6b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:3</td><td>Fig. 5(b) run, τ/ε 3</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c3;hei24:fig6b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:4</td><td>Fig. 5(b) run, τ/ε 4</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c4;hei24:fig6b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:5</td><td>Fig. 5(b) run, τ/ε 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c5;hei24:fig6b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:50</td><td>Fig. 5(c) run, reactant molar mass 50</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:150</td><td>Fig. 5(c) run, reactant molar mass 150</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:200</td><td>Fig. 5(c) run, reactant molar mass 200</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td>hei24:fig5c#c4;hei24:fig6c#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:250</td><td>Fig. 5(c) run, reactant molar mass 250</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:50</td><td>Fig. 5(d) run, reactant molar mass 50</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:150</td><td>Fig. 5(d) run, reactant molar mass 150</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:200</td><td>Fig. 5(d) run, reactant molar mass 200</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td>hei24:fig5d#c4;hei24:fig6d#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:250</td><td>Fig. 5(d) run, reactant molar mass 250</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:1</td><td>Fig. 5(e) run, σ 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c1;hei24:fig6e#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:2</td><td>Fig. 5(e) run, σ 2</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c2;hei24:fig6e#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:6</td><td>Fig. 5(e) run, σ 6</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c4;hei24:fig6e#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:8</td><td>Fig. 5(e) run, σ 8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c5;hei24:fig6e#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:1</td><td>Fig. 5(f) run, σ 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c1;hei24:fig6f#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:2</td><td>Fig. 5(f) run, σ 2</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c2;hei24:fig6f#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:6</td><td>Fig. 5(f) run, σ 6</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c4;hei24:fig6f#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:8</td><td>Fig. 5(f) run, σ 8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c5;hei24:fig6f#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:1e8</td><td>Fig. 5(g) run, s̄ 1e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c1;hei24:fig6g#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:2e8</td><td>Fig. 5(g) run, s̄ 2e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c2;hei24:fig6g#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:3e8</td><td>Fig. 5(g) run, s̄ 3e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c3;hei24:fig6g#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:4e8</td><td>Fig. 5(g) run, s̄ 4e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c4;hei24:fig6g#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:5e8</td><td>Fig. 5(g) run, s̄ 5e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c5;hei24:fig6g#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:1e8</td><td>Fig. 5(h) run, s̄ 1e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c1;hei24:fig6h#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:2e8</td><td>Fig. 5(h) run, s̄ 2e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c2;hei24:fig6h#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:3e8</td><td>Fig. 5(h) run, s̄ 3e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c3;hei24:fig6h#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:4e8</td><td>Fig. 5(h) run, s̄ 4e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c4;hei24:fig6h#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:5e8</td><td>Fig. 5(h) run, s̄ 5e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c5;hei24:fig6h#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.0001</td><td>Fig. 5(i) run, sticking probability 0.0001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c1;hei24:fig6i#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.001</td><td>Fig. 5(i) run, sticking probability 0.001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c2;hei24:fig6i#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.01</td><td>Fig. 5(i) run, sticking probability 0.01</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c3;hei24:fig6i#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.1</td><td>Fig. 5(i) run, sticking probability 0.1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c4;hei24:fig6i#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:1</td><td>Fig. 5(i) run, sticking probability 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c5;hei24:fig6i#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.0001</td><td>Fig. 5(j) run, sticking probability 0.0001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c1;hei24:fig6j#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.001</td><td>Fig. 5(j) run, sticking probability 0.001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c2;hei24:fig6j#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.01</td><td>Fig. 5(j) run, sticking probability 0.01</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c3;hei24:fig6j#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.1</td><td>Fig. 5(j) run, sticking probability 0.1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c4;hei24:fig6j#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:1</td><td>Fig. 5(j) run, sticking probability 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c5;hei24:fig6j#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:5</td><td>Fig. 5(k) run, d_pore 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c1;hei24:fig6k#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:10</td><td>Fig. 5(k) run, d_pore 10</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c2;hei24:fig6k#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:30</td><td>Fig. 5(k) run, d_pore 30</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c4;hei24:fig6k#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:40</td><td>Fig. 5(k) run, d_pore 40</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c5;hei24:fig6k#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:5</td><td>Fig. 5(l) run, d_pore 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c1;hei24:fig6l#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:10</td><td>Fig. 5(l) run, d_pore 10</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c2;hei24:fig6l#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:30</td><td>Fig. 5(l) run, d_pore 30</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c4;hei24:fig6l#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:40</td><td>Fig. 5(l) run, d_pore 40</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c5;hei24:fig6l#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e5</td><td>Fig. 7 run, R 300 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c1;hei24:fig7b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e4</td><td>Fig. 7 run, R 300 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c4;hei24:fig7b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e3</td><td>Fig. 7 run, R 300 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c7;hei24:fig7b#c7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e5</td><td>Fig. 7 run, R 200 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c2;hei24:fig7b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e4</td><td>Fig. 7 run, R 200 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c5;hei24:fig7b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e3</td><td>Fig. 7 run, R 200 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c8;hei24:fig7b#c8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e5</td><td>Fig. 7 run, R 100 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c3;hei24:fig7b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e4</td><td>Fig. 7 run, R 100 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c6;hei24:fig7b#c6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e3</td><td>Fig. 7 run, R 100 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c9;hei24:fig7b#c9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T373</td><td>Fig. 8(a) run, 373 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T423</td><td>Fig. 8(a) run, 423 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T473</td><td>Fig. 8(a) run, 473 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T523</td><td>Fig. 8(a) run, 523 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T573</td><td>Fig. 8(a) run, 573 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T373</td><td>Fig. 8(b) run, 373 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T423</td><td>Fig. 8(b) run, 423 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T473</td><td>Fig. 8(b) run, 473 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T523</td><td>Fig. 8(b) run, 523 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T573</td><td>Fig. 8(b) run, 573 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>E. Pass 1 run (ela03; gor03 stopped)</h2><p>psed_v2/kb/reports/P160.E_pass1_run.txt</p>
+<pre>== ela03
+ela03 pass 1: 19 groups (abstract+s1+s2, s3, s4, s5, s6, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11, fig12, fig13, tab1); figure/table/equation groups: fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11, fig12, fig13, tab1; unpaired: none
+10.1021_cm0303080: 19 planned calls (0 cached, 19 to call), model gemini-3.8-flash
+10.1021_cm0303080: 19 calls made, 0 from the cache; prefix cached once (1 cached content)
+ela03 pass 1: 247 records by type {&#x27;setting&#x27;: 108, &#x27;model&#x27;: 67, &#x27;observation&#x27;: 22, &#x27;claim&#x27;: 21, &#x27;derived&#x27;: 15, &#x27;cited&#x27;: 10, &#x27;definition&#x27;: 3, &#x27;caveat&#x27;: 1}; NK {&#x27;citation_line&#x27;: 35, &#x27;no_knowledge&#x27;: 32, &#x27;boilerplate&#x27;: 23, &#x27;duplicate&#x27;: 1}; elements missing 0; records failing form.json 7; unparsed responses none
+ela03 this run: 19 lines, tokens in 562128 (cache read 541120) out 61996
+== gor03
+ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/kb/extract/pass1_elements.py gor03` failed. (See above for error)
+gor03 pass 1: 6 groups (abstract+s1+s2+s3+s4+s5+s6, s7+s8+s9+s10, fig1, fig3, fig2, fig4); figure/table/equation groups: fig1, fig3, fig2, fig4; unpaired: none
+10.1002_cvde.200390005: 6 planned calls (0 cached, 6 to call), model gemini-3.8-flash
+STOP: cached content not created (ClientError): 402 RESOURCE_EXHAUSTED. {&#x27;error&#x27;: {&#x27;code&#x27;: 402, &#x27;message&#x27;: &#x27;Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. &#x27;, &#x27;status&#x27;: &#x27;RESOURCE_EXHAUSTED&#x27;}}
+exit 0
+</pre>
+<h2>E. Cost</h2><p>psed_v2/kb/reports/P160.cost.csv</p>
+<table><tr><th>paper</th><th>step</th><th>calls</th><th>cached_input_tokens</th><th>uncached_input_tokens</th><th>output_tokens</th><th>usd</th><th>note</th></tr>
+<tr><td>ela03</td><td>E pass 1</td><td>19</td><td>541120</td><td>21008</td><td>61996</td><td>0.2888</td><td>cached prefix registration not in the lines: at most 28480 tokens x $0.75/M = $0.0214</td></tr>
+<tr><td>gor03</td><td>E pass 1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0.0000</td><td>stopped before any call: creating the cached prefix returned 402 RESOURCE_EXHAUSTED (prepayment credits depleted); nothing appended</td></tr>
+<tr><td>hei24</td><td>D pass 0</td><td>0</td><td></td><td></td><td></td><td>0.0000</td><td>cache hit: the request is P159&#x27;s (instructions unchanged, C); nothing appended</td></tr>
+</table>
+<h2>E. Score vs gold, before (P159) -&gt; after (P160), every column</h2><p>psed_v2/kb/reports/P160.score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before (P159)</th><th>after (P160)</th><th>same</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>159</td><td>156</td><td>NO</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>30/63</td><td>31/63</td><td>NO</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>306</td><td>318</td><td>NO</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>425</td><td>430</td><td>NO</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>2</td><td>0</td><td>NO</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>512</td><td>519</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>99/108</td><td>101/108</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>80/154</td><td>81/154</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>27/92</td><td>28/92</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>263</td><td>263</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>133/249</td><td>133/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>(new paper)</td><td>152</td><td>new</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>(new paper)</td><td>165</td><td>new</td></tr>
+<tr><td>ela03</td><td>gold_rows</td><td>(new paper)</td><td>561</td><td>new</td></tr>
+<tr><td>ela03</td><td>parent_flagged_yes</td><td>(new paper)</td><td>0</td><td>new</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>(new paper)</td><td>188</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>(new paper)</td><td>35/57</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>(new paper)</td><td>56/277</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_definition</td><td>(new paper)</td><td>1/10</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_derived</td><td>(new paper)</td><td>4/17</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_claim</td><td>(new paper)</td><td>9/37</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_entity</td><td>(new paper)</td><td>13/34</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>(new paper)</td><td>13/46</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_caveat</td><td>(new paper)</td><td>1/15</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>(new paper)</td><td>12/38</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_cited</td><td>(new paper)</td><td>5/21</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_comparison</td><td>(new paper)</td><td>0/8</td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_identity</td><td>(new paper)</td><td></td><td>new</td></tr>
+<tr><td>ela03</td><td>diff_paper</td><td>(new paper)</td><td>1/1</td><td>new</td></tr>
+</table>
+<h2>E. ela03 score by type</h2><p>psed_v2/kb/reports/P160.ela03.diff.csv</p>
+<table><tr><th>type</th><th>gold</th><th>compiled</th><th>matched</th><th>precision</th><th>recall</th></tr>
+<tr><td>setting</td><td>277</td><td>80</td><td>56</td><td>0.70</td><td>0.20</td></tr>
+<tr><td>model</td><td>57</td><td>69</td><td>35</td><td>0.51</td><td>0.61</td></tr>
+<tr><td>activity</td><td>46</td><td>27</td><td>13</td><td>0.48</td><td>0.28</td></tr>
+<tr><td>observation</td><td>38</td><td>31</td><td>12</td><td>0.39</td><td>0.32</td></tr>
+<tr><td>claim</td><td>37</td><td>20</td><td>9</td><td>0.45</td><td>0.24</td></tr>
+<tr><td>entity</td><td>34</td><td>30</td><td>13</td><td>0.43</td><td>0.38</td></tr>
+<tr><td>cited</td><td>21</td><td>6</td><td>5</td><td>0.83</td><td>0.24</td></tr>
+<tr><td>derived</td><td>17</td><td>28</td><td>4</td><td>0.14</td><td>0.24</td></tr>
+<tr><td>caveat</td><td>15</td><td>1</td><td>1</td><td>1.00</td><td>0.07</td></tr>
+<tr><td>definition</td><td>10</td><td>3</td><td>1</td><td>0.33</td><td>0.10</td></tr>
+<tr><td>comparison</td><td>8</td><td>4</td><td>0</td><td>0.00</td><td>0.00</td></tr>
+<tr><td>paper</td><td>1</td><td>1</td><td>1</td><td>1.00</td><td>1.00</td></tr>
+</table>
+<h2>E. check.py --dir, every changed problem</h2><p>psed_v2/kb/reports/P160.check_dir.csv</p>
+<table><tr><th>paper</th><th>before</th><th>after</th><th>change</th><th>row</th></tr>
+<tr><td>yli18</td><td>159</td><td>156</td><td>-3</td><td></td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:s5.p7#1: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:s5.p7#2: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:s5.p7#3: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:s8.p21#8: statement repeats eight words of s8.p21 in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:fig6.cap#1: same statement as yli18:s8.p23#3</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:fig6.cap#1: statement repeats eight words of fig6.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>new: yli18:fig7.cap#1: statement repeats eight words of fig7.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:s8.p21#6: statement repeats eight words of s8.p21 in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#1: same statement as yli18:s5.p7#1</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#1: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#2: same statement as yli18:s5.p7#2</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#2: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#3: same statement as yli18:s5.p7#3</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig1.cap#3: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig6.cap#2: same statement as yli18:s8.p23#3</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig6.cap#2: statement repeats eight words of fig6.cap in a row</td></tr>
+<tr><td>yli18</td><td></td><td></td><td></td><td>gone: yli18:fig7.cap#3: statement repeats eight words of fig7.cap in a row</td></tr>
+<tr><td>yim20</td><td>306</td><td>318</td><td>12</td><td></td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s7.p5#7: statement repeats eight words of s7.p5 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s7.p5#8: same statement as yim20:s7.p5#7</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s7.p5#8: statement repeats eight words of s7.p5 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s7.p5#9: statement repeats eight words of s7.p5 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s10.p1#2: statement repeats eight words of s10.p1 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s11.x1#2: statement repeats eight words of s11.x1 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s16.p4#1: statement repeats eight words of s16.p4 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s16.p10#1: statement repeats eight words of s16.p10 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s19.p3#2: same statement as yim20:s19.p3#1</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s19.p3#4: statement repeats eight words of s19.p3 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s19.p3#5: same statement as yim20:s19.p3#4</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s19.p3#5: statement repeats eight words of s19.p3 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s19.p4#2: statement repeats eight words of s19.p4 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s10.p1#2: penetration_depth measured on the paper&#x27;s method activity yim20:method:optical_microscopy, not on an entity</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>new: yim20:s16.p4#1: a spread fact (stat=) without between= and n= (P1)</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>gone: yim20:s7.p5#5: statement repeats eight words of s7.p5 in a row</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>gone: yim20:s19.p3#3: same statement as yim20:s19.p3#2</td></tr>
+<tr><td>yim20</td><td></td><td></td><td></td><td>gone: yim20:s19.p4#1: statement repeats eight words of s19.p4 in a row</td></tr>
+<tr><td>mat22</td><td>263</td><td>263</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>(new paper)</td><td>152</td><td></td><td></td></tr>
+</table>
+<h2>E. Records no longer dropped (the normalizer)</h2><p>psed_v2/kb/reports/P160.drops_changed.csv</p>
+<table><tr><th>paper</th><th>element</th><th>reason</th><th>change</th></tr>
+<tr><td>yli18</td><td>s8.p21</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yli18</td><td>s8.p21</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s5.p2</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s10.p1</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s11.x1</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s13.x2</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s16.p4</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s16.p10</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s18.p3</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s19.p3</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s19.p3</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>yim20</td><td>s19.p4</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+<tr><td>mat22</td><td>s4.p2</td><td>quote_not_found</td><td>no longer dropped (quote found)</td></tr>
+</table>
+<h2>E. Round-1 audit</h2><p>psed_v2/kb/reports/P160.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 33 promotions: {&#x27;agree&#x27;: 33}
+A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 7/7
+result: PASS
+</pre>
+<h2>score.py run</h2><p>psed_v2/kb/reports/P160.score_run.txt</p>
+<pre>yli18: 243 gold rows, 77 compiled facts without a gold match
+yli18: check --dir 156 problems; T6 138/243
+yim20: 900 gold rows, 169 compiled facts without a gold match
+yim20: check --dir 318 problems; T6 430/900
+mat22: 1071 gold rows, 106 compiled facts without a gold match
+mat22: check --dir 263 problems; T6 273/1071
+ela03: 561 gold rows, 75 compiled facts without a gold match
+ela03: check --dir 152 problems; T6 165/561
+exit 0
+</pre>
+</body></html>

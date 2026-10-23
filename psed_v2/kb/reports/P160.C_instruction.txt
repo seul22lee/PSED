@@ -1,0 +1,19 @@
+pass-0 instruction (the prompt before 'PAPER (document.md):'), kb/extract/pass0_paper.py jobs():
+instruction_sha256: 7eb057c24c439bbabd0ff955419cff1d97b581e389adca0b8685cddce7ef1862
+instruction_chars: 128529
+request_hash_now: 9afddd82b8de1de9d87d7410a8d9ca43719b4742ec6637b1408ec1ac30091ed6
+request_hash_P159_line: 9afddd82b8de1de9d87d7410a8d9ca43719b4742ec6637b1408ec1ac30091ed6
+identical: True
+
+What the pass-0 instruction says today about runs, model runs and the per-curve / per-point layouts (verbatim):
+
+- run: one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption ("deposited at … using … cycles", "films grown on glassy carbon"), a table row, a grid point. A stated deposition is a run even when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure.
+- model run: one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same inputs are one model run.
+UNITS: one item per run, specimen, simulation and model run.
+- curve_per_unit: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- panel_one_unit: The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only). Example: an EDS panel = one specimen, its curves one measurement's results per element.
+- point_per_unit: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+- **curve_per_unit**: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+
+Verdict (C): a per-curve rule is present ('Each curve is one experiment unit ... one curve per model run'; 'list every point as a run'): nothing added; the model ignored it on hei24 (31 of 32 curve_per_unit panels without a unit, B).
