@@ -1,0 +1,556 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 690e035..284ccf0 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -140,53 +140,81 @@ for _q, _vs in VALUES.items():
+     SYMBOLS[f"value:{_q}"] = {}
+ NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
+ DATA_ROLE = {"simulated": "simulated", "read_from_figure": "measured"}          # P161: figures.json kind (P87) -> the pass-0 data role
++UNIT_LAYOUTS = ("curve_per_unit", "point_per_unit")
+ 
+ 
+-def curve_units(pid, obj):
+-    """P161 step 1, between pass 0 and pass 1 (no call): for every panel whose pass-0 layout is curve_per_unit (point_per_unit), one unit
+-    per curve (point: a point of a curve, or a cell) of kb/<pid>.figures.json that no pass-0 unit's data refs bind (a point is bound when
+-    its curve or its cell is). id <pid>:<panel>:<curve id> (a point of a curve: .p<n>); role model_run when the curve's data role is
+-    simulated, else run (point_per_unit: run), the data role being the figures.json kind (DATA_ROLE: the one a curve no unit names
+-    carries); parent the paper's one pass-0 simulation (model_run) or its one pass-0 run (run), else null, flagged "parent unresolved";
+-    introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with
+-    its role; conditions the legend label as an other condition (label_as_printed = the label); origin "derived: <layout>". A unit
+-    pass 0 bound is left as it is, no other layout makes units, nothing else is inferred. Read by compile (input, tree), by
+-    pass1_elements.units_block (PASS-0 UNITS) and by pass0_paper.consistency."""
++def panel_items(pid, obj):
++    """P162 (rules 2, 4): the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the unit refs that hold
++    it: {panel: [item]}, item = dict(curve, point, cell, held). curve_per_unit: one item per curve. point_per_unit: a series whose
++    figures.json series_structure is per_point gives one item per point (point = its 1-based index); any other series one item (its curve);
++    a cell one item. A unit's data ref {id} holds a curve or a cell, and every point of that curve; {id, point} holds that point. One
++    measure for curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds)."""
+     p = C.V2 / "kb" / f"{pid}.figures.json"
+     Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+     obj = obj if isinstance(obj, dict) else {}
++    lay = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict) and x.get("layout") in UNIT_LAYOUTS}
++    refs = collections.defaultdict(list)                                       # (id, point or None) -> unit ids
++    for u in obj.get("units") or []:
++        for d in (u.get("data") or []) if isinstance(u, dict) else []:
++            refs[(d.get("id"), d.get("point")) if isinstance(d, dict) else (d, None)].append(u.get("id"))
++    out = collections.defaultdict(list)
++    for c in Fj.get("curves", []) + [v for v in Fj.get("values", []) if v.get("kind") == "cell"]:
++        panel = f"fig{c['figure']}{c.get('panel', '')}"
++        if panel not in lay:
++            continue
++        cell = c.get("kind") == "cell"
++        if cell and lay[panel]["layout"] == "curve_per_unit":
++            continue
++        per_point = not cell and lay[panel]["layout"] == "point_per_unit" and c.get("series", {}).get("series_structure") == "per_point"
++        for n in range(1, len(c.get("points") or []) + 1) if per_point else [None]:
++            out[panel].append(dict(curve=c, point=n, cell=cell, held=refs.get((c["id"], None), []) + (refs.get((c["id"], n), []) if n else [])))
++    return out
++
++
++def curve_units(pid, obj):
++    """P161 step 1, between pass 0 and pass 1 (no call), P162 rules 1 and 4: one unit per item of panel_items() that no pass-0 unit's
++    data refs hold. id <pid>:<panel>:<curve id> (a point: .p<n>). Role (P162 rule 1) from the paper's pass-0 units: a simulation and no
++    run -> model_run, a run and no simulation -> run, both (or neither) -> the figures.json kind (DATA_ROLE), the unit flagged "role from
++    figure kind"; the data role follows the role (model_run simulated, run measured) unless taken from the kind. Parent: the paper's one
++    simulation (model_run) or its one run (run), else null, flagged "parent unresolved". introduced_in the panel's caption element;
++    evidence_quote and name_as_printed the legend label as printed; data the curve ref with its role (a point: and its index);
++    conditions: the legend label (an other condition, resolved like a record value by compile step a0, P162 rule 3) and, for a point
++    (P162 rule 4), its coordinates on the axes the pass-0 layout names (axis_quantities; both axes when it names none: the layout's
++    axes are the unit's conditions); origin "derived: <layout>". Read by compile (input, tree), by pass1_elements.units_block (PASS-0
++    UNITS) and by pass0_paper.consistency."""
++    obj = obj if isinstance(obj, dict) else {}
+     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
+-    bound = {d.get("id") if isinstance(d, dict) else d for u in units for d in u.get("data") or []}
+     sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
++    by_list = "model_run" if sims and not runs else "run" if runs and not sims else None
++    lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict)}
+     ids = set(C.E.texts(pid))
+-    items = collections.defaultdict(list)
+-    for c in Fj.get("curves", []):
+-        items[f"fig{c['figure']}{c.get('panel', '')}"].append(c)
+-    for v in Fj.get("values", []):
+-        if v.get("kind") == "cell":
+-            items[f"fig{v['figure']}{v.get('panel', '')}"].append(v)
+     out = []
+-    for x in obj.get("panel_layouts") or []:
+-        lay = x.get("layout") if isinstance(x, dict) else None
+-        if lay not in ("curve_per_unit", "point_per_unit"):
+-            continue
+-        for c in items.get(x["panel"], []):
+-            cell = c.get("kind") == "cell"
+-            if c["id"] in bound or (cell and lay == "curve_per_unit"):
++    for panel, items in panel_items(pid, obj).items():
++        lay = lays[panel]["layout"]
++        for it in items:
++            c, n = it["curve"], it["point"]
++            if it["held"]:
+                 continue
+-            drole = DATA_ROLE.get(c.get("data_kind") if cell else c.get("kind"), "measured")
+-            role = "run" if lay == "point_per_unit" else "model_run" if drole == "simulated" else "run"
+-            par = (sims if role == "model_run" else runs)
+-            label = ((c.get("label") or c.get("value_text") or "") if cell else c.get("series", {}).get("label_raw") or "").strip()
++            kind_role = DATA_ROLE.get(c.get("data_kind") if it["cell"] else c.get("kind"), "measured")
++            role = by_list or ("model_run" if kind_role == "simulated" else "run")
++            drole = kind_role if not by_list else "simulated" if role == "model_run" else "measured"
++            par = sims if role == "model_run" else runs
++            label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
+             cap = f"fig{c['figure']}.cap"
+-            flags = ([] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) + ([] if cap in ids else ["no caption element"])
+-            base = f"{pid}:{x['panel']}:{c['id'].split('#')[-1]}"
+-            for n in ([None] if cell or lay == "curve_per_unit" else range(1, len(c.get("points") or []) + 1)):
+-                out.append(dict(id=base if n is None else f"{base}.p{n}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
+-                                structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+-                                data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lay}",
+-                                conditions=[dict(quantity="other", label_as_printed=label)] if label else [], panel=x["panel"], curve=c["id"], point=n,
+-                                flag="; ".join(flags)))
++            conds = [dict(quantity="other", label_as_printed=label)] if label else []
++            if n:                                                               # P162 rule 4: a point's coordinates on the layout's axes
++                axes = lays[panel].get("axis_quantities") or []
++                for ax, v in zip(("x", "y"), c["points"][n - 1]):
++                    a = c.get(ax) or {}
++                    if a.get("quantity") in L.QUANTITIES and (not axes or a["quantity"] in axes) and v is not None:
++                        conds.append(dict(quantity=a["quantity"], value=v, unit=a.get("unit") or "", label_as_printed=a.get("label_raw") or a["quantity"]))
++            flags = ([] if by_list else ["role from figure kind"]) + ([] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) \
++                + ([] if cap in ids else ["no caption element"])
++            out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}" + (f".p{n}" if n else ""), parent=par[0] if len(par) == 1 else None,
++                            name_as_printed=label or None, role=role, structure_class=None, specimen_class=None, experiment_kind=None,
++                            introduced_in=[cap] if cap in ids else [], data=[dict(id=c["id"], role=drole, **({"point": n} if n else {}))],
++                            evidence_quote=label or None, origin=f"derived: {lay}", conditions=conds, panel=panel, curve=c["id"], point=n,
++                            role_from="unit list" if by_list else "figure kind", flag="; ".join(flags)))
+     return out
+ 
+ 
+@@ -260,10 +288,12 @@ class Run:
+         self.pass0 = list(self.pass0) + self.from_curves
+         for u in self.from_curves:
+             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
+-            for c in u["conditions"] if u["introduced_in"] else []:
+-                rec = dict(type="setting", quantity="other", label_as_printed=c["label_as_printed"], quote=c["label_as_printed"], about=u["id"])
++            for c in u["conditions"] if u["introduced_in"] else []:              # P162: the legend label (other) and a point's coordinates
++                rec = dict(type="setting", label_as_printed=c["label_as_printed"], quote=c["label_as_printed"], about=u["id"], quantity=c["quantity"])
++                if c["quantity"] != "other":
++                    rec.update(value=c["value"], unit=c["unit"] or None, kind="read_from_figure")
+                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"]))
+-                self.count("input", "condition of a derived unit (the legend label, other)")
++                self.count("input", "condition of a derived unit: " + ("the legend label (other)" if c["quantity"] == "other" else "a point's coordinate"))
+         if self.from_curves:
+             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
+         return recs
+@@ -278,12 +308,27 @@ class Run:
+         entries). An entry's label is never read. A unit is left to step e. One id: the record takes it and goes on like any record
+         (form.json, units, placement, fact); two ids: ambiguous, left as it is (unmapped.csv action 'kept (ambiguous: ids)'). A record still
+         quantity other whose key is a never.csv word, or a never.csv symbol of this paper, carries the never category (unmapped.csv column
+-        never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv."""
++        never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv. P162 rule 3: a
++        derived unit's legend label (quantity other) is first read like a record value: one categorical value (id or value alias, any
++        categorical with a value list) -> that quantity and value_text (Amorphous -> crystallinity = amorphous); else it goes on as other."""
+         enum = C.schema("form.json")["$defs"]
+         for r in recs:
+             rec = r["rec"]
+             q = rec.get("quantity")
+             q = q if isinstance(q, str) else ""
++            if r.get("origin") and q == "other":                                # P162 rule 3: a derived unit's legend label, read like a record value
++                lab = C.X.record_text(rec)
++                hits = {(cq, v): how for cq in VALUES for v, how in WORDS[f"value:{cq}"].get(C.X.norm_label(lab), {}).items()}
++                if len(hits) == 1:
++                    ((cq, v), how), = hits.items()
++                    rec.update(quantity=cq, value_text=v)
++                    q = cq
++                    self.promoted.append(dict(r=r, element=r["eid"], field="value_text", printed=lab, meaning=lab, lookup=f"value:{cq}: {how}", id=v, outcome=""))
++                    self.count("a0", "derived legend label -> categorical value")
++                    self.note(f"a0: {r['eid']}: legend label {lab!r} -> {cq} = {v} (value:{cq}: {how})")
++                elif hits:
++                    self.count("a0", "derived legend label: two categorical values (left other)")
++                    self.note(f"a0: {r['eid']}: legend label {lab!r} names {sorted(hits)} (left other)")
+             todo = [("quantity", C.X.record_text(rec), "quantity")] if q == "other" else []
+             vt = rec.get("value_text")
+             if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]]["enum"]:
+@@ -468,7 +513,7 @@ class Run:
+ 
+     def quotes(self, recs):
+         """d (D11): the quote, normalize()d, in the normalized texts of the record's scope (scope()), contiguous or every token in
+-        order (P140 C1); a null quote is not found."""
++        order (P140 C1); a null quote is not found. P162: a derived unit's condition (figures.json, no quote) is counted, not checked."""
+         self.labels = collections.defaultdict(list)
+         p = C.V2 / "kb" / f"{self.pid}.figures.json"
+         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+@@ -481,6 +526,10 @@ class Run:
+                                                                                     *(v.get("at_raw") or {}).values()) if x not in (None, "")]
+         out = []
+         for r in recs:
++            if r.get("origin"):                                                 # P162: a derived unit's condition comes from figures.json, not a quote
++                self.count("d", "derived condition (figures.json, no quote check)")
++                out.append(r)
++                continue
+             q, txt = normalize(r["rec"].get("quote") or ""), normalize(" ".join(self.scope(r["eid"])))
+             if not q:
+                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 0d02cb5..0f70170 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -67,39 +67,26 @@ THINKING = {"thinking_level": "MEDIUM"}
+ 
+ 
+ def consistency(pid, obj):
+-    """P160 B, part of every pass-0 run: for each panel whose pass-0 layout is curve_per_unit (point_per_unit), the curves (the points of
+-    its curves and its cells) of kb/<pid>.figures.json against the pass-0 units whose data name an item of that panel; a panel with fewer
+-    units than curves (points) is flagged "layout says one unit per curve; units missing". P161: derived = the units
+-    compile.curve_units() makes for the panel; the flag counts the pass-0 units and the derived ones."""
++    """P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
++    (compile.panel_items: the curves; a per_point series' points, any other series, the cells) and the units that hold them: held by a
++    pass-0 unit's data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses."""
+     import compile as K                                                         # P161
+-    p = C.V2 / "kb" / f"{pid}.figures.json"
+-    Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+-    panel = lambda i: str(i).split(":", 1)[-1].split("#")[0]                    # noqa: E731  'ela03:fig5a#c1' -> 'fig5a'
+-    curves, points = collections.Counter(), collections.Counter()
+-    for c in Fj.get("curves", []):
+-        k = f"fig{c['figure']}{c.get('panel', '')}"
+-        curves[k] += 1
+-        points[k] += len(c.get("points") or [])
+-    for v in Fj.get("values", []):
+-        if v.get("kind") == "cell":
+-            points[f"fig{v['figure']}{v.get('panel', '')}"] += 1
+-    units = collections.defaultdict(set)
+-    for u in (obj.get("units") or []) if isinstance(obj, dict) else []:
+-        for d in u.get("data") or []:
+-            units[panel(d.get("id") if isinstance(d, dict) else d)].add(u.get("id"))
+-    derived = collections.defaultdict(set)
++    obj = obj if isinstance(obj, dict) else {}
++    der = collections.defaultdict(set)
+     for u in K.curve_units(pid, obj):
+-        derived[u["panel"]].add(u["id"])
+-    out = []
+-    for x in (obj.get("panel_layouts") or []) if isinstance(obj, dict) else []:
+-        lay = x.get("layout")
+-        if lay not in ("curve_per_unit", "point_per_unit"):
++        for d in u["data"]:
++            der[(d["id"], d.get("point"))].add(u["id"])
++    items, out = K.panel_items(pid, obj), []
++    for x in obj.get("panel_layouts") or []:
++        if not isinstance(x, dict) or x.get("layout") not in K.UNIT_LAYOUTS:
+             continue
+-        want = curves[x["panel"]] if lay == "curve_per_unit" else points[x["panel"]]
+-        n, m = len(units[x["panel"]]), len(derived[x["panel"]])
+-        out.append(dict(panel=x["panel"], layout=lay, figures_json=want, what="curves" if lay == "curve_per_unit" else "points", units=n, derived=m,
+-                        unit_ids=";".join(sorted(units[x["panel"]])),
+-                        flag="layout says one unit per curve; units missing" if n + m < want else ("more units than curves" if n + m > want else "")))
++        its = items.get(x["panel"], [])
++        name = lambda i: i["curve"]["id"] + (f".p{i['point']}" if i["point"] else "")       # noqa: E731
++        held0 = [i for i in its if i["held"]]
++        heldd = [i for i in its if not i["held"] and (der.get((i["curve"]["id"], None)) or der.get((i["curve"]["id"], i["point"])))]
++        unb = [name(i) for i in its if not i["held"] and name(i) not in {name(j) for j in heldd}]
++        out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=len(held0), held_derived=len(heldd), unbound=len(unb),
++                        unit_ids=";".join(sorted({u for i in held0 for u in i["held"]})), unbound_ids=";".join(unb), flag=f"unbound: {len(unb)}" if unb else ""))
+     return out
+ 
+ 
+@@ -109,7 +96,7 @@ def main(arg):
+         lines = [json.loads(x) for x in (C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+         rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
+         for r in rows:
+-            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units + {r['derived']} derived {r['flag']}")
++            print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units {r['flag']}")
+         return 0
+     if "--plan" in sys.argv:                                                    # the planned call only, no call
+         js = jobs(pid)
+@@ -124,9 +111,9 @@ def main(arg):
+         roles[it.get("role", "?")] = roles.get(it.get("role", "?"), 0) + 1
+     print(f"{key} pass 0: {len(units)} units, by role {roles}; table layouts {len((obj or {}).get('table_layouts') or [])}, "
+           f"panel layouts {len((obj or {}).get('panel_layouts') or [])}")
+-    for r in consistency(pid, obj or {}):                                       # P160 B: one unit per curve (point) where the layout says so
++    for r in consistency(pid, obj or {}):                                       # P160 B, P162: the items of a per-unit panel no unit holds
+         if r["flag"]:
+-            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units + {r['derived']} derived: {r['flag']}")
++            print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units: {r['flag']}")
+     return 0
+ 
+ 
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index d5935f2..fef21ec 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -275,7 +275,8 @@ def units_block(pid):
+         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
+     obj = C.loads_json(p0[-1]["response"])
+     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
+-    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
++    data = lambda it: " ".join(f"{d.get('id')}" + (f" point {d['point']}" if d.get("point") else "") + f":{d.get('role')}" if isinstance(d, dict) else str(d)   # noqa: E731
++                               for d in (it.get("data") or [])) or "-"
+     line = lambda it: f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731
+     der = K.curve_units(pid, obj)
+     return "\n".join([line(it) for it in items if isinstance(it, dict)]
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 1e52d08..32da0ca 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -19,7 +19,8 @@ collapsed), across the round and the earlier undecided rows; its id is the label
+ back from those rows (printed_labels); the paper text is never read. DOIs come from corpus/manifest.csv (ingest/final/<pid>/ holds no
+ metadata file). Held-out papers (kb/extract/common.py HELD_OUT) are refused and never shown. Imports nothing of the project but export.
+ P157b: never.csv is applied by kb/extract/compile.py (unmapped.csv column never, export.never_index); propose drops those rows and does no
+-never matching of its own; decide.html shows the candidates found in two or more papers first.
++never matching of its own; decide.html shows the candidates found in two or more papers first. P162: an unmapped row of a paper of an
++applied round that its apply snapshot does not hold (born after apply) is carried into the next propose (carried_rows), not an A3 failure.
+ """
+ import argparse
+ import ast
+@@ -189,8 +190,9 @@ def unit_spellings():
+     return {str(v) for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}
+ 
+ 
+-def candidates(pids):
+-    """P156: the candidates of a set of papers from their compiled unmapped rows, and the log of how they were made.
++def candidates(pids, extra=()):
++    """P156: the candidates of a set of papers from their compiled unmapped rows, and the log of how they were made. P162: extra = rows
++    carried from papers of applied rounds (carried_rows), taken in beside the papers' own rows, by the same steps.
+ 
+     1. A row of a symbol-table layout (pass 0: P143 not_units, whose definition names the roles symbol, meaning, value; the record carries a
+        symbol) groups by table row and symbol: the cell whose text is the symbol is the symbol column, the other cell (or, when its text is
+@@ -209,9 +211,11 @@ def candidates(pids):
+     spell = unit_spellings()
+     log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
+     tables, rest = defaultdict(list), []
+-    for pid in pids:
++    carried = defaultdict(list)
++    for u in extra:
++        carried[u["pid"]].append(u)
++    for pid, rows in [(p, unmapped_rows(p)) for p in pids] + [(p, us) for p, us in carried.items() if p not in pids]:
+         layouts = pass0_tables(pid)
+-        rows = unmapped_rows(pid)
+         own = {(u["element"], u["label"]): u["symbol"] for u in rows if u["field"] == "quantity" and u["symbol"]}
+         for u in rows:
+             if u["field"] == "unit" and not u["symbol"]:                       # a unit row follows the quantity row of its cell and label
+@@ -297,6 +301,15 @@ def candidates(pids):
+ _CAND = {}
+ 
+ 
++def round_candidates(pids):
++    """P162: a round's candidates: its papers' rows and the rows carried from the papers of applied rounds (carried_rows). propose and the
++    apply snapshot read the same set."""
++    key = tuple(sorted(p for p in pids if p)) + ("+carried",)
++    if key not in _CAND:
++        _CAND[key] = candidates(key[:-1], extra=carried_rows(key[:-1]))
++    return _CAND[key]
++
++
+ def candidates_of(pids):
+     key = tuple(sorted(p for p in pids if p))
+     if key not in _CAND:
+@@ -387,7 +400,7 @@ def cmd_propose():
+     by_id = {x["id"]: x for x in rows}
+     dois = doi_of()
+     _CAND.clear()
+-    cands, log = candidates_of(pids)
++    cands, log = round_candidates(pids)                                          # P162: with the rows carried from applied rounds
+     conds = {pid: run_conditions(pid) for pid in pids}
+     new, touched = [], []
+     for cid, c in sorted(cands.items()):
+@@ -636,7 +649,7 @@ def snapshot(n, pids, pend):
+     """The rows of a round before apply changes anything: every compiled unmapped row of its papers with the candidate propose made of
+     it and that candidate's decision in pending.csv ('' when undecided; candidate '' for a never row or a value without a quantity)."""
+     _CAND.clear()
+-    cands, _ = candidates_of(pids)
++    cands, _ = round_candidates(pids)                                            # P162: the carried rows too, as propose made them
+     dec = {x["id"]: x["decision"] for x in pend}
+     out = []
+     for cid, c in cands.items():
+@@ -655,6 +668,83 @@ def head_noun(text):
+     return h[:-1] if h.endswith("s") and not h.endswith(("ss", "us", "is")) and len(h) > 3 else h
+ 
+ 
++NEW_SINCE_APPLY = "new since apply → next round"
++
++
++def open_rows(n, compiled, unm, snap):
++    """P157d A3, out of audit_round since P162: every open (not never) unmapped row of round n's compiled papers (unm: their unmapped.csv
++    rows), classified. P162: a row that would be unclassified and is absent from the round's apply snapshot (born after apply, e.g. a
++    derived unit's condition) is NEW_SINCE_APPLY: counted, listed and carried into the next propose (carried_rows), not a failure.
++    Returns (A3 rows, failures, the unmapped_rows() row of each A3 row)."""
++    fails = []
++    pend = {x["id"]: x for x in rd(PENDING)}
++    decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
++    _CAND.clear()
++    cands, log = candidates_of(sorted(compiled)) if compiled else ({}, dict(never=[], values=[]))
++    member, ngrp, vals = {}, {}, set()
++    ck = lambda u: (u["pid"], u["element"], u["field"], u["label"], u["unit"])  # noqa: E731
++    for cid, c in cands.items():
++        for u in c["members"]:
++            member.setdefault(ck(u), []).append(cid)
++    for u, nv in log["never"]:
++        if not u["never"]:
++            ngrp[ck(u)] = nv
++    for u in log["values"]:
++        vals.add(ck(u))
++    snap_of = {}
++    for r in snap:
++        snap_of.setdefault((r["pid"], r["element"], r["field"], r["label"], r["unit"]), []).append(r["candidate"])
++    a3, seen, src = [], Counter(), []
++    for p in sorted(compiled):
++        for u in unmapped_rows(p):
++            if u["never"]:
++                continue
++            k = ck(u)
++            cids = member.get(k, [])
++            cid = cids[min(seen[k], len(cids) - 1)] if cids else ""
++            seen[k] += 1
++            raw = next(x for x in unm[p] if x["element"] == u["element"] and x["field"] == u["field"] and x["label_as_printed"].strip() == u["label"])
++            if cid in pend:
++                cls, why = f"pending candidate {cid}", ("cell without printed label, keyed by its meaning" if not u["label"] else "")
++            elif raw["action"].startswith("kept (ambiguous"):
++                cls, why = "other", f"compile: {raw['action'][6:-1]}; propose groups it as {cid or 'nothing'}"
++            elif k in ngrp:
++                cls, why = "other", f"joined the symbol-table row of a never candidate through its symbol ({ngrp[k]}); propose drops the group"
++            elif k in vals:
++                cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
++            elif cid in decided_ids:
++                h = decided_ids[cid]
++                cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
++                    "a rejected label is written nowhere (by design)" if h["action"] == "reject" else "decided, but the row is still open")
++            elif not u["label"]:
++                cls, why = "cell without printed label", f"candidate {cid or 'none'}"
++            elif k not in snap_of:                                              # P162: born after apply (absent from the snapshot)
++                cls, why = NEW_SINCE_APPLY, f"candidate {cid or 'none'}: not in R{n}_apply.decision_rows.csv; carried into the next propose"
++            else:
++                cls, why = "unclassified", f"candidate {cid or 'none'}: not pending, not decided"
++            if cls == "unclassified" or why.endswith("still open"):
++                fails.append(f"A3 {p}:{u['element']} {u['field']} '{u['label']}': {why}")
++            a3.append(dict(pid=p, element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], record_key=X.norm_label(u["text"]), **{"class": cls},
++                           candidate_at_snapshot=";".join(snap_of.get(k, [])), why=why))
++            src.append(u)
++    return a3, fails, src
++
++
++def carried_rows(exclude=()):
++    """P162: the rows open_rows() classes NEW_SINCE_APPLY, of the papers of every applied round with an apply snapshot (a paper in two
++    such rounds: the later one), the papers in exclude (the open round's own, read whole) left out."""
++    out, done = [], set(exclude)
++    for r in sorted(rounds(), key=lambda r: -int(r["round"])):
++        snap = rd(REPORTS / f"R{r['round']}_apply.decision_rows.csv") if r["status"] == "applied" else []
++        pids = [p for p in r["pids"].split(";") if p and p not in done and (COMPILED / f"{p}.facts.csv").exists()]
++        if not snap or not pids:
++            continue
++        done |= set(pids)
++        rows, _, us = open_rows(int(r["round"]), set(pids), {p: rd(COMPILED / f"{p}.unmapped.csv") for p in pids}, snap)
++        out += [u for x, u in zip(rows, us) if x["class"] == NEW_SINCE_APPLY]
++    return out
++
++
+ def audit_round(n):
+     """P157d: A1-A3 of round n (the P157c audit), written to kb/reports/R<n>_apply.{A1,A2,A3,A3_pending}.csv, .acceptance.txt and .html.
+     A1: every decision of the round (history.csv; back-fill rows extend its never labels) and every row it covered (the snapshot), with
+@@ -662,7 +752,8 @@ def audit_round(n):
+     agree when the record's meaning and the entry share the head noun. A3: every open row, classified; every pending candidate of the
+     round's papers accounted for. Acceptance: A1 every covered row has its effect, except a reject (by design), a paper with no compiled
+     output and the unit row of a promoted record (a units.yaml matter); A2 no disagree; A3 no unclassified row, no pending candidate
+-    lost a row. Returns the failures (printed by the caller, never silenced)."""
++    lost a row. P162: A3 is open_rows() (a row born after apply: NEW_SINCE_APPLY, carried, not a failure); A1 also reads the papers of rows
++    a propose carried into the round (carried_rows). Returns the failures (printed by the caller, never silenced)."""
+     rnd = next((r for r in rounds() if r["round"] == str(n)), None)
+     if rnd is None:
+         raise Stop(f"no round {n}")
+@@ -671,8 +762,9 @@ def audit_round(n):
+     if not snap:
+         raise Stop(f"kb/reports/R{n}_apply.decision_rows.csv missing (written by apply before it changes anything)")
+     compiled = {p for p in pids if (COMPILED / f"{p}.facts.csv").exists()}
+-    unm = {p: rd(COMPILED / f"{p}.unmapped.csv") for p in compiled}
+-    pro = {p: rd(COMPILED / f"{p}.promoted.csv") for p in compiled}
++    a1p = compiled | {r["pid"] for r in snap if (COMPILED / f"{r['pid']}.facts.csv").exists()}   # P162: + the papers of rows carried in (A1 only)
++    unm = {p: rd(COMPILED / f"{p}.unmapped.csv") for p in a1p}
++    pro = {p: rd(COMPILED / f"{p}.promoted.csv") for p in a1p}
+     hist = [h for h in rd(HISTORY) if h["round"] == str(n)]
+     nev = [r for r in X.never_rows() if r["source"].startswith(f"round {n}")]
+     never_of = defaultdict(list)                                               # decision id -> its never.csv rows
+@@ -682,7 +774,7 @@ def audit_round(n):
+     entries = {e["id"]: e for e in onto()["entries"]}
+     fails, a1 = [], []
+     pool, used = defaultdict(list), Counter()
+-    for p in compiled:
++    for p in a1p:
+         for u in unm[p]:
+             pool[(p, u["element"], u["field"], u["label_as_printed"].strip(), u["unit"])].append(u)
+     taken_pro = set()
+@@ -702,7 +794,7 @@ def audit_round(n):
+         src = [p for p in h["source_pids"].split(";") if p]
+         base = dict(id=cid, decision=act + (f" -> {h['target']}" if h["target"] else ""), covers=covers)
+         if not rows:
+-            why = (f"no compiled output for {', '.join(src)}" if src and not set(src) & compiled else "no row of this decision in the snapshot")
++            why = (f"no compiled output for {', '.join(src)}" if src and not set(src) & a1p else "no row of this decision in the snapshot")
+             a1.append(dict(base, now="none", effect="n/a" if "no compiled output" in why else "no effect", reason=why))
+             if "no compiled output" not in why and act != "reject":
+                 fails.append(f"A1 {cid}: {why}")
+@@ -713,7 +805,7 @@ def audit_round(n):
+             u = hits[used[k]] if used[k] < len(hits) else None
+             used[k] += 1 if u else 0
+             row = dict(base, pid=r["pid"], element=r["element"], field=r["field"], row_label=r["label"])
+-            if r["pid"] not in compiled:
++            if r["pid"] not in a1p:
+                 a1.append(dict(row, now="none", effect="n/a", reason=f"no compiled output for {r['pid']}"))
+                 continue
+             if u is None:
+@@ -764,54 +856,9 @@ def audit_round(n):
+             if verdict in ("disagree", "no meaning text"):
+                 fails.append(f"A2 {p}:{x['element']} '{x['printed']}' -> {x['id']}: {verdict} (head nouns {hr} / {hn} / {hd})")
+     write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)
+-    # A3
++    a3, fails3, _ = open_rows(n, compiled, unm, snap)
++    fails += fails3
+     pend = {x["id"]: x for x in rd(PENDING)}
+-    decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
+-    _CAND.clear()
+-    cands, log = candidates_of(sorted(compiled)) if compiled else ({}, dict(never=[], values=[]))
+-    member, ngrp, vals = {}, {}, set()
+-    ck = lambda u: (u["pid"], u["element"], u["field"], u["label"], u["unit"])  # noqa: E731
+-    for cid, c in cands.items():
+-        for u in c["members"]:
+-            member.setdefault(ck(u), []).append(cid)
+-    for u, nv in log["never"]:
+-        if not u["never"]:
+-            ngrp[ck(u)] = nv
+-    for u in log["values"]:
+-        vals.add(ck(u))
+-    snap_of = {}
+-    for r in snap:
+-        snap_of.setdefault((r["pid"], r["element"], r["field"], r["label"], r["unit"]), []).append(r["candidate"])
+-    a3, seen = [], Counter()
+-    for p in sorted(compiled):
+-        for u in unmapped_rows(p):
+-            if u["never"]:
+-                continue
+-            k = ck(u)
+-            cids = member.get(k, [])
+-            cid = cids[min(seen[k], len(cids) - 1)] if cids else ""
+-            seen[k] += 1
+-            raw = next(x for x in unm[p] if x["element"] == u["element"] and x["field"] == u["field"] and x["label_as_printed"].strip() == u["label"])
+-            if cid in pend:
+-                cls, why = f"pending candidate {cid}", ("cell without printed label, keyed by its meaning" if not u["label"] else "")
+-            elif raw["action"].startswith("kept (ambiguous"):
+-                cls, why = "other", f"compile: {raw['action'][6:-1]}; propose groups it as {cid or 'nothing'}"
+-            elif k in ngrp:
+-                cls, why = "other", f"joined the symbol-table row of a never candidate through its symbol ({ngrp[k]}); propose drops the group"
+-            elif k in vals:
+-                cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
+-            elif cid in decided_ids:
+-                h = decided_ids[cid]
+-                cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
+-                    "a rejected label is written nowhere (by design)" if h["action"] == "reject" else "decided, but the row is still open")
+-            elif not u["label"]:
+-                cls, why = "cell without printed label", f"candidate {cid or 'none'}"
+-            else:
+-                cls, why = "unclassified", f"candidate {cid or 'none'}: not pending, not decided"
+-            if cls == "unclassified" or why.endswith("still open"):
+-                fails.append(f"A3 {p}:{u['element']} {u['field']} '{u['label']}': {why}")
+-            a3.append(dict(pid=p, element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], record_key=X.norm_label(u["text"]), **{"class": cls},
+-                           candidate_at_snapshot=";".join(snap_of.get(k, [])), why=why))
+     write(REPORTS / f"R{n}_apply.A3.csv", A3_COLS, a3)
+     a3p = []
+     for cid, x in pend.items():
+@@ -834,6 +881,8 @@ def audit_round(n):
+     acc = [f"round {n} acceptance (grow.py audit_round)", f"A1: {len(decisions)} decisions, {len(a1)} rows: effect {dict(eff)}",
+            f"A2: {len(a2)} promotions: {dict(Counter(r['verdict'] for r in a2))}", f"A3: {len(a3)} open rows: {dict(Counter(r['class'].split(' ')[0] for r in a3))}; "
+            f"pending candidates accounted {sum(1 for r in a3p if r['accounted'] == 'yes')}/{len(a3p)}",
++           f"A3 {NEW_SINCE_APPLY} (P162, carried, not a failure): {sum(1 for r in a3 if r['class'] == NEW_SINCE_APPLY)} rows"
++           + "".join(f"\n  {r['pid']}:{r['element']} {r['field']} '{r['label']}'" for r in a3 if r["class"] == NEW_SINCE_APPLY),
+            "result: " + ("PASS" if not fails else f"FAIL ({len(fails)})")] + [f"FAIL {f}" for f in fails]
+     (REPORTS / f"R{n}_apply.acceptance.txt").write_text("\n".join(acc) + "\n", encoding="utf-8")
+     R_ = f"psed_v2/kb/reports/R{n}_apply"

@@ -1,5 +1,5 @@
 input: 18 lines; pass 0 = line 4; 14 pass-1 lines for 14 groups; ignored lines 
-input: 32 units derived from curves (P161): 10.1021_acs.chemmater.2c01154:fig2:c1.p1, 10.1021_acs.chemmater.2c01154:fig2:c1.p2, 10.1021_acs.chemmater.2c01154:fig2:c1.p3, 10.1021_acs.chemmater.2c01154:fig2:c1.p4, 10.1021_acs.chemmater.2c01154:fig2:c1.p5, 10.1021_acs.chemmater.2c01154:fig2:c1.p6, 10.1021_acs.chemmater.2c01154:fig2:c1.p7, 10.1021_acs.chemmater.2c01154:fig2:c1.p8, 10.1021_acs.chemmater.2c01154:fig2:c1.p9, 10.1021_acs.chemmater.2c01154:fig2:c1.p10, 10.1021_acs.chemmater.2c01154:fig2:c1.p11, 10.1021_acs.chemmater.2c01154:fig2:c1.p12, 10.1021_acs.chemmater.2c01154:fig2:c1.p13, 10.1021_acs.chemmater.2c01154:fig2:c1.p14, 10.1021_acs.chemmater.2c01154:fig2:c2.p1, 10.1021_acs.chemmater.2c01154:fig2:c2.p2, 10.1021_acs.chemmater.2c01154:fig2:c2.p3, 10.1021_acs.chemmater.2c01154:fig2:c2.p4, 10.1021_acs.chemmater.2c01154:fig2:c2.p5, 10.1021_acs.chemmater.2c01154:fig2:c2.p6, 10.1021_acs.chemmater.2c01154:fig2:c2.p7, 10.1021_acs.chemmater.2c01154:fig2:c2.p8, 10.1021_acs.chemmater.2c01154:fig2:c2.p9, 10.1021_acs.chemmater.2c01154:fig2:c2.p10, 10.1021_acs.chemmater.2c01154:fig2:c2.p11, 10.1021_acs.chemmater.2c01154:fig2:c2.p12, 10.1021_acs.chemmater.2c01154:fig2:c2.p13, 10.1021_acs.chemmater.2c01154:fig2:c2.p14, 10.1021_acs.chemmater.2c01154:fig2:c2.p15, 10.1021_acs.chemmater.2c01154:fig2:c2.p16, 10.1021_acs.chemmater.2c01154:fig2:c2.p17, 10.1021_acs.chemmater.2c01154:fig2:c2.p18
+input: 2 units derived from curves (P161): 10.1021_acs.chemmater.2c01154:fig2:c1, 10.1021_acs.chemmater.2c01154:fig2:c2
 a0: fig2: value_text 'Amorphous' -> amorphous (value:crystallinity: value id 'amorphous')
 a0: fig2: value_text 'Amorphous' -> amorphous (value:crystallinity: value id 'amorphous')
 a0: fig2: value_text 'Amorphous' -> amorphous (value:crystallinity: value id 'amorphous')
@@ -32,6 +32,8 @@ a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
+a0: fig2.cap: legend label 'Amorphous' -> crystallinity = amorphous (value:crystallinity: value id 'amorphous')
+a0: fig2.cap: legend label 'Crystalline' -> crystallinity = crystalline (value:crystallinity: value id 'crystalline')
 a: s2.p1: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: fig3b: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 g: s3.p6: mention_unmatched ['unit_fig1c']
@@ -66,7 +68,7 @@ g: s3.x7: mention_unmatched ['unit_ws2_150c']
 g: s3.x7: mention_unmatched ['unit_tis2_100c']
 g: s3.p48: mention_unmatched ['unit_tis2_100c']
 g: s3.p48: mention_unmatched ['unit_tis2_100c']
-h: tree from pass 0: run 74, simulation 0, specimen 0, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+h: tree from pass 0: run 44, simulation 0, specimen 0, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 h: specimen_created mat22:run:run_grid_1:film
 h: specimen_created mat22:run:run_grid_19:film
 h: specimen_created mat22:run:unit_fig1c:film
@@ -109,6 +111,10 @@ h: specimen_created mat22:run:run_grid_31:film
 h: specimen_created mat22:run:run_grid_29:film
 h: specimen_created mat22:run:unit_fig6b:film
 h: specimen_created mat22:run:unit_tis2_100c:film
+h: specimen_created mat22:run:10_1021_acs_chemmater_2c01154_fig2_c1:film
+h: 1 result rows moved to mat22:run:10_1021_acs_chemmater_2c01154_fig2_c1:film
+h: specimen_created mat22:run:10_1021_acs_chemmater_2c01154_fig2_c2:film
+h: 1 result rows moved to mat22:run:10_1021_acs_chemmater_2c01154_fig2_c2:film
 h: 2 result rows moved to mat22:run:run_grid_1:film
 h: 1 result rows moved to mat22:run:run_grid_10:film
 h: 1 result rows moved to mat22:run:run_grid_11:film
@@ -164,41 +170,41 @@ i: merged fig4.cap into fig2.cap;fig4.cap (cycle_number )
 i: merged fig6.cap into s3.x5;fig6.cap (cycle_number 500)
 i: merged fig7a into s3.p14;s3.p19;s3.x6;fig1a;fig7a (deposition_temperature 150)
 i: merged fig8.cap into fig2.cap;fig4.cap;fig8.cap (cycle_number )
-j: derived over 42 entities: 4 rows; not derived: {'no fact for H': 81, 'no fact for p': 84, 'E: no fact for p': 42, 'no fact for rho': 78, 'n: no fact for gpc': 39, 'gpc: no fact for n': 39, 'no fact for dn': 42, 'no fact for mg': 84, 'no fact for N': 36, 'no fact for h2': 42, 'no fact for phi': 42, 'lam: no fact for p': 42, 'stated: mat22:s5.p6#10 51 s': 42, 'gpc: n: no fact for gpc': 39, 'derive raised: cannot convert cycle to 1': 6, 'no fact for M': 3, 'stated: mat22:s3.p30#1 0.6 nm-2': 1, 'no fact for rb': 3, 'gpc: no fact for M': 3, 'stated: mat22:s3.p30#2 1.6 nm-2': 1, 'stated: mat22:s3.p32#1 2.2 nm-2': 1, 'no fact for t': 2}
+j: derived over 44 entities: 4 rows; not derived: {'no fact for H': 85, 'no fact for p': 88, 'E: no fact for p': 44, 'no fact for rho': 82, 'n: no fact for gpc': 41, 'gpc: no fact for n': 41, 'no fact for dn': 44, 'no fact for mg': 88, 'no fact for N': 38, 'no fact for h2': 44, 'no fact for phi': 44, 'lam: no fact for p': 44, 'stated: mat22:s5.p6#10 51 s': 44, 'gpc: n: no fact for gpc': 41, 'derive raised: cannot convert cycle to 1': 6, 'no fact for M': 3, 'stated: mat22:s3.p30#1 0.6 nm-2': 1, 'no fact for rb': 3, 'gpc: no fact for M': 3, 'stated: mat22:s3.p30#2 1.6 nm-2': 1, 'stated: mat22:s3.p32#1 2.2 nm-2': 1, 'no fact for t': 2}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 29 nodes for 37 claims; claims without a full triple (query.node_of empty): 4
-j: comparisons from figures.json (1c): 7
-step input: {'records': 330, 'unit derived (derived: point_per_unit, run)': 32, 'condition of a derived unit (the legend label, other)': 32}
-step a0: {'quantity other: never.csv word': 4, 'value_text promoted (value:crystallinity: value)': 32}
+j: comparisons from figures.json (1c): 8
+step input: {'records': 330, 'unit derived (derived: point_per_unit, run)': 2, 'condition of a derived unit: the legend label (other)': 2}
+step a0: {'quantity other: never.csv word': 4, 'value_text promoted (value:crystallinity: value)': 32, 'derived legend label -> categorical value': 2}
 step a_p158: {'P158 rule 4 (predates the freeze, kept)': 2}
-step a: {'kept': 362}
-step b: {'kept': 362}
-step c: {'quantity_other never (kept)': 4, 'quantity_other (kept)': 32, 'kept': 362}
-step d: {'quote_not_found': 54, 'kept': 308}
-step e: {'unit_unresolved (kept as printed)': 1, 'kept': 308}
-step f: {'species_resolved': 5, 'kept': 308}
+step a: {'kept': 332}
+step b: {'kept': 332}
+step c: {'quantity_other never (kept)': 4, 'kept': 332}
+step d: {'quote_not_found': 54, 'derived condition (figures.json, no quote check)': 2, 'kept': 278}
+step e: {'unit_unresolved (kept as printed)': 1, 'kept': 278}
+step f: {'species_resolved': 5, 'kept': 278}
 step g: {'mention_unmatched': 32}
-step h: {'place: claim -> paper': 37, 'place: cited -> paper': 11, 'place: about paper -> recipe': 75, 'specimen_created': 42, 'place: result about a run -> film measurement': 91, 'place: about paper, method -> paper method activity': 15, 'place: setting about a run -> deposition': 78, 'place: caveat -> paper': 1}
-step m: {'label_as_printed filled with the quantity id': 17, 'statement filled from the quote': 259, 'links resolved': 8, 'links named elements without facts': 5}
-step 1c: {'curve named by several units (left out)': 2, 'curve -> observation': 6, 'data role measured': 6, 'peak -> observation': 25, 'crystallinity value_text resolved (F3)': 32, 'cell -> observation': 32, 'cell without a quantity id (result left out)': 32}
-step i: {'merged': 21, 'kept': 350}
-step n: {'comparison replicate': 3, 'comparison series': 3, 'comparison grid': 1}
+step h: {'place: claim -> paper': 37, 'place: cited -> paper': 11, 'place: about paper -> recipe': 75, 'specimen_created': 44, 'place: result about a run -> film measurement': 91, 'place: about paper, method -> paper method activity': 15, 'place: setting about a run -> deposition': 48, 'place: caveat -> paper': 1}
+step m: {'label_as_printed filled with the quantity id': 17, 'statement filled from the quote': 229, 'links resolved': 8, 'links named elements without facts': 5}
+step 1c: {'curve -> observation': 8, 'data role measured': 8, 'peak -> observation': 25, 'crystallinity value_text resolved (F3)': 32, 'cell -> observation': 32, 'cell without a quantity id (result left out)': 32}
+step i: {'merged': 21, 'kept': 322}
+step n: {'comparison replicate': 3, 'comparison series': 4, 'comparison grid': 1}
 step j: {'derived sheet_resistance': 1, 'derived element_ratio{element=H;reference_element=Mo}': 3}
-step k: {'statement from the record': 287, 'statement_copies_text (reported by check)': 44, 'statement assembled': 67}
+step k: {'statement from the record': 257, 'statement_copies_text (reported by check)': 44, 'statement assembled': 69}
 diff against the gold:
-  observation   313  161  109  0.68  0.35
-  setting       251  139   67  0.48  0.27
-  activity      249  175  133  0.76  0.53
+  observation   313  163  109  0.67  0.35
+  setting       251  109   67  0.61  0.27
+  activity      249  147  135  0.92  0.54
   cited          58   11    6  0.55  0.10
   caveat         54    1    1  1.00  0.02
-  entity         54   42   42  1.00  0.78
+  entity         54   44   42  0.95  0.78
   claim          52   37   27  0.73  0.52
   definition     14    0    0     -  0.00
-  comparison     12    7    2  0.29  0.17
+  comparison     12    8    2  0.25  0.17
   model           8    1    1  1.00  0.12
   derived         4    4    0  0.00  0.00
   identity        1    0    0     -  0.00
   paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 1/14
 gold model rows with quantity and value: 1: {'other': 1}
-observations: gold 313, compiled 161, matched 109
+observations: gold 313, compiled 163, matched 109

@@ -6,8 +6,8 @@ yli18,type,derived,15,27,7,0.26,0.47,
 yli18,type,claim,13,15,8,0.53,0.62,
 yli18,type,entity,12,12,6,0.50,0.50,
 yli18,type,activity,11,10,4,0.40,0.36,
-yli18,type,caveat,7,8,2,0.25,0.29,
 yli18,type,observation,7,6,2,0.33,0.29,
+yli18,type,caveat,7,8,2,0.25,0.29,
 yli18,type,cited,5,0,0,-,0.00,
 yli18,type,comparison,3,1,0,0.00,0.00,
 yli18,type,identity,1,0,0,-,0.00,
@@ -68,15 +68,15 @@ yim20,placement,differs: gold comparison replicate / compiled activity recipe,,,
 yim20,placement,differs: gold derived / compiled activity recipe,,,,,,1
 yim20,placement,differs: gold entity / compiled activity deposition,,,,,,1
 yim20,placement,differs: gold activity deposition / compiled activity recipe,,,,,,1
-mat22,type,observation,313,161,109,0.68,0.35,
-mat22,type,setting,251,139,67,0.48,0.27,
-mat22,type,activity,249,175,133,0.76,0.53,
+mat22,type,observation,313,163,109,0.67,0.35,
+mat22,type,setting,251,109,67,0.61,0.27,
+mat22,type,activity,249,147,135,0.92,0.54,
 mat22,type,cited,58,11,6,0.55,0.10,
 mat22,type,caveat,54,1,1,1.00,0.02,
-mat22,type,entity,54,42,42,1.00,0.78,
+mat22,type,entity,54,44,42,0.95,0.78,
 mat22,type,claim,52,37,27,0.73,0.52,
 mat22,type,definition,14,0,0,-,0.00,
-mat22,type,comparison,12,7,2,0.29,0.17,
+mat22,type,comparison,12,8,2,0.25,0.17,
 mat22,type,model,8,1,1,1.00,0.12,
 mat22,type,derived,4,4,0,0.00,0.00,
 mat22,type,identity,1,0,0,-,0.00,
@@ -88,6 +88,7 @@ mat22,check_tree,"carrier_density measured on the paper's method activity ·, no
 mat22,check_tree,a film thickness setting that is not a target (thickness is a result; ·),,,,,,2
 mat22,check_tree,plasma_gas_ratio without relative_to= (its definition key; ·),,,,,,2
 mat22,check_tree,plasma_gas_ratio without relative_to= (what it is a fraction of; ·),,,,,,2
+mat22,check_tree,observation with the setting quantity deposition_temperature (lists.SETTING_QUANTITIES),,,,,,2
 mat22,check_tree,a spread fact (stat=) without between= and n= (·),,,,,,1
 mat22,check_tree,growth_per_cycle without over= (its definition key; ·),,,,,,1
 mat22,check_tree,"resistivity measured on the paper's method activity ·, not on an entity",,,,,,1
@@ -97,7 +98,7 @@ mat22,check_tree,"element_ratio measured on the paper's method activity ·, not 
 mat22,drops,d:quote_not_found,,,,,,54
 mat22,about,filled (a pass-0 unit),,,,,,188
 mat22,about,paper,,,,,,142
-mat22,placement,parent kind = gold,,,,,,353
+mat22,placement,parent kind = gold,,,,,,355
 mat22,placement,differs: gold paper / compiled entity,,,,,,10
 mat22,placement,differs: gold entity / compiled paper,,,,,,8
 mat22,placement,differs: gold cited / compiled paper,,,,,,5
@@ -107,19 +108,19 @@ mat22,placement,differs: gold activity recipe / compiled paper,,,,,,2
 mat22,placement,differs: gold activity measurement / compiled activity deposition,,,,,,1
 mat22,placement,differs: gold activity measurement / compiled activity recipe,,,,,,1
 mat22,placement,differs: gold comparison series / compiled activity measurement,,,,,,1
-ela03,type,setting,277,99,56,0.57,0.20,
-ela03,type,model,57,69,35,0.51,0.61,
-ela03,type,activity,46,62,13,0.21,0.28,
-ela03,type,observation,38,31,12,0.39,0.32,
+ela03,type,setting,277,82,56,0.68,0.20,
+ela03,type,model,57,73,35,0.48,0.61,
+ela03,type,activity,46,31,15,0.48,0.33,
+ela03,type,observation,38,33,13,0.39,0.34,
 ela03,type,claim,37,20,9,0.45,0.24,
-ela03,type,entity,34,30,13,0.43,0.38,
+ela03,type,entity,34,36,13,0.36,0.38,
 ela03,type,cited,21,6,5,0.83,0.24,
-ela03,type,derived,17,28,4,0.14,0.24,
+ela03,type,derived,17,30,4,0.13,0.24,
 ela03,type,caveat,15,1,1,1.00,0.07,
 ela03,type,definition,10,3,1,0.33,0.10,
 ela03,type,comparison,8,4,0,0.00,0.00,
 ela03,type,paper,1,1,1,1.00,1.00,
-ela03,check_tree,claim without links,,,,,,11
+ela03,check_tree,claim without links,,,,,,10
 ela03,check_tree,"observation under · (activity recipe), not under a measurement activity or a comparison",,,,,,3
 ela03,check_tree,range ·–· is not a range its statement prints (·),,,,,,3
 ela03,check_tree,"feature_width measured on the paper's method activity ·, not on an entity",,,,,,1
@@ -128,7 +129,7 @@ ela03,drops,d:quote_not_found,,,,,,31
 ela03,drops,a:schema:required,,,,,,7
 ela03,about,filled (a pass-0 unit),,,,,,167
 ela03,about,paper,,,,,,80
-ela03,placement,parent kind = gold,,,,,,99
+ela03,placement,parent kind = gold,,,,,,101
 ela03,placement,differs: gold entity / compiled activity deposition,,,,,,10
 ela03,placement,differs: gold activity recipe / compiled activity deposition,,,,,,7
 ela03,placement,differs: gold comparison series / compiled entity,,,,,,7
@@ -145,3 +146,30 @@ ela03,placement,differs: gold entity / compiled activity measurement,,,,,,1
 ela03,placement,differs: gold comparison series / compiled activity simulation,,,,,,1
 ela03,placement,differs: gold activity simulation / compiled entity,,,,,,1
 ela03,placement,differs: gold entity / compiled activity recipe,,,,,,1
+ela03,placement,differs: gold comparison series / compiled activity measurement,,,,,,1
+hei24,type,model,189,163,151,0.93,0.80,
+hei24,type,setting,172,163,0,0.00,0.00,
+hei24,type,entity,83,163,80,0.49,0.96,
+hei24,type,definition,35,0,0,-,0.00,
+hei24,type,comparison,24,0,0,-,0.00,
+hei24,type,claim,20,0,0,-,0.00,
+hei24,type,derived,16,0,0,-,0.00,
+hei24,type,caveat,7,0,0,-,0.00,
+hei24,type,activity,1,2,0,0.00,0.00,
+hei24,type,identity,1,0,0,-,0.00,
+hei24,type,paper,1,1,0,0.00,0.00,
+hei24,placement,parent kind = gold,,,,,,231
+gor03,type,setting,52,0,0,-,0.00,
+gor03,type,model,21,1,1,1.00,0.05,
+gor03,type,claim,18,0,0,-,0.00,
+gor03,type,cited,11,0,0,-,0.00,
+gor03,type,activity,11,5,3,0.60,0.27,
+gor03,type,observation,11,0,0,-,0.00,
+gor03,type,derived,10,0,0,-,0.00,
+gor03,type,definition,8,0,0,-,0.00,
+gor03,type,caveat,7,0,0,-,0.00,
+gor03,type,entity,6,4,4,1.00,0.67,
+gor03,type,comparison,1,0,0,-,0.00,
+gor03,type,paper,1,1,0,0.00,0.00,
+gor03,placement,parent kind = gold,,,,,,7
+gor03,placement,differs: gold activity recipe / compiled paper,,,,,,1

@@ -275,7 +275,8 @@ def units_block(pid):
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
     obj = C.loads_json(p0[-1]["response"])
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
-    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
+    data = lambda it: " ".join(f"{d.get('id')}" + (f" point {d['point']}" if d.get("point") else "") + f":{d.get('role')}" if isinstance(d, dict) else str(d)   # noqa: E731
+                               for d in (it.get("data") or [])) or "-"
     line = lambda it: f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731
     der = K.curve_units(pid, obj)
     return "\n".join([line(it) for it in items if isinstance(it, dict)]
