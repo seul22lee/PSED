@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): e98f546e68f1fd74db449bcb5820d375496ee628b8f41b6f4e4cdaf913e2a105
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): da28f96fdcf34954c03ef898c98465f2f4013d4ff3c5242122f0306ed7bfd554
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -262,7 +262,7 @@ entries:
   - id: reactor_type
     type: categorical
     label: "reactor"
-    name: "reactor"
+    name: "reactor type"
     origin: base
     role: condition
     category: ald_reactor
@@ -297,7 +297,7 @@ entries:
     values_from: "structure entries"
     definition: "The test structure or substrate on which conformality is quantified (Cremers 2019, Sec. III, Table I 'Structure'; Tables II-IV 'Substrate'); value is a structure id."
     dimension: categorical
-    aliases: [Substrate, Structure, "LHAR type"]
+    aliases: [Structure, LHAR type]
     base: {source: cremers_2019, section: "Sec. III, Table I"}
     evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Ylilammi2018 Fig. 6", "Werbrouck2021 Fig. 3"]
 
@@ -310,12 +310,12 @@ entries:
     role: condition
     category: deposition_run
     definition: "The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column 'T')."
-    symbol: T
     dimension: temperature
     unit: "°C"
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
-    aliases: ["Deposition temperature", "substrate temperature", "Temperature (°C)", "T (°C)", "Temperature (K)"]
+    aliases: [Deposition temperature, substrate temperature, Temperature (°C), Temperature (K)]
+    symbols: [{text: T, paper: 10.1039_d0cp03358h}, {text: T, paper: 10.1063_1.5028178}, {text: T, paper: 10.1116_6.0001094}, {text: T (°C), paper: ''}]
     base: {source: schema_miner, path: ProcessParameters/Temperature}
     deviation: {type: renamed, reason: "several temperatures exist (source, gas, annealing); only this one carries data"}
     evidence: ["Yim2020 Sec. C.B", "Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 10", "Ylilammi2018 Sec. VII", "Ylilammi2018 Figs. 2-5", "Werbrouck2021 Sec. II D"]
@@ -346,12 +346,12 @@ entries:
     role: output
     category: growth
     definition: "The amount of material deposited on the surface after each ALD cycle, here expressed as thickness per cycle (Cremers 2019, Sec. I)."
-    symbol: GPC
     dimension: length_per_cycle
     unit: nm/cycle
     qudt_unit: "unit:NanoM"
     qualifiers: [position, over, kind]
-    aliases: [GrowthPerCycle, "growth per cycle", GPC, "Thickness/cycles S/N (nm)", "SI/N (GPCI)", "SIIb/N (GPCIIb)", "Film growth per cycle"]
+    aliases: [GrowthPerCycle, growth per cycle, GPC, Thickness/cycles S/N (nm), SI/N (GPCI), SIIb/N (GPCIIb), Film growth per cycle]
+    symbols: [{text: GPC, paper: 10.1039_d0cp03358h}, {text: GPC, paper: 10.1116_6.0001094}]
     base: {source: schema_miner, path: ProcessParameters/ThicknessControl/GrowthPerCycle}
     deviation: {type: role_changed, reason: "an outcome of the process, not a process parameter"}
     evidence: ["Yim2020 Table 1", "Yim2020 Fig. 9b", "Yim2020 Fig. 9e", "Yim2020 Fig. 10b", "Yim2020 Fig. 10e", "Werbrouck2021 Sec. II D"]
@@ -386,7 +386,8 @@ entries:
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:SEC"
     qualifiers: [step]
-    aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length, t_1]
+    aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length]
+    symbols: [{text: t_1, paper: 10.1039_d1cp04758b}]
     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
     deviation: {type: renamed, reason: "Cremers and all gold papers say pulse time; the two fields become one entry with the step qualifier"}
     evidence: [Yim2020 Table 1, Yim2020 Fig. 11a, Yim2020 Fig. 10, Ylilammi2018 Fig. 5, Ylilammi2018 Fig. 4, Ylilammi2018 Sec. VII, Werbrouck2021 Fig. 11, Werbrouck2021 Sec. II D, 'alias ''t_1'': yim22 tab1.r2c1 (P131b alias audit)']
@@ -516,12 +517,12 @@ entries:
     role: condition
     category: test_structure
     definition: "Aspect ratio of the structure, AR = L/w, with L the depth and w the width of the structure (Cremers 2019, Sec. II G, Eq. 11)."
-    symbol: AR
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [AspectRatio, aspect ratio, Max. AR, structural aspect ratio, L/d]
+    symbols: [{text: AR, paper: 10.1039_d0cp03358h}, {text: AR, paper: 10.1063_1.5028178}, {text: AR, paper: 10.1116_6.0001094}]
     base: {source: schema_miner, path: MaterialProperties/Conformality/AspectRatio}
     deviation: {type: split, reason: "split into aspect_ratio and coated_aspect_ratio: the AR of the structure is not the AR reached by the coating (Cremers Sec. II G-H)"}
     evidence: [Yim2020 Table 2, Yim2020 Fig. 1, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''L/d'': ela03 abs.g1 (P131b alias audit)']
@@ -536,13 +537,13 @@ entries:
     category: conformality
     family: conformality
     definition: "The (equivalent) aspect ratio reached by the coating: equal to that of the structure for complete coverage, otherwise calculated from PD50% (Cremers 2019, Sec. II H; Tables II-IV)."
-    symbol: coated (E)AR
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [basis]
-    aliases: ["coated EAR", "coated (E)AR", "x̃50%"]
+    aliases: [coated EAR, coated (E)AR]
+    symbols: [{text: coated (E)AR, paper: 10.1039_d0cp03358h}, {text: coated (E)AR, paper: 10.1116_6.0003182}, {text: x̃50%, paper: ''}]
     base: {source: cremers_2019, section: "Sec. II H; second half of the split of schema_miner MaterialProperties/Conformality/AspectRatio (path recorded on aspect_ratio)"}
     evidence: ["Yim2020 Table 1", "gre23 Fig. 6 (the Zn profile through the compact: the coating reaches the full half-thickness, AR 7800)", "gre23 Sec. III C (s14.p1)"]
 
@@ -588,13 +589,13 @@ entries:
     role: condition
     category: cycle_step
     definition: "Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3)."
-    symbol: P_i
     dimension: pressure
     unit: Pa
     qudt_quantity_kind: "quantitykind:PartialPressure"
     qudt_unit: "unit:PA"
     qualifiers: [species]
-    aliases: [Partial pressure of reactant A, Input partial pressure of reactant A, Pressure pA (Pa), pA0 (Pa), pO (mbar), Partial pressure of active species, p_A0, p_i, vapour pressure]
+    aliases: [Partial pressure of reactant A, Input partial pressure of reactant A, Pressure pA (Pa), Partial pressure of active species, vapour pressure]
+    symbols: [{text: P_i, paper: 10.1063_1.5028178}, {text: P_i, paper: 10.1039_d0cp03358h}, {text: P_i, paper: 10.1116_6.0001094}, {text: pA0 (Pa), paper: ''}, {text: pO (mbar), paper: ''}, {text: p_A0, paper: 10.1039_d1cp04758b}, {text: p_i, paper: 10.1039_d1cp04758b}]
     base: {source: cremers_2019, section: "Sec. II D; second half of the split of schema_miner ProcessParameters/Pressure (path recorded on process_pressure)"}
     evidence: [Ylilammi2018 Fig. 2, Ylilammi2018 Table I, Ylilammi2018 Figs. 3-5, Yim2020 Fig. 10, Werbrouck2021 Fig. 13, Werbrouck2021 Fig. 14, Werbrouck2021 Sec. II D, 'alias ''p_A0'': yim22 tab1.r1c1; yli18 tabI.r1c3 (P131b alias audit)', 'alias ''p_i'': yim22 tab1.r9c1 (P131b alias audit)', 'alias ''vapour pressure'': zou23 s5.p1 (P131b alias audit)']
 
@@ -657,13 +658,13 @@ entries:
     category: conformality
     family: conformality
     definition: "The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b)."
-    symbol: "PD50%"
     dimension: length
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
     qualifiers: [level]
-    aliases: [PD50%, x50% (PD50%), Penetration depth xp (µm), Half-thickness penetration depth, 50% thickness penetration depth, x_50% (PD^50%)]
+    aliases: [Penetration depth xp (µm), Half-thickness penetration depth, 50% thickness penetration depth]
+    symbols: [{text: PD50%, paper: 10.1039_d0cp03358h}, {text: PD50%, paper: 10.1063_1.5028178}, {text: PD50%, paper: ''}, {text: x50% (PD50%), paper: ''}, {text: x_50% (PD^50%), paper: 10.1039_d0cp03358h}]
     base: {source: cremers_2019, section: "Sec. II H"}
     evidence: [Yim2020 Table 1, Ylilammi2018 Fig. 5, 'alias ''x_50% (PD^50%)'': yim20 tab1.r1c11 (P131b alias audit)']
 
@@ -675,12 +676,12 @@ entries:
     role: condition
     category: test_structure
     definition: "The aspect ratio of a hypothetical cylindrical hole that would require the same reactant exposure dose as the feature of interest (Cremers 2019, Sec. II G). Recorded as reported, never computed."
-    symbol: EAR
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: [EAR, "equivalent aspect ratio"]
+    aliases: [EAR, equivalent aspect ratio]
+    symbols: [{text: EAR, paper: 10.1116_6.0001094}]
     base: {source: cremers_2019, section: "Sec. II G"}
     evidence: ["Werbrouck2021 Sec. II D"]
 
@@ -693,13 +694,13 @@ entries:
     category: conformality
     family: conformality
     definition: "The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a)."
-    symbol: SC
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [position]
-    aliases: ["step coverage", SC]
+    aliases: [step coverage, SC]
+    symbols: [{text: SC, paper: ''}]
     base: {source: cremers_2019, section: "Sec. II H"}
     evidence: []
 
@@ -711,13 +712,13 @@ entries:
     role: model_parameter
     category: surface_kinetics
     definition: "The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5)."
-    symbol: s0
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [species]
-    aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, cH2O, sticking coefficient, c, c_ext]
+    aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, sticking coefficient]
+    symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}]
     base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
     evidence: [Ylilammi2018 Table I, Ylilammi2018 Figs. 2-5, Yim2020 Table 2, Yim2020 Fig. 10, Werbrouck2021 Sec. III D, 'alias ''c'': yim22 tab1.r7c1; yli18 tabI.r1c4 (P131b alias audit)', 'alias ''c_ext'': yim22 tab3.r1c6 (P131b alias audit)']
 
@@ -729,13 +730,13 @@ entries:
     role: model_parameter
     category: surface_kinetics
     definition: "The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII)."
-    symbol: r
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     qualifiers: [species, surface]
-    aliases: ["recombination probability", "recombination coefficient"]
+    aliases: [recombination probability, recombination coefficient]
+    symbols: [{text: r, paper: 10.1116_6.0001094}]
     base: {source: cremers_2019, section: "Sec. II E, Table VII"}
     evidence: ["Werbrouck2021 Sec. III D"]
 
@@ -747,12 +748,12 @@ entries:
     role: output
     category: surface_kinetics
     definition: "The fraction of covered surface sites, θ (Cremers 2019, Sec. II E, Eqs. 5-9)."
-    symbol: "θ"
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: ["Surface coverage (θ)", "Surface coverage", "fraction of covered sites"]
+    aliases: [Surface coverage (θ), Surface coverage, fraction of covered sites]
+    symbols: [{text: θ, paper: 10.1063_1.5028178}]
     base: {source: cremers_2019, section: "Sec. II E"}
     evidence: ["Ylilammi2018 Fig. 3"]
 
@@ -764,12 +765,12 @@ entries:
     role: condition
     category: test_structure
     definition: "The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole."
-    symbol: w
     dimension: length
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: [Design channel height H (nm), Channel height (nm), Height of the channel, H (nm), LHAR H (µm), opening height, channel gap height, minor axis, h, pore diameter (nm), targeted channel height H, Design channel height H, LHAR H, d_pore, channel height, H (channel height)]
+    aliases: [Design channel height H (nm), Channel height (nm), Height of the channel, LHAR H (µm), opening height, channel gap height, minor axis, pore diameter (nm), targeted channel height H, Design channel height H, LHAR H, channel height]
+    symbols: [{text: w, paper: 10.1039_d0cp03358h}, {text: w, paper: 10.1063_1.5028178}, {text: w, paper: 10.1116_6.0001094}, {text: H (nm), paper: ''}, {text: h, paper: 10.1021_acs.jpcc.9b08176}, {text: d_pore, paper: 10.1039_d3cp05639b}, {text: H (channel height), paper: ''}]
     note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
     evidence: [Yim2020 Table 1, Yim2020 Table 2, Yim2020 Fig. 9, Yim2020 Fig. 10, Ylilammi2018 Table I, Ylilammi2018 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''minor axis'': gor03 s8.p1 (P131b alias audit)', 'alias ''h'': art19 s4.p10 (P131b alias audit)', 'alias ''pore diameter (nm)'': ela03 tab1.r1c4 (P131b alias audit)', 'alias ''targeted channel height H'': yim20 s5.p1 (P131b alias audit)', 'alias ''Design channel height H'': yim20 tab1.r1c3 (P131b alias audit)', 'alias ''LHAR H'': yim20 tab2.r6c2 (P131b alias audit)', 'alias ''H'': yim22 tab1.r10c1; yli18 s5.p3 (P131b alias audit)', 'alias ''d_pore'': hei24 fig5.cap (P131b alias audit)']
@@ -782,12 +783,12 @@ entries:
     role: condition
     category: test_structure
     definition: "The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure."
-    symbol: L
     dimension: length
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: [L (mm), Length of the channel, Lateral length of the channel (mm), channel length L, lateral length L, l/2, cavity length, channel length, L (channel length)]
+    aliases: [Length of the channel, Lateral length of the channel (mm), channel length L, lateral length L, cavity length, channel length]
+    symbols: [{text: L, paper: 10.1039_d0cp03358h}, {text: L, paper: 10.1063_1.5028178}, {text: L, paper: 10.1116_6.0001094}, {text: L (mm), paper: ''}, {text: l/2, paper: 10.1021_cm0303080}, {text: L (channel length), paper: ''}]
     note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
     base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
     evidence: [Yim2020 Fig. 8a, Yim2020 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Sec. II D, 'alias ''l/2'': ela03 s5.p4 (P131b alias audit)', 'alias ''cavity length'': gao15 abs.g2 (P131b alias audit)']
@@ -800,12 +801,12 @@ entries:
     role: condition
     category: test_structure
     definition: "The length z of the feature along the third dimension, perpendicular to w and L (Cremers 2019, Sec. II G, Fig. 6): channel width of a lateral structure, trench length of a vertical trench."
-    symbol: z
     dimension: length
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    aliases: [Width of the channel, channel width W, major axis, channel width, W (channel width)]
+    aliases: [Width of the channel, channel width W, major axis, channel width]
+    symbols: [{text: z, paper: 10.1063_1.5028178}, {text: z, paper: 10.1116_6.0001094}, {text: W (channel width), paper: ''}]
     note: "For a lateral channel the gap H is the width (feature_width), the length along the channel is the depth (feature_depth), the channel width W across it is the extent (feature_extent)."
     base: {source: cremers_2019, section: "Sec. II G, Fig. 6"}
     evidence: [Ylilammi2018 Figs. 2-5, Werbrouck2021 Sec. II D, 'alias ''major axis'': gor03 s8.p1 (P131b alias audit)']
@@ -891,7 +892,8 @@ entries:
     unit: 1/Pa
     qudt_unit: "unit:PER-PA"
     qualifiers: [species]
-    aliases: ["Adsorption equilibrium constant", "K (Pa-1)", "Adsorption equilibrium constant (1/Pa)"]
+    aliases: [Adsorption equilibrium constant, Adsorption equilibrium constant (1/Pa)]
+    symbols: [{text: K (Pa-1), paper: ''}]
     base: {}
     evidence: ["Ylilammi2018 Table I", "Ylilammi2018 Figs. 2-5", "Yim2020 Fig. 10"]
 
@@ -1078,7 +1080,8 @@ entries:
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
     qualifiers: [species]
-    aliases: ["purity", "min. 95%", "99.5%"]
+    aliases: [purity, min. 95%]
+    symbols: [{text: 99.5%, paper: ''}]
     base: {}
     evidence: ["mat22 Sec. 5 (s5.p4, s5.p6)", "gre23 Sec. II B (s9.p4)"]
 
@@ -1194,7 +1197,8 @@ entries:
     unit: "µmol"
     qudt_quantity_kind: "quantitykind:AmountOfSubstance"
     qudt_unit: "unit:MicroMOL"
-    aliases: ["Δn_s", "solid deposited per cycle"]
+    aliases: [solid deposited per cycle]
+    symbols: [{text: Δn_s, paper: ''}]
     base: {}
     evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table II"]
 
@@ -1278,7 +1282,8 @@ entries:
     unit: "µmol"
     qudt_quantity_kind: "quantitykind:AmountOfSubstance"
     qudt_unit: "unit:MicroMOL"
-    aliases: ["Δn_g", "gas released per cycle"]
+    aliases: [gas released per cycle]
+    symbols: [{text: Δn_g, paper: ''}]
     base: {}
     evidence: ["gre23 Sec. III A (s12.p1)", "gre23 Table II"]
 
@@ -1294,7 +1299,8 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: [ȳ, gas-to-solid ratio, x, ȳ (printed ν̄ in the text layer)]
+    aliases: [gas-to-solid ratio]
+    symbols: [{text: ȳ, paper: ''}, {text: x, paper: ''}, {text: ȳ (printed ν̄ in the text layer), paper: 10.1116_6.0003182}]
     base: {}
     evidence: [gre23 Sec. III A (s12.p6), gre23 Table II, 'alias ''ȳ (printed ν̄ in the text layer)'': gre23 s12.p14 (P131b alias audit)']
 
@@ -1311,7 +1317,8 @@ entries:
     qudt_quantity_kind: "quantitykind:Pressure"
     qudt_unit: "unit:TORR"
     qualifiers: [level, step]
-    aliases: [δp, pressure rise, δp_max, δp maximum]
+    aliases: [pressure rise, δp maximum]
+    symbols: [{text: δp, paper: ''}, {text: δp_max, paper: ''}]
     base: {}
     evidence: [gre23 Fig. 2, gre23 Sec. III A (s12.p1), 'alias ''δp maximum'': gre23 s12.x1 (P131b alias audit)']
 
@@ -1343,7 +1350,8 @@ entries:
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:MIN"
     qualifiers: [step]
-    aliases: [t_max, time to pressure maximum, time to δp maximum]
+    aliases: [time to pressure maximum, time to δp maximum]
+    symbols: [{text: t_max, paper: ''}]
     base: {}
     evidence: [gre23 Fig. 2, gre23 Sec. III A (s12.p7), 'alias ''time to δp maximum'': gre23 s12.x1 (P131b alias audit)']
 
@@ -1360,7 +1368,8 @@ entries:
     qudt_quantity_kind: "quantitykind:Porosity"
     qudt_unit: "unit:PERCENT"
     qualifiers: [stage, relative_to]
-    aliases: [porosity, φ_i, φ_f, 'Final porosity, φ_f (%)']
+    aliases: [porosity, 'Final porosity, φ_f (%)']
+    symbols: [{text: φ_i, paper: ''}, {text: φ_f, paper: ''}]
     base: {}
     evidence: [gre23 Table I, gre23 Sec. II A (s8.p1), 'alias ''Final porosity, φ_f (%)'': gre23 tabI.r1c2 (P131b alias audit)']
 
@@ -1388,7 +1397,8 @@ entries:
     definition: "The ratio of the path length through a porous body's pores to the straight distance, a factor on its effective diffusivity."
     dimension: dimensionless
     unit: "1"
-    aliases: [tortuosity, τ]
+    aliases: [tortuosity]
+    symbols: [{text: τ, paper: ''}]
     base: {}
     evidence: ["hei24 (gold claim cause, P138)"]
 
@@ -1402,7 +1412,8 @@ entries:
     definition: "The volume of the open pores of a porous material per unit mass."
     dimension: volume_per_mass
     unit: "cm3/g"
-    aliases: [pore volume, V_p]
+    aliases: [pore volume]
+    symbols: [{text: V_p, paper: ''}]
     base: {}
     evidence: ["hei24 (gold claim cause, P138)"]
 
@@ -1485,7 +1496,8 @@ entries:
     unit: "Ω/sq"
     qudt_quantity_kind: "quantitykind:Resistance"
     qudt_unit: "unit:OHM"
-    aliases: ["sheet resistance", "R_sheet"]
+    aliases: [sheet resistance]
+    symbols: [{text: R_sheet, paper: ''}]
     base: {}
     evidence: ["mat22 Sec. 5 (s5.p12)"]
 
@@ -1501,7 +1513,8 @@ entries:
     unit: "%"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
-    aliases: ["ρ/ρ_bulk", "density relative to bulk"]
+    aliases: [density relative to bulk]
+    symbols: [{text: ρ/ρ_bulk, paper: ''}]
     base: {}
     evidence: ["mat22 Table 1", "mat22 Sec. 3 (s3.p19)"]
 
@@ -1534,7 +1547,8 @@ entries:
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
     qualifiers: [gas]
-    aliases: [annealing temperature, T_anneal, annealing temperature in air]
+    aliases: [annealing temperature, annealing temperature in air]
+    symbols: [{text: T_anneal, paper: ''}]
     base: {}
     evidence: [mat22 Sec. 3 (s3.p40), 'alias ''annealing temperature in air'': mat22 s3.p44 (P131b alias audit)']
 
@@ -1551,7 +1565,8 @@ entries:
     unit: "nm-2"
     qudt_quantity_kind: "quantitykind:InverseArea"
     qudt_unit: "unit:PER-NanoM2"
-    aliases: [q, saturation density, q_sat, S_Hf, S_O, Γ, σ]
+    aliases: [saturation density]
+    symbols: [{text: q, paper: ''}, {text: q_sat, paper: ''}, {text: S_Hf, paper: 10.1002_cvde.200390005}, {text: S_O, paper: 10.1002_cvde.200390005}, {text: Γ, paper: 10.1021_cm0303080}, {text: σ, paper: 10.1039_d3cp05639b}]
     base: {}
     evidence: [yim20 Fig. 10, yim20 Table 2, 'alias ''S_Hf'': gor03 s4.p1 (P131b alias audit)', 'alias ''S_O'': gor03 s4.p2 (P131b alias audit)', 'alias ''Γ'': ela03 s5.p34 (P131b alias audit)', 'alias ''σ'': hei24 fig5.cap (P131b alias audit)']
 
@@ -1653,7 +1668,8 @@ entries:
     qudt_quantity_kind: "quantitykind:MeanFreePath"
     qudt_unit: "unit:MicroM"
     qualifiers: [species]
-    aliases: ["mean free path", "λ"]
+    aliases: [mean free path]
+    symbols: [{text: λ, paper: ''}]
     base: {}
     deviation: {type: promoted, reason: "Sec. 18.7 (decision D2): stated in yim20 (Sec. D) and computed for gre23 from its stated pressure and temperature; the input of the Knudsen number"}
     evidence: ["yim20 Sec. D (s19.p3)", "gre23 Sec. II B (the dose pressure, s6.p8) with the deposition temperature"]
@@ -1692,7 +1708,8 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    aliases: [R2, R², Linear fitting residual R2, Linear fitting residual R^2]
+    aliases: [Linear fitting residual R2, Linear fitting residual R^2]
+    symbols: [{text: R2, paper: ''}, {text: R², paper: ''}]
     base: {}
     evidence: [yim20 Table 1, 'alias ''Linear fitting residual R^2'': yim20 tab1.r1c15 (P131b alias audit)']
 
@@ -1727,7 +1744,8 @@ entries:
     qudt_quantity_kind: "quantitykind:AmountOfSubstanceFraction"
     qudt_unit: "unit:PERCENT"
     qualifiers: [element]
-    aliases: [at.%, at. %, atomic percent, H content, O content, N content, C content, H (at. %), C (at. %), N (at. %), O (at. %), C after sputtering, O after sputtering]
+    aliases: [at.%, at. %, atomic percent, H content, O content, N content, C content, C after sputtering, O after sputtering]
+    symbols: [{text: H (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: C (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: N (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: O (at. %), paper: 10.1021_acs.chemmater.2c01154}]
     base: {}
     evidence: [mat22 Table 1, mat22 Sec. 3 (s3.p21), 'alias ''H (at. %)'': mat22 tab1.r1c4 (P131b alias audit)', 'alias ''C (at. %)'': mat22 tab1.r1c5 (P131b alias audit)', 'alias ''N (at. %)'': mat22 tab1.r1c6 (P131b alias audit)', 'alias ''O (at. %)'': mat22 tab1.r1c7 (P131b alias audit)', 'alias ''C after sputtering'': mat23 fig3c (P131b alias audit)', 'alias ''O after sputtering'': mat23 fig3d (P131b alias audit)']
 
@@ -2056,7 +2074,8 @@ entries:
     unit: nm
     qudt_quantity_kind: "quantitykind:Diameter"
     qudt_unit: "unit:NanoM"
-    aliases: ["particle diameter", "NP diameter", "nanoparticle diameter", "d_NP"]
+    aliases: [particle diameter, NP diameter, nanoparticle diameter]
+    symbols: [{text: d_NP, paper: ''}]
     cq: "What are the dimensions of the coated structure?"
     base: {}
     deviation: {type: added, reason: "P78: a dimension slot of the structure taxonomy; defined from gre23 Sec. II A (Sec. 18.10)"}
@@ -2611,7 +2630,8 @@ entries:
     definition: 'The diffraction angle 2θ of an X-ray diffractogram: the abscissa of a diffraction pattern, on which the peaks of a phase are read as printed (P84: a peak coordinate).'
     dimension: angle
     unit: °
-    aliases: [2θ (deg.), 2θ (°), diffraction angle, 2theta]
+    aliases: [diffraction angle]
+    symbols: [{text: 2θ (deg.), paper: ''}, {text: 2θ (°), paper: ''}, {text: 2theta, paper: ''}]
     citation: Greenberg 2023 Fig. 5 (XRD patterns, 2θ in degrees); Mathew 2023 Fig. 2d; van der Zouw 2023 Fig. 8
     cq: Which crystalline phases does the film show?
     base: {}
@@ -2628,7 +2648,8 @@ entries:
     definition: The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.
     dimension: molar_mass
     unit: g/mol
-    aliases: [M_A, M_B, MA, molar mass, reactant molar mass, molar mass of reactant A]
+    aliases: [MA, molar mass, reactant molar mass, molar mass of reactant A]
+    symbols: [{text: M_A, paper: ''}, {text: M_B, paper: ''}]
     citation: Ylilammi 2018 Fig. 2 conditions (M_A, M_B); Yim 2022 Figs. 4c and 6c (M_A in g mol-1 and kg mol-1); Heikkinen 2024 Fig. 5 series (50 to 250 g mol-1)
     cq: Which model inputs give the profile?
     base: {}
@@ -2692,7 +2713,8 @@ entries:
     definition: The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density).
     dimension: length
     unit: pm
-    aliases: [d_B, molecular diameter, diameter of molecule A, d_TMA, d_TiCl4]
+    aliases: [molecular diameter, diameter of molecule A]
+    symbols: [{text: d_B, paper: ''}, {text: d_TMA, paper: 10.1063_1.5028178}, {text: d_TiCl4, paper: 10.1063_1.5028178}]
     citation: Ylilammi 2018 Sec. II, Eqs. (7)-(8) (d_A = 418 pm for water, 591 pm for TMA, 703.9 pm for TiCl4); Yim 2022 Fig. 2 conditions (d_A)
     cq: Which model inputs give the profile?
     base: {}
@@ -3191,7 +3213,8 @@ entries:
     definition: 'The Knudsen diffusion coefficient D_Kn of the reactant in a feature or pore: wall collisions alone set it, D_Kn = (d_h/3)(8RT/(πM))^1/2 with the hydraulic diameter d_h and the molar mass M; a model parameter of the diffusion-reaction models, varied through the pressure and the geometry.'
     dimension: diffusivity
     unit: m2/s
-    aliases: [D_Kn, DKn, Knudsen diffusion coefficient]
+    aliases: [DKn, Knudsen diffusion coefficient]
+    symbols: [{text: D_Kn, paper: ''}]
     citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_Kn); Heikkinen 2024 Table 1 (D_Kn)
     cq: How fast does the reactant diffuse into the structure?
     base: {}
@@ -3208,7 +3231,8 @@ entries:
     definition: 'The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.'
     dimension: diffusivity
     unit: m2/s
-    aliases: [D_eff, Deff, D_e, De, effective diffusion coefficient, Apparent longitudinal diffusion coefficient]
+    aliases: [Deff, De, effective diffusion coefficient, Apparent longitudinal diffusion coefficient]
+    symbols: [{text: D_eff, paper: ''}, {text: D_e, paper: ''}]
     citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_eff); Heikkinen 2024 Table 1 and Sec. 4 (D_e)
     cq: How fast does the reactant diffuse into the structure?
     base: {}
@@ -3225,7 +3249,8 @@ entries:
     definition: The gas-phase (molecular, bulk) diffusion coefficient D_A of the reactant in the carrier gas, set by intermolecular collisions and so by the total pressure; the continuum limit of the Bosanquet interpolation; a model parameter of the diffusion-reaction models.
     dimension: diffusivity
     unit: m2/s
-    aliases: [D_mi, Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
+    aliases: [Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
+    symbols: [{text: D_mi, paper: ''}]
     citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_A); Heikkinen 2024 Table 1 (D_mi)
     cq: How fast does the reactant diffuse into the structure?
     base: {}
@@ -3242,7 +3267,8 @@ entries:
     definition: The number of reactant molecules per unit gas volume n (n_P0 at the surface of a porous body), the concentration variable of Heikkinen 2024's diffusion-reaction equation; a model output along the depth and a model input at the surface. Converts to the partial pressure by the ideal gas law p = n·k_B·T given the temperature (P109).
     dimension: number_density
     unit: 1/m3
-    aliases: [n_P, n_P0, reactant number density, volumetric reactant number density, number density of the reactant]
+    aliases: [reactant number density, volumetric reactant number density, number density of the reactant]
+    symbols: [{text: n_P, paper: ''}, {text: n_P0, paper: ''}]
     converts_to: {target: partial_pressure, rule: p = n·k_B·T, requires: deposition_temperature}
     citation: Heikkinen 2024 Sec. 4, Eq. (1) and Table 1 (n_P0); Cremers 2019 Sec. V B writes the same equations in partial pressure
     cq: How much reactant is in the gas at a given depth?
@@ -3259,7 +3285,8 @@ entries:
     category: surface_kinetics
     definition: b_film is the number of metal atoms in the formula unit of the deposited film
     dimension: dimensionless
-    aliases: [b_film]
+    aliases: []
+    symbols: [{text: b_film, paper: ''}]
     citation: yim20:fig10.cap#9 (fig10.cap); yim22:tab1.cap#17 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yli18:s5.p18#1 (s5.p18); yli18:s5.p18#2 (s5.p18)
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22 yli18; merged from pending.csv (P131b)'}
@@ -3331,7 +3358,8 @@ entries:
     definition: desorption probability, P_d
     dimension: inverse_time
     unit: 1/s
-    aliases: [P_d]
+    aliases: []
+    symbols: [{text: P_d, paper: ''}]
     citation: yim20:fig10.cap#15 (fig10.cap); yim22:tab1.cap#11 (tab1.cap;tab1.r1c1;tab1.r2c1;tab1.r3c1;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;s12.p1;s12.p2;s12.p5); yim22:fig6.cap#15 (fig6.cap;s15.p4;fig7.cap); yim22:s14.p6#15 (s14.p6;tab2.cap); yim22:s14.p6#31 (s14.p6;tab2.cap); yim22:tab1.r6c1#1 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#2 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#3 (tab1.r6c1;fig4.cap;fig4f); yim22:tab1.r6c1#4 (tab1.r6c1;fig4.cap;fig4f); yim22:fig6.cap#31 (fig6.cap;s15.p4;fig7.cap)
     base: {}
     deviation: {type: added, reason: 'P98 rule a, papers yim20 yim22; merged from pending.csv (P131b)'}
