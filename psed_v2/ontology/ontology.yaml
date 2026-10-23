@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): da28f96fdcf34954c03ef898c98465f2f4013d4ff3c5242122f0306ed7bfd554
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 93995ab60e51b6f636efc16599d17ef663fd424f3f474eac6dc82ec534eb5e1e
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -351,7 +351,6 @@ entries:
     qudt_unit: "unit:NanoM"
     qualifiers: [position, over, kind]
     aliases: [GrowthPerCycle, growth per cycle, GPC, Thickness/cycles S/N (nm), SI/N (GPCI), SIIb/N (GPCIIb), Film growth per cycle]
-    symbols: [{text: GPC, paper: 10.1039_d0cp03358h}, {text: GPC, paper: 10.1116_6.0001094}]
     base: {source: schema_miner, path: ProcessParameters/ThicknessControl/GrowthPerCycle}
     deviation: {type: role_changed, reason: "an outcome of the process, not a process parameter"}
     evidence: ["Yim2020 Table 1", "Yim2020 Fig. 9b", "Yim2020 Fig. 9e", "Yim2020 Fig. 10b", "Yim2020 Fig. 10e", "Werbrouck2021 Sec. II D"]
@@ -595,7 +594,7 @@ entries:
     qudt_unit: "unit:PA"
     qualifiers: [species]
     aliases: [Partial pressure of reactant A, Input partial pressure of reactant A, Pressure pA (Pa), Partial pressure of active species, vapour pressure]
-    symbols: [{text: P_i, paper: 10.1063_1.5028178}, {text: P_i, paper: 10.1039_d0cp03358h}, {text: P_i, paper: 10.1116_6.0001094}, {text: pA0 (Pa), paper: ''}, {text: pO (mbar), paper: ''}, {text: p_A0, paper: 10.1039_d1cp04758b}, {text: p_i, paper: 10.1039_d1cp04758b}]
+    symbols: [{text: P_i, paper: 10.1063_1.5028178}, {text: P_i, paper: 10.1039_d0cp03358h}, {text: P_i, paper: 10.1116_6.0001094}, {text: pA0 (Pa), paper: ''}, {text: pO (mbar), paper: ''}, {text: p_A0, paper: 10.1039_d1cp04758b}, {text: p_i, paper: 10.1039_d1cp04758b}, {text: p_A0, paper: 10.1063_1.5028178}]
     base: {source: cremers_2019, section: "Sec. II D; second half of the split of schema_miner ProcessParameters/Pressure (path recorded on process_pressure)"}
     evidence: [Ylilammi2018 Fig. 2, Ylilammi2018 Table I, Ylilammi2018 Figs. 3-5, Yim2020 Fig. 10, Werbrouck2021 Fig. 13, Werbrouck2021 Fig. 14, Werbrouck2021 Sec. II D, 'alias ''p_A0'': yim22 tab1.r1c1; yli18 tabI.r1c3 (P131b alias audit)', 'alias ''p_i'': yim22 tab1.r9c1 (P131b alias audit)', 'alias ''vapour pressure'': zou23 s5.p1 (P131b alias audit)']
 
@@ -681,7 +680,6 @@ entries:
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [EAR, equivalent aspect ratio]
-    symbols: [{text: EAR, paper: 10.1116_6.0001094}]
     base: {source: cremers_2019, section: "Sec. II G"}
     evidence: ["Werbrouck2021 Sec. II D"]
 
@@ -700,7 +698,6 @@ entries:
     qudt_unit: "unit:UNITLESS"
     qualifiers: [position]
     aliases: [step coverage, SC]
-    symbols: [{text: SC, paper: ''}]
     base: {source: cremers_2019, section: "Sec. II H"}
     evidence: []
 
@@ -718,7 +715,7 @@ entries:
     qudt_unit: "unit:UNITLESS"
     qualifiers: [species]
     aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, sticking coefficient]
-    symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}]
+    symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}, {text: c, paper: 10.1063_1.5028178}]
     base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
     evidence: [Ylilammi2018 Table I, Ylilammi2018 Figs. 2-5, Yim2020 Table 2, Yim2020 Fig. 10, Werbrouck2021 Sec. III D, 'alias ''c'': yim22 tab1.r7c1; yli18 tabI.r1c4 (P131b alias audit)', 'alias ''c_ext'': yim22 tab3.r1c6 (P131b alias audit)']
 
