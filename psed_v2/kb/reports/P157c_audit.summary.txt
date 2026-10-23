@@ -1,0 +1,25 @@
+P157c audit, 0 calls, no code change. compile.py re-run into a scratch folder (read / drop wrapped from outside) is byte-identical to
+kb/compiled for the three papers (rerun_identical); every table below is computed by the audit script from that run and the files.
+A1. 42 round-1 decisions over the 85 rows they were decided on (decision_rows: P157's snapshot of every unmapped row and its P156 candidate).
+  Effect on 61 rows: alias apparent_longitudinal_diffusion_coefficient -> yli18:tabu1.r4c0 is an effective_diffusion_coefficient fact; 60 rows of
+  never decisions carry never in compile's unmapped.csv. No effect on 24: 13 symbol rows (z_A, v_A, h, g twice, f_ads, f_des, R_row, and 5 unit
+  rows) whose own label is the symbol (P156 joined them to the decided row; compile matches each record by its own label: both normalized strings
+  shown); 6 cells with no printed label (surface_area, diffusion_coefficient_without_pillars, flux_of_material_in_direction_x); 3 symbol rows
+  promoted by a0 before the never match (Q twice -> saturation_density, R -> recombination_probability); evacuated_below (ela03, not compiled);
+  top_membrane_removal (reject writes nothing, by design).
+A2. 37 promotions and 1 ambiguous: agree 33 (the alias row; 32 mat22 crystallinity values, which F3 resolved before P157b); disagree 4 by the
+  head-noun rule: Q -> saturation_density twice (alias 'q'; rate vs density), R -> recombination_probability (its label field 'r'; resistance vs
+  probability), l -> feature_depth (aliases 'L (mm)', 'L (channel length)' once their unit group is stripped; distance vs depth). h names two ids.
+A3. 29 open rows: 8 rows of 6 pending candidates; 6 cells without printed label (the 3 never decisions above); 15 other: 13 symbol rows dropped
+  by propose with their never group, 1 rejected label, 1 value without a quantity. elam_monte_carlo has no row: a pilot row from ela03, which
+  is not compiled (its records hold a pass-0 simulation 'Monte Carlo simulation'). distance_between_rows_of_pillars lost its symbol row l to a0.
+A4. 621 aliases: word 475, symbol-like 131, abbreviation 15. Check 4 confirmed: no alias under two entries (exact, casefold, and with the
+  symbol field and structure_aliases). resolve_other's normalized keys collide 13 times, so those labels never promote: c, da, depth,
+  film thicknes, h, n, pd, reactor, s, substrate, t, w, x - words among them: 'Film thickness' (body_thickness alias 'film thickness (µm)'),
+  'Substrate' (structure alias), 'Depth', 'Reactor'. resolve_other also reads the label field: 43 quantity labels are symbol-like (r, T, n,
+  S, ...). The symbol field (14 entries) is not in the generated vocab.
+A5. check.py --dir: 728 problems in 40 messages (159 / 306 / 263); statement copies and duplicates 483, points_ref 150, claim without links 45, 50 other.
+  None is on a promoted row except yli18:eq14#1 'statement repeats eight words', present before P157b too.
+A6. 139 records with an empty label_as_printed: 10 are quantity other (the yim20 tabu1 cells: propose keys them by their definition, compile by
+  nothing; their facts get label_as_printed 'other'); the rest are claims, caveats, cited, settings and models whose fact takes the quantity
+  id or stays empty.

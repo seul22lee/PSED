@@ -1,0 +1,17 @@
+How the tables are made (scratchpad script audit.py; nothing in the repo changed but kb/reports/P157c_audit.*):
+- compile.py imported, Run.read and Run.drop wrapped (the raw record kept before a0; the step that dropped it), K.OUT a scratch folder;
+  facts.csv, unmapped.csv, promoted.csv and dropped.csv compared with kb/compiled byte for byte (rerun_identical).
+- A1: decision_rows.csv is P157's snapshot (grow.py candidates() on the 9a893b5 compiled outputs, never.csv of 45 rows): each row with the
+  P156 candidate it belonged to. The 42 history rows (round 1) give the decision; never.csv's round-1 rows give the never label, P157's alias
+  table the alias. Each decided row is looked up in today's unmapped.csv (column never) and promoted.csv.
+- A2: the record's own meaning = its candidate definition_quote (quantity) or its value_text (categorical value); matched text = the id /
+  name / label / alias of the entry whose export.norm_label equals the printed label's. Head noun: LaTeX unwrapped, casefold, the text before
+  the first of of / at / in / for / with / between / without / per / from / on / to / by / where / that / which / during / when / as / under
+  / over / , ; : ( [ $, its last alphabetic word of two or more letters, a plural s dropped. agree = the record's head noun equals the head
+  noun of the entry's name or of its definition.
+- A4 tags: symbol-like = one letter, a Greek letter (U+0370-03FF, U+1F00-1FFF), or one of _ { } \ or a digit; abbreviation = 2-4
+  characters, all upper-case letters; else word. Duplicates under four rules: exact, casefold (check 4), casefold with the symbol field and
+  structure_aliases, and resolve_other's own keys (export.norm_label over id, id with spaces, name, label, aliases of live quantity and
+  categorical entries).
+- A5: kb/reports/P157b.<paper>.check_dir.csv (check.py --dir, every problem), grouped by score.py err_class().
+- A6: every raw record compile.py reads whose label_as_printed is empty; propose's key from grow.py candidates() on today's unmapped.csv.
