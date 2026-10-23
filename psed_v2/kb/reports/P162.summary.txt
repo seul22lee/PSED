@@ -1,0 +1,36 @@
+P162, round 2 turn 4: 21 provider calls (pass 1: gor03 6, hei24 15), $0.39 (+ at most $0.05 for the two cached prefixes). Rules 1-4: 0 calls.
+
+Rule 1 (role). compile.curve_units() takes a derived unit's role from the paper's pass-0 units: a simulation and no run -> model_run under the
+  one simulation; runs and no simulation -> run; both -> the figures.json kind, flagged "role from figure kind" (ela03: all 6). The data role
+  follows the role unless taken from the kind. hei24: 163 model runs under sim_dr; 80 of 83 gold model runs pair (10 matched, 58 split,
+  2 merged+split; missing the three fig4 runs: fig4 has no curve in figures.json). Baseline duplicates by P161's rule: 6 ('100 g mol^-1' x4,
+  '423 K' x2), plus 20 tau/epsilon labels a single table cell cannot equal; not merged.
+Rule 2 (check). compile.panel_items() is the one measure for creation and pass0_paper.consistency(): curves; a per_point series' points; any
+  other series; cells. Unbound items: 0 on all six papers, yli18 included (its 25 items are all held by pass-0 units).
+Rule 3 (labels as values, A3). A derived legend label that is a categorical value becomes that condition: mat22 'Amorphous' / 'Crystalline' ->
+  crystallinity amorphous / crystalline (A2: agree). Derived conditions skip the quote check (figures.json, not a quote). grow.py: A3 in
+  open_rows(); a row absent from the apply snapshot is "new since apply -> next round", counted and listed, not a failure; carried_rows()
+  feeds round_candidates() (propose and the apply snapshot); A1 also reads the carried rows' papers. Round-1 audit: PASS, 0 rows carried
+  (rule 3 resolved the mat22 rows). The carry path, tested with one injected row (writes nothing): classed new since apply, no failure,
+  carried, a round-2 candidate with mat22 evidence (s4_a3_test).
+Rule 4 (points). figures.json carries no series_structure curve or per_point: kb/<pid>.figures.json has only 'replicate' (a label class, P87)
+  or none, and the figure stage's own figures.json has no such field. So no series gives one unit per point: every point_per_unit series is
+  one unit (its curve). Derived units P161 -> P162: ela03 35 -> 6 ('y ∝ t^1/2' one unit), mat22 32 -> 2, hei24 163 -> 163 (roles changed).
+  A point's conditions (its coordinates on the layout's axis_quantities + the legend label) are coded but meet no per_point series here.
+Recompile (six papers, 0 calls): yli18, yim20 unchanged. mat22 check 293 -> 267, activity 133 -> 135 / 249. ela03 check 170 -> 159, T6 165 -> 166,
+  activity 13 -> 15 / 46, observation 12 -> 13 / 38. Against P160 (before any derived unit): ela03 +6, mat22 +2 "points_ref in a facts file" (a
+  derived unit's curve result row carries its points_ref), mat22 +2 "observation with the setting quantity deposition_temperature" (fig2's y
+  axis). hei24, gor03 compiled for the first time (tree only): T6 151 / 549, 1 / 157. export.py --check 15 of 15.
+
+Step 5, pass 1 (form P158, cached prefix). gor03 6 calls, 99 records, $0.109; hei24 15 calls, 214 records, $0.281; hei24 left 18 elements
+  unanswered (all in group s5-s10: 12 of s9, 5 of s10, 1 of s8). Scores after pass 1: gor03 T6 1 -> 46 / 157, check --dir 48; hei24 T6 151 ->
+  229 / 549, check --dir 483 (model 167 / 189, entity 80 / 83, setting 39 / 172, definition 16 / 35); ela03 unchanged (T6 166, check 159).
+  Records failing form.json (as pass 1 counts them): ela03 7 (P158 rule 1: 7), gor03 22 (rule 1: 19, rule 4: 2, an enum: 1), hei24 15 (rule 1:
+  14, a variables type: 1); compile drops them at step a (hei24 14: one passes after compile's coercion). Rule 1 (pulse, purge, exposure name
+  their step) is 40 of the 44.
+Step 6. grow.py add (round 2: ela03, hei24, gor03) and propose: 82 candidates (hei24 65, ela03 15, gor03 2), none in two or more papers; 49 are
+  made only of derived units' legend labels (hei24 47: values such as '100 g mol^{-1}', '373 K', 'Sphere (s = 2)'; ela03 2), 33 come from
+  pass-1 records. Carried rows: 0. decide.html: psed_v2/ontology/decide.html, 89 undecided rows (the 7 earlier pending rows first in file
+  order, no row in two or more papers).
+For the user: the 49 legend-label candidates (values, not quantities; rule 3 resolves only categorical values); P158 rule 1 failures; hei24's
+  18 unanswered elements; series_structure for rule 4.
