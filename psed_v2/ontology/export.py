@@ -65,7 +65,8 @@ def strip_unit(label):
     return re.sub(r"\s*[\[(][^\])]*[\])]\s*$", "", str(label)).strip()
 
 
-# P157b: the one label normalization (P156 FIX 2b, moved here from grow.py): compile.py's resolve_other() and never match, and grow.py
+# P157b: the one label normalization, moved here from grow.py; P157d: no trailing unit group stripped, no trailing 's' dropped (a key is
+# the whole normalized string); symbols are paper-local and keep their case; one record key for compile.py and grow.py propose
 LATEX_TEXT = re.compile(r"\\(?:text|mathrm|mathit|mathbf|rm)\s*\{([^{}]*)\}")
 
 
@@ -75,7 +76,8 @@ def strip_latex(s):
 
 
 def strip_trailing_units(s):
-    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty."""
+    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty.
+    P157d: used for a record's meaning (record_text: a definition without its unit) and grow.py's candidate ids, never for a lookup key."""
     s = str(s).strip()
     while True:
         t = re.sub(r"\s*(\[[^\[\]]*\]|\([^()]*\))\s*$", "", s)
@@ -85,10 +87,33 @@ def strip_trailing_units(s):
 
 
 def norm_label(label):
-    """A label for a whole-label match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing 's'
-    dropped. Both sides of every match go through it."""
-    s = " ".join(strip_latex(strip_trailing_units(label)).casefold().split())
-    return s[:-1] if len(s) > 1 and s.endswith("s") else s
+    """A word key for a whole-label match (P157d): LaTeX stripped, casefold, whitespace collapsed. Both sides of every word match (ids,
+    names, aliases, value aliases, never.csv words) go through it."""
+    return " ".join(strip_latex(label).casefold().split())
+
+
+def symbol_key(text):
+    """A symbol key (P157d): LaTeX stripped, whitespace collapsed, case kept (R is not r, Q is not q; P156)."""
+    return " ".join(strip_latex(text).split())
+
+
+def record_text(rec):
+    """P157d, the one record key's text: the record's label_as_printed when it has one, else its meaning: the candidate's
+    definition_quote without its trailing unit group (P156: 'Surface area (m^2)' -> 'Surface area'), else ''. rec: a pass-1 record or
+    an unmapped.csv row (candidate as a dict or as its JSON text)."""
+    lab = str(rec.get("label_as_printed") or "").strip()
+    if lab:
+        return lab
+    cand = rec.get("candidate") or {}
+    if isinstance(cand, str):
+        cand = json.loads(cand) if cand.startswith("{") else {}
+    d = " ".join(str(cand.get("definition_quote") or "").split())
+    return strip_trailing_units(d) if d else ""
+
+
+def record_key(rec):
+    """P157d: the one record key (compile.py resolve_other and its never match, grow.py propose): norm_label(record_text(rec))."""
+    return norm_label(record_text(rec))
 
 
 def split_parts(label):
@@ -106,26 +131,62 @@ def split_parts(label):
 
 
 def never_index(entries):
-    """({normalized part: never.csv row}, superseded): every part of every never.csv label, normalized (norm_label), except the parts
-    that name a live entry - its id, name, label or an alias, normalized the same way - that is not an attribute: an attribute entry is
-    how the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label,
-    part, entry ids)] and suppress nothing. entries: dicts with id, name, label, aliases, attribute (ontology.yaml or vocab.ENTRIES)."""
-    names = {}
+    """({word key: never.csv row}, superseded, {(paper, symbol key): never.csv row}). A word row (symbol empty): every part of its label
+    (split_parts), read as never.csv writes a label ('label [unit]': the text before a trailing ' [unit]', _never_label, as check 12),
+    norm_label, matched in any paper. A symbol row (P157d, symbol yes): its label, symbol_key, matched only in its paper.
+    A word part that names a live non-attribute entry (its id, name or an alias; P157d: not its label) and a symbol row that is a symbol
+    of a live entry in the same paper are superseded and suppress nothing: an attribute entry is how the pilot stores a never label
+    (check 12). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute."""
+    names, syms = {}, {}
     for e in entries:
         if e.get("attribute"):
             continue
-        for t in [e["id"], e.get("name", ""), e.get("label", "")] + [str(a) for a in e.get("aliases") or []]:
+        for t in [e["id"], e.get("name", "")] + [str(a) for a in e.get("aliases") or []]:
             if str(t).strip() and e["id"] not in names.setdefault(norm_label(t), []):
                 names[norm_label(t)].append(e["id"])
-    parts, sup = {}, []
+        for sy in e.get("symbols") or []:
+            syms.setdefault((sy.get("paper", ""), symbol_key(sy["text"])), []).append(e["id"])
+    parts, sup, sparts = {}, [], {}
     for r in never_rows():
+        if r.get("symbol") == "yes":
+            k = (r["paper"], symbol_key(r["label"]))
+            if syms.get(k):
+                sup.append((r["label"], f"{r['label']} in {r['paper']}", ", ".join(syms[k])))
+            else:
+                sparts.setdefault(k, r)
+            continue
         for p in split_parts(r["label"]):
-            k = norm_label(p)
+            k = norm_label(_never_label(p))                                     # never.csv's label format: 'label [unit]' (check 12 reads it so)
             if names.get(k):
                 sup.append((r["label"], p, ", ".join(names[k])))
             elif k:
                 parts.setdefault(k, r)
-    return parts, sup
+    return parts, sup, sparts
+
+
+def resolve_index(entries, materials):
+    """P157d: the lookup tables of compile.py resolve_other and of ontology.html's ambiguous keys. entries: {id: dict(type, name,
+    aliases, symbols, replaced_by)} (vocab.ENTRIES or ontology.yaml); materials: the material species ids. Returns (words, symbols):
+    words[kind][norm_label(text)] = {id: how} over the id, the id with spaces, the name and the aliases (never the label);
+    symbols[kind][(paper, symbol_key(text))] = {id: text}. kind: quantity (quantity and categorical entries), method, structure,
+    species, material. A key under two ids is ambiguous."""
+    live = {i: e for i, e in entries.items() if not e.get("replaced_by")}
+    kinds = {"quantity": [i for i, e in live.items() if e["type"] in ("quantity", "categorical")], "method": [i for i, e in live.items() if e["type"] == "method"],
+             "structure": [i for i, e in live.items() if e["type"] == "structure"], "species": [i for i, e in live.items() if e["type"] == "species"],
+             "material": [i for i in materials if i in live]}
+    words, symbols = {}, {}
+    for kind, ids in kinds.items():
+        w, sy = {}, {}
+        for i in ids:
+            e = live[i]
+            for t, how in [(i, "id"), (i.replace("_", " "), "id"), (e.get("name", ""), "name")] + [(str(a), "alias") for a in e.get("aliases") or []]:
+                k = norm_label(t) if t else ""
+                if k:
+                    w.setdefault(k, {}).setdefault(i, f"{how} '{t}'")
+            for x in e.get("symbols") or []:
+                sy.setdefault((x.get("paper", ""), symbol_key(x["text"])), {}).setdefault(i, x["text"])
+        words[kind], symbols[kind] = w, sy
+    return words, symbols
 
 
 _UNITS = {}
@@ -178,16 +239,18 @@ def unit_tables(onto):
     return base, alias, {**{d: d for d in by_dim}, **same}
 
 
-def pending_entry(r, labels=()):
+def pending_entry(r, labels=(), symbols=()):
     """P155: the entry an accepted pending.csv row becomes (grow.py apply adds origin, source_pids and evidence): id, type = kind,
-    definition = proposed_definition, unit and its dimension, name, label and aliases = the printed labels; a species takes its formula
-    from its first formula-like label, verbatim (P131b: never derived from the id); a model an empty parameter list."""
+    definition = proposed_definition, unit and its dimension, name, label and aliases = the printed labels; P157d: symbols = the
+    candidate's table symbols, each with the paper it came from ([(text, pid)]); a species takes its formula from its first
+    formula-like label or symbol, verbatim (P131b: never derived from the id); a model an empty parameter list."""
     als = list(dict.fromkeys(a for a in labels if a))
+    sy = [dict(text=t, paper=p) for t, p in dict.fromkeys((t, p) for t, p in symbols if t)]
     e = dict(id=r["id"], type=r["kind"], definition=r["proposed_definition"], unit=r.get("unit", ""), dimension=unit_dimension(r.get("unit", "")),
-             name=(als[0] if als else r["id"].replace("_", " ")), label=(als[0] if als else r["id"].replace("_", " ")), aliases=als,
+             name=(als[0] if als else r["id"].replace("_", " ")), label=(als[0] if als else r["id"].replace("_", " ")), aliases=als, symbols=sy,
              category={"quantity": "measurement", "model": "models"}.get(r["kind"], ""))
     if r["kind"] == "species":
-        e.update(kind="molecule", formula=next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), ""))
+        e.update(kind="molecule", formula=next((a for a in als + [x["text"] for x in sy] if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), ""))
     if r["kind"] == "structure":
         e["class"] = ""
     if r["kind"] == "model":
@@ -246,6 +309,7 @@ def build(onto, pmap):
         BASES=dict(voc.get("uncertainty_basis", {})),
         ENTRIES={e["id"]: dict(type=e["type"], role=e.get("role", ""), category=e.get("category", ""), definition=e.get("definition", ""), unit=str(e.get("unit", "")),
                                family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
+                               symbols=[dict(text=str(x["text"]), paper=str(x.get("paper", ""))) for x in e.get("symbols") or []],   # P157d: paper-local
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
                                dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
                                ratio_of=[str(x) for x in e.get("ratio_of", [])], parameters=[str(x) for x in e.get("parameters", [])],   # P101: a model's parameters are card edges
@@ -627,14 +691,16 @@ def codebook(onto, L):
         if e["type"] not in ("quantity", "categorical") or e.get("replaced_by"):
             continue
         dd = L.DEFAULT_DEFINITION.get(e["id"], {})
-        qrows.append([e["id"], e.get("name", ""), e.get("definition", ""), e.get("aliases", []), e.get("unit", ""), e.get("dimension", ""), e.get("note", ""),
+        qrows.append([e["id"], e.get("name", ""), e.get("definition", ""), e.get("aliases", []),
+                      [f"{x['text']} (only in {x['paper'] or 'no paper recorded'})" for x in e.get("symbols") or []], e.get("unit", ""), e.get("dimension", ""), e.get("note", ""),
                       e.get("role", ""), "yes" if e["id"] in L.SETTING_QUANTITIES else "", "yes" if e["id"] in L.SUBSTANCE_SCOPED else "",
                       "; ".join(f"{k}={v}" for k, v in dd.items())])
         for f, v in (("name", e.get("name")), ("definition", e.get("definition"))):
             if not str(v or "").strip():
                 missing.append(f"d. quantity {e['id']}: {f}")
     out += ["## d. Quantities (sources: ontology/ontology.yaml entries; kb/pilot/lists.py SETTING_QUANTITIES, SUBSTANCE_SCOPED, DEFAULT_DEFINITION)", ""]
-    out += _table(["id", "name", "definition", "aliases", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key"], qrows)
+    out += ["Symbols (P157d) are hints, local to the paper named: a symbol means its quantity only in that paper.", ""]
+    out += _table(["id", "name", "definition", "aliases", "symbols (paper)", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key"], qrows)
     # e. qualifiers and tying rules
     out += ["", "## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)", ""]
     qr = []

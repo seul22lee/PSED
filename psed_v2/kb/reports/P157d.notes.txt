@@ -1,0 +1,21 @@
+Choices made in this unit, each one reported, none made to pass the acceptance (the acceptance ran after them):
+1. FIX 1 scope: quantity and categorical entries only. The symbol-like rule also selects 42 strings of species, structures and a mechanism
+   (H2O, TiCl4, Al(CH3)3, PillarHall-4, LHAR4, ...; symbols_not_moved). A formula or a product name is a name in every paper; moved to a
+   paper-local symbol with no recorded paper it would stop resolving species in compile step f and in a0. They stay aliases.
+2. Symbol matching keeps case (export.symbol_key), as P156's norm_symbol (R is not r). Case-folded, feature_depth's L (paper yim20, from its
+   evidence) would promote yim20's l (distance between rows of pillars) again (symbol_case).
+3. A symbol: field with evidence in several papers becomes one {text, paper} per paper; an alias with no "alias '<a>': <key>" evidence gets
+   paper '' and promotes nowhere (49 of the 98: 48 aliases and step_coverage's SC, whose entry has no evidence; symbols_move, paper_from).
+4. never.csv labels are read in their own format, 'label [unit]' (the text before a trailing ' [unit]', export._never_label, as check 12
+   reads them). Without it, 5 rows matched by pilot labels ('rms thickness error [nm]', 'Viscosity of gas [µPa s]', 'Accelerating voltage
+   [keV]') stopped being never. Lookup keys of ids, names and aliases are whole strings (no unit group stripped).
+5. The trailing-'s' rule is gone: 102 printed variants that matched before no longer do (keys_changed: an alias printed without its unit
+   group, the singular or plural of its last word). No plural aliases were added (an ontology decision); no row of the three papers changed by it.
+6. Never parts: 17 never labels changed key or superseded status (never_keys_changed); e.g. 'q [nm-2]' (pilot) now matches Q in any paper since
+   'q' moved from saturation_density's aliases to its symbols; yli18 eq14 Q and yim20 tabu2.r15c0 Q reach never through it (word before
+   symbol), category 'Model internals not in Sec. 8', not through their round-1 symbol rows. Option: give the pilot's symbol-like never rows a
+   paper (symbol yes).
+7. P157b's report table P157b.score.csv overwrote score.py's file of that name (the values survive in its 'after' column, used as 'before' here);
+   P157d's comparison is P157d.score_before_after.csv, P157d.score.csv is score.py's.
+8. CODEBOOK prints each symbol's paper as its pid (a held-out pid included where the evidence names one); ontology.html withholds those cells.
+9. Gold builders read aliases (kb/pilot/facts.py slot_for); gold is not rebuilt here, a rebuild would see the slimmer alias lists.

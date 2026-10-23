@@ -8,6 +8,7 @@
                                                            # recompile, score, ontology.html, one commit
     python3 psed_v2/ontology/grow.py status                # the open round, pending counts by decision, the last history rows
     python3 psed_v2/ontology/grow.py report                # ontology.html only
+    python3 psed_v2/ontology/grow.py audit <round>         # P157d: A1-A3 of a round and its acceptance (apply runs it after every round)
 
 Files in ontology/: rounds.csv (one row per round), history.csv (append-only, one row per decision), pending.csv (export.PENDING_COLUMNS),
 never.csv (the never-an-entry labels), decide.html (the decision form propose writes), ontology.html (the one report).
@@ -48,7 +49,7 @@ DECIDE, REPORT, UNMAPPED = HERE / "decide.html", HERE / "ontology.html", HERE / 
 COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
 ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
 HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"]
-NEVER_COLS = ["label", "category", "paper", "source"]
+NEVER_COLS = ["label", "category", "paper", "source", "symbol"]                 # P157d: symbol yes = matched only in its paper
 STOP_WORDS = {"of", "the", "an", "and", "or", "in", "on", "at", "to", "for", "by", "with", "is", "as", "from", "per", "its", "a"}
 
 
@@ -142,14 +143,14 @@ def nearest(label, entries):
 
 def unmapped_rows(pid):
     """A paper's compiled unmapped rows, every one: element, field, the label as printed, unit, the record's symbol, definition (the
-    candidate's definition_quote), quote (the definition, else the label, else the unit) and never (P157b: compile.py's never column,
-    the never.csv category of the record's label)."""
+    candidate's definition_quote), quote (the definition, else the label, else the unit), never (P157b: compile.py's never column,
+    the never.csv category of the record's label) and text (P157d: export.record_text, the one record key: the label, else the meaning)."""
     out = []
     for r in rd(COMPILED / f"{pid}.unmapped.csv"):
         cand = json.loads(r["candidate"]) if r["candidate"].startswith("{") else {}
         d = " ".join((cand.get("definition_quote") or "").split())
         out.append(dict(pid=pid, element=r["element"], field=r["field"], label=r["label_as_printed"].strip(), unit=r["unit"], symbol=(cand.get("symbol") or "").strip(),
-                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"], never=r.get("never", "")))
+                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"], never=r.get("never", ""), text=X.record_text(r)))
     return out
 
 
@@ -199,8 +200,11 @@ def candidates(pids):
        symbol's: its definition) has the words of one symbol-table meaning (words(): articles and 'of' dropped, order ignored) joins it.
     3. P157b: a row compile.py marked never (its never column) is dropped; a symbol-table group with a never row is dropped with the rows
        that joined it. grow.py does no never matching of its own.
-    4. A row with no label, or a label that is only a unit spelling of units.yaml, is a value without a quantity, not a candidate (FIX 3).
-    5. The rest group across the papers by the normalized label (snake case of norm()).
+    4. A row with no record key (P157d: export.record_text, the label else the meaning of its definition), or a label that is only a unit
+       spelling of units.yaml, is a value without a quantity, not a candidate (FIX 3).
+    5. The rest group across the papers by their record key, the id built with the unit group stripped (snake case of norm()).
+    P157d: a candidate's symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
+    on accept and into never.csv as paper-local rows on never.
     Returns ({id: group}, log)."""
     spell = unit_spellings()
     log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
@@ -215,7 +219,7 @@ def candidates(pids):
             m = re.match(r"^(tab\w*)\.(r\d+)c\d+$", u["element"])
             if m and layouts.get(m.group(1)) == SYMBOL_LAYOUT and u["symbol"]:
                 tables[(pid, f"{m.group(1)}.{m.group(2)}", norm_symbol(u["symbol"]))].append(u)
-            elif not u["label"] or (u["label"] in spell and not (u["symbol"] and norm_symbol(u["label"]) == norm_symbol(u["symbol"]))):
+            elif not u["text"] or (u["label"] in spell and not (u["symbol"] and norm_symbol(u["label"]) == norm_symbol(u["symbol"]))):
                 log["values"].append(u)                                         # FIX 3: no label, or a unit spelling that is not the record's own symbol
             else:
                 rest.append(u)
@@ -225,8 +229,8 @@ def candidates(pids):
         meaning = next((u["label"] for u in us if u["label"] and norm_symbol(u["label"]) != sym), "") \
             or next((X.strip_trailing_units(u["definition"]) for u in us if u["definition"]), "")
         symbol = symcell[0]["label"] if symcell else us[0]["symbol"]
-        g = dict(label=meaning or symbol, aliases=[symbol] if meaning else [], definition=meaning, members=list(us), pid=pid, row=row,
-                 note="" if meaning else f"symbol with no meaning cell in table row {row}")
+        g = dict(label=meaning or symbol, aliases=[symbol] if meaning else [], symbols=[(symbol, pid)] if meaning else [], definition=meaning,
+                 members=list(us), pid=pid, row=row, note="" if meaning else f"symbol with no meaning cell in table row {row}")
         groups.append(g)
         by_sym[(pid, sym)].append(g)
         by_cell.update({(pid, u["element"]): g for u in us})
@@ -243,6 +247,7 @@ def candidates(pids):
         if len(hits) == 1:
             hits[0]["members"].append(u)
             hits[0]["aliases"] += [u["label"]] if u["label"] not in hits[0]["aliases"] else []
+            hits[0]["symbols"].append((u["label"], u["pid"]))
             log["symbol_merges"].append((u, hits[0]))
             continue
         if len(hits) > 1:
@@ -257,9 +262,11 @@ def candidates(pids):
             same[0]["members"].append(u)
             if is_symbol and u["label"] not in same[0]["aliases"]:
                 same[0]["aliases"].append(u["label"])
+            if is_symbol:
+                same[0]["symbols"].append((u["label"], u["pid"]))
             log["label_merges"].append((u, same[0], text))
             continue
-        groups.append(dict(label=u["label"], aliases=[], definition=u["definition"], members=[u], pid=u["pid"], row="", note=""))
+        groups.append(dict(label=u["text"], aliases=[], symbols=[], definition=u["definition"], members=[u], pid=u["pid"], row="", note=""))
     out = {}
     for g in groups:
         nv = next((u["never"] for u in g["members"] if u["never"]), "")
@@ -270,8 +277,9 @@ def candidates(pids):
         if not cid:
             log["values"] += g["members"]
             continue
-        c = out.setdefault(cid, dict(id=cid, label=g["label"], aliases=[], definition="", members=[], notes=[]))
+        c = out.setdefault(cid, dict(id=cid, label=g["label"], aliases=[], symbols=[], definition="", members=[], notes=[]))
         c["aliases"] += [a for a in g["aliases"] if a not in c["aliases"] and a != c["label"]]
+        c["symbols"] += [x for x in g["symbols"] if x not in c["symbols"] and x[0] != c["label"]]
         c["definition"] = c["definition"] or g["definition"]
         c["members"] += g["members"]
         c["notes"] += [g["note"]] if g["note"] else []
@@ -300,6 +308,12 @@ def printed_labels(row):
     """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id."""
     c = candidates_of(row["pids"].split(";"))[0].get(row["id"]) if row["first_round"] not in ("", "0") else None
     return [c["label"]] + c["aliases"] if c else [row["id"].replace("_", " ")]
+
+
+def candidate_symbols(row):
+    """P157d: the symbols of a pending row's candidate, each with the paper it came from: [(text, pid)]; a pilot row: none."""
+    c = candidates_of(row["pids"].split(";"))[0].get(row["id"]) if row["first_round"] not in ("", "0") else None
+    return list(c["symbols"]) if c else []
 
 
 def run_conditions(pid):
@@ -489,7 +503,7 @@ def decide_page(rows, n):
 
 # ---------------------------------------------------------------- apply (merge_pending.py's writing of entries)
 ORDER = ["id", "type", "label", "name", "origin", "role", "category", "definition", "dimension", "unit", "kind", "formula", "class", "model_type",
-         "parameters", "aliases", "source_pids", "evidence"]
+         "parameters", "aliases", "symbols", "source_pids", "evidence"]
 
 
 def block(e):
@@ -544,18 +558,20 @@ def cmd_apply():
     if stops:
         raise Stop("nothing written:\n  " + "\n  ".join(stops))
     backup = {p: p.read_bytes() for p in (ONTO, PENDING, NEVER, HISTORY, ROUNDS) if p.exists()}
+    snapshot(n, r["pids"].split(";"), rows)                                     # P157d: the rows each candidate covers, before anything changes
     text = ONTO.read_text(encoding="utf-8")
     new, hist, nev = [], [], X.never_rows()
     for x in decided:
-        labels = printed_labels(x)
-        if x["decision"] == "accept" and x["id"] not in have:
-            e = X.pending_entry(x, labels)
+        labels, syms = printed_labels(x), candidate_symbols(x)
+        if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
+            e = X.pending_entry(x, labels[:1], syms)
             e.update(origin=f"round {n}", source_pids=[p for p in x["pids"].split(";") if p], evidence=evidence_items(x))
             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
         elif x["decision"] == "alias":                                         # P156: the label only; a symbol (an alias of the candidate) is
             text = add_alias(text, x["alias_target"], labels[:1])              # local to its paper and goes into an entry only on accept
-        elif x["decision"] == "never":
-            nev.append(dict(label=labels[0], category=x["never_category"], paper=x["pids"], source=f"round {n}"))
+        elif x["decision"] == "never":                                         # P157d: the label (any paper) and each symbol (its paper only)
+            nev.append(dict(label=labels[0], category=x["never_category"], paper=x["pids"], source=f"round {n}: {x['id']}", symbol=""))
+            nev += [dict(label=t, category=x["never_category"], paper=p, source=f"round {n}: symbol of {x['id']}", symbol="yes") for t, p in syms]
     if new:
         mark = "\nfamilies:"
         assert text.count(mark) == 1
@@ -593,12 +609,247 @@ def cmd_apply():
     append(HISTORY, HISTORY_COLS, hist)
     c = Counter(x["decision"] for x in decided)
     set_round(n, status="applied", applied=today(), n_accepted=c["accept"], n_alias=c["alias"], n_rejected=c["reject"], n_never=c["never"])
+    fails = audit_round(n)                                                      # P157d: A1-A3 and their acceptance, every round
     report_page()
     files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / "kb" / "pilot" / "vocab.py", V2 / "kb" / "schema", COMPILED, V2 / "kb" / "reports"]
     subprocess.run(["git", "add", "--", *map(str, files)], cwd=ROOT, check=True)
     subprocess.run(["git", "commit", "-q", "-m", f"grow round {n} applied: {c['accept']} accepted, {c['alias']} aliases, {c['reject']} rejected, "
                     f"{c['never']} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)"], cwd=ROOT, check=True)
     print(f"round {n} applied: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}; committed")
+    for f in fails:
+        print(f"ACCEPTANCE FAIL round {n}: {f}")
+    return fails
+
+
+# ---------------------------------------------------------------- P157d: the decision audit of a round (A1-A3, P157c), every round
+REPORTS = V2 / "kb" / "reports"
+SNAP_COLS = ["pid", "element", "field", "label", "unit", "candidate", "decision"]
+A1_COLS = ["id", "decision", "covers", "pid", "element", "field", "row_label", "now", "effect", "reason"]
+A2_COLS = ["pid", "element", "field", "printed", "record_meaning", "lookup", "entry", "entry_name", "entry_definition", "head_record", "head_entry_name",
+           "head_entry_definition", "verdict", "outcome"]
+A3_COLS = ["pid", "element", "field", "label", "unit", "record_key", "class", "candidate_at_snapshot", "why"]
+A3P_COLS = ["candidate", "first_round", "pids", "rows_at_snapshot", "open_rows_now", "accounted", "detail"]
+HEAD_STOPS = r"\b(of|at|in|for|with|between|without|per|from|on|to|by|where|that|which|during|when|as|under|over)\b|[,;:(\[$]| - | – "
+
+
+def snapshot(n, pids, pend):
+    """The rows of a round before apply changes anything: every compiled unmapped row of its papers with the candidate propose made of
+    it and that candidate's decision in pending.csv ('' when undecided; candidate '' for a never row or a value without a quantity)."""
+    _CAND.clear()
+    cands, _ = candidates_of(pids)
+    dec = {x["id"]: x["decision"] for x in pend}
+    out = []
+    for cid, c in cands.items():
+        for u in c["members"]:
+            out.append(dict(pid=u["pid"], element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], candidate=cid, decision=dec.get(cid, "")))
+    write(REPORTS / f"R{n}_apply.decision_rows.csv", SNAP_COLS, out)
+    return out
+
+
+def head_noun(text):
+    """The head noun of a noun phrase (P157c): LaTeX unwrapped, casefold, the text before the first preposition / relative word / comma
+    / bracket / '$', its last alphabetic word of two or more letters, a plural s dropped (not ss, us, is)."""
+    t = re.split(HEAD_STOPS, X.LATEX_TEXT.sub(r"\1", str(text or "")).casefold(), maxsplit=1)[0]
+    ws = [x for x in t.split() if re.fullmatch(r"[a-zà-ÿ\-]{2,}", x)]
+    h = ws[-1] if ws else ""
+    return h[:-1] if h.endswith("s") and not h.endswith(("ss", "us", "is")) and len(h) > 3 else h
+
+
+def audit_round(n):
+    """P157d: A1-A3 of round n (the P157c audit), written to kb/reports/R<n>_apply.{A1,A2,A3,A3_pending}.csv, .acceptance.txt and .html.
+    A1: every decision of the round (history.csv; back-fill rows extend its never labels) and every row it covered (the snapshot), with
+    where the row is now: a fact (promoted.csv), never (unmapped.csv column never) or open. A2: every promotion in the round's papers,
+    agree when the record's meaning and the entry share the head noun. A3: every open row, classified; every pending candidate of the
+    round's papers accounted for. Acceptance: A1 every covered row has its effect, except a reject (by design), a paper with no compiled
+    output and the unit row of a promoted record (a units.yaml matter); A2 no disagree; A3 no unclassified row, no pending candidate
+    lost a row. Returns the failures (printed by the caller, never silenced)."""
+    rnd = next((r for r in rounds() if r["round"] == str(n)), None)
+    if rnd is None:
+        raise Stop(f"no round {n}")
+    pids = [p for p in rnd["pids"].split(";") if p]
+    snap = rd(REPORTS / f"R{n}_apply.decision_rows.csv")
+    if not snap:
+        raise Stop(f"kb/reports/R{n}_apply.decision_rows.csv missing (written by apply before it changes anything)")
+    compiled = {p for p in pids if (COMPILED / f"{p}.facts.csv").exists()}
+    unm = {p: rd(COMPILED / f"{p}.unmapped.csv") for p in compiled}
+    pro = {p: rd(COMPILED / f"{p}.promoted.csv") for p in compiled}
+    hist = [h for h in rd(HISTORY) if h["round"] == str(n)]
+    nev = [r for r in X.never_rows() if r["source"].startswith(f"round {n}")]
+    never_of = defaultdict(list)                                               # decision id -> its never.csv rows
+    for r in nev:
+        m = re.match(rf"round {n}: (?:symbol of )?(\S+)$", r["source"])
+        never_of[m.group(1) if m else snake(r["label"])].append(r)
+    entries = {e["id"]: e for e in onto()["entries"]}
+    fails, a1 = [], []
+    pool, used = defaultdict(list), Counter()
+    for p in compiled:
+        for u in unm[p]:
+            pool[(p, u["element"], u["field"], u["label_as_printed"].strip(), u["unit"])].append(u)
+    taken_pro = set()
+    decisions = {}
+    for h in hist:
+        if h["action"] in ("add", "alias", "never", "reject") and "back-fill" not in h["decided_by"]:
+            decisions.setdefault(h["id"], h)
+    for cid, h in decisions.items():
+        act = h["action"]
+        if act == "never":
+            covers = "; ".join(f"{r['label']}" + (f" (symbol, {PAPERS.get(r['paper'], r['paper'])} only)" if r.get("symbol") == "yes" else " (any paper)") for r in never_of[cid])
+        elif act == "alias":
+            covers = f"alias of {h['target']}: " + "; ".join(a for a in (entries.get(h["target"], {}).get("aliases") or []) if snake(a) == cid)
+        else:
+            covers = cid.replace("_", " ")
+        rows = [r for r in snap if r["candidate"] == cid]
+        src = [p for p in h["source_pids"].split(";") if p]
+        base = dict(id=cid, decision=act + (f" -> {h['target']}" if h["target"] else ""), covers=covers)
+        if not rows:
+            why = (f"no compiled output for {', '.join(src)}" if src and not set(src) & compiled else "no row of this decision in the snapshot")
+            a1.append(dict(base, now="none", effect="n/a" if "no compiled output" in why else "no effect", reason=why))
+            if "no compiled output" not in why and act != "reject":
+                fails.append(f"A1 {cid}: {why}")
+            continue
+        for r in rows:
+            k = (r["pid"], r["element"], r["field"], r["label"], r["unit"])
+            hits = pool.get(k, [])
+            u = hits[used[k]] if used[k] < len(hits) else None
+            used[k] += 1 if u else 0
+            row = dict(base, pid=r["pid"], element=r["element"], field=r["field"], row_label=r["label"])
+            if r["pid"] not in compiled:
+                a1.append(dict(row, now="none", effect="n/a", reason=f"no compiled output for {r['pid']}"))
+                continue
+            if u is None:
+                p = next((x for i, x in enumerate(pro[r["pid"]]) if (r["pid"], i) not in taken_pro and x["element"] == r["element"] and x["field"] == r["field"]
+                          and (x["printed"] == r["label"] or not r["label"]) and not x["outcome"].startswith("not promoted")), None)
+                if p:
+                    taken_pro.add((r["pid"], pro[r["pid"]].index(p)))
+                ok = bool(p) and ((act == "alias" and p["id"] == h["target"]) or (act == "add" and p["id"] == cid))
+                a1.append(dict(row, now=f"fact: {p['id']} ({p['lookup']}); {p['outcome']}" if p else "not in unmapped.csv, not promoted",
+                               effect="yes" if ok else "no effect", reason="" if ok else (f"promoted to {p['id']}" if p else "row not found")))
+                if not ok and act != "reject":
+                    fails.append(f"A1 {cid}: {r['pid']}:{r['element']} {r['field']} '{r['label']}': " + (f"promoted to {p['id']}" if p else "row not found"))
+                continue
+            if u["never"]:
+                ok = act == "never"
+                a1.append(dict(row, now=f"never: {u['never']} ({u['action']})" if u["field"] == "quantity" else f"never: {u['never']} (unit row of a never record)",
+                               effect="yes" if ok else "no effect", reason="" if ok else "marked never, but the decision is not never"))
+                if not ok and act != "reject":
+                    fails.append(f"A1 {cid}: {r['pid']}:{r['element']} never, decision {act}")
+                continue
+            if act == "reject":
+                a1.append(dict(row, now="unmapped (open)", effect="n/a", reason="reject writes nothing to ontology.yaml or never.csv (by design)"))
+                continue
+            if u["field"] == "unit" and act in ("alias", "add"):
+                a1.append(dict(row, now="unmapped (open): unit row", effect="n/a", reason="the record is promoted; its unit is not in units.yaml"))
+                continue
+            key = X.record_key(u)
+            a1.append(dict(row, now="unmapped (open)" + (f": {u['action']}" if u["action"] != "kept" else ""), effect="no effect",
+                           reason=f"record key '{key}' (symbol key '{X.symbol_key(X.record_text(u))}') matches none of: {covers}"))
+            fails.append(f"A1 {cid}: {r['pid']}:{r['element']} {r['field']} '{r['label']}' open")
+    write(REPORTS / f"R{n}_apply.A1.csv", A1_COLS, a1)
+    # A2
+    a2 = []
+    for p in sorted(compiled):
+        for x in pro[p]:
+            if x["field"] == "quantity":
+                es = [entries.get(i, {}) for i in x["id"].split(" | ")]
+                name, defi = " | ".join(e.get("name", "") for e in es), " | ".join(e.get("definition", "") for e in es)
+                hd = head_noun(defi)
+            else:
+                q = x["lookup"].split(":")[1].strip()
+                name, defi = x["id"], f"a value of {q}"
+                hd = head_noun(entries.get(q, {}).get("definition", ""))
+            hr, hn = head_noun(x.get("meaning") or x["printed"]), head_noun(name.replace("_", " "))
+            verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else ("agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
+            a2.append(dict(pid=p, element=x["element"], field=x["field"], printed=x["printed"], record_meaning=x.get("meaning", ""), lookup=x["lookup"], entry=x["id"],
+                           entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict, outcome=x["outcome"]))
+            if verdict in ("disagree", "no meaning text"):
+                fails.append(f"A2 {p}:{x['element']} '{x['printed']}' -> {x['id']}: {verdict} (head nouns {hr} / {hn} / {hd})")
+    write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)
+    # A3
+    pend = {x["id"]: x for x in rd(PENDING)}
+    decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
+    _CAND.clear()
+    cands, log = candidates_of(sorted(compiled)) if compiled else ({}, dict(never=[], values=[]))
+    member, ngrp, vals = {}, {}, set()
+    ck = lambda u: (u["pid"], u["element"], u["field"], u["label"], u["unit"])  # noqa: E731
+    for cid, c in cands.items():
+        for u in c["members"]:
+            member.setdefault(ck(u), []).append(cid)
+    for u, nv in log["never"]:
+        if not u["never"]:
+            ngrp[ck(u)] = nv
+    for u in log["values"]:
+        vals.add(ck(u))
+    snap_of = {}
+    for r in snap:
+        snap_of.setdefault((r["pid"], r["element"], r["field"], r["label"], r["unit"]), []).append(r["candidate"])
+    a3, seen = [], Counter()
+    for p in sorted(compiled):
+        for u in unmapped_rows(p):
+            if u["never"]:
+                continue
+            k = ck(u)
+            cids = member.get(k, [])
+            cid = cids[min(seen[k], len(cids) - 1)] if cids else ""
+            seen[k] += 1
+            raw = next(x for x in unm[p] if x["element"] == u["element"] and x["field"] == u["field"] and x["label_as_printed"].strip() == u["label"])
+            if cid in pend:
+                cls, why = f"pending candidate {cid}", ("cell without printed label, keyed by its meaning" if not u["label"] else "")
+            elif raw["action"].startswith("kept (ambiguous"):
+                cls, why = "other", f"compile: {raw['action'][6:-1]}; propose groups it as {cid or 'nothing'}"
+            elif k in ngrp:
+                cls, why = "other", f"joined the symbol-table row of a never candidate through its symbol ({ngrp[k]}); propose drops the group"
+            elif k in vals:
+                cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
+            elif cid in decided_ids:
+                h = decided_ids[cid]
+                cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
+                    "a rejected label is written nowhere (by design)" if h["action"] == "reject" else "decided, but the row is still open")
+            elif not u["label"]:
+                cls, why = "cell without printed label", f"candidate {cid or 'none'}"
+            else:
+                cls, why = "unclassified", f"candidate {cid or 'none'}: not pending, not decided"
+            if cls == "unclassified" or why.endswith("still open"):
+                fails.append(f"A3 {p}:{u['element']} {u['field']} '{u['label']}': {why}")
+            a3.append(dict(pid=p, element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], record_key=X.norm_label(u["text"]), **{"class": cls},
+                           candidate_at_snapshot=";".join(snap_of.get(k, [])), why=why))
+    write(REPORTS / f"R{n}_apply.A3.csv", A3_COLS, a3)
+    a3p = []
+    for cid, x in pend.items():
+        xp = [p for p in x["pids"].split(";") if p]
+        at = [r for r in snap if r["candidate"] == cid]
+        now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]
+        if not set(xp) & set(pids) and not at:
+            if not set(xp) & {p.stem for p in COMPILED.glob("*.facts.csv")}:
+                a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=0, open_rows_now=0, accounted="yes",
+                                detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
+            continue
+        lost = [r for r in at if not any(o["pid"] == r["pid"] and o["element"] == r["element"] and o["field"] == r["field"] for o in now)]
+        ok = not lost and bool(now)
+        a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now), accounted="yes" if ok else "NO",
+                        detail="; ".join(f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost) or ("" if now else "no open row")))
+        if not ok:
+            fails.append(f"A3 pending {cid}: " + (a3p[-1]["detail"] or "no open row"))
+    write(REPORTS / f"R{n}_apply.A3_pending.csv", A3P_COLS, a3p)
+    eff = Counter(r["effect"] for r in a1)
+    acc = [f"round {n} acceptance (grow.py audit_round)", f"A1: {len(decisions)} decisions, {len(a1)} rows: effect {dict(eff)}",
+           f"A2: {len(a2)} promotions: {dict(Counter(r['verdict'] for r in a2))}", f"A3: {len(a3)} open rows: {dict(Counter(r['class'].split(' ')[0] for r in a3))}; "
+           f"pending candidates accounted {sum(1 for r in a3p if r['accounted'] == 'yes')}/{len(a3p)}",
+           "result: " + ("PASS" if not fails else f"FAIL ({len(fails)})")] + [f"FAIL {f}" for f in fails]
+    (REPORTS / f"R{n}_apply.acceptance.txt").write_text("\n".join(acc) + "\n", encoding="utf-8")
+    R_ = f"psed_v2/kb/reports/R{n}_apply"
+    subprocess.run([sys.executable, str(V2 / "kb" / "report.py"), f"{R_}.html", f"Acceptance={R_}.acceptance.txt",
+                    f"A1 decision trace: every decision, every row it covered, where it is now={R_}.A1.csv",
+                    f"A2 promotions in the round's papers, head-noun check={R_}.A2.csv", f"A3 open rows, classified={R_}.A3.csv",
+                    f"A3 pending candidates of the round's papers={R_}.A3_pending.csv", f"Snapshot: every row of the round before apply={R_}.decision_rows.csv"],
+                   cwd=ROOT, check=True, capture_output=True)
+    print("\n".join(acc))
+    return fails
+
+
+def cmd_audit(n):
+    fails = audit_round(int(n))
+    report_page()
+    return fails
 
 
 def cmd_status():
@@ -887,6 +1138,31 @@ def family_rows(o):
              " | ".join(f"{e['id']}: {e['definition'].split('.')[0]}" for e in ms)] for f, ms in sorted(fam.items())]
 
 
+def ambiguous_keys(o):
+    """P157d: every key of compile.py's lookup (export.resolve_index over ontology.yaml) that names two or more entries: [lookup, key, entries]."""
+    ents = {e["id"]: e for e in o["entries"]}
+    words, syms = X.resolve_index(ents, [i for i, e in ents.items() if e["type"] == "species" and e.get("kind") == "material"])
+    out = [[kind, k, "; ".join(f"{i} ({h})" for i, h in sorted(v.items()))] for kind, idx in words.items() for k, v in sorted(idx.items()) if len(v) > 1]
+    out += [[f"{kind} symbols", f"{k[1]} in {PAPERS.get(k[0], k[0]) or 'no paper'}", "; ".join(sorted(v))] for kind, idx in syms.items() for k, v in sorted(idx.items()) if len(v) > 1]
+    return out
+
+
+def rounds_audit_html(rs):
+    """P157d: per applied round, its acceptance and the A1-A3 tables (kb/reports/R<n>_apply.*, written by audit_round)."""
+    out = ""
+    for r in rs:
+        acc = REPORTS / f"R{r['round']}_apply.acceptance.txt"
+        if not acc.exists():
+            continue
+        text = acc.read_text(encoding="utf-8")
+        out += (f"<h3>Round {esc(r['round'])}: decision audit (kb/reports/R{esc(r['round'])}_apply.html)</h3>"
+                f"<pre class='{'pass' if 'result: PASS' in text else 'fail'}'>{esc(text)}</pre>")
+        for part, cols in (("A1", A1_COLS), ("A2", A2_COLS), ("A3", A3_COLS), ("A3_pending", A3P_COLS)):
+            rows = rd(REPORTS / f"R{r['round']}_apply.{part}.csv")
+            out += f"<h4>{part} ({len(rows)})</h4>" + table(cols, [[x.get(c, "") for c in cols] for x in rows])
+    return out
+
+
 def report_page():
     o = onto()
     entries = o["entries"]
@@ -911,8 +1187,11 @@ def report_page():
     for k in ("quantity", "categorical", "species", "structure", "mechanism", "method", "model"):
         rows = [[e["id"], e.get("name", ""), e.get("definition", ""), e.get("unit", ""), e.get("origin", ""), ", ".join(src[e["id"]]["rounds"]),
                  "; ".join(src[e["id"]]["pids"]), "; ".join(src[e["id"]]["dois"]), "; ".join(x for x in map(str, e.get("evidence") or []) if not HELD_RX.search(x)),
-                 ("replaced by " + (", ".join(e["replaced_by"]) if isinstance(e["replaced_by"], list) else e["replaced_by"])) if e.get("replaced_by") else ""] for e in entries if e["type"] == k]
-        ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence (held-out removed)", "replaced"], rows)
+                 ("replaced by " + (", ".join(e["replaced_by"]) if isinstance(e["replaced_by"], list) else e["replaced_by"])) if e.get("replaced_by") else "",
+                 "; ".join(e.get("aliases") or []), "; ".join(f"{x['text']} ({PAPERS.get(x.get('paper', ''), x.get('paper', '')) or 'no paper'})" for x in e.get("symbols") or [])]
+                for e in entries if e["type"] == k]
+        ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence (held-out removed)",
+                                                                  "replaced", "aliases", "symbols (paper; P157d)"], rows)
     sup = X.never_index([e for e in entries if not e.get("replaced_by")])[1]
     round_pids = [p for r in rs if r["round"] != "0" for p in r["pids"].split(";") if p]
     values = candidates_of(round_pids)[1]["values"] if round_pids else []
@@ -925,6 +1204,8 @@ def report_page():
             f"<pre class='{'pass' if tree_check[0].startswith('sum check: pass') and tree_check[1] == 'unplaced: none' else 'fail'}'>{esc(chr(10).join(tree_check))}</pre>"
             f"<pre>{esc(chr(10).join(ln for t in trees[1:] for ln in draw(t)))}</pre>{table(['item', 'value'], summary)}"
             f"<h2>3. Checks (export.py --check)</h2><table><tr><th>check</th><th>result</th><th>detail</th><th>rows</th></tr>{check_html}</table>"
+            f"<h3>Ambiguous keys (P157d: a key under two entries promotes nothing in compile.py; listed every round)</h3>"
+            f"{table(['lookup', 'key', 'entries'], ambiguous_keys(o))}"
             f"<h2>4. Entries by kind</h2>{ent_html}"
             f"<h2>5. Values</h2>{table(['categorical', 'values_from', 'current values', 'value aliases'], values_rows(o))}"
             f"<h2>6. Families</h2>{table(['family', 'members', 'what they answer'], family_rows(o))}"
@@ -932,7 +1213,7 @@ def report_page():
             f"<h2>8. Hierarchy</h2>{hierarchy_html(o)}"
             f"<h2>9. Units</h2>{table(['dimension', 'canonical', 'accepted'], [[d, u['canonical'], ', '.join(u['accepted'])] for d, u in o['units'].items()])}"
             f"<h2>10. History ({len(hist)} rows)</h2>{table(HISTORY_COLS, [[h[c] for c in HISTORY_COLS] for h in hist])}"
-            f"<h2>11. Rounds</h2>{table(ROUND_COLS, [[r[c] for c in ROUND_COLS] for r in rs])}"
+            f"<h2>11. Rounds</h2>{table(ROUND_COLS, [[r[c] for c in ROUND_COLS] for r in rs])}{rounds_audit_html(rs)}"
             f"<h2>12. Pending ({len(pend)} rows; read-only, as decide.html shows them)</h2>"
             + table(CAND_HEAD + ["decision", "alias target", "never category", "note", "first round"], cand, raw=True)
             + f"<h2>13. Never ({len(nev)}; a part that names a live entry is superseded and suppresses nothing)</h2>"
@@ -954,15 +1235,18 @@ def main(argv=None):
     sub.add_parser("init")
     a = sub.add_parser("add")
     a.add_argument("pids", nargs="+")
+    au = sub.add_parser("audit")                                                # P157d: A1-A3 of a round
+    au.add_argument("round")
     for c in ("propose", "apply", "status", "report"):
         sub.add_parser(c)
     args = ap.parse_args(argv)
     try:
-        {"init": cmd_init, "add": lambda: cmd_add(args.pids), "propose": cmd_propose, "apply": cmd_apply, "status": cmd_status, "report": report_page}[args.cmd]()
+        out = {"init": cmd_init, "add": lambda: cmd_add(args.pids), "propose": cmd_propose, "apply": cmd_apply, "status": cmd_status, "report": report_page,
+               "audit": lambda: cmd_audit(args.round)}[args.cmd]()
     except Stop as e:
         print(f"STOPPED: {e}")
         return 1
-    return 0
+    return 1 if args.cmd in ("apply", "audit") and out else 0                  # P157d: a failed acceptance is an exit code too
 
 
 if __name__ == "__main__":

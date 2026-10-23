@@ -1,0 +1,997 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P157d</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P157d</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P157d.summary.txt</p>
+<pre>P157d, 0 calls; gold untouched; held-out not read. Round-1 re-audit (grow.py audit 1): PASS.
+FIX 1. 98 strings moved into symbols: [{text, paper}] on 42 quantity / categorical entries (symbols_move): the 14 symbol: fields (deleted; paper =
+  each paper of the entry&#x27;s evidence) and the symbol-like aliases (paper = the alias&#x27;s own evidence, else none: such a symbol promotes nowhere).
+  export: vocab and CODEBOOK carry symbols with their paper; norm_label = LaTeX stripped, casefold, whitespace (no unit-group strip, no trailing s);
+  compile a0 promotes by id, name, aliases, value aliases; symbols only in their own paper, case kept; never by an entry&#x27;s label; a key under two
+  ids -&gt; unmapped &#x27;kept (ambiguous: ids)&#x27;. apply: accept -&gt; label to aliases, table symbols to symbols with their paper.
+FIX 2. apply writes a never decision&#x27;s label (any paper) and each symbol (its paper only); back-fill: 10 never.csv symbol rows + 10 history rows
+  (z_A, v_A, h, g, f_ads, f_des, Q in yli18; Q, R, R_row in yim20).
+FIX 3. export.record_text / record_key: the label, else the definition&#x27;s meaning (unit group stripped, as P156); compile and propose call it.
+  139 empty-label records with their key (record_keys); the 10 yim20 tabu1 cells now key by their meaning (Surface area, ...).
+Data: reactor_type name &#x27;reactor type&#x27;; structure alias &#x27;Substrate&#x27; removed (2 history rows). Ambiguous keys now (ontology.html sec. 3).
+Re-audit (R1_apply): A1 42 decisions / 85 rows: effect 83, n/a 2 (evacuated_below: ela03 not compiled; top_membrane_removal: reject by design);
+  elam_monte_carlo is a pending pilot row of ela03 (not compiled), accounted in A3. A2: 33 promotions, 33 agree, 0 disagree (the
+  effective_diffusion_coefficient fact yli18:tabu1.r4c0#1 present; Q, R, l no longer promoted). A3: 11 open rows, all classified; pending 7/7,
+  distance_between_rows_of_pillars has its l row back. Row states vs P157b: 23 rows changed, every one listed (row_states).
+Score vs gold: identical in every column and type (score_before_after, score_by_type). check.py --dir: 159 / 306 / 263 before and after, the same
+  problems (check_dir). export.py --check 15 of 15.
+Where I read the directive and chose (notes): FIX 1 scope; symbols case-kept; never.csv&#x27;s &#x27;label [unit]&#x27; format; the pilot word &#x27;q [nm-2]&#x27;.
+</pre>
+<h2>Choices made, each reported</h2><p>psed_v2/kb/reports/P157d.notes.txt</p>
+<pre>Choices made in this unit, each one reported, none made to pass the acceptance (the acceptance ran after them):
+1. FIX 1 scope: quantity and categorical entries only. The symbol-like rule also selects 42 strings of species, structures and a mechanism
+   (H2O, TiCl4, Al(CH3)3, PillarHall-4, LHAR4, ...; symbols_not_moved). A formula or a product name is a name in every paper; moved to a
+   paper-local symbol with no recorded paper it would stop resolving species in compile step f and in a0. They stay aliases.
+2. Symbol matching keeps case (export.symbol_key), as P156&#x27;s norm_symbol (R is not r). Case-folded, feature_depth&#x27;s L (paper yim20, from its
+   evidence) would promote yim20&#x27;s l (distance between rows of pillars) again (symbol_case).
+3. A symbol: field with evidence in several papers becomes one {text, paper} per paper; an alias with no &quot;alias &#x27;&lt;a&gt;&#x27;: &lt;key&gt;&quot; evidence gets
+   paper &#x27;&#x27; and promotes nowhere (49 of the 98: 48 aliases and step_coverage&#x27;s SC, whose entry has no evidence; symbols_move, paper_from).
+4. never.csv labels are read in their own format, &#x27;label [unit]&#x27; (the text before a trailing &#x27; [unit]&#x27;, export._never_label, as check 12
+   reads them). Without it, 5 rows matched by pilot labels (&#x27;rms thickness error [nm]&#x27;, &#x27;Viscosity of gas [µPa s]&#x27;, &#x27;Accelerating voltage
+   [keV]&#x27;) stopped being never. Lookup keys of ids, names and aliases are whole strings (no unit group stripped).
+5. The trailing-&#x27;s&#x27; rule is gone: 102 printed variants that matched before no longer do (keys_changed: an alias printed without its unit
+   group, the singular or plural of its last word). No plural aliases were added (an ontology decision); no row of the three papers changed by it.
+6. Never parts: 17 never labels changed key or superseded status (never_keys_changed); e.g. &#x27;q [nm-2]&#x27; (pilot) now matches Q in any paper since
+   &#x27;q&#x27; moved from saturation_density&#x27;s aliases to its symbols; yli18 eq14 Q and yim20 tabu2.r15c0 Q reach never through it (word before
+   symbol), category &#x27;Model internals not in Sec. 8&#x27;, not through their round-1 symbol rows. Option: give the pilot&#x27;s symbol-like never rows a
+   paper (symbol yes).
+7. P157b&#x27;s report table P157b.score.csv overwrote score.py&#x27;s file of that name (the values survive in its &#x27;after&#x27; column, used as &#x27;before&#x27; here);
+   P157d&#x27;s comparison is P157d.score_before_after.csv, P157d.score.csv is score.py&#x27;s.
+8. CODEBOOK prints each symbol&#x27;s paper as its pid (a held-out pid included where the evidence names one); ontology.html withholds those cells.
+9. Gold builders read aliases (kb/pilot/facts.py slot_for); gold is not rebuilt here, a rebuild would see the slimmer alias lists.
+</pre>
+<h2>Paths</h2><p>psed_v2/kb/reports/P157d.paths.txt</p>
+<pre>report: psed_v2/kb/reports/P157d.html
+round-1 audit: psed_v2/kb/reports/R1_apply.html (grow.py audit 1; apply writes it every round)
+ontology.html: psed_v2/ontology/ontology.html (3. ambiguous keys; 4. aliases and symbols; 11. rounds with the audit)
+</pre>
+<h2>FIX 1a. The symbols move: entry, string, from field -&gt; symbols, paper</h2><p>psed_v2/kb/reports/P157d.symbols_move.csv</p>
+<table><tr><th>entry</th><th>string</th><th>from_field</th><th>to</th><th>paper</th><th>paper_from</th></tr>
+<tr><td>deposition_temperature</td><td>T</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>deposition_temperature</td><td>T</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>deposition_temperature</td><td>T</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>deposition_temperature</td><td>T (°C)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>growth_per_cycle</td><td>GPC</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>growth_per_cycle</td><td>GPC</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>pulse_time</td><td>t_1</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>coated_aspect_ratio</td><td>coated (E)AR</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>coated_aspect_ratio</td><td>coated (E)AR</td><td>symbol</td><td>symbols</td><td>held-out paper</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>coated_aspect_ratio</td><td>x̃50%</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>partial_pressure</td><td>P_i</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>partial_pressure</td><td>P_i</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>partial_pressure</td><td>P_i</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>partial_pressure</td><td>pA0 (Pa)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>partial_pressure</td><td>pO (mbar)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>partial_pressure</td><td>p_A0</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>partial_pressure</td><td>p_i</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>penetration_depth</td><td>PD50%</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>penetration_depth</td><td>PD50%</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>penetration_depth</td><td>PD50%</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>penetration_depth</td><td>x50% (PD50%)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>penetration_depth</td><td>x_50% (PD^50%)</td><td>aliases</td><td>symbols</td><td>yim20</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>equivalent_aspect_ratio</td><td>EAR</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>step_coverage</td><td>SC</td><td>symbol</td><td>symbols</td><td></td><td>no evidence: no paper</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>s0</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>s0</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>s0</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>cH2O</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c_ext</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>recombination_probability</td><td>r</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>surface_coverage</td><td>θ</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_width</td><td>w</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_width</td><td>w</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_width</td><td>w</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_width</td><td>H (nm)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>feature_width</td><td>h</td><td>aliases</td><td>symbols</td><td>art19</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>feature_width</td><td>d_pore</td><td>aliases</td><td>symbols</td><td>hei24</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>feature_width</td><td>H (channel height)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>feature_depth</td><td>L</td><td>symbol</td><td>symbols</td><td>yim20</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_depth</td><td>L</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_depth</td><td>L</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_depth</td><td>L (mm)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>feature_depth</td><td>l/2</td><td>aliases</td><td>symbols</td><td>ela03</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>feature_depth</td><td>L (channel length)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>feature_extent</td><td>z</td><td>symbol</td><td>symbols</td><td>yli18</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_extent</td><td>z</td><td>symbol</td><td>symbols</td><td>10.1116_6.0001094</td><td>the entry&#x27;s evidence</td></tr>
+<tr><td>feature_extent</td><td>W (channel width)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>adsorption_equilibrium_constant</td><td>K (Pa-1)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>precursor_purity</td><td>99.5%</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>Δn_s</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>gas_moles_per_cycle</td><td>Δn_g</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>reaction_stoichiometry</td><td>ȳ</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>reaction_stoichiometry</td><td>x</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>reaction_stoichiometry</td><td>ȳ (printed ν̄ in the text layer)</td><td>aliases</td><td>symbols</td><td>held-out paper</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>pressure_rise</td><td>δp</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>pressure_rise</td><td>δp_max</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>time_to_maximum</td><td>t_max</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>porosity</td><td>φ_i</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>porosity</td><td>φ_f</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>tortuosity</td><td>τ</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>pore_volume</td><td>V_p</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>sheet_resistance</td><td>R_sheet</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>density_relative_to_bulk</td><td>ρ/ρ_bulk</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>annealing_temperature</td><td>T_anneal</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>saturation_density</td><td>q</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>saturation_density</td><td>q_sat</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>saturation_density</td><td>S_Hf</td><td>aliases</td><td>symbols</td><td>gor03</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>saturation_density</td><td>S_O</td><td>aliases</td><td>symbols</td><td>gor03</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>saturation_density</td><td>Γ</td><td>aliases</td><td>symbols</td><td>ela03</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>saturation_density</td><td>σ</td><td>aliases</td><td>symbols</td><td>hei24</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>mean_free_path</td><td>λ</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>fit_r2</td><td>R2</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>fit_r2</td><td>R²</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>element_fraction</td><td>H (at. %)</td><td>aliases</td><td>symbols</td><td>mat22</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>element_fraction</td><td>C (at. %)</td><td>aliases</td><td>symbols</td><td>mat22</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>element_fraction</td><td>N (at. %)</td><td>aliases</td><td>symbols</td><td>mat22</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>element_fraction</td><td>O (at. %)</td><td>aliases</td><td>symbols</td><td>mat22</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>particle_diameter</td><td>d_NP</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>diffraction_angle</td><td>2θ (deg.)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>diffraction_angle</td><td>2θ (°)</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>diffraction_angle</td><td>2theta</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>molar_mass</td><td>M_A</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>molar_mass</td><td>M_B</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>molecule_diameter</td><td>d_B</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>molecule_diameter</td><td>d_TMA</td><td>aliases</td><td>symbols</td><td>yli18</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>molecule_diameter</td><td>d_TiCl4</td><td>aliases</td><td>symbols</td><td>yli18</td><td>the alias&#x27;s own evidence</td></tr>
+<tr><td>knudsen_diffusion_coefficient</td><td>D_Kn</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>effective_diffusion_coefficient</td><td>D_eff</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>effective_diffusion_coefficient</td><td>D_e</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>gas_phase_diffusion_coefficient</td><td>D_mi</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>reactant_number_density</td><td>n_P</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>reactant_number_density</td><td>n_P0</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>b_film</td><td>b_film</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+<tr><td>p_d</td><td>P_d</td><td>aliases</td><td>symbols</td><td></td><td>no alias evidence: no paper</td></tr>
+</table>
+<h2>FIX 1a. Symbol-like strings of other kinds, not moved</h2><p>psed_v2/kb/reports/P157d.symbols_not_moved.csv</p>
+<table><tr><th>entry</th><th>kind</th><th>alias</th><th>why</th></tr>
+<tr><td>tma</td><td>species</td><td>Al(CH3)3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tma</td><td>species</td><td>AlMe3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tma</td><td>species</td><td>Me3Al</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tma</td><td>species</td><td>(CH3)3Al</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>ticl4</td><td>species</td><td>TiCl4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>h2o</td><td>species</td><td>H2O</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>o2</td><td>species</td><td>O2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>n2</td><td>species</td><td>N2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>al2o3</td><td>species</td><td>Al2O3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tio2</td><td>species</td><td>TiO2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>mo_ntbu2_nme22</td><td>species</td><td>Mo(NtBu)2(NMe2)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>mo_ntbu2_nme22</td><td>species</td><td>(NtBu)2(NMe2)2Mo</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>w_ntbu2_nme22</td><td>species</td><td>W(tBuN)2(Me2N)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>w_ntbu2_nme22</td><td>species</td><td>(tBuN)2(Me2N)2W</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>w_ntbu2_nme22</td><td>species</td><td>W(NtBu)2(NMe2)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tdmat</td><td>species</td><td>Ti(NMe2)4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>dez</td><td>species</td><td>ZnEt2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>dez</td><td>species</td><td>Zn(C2H5)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>dez</td><td>species</td><td>Et2Zn</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>h2s</td><td>species</td><td>H2S</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>h2</td><td>species</td><td>H2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>mos2</td><td>species</td><td>MoS2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>ws2</td><td>species</td><td>WS2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tis2</td><td>species</td><td>TiS2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>moo3</td><td>species</td><td>MoO3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>si</td><td>species</td><td>Si(100)</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>sio2</td><td>species</td><td>SiO2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>sio2</td><td>species</td><td>SiO2/Si</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>pillarhall_3</td><td>structure</td><td>PillarHall-3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>sicl4</td><td>species</td><td>SiCl4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>hfo2</td><td>species</td><td>HfO2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>hf_nme2_4</td><td>species</td><td>Hf(NMe2)4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>bdeas</td><td>species</td><td>SiH2(N(C2H5)2)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>bdeas</td><td>species</td><td>SiH2(NEt2)2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tdmacph</td><td>species</td><td>HfCp(N(CH3)2)3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>tdmacph</td><td>species</td><td>HfCp(NMe2)3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>pillarhall_4</td><td>structure</td><td>PillarHall-4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>pillarhall_4</td><td>structure</td><td>LHAR4</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>pillarhall_4</td><td>structure</td><td>LHAR4-ADVANCED</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>Ga2S3</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>Ga2(NMe2)6</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+<tr><td>mocl2o2</td><td>species</td><td>MoCl2O2</td><td>not moved: a species formula, structure or product name is a name in every paper, not a paper-local symbol (P157d scope)</td></tr>
+</table>
+<h2>FIX 1c. Symbols keep case: what a case-folded match would have promoted</h2><p>psed_v2/kb/reports/P157d.symbol_case.csv</p>
+<table><tr><th>paper</th><th>element</th><th>printed</th><th>casefolded_match</th><th>case_kept_match</th><th>symbols</th></tr>
+<tr><td>yim20</td><td>tabu2.r7c0</td><td>l</td><td>feature_depth</td><td>none</td><td>L (yim20)</td></tr>
+</table>
+<h2>FIX 1b. What stops matching without the unit-group strip and the trailing-s rule (printed variants)</h2><p>psed_v2/kb/reports/P157d.keys_changed.csv</p>
+<table><tr><th>entry</th><th>kind</th><th>text</th><th>field</th><th>variant</th><th>variant_kind</th><th>matched_before</th><th>matches_now</th></tr>
+<tr><td>material</td><td>categorical</td><td>Film (process)</td><td>alias</td><td>Film</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>material</td><td>categorical</td><td>Film (process)</td><td>alias</td><td>Films</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>reactor_type</td><td>categorical</td><td>ALD reactor types</td><td>alias</td><td>ALD reactor type</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>Temperature (°C)</td><td>alias</td><td>Temperature</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>Temperature (°C)</td><td>alias</td><td>Temperatures</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>Temperature (K)</td><td>alias</td><td>Temperature</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>Temperature (K)</td><td>alias</td><td>Temperatures</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>process_pressure</td><td>quantity</td><td>Pressure (mbar)</td><td>alias</td><td>Pressure</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>process_pressure</td><td>quantity</td><td>Pressure (mbar)</td><td>alias</td><td>Pressures</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>growth_per_cycle</td><td>quantity</td><td>Thickness/cycles S/N (nm)</td><td>alias</td><td>Thickness/cycles S/N</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>growth_per_cycle</td><td>quantity</td><td>SI/N (GPCI)</td><td>alias</td><td>SI/N</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>growth_per_cycle</td><td>quantity</td><td>SIIb/N (GPCIIb)</td><td>alias</td><td>SIIb/N</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>Pulse length (s)</td><td>alias</td><td>Pulse length</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>Pulse length (s)</td><td>alias</td><td>Pulse lengths</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>Pressure pA (Pa)</td><td>alias</td><td>Pressure pA</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>Film thickness (nm)</td><td>alias</td><td>Film thickness</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>Film thickness S (nm)</td><td>alias</td><td>Film thickness S</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>Thickness (nm)</td><td>alias</td><td>Thickness</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>Thickness outside SI (nm)</td><td>alias</td><td>Thickness outside SI</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>Initial thickness SIIb (nm)</td><td>alias</td><td>Initial thickness SIIb</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>penetration_depth</td><td>quantity</td><td>Penetration depth xp (µm)</td><td>alias</td><td>Penetration depth xp</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>penetration_depth</td><td>quantity</td><td>Penetration depth xp (µm)</td><td>alias</td><td>Penetration depth xps</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>surface_coverage</td><td>quantity</td><td>Surface coverage (θ)</td><td>alias</td><td>Surface coverage</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>surface_coverage</td><td>quantity</td><td>Surface coverage (θ)</td><td>alias</td><td>Surface coverages</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>surface_coverage</td><td>quantity</td><td>fraction of covered sites</td><td>alias</td><td>fraction of covered site</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>Design channel height H (nm)</td><td>alias</td><td>Design channel height H</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>Design channel height H (nm)</td><td>alias</td><td>Design channel height Hs</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>Channel height (nm)</td><td>alias</td><td>Channel height</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>Channel height (nm)</td><td>alias</td><td>Channel heights</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>LHAR H (µm)</td><td>alias</td><td>LHAR H</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>LHAR H (µm)</td><td>alias</td><td>LHAR Hs</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>pore diameter (nm)</td><td>alias</td><td>pore diameter</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>pore diameter (nm)</td><td>alias</td><td>pore diameters</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_depth</td><td>quantity</td><td>Lateral length of the channel (mm)</td><td>alias</td><td>Lateral length of the channel</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>feature_depth</td><td>quantity</td><td>Lateral length of the channel (mm)</td><td>alias</td><td>Lateral length of the channels</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>cycles</td><td>name</td><td>cycle</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>Number of cycles</td><td>alias</td><td>Number of cycle</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>Cycles</td><td>alias</td><td>Cycle</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>number of ALD cycles</td><td>alias</td><td>number of ALD cycle</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>ALD cycles</td><td>alias</td><td>ALD cycle</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>plasma_power</td><td>quantity</td><td>Power (W)</td><td>alias</td><td>Power</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>plasma_power</td><td>quantity</td><td>Power (W)</td><td>alias</td><td>Powers</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>gas_flow_rate</td><td>quantity</td><td>Flow (sccm)</td><td>alias</td><td>Flow</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>gas_flow_rate</td><td>quantity</td><td>Flow (sccm)</td><td>alias</td><td>Flows</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>normalized_thickness</td><td>quantity</td><td>Normalized thickness (-)</td><td>alias</td><td>Normalized thickness</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>adsorption_equilibrium_constant</td><td>quantity</td><td>Adsorption equilibrium constant (1/Pa)</td><td>alias</td><td>Adsorption equilibrium constant</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>adsorption_equilibrium_constant</td><td>quantity</td><td>Adsorption equilibrium constant (1/Pa)</td><td>alias</td><td>Adsorption equilibrium constants</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td>gpcsat (pm)</td><td>alias</td><td>gpcsat</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td>gpcsat (pm)</td><td>alias</td><td>gpcsats</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td>Saturation growth in cycle (nm)</td><td>alias</td><td>Saturation growth in cycle</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td>Saturation growth in cycle (nm)</td><td>alias</td><td>Saturation growth in cycles</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance inside the channel x (µm)</td><td>alias</td><td>Distance inside the channel x</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance inside the channel x (µm)</td><td>alias</td><td>Distance inside the channel xs</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance x (µm)</td><td>alias</td><td>Distance x</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance x (µm)</td><td>alias</td><td>Distance xs</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Location x (µm)</td><td>alias</td><td>Location x</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Location x (µm)</td><td>alias</td><td>Location xs</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Location (µm)</td><td>alias</td><td>Location</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Location (µm)</td><td>alias</td><td>Locations</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Depth (m)</td><td>alias</td><td>Depth</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Depth (m)</td><td>alias</td><td>Depths</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance [µm]</td><td>alias</td><td>Distance</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>distance</td><td>quantity</td><td>Distance [µm]</td><td>alias</td><td>Distances</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>time</td><td>quantity</td><td>Time (s)</td><td>alias</td><td>Time</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>time</td><td>quantity</td><td>Time (s)</td><td>alias</td><td>Times</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>model_reactant</td><td>species</td><td>reactant A (model)</td><td>alias</td><td>reactant A</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>model_reactant</td><td>species</td><td>reactant A (model)</td><td>alias</td><td>reactant As</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>o_atom</td><td>species</td><td>oxygen radicals</td><td>alias</td><td>oxygen radical</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>o_atom</td><td>species</td><td>O radicals</td><td>alias</td><td>O radical</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>o_atom</td><td>species</td><td>O atoms</td><td>alias</td><td>O atom</td><td>singular of the last word</td><td>yes</td><td>yes</td></tr>
+<tr><td>cycle_time</td><td>quantity</td><td>one full ALD cycle takes</td><td>alias</td><td>one full ALD cycle take</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>Mass gain (%)</td><td>alias</td><td>Mass gain</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>Mass gain (%)</td><td>alias</td><td>Mass gains</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>Final porosity, φ_f (%)</td><td>alias</td><td>Final porosity, φ_f</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>ZnO (zincite) Crystallite size (nm)</td><td>alias</td><td>ZnO (zincite) Crystallite size</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>ZnO (zincite) Crystallite size (nm)</td><td>alias</td><td>ZnO (zincite) Crystallite sizes</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>Zn (metallic) Crystallite size (nm)</td><td>alias</td><td>Zn (metallic) Crystallite size</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>Zn (metallic) Crystallite size (nm)</td><td>alias</td><td>Zn (metallic) Crystallite sizes</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>raman_shift</td><td>quantity</td><td>Raman shift (cm-1)</td><td>alias</td><td>Raman shift</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>raman_shift</td><td>quantity</td><td>Raman shift (cm-1)</td><td>alias</td><td>Raman shifts</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>counts</td><td>alias</td><td>count</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity (Arb. units)</td><td>alias</td><td>Intensity</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity (Arb. units)</td><td>alias</td><td>Intensitys</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity (Normalized to Si)</td><td>alias</td><td>Intensity</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity (Normalized to Si)</td><td>alias</td><td>Intensitys</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity [a.u.]</td><td>alias</td><td>Intensity</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Intensity [a.u.]</td><td>alias</td><td>Intensitys</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Normalized X-ray counts (Zn)</td><td>alias</td><td>Normalized X-ray counts</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>Normalized X-ray counts (Zn)</td><td>alias</td><td>Normalized X-ray count</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>S/Mo ratio (RBS)</td><td>alias</td><td>S/Mo ratio</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>S/Mo ratio (RBS)</td><td>alias</td><td>S/Mo ratios</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>S/Mo ratio (XPS)</td><td>alias</td><td>S/Mo ratio</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>S/Mo ratio (XPS)</td><td>alias</td><td>S/Mo ratios</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>si</td><td>species</td><td>Si(100)</td><td>alias</td><td>Si</td><td>printed without its unit group</td><td>yes</td><td>yes</td></tr>
+<tr><td>si</td><td>species</td><td>Si(100)</td><td>alias</td><td>Sis</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>pet</td><td>species</td><td>poly(ethylene terephthalate)</td><td>alias</td><td>poly</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>pet</td><td>species</td><td>poly(ethylene terephthalate)</td><td>alias</td><td>polys</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>body_thickness</td><td>quantity</td><td>film thickness (µm)</td><td>alias</td><td>film thickness</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>entry sides</td><td>id</td><td>entry side</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>entry sides</td><td>name</td><td>entry side</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>entry faces</td><td>alias</td><td>entry face</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>number of entry sides</td><td>alias</td><td>number of entry side</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>macroscopic_lateral_trench</td><td>structure</td><td>macroscopic test structures</td><td>alias</td><td>macroscopic test structure</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>nanoparticle compacts</td><td>alias</td><td>nanoparticle compact</td><td>singular of the last word</td><td>yes</td><td>yes</td></tr>
+<tr><td>desorption</td><td>mechanism</td><td>desorbs</td><td>alias</td><td>desorb</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>fin_growth</td><td>mechanism</td><td>fins</td><td>alias</td><td>fin</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>thiol_groups</td><td>mechanism</td><td>thiol groups</td><td>id</td><td>thiol group</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>thiol_groups</td><td>mechanism</td><td>thiol groups</td><td>name</td><td>thiol group</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>thiol_groups</td><td>mechanism</td><td>-SH groups</td><td>alias</td><td>-SH group</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>edge_reactivity</td><td>mechanism</td><td>reactive edges</td><td>alias</td><td>reactive edge</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>precursor_adsorption</td><td>mechanism</td><td>adsorption sites</td><td>alias</td><td>adsorption site</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>scan_averaging</td><td>mechanism</td><td>averaging repeated scans</td><td>alias</td><td>averaging repeated scan</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>gas_generation</td><td>mechanism</td><td>gas-producing processes</td><td>alias</td><td>gas-producing processe</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>leak</td><td>mechanism</td><td>leak rates</td><td>alias</td><td>leak rate</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cracks</td><td>mechanism</td><td>cracks</td><td>id</td><td>crack</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>cracks</td><td>mechanism</td><td>cracks</td><td>name</td><td>crack</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>etched_hole_array</td><td>structure</td><td>etched holes</td><td>alias</td><td>etched hole</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>etched_hole_array</td><td>structure</td><td>elliptical holes</td><td>alias</td><td>elliptical hole</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>surface_recombination</td><td>mechanism</td><td>recombination of plasma radicals</td><td>alias</td><td>recombination of plasma radical</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>giwaxs</td><td>id</td><td>giwax</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>giwaxs</td><td>name</td><td>giwax</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>h_atom</td><td>species</td><td>hydrogen atoms</td><td>alias</td><td>hydrogen atom</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>sims</td><td>method</td><td>sims</td><td>id</td><td>sim</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>sims</td><td>method</td><td>sims</td><td>name</td><td>sim</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>si_trench_capped</td><td>structure</td><td>Si trenches</td><td>alias</td><td>Si trenche</td><td>singular of the last word</td><td>yes</td><td>NO</td></tr>
+<tr><td>p_d</td><td>quantity</td><td>desorption probability (per unit time)</td><td>name</td><td>desorption probability</td><td>printed without its unit group</td><td>yes</td><td>NO</td></tr>
+<tr><td>p_d</td><td>quantity</td><td>desorption probability (per unit time)</td><td>name</td><td>desorption probabilitys</td><td>plural of the last word</td><td>yes</td><td>NO</td></tr>
+</table>
+<h2>FIX 1b / 2. never.csv labels whose key or superseded status changed</h2><p>psed_v2/kb/reports/P157d.never_keys_changed.csv</p>
+<table><tr><th>never_label</th><th>keys_before</th><th>keys_now</th><th>superseded_before</th><th>superseded_now</th></tr>
+<tr><td>Alumina film density (footnote e; model input) [kg m-3]</td><td>alumina film density</td><td>alumina film density (footnote e; model input)</td><td></td><td></td></tr>
+<tr><td>Counts/s vs Wavelength (infrared) [counts/s; nm]</td><td></td><td>counts/s vs wavelength (infrared)</td><td></td><td></td></tr>
+<tr><td>Diffusion coefficient without pillars</td><td>diffusion coefficient without pillar</td><td>diffusion coefficient without pillars</td><td></td><td></td></tr>
+<tr><td>Diffusion resistance of one row of pillars</td><td>diffusion resistance of one row of pillar</td><td>diffusion resistance of one row of pillars</td><td></td><td></td></tr>
+<tr><td>Fitted exposures (Ψ)</td><td>fitted exposure</td><td>fitted exposures (ψ)</td><td></td><td></td></tr>
+<tr><td>Growth regimes (saturation spread out in space)</td><td>growth regime</td><td>growth regimes (saturation spread out in space)</td><td></td><td></td></tr>
+<tr><td>MA; MB [kg mol-1]</td><td></td><td>mb</td><td>MA (superseded by molar_mass); MB [kg mol-1] (superseded by molar_mass)</td><td>MA (superseded by molar_mass)</td></tr>
+<tr><td>MA; MB [kg/mol]</td><td></td><td></td><td>MA (superseded by molar_mass); MB [kg/mol] (superseded by molar_mass)</td><td>MA (superseded by molar_mass)</td></tr>
+<tr><td>Magnification (spot size) [µm]</td><td>magnification</td><td>magnification (spot size)</td><td></td><td></td></tr>
+<tr><td>Pd [s-1]</td><td></td><td></td><td>Pd [s-1] (superseded by penetration_depth, p_d)</td><td>Pd [s-1] (superseded by p_d)</td></tr>
+<tr><td>Series</td><td>serie</td><td>series</td><td></td><td></td></tr>
+<tr><td>Spot size; objective lens [µm]</td><td>objective len; spot size</td><td>objective lens; spot size</td><td></td><td></td></tr>
+<tr><td>Technique; Reactor (ALD or EQP chamber)</td><td>technique</td><td>reactor (ald or eqp chamber); technique</td><td>Reactor (ALD or EQP chamber) (superseded by reactor, reactor_type)</td><td></td></tr>
+<tr><td>Viscosity of gas [µPa s]</td><td>viscosity of ga</td><td>viscosity of gas</td><td></td><td></td></tr>
+<tr><td>dA; dB [pm]</td><td></td><td>da; db</td><td>dA (superseded by molecule_diameter, gas_phase_diffusion_coefficient); dB [pm] (superseded by molecule_diameter)</td><td></td></tr>
+<tr><td>rho (film density; model input) [kg m-3]</td><td></td><td>rho (film density; model input)</td><td>rho (film density; model input) [kg m-3] (superseded by film_density)</td><td></td></tr>
+<tr><td>xt; xs [µm]</td><td>xt</td><td>xs; xt</td><td>xs [µm] (superseded by distance, reaction_stoichiometry)</td><td></td></tr>
+</table>
+<h2>FIX 1c. Ambiguous keys now (listed in ontology.html every round)</h2><p>psed_v2/kb/reports/P157d.ambiguous_keys.csv</p>
+<table><tr><th>lookup</th><th>key</th><th>entries</th></tr>
+</table>
+<h2>FIX 2. never.csv back-fill rows (round 1, symbols)</h2><p>psed_v2/kb/reports/P157d.never_backfill.csv</p>
+<table><tr><th>label</th><th>category</th><th>paper</th><th>source</th><th>symbol</th></tr>
+<tr><td>z_A</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of collision_rate_of_molecule_a</td><td>yes</td></tr>
+<tr><td>v_A</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of average_speed_of_molecules_a</td><td>yes</td></tr>
+<tr><td>h</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of hydraulic_diameter_of_the_channel</td><td>yes</td></tr>
+<tr><td>g</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of net_adsorption_rate</td><td>yes</td></tr>
+<tr><td>f_ads</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of adsorption_rate</td><td>yes</td></tr>
+<tr><td>f_des</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of desorption_rate</td><td>yes</td></tr>
+<tr><td>Q</td><td>Model internals</td><td>yli18</td><td>round 1: symbol of collision_rate_at_unit_pressure</td><td>yes</td></tr>
+<tr><td>Q</td><td>Model internals</td><td>yim20</td><td>round 1: symbol of collision_rate_at_unit_pressure</td><td>yes</td></tr>
+<tr><td>R</td><td>Model internals</td><td>yim20</td><td>round 1: symbol of diffusion_resistance_of_a_rectangular_channel</td><td>yes</td></tr>
+<tr><td>R_row</td><td>Model internals</td><td>yim20</td><td>round 1: symbol of diffusion_resistance_of_one_row_of_pillars</td><td>yes</td></tr>
+</table>
+<h2>History rows added (back-fill and the two edits)</h2><p>psed_v2/kb/reports/P157d.history_added.csv</p>
+<table><tr><th>date</th><th>round</th><th>action</th><th>id</th><th>kind</th><th>target</th><th>source_pids</th><th>source_dois</th><th>decided_by</th><th>reason</th><th>ontology_sha256_after</th></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>collision_rate_of_molecule_a</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of collision_rate_of_molecule_a: &#x27;z_A&#x27; in yli18 (P157 decision snapshot, eq1)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>average_speed_of_molecules_a</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of average_speed_of_molecules_a: &#x27;v_A&#x27; in yli18 (P157 decision snapshot, eq2)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>hydraulic_diameter_of_the_channel</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of hydraulic_diameter_of_the_channel: &#x27;h&#x27; in yli18 (P157 decision snapshot, eq5)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>net_adsorption_rate</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of net_adsorption_rate: &#x27;g&#x27; in yli18 (P157 decision snapshot, s6.p3)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>adsorption_rate</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of adsorption_rate: &#x27;f_ads&#x27; in yli18 (P157 decision snapshot, eq11)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>desorption_rate</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of desorption_rate: &#x27;f_des&#x27; in yli18 (P157 decision snapshot, eq12)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>collision_rate_at_unit_pressure</td><td>quantity</td><td>Model internals</td><td>yli18</td><td>10.1063/1.5028178</td><td>user (P157d back-fill)</td><td>symbol of collision_rate_at_unit_pressure: &#x27;Q&#x27; in yli18 (P157 decision snapshot, eq14)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>collision_rate_at_unit_pressure</td><td>quantity</td><td>Model internals</td><td>yim20</td><td>10.1039/d0cp03358h</td><td>user (P157d back-fill)</td><td>symbol of collision_rate_at_unit_pressure: &#x27;Q&#x27; in yim20 (P157 decision snapshot, tabu2.r15c0)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>diffusion_resistance_of_a_rectangular_channel</td><td>quantity</td><td>Model internals</td><td>yim20</td><td>10.1039/d0cp03358h</td><td>user (P157d back-fill)</td><td>symbol of diffusion_resistance_of_a_rectangular_channel: &#x27;R&#x27; in yim20 (P157 decision snapshot, tabu2.r17c0)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>never</td><td>diffusion_resistance_of_one_row_of_pillars</td><td>quantity</td><td>Model internals</td><td>yim20</td><td>10.1039/d0cp03358h</td><td>user (P157d back-fill)</td><td>symbol of diffusion_resistance_of_one_row_of_pillars: &#x27;R_row&#x27; in yim20 (P157 decision snapshot, tabu2.r18c0)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>edit</td><td>reactor_type</td><td>categorical</td><td>name: reactor -&gt; reactor type</td><td></td><td></td><td>user</td><td>P157d (user): ontology data edit after the P157c audit (A4 key collisions)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+<tr><td>2026-10-23</td><td>1</td><td>edit</td><td>structure</td><td>categorical</td><td>alias removed: Substrate (substrate is its own entry)</td><td></td><td></td><td>user</td><td>P157d (user): ontology data edit after the P157c audit (A4 key collisions)</td><td>416f7558cc46ee6139b18ca9708c0cb71ad3389160bdcdc012e21fcd6260c1ec</td></tr>
+</table>
+<h2>FIX 3. record_key of every record with an empty label (three papers)</h2><p>psed_v2/kb/reports/P157d.record_keys.csv</p>
+<table><tr><th>paper</th><th>element</th><th>type</th><th>quantity</th><th>record_text</th><th>record_key</th><th>used_by</th></tr>
+<tr><td>yli18</td><td>abs.g1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>abs.g2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>abs.g3</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>abs.g4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s5.p3</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s5.p4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s5.p19</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s6.p1</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s6.p10</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s7.p1</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq17</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq22</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq25</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq26</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq27</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s7.p14</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s7.p17</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s7.p20</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s7.p21</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s8.p2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s8.p7</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>eq43</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s8.p19</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s8.p25</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s9.p5</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s10.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s10.p3</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>s10.p3</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig3</td><td>model</td><td>penetration_depth</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig3</td><td>model</td><td>penetration_depth</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig3</td><td>model</td><td>penetration_depth</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig3</td><td>model</td><td>penetration_depth</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig4.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig4</td><td>model</td><td>penetration_depth</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>abs.g1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>abs.g4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s2.p2</td><td>cited</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s2.p9</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s2.p11</td><td>cited</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s2.p12</td><td>cited</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s3.p4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s8.p1</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s10.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s10.x2</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s11.x1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s12.x1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s12.p1</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.x1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.x1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.x2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s13.p2</td><td>model</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s14.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s14.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s14.x1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s16.p6</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s16.p8</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s16.p9</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s17.p1</td><td>observation</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s17.p2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s18.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s18.p4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s18.p5</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s18.p6</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s20.p2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>s20.p3</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>fig3a</td><td>definition</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>fig3b</td><td>definition</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>fig6.cap</td><td>setting</td><td>material</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>fig6.cap</td><td>setting</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>fig7.cap</td><td>setting</td><td>material</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>tab2.r7c8</td><td>setting</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>yim20</td><td>tabu1.r0c0</td><td>definition</td><td>other</td><td>Distance between pillars</td><td>distance between pillars</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r0c1</td><td>definition</td><td>other</td><td>Distance between pillars</td><td>distance between pillars</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c0</td><td>definition</td><td>other</td><td>Surface area</td><td>surface area</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c1</td><td>definition</td><td>other</td><td>Surface area</td><td>surface area</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r5c0</td><td>definition</td><td>other</td><td>Pillar diameter</td><td>pillar diameter</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r5c1</td><td>definition</td><td>other</td><td>Pillar diameter</td><td>pillar diameter</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c0</td><td>definition</td><td>other</td><td>Diffusion coefficient without pillars</td><td>diffusion coefficient without pillars</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c1</td><td>definition</td><td>other</td><td>Diffusion coefficient without pillars</td><td>diffusion coefficient without pillars</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c0</td><td>definition</td><td>other</td><td>Flux of material in direction x</td><td>flux of material in direction x</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c1</td><td>definition</td><td>other</td><td>Flux of material in direction x</td><td>flux of material in direction x</td><td>resolve_other and the never match (quantity other)</td></tr>
+<tr><td>mat22</td><td>abs.g1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>abs.g2</td><td>claim</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>abs.g2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>abs.g3</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>abs.g4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s2.p1</td><td>cited</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s2.p8</td><td>cited</td><td>crystallinity</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s2.p9</td><td>cited</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s2.p11</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p4</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p7</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p11</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p11</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p13</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p15</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p21</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p22</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p25</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p28</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p29</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p31</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p33</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p37</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p39</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p42</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p45</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p52</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s3.p53</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s4.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s4.p1</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s4.p2</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>setting</td><td>reactor</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>setting</td><td>plasma_power</td><td>13.56 MHz remote inductively coupled plasma (ICP) source</td><td>13.56 mhz remote inductively coupled plasma (icp) source</td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>setting</td><td>plasma_configuration</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>caveat</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p2</td><td>setting</td><td>substrate</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p3</td><td>setting</td><td>carrier_gas</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p3</td><td>setting</td><td>process_pressure</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p6</td><td>setting</td><td>precursor_purity</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p6</td><td>setting</td><td>source_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p8</td><td>setting</td><td>material</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p8</td><td>setting</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p8</td><td>setting</td><td>material</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>s5.p8</td><td>setting</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig1.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig3.cap</td><td>setting</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig3.cap</td><td>setting</td><td>deposition_temperature</td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig3b</td><td>cited</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig4.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig6.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig7.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>fig9.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+<tr><td>mat22</td><td>tab1.cap</td><td>claim</td><td></td><td></td><td></td><td>not other: no lookup</td></tr>
+</table>
+<h2>Ontology data edits</h2><p>psed_v2/kb/reports/P157d.edits.csv</p>
+<table><tr><th>entry</th><th>field</th><th>before</th><th>after</th></tr>
+<tr><td>reactor_type</td><td>name</td><td>reactor</td><td>reactor type</td></tr>
+<tr><td>structure</td><td>aliases</td><td>Substrate; Structure; LHAR type</td><td>Structure; LHAR type</td></tr>
+</table>
+<h2>Re-audit: acceptance (grow.py audit 1)</h2><p>psed_v2/kb/reports/R1_apply.acceptance.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 33 promotions: {&#x27;agree&#x27;: 33}
+A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 7/7
+result: PASS
+</pre>
+<h2>Re-audit A1: decision trace</h2><p>psed_v2/kb/reports/R1_apply.A1.csv</p>
+<table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
+<tr><td>evacuated_below</td><td>alias -&gt; base_pressure</td><td>alias of base_pressure: evacuated below</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1021_cm0303080</td></tr>
+<tr><td>acceleration_voltage</td><td>never -&gt; Instrument settings</td><td>acceleration voltage (any paper)</td><td>10.1021_acs.chemmater.2c01154</td><td>s5.p14</td><td>quantity</td><td>acceleration voltage</td><td>never: Instrument settings (kept (never: acceleration voltage))</td><td>yes</td><td></td></tr>
+<tr><td>adsorption_rate</td><td>never -&gt; Model internals</td><td>Adsorption rate (any paper); f_ads (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq11</td><td>quantity</td><td>f_ads</td><td>never: Model internals (kept (never: f_ads (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>adsorption_rate</td><td>never -&gt; Model internals</td><td>Adsorption rate (any paper); f_ads (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r10c0</td><td>quantity</td><td>Adsorption rate</td><td>never: Model internals (kept (never: Adsorption rate))</td><td>yes</td><td></td></tr>
+<tr><td>adsorption_rate</td><td>never -&gt; Model internals</td><td>Adsorption rate (any paper); f_ads (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq11</td><td>unit</td><td>f_ads</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>adsorption_rate</td><td>never -&gt; Model internals</td><td>Adsorption rate (any paper); f_ads (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r10c0</td><td>unit</td><td>Adsorption rate</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>amount_of_reactant_a</td><td>never -&gt; Model internals</td><td>Amount of reactant A (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r22c0</td><td>quantity</td><td>Amount of reactant A</td><td>never: Model internals (kept (never: Amount of reactant A))</td><td>yes</td><td></td></tr>
+<tr><td>apparent_longitudinal_diffusion_coefficient</td><td>alias -&gt; effective_diffusion_coefficient</td><td>alias of effective_diffusion_coefficient: Apparent longitudinal diffusion coefficient</td><td>10.1063_1.5028178</td><td>tabu1.r4c0</td><td>quantity</td><td>Apparent longitudinal diffusion coefficient</td><td>fact: effective_diffusion_coefficient (quantity: alias &#x27;Apparent longitudinal diffusion coefficient&#x27;); fact yli18:tabu1.r4c0#1 (type definition, quantity effective_diffusion_coefficient, parent yli18)</td><td>yes</td><td></td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>never -&gt; Model internals</td><td>Average speed of molecules A (any paper); v_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq2</td><td>quantity</td><td>v_A</td><td>never: Model internals (kept (never: v_A (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>never -&gt; Model internals</td><td>Average speed of molecules A (any paper); v_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r5c2</td><td>quantity</td><td>Average speed of molecules A</td><td>never: Model internals (kept (never: Average speed of molecules A))</td><td>yes</td><td></td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>never -&gt; Model internals</td><td>Average speed of molecules A (any paper); v_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq2</td><td>unit</td><td>v_A</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>never -&gt; Model internals</td><td>Average speed of molecules A (any paper); v_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r5c2</td><td>unit</td><td>Average speed of molecules A</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>avogadro_constant</td><td>never -&gt; Model internals</td><td>Avogadro constant (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r23c0</td><td>quantity</td><td>Avogadro constant</td><td>never: Model internals (kept (never: Avogadro constant))</td><td>yes</td><td></td></tr>
+<tr><td>beam_energy</td><td>never -&gt; Instrument settings</td><td>beam energy (any paper)</td><td>10.1021_acs.chemmater.2c01154</td><td>s5.p17</td><td>quantity</td><td>beam energy</td><td>never: Instrument settings (kept (never: beam energy))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>never -&gt; Model internals</td><td>Collision rate at unit pressure (any paper); Q (symbol, yli18 only); Q (symbol, yim20 only)</td><td>10.1063_1.5028178</td><td>eq14</td><td>quantity</td><td>Q</td><td>never: Model internals not in Sec. 8 (kept (never: q [nm-2]))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>never -&gt; Model internals</td><td>Collision rate at unit pressure (any paper); Q (symbol, yli18 only); Q (symbol, yim20 only)</td><td>10.1063_1.5028178</td><td>tabu1.r28c0</td><td>quantity</td><td>Collision rate at unit pressure</td><td>never: Model internals (kept (never: Collision rate at unit pressure))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>never -&gt; Model internals</td><td>Collision rate at unit pressure (any paper); Q (symbol, yli18 only); Q (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r15c0</td><td>quantity</td><td>Q</td><td>never: Model internals not in Sec. 8 (kept (never: q [nm-2]))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>never -&gt; Model internals</td><td>Collision rate at unit pressure (any paper); Q (symbol, yli18 only); Q (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r15c1</td><td>quantity</td><td>Collision rate at unit pressure</td><td>never: Model internals (kept (never: Collision rate at unit pressure))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_of_molecule_a</td><td>never -&gt; Model internals</td><td>Collision rate of molecule A (any paper); z_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq1</td><td>quantity</td><td>z_A</td><td>never: Model internals (kept (never: z_A (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_of_molecule_a</td><td>never -&gt; Model internals</td><td>Collision rate of molecule A (any paper); z_A (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r11c2</td><td>quantity</td><td>Collision rate of molecule A</td><td>never: Model internals (kept (never: Collision rate of molecule A))</td><td>yes</td><td></td></tr>
+<tr><td>desorption_rate</td><td>never -&gt; Model internals</td><td>Desorption rate (any paper); f_des (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq12</td><td>quantity</td><td>f_des</td><td>never: Model internals (kept (never: f_des (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>desorption_rate</td><td>never -&gt; Model internals</td><td>Desorption rate (any paper); f_des (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r11c0</td><td>quantity</td><td>Desorption rate</td><td>never: Model internals (kept (never: Desorption rate))</td><td>yes</td><td></td></tr>
+<tr><td>desorption_rate</td><td>never -&gt; Model internals</td><td>Desorption rate (any paper); f_des (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq12</td><td>unit</td><td>f_des</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>desorption_rate</td><td>never -&gt; Model internals</td><td>Desorption rate (any paper); f_des (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r11c0</td><td>unit</td><td>Desorption rate</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_coefficient_without_pillars</td><td>never -&gt; Model internals</td><td>Diffusion coefficient without pillars (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r9c0</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Diffusion coefficient without pillars))</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_coefficient_without_pillars</td><td>never -&gt; Model internals</td><td>Diffusion coefficient without pillars (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r9c1</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Diffusion coefficient without pillars))</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_resistance_of_a_rectangular_channel</td><td>never -&gt; Model internals</td><td>Diffusion resistance of a rectangular channel (any paper); R (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r17c0</td><td>quantity</td><td>R</td><td>never: Model internals (kept (never: R (symbol in 10.1039_d0cp03358h)))</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_resistance_of_a_rectangular_channel</td><td>never -&gt; Model internals</td><td>Diffusion resistance of a rectangular channel (any paper); R (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r17c1</td><td>quantity</td><td>Diffusion resistance of a rectangular channel</td><td>never: Model internals (kept (never: Diffusion resistance of a rectangular channel))</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_resistance_of_one_row_of_pillars</td><td>never -&gt; Model internals</td><td>Diffusion resistance of one row of pillars (any paper); R_row (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r18c0</td><td>quantity</td><td>R_row</td><td>never: Model internals (kept (never: R_row (symbol in 10.1039_d0cp03358h)))</td><td>yes</td><td></td></tr>
+<tr><td>diffusion_resistance_of_one_row_of_pillars</td><td>never -&gt; Model internals</td><td>Diffusion resistance of one row of pillars (any paper); R_row (symbol, yim20 only)</td><td>10.1039_d0cp03358h</td><td>tabu2.r18c1</td><td>quantity</td><td>Diffusion resistance of one row of pillars</td><td>never: Model internals (kept (never: Diffusion resistance of one row of pillars))</td><td>yes</td><td></td></tr>
+<tr><td>distance_where_the_linear_part_of_the_reactant_pressure_is_zero</td><td>never -&gt; Model internals</td><td>Distance where the linear part of the reactant pressure is zero (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r9c2</td><td>quantity</td><td>Distance where the linear part of the reactant pressure is zero</td><td>never: Model internals (kept (never: Distance where the linear part of the reactant pressure is zero))</td><td>yes</td><td></td></tr>
+<tr><td>equilibrium_surface_coverage_in_the_langmuir_model</td><td>never -&gt; Model internals</td><td>Equilibrium surface coverage in the Langmuir model (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r15c2</td><td>quantity</td><td>Equilibrium surface coverage in the Langmuir model</td><td>never: Model internals (kept (never: Equilibrium surface coverage in the Langmuir model))</td><td>yes</td><td></td></tr>
+<tr><td>error_in_thickness_measurement</td><td>never -&gt; Fit quality</td><td>Error in thickness measurement (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r12c2</td><td>quantity</td><td>Error in thickness measurement</td><td>never: Fit quality (kept (never: Error in thickness measurement))</td><td>yes</td><td></td></tr>
+<tr><td>flux_of_material_in_direction_x</td><td>never -&gt; Model internals</td><td>Flux of material in direction x (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r10c0</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Flux of material in direction x))</td><td>yes</td><td></td></tr>
+<tr><td>flux_of_material_in_direction_x</td><td>never -&gt; Model internals</td><td>Flux of material in direction x (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r10c1</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Flux of material in direction x))</td><td>yes</td><td></td></tr>
+<tr><td>gas_constant</td><td>never -&gt; Model internals</td><td>Gas constant (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r29c0</td><td>quantity</td><td>Gas constant</td><td>never: Model internals (kept (never: Gas constant))</td><td>yes</td><td></td></tr>
+<tr><td>gas_constant</td><td>never -&gt; Model internals</td><td>Gas constant (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r29c0</td><td>unit</td><td>Gas constant</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>gas_flow_of_the_reactant</td><td>never -&gt; Model internals</td><td>Gas flow of the reactant (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r9c0</td><td>quantity</td><td>Gas flow of the reactant</td><td>never: Model internals (kept (never: Gas flow of the reactant))</td><td>yes</td><td></td></tr>
+<tr><td>gas_flow_of_the_reactant</td><td>never -&gt; Model internals</td><td>Gas flow of the reactant (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r9c0</td><td>unit</td><td>Gas flow of the reactant</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>hydraulic_diameter_of_the_channel</td><td>never -&gt; Model internals</td><td>Hydraulic diameter of the channel (any paper); h (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq5</td><td>quantity</td><td>h</td><td>never: Model internals (kept (never: h (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>hydraulic_diameter_of_the_channel</td><td>never -&gt; Model internals</td><td>Hydraulic diameter of the channel (any paper); h (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r15c0</td><td>quantity</td><td>Hydraulic diameter of the channel</td><td>never: Model internals (kept (never: Hydraulic diameter of the channel))</td><td>yes</td><td></td></tr>
+<tr><td>laser_power</td><td>never -&gt; Instrument settings</td><td>Laser power (any paper)</td><td>10.1021_acs.chemmater.2c01154</td><td>s5.p15</td><td>quantity</td><td>Laser power</td><td>never: Instrument settings (kept (never: Laser power))</td><td>yes</td><td></td></tr>
+<tr><td>length_of_the_line</td><td>never -&gt; Instrument settings</td><td>length of the line (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p3</td><td>quantity</td><td>length of the line</td><td>never: Instrument settings (kept (never: length of the line))</td><td>yes</td><td></td></tr>
+<tr><td>length_of_the_linear_part_of_the_pressure_distribution</td><td>never -&gt; Model internals</td><td>Length of the linear part of the pressure distribution (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r10c2</td><td>quantity</td><td>Length of the linear part of the pressure distribution</td><td>never: Model internals (kept (never: Length of the linear part of the pressure distribution))</td><td>yes</td><td></td></tr>
+<tr><td>measurement_area</td><td>never -&gt; Instrument settings</td><td>measurement area (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p4</td><td>quantity</td><td>measurement area</td><td>never: Instrument settings (kept (never: measurement area))</td><td>yes</td><td></td></tr>
+<tr><td>measurement_points_interval</td><td>never -&gt; Instrument settings</td><td>measurement points interval (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p3</td><td>quantity</td><td>measurement points interval</td><td>never: Instrument settings (kept (never: measurement points interval))</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>s6.p3</td><td>quantity</td><td>g</td><td>never: Model internals (kept (never: g (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq15</td><td>quantity</td><td>g</td><td>never: Model internals (kept (never: g (symbol in 10.1063_1.5028178)))</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r12c0</td><td>quantity</td><td>Net adsorption rate</td><td>never: Model internals (kept (never: Net adsorption rate))</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>s6.p3</td><td>unit</td><td>g</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>eq15</td><td>unit</td><td>g</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>net_adsorption_rate</td><td>never -&gt; Model internals</td><td>Net adsorption rate (any paper); g (symbol, yli18 only)</td><td>10.1063_1.5028178</td><td>tabu1.r12c0</td><td>unit</td><td>Net adsorption rate</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>penetration_depth_parameter_in_the_gordon_model</td><td>never -&gt; Model internals</td><td>Penetration depth parameter in the Gordon model (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r3c0</td><td>quantity</td><td>Penetration depth parameter in the Gordon model</td><td>never: Model internals (kept (never: Penetration depth parameter in the Gordon model))</td><td>yes</td><td></td></tr>
+<tr><td>positioning_uncertainty</td><td>never -&gt; Fit quality</td><td>positioning uncertainty (any paper)</td><td>10.1039_d0cp03358h</td><td>s16.p7</td><td>quantity</td><td>positioning uncertainty</td><td>never: Fit quality (kept (never: positioning uncertainty))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r1c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r2c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r3c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r4c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r5c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r6c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r7c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r8c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r9c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r10c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r12c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r13c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r14c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r15c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r16c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series</td><td>never -&gt; Equipment details and sample codes</td><td>Series (any paper)</td><td>10.1039_d0cp03358h</td><td>tab1.r18c0</td><td>quantity</td><td>Series</td><td>never: Equipment details and sample codes (kept (never: Series))</td><td>yes</td><td></td></tr>
+<tr><td>series_a</td><td>never -&gt; Equipment details and sample codes</td><td>Series A (any paper)</td><td>10.1039_d0cp03358h</td><td>s6.p2</td><td>quantity</td><td>Series A</td><td>never: Equipment details and sample codes (kept (never: Series A))</td><td>yes</td><td></td></tr>
+<tr><td>series_c</td><td>never -&gt; Equipment details and sample codes</td><td>Series C (any paper)</td><td>10.1039_d0cp03358h</td><td>fig9.cap</td><td>quantity</td><td>Series C</td><td>never: Equipment details and sample codes (kept (never: Series C))</td><td>yes</td><td></td></tr>
+<tr><td>series_d</td><td>never -&gt; Equipment details and sample codes</td><td>Series D (any paper)</td><td>10.1039_d0cp03358h</td><td>fig9.cap</td><td>quantity</td><td>Series D</td><td>never: Equipment details and sample codes (kept (never: Series D))</td><td>yes</td><td></td></tr>
+<tr><td>series_e</td><td>never -&gt; Equipment details and sample codes</td><td>Series E (any paper)</td><td>10.1039_d0cp03358h</td><td>fig11.cap</td><td>quantity</td><td>Series E</td><td>never: Equipment details and sample codes (kept (never: Series E))</td><td>yes</td><td></td></tr>
+<tr><td>series_f</td><td>never -&gt; Equipment details and sample codes</td><td>Series F (any paper)</td><td>10.1039_d0cp03358h</td><td>fig11.cap</td><td>quantity</td><td>Series F</td><td>never: Equipment details and sample codes (kept (never: Series F))</td><td>yes</td><td></td></tr>
+<tr><td>step</td><td>never -&gt; Instrument settings</td><td>step (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>step</td><td>never: Instrument settings (kept (never: step))</td><td>yes</td><td></td></tr>
+<tr><td>surface_area</td><td>never -&gt; Model internals</td><td>Surface area (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r1c0</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Surface area))</td><td>yes</td><td></td></tr>
+<tr><td>surface_area</td><td>never -&gt; Model internals</td><td>Surface area (any paper)</td><td>10.1039_d0cp03358h</td><td>tabu1.r1c1</td><td>quantity</td><td></td><td>never: Model internals (kept (never: Surface area))</td><td>yes</td><td></td></tr>
+<tr><td>time_constant_of_adsorption</td><td>never -&gt; Model internals</td><td>Time constant of adsorption (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r17c2</td><td>quantity</td><td>Time constant of adsorption</td><td>never: Model internals (kept (never: Time constant of adsorption))</td><td>yes</td><td></td></tr>
+<tr><td>top_membrane_removal</td><td>reject</td><td>top membrane removal</td><td>10.1039_d0cp03358h</td><td>s7.p1</td><td>quantity</td><td>top membrane removal</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>total_scan_length</td><td>never -&gt; Instrument settings</td><td>total scan length (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>total scan length</td><td>never: Instrument settings (kept (never: total scan length))</td><td>yes</td><td></td></tr>
+<tr><td>total_scan_length</td><td>never -&gt; Instrument settings</td><td>total scan length (any paper)</td><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>total scan length</td><td>never: Instrument settings (kept (never: total scan length))</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front</td><td>never -&gt; Model internals</td><td>Velocity of gas front (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r4c2</td><td>quantity</td><td>Velocity of gas front</td><td>never: Model internals (kept (never: Velocity of gas front))</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front</td><td>never -&gt; Model internals</td><td>Velocity of gas front (any paper)</td><td>10.1063_1.5028178</td><td>tabu1.r4c2</td><td>unit</td><td>Velocity of gas front</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>voltage</td><td>never -&gt; Instrument settings</td><td>voltage (any paper)</td><td>10.1021_acs.chemmater.2c01154</td><td>s5.p18</td><td>quantity</td><td>voltage</td><td>never: Instrument settings (kept (never: voltage))</td><td>yes</td><td></td></tr>
+</table>
+<h2>Re-audit A2: promotions</h2><p>psed_v2/kb/reports/R1_apply.A2.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>outcome</th></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r4c0</td><td>quantity</td><td>Apparent longitudinal diffusion coefficient</td><td>Apparent longitudinal diffusion coefficient</td><td>quantity: alias &#x27;Apparent longitudinal diffusion coefficient&#x27;</td><td>effective_diffusion_coefficient</td><td>effective diffusion coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.</td><td>coefficient</td><td>coefficient</td><td>coefficient</td><td>agree</td><td>fact yli18:tabu1.r4c0#1 (type definition, quantity effective_diffusion_coefficient, parent yli18)</td></tr>
+</table>
+<h2>Re-audit A3: open rows</h2><p>psed_v2/kb/reports/R1_apply.A3.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p1</td><td>unit</td><td></td><td>MHz</td><td></td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p1</td><td>quantity</td><td>top membrane removal</td><td></td><td>top membrane removal</td><td>other</td><td>top_membrane_removal</td><td>candidate top_membrane_removal decided in round 1 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>displacement</td><td>nm</td><td>displacement</td><td>pending candidate displacement</td><td>displacement</td><td></td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>bent</td><td>nm</td><td>bent</td><td>pending candidate bent</td><td>bent</td><td></td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig2.cap</td><td>quantity</td><td>\tilde{\xi}</td><td>1</td><td>tildexi</td><td>pending candidate tilde_xi</td><td>tilde_xi</td><td></td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r0c0</td><td>quantity</td><td></td><td></td><td>distance between pillars</td><td>pending candidate distance_between_pillars</td><td>distance_between_pillars</td><td>cell without printed label, keyed by its meaning</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r0c1</td><td>quantity</td><td></td><td></td><td>distance between pillars</td><td>pending candidate distance_between_pillars</td><td>distance_between_pillars</td><td>cell without printed label, keyed by its meaning</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c0</td><td>quantity</td><td></td><td></td><td>pillar diameter</td><td>pending candidate pillar_diameter</td><td>pillar_diameter</td><td>cell without printed label, keyed by its meaning</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c1</td><td>quantity</td><td></td><td></td><td>pillar diameter</td><td>pending candidate pillar_diameter</td><td>pillar_diameter</td><td>cell without printed label, keyed by its meaning</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c0</td><td>quantity</td><td>l</td><td>µm</td><td>l</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c1</td><td>quantity</td><td>Distance between rows of pillars</td><td>µm</td><td>distance between rows of pillars</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
+</table>
+<h2>Re-audit A3: the pending candidates</h2><p>psed_v2/kb/reports/R1_apply.A3_pending.csv</p>
+<table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
+<tr><td>elam_monte_carlo</td><td>0</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>bent</td><td>1</td><td>10.1039_d0cp03358h</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>displacement</td><td>1</td><td>10.1039_d0cp03358h</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>distance_between_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>pillar_diameter</td><td>1</td><td>10.1039_d0cp03358h</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>tilde_xi</td><td>1</td><td>10.1039_d0cp03358h</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+</table>
+<h2>Every unmapped row whose state changed vs P157b</h2><p>psed_v2/kb/reports/P157d.row_states.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>label</th><th>before</th><th>now</th><th>action_now</th></tr>
+<tr><td>yli18</td><td>eq1</td><td>quantity</td><td>z_A</td><td>open</td><td>never</td><td>kept (never: z_A (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>eq11</td><td>quantity</td><td>f_ads</td><td>open</td><td>never</td><td>kept (never: f_ads (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>eq11</td><td>unit</td><td>f_ads</td><td>open</td><td>never</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>eq12</td><td>quantity</td><td>f_des</td><td>open</td><td>never</td><td>kept (never: f_des (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>eq12</td><td>unit</td><td>f_des</td><td>open</td><td>never</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>eq14</td><td>quantity</td><td>Q</td><td>promoted: saturation_density</td><td>never</td><td>kept (never: q [nm-2])</td></tr>
+<tr><td>yli18</td><td>eq15</td><td>quantity</td><td>g</td><td>open</td><td>never</td><td>kept (never: g (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>eq15</td><td>unit</td><td>g</td><td>open</td><td>never</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>eq2</td><td>quantity</td><td>v_A</td><td>open</td><td>never</td><td>kept (never: v_A (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>eq2</td><td>unit</td><td>v_A</td><td>open</td><td>never</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>eq5</td><td>quantity</td><td>h</td><td>open</td><td>never</td><td>kept (never: h (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>s6.p3</td><td>quantity</td><td>g</td><td>open</td><td>never</td><td>kept (never: g (symbol in 10.1063_1.5028178))</td></tr>
+<tr><td>yli18</td><td>s6.p3</td><td>unit</td><td>g</td><td>open</td><td>never</td><td>kept (unit as printed)</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c0</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Flux of material in direction x)</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c1</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Flux of material in direction x)</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c0</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Surface area)</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c1</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Surface area)</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c0</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Diffusion coefficient without pillars)</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c1</td><td>quantity</td><td></td><td>open</td><td>never</td><td>kept (never: Diffusion coefficient without pillars)</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c0</td><td>quantity</td><td>Q</td><td>promoted: saturation_density</td><td>never</td><td>kept (never: q [nm-2])</td></tr>
+<tr><td>yim20</td><td>tabu2.r17c0</td><td>quantity</td><td>R</td><td>promoted: recombination_probability</td><td>never</td><td>kept (never: R (symbol in 10.1039_d0cp03358h))</td></tr>
+<tr><td>yim20</td><td>tabu2.r18c0</td><td>quantity</td><td>R_row</td><td>open</td><td>never</td><td>kept (never: R_row (symbol in 10.1039_d0cp03358h))</td></tr>
+<tr><td>yim20</td><td>tabu2.r7c0</td><td>quantity</td><td>l</td><td>promoted: feature_depth</td><td>open</td><td>kept</td></tr>
+</table>
+<h2>Score vs gold before (P157b) -&gt; after (P157d), every column</h2><p>psed_v2/kb/reports/P157d.score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before (P157b)</th><th>after (P157d)</th><th>same</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>30/63</td><td>30/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>306</td><td>306</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>425</td><td>425</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>512</td><td>512</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>99/108</td><td>99/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>80/154</td><td>80/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>27/92</td><td>27/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>263</td><td>263</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>133/249</td><td>133/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+</table>
+<h2>Score by record type, before -&gt; after</h2><p>psed_v2/kb/reports/P157d.score_by_type.csv</p>
+<table><tr><th>paper</th><th>type</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>yli18</td><td>model</td><td>gold</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>compiled</td><td>125</td><td>125</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>matched</td><td>61</td><td>61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>precision</td><td>0.49</td><td>0.49</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>recall</td><td>0.91</td><td>0.91</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>gold</td><td>63</td><td>63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>compiled</td><td>44</td><td>44</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>matched</td><td>30</td><td>30</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>recall</td><td>0.48</td><td>0.48</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>gold</td><td>38</td><td>38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>compiled</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>matched</td><td>23</td><td>23</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>precision</td><td>0.43</td><td>0.43</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>recall</td><td>0.61</td><td>0.61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>gold</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>compiled</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>matched</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>precision</td><td>0.26</td><td>0.26</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>recall</td><td>0.47</td><td>0.47</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>gold</td><td>13</td><td>13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>compiled</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>matched</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>precision</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>compiled</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>precision</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>recall</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>gold</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>matched</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>precision</td><td>0.40</td><td>0.40</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>compiled</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>compiled</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>precision</td><td>0.33</td><td>0.33</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>gold</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>gold</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>gold</td><td>206</td><td>206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>compiled</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>matched</td><td>105</td><td>105</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>precision</td><td>0.66</td><td>0.66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>recall</td><td>0.51</td><td>0.51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>gold</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>compiled</td><td>101</td><td>101</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>matched</td><td>80</td><td>80</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>precision</td><td>0.79</td><td>0.79</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>gold</td><td>108</td><td>108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>compiled</td><td>137</td><td>137</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>matched</td><td>99</td><td>99</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>precision</td><td>0.72</td><td>0.72</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>recall</td><td>0.92</td><td>0.92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>gold</td><td>92</td><td>92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>compiled</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>precision</td><td>0.87</td><td>0.87</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>gold</td><td>75</td><td>75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>compiled</td><td>49</td><td>49</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>matched</td><td>47</td><td>47</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>precision</td><td>0.96</td><td>0.96</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>recall</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>gold</td><td>73</td><td>73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>compiled</td><td>51</td><td>51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>matched</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>precision</td><td>0.88</td><td>0.88</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>gold</td><td>66</td><td>66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>compiled</td><td>97</td><td>97</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>matched</td><td>24</td><td>24</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>gold</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>compiled</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>matched</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>precision</td><td>0.60</td><td>0.60</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>recall</td><td>0.07</td><td>0.07</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>gold</td><td>40</td><td>40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>compiled</td><td>20</td><td>20</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>matched</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>precision</td><td>0.75</td><td>0.75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>recall</td><td>0.38</td><td>0.38</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>gold</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>compiled</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>matched</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>recall</td><td>0.81</td><td>0.81</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>precision</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>gold</td><td>313</td><td>313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>compiled</td><td>161</td><td>161</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>matched</td><td>109</td><td>109</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>recall</td><td>0.35</td><td>0.35</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>gold</td><td>251</td><td>251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>compiled</td><td>107</td><td>107</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>matched</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>precision</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>recall</td><td>0.27</td><td>0.27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>gold</td><td>249</td><td>249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>compiled</td><td>143</td><td>143</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>matched</td><td>133</td><td>133</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>precision</td><td>0.93</td><td>0.93</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>recall</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>gold</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>compiled</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>precision</td><td>0.55</td><td>0.55</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>recall</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>recall</td><td>0.02</td><td>0.02</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>compiled</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>matched</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>recall</td><td>0.78</td><td>0.78</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>gold</td><td>52</td><td>52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>compiled</td><td>37</td><td>37</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>precision</td><td>0.73</td><td>0.73</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>gold</td><td>14</td><td>14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>compiled</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>precision</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>recall</td><td>0.17</td><td>0.17</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>gold</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>compiled</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+</table>
+<h2>check.py --dir counts before -&gt; after</h2><p>psed_v2/kb/reports/P157d.check_dir.csv</p>
+<table><tr><th>paper</th><th>problems_before</th><th>problems_after</th><th>rose</th><th>new</th><th>gone</th></tr>
+<tr><td>yli18</td><td>159</td><td>159</td><td>no</td><td>0</td><td>0</td></tr>
+<tr><td>yim20</td><td>306</td><td>306</td><td>no</td><td>0</td><td>0</td></tr>
+<tr><td>mat22</td><td>263</td><td>263</td><td>no</td><td>0</td><td>0</td></tr>
+</table>
+<h2>export.py --check</h2><p>psed_v2/kb/reports/P157d.check_run.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 7 rows: undecided 7
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+</pre>
+<h2>score.py run</h2><p>psed_v2/kb/reports/P157d.score_run.txt</p>
+<pre>yli18: 243 gold rows, 80 compiled facts without a gold match
+yli18: check --dir 159 problems; T6 138/243
+yim20: 900 gold rows, 165 compiled facts without a gold match
+yim20: check --dir 306 problems; T6 425/900
+mat22: 1071 gold rows, 106 compiled facts without a gold match
+mat22: check --dir 263 problems; T6 273/1071
+</pre>
+</body></html>

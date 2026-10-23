@@ -1,0 +1,18 @@
+P157d, 0 calls; gold untouched; held-out not read. Round-1 re-audit (grow.py audit 1): PASS.
+FIX 1. 98 strings moved into symbols: [{text, paper}] on 42 quantity / categorical entries (symbols_move): the 14 symbol: fields (deleted; paper =
+  each paper of the entry's evidence) and the symbol-like aliases (paper = the alias's own evidence, else none: such a symbol promotes nowhere).
+  export: vocab and CODEBOOK carry symbols with their paper; norm_label = LaTeX stripped, casefold, whitespace (no unit-group strip, no trailing s);
+  compile a0 promotes by id, name, aliases, value aliases; symbols only in their own paper, case kept; never by an entry's label; a key under two
+  ids -> unmapped 'kept (ambiguous: ids)'. apply: accept -> label to aliases, table symbols to symbols with their paper.
+FIX 2. apply writes a never decision's label (any paper) and each symbol (its paper only); back-fill: 10 never.csv symbol rows + 10 history rows
+  (z_A, v_A, h, g, f_ads, f_des, Q in yli18; Q, R, R_row in yim20).
+FIX 3. export.record_text / record_key: the label, else the definition's meaning (unit group stripped, as P156); compile and propose call it.
+  139 empty-label records with their key (record_keys); the 10 yim20 tabu1 cells now key by their meaning (Surface area, ...).
+Data: reactor_type name 'reactor type'; structure alias 'Substrate' removed (2 history rows). Ambiguous keys now (ontology.html sec. 3).
+Re-audit (R1_apply): A1 42 decisions / 85 rows: effect 83, n/a 2 (evacuated_below: ela03 not compiled; top_membrane_removal: reject by design);
+  elam_monte_carlo is a pending pilot row of ela03 (not compiled), accounted in A3. A2: 33 promotions, 33 agree, 0 disagree (the
+  effective_diffusion_coefficient fact yli18:tabu1.r4c0#1 present; Q, R, l no longer promoted). A3: 11 open rows, all classified; pending 7/7,
+  distance_between_rows_of_pillars has its l row back. Row states vs P157b: 23 rows changed, every one listed (row_states).
+Score vs gold: identical in every column and type (score_before_after, score_by_type). check.py --dir: 159 / 306 / 263 before and after, the same
+  problems (check_dir). export.py --check 15 of 15.
+Where I read the directive and chose (notes): FIX 1 scope; symbols case-kept; never.csv's 'label [unit]' format; the pilot word 'q [nm-2]'.

@@ -6,7 +6,7 @@
 
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
 are ignored); the latest pass-0 line. Steps: a0 resolve_other (P157b: a value held as other or outside the vocabulary, matched to the
-generated vocab by its printed text; never.csv -> unmapped.csv column never; <pid>.promoted.csv), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
+generated vocab by its record key, symbols only in their own paper (P157d); never.csv -> unmapped.csv column never; <pid>.promoted.csv), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
 ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
 m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
 dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
@@ -33,7 +33,7 @@ VALUE_KEYS = ("value", "value_min", "value_max", "value_text")
 DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "unit", "qualifiers", "value_text")
 FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never"]   # P157b: never = the never.csv category
-PROMOTED_FIELDS = ["element", "field", "printed", "lookup", "id", "outcome"]    # P157b: step a0
+PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
@@ -108,40 +108,19 @@ def categorical(q, text):
 
 
 # P157b: step a0, resolve_other(): a value the ontology did not give the record (quantity other, a species / structure / categorical
-# value_text or a method not in the vocabulary) against the generated vocab, of its kind only. Not a unit: the label normalization strips
-# a trailing (...) group and a trailing s, which are part of a unit spelling (mol/s -> 'mol/' = mol/(m2 s)); a unit spelling stays with
-# unit_symbol() (normalize(), D10), which compares it with every units.yaml symbol and variant in step e.
+# value_text or a method not in the vocabulary) against the generated vocab, of its kind only. Not a unit: a unit spelling stays with
+# unit_symbol() (normalize(), D10), which compares it with every units.yaml symbol and variant in step e. P157d: the lookup tables are
+# export.resolve_index (ids, names, aliases; never an entry's label) and the symbols, which count only in their own paper.
 LIVE = {i: e for i, e in V.ENTRIES.items() if not e["replaced_by"]}
 SPECIES_KIND = {"material": "material", "substrate": "material", "reactant_A": "species", "reactant_B": "species", "structure": "structure"}
 VALUES = {**V.CATEGORICAL_VALUES, **V.FORM_CATEGORICAL_VALUES}                 # the categoricals with a fixed value list
-
-
-def label_index(pairs):
-    """{export.norm_label(text): {id: how}} over (text, id, how) pairs; a key under two ids is ambiguous and promotes nothing."""
-    out = collections.defaultdict(dict)
-    for text, i, how in pairs:
-        k = C.X.norm_label(text) if text else ""
-        if k:
-            out[k].setdefault(i, how)
-    return out
-
-
-def entry_pairs(ids):
-    """(text, id, how) for every entry id: the id, the id with spaces, its name, label and aliases (vocab.ENTRIES)."""
-    return [(t, i, how) for i in ids for t, how in [(i, "id"), (i.replace("_", " "), "id"), (LIVE[i]["name"], "name"), (LIVE[i]["label"], "label")]
-            + [(a, "alias") for a in LIVE[i]["aliases"]]]
-
-
-OTHER_INDEX = {
-    "quantity": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] in ("quantity", "categorical"))),
-    "method": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] == "method")),
-    "structure": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] == "structure")),
-    "species": label_index(entry_pairs(L.SPECIES)),
-    "material": label_index(entry_pairs(i for i in L.MATERIALS if i in LIVE)),
-    **{f"value:{q}": label_index([(v, v, "value id") for v in vs] + [(a, v, "value alias") for v, al in V.VALUE_ALIASES.get(q, {}).items() for a in al])
-       for q, vs in VALUES.items()},
-}
-NEVER = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])[0]          # ontology/never.csv: normalized part -> its row
+WORDS, SYMBOLS = C.X.resolve_index(V.ENTRIES, L.MATERIALS)
+for _q, _vs in VALUES.items():                                                  # categorical values: the value ids and their value_aliases
+    WORDS[f"value:{_q}"] = {}
+    for _v, _t, _how in [(v, v, "value id") for v in _vs] + [(v, a, "value alias") for v, al in V.VALUE_ALIASES.get(_q, {}).items() for a in al]:
+        WORDS[f"value:{_q}"].setdefault(C.X.norm_label(_t), {}).setdefault(_v, f"{_how} '{_t}'")
+    SYMBOLS[f"value:{_q}"] = {}
+NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
 
 
 class Run:
@@ -211,47 +190,55 @@ class Run:
         self.count("input", "records", len(recs))
         return recs
 
-    # ------------------------------------------------------------------------------------------------------------ a0 (P157b)
+    # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
     def resolve_other(self, recs):
-        """a0, before form.json: a value the record holds as other or outside the vocabulary, compared by its printed text (export.
-        norm_label, a whole-label match, never a substring) with the generated vocab of its kind only: quantity other by its
-        label_as_printed (quantity and categorical ids, names, labels, aliases); a material / substrate / reactant / structure
-        value_text not in form.json's enum (those entries); a categorical value_text not in its fixed list (the value ids and
-        value_aliases); a method not in lists.METHODS (method entries); a unit is left to step e (see OTHER_INDEX). One id: the record takes it and goes on like any record (form.json, units, placement, fact); two ids: ambiguous,
-        left as it is. A record still quantity other whose label is a never.csv part (export.never_index: a part naming a live entry
-        has no effect) carries the never category (unmapped.csv, column never). Every promotion -> <pid>.promoted.csv with its outcome."""
+        """a0, before form.json: a value the record holds as other or outside the vocabulary, compared whole (never a substring) with
+        the generated vocab of its kind only: quantity other by its record key (export.record_text: label_as_printed, else the meaning of
+        its candidate definition) against the quantity and categorical ids, names and aliases (export.norm_label) and the symbols of this
+        paper (export.symbol_key, case kept); a material / substrate / reactant / structure value_text not in form.json's enum (those
+        entries); a categorical value_text not in its fixed list (the value ids and value_aliases); a method not in lists.METHODS (method
+        entries). An entry's label is never read. A unit is left to step e. One id: the record takes it and goes on like any record
+        (form.json, units, placement, fact); two ids: ambiguous, left as it is (unmapped.csv action 'kept (ambiguous: ids)'). A record still
+        quantity other whose key is a never.csv word, or a never.csv symbol of this paper, carries the never category (unmapped.csv column
+        never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv."""
         enum = C.schema("form.json")["$defs"]
         for r in recs:
             rec = r["rec"]
             q = rec.get("quantity")
             q = q if isinstance(q, str) else ""
-            todo = [("quantity", "label_as_printed", "quantity")] if q == "other" else []
+            todo = [("quantity", C.X.record_text(rec), "quantity")] if q == "other" else []
             vt = rec.get("value_text")
             if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]]["enum"]:
-                todo.append(("value_text", "value_text", SPECIES_KIND[q]))
+                todo.append(("value_text", vt, SPECIES_KIND[q]))
             if q in VALUES and isinstance(vt, str) and vt not in VALUES[q]:
-                todo.append(("value_text", "value_text", f"value:{q}"))
+                todo.append(("value_text", vt, f"value:{q}"))
             if isinstance(rec.get("method"), str) and rec["method"] not in L.METHODS:
-                todo.append(("method", "method", "method"))
-            for field, src, kind in todo:
-                text = rec.get(src)
-                hits = OTHER_INDEX[kind].get(C.X.norm_label(text), {}) if isinstance(text, str) and text.strip() else {}
+                todo.append(("method", rec["method"], "method"))
+            for field, text, kind in todo:
+                if not text.strip():
+                    continue
+                hits = dict(WORDS[kind].get(C.X.norm_label(text), {}))
+                for i, t in SYMBOLS[kind].get((self.pid, C.X.symbol_key(text)), {}).items():
+                    hits.setdefault(i, f"symbol '{t}' of this paper")
+                meaning = " ".join(((rec.get("candidate") or {}).get("definition_quote") or "").split()) if field == "quantity" else text
                 if len(hits) == 1:
                     (i, how), = hits.items()
                     rec[field] = i
-                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, lookup=f"{kind}: {how}", id=i, outcome=""))
-                    self.count("a0", f"{field} promoted ({kind}: {how})")
+                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, meaning=meaning, lookup=f"{kind}: {how}", id=i, outcome=""))
+                    self.count("a0", f"{field} promoted ({kind}: {how.split(' ')[0]})")
                     self.note(f"a0: {r['eid']}: {field} {text!r} -> {i} ({kind}: {how})")
                 elif hits:
-                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, lookup=f"{kind}: ambiguous", id=" | ".join(sorted(hits)),
-                                              outcome="not promoted: the label names two ids"))
+                    r["ambiguous"] = sorted(hits)
+                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, meaning=meaning, lookup=f"{kind}: ambiguous ({'; '.join(f'{i}: {h}' for i, h in sorted(hits.items()))})",
+                                              id=" | ".join(sorted(hits)), outcome="not promoted: the key names two ids"))
                     self.count("a0", f"{field} ambiguous (left as it is)")
                     self.note(f"a0: {r['eid']}: {field} {text!r} ambiguous: {sorted(hits)}")
-            lab = rec.get("label_as_printed")
-            hit = NEVER.get(C.X.norm_label(lab)) if rec.get("quantity") == "other" and isinstance(lab, str) and lab.strip() else None
-            if hit:
-                r["never"], r["never_label"] = hit["category"], hit["label"]
-                self.count("a0", "quantity other: never.csv")
+            if rec.get("quantity") == "other":
+                text = C.X.record_text(rec)
+                hit = (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(text)))) if text.strip() else None
+                if hit:
+                    r["never"], r["never_label"] = hit["category"], hit["label"] + (f" (symbol in {hit['paper']})" if hit.get("symbol") == "yes" else "")
+                    self.count("a0", "quantity other: never.csv " + ("symbol" if hit.get("symbol") == "yes" else "word"))
         return recs
 
     # ------------------------------------------------------------------------------------------------------------ a-g
@@ -366,7 +353,8 @@ class Run:
             if q == "other":
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
-                                          action=f"kept (never: {r['never_label']})" if r.get("never") else "kept", never=r.get("never", "")))
+                                          action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous") else "kept",
+                                          never=r.get("never", "")))
                 self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
             out.append(r)
         return out

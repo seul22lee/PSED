@@ -56,6 +56,7 @@ psed_v2/
   kb/<paper_id>.figures.json # tracked: the figure records imported by rule (kb/figures_import.py)
   kb/verify/                # tracked: frozen evidence of past units (d8-d15, ask-v4, kb-12, kb-fig3, figures-12)
   kb/report.py, kb/reports/<unit>.html # tracked: one self-contained HTML report per unit (R2)
+  kb/reports/R<n>_apply.*   # tracked (P157d): grow.py's decision audit of round n (A1 decision trace, A2 promotions, A3 open rows, acceptance), written by apply / grow.py audit <n>
                             # from P134, facts.csv is produced by kb/extract/compile.py; kb/pilot/<paper_id>.facts.py stays the gold
 ```
 
