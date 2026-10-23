@@ -267,15 +267,20 @@ def examples(pid, form):
 
 
 def units_block(pid):
-    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | parent | data (id:role ...)."""
+    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | parent | data (id:role ...). P161: then
+    the units compile.curve_units() derives from the curves no pass-0 unit names, each line ending | <origin>; none, no line."""
+    import compile as K                                                         # P161 (compile imports this module)
     p0 = C.lines(pid, 0)
     if not p0:
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
     obj = C.loads_json(p0[-1]["response"])
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
-    return "\n".join(f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
-                     for it in items if isinstance(it, dict))
+    line = lambda it: f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731
+    der = K.curve_units(pid, obj)
+    return "\n".join([line(it) for it in items if isinstance(it, dict)]
+                     + (["Units the compiler derived from figure curves (one per curve, or point, no unit above names; name = the legend label):"] if der else [])
+                     + [f"{line(it)} | {it['origin']}" for it in der])
 
 
 def prefix(pid, form):

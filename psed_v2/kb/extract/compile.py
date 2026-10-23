@@ -139,6 +139,55 @@ for _q, _vs in VALUES.items():                                                  
         WORDS[f"value:{_q}"].setdefault(C.X.norm_label(_t), {}).setdefault(_v, f"{_how} '{_t}'")
     SYMBOLS[f"value:{_q}"] = {}
 NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
+DATA_ROLE = {"simulated": "simulated", "read_from_figure": "measured"}          # P161: figures.json kind (P87) -> the pass-0 data role
+
+
+def curve_units(pid, obj):
+    """P161 step 1, between pass 0 and pass 1 (no call): for every panel whose pass-0 layout is curve_per_unit (point_per_unit), one unit
+    per curve (point: a point of a curve, or a cell) of kb/<pid>.figures.json that no pass-0 unit's data refs bind (a point is bound when
+    its curve or its cell is). id <pid>:<panel>:<curve id> (a point of a curve: .p<n>); role model_run when the curve's data role is
+    simulated, else run (point_per_unit: run), the data role being the figures.json kind (DATA_ROLE: the one a curve no unit names
+    carries); parent the paper's one pass-0 simulation (model_run) or its one pass-0 run (run), else null, flagged "parent unresolved";
+    introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with
+    its role; conditions the legend label as an other condition (label_as_printed = the label); origin "derived: <layout>". A unit
+    pass 0 bound is left as it is, no other layout makes units, nothing else is inferred. Read by compile (input, tree), by
+    pass1_elements.units_block (PASS-0 UNITS) and by pass0_paper.consistency."""
+    p = C.V2 / "kb" / f"{pid}.figures.json"
+    Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    obj = obj if isinstance(obj, dict) else {}
+    units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
+    bound = {d.get("id") if isinstance(d, dict) else d for u in units for d in u.get("data") or []}
+    sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
+    ids = set(C.E.texts(pid))
+    items = collections.defaultdict(list)
+    for c in Fj.get("curves", []):
+        items[f"fig{c['figure']}{c.get('panel', '')}"].append(c)
+    for v in Fj.get("values", []):
+        if v.get("kind") == "cell":
+            items[f"fig{v['figure']}{v.get('panel', '')}"].append(v)
+    out = []
+    for x in obj.get("panel_layouts") or []:
+        lay = x.get("layout") if isinstance(x, dict) else None
+        if lay not in ("curve_per_unit", "point_per_unit"):
+            continue
+        for c in items.get(x["panel"], []):
+            cell = c.get("kind") == "cell"
+            if c["id"] in bound or (cell and lay == "curve_per_unit"):
+                continue
+            drole = DATA_ROLE.get(c.get("data_kind") if cell else c.get("kind"), "measured")
+            role = "run" if lay == "point_per_unit" else "model_run" if drole == "simulated" else "run"
+            par = (sims if role == "model_run" else runs)
+            label = ((c.get("label") or c.get("value_text") or "") if cell else c.get("series", {}).get("label_raw") or "").strip()
+            cap = f"fig{c['figure']}.cap"
+            flags = ([] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) + ([] if cap in ids else ["no caption element"])
+            base = f"{pid}:{x['panel']}:{c['id'].split('#')[-1]}"
+            for n in ([None] if cell or lay == "curve_per_unit" else range(1, len(c.get("points") or []) + 1)):
+                out.append(dict(id=base if n is None else f"{base}.p{n}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
+                                structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                                data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lay}",
+                                conditions=[dict(quantity="other", label_as_printed=label)] if label else [], panel=x["panel"], curve=c["id"], point=n,
+                                flag="; ".join(flags)))
+    return out
 
 
 class Run:
@@ -207,6 +256,16 @@ class Run:
                         self.count("input", "parent read as about (older line)")
                     recs.append(dict(eid=eid, rec=rec, seq=i, form_version=self.form_version.get(eid, "")))
         self.count("input", "records", len(recs))
+        self.from_curves = curve_units(self.pid, p0obj)                         # P161 step 1: units from curves, their legend labels as conditions
+        self.pass0 = list(self.pass0) + self.from_curves
+        for u in self.from_curves:
+            self.count("input", f"unit derived ({u['origin']}, {u['role']})")
+            for c in u["conditions"] if u["introduced_in"] else []:
+                rec = dict(type="setting", quantity="other", label_as_printed=c["label_as_printed"], quote=c["label_as_printed"], about=u["id"])
+                recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"]))
+                self.count("input", "condition of a derived unit (the legend label, other)")
+        if self.from_curves:
+            self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
         return recs
 
     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
@@ -510,13 +569,15 @@ class Run:
             self.p0[it["id"]] = it
             items.append(it)
         role = lambda r: [it for it in items if it.get("role") == r]               # noqa: E731
+        how = lambda it: "inferred" if it.get("origin") else "stated"                 # noqa: E731  P161: a unit derived from a curve
+        origin = lambda it: f"; {it['origin']}" if it.get("origin") else ""          # noqa: E731
         rows.append(row(fact_id=f"{k}:recipe", type="activity", kind="recipe", how="inferred", parent=k, label_as_printed="recipe",   # P148: always (C1)
                         evidence=ok_ev([e for it in role("run") + role("specimen") for e in it.get("introduced_in") or []]) or self.els[0]["element_id"],
                         statement=f"the deposition recipe of {k}: the runs and specimens of its first pass"))
         for it in role("run"):
             self.node[it["id"]] = (f"{k}:run:{slug(it['id'])}", "run")
-            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
-                            parent=f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"], statement=f"deposition run {it['id']} ({it.get('name_as_printed')!r})"))
+            rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
+                            parent=f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"], statement=f"deposition run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
         for it in role("simulation"):
             self.node[it["id"]] = (f"{k}:sim:{slug(it['id'])}", "simulation")
             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="simulation", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
@@ -535,9 +596,9 @@ class Run:
             if par[1] != "simulation":
                 self.count("h", "model run without a simulation parent (under the paper)")
             self.node[it["id"]] = (f"{k}:mrun:{slug(it['id'])}", "model_run")
-            rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
+            rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
                             parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
-                            statement=f"model run {it['id']} ({it.get('name_as_printed')!r})"))
+                            statement=f"model run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
         self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "model_run", "series", "cited_work"))
                   + "; identity rows: none (pass 0 carries no identity)")
         self.rows_tree = rows
@@ -873,6 +934,7 @@ class Run:
         f["_parent_filled"] = bool(r.get("parent_filled"))                     # P148: about null or unknown
         f["_links"] = [e for e in rec.get("links") or [] if e in self.order]    # P138: resolved to fact ids after ids()
         f["_quote"] = normalize(rec.get("quote", "")).lower()
+        f["_origin"] = r.get("origin", "")                                      # P161: the condition of a unit derived from a curve
         if any(f[x] for x in ("value", "value_min", "value_max")) and not f["data_kind"]:
             f["data_kind"] = "stated"                                           # P138: filled, flagged
             f["_kind_filled"] = True
@@ -1005,9 +1067,10 @@ class Run:
         return rows
 
     def coverage(self, rows):
+        """P161: a derived unit's condition (made from its legend label, not extracted) covers no element."""
         by_el = collections.defaultdict(list)
         for f in rows:
-            if "#" in f["fact_id"]:
+            if "#" in f["fact_id"] and not f.get("_origin"):
                 for e in f["evidence"].split(";"):
                     by_el[e].append(f)
         drops = collections.defaultdict(list)

@@ -1,0 +1,30 @@
+P161, round 2 turn 3: 0 provider calls. Step 1 is done and misses three of the directive's expectations (below); steps 2 and 3 (21 pass-1
+calls, grow.py add / propose) did not run and wait for the user.
+
+Step 1 (0 calls). compile.curve_units() in compile.py, read by compile (input and tree), pass1_elements.units_block (PASS-0 UNITS) and
+  pass0_paper.consistency: for every curve_per_unit (point_per_unit) panel, one unit per figures.json curve (point: a point of a curve, or a
+  cell) that no pass-0 unit's data bind. id <pid>:<panel>:<curve> (a point of a curve: .p<n>); the curve's data role is its figures.json kind
+  (simulated -> simulated, read_from_figure -> measured), the only role a curve no unit names carries; origin "derived: curve_per_unit"
+  (point units: "derived: point_per_unit"); tree rows how = inferred; the legend label becomes a setting of quantity other on the caption
+  (form P158, through steps a0-g like any record, so it reaches unmapped.csv; element coverage does not count it). Pass 1 sees the units:
+  the PASS-0 UNITS block lists them after one heading line, each line ending "| <origin>"; a paper without derived units keeps its block.
+  Created: hei24 163 (153 run, 10 model_run), ela03 35 and mat22 32 (point units); yli18, yim20, gor03 0. Parent unresolved on all 220
+  runs (hei24 has no pass-0 run, ela03 14, mat22 42); ela03 16 without a legend label (no condition).
+Miss 1, B check: 0 panels short on yim20, mat22, ela03, hei24, gor03; yli18 still 3 (fig2, fig3, fig5). Every curve there is bound, by
+  fewer units than curves (a pass-0 model run binds two to four curves), so nothing is created ("a unit already bound is left as is") and
+  the count check still flags them.
+Miss 2, hei24 vs gold: 10 of 83 gold model runs paired (fig8a/b, the only curves figures.json calls simulated). figures.json calls the
+  other 153 read_from_figure, so they became runs with no parent and pair with nothing (153 extra, 73 gold missing). Were they model runs
+  of sim_dr (hypothetical, computed for the decision only, not compiled): 80 of 83 paired, 58 as split (one gold run drawn in several
+  panels). Baseline duplicates (legend label equals a Table 1 / 2 value): 6, '100 g mol^-1' x4 (fig5c/d, 6c/d), '423 K' x2 (fig8a/b);
+  the 20 tau/epsilon labels of fig5a/b, 6a/b name a ratio of two table rows, no one cell, so equality does not count them. Not merged.
+Miss 3, round-1 audit: FAIL (32), A3. mat22's 32 new unmapped rows (the point units' legend labels 'Amorphous' x14, 'Crystalline' x18,
+  fig2) are open rows of round 1, neither pending nor decided. Reported, not worked around.
+Recompiled yli18, yim20, mat22, ela03: T6 and every type column unchanged. check.py --dir: yli18 156, yim20 318 unchanged; mat22 263 -> 293,
+  ela03 152 -> 170, every new row a "same statement" pair (the points of one curve share its legend label). Unmapped rows: mat22 5 -> 37,
+  ela03 27 -> 46 ('Simulation' x4; 'y ∝ t^1/2' x15: fig10b's second curve, a 15-point line, became 15 runs). export.py --check 15 of 15.
+  ela03's pass-1 lines were written before its derived units existed.
+Step 2, not run: planned gor03 6 calls, hei24 15 (0 cached, --plan; P161.s2_plan.txt). gor03 has no derived units, its prefix is unchanged.
+Step 3, not run: grow.py add would open round 2 with hei24 not extracted.
+For the user: (1) the data role of a hei24 curve no unit names (figures.json kind: measured on 153); (2) yli18's bound-but-short panels;
+  (3) derived conditions in an applied round's paper (A3); (4) point units on a line curve and one legend label repeated on every point.

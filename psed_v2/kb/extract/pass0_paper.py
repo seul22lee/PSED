@@ -69,7 +69,9 @@ THINKING = {"thinking_level": "MEDIUM"}                                         
 def consistency(pid, obj):
     """P160 B, part of every pass-0 run: for each panel whose pass-0 layout is curve_per_unit (point_per_unit), the curves (the points of
     its curves and its cells) of kb/<pid>.figures.json against the pass-0 units whose data name an item of that panel; a panel with fewer
-    units than curves (points) is flagged "layout says one unit per curve; units missing"."""
+    units than curves (points) is flagged "layout says one unit per curve; units missing". P161: derived = the units
+    compile.curve_units() makes for the panel; the flag counts the pass-0 units and the derived ones."""
+    import compile as K                                                         # P161
     p = C.V2 / "kb" / f"{pid}.figures.json"
     Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
     panel = lambda i: str(i).split(":", 1)[-1].split("#")[0]                    # noqa: E731  'ela03:fig5a#c1' -> 'fig5a'
@@ -85,16 +87,19 @@ def consistency(pid, obj):
     for u in (obj.get("units") or []) if isinstance(obj, dict) else []:
         for d in u.get("data") or []:
             units[panel(d.get("id") if isinstance(d, dict) else d)].add(u.get("id"))
+    derived = collections.defaultdict(set)
+    for u in K.curve_units(pid, obj):
+        derived[u["panel"]].add(u["id"])
     out = []
     for x in (obj.get("panel_layouts") or []) if isinstance(obj, dict) else []:
         lay = x.get("layout")
         if lay not in ("curve_per_unit", "point_per_unit"):
             continue
         want = curves[x["panel"]] if lay == "curve_per_unit" else points[x["panel"]]
-        n = len(units[x["panel"]])
-        out.append(dict(panel=x["panel"], layout=lay, figures_json=want, what="curves" if lay == "curve_per_unit" else "points", units=n,
+        n, m = len(units[x["panel"]]), len(derived[x["panel"]])
+        out.append(dict(panel=x["panel"], layout=lay, figures_json=want, what="curves" if lay == "curve_per_unit" else "points", units=n, derived=m,
                         unit_ids=";".join(sorted(units[x["panel"]])),
-                        flag="layout says one unit per curve; units missing" if n < want else ("more units than curves" if n > want else "")))
+                        flag="layout says one unit per curve; units missing" if n + m < want else ("more units than curves" if n + m > want else "")))
     return out
 
 
@@ -104,7 +109,7 @@ def main(arg):
         lines = [json.loads(x) for x in (C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
         rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
         for r in rows:
-            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units {r['flag']}")
+            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units + {r['derived']} derived {r['flag']}")
         return 0
     if "--plan" in sys.argv:                                                    # the planned call only, no call
         js = jobs(pid)
@@ -121,7 +126,7 @@ def main(arg):
           f"panel layouts {len((obj or {}).get('panel_layouts') or [])}")
     for r in consistency(pid, obj or {}):                                       # P160 B: one unit per curve (point) where the layout says so
         if r["flag"]:
-            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units: {r['flag']}")
+            print(f"{key} {r['panel']} {r['layout']}: {r['figures_json']} {r['what']}, {r['units']} units + {r['derived']} derived: {r['flag']}")
     return 0
 
 
