@@ -1,0 +1,23 @@
+P157e held-out audit, 0 calls, no file changed but this report. Held-out: yim22 (10.1039_d1cp04758b), gre23 (10.1116_6.0003182), mat23
+(10.1116_6.0002993). No held-out text below: ids, field names, pids, line numbers and alias / symbol strings only; any other text is named
+"<field> text". A leak check confirms that none of the 128 held-out-bearing values of ontology.yaml appears in these files.
+H1. 149 lines of ontology.yaml cite a held-out paper, all covered: 192 rows. HO-only 111, mention 77, mixed 4 (2 of the rows are comments).
+H2. 34 entries rest on held-out evidence only (every evidence line held-out, origin extension): 15 quantities, 9 mechanisms, 6 species,
+  2 methods, 1 categorical, 1 structure; all gre23 except ga2s3, gasx, ga2_nme2_6, giwaxs, uv_vis_spectroscopy (mat23). film_density has
+  held-out-only evidence but origin base (schema_miner): kept. Removing all 34 breaks: family growth_amount 7 -> 1 member (check 11),
+  hierarchy leaf reaction_monitoring 6 -> 0 (check 8; the node itself cites gre23 only), transforms moles_from_mass_gain,
+  coating_mass_fraction, moles_deposited, shell_volume_fraction, body_thickness; the porous structure classes' slots; 14 pilot_map.csv rows;
+  21 external_ids.csv rows. 8 of the 34 are used by dev data: dez, zno, entry_sides (ela03 gold), porosity, specific_surface_area (hei24
+  gold), cvd_growth (zou23 gold), metallic_zinc (compiled mat22), reaction_diffusion (compiled yli18).
+  Other nodes: qualifier kind's 2 evidence lines are held-out only; 3 structure classes and 2 qualifier logs cite gre23 beside Cremers / dev.
+H3. units.yaml rows carry no source field: no row's only evidence is held-out. One comment (line 96) cites yim22 beside yim20. MPa is gone;
+  L is in units.yaml as the Langmuir (dimension exposure), not the litre P142b removed.
+H4. never.csv: no held-out row. external_ids.csv: 21 rows of H2 entries, no held-out text. pilot_map.csv: 4 notes name gre23; 14 rows link
+  H2 entries.
+H5. vocab.py: 30 lines carry a held-out pid, 20 an HO-only string, 221 an H2 id; CODEBOOK.md: 21 / 14 / 34 (line refs in H5).
+H6. P131b alias_audit.py read every kb/pilot/10.*.facts.csv and elements.texts(pid), held-out papers included (no filter); its 21 aliases
+  from held-out alias-evidence lines (all marked "P131b alias audit"): 18 HO-only = H1's 18 HO-only aliases, 3 mixed. The P98 rules
+  (pending_decide.py, deleted in P155) read all 12 papers' facts.csv and figures.json; 15 entries name a held-out paper in their P98
+  deviation.reason (5 of them only held-out).
+H7. Totals per kind and field below; 106 aliases / symbols would go (88 with their H2 entry, 18 by their own held-out-only evidence).
+Found on the way (a P157d defect, not changed here): p_A0 and c moved into symbols with paper yim22 only; their evidence line names yli18 too.

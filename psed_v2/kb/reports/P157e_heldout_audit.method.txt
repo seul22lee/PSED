@@ -1,0 +1,15 @@
+How the rows are made (scratchpad script heldout.py; reads ontology.yaml, units.yaml, never.csv, history.csv, pilot_map.csv, external_ids.csv,
+vocab.py, CODEBOOK.md, the dev papers' gold and compiled facts.csv; never a held-out paper's own files):
+- A held-out reference: the keys yim22, gre23, mat23; the three pids (with / or _); the first author's surname followed by the year (from
+  corpus/manifest.csv metadata, the pattern not printed). A dev reference: every other paper key or pid; Cremers / Popov count as review sources.
+- H1: every value of ontology.yaml (yaml.compose, with its line) that holds a held-out reference, then every comment line that does. An
+  "alias '<a>': <key> ..." evidence line is a row of field aliases with the alias string; a symbols paper is a row of field symbols with the
+  symbol text; any other value is "<field> text" or "evidence line n". Class: an alias or symbol by its own evidence (HO-only / mixed); an
+  evidence line or a text field by its entry (mention when the entry has a dev evidence line or a review / schema base, else HO-only).
+- H2: an entry whose every evidence line holds a held-out reference and none a dev one, and whose origin is extension (no origin names a pid:
+  extension / base / base_vocabulary); referenced_by lists transforms, model parameters, families, hierarchy leaves, structure-class slots,
+  pilot_map.csv, never.csv superseded links, external_ids.csv, other entries' replaced_by / ratio_of / converts_to / values_from /
+  parameters, vocabularies, export.EXPECTED_BASE, and the rows of the dev gold (kb/pilot/<dev pid>.facts.csv) and compiled facts that use the id
+  (quantity, value_text, cause, effect, method, qualifier values).
+- H5: lines with a held-out reference; lines with an H1 HO-only alias / symbol (one- and two-character strings only inside an alias list or a
+  symbols entry); lines naming an H2 id.

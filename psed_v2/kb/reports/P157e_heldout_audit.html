@@ -1,0 +1,852 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P157e_heldout_audit</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P157e_heldout_audit</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P157e_heldout_audit.summary.txt</p>
+<pre>P157e held-out audit, 0 calls, no file changed but this report. Held-out: yim22 (10.1039_d1cp04758b), gre23 (10.1116_6.0003182), mat23
+(10.1116_6.0002993). No held-out text below: ids, field names, pids, line numbers and alias / symbol strings only; any other text is named
+&quot;&lt;field&gt; text&quot;. A leak check confirms that none of the 128 held-out-bearing values of ontology.yaml appears in these files.
+H1. 149 lines of ontology.yaml cite a held-out paper, all covered: 192 rows. HO-only 111, mention 77, mixed 4 (2 of the rows are comments).
+H2. 34 entries rest on held-out evidence only (every evidence line held-out, origin extension): 15 quantities, 9 mechanisms, 6 species,
+  2 methods, 1 categorical, 1 structure; all gre23 except ga2s3, gasx, ga2_nme2_6, giwaxs, uv_vis_spectroscopy (mat23). film_density has
+  held-out-only evidence but origin base (schema_miner): kept. Removing all 34 breaks: family growth_amount 7 -&gt; 1 member (check 11),
+  hierarchy leaf reaction_monitoring 6 -&gt; 0 (check 8; the node itself cites gre23 only), transforms moles_from_mass_gain,
+  coating_mass_fraction, moles_deposited, shell_volume_fraction, body_thickness; the porous structure classes&#x27; slots; 14 pilot_map.csv rows;
+  21 external_ids.csv rows. 8 of the 34 are used by dev data: dez, zno, entry_sides (ela03 gold), porosity, specific_surface_area (hei24
+  gold), cvd_growth (zou23 gold), metallic_zinc (compiled mat22), reaction_diffusion (compiled yli18).
+  Other nodes: qualifier kind&#x27;s 2 evidence lines are held-out only; 3 structure classes and 2 qualifier logs cite gre23 beside Cremers / dev.
+H3. units.yaml rows carry no source field: no row&#x27;s only evidence is held-out. One comment (line 96) cites yim22 beside yim20. MPa is gone;
+  L is in units.yaml as the Langmuir (dimension exposure), not the litre P142b removed.
+H4. never.csv: no held-out row. external_ids.csv: 21 rows of H2 entries, no held-out text. pilot_map.csv: 4 notes name gre23; 14 rows link
+  H2 entries.
+H5. vocab.py: 30 lines carry a held-out pid, 20 an HO-only string, 221 an H2 id; CODEBOOK.md: 21 / 14 / 34 (line refs in H5).
+H6. P131b alias_audit.py read every kb/pilot/10.*.facts.csv and elements.texts(pid), held-out papers included (no filter); its 21 aliases
+  from held-out alias-evidence lines (all marked &quot;P131b alias audit&quot;): 18 HO-only = H1&#x27;s 18 HO-only aliases, 3 mixed. The P98 rules
+  (pending_decide.py, deleted in P155) read all 12 papers&#x27; facts.csv and figures.json; 15 entries name a held-out paper in their P98
+  deviation.reason (5 of them only held-out).
+H7. Totals per kind and field below; 106 aliases / symbols would go (88 with their H2 entry, 18 by their own held-out-only evidence).
+Found on the way (a P157d defect, not changed here): p_A0 and c moved into symbols with paper yim22 only; their evidence line names yli18 too.
+</pre>
+<h2>How the rows are made</h2><p>psed_v2/kb/reports/P157e_heldout_audit.method.txt</p>
+<pre>How the rows are made (scratchpad script heldout.py; reads ontology.yaml, units.yaml, never.csv, history.csv, pilot_map.csv, external_ids.csv,
+vocab.py, CODEBOOK.md, the dev papers&#x27; gold and compiled facts.csv; never a held-out paper&#x27;s own files):
+- A held-out reference: the keys yim22, gre23, mat23; the three pids (with / or _); the first author&#x27;s surname followed by the year (from
+  corpus/manifest.csv metadata, the pattern not printed). A dev reference: every other paper key or pid; Cremers / Popov count as review sources.
+- H1: every value of ontology.yaml (yaml.compose, with its line) that holds a held-out reference, then every comment line that does. An
+  &quot;alias &#x27;&lt;a&gt;&#x27;: &lt;key&gt; ...&quot; evidence line is a row of field aliases with the alias string; a symbols paper is a row of field symbols with the
+  symbol text; any other value is &quot;&lt;field&gt; text&quot; or &quot;evidence line n&quot;. Class: an alias or symbol by its own evidence (HO-only / mixed); an
+  evidence line or a text field by its entry (mention when the entry has a dev evidence line or a review / schema base, else HO-only).
+- H2: an entry whose every evidence line holds a held-out reference and none a dev one, and whose origin is extension (no origin names a pid:
+  extension / base / base_vocabulary); referenced_by lists transforms, model parameters, families, hierarchy leaves, structure-class slots,
+  pilot_map.csv, never.csv superseded links, external_ids.csv, other entries&#x27; replaced_by / ratio_of / converts_to / values_from /
+  parameters, vocabularies, export.EXPECTED_BASE, and the rows of the dev gold (kb/pilot/&lt;dev pid&gt;.facts.csv) and compiled facts that use the id
+  (quantity, value_text, cause, effect, method, qualifier values).
+- H5: lines with a held-out reference; lines with an H1 HO-only alias / symbol (one- and two-character strings only inside an alias list or a
+  symbols entry); lines naming an H2 id.
+</pre>
+<h2>H1. Every place in ontology.yaml that cites a held-out paper</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H1_citations.csv</p>
+<table><tr><th>line</th><th>id</th><th>kind</th><th>field</th><th>sub_item</th><th>pids</th><th>keys</th><th>dev_evidence_same</th><th>cls</th></tr>
+<tr><td>123</td><td>reaction_monitoring</td><td>hierarchy node</td><td>citation</td><td>citation text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>137</td><td>porous_body</td><td>structure class</td><td>citation</td><td>citation text</td><td>10.1116_6.0003182</td><td>gre23</td><td>review Cremers</td><td>mention</td></tr>
+<tr><td>138</td><td>nanoparticle_compact</td><td>structure class</td><td>citation</td><td>citation text</td><td>10.1116_6.0003182</td><td>gre23</td><td>review Cremers</td><td>mention</td></tr>
+<tr><td>139</td><td>aerogel_monolith</td><td>structure class</td><td>citation</td><td>citation text</td><td>10.1116_6.0003182</td><td>gre23</td><td>review Cremers</td><td>mention</td></tr>
+<tr><td>390</td><td>pulse_time</td><td>quantity</td><td>symbols</td><td>t_1</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>393</td><td>pulse_time</td><td>quantity</td><td>aliases (alias evidence line 9; string now in symbols)</td><td>t_1</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>546</td><td>coated_aspect_ratio</td><td>quantity</td><td>symbols</td><td>coated (E)AR</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mixed</td></tr>
+<tr><td>548</td><td>coated_aspect_ratio</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h;base: cremers_2019</td><td>mention</td></tr>
+<tr><td>548</td><td>coated_aspect_ratio</td><td>quantity</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h;base: cremers_2019</td><td>mention</td></tr>
+<tr><td>581</td><td>film_density</td><td>quantity</td><td>aliases (alias evidence line 1; string now in aliases)</td><td>rho</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>598</td><td>partial_pressure</td><td>quantity</td><td>symbols</td><td>p_A0</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>598</td><td>partial_pressure</td><td>quantity</td><td>symbols</td><td>p_i</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>600</td><td>partial_pressure</td><td>quantity</td><td>aliases (alias evidence line 8; string now in symbols)</td><td>p_A0</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mixed</td></tr>
+<tr><td>600</td><td>partial_pressure</td><td>quantity</td><td>aliases (alias evidence line 9; string now in symbols)</td><td>p_i</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>721</td><td>initial_sticking_coefficient</td><td>quantity</td><td>symbols</td><td>c</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>721</td><td>initial_sticking_coefficient</td><td>quantity</td><td>symbols</td><td>c_ext</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>723</td><td>initial_sticking_coefficient</td><td>quantity</td><td>aliases (alias evidence line 6; string now in symbols)</td><td>c</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mixed</td></tr>
+<tr><td>723</td><td>initial_sticking_coefficient</td><td>quantity</td><td>aliases (alias evidence line 7; string now in symbols)</td><td>c_ext</td><td>10.1039_d1cp04758b</td><td>yim22</td><td></td><td>HO-only</td></tr>
+<tr><td>776</td><td>feature_width</td><td>quantity</td><td>aliases (alias evidence line 16; string now in evidence only (string in neither list))</td><td>H</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mixed</td></tr>
+<tr><td>1077</td><td>precursor_purity</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1086</td><td>precursor_purity</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1119</td><td>cycle_time</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1133</td><td>substrate</td><td>categorical</td><td>evidence</td><td>evidence line 4 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1151</td><td>mass_gain</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1151</td><td>mass_gain</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1161</td><td>moles_deposited</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1168</td><td>moles_deposited</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1178</td><td>moles_from_mass_gain</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1185</td><td>moles_from_mass_gain</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1185</td><td>moles_from_mass_gain</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1195</td><td>deposited_moles_per_cycle</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1203</td><td>deposited_moles_per_cycle</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1203</td><td>deposited_moles_per_cycle</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1221</td><td>atoms_per_cycle</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1238</td><td>coating_mass_fraction</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1255</td><td>shell_volume_fraction</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1255</td><td>shell_volume_fraction</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1271</td><td>deposition_rate</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1280</td><td>gas_moles_per_cycle</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1288</td><td>gas_moles_per_cycle</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1288</td><td>gas_moles_per_cycle</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1297</td><td>reaction_stoichiometry</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1303</td><td>reaction_stoichiometry</td><td>quantity</td><td>symbols</td><td>ȳ (printed ν̄ in the text layer)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1305</td><td>reaction_stoichiometry</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1305</td><td>reaction_stoichiometry</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1305</td><td>reaction_stoichiometry</td><td>quantity</td><td>aliases (alias evidence line 3; string now in symbols)</td><td>ȳ (printed ν̄ in the text layer)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1314</td><td>pressure_rise</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1323</td><td>pressure_rise</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1323</td><td>pressure_rise</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1323</td><td>pressure_rise</td><td>quantity</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>δp maximum</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1332</td><td>pressure_rate</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1338</td><td>pressure_rate</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1338</td><td>pressure_rate</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1347</td><td>time_to_maximum</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1356</td><td>time_to_maximum</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1356</td><td>time_to_maximum</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1356</td><td>time_to_maximum</td><td>quantity</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>time to δp maximum</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1374</td><td>porosity</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1374</td><td>porosity</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1374</td><td>porosity</td><td>quantity</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>Final porosity, φ_f (%)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1468</td><td>binding_energy</td><td>quantity</td><td>aliases (alias evidence line 6; string now in aliases)</td><td>Ga 2p3/2</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>1468</td><td>binding_energy</td><td>quantity</td><td>aliases (alias evidence line 7; string now in aliases)</td><td>S 2s</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>1477</td><td>crystallite_size</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1485</td><td>crystallite_size</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1485</td><td>crystallite_size</td><td>quantity</td><td>aliases (alias evidence line 4; string now in aliases)</td><td>corundum grain size</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1485</td><td>crystallite_size</td><td>quantity</td><td>aliases (alias evidence line 5; string now in aliases)</td><td>ZnO (zincite) Crystallite size (nm)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1485</td><td>crystallite_size</td><td>quantity</td><td>aliases (alias evidence line 6; string now in aliases)</td><td>Zn (metallic) Crystallite size (nm)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1534</td><td>phase</td><td>categorical</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1534</td><td>phase</td><td>categorical</td><td>evidence</td><td>evidence line 4 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>1581</td><td>probe_resolution</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1588</td><td>probe_resolution</td><td>quantity</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1655</td><td>knudsen_number</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1656</td><td>knudsen_number</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1674</td><td>mean_free_path</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1675</td><td>mean_free_path</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1687</td><td>front_slope</td><td>quantity</td><td>definitions.text</td><td>definitions.text text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1730</td><td>signal_intensity</td><td>quantity</td><td>evidence</td><td>evidence line 4 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1730</td><td>signal_intensity</td><td>quantity</td><td>aliases (alias evidence line 9; string now in aliases)</td><td>Normalized X-ray counts (Zn)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1750</td><td>element_fraction</td><td>quantity</td><td>aliases (alias evidence line 7; string now in aliases)</td><td>C after sputtering</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>1750</td><td>element_fraction</td><td>quantity</td><td>aliases (alias evidence line 8; string now in aliases)</td><td>O after sputtering</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>1778</td><td>phase_fraction</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1786</td><td>phase_fraction</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1786</td><td>phase_fraction</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1786</td><td>phase_fraction</td><td>quantity</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>ZnO (zincite) Wt. %</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1803</td><td>h_per_metal</td><td>comment</td><td>comment</td><td>comment text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>1840</td><td>dez</td><td>species</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1847</td><td>dez</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1847</td><td>dez</td><td>species</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1940</td><td>zno</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1940</td><td>zno</td><td>species</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1940</td><td>zno</td><td>species</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1958</td><td>zn</td><td>species</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1966</td><td>zn</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>1966</td><td>zn</td><td>species</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2029</td><td>pet</td><td>comment</td><td>comment</td><td>comment text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>mention</td></tr>
+<tr><td>2037</td><td>body_thickness</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2046</td><td>body_thickness</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2047</td><td>body_thickness</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2047</td><td>body_thickness</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2057</td><td>entry_sides</td><td>categorical</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2062</td><td>entry_sides</td><td>categorical</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2063</td><td>entry_sides</td><td>categorical</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2063</td><td>entry_sides</td><td>categorical</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2072</td><td>particle_diameter</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2081</td><td>particle_diameter</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2082</td><td>particle_diameter</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2082</td><td>particle_diameter</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2091</td><td>specific_surface_area</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2100</td><td>specific_surface_area</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2101</td><td>specific_surface_area</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2101</td><td>specific_surface_area</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2110</td><td>body_diameter</td><td>quantity</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2119</td><td>body_diameter</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2120</td><td>body_diameter</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2120</td><td>body_diameter</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_cm0303080</td><td>mention</td></tr>
+<tr><td>2120</td><td>body_diameter</td><td>quantity</td><td>aliases (alias evidence line 4; string now in aliases)</td><td>diameter</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2180</td><td>nanoparticle_compact</td><td>structure</td><td>definition</td><td>definition text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2184</td><td>nanoparticle_compact</td><td>structure</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2184</td><td>nanoparticle_compact</td><td>structure</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2184</td><td>nanoparticle_compact</td><td>structure</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2194</td><td>residual_water</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>2203</td><td>surface_hydroxyl</td><td>mechanism</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>2212</td><td>desorption</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>2221</td><td>self_limiting_growth</td><td>mechanism</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>2257</td><td>metallic_zinc</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2347</td><td>feature_narrowing</td><td>mechanism</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>2439</td><td>gas_diffusion</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>2448</td><td>gas_generation</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2457</td><td>leak</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2466</td><td>reaction_diffusion</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2475</td><td>percolation</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2484</td><td>cracks</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2493</td><td>side_reaction</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2502</td><td>cvd_growth</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2511</td><td>xray_reabsorption</td><td>mechanism</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>2635</td><td>diffraction_angle</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993;10.1116_6.0003182</td><td>mat23;gre23</td><td>10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>2638</td><td>diffraction_angle</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993;10.1116_6.0003182</td><td>mat23;gre23</td><td>10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>2639</td><td>diffraction_angle</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>2639</td><td>diffraction_angle</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>2653</td><td>molar_mass</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1002_cvde.200390005;10.1039_d3cp05639b;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2656</td><td>molar_mass</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1002_cvde.200390005;10.1039_d3cp05639b;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2657</td><td>molar_mass</td><td>quantity</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1002_cvde.200390005;10.1039_d3cp05639b;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2718</td><td>molecule_diameter</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2721</td><td>molecule_diameter</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2722</td><td>molecule_diameter</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>2822</td><td>ga2s3</td><td>species</td><td>definition</td><td>definition text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2827</td><td>ga2s3</td><td>species</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2830</td><td>ga2s3</td><td>species</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2831</td><td>ga2s3</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2838</td><td>gasx</td><td>species</td><td>definition</td><td>definition text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2843</td><td>gasx</td><td>species</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2846</td><td>gasx</td><td>species</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2847</td><td>gasx</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2859</td><td>ga2_nme2_6</td><td>species</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2862</td><td>ga2_nme2_6</td><td>species</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2863</td><td>ga2_nme2_6</td><td>species</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2876</td><td>giwaxs</td><td>method</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2879</td><td>giwaxs</td><td>method</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2880</td><td>giwaxs</td><td>method</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2893</td><td>uv_vis_spectroscopy</td><td>method</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2896</td><td>uv_vis_spectroscopy</td><td>method</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>2897</td><td>uv_vis_spectroscopy</td><td>method</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td></td><td>HO-only</td></tr>
+<tr><td>3218</td><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3221</td><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3222</td><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3236</td><td>effective_diffusion_coefficient</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3239</td><td>effective_diffusion_coefficient</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3240</td><td>effective_diffusion_coefficient</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3254</td><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3257</td><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3258</td><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d3cp05639b</td><td>mention</td></tr>
+<tr><td>3290</td><td>b_film</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3292</td><td>b_film</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3295</td><td>b_film</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3308</td><td>wall_temperature</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>3310</td><td>wall_temperature</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>3313</td><td>wall_temperature</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1021_acs.chemmater.2c01154</td><td>mention</td></tr>
+<tr><td>3326</td><td>wavelength_range</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>3328</td><td>wavelength_range</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>3331</td><td>wavelength_range</td><td>quantity</td><td>evidence</td><td>evidence line 1 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1039_d0cp03358h</td><td>mention</td></tr>
+<tr><td>3344</td><td>base_pressure</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1021_acs.chemmater.2c01154;10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>3349</td><td>base_pressure</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1116_6.0002993</td><td>mat23</td><td>10.1021_acs.chemmater.2c01154;10.1116_6.0002804</td><td>mention</td></tr>
+<tr><td>3363</td><td>p_d</td><td>quantity</td><td>citation</td><td>citation text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3365</td><td>p_d</td><td>quantity</td><td>deviation.reason</td><td>deviation.reason text</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3368</td><td>p_d</td><td>quantity</td><td>evidence</td><td>evidence line 2 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3368</td><td>p_d</td><td>quantity</td><td>evidence</td><td>evidence line 3 (text not printed)</td><td>10.1039_d1cp04758b</td><td>yim22</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>mention</td></tr>
+<tr><td>3404</td><td>step</td><td>qualifier</td><td>log</td><td>log text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;review Cremers;review Popov</td><td>mention</td></tr>
+<tr><td>3412</td><td>level</td><td>qualifier</td><td>log</td><td>log text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1039_d0cp03358h;review Cremers</td><td>mention</td></tr>
+<tr><td>3415</td><td>kind</td><td>qualifier</td><td>evidence</td><td>evidence text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>3415</td><td>kind</td><td>qualifier</td><td>evidence</td><td>evidence text</td><td>10.1116_6.0003182</td><td>gre23</td><td></td><td>HO-only</td></tr>
+<tr><td>3560</td><td>proposal 4</td><td>proposals</td><td>decision_reason</td><td>decision_reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>review Cremers</td><td>mention</td></tr>
+<tr><td>3565</td><td>proposal 5</td><td>proposals</td><td>decision_reason</td><td>decision_reason text</td><td>10.1116_6.0003182</td><td>gre23</td><td>10.1021_acs.chemmater.2c01154;10.1039_d0cp03358h;review Cremers</td><td>mention</td></tr>
+</table>
+<h2>H2. Entries whose existence rests on held-out only, and what references them</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H2_entries.csv</p>
+<table><tr><th>id</th><th>kind</th><th>origin</th><th>evidence_lines</th><th>held_out_pids</th><th>aliases</th><th>symbols</th><th>referenced_by</th></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>transform moles_from_mass_gain (input); transform coating_mass_fraction (input); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row mass_gain (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>moles_deposited</td><td>quantity</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>transform moles_deposited (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row moles_deposited (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>moles_from_mass_gain</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>transform moles_from_mass_gain (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row moles_from_mass_gain (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>1</td><td>1</td><td>transform moles_deposited (input); family growth_amount (7 members; 6 after removal); hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row deposited_moles_per_cycle (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>coating_mass_fraction</td><td>quantity</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>transform coating_mass_fraction (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row coating_mass_fraction (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>shell_volume_fraction</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>transform shell_volume_fraction (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row shell_volume_fraction (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>gas_moles_per_cycle</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>1</td><td>1</td><td>hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row gas_moles_per_cycle (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>1</td><td>3</td><td>hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row reaction_stoichiometry (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>2</td><td>2</td><td>hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row pressure_rise (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>3</td><td>0</td><td>hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row pressure_rate (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>2</td><td>1</td><td>hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row time_to_maximum (new_entry); external_ids.csv row (quantity)</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>2</td><td>2</td><td>transform shell_volume_fraction (input); hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; pilot_map.csv row porosity (new_entry); external_ids.csv row (quantity); 1 dev gold cause rows in hei24; 2 dev gold quantity rows in hei24</td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>4</td><td>0</td><td>family composition (3 members; 2 after removal); hierarchy leaf film_properties (18 members; 17 after); external_ids.csv row (quantity)</td></tr>
+<tr><td>dez</td><td>species</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>5</td><td>0</td><td>external_ids.csv row (species); 28 dev gold qualifier species= rows in ela03; 8 dev gold value_text rows in ela03</td></tr>
+<tr><td>zno</td><td>species</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>3</td><td>0</td><td>pilot_map.csv row ZnO (alias); external_ids.csv row (species); 8 dev gold value_text rows in ela03</td></tr>
+<tr><td>zn</td><td>species</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>4</td><td>0</td><td>external_ids.csv row (species)</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>3</td><td>0</td><td>transform body_thickness (input); hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; vocabularies.categorical_conditions; 1 dev gold quantity rows in ela03</td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>3</td><td>1</td><td>hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; external_ids.csv row (quantity)</td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>extension</td><td>2</td><td>10.1116_6.0003182</td><td>4</td><td>0</td><td>hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; external_ids.csv row (quantity); 3 dev gold cause rows in hei24; 3 dev gold quantity rows in hei24</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>extension</td><td>3</td><td>10.1116_6.0003182</td><td>5</td><td>0</td><td>pilot_map.csv row porous (alias); vocabularies.structure_class</td></tr>
+<tr><td>metallic_zinc</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>1 compiled effect rows in mat22</td></tr>
+<tr><td>gas_generation</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>nothing</td></tr>
+<tr><td>leak</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>nothing</td></tr>
+<tr><td>reaction_diffusion</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>4 compiled cause rows in yli18</td></tr>
+<tr><td>percolation</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>nothing</td></tr>
+<tr><td>cracks</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>nothing</td></tr>
+<tr><td>side_reaction</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>nothing</td></tr>
+<tr><td>cvd_growth</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>2</td><td>0</td><td>1 dev gold cause rows in zou23</td></tr>
+<tr><td>xray_reabsorption</td><td>mechanism</td><td>extension</td><td>1</td><td>10.1116_6.0003182</td><td>1</td><td>0</td><td>nothing</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>extension</td><td>1</td><td>10.1116_6.0002993</td><td>3</td><td>0</td><td>external_ids.csv row (species)</td></tr>
+<tr><td>gasx</td><td>species</td><td>extension</td><td>1</td><td>10.1116_6.0002993</td><td>2</td><td>0</td><td>external_ids.csv row (species)</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>extension</td><td>1</td><td>10.1116_6.0002993</td><td>3</td><td>0</td><td>external_ids.csv row (species)</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>extension</td><td>1</td><td>10.1116_6.0002993</td><td>2</td><td>0</td><td>nothing</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>extension</td><td>1</td><td>10.1116_6.0002993</td><td>4</td><td>0</td><td>nothing</td></tr>
+</table>
+<h2>H2. Held-out-only evidence but kept by a base or a dev symbol</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H2_kept_by_base_or_dev_symbol.csv</p>
+<table><tr><th>id</th><th>kind</th><th>origin</th><th>base_source</th><th>dev_symbols</th></tr>
+<tr><td>film_density</td><td>quantity</td><td>base</td><td>schema_miner</td><td></td></tr>
+</table>
+<h2>H2. Hierarchy nodes, structure classes and qualifiers citing a held-out paper</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H2_nodes.csv</p>
+<table><tr><th>id</th><th>kind</th><th>held_out</th><th>other_sources</th><th>rests_on_held_out_only</th><th>holds</th></tr>
+<tr><td>reaction_monitoring</td><td>hierarchy node</td><td>gre23</td><td></td><td>yes</td><td>6 entries: deposited_moles_per_cycle, gas_moles_per_cycle, reaction_stoichiometry, pressure_rise, pressure_rate, time_to_maximum</td></tr>
+<tr><td>porous_body</td><td>structure class</td><td>gre23</td><td>review Cremers</td><td>no</td><td>3 entries: porous_sphere, porous_slab, porous_cylinder</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure class</td><td>gre23</td><td>review Cremers</td><td>no</td><td>1 entries: nanoparticle_compact</td></tr>
+<tr><td>aerogel_monolith</td><td>structure class</td><td>gre23</td><td>review Cremers</td><td>no</td><td>0 entries: </td></tr>
+<tr><td>step</td><td>qualifier</td><td>gre23</td><td>mat22;review Cremers;review Popov</td><td>evidence lines: mixed or none</td><td>values: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none</td></tr>
+<tr><td>level</td><td>qualifier</td><td>gre23</td><td>review Cremers;yim20</td><td>evidence lines: mixed or none</td><td>values: 50%, 80%, front_start, front_end, maximum</td></tr>
+<tr><td>kind</td><td>qualifier</td><td>gre23</td><td></td><td>evidence lines: held-out only</td><td>values: set_point, measured, default, option, target, estimated</td></tr>
+</table>
+<h2>H3. units.yaml</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H3_units.csv</p>
+<table><tr><th>line</th><th>near_symbol</th><th>where</th><th>pids</th><th>dev_or_review</th><th>only_held_out</th></tr>
+<tr><td>96</td><td>1/mbar</td><td>comment</td><td>10.1039_d1cp04758b</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td></td><td>MPa</td><td>P142b removal check (P142b removed MPa, pressure, and L, volume: the litre)</td><td></td><td></td><td>not in units.yaml (removed)</td></tr>
+<tr><td></td><td>L</td><td>P142b removal check (P142b removed MPa, pressure, and L, volume: the litre)</td><td></td><td></td><td>in units.yaml as the symbol of a row of dimension exposure (the Langmuir, not the litre P142b removed); units.yaml rows carry no source field</td></tr>
+</table>
+<h2>H4. never.csv, external_ids.csv, pilot_map.csv</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H4_tables.csv</p>
+<table><tr><th>file</th><th>row</th><th>key</th><th>column</th><th>value</th><th>pids</th></tr>
+<tr><td>external_ids.csv</td><td>12</td><td>coating_mass_fraction</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>17</td><td>deposited_moles_per_cycle</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>36</td><td>gas_moles_per_cycle</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>40</td><td>mass_gain</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>45</td><td>moles_deposited</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>46</td><td>moles_from_mass_gain</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>52</td><td>phase_fraction</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>56</td><td>porosity</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>58</td><td>pressure_rate</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>59</td><td>pressure_rise</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>72</td><td>shell_volume_fraction</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>75</td><td>specific_surface_area</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>80</td><td>time_to_maximum</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>81</td><td>reaction_stoichiometry</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>82</td><td>particle_diameter</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>101</td><td>zno</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>103</td><td>zn</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>110</td><td>dez</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>118</td><td>ga2s3</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>119</td><td>gasx</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>external_ids.csv</td><td>120</td><td>ga2_nme2_6</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>10</td><td>coating_mass_fraction</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>15</td><td>cycle_time</td><td>note</td><td>note text</td><td>10.1116_6.0003182</td></tr>
+<tr><td>pilot_map.csv</td><td>17</td><td>deposited_moles_per_cycle</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>35</td><td>gas_moles_per_cycle</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>39</td><td>knudsen_number</td><td>note</td><td>note text</td><td>10.1116_6.0003182</td></tr>
+<tr><td>pilot_map.csv</td><td>41</td><td>mass_gain</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>43</td><td>mean_free_path</td><td>note</td><td>note text</td><td>10.1116_6.0003182</td></tr>
+<tr><td>pilot_map.csv</td><td>44</td><td>moles_deposited</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>45</td><td>moles_from_mass_gain</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>57</td><td>porosity</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>58</td><td>precursor_purity</td><td>note</td><td>note text</td><td>10.1116_6.0003182</td></tr>
+<tr><td>pilot_map.csv</td><td>59</td><td>pressure_rate</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>60</td><td>pressure_rise</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>66</td><td>reaction_stoichiometry</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>73</td><td>shell_volume_fraction</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>82</td><td>time_to_maximum</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>87</td><td>ZnO</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+<tr><td>pilot_map.csv</td><td>94</td><td>porous</td><td>id / entry_id</td><td>an H2 entry</td><td></td></tr>
+</table>
+<h2>H5. Generated outputs: counts</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H5_counts.csv</p>
+<table><tr><th>file</th><th>lines_with_a_held_out_pid</th><th>lines_with_an_HO_only_string</th><th>lines_with_an_H2_id</th></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>30</td><td>20</td><td>221</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>21</td><td>14</td><td>34</td></tr>
+</table>
+<h2>H5. Generated outputs: every line</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H5_generated.csv</p>
+<table><tr><th>file</th><th>line</th><th>held_out_pids</th><th>ho_only_strings</th><th>h2_ids</th></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>667</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>674</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>683</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>693</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>699</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>705</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>706</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>711</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>714</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>720</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>722</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>723</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>731</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>740</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>742</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>749</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>770</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>783</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>784</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>788</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>809</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>816</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>825</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>837</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>843</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>849</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>850</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>857</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>860</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>867</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>869</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>870</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>880</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>890</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>893</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>900</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>918</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>925</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>934</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>946</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>952</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>958</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>959</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>965</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>968</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>975</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>977</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>978</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>988</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>998</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1001</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1008</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1026</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1033</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1042</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1054</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1060</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1066</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1067</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1073</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1076</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1083</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1085</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1086</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1096</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1106</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1109</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1116</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1130</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1131</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1132</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1133</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1162</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1163</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1174</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1175</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1176</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1177</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1206</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1207</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1225</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1226</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1227</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1228</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1257</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1258</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1266</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1273</td><td></td><td></td><td>ga2s3; gasx; zn; zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1283</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1306</td><td></td><td></td><td>uv_vis_spectroscopy</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1316</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1320</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1329</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1331</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1333</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1334</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1339</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1340</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1341</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1342</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1344</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1349</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1354</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1364</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1387</td><td></td><td></td><td>uv_vis_spectroscopy</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1402</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1431</td><td></td><td></td><td>uv_vis_spectroscopy</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1451</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1457</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1463</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1469</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1628</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1634</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1641</td><td></td><td></td><td>ga2s3; gasx; zn; zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1646</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1659</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1671</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1673</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1674</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1675</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1676</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1678</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1679</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1684</td><td></td><td></td><td>cracks</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1685</td><td></td><td></td><td>cvd_growth</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1711</td><td></td><td></td><td>gas_generation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1720</td><td></td><td></td><td>leak</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1722</td><td></td><td></td><td>leak</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1726</td><td></td><td></td><td>metallic_zinc</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1735</td><td></td><td></td><td>percolation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1737</td><td></td><td></td><td>percolation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1748</td><td></td><td></td><td>reaction_diffusion</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1768</td><td></td><td></td><td>side_reaction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>1791</td><td></td><td></td><td>xray_reabsorption</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2159</td><td></td><td>Ga 2p3/2; S 2s</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2181</td><td></td><td>diameter</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2187</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2200</td><td></td><td>diameter</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2211</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2384</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2389</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2434</td><td></td><td></td><td>cracks</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2444</td><td></td><td></td><td>cracks</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2481</td><td></td><td>corundum grain size</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2482</td><td></td><td>ZnO (zincite) Crystallite size (nm)</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2483</td><td></td><td>Zn (metallic) Crystallite size (nm)</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2488</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2506</td><td></td><td></td><td>cvd_growth</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2616</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2621</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2709</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2714</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2883</td><td></td><td>C after sputtering</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2884</td><td></td><td>O after sputtering</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2955</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>2962</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3259</td><td></td><td>rho</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3389</td><td>10.1039_d1cp04758b</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3434</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3457</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3462</td><td>10.1116_6.0002993</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3468</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3525</td><td></td><td></td><td>gas_generation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3547</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3552</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3594</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3600</td><td>10.1116_6.0002993</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3605</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3617</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3628</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3985</td><td>10.1039_d1cp04758b</td><td>c</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>3986</td><td>10.1039_d1cp04758b</td><td>c_ext</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4060</td><td></td><td></td><td>leak</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4070</td><td></td><td></td><td>leak</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4105</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4195</td><td></td><td></td><td>metallic_zinc</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4377</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4383</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4400</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4406</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4489</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4495</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4764</td><td>10.1039_d1cp04758b</td><td>p_A0</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4765</td><td>10.1039_d1cp04758b</td><td>p_i</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4769</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4775</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4820</td><td></td><td></td><td>percolation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4830</td><td></td><td></td><td>percolation</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4888</td><td></td><td>ZnO (zincite) Wt. %</td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>4894</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5207</td><td></td><td>Final porosity, φ_f (%)</td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5217</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5218</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5323</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5341</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5346</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5364</td><td></td><td>δp maximum</td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5369</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5392</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5502</td><td>10.1039_d1cp04758b</td><td>t_1</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5666</td><td></td><td></td><td>reaction_diffusion</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5689</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5694</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>5710</td><td>10.1116_6.0003182</td><td>ȳ (printed ν̄ in the text layer)</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6121</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6212</td><td></td><td></td><td>side_reaction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6240</td><td></td><td>Normalized X-ray counts (Zn)</td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6351</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6357</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6803</td><td></td><td>time to δp maximum</td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6808</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>6982</td><td></td><td></td><td>uv_vis_spectroscopy</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7118</td><td></td><td></td><td>xray_reabsorption</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7235</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7240</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7257</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7347</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7350</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7351</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7352</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7364</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7368</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7371</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7372</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7373</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7379</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7382</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7383</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7384</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7395</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7398</td><td></td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7399</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7400</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7411</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7422</td><td></td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7423</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7424</td><td></td><td></td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7448</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7460</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7467</td><td></td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7487</td><td></td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7496</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7499</td><td></td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7500</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7517</td><td></td><td></td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7518</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7520</td><td></td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7521</td><td></td><td></td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7530</td><td></td><td></td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7541</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7553</td><td></td><td></td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7592</td><td></td><td></td><td>deposited_moles_per_cycle; moles_deposited</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7594</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7595</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7596</td><td></td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7606</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7607</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7608</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7610</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7612</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/pilot/vocab.py</td><td>7629</td><td></td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>135</td><td>10.1039_d1cp04758b</td><td>t_1</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>144</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>145</td><td></td><td>rho</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>146</td><td>10.1039_d1cp04758b</td><td>p_A0; p_i</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>153</td><td>10.1039_d1cp04758b</td><td>c_ext; c</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>168</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>172</td><td></td><td></td><td>mass_gain</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>173</td><td>10.1116_6.0003182</td><td></td><td>moles_deposited</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>174</td><td>10.1116_6.0003182</td><td></td><td>moles_from_mass_gain</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>175</td><td>10.1116_6.0003182</td><td></td><td>deposited_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>177</td><td></td><td></td><td>coating_mass_fraction</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>178</td><td></td><td></td><td>shell_volume_fraction</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>180</td><td>10.1116_6.0003182</td><td></td><td>gas_moles_per_cycle</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>181</td><td>10.1116_6.0003182</td><td>ȳ (printed ν̄ in the text layer)</td><td>reaction_stoichiometry</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>182</td><td>10.1116_6.0003182</td><td>δp maximum</td><td>pressure_rise</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>183</td><td>10.1116_6.0003182</td><td></td><td>pressure_rate</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>184</td><td>10.1116_6.0003182</td><td>time to δp maximum</td><td>time_to_maximum</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>185</td><td></td><td>Final porosity, φ_f (%)</td><td>porosity</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>191</td><td></td><td>Ga 2p3/2; S 2s</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>192</td><td>10.1116_6.0003182</td><td>ZnO (zincite) Crystallite size (nm); Zn (metallic) Crystallite size (nm); corundum grain size</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>198</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>206</td><td></td><td>Normalized X-ray counts (Zn)</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>207</td><td></td><td>C after sputtering; O after sputtering</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>209</td><td>10.1116_6.0003182</td><td>ZnO (zincite) Wt. %</td><td>phase_fraction</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>210</td><td>10.1116_6.0003182</td><td></td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>211</td><td>10.1116_6.0003182</td><td></td><td>entry_sides</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>212</td><td>10.1116_6.0003182</td><td></td><td>particle_diameter</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>213</td><td>10.1116_6.0003182</td><td></td><td>specific_surface_area</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>214</td><td>10.1116_6.0003182</td><td>diameter</td><td></td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>286</td><td></td><td></td><td>dez</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>294</td><td></td><td></td><td>zno</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>296</td><td></td><td></td><td>zn</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>307</td><td></td><td></td><td>ga2s3</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>308</td><td></td><td></td><td>gasx</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>309</td><td></td><td></td><td>ga2_nme2_6</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>323</td><td></td><td></td><td>nanoparticle_compact</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>337</td><td></td><td></td><td>giwaxs</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>338</td><td></td><td></td><td>uv_vis_spectroscopy</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>380</td><td></td><td></td><td>metallic_zinc</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>401</td><td></td><td></td><td>gas_generation</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>402</td><td></td><td></td><td>leak</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>403</td><td></td><td></td><td>reaction_diffusion</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>404</td><td></td><td></td><td>percolation</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>405</td><td></td><td></td><td>cracks</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>406</td><td></td><td></td><td>side_reaction</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>407</td><td></td><td></td><td>cvd_growth</td></tr>
+<tr><td>psed_v2/kb/schema/CODEBOOK.md</td><td>408</td><td></td><td></td><td>xray_reabsorption</td></tr>
+</table>
+<h2>H6. What the alias audit and the P98 rules read (code)</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H6_code.txt</p>
+<pre>What the code read (code only; line numbers of the files as committed):
+ontology/alias_audit.py (P131b):
+  line 55  for p in sorted(glob.glob(str(V2 / &quot;kb&quot; / &quot;pilot&quot; / &quot;10.*.facts.csv&quot;))): every paper&#x27;s gold facts.csv, the 3 held-out ones included
+  line 65  texts = ... elements.texts(pid): the element texts of each of those papers, read at run time
+  line 127 every kb/pilot/*.facts.csv (labels of other[...] records, the stop rule)
+  no held-out filter in the file; its additions carry the evidence line &quot;alias &#x27;&lt;form&gt;&#x27;: &lt;key&gt; &lt;element&gt; (P131b alias audit)&quot;
+ontology/pending_decide.py (P98; deleted in P155, commit dcfcd65; read from dcfcd65^):
+  lines 38-40 PAPER_KEYS: all 12 papers, 10.1116_6.0003182 gre23, 10.1039_d1cp04758b yim22, 10.1116_6.0002993 mat23 included
+  lines 50, 99, 113 glob kb/pilot/*.facts.csv; line 61 glob kb/*.figures.json: every paper, held-out included
+ontology/merge_pending.py (P131b; deleted in P155): line 51 deviation.reason = &quot;P98 rule ..., papers &lt;papers&gt;; merged from pending.csv (P131b)&quot;
+</pre>
+<h2>H6. Aliases from held-out alias-evidence lines</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H6_alias_audit_aliases.csv</p>
+<table><tr><th>id</th><th>alias</th><th>keys</th><th>cls</th><th>field</th><th>marker</th></tr>
+<tr><td>pulse_time</td><td>t_1</td><td>yim22</td><td>HO-only</td><td>aliases (alias evidence line 9; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>film_density</td><td>rho</td><td>yim22</td><td>HO-only</td><td>aliases (alias evidence line 1; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>partial_pressure</td><td>p_A0</td><td>yim22</td><td>mixed</td><td>aliases (alias evidence line 8; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>partial_pressure</td><td>p_i</td><td>yim22</td><td>HO-only</td><td>aliases (alias evidence line 9; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c</td><td>yim22</td><td>mixed</td><td>aliases (alias evidence line 6; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c_ext</td><td>yim22</td><td>HO-only</td><td>aliases (alias evidence line 7; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>feature_width</td><td>H</td><td>yim22</td><td>mixed</td><td>aliases (alias evidence line 16; string now in evidence only (string in neither list))</td><td>P131b alias audit</td></tr>
+<tr><td>reaction_stoichiometry</td><td>ȳ (printed ν̄ in the text layer)</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 3; string now in symbols)</td><td>P131b alias audit</td></tr>
+<tr><td>pressure_rise</td><td>δp maximum</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>time_to_maximum</td><td>time to δp maximum</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>porosity</td><td>Final porosity, φ_f (%)</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>binding_energy</td><td>Ga 2p3/2</td><td>mat23</td><td>HO-only</td><td>aliases (alias evidence line 6; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>binding_energy</td><td>S 2s</td><td>mat23</td><td>HO-only</td><td>aliases (alias evidence line 7; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>crystallite_size</td><td>corundum grain size</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 4; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>crystallite_size</td><td>ZnO (zincite) Crystallite size (nm)</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 5; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>crystallite_size</td><td>Zn (metallic) Crystallite size (nm)</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 6; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>signal_intensity</td><td>Normalized X-ray counts (Zn)</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 9; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>element_fraction</td><td>C after sputtering</td><td>mat23</td><td>HO-only</td><td>aliases (alias evidence line 7; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>element_fraction</td><td>O after sputtering</td><td>mat23</td><td>HO-only</td><td>aliases (alias evidence line 8; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>phase_fraction</td><td>ZnO (zincite) Wt. %</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 3; string now in aliases)</td><td>P131b alias audit</td></tr>
+<tr><td>body_diameter</td><td>diameter</td><td>gre23</td><td>HO-only</td><td>aliases (alias evidence line 4; string now in aliases)</td><td>P131b alias audit</td></tr>
+</table>
+<h2>H6. Entries whose P98 deviation.reason names a held-out paper</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H6_p98_entries.csv</p>
+<table><tr><th>id</th><th>kind</th><th>held_out_in_reason</th><th>dev_in_reason</th><th>only_held_out</th></tr>
+<tr><td>diffraction_angle</td><td>quantity</td><td>mat23;gre23</td><td>zou23</td><td>no</td></tr>
+<tr><td>molar_mass</td><td>quantity</td><td>yim22</td><td>gor03;hei24;yli18</td><td>no</td></tr>
+<tr><td>molecule_diameter</td><td>quantity</td><td>yim22</td><td>yli18</td><td>no</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>mat23</td><td></td><td>yes</td></tr>
+<tr><td>gasx</td><td>species</td><td>mat23</td><td></td><td>yes</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>mat23</td><td></td><td>yes</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>mat23</td><td></td><td>yes</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>mat23</td><td></td><td>yes</td></tr>
+<tr><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>yim22</td><td>hei24</td><td>no</td></tr>
+<tr><td>effective_diffusion_coefficient</td><td>quantity</td><td>yim22</td><td>hei24</td><td>no</td></tr>
+<tr><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>yim22</td><td>hei24</td><td>no</td></tr>
+<tr><td>b_film</td><td>quantity</td><td>yim22</td><td>yim20;yli18</td><td>no</td></tr>
+<tr><td>wall_temperature</td><td>quantity</td><td>mat23</td><td>mat22</td><td>no</td></tr>
+<tr><td>wavelength_range</td><td>quantity</td><td>mat23</td><td>yim20</td><td>no</td></tr>
+<tr><td>p_d</td><td>quantity</td><td>yim22</td><td>yim20</td><td>no</td></tr>
+</table>
+<h2>H7. Totals per kind and field</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H7_totals.csv</p>
+<table><tr><th>kind</th><th>field</th><th>HO-only</th><th>mixed</th><th>mention</th><th>total</th></tr>
+<tr><td>categorical</td><td>definition</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>categorical</td><td>deviation.reason</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>categorical</td><td>evidence</td><td>2</td><td>0</td><td>3</td><td>5</td></tr>
+<tr><td>comment</td><td>comment</td><td>0</td><td>0</td><td>2</td><td>2</td></tr>
+<tr><td>hierarchy node</td><td>citation</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>mechanism</td><td>evidence</td><td>9</td><td>0</td><td>6</td><td>15</td></tr>
+<tr><td>method</td><td>citation</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+<tr><td>method</td><td>deviation.reason</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+<tr><td>method</td><td>evidence</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+<tr><td>proposals</td><td>decision_reason</td><td>0</td><td>0</td><td>2</td><td>2</td></tr>
+<tr><td>qualifier</td><td>evidence</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+<tr><td>qualifier</td><td>log</td><td>0</td><td>0</td><td>2</td><td>2</td></tr>
+<tr><td>quantity</td><td>aliases</td><td>18</td><td>3</td><td>0</td><td>21</td></tr>
+<tr><td>quantity</td><td>citation</td><td>0</td><td>0</td><td>11</td><td>11</td></tr>
+<tr><td>quantity</td><td>definition</td><td>11</td><td>0</td><td>5</td><td>16</td></tr>
+<tr><td>quantity</td><td>definitions.text</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>quantity</td><td>deviation.reason</td><td>2</td><td>0</td><td>14</td><td>16</td></tr>
+<tr><td>quantity</td><td>evidence</td><td>28</td><td>0</td><td>28</td><td>56</td></tr>
+<tr><td>quantity</td><td>symbols</td><td>6</td><td>1</td><td>0</td><td>7</td></tr>
+<tr><td>species</td><td>citation</td><td>3</td><td>0</td><td>0</td><td>3</td></tr>
+<tr><td>species</td><td>definition</td><td>4</td><td>0</td><td>0</td><td>4</td></tr>
+<tr><td>species</td><td>deviation.reason</td><td>3</td><td>0</td><td>0</td><td>3</td></tr>
+<tr><td>species</td><td>evidence</td><td>10</td><td>0</td><td>0</td><td>10</td></tr>
+<tr><td>structure</td><td>definition</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>structure</td><td>evidence</td><td>3</td><td>0</td><td>0</td><td>3</td></tr>
+<tr><td>structure class</td><td>citation</td><td>0</td><td>0</td><td>3</td><td>3</td></tr>
+</table>
+<h2>H7. Aliases and symbols that would disappear</h2><p>psed_v2/kb/reports/P157e_heldout_audit.H7_strings_that_would_go.csv</p>
+<table><tr><th>id</th><th>kind</th><th>what</th><th>string</th><th>reason</th></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>alias</td><td>mass gain</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>alias</td><td>Mass gain (%)</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>moles_deposited</td><td>quantity</td><td>alias</td><td>moles deposited</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>moles_from_mass_gain</td><td>quantity</td><td>alias</td><td>moles from mass gain</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>quantity</td><td>alias</td><td>solid deposited per cycle</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>coating_mass_fraction</td><td>quantity</td><td>alias</td><td>coating mass fraction</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>shell_volume_fraction</td><td>quantity</td><td>alias</td><td>coating volume fraction</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gas_moles_per_cycle</td><td>quantity</td><td>alias</td><td>gas released per cycle</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>alias</td><td>gas-to-solid ratio</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>alias</td><td>pressure rise</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>alias</td><td>δp maximum</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td>alias</td><td>TS</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td>alias</td><td>terminal slope</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td>alias</td><td>terminal pressure slope</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>alias</td><td>time to pressure maximum</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>alias</td><td>time to δp maximum</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>alias</td><td>porosity</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>alias</td><td>Final porosity, φ_f (%)</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>alias</td><td>wt%</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>alias</td><td>Wt. %</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>alias</td><td>weight percent</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>alias</td><td>ZnO (zincite) Wt. %</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>dez</td><td>species</td><td>alias</td><td>DEZ</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>dez</td><td>species</td><td>alias</td><td>diethylzinc</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>dez</td><td>species</td><td>alias</td><td>ZnEt2</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>dez</td><td>species</td><td>alias</td><td>Zn(C2H5)2</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>dez</td><td>species</td><td>alias</td><td>Et2Zn</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zno</td><td>species</td><td>alias</td><td>ZnO</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zno</td><td>species</td><td>alias</td><td>zincite</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zno</td><td>species</td><td>alias</td><td>zinc oxide</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zn</td><td>species</td><td>alias</td><td>metallic Zn</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zn</td><td>species</td><td>alias</td><td>Zn metal</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zn</td><td>species</td><td>alias</td><td>zinc metal</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>zn</td><td>species</td><td>alias</td><td>metallic zinc</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>alias</td><td>entry faces</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>alias</td><td>number of entry sides</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>entry_sides</td><td>categorical</td><td>alias</td><td>faces open to the reactant</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>alias</td><td>particle diameter</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>alias</td><td>NP diameter</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>alias</td><td>nanoparticle diameter</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>alias</td><td>specific surface area</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>alias</td><td>BET area</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>alias</td><td>BET specific surface area</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>alias</td><td>surface area per mass</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>alias</td><td>nanoparticle compact</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>alias</td><td>NPC</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>alias</td><td>Al2O3 nanoparticle compact</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>alias</td><td>nanoparticle compacts</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>nanoparticle_compact</td><td>structure</td><td>alias</td><td>NPCs</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>metallic_zinc</td><td>mechanism</td><td>alias</td><td>Zn deposition</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>metallic_zinc</td><td>mechanism</td><td>alias</td><td>metallic Zn deposition</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gas_generation</td><td>mechanism</td><td>alias</td><td>gas-producing processes</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gas_generation</td><td>mechanism</td><td>alias</td><td>ethane release</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>leak</td><td>mechanism</td><td>alias</td><td>leak-dominated</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>leak</td><td>mechanism</td><td>alias</td><td>leak rates</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_diffusion</td><td>mechanism</td><td>alias</td><td>reaction-diffusion</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_diffusion</td><td>mechanism</td><td>alias</td><td>diffusion-reaction</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>percolation</td><td>mechanism</td><td>alias</td><td>percolating network</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>cracks</td><td>mechanism</td><td>alias</td><td>cracking</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>side_reaction</td><td>mechanism</td><td>alias</td><td>non-self-limiting growth</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>cvd_growth</td><td>mechanism</td><td>alias</td><td>CVD</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>cvd_growth</td><td>mechanism</td><td>alias</td><td>gas-phase reaction</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>xray_reabsorption</td><td>mechanism</td><td>alias</td><td>reabsorption</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>alias</td><td>Ga2S3</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>alias</td><td>gallium sulfide</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2s3</td><td>species</td><td>alias</td><td>gallium(III) sulfide</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gasx</td><td>species</td><td>alias</td><td>GaSx</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gasx</td><td>species</td><td>alias</td><td>amorphous gallium sulfide</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>alias</td><td>Ga2(NMe2)6</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>alias</td><td>hexakis(dimethylamido)digallium</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td>alias</td><td>hexakis(dimethyl amido)digallium</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>alias</td><td>GIWAXS</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>giwaxs</td><td>method</td><td>alias</td><td>grazing incidence wide-angle x-ray scattering</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>alias</td><td>UV-vis</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>alias</td><td>UV-vis transmission</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>alias</td><td>transmission measurement</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>uv_vis_spectroscopy</td><td>method</td><td>alias</td><td>spectrophotometry</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>quantity</td><td>symbol</td><td>Δn_s</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>gas_moles_per_cycle</td><td>quantity</td><td>symbol</td><td>Δn_g</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>symbol</td><td>ȳ</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>symbol</td><td>x</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>symbol</td><td>ȳ (printed ν̄ in the text layer)</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>symbol</td><td>δp</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>symbol</td><td>δp_max</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>symbol</td><td>t_max</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>symbol</td><td>φ_i</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>porosity</td><td>quantity</td><td>symbol</td><td>φ_f</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>symbol</td><td>d_NP</td><td>its entry rests on held-out only (H2)</td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>symbol</td><td>t_1</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>alias</td><td>t_1</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>film_density</td><td>quantity</td><td>alias</td><td>rho</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>symbol</td><td>p_A0</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>symbol</td><td>p_i</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>alias</td><td>p_i</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>quantity</td><td>symbol</td><td>c</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>quantity</td><td>symbol</td><td>c_ext</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>quantity</td><td>alias</td><td>c_ext</td><td>its own evidence is held-out only (yim22)</td></tr>
+<tr><td>binding_energy</td><td>quantity</td><td>alias</td><td>Ga 2p3/2</td><td>its own evidence is held-out only (mat23)</td></tr>
+<tr><td>binding_energy</td><td>quantity</td><td>alias</td><td>S 2s</td><td>its own evidence is held-out only (mat23)</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>alias</td><td>corundum grain size</td><td>its own evidence is held-out only (gre23)</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>alias</td><td>ZnO (zincite) Crystallite size (nm)</td><td>its own evidence is held-out only (gre23)</td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>alias</td><td>Zn (metallic) Crystallite size (nm)</td><td>its own evidence is held-out only (gre23)</td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td>alias</td><td>Normalized X-ray counts (Zn)</td><td>its own evidence is held-out only (gre23)</td></tr>
+<tr><td>element_fraction</td><td>quantity</td><td>alias</td><td>C after sputtering</td><td>its own evidence is held-out only (mat23)</td></tr>
+<tr><td>element_fraction</td><td>quantity</td><td>alias</td><td>O after sputtering</td><td>its own evidence is held-out only (mat23)</td></tr>
+<tr><td>body_diameter</td><td>quantity</td><td>alias</td><td>diameter</td><td>its own evidence is held-out only (gre23)</td></tr>
+</table>
+<h2>Found on the way: P157d symbol papers (alias evidence lines naming a held-out and a dev paper)</h2><p>psed_v2/kb/reports/P157e_heldout_audit.P157d_symbol_papers.csv</p>
+<table><tr><th>id</th><th>string</th><th>evidence_line</th><th>papers_in_line</th><th>symbols_now</th><th>in_aliases</th></tr>
+<tr><td>partial_pressure</td><td>p_A0</td><td>8</td><td>yim22;yli18</td><td>p_A0 (yim22)</td><td>no</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c</td><td>6</td><td>yim22;yli18</td><td>c (yim22)</td><td>no</td></tr>
+<tr><td>feature_width</td><td>H</td><td>16</td><td>yim22;yli18</td><td>not a symbol</td><td>no</td></tr>
+</table>
+</body></html>

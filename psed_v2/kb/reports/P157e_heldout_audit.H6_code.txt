@@ -1,0 +1,10 @@
+What the code read (code only; line numbers of the files as committed):
+ontology/alias_audit.py (P131b):
+  line 55  for p in sorted(glob.glob(str(V2 / "kb" / "pilot" / "10.*.facts.csv"))): every paper's gold facts.csv, the 3 held-out ones included
+  line 65  texts = ... elements.texts(pid): the element texts of each of those papers, read at run time
+  line 127 every kb/pilot/*.facts.csv (labels of other[...] records, the stop rule)
+  no held-out filter in the file; its additions carry the evidence line "alias '<form>': <key> <element> (P131b alias audit)"
+ontology/pending_decide.py (P98; deleted in P155, commit dcfcd65; read from dcfcd65^):
+  lines 38-40 PAPER_KEYS: all 12 papers, 10.1116_6.0003182 gre23, 10.1039_d1cp04758b yim22, 10.1116_6.0002993 mat23 included
+  lines 50, 99, 113 glob kb/pilot/*.facts.csv; line 61 glob kb/*.figures.json: every paper, held-out included
+ontology/merge_pending.py (P131b; deleted in P155): line 51 deviation.reason = "P98 rule ..., papers <papers>; merged from pending.csv (P131b)"

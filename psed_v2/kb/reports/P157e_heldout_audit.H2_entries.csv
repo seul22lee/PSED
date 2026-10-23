@@ -1,0 +1,35 @@
+id,kind,origin,evidence_lines,held_out_pids,aliases,symbols,referenced_by
+mass_gain,quantity,extension,2,10.1116_6.0003182,2,0,transform moles_from_mass_gain (input); transform coating_mass_fraction (input); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row mass_gain (new_entry); external_ids.csv row (quantity)
+moles_deposited,quantity,extension,1,10.1116_6.0003182,1,0,transform moles_deposited (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row moles_deposited (new_entry); external_ids.csv row (quantity)
+moles_from_mass_gain,quantity,extension,2,10.1116_6.0003182,1,0,transform moles_from_mass_gain (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row moles_from_mass_gain (new_entry); external_ids.csv row (quantity)
+deposited_moles_per_cycle,quantity,extension,2,10.1116_6.0003182,1,1,transform moles_deposited (input); family growth_amount (7 members; 6 after removal); hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row deposited_moles_per_cycle (new_entry); external_ids.csv row (quantity)
+coating_mass_fraction,quantity,extension,1,10.1116_6.0003182,1,0,transform coating_mass_fraction (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row coating_mass_fraction (new_entry); external_ids.csv row (quantity)
+shell_volume_fraction,quantity,extension,2,10.1116_6.0003182,1,0,transform shell_volume_fraction (output); family growth_amount (7 members; 6 after removal); hierarchy leaf growth (11 members; 10 after); pilot_map.csv row shell_volume_fraction (new_entry); external_ids.csv row (quantity)
+gas_moles_per_cycle,quantity,extension,2,10.1116_6.0003182,1,1,hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row gas_moles_per_cycle (new_entry); external_ids.csv row (quantity)
+reaction_stoichiometry,quantity,extension,3,10.1116_6.0003182,1,3,hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row reaction_stoichiometry (new_entry); external_ids.csv row (quantity)
+pressure_rise,quantity,extension,3,10.1116_6.0003182,2,2,hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row pressure_rise (new_entry); external_ids.csv row (quantity)
+pressure_rate,quantity,extension,2,10.1116_6.0003182,3,0,hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row pressure_rate (new_entry); external_ids.csv row (quantity)
+time_to_maximum,quantity,extension,3,10.1116_6.0003182,2,1,hierarchy leaf reaction_monitoring (6 members; 5 after); pilot_map.csv row time_to_maximum (new_entry); external_ids.csv row (quantity)
+porosity,quantity,extension,3,10.1116_6.0003182,2,2,transform shell_volume_fraction (input); hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; pilot_map.csv row porosity (new_entry); external_ids.csv row (quantity); 1 dev gold cause rows in hei24; 2 dev gold quantity rows in hei24
+phase_fraction,quantity,extension,3,10.1116_6.0003182,4,0,family composition (3 members; 2 after removal); hierarchy leaf film_properties (18 members; 17 after); external_ids.csv row (quantity)
+dez,species,extension,2,10.1116_6.0003182,5,0,external_ids.csv row (species); 28 dev gold qualifier species= rows in ela03; 8 dev gold value_text rows in ela03
+zno,species,extension,3,10.1116_6.0003182,3,0,pilot_map.csv row ZnO (alias); external_ids.csv row (species); 8 dev gold value_text rows in ela03
+zn,species,extension,2,10.1116_6.0003182,4,0,external_ids.csv row (species)
+entry_sides,categorical,extension,2,10.1116_6.0003182,3,0,transform body_thickness (input); hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; vocabularies.categorical_conditions; 1 dev gold quantity rows in ela03
+particle_diameter,quantity,extension,2,10.1116_6.0003182,3,1,hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; external_ids.csv row (quantity)
+specific_surface_area,quantity,extension,2,10.1116_6.0003182,4,0,hierarchy leaf test_structure (22 members; 21 after); structure class porous_body slot; structure class nanoparticle_compact slot; structure class aerogel_monolith slot; structure class nanopore_membrane slot; external_ids.csv row (quantity); 3 dev gold cause rows in hei24; 3 dev gold quantity rows in hei24
+nanoparticle_compact,structure,extension,3,10.1116_6.0003182,5,0,pilot_map.csv row porous (alias); vocabularies.structure_class
+metallic_zinc,mechanism,extension,1,10.1116_6.0003182,2,0,1 compiled effect rows in mat22
+gas_generation,mechanism,extension,1,10.1116_6.0003182,2,0,nothing
+leak,mechanism,extension,1,10.1116_6.0003182,2,0,nothing
+reaction_diffusion,mechanism,extension,1,10.1116_6.0003182,2,0,4 compiled cause rows in yli18
+percolation,mechanism,extension,1,10.1116_6.0003182,1,0,nothing
+cracks,mechanism,extension,1,10.1116_6.0003182,1,0,nothing
+side_reaction,mechanism,extension,1,10.1116_6.0003182,1,0,nothing
+cvd_growth,mechanism,extension,1,10.1116_6.0003182,2,0,1 dev gold cause rows in zou23
+xray_reabsorption,mechanism,extension,1,10.1116_6.0003182,1,0,nothing
+ga2s3,species,extension,1,10.1116_6.0002993,3,0,external_ids.csv row (species)
+gasx,species,extension,1,10.1116_6.0002993,2,0,external_ids.csv row (species)
+ga2_nme2_6,species,extension,1,10.1116_6.0002993,3,0,external_ids.csv row (species)
+giwaxs,method,extension,1,10.1116_6.0002993,2,0,nothing
+uv_vis_spectroscopy,method,extension,1,10.1116_6.0002993,4,0,nothing
