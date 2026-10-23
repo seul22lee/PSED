@@ -1,0 +1,16 @@
+check,result,detail
+1. every schema-miner leaf path appears exactly once,pass,30 paths
+2. every entry has a definition; review-defined terms cite the review,pass,
+3. every extension entry has gold evidence,pass,
+4. no alias in two entries; ambiguous words only in ambiguous_aliases,pass,
+5. extension quantities (concepts) <= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes,pass,56 extension quantities
+6. transform inputs/outputs and model parameters are existing ids; ids unique,pass,
+"7. no species, structure or process taken from a review table (each has gold evidence)",pass,
+"8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty",pass,"16 nodes, 8 top-level, 13 leaves, depth 2"
+9. every categorical has values_from; every species has kind; no value alias under two values,pass,186 value aliases
+10. no orphan: every entry and hierarchy node has at least one edge,pass,all connected; only as a qualifier value: ['o_atom']
+"11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals",pass,3 families: conformality (5); growth_amount (7); composition (3)
+12. a 'never an entry' label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry's alias,pass,"attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity"
+"13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots",pass,"10 classes, 10 slot entries, 12 structure instances"
+"14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted",pass,49 rows: undecided 49
+"15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason",pass,"composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper's own measure: re…)"

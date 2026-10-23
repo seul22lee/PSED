@@ -1,0 +1,8 @@
+mat22 s5.p1: the pass-1 record is {type: setting, quantity: plasma_power, label_as_printed: null, value: 13.56, unit: MHz, about: paper}.
+compile.py step e (Run.units): unit_symbol('MHz') is None (MHz is not in units.yaml; plasma_power's unit is W, dimension power), so the record
+is kept with the unit as printed and an unmapped row field=unit is written with label_as_printed = the record's label_as_printed, which is null:
+hence no label (compile.py not changed in this unit). The value is an RF frequency filed under plasma_power.
+Rule c (positioning_uncertainty): rule_c_trace.csv lists the condition columns that fired. The comparison is the whole normalized label
+(norm(label) in the set of normalized condition labels), not a substring: 'positioning uncertainty' == 'positioning uncertainty'. A run condition
+really names it: compile placed the record s16.p7 (other[positioning uncertainty], 2 µm) as a setting on the 16 specimens of yim20
+(experiments.csv setting:other:positioning uncertainty), so the condition is the candidate's own record. No change to the rule.

@@ -1,0 +1,10 @@
+Expected matches the directive names, under the normalization as specified (no fuzzier):
+- acceleration voltage (mat22 s5.p14): 'acceleration voltage' vs 'accelerating voltage': not equal
+- mean_free_path (the entry): 'meanfreepath' vs 'mean free path of tma': not equal
+  acceleration / accelerating differ beyond a trailing s; 'of TMA' stays in the never label. Neither matches; acceleration_voltage stays a candidate,
+  'Mean free path of TMA' stays a never label (it does not supersede). Matching them needs a stem rule or a word drop: not added (the user decides).
+- Superseded by an attribute entry: no (an attribute entry is the pilot's way of storing a never label, check 12): Intensity -> signal_intensity,
+  q -> saturation_density, Spot size -> probe_resolution, Slope ... -> front_slope, Linear fitting residual R2 -> fit_r2, Pillar layout ->
+  pillar_layout, magnification -> objective_magnification stay never labels.
+- The trailing-s rule turns the symbol xs ('xt; xs [µm]') into x, an alias of distance and reaction_stoichiometry: superseded by accident; xs
+  suppresses nothing now (no round-1 row is labelled xs: yli18 tabu1.r9c2 is labelled with its meaning). Reported, not worked around.

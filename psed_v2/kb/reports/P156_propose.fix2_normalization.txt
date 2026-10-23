@@ -1,0 +1,60 @@
+grow.py (P156), the never match: a never.csv label is split into parts (split_parts), every part normalized (norm_strict) and
+compared, equal or not, with the normalized label of each compiled row and symbol-table meaning (norm_strict too). A part that names a live
+entry that is not an attribute is superseded and suppresses nothing (never_index).
+
+def strip_latex(s):
+    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed."""
+    return re.sub(r"[{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+
+
+def strip_trailing_units(s):
+    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty."""
+    s = str(s).strip()
+    while True:
+        t = re.sub(r"\s*(\[[^\[\]]*\]|\([^()]*\))\s*$", "", s)
+        if t == s or not t.strip():
+            return s
+        s = t
+
+
+def norm_strict(label):
+    """FIX 2b, both sides of a never match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing 's' dropped."""
+    s = " ".join(strip_latex(strip_trailing_units(label)).casefold().split())
+    return s[:-1] if len(s) > 1 and s.endswith("s") else s
+
+
+def split_parts(label):
+    """FIX 2a: a never label that holds several labels, split at ';' outside brackets ('MA; MB [kg mol-1]' -> 'MA', 'MB [kg mol-1]')."""
+    parts, depth, cur = [], 0, ""
+    for ch in str(label):
+        depth += ch in "([{"
+        depth = max(0, depth - (ch in ")]}"))
+        if ch == ";" and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    return [p.strip() for p in parts + [cur] if p.strip()]
+
+
+def never_index(entries):
+    """({normalized part: never label}, superseded): every part of every never.csv label, normalized (norm_strict), except the parts that name
+    a live entry - its id, name, label or an alias, normalized the same way (FIX 2c) - that is not an attribute: an attribute entry is how
+    the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label, part,
+    entry ids)] and suppress nothing. never.csv itself is not changed."""
+    names = defaultdict(list)
+    for e in entries:
+        if e.get("attribute"):
+            continue
+        for t in [e["id"], e.get("name", ""), e.get("label", "")] + [str(a) for a in e.get("aliases") or []]:
+            if str(t).strip() and e["id"] not in names[norm_strict(t)]:
+                names[norm_strict(t)].append(e["id"])
+    parts, sup = {}, []
+    for r in X.never_rows():
+        for p in split_parts(r["label"]):
+            k = norm_strict(p)
+            if names.get(k):
+                sup.append((r["label"], p, ", ".join(names[k])))
+            elif k:
+                parts.setdefault(k, r["label"])
+    return parts, sup

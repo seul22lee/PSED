@@ -1,0 +1,22 @@
+P156: three root-cause fixes in grow.py propose, then round 1 proposed again. 0 calls. Not applied.
+
+Candidates: 53 -> 47 (count; ids only in P155 / only in P156). 11 P155 candidates changed (before_after): 9 symbols joined their meaning.
+FIX 1 symbol-table rows: the P143 layout whose definition names a symbol table is not_units, roles (symbol, meaning, value), no unit
+  column (fix1_rule). A row groups by (paper, table row, symbol): yli18 tabu1 holds two symbol / meaning groups per row, so the row alone
+  would merge two quantities. 29 symbol-table rows (fix1_table_rows); the meaning gives label, id and definition, the symbol is an alias.
+  8 equation / paragraph rows joined by their symbol (z_A, v_A, h, g twice, f_ads, f_des, Q: fix1_merges); the word rule ('rate of
+  adsorption' = 'Adsorption rate', articles and 'of' dropped, order ignored) added none beyond them. yim20 tabu1 (also a symbol table)
+  had ten cells with no printed label: P155 skipped them silently; they are five candidates now. Symbols R and F label two candidates
+  each, from two papers: accepting both of a pair would put one alias in two entries (check 4).
+FIX 2 never matching: labels split at ';' outside brackets, both sides normalized by norm_strict (fix2_normalization; the 45 labels
+  before / after: fix2_never_labels). New match: yim20 fig10.cap b_{\text{TMA}} <- 'bfilm; bTMA'. No longer matched: Q (yli18 eq14, yim20
+  tabu2.r15c0), which P155 matched to 'q [m-2]' by casefold only; it joins collision_rate_at_unit_pressure (fix2_matches). 15 parts
+  superseded by a live, non-attribute entry (b_film, p_d, knudsen_number, film_density, molar_mass, molecule_diameter, reactor,
+  entrance_nanostep, ...), listed in ontology.html's never section; the trailing-s rule supersedes xs by accident (xs -> x = distance).
+  Expected but not matched under the rule as specified: acceleration voltage vs Accelerating voltage, Mean free path of TMA vs
+  mean_free_path (fix2_expected) - no fuzzier rule added.
+FIX 3: one value without a quantity (mat22 s5.p1, MHz), in this report and in ontology.html's unmapped section, not in pending.csv; cause:
+  the pass-1 record's label_as_printed is null and MHz is not in units.yaml (fix3_cause). Rule c: positioning_uncertainty matches the whole
+  normalized label of a real run condition (its own record, placed on yim20's 16 specimens): no fix (rule_c_trace).
+propose accepts a proposed round now (rebuilds its undecided rows). export.py --check: 15 of 15 pass (checks). decide.html round trip still
+byte for byte (run).

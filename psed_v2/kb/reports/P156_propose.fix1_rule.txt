@@ -1,0 +1,15 @@
+Layout: P143 'not_units' = 'The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values).' (ontology/export.py P143_TABLE_LAYOUTS).
+Its definition names the columns of a symbol table: ['symbol', 'meaning', 'value']; there is no unit column, so a candidate's unit is its records' unit.
+Which cell plays which role is read from the records, not from the position: yli18 tabu1 holds two symbol / meaning groups per row (cells c0 and c2
+are different quantities: tabu1.r4c0 symbol D, tabu1.r4c2 symbol v), so a table row groups by (paper, table row, symbol); in the group the cell
+whose text is the symbol is the symbol column, the other cell the meaning column. A row's symbol is the pass-1 record's symbol field.
+A row of a symbol-table layout is a record of a not_units table that carries a symbol: yli18 tabu1, yim20 tabu1 and yim20 tabu2 (yim20 tab2 and
+mat22 tab2, also not_units, have no unmapped rows). yim20 tabu1's ten cells have no printed label (the meaning is only in the record's quote,
+'Distance between pillars (m)'): P155 skipped them silently (a row with no label was not a candidate and not reported); they are five candidates now.
+A unit row of a cell (field unit, no symbol of its own) takes the symbol of the quantity row of the same cell and label.
+Equation / symbol-table merge: a row whose label is its symbol joins the one symbol-table row of its paper with that symbol (8 rows);
+else a row whose label (a symbol's: its definition) has the words of one meaning, articles and 'of' dropped and word order ignored, joins it
+(0 rows: every equation row of round 1 joined by its symbol first). Check of the rule on the example: words('rate of adsorption')
+= ['adsorption', 'rate'], words('Adsorption rate') = ['adsorption', 'rate']: equal. Ambiguous symbols (two rows): 0.
+Symbols are local to a paper: R is yli18's gas constant and yim20's diffusion resistance of a channel, F yli18's gas flow and yim20's flux; both
+candidates carry the symbol as an alias, so accepting both of a pair would put one alias in two entries (check 4 would fail).

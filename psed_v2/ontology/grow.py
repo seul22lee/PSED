@@ -139,25 +139,225 @@ def nearest(label, entries):
 
 
 def unmapped_rows(pid):
-    """A paper's compiled unmapped rows as (label, kind, unit, element, quote): the label as printed, or for a unit row without one the unit
-    itself (kind unit); the quote is the candidate's definition_quote, else the label."""
+    """A paper's compiled unmapped rows, every one: element, field, the label as printed, unit, the record's symbol, definition (the
+    candidate's definition_quote) and quote (the definition, else the label, else the unit)."""
     out = []
     for r in rd(COMPILED / f"{pid}.unmapped.csv"):
         cand = json.loads(r["candidate"]) if r["candidate"].startswith("{") else {}
-        label, kind = r["label_as_printed"], ""
-        if not label and r["field"] == "unit":
-            label, kind = r["unit"], "unit"
-        if not norm(label):
-            continue
-        quote = " ".join((cand.get("definition_quote") or label).split())
-        out.append(dict(label=label, kind=kind, field=r["field"], unit=r["unit"], element=r["element"], quote=quote, definition=" ".join((cand.get("definition_quote") or "").split())))
+        d = " ".join((cand.get("definition_quote") or "").split())
+        out.append(dict(pid=pid, element=r["element"], field=r["field"], label=r["label_as_printed"].strip(), unit=r["unit"], symbol=(cand.get("symbol") or "").strip(),
+                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"]))
     return out
 
 
+# P156: the normalizations of the never match (FIX 2) and of the symbol-table grouping (FIX 1)
+LATEX_TEXT = re.compile(r"\\(?:text|mathrm|mathit|mathbf|rm)\s*\{([^{}]*)\}")
+
+
+def strip_latex(s):
+    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed."""
+    return re.sub(r"[{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+
+
+def strip_trailing_units(s):
+    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty."""
+    s = str(s).strip()
+    while True:
+        t = re.sub(r"\s*(\[[^\[\]]*\]|\([^()]*\))\s*$", "", s)
+        if t == s or not t.strip():
+            return s
+        s = t
+
+
+def norm_strict(label):
+    """FIX 2b, both sides of a never match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing 's' dropped."""
+    s = " ".join(strip_latex(strip_trailing_units(label)).casefold().split())
+    return s[:-1] if len(s) > 1 and s.endswith("s") else s
+
+
+def split_parts(label):
+    """FIX 2a: a never label that holds several labels, split at ';' outside brackets ('MA; MB [kg mol-1]' -> 'MA', 'MB [kg mol-1]')."""
+    parts, depth, cur = [], 0, ""
+    for ch in str(label):
+        depth += ch in "([{"
+        depth = max(0, depth - (ch in ")]}"))
+        if ch == ";" and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    return [p.strip() for p in parts + [cur] if p.strip()]
+
+
+def never_index(entries):
+    """({normalized part: never label}, superseded): every part of every never.csv label, normalized (norm_strict), except the parts that name
+    a live entry - its id, name, label or an alias, normalized the same way (FIX 2c) - that is not an attribute: an attribute entry is how
+    the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label, part,
+    entry ids)] and suppress nothing. never.csv itself is not changed."""
+    names = defaultdict(list)
+    for e in entries:
+        if e.get("attribute"):
+            continue
+        for t in [e["id"], e.get("name", ""), e.get("label", "")] + [str(a) for a in e.get("aliases") or []]:
+            if str(t).strip() and e["id"] not in names[norm_strict(t)]:
+                names[norm_strict(t)].append(e["id"])
+    parts, sup = {}, []
+    for r in X.never_rows():
+        for p in split_parts(r["label"]):
+            k = norm_strict(p)
+            if names.get(k):
+                sup.append((r["label"], p, ", ".join(names[k])))
+            elif k:
+                parts.setdefault(k, r["label"])
+    return parts, sup
+
+
+def norm_symbol(s):
+    """A symbol for equality within one paper: LaTeX unwrapped, braces, backslashes, ^, _ and spaces removed; case kept (R is not r)."""
+    return re.sub(r"[\s{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+
+
+ARTICLES = {"a", "an", "the", "of"}
+
+
+def words(s):
+    """FIX 1: a label as words for the equation / symbol-table merge: trailing units and LaTeX stripped, casefold, articles and 'of' dropped,
+    sorted (word order ignored: eq11 'rate of adsorption' = tabu1 'Adsorption rate')."""
+    return sorted(w for w in re.findall(r"[a-z0-9]+", strip_latex(strip_trailing_units(s)).casefold()) if w not in ARTICLES)
+
+
+SYMBOL_LAYOUT = next(k for k, d in X.P143_TABLE_LAYOUTS if "symbol table" in d)          # P143: not_units, 'a symbol table (symbol, meaning, value) or ...'
+SYMBOL_ROLES = re.search(r"symbol table \(([^)]*)\)", dict(X.P143_TABLE_LAYOUTS)[SYMBOL_LAYOUT]).group(1).split(", ")   # ['symbol', 'meaning', 'value']: no unit column
+
+
+def pass0_tables(pid):
+    """{table id: layout} of the pass-0 line compile.py read for the paper (its compile.log names the line)."""
+    log = COMPILED / f"{pid}.compile.log"
+    m = re.search(r"pass 0 = line (\d+)", log.read_text(encoding="utf-8")) if log.exists() else None
+    if not m:
+        return {}
+    lines = [x for x in (RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    obj = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", json.loads(lines[int(m.group(1)) - 1])["response"].strip()))
+    return {t["table"]: t["layout"] for t in (obj.get("table_layouts") or []) if isinstance(t, dict)} if isinstance(obj, dict) else {}
+
+
+def unit_spellings():
+    return {str(v) for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}
+
+
+def candidates(pids, entries=None):
+    """P156: the candidates of a set of papers from their compiled unmapped rows, and the log of how they were made.
+
+    1. A row of a symbol-table layout (pass 0: P143 not_units, whose definition names the roles symbol, meaning, value; the record carries a
+       symbol) groups by table row and symbol: the cell whose text is the symbol is the symbol column, the other cell (or, when its text is
+       empty, the record's definition) is the meaning column, which gives the label, the id and the definition; the symbol becomes an alias.
+       The layout has no unit column: the unit is the records'. A symbol with no meaning cell in its row stays its own candidate, noted.
+    2. A row elsewhere in the same paper whose label is its symbol joins the one symbol-table row with that symbol; else a row whose label (a
+       symbol's: its definition) has the words of one symbol-table meaning (words(): articles and 'of' dropped, order ignored) joins it.
+    3. A row whose label matches a never part (never_index, norm_strict) is dropped; a symbol-table group whose meaning matches one is
+       dropped with the rows that joined it.
+    4. A row with no label, or a label that is only a unit spelling of units.yaml, is a value without a quantity, not a candidate (FIX 3).
+    5. The rest group across the papers by the normalized label (snake case of norm()).
+    Returns ({id: group}, log)."""
+    entries = entries if entries is not None else [e for e in onto()["entries"] if not e.get("replaced_by")]
+    never, superseded = never_index(entries)
+    spell = unit_spellings()
+    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], superseded=superseded)
+    tables, rest = defaultdict(list), []
+    for pid in pids:
+        layouts = pass0_tables(pid)
+        rows = unmapped_rows(pid)
+        own = {(u["element"], u["label"]): u["symbol"] for u in rows if u["field"] == "quantity" and u["symbol"]}
+        for u in rows:
+            if u["field"] == "unit" and not u["symbol"]:                       # a unit row follows the quantity row of its cell and label
+                u["symbol"] = own.get((u["element"], u["label"]), "")
+            m = re.match(r"^(tab\w*)\.(r\d+)c\d+$", u["element"])
+            if m and layouts.get(m.group(1)) == SYMBOL_LAYOUT and u["symbol"]:
+                tables[(pid, f"{m.group(1)}.{m.group(2)}", norm_symbol(u["symbol"]))].append(u)
+            elif not u["label"] or (u["label"] in spell and not (u["symbol"] and norm_symbol(u["label"]) == norm_symbol(u["symbol"]))):
+                log["values"].append(u)                                         # FIX 3: no label, or a unit spelling that is not the record's own symbol
+            else:
+                rest.append(u)
+    groups, by_sym, by_cell = [], defaultdict(list), {}
+    for (pid, row, sym), us in tables.items():
+        symcell = [u for u in us if u["label"] and norm_symbol(u["label"]) == sym]
+        meaning = next((u["label"] for u in us if u["label"] and norm_symbol(u["label"]) != sym), "") \
+            or next((strip_trailing_units(u["definition"]) for u in us if u["definition"]), "")
+        symbol = symcell[0]["label"] if symcell else us[0]["symbol"]
+        g = dict(label=meaning or symbol, aliases=[symbol] if meaning else [], definition=meaning, members=list(us), pid=pid, row=row,
+                 note="" if meaning else f"symbol with no meaning cell in table row {row}", never=never.get(norm_strict(meaning or symbol), ""))
+        groups.append(g)
+        by_sym[(pid, sym)].append(g)
+        by_cell.update({(pid, u["element"]): g for u in us})
+        log["table_groups"].append(g)
+    log["same_cell"] = []
+    for u in rest:
+        if (u["pid"], u["element"]) in by_cell:                                 # a unit row of a symbol-table cell joins its cell's row
+            by_cell[(u["pid"], u["element"])]["members"].append(u)
+            log["same_cell"].append(u)
+            continue
+        sym = norm_symbol(u["symbol"]) if u["symbol"] else ""
+        is_symbol = bool(sym) and norm_symbol(u["label"]) == sym
+        hits = by_sym.get((u["pid"], sym), []) if is_symbol else []
+        if len(hits) == 1:
+            hits[0]["members"].append(u)
+            hits[0]["aliases"] += [u["label"]] if u["label"] not in hits[0]["aliases"] else []
+            log["symbol_merges"].append((u, hits[0]))
+            continue
+        if len(hits) > 1:
+            log["ambiguous"].append((u, [h["row"] for h in hits]))
+        if never.get(norm_strict(u["label"])):
+            log["never"].append((u, never[norm_strict(u["label"])]))
+            continue
+        text = strip_trailing_units(u["definition"]) if is_symbol and u["definition"] else u["label"]
+        lw = words(text)
+        same = [g for g in groups if g.get("row") and g["pid"] == u["pid"] and g["definition"] and words(g["definition"]) == lw] if lw else []
+        if len(same) == 1:
+            same[0]["members"].append(u)
+            if is_symbol and u["label"] not in same[0]["aliases"]:
+                same[0]["aliases"].append(u["label"])
+            log["label_merges"].append((u, same[0], text))
+            continue
+        groups.append(dict(label=u["label"], aliases=[], definition=u["definition"], members=[u], pid=u["pid"], row="", note="", never=""))
+    out = {}
+    for g in groups:
+        if g["never"]:
+            log["never"] += [(u, g["never"]) for u in g["members"]]
+            continue
+        cid = snake(g["label"])
+        if not cid:
+            log["values"] += g["members"]
+            continue
+        c = out.setdefault(cid, dict(id=cid, label=g["label"], aliases=[], definition="", members=[], notes=[]))
+        c["aliases"] += [a for a in g["aliases"] if a not in c["aliases"] and a != c["label"]]
+        c["definition"] = c["definition"] or g["definition"]
+        c["members"] += g["members"]
+        c["notes"] += [g["note"]] if g["note"] else []
+    for c in out.values():
+        units = Counter(u["unit"] for u in c["members"] if u["unit"])
+        c["unit"] = units.most_common(1)[0][0] if units else ""
+        c["kind"] = "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] == "quantity" for u in c["members"]) else "unit"
+        ev = {}
+        for u in c["members"]:
+            ev.setdefault(u["pid"], f"{u['pid']}:{u['element']} — {u['quote']}" + (f" ({'; '.join(c['notes'])})" if c["notes"] else ""))
+        c["evidence"] = ev
+    return out, log
+
+
+_CAND = {}
+
+
+def candidates_of(pids):
+    key = tuple(sorted(p for p in pids if p))
+    if key not in _CAND:
+        _CAND[key] = candidates(key)
+    return _CAND[key]
+
+
 def printed_labels(row):
-    """The printed labels behind a pending row: the compiled unmapped labels of its papers whose snake case is its id (a pilot row: its id)."""
-    labs = [u["label"] for pid in filter(None, row["pids"].split(";")) for u in unmapped_rows(pid) if snake(u["label"]) == row["id"]]
-    return list(dict.fromkeys(labs)) or [row["id"].replace("_", " ")]
+    """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id."""
+    c = candidates_of(row["pids"].split(";"))[0].get(row["id"]) if row["first_round"] not in ("", "0") else None
+    return [c["label"]] + c["aliases"] if c else [row["id"].replace("_", " ")]
 
 
 def run_conditions(pid):
@@ -171,10 +371,6 @@ def run_conditions(pid):
             if v and k.startswith("setting:other:"):
                 out.add(norm(re.sub(r"\[[^\]]*\]$", "", k[len("setting:other:"):])))
     return out
-
-
-def never_labels():
-    return {norm(r["label"]) for r in X.never_rows()}
 
 
 # ---------------------------------------------------------------- rounds
@@ -217,46 +413,43 @@ def cmd_add(pids):
 
 
 def cmd_propose():
-    r = current(("open",))
+    r = current(("open", "proposed"))                                           # P156: a proposed round can be proposed again (not yet applied)
     if not r:
-        raise Stop("no open round (grow.py add first)")
+        raise Stop("no open or proposed round (grow.py add first)")
     n, pids = int(r["round"]), r["pids"].split(";")
     entries = [e for e in onto()["entries"] if not e.get("replaced_by")]
     rows = rd(PENDING)
     for x in rows:
         assert list(x) == X.PENDING_COLUMNS, "pending.csv columns differ from export.PENDING_COLUMNS"
+    redo = [x for x in rows if x["first_round"] == str(n) and not x["decision"]]
+    rows = [x for x in rows if not (x["first_round"] == str(n) and not x["decision"])]   # the round's undecided rows are rebuilt
+    for x in rows:                                                              # an earlier undecided row gives back this round's papers
+        if not x["decision"] and set(x["pids"].split(";")) & set(pids):
+            items = [i for i in x["evidence"].split(" || ") if i and i.split(":", 1)[0] not in pids]
+            keep = [p for p in x["pids"].split(";") if p and p not in pids]
+            x.update(evidence=" || ".join(items), pids=";".join(keep), n_papers=str(len(keep)), dois=";".join(doi_of().get(p, "") for p in keep))
     by_id = {x["id"]: x for x in rows}
-    never, dois = never_labels(), doi_of()
-    groups, dropped = defaultdict(list), []
-    for pid in pids:
-        for u in unmapped_rows(pid):
-            if norm(u["label"]) in never:
-                dropped.append((pid, u["label"]))
-                continue
-            groups[snake(u["label"])].append((pid, u))
+    dois = doi_of()
+    _CAND.clear()
+    cands, log = candidates_of(pids)
     conds = {pid: run_conditions(pid) for pid in pids}
     new, touched = [], []
-    for cid, members in sorted(groups.items()):
+    for cid, c in sorted(cands.items()):
         old = by_id.get(cid)
         if old and old["decision"]:
             continue                                                            # a decided row stays as it is
         ev = {}
         for item in (old["evidence"].split(" || ") if old and old["evidence"] else []):
             ev.setdefault(item.split(":", 1)[0], item)
-        for pid, u in members:
-            ev.setdefault(pid, f"{pid}:{u['element']} — {u['quote']}")
+        for pid, item in c["evidence"].items():
+            ev.setdefault(pid, item)
         cpids = sorted(ev)
-        labels = list(dict.fromkeys(u["label"] for _, u in members))
-        units = Counter(u["unit"] for _, u in members if u["unit"])
-        kinds = {u["kind"] for _, u in members}
-        kind = "unit" if kinds == {"unit"} else "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for _, u in members) \
-            else ("quantity" if any(u["field"] == "quantity" for _, u in members) else "unit")
-        nid, ndef, score = nearest(labels[0], entries)
-        hint = "a" if len(cpids) >= 2 else "c" if any(norm(labels[0]) in conds.get(p, set()) for p in cpids) else "none"
-        row = dict(id=cid, kind=old["kind"] if old else kind, proposed_definition=(old or {}).get("proposed_definition") or next((u["definition"] for _, u in members if u["definition"]), ""),
-                   unit=(old or {}).get("unit") or (units.most_common(1)[0][0] if units else ""), n_papers=str(len(cpids)), pids=";".join(cpids),
-                   dois=";".join(dois.get(p, "") for p in cpids), evidence=" || ".join(ev[p] for p in cpids), nearest_id=nid, nearest_definition=shown(ndef),
-                   rule_hint=hint, first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""))
+        nid, ndef, score = nearest(c["label"], entries)
+        hint = "a" if len(cpids) >= 2 else "c" if any(norm(c["label"]) in conds.get(p, set()) for p in cpids) else "none"   # whole normalized label
+        row = dict(id=cid, kind=old["kind"] if old else c["kind"], proposed_definition=(old or {}).get("proposed_definition") or c["definition"],
+                   unit=(old or {}).get("unit") or c["unit"], n_papers=str(len(cpids)), pids=";".join(cpids), dois=";".join(dois.get(p, "") for p in cpids),
+                   evidence=" || ".join(ev[p] for p in cpids), nearest_id=nid, nearest_definition=shown(ndef), rule_hint=hint,
+                   first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""))
         if old:
             old.update(row)
             touched.append(cid)
@@ -266,7 +459,10 @@ def cmd_propose():
     write(PENDING, X.PENDING_COLUMNS, rows)
     decide_page(rows, n)
     set_round(n, status="proposed", n_candidates=len(new) + len(touched))
-    print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(dropped)} rows matched never.csv)")
+    print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of "
+          f"round {n} rebuilt); {len(log['never'])} rows matched never.csv ({len(log['superseded'])} never parts superseded by a live entry), "
+          f"{len(log['values'])} values without a quantity, {len(log['symbol_merges'])} symbol and {len(log['label_merges'])} label merges into "
+          f"{len(log['table_groups'])} symbol-table rows")
     print(f"pending.csv: {len(rows)} rows; decide in {DECIDE}")
 
 
@@ -302,7 +498,7 @@ def candidate_cells(row, entries_by_id):
     score = len(tokens(labels[0]) & (tokens(row["nearest_id"].replace("_", " ")) | {t for a in entries_by_id.get(row["nearest_id"], {}).get("aliases") or [] for t in tokens(a)}
                                      | tokens(row["nearest_definition"]))) if row["nearest_id"] else 0
     ev = "".join(f"<li>{esc(x)}</li>" for x in evidence_items(row))
-    return [f"<b>{esc(row['id'])}</b><br><span class='lab'>printed: {esc('; '.join(labels))}</span>", esc(row["kind"]),
+    return [f"<b>{esc(row['id'])}</b><br><span class='lab'>printed: {esc(labels[0])}" + (f"<br>aliases (symbols): {esc('; '.join(labels[1:]))}" if labels[1:] else "") + "</span>", esc(row["kind"]),
             esc(row["proposed_definition"]), esc(row["unit"]), f"{esc(row['n_papers'])}<br>{doi_links(row)}", f"<ul>{ev}</ul>",
             (f"<b>{esc(row['nearest_id'])}</b> (score {score})<br>{esc(row['nearest_definition'])}" if row["nearest_id"] else "none (score 0)"),
             esc(row["rule_hint"])]
@@ -411,10 +607,10 @@ def cmd_apply():
             e = X.pending_entry(x, labels)
             e.update(origin=f"round {n}", source_pids=[p for p in x["pids"].split(";") if p], evidence=evidence_items(x))
             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
-        elif x["decision"] == "alias":
-            text = add_alias(text, x["alias_target"], labels)
+        elif x["decision"] == "alias":                                         # P156: the label only; a symbol (an alias of the candidate) is
+            text = add_alias(text, x["alias_target"], labels[:1])              # local to its paper and goes into an entry only on accept
         elif x["decision"] == "never":
-            nev += [dict(label=lab, category=x["never_category"], paper=x["pids"], source=f"round {n}") for lab in labels]
+            nev.append(dict(label=labels[0], category=x["never_category"], paper=x["pids"], source=f"round {n}"))
     if new:
         mark = "\nfamilies:"
         assert text.count(mark) == 1
@@ -625,6 +821,9 @@ def report_page():
                  "; ".join(src[e["id"]]["pids"]), "; ".join(src[e["id"]]["dois"]), "; ".join(x for x in map(str, e.get("evidence") or []) if not HELD_RX.search(x)),
                  ("replaced by " + (", ".join(e["replaced_by"]) if isinstance(e["replaced_by"], list) else e["replaced_by"])) if e.get("replaced_by") else ""] for e in entries if e["type"] == k]
         ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence (held-out removed)", "replaced"], rows)
+    sup = never_index([e for e in entries if not e.get("replaced_by")])[1]
+    round_pids = [p for r in rs if r["round"] != "0" for p in r["pids"].split(";") if p]
+    values = candidates_of(round_pids)[1]["values"] if round_pids else []
     cand = [candidate_cells(x, by_id) + [esc(x["decision"]), esc(x["alias_target"]), esc(x["never_category"]), esc(x["decision_note"]), esc(x["first_round"])] for x in pend]
     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>ontology</title><style>{STYLE}</style></head><body><h1>PSED v2 ontology</h1>"
             f"<p>Written by psed_v2/ontology/grow.py (report / apply) from ontology.yaml, units.yaml, history.csv, rounds.csv, pending.csv, never.csv and "
@@ -642,8 +841,11 @@ def report_page():
             f"<h2>11. Rounds</h2>{table(ROUND_COLS, [[r[c] for c in ROUND_COLS] for r in rs])}"
             f"<h2>12. Pending ({len(pend)} rows; read-only, as decide.html shows them)</h2>"
             + table(CAND_HEAD + ["decision", "alias target", "never category", "note", "first round"], cand, raw=True)
-            + f"<h2>13. Never ({len(nev)})</h2>{table(NEVER_COLS, [[x[c] for c in NEVER_COLS] for x in nev])}"
-            f"<h2>14. Unmapped (figure import, {len(unm)})</h2>{table(['paper', 'figure', 'panel', 'field', 'raw', 'reason'], [[x[c] for c in ('paper', 'figure', 'panel', 'field', 'raw', 'reason')] for x in unm if not HELD_RX.search(x['paper'])])}"
+            + f"<h2>13. Never ({len(nev)}; a part that names a live entry is superseded and suppresses nothing)</h2>"
+            + table(NEVER_COLS + ["superseded by"], [[x[c] for c in NEVER_COLS] + ["; ".join(f"{p} → superseded by {e}" for lab, p, e in sup if lab == x["label"])] for x in nev])
+            + f"<h2>14. Unmapped</h2><h3>Values without a quantity (compiled unmapped rows of the rounds' papers with no label or only a unit; not candidates)</h3>"
+            + table(["pid", "element", "raw text", "unit"], [[u["pid"], u["element"], u["quote"], u["unit"]] for u in values])
+            + f"<h3>Figure import ({len(unm)})</h3>{table(['paper', 'figure', 'panel', 'field', 'raw', 'reason'], [[x[c] for c in ('paper', 'figure', 'panel', 'field', 'raw', 'reason')] for x in unm if not HELD_RX.search(x['paper'])])}"
             "</body></html>\n")
     page = page.replace(esc("{withheld}"), str(page.count(WITHHELD)), 1)
     assert not HELD_RX.search(page), "a held-out paper in ontology.html"

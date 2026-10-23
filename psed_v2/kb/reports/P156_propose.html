@@ -1,0 +1,411 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P156_propose</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P156_propose</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P156_propose.summary.txt</p>
+<pre>P156: three root-cause fixes in grow.py propose, then round 1 proposed again. 0 calls. Not applied.
+
+Candidates: 53 -&gt; 47 (count; ids only in P155 / only in P156). 11 P155 candidates changed (before_after): 9 symbols joined their meaning.
+FIX 1 symbol-table rows: the P143 layout whose definition names a symbol table is not_units, roles (symbol, meaning, value), no unit
+  column (fix1_rule). A row groups by (paper, table row, symbol): yli18 tabu1 holds two symbol / meaning groups per row, so the row alone
+  would merge two quantities. 29 symbol-table rows (fix1_table_rows); the meaning gives label, id and definition, the symbol is an alias.
+  8 equation / paragraph rows joined by their symbol (z_A, v_A, h, g twice, f_ads, f_des, Q: fix1_merges); the word rule (&#x27;rate of
+  adsorption&#x27; = &#x27;Adsorption rate&#x27;, articles and &#x27;of&#x27; dropped, order ignored) added none beyond them. yim20 tabu1 (also a symbol table)
+  had ten cells with no printed label: P155 skipped them silently; they are five candidates now. Symbols R and F label two candidates
+  each, from two papers: accepting both of a pair would put one alias in two entries (check 4).
+FIX 2 never matching: labels split at &#x27;;&#x27; outside brackets, both sides normalized by norm_strict (fix2_normalization; the 45 labels
+  before / after: fix2_never_labels). New match: yim20 fig10.cap b_{\text{TMA}} &lt;- &#x27;bfilm; bTMA&#x27;. No longer matched: Q (yli18 eq14, yim20
+  tabu2.r15c0), which P155 matched to &#x27;q [m-2]&#x27; by casefold only; it joins collision_rate_at_unit_pressure (fix2_matches). 15 parts
+  superseded by a live, non-attribute entry (b_film, p_d, knudsen_number, film_density, molar_mass, molecule_diameter, reactor,
+  entrance_nanostep, ...), listed in ontology.html&#x27;s never section; the trailing-s rule supersedes xs by accident (xs -&gt; x = distance).
+  Expected but not matched under the rule as specified: acceleration voltage vs Accelerating voltage, Mean free path of TMA vs
+  mean_free_path (fix2_expected) - no fuzzier rule added.
+FIX 3: one value without a quantity (mat22 s5.p1, MHz), in this report and in ontology.html&#x27;s unmapped section, not in pending.csv; cause:
+  the pass-1 record&#x27;s label_as_printed is null and MHz is not in units.yaml (fix3_cause). Rule c: positioning_uncertainty matches the whole
+  normalized label of a real run condition (its own record, placed on yim20&#x27;s 16 specimens): no fix (rule_c_trace).
+propose accepts a proposed round now (rebuilds its undecided rows). export.py --check: 15 of 15 pass (checks). decide.html round trip still
+byte for byte (run).
+</pre>
+<h2>Paths</h2><p>psed_v2/kb/reports/P156_propose.paths.txt</p>
+<pre>decide.html: psed_v2/ontology/decide.html
+ontology.html: psed_v2/ontology/ontology.html (never section: superseded parts; unmapped section: values without a quantity)
+pending.csv: psed_v2/ontology/pending.csv
+</pre>
+<h2>Candidate count before -&gt; after</h2><p>psed_v2/kb/reports/P156_propose.count.csv</p>
+<table><tr><th>item</th><th>P155</th><th>P156</th></tr>
+<tr><td>round-1 candidates</td><td>53</td><td>47</td></tr>
+<tr><td>pending.csv rows (with the 2 pilot rows)</td><td>55</td><td>49</td></tr>
+<tr><td>ids only in P155</td><td>b_text_tma; f_ads; f_des; g; h; l; mhz; r; r_row; v_a; z_a</td><td></td></tr>
+<tr><td>ids only in P156</td><td></td><td>diffusion_coefficient_without_pillars; distance_between_pillars; flux_of_material_in_direction_x; pillar_diameter; surface_area</td></tr>
+<tr><td>rows matched never.csv</td><td>7</td><td>6</td></tr>
+<tr><td>values without a quantity</td><td>0 (1 was the candidate mhz; 10 empty-label rows skipped silently)</td><td>1</td></tr>
+</table>
+<h2>Every P155 round-1 candidate: where its rows are now</h2><p>psed_v2/kb/reports/P156_propose.before_after.csv</p>
+<table><tr><th>P155 candidate</th><th>P155 evidence rows</th><th>P156</th><th>change</th></tr>
+<tr><td>acceleration_voltage</td><td>10.1021_acs.chemmater.2c01154:s5.p14</td><td>candidate acceleration_voltage</td><td>same</td></tr>
+<tr><td>adsorption_rate</td><td>10.1063_1.5028178:tabu1.r10c0</td><td>candidate adsorption_rate</td><td>same</td></tr>
+<tr><td>amount_of_reactant_a</td><td>10.1063_1.5028178:tabu1.r22c0</td><td>candidate amount_of_reactant_a</td><td>same</td></tr>
+<tr><td>apparent_longitudinal_diffusion_coefficient</td><td>10.1063_1.5028178:tabu1.r4c0</td><td>candidate apparent_longitudinal_diffusion_coefficient</td><td>same</td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>10.1063_1.5028178:tabu1.r5c2</td><td>candidate average_speed_of_molecules_a</td><td>same</td></tr>
+<tr><td>avogadro_constant</td><td>10.1063_1.5028178:tabu1.r23c0</td><td>candidate avogadro_constant</td><td>same</td></tr>
+<tr><td>b_text_tma</td><td>10.1039_d0cp03358h:fig10.cap</td><td>never: bfilm; bTMA</td><td>changed</td></tr>
+<tr><td>beam_energy</td><td>10.1021_acs.chemmater.2c01154:s5.p17</td><td>candidate beam_energy</td><td>same</td></tr>
+<tr><td>bent</td><td>10.1039_d0cp03358h:s16.p5</td><td>candidate bent</td><td>same</td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>10.1039_d0cp03358h:tabu2.r15c1; 10.1063_1.5028178:tabu1.r28c0</td><td>candidate collision_rate_at_unit_pressure</td><td>same</td></tr>
+<tr><td>collision_rate_of_molecule_a</td><td>10.1063_1.5028178:tabu1.r11c2</td><td>candidate collision_rate_of_molecule_a</td><td>same</td></tr>
+<tr><td>desorption_rate</td><td>10.1063_1.5028178:tabu1.r11c0</td><td>candidate desorption_rate</td><td>same</td></tr>
+<tr><td>diffusion_resistance_of_a_rectangular_channel</td><td>10.1039_d0cp03358h:tabu2.r17c1</td><td>candidate diffusion_resistance_of_a_rectangular_channel</td><td>same</td></tr>
+<tr><td>diffusion_resistance_of_one_row_of_pillars</td><td>10.1039_d0cp03358h:tabu2.r18c1</td><td>candidate diffusion_resistance_of_one_row_of_pillars</td><td>same</td></tr>
+<tr><td>displacement</td><td>10.1039_d0cp03358h:s16.p5</td><td>candidate displacement</td><td>same</td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>10.1039_d0cp03358h:tabu2.r7c1</td><td>candidate distance_between_rows_of_pillars</td><td>same</td></tr>
+<tr><td>distance_where_the_linear_part_of_the_reactant_pressure_is_zero</td><td>10.1063_1.5028178:tabu1.r9c2</td><td>candidate distance_where_the_linear_part_of_the_reactant_pressure_is_zero</td><td>same</td></tr>
+<tr><td>equilibrium_surface_coverage_in_the_langmuir_model</td><td>10.1063_1.5028178:tabu1.r15c2</td><td>candidate equilibrium_surface_coverage_in_the_langmuir_model</td><td>same</td></tr>
+<tr><td>error_in_thickness_measurement</td><td>10.1063_1.5028178:tabu1.r12c2</td><td>candidate error_in_thickness_measurement</td><td>same</td></tr>
+<tr><td>f_ads</td><td>10.1063_1.5028178:eq11</td><td>candidate adsorption_rate</td><td>changed</td></tr>
+<tr><td>f_des</td><td>10.1063_1.5028178:eq12</td><td>candidate desorption_rate</td><td>changed</td></tr>
+<tr><td>g</td><td>10.1063_1.5028178:eq15; 10.1063_1.5028178:s6.p3</td><td>candidate net_adsorption_rate</td><td>changed</td></tr>
+<tr><td>gas_constant</td><td>10.1063_1.5028178:tabu1.r29c0</td><td>candidate gas_constant</td><td>same</td></tr>
+<tr><td>gas_flow_of_the_reactant</td><td>10.1063_1.5028178:tabu1.r9c0</td><td>candidate gas_flow_of_the_reactant</td><td>same</td></tr>
+<tr><td>h</td><td>10.1063_1.5028178:eq5</td><td>candidate hydraulic_diameter_of_the_channel</td><td>changed</td></tr>
+<tr><td>hydraulic_diameter_of_the_channel</td><td>10.1063_1.5028178:tabu1.r15c0</td><td>candidate hydraulic_diameter_of_the_channel</td><td>same</td></tr>
+<tr><td>l</td><td>10.1039_d0cp03358h:tabu2.r7c0</td><td>candidate distance_between_rows_of_pillars</td><td>changed</td></tr>
+<tr><td>laser_power</td><td>10.1021_acs.chemmater.2c01154:s5.p15</td><td>candidate laser_power</td><td>same</td></tr>
+<tr><td>length_of_the_line</td><td>10.1039_d0cp03358h:s7.p3</td><td>candidate length_of_the_line</td><td>same</td></tr>
+<tr><td>length_of_the_linear_part_of_the_pressure_distribution</td><td>10.1063_1.5028178:tabu1.r10c2</td><td>candidate length_of_the_linear_part_of_the_pressure_distribution</td><td>same</td></tr>
+<tr><td>measurement_area</td><td>10.1039_d0cp03358h:s7.p4</td><td>candidate measurement_area</td><td>same</td></tr>
+<tr><td>measurement_points_interval</td><td>10.1039_d0cp03358h:s7.p3</td><td>candidate measurement_points_interval</td><td>same</td></tr>
+<tr><td>mhz</td><td>10.1021_acs.chemmater.2c01154:s5.p1</td><td>value without a quantity</td><td>changed</td></tr>
+<tr><td>net_adsorption_rate</td><td>10.1063_1.5028178:tabu1.r12c0</td><td>candidate net_adsorption_rate</td><td>same</td></tr>
+<tr><td>penetration_depth_parameter_in_the_gordon_model</td><td>10.1063_1.5028178:tabu1.r3c0</td><td>candidate penetration_depth_parameter_in_the_gordon_model</td><td>same</td></tr>
+<tr><td>positioning_uncertainty</td><td>10.1039_d0cp03358h:s16.p7</td><td>candidate positioning_uncertainty</td><td>same</td></tr>
+<tr><td>r</td><td>10.1039_d0cp03358h:tabu2.r17c0</td><td>candidate diffusion_resistance_of_a_rectangular_channel</td><td>changed</td></tr>
+<tr><td>r_row</td><td>10.1039_d0cp03358h:tabu2.r18c0</td><td>candidate diffusion_resistance_of_one_row_of_pillars</td><td>changed</td></tr>
+<tr><td>series</td><td>10.1039_d0cp03358h:tab1.r10c0; 10.1039_d0cp03358h:tab1.r12c0; 10.1039_d0cp03358h:tab1.r13c0; 10.1039_d0cp03358h:tab1.r14c0; 10.1039_d0cp03358h:tab1.r15c0; 10.1039_d0cp03358h:tab1.r16c0; 10.1039_d0cp03358h:tab1.r18c0; 10.1039_d0cp03358h:tab1.r1c0; 10.1039_d0cp03358h:tab1.r2c0; 10.1039_d0cp03358h:tab1.r3c0; 10.1039_d0cp03358h:tab1.r4c0; 10.1039_d0cp03358h:tab1.r5c0; 10.1039_d0cp03358h:tab1.r6c0; 10.1039_d0cp03358h:tab1.r7c0; 10.1039_d0cp03358h:tab1.r8c0; 10.1039_d0cp03358h:tab1.r9c0</td><td>candidate series</td><td>same</td></tr>
+<tr><td>series_a</td><td>10.1039_d0cp03358h:s6.p2</td><td>candidate series_a</td><td>same</td></tr>
+<tr><td>series_c</td><td>10.1039_d0cp03358h:fig9.cap</td><td>candidate series_c</td><td>same</td></tr>
+<tr><td>series_d</td><td>10.1039_d0cp03358h:fig9.cap</td><td>candidate series_d</td><td>same</td></tr>
+<tr><td>series_e</td><td>10.1039_d0cp03358h:fig11.cap</td><td>candidate series_e</td><td>same</td></tr>
+<tr><td>series_f</td><td>10.1039_d0cp03358h:fig11.cap</td><td>candidate series_f</td><td>same</td></tr>
+<tr><td>step</td><td>10.1039_d0cp03358h:s7.p5</td><td>candidate step</td><td>same</td></tr>
+<tr><td>tilde_xi</td><td>10.1039_d0cp03358h:fig2.cap</td><td>candidate tilde_xi</td><td>same</td></tr>
+<tr><td>time_constant_of_adsorption</td><td>10.1063_1.5028178:tabu1.r17c2</td><td>candidate time_constant_of_adsorption</td><td>same</td></tr>
+<tr><td>top_membrane_removal</td><td>10.1039_d0cp03358h:s7.p1</td><td>candidate top_membrane_removal</td><td>same</td></tr>
+<tr><td>total_scan_length</td><td>10.1039_d0cp03358h:s7.p5</td><td>candidate total_scan_length</td><td>same</td></tr>
+<tr><td>v_a</td><td>10.1063_1.5028178:eq2</td><td>candidate average_speed_of_molecules_a</td><td>changed</td></tr>
+<tr><td>velocity_of_gas_front</td><td>10.1063_1.5028178:tabu1.r4c2</td><td>candidate velocity_of_gas_front</td><td>same</td></tr>
+<tr><td>voltage</td><td>10.1021_acs.chemmater.2c01154:s5.p18</td><td>candidate voltage</td><td>same</td></tr>
+<tr><td>z_a</td><td>10.1063_1.5028178:eq1</td><td>candidate collision_rate_of_molecule_a</td><td>changed</td></tr>
+</table>
+<h2>FIX 1 the rule and the layout</h2><p>psed_v2/kb/reports/P156_propose.fix1_rule.txt</p>
+<pre>Layout: P143 &#x27;not_units&#x27; = &#x27;The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values).&#x27; (ontology/export.py P143_TABLE_LAYOUTS).
+Its definition names the columns of a symbol table: [&#x27;symbol&#x27;, &#x27;meaning&#x27;, &#x27;value&#x27;]; there is no unit column, so a candidate&#x27;s unit is its records&#x27; unit.
+Which cell plays which role is read from the records, not from the position: yli18 tabu1 holds two symbol / meaning groups per row (cells c0 and c2
+are different quantities: tabu1.r4c0 symbol D, tabu1.r4c2 symbol v), so a table row groups by (paper, table row, symbol); in the group the cell
+whose text is the symbol is the symbol column, the other cell the meaning column. A row&#x27;s symbol is the pass-1 record&#x27;s symbol field.
+A row of a symbol-table layout is a record of a not_units table that carries a symbol: yli18 tabu1, yim20 tabu1 and yim20 tabu2 (yim20 tab2 and
+mat22 tab2, also not_units, have no unmapped rows). yim20 tabu1&#x27;s ten cells have no printed label (the meaning is only in the record&#x27;s quote,
+&#x27;Distance between pillars (m)&#x27;): P155 skipped them silently (a row with no label was not a candidate and not reported); they are five candidates now.
+A unit row of a cell (field unit, no symbol of its own) takes the symbol of the quantity row of the same cell and label.
+Equation / symbol-table merge: a row whose label is its symbol joins the one symbol-table row of its paper with that symbol (8 rows);
+else a row whose label (a symbol&#x27;s: its definition) has the words of one meaning, articles and &#x27;of&#x27; dropped and word order ignored, joins it
+(0 rows: every equation row of round 1 joined by its symbol first). Check of the rule on the example: words(&#x27;rate of adsorption&#x27;)
+= [&#x27;adsorption&#x27;, &#x27;rate&#x27;], words(&#x27;Adsorption rate&#x27;) = [&#x27;adsorption&#x27;, &#x27;rate&#x27;]: equal. Ambiguous symbols (two rows): 0.
+Symbols are local to a paper: R is yli18&#x27;s gas constant and yim20&#x27;s diffusion resistance of a channel, F yli18&#x27;s gas flow and yim20&#x27;s flux; both
+candidates carry the symbol as an alias, so accepting both of a pair would put one alias in two entries (check 4 would fail).
+</pre>
+<h2>FIX 1 pass-0 table layouts of the three papers</h2><p>psed_v2/kb/reports/P156_propose.fix1_layouts.csv</p>
+<table><tr><th>paper</th><th>table</th><th>pass-0 layout</th><th>symbol-table layout?</th></tr>
+<tr><td>yli18</td><td>tabI</td><td>row_per_unit</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1</td><td>not_units</td><td>yes</td></tr>
+<tr><td>yim20</td><td>tab1</td><td>row_per_unit</td><td></td></tr>
+<tr><td>yim20</td><td>tab2</td><td>not_units</td><td>yes</td></tr>
+<tr><td>yim20</td><td>tabu1</td><td>not_units</td><td>yes</td></tr>
+<tr><td>yim20</td><td>tabu2</td><td>not_units</td><td>yes</td></tr>
+<tr><td>mat22</td><td>tab1</td><td>row_per_unit</td><td></td></tr>
+<tr><td>mat22</td><td>tab2</td><td>not_units</td><td>yes</td></tr>
+</table>
+<h2>FIX 1 symbol-table rows (one candidate each)</h2><p>psed_v2/kb/reports/P156_propose.fix1_table_rows.csv</p>
+<table><tr><th>paper</th><th>table row</th><th>symbol</th><th>meaning (label, id, definition)</th><th>aliases</th><th>cells</th><th>note</th></tr>
+<tr><td>yli18</td><td>tabu1.r3</td><td>C</td><td>Penetration depth parameter in the Gordon model</td><td>C</td><td>tabu1.r3c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r4</td><td>D</td><td>Apparent longitudinal diffusion coefficient</td><td>D</td><td>tabu1.r4c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r4</td><td>v</td><td>Velocity of gas front</td><td>v</td><td>tabu1.r4c2 tabu1.r4c2 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r5</td><td>vA</td><td>Average speed of molecules A</td><td>vA; v_A</td><td>tabu1.r5c2 tabu1.r5c2 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r9</td><td>F</td><td>Gas flow of the reactant</td><td>F</td><td>tabu1.r9c0 tabu1.r9c0 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r9</td><td>xs</td><td>Distance where the linear part of the reactant pressure is zero</td><td>xs</td><td>tabu1.r9c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r10</td><td>fads</td><td>Adsorption rate</td><td>fads; f_ads</td><td>tabu1.r10c0 tabu1.r10c0 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r10</td><td>xt</td><td>Length of the linear part of the pressure distribution</td><td>xt</td><td>tabu1.r10c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r11</td><td>fdes</td><td>Desorption rate</td><td>fdes; f_des</td><td>tabu1.r11c0 tabu1.r11c0 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r11</td><td>zA</td><td>Collision rate of molecule A</td><td>zA; z_A</td><td>tabu1.r11c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r12</td><td>g</td><td>Net adsorption rate</td><td>g</td><td>tabu1.r12c0 tabu1.r12c0 (unit row)</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r12</td><td>Δs</td><td>Error in thickness measurement</td><td>Δs</td><td>tabu1.r12c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r13</td><td>η</td><td>Viscosity of gas</td><td>η</td><td>tabu1.r13c2</td><td>dropped: never &#x27;Viscosity of gas [µPa s]&#x27;</td></tr>
+<tr><td>yli18</td><td>tabu1.r15</td><td>h</td><td>Hydraulic diameter of the channel</td><td>h</td><td>tabu1.r15c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r15</td><td>θeq</td><td>Equilibrium surface coverage in the Langmuir model</td><td>θeq</td><td>tabu1.r15c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r17</td><td>τ</td><td>Time constant of adsorption</td><td>τ</td><td>tabu1.r17c2</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r22</td><td>nA</td><td>Amount of reactant A</td><td>nA</td><td>tabu1.r22c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r23</td><td>N0</td><td>Avogadro constant</td><td>N0</td><td>tabu1.r23c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r28</td><td>Q</td><td>Collision rate at unit pressure</td><td>Q</td><td>tabu1.r28c0</td><td></td></tr>
+<tr><td>yli18</td><td>tabu1.r29</td><td>R</td><td>Gas constant</td><td>R</td><td>tabu1.r29c0 tabu1.r29c0 (unit row)</td><td></td></tr>
+<tr><td>yim20</td><td>tabu1.r0</td><td>a</td><td>Distance between pillars</td><td>a</td><td>tabu1.r0c0 tabu1.r0c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu1.r1</td><td>A</td><td>Surface area</td><td>A</td><td>tabu1.r1c0 tabu1.r1c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu1.r5</td><td>d</td><td>Pillar diameter</td><td>d</td><td>tabu1.r5c0 tabu1.r5c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu1.r9</td><td>D_0</td><td>Diffusion coefficient without pillars</td><td>D_0</td><td>tabu1.r9c0 tabu1.r9c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu1.r10</td><td>F</td><td>Flux of material in direction x</td><td>F</td><td>tabu1.r10c0 tabu1.r10c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu2.r7</td><td>l</td><td>Distance between rows of pillars</td><td>l</td><td>tabu2.r7c0 tabu2.r7c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu2.r15</td><td>Q</td><td>Collision rate at unit pressure</td><td>Q</td><td>tabu2.r15c0 tabu2.r15c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu2.r17</td><td>R</td><td>Diffusion resistance of a rectangular channel</td><td>R</td><td>tabu2.r17c0 tabu2.r17c1</td><td></td></tr>
+<tr><td>yim20</td><td>tabu2.r18</td><td>R_row</td><td>Diffusion resistance of one row of pillars</td><td>R_row</td><td>tabu2.r18c0 tabu2.r18c1</td><td></td></tr>
+</table>
+<h2>FIX 1 rows merged into a symbol-table row</h2><p>psed_v2/kb/reports/P156_propose.fix1_merges.csv</p>
+<table><tr><th>paper</th><th>row</th><th>label (a symbol)</th><th>joined</th><th>meaning</th><th>by</th></tr>
+<tr><td>yli18</td><td>eq1</td><td>z_A</td><td>tabu1.r11</td><td>Collision rate of molecule A</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq2</td><td>v_A</td><td>tabu1.r5</td><td>Average speed of molecules A</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq5</td><td>h</td><td>tabu1.r15</td><td>Hydraulic diameter of the channel</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>s6.p3</td><td>g</td><td>tabu1.r12</td><td>Net adsorption rate</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq11</td><td>f_ads</td><td>tabu1.r10</td><td>Adsorption rate</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq12</td><td>f_des</td><td>tabu1.r11</td><td>Desorption rate</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq14</td><td>Q</td><td>tabu1.r28</td><td>Collision rate at unit pressure</td><td>symbol</td></tr>
+<tr><td>yli18</td><td>eq15</td><td>g</td><td>tabu1.r12</td><td>Net adsorption rate</td><td>symbol</td></tr>
+</table>
+<h2>FIX 2 the normalization (grow.py)</h2><p>psed_v2/kb/reports/P156_propose.fix2_normalization.txt</p>
+<pre>grow.py (P156), the never match: a never.csv label is split into parts (split_parts), every part normalized (norm_strict) and
+compared, equal or not, with the normalized label of each compiled row and symbol-table meaning (norm_strict too). A part that names a live
+entry that is not an attribute is superseded and suppresses nothing (never_index).
+
+def strip_latex(s):
+    &quot;&quot;&quot;\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed.&quot;&quot;&quot;
+    return re.sub(r&quot;[{}\\^_]&quot;, &quot;&quot;, LATEX_TEXT.sub(r&quot;\1&quot;, str(s)))
+
+
+def strip_trailing_units(s):
+    &quot;&quot;&quot;Every trailing group in [ ] or ( ) removed, the last first (&#x27;rho (film density; model input) [kg m-3]&#x27; -&gt; &#x27;rho&#x27;); never to empty.&quot;&quot;&quot;
+    s = str(s).strip()
+    while True:
+        t = re.sub(r&quot;\s*(\[[^\[\]]*\]|\([^()]*\))\s*$&quot;, &quot;&quot;, s)
+        if t == s or not t.strip():
+            return s
+        s = t
+
+
+def norm_strict(label):
+    &quot;&quot;&quot;FIX 2b, both sides of a never match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing &#x27;s&#x27; dropped.&quot;&quot;&quot;
+    s = &quot; &quot;.join(strip_latex(strip_trailing_units(label)).casefold().split())
+    return s[:-1] if len(s) &gt; 1 and s.endswith(&quot;s&quot;) else s
+
+
+def split_parts(label):
+    &quot;&quot;&quot;FIX 2a: a never label that holds several labels, split at &#x27;;&#x27; outside brackets (&#x27;MA; MB [kg mol-1]&#x27; -&gt; &#x27;MA&#x27;, &#x27;MB [kg mol-1]&#x27;).&quot;&quot;&quot;
+    parts, depth, cur = [], 0, &quot;&quot;
+    for ch in str(label):
+        depth += ch in &quot;([{&quot;
+        depth = max(0, depth - (ch in &quot;)]}&quot;))
+        if ch == &quot;;&quot; and depth == 0:
+            parts.append(cur)
+            cur = &quot;&quot;
+        else:
+            cur += ch
+    return [p.strip() for p in parts + [cur] if p.strip()]
+
+
+def never_index(entries):
+    &quot;&quot;&quot;({normalized part: never label}, superseded): every part of every never.csv label, normalized (norm_strict), except the parts that name
+    a live entry - its id, name, label or an alias, normalized the same way (FIX 2c) - that is not an attribute: an attribute entry is how
+    the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label, part,
+    entry ids)] and suppress nothing. never.csv itself is not changed.&quot;&quot;&quot;
+    names = defaultdict(list)
+    for e in entries:
+        if e.get(&quot;attribute&quot;):
+            continue
+        for t in [e[&quot;id&quot;], e.get(&quot;name&quot;, &quot;&quot;), e.get(&quot;label&quot;, &quot;&quot;)] + [str(a) for a in e.get(&quot;aliases&quot;) or []]:
+            if str(t).strip() and e[&quot;id&quot;] not in names[norm_strict(t)]:
+                names[norm_strict(t)].append(e[&quot;id&quot;])
+    parts, sup = {}, []
+    for r in X.never_rows():
+        for p in split_parts(r[&quot;label&quot;]):
+            k = norm_strict(p)
+            if names.get(k):
+                sup.append((r[&quot;label&quot;], p, &quot;, &quot;.join(names[k])))
+            elif k:
+                parts.setdefault(k, r[&quot;label&quot;])
+    return parts, sup
+</pre>
+<h2>FIX 2 the 45 never labels before and after</h2><p>psed_v2/kb/reports/P156_propose.fix2_never_labels.csv</p>
+<table><tr><th>never label</th><th>P155 normalized (whole label)</th><th>P156 parts</th><th>P156 normalized parts</th><th>superseded by a live entry</th></tr>
+<tr><td>Regions I-IV; knee; nanostep; leading edge</td><td>regions i-iv; knee; nanostep; leading edge</td><td>Regions I-IV | knee | nanostep | leading edge</td><td>regions i-iv | knee | nanostep | leading edge</td><td>nanostep -&gt; entrance_nanostep</td></tr>
+<tr><td>Intensity [a.u.]</td><td>intensity</td><td>Intensity [a.u.]</td><td>intensity</td><td></td></tr>
+<tr><td>Magnification (spot size) [µm]</td><td>magnification (spot size)</td><td>Magnification (spot size) [µm]</td><td>magnification</td><td></td></tr>
+<tr><td>Sample; sample code</td><td>sample; sample code</td><td>Sample | sample code</td><td>sample | sample code</td><td></td></tr>
+<tr><td>Pillar layout</td><td>pillar layout</td><td>Pillar layout</td><td>pillar layout</td><td></td></tr>
+<tr><td>Reflectometer magnification</td><td>reflectometer magnification</td><td>Reflectometer magnification</td><td>reflectometer magnification</td><td></td></tr>
+<tr><td>Slope dθ/dx̃</td><td>slope dθ/dx̃</td><td>Slope dθ/dx̃</td><td>slope dθ/dx̃</td><td></td></tr>
+<tr><td>Slope d(S/N)/dx̃ [nm]</td><td>slope d(s/n)/dx̃</td><td>Slope d(S/N)/dx̃ [nm]</td><td>slope d(s/n)/dx̃</td><td></td></tr>
+<tr><td>Linear fitting residual R2</td><td>linear fitting residual r2</td><td>Linear fitting residual R2</td><td>linear fitting residual r2</td><td></td></tr>
+<tr><td>pB [Pa]</td><td>pb</td><td>pB [Pa]</td><td>pb</td><td></td></tr>
+<tr><td>MA; MB [kg mol-1]</td><td>ma; mb</td><td>MA | MB [kg mol-1]</td><td>ma | mb</td><td>MA -&gt; molar_mass; MB [kg mol-1] -&gt; molar_mass</td></tr>
+<tr><td>dA; dB [pm]</td><td>da; db</td><td>dA | dB [pm]</td><td>da | db</td><td>dA -&gt; molecule_diameter, gas_phase_diffusion_coefficient; dB [pm] -&gt; molecule_diameter; dA -&gt; molecule_diameter, gas_phase_diffusion_coefficient; dB [pm] -&gt; molecule_diameter</td></tr>
+<tr><td>bfilm; bTMA</td><td>bfilm; btma</td><td>bfilm | bTMA</td><td>bfilm | btma</td><td>bfilm -&gt; b_film</td></tr>
+<tr><td>q [nm-2]</td><td>q</td><td>q [nm-2]</td><td>q</td><td></td></tr>
+<tr><td>Pd [s-1]</td><td>pd</td><td>Pd [s-1]</td><td>pd</td><td>Pd [s-1] -&gt; penetration_depth, p_d</td></tr>
+<tr><td>Mean free path of TMA [µm]</td><td>mean free path of tma</td><td>Mean free path of TMA [µm]</td><td>mean free path of tma</td><td></td></tr>
+<tr><td>Knudsen number</td><td>knudsen number</td><td>Knudsen number</td><td>knudsen number</td><td>Knudsen number -&gt; knudsen_number</td></tr>
+<tr><td>Accelerating voltage [keV]</td><td>accelerating voltage</td><td>Accelerating voltage [keV]</td><td>accelerating voltage</td><td></td></tr>
+<tr><td>xt; xs [µm]</td><td>xt; xs</td><td>xt | xs [µm]</td><td>xt | x</td><td>xs [µm] -&gt; distance, reaction_stoichiometry</td></tr>
+<tr><td>MA; MB [kg/mol]</td><td>ma; mb</td><td>MA | MB [kg/mol]</td><td>ma | mb</td><td>MA -&gt; molar_mass; MB [kg/mol] -&gt; molar_mass</td></tr>
+<tr><td>dA; dB [pm]</td><td>da; db</td><td>dA | dB [pm]</td><td>da | db</td><td>dA -&gt; molecule_diameter, gas_phase_diffusion_coefficient; dB [pm] -&gt; molecule_diameter; dA -&gt; molecule_diameter, gas_phase_diffusion_coefficient; dB [pm] -&gt; molecule_diameter</td></tr>
+<tr><td>pB [Pa]</td><td>pb</td><td>pB [Pa]</td><td>pb</td><td></td></tr>
+<tr><td>q [m-2]</td><td>q</td><td>q [m-2]</td><td>q</td><td></td></tr>
+<tr><td>rms thickness error [nm]</td><td>rms thickness error</td><td>rms thickness error [nm]</td><td>rms thickness error</td><td></td></tr>
+<tr><td>Viscosity of gas [µPa s]</td><td>viscosity of gas</td><td>Viscosity of gas [µPa s]</td><td>viscosity of ga</td><td></td></tr>
+<tr><td>Spot size; objective lens [µm]</td><td>spot size; objective lens</td><td>Spot size | objective lens [µm]</td><td>spot size | objective len</td><td></td></tr>
+<tr><td>Precision of the film thickness measurement [nm]</td><td>precision of the film thickness measurement</td><td>Precision of the film thickness measurement [nm]</td><td>precision of the film thickness measurement</td><td></td></tr>
+<tr><td>Closing of the gate valve [cm]</td><td>closing of the gate valve</td><td>Closing of the gate valve [cm]</td><td>closing of the gate valve</td><td></td></tr>
+<tr><td>Counts/s vs Wavelength [counts/s; nm]</td><td>counts/s vs wavelength</td><td>Counts/s vs Wavelength [counts/s; nm]</td><td>counts/s vs wavelength</td><td></td></tr>
+<tr><td>Counts/s vs Wavelength (infrared) [counts/s; nm]</td><td>counts/s vs wavelength (infrared)</td><td>Counts/s vs Wavelength (infrared) [counts/s; nm]</td><td>counts/s vs wavelength</td><td></td></tr>
+<tr><td>Itotal</td><td>itotal</td><td>Itotal</td><td>itotal</td><td></td></tr>
+<tr><td>IO2+/Itotal; IO/Itotal</td><td>io2+/itotal; io/itotal</td><td>IO2+/Itotal | IO/Itotal</td><td>io2+/itotal | io/itotal</td><td></td></tr>
+<tr><td>Counts/s vs Energy; m/z = +16; m/z = +32 [counts/s; eV]</td><td>counts/s vs energy; m/z = +16; m/z = +32</td><td>Counts/s vs Energy | m/z = +16 | m/z = +32 [counts/s; eV]</td><td>counts/s vs energy | m/z = +16 | m/z = +32</td><td></td></tr>
+<tr><td>Counts/s vs Energy; m/z = -16; m/z = -32 [counts/s; eV]</td><td>counts/s vs energy; m/z = -16; m/z = -32</td><td>Counts/s vs Energy | m/z = -16 | m/z = -32 [counts/s; eV]</td><td>counts/s vs energy | m/z = -16 | m/z = -32</td><td></td></tr>
+<tr><td>Activated gas fraction</td><td>activated gas fraction</td><td>Activated gas fraction</td><td>activated gas fraction</td><td></td></tr>
+<tr><td>Fitted exposures (Ψ)</td><td>fitted exposures</td><td>Fitted exposures (Ψ)</td><td>fitted exposure</td><td></td></tr>
+<tr><td>Area per surface site s0 [m2]</td><td>area per surface site s0</td><td>Area per surface site s0 [m2]</td><td>area per surface site s0</td><td></td></tr>
+<tr><td>Mass of atomic O [amu]</td><td>mass of atomic o</td><td>Mass of atomic O [amu]</td><td>mass of atomic o</td><td></td></tr>
+<tr><td>OES integration time [s]</td><td>oes integration time</td><td>OES integration time [s]</td><td>oes integration time</td><td></td></tr>
+<tr><td>EQP energy step [eV]</td><td>eqp energy step</td><td>EQP energy step [eV]</td><td>eqp energy step</td><td></td></tr>
+<tr><td>Gas-only stabilization sub-steps of the oxygen pulse [s]</td><td>gas-only stabilization sub-steps of the oxygen pulse</td><td>Gas-only stabilization sub-steps of the oxygen pulse [s]</td><td>gas-only stabilization sub-steps of the oxygen pulse</td><td></td></tr>
+<tr><td>Technique; Reactor (ALD or EQP chamber)</td><td>technique; reactor</td><td>Technique | Reactor (ALD or EQP chamber)</td><td>technique | reactor</td><td>Reactor (ALD or EQP chamber) -&gt; reactor, reactor_type</td></tr>
+<tr><td>Growth regimes (saturation spread out in space)</td><td>growth regimes</td><td>Growth regimes (saturation spread out in space)</td><td>growth regime</td><td></td></tr>
+<tr><td>rho (film density; model input) [kg m-3]</td><td>rho (film density; model input)</td><td>rho (film density; model input) [kg m-3]</td><td>rho</td><td>rho (film density; model input) [kg m-3] -&gt; film_density</td></tr>
+<tr><td>Alumina film density (footnote e; model input) [kg m-3]</td><td>alumina film density (footnote e; model input)</td><td>Alumina film density (footnote e; model input) [kg m-3]</td><td>alumina film density</td><td></td></tr>
+</table>
+<h2>FIX 2 never matches, P155 vs P156</h2><p>psed_v2/kb/reports/P156_propose.fix2_matches.csv</p>
+<table><tr><th>paper</th><th>row</th><th>label</th><th>P155 never match</th><th>P156 never match</th><th>change</th></tr>
+<tr><td>yli18</td><td>eq14</td><td>Q</td><td>q [m-2]</td><td></td><td>only in P155</td></tr>
+<tr><td>yli18</td><td>tabI.cap</td><td>rms thickness error</td><td>rms thickness error [nm]</td><td>rms thickness error [nm]</td><td>same</td></tr>
+<tr><td>yli18</td><td>tabI.r1c7</td><td>rms thickness error</td><td>rms thickness error [nm]</td><td>rms thickness error [nm]</td><td>same</td></tr>
+<tr><td>yli18</td><td>tabI.r2c7</td><td>rms thickness error</td><td>rms thickness error [nm]</td><td>rms thickness error [nm]</td><td>same</td></tr>
+<tr><td>yli18</td><td>tabu1.r13c2</td><td>Viscosity of gas</td><td>Viscosity of gas [µPa s]</td><td>Viscosity of gas [µPa s]</td><td>same</td></tr>
+<tr><td>yim20</td><td>s7.p2</td><td>accelerating voltage</td><td>Accelerating voltage [keV]</td><td>Accelerating voltage [keV]</td><td>same</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>b_{\text{TMA}}</td><td></td><td>bfilm; bTMA</td><td>new in P156</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c0</td><td>Q</td><td>q [m-2]</td><td></td><td>only in P155</td></tr>
+</table>
+<h2>FIX 2 expected matches and superseded labels</h2><p>psed_v2/kb/reports/P156_propose.fix2_expected.txt</p>
+<pre>Expected matches the directive names, under the normalization as specified (no fuzzier):
+- acceleration voltage (mat22 s5.p14): &#x27;acceleration voltage&#x27; vs &#x27;accelerating voltage&#x27;: not equal
+- mean_free_path (the entry): &#x27;meanfreepath&#x27; vs &#x27;mean free path of tma&#x27;: not equal
+  acceleration / accelerating differ beyond a trailing s; &#x27;of TMA&#x27; stays in the never label. Neither matches; acceleration_voltage stays a candidate,
+  &#x27;Mean free path of TMA&#x27; stays a never label (it does not supersede). Matching them needs a stem rule or a word drop: not added (the user decides).
+- Superseded by an attribute entry: no (an attribute entry is the pilot&#x27;s way of storing a never label, check 12): Intensity -&gt; signal_intensity,
+  q -&gt; saturation_density, Spot size -&gt; probe_resolution, Slope ... -&gt; front_slope, Linear fitting residual R2 -&gt; fit_r2, Pillar layout -&gt;
+  pillar_layout, magnification -&gt; objective_magnification stay never labels.
+- The trailing-s rule turns the symbol xs (&#x27;xt; xs [µm]&#x27;) into x, an alias of distance and reaction_stoichiometry: superseded by accident; xs
+  suppresses nothing now (no round-1 row is labelled xs: yli18 tabu1.r9c2 is labelled with its meaning). Reported, not worked around.
+</pre>
+<h2>FIX 3 values without a quantity</h2><p>psed_v2/kb/reports/P156_propose.fix3_values.csv</p>
+<table><tr><th>paper</th><th>element</th><th>raw text</th><th>unit</th></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>MHz</td><td>MHz</td></tr>
+</table>
+<h2>FIX 3 cause; rule c</h2><p>psed_v2/kb/reports/P156_propose.fix3_cause.txt</p>
+<pre>mat22 s5.p1: the pass-1 record is {type: setting, quantity: plasma_power, label_as_printed: null, value: 13.56, unit: MHz, about: paper}.
+compile.py step e (Run.units): unit_symbol(&#x27;MHz&#x27;) is None (MHz is not in units.yaml; plasma_power&#x27;s unit is W, dimension power), so the record
+is kept with the unit as printed and an unmapped row field=unit is written with label_as_printed = the record&#x27;s label_as_printed, which is null:
+hence no label (compile.py not changed in this unit). The value is an RF frequency filed under plasma_power.
+Rule c (positioning_uncertainty): rule_c_trace.csv lists the condition columns that fired. The comparison is the whole normalized label
+(norm(label) in the set of normalized condition labels), not a substring: &#x27;positioning uncertainty&#x27; == &#x27;positioning uncertainty&#x27;. A run condition
+really names it: compile placed the record s16.p7 (other[positioning uncertainty], 2 µm) as a setting on the 16 specimens of yim20
+(experiments.csv setting:other:positioning uncertainty), so the condition is the candidate&#x27;s own record. No change to the rule.
+</pre>
+<h2>FIX 3 rule c trace (positioning_uncertainty)</h2><p>psed_v2/kb/reports/P156_propose.rule_c_trace.csv</p>
+<table><tr><th>paper</th><th>run</th><th>condition column</th><th>value</th><th>normalized</th><th>candidate label normalized</th></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>setting:other:positioning uncertainty</td><td>2 µm</td><td>positioning uncertainty</td><td>positioning uncertainty</td></tr>
+</table>
+<h2>Re-proposal run</h2><p>psed_v2/kb/reports/P156_propose.run.txt</p>
+<pre>round 1: 47 candidates (47 new, 0 merged with earlier undecided rows; 53 undecided rows of round 1 rebuilt); 6 rows matched never.csv (15 never parts superseded by a live entry), 1 values without a quantity, 13 symbol and 0 label merges into 29 symbol-table rows
+pending.csv: 49 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+
+propose now accepts a proposed round (not yet applied): it rebuilds that round&#x27;s undecided rows (53 here) and keeps every decided row
+and every other round&#x27;s row; an earlier undecided row gives back this round&#x27;s papers before the regrouping.
+decide.html byte round trip after the re-proposal (headless chromium): (1) no change: 17241 bytes downloaded, pending.csv 17241 bytes; byte for byte equal: True; (2) one decision on elam_monte_carlo: reject + note; 1 line removed, 1 line added; page errors: none
+</pre>
+<h2>Candidates as decide.html shows them</h2><p>psed_v2/kb/reports/P156_propose.candidates.csv</p>
+<table><tr><th>id</th><th>printed</th><th>aliases</th><th>kind</th><th>proposed_definition</th><th>unit</th><th>n_papers</th><th>dois</th><th>evidence</th><th>nearest</th><th>nearest_definition</th><th>score</th><th>rule_hint</th><th>first_round</th></tr>
+<tr><td>elam_monte_carlo</td><td>elam monte carlo</td><td></td><td>model</td><td>One-dimensional Monte Carlo random walk of reactant molecules in a cylindrical pore with Knudsen steps, self-limiting reaction with probability S, pore narrowing by 2G per reacted element; parameters initial_sticking_coefficient, saturation_density, growth_per_cycle.</td><td></td><td>1</td><td>10.1021/cm0303080</td><td>10.1021_cm0303080: — Elam 2003 Sec. IV A (Monte Carlo simulation of ALD in nanoporous AA membranes)</td><td></td><td></td><td>0</td><td>none</td><td>0</td></tr>
+<tr><td>evacuated_below</td><td>evacuated below</td><td></td><td>quantity</td><td>evacuated below: the free label of 1 records in 1 papers; first record (ela03:s3.p26#3): quasi-static cycle: the tube is pumped below 0.035 Torr before each dose and after it</td><td>Torr</td><td>1</td><td>10.1021/cm0303080</td><td>10.1021_cm0303080:s3.p26 s3.p27 — ela03:s3.p26#3 (s3.p26;s3.p27)</td><td></td><td></td><td>0</td><td>none</td><td>0</td></tr>
+<tr><td>acceleration_voltage</td><td>acceleration voltage</td><td></td><td>quantity</td><td>SEM (Zeiss Sigma) using an acceleration voltage of 3 kV</td><td>kV</td><td>1</td><td>10.1021/acs.chemmater.2c01154</td><td>10.1021_acs.chemmater.2c01154:s5.p14 — SEM (Zeiss Sigma) using an acceleration voltage of 3 kV</td><td>transistor_iv</td><td>Current-voltage characteristics of a field-effect transistor made from the film.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>adsorption_rate</td><td>Adsorption rate</td><td>fads; f_ads</td><td>quantity</td><td>Adsorption rate</td><td>m^-2 s^-1</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r10c0 — Adsorption rate</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>amount_of_reactant_a</td><td>Amount of reactant A</td><td>nA</td><td>quantity</td><td>Amount of reactant A</td><td>mol</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r22c0 — Amount of reactant A</td><td>entry_sides</td><td>[withheld: names a held-out paper]</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>apparent_longitudinal_diffusion_coefficient</td><td>Apparent longitudinal diffusion coefficient</td><td>D</td><td>quantity</td><td>Apparent longitudinal diffusion coefficient</td><td>m^2/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r4c0 — Apparent longitudinal diffusion coefficient</td><td>effective_diffusion_coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>average_speed_of_molecules_a</td><td>Average speed of molecules A</td><td>vA; v_A</td><td>quantity</td><td>Average speed of molecules A</td><td>m/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r5c2 — Average speed of molecules A</td><td>reactant_number_density</td><td>The number of reactant molecules per unit gas volume n (n_P0 at the surface of a porous body), the concentration variable of Heikkinen 2024&#x27;s diffusion-reaction equation; a model output along the depth and a model input at the surface. Converts to the partial pressure by the ideal gas law p = n·k_B·T given the temperature (P109).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>avogadro_constant</td><td>Avogadro constant</td><td>N0</td><td>quantity</td><td>Avogadro constant</td><td>1/mol</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r23c0 — Avogadro constant</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>beam_energy</td><td>beam energy</td><td></td><td>quantity</td><td>using a 2 MeV He+ beam.</td><td>MeV</td><td>1</td><td>10.1021/acs.chemmater.2c01154</td><td>10.1021_acs.chemmater.2c01154:s5.p17 — using a 2 MeV He+ beam.</td><td>binding_energy</td><td>The binding energy of an XPS core-level component of the film, which names its chemical state.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>bent</td><td>bent</td><td></td><td>quantity</td><td>The 100 nm design channel height bent ca. 40 nm</td><td>nm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s16.p5 — The 100 nm design channel height bent ca. 40 nm</td><td></td><td></td><td>0</td><td>none</td><td>1</td></tr>
+<tr><td>collision_rate_at_unit_pressure</td><td>Collision rate at unit pressure</td><td>Q</td><td>quantity</td><td>Collision rate at unit pressure</td><td>m-2 s-1 Pa-1</td><td>2</td><td>10.1039/d0cp03358h;10.1063/1.5028178</td><td>10.1039_d0cp03358h:tabu2.r15c0 — Collision rate at unit pressure (\text{m}^{-2} \text{s}^{-1} \text{Pa}^{-1}) || 10.1063_1.5028178:tabu1.r28c0 — Collision rate at unit pressure</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>3</td><td>a</td><td>1</td></tr>
+<tr><td>collision_rate_of_molecule_a</td><td>Collision rate of molecule A</td><td>zA; z_A</td><td>quantity</td><td>Collision rate of molecule A</td><td>1/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r11c2 — Collision rate of molecule A</td><td>deposition_rate</td><td>Film thickness grown per hour: the growth per cycle over the cycle time (a transform).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>desorption_rate</td><td>Desorption rate</td><td>fdes; f_des</td><td>quantity</td><td>Desorption rate</td><td>m^-2 s^-1</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r11c0 — Desorption rate</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>diffusion_coefficient_without_pillars</td><td>Diffusion coefficient without pillars</td><td>D_0</td><td>quantity</td><td>Diffusion coefficient without pillars</td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu1.r9c0 — Diffusion coefficient without pillars (\text{m}^2 \text{s}^{-1})</td><td>effective_diffusion_coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>diffusion_resistance_of_a_rectangular_channel</td><td>Diffusion resistance of a rectangular channel</td><td>R</td><td>quantity</td><td>Diffusion resistance of a rectangular channel</td><td>s m-3</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu2.r17c0 — Diffusion resistance of a rectangular channel (\text{s m}^{-3})</td><td>distance</td><td>Position along the direction of reactant diffusion, measured from the feature entrance, positive inward and negative outside the feature.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>diffusion_resistance_of_one_row_of_pillars</td><td>Diffusion resistance of one row of pillars</td><td>R_row</td><td>quantity</td><td>Diffusion resistance of one row of pillars</td><td>s m-3</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu2.r18c0 — Diffusion resistance of one row of pillars (\text{s m}^{-3})</td><td>ylilammi_diffusion_reaction</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>displacement</td><td>displacement</td><td></td><td>quantity</td><td>displacement of ca. 25 nm</td><td>nm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s16.p5 — displacement of ca. 25 nm</td><td></td><td></td><td>0</td><td>none</td><td>1</td></tr>
+<tr><td>distance_between_pillars</td><td>Distance between pillars</td><td>a</td><td>quantity</td><td>Distance between pillars</td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu1.r0c0 — Distance between pillars (m)</td><td>membrane_sagging</td><td>Bending of the channel&#x27;s roof membrane between the pillars, which narrows the channel locally.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>Distance between rows of pillars</td><td>l</td><td>quantity</td><td>Distance between rows of pillars</td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu2.r7c0 — Distance between rows of pillars (\mu\text{m})</td><td>membrane_sagging</td><td>Bending of the channel&#x27;s roof membrane between the pillars, which narrows the channel locally.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>distance_where_the_linear_part_of_the_reactant_pressure_is_zero</td><td>Distance where the linear part of the reactant pressure is zero</td><td>xs</td><td>quantity</td><td>Distance where the linear part of the reactant pressure is zero</td><td>m</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r9c2 — Distance where the linear part of the reactant pressure is zero</td><td>partial_pressure</td><td>Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>equilibrium_surface_coverage_in_the_langmuir_model</td><td>Equilibrium surface coverage in the Langmuir model</td><td>θeq</td><td>quantity</td><td>Equilibrium surface coverage in the Langmuir model</td><td>1</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r15c2 — Equilibrium surface coverage in the Langmuir model</td><td>ylilammi_diffusion_reaction</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td><td>4</td><td>none</td><td>1</td></tr>
+<tr><td>error_in_thickness_measurement</td><td>Error in thickness measurement</td><td>Δs</td><td>quantity</td><td>Error in thickness measurement</td><td>m</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r12c2 — Error in thickness measurement</td><td>optical_model</td><td>The optical model of the reflectometer fit, whose mismatch with the real stack gives a systematic thickness error.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>flux_of_material_in_direction_x</td><td>Flux of material in direction x</td><td>F</td><td>quantity</td><td>Flux of material in direction x</td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu1.r10c0 — Flux of material in direction x (\text{mol m}^{-2} \text{s}^{-1})</td><td>material</td><td>The material being deposited; value is a species id.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>gas_constant</td><td>Gas constant</td><td>R</td><td>quantity</td><td>Gas constant</td><td>J K^-1 mol^-1</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r29c0 — Gas constant</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>gas_flow_of_the_reactant</td><td>Gas flow of the reactant</td><td>F</td><td>quantity</td><td>Gas flow of the reactant</td><td>mol/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r9c0 — Gas flow of the reactant</td><td>gas_diffusion</td><td>Transport of the reactant through the pores or the channel by gas-phase diffusion (Knudsen diffusion in narrow features).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>hydraulic_diameter_of_the_channel</td><td>Hydraulic diameter of the channel</td><td>h</td><td>quantity</td><td>Hydraulic diameter of the channel</td><td>m</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r15c0 — Hydraulic diameter of the channel</td><td>feature_width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>laser_power</td><td>Laser power</td><td></td><td>quantity</td><td>Laser power was estimated as 0.6 mW on the sample</td><td>mW</td><td>1</td><td>10.1021/acs.chemmater.2c01154</td><td>10.1021_acs.chemmater.2c01154:s5.p15 — Laser power was estimated as 0.6 mW on the sample</td><td>plasma_power</td><td>Power delivered to the plasma source during the plasma step (the RF power of Cremers 2019, Sec. IV C).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>length_of_the_line</td><td>length of the line</td><td></td><td>quantity</td><td></td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p3 — length of the line</td><td>feature_depth</td><td>The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>length_of_the_linear_part_of_the_pressure_distribution</td><td>Length of the linear part of the pressure distribution</td><td>xt</td><td>quantity</td><td>Length of the linear part of the pressure distribution</td><td>m</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r10c2 — Length of the linear part of the pressure distribution</td><td>pulse_time</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>measurement_area</td><td>measurement area</td><td></td><td>quantity</td><td></td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p4 — measurement area</td><td>feature_narrowing</td><td>The growing film narrows the feature (a channel or a pore), raising the aspect ratio the process sees and shrinking the surface area.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>measurement_points_interval</td><td>measurement points interval</td><td></td><td>quantity</td><td></td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p3 — measurement points interval</td><td>wavelength_range</td><td>wavelength interval covered by an optical measurement (reflectometry, transmittance)</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>net_adsorption_rate</td><td>Net adsorption rate</td><td>g</td><td>quantity</td><td>Net adsorption rate</td><td>1/(m2 s)</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r12c0 — Net adsorption rate</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>penetration_depth_parameter_in_the_gordon_model</td><td>Penetration depth parameter in the Gordon model</td><td>C</td><td>quantity</td><td>Penetration depth parameter in the Gordon model</td><td>1/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r3c0 — Penetration depth parameter in the Gordon model</td><td>penetration_depth</td><td>The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>pillar_diameter</td><td>Pillar diameter</td><td>d</td><td>quantity</td><td>Pillar diameter</td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu1.r5c0 — Pillar diameter (\mu\text{m})</td><td>body_diameter</td><td>[withheld: names a held-out paper]</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>positioning_uncertainty</td><td>positioning uncertainty</td><td></td><td>quantity</td><td>positioning uncertainty to be on the order of 2 μm</td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s16.p7 — positioning uncertainty to be on the order of 2 μm</td><td></td><td></td><td>0</td><td>c</td><td>1</td></tr>
+<tr><td>series</td><td>Series</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tab1.r1c0 — Series</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>series_a</td><td>Series A</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s6.p2 — Series A</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>series_c</td><td>Series C</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:fig9.cap — Series C</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>series_d</td><td>Series D</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:fig9.cap — Series D</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>series_e</td><td>Series E</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:fig11.cap — Series E</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>series_f</td><td>Series F</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:fig11.cap — Series F</td><td>molar_mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>step</td><td>step</td><td></td><td>quantity</td><td></td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p5 — step</td><td>step_coverage</td><td>The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a).</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>surface_area</td><td>Surface area</td><td>A</td><td>quantity</td><td>Surface area</td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:tabu1.r1c0 — Surface area (\text{m}^2)</td><td>feature_narrowing</td><td>The growing film narrows the feature (a channel or a pore), raising the aspect ratio the process sees and shrinking the surface area.</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>tilde_xi</td><td>\tilde{\xi}</td><td></td><td>quantity</td><td>\tilde{\xi} = x/L</td><td>1</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:fig2.cap — \tilde{\xi} = x/L</td><td></td><td></td><td>0</td><td>none</td><td>1</td></tr>
+<tr><td>time_constant_of_adsorption</td><td>Time constant of adsorption</td><td>τ</td><td>quantity</td><td>Time constant of adsorption</td><td>s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r17c2 — Time constant of adsorption</td><td>adsorption_equilibrium_constant</td><td>Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>top_membrane_removal</td><td>top membrane removal</td><td></td><td>quantity</td><td></td><td></td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p1 — top membrane removal</td><td>infrared_microscopy</td><td>Infrared light microscopy through a silicon membrane: top-view images of the film extent in a lateral cavity (silicon is transparent in the infrared).</td><td>2</td><td>none</td><td>1</td></tr>
+<tr><td>total_scan_length</td><td>total scan length</td><td></td><td>quantity</td><td></td><td>µm</td><td>1</td><td>10.1039/d0cp03358h</td><td>10.1039_d0cp03358h:s7.p5 — total scan length</td><td>feature_depth</td><td>The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>velocity_of_gas_front</td><td>Velocity of gas front</td><td>v</td><td>quantity</td><td>Velocity of gas front</td><td>m/s</td><td>1</td><td>10.1063/1.5028178</td><td>10.1063_1.5028178:tabu1.r4c2 — Velocity of gas front</td><td>carrier_gas</td><td>The inert gas in which the reactants are entrained and which purges the reactor between reactant pulses (Cremers 2019, Sec. II C; Popov 2025, Sec. I); value is a species id.</td><td>1</td><td>none</td><td>1</td></tr>
+<tr><td>voltage</td><td>voltage</td><td></td><td>quantity</td><td>JEOL ARM 200F instrument operated at 200 kV.</td><td>kV</td><td>1</td><td>10.1021/acs.chemmater.2c01154</td><td>10.1021_acs.chemmater.2c01154:s5.p18 — JEOL ARM 200F instrument operated at 200 kV.</td><td>transistor_iv</td><td>Current-voltage characteristics of a field-effect transistor made from the film.</td><td>1</td><td>none</td><td>1</td></tr>
+</table>
+<h2>export.py --check</h2><p>psed_v2/kb/reports/P156_propose.checks.csv</p>
+<table><tr><th>check</th><th>result</th><th>detail</th></tr>
+<tr><td>1. every schema-miner leaf path appears exactly once</td><td>pass</td><td>30 paths</td></tr>
+<tr><td>2. every entry has a definition; review-defined terms cite the review</td><td>pass</td><td></td></tr>
+<tr><td>3. every extension entry has gold evidence</td><td>pass</td><td></td></tr>
+<tr><td>4. no alias in two entries; ambiguous words only in ambiguous_aliases</td><td>pass</td><td></td></tr>
+<tr><td>5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes</td><td>pass</td><td>56 extension quantities</td></tr>
+<tr><td>6. transform inputs/outputs and model parameters are existing ids; ids unique</td><td>pass</td><td></td></tr>
+<tr><td>7. no species, structure or process taken from a review table (each has gold evidence)</td><td>pass</td><td></td></tr>
+<tr><td>8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty</td><td>pass</td><td>16 nodes, 8 top-level, 13 leaves, depth 2</td></tr>
+<tr><td>9. every categorical has values_from; every species has kind; no value alias under two values</td><td>pass</td><td>186 value aliases</td></tr>
+<tr><td>10. no orphan: every entry and hierarchy node has at least one edge</td><td>pass</td><td>all connected; only as a qualifier value: [&#x27;o_atom&#x27;]</td></tr>
+<tr><td>11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals</td><td>pass</td><td>3 families: conformality (5); growth_amount (7); composition (3)</td></tr>
+<tr><td>12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias</td><td>pass</td><td>attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity</td></tr>
+<tr><td>13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots</td><td>pass</td><td>10 classes, 10 slot entries, 12 structure instances</td></tr>
+<tr><td>14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted</td><td>pass</td><td>49 rows: undecided 49</td></tr>
+<tr><td>15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason</td><td>pass</td><td>composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)</td></tr>
+</table>
+</body></html>
