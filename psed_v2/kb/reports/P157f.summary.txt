@@ -1,0 +1,17 @@
+P157f, 0 calls. The audit cycle closed.
+1. Held-out decision (user, 2026-10-23): papers 1-12 (the pilot golds) are development papers; papers 13+ are held-out. history.csv round 0
+   edit HELD_OUT (history_row); CLAUDE.md rule replaced (claude_md.diff); kb/extract/common.py HELD_OUT = set() (code.diff); grow.py add
+   still refuses whatever HELD_OUT lists; the withheld masking is gone: ontology.html 32 masked fields -> 0, decide.html 3 -> 0 (one was
+   stored in pending.csv's nearest_definition of pillar_diameter: restored from body_diameter's definition). rounds.csv round 0 pids = the
+   twelve (round0_pids: 10.1116_6.0001094, Werbrouck2021, an evidence source but not a pilot paper, left the list; gre23, yim22, mat23 joined).
+2. Abbreviations back to aliases: GPC (2 papers), EAR, SC (all three already aliases; their symbols dropped). AR NOT moved: it is a key of
+   vocabularies.ambiguous_aliases (P131b-12b), and as an alias it fails check 4 (tried: export.py --check 14 of 15); left a symbol (abbreviations_not_moved).
+3. Symbol papers: p_A0 and c gain yli18 (their evidence line names yim22 and yli18); no other symbol's evidence line names a missing paper.
+4. never.csv: the 45 pilot rows' paper -> pid; 3 rows symbol yes (q [nm-2] yim20, q [m-2] yli18, rho (film density; model input) yim20); the
+   Werbrouck row 'IO2+/Itotal; IO/Itotal' split into its symbol part and its word part (95 rows). Changed matches: yli18 eq14 Q and yim20
+   tabu2.r15c0 Q now reach never through their round-1 symbol rows (Model internals), no longer through the pilot's 'q [nm-2]' (never_matches_changed).
+5. Recompiled yli18, yim20, mat22: grow.py audit 1 PASS (42 decisions, 85 rows, effect 83, n/a 2; A2 33 agree; A3 11 open rows classified,
+   pending 7/7). export.py --check 15 of 15. Score vs gold identical in every column and type; check.py --dir 159 / 306 / 263, same problems.
+   check.py's gold-vocabulary check now covers 12 golds: 0 -> 2 misses, both gre23 units P142b removed from units.yaml (MPa, the litre 'l')
+   (gold_vocabulary, gold_vocabulary_misses).
+Open: AR (alias in ambiguous_aliases, or stay a symbol); MPa and the litre back into units.yaml for gre23's gold.

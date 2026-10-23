@@ -1,0 +1,139 @@
+diff --git a/psed_v2/kb/extract/common.py b/psed_v2/kb/extract/common.py
+index eaa4fb1..19ed45c 100644
+--- a/psed_v2/kb/extract/common.py
++++ b/psed_v2/kb/extract/common.py
+@@ -30,7 +30,7 @@ from figures import client_for, load_env, loads_json  # noqa: E402,F401
+ 
+ MODEL = "gemini-3.8-flash"                                                       # user, P133: pinned (gemini-2.5-flash 404s)
+ KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
+-HELD_OUT = {"yim22", "gre23", "mat23"}
++HELD_OUT = set()                                                                 # P157f (user, 2026-10-23): papers 1-12 (the pilot golds) are development papers; papers 13+ are held-out (none yet)
+ CONTENT_TTL = "3600s"                                                           # P148: the cached prefix lives at most an hour (deleted at the end of the run)
+ HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
+ CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 0e1f871..d29e10d 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -136,7 +136,8 @@ def never_index(entries):
+     norm_label, matched in any paper. A symbol row (P157d, symbol yes): its label, symbol_key, matched only in its paper.
+     A word part that names a live non-attribute entry (its id, name or an alias; P157d: not its label) and a symbol row that is a symbol
+     of a live entry in the same paper are superseded and suppress nothing: an attribute entry is how the pilot stores a never label
+-    (check 12). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute."""
++    (check 12). P157f: a symbol row is split into parts and read in the same 'label [unit]' format, one key per paper of its paper column (pids,
++    ';'-separated). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute."""
+     names, syms = {}, {}
+     for e in entries:
+         if e.get("attribute"):
+@@ -148,12 +149,14 @@ def never_index(entries):
+             syms.setdefault((sy.get("paper", ""), symbol_key(sy["text"])), []).append(e["id"])
+     parts, sup, sparts = {}, [], {}
+     for r in never_rows():
+-        if r.get("symbol") == "yes":
+-            k = (r["paper"], symbol_key(r["label"]))
+-            if syms.get(k):
+-                sup.append((r["label"], f"{r['label']} in {r['paper']}", ", ".join(syms[k])))
+-            else:
+-                sparts.setdefault(k, r)
++        if r.get("symbol") == "yes":                                            # P157f: every part, in each paper of the row (pids)
++            for p in split_parts(r["label"]):
++                for paper in [x for x in str(r["paper"]).split(";") if x] or [""]:
++                    k = (paper, symbol_key(_never_label(p)))
++                    if syms.get(k):
++                        sup.append((r["label"], f"{p} in {paper}", ", ".join(syms[k])))
++                    else:
++                        sparts.setdefault(k, r)
+             continue
+         for p in split_parts(r["label"]):
+             k = norm_label(_never_label(p))                                     # never.csv's label format: 'label [unit]' (check 12 reads it so)
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index b8a4834..1e52d08 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -70,7 +70,7 @@ HELD_KEYS = set(literal(V2 / "kb" / "extract" / "common.py", "HELD_OUT"))
+ HELD = HELD_KEYS | {p for p, k in PAPERS.items() if k in HELD_KEYS}
+ KEY2PID = {k: p for p, k in PAPERS.items()}
+ KEY2PID.update({k: v.rstrip(".") for k, v in re.findall(r"(\w+) = (10\.[\w.\-]+)", "\n".join(l for l in ONTO.read_text(encoding="utf-8").splitlines()[:4] if l.startswith("#")))})   # the header's evidence keys
+-HELD_RX = re.compile(r"\b(" + "|".join(re.escape(h) for h in sorted(HELD)) + r")\b")
++HELD_RX = re.compile(r"\b(" + "|".join(re.escape(h) for h in sorted(HELD)) + r")\b") if HELD else None   # P157f: none while papers 13+ do not exist
+ 
+ 
+ def doi_of():
+@@ -440,7 +440,7 @@ document.querySelectorAll('input.filter').forEach(f=>f.addEventListener('input',
+ 
+ 
+ def evidence_items(row):
+-    return [x for x in (row["evidence"] or "").split(" || ") if x and not HELD_RX.search(x)]
++    return [x for x in (row["evidence"] or "").split(" || ") if x]           # P157f: papers 1-12 are development papers, nothing withheld
+ 
+ 
+ def doi_links(row):
+@@ -886,7 +886,7 @@ def cmd_init():
+         reason = f"origin {e.get('origin', '')}; first in {h} {d} ({s[:70]})" + (f"; deviation {dev.get('type')}: {str(dev.get('reason', ''))[:100]}" if dev else "") \
+             + ("; P142b: a method made an entry (kb/reports/P142b_ontology.c_methods.csv)" if e["id"] in c_methods else "")
+         out.append(dict(date=d, round=0, action="add", id=e["id"], kind=e["type"], target="", source_pids=";".join(pids),
+-                        source_dois=";".join(dois.get(p, "") for p in pids), decided_by="pilot", reason=HELD_RX.sub("held-out", reason), ontology_sha256_after=blob_sha))
++                        source_dois=";".join(dois.get(p, "") for p in pids), decided_by="pilot", reason=HELD_RX.sub("held-out", reason) if HELD_RX else reason, ontology_sha256_after=blob_sha))
+     never = [x for x in X.never_rows() if x["source"].startswith("pilot")]
+     nev_pids = lambda k: KEY2PID.get(k, k if k.startswith("10.") else "")   # noqa: E731
+     out += [dict(date=today(), round=0, action="never", id=snake(x["label"]), kind="", target=x["category"], source_pids=nev_pids(x["paper"]),
+@@ -908,13 +908,9 @@ STYLE = ("body{font-family:sans-serif;font-size:13px;margin:16px;color:#222;back
+          "pre{white-space:pre-wrap;border:1px solid #bbb;padding:8px}.fail{background:#f6c0c0}.pass{background:#d8f0d8}")
+ 
+ 
+-WITHHELD = "[withheld: names a held-out paper]"
+-
+-
+ def shown(x):
+-    """A text as the pages show it: withheld whole when it names a held-out paper (CLAUDE.md: never shown), never cut."""
+-    s = "" if x is None else str(x)
+-    return WITHHELD if HELD_RX.search(s) else s
++    """A text as the pages show it, never cut (P157f: nothing is withheld; papers 1-12 are development papers)."""
++    return "" if x is None else str(x)
+ 
+ 
+ def esc(x):
+@@ -1180,17 +1176,17 @@ def report_page():
+     tree_check = tree_result(trees)
+     summary = [["ontology.yaml sha256", sha(ONTO)], ["ontology hash (export.ontology_hash: this file without its header line, then units.yaml)", X.ontology_hash()],
+                ["rounds", len(rs)], ["unmapped (figure import)", len(unm)],
+-               ["checks passed", f"{sum(1 for c in checks if c[1])} of {len(checks)}"], ["text fields withheld on this page (they name a held-out paper)", "{withheld}"]]
++               ["checks passed", f"{sum(1 for c in checks if c[1])} of {len(checks)}"]]
+     check_html = "".join(f"<tr class='{'pass' if c[1] else 'fail'}'><td>{esc(c[0])}</td><td>{'pass' if c[1] else 'FAIL'}</td><td>{esc(c[2])}</td>"
+                          f"<td>{'<ul>' + ''.join(f'<li>{esc(b)}</li>' for b in c[3]) + '</ul>' if c[3] else '—'}</td></tr>" for c in checks)
+     ent_html = ""
+     for k in ("quantity", "categorical", "species", "structure", "mechanism", "method", "model"):
+         rows = [[e["id"], e.get("name", ""), e.get("definition", ""), e.get("unit", ""), e.get("origin", ""), ", ".join(src[e["id"]]["rounds"]),
+-                 "; ".join(src[e["id"]]["pids"]), "; ".join(src[e["id"]]["dois"]), "; ".join(x for x in map(str, e.get("evidence") or []) if not HELD_RX.search(x)),
++                 "; ".join(src[e["id"]]["pids"]), "; ".join(src[e["id"]]["dois"]), "; ".join(map(str, e.get("evidence") or [])),
+                  ("replaced by " + (", ".join(e["replaced_by"]) if isinstance(e["replaced_by"], list) else e["replaced_by"])) if e.get("replaced_by") else "",
+                  "; ".join(e.get("aliases") or []), "; ".join(f"{x['text']} ({PAPERS.get(x.get('paper', ''), x.get('paper', '')) or 'no paper'})" for x in e.get("symbols") or [])]
+                 for e in entries if e["type"] == k]
+-        ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence (held-out removed)",
++        ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence",
+                                                                   "replaced", "aliases", "symbols (paper; P157d)"], rows)
+     sup = X.never_index([e for e in entries if not e.get("replaced_by")])[1]
+     round_pids = [p for r in rs if r["round"] != "0" for p in r["pids"].split(";") if p]
+@@ -1198,7 +1194,7 @@ def report_page():
+     cand = [candidate_cells(x, by_id) + [esc(x["decision"]), esc(x["alias_target"]), esc(x["never_category"]), esc(x["decision_note"]), esc(x["first_round"])] for x in pend]
+     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>ontology</title><style>{STYLE}</style></head><body><h1>PSED v2 ontology</h1>"
+             f"<p>Written by psed_v2/ontology/grow.py (report / apply) from ontology.yaml, units.yaml, history.csv, rounds.csv, pending.csv, never.csv and "
+-            f"unmapped.csv. Held-out papers are never shown.</p>"
++            f"unmapped.csv. Papers 1-12 (the pilot golds) are development papers (P157f); held-out papers (13+) are refused by grow.py add.</p>"
+             f"<h2>1. Kinds</h2><pre>{esc(chr(10).join(X.kinds_lines(o)))}</pre>"
+             f"<h2>2. Summary</h2><pre>{esc(chr(10).join(draw(trees[0])))}</pre>"
+             f"<pre class='{'pass' if tree_check[0].startswith('sum check: pass') and tree_check[1] == 'unplaced: none' else 'fail'}'>{esc(chr(10).join(tree_check))}</pre>"
+@@ -1220,10 +1216,10 @@ def report_page():
+             + table(NEVER_COLS + ["superseded by"], [[x[c] for c in NEVER_COLS] + ["; ".join(f"{p} → superseded by {e}" for lab, p, e in sup if lab == x["label"])] for x in nev])
+             + f"<h2>14. Unmapped</h2><h3>Values without a quantity (compiled unmapped rows of the rounds' papers with no label or only a unit; not candidates)</h3>"
+             + table(["pid", "element", "raw text", "unit"], [[u["pid"], u["element"], u["quote"], u["unit"]] for u in values])
+-            + f"<h3>Figure import ({len(unm)})</h3>{table(['paper', 'figure', 'panel', 'field', 'raw', 'reason'], [[x[c] for c in ('paper', 'figure', 'panel', 'field', 'raw', 'reason')] for x in unm if not HELD_RX.search(x['paper'])])}"
++            + f"<h3>Figure import ({len(unm)})</h3>{table(['paper', 'figure', 'panel', 'field', 'raw', 'reason'], [[x[c] for c in ('paper', 'figure', 'panel', 'field', 'raw', 'reason')] for x in unm])}"
+             "</body></html>\n")
+-    page = page.replace(esc("{withheld}"), str(page.count(WITHHELD)), 1)
+-    assert not HELD_RX.search(page), "a held-out paper in ontology.html"
++    if HELD_RX:
++        assert not HELD_RX.search(page), "a held-out paper in ontology.html"
+     REPORT.write_text(page, encoding="utf-8")
+     print(f"{REPORT}: {len(entries)} entries, {len(hist)} history rows, {len(pend)} pending, checks {sum(1 for c in checks if c[1])}/{len(checks)}")
+     print("\n".join(draw(trees[0]) + tree_check))                              # P157: the tree and its check, printed next to each other

@@ -1,0 +1,588 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P157f</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P157f</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P157f.summary.txt</p>
+<pre>P157f, 0 calls. The audit cycle closed.
+1. Held-out decision (user, 2026-10-23): papers 1-12 (the pilot golds) are development papers; papers 13+ are held-out. history.csv round 0
+   edit HELD_OUT (history_row); CLAUDE.md rule replaced (claude_md.diff); kb/extract/common.py HELD_OUT = set() (code.diff); grow.py add
+   still refuses whatever HELD_OUT lists; the withheld masking is gone: ontology.html 32 masked fields -&gt; 0, decide.html 3 -&gt; 0 (one was
+   stored in pending.csv&#x27;s nearest_definition of pillar_diameter: restored from body_diameter&#x27;s definition). rounds.csv round 0 pids = the
+   twelve (round0_pids: 10.1116_6.0001094, Werbrouck2021, an evidence source but not a pilot paper, left the list; gre23, yim22, mat23 joined).
+2. Abbreviations back to aliases: GPC (2 papers), EAR, SC (all three already aliases; their symbols dropped). AR NOT moved: it is a key of
+   vocabularies.ambiguous_aliases (P131b-12b), and as an alias it fails check 4 (tried: export.py --check 14 of 15); left a symbol (abbreviations_not_moved).
+3. Symbol papers: p_A0 and c gain yli18 (their evidence line names yim22 and yli18); no other symbol&#x27;s evidence line names a missing paper.
+4. never.csv: the 45 pilot rows&#x27; paper -&gt; pid; 3 rows symbol yes (q [nm-2] yim20, q [m-2] yli18, rho (film density; model input) yim20); the
+   Werbrouck row &#x27;IO2+/Itotal; IO/Itotal&#x27; split into its symbol part and its word part (95 rows). Changed matches: yli18 eq14 Q and yim20
+   tabu2.r15c0 Q now reach never through their round-1 symbol rows (Model internals), no longer through the pilot&#x27;s &#x27;q [nm-2]&#x27; (never_matches_changed).
+5. Recompiled yli18, yim20, mat22: grow.py audit 1 PASS (42 decisions, 85 rows, effect 83, n/a 2; A2 33 agree; A3 11 open rows classified,
+   pending 7/7). export.py --check 15 of 15. Score vs gold identical in every column and type; check.py --dir 159 / 306 / 263, same problems.
+   check.py&#x27;s gold-vocabulary check now covers 12 golds: 0 -&gt; 2 misses, both gre23 units P142b removed from units.yaml (MPa, the litre &#x27;l&#x27;)
+   (gold_vocabulary, gold_vocabulary_misses).
+Open: AR (alias in ambiguous_aliases, or stay a symbol); MPa and the litre back into units.yaml for gre23&#x27;s gold.
+</pre>
+<h2>Choices made, each reported</h2><p>psed_v2/kb/reports/P157f.notes.txt</p>
+<pre>Choices made in this unit, each reported:
+1. AR stays a symbol of aspect_ratio: moving it to aliases made export.py --check fail check 4 (&#x27;ar&#x27;: an alias that is a key of
+   vocabularies.ambiguous_aliases, P131b-12b). R3: not worked around; options: (a) AR stays a symbol (as now); (b) AR leaves
+   ambiguous_aliases and becomes an alias of aspect_ratio.
+2. The never.csv row &#x27;IO2+/Itotal; IO/Itotal&#x27; holds a symbol part and a word part: split into two rows (source marked), each with its own
+   scope, rather than one flag for both.
+3. pending.csv: one stored nearest_definition was the mask string (written by propose in P156); restored from the nearest entry&#x27;s current
+   definition so that the masked fields print.
+4. rounds.csv round 0: pids = the twelve pilot papers, as directed; 10.1116_6.0001094 (Werbrouck2021, cited in evidence, not a pilot paper)
+   left the list.
+5. With HELD_OUT empty, the readers of the list change: the pass-0 and pass-1 example picks (kb/extract/render.py, pass1_elements.py) may
+   take any of the twelve golds; kb/pilot/check.py&#x27;s gold-vocabulary check reads twelve golds (2 new misses, gre23&#x27;s MPa and &#x27;l&#x27;).
+   No provider call was made; the next extraction&#x27;s prompts can differ from P148&#x27;s.
+</pre>
+<h2>1. The history row (round 0, HELD_OUT)</h2><p>psed_v2/kb/reports/P157f.history_row.csv</p>
+<table><tr><th>date</th><th>round</th><th>action</th><th>id</th><th>kind</th><th>target</th><th>source_pids</th><th>source_dois</th><th>decided_by</th><th>reason</th><th>ontology_sha256_after</th></tr>
+<tr><td>2026-10-23</td><td>0</td><td>edit</td><td>HELD_OUT</td><td></td><td>HELD_OUT = set() (kb/extract/common.py); papers 1-12 are development papers</td><td>10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804</td><td>10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154;10.1116/6.0003182;10.1021/cm0303080;10.1002/cvde.200390005;10.1063/1.5028178;10.1116/1.4903941;10.1021/acs.jpcc.9b08176;10.1039/d1cp04758b;10.1039/d3cp05639b;10.1116/6.0002993;10.1116/6.0002804</td><td>user</td><td>P157f (user, 2026-10-23): the twelve pilot papers are all development papers. The ontology v0 was built from all twelve golds (the P131b alias audit and the P98 rules read them without a filter; 34 entries, the reaction_monitoring node and three structure classes rest on gre23 / mat23 evidence: kb/reports/P157e_heldout_audit.html). Nothing is removed. The held-out set is paper 13 onward: the ontology never reads a paper before it is extracted, and growth takes only compile&#x27;s unmapped rows.</td><td>2666a33b77d2d7f5d10d3c4d6944e3d33d433a799636f5a803b8f4e54b6fcca2</td></tr>
+</table>
+<h2>1. CLAUDE.md diff</h2><p>psed_v2/kb/reports/P157f.claude_md.diff</p>
+<pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index a7585e5..b037440 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -92,7 +92,7 @@ psed_v2/
+ - R3 checks: a check failure is reported, never worked around; no wording, statement or id change made to satisfy a check;
+   `kb/pilot/check.py` is never edited to make an output pass.
+ - No logic keyed on a paper, an element id or a value.
+-- Held-out papers yim22, gre23, mat23: never extracted, never read.
++- Papers 1–12 (the pilot golds) are development papers. Papers 13+ are held-out: never read for the ontology before extraction; growth from compile unmapped only.
+ - A unit is done when its report carries the gold row comparison.
+ - Models are pinned by name; the cost is stated before any provider call.
+ 
+</pre>
+<h2>1. Code diff (common.py HELD_OUT, grow.py masking, export.py never symbols)</h2><p>psed_v2/kb/reports/P157f.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/common.py b/psed_v2/kb/extract/common.py
+index eaa4fb1..19ed45c 100644
+--- a/psed_v2/kb/extract/common.py
++++ b/psed_v2/kb/extract/common.py
+@@ -30,7 +30,7 @@ from figures import client_for, load_env, loads_json  # noqa: E402,F401
+ 
+ MODEL = &quot;gemini-3.8-flash&quot;                                                       # user, P133: pinned (gemini-2.5-flash 404s)
+ KEY_ENV = &quot;GOOGLE_API_KEY&quot;                                                     # user, P133: the repo key of psed_v2/.env
+-HELD_OUT = {&quot;yim22&quot;, &quot;gre23&quot;, &quot;mat23&quot;}
++HELD_OUT = set()                                                                 # P157f (user, 2026-10-23): papers 1-12 (the pilot golds) are development papers; papers 13+ are held-out (none yet)
+ CONTENT_TTL = &quot;3600s&quot;                                                           # P148: the cached prefix lives at most an hour (deleted at the end of the run)
+ HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
+ CACHE, RECORDS, SCHEMA = V2 / &quot;kb&quot; / &quot;cache&quot;, V2 / &quot;kb&quot; / &quot;records&quot;, V2 / &quot;kb&quot; / &quot;schema&quot;
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 0e1f871..d29e10d 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -136,7 +136,8 @@ def never_index(entries):
+     norm_label, matched in any paper. A symbol row (P157d, symbol yes): its label, symbol_key, matched only in its paper.
+     A word part that names a live non-attribute entry (its id, name or an alias; P157d: not its label) and a symbol row that is a symbol
+     of a live entry in the same paper are superseded and suppress nothing: an attribute entry is how the pilot stores a never label
+-    (check 12). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute.&quot;&quot;&quot;
++    (check 12). P157f: a symbol row is split into parts and read in the same &#x27;label [unit]&#x27; format, one key per paper of its paper column (pids,
++    &#x27;;&#x27;-separated). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute.&quot;&quot;&quot;
+     names, syms = {}, {}
+     for e in entries:
+         if e.get(&quot;attribute&quot;):
+@@ -148,12 +149,14 @@ def never_index(entries):
+             syms.setdefault((sy.get(&quot;paper&quot;, &quot;&quot;), symbol_key(sy[&quot;text&quot;])), []).append(e[&quot;id&quot;])
+     parts, sup, sparts = {}, [], {}
+     for r in never_rows():
+-        if r.get(&quot;symbol&quot;) == &quot;yes&quot;:
+-            k = (r[&quot;paper&quot;], symbol_key(r[&quot;label&quot;]))
+-            if syms.get(k):
+-                sup.append((r[&quot;label&quot;], f&quot;{r[&#x27;label&#x27;]} in {r[&#x27;paper&#x27;]}&quot;, &quot;, &quot;.join(syms[k])))
+-            else:
+-                sparts.setdefault(k, r)
++        if r.get(&quot;symbol&quot;) == &quot;yes&quot;:                                            # P157f: every part, in each paper of the row (pids)
++            for p in split_parts(r[&quot;label&quot;]):
++                for paper in [x for x in str(r[&quot;paper&quot;]).split(&quot;;&quot;) if x] or [&quot;&quot;]:
++                    k = (paper, symbol_key(_never_label(p)))
++                    if syms.get(k):
++                        sup.append((r[&quot;label&quot;], f&quot;{p} in {paper}&quot;, &quot;, &quot;.join(syms[k])))
++                    else:
++                        sparts.setdefault(k, r)
+             continue
+         for p in split_parts(r[&quot;label&quot;]):
+             k = norm_label(_never_label(p))                                     # never.csv&#x27;s label format: &#x27;label [unit]&#x27; (check 12 reads it so)
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index b8a4834..1e52d08 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -70,7 +70,7 @@ HELD_KEYS = set(literal(V2 / &quot;kb&quot; / &quot;extract&quot; / &quot;common.py&quot;, &quot;HELD_OUT&quot;))
+ HELD = HELD_KEYS | {p for p, k in PAPERS.items() if k in HELD_KEYS}
+ KEY2PID = {k: p for p, k in PAPERS.items()}
+ KEY2PID.update({k: v.rstrip(&quot;.&quot;) for k, v in re.findall(r&quot;(\w+) = (10\.[\w.\-]+)&quot;, &quot;\n&quot;.join(l for l in ONTO.read_text(encoding=&quot;utf-8&quot;).splitlines()[:4] if l.startswith(&quot;#&quot;)))})   # the header&#x27;s evidence keys
+-HELD_RX = re.compile(r&quot;\b(&quot; + &quot;|&quot;.join(re.escape(h) for h in sorted(HELD)) + r&quot;)\b&quot;)
++HELD_RX = re.compile(r&quot;\b(&quot; + &quot;|&quot;.join(re.escape(h) for h in sorted(HELD)) + r&quot;)\b&quot;) if HELD else None   # P157f: none while papers 13+ do not exist
+ 
+ 
+ def doi_of():
+@@ -440,7 +440,7 @@ document.querySelectorAll(&#x27;input.filter&#x27;).forEach(f=&gt;f.addEventListener(&#x27;input&#x27;,
+ 
+ 
+ def evidence_items(row):
+-    return [x for x in (row[&quot;evidence&quot;] or &quot;&quot;).split(&quot; || &quot;) if x and not HELD_RX.search(x)]
++    return [x for x in (row[&quot;evidence&quot;] or &quot;&quot;).split(&quot; || &quot;) if x]           # P157f: papers 1-12 are development papers, nothing withheld
+ 
+ 
+ def doi_links(row):
+@@ -886,7 +886,7 @@ def cmd_init():
+         reason = f&quot;origin {e.get(&#x27;origin&#x27;, &#x27;&#x27;)}; first in {h} {d} ({s[:70]})&quot; + (f&quot;; deviation {dev.get(&#x27;type&#x27;)}: {str(dev.get(&#x27;reason&#x27;, &#x27;&#x27;))[:100]}&quot; if dev else &quot;&quot;) \
+             + (&quot;; P142b: a method made an entry (kb/reports/P142b_ontology.c_methods.csv)&quot; if e[&quot;id&quot;] in c_methods else &quot;&quot;)
+         out.append(dict(date=d, round=0, action=&quot;add&quot;, id=e[&quot;id&quot;], kind=e[&quot;type&quot;], target=&quot;&quot;, source_pids=&quot;;&quot;.join(pids),
+-                        source_dois=&quot;;&quot;.join(dois.get(p, &quot;&quot;) for p in pids), decided_by=&quot;pilot&quot;, reason=HELD_RX.sub(&quot;held-out&quot;, reason), ontology_sha256_after=blob_sha))
++                        source_dois=&quot;;&quot;.join(dois.get(p, &quot;&quot;) for p in pids), decided_by=&quot;pilot&quot;, reason=HELD_RX.sub(&quot;held-out&quot;, reason) if HELD_RX else reason, ontology_sha256_after=blob_sha))
+     never = [x for x in X.never_rows() if x[&quot;source&quot;].startswith(&quot;pilot&quot;)]
+     nev_pids = lambda k: KEY2PID.get(k, k if k.startswith(&quot;10.&quot;) else &quot;&quot;)   # noqa: E731
+     out += [dict(date=today(), round=0, action=&quot;never&quot;, id=snake(x[&quot;label&quot;]), kind=&quot;&quot;, target=x[&quot;category&quot;], source_pids=nev_pids(x[&quot;paper&quot;]),
+@@ -908,13 +908,9 @@ STYLE = (&quot;body{font-family:sans-serif;font-size:13px;margin:16px;color:#222;back
+          &quot;pre{white-space:pre-wrap;border:1px solid #bbb;padding:8px}.fail{background:#f6c0c0}.pass{background:#d8f0d8}&quot;)
+ 
+ 
+-WITHHELD = &quot;[withheld: names a held-out paper]&quot;
+-
+-
+ def shown(x):
+-    &quot;&quot;&quot;A text as the pages show it: withheld whole when it names a held-out paper (CLAUDE.md: never shown), never cut.&quot;&quot;&quot;
+-    s = &quot;&quot; if x is None else str(x)
+-    return WITHHELD if HELD_RX.search(s) else s
++    &quot;&quot;&quot;A text as the pages show it, never cut (P157f: nothing is withheld; papers 1-12 are development papers).&quot;&quot;&quot;
++    return &quot;&quot; if x is None else str(x)
+ 
+ 
+ def esc(x):
+@@ -1180,17 +1176,17 @@ def report_page():
+     tree_check = tree_result(trees)
+     summary = [[&quot;ontology.yaml sha256&quot;, sha(ONTO)], [&quot;ontology hash (export.ontology_hash: this file without its header line, then units.yaml)&quot;, X.ontology_hash()],
+                [&quot;rounds&quot;, len(rs)], [&quot;unmapped (figure import)&quot;, len(unm)],
+-               [&quot;checks passed&quot;, f&quot;{sum(1 for c in checks if c[1])} of {len(checks)}&quot;], [&quot;text fields withheld on this page (they name a held-out paper)&quot;, &quot;{withheld}&quot;]]
++               [&quot;checks passed&quot;, f&quot;{sum(1 for c in checks if c[1])} of {len(checks)}&quot;]]
+     check_html = &quot;&quot;.join(f&quot;&lt;tr class=&#x27;{&#x27;pass&#x27; if c[1] else &#x27;fail&#x27;}&#x27;&gt;&lt;td&gt;{esc(c[0])}&lt;/td&gt;&lt;td&gt;{&#x27;pass&#x27; if c[1] else &#x27;FAIL&#x27;}&lt;/td&gt;&lt;td&gt;{esc(c[2])}&lt;/td&gt;&quot;
+                          f&quot;&lt;td&gt;{&#x27;&lt;ul&gt;&#x27; + &#x27;&#x27;.join(f&#x27;&lt;li&gt;{esc(b)}&lt;/li&gt;&#x27; for b in c[3]) + &#x27;&lt;/ul&gt;&#x27; if c[3] else &#x27;—&#x27;}&lt;/td&gt;&lt;/tr&gt;&quot; for c in checks)
+     ent_html = &quot;&quot;
+     for k in (&quot;quantity&quot;, &quot;categorical&quot;, &quot;species&quot;, &quot;structure&quot;, &quot;mechanism&quot;, &quot;method&quot;, &quot;model&quot;):
+         rows = [[e[&quot;id&quot;], e.get(&quot;name&quot;, &quot;&quot;), e.get(&quot;definition&quot;, &quot;&quot;), e.get(&quot;unit&quot;, &quot;&quot;), e.get(&quot;origin&quot;, &quot;&quot;), &quot;, &quot;.join(src[e[&quot;id&quot;]][&quot;rounds&quot;]),
+-                 &quot;; &quot;.join(src[e[&quot;id&quot;]][&quot;pids&quot;]), &quot;; &quot;.join(src[e[&quot;id&quot;]][&quot;dois&quot;]), &quot;; &quot;.join(x for x in map(str, e.get(&quot;evidence&quot;) or []) if not HELD_RX.search(x)),
++                 &quot;; &quot;.join(src[e[&quot;id&quot;]][&quot;pids&quot;]), &quot;; &quot;.join(src[e[&quot;id&quot;]][&quot;dois&quot;]), &quot;; &quot;.join(map(str, e.get(&quot;evidence&quot;) or [])),
+                  (&quot;replaced by &quot; + (&quot;, &quot;.join(e[&quot;replaced_by&quot;]) if isinstance(e[&quot;replaced_by&quot;], list) else e[&quot;replaced_by&quot;])) if e.get(&quot;replaced_by&quot;) else &quot;&quot;,
+                  &quot;; &quot;.join(e.get(&quot;aliases&quot;) or []), &quot;; &quot;.join(f&quot;{x[&#x27;text&#x27;]} ({PAPERS.get(x.get(&#x27;paper&#x27;, &#x27;&#x27;), x.get(&#x27;paper&#x27;, &#x27;&#x27;)) or &#x27;no paper&#x27;})&quot; for x in e.get(&quot;symbols&quot;) or [])]
+                 for e in entries if e[&quot;type&quot;] == k]
+-        ent_html += f&quot;&lt;h3&gt;{esc(k)} ({len(rows)})&lt;/h3&gt;&quot; + table([&quot;id&quot;, &quot;name&quot;, &quot;definition&quot;, &quot;unit&quot;, &quot;origin&quot;, &quot;source round&quot;, &quot;source pids&quot;, &quot;DOIs&quot;, &quot;evidence (held-out removed)&quot;,
++        ent_html += f&quot;&lt;h3&gt;{esc(k)} ({len(rows)})&lt;/h3&gt;&quot; + table([&quot;id&quot;, &quot;name&quot;, &quot;definition&quot;, &quot;unit&quot;, &quot;origin&quot;, &quot;source round&quot;, &quot;source pids&quot;, &quot;DOIs&quot;, &quot;evidence&quot;,
+                                                                   &quot;replaced&quot;, &quot;aliases&quot;, &quot;symbols (paper; P157d)&quot;], rows)
+     sup = X.never_index([e for e in entries if not e.get(&quot;replaced_by&quot;)])[1]
+     round_pids = [p for r in rs if r[&quot;round&quot;] != &quot;0&quot; for p in r[&quot;pids&quot;].split(&quot;;&quot;) if p]
+@@ -1198,7 +1194,7 @@ def report_page():
+     cand = [candidate_cells(x, by_id) + [esc(x[&quot;decision&quot;]), esc(x[&quot;alias_target&quot;]), esc(x[&quot;never_category&quot;]), esc(x[&quot;decision_note&quot;]), esc(x[&quot;first_round&quot;])] for x in pend]
+     page = (f&quot;&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;title&gt;ontology&lt;/title&gt;&lt;style&gt;{STYLE}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;PSED v2 ontology&lt;/h1&gt;&quot;
+             f&quot;&lt;p&gt;Written by psed_v2/ontology/grow.py (report / apply) from ontology.yaml, units.yaml, history.csv, rounds.csv, pending.csv, never.csv and &quot;
+-            f&quot;unmapped.csv. Held-out papers are never shown.&lt;/p&gt;&quot;
++            f&quot;unmapped.csv. Papers 1-12 (the pilot golds) are development papers (P157f); held-out papers (13+) are refused by grow.py add.&lt;/p&gt;&quot;
+             f&quot;&lt;h2&gt;1. Kinds&lt;/h2&gt;&lt;pre&gt;{esc(chr(10).join(X.kinds_lines(o)))}&lt;/pre&gt;&quot;
+             f&quot;&lt;h2&gt;2. Summary&lt;/h2&gt;&lt;pre&gt;{esc(chr(10).join(draw(trees[0])))}&lt;/pre&gt;&quot;
+             f&quot;&lt;pre class=&#x27;{&#x27;pass&#x27; if tree_check[0].startswith(&#x27;sum check: pass&#x27;) and tree_check[1] == &#x27;unplaced: none&#x27; else &#x27;fail&#x27;}&#x27;&gt;{esc(chr(10).join(tree_check))}&lt;/pre&gt;&quot;
+@@ -1220,10 +1216,10 @@ def report_page():
+             + table(NEVER_COLS + [&quot;superseded by&quot;], [[x[c] for c in NEVER_COLS] + [&quot;; &quot;.join(f&quot;{p} → superseded by {e}&quot; for lab, p, e in sup if lab == x[&quot;label&quot;])] for x in nev])
+             + f&quot;&lt;h2&gt;14. Unmapped&lt;/h2&gt;&lt;h3&gt;Values without a quantity (compiled unmapped rows of the rounds&#x27; papers with no label or only a unit; not candidates)&lt;/h3&gt;&quot;
+             + table([&quot;pid&quot;, &quot;element&quot;, &quot;raw text&quot;, &quot;unit&quot;], [[u[&quot;pid&quot;], u[&quot;element&quot;], u[&quot;quote&quot;], u[&quot;unit&quot;]] for u in values])
+-            + f&quot;&lt;h3&gt;Figure import ({len(unm)})&lt;/h3&gt;{table([&#x27;paper&#x27;, &#x27;figure&#x27;, &#x27;panel&#x27;, &#x27;field&#x27;, &#x27;raw&#x27;, &#x27;reason&#x27;], [[x[c] for c in (&#x27;paper&#x27;, &#x27;figure&#x27;, &#x27;panel&#x27;, &#x27;field&#x27;, &#x27;raw&#x27;, &#x27;reason&#x27;)] for x in unm if not HELD_RX.search(x[&#x27;paper&#x27;])])}&quot;
++            + f&quot;&lt;h3&gt;Figure import ({len(unm)})&lt;/h3&gt;{table([&#x27;paper&#x27;, &#x27;figure&#x27;, &#x27;panel&#x27;, &#x27;field&#x27;, &#x27;raw&#x27;, &#x27;reason&#x27;], [[x[c] for c in (&#x27;paper&#x27;, &#x27;figure&#x27;, &#x27;panel&#x27;, &#x27;field&#x27;, &#x27;raw&#x27;, &#x27;reason&#x27;)] for x in unm])}&quot;
+             &quot;&lt;/body&gt;&lt;/html&gt;\n&quot;)
+-    page = page.replace(esc(&quot;{withheld}&quot;), str(page.count(WITHHELD)), 1)
+-    assert not HELD_RX.search(page), &quot;a held-out paper in ontology.html&quot;
++    if HELD_RX:
++        assert not HELD_RX.search(page), &quot;a held-out paper in ontology.html&quot;
+     REPORT.write_text(page, encoding=&quot;utf-8&quot;)
+     print(f&quot;{REPORT}: {len(entries)} entries, {len(hist)} history rows, {len(pend)} pending, checks {sum(1 for c in checks if c[1])}/{len(checks)}&quot;)
+     print(&quot;\n&quot;.join(draw(trees[0]) + tree_check))                              # P157: the tree and its check, printed next to each other
+</pre>
+<h2>1. Masked fields before -&gt; now</h2><p>psed_v2/kb/reports/P157f.masking.csv</p>
+<table><tr><th>page</th><th>masked_fields_before</th><th>masked_fields_now</th></tr>
+<tr><td>ontology/ontology.html</td><td>32</td><td>0</td></tr>
+<tr><td>ontology/decide.html</td><td>3</td><td>0</td></tr>
+<tr><td>kb/schema/CODEBOOK.md (never masked)</td><td>0</td><td>0</td></tr>
+</table>
+<h2>1. pending.csv field restored</h2><p>psed_v2/kb/reports/P157f.pending_unmasked.csv</p>
+<table><tr><th>id</th><th>column</th><th>nearest_id</th><th>now</th></tr>
+<tr><td>pillar_diameter</td><td>nearest_definition</td><td>body_diameter</td><td>the definition of body_diameter</td></tr>
+</table>
+<h2>1. rounds.csv round 0 pids</h2><p>psed_v2/kb/reports/P157f.round0_pids.csv</p>
+<table><tr><th>before</th><th>after</th><th>only_before</th><th>only_after</th></tr>
+<tr><td>10.1002_cvde.200390005;10.1021_acs.chemmater.2c01154;10.1021_acs.jpcc.9b08176;10.1021_cm0303080;10.1039_d0cp03358h;10.1039_d3cp05639b;10.1063_1.5028178;10.1116_1.4903941;10.1116_6.0001094;10.1116_6.0002804</td><td>10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804</td><td>10.1116_6.0001094</td><td>10.1116_6.0003182;10.1039_d1cp04758b;10.1116_6.0002993</td></tr>
+</table>
+<h2>2. Abbreviations moved back to aliases</h2><p>psed_v2/kb/reports/P157f.abbreviations.csv</p>
+<table><tr><th>entry</th><th>string</th><th>paper_dropped</th><th>aliases</th></tr>
+<tr><td>growth_per_cycle</td><td>GPC</td><td>yim20</td><td>already an alias</td></tr>
+<tr><td>growth_per_cycle</td><td>GPC</td><td>10.1116_6.0001094</td><td>already an alias</td></tr>
+<tr><td>equivalent_aspect_ratio</td><td>EAR</td><td>10.1116_6.0001094</td><td>already an alias</td></tr>
+<tr><td>step_coverage</td><td>SC</td><td>none</td><td>already an alias</td></tr>
+</table>
+<h2>2. Abbreviations not moved</h2><p>psed_v2/kb/reports/P157f.abbreviations_not_moved.csv</p>
+<table><tr><th>entry</th><th>string</th><th>paper</th><th>why</th></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>yim20</td><td>a key of vocabularies.ambiguous_aliases (P131b-12b, a word with two meanings); as an alias it fails check 4: left a symbol</td></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>yli18</td><td>a key of vocabularies.ambiguous_aliases (P131b-12b, a word with two meanings); as an alias it fails check 4: left a symbol</td></tr>
+<tr><td>aspect_ratio</td><td>AR</td><td>10.1116_6.0001094</td><td>a key of vocabularies.ambiguous_aliases (P131b-12b, a word with two meanings); as an alias it fails check 4: left a symbol</td></tr>
+</table>
+<h2>3. Symbol papers completed</h2><p>psed_v2/kb/reports/P157f.symbol_papers.csv</p>
+<table><tr><th>entry</th><th>symbol</th><th>evidence_line</th><th>papers_in_line</th><th>paper_added</th><th>symbols_before</th></tr>
+<tr><td>partial_pressure</td><td>p_A0</td><td>8</td><td>yim22; yli18</td><td>yli18</td><td>p_A0 (yim22)</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>c</td><td>6</td><td>yim22; yli18</td><td>yli18</td><td>c (yim22)</td></tr>
+</table>
+<h2>4. never.csv pilot rows: paper -&gt; pid, symbol yes / no</h2><p>psed_v2/kb/reports/P157f.never_conversion.csv</p>
+<table><tr><th>row</th><th>label</th><th>paper_before</th><th>paper_now</th><th>symbol</th></tr>
+<tr><td>2</td><td>Regions I-IV; knee; nanostep; leading edge</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>3</td><td>Intensity [a.u.]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>4</td><td>Magnification (spot size) [µm]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>5</td><td>Sample; sample code</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>6</td><td>Pillar layout</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>7</td><td>Reflectometer magnification</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>8</td><td>Slope dθ/dx̃</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>9</td><td>Slope d(S/N)/dx̃ [nm]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>10</td><td>Linear fitting residual R2</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>11</td><td>pB [Pa]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>12</td><td>MA; MB [kg mol-1]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>13</td><td>dA; dB [pm]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>14</td><td>bfilm; bTMA</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>15</td><td>q [nm-2]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>yes</td></tr>
+<tr><td>16</td><td>Pd [s-1]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>17</td><td>Mean free path of TMA [µm]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>18</td><td>Knudsen number</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>19</td><td>Accelerating voltage [keV]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+<tr><td>20</td><td>xt; xs [µm]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>21</td><td>MA; MB [kg/mol]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>22</td><td>dA; dB [pm]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>23</td><td>pB [Pa]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>24</td><td>q [m-2]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>yes</td></tr>
+<tr><td>25</td><td>rms thickness error [nm]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>26</td><td>Viscosity of gas [µPa s]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>27</td><td>Spot size; objective lens [µm]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>28</td><td>Precision of the film thickness measurement [nm]</td><td>Ylilammi2018</td><td>10.1063_1.5028178</td><td>no</td></tr>
+<tr><td>29</td><td>Closing of the gate valve [cm]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>30</td><td>Counts/s vs Wavelength [counts/s; nm]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>31</td><td>Counts/s vs Wavelength (infrared) [counts/s; nm]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>32</td><td>Itotal</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>33</td><td>IO2+/Itotal; IO/Itotal</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>split: IO2+/Itotal symbol; IO/Itotal word</td></tr>
+<tr><td>34</td><td>Counts/s vs Energy; m/z = +16; m/z = +32 [counts/s; eV]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>35</td><td>Counts/s vs Energy; m/z = -16; m/z = -32 [counts/s; eV]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>36</td><td>Activated gas fraction</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>37</td><td>Fitted exposures (Ψ)</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>38</td><td>Area per surface site s0 [m2]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>39</td><td>Mass of atomic O [amu]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>40</td><td>OES integration time [s]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>41</td><td>EQP energy step [eV]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>42</td><td>Gas-only stabilization sub-steps of the oxygen pulse [s]</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>43</td><td>Technique; Reactor (ALD or EQP chamber)</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>44</td><td>Growth regimes (saturation spread out in space)</td><td>Werbrouck2021</td><td>10.1116_6.0001094</td><td>no</td></tr>
+<tr><td>45</td><td>rho (film density; model input) [kg m-3]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>yes</td></tr>
+<tr><td>46</td><td>Alumina film density (footnote e; model input) [kg m-3]</td><td>Yim2020</td><td>10.1039_d0cp03358h</td><td>no</td></tr>
+</table>
+<h2>4. Compiled rows whose never match changed</h2><p>psed_v2/kb/reports/P157f.never_matches_changed.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>label</th><th>before</th><th>now</th></tr>
+<tr><td>yli18</td><td>eq14</td><td>quantity</td><td>Q</td><td>kept (never: q [nm-2]) [Model internals not in Sec. 8]</td><td>kept (never: Q (symbol in 10.1063_1.5028178)) [Model internals]</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c0</td><td>quantity</td><td>Q</td><td>kept (never: q [nm-2]) [Model internals not in Sec. 8]</td><td>kept (never: Q (symbol in 10.1039_d0cp03358h)) [Model internals]</td></tr>
+</table>
+<h2>5. Round-1 audit acceptance (grow.py audit 1)</h2><p>psed_v2/kb/reports/R1_apply.acceptance.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 33 promotions: {&#x27;agree&#x27;: 33}
+A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 7/7
+result: PASS
+</pre>
+<h2>5. export.py --check</h2><p>psed_v2/kb/reports/P157f.check_run.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 7 rows: undecided 7
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+exit 0
+</pre>
+<h2>5. Score vs gold before (P157d) -&gt; after (P157f), every column</h2><p>psed_v2/kb/reports/P157f.score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before (P157d)</th><th>after (P157f)</th><th>same</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>30/63</td><td>30/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>306</td><td>306</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>425</td><td>425</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>512</td><td>512</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>99/108</td><td>99/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>80/154</td><td>80/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>27/92</td><td>27/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>263</td><td>263</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>133/249</td><td>133/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+</table>
+<h2>5. Score by record type</h2><p>psed_v2/kb/reports/P157f.score_by_type.csv</p>
+<table><tr><th>paper</th><th>type</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>yli18</td><td>model</td><td>gold</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>compiled</td><td>125</td><td>125</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>matched</td><td>61</td><td>61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>precision</td><td>0.49</td><td>0.49</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>recall</td><td>0.91</td><td>0.91</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>gold</td><td>63</td><td>63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>compiled</td><td>44</td><td>44</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>matched</td><td>30</td><td>30</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>recall</td><td>0.48</td><td>0.48</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>gold</td><td>38</td><td>38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>compiled</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>matched</td><td>23</td><td>23</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>precision</td><td>0.43</td><td>0.43</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>recall</td><td>0.61</td><td>0.61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>gold</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>compiled</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>matched</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>precision</td><td>0.26</td><td>0.26</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>recall</td><td>0.47</td><td>0.47</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>gold</td><td>13</td><td>13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>compiled</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>matched</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>precision</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>compiled</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>precision</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>recall</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>gold</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>matched</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>precision</td><td>0.40</td><td>0.40</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>compiled</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>compiled</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>precision</td><td>0.33</td><td>0.33</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>gold</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>gold</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>gold</td><td>206</td><td>206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>compiled</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>matched</td><td>105</td><td>105</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>precision</td><td>0.66</td><td>0.66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>recall</td><td>0.51</td><td>0.51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>gold</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>compiled</td><td>101</td><td>101</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>matched</td><td>80</td><td>80</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>precision</td><td>0.79</td><td>0.79</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>gold</td><td>108</td><td>108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>compiled</td><td>137</td><td>137</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>matched</td><td>99</td><td>99</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>precision</td><td>0.72</td><td>0.72</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>recall</td><td>0.92</td><td>0.92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>gold</td><td>92</td><td>92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>compiled</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>precision</td><td>0.87</td><td>0.87</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>gold</td><td>75</td><td>75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>compiled</td><td>49</td><td>49</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>matched</td><td>47</td><td>47</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>precision</td><td>0.96</td><td>0.96</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>recall</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>gold</td><td>73</td><td>73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>compiled</td><td>51</td><td>51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>matched</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>precision</td><td>0.88</td><td>0.88</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>gold</td><td>66</td><td>66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>compiled</td><td>97</td><td>97</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>matched</td><td>24</td><td>24</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>gold</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>compiled</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>matched</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>precision</td><td>0.60</td><td>0.60</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>recall</td><td>0.07</td><td>0.07</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>gold</td><td>40</td><td>40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>compiled</td><td>20</td><td>20</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>matched</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>precision</td><td>0.75</td><td>0.75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>recall</td><td>0.38</td><td>0.38</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>gold</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>compiled</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>matched</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>recall</td><td>0.81</td><td>0.81</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>precision</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>gold</td><td>313</td><td>313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>compiled</td><td>161</td><td>161</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>matched</td><td>109</td><td>109</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>recall</td><td>0.35</td><td>0.35</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>gold</td><td>251</td><td>251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>compiled</td><td>107</td><td>107</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>matched</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>precision</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>recall</td><td>0.27</td><td>0.27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>gold</td><td>249</td><td>249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>compiled</td><td>143</td><td>143</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>matched</td><td>133</td><td>133</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>precision</td><td>0.93</td><td>0.93</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>recall</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>gold</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>compiled</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>precision</td><td>0.55</td><td>0.55</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>recall</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>recall</td><td>0.02</td><td>0.02</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>compiled</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>matched</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>recall</td><td>0.78</td><td>0.78</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>gold</td><td>52</td><td>52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>compiled</td><td>37</td><td>37</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>precision</td><td>0.73</td><td>0.73</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>gold</td><td>14</td><td>14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>compiled</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>precision</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>recall</td><td>0.17</td><td>0.17</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>gold</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>compiled</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+</table>
+<h2>5. check.py --dir counts</h2><p>psed_v2/kb/reports/P157f.check_dir.csv</p>
+<table><tr><th>paper</th><th>problems_before</th><th>problems_after</th><th>worse</th><th>new</th><th>gone</th></tr>
+<tr><td>yli18</td><td>159</td><td>159</td><td>no</td><td>0</td><td>0</td></tr>
+<tr><td>yim20</td><td>306</td><td>306</td><td>no</td><td>0</td><td>0</td></tr>
+<tr><td>mat22</td><td>263</td><td>263</td><td>no</td><td>0</td><td>0</td></tr>
+</table>
+<h2>5. check.py gold vocabulary, 9 -&gt; 12 golds</h2><p>psed_v2/kb/reports/P157f.gold_vocabulary.csv</p>
+<table><tr><th>state</th><th>misses</th><th>dev_papers</th><th>by_paper</th></tr>
+<tr><td>before (HELD_OUT = yim22, gre23, mat23)</td><td>0</td><td>9</td><td></td></tr>
+<tr><td>after (HELD_OUT empty)</td><td>2</td><td>12</td><td>gre23 2</td></tr>
+</table>
+<h2>5. The gold-vocabulary misses</h2><p>psed_v2/kb/reports/P157f.gold_vocabulary_misses.csv</p>
+<table><tr><th>problem</th></tr>
+<tr><td>gre23:s8.p1#5: unit &#x27;MPa&#x27; is not in the extraction vocabulary (P142)</td></tr>
+<tr><td>gre23:s9.p5#1: unit &#x27;l&#x27; is not in the extraction vocabulary (P142)</td></tr>
+</table>
+<h2>score.py run</h2><p>psed_v2/kb/reports/P157f.score_run.txt</p>
+<pre>yli18: 243 gold rows, 80 compiled facts without a gold match
+yli18: check --dir 159 problems; T6 138/243
+yim20: 900 gold rows, 165 compiled facts without a gold match
+yim20: check --dir 306 problems; T6 425/900
+mat22: 1071 gold rows, 106 compiled facts without a gold match
+mat22: check --dir 263 problems; T6 273/1071
+exit 0
+</pre>
+</body></html>

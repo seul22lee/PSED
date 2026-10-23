@@ -30,7 +30,7 @@ from figures import client_for, load_env, loads_json  # noqa: E402,F401
 
 MODEL = "gemini-3.8-flash"                                                       # user, P133: pinned (gemini-2.5-flash 404s)
 KEY_ENV = "GOOGLE_API_KEY"                                                     # user, P133: the repo key of psed_v2/.env
-HELD_OUT = {"yim22", "gre23", "mat23"}
+HELD_OUT = set()                                                                 # P157f (user, 2026-10-23): papers 1-12 (the pilot golds) are development papers; papers 13+ are held-out (none yet)
 CONTENT_TTL = "3600s"                                                           # P148: the cached prefix lives at most an hour (deleted at the end of the run)
 HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
 CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"

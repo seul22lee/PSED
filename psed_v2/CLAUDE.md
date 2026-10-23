@@ -92,7 +92,7 @@ psed_v2/
 - R3 checks: a check failure is reported, never worked around; no wording, statement or id change made to satisfy a check;
   `kb/pilot/check.py` is never edited to make an output pass.
 - No logic keyed on a paper, an element id or a value.
-- Held-out papers yim22, gre23, mat23: never extracted, never read.
+- Papers 1–12 (the pilot golds) are development papers. Papers 13+ are held-out: never read for the ontology before extraction; growth from compile unmapped only.
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

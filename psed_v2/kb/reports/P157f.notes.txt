@@ -1,0 +1,13 @@
+Choices made in this unit, each reported:
+1. AR stays a symbol of aspect_ratio: moving it to aliases made export.py --check fail check 4 ('ar': an alias that is a key of
+   vocabularies.ambiguous_aliases, P131b-12b). R3: not worked around; options: (a) AR stays a symbol (as now); (b) AR leaves
+   ambiguous_aliases and becomes an alias of aspect_ratio.
+2. The never.csv row 'IO2+/Itotal; IO/Itotal' holds a symbol part and a word part: split into two rows (source marked), each with its own
+   scope, rather than one flag for both.
+3. pending.csv: one stored nearest_definition was the mask string (written by propose in P156); restored from the nearest entry's current
+   definition so that the masked fields print.
+4. rounds.csv round 0: pids = the twelve pilot papers, as directed; 10.1116_6.0001094 (Werbrouck2021, cited in evidence, not a pilot paper)
+   left the list.
+5. With HELD_OUT empty, the readers of the list change: the pass-0 and pass-1 example picks (kb/extract/render.py, pass1_elements.py) may
+   take any of the twelve golds; kb/pilot/check.py's gold-vocabulary check reads twelve golds (2 new misses, gre23's MPa and 'l').
+   No provider call was made; the next extraction's prompts can differ from P148's.

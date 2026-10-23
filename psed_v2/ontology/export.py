@@ -136,7 +136,8 @@ def never_index(entries):
     norm_label, matched in any paper. A symbol row (P157d, symbol yes): its label, symbol_key, matched only in its paper.
     A word part that names a live non-attribute entry (its id, name or an alias; P157d: not its label) and a symbol row that is a symbol
     of a live entry in the same paper are superseded and suppress nothing: an attribute entry is how the pilot stores a never label
-    (check 12). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute."""
+    (check 12). P157f: a symbol row is split into parts and read in the same 'label [unit]' format, one key per paper of its paper column (pids,
+    ';'-separated). Superseded: [(never label, part, entry ids)]. entries: dicts with id, name, aliases, symbols, attribute."""
     names, syms = {}, {}
     for e in entries:
         if e.get("attribute"):
@@ -148,12 +149,14 @@ def never_index(entries):
             syms.setdefault((sy.get("paper", ""), symbol_key(sy["text"])), []).append(e["id"])
     parts, sup, sparts = {}, [], {}
     for r in never_rows():
-        if r.get("symbol") == "yes":
-            k = (r["paper"], symbol_key(r["label"]))
-            if syms.get(k):
-                sup.append((r["label"], f"{r['label']} in {r['paper']}", ", ".join(syms[k])))
-            else:
-                sparts.setdefault(k, r)
+        if r.get("symbol") == "yes":                                            # P157f: every part, in each paper of the row (pids)
+            for p in split_parts(r["label"]):
+                for paper in [x for x in str(r["paper"]).split(";") if x] or [""]:
+                    k = (paper, symbol_key(_never_label(p)))
+                    if syms.get(k):
+                        sup.append((r["label"], f"{p} in {paper}", ", ".join(syms[k])))
+                    else:
+                        sparts.setdefault(k, r)
             continue
         for p in split_parts(r["label"]):
             k = norm_label(_never_label(p))                                     # never.csv's label format: 'label [unit]' (check 12 reads it so)
