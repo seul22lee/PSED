@@ -1,0 +1,42 @@
+git diff HEAD -- kb/compiled/<pid>.facts.csv (HEAD = 40ee0bf, P157): every changed fact row
+
+diff --git a/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv b/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
+index 9ce63bb..4329c95 100644
+--- a/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
++++ b/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
+@@ -560 +560 @@ yim20:tabu2.r14c1#1,definition,,,,tabu2.r14c1,Desorption probability in unit tim
+-yim20:tabu2.r15c0#1,definition,,,,tabu2.r15c0;tabu2.r16c0,Q,other,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,Q,
++yim20:tabu2.r15c0#1,definition,,,,tabu2.r15c0;tabu2.r16c0,Q,saturation_density,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,Q,
+@@ -563 +563 @@ yim20:tabu2.r16c1#1,definition,,,,tabu2.r16c1,Adsorption density of reactant A a
+-yim20:tabu2.r17c0#1,definition,,,,tabu2.r17c0,R,other,,R,,,,,s m-3,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,R,
++yim20:tabu2.r17c0#1,definition,,,,tabu2.r17c0,R,recombination_probability,,R,,,,,s m-3,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,R,
+diff --git a/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv b/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+index 9a811b0..d115e5e 100644
+--- a/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
++++ b/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+@@ -59 +59 @@ yli18:eq13#1,model,,,,eq13,K = \frac{\theta_{\text{eq}}/p_A}{1 - \theta_{\text{e
+-yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},other,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
++yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},saturation_density,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
+@@ -225 +225 @@ yli18:tabu1.r3c2#1,definition,,,,tabu1.r3c2,tp,pulse_time,,Length of the reactan
+-yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,other,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
++yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,effective_diffusion_coefficient,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
+
+dropped.csv, coverage.csv, experiments.csv: no change
+
+audit.csv / audit_reverse.csv (score.py's audit; the gold holds no quantity on these definitions):
+diff --git a/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv b/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
+index b4b482a..ba7bd2d 100644
+--- a/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
++++ b/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
+@@ -124 +123,0 @@ yim20:tabu2.r14c1#1,definition,p_d,,1/s,,tabu2.r14c1,yim20:tabu2.r14c0#1,quantit
+-yim20:tabu2.r15c0#1,definition,other,,m-2 s-1 Pa-1,,tabu2.r15c0;tabu2.r16c0,yim20:tabu2.r15c0#1,quantity '' vs 'other'
+@@ -126 +125 @@ yim20:tabu2.r15c1#1,definition,other,,m-2 s-1 Pa-1,,tabu2.r15c1,yim20:tabu2.r15c
+-yim20:tabu2.r17c0#1,definition,other,,s m-3,,tabu2.r17c0,yim20:tabu2.r17c0#1,quantity '' vs 'other'
++yim20:tabu2.r17c0#1,definition,recombination_probability,,s m-3,,tabu2.r17c0,yim20:tabu2.r17c0#1,quantity '' vs 'recombination_probability'
+diff --git a/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv b/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
+index 253b307..331baed 100644
+--- a/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
++++ b/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
+@@ -47 +47 @@ yli18:tabu1.r1c0#1,definition,b_film,,,,tabu1.r1c0,,no gold row on this element
+-yli18:tabu1.r4c0#1,definition,other,,m2/s,,tabu1.r4c0,yli18:tabu1.r4c0#1,quantity '' vs 'other'
++yli18:tabu1.r4c0#1,definition,effective_diffusion_coefficient,,m2/s,,tabu1.r4c0,yli18:tabu1.r4c0#1,quantity '' vs 'effective_diffusion_coefficient'

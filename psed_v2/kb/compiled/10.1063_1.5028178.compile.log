@@ -1,4 +1,7 @@
 input: 134 lines; pass 0 = line 122; 12 pass-1 lines for 12 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (figures), 16 (tables), 17 (tabI), 18 (tabu1), 19 (fig1), 20 (fig2), 21 (fig3), 22 (fig4), 23 (fig5), 24 (fig6), 25 (fig7), 26 (tabI), 28 (abstract), 29 (s0), 30 (s1), 31 (s2), 32 (s3), 33 (s4), 34 (s5), 35 (s6), 36 (s7), 37 (s8), 38 (s9), 39 (s10), 40 (s11), 41 (fig1), 42 (fig2), 43 (fig3), 44 (fig4), 45 (fig5), 46 (fig6), 47 (fig7), 48 (tabI), 49 (tabu1), 51 (abstract), 52 (s0), 53 (s1), 54 (s2), 55 (s3), 56 (s4), 57 (s5), 58 (s6), 59 (s7), 60 (s8), 61 (s9), 62 (s10), 63 (s11), 64 (fig1), 65 (fig2), 66 (fig3), 67 (fig4), 68 (fig5), 69 (fig6), 70 (fig7), 71 (tabI), 72 (tabu1), 74 (abstract), 75 (s0), 76 (s1), 77 (s2), 78 (s3), 79 (s4), 80 (s5), 81 (s6), 82 (s7), 83 (s8), 84 (s9), 85 (s10), 86 (s11), 87 (fig1), 88 (fig2), 89 (fig3), 90 (fig4), 91 (fig5), 92 (fig6), 93 (fig7), 94 (tabI), 95 (tabu1), 97 (abstract), 98 (s0), 99 (s1), 100 (s2), 101 (s3), 102 (s4), 103 (s5), 104 (s6), 105 (s7), 106 (s8), 107 (s9), 108 (s10), 109 (s11), 110 (fig1), 111 (fig2), 112 (fig3), 113 (fig4), 114 (fig5), 115 (fig6), 116 (fig7), 117 (tabI), 118 (tabu1)
+a0: eq5: quantity 'h' ambiguous: ['element_fraction', 'feature_width']
+a0: eq14: quantity 'Q' -> saturation_density (quantity: alias)
+a0: tabu1.r4c0: quantity 'Apparent longitudinal diffusion coefficient' -> effective_diffusion_coefficient (quantity: alias)
 a: eq1: variables_unmapped 'z_A' -> 'other'
 a: eq2: variables_unmapped 'v_A' -> 'other'
 a: eq3: variables_unmapped 'v_A' -> 'other'
@@ -22,8 +25,10 @@ a: eq5: variable 'h' -> feature_width (C5, from the paper's definition)
 a: eq10: variable 'h' -> feature_width (C5, from the paper's definition)
 a: eq13: variable 'Q' -> saturation_density (C5, from the paper's definition)
 a: eq14: variable 'Q' -> saturation_density (C5, from the paper's definition)
+a: eq19: variable 'D' -> effective_diffusion_coefficient (C5, from the paper's definition)
 a: eq21: variable 'N' -> cycle_number (C5, from the paper's definition)
 a: eq22: variable 'N' -> cycle_number (C5, from the paper's definition)
+a: eq23: variable 'D' -> effective_diffusion_coefficient (C5, from the paper's definition)
 h: tree from pass 0: run 2, simulation 2, specimen 2, model_run 10, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s8.p22 into s8.p9;s8.p22 (pulse_time 0.1)
 i: merged s8.p24 into s8.p23;s8.p24 (cycle_number 500)
@@ -75,9 +80,10 @@ j: caveats (query.caveats_of): 8, linked to facts 3, to nodes 0; facts reached t
 j: claim nodes (query.claim_nodes): 10 nodes for 15 claims; claims without a full triple (query.node_of empty): 5
 j: comparisons from figures.json (1c): 1
 step input: {'records': 285}
-step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 7, 'kept': 285}
+step a0: {'quantity ambiguous (left as it is)': 1, 'quantity promoted (quantity: alias)': 2, 'quantity other: never.csv': 22}
+step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 9, 'kept': 285}
 step b: {'model_with_value (kept)': 76, 'kept': 285}
-step c: {'quantity_other (kept)': 31, 'kept': 285}
+step c: {'quantity_other (kept)': 7, 'quantity_other never (kept)': 22, 'kept': 285}
 step d: {'quote_not_found': 4, 'kept': 281}
 step e: {'unit_unresolved (kept as printed)': 12, 'kept': 281}
 step f: {'species_resolved': 14, 'kept': 281}
@@ -100,8 +106,8 @@ diff against the gold:
   caveat          7    8    2  0.25  0.29
   cited           5    0    0     -  0.00
   comparison      3    1    0  0.00  0.00
-  paper           1    1    0  0.00  0.00
   identity        1    0    0     -  0.00
+  paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 5/38
 gold model rows with quantity and value: 15: {'other': 1, 'feature_width': 1, 'feature_extent': 1, 'partial_pressure': 2, 'molar_mass': 2, 'molecule_diameter': 2, 'saturation_density': 1, 'deposition_temperature': 1, 'adsorption_equilibrium_constant': 1, 'initial_sticking_coefficient': 1, 'saturation_growth_per_cycle': 1, 'pulse_time': 1}
 observations: gold 7, compiled 6, matched 2

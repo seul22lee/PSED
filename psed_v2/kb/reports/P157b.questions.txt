@@ -1,0 +1,9 @@
+A. Symbols. The whole-label rule promotes a one-letter label to whatever entry carries that letter as an alias: 3 wrong facts in round 1
+   (Q twice, R) and l merged into a feature_depth fact; 66 aliases of quantity entries normalize to 3 characters or fewer (several only
+   after the normalization drops their unit group: 'T (°C)' -> 't', 'H (at. %)' -> 'h'). (a) a label or alias that normalizes to 3
+   characters or fewer does not promote (it stays other and goes to propose, where P156 joins it to its symbol-table row); (b) keep the
+   rule and remove the symbol aliases from the entries. Which one?
+B. Never decisions on a cell with no printed label (surface_area, diffusion_coefficient_without_pillars, flux_of_material_in_direction_x:
+   6 rows). (a) compile.py's never and promotion lookups fall back to the record's candidate definition_quote with its trailing unit group
+   stripped when label_as_printed is empty (the P156 meaning rule); (b) grow.py apply refuses a never decision whose rows have no printed
+   label and leaves the row pending. Which one?

@@ -17,6 +17,8 @@ unmapped rows (kb/compiled/<pid>.unmapped.csv) with one normalized label (casefo
 collapsed), across the round and the earlier undecided rows; its id is the label in snake case. The printed labels of a candidate are read
 back from those rows (printed_labels); the paper text is never read. DOIs come from corpus/manifest.csv (ingest/final/<pid>/ holds no
 metadata file). Held-out papers (kb/extract/common.py HELD_OUT) are refused and never shown. Imports nothing of the project but export.
+P157b: never.csv is applied by kb/extract/compile.py (unmapped.csv column never, export.never_index); propose drops those rows and does no
+never matching of its own; decide.html shows the candidates found in two or more papers first.
 """
 import argparse
 import ast
@@ -140,81 +142,22 @@ def nearest(label, entries):
 
 def unmapped_rows(pid):
     """A paper's compiled unmapped rows, every one: element, field, the label as printed, unit, the record's symbol, definition (the
-    candidate's definition_quote) and quote (the definition, else the label, else the unit)."""
+    candidate's definition_quote), quote (the definition, else the label, else the unit) and never (P157b: compile.py's never column,
+    the never.csv category of the record's label)."""
     out = []
     for r in rd(COMPILED / f"{pid}.unmapped.csv"):
         cand = json.loads(r["candidate"]) if r["candidate"].startswith("{") else {}
         d = " ".join((cand.get("definition_quote") or "").split())
         out.append(dict(pid=pid, element=r["element"], field=r["field"], label=r["label_as_printed"].strip(), unit=r["unit"], symbol=(cand.get("symbol") or "").strip(),
-                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"]))
+                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"], never=r.get("never", "")))
     return out
 
 
-# P156: the normalizations of the never match (FIX 2) and of the symbol-table grouping (FIX 1)
-LATEX_TEXT = re.compile(r"\\(?:text|mathrm|mathit|mathbf|rm)\s*\{([^{}]*)\}")
-
-
-def strip_latex(s):
-    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed."""
-    return re.sub(r"[{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
-
-
-def strip_trailing_units(s):
-    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty."""
-    s = str(s).strip()
-    while True:
-        t = re.sub(r"\s*(\[[^\[\]]*\]|\([^()]*\))\s*$", "", s)
-        if t == s or not t.strip():
-            return s
-        s = t
-
-
-def norm_strict(label):
-    """FIX 2b, both sides of a never match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing 's' dropped."""
-    s = " ".join(strip_latex(strip_trailing_units(label)).casefold().split())
-    return s[:-1] if len(s) > 1 and s.endswith("s") else s
-
-
-def split_parts(label):
-    """FIX 2a: a never label that holds several labels, split at ';' outside brackets ('MA; MB [kg mol-1]' -> 'MA', 'MB [kg mol-1]')."""
-    parts, depth, cur = [], 0, ""
-    for ch in str(label):
-        depth += ch in "([{"
-        depth = max(0, depth - (ch in ")]}"))
-        if ch == ";" and depth == 0:
-            parts.append(cur)
-            cur = ""
-        else:
-            cur += ch
-    return [p.strip() for p in parts + [cur] if p.strip()]
-
-
-def never_index(entries):
-    """({normalized part: never label}, superseded): every part of every never.csv label, normalized (norm_strict), except the parts that name
-    a live entry - its id, name, label or an alias, normalized the same way (FIX 2c) - that is not an attribute: an attribute entry is how
-    the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label, part,
-    entry ids)] and suppress nothing. never.csv itself is not changed."""
-    names = defaultdict(list)
-    for e in entries:
-        if e.get("attribute"):
-            continue
-        for t in [e["id"], e.get("name", ""), e.get("label", "")] + [str(a) for a in e.get("aliases") or []]:
-            if str(t).strip() and e["id"] not in names[norm_strict(t)]:
-                names[norm_strict(t)].append(e["id"])
-    parts, sup = {}, []
-    for r in X.never_rows():
-        for p in split_parts(r["label"]):
-            k = norm_strict(p)
-            if names.get(k):
-                sup.append((r["label"], p, ", ".join(names[k])))
-            elif k:
-                parts.setdefault(k, r["label"])
-    return parts, sup
-
-
+# P157b: the label normalization (norm_label, P156 FIX 2b) and the never index moved to export.py; compile.py applies never.csv, propose
+# reads its never column. Here only the symbol-table grouping (P156 FIX 1).
 def norm_symbol(s):
     """A symbol for equality within one paper: LaTeX unwrapped, braces, backslashes, ^, _ and spaces removed; case kept (R is not r)."""
-    return re.sub(r"[\s{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+    return re.sub(r"[\s{}\\^_]", "", X.LATEX_TEXT.sub(r"\1", str(s)))
 
 
 ARTICLES = {"a", "an", "the", "of"}
@@ -223,7 +166,7 @@ ARTICLES = {"a", "an", "the", "of"}
 def words(s):
     """FIX 1: a label as words for the equation / symbol-table merge: trailing units and LaTeX stripped, casefold, articles and 'of' dropped,
     sorted (word order ignored: eq11 'rate of adsorption' = tabu1 'Adsorption rate')."""
-    return sorted(w for w in re.findall(r"[a-z0-9]+", strip_latex(strip_trailing_units(s)).casefold()) if w not in ARTICLES)
+    return sorted(w for w in re.findall(r"[a-z0-9]+", X.strip_latex(X.strip_trailing_units(s)).casefold()) if w not in ARTICLES)
 
 
 SYMBOL_LAYOUT = next(k for k, d in X.P143_TABLE_LAYOUTS if "symbol table" in d)          # P143: not_units, 'a symbol table (symbol, meaning, value) or ...'
@@ -245,7 +188,7 @@ def unit_spellings():
     return {str(v) for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}
 
 
-def candidates(pids, entries=None):
+def candidates(pids):
     """P156: the candidates of a set of papers from their compiled unmapped rows, and the log of how they were made.
 
     1. A row of a symbol-table layout (pass 0: P143 not_units, whose definition names the roles symbol, meaning, value; the record carries a
@@ -254,15 +197,13 @@ def candidates(pids, entries=None):
        The layout has no unit column: the unit is the records'. A symbol with no meaning cell in its row stays its own candidate, noted.
     2. A row elsewhere in the same paper whose label is its symbol joins the one symbol-table row with that symbol; else a row whose label (a
        symbol's: its definition) has the words of one symbol-table meaning (words(): articles and 'of' dropped, order ignored) joins it.
-    3. A row whose label matches a never part (never_index, norm_strict) is dropped; a symbol-table group whose meaning matches one is
-       dropped with the rows that joined it.
+    3. P157b: a row compile.py marked never (its never column) is dropped; a symbol-table group with a never row is dropped with the rows
+       that joined it. grow.py does no never matching of its own.
     4. A row with no label, or a label that is only a unit spelling of units.yaml, is a value without a quantity, not a candidate (FIX 3).
     5. The rest group across the papers by the normalized label (snake case of norm()).
     Returns ({id: group}, log)."""
-    entries = entries if entries is not None else [e for e in onto()["entries"] if not e.get("replaced_by")]
-    never, superseded = never_index(entries)
     spell = unit_spellings()
-    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], superseded=superseded)
+    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
     tables, rest = defaultdict(list), []
     for pid in pids:
         layouts = pass0_tables(pid)
@@ -282,10 +223,10 @@ def candidates(pids, entries=None):
     for (pid, row, sym), us in tables.items():
         symcell = [u for u in us if u["label"] and norm_symbol(u["label"]) == sym]
         meaning = next((u["label"] for u in us if u["label"] and norm_symbol(u["label"]) != sym), "") \
-            or next((strip_trailing_units(u["definition"]) for u in us if u["definition"]), "")
+            or next((X.strip_trailing_units(u["definition"]) for u in us if u["definition"]), "")
         symbol = symcell[0]["label"] if symcell else us[0]["symbol"]
         g = dict(label=meaning or symbol, aliases=[symbol] if meaning else [], definition=meaning, members=list(us), pid=pid, row=row,
-                 note="" if meaning else f"symbol with no meaning cell in table row {row}", never=never.get(norm_strict(meaning or symbol), ""))
+                 note="" if meaning else f"symbol with no meaning cell in table row {row}")
         groups.append(g)
         by_sym[(pid, sym)].append(g)
         by_cell.update({(pid, u["element"]): g for u in us})
@@ -306,10 +247,10 @@ def candidates(pids, entries=None):
             continue
         if len(hits) > 1:
             log["ambiguous"].append((u, [h["row"] for h in hits]))
-        if never.get(norm_strict(u["label"])):
-            log["never"].append((u, never[norm_strict(u["label"])]))
+        if u["never"]:
+            log["never"].append((u, u["never"]))
             continue
-        text = strip_trailing_units(u["definition"]) if is_symbol and u["definition"] else u["label"]
+        text = X.strip_trailing_units(u["definition"]) if is_symbol and u["definition"] else u["label"]
         lw = words(text)
         same = [g for g in groups if g.get("row") and g["pid"] == u["pid"] and g["definition"] and words(g["definition"]) == lw] if lw else []
         if len(same) == 1:
@@ -318,11 +259,12 @@ def candidates(pids, entries=None):
                 same[0]["aliases"].append(u["label"])
             log["label_merges"].append((u, same[0], text))
             continue
-        groups.append(dict(label=u["label"], aliases=[], definition=u["definition"], members=[u], pid=u["pid"], row="", note="", never=""))
+        groups.append(dict(label=u["label"], aliases=[], definition=u["definition"], members=[u], pid=u["pid"], row="", note=""))
     out = {}
     for g in groups:
-        if g["never"]:
-            log["never"] += [(u, g["never"]) for u in g["members"]]
+        nv = next((u["never"] for u in g["members"] if u["never"]), "")
+        if nv:
+            log["never"] += [(u, u["never"] or f"{nv} (in a never group)") for u in g["members"]]
             continue
         cid = snake(g["label"])
         if not cid:
@@ -460,7 +402,7 @@ def cmd_propose():
     decide_page(rows, n)
     set_round(n, status="proposed", n_candidates=len(new) + len(touched))
     print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of "
-          f"round {n} rebuilt); {len(log['never'])} rows matched never.csv ({len(log['superseded'])} never parts superseded by a live entry), "
+          f"round {n} rebuilt); {len(log['never'])} rows never (compile.py's never column), "
           f"{len(log['values'])} values without a quantity, {len(log['symbol_merges'])} symbol and {len(log['label_merges'])} label merges into "
           f"{len(log['table_groups'])} symbol-table rows")
     print(f"pending.csv: {len(rows)} rows; decide in {DECIDE}")
@@ -520,20 +462,23 @@ def decide_page(rows, n):
     opt_ids = "".join(f"<option value='{html.escape(i)}'>{html.escape(i)}</option>" for i in ids)
     opt_cats = "".join(f"<option value='{html.escape(c)}'>{html.escape(c)}</option>" for c in cats)
     body = []
-    for i, r in enumerate(rows):
-        if r["decision"]:
-            continue
+    multi = lambda r: int(r["n_papers"] or 0) >= 2                                # noqa: E731  P157b: rows in two or more papers first, marked
+    for i, r in sorted(((i, r) for i, r in enumerate(rows) if not r["decision"]), key=lambda x: (not multi(x[1]), x[0])):
         cells = candidate_cells(r, by_id)
+        if multi(r):
+            cells[0] = f"<span class='multi'>▲ in {esc(r['n_papers'])} papers</span><br>" + cells[0]
         ctl = (f"<div class='ctl'>" + "".join(f"<label><input type='radio' name='d{i}' value='{v}'> {v}</label>" for v in ("accept", "alias", "reject", "never"))
                + f"<div>alias to: <input class='filter' placeholder='type to filter'><select class='alias'>{opt_ids}</select></div>"
                + f"<div>never category: <select class='never'>{opt_cats}</select></div><textarea placeholder='note'>{html.escape(r['decision_note'])}</textarea></div>")
-        body.append(f"<tr id='r{i}'>" + "".join(f"<td>{c}</td>" for c in cells) + f"<td>{ctl}</td></tr>")
+        body.append(f"<tr id='r{i}'{' class=multi' if multi(r) else ''}>" + "".join(f"<td>{c}</td>" for c in cells) + f"<td>{ctl}</td></tr>")
     done = [r for r in rows if r["decision"]]
     done_html = "".join("<tr>" + "".join(f"<td>{html.escape(r[k])}</td>" for k in ("id", "kind", "decision", "alias_target", "never_category", "decision_note", "first_round")) + "</tr>" for r in done)
     data = json.dumps(dict(cols=X.PENDING_COLUMNS, rows=rows, lines=lines, header=header), ensure_ascii=False).replace("</", "<\\/")
     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>decide round {n}</title><style>{STYLE}"
-            ".ctl label{display:block}.ctl select,.ctl input.filter{max-width:16em}.ctl textarea{width:16em;height:3em}.lab{color:#555;font-size:12px}</style></head><body>"
-            f"<h1>Round {n}: decide the candidates</h1><p>{len(body)} candidates without a decision. Choose accept / alias / reject / never per row, then "
+            ".ctl label{display:block}.ctl select,.ctl input.filter{max-width:16em}.ctl textarea{width:16em;height:3em}.lab{color:#555;font-size:12px}"
+            "tr.multi td:first-child{border-left:4px solid #b35900}.multi{color:#b35900;font-weight:bold}</style></head><body>"
+            f"<h1>Round {n}: decide the candidates</h1><p>{len(body)} candidates without a decision ({sum(1 for r in rows if not r['decision'] and multi(r))} found in two "
+            "or more papers come first, marked ▲). Choose accept / alias / reject / never per row, then "
             "<button id='dl'>download pending.csv</button> and save it over psed_v2/ontology/pending.csv; then run <code>python3 psed_v2/ontology/grow.py apply</code>. "
             "Rows left without a choice stay pending.</p>"
             f"<table><tr>{''.join(f'<th>{h}</th>' for h in CAND_HEAD)}<th>decision</th></tr>{''.join(body)}</table>"
@@ -755,12 +700,11 @@ def hierarchy_html(o):
 
 # ---------------------------------------------------------------- the summary tree (P157)
 TREE_KINDS = ("quantity", "categorical", "model", "species", "structure", "mechanism", "method")
-METHOD_MODE = literal(V2 / "kb" / "pilot" / "lists.py", "METHOD_MODE")            # the methods' split
 
 
 def node(label, n, children=(), ids=(), text=""):
     """A summary-tree node: its count n is computed from the data on its own, never as the sum of its children (check_tree compares
-    them); ids only on an 'unplaced' node; text replaces 'label n' in the drawing."""
+    them); ids on an 'unplaced' node and on a kind with no grouping field (a flat list); text replaces 'label n' in the drawing."""
     return dict(label=label, n=n, children=[c for c in children if c], ids=list(ids), text=text)
 
 
@@ -820,24 +764,19 @@ def by_field(es, key, order=()):
 
 
 def summary_trees(o, hist, pend, nev):
-    """The summary as trees: the entries by kind and within a kind (quantity, categorical, model: hierarchy; species: kind; structure:
-    structure class; mechanism: hierarchy node, else category field; method: lists.METHOD_MODE), then units, qualifier keys, never,
-    pending and history in the same form."""
+    """The summary as trees: the entries by kind and within a kind by a field it has (quantity, categorical, model: hierarchy leaf;
+    species: kind; structure: structure class; method: measurement yes / no); mechanism has no grouping field: a flat list, no unplaced
+    check (P157b). Then units (both tables, with their source), qualifier keys, never, pending (by n_papers) and history."""
     entries = o["entries"]
-    nodes = {n["id"] for n in o["hierarchy"]}
     of = lambda t: [e for e in entries if e["type"] == t]                       # noqa: E731
-    mech = of("mechanism")
-    in_h, in_cat = [e for e in mech if e.get("category") in nodes], [e for e in mech if e.get("category") and e.get("category") not in nodes]
     split = {"quantity": ("hierarchy leaf", by_hierarchy(o, of("quantity"))),
              "categorical": ("hierarchy leaf", by_hierarchy(o, of("categorical"))),
              "model": ("hierarchy leaf", by_hierarchy(o, of("model"))),
              "species": ("species kind", by_field(of("species"), lambda e: e.get("kind"), X.SPECIES_KINDS)),
              "structure": ("structure class", by_class(o, of("structure"))),
-             "mechanism": (f"hierarchy node for {len(in_h)}, category field for {len(in_cat)}, neither for {len(mech) - len(in_h) - len(in_cat)}",
-                           by_hierarchy(o, in_h) + by_field(in_cat, lambda e: f"category={e['category']}")
-                           + [unplaced([e for e in mech if e not in in_h and e not in in_cat])]),
-             "method": ("lists.METHOD_MODE", by_field(of("method"), lambda e: METHOD_MODE.get(e["id"])))}
-    kinds = [node(k, len(of(k)), split[k][1], text=f"{k} {len(of(k))}   [split by {split[k][0]}]") for k in TREE_KINDS]
+             "method": ("the measurement field", by_field(of("method"), lambda e: {True: "measurement yes", False: "measurement no"}.get(e.get("measurement")), ("measurement yes", "measurement no")))}
+    kinds = [node(k, len(of(k)), split[k][1], text=f"{k} {len(of(k))}   [split by {split[k][0]}]") if k in split else
+             node(k, len(of(k)), ids=[e["id"] for e in of(k)], text=f"{k} {len(of(k))}   [no grouping field: a flat list]") for k in TREE_KINDS]
     ent = node("entries", len(entries), kinds + [unplaced([e for e in entries if e["type"] not in TREE_KINDS])])
     units = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]
     dims = Counter(u["dimension"] for u in units)
@@ -853,12 +792,16 @@ def summary_trees(o, hist, pend, nev):
     hist_rounds = defaultdict(Counter)
     for h in hist:
         hist_rounds[h["round"]][h["action"]] += 1
-    rest = [node("units", len(units), [node(d, n) for d, n in dims.most_common()], text=f"units {len(units)} (accepted symbols in units.yaml, {len(dims)} dimensions)"),
-            node("unit spellings", spell, text=f"unit spellings {spell} (symbol and variants of each units.yaml row)"),
+    block = o.get("units") or {}
+    n_pap = Counter(min(int(x["n_papers"] or 0), 3) for x in pend)
+    rest = [node("units", len(units), [node(d, n) for d, n in dims.most_common()], text=f"units {len(units)} (ontology/units.yaml: symbols, {len(dims)} dimensions)"),
+            node("units block", sum(len(u.get("accepted") or []) for u in block.values()),
+                 text=f"units {sum(len(u.get('accepted') or []) for u in block.values())} (ontology/ontology.yaml units: block: accepted, {len(block)} dimensions)"),
+            node("unit spellings", spell, text=f"unit spellings {spell} (ontology/units.yaml: symbol and variants of each row)"),
             node("qualifier keys", len(o["qualifiers"]), quals),
             node("never", len(nev), [node(c, n) for c, n in Counter(r["category"] for r in nev).most_common()],
                  text=f"never {len(nev)} (" + " + ".join(f"{n} {s}" for s, n in src.items()) + ")"),
-            node("pending", len(pend), [node(d, n) for d, n in Counter(x["decision"] or "undecided" for x in pend).most_common()]),
+            node("pending", len(pend), text=f"pending {len(pend)} (" + (f"no paper {n_pap[0]}, " if n_pap[0] else "") + f"1 paper {n_pap[1]}, 2 papers {n_pap[2]}, 3+ papers {n_pap[3]})"),
             node("history rows", len(hist), [node(f"round {r}", sum(c.values()), [node(a, n) for a, n in c.most_common()]) for r, c in hist_rounds.items()])]
     return [ent] + rest
 
@@ -970,7 +913,7 @@ def report_page():
                  "; ".join(src[e["id"]]["pids"]), "; ".join(src[e["id"]]["dois"]), "; ".join(x for x in map(str, e.get("evidence") or []) if not HELD_RX.search(x)),
                  ("replaced by " + (", ".join(e["replaced_by"]) if isinstance(e["replaced_by"], list) else e["replaced_by"])) if e.get("replaced_by") else ""] for e in entries if e["type"] == k]
         ent_html += f"<h3>{esc(k)} ({len(rows)})</h3>" + table(["id", "name", "definition", "unit", "origin", "source round", "source pids", "DOIs", "evidence (held-out removed)", "replaced"], rows)
-    sup = never_index([e for e in entries if not e.get("replaced_by")])[1]
+    sup = X.never_index([e for e in entries if not e.get("replaced_by")])[1]
     round_pids = [p for r in rs if r["round"] != "0" for p in r["pids"].split(";") if p]
     values = candidates_of(round_pids)[1]["values"] if round_pids else []
     cand = [candidate_cells(x, by_id) + [esc(x["decision"]), esc(x["alias_target"]), esc(x["never_category"]), esc(x["decision_note"]), esc(x["first_round"])] for x in pend]

@@ -56,7 +56,7 @@ yli18:s6.p3#1,definition,,,,s6.p3,gas adsorption rate to the walls is $g (1/\tex
 yli18:eq11#1,model,,,,eq11,f_{\text{ads}} = (1 - \theta) \frac{cN_0p_A}{\sqrt{2\pi M_A RT}},other,,f_ads,,,,,1/(m2 s),,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
 yli18:eq12#1,model,,,,eq12,f_{\text{des}} = q\theta P_d,other,,f_des,,,,,1/(m2 s),,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
 yli18:eq13#1,model,,,,eq13,K = \frac{\theta_{\text{eq}}/p_A}{1 - \theta_{\text{eq}}} = \frac{cQ}{qP_d},adsorption_equilibrium_constant,,K,,,,,1/Pa,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
-yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},other,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
+yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},saturation_density,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
 yli18:eq15#1,model,,,,eq15,g = f_{\text{ads}} - f_{\text{des}},other,,g,,,,,1/(m2 s),,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
 yli18:eq16#1,model,,,,eq16,\frac{d\theta}{dt} = \frac{g}{q},surface_coverage,,dθ/dt,,,,,1/s,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
 yli18:s6.p10#1,claim,,,,s6.p10,"Including a non-zero desorption probability provides a better model fit to experimental profiles, particularly for TiO2.",,,,,,,,,,,,,,,,,TiO2,,yli18,,asserted,p_d,fit_r2,causes,10.1063_1.5028178,,,,Non-zero desorption probability improves TiO2 fit.
@@ -222,7 +222,7 @@ yli18:tabu1.r1c0#1,definition,,,,tabu1.r1c0,b,b_film,,Number of metal atoms in a
 yli18:tabu1.r1c2#1,definition,,,,tabu1.r1c2;tabu1.r2c2,t,time,,Time,,,,,s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,t,
 yli18:tabu1.r2c0#1,definition,,,,tabu1.r2c0;tabu1.r3c0,c,initial_sticking_coefficient,,Lumped sticking coefficient,,,,,,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,c,
 yli18:tabu1.r3c2#1,definition,,,,tabu1.r3c2,tp,pulse_time,,Length of the reactant pulse,,,,,s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,tp,
-yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,other,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
+yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,effective_diffusion_coefficient,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
 yli18:tabu1.r4c2#1,definition,,,,tabu1.r4c2,v,other,,Velocity of gas front,,,,,m/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,v,
 yli18:tabu1.r5c0#1,definition,,,,tabu1.r5c0;tabu1.r6c0,dA,molecule_diameter,species=model_reactant,Diameter of molecule A,,,,,m,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,dA,
 yli18:tabu1.r5c2#1,definition,,,,tabu1.r5c2,vA,other,,Average speed of molecules A,,,,,m/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,vA,

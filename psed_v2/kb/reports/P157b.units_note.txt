@@ -1,0 +1,7 @@
+Both unit tables, with their source (ontology.html section 2 prints both):
+  ontology/units.yaml: 93 symbols in 43 dimensions, 444 spellings (symbol + variants of each row; 348 distinct)
+  ontology/ontology.yaml units: block: 70 accepted units in 32 dimensions (one canonical each)
+The generated vocab / form for the LLM uses units.yaml only: CODEBOOK.md section h (the 93 symbols with dimension and variants) is part of the
+pass-1 prefix (pass1_elements.prefix -> render.codebook), and form.json candidate.dimension is units.yaml's 43 dimensions; the unit field
+itself is a free string. The units: block reaches no prompt: export.unit_tables reads its canonical per dimension to set the factors of
+vocab.UNIT_BASE, and grow.py prints it (ontology.html sections 2 and 9).

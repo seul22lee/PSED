@@ -1,0 +1,12 @@
+5a. Form hashes. Each kb/records/<pid>.jsonl line carries ontology_hash (export.ontology_hash() at call time: ontology.yaml + units.yaml, the
+source of form.json) and prompt_hash (common.request_hash: prompt + response schema + thinking). compile.py Run.read() takes the latest pass-1
+line per section and the pass-0 line before them, whatever their ontology_hash; no reader in kb/extract, kb/pilot or ontology compares a
+record's hash (grep: ontology_hash is written by common.run and compile.main's summary.csv, read nowhere). The only hash check is the
+cache: common.plan / common.run look up cache/<pid>/<pass>_<section>_<request hash>_<model>.json, so a new form (a new schema) is a cache
+miss and a new call. The three papers' records in use carry b8048d18… (2026-10-20); the current ontology hash is e98f546e…
+(form_hashes). After P158 freezes a new form, compile.py will keep reading these lines and validate them against the new form.json
+(step a): a record valid under the old form and not under the new one is dropped there, with the validator as its reason.
+5b. Prices used: kb/pilot/prices.csv, gemini-3.8-flash (ai.google.dev pricing, read 2026-10-19, paid tier through 2026-12-31): input
+$0.75, cache hit $0.075, output (thinking included) $3.75 per 1M tokens; dollars = (input - cached) x 0.75 + cached x 0.075 + output x
+3.75, per 1M (ask.cost_of). Not in the records: the cached-content registration (upper bound = prefix tokens at the input price,
+cost_prefixes: $0.018-0.020 per paper) and its storage ($0.50 per 1M tokens per hour, deleted when the run ends; duration not logged).

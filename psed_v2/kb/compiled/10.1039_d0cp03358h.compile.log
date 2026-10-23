@@ -1,4 +1,7 @@
 input: 106 lines; pass 0 = line 88; 18 pass-1 lines for 18 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (s12), 16 (s13), 17 (s14), 18 (s15), 19 (s16), 20 (s17), 21 (s18), 22 (s19), 23 (s20), 24 (s21), 25 (s22), 26 (s23), 27 (s24), 28 (fig1), 29 (fig2), 30 (fig3), 31 (fig4), 32 (fig5), 33 (fig6), 34 (fig7), 35 (fig8), 36 (fig9), 37 (fig10), 38 (fig11), 39 (tab1), 40 (tab2), 41 (tabu1), 42 (tabu2), 44 (abstract), 45 (s0), 46 (s1), 47 (s2), 48 (s3), 49 (s4), 50 (s5), 51 (s6), 52 (s7), 53 (s8), 54 (s9), 55 (s10), 56 (s11), 57 (s12), 58 (s13), 59 (s14), 60 (s15), 61 (s16), 62 (s17), 63 (s18), 64 (s19), 65 (s20), 66 (s21), 67 (s22), 68 (s23), 69 (s24), 70 (fig1), 71 (fig2), 72 (fig3), 73 (fig4), 74 (fig5), 75 (fig6), 76 (fig7), 77 (fig8), 78 (fig9), 79 (fig10), 80 (fig11), 81 (tab1), 82 (tab2), 83 (tabu1), 84 (tabu2)
+a0: tabu2.r7c0: quantity 'l' -> feature_depth (quantity: alias)
+a0: tabu2.r15c0: quantity 'Q' -> saturation_density (quantity: alias)
+a0: tabu2.r17c0: quantity 'R' -> recombination_probability (quantity: label)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
@@ -90,10 +93,11 @@ j: caveats (query.caveats_of): 5, linked to facts 2, to nodes 0; facts reached t
 j: claim nodes (query.claim_nodes): 18 nodes for 20 claims; claims without a full triple (query.node_of empty): 2
 j: comparisons from figures.json (1c): 10
 step input: {'records': 582}
+step a0: {'quantity other: never.csv': 33, 'quantity promoted (quantity: alias)': 2, 'quantity promoted (quantity: label)': 1}
 step a: {'numeric string coerced (C4)': 20, 'schema:enum': 1, 'kept': 581}
 step a_fields: {'value_text': 1}
 step b: {'model_with_value (kept)': 23, 'statement_only (kept: P138 form)': 2, 'kept': 581}
-step c: {'quantity_other (kept)': 52, 'kept': 581}
+step c: {'quantity_other never (kept)': 33, 'quantity_other (kept)': 16, 'kept': 581}
 step d: {'quote_noncontiguous (kept)': 6, 'quote_not_found': 22, 'kept': 559}
 step e: {'kept': 559}
 step f: {'species_resolved': 19, 'kept': 559}
@@ -117,8 +121,8 @@ diff against the gold:
   claim          40   20   15  0.75  0.38
   entity         31   25   25  1.00  0.81
   comparison      8   10    1  0.10  0.12
-  paper           1    1    1  1.00  1.00
   identity        1    0    0     -  0.00
+  paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 0/66
 gold model rows with quantity and value: 20: {'other': 10, 'deposition_temperature': 1, 'pulse_time': 1, 'partial_pressure': 2, 'b_film': 1, 'growth_per_cycle': 1, 'saturation_density': 1, 'initial_sticking_coefficient': 1, 'p_d': 1, 'film_density': 1}
 observations: gold 154, compiled 101, matched 80

@@ -1,0 +1,837 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P157b</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P157b</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P157b.summary.txt</p>
+<pre>P157b (0 calls). compile.py step a0 resolve_other() before form.json: a record&#x27;s other value is matched by its printed text to the generated
+vocab of its kind (whole label, export.norm_label - the one normalization, moved from grow.py; a key under two ids promotes nothing); a
+record still quantity other whose label is a never.csv part gets unmapped.csv column never=&lt;category&gt;; every promotion -&gt; &lt;pid&gt;.promoted.csv.
+grow.py propose reads that column and does no never matching. Recompiled yli18, yim20, mat22; export.py --check 15 of 15.
+1e. The alias reached the compiler: yli18:tabu1.r4c0#1 &#x27;Apparent longitudinal diffusion coefficient&#x27; is effective_diffusion_coefficient (promoted).
+  Four more quantity promotions are short symbols matching another paper&#x27;s symbol alias: Q -&gt; saturation_density (yli18 eq14, yim20 tabu2.r15c0),
+  R -&gt; recombination_probability (yim20 tabu2.r17c0), l -&gt; feature_depth (yim20 tabu2.r7c0, merged into an existing fact); the record&#x27;s own
+  definition says otherwise in each (promoted_quantity). h (yli18 eq5) names two ids: not promoted. mat22: 32 crystallinity values, which F3
+  already resolved before (case only), same outcome (dropped at d).
+  Score vs gold: identical in every column and type (score, score_by_type). check.py --dir: 159 / 306 / 263 problems before and after, the
+  same problems (check_dir): the three papers do not pass, as before P157b; nothing patched.
+  Not done as directed: units. The label normalization strips a trailing (...) group and a trailing s, which belong to a unit spelling
+  (mol/s -&gt; &#x27;mol/&#x27; matched mol/(m2 s); 1/(m2 s) -&gt; &#x27;1/&#x27; matched 1/s and 1/(m2 s Pa)); units stay with unit_symbol() (step e, D10).
+  No model field exists in the form. One structure value_text outside the enum (yim20 tab2.r2c1) matches no structure: dropped at a, as before.
+2. Tree: method by measurement (yes 30 / no 5), mechanism 37 a flat list; sums pass, unplaced none. pending 7 (1 paper 7). decide.html puts rows
+  in 2+ papers first, marked; tested in Chromium on the P156 pending.csv (decide_test): byte round trip equal, one decision = its own line.
+3. units.yaml 93 symbols / 43 dimensions / 444 spellings vs ontology.yaml units: 70 accepted / 32 dimensions: 46 differences (units_diff);
+  readers by function (unit_readers). The LLM sees units.yaml only: CODEBOOK.md sec. h (pass-1 prefix) and form.json candidate.dimension (43).
+4. 29 open rows (open_rows): 8 are 6 of the 7 pending candidates (elam_monte_carlo has no row in these papers); 13 joined a symbol-table row
+  compile marked never; 1 rejected (top_membrane_removal); 1 value without a quantity; 6 are round-1 never decisions that do not reach compile:
+  surface_area, diffusion_coefficient_without_pillars, flux_of_material_in_direction_x have no printed label (never_reconcile).
+5. Records carry ontology_hash; compile.py reads every line whatever its hash (no reader compares it); the request hash is only the cache key.
+  Cost (cost): the lines compile reads cost $1.74 (47 calls); their run (hash b8048d18) $3.07 (53 calls); every call since P138 $6.84 (258).
+Open: two questions (questions).
+</pre>
+<h2>Paths</h2><p>psed_v2/kb/reports/P157b.paths.txt</p>
+<pre>report: psed_v2/kb/reports/P157b.html
+ontology.html: psed_v2/ontology/ontology.html (2. summary tree)
+decide.html: psed_v2/ontology/decide.html (regenerated from the 7 pending rows)
+score after: psed_v2/kb/reports/P157b.score.csv; before: psed_v2/kb/reports/R1.score.csv
+compiled: psed_v2/kb/compiled/&lt;pid&gt;.promoted.csv, &lt;pid&gt;.unmapped.csv (column never)
+</pre>
+<h2>Two questions, two options each</h2><p>psed_v2/kb/reports/P157b.questions.txt</p>
+<pre>A. Symbols. The whole-label rule promotes a one-letter label to whatever entry carries that letter as an alias: 3 wrong facts in round 1
+   (Q twice, R) and l merged into a feature_depth fact; 66 aliases of quantity entries normalize to 3 characters or fewer (several only
+   after the normalization drops their unit group: &#x27;T (°C)&#x27; -&gt; &#x27;t&#x27;, &#x27;H (at. %)&#x27; -&gt; &#x27;h&#x27;). (a) a label or alias that normalizes to 3
+   characters or fewer does not promote (it stays other and goes to propose, where P156 joins it to its symbol-table row); (b) keep the
+   rule and remove the symbol aliases from the entries. Which one?
+B. Never decisions on a cell with no printed label (surface_area, diffusion_coefficient_without_pillars, flux_of_material_in_direction_x:
+   6 rows). (a) compile.py&#x27;s never and promotion lookups fall back to the record&#x27;s candidate definition_quote with its trailing unit group
+   stripped when label_as_printed is empty (the P156 meaning rule); (b) grow.py apply refuses a never decision whose rows have no printed
+   label and leaves the row pending. Which one?
+</pre>
+<h2>1e. Every quantity record step a0 promoted or found ambiguous, with its outcome, the record&#x27;s own definition and the entry&#x27;s</h2><p>psed_v2/kb/reports/P157b.promoted_quantity.csv</p>
+<table><tr><th>paper</th><th>element</th><th>printed</th><th>lookup</th><th>id</th><th>outcome</th><th>symbol</th><th>record_definition</th><th>entry_definition</th></tr>
+<tr><td>yli18</td><td>eq5</td><td>h</td><td>quantity: ambiguous</td><td>element_fraction | feature_width</td><td>not promoted: the label names two ids</td><td>yes (normalizes to &lt;= 3 characters)</td><td>hydraulic diameter of a rectangular channel of height $H$ and width $W$</td><td></td></tr>
+<tr><td>yli18</td><td>eq14</td><td>Q</td><td>quantity: alias</td><td>saturation_density</td><td>fact yli18:eq14#1 (type model, quantity saturation_density, parent yli18:sim:sim_ylilammi)</td><td>yes (normalizes to &lt;= 3 characters)</td><td>collision rate at unit pressure $Q$</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td></tr>
+<tr><td>yli18</td><td>tabu1.r4c0</td><td>Apparent longitudinal diffusion coefficient</td><td>quantity: alias</td><td>effective_diffusion_coefficient</td><td>fact yli18:tabu1.r4c0#1 (type definition, quantity effective_diffusion_coefficient, parent yli18)</td><td></td><td>Apparent longitudinal diffusion coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further</td></tr>
+<tr><td>yim20</td><td>tabu2.r7c0</td><td>l</td><td>quantity: alias</td><td>feature_depth</td><td>merged by dedupe into another fact</td><td>yes (normalizes to &lt;= 3 characters)</td><td>Distance between rows of pillars (\mu\text{m})</td><td>The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure.</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c0</td><td>Q</td><td>quantity: alias</td><td>saturation_density</td><td>fact yim20:tabu2.r15c0#1 (type definition, quantity saturation_density, parent yim20)</td><td>yes (normalizes to &lt;= 3 characters)</td><td>Collision rate at unit pressure (\text{m}^{-2} \text{s}^{-1} \text{Pa}^{-1})</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td></tr>
+<tr><td>yim20</td><td>tabu2.r17c0</td><td>R</td><td>quantity: label</td><td>recombination_probability</td><td>fact yim20:tabu2.r17c0#1 (type definition, quantity recombination_probability, parent yim20)</td><td>yes (normalizes to &lt;= 3 characters)</td><td>Diffusion resistance of a rectangular channel (\text{s m}^{-3})</td><td>The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII).</td></tr>
+</table>
+<h2>1e. Value promotions (categorical value_text), grouped</h2><p>psed_v2/kb/reports/P157b.promoted_values.csv</p>
+<table><tr><th>paper</th><th>field</th><th>lookup</th><th>id</th><th>outcome</th><th>records</th><th>new</th></tr>
+<tr><td>mat22</td><td>value_text</td><td>value:crystallinity: value id</td><td>amorphous</td><td>dropped at d: quote_not_found (quote)</td><td>14</td><td>no: F3 resolved them before P157b (32 F3 resolutions in the HEAD compile.log)</td></tr>
+<tr><td>mat22</td><td>value_text</td><td>value:crystallinity: value id</td><td>crystalline</td><td>dropped at d: quote_not_found (quote)</td><td>18</td><td>no: F3 resolved them before P157b (32 F3 resolutions in the HEAD compile.log)</td></tr>
+</table>
+<h2>1e. Per paper before (HEAD, P157) -&gt; after: facts, quantity other, dropped, unmapped, never, open, promoted</h2><p>psed_v2/kb/reports/P157b.counts.csv</p>
+<table><tr><th>paper</th><th>facts before</th><th>facts after</th><th>facts quantity other before</th><th>facts quantity other after</th><th>dropped before</th><th>dropped after</th><th>unmapped rows before</th><th>unmapped rows after</th><th>of which never before</th><th>of which never after</th><th>of which open before</th><th>of which open after</th><th>promoted before</th><th>promoted after</th></tr>
+<tr><td>yli18</td><td>303</td><td>303</td><td>28</td><td>26</td><td>4</td><td>4</td><td>43</td><td>41</td><td>0</td><td>29</td><td>43</td><td>12</td><td>0</td><td>2</td></tr>
+<tr><td>yim20</td><td>686</td><td>686</td><td>50</td><td>48</td><td>23</td><td>23</td><td>52</td><td>49</td><td>0</td><td>33</td><td>52</td><td>16</td><td>0</td><td>3</td></tr>
+<tr><td>mat22</td><td>515</td><td>515</td><td>4</td><td>4</td><td>55</td><td>55</td><td>5</td><td>5</td><td>0</td><td>4</td><td>5</td><td>1</td><td>0</td><td>32</td></tr>
+</table>
+<h2>1e. Step a0 counts per paper (summary.csv)</h2><p>psed_v2/kb/reports/P157b.a0_counts.csv</p>
+<table><tr><th>paper</th><th>metric</th><th>value</th></tr>
+<tr><td>yli18</td><td>unmapped</td><td>41</td></tr>
+<tr><td>yli18</td><td>unmapped_never</td><td>29</td></tr>
+<tr><td>yli18</td><td>promoted</td><td>2</td></tr>
+<tr><td>yli18</td><td>step_a0:quantity ambiguous (left as it is)</td><td>1</td></tr>
+<tr><td>yli18</td><td>step_a0:quantity promoted (quantity: alias)</td><td>2</td></tr>
+<tr><td>yli18</td><td>step_a0:quantity other: never.csv</td><td>22</td></tr>
+<tr><td>yim20</td><td>unmapped</td><td>49</td></tr>
+<tr><td>yim20</td><td>unmapped_never</td><td>33</td></tr>
+<tr><td>yim20</td><td>promoted</td><td>3</td></tr>
+<tr><td>yim20</td><td>step_a0:quantity other: never.csv</td><td>33</td></tr>
+<tr><td>yim20</td><td>step_a0:quantity promoted (quantity: alias)</td><td>2</td></tr>
+<tr><td>yim20</td><td>step_a0:quantity promoted (quantity: label)</td><td>1</td></tr>
+<tr><td>mat22</td><td>unmapped</td><td>5</td></tr>
+<tr><td>mat22</td><td>unmapped_never</td><td>4</td></tr>
+<tr><td>mat22</td><td>promoted</td><td>32</td></tr>
+<tr><td>mat22</td><td>step_a0:quantity other: never.csv</td><td>4</td></tr>
+<tr><td>mat22</td><td>step_a0:value_text promoted (value:crystallinity: value id)</td><td>32</td></tr>
+</table>
+<h2>1e. Changed fact rows and audit rows</h2><p>psed_v2/kb/reports/P157b.facts_diff.txt</p>
+<pre>git diff HEAD -- kb/compiled/&lt;pid&gt;.facts.csv (HEAD = 40ee0bf, P157): every changed fact row
+
+diff --git a/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv b/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
+index 9ce63bb..4329c95 100644
+--- a/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
++++ b/psed_v2/kb/compiled/10.1039_d0cp03358h.facts.csv
+@@ -560 +560 @@ yim20:tabu2.r14c1#1,definition,,,,tabu2.r14c1,Desorption probability in unit tim
+-yim20:tabu2.r15c0#1,definition,,,,tabu2.r15c0;tabu2.r16c0,Q,other,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,Q,
++yim20:tabu2.r15c0#1,definition,,,,tabu2.r15c0;tabu2.r16c0,Q,saturation_density,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,Q,
+@@ -563 +563 @@ yim20:tabu2.r16c1#1,definition,,,,tabu2.r16c1,Adsorption density of reactant A a
+-yim20:tabu2.r17c0#1,definition,,,,tabu2.r17c0,R,other,,R,,,,,s m-3,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,R,
++yim20:tabu2.r17c0#1,definition,,,,tabu2.r17c0,R,recombination_probability,,R,,,,,s m-3,,,,,,,,,,,yim20,,,,,,10.1039_d0cp03358h,,,R,
+diff --git a/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv b/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+index 9a811b0..d115e5e 100644
+--- a/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
++++ b/psed_v2/kb/compiled/10.1063_1.5028178.facts.csv
+@@ -59 +59 @@ yli18:eq13#1,model,,,,eq13,K = \frac{\theta_{\text{eq}}/p_A}{1 - \theta_{\text{e
+-yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},other,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
++yli18:eq14#1,model,,,,eq14,Q = \frac{N_0}{\sqrt{2\pi M_A RT}},saturation_density,,Q,,,,,m-2 s-1 Pa-1,,,,,,,,,,,yli18:sim:sim_ylilammi,,,,,,10.1063_1.5028178,,,,
+@@ -225 +225 @@ yli18:tabu1.r3c2#1,definition,,,,tabu1.r3c2,tp,pulse_time,,Length of the reactan
+-yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,other,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
++yli18:tabu1.r4c0#1,definition,,,,tabu1.r4c0,D,effective_diffusion_coefficient,,Apparent longitudinal diffusion coefficient,,,,,m2/s,,,,,,,,,,,yli18,,,,,,10.1063_1.5028178,,,D,
+
+dropped.csv, coverage.csv, experiments.csv: no change
+
+audit.csv / audit_reverse.csv (score.py&#x27;s audit; the gold holds no quantity on these definitions):
+diff --git a/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv b/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
+index b4b482a..ba7bd2d 100644
+--- a/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
++++ b/psed_v2/kb/compiled/10.1039_d0cp03358h.audit_reverse.csv
+@@ -124 +123,0 @@ yim20:tabu2.r14c1#1,definition,p_d,,1/s,,tabu2.r14c1,yim20:tabu2.r14c0#1,quantit
+-yim20:tabu2.r15c0#1,definition,other,,m-2 s-1 Pa-1,,tabu2.r15c0;tabu2.r16c0,yim20:tabu2.r15c0#1,quantity &#x27;&#x27; vs &#x27;other&#x27;
+@@ -126 +125 @@ yim20:tabu2.r15c1#1,definition,other,,m-2 s-1 Pa-1,,tabu2.r15c1,yim20:tabu2.r15c
+-yim20:tabu2.r17c0#1,definition,other,,s m-3,,tabu2.r17c0,yim20:tabu2.r17c0#1,quantity &#x27;&#x27; vs &#x27;other&#x27;
++yim20:tabu2.r17c0#1,definition,recombination_probability,,s m-3,,tabu2.r17c0,yim20:tabu2.r17c0#1,quantity &#x27;&#x27; vs &#x27;recombination_probability&#x27;
+diff --git a/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv b/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
+index 253b307..331baed 100644
+--- a/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
++++ b/psed_v2/kb/compiled/10.1063_1.5028178.audit_reverse.csv
+@@ -47 +47 @@ yli18:tabu1.r1c0#1,definition,b_film,,,,tabu1.r1c0,,no gold row on this element
+-yli18:tabu1.r4c0#1,definition,other,,m2/s,,tabu1.r4c0,yli18:tabu1.r4c0#1,quantity &#x27;&#x27; vs &#x27;other&#x27;
++yli18:tabu1.r4c0#1,definition,effective_diffusion_coefficient,,m2/s,,tabu1.r4c0,yli18:tabu1.r4c0#1,quantity &#x27;&#x27; vs &#x27;effective_diffusion_coefficient&#x27;
+</pre>
+<h2>1e. Score vs gold before -&gt; after, every column</h2><p>psed_v2/kb/reports/P157b.score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before (R1.score.csv, P157)</th><th>after (P157b.score.csv)</th><th>same</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>30/63</td><td>30/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>306</td><td>306</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>425</td><td>425</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>512</td><td>512</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>99/108</td><td>99/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>80/154</td><td>80/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>27/92</td><td>27/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>263</td><td>263</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>133/249</td><td>133/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+</table>
+<h2>1e. Score by record type before -&gt; after</h2><p>psed_v2/kb/reports/P157b.score_by_type.csv</p>
+<table><tr><th>paper</th><th>type</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>yli18</td><td>model</td><td>gold</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>compiled</td><td>125</td><td>125</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>matched</td><td>61</td><td>61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>precision</td><td>0.49</td><td>0.49</td><td>yes</td></tr>
+<tr><td>yli18</td><td>model</td><td>recall</td><td>0.91</td><td>0.91</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>gold</td><td>63</td><td>63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>compiled</td><td>44</td><td>44</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>matched</td><td>30</td><td>30</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>yli18</td><td>setting</td><td>recall</td><td>0.48</td><td>0.48</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>gold</td><td>38</td><td>38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>compiled</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>matched</td><td>23</td><td>23</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>precision</td><td>0.43</td><td>0.43</td><td>yes</td></tr>
+<tr><td>yli18</td><td>definition</td><td>recall</td><td>0.61</td><td>0.61</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>gold</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>compiled</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>matched</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>precision</td><td>0.26</td><td>0.26</td><td>yes</td></tr>
+<tr><td>yli18</td><td>derived</td><td>recall</td><td>0.47</td><td>0.47</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>gold</td><td>13</td><td>13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>compiled</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>matched</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>precision</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>yli18</td><td>claim</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>compiled</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>precision</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>entity</td><td>recall</td><td>0.50</td><td>0.50</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>gold</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>matched</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>precision</td><td>0.40</td><td>0.40</td><td>yes</td></tr>
+<tr><td>yli18</td><td>activity</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>compiled</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>precision</td><td>0.33</td><td>0.33</td><td>yes</td></tr>
+<tr><td>yli18</td><td>observation</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>gold</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>compiled</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yli18</td><td>caveat</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>gold</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>cited</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>gold</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>comparison</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yli18</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yli18</td><td>paper</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>gold</td><td>206</td><td>206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>compiled</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>matched</td><td>105</td><td>105</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>precision</td><td>0.66</td><td>0.66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>setting</td><td>recall</td><td>0.51</td><td>0.51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>gold</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>compiled</td><td>101</td><td>101</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>matched</td><td>80</td><td>80</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>precision</td><td>0.79</td><td>0.79</td><td>yes</td></tr>
+<tr><td>yim20</td><td>observation</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>gold</td><td>108</td><td>108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>compiled</td><td>137</td><td>137</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>matched</td><td>99</td><td>99</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>precision</td><td>0.72</td><td>0.72</td><td>yes</td></tr>
+<tr><td>yim20</td><td>derived</td><td>recall</td><td>0.92</td><td>0.92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>gold</td><td>92</td><td>92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>compiled</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>precision</td><td>0.87</td><td>0.87</td><td>yes</td></tr>
+<tr><td>yim20</td><td>cited</td><td>recall</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>gold</td><td>75</td><td>75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>compiled</td><td>49</td><td>49</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>matched</td><td>47</td><td>47</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>precision</td><td>0.96</td><td>0.96</td><td>yes</td></tr>
+<tr><td>yim20</td><td>activity</td><td>recall</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>gold</td><td>73</td><td>73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>compiled</td><td>51</td><td>51</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>matched</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>precision</td><td>0.88</td><td>0.88</td><td>yes</td></tr>
+<tr><td>yim20</td><td>model</td><td>recall</td><td>0.62</td><td>0.62</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>gold</td><td>66</td><td>66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>compiled</td><td>97</td><td>97</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>matched</td><td>24</td><td>24</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>precision</td><td>0.25</td><td>0.25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>definition</td><td>recall</td><td>0.36</td><td>0.36</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>gold</td><td>45</td><td>45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>compiled</td><td>5</td><td>5</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>matched</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>precision</td><td>0.60</td><td>0.60</td><td>yes</td></tr>
+<tr><td>yim20</td><td>caveat</td><td>recall</td><td>0.07</td><td>0.07</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>gold</td><td>40</td><td>40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>compiled</td><td>20</td><td>20</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>matched</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>precision</td><td>0.75</td><td>0.75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>claim</td><td>recall</td><td>0.38</td><td>0.38</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>gold</td><td>31</td><td>31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>compiled</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>matched</td><td>25</td><td>25</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>entity</td><td>recall</td><td>0.81</td><td>0.81</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>compiled</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>precision</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>yim20</td><td>comparison</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>yim20</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>yim20</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>gold</td><td>313</td><td>313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>compiled</td><td>161</td><td>161</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>matched</td><td>109</td><td>109</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>precision</td><td>0.68</td><td>0.68</td><td>yes</td></tr>
+<tr><td>mat22</td><td>observation</td><td>recall</td><td>0.35</td><td>0.35</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>gold</td><td>251</td><td>251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>compiled</td><td>107</td><td>107</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>matched</td><td>67</td><td>67</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>precision</td><td>0.63</td><td>0.63</td><td>yes</td></tr>
+<tr><td>mat22</td><td>setting</td><td>recall</td><td>0.27</td><td>0.27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>gold</td><td>249</td><td>249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>compiled</td><td>143</td><td>143</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>matched</td><td>133</td><td>133</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>precision</td><td>0.93</td><td>0.93</td><td>yes</td></tr>
+<tr><td>mat22</td><td>activity</td><td>recall</td><td>0.53</td><td>0.53</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>gold</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>compiled</td><td>11</td><td>11</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>matched</td><td>6</td><td>6</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>precision</td><td>0.55</td><td>0.55</td><td>yes</td></tr>
+<tr><td>mat22</td><td>cited</td><td>recall</td><td>0.10</td><td>0.10</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>compiled</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>matched</td><td>42</td><td>42</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>entity</td><td>recall</td><td>0.78</td><td>0.78</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>gold</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>caveat</td><td>recall</td><td>0.02</td><td>0.02</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>gold</td><td>52</td><td>52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>compiled</td><td>37</td><td>37</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>matched</td><td>27</td><td>27</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>precision</td><td>0.73</td><td>0.73</td><td>yes</td></tr>
+<tr><td>mat22</td><td>claim</td><td>recall</td><td>0.52</td><td>0.52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>gold</td><td>14</td><td>14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>definition</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>gold</td><td>12</td><td>12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>compiled</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>matched</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>precision</td><td>0.29</td><td>0.29</td><td>yes</td></tr>
+<tr><td>mat22</td><td>comparison</td><td>recall</td><td>0.17</td><td>0.17</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>gold</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>model</td><td>recall</td><td>0.12</td><td>0.12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>gold</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>compiled</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>precision</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>derived</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>compiled</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>matched</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>precision</td><td>-</td><td>-</td><td>yes</td></tr>
+<tr><td>mat22</td><td>identity</td><td>recall</td><td>0.00</td><td>0.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>gold</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>compiled</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>precision</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+<tr><td>mat22</td><td>paper</td><td>recall</td><td>1.00</td><td>1.00</td><td>yes</td></tr>
+</table>
+<h2>1e. check.py --dir on the three papers, before -&gt; after</h2><p>psed_v2/kb/reports/P157b.check_dir.csv</p>
+<table><tr><th>paper</th><th>problems_before</th><th>problems_after</th><th>new</th><th>gone</th><th>result</th></tr>
+<tr><td>yli18</td><td>159</td><td>159</td><td>0</td><td>0</td><td>same problems, same count</td></tr>
+<tr><td>yim20</td><td>306</td><td>306</td><td>0</td><td>0</td><td>same problems, same count</td></tr>
+<tr><td>mat22</td><td>263</td><td>263</td><td>0</td><td>0</td><td>same problems, same count</td></tr>
+</table>
+<h2>1c. unmapped.csv rows with a never category (compile.py column never)</h2><p>psed_v2/kb/reports/P157b.never_rows.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>never</th><th>action</th></tr>
+<tr><td>yli18</td><td>tabI.cap</td><td>quantity</td><td>rms thickness error</td><td>nm</td><td>Fit quality</td><td>kept (never: rms thickness error [nm])</td></tr>
+<tr><td>yli18</td><td>tabI.r1c7</td><td>quantity</td><td>rms thickness error</td><td>nm</td><td>Fit quality</td><td>kept (never: rms thickness error [nm])</td></tr>
+<tr><td>yli18</td><td>tabI.r2c7</td><td>quantity</td><td>rms thickness error</td><td>nm</td><td>Fit quality</td><td>kept (never: rms thickness error [nm])</td></tr>
+<tr><td>yli18</td><td>tabu1.r3c0</td><td>quantity</td><td>Penetration depth parameter in the Gordon model</td><td>1/s</td><td>Model internals</td><td>kept (never: Penetration depth parameter in the Gordon model)</td></tr>
+<tr><td>yli18</td><td>tabu1.r4c2</td><td>quantity</td><td>Velocity of gas front</td><td>m/s</td><td>Model internals</td><td>kept (never: Velocity of gas front)</td></tr>
+<tr><td>yli18</td><td>tabu1.r5c2</td><td>quantity</td><td>Average speed of molecules A</td><td>m/s</td><td>Model internals</td><td>kept (never: Average speed of molecules A)</td></tr>
+<tr><td>yli18</td><td>tabu1.r9c0</td><td>quantity</td><td>Gas flow of the reactant</td><td>mol/s</td><td>Model internals</td><td>kept (never: Gas flow of the reactant)</td></tr>
+<tr><td>yli18</td><td>tabu1.r9c2</td><td>quantity</td><td>Distance where the linear part of the reactant pressure is zero</td><td>m</td><td>Model internals</td><td>kept (never: Distance where the linear part of the reactant pressure is zero)</td></tr>
+<tr><td>yli18</td><td>tabu1.r10c0</td><td>quantity</td><td>Adsorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (never: Adsorption rate)</td></tr>
+<tr><td>yli18</td><td>tabu1.r10c2</td><td>quantity</td><td>Length of the linear part of the pressure distribution</td><td>m</td><td>Model internals</td><td>kept (never: Length of the linear part of the pressure distribution)</td></tr>
+<tr><td>yli18</td><td>tabu1.r11c0</td><td>quantity</td><td>Desorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (never: Desorption rate)</td></tr>
+<tr><td>yli18</td><td>tabu1.r11c2</td><td>quantity</td><td>Collision rate of molecule A</td><td>1/s</td><td>Model internals</td><td>kept (never: Collision rate of molecule A)</td></tr>
+<tr><td>yli18</td><td>tabu1.r12c0</td><td>quantity</td><td>Net adsorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (never: Net adsorption rate)</td></tr>
+<tr><td>yli18</td><td>tabu1.r12c2</td><td>quantity</td><td>Error in thickness measurement</td><td>m</td><td>Fit quality</td><td>kept (never: Error in thickness measurement)</td></tr>
+<tr><td>yli18</td><td>tabu1.r13c2</td><td>quantity</td><td>Viscosity of gas</td><td>Pa s</td><td>Molecule properties</td><td>kept (never: Viscosity of gas [µPa s])</td></tr>
+<tr><td>yli18</td><td>tabu1.r15c0</td><td>quantity</td><td>Hydraulic diameter of the channel</td><td>m</td><td>Model internals</td><td>kept (never: Hydraulic diameter of the channel)</td></tr>
+<tr><td>yli18</td><td>tabu1.r15c2</td><td>quantity</td><td>Equilibrium surface coverage in the Langmuir model</td><td>1</td><td>Model internals</td><td>kept (never: Equilibrium surface coverage in the Langmuir model)</td></tr>
+<tr><td>yli18</td><td>tabu1.r17c2</td><td>quantity</td><td>Time constant of adsorption</td><td>s</td><td>Model internals</td><td>kept (never: Time constant of adsorption)</td></tr>
+<tr><td>yli18</td><td>tabu1.r22c0</td><td>quantity</td><td>Amount of reactant A</td><td>mol</td><td>Model internals</td><td>kept (never: Amount of reactant A)</td></tr>
+<tr><td>yli18</td><td>tabu1.r23c0</td><td>quantity</td><td>Avogadro constant</td><td>1/mol</td><td>Model internals</td><td>kept (never: Avogadro constant)</td></tr>
+<tr><td>yli18</td><td>tabu1.r28c0</td><td>quantity</td><td>Collision rate at unit pressure</td><td>m^-2 s^-1 Pa^-1</td><td>Model internals</td><td>kept (never: Collision rate at unit pressure)</td></tr>
+<tr><td>yli18</td><td>tabu1.r29c0</td><td>quantity</td><td>Gas constant</td><td>J K^-1 mol^-1</td><td>Model internals</td><td>kept (never: Gas constant)</td></tr>
+<tr><td>yli18</td><td>tabu1.r4c2</td><td>unit</td><td>Velocity of gas front</td><td>m/s</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r5c2</td><td>unit</td><td>Average speed of molecules A</td><td>m/s</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r9c0</td><td>unit</td><td>Gas flow of the reactant</td><td>mol/s</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r10c0</td><td>unit</td><td>Adsorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r11c0</td><td>unit</td><td>Desorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r12c0</td><td>unit</td><td>Net adsorption rate</td><td>m^-2 s^-1</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yli18</td><td>tabu1.r29c0</td><td>unit</td><td>Gas constant</td><td>J K^-1 mol^-1</td><td>Model internals</td><td>kept (unit as printed)</td></tr>
+<tr><td>yim20</td><td>s6.p2</td><td>quantity</td><td>Series A</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series A)</td></tr>
+<tr><td>yim20</td><td>s7.p2</td><td>quantity</td><td>accelerating voltage</td><td>keV</td><td>Instrument settings</td><td>kept (never: Accelerating voltage [keV])</td></tr>
+<tr><td>yim20</td><td>s7.p3</td><td>quantity</td><td>length of the line</td><td>µm</td><td>Instrument settings</td><td>kept (never: length of the line)</td></tr>
+<tr><td>yim20</td><td>s7.p3</td><td>quantity</td><td>measurement points interval</td><td>µm</td><td>Instrument settings</td><td>kept (never: measurement points interval)</td></tr>
+<tr><td>yim20</td><td>s7.p4</td><td>quantity</td><td>measurement area</td><td>µm</td><td>Instrument settings</td><td>kept (never: measurement area)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quantity</td><td>total scan length</td><td>µm</td><td>Instrument settings</td><td>kept (never: total scan length)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quantity</td><td>total scan length</td><td>µm</td><td>Instrument settings</td><td>kept (never: total scan length)</td></tr>
+<tr><td>yim20</td><td>s7.p5</td><td>quantity</td><td>step</td><td>µm</td><td>Instrument settings</td><td>kept (never: step)</td></tr>
+<tr><td>yim20</td><td>s16.p7</td><td>quantity</td><td>positioning uncertainty</td><td>µm</td><td>Fit quality</td><td>kept (never: positioning uncertainty)</td></tr>
+<tr><td>yim20</td><td>fig9.cap</td><td>quantity</td><td>Series C</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series C)</td></tr>
+<tr><td>yim20</td><td>fig9.cap</td><td>quantity</td><td>Series D</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series D)</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>quantity</td><td>b_{\text{TMA}}</td><td>1</td><td>Model internals not in Sec. 8</td><td>kept (never: bfilm; bTMA)</td></tr>
+<tr><td>yim20</td><td>fig11.cap</td><td>quantity</td><td>Series E</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series E)</td></tr>
+<tr><td>yim20</td><td>fig11.cap</td><td>quantity</td><td>Series F</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series F)</td></tr>
+<tr><td>yim20</td><td>tab1.r1c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r2c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r3c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r4c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r5c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r6c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r7c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r8c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r9c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r10c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r12c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r13c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r14c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r15c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r16c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tab1.r18c0</td><td>quantity</td><td>Series</td><td></td><td>Equipment details and sample codes</td><td>kept (never: Series)</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c1</td><td>quantity</td><td>Collision rate at unit pressure</td><td>m-2 s-1 Pa-1</td><td>Model internals</td><td>kept (never: Collision rate at unit pressure)</td></tr>
+<tr><td>yim20</td><td>tabu2.r17c1</td><td>quantity</td><td>Diffusion resistance of a rectangular channel</td><td>s m-3</td><td>Model internals</td><td>kept (never: Diffusion resistance of a rectangular channel)</td></tr>
+<tr><td>yim20</td><td>tabu2.r18c1</td><td>quantity</td><td>Diffusion resistance of one row of pillars</td><td>s m-3</td><td>Model internals</td><td>kept (never: Diffusion resistance of one row of pillars)</td></tr>
+<tr><td>mat22</td><td>s5.p14</td><td>quantity</td><td>acceleration voltage</td><td>kV</td><td>Instrument settings</td><td>kept (never: acceleration voltage)</td></tr>
+<tr><td>mat22</td><td>s5.p15</td><td>quantity</td><td>Laser power</td><td>mW</td><td>Instrument settings</td><td>kept (never: Laser power)</td></tr>
+<tr><td>mat22</td><td>s5.p17</td><td>quantity</td><td>beam energy</td><td>MeV</td><td>Instrument settings</td><td>kept (never: beam energy)</td></tr>
+<tr><td>mat22</td><td>s5.p18</td><td>quantity</td><td>voltage</td><td>kV</td><td>Instrument settings</td><td>kept (never: voltage)</td></tr>
+</table>
+<h2>1d. Never rows: P157 (grow.py matched) vs P157b (compile.py column + propose&#x27;s never groups): the rows that differ</h2><p>psed_v2/kb/reports/P157b.never_reconcile.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>P157</th><th>P157b</th></tr>
+<tr><td>yim20</td><td>tabu1.r10c0</td><td>quantity</td><td>never</td><td>open: not pending: candidate flux_of_material_in_direction_x was decided in round 1 (never -&gt; Model internals); never.csv hold</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c1</td><td>quantity</td><td>never</td><td>open: not pending: candidate flux_of_material_in_direction_x was decided in round 1 (never -&gt; Model internals); never.csv hold</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c0</td><td>quantity</td><td>never</td><td>open: not pending: candidate surface_area was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but th</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c1</td><td>quantity</td><td>never</td><td>open: not pending: candidate surface_area was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but th</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c0</td><td>quantity</td><td>never</td><td>open: not pending: candidate diffusion_coefficient_without_pillars was decided in round 1 (never -&gt; Model internals); never.cs</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c1</td><td>quantity</td><td>never</td><td>open: not pending: candidate diffusion_coefficient_without_pillars was decided in round 1 (never -&gt; Model internals); never.cs</td></tr>
+<tr><td>yim20</td><td>tabu2.r15c0</td><td>quantity</td><td>never</td><td>promoted by a0</td></tr>
+<tr><td>yim20</td><td>tabu2.r17c0</td><td>quantity</td><td>never</td><td>promoted by a0</td></tr>
+<tr><td>yli18</td><td>eq14</td><td>quantity</td><td>never</td><td>promoted by a0</td></tr>
+</table>
+<h2>4. Unmapped rows neither promoted nor never, and what propose makes of each</h2><p>psed_v2/kb/reports/P157b.open_rows.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>symbol</th><th>pending</th><th>why</th></tr>
+<tr><td>yli18</td><td>eq1</td><td>quantity</td><td>z_A</td><td>1/s</td><td>z_A</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq2</td><td>quantity</td><td>v_A</td><td>m/s</td><td>v_A</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq5</td><td>quantity</td><td>h</td><td>m</td><td>h</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>s6.p3</td><td>quantity</td><td>g</td><td>1/(m2 s)</td><td>g</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq11</td><td>quantity</td><td>f_ads</td><td>1/(m2 s)</td><td>f_ads</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq12</td><td>quantity</td><td>f_des</td><td>1/(m2 s)</td><td>f_des</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq15</td><td>quantity</td><td>g</td><td>1/(m2 s)</td><td>g</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq2</td><td>unit</td><td>v_A</td><td>m/s</td><td></td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>s6.p3</td><td>unit</td><td>g</td><td>1/(m2 s)</td><td></td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq11</td><td>unit</td><td>f_ads</td><td>1/(m2 s)</td><td></td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq12</td><td>unit</td><td>f_des</td><td>1/(m2 s)</td><td></td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yli18</td><td>eq15</td><td>unit</td><td>g</td><td>1/(m2 s)</td><td></td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>yim20</td><td>s7.p1</td><td>quantity</td><td>top membrane removal</td><td></td><td></td><td>no</td><td>not pending: candidate top_membrane_removal was decided in round 1 (reject); a rejected label stays out of ontology.yaml and never.csv; propose would offer it again</td></tr>
+<tr><td>yim20</td><td>s16.p5</td><td>quantity</td><td>displacement</td><td>nm</td><td>displacement</td><td>yes: displacement</td><td>one of the 7 pending candidates: displacement</td></tr>
+<tr><td>yim20</td><td>s16.p5</td><td>quantity</td><td>bent</td><td>nm</td><td>bent</td><td>yes: bent</td><td>one of the 7 pending candidates: bent</td></tr>
+<tr><td>yim20</td><td>fig2.cap</td><td>quantity</td><td>\tilde{\xi}</td><td>1</td><td>\tilde{\xi}</td><td>yes: tilde_xi</td><td>one of the 7 pending candidates: tilde_xi</td></tr>
+<tr><td>yim20</td><td>tabu1.r0c0</td><td>quantity</td><td></td><td></td><td>a</td><td>yes: distance_between_pillars</td><td>one of the 7 pending candidates: distance_between_pillars</td></tr>
+<tr><td>yim20</td><td>tabu1.r0c1</td><td>quantity</td><td></td><td></td><td>a</td><td>yes: distance_between_pillars</td><td>one of the 7 pending candidates: distance_between_pillars</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c0</td><td>quantity</td><td></td><td></td><td>A</td><td>no</td><td>not pending: candidate surface_area was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu1.r1c1</td><td>quantity</td><td></td><td></td><td>A</td><td>no</td><td>not pending: candidate surface_area was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu1.r5c0</td><td>quantity</td><td></td><td></td><td>d</td><td>yes: pillar_diameter</td><td>one of the 7 pending candidates: pillar_diameter</td></tr>
+<tr><td>yim20</td><td>tabu1.r5c1</td><td>quantity</td><td></td><td></td><td>d</td><td>yes: pillar_diameter</td><td>one of the 7 pending candidates: pillar_diameter</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c0</td><td>quantity</td><td></td><td></td><td>D_0</td><td>no</td><td>not pending: candidate diffusion_coefficient_without_pillars was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu1.r9c1</td><td>quantity</td><td></td><td></td><td>D_0</td><td>no</td><td>not pending: candidate diffusion_coefficient_without_pillars was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c0</td><td>quantity</td><td></td><td></td><td>F</td><td>no</td><td>not pending: candidate flux_of_material_in_direction_x was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu1.r10c1</td><td>quantity</td><td></td><td></td><td>F</td><td>no</td><td>not pending: candidate flux_of_material_in_direction_x was decided in round 1 (never -&gt; Model internals); never.csv holds its label, but the record has no printed label (the meaning came from its definition), and compile.py matches the printed label only</td></tr>
+<tr><td>yim20</td><td>tabu2.r7c1</td><td>quantity</td><td>Distance between rows of pillars</td><td>µm</td><td>l</td><td>yes: distance_between_rows_of_pillars</td><td>one of the 7 pending candidates: distance_between_rows_of_pillars</td></tr>
+<tr><td>yim20</td><td>tabu2.r18c0</td><td>quantity</td><td>R_row</td><td>s m-3</td><td>R_{\text{row}}</td><td>no</td><td>not a candidate: it joined a symbol-table row (Model internals (in a never group)) whose other row compile.py marked never; propose drops the group</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>unit</td><td></td><td>MHz</td><td></td><td>no</td><td>not a candidate: a value without a quantity (no printed label, or the label is only a units.yaml spelling)</td></tr>
+</table>
+<h2>2. Summary tree (ontology.html section 2) and its check</h2><p>psed_v2/kb/reports/P157b.tree.txt</p>
+<pre>entries 235
+├─ quantity 94   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 10
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 4   [split by hierarchy leaf]
+│  └─ modelling 4
+│     └─ models 4
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+units 93 (ontology/units.yaml: symbols, 43 dimensions)
+├─ length 7
+├─ pressure 6
+├─ time 5
+├─ dimensionless 4
+├─ resistivity 4
+├─ mass 4
+├─ exposure 3
+├─ length_per_cycle 3
+├─ energy 3
+├─ amount 3
+├─ pressure_per_time 3
+├─ areal_density 3
+├─ temperature 2
+├─ diffusivity 2
+├─ volume_per_mass 2
+├─ number_density 2
+├─ inverse_length 2
+├─ length_per_time 2
+├─ power 2
+├─ density 2
+├─ inverse_pressure 2
+├─ mobility 2
+├─ molar_mass 2
+├─ voltage 2
+├─ area 2
+├─ viscosity 2
+├─ signal 1
+├─ count 1
+├─ resistance 1
+├─ wavenumber 1
+├─ area_per_mass 1
+├─ gas_flow 1
+├─ inverse_time 1
+├─ angle 1
+├─ inverse_amount 1
+├─ energy_per_temperature 1
+├─ current 1
+├─ charge_per_area 1
+├─ volume 1
+├─ inverse_sqrt_time 1
+├─ molar_flux 1
+├─ flux_per_pressure 1
+└─ time_per_volume 1
+units 70 (ontology/ontology.yaml units: block: accepted, 32 dimensions)
+unit spellings 444 (ontology/units.yaml: symbol and variants of each row)
+qualifier keys 26
+├─ definition: 2 values (definition ids)
+├─ step: 8 values
+├─ species: 38 values (species ids)
+├─ gas: 38 values (species ids)
+├─ element: open (element symbols)
+├─ reference_element: open (element symbols)
+├─ phase: 38 values (species ids)
+├─ position: 9 values
+├─ reference: 8 values
+├─ level: 5 values
+├─ basis: 2 values
+├─ surface: 16 values (material ids)
+├─ kind: 6 values
+├─ by: 6 values
+├─ origin: 5 values
+├─ stage: 2 values
+├─ stat: 6 values
+├─ between: 5 values
+├─ n: open (a number or not_stated)
+├─ relative_to: 9 values
+├─ over: 4 values
+├─ mode: 3 values
+├─ x: open (quantity ids)
+├─ ratio: open (a number)
+├─ specimen_class: 2 values
+└─ structure_class: 10 values
+never 84 (45 pilot + 39 round 1)
+├─ Model internals 22
+├─ Instrument settings 15
+├─ Equipment details and sample codes 11
+├─ Model internals not in Sec. 8 11
+├─ Molecule properties 6
+├─ Plasma internals 6
+├─ Fit quality 4
+├─ Interpretations, regimes 2
+├─ Sec. 18.7: attribute entry front_slope 2
+├─ Sec. 18.7: attribute entry signal_intensity 1
+├─ Sec. 18.7: attribute entry fit_r2 1
+├─ Sec. 18.7: promoted to mean_free_path (decision D2) 1
+├─ Sec. 18.7: promoted to knudsen_number (decision D2) 1
+└─ No row applies: decision procedure step 5 (data in one paper only) 1
+pending 7 (1 paper 7, 2 papers 0, 3+ papers 0)
+history rows 329
+├─ round 0 287
+│  ├─ add 242
+│  └─ never 45
+└─ round 1 42
+   ├─ never 39
+   ├─ alias 2
+   └─ reject 1
+</pre>
+<h2>2. decide.html: multi-paper rows first, browser round trip</h2><p>psed_v2/kb/reports/P157b.decide_test.txt</p>
+<pre>(1) first body row: r10 = collision_rate_at_unit_pressure (n_papers 2), class &#x27;multi&#x27;, marked: True; pending.csv position 10 of 49
+(2) no change: 17241 bytes downloaded, pending.csv 17241 bytes; byte for byte equal: True
+(3) one decision on collision_rate_at_unit_pressure: lines 50 -&gt; 50; changed line numbers [11] (the row is line 11 after the header); page errors: none
+</pre>
+<h2>3. The two unit tables: counts, and the table the LLM sees</h2><p>psed_v2/kb/reports/P157b.units_note.txt</p>
+<pre>Both unit tables, with their source (ontology.html section 2 prints both):
+  ontology/units.yaml: 93 symbols in 43 dimensions, 444 spellings (symbol + variants of each row; 348 distinct)
+  ontology/ontology.yaml units: block: 70 accepted units in 32 dimensions (one canonical each)
+The generated vocab / form for the LLM uses units.yaml only: CODEBOOK.md section h (the 93 symbols with dimension and variants) is part of the
+pass-1 prefix (pass1_elements.prefix -&gt; render.codebook), and form.json candidate.dimension is units.yaml&#x27;s 43 dimensions; the unit field
+itself is a free string. The units: block reaches no prompt: export.unit_tables reads its canonical per dimension to set the factors of
+vocab.UNIT_BASE, and grow.py prints it (ontology.html sections 2 and 9).
+</pre>
+<h2>3. Every symbol and dimension in one table and not the other</h2><p>psed_v2/kb/reports/P157b.units_diff.csv</p>
+<table><tr><th>item</th><th>value</th><th>only_in</th><th>note</th></tr>
+<tr><td>dimension</td><td>area</td><td>ontology/units.yaml</td><td>2 symbols: m2, cm2</td></tr>
+<tr><td>dimension</td><td>charge_per_area</td><td>ontology/units.yaml</td><td>1 symbols: C/cm2</td></tr>
+<tr><td>dimension</td><td>current</td><td>ontology/units.yaml</td><td>1 symbols: nA</td></tr>
+<tr><td>dimension</td><td>flux_per_pressure</td><td>ontology/units.yaml</td><td>1 symbols: m-2 s-1 Pa-1</td></tr>
+<tr><td>dimension</td><td>inverse_sqrt_time</td><td>ontology/units.yaml</td><td>1 symbols: s^-1/2</td></tr>
+<tr><td>dimension</td><td>molar_flux</td><td>ontology/units.yaml</td><td>1 symbols: mol m-2 s-1</td></tr>
+<tr><td>dimension</td><td>time_per_volume</td><td>ontology/units.yaml</td><td>1 symbols: s m-3</td></tr>
+<tr><td>dimension</td><td>viscosity</td><td>ontology/units.yaml</td><td>2 symbols: µPa s, Pa s</td></tr>
+<tr><td>dimension</td><td>voltage</td><td>ontology/units.yaml</td><td>2 symbols: V, kV</td></tr>
+<tr><td>dimension</td><td>volume</td><td>ontology/units.yaml</td><td>1 symbols: mL</td></tr>
+<tr><td>dimension</td><td>volume_per_mass</td><td>ontology/units.yaml</td><td>2 symbols: m3/g, cm3/g</td></tr>
+<tr><td>symbol</td><td>C/cm2</td><td>ontology/units.yaml</td><td>dimension charge_per_area (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>MeV</td><td>ontology/units.yaml</td><td>dimension energy</td></tr>
+<tr><td>symbol</td><td>Pa s</td><td>ontology/units.yaml</td><td>dimension viscosity (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>Torr/s</td><td>ontology/units.yaml</td><td>dimension pressure_per_time</td></tr>
+<tr><td>symbol</td><td>V</td><td>ontology/units.yaml</td><td>dimension voltage (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>amu</td><td>ontology/units.yaml</td><td>dimension mass</td></tr>
+<tr><td>symbol</td><td>bar</td><td>ontology/units.yaml</td><td>dimension pressure</td></tr>
+<tr><td>symbol</td><td>cm-2</td><td>ontology/units.yaml</td><td>dimension areal_density</td></tr>
+<tr><td>symbol</td><td>cm2</td><td>ontology/units.yaml</td><td>dimension area (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>cm3/g</td><td>ontology/units.yaml</td><td>dimension volume_per_mass (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>h</td><td>ontology/units.yaml</td><td>dimension time</td></tr>
+<tr><td>symbol</td><td>kV</td><td>ontology/units.yaml</td><td>dimension voltage (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>keV</td><td>ontology/units.yaml</td><td>dimension energy</td></tr>
+<tr><td>symbol</td><td>m-2</td><td>ontology/units.yaml</td><td>dimension areal_density</td></tr>
+<tr><td>symbol</td><td>m-2 s-1 Pa-1</td><td>ontology/units.yaml</td><td>dimension flux_per_pressure (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>m2</td><td>ontology/units.yaml</td><td>dimension area (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>m3/g</td><td>ontology/units.yaml</td><td>dimension volume_per_mass (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>mL</td><td>ontology/units.yaml</td><td>dimension volume (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>mW</td><td>ontology/units.yaml</td><td>dimension power</td></tr>
+<tr><td>symbol</td><td>mol m-2 s-1</td><td>ontology/units.yaml</td><td>dimension molar_flux (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>mΩ·cm</td><td>ontology/units.yaml</td><td>dimension resistivity</td></tr>
+<tr><td>symbol</td><td>nA</td><td>ontology/units.yaml</td><td>dimension current (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>nm-1</td><td>ontology/units.yaml</td><td>dimension inverse_length</td></tr>
+<tr><td>symbol</td><td>nm/s</td><td>ontology/units.yaml</td><td>dimension length_per_time</td></tr>
+<tr><td>symbol</td><td>ns</td><td>ontology/units.yaml</td><td>dimension time</td></tr>
+<tr><td>symbol</td><td>s m-3</td><td>ontology/units.yaml</td><td>dimension time_per_volume (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>s^-1/2</td><td>ontology/units.yaml</td><td>dimension inverse_sqrt_time (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>wt%</td><td>ontology/units.yaml</td><td>dimension dimensionless</td></tr>
+<tr><td>symbol</td><td>µPa s</td><td>ontology/units.yaml</td><td>dimension viscosity (dimension not in the units: block)</td></tr>
+<tr><td>symbol</td><td>1/cm</td><td>ontology/ontology.yaml units:</td><td>dimension inverse_length; a variant of cm-1 in units.yaml</td></tr>
+<tr><td>symbol</td><td>Torr-s</td><td>ontology/ontology.yaml units:</td><td>dimension exposure; a variant of Torr·s in units.yaml</td></tr>
+<tr><td>symbol</td><td>a.u.</td><td>ontology/ontology.yaml units:</td><td>dimension signal; a variant of 1 in units.yaml</td></tr>
+<tr><td>symbol</td><td>at/nm2</td><td>ontology/ontology.yaml units:</td><td>dimension areal_density; a variant of nm-2 in units.yaml</td></tr>
+<tr><td>symbol</td><td>counts</td><td>ontology/ontology.yaml units:</td><td>dimension signal; a variant of  in units.yaml</td></tr>
+<tr><td>symbol</td><td>counts/s</td><td>ontology/ontology.yaml units:</td><td>dimension signal; a variant of  in units.yaml</td></tr>
+</table>
+<h2>3. Which table each file reads, by function</h2><p>psed_v2/kb/reports/P157b.unit_readers.csv</p>
+<table><tr><th>file</th><th>function</th><th>table</th><th>first_line</th><th>code</th></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>unit_dimension</td><td>ontology/units.yaml (opened)</td><td>137</td><td>for u in yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]:</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>unit_tables</td><td>ontology/units.yaml (opened)</td><td>160</td><td>doc = yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>unit_tables</td><td>ontology.yaml units: block</td><td>167</td><td>want = str((onto.get(&quot;units&quot;, {}).get(dim) or {}).get(&quot;canonical&quot;, &quot;&quot;)).split(&quot; &quot;)[0]</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>pending_entry</td><td>units.yaml through a helper (export.unit_dimension / grow.unit_spellings)</td><td>186</td><td>e = dict(id=r[&quot;id&quot;], type=r[&quot;kind&quot;], definition=r[&quot;proposed_definition&quot;], unit=r.get(&quot;unit&quot;, &quot;&quot;), dimension=unit_dimension(r.get(&quot;unit&quot;, &quot;&quot;)</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>build</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>227</td><td>unit_base, unit_alias, dimension_of = unit_tables(onto)</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>ontology_hash</td><td>ontology/units.yaml (opened)</td><td>291</td><td>return hashlib.sha256(b + (HERE / &quot;units.yaml&quot;).read_bytes()).hexdigest()</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>form_schema</td><td>ontology/units.yaml (opened)</td><td>348</td><td>dims = sorted({u[&quot;dimension&quot;] for u in yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]})</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>codebook</td><td>ontology/units.yaml (opened)</td><td>675</td><td>U = yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>run_checks</td><td>ontology/units.yaml (opened)</td><td>934</td><td>units = {str(v): u for u in yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;] for v in [u[&quot;symbol&quot;]] + list(u[&quot;vari</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>(module level)</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>76</td><td>UNIT_SYMBOL = {normalize(a): V.UNIT_ALIAS.get(a, a) for a in list(V.UNIT_BASE) + list(V.UNIT_ALIAS) if V.UNIT_ALIAS.get(a, a) in V.UNIT_BASE</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>unit_symbol</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>83</td><td>return UNIT_SYMBOL.get(n) or UNIT_SYMBOL.get(re.sub(r&quot;^u(?=[A-Za-z])&quot;, &quot;µ&quot;, n))</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>units</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>423</td><td>s = unit_symbol(rec[&quot;unit&quot;])</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>figures</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>648</td><td>u = dimless(unit_symbol(v.get(&quot;unit&quot;) or &quot;&quot;) if v.get(&quot;unit&quot;) else &quot;&quot;)</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>canon</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>1153</td><td>u = V.UNIT_ALIAS.get(f[&quot;unit&quot;], f[&quot;unit&quot;])</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>canon</td><td>lists.UNITS (canonical unit per quantity, a hand table in lists.py)</td><td>1154</td><td>for to in (L.UNITS.get(f[&quot;quantity&quot;]), &quot;K&quot; if u == &quot;°C&quot; else None):</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_figures_import</td><td>ontology/units.yaml (opened)</td><td>441</td><td>units = yaml.safe_load((HERE.parent.parent / &quot;ontology&quot; / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_gold_vocabulary</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>676</td><td>if f[&quot;unit&quot;] and L.UNIT_ALIAS.get(f[&quot;unit&quot;], f[&quot;unit&quot;]) not in L.UNIT_BASE:</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_structure</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>921</td><td>if L.UNIT_BASE.get(L.UNIT_ALIAS.get(r[&quot;unit&quot;], r[&quot;unit&quot;]), (&quot;&quot;,))[0] in (&quot;length&quot;, &quot;area_per_mass&quot;):</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_bases</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>1679</td><td>u = L.UNIT_ALIAS.get(f[&quot;unit&quot;], f[&quot;unit&quot;])</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>unit_dimensions</td><td>ontology/units.yaml (opened)</td><td>1702</td><td>for u in yaml.safe_load((HERE.parent.parent / &quot;ontology&quot; / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]:</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>dimension_problem</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>1716</td><td>u = L.UNIT_ALIAS.get(unit, unit) if unit else &quot;&quot;</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_unit_table</td><td>vocab.UNIT_BASE / UNIT_ALIAS / DIMENSION_OF (export.py from units.yaml + the units: block canonicals)</td><td>1742</td><td>ok = lambda u: (not u) or L.UNIT_ALIAS.get(u, u) in L.UNIT_BASE</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>check_unit_table</td><td>lists.UNITS (canonical unit per quantity, a hand table in lists.py)</td><td>1770</td><td>for q, u in L.UNITS.items():</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>(module level)</td><td>ontology/units.yaml (opened)</td><td>49</td><td>UNITS = yaml.safe_load((V2 / &quot;ontology&quot; / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>(module level)</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>50</td><td>for _u in UNITS:</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>convert_curve</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>185</td><td>T = kelvin(v, u); src = UNIT_BY_SYMBOL.get(c[ax][&quot;unit&quot;]) or unit_of(c[ax][&quot;unit&quot;])</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>fit_unit</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>434</td><td>return {&quot;dimensionless&quot;: UNIT_BY_SYMBOL[&quot;1&quot;], &quot;signal&quot;: UNIT_BY_SYMBOL[&quot;&quot;], &quot;count&quot;: UNIT_BY_SYMBOL[&quot;cycle&quot;]}[e[&quot;dimension&quot;]]</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>entry_unit_row</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>446</td><td>return UNIT_BY_SYMBOL.get(u) or unit_of(u)</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>canon</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>801</td><td>tgt = entry_unit_row(q); src = UNIT_BY_SYMBOL.get(from_unit) or unit_of(from_unit)</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>derive</td><td>units.yaml rows loaded at module level (figures_import UNITS / UNIT_BY_SYMBOL)</td><td>823</td><td>tgt = entry_unit_row(&quot;growth_per_cycle&quot;); yrow = UNIT_BY_SYMBOL.get(c[&quot;y&quot;][&quot;unit&quot;])</td></tr>
+<tr><td>psed_v2/ontology/grow.py</td><td>unit_spellings</td><td>ontology/units.yaml (opened)</td><td>186</td><td>return {str(v) for u in yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;] for v in [u[&quot;symbol&quot;]] + list(u[&quot;variants</td></tr>
+<tr><td>psed_v2/ontology/grow.py</td><td>candidates</td><td>units.yaml through a helper (export.unit_dimension / grow.unit_spellings)</td><td>203</td><td>spell = unit_spellings()</td></tr>
+<tr><td>psed_v2/ontology/grow.py</td><td>summary_trees</td><td>ontology/units.yaml (opened)</td><td>779</td><td>units = yaml.safe_load((HERE / &quot;units.yaml&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;units&quot;]</td></tr>
+<tr><td>psed_v2/ontology/grow.py</td><td>summary_trees</td><td>ontology.yaml units: block</td><td>793</td><td>block = o.get(&quot;units&quot;) or {}</td></tr>
+<tr><td>psed_v2/ontology/grow.py</td><td>report_page</td><td>ontology.yaml units: block</td><td>931</td><td>f&quot;&lt;h2&gt;9. Units&lt;/h2&gt;{table([&#x27;dimension&#x27;, &#x27;canonical&#x27;, &#x27;accepted&#x27;], [[d, u[&#x27;canonical&#x27;], &#x27;, &#x27;.join(u[&#x27;accepted&#x27;])] for d, u in o[&#x27;units&#x27;].item</td></tr>
+</table>
+<h2>5a. Form hashes: where checked</h2><p>psed_v2/kb/reports/P157b.hash_note.txt</p>
+<pre>5a. Form hashes. Each kb/records/&lt;pid&gt;.jsonl line carries ontology_hash (export.ontology_hash() at call time: ontology.yaml + units.yaml, the
+source of form.json) and prompt_hash (common.request_hash: prompt + response schema + thinking). compile.py Run.read() takes the latest pass-1
+line per section and the pass-0 line before them, whatever their ontology_hash; no reader in kb/extract, kb/pilot or ontology compares a
+record&#x27;s hash (grep: ontology_hash is written by common.run and compile.main&#x27;s summary.csv, read nowhere). The only hash check is the
+cache: common.plan / common.run look up cache/&lt;pid&gt;/&lt;pass&gt;_&lt;section&gt;_&lt;request hash&gt;_&lt;model&gt;.json, so a new form (a new schema) is a cache
+miss and a new call. The three papers&#x27; records in use carry b8048d18… (2026-10-20); the current ontology hash is e98f546e…
+(form_hashes). After P158 freezes a new form, compile.py will keep reading these lines and validate them against the new form.json
+(step a): a record valid under the old form and not under the new one is dropped there, with the validator as its reason.
+5b. Prices used: kb/pilot/prices.csv, gemini-3.8-flash (ai.google.dev pricing, read 2026-10-19, paid tier through 2026-12-31): input
+$0.75, cache hit $0.075, output (thinking included) $3.75 per 1M tokens; dollars = (input - cached) x 0.75 + cached x 0.075 + output x
+3.75, per 1M (ask.cost_of). Not in the records: the cached-content registration (upper bound = prefix tokens at the input price,
+cost_prefixes: $0.018-0.020 per paper) and its storage ($0.50 per 1M tokens per hour, deleted when the run ends; duration not logged).
+</pre>
+<h2>5a. Hashes of the three papers&#x27; record lines</h2><p>psed_v2/kb/reports/P157b.form_hashes.csv</p>
+<table><tr><th>paper</th><th>ontology_hash</th><th>equals_current</th><th>pass</th><th>lines</th><th>line_numbers</th><th>read_by_compile</th><th>models</th><th>dates</th></tr>
+<tr><td>yli18</td><td>6f0cea60cd475c33</td><td>no</td><td>0</td><td>1</td><td>1</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-19</td></tr>
+<tr><td>yli18</td><td>6f0cea60cd475c33</td><td>no</td><td>1</td><td>25</td><td>2-26</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-19;2026-10-20</td></tr>
+<tr><td>yli18</td><td>23c7643ec1bf821e</td><td>no</td><td>0</td><td>1</td><td>27</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>23c7643ec1bf821e</td><td>no</td><td>1</td><td>22</td><td>28-49</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>7a72429b65918253</td><td>no</td><td>0</td><td>1</td><td>50</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>7a72429b65918253</td><td>no</td><td>1</td><td>22</td><td>51-72</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>56f5301bf982045c</td><td>no</td><td>0</td><td>3</td><td>73-119</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>56f5301bf982045c</td><td>no</td><td>1</td><td>44</td><td>74-118</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>b8048d18a8a94be6</td><td>no</td><td>0</td><td>3</td><td>120-122</td><td>1</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yli18</td><td>b8048d18a8a94be6</td><td>no</td><td>1</td><td>12</td><td>123-134</td><td>12</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yim20</td><td>56f5301bf982045c</td><td>no</td><td>0</td><td>3</td><td>1-85</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yim20</td><td>56f5301bf982045c</td><td>no</td><td>1</td><td>82</td><td>2-84</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yim20</td><td>b8048d18a8a94be6</td><td>no</td><td>0</td><td>3</td><td>86-88</td><td>1</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>yim20</td><td>b8048d18a8a94be6</td><td>no</td><td>1</td><td>18</td><td>89-106</td><td>18</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>mat22</td><td>56f5301bf982045c</td><td>no</td><td>0</td><td>1</td><td>1</td><td>0</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>mat22</td><td>b8048d18a8a94be6</td><td>no</td><td>0</td><td>3</td><td>2-4</td><td>1</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+<tr><td>mat22</td><td>b8048d18a8a94be6</td><td>no</td><td>1</td><td>14</td><td>5-18</td><td>14</td><td>gemini-3.8-flash</td><td>2026-10-20</td></tr>
+</table>
+<h2>5b. Cost per paper and pass (kb/records usage at prices.csv)</h2><p>psed_v2/kb/reports/P157b.cost.csv</p>
+<table><tr><th>paper</th><th>scope</th><th>pass</th><th>calls</th><th>cached_input_tokens</th><th>uncached_input_tokens</th><th>output_tokens</th><th>usd</th><th>models</th></tr>
+<tr><td>yli18</td><td>all lines (every call made since P138)</td><td>0</td><td>9</td><td>0</td><td>271463</td><td>148557</td><td>0.7607</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yli18</td><td>all lines (every call made since P138)</td><td>1</td><td>125</td><td>293808</td><td>1003736</td><td>283265</td><td>1.8371</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yli18</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>0</td><td>3</td><td>0</td><td>149043</td><td>97180</td><td>0.4762</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yli18</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>1</td><td>12</td><td>293808</td><td>20796</td><td>75278</td><td>0.3199</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yli18</td><td>lines compile.py reads</td><td>0</td><td>1</td><td>0</td><td>48202</td><td>18425</td><td>0.1052</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yli18</td><td>lines compile.py reads</td><td>1</td><td>12</td><td>293808</td><td>20796</td><td>75278</td><td>0.3199</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>all lines (every call made since P138)</td><td>0</td><td>6</td><td>0</td><td>344636</td><td>248200</td><td>1.1892</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>all lines (every call made since P138)</td><td>1</td><td>100</td><td>470106</td><td>944191</td><td>314386</td><td>1.9223</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>0</td><td>3</td><td>0</td><td>229791</td><td>152443</td><td>0.7440</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>1</td><td>18</td><td>470106</td><td>31561</td><td>131988</td><td>0.5539</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>lines compile.py reads</td><td>0</td><td>1</td><td>0</td><td>75845</td><td>41907</td><td>0.2140</td><td>gemini-3.8-flash</td></tr>
+<tr><td>yim20</td><td>lines compile.py reads</td><td>1</td><td>18</td><td>470106</td><td>31561</td><td>131988</td><td>0.5539</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>all lines (every call made since P138)</td><td>0</td><td>4</td><td>0</td><td>205995</td><td>170004</td><td>0.7920</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>all lines (every call made since P138)</td><td>1</td><td>14</td><td>368004</td><td>25883</td><td>77147</td><td>0.3363</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>0</td><td>3</td><td>0</td><td>175092</td><td>136024</td><td>0.6414</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>1</td><td>14</td><td>368004</td><td>25883</td><td>77147</td><td>0.3363</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>lines compile.py reads</td><td>0</td><td>1</td><td>0</td><td>58507</td><td>43915</td><td>0.2086</td><td>gemini-3.8-flash</td></tr>
+<tr><td>mat22</td><td>lines compile.py reads</td><td>1</td><td>14</td><td>368004</td><td>25883</td><td>77147</td><td>0.3363</td><td>gemini-3.8-flash</td></tr>
+<tr><td>all three</td><td>all lines (every call made since P138)</td><td>0+1</td><td>258</td><td>1131918</td><td>2795904</td><td>1241559</td><td>6.8376</td><td>gemini-3.8-flash</td></tr>
+<tr><td>all three</td><td>the run compile reads (every line with the ontology hash of the lines in use, b8048d18)</td><td>0+1</td><td>53</td><td>1131918</td><td>632166</td><td>670060</td><td>3.0717</td><td>gemini-3.8-flash</td></tr>
+<tr><td>all three</td><td>lines compile.py reads</td><td>0+1</td><td>47</td><td>1131918</td><td>260794</td><td>388660</td><td>1.7379</td><td>gemini-3.8-flash</td></tr>
+</table>
+<h2>5b. Cached prefixes (registration upper bound)</h2><p>psed_v2/kb/reports/P157b.cost_prefixes.csv</p>
+<table><tr><th>paper</th><th>prefix_hash</th><th>calls_using_it</th><th>prefix_tokens_read</th><th>registration_upper_bound_usd</th></tr>
+<tr><td>yli18</td><td>d08e1e098651d31d</td><td>12</td><td>24484</td><td>0.0184</td></tr>
+<tr><td>yim20</td><td>1e24647a68df8c7e</td><td>18</td><td>26117</td><td>0.0196</td></tr>
+<tr><td>mat22</td><td>1c6911a52d42e8c1</td><td>14</td><td>26286</td><td>0.0197</td></tr>
+</table>
+<h2>export.py --check</h2><p>psed_v2/kb/reports/P157b.check_run.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 7 rows: undecided 7
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+exit 0
+</pre>
+</body></html>

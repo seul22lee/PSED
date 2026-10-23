@@ -14,6 +14,8 @@ pending id is emitted into the vocabulary provisionally so that the data keeps p
 P155: the 15 ontology checks (make_report.py until P155) run with --check, same numbering and messages (11 reads a split replaced_by
 list, 12 reads never.csv, 14 reads the grow.py pending.csv); the kinds: block of ontology.yaml opens CODEBOOK.md; pending.csv rows no
 longer enter the vocabulary (a candidate becomes vocabulary only when grow.py apply writes it into ontology.yaml).
+P157b: the one label normalization (norm_label) and the never.csv index (never_index) live here; kb/extract/compile.py and grow.py
+import them.
 Needs PyYAML.
 """
 import csv
@@ -61,6 +63,69 @@ def never_rows():
 def strip_unit(label):
     """A label without its trailing unit in brackets or parentheses: 'Intensity [a.u.]' -> 'Intensity'."""
     return re.sub(r"\s*[\[(][^\])]*[\])]\s*$", "", str(label)).strip()
+
+
+# P157b: the one label normalization (P156 FIX 2b, moved here from grow.py): compile.py's resolve_other() and never match, and grow.py
+LATEX_TEXT = re.compile(r"\\(?:text|mathrm|mathit|mathbf|rm)\s*\{([^{}]*)\}")
+
+
+def strip_latex(s):
+    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed."""
+    return re.sub(r"[{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+
+
+def strip_trailing_units(s):
+    """Every trailing group in [ ] or ( ) removed, the last first ('rho (film density; model input) [kg m-3]' -> 'rho'); never to empty."""
+    s = str(s).strip()
+    while True:
+        t = re.sub(r"\s*(\[[^\[\]]*\]|\([^()]*\))\s*$", "", s)
+        if t == s or not t.strip():
+            return s
+        s = t
+
+
+def norm_label(label):
+    """A label for a whole-label match: trailing unit groups stripped, LaTeX stripped, casefold, whitespace collapsed, a trailing 's'
+    dropped. Both sides of every match go through it."""
+    s = " ".join(strip_latex(strip_trailing_units(label)).casefold().split())
+    return s[:-1] if len(s) > 1 and s.endswith("s") else s
+
+
+def split_parts(label):
+    """A never label that holds several labels, split at ';' outside brackets ('MA; MB [kg mol-1]' -> 'MA', 'MB [kg mol-1]')."""
+    parts, depth, cur = [], 0, ""
+    for ch in str(label):
+        depth += ch in "([{"
+        depth = max(0, depth - (ch in ")]}"))
+        if ch == ";" and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    return [p.strip() for p in parts + [cur] if p.strip()]
+
+
+def never_index(entries):
+    """({normalized part: never.csv row}, superseded): every part of every never.csv label, normalized (norm_label), except the parts
+    that name a live entry - its id, name, label or an alias, normalized the same way - that is not an attribute: an attribute entry is
+    how the pilot stores a never label (check 12), a promoted or ordinary entry is a concept now. Superseded parts are [(never label,
+    part, entry ids)] and suppress nothing. entries: dicts with id, name, label, aliases, attribute (ontology.yaml or vocab.ENTRIES)."""
+    names = {}
+    for e in entries:
+        if e.get("attribute"):
+            continue
+        for t in [e["id"], e.get("name", ""), e.get("label", "")] + [str(a) for a in e.get("aliases") or []]:
+            if str(t).strip() and e["id"] not in names.setdefault(norm_label(t), []):
+                names[norm_label(t)].append(e["id"])
+    parts, sup = {}, []
+    for r in never_rows():
+        for p in split_parts(r["label"]):
+            k = norm_label(p)
+            if names.get(k):
+                sup.append((r["label"], p, ", ".join(names[k])))
+            elif k:
+                parts.setdefault(k, r)
+    return parts, sup
 
 
 _UNITS = {}

@@ -1,0 +1,24 @@
+P157b (0 calls). compile.py step a0 resolve_other() before form.json: a record's other value is matched by its printed text to the generated
+vocab of its kind (whole label, export.norm_label - the one normalization, moved from grow.py; a key under two ids promotes nothing); a
+record still quantity other whose label is a never.csv part gets unmapped.csv column never=<category>; every promotion -> <pid>.promoted.csv.
+grow.py propose reads that column and does no never matching. Recompiled yli18, yim20, mat22; export.py --check 15 of 15.
+1e. The alias reached the compiler: yli18:tabu1.r4c0#1 'Apparent longitudinal diffusion coefficient' is effective_diffusion_coefficient (promoted).
+  Four more quantity promotions are short symbols matching another paper's symbol alias: Q -> saturation_density (yli18 eq14, yim20 tabu2.r15c0),
+  R -> recombination_probability (yim20 tabu2.r17c0), l -> feature_depth (yim20 tabu2.r7c0, merged into an existing fact); the record's own
+  definition says otherwise in each (promoted_quantity). h (yli18 eq5) names two ids: not promoted. mat22: 32 crystallinity values, which F3
+  already resolved before (case only), same outcome (dropped at d).
+  Score vs gold: identical in every column and type (score, score_by_type). check.py --dir: 159 / 306 / 263 problems before and after, the
+  same problems (check_dir): the three papers do not pass, as before P157b; nothing patched.
+  Not done as directed: units. The label normalization strips a trailing (...) group and a trailing s, which belong to a unit spelling
+  (mol/s -> 'mol/' matched mol/(m2 s); 1/(m2 s) -> '1/' matched 1/s and 1/(m2 s Pa)); units stay with unit_symbol() (step e, D10).
+  No model field exists in the form. One structure value_text outside the enum (yim20 tab2.r2c1) matches no structure: dropped at a, as before.
+2. Tree: method by measurement (yes 30 / no 5), mechanism 37 a flat list; sums pass, unplaced none. pending 7 (1 paper 7). decide.html puts rows
+  in 2+ papers first, marked; tested in Chromium on the P156 pending.csv (decide_test): byte round trip equal, one decision = its own line.
+3. units.yaml 93 symbols / 43 dimensions / 444 spellings vs ontology.yaml units: 70 accepted / 32 dimensions: 46 differences (units_diff);
+  readers by function (unit_readers). The LLM sees units.yaml only: CODEBOOK.md sec. h (pass-1 prefix) and form.json candidate.dimension (43).
+4. 29 open rows (open_rows): 8 are 6 of the 7 pending candidates (elam_monte_carlo has no row in these papers); 13 joined a symbol-table row
+  compile marked never; 1 rejected (top_membrane_removal); 1 value without a quantity; 6 are round-1 never decisions that do not reach compile:
+  surface_area, diffusion_coefficient_without_pillars, flux_of_material_in_direction_x have no printed label (never_reconcile).
+5. Records carry ontology_hash; compile.py reads every line whatever its hash (no reader compares it); the request hash is only the cache key.
+  Cost (cost): the lines compile reads cost $1.74 (47 calls); their run (hash b8048d18) $3.07 (53 calls); every call since P138 $6.84 (258).
+Open: two questions (questions).

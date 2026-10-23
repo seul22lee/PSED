@@ -1,0 +1,146 @@
+entries 235
+├─ quantity 94   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 10
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 4   [split by hierarchy leaf]
+│  └─ modelling 4
+│     └─ models 4
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+units 93 (ontology/units.yaml: symbols, 43 dimensions)
+├─ length 7
+├─ pressure 6
+├─ time 5
+├─ dimensionless 4
+├─ resistivity 4
+├─ mass 4
+├─ exposure 3
+├─ length_per_cycle 3
+├─ energy 3
+├─ amount 3
+├─ pressure_per_time 3
+├─ areal_density 3
+├─ temperature 2
+├─ diffusivity 2
+├─ volume_per_mass 2
+├─ number_density 2
+├─ inverse_length 2
+├─ length_per_time 2
+├─ power 2
+├─ density 2
+├─ inverse_pressure 2
+├─ mobility 2
+├─ molar_mass 2
+├─ voltage 2
+├─ area 2
+├─ viscosity 2
+├─ signal 1
+├─ count 1
+├─ resistance 1
+├─ wavenumber 1
+├─ area_per_mass 1
+├─ gas_flow 1
+├─ inverse_time 1
+├─ angle 1
+├─ inverse_amount 1
+├─ energy_per_temperature 1
+├─ current 1
+├─ charge_per_area 1
+├─ volume 1
+├─ inverse_sqrt_time 1
+├─ molar_flux 1
+├─ flux_per_pressure 1
+└─ time_per_volume 1
+units 70 (ontology/ontology.yaml units: block: accepted, 32 dimensions)
+unit spellings 444 (ontology/units.yaml: symbol and variants of each row)
+qualifier keys 26
+├─ definition: 2 values (definition ids)
+├─ step: 8 values
+├─ species: 38 values (species ids)
+├─ gas: 38 values (species ids)
+├─ element: open (element symbols)
+├─ reference_element: open (element symbols)
+├─ phase: 38 values (species ids)
+├─ position: 9 values
+├─ reference: 8 values
+├─ level: 5 values
+├─ basis: 2 values
+├─ surface: 16 values (material ids)
+├─ kind: 6 values
+├─ by: 6 values
+├─ origin: 5 values
+├─ stage: 2 values
+├─ stat: 6 values
+├─ between: 5 values
+├─ n: open (a number or not_stated)
+├─ relative_to: 9 values
+├─ over: 4 values
+├─ mode: 3 values
+├─ x: open (quantity ids)
+├─ ratio: open (a number)
+├─ specimen_class: 2 values
+└─ structure_class: 10 values
+never 84 (45 pilot + 39 round 1)
+├─ Model internals 22
+├─ Instrument settings 15
+├─ Equipment details and sample codes 11
+├─ Model internals not in Sec. 8 11
+├─ Molecule properties 6
+├─ Plasma internals 6
+├─ Fit quality 4
+├─ Interpretations, regimes 2
+├─ Sec. 18.7: attribute entry front_slope 2
+├─ Sec. 18.7: attribute entry signal_intensity 1
+├─ Sec. 18.7: attribute entry fit_r2 1
+├─ Sec. 18.7: promoted to mean_free_path (decision D2) 1
+├─ Sec. 18.7: promoted to knudsen_number (decision D2) 1
+└─ No row applies: decision procedure step 5 (data in one paper only) 1
+pending 7 (1 paper 7, 2 papers 0, 3+ papers 0)
+history rows 329
+├─ round 0 287
+│  ├─ add 242
+│  └─ never 45
+└─ round 1 42
+   ├─ never 39
+   ├─ alias 2
+   └─ reject 1

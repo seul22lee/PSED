@@ -6,8 +6,13 @@ facts,601
 tree_rows,85
 derived_by_kb,31
 dropped,23
-unmapped,52
+unmapped,49
+unmapped_never,33
+promoted,3
 step_input:records,582
+step_a0:quantity other: never.csv,33
+step_a0:quantity promoted (quantity: alias),2
+step_a0:quantity promoted (quantity: label),1
 step_a:numeric string coerced (C4),20
 step_a:schema:enum,1
 step_a:kept,581
@@ -15,7 +20,8 @@ step_a_fields:value_text,1
 step_b:model_with_value (kept),23
 step_b:statement_only (kept: P138 form),2
 step_b:kept,581
-step_c:quantity_other (kept),52
+step_c:quantity_other never (kept),33
+step_c:quantity_other (kept),16
 step_c:kept,581
 step_d:quote_noncontiguous (kept),6
 step_d:quote_not_found,22
@@ -69,5 +75,5 @@ diff:caveat,gold 45 compiled 5 matched 3 P 0.60 R 0.07
 diff:claim,gold 40 compiled 20 matched 15 P 0.75 R 0.38
 diff:entity,gold 31 compiled 25 matched 25 P 1.00 R 0.81
 diff:comparison,gold 8 compiled 10 matched 1 P 0.10 R 0.12
-diff:identity,gold 1 compiled 0 matched 0 P - R 0.00
 diff:paper,gold 1 compiled 1 matched 1 P 1.00 R 1.00
+diff:identity,gold 1 compiled 0 matched 0 P - R 0.00

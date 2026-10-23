@@ -5,7 +5,8 @@
     python3 psed_v2/extract/compile.py yli18          # then: python3 psed_v2/pilot/check.py --dir psed_v2/compiled
 
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
-are ignored); the latest pass-0 line. Steps: a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
+are ignored); the latest pass-0 line. Steps: a0 resolve_other (P157b: a value held as other or outside the vocabulary, matched to the
+generated vocab by its printed text; never.csv -> unmapped.csv column never; <pid>.promoted.csv), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
 ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
 m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
 dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
@@ -31,7 +32,8 @@ SPECIES_Q = {"material": L.MATERIALS, "substrate": L.MATERIALS, "reactant_A": li
 VALUE_KEYS = ("value", "value_min", "value_max", "value_text")
 DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "unit", "qualifiers", "value_text")
 FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
-UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action"]
+UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never"]   # P157b: never = the never.csv category
+PROMOTED_FIELDS = ["element", "field", "printed", "lookup", "id", "outcome"]    # P157b: step a0
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
@@ -105,10 +107,47 @@ def categorical(q, text):
     return CATEGORICAL_ALIASES.get(q, {}).get(normalize(text or "").lower())
 
 
+# P157b: step a0, resolve_other(): a value the ontology did not give the record (quantity other, a species / structure / categorical
+# value_text or a method not in the vocabulary) against the generated vocab, of its kind only. Not a unit: the label normalization strips
+# a trailing (...) group and a trailing s, which are part of a unit spelling (mol/s -> 'mol/' = mol/(m2 s)); a unit spelling stays with
+# unit_symbol() (normalize(), D10), which compares it with every units.yaml symbol and variant in step e.
+LIVE = {i: e for i, e in V.ENTRIES.items() if not e["replaced_by"]}
+SPECIES_KIND = {"material": "material", "substrate": "material", "reactant_A": "species", "reactant_B": "species", "structure": "structure"}
+VALUES = {**V.CATEGORICAL_VALUES, **V.FORM_CATEGORICAL_VALUES}                 # the categoricals with a fixed value list
+
+
+def label_index(pairs):
+    """{export.norm_label(text): {id: how}} over (text, id, how) pairs; a key under two ids is ambiguous and promotes nothing."""
+    out = collections.defaultdict(dict)
+    for text, i, how in pairs:
+        k = C.X.norm_label(text) if text else ""
+        if k:
+            out[k].setdefault(i, how)
+    return out
+
+
+def entry_pairs(ids):
+    """(text, id, how) for every entry id: the id, the id with spaces, its name, label and aliases (vocab.ENTRIES)."""
+    return [(t, i, how) for i in ids for t, how in [(i, "id"), (i.replace("_", " "), "id"), (LIVE[i]["name"], "name"), (LIVE[i]["label"], "label")]
+            + [(a, "alias") for a in LIVE[i]["aliases"]]]
+
+
+OTHER_INDEX = {
+    "quantity": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] in ("quantity", "categorical"))),
+    "method": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] == "method")),
+    "structure": label_index(entry_pairs(i for i, e in LIVE.items() if e["type"] == "structure")),
+    "species": label_index(entry_pairs(L.SPECIES)),
+    "material": label_index(entry_pairs(i for i in L.MATERIALS if i in LIVE)),
+    **{f"value:{q}": label_index([(v, v, "value id") for v in vs] + [(a, v, "value alias") for v, al in V.VALUE_ALIASES.get(q, {}).items() for a in al])
+       for q, vs in VALUES.items()},
+}
+NEVER = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])[0]          # ontology/never.csv: normalized part -> its row
+
+
 class Run:
     def __init__(self, pid):
         self.pid, self.key = pid, C.E.PAPERS[pid]
-        self.log, self.dropped, self.unmapped = [], [], []
+        self.log, self.dropped, self.unmapped, self.promoted = [], [], [], []
         self.steps = collections.OrderedDict()
         self.els = C.E.load(pid)
         self.order = {r["element_id"]: n for n, r in enumerate(self.els)}
@@ -121,6 +160,9 @@ class Run:
     def drop(self, step, eid, rec, reason, field=""):
         self.dropped.append(dict(element=eid, step=step, field=field, reason=reason, type=rec.get("type", ""), quantity=rec.get("quantity", "")))
         self.steps.setdefault(step, collections.Counter())[reason] += 1
+        for p in self.promoted:                                                 # P157b: a promoted record's outcome
+            if p["r"]["rec"] is rec and not p["outcome"]:
+                p["outcome"] = f"dropped at {step}: {reason}" + (f" ({field})" if field else "")
 
     def count(self, step, what, n=1):
         self.steps.setdefault(step, collections.Counter())[what] += n
@@ -167,6 +209,49 @@ class Run:
                         self.count("input", "parent read as about (older line)")
                     recs.append(dict(eid=eid, rec=rec, seq=i))
         self.count("input", "records", len(recs))
+        return recs
+
+    # ------------------------------------------------------------------------------------------------------------ a0 (P157b)
+    def resolve_other(self, recs):
+        """a0, before form.json: a value the record holds as other or outside the vocabulary, compared by its printed text (export.
+        norm_label, a whole-label match, never a substring) with the generated vocab of its kind only: quantity other by its
+        label_as_printed (quantity and categorical ids, names, labels, aliases); a material / substrate / reactant / structure
+        value_text not in form.json's enum (those entries); a categorical value_text not in its fixed list (the value ids and
+        value_aliases); a method not in lists.METHODS (method entries); a unit is left to step e (see OTHER_INDEX). One id: the record takes it and goes on like any record (form.json, units, placement, fact); two ids: ambiguous,
+        left as it is. A record still quantity other whose label is a never.csv part (export.never_index: a part naming a live entry
+        has no effect) carries the never category (unmapped.csv, column never). Every promotion -> <pid>.promoted.csv with its outcome."""
+        enum = C.schema("form.json")["$defs"]
+        for r in recs:
+            rec = r["rec"]
+            q = rec.get("quantity")
+            q = q if isinstance(q, str) else ""
+            todo = [("quantity", "label_as_printed", "quantity")] if q == "other" else []
+            vt = rec.get("value_text")
+            if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]]["enum"]:
+                todo.append(("value_text", "value_text", SPECIES_KIND[q]))
+            if q in VALUES and isinstance(vt, str) and vt not in VALUES[q]:
+                todo.append(("value_text", "value_text", f"value:{q}"))
+            if isinstance(rec.get("method"), str) and rec["method"] not in L.METHODS:
+                todo.append(("method", "method", "method"))
+            for field, src, kind in todo:
+                text = rec.get(src)
+                hits = OTHER_INDEX[kind].get(C.X.norm_label(text), {}) if isinstance(text, str) and text.strip() else {}
+                if len(hits) == 1:
+                    (i, how), = hits.items()
+                    rec[field] = i
+                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, lookup=f"{kind}: {how}", id=i, outcome=""))
+                    self.count("a0", f"{field} promoted ({kind}: {how})")
+                    self.note(f"a0: {r['eid']}: {field} {text!r} -> {i} ({kind}: {how})")
+                elif hits:
+                    self.promoted.append(dict(r=r, element=r["eid"], field=field, printed=text, lookup=f"{kind}: ambiguous", id=" | ".join(sorted(hits)),
+                                              outcome="not promoted: the label names two ids"))
+                    self.count("a0", f"{field} ambiguous (left as it is)")
+                    self.note(f"a0: {r['eid']}: {field} {text!r} ambiguous: {sorted(hits)}")
+            lab = rec.get("label_as_printed")
+            hit = NEVER.get(C.X.norm_label(lab)) if rec.get("quantity") == "other" and isinstance(lab, str) and lab.strip() else None
+            if hit:
+                r["never"], r["never_label"] = hit["category"], hit["label"]
+                self.count("a0", "quantity other: never.csv")
         return recs
 
     # ------------------------------------------------------------------------------------------------------------ a-g
@@ -280,8 +365,9 @@ class Run:
                 self.note(f"c: BUG {eid}: {bad} not in the vocabulary after form.json (kept)")
             if q == "other":
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
-                                          candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False), action="kept"))
-                self.count("c", "quantity_other (kept)")
+                                          candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
+                                          action=f"kept (never: {r['never_label']})" if r.get("never") else "kept", never=r.get("never", "")))
+                self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
             out.append(r)
         return out
 
@@ -337,7 +423,7 @@ class Run:
                 s = unit_symbol(rec["unit"])
                 if s is None:                                                   # C6: kept with the unit as printed, logged
                     self.unmapped.append(dict(element=r["eid"], field="unit", id=normalize(rec["unit"]), label_as_printed=rec.get("label_as_printed", ""),
-                                              unit=rec["unit"], candidate="", action="kept (unit as printed)"))
+                                              unit=rec["unit"], candidate="", action="kept (unit as printed)", never=r.get("never", "")))
                     self.count("e", "unit_unresolved (kept as printed)")
                     s = rec["unit"]
                 r["unit"] = dimless(s)                                          # P151 C2
@@ -935,6 +1021,7 @@ class Run:
 
     def run(self):
         recs = self.read()
+        recs = self.resolve_other(recs)                                         # P157b
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
         recs = self.type_rules(recs)
@@ -950,11 +1037,15 @@ class Run:
         recs = self.mentions(recs)
         tree = self.tree()
         items = []
+        mine = collections.defaultdict(list)
+        for x in self.promoted:
+            mine[id(x["r"])].append(x)
         for r in recs:
             p, why = self.place(r)
             self.count("h", f"place: {why}")
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
+            items[-1]["_promoted"] = mine.get(id(r), [])                         # P157b
         fig_tree, fig_facts = self.figures()
         self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
@@ -985,6 +1076,11 @@ class Run:
         write_csv(OUT / f"{self.pid}.coverage.csv", F.COV_FIELDS, self.cov)
         write_csv(OUT / f"{self.pid}.dropped.csv", DROPPED_FIELDS, self.dropped)
         write_csv(OUT / f"{self.pid}.unmapped.csv", UNMAPPED_FIELDS, self.unmapped)
+        for x in self.promoted:                                                 # P157b: the fact a promoted record became
+            if not x["outcome"]:
+                f = next((f for f in rows if any(y is x for y in f.get("_promoted", []))), None)
+                x["outcome"] = f"fact {f['fact_id']} (type {f['type']}, quantity {f['quantity']}, parent {f['parent']})" if f else "merged by dedupe into another fact"
+        write_csv(OUT / f"{self.pid}.promoted.csv", PROMOTED_FIELDS, self.promoted)
         import experiments as EX
         here, EX.HERE = EX.HERE, OUT
         try:
@@ -1123,7 +1219,8 @@ def main(arg):
     (OUT / f"{pid}.compile.log").write_text("\n".join(log) + "\n", encoding="utf-8")
     summ = [("ontology_hash", C.X.ontology_hash()), ("lines_used", ";".join(map(str, run.lines_used))), ("lines_ignored", ";".join(map(str, run.lines_ignored))),
             ("facts", sum("#" in r["fact_id"] for r in rows)), ("tree_rows", sum("#" not in r["fact_id"] for r in rows)), ("derived_by_kb", run.n_derived),
-            ("dropped", len(run.dropped)), ("unmapped", len(run.unmapped))]
+            ("dropped", len(run.dropped)), ("unmapped", len(run.unmapped)), ("unmapped_never", sum(1 for u in run.unmapped if u.get("never"))),
+            ("promoted", sum(1 for x in run.promoted if x["id"] and not x["outcome"].startswith("not promoted")))]
     summ += [(f"step_{s}:{k}", v) for s, c in run.steps.items() for k, v in c.items()]
     summ += [(f"diff:{d['type']}", f"gold {d['gold']} compiled {d['compiled']} matched {d['matched']} P {d['precision']} R {d['recall']}") for d in table]
     with (OUT / f"{pid}.summary.csv").open("w", newline="", encoding="utf-8") as fh:
