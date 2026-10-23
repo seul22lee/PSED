@@ -1,0 +1,8 @@
+line 4: Form version P158, frozen (P158): form.json sha256 `226d4dcb1c73dfda6578d42be1404c4f1d8b3b1e24215a74052cc090ee6cdd6d` at ontology sha256 `4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754`. Ontology growth changes the enums and this file hash, never the rules; a record line carries form_version P158 from P158 on (common.run), older lines none.
+line 16: | type | enum, 8 values or {'type': 'null'} | always; `cited` when kind `cited` | extractor |
+line 17: | quantity | enum, 108 values or list of enum, 107 values (quantity_id) or {'type': 'null'} | always; never null when type `definition` / `cited` | extractor |
+line 18: | label_as_printed | string or {'type': 'null'} | always; string when quantity `other` | extractor |
+line 19: | qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) or {'type': 'null'} | always; required when quantity `pulse_time` / `purge_time` / `exposure`; an object holding step when quantity `pulse
+line 26: | kind | enum, 9 values or {'type': 'null'} | always; one of `cited`, `None` when type `cited` | extractor |
+line 43: | nearest | enum, 107 values (quantity_id) or {'type': 'null'} | always | extractor |
+line 95: | kind | not in the form (facts.FIELDS column with no form field) |  | nobody |

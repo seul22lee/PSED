@@ -1,0 +1,10 @@
+Choices made in this unit, each reported:
+1. Versioned validation. Applying the P158 rules to the stored round-1 records would drop 67 of them at compile step a (and break the
+   round-1 audit: the yim20 tabu1 cells would vanish). The directive's premise is "extraction is once per paper; compile reads both hashes":
+   compile.py therefore applies the "P158 rule n" allOf entries only to lines with form_version (written from P158 on) and counts every
+   older record a P158 rule would reject (a_p158). Options: (a) keep this; (b) apply the frozen rules to every record and accept the drops.
+2. nearest is a top-level field of every record (null unless quantity other), not a key of candidate: compile reads a missing field as null
+   (P139), so the stored records stay valid; a candidate key would fail additionalProperties / required.
+3. The litre is restored as l / litre / liter, not with "L" (the Langmuir's symbol in units.yaml; P142b's stated collision).
+4. The pilot gold does not meet the frozen form in 122 rows (T2_gold_rows); gold untouched. The audit's T2 stage now counts them first.
+5. Change 2 is two rules (type cited -> kind cited or null; kind cited -> type cited); fitted is a pass-0 data role, not a kind value.

@@ -32,7 +32,7 @@ SPECIES_Q = {"material": L.MATERIALS, "substrate": L.MATERIALS, "reactant_A": li
 VALUE_KEYS = ("value", "value_min", "value_max", "value_text")
 DEDUPE_KEY = ("type", "parent", "quantity", "value", "value_min", "value_max", "unit", "qualifiers", "value_text")
 FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
-UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never"]   # P157b: never = the never.csv category
+UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never", "nearest"]   # P157b: never = the never.csv category; P158: nearest
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
@@ -169,7 +169,7 @@ class Run:
         p0obj = C.loads_json(lines[p0 - 1]["response"])
         self.pass0 = (p0obj.get("units") or []) if isinstance(p0obj, dict) else p0obj    # P144: {units, table_layouts, panel_layouts}
         self.layouts = {k: (p0obj.get(k) or []) for k in ("table_layouts", "panel_layouts")} if isinstance(p0obj, dict) else {}
-        self.answers = {}                                                       # element id -> [record] | "NK:..."
+        self.answers, self.form_version = {}, {}                                # element id -> [record] | "NK:..."; P158: its line's form version
         for g, rs in self.groups.items():
             if g not in latest:
                 continue
@@ -177,6 +177,7 @@ class Run:
             for r in rs:
                 if r["element_id"] in a:
                     self.answers[r["element_id"]] = a[r["element_id"]]
+                    self.form_version[r["element_id"]] = lines[latest[g] - 1].get("form_version", "")   # P158: '' = written before the freeze
         recs = []
         for eid, a in sorted(self.answers.items(), key=lambda x: self.order[x[0]]):
             if isinstance(a, list):
@@ -186,7 +187,7 @@ class Run:
                     if "parent" in rec and "about" not in rec:                  # P148: a line written before the form's parent became about
                         rec["about"] = rec.pop("parent")
                         self.count("input", "parent read as about (older line)")
-                    recs.append(dict(eid=eid, rec=rec, seq=i))
+                    recs.append(dict(eid=eid, rec=rec, seq=i, form_version=self.form_version.get(eid, "")))
         self.count("input", "records", len(recs))
         return recs
 
@@ -247,10 +248,13 @@ class Run:
         value_max, uncertainty, uncertainty_n, a numeric qualifier) -> the number, logged; C5 (P148): a variable whose quantity is null
         -> the quantity of the same paper's definition of that term (normalize()d; a term two definitions give different quantities is
         left null), logged; then form.json: C6 (P148, corrected in P148 D) every error drops the record, the reason
-        schema:<validator> (inside a nullable anyOf, the validator of its non-null branch)."""
+        schema:<validator> (inside a nullable anyOf, the validator of its non-null branch). P158: a record of a line written before the
+        form freeze (no form_version) is validated without the allOf rules marked "P158 rule n", which it predates; every such record
+        that one of them would reject is counted under a_p158 (rule and field), never dropped for it: extraction is once per paper."""
         from jsonschema import Draft202012Validator
         form = C.schema("form.json")
         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
+        pre = Draft202012Validator({**form, "allOf": [x for x in form.get("allOf", []) if not str(x.get("$comment", "")).startswith("P158")]})
         branch = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)                     # noqa: E731
         nums = {k_: branch(p).get("type") for k_, p in form["properties"].items() if branch(p).get("type") in ("number", "integer")}
         qnum = {k_ for k_, p in form["properties"]["qualifiers"]["anyOf"][0]["properties"].items()
@@ -295,7 +299,16 @@ class Run:
                 r["rec"].setdefault(k_, None)
             if r["rec"].get("type") is None:
                 self.drop("a", r["eid"], r["rec"], "schema:type null", "type"); continue
-            errs = list(val.iter_errors(r["rec"]))
+            if r.get("form_version"):
+                errs = list(val.iter_errors(r["rec"]))
+            else:                                                               # P158: a pre-freeze record, the rules of its own form
+                errs = list(pre.iter_errors(r["rec"]))
+                if not errs:
+                    for e in val.iter_errors(r["rec"]):
+                        rule = next((str(form["allOf"][p]["$comment"]).split(":")[0] for p_, p in zip(e.absolute_schema_path, list(e.absolute_schema_path)[1:])
+                                     if p_ == "allOf" and isinstance(p, int) and "$comment" in form["allOf"][p]), "")
+                        self.count("a_p158", f"{rule} (predates the freeze, kept)")
+                        self.note(f"a: {r['eid']}: {rule} would reject it ({'.'.join(map(str, e.path)) or e.validator}); a pre-freeze record, kept")
             if errs:                                                            # P148 D: every form.json error drops
                 e = errs[0]
                 field = ".".join(str(p) for p in e.path) or e.validator
@@ -354,7 +367,7 @@ class Run:
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
                                           action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous") else "kept",
-                                          never=r.get("never", "")))
+                                          never=r.get("never", ""), nearest=rec.get("nearest", "") or ""))
                 self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
             out.append(r)
         return out

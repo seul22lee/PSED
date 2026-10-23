@@ -167,6 +167,7 @@ def run(pid, jobs, thinking=None):
             text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
             made += 1
             line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
+                        form_version=X.FORM_VERSION,                            # P158: compile.py applies the frozen form's rules to this line
                         request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), response=text)
             cp.parent.mkdir(parents=True, exist_ok=True)
             cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")

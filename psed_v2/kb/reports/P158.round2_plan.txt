@@ -1,0 +1,11 @@
+Round 2 (NOT run; no provider call until the user says OK). Model gemini-3.8-flash (pinned); prices kb/pilot/prices.csv: input $0.75,
+cache hit $0.075, output $3.75 per 1M tokens.
+  10.1021_cm0303080   ela03   pass 0: 1 call; pass 1: 19 calls (19 groups, 210 elements)
+  10.1039_d3cp05639b  hei24   pass 0: 1 call; pass 1: 15 calls (15 groups, 247 elements)
+  10.1116_6.0001094   wer21   NOT READY: not in the paper index (kb/pilot/elements.py PAPERS) and no kb/pilot/<pid>.elements.csv;
+                              common.resolve refuses it. It needs a paper key and elements.py (0 calls) first; then pass 0: 1 call,
+                              pass 1: about 10 calls (the directive's 44 less 34). It is cited in 52 ontology evidence lines (Werbrouck2021):
+                              under the new rule (papers 13+ are held-out, never read before extraction) it is not an unseen paper.
+Planned: pass 0 3 calls, about $0.7 (P148: $0.11 to $0.21 per pass-0 call read, $0.48 to $0.74 per paper with its probes);
+pass 1 about 44 calls, about $1.2 with the cached prefix (P148 lines in use: 44 pass-1 calls, $1.21; $1.74 for all 47 calls with pass 0).
+ela03 and hei24 each hold one earlier pass-0 line (pre-freeze); the new lines are appended and compile reads the latest.
