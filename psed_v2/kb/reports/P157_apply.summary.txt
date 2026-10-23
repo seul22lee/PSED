@@ -1,0 +1,17 @@
+P157: round 1 applied with grow.py apply (0 calls): 39 never, 2 alias, 1 reject; 7 rows stay pending. Precondition matched (precondition).
+History: 42 rows appended (round 1, decided_by user); never.csv 45 -> 84 (never_added); rounds.csv: round 1 applied 2026-10-23, 0/2/1/39.
+Aliases: effective_diffusion_coefficient + 'Apparent longitudinal diffusion coefficient'; base_pressure + 'evacuated below' (aliases).
+export.py --check: 15 of 15 pass before and after (checks). Recompile of yli18, yim20, mat22: facts, dropped and unmapped byte-identical
+  to 9a893b5 (compiled_diff); score vs gold identical in every column (score: before = P157_apply.before.score.csv, after = R1.score.csv).
+Counts (counts): facts 303 / 686 / 515 and dropped 4 / 23 / 55 unchanged; of the 100 compiled unmapped rows, never 6 -> 88 (82 rows moved:
+  rows_never), open 94 -> 12 (rows_open_after: 1 alias row, 1 rejected row, 9 rows of the 6 undecided round-1 candidates, 1 value without a quantity).
+NOT as the directive expected (directive_vs_data): the alias row did not become a fact of effective_diffusion_coefficient: compile.py has
+  no alias lookup for a record with quantity other, so yli18:tabu1.r4c0#1 stays other (alias_facts); ela03 (evacuated below) is not
+  compiled. The never column is grow.py's never match over the unchanged unmapped.csv; compile.py does not read never.csv.
+Kinds block = the seven entry kinds + the not-entries note (kinds, as printed in CODEBOOK.md); 4 examples were not ids and are written as
+  the ids that carry them as aliases: TMA -> tma, H2O -> h2o, O radical -> o_atom, knudsen diffusion -> gas_diffusion (kinds_examples).
+Units: units.yaml has 93 symbols in 43 dimensions, 444 spellings, not 66 / 32 (the ontology.yaml units: block has 70 accepted in 32 dims).
+Summary tree (tree): sums pass at every level; unplaced FAIL: mechanism 37 (no mechanism has a hierarchy node or a category field) and
+  method 17 (lists.METHOD_MODE holds in_situ / ex_situ for 18 of the 35 methods, no deposition / measurement / computation).
+  Section 8 of ontology.html lists, per node, what it holds by kind and the ids of its own members.
+Two questions are open (directive_vs_data, end): how mechanisms and methods are split, and whether compile.py maps an alias.

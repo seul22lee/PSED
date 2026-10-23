@@ -1,0 +1,34 @@
+Where the data differs from the directive (reported, not worked around; no wording, id or check changed to make it fit):
+
+1. Kinds examples. 11 of 15 are ids as written. TMA, H2O (species) are aliases of tma, h2o; 'O radical' is no id or alias ('O radicals'
+   is an alias of o_atom, kind atom); 'knudsen diffusion' is no id ('Knudsen diffusion' is an alias of gas_diffusion). Written as those
+   ids, so every example is a real id (kinds_examples); the ontology.yaml comment on kinds: says so. Revert = four words in ontology.yaml.
+2. Units. 'units 66 (accepted symbols, 32 dimensions)' matches neither file: units.yaml has 93 rows (one symbol each) in 43 dimensions
+   and 444 spellings (symbol + variants per row; 348 distinct); the ontology.yaml units: block has 32 dimensions and 70 accepted units.
+   Computed from units.yaml as directed: units 93 (43 dimensions), unit spellings 444.
+3. Method split. lists.METHOD_MODE is the default measurement mode: 21 method ids -> in_situ / ex_situ (3 of them, calibration,
+   weighing_before, metrology, are no entry). 18 of the 35 method entries are in it (ex_situ 16, in_situ 2); 17 are not -> unplaced.
+   No method entry is a deposition method. What ontology.yaml itself holds per method: measurement true 30 / false 5 (simulation,
+   calculation, cited, schematic, tabulated); mode ex_situ 23 / in_situ 3 / none 9.
+4. Mechanism split. No mechanism has a hierarchy node or a category field (check 8 rejects a category on a mechanism) -> unplaced 37.
+5. Aliases -> facts. compile.py step c keeps a record with quantity other and logs it in unmapped.csv; it has no alias lookup (the
+   extractor chose the id when the record was made). With 0 calls, yli18:tabu1.r4c0#1 'Apparent longitudinal diffusion coefficient'
+   is quantity other before and after (alias_facts). evacuated_below comes from ela03 (10.1021_cm0303080), which has no compiled output.
+6. Never column. compile.py does not read never.csv; kb/compiled/<pid>.unmapped.csv is unchanged (100 rows). The never column is
+   grow.py's own never match (candidates(): never_index, norm_strict) over those rows: 6 before, 88 after (rows_never).
+7. Never categories. The round-1 rows use 'Model internals' (22); the pilot rows use 'Model internals not in Sec. 8' (11). The tree
+   shows two categories, as written.
+8. History round 0 has 242 add rows for 235 entries: 7 entries also carry the P155 user row 'P138 added by hand; pending row closed in
+   P155' (pore_density, porous_sphere, porous_cylinder, porous_slab, model_reactant, tortuosity, pore_volume).
+9. grow.py candidates() reads never.csv but not live aliases or history: a later propose over yli18 or yim20 would offer
+   apparent_longitudinal_diffusion_coefficient (now an alias) and top_membrane_removal (rejected) again. Not changed.
+10. kb/compiled/*.summary.csv were stale since P143b (score.py does not write them, compile.py does): apply's compile.py run rewrote
+   yli18's and yim20's and wrote mat22's first one. compile.log differs from 9a893b5 only by the order of two tied rows (compiled_diff).
+
+Two options and a question each:
+A. Mechanisms and methods in the tree. (a) a field the user fills in ontology.yaml: a hierarchy node or category for each mechanism,
+   and a mode deposition / measurement / computation for each method; (b) split methods by their measurement field (true 30 / false 5)
+   and leave mechanisms unplaced. Which one?
+B. The alias row. (a) a compile.py step: a record with quantity other whose printed label equals a live entry's alias (normalized)
+   takes that entry, logged (as facts.py rekey_from_other does for from_other labels); it would also apply to every earlier alias;
+   (b) leave it to the next extraction of the paper. Which one?

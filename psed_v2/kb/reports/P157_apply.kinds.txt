@@ -1,0 +1,13 @@
+Kinds (source: ontology/ontology.yaml kinds: and not_entries:, P157):
+
+```
+quantity:    something with a number: measured, set, fitted or computed; carries a unit (or "1" for dimensionless). Example: film_thickness, deposition_temperature.
+categorical: a field whose value is a name from a fixed list, not a number. Example: material, carrier_gas, crystallinity.
+species:     a chemical thing: element, molecule, ion or radical, named as the paper names it. Example: tma, h2o, o_atom.
+structure:   a physical object or shape the deposition acts on or produces: substrate, trench, pillar array, film, porous body. Example: pillarhall_4.
+mechanism:   a physical or chemical process the paper invokes to explain a result, not a number. Example: gas_diffusion, surface_recombination.
+method:      how something was deposited, measured or computed; a measurement method is what makes a measurement activity. Example: spectroscopic_ellipsometry, xps.
+model:       a named mathematical or simulation model the paper fits or runs; its parameters are quantities with role model_parameter. Example: ylilammi_diffusion_reaction, gordon_plug_flow.
+
+Not entries: units live in units.yaml (symbol, spelling variants, dimension, factor); qualifiers are the 26 keys that narrow a fact (step, stage, stat, …) under qualifiers:.
+```

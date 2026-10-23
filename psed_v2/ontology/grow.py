@@ -731,20 +731,171 @@ def table(head, rows, raw=False):
 
 
 def hierarchy_html(o):
+    """Section 8: every node with its definition, the number of entries it holds (its own and its children's) by kind, and the ids of
+    its own members (P157: so the summary tree can be checked against it by eye)."""
     nodes, children, _ = X.hierarchy_tree(o)
     members = defaultdict(list)
     for e in o["entries"]:
         if e.get("category"):
-            members[e["category"]].append(e["id"])
+            members[e["category"]].append(e)
+
+    def held(c):
+        return members[c] + [e for k in children.get(c, []) for e in held(k)]
 
     def render(pid):
         items = ""
         for c in children.get(pid, []):
-            n = nodes[c]
-            items += (f"<li><b>{esc(c)}</b>: {esc(n['definition'])} <i>[{esc(n.get('citation', ''))}]</i>"
-                      + (f"<br>entries: {esc(', '.join(members[c]))}" if members[c] else "") + render(c) + "</li>")
+            n, h = nodes[c], held(c)
+            kinds = ", ".join(f"{k} {v}" for k, v in Counter(e["type"] for e in h).items())
+            items += (f"<li><b>{esc(c)}</b> holds {len(h)}{f' ({esc(kinds)})' if h else ''}: {esc(n['definition'])} <i>[{esc(n.get('citation', ''))}]</i>"
+                      + (f"<br>ids: {esc(', '.join(e['id'] for e in members[c]))}" if members[c] else "") + render(c) + "</li>")
         return f"<ul>{items}</ul>" if items else ""
     return render(None)
+
+
+# ---------------------------------------------------------------- the summary tree (P157)
+TREE_KINDS = ("quantity", "categorical", "model", "species", "structure", "mechanism", "method")
+METHOD_MODE = literal(V2 / "kb" / "pilot" / "lists.py", "METHOD_MODE")            # the methods' split
+
+
+def node(label, n, children=(), ids=(), text=""):
+    """A summary-tree node: its count n is computed from the data on its own, never as the sum of its children (check_tree compares
+    them); ids only on an 'unplaced' node; text replaces 'label n' in the drawing."""
+    return dict(label=label, n=n, children=[c for c in children if c], ids=list(ids), text=text)
+
+
+def unplaced(es):
+    return node("unplaced", len(es), ids=[e["id"] for e in es]) if es else None
+
+
+def by_hierarchy(o, es):
+    """Entries split by their category: the hierarchy node it names, nested under its parents (only nodes that hold one of es). An entry
+    whose category is no hierarchy node goes under 'unplaced'. A non-leaf node holding entries itself (check 8 forbids it) shows them
+    as '<node> itself'."""
+    nodes, children, _ = X.hierarchy_tree(o)
+
+    def sub(n):
+        return {n} | {d for c in children.get(n, []) for d in sub(c)}
+
+    def walk(n):
+        held = [e for e in es if e.get("category") in sub(n)]
+        if not held:
+            return None
+        own = [e for e in held if e.get("category") == n]
+        kids = [walk(c) for c in children.get(n, [])]
+        if any(kids) and own:
+            kids.append(node(f"{n} itself", len(own)))
+        return node(n, len(held), kids)
+    return [walk(t) for t in children.get(None, [])] + [unplaced([e for e in es if e.get("category") not in nodes])]
+
+
+def by_class(o, es):
+    """Structure entries split by their structure class, nested along the class tree (section 7) below its root; an instance counts
+    under its class; a class with instances and subclasses shows its own as '<class> itself'; a class not in the tree: 'unplaced'."""
+    kids = defaultdict(list)
+    for c in o.get("structure_classes", []):
+        kids[c.get("parent") or ""].append(c["id"])
+
+    def sub(c):
+        return {c} | {d for k in kids.get(c, []) for d in sub(k)}
+
+    def walk(c):
+        held = [e for e in es if e.get("class") in sub(c)]
+        if not held:
+            return None
+        own = [e for e in held if e.get("class") == c]
+        ch = [walk(k) for k in kids.get(c, [])]
+        if any(ch) and own:
+            ch.append(node(f"{c} itself", len(own)))
+        return node(c, len(held), ch)
+    roots = kids.get("", [])
+    out = [walk(k) for r in roots for k in kids.get(r, [])] + [node(f"{r} itself", n) for r in roots for n in [sum(1 for e in es if e.get("class") == r)] if n]
+    return out + [unplaced([e for e in es if not any(e.get("class") in sub(r) for r in roots)])]
+
+
+def by_field(es, key, order=()):
+    """Entries split by the value key(e) gives, in the given order and then sorted; '' or None: 'unplaced'."""
+    vals = Counter(key(e) for e in es if key(e))
+    return [node(v, vals[v]) for v in list(dict.fromkeys([v for v in order if v in vals] + sorted(vals)))] + [unplaced([e for e in es if not key(e)])]
+
+
+def summary_trees(o, hist, pend, nev):
+    """The summary as trees: the entries by kind and within a kind (quantity, categorical, model: hierarchy; species: kind; structure:
+    structure class; mechanism: hierarchy node, else category field; method: lists.METHOD_MODE), then units, qualifier keys, never,
+    pending and history in the same form."""
+    entries = o["entries"]
+    nodes = {n["id"] for n in o["hierarchy"]}
+    of = lambda t: [e for e in entries if e["type"] == t]                       # noqa: E731
+    mech = of("mechanism")
+    in_h, in_cat = [e for e in mech if e.get("category") in nodes], [e for e in mech if e.get("category") and e.get("category") not in nodes]
+    split = {"quantity": ("hierarchy leaf", by_hierarchy(o, of("quantity"))),
+             "categorical": ("hierarchy leaf", by_hierarchy(o, of("categorical"))),
+             "model": ("hierarchy leaf", by_hierarchy(o, of("model"))),
+             "species": ("species kind", by_field(of("species"), lambda e: e.get("kind"), X.SPECIES_KINDS)),
+             "structure": ("structure class", by_class(o, of("structure"))),
+             "mechanism": (f"hierarchy node for {len(in_h)}, category field for {len(in_cat)}, neither for {len(mech) - len(in_h) - len(in_cat)}",
+                           by_hierarchy(o, in_h) + by_field(in_cat, lambda e: f"category={e['category']}")
+                           + [unplaced([e for e in mech if e not in in_h and e not in in_cat])]),
+             "method": ("lists.METHOD_MODE", by_field(of("method"), lambda e: METHOD_MODE.get(e["id"])))}
+    kinds = [node(k, len(of(k)), split[k][1], text=f"{k} {len(of(k))}   [split by {split[k][0]}]") for k in TREE_KINDS]
+    ent = node("entries", len(entries), kinds + [unplaced([e for e in entries if e["type"] not in TREE_KINDS])])
+    units = yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"]
+    dims = Counter(u["dimension"] for u in units)
+    spell = sum(1 + len(u["variants"]) for u in units)
+    species = [e["id"] for e in entries if e["type"] == "species" and not e.get("replaced_by")]
+    mats = [e["id"] for e in entries if e["type"] == "species" and e.get("kind") == "material" and not e.get("replaced_by")]
+    defs = {d["id"] for e in entries if not e.get("replaced_by") for d in (e.get("definitions") or [])}
+    quals = []
+    for k, q in o["qualifiers"].items():
+        v = X.qualifier_values(q, species, mats, defs)
+        quals.append(node(k, 1, text=f"{k}: {len(v)} values" + (f" ({q['values']})" if isinstance(q.get("values"), str) else "") if v is not None else f"{k}: open ({q.get('values')})"))
+    src = Counter("pilot" if r["source"].startswith("pilot") else r["source"] for r in nev)
+    hist_rounds = defaultdict(Counter)
+    for h in hist:
+        hist_rounds[h["round"]][h["action"]] += 1
+    rest = [node("units", len(units), [node(d, n) for d, n in dims.most_common()], text=f"units {len(units)} (accepted symbols in units.yaml, {len(dims)} dimensions)"),
+            node("unit spellings", spell, text=f"unit spellings {spell} (symbol and variants of each units.yaml row)"),
+            node("qualifier keys", len(o["qualifiers"]), quals),
+            node("never", len(nev), [node(c, n) for c, n in Counter(r["category"] for r in nev).most_common()],
+                 text=f"never {len(nev)} (" + " + ".join(f"{n} {s}" for s, n in src.items()) + ")"),
+            node("pending", len(pend), [node(d, n) for d, n in Counter(x["decision"] or "undecided" for x in pend).most_common()]),
+            node("history rows", len(hist), [node(f"round {r}", sum(c.values()), [node(a, n) for a, n in c.most_common()]) for r, c in hist_rounds.items()])]
+    return [ent] + rest
+
+
+def draw(n, lead="", last=True, top=True):
+    """The tree as text lines: '├─ ' / '└─ ' before a child, '│  ' below an open branch."""
+    line = (n["text"] or f"{n['label']} {n['n']}") + (f": {', '.join(n['ids'])}" if n["ids"] else "")
+    out = [line if top else lead + ("└─ " if last else "├─ ") + line]
+    pad = "" if top else lead + ("   " if last else "│  ")
+    for i, c in enumerate(n["children"]):
+        out += draw(c, pad, i == len(n["children"]) - 1, False)
+    return out
+
+
+def check_tree(trees):
+    """(sum problems, unplaced problems): every parent's n against the sum of its children's n, with the path and the difference; every
+    'unplaced' node with its ids (a check failure, reported)."""
+    sums, lost = [], []
+
+    def walk(n, path):
+        here = f"{path} / {n['label']}" if path else n["label"]
+        if n["children"] and sum(c["n"] for c in n["children"]) != n["n"]:
+            s = sum(c["n"] for c in n["children"])
+            sums.append(f"{here}: {n['n']} but its children sum to {s} (off by {s - n['n']:+d})")
+        if n["label"] == "unplaced":
+            lost.append(f"{path}: {n['n']} unplaced: {', '.join(n['ids'])}")
+        for c in n["children"]:
+            walk(c, here)
+    for t in trees:
+        walk(t, "")
+    return sums, lost
+
+
+def tree_result(trees):
+    sums, lost = check_tree(trees)
+    return ["sum check: " + ("pass (every parent equals the sum of its children, at every level)" if not sums else "FAIL at " + "; ".join(sums)),
+            "unplaced: " + ("none" if not lost else "FAIL: " + "; ".join(lost))]
 
 
 def structure_classes_html(o):
@@ -806,13 +957,11 @@ def report_page():
             s["rounds"].append(h["round"])
             s["pids"] += [p for p in h["source_pids"].split(";") if p and p not in s["pids"]]
             s["dois"] += [d for d in h["source_dois"].split(";") if d and d not in s["dois"]]
-    kinds = Counter(e["type"] for e in entries)
+    trees = summary_trees(o, hist, pend, nev)                                   # P157: the entries, units, qualifiers, never, pending, history
+    tree_check = tree_result(trees)
     summary = [["ontology.yaml sha256", sha(ONTO)], ["ontology hash (export.ontology_hash: this file without its header line, then units.yaml)", X.ontology_hash()],
-               ["entries", len(entries)]] + [[f"entries of kind {k}", kinds[k]] for k in ("quantity", "categorical", "species", "structure", "mechanism", "method", "model")] \
-        + [["units (units.yaml spellings)", sum(1 + len(u["variants"]) for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"])],
-           ["qualifier keys", len(o["qualifiers"])], ["rounds", len(rs)], ["history rows", len(hist)], ["pending rows", len(pend)],
-           ["pending undecided", sum(1 for x in pend if not x["decision"])], ["never labels", len(nev)], ["unmapped (figure import)", len(unm)],
-           ["checks passed", f"{sum(1 for c in checks if c[1])} of {len(checks)}"], ["text fields withheld on this page (they name a held-out paper)", "{withheld}"]]
+               ["rounds", len(rs)], ["unmapped (figure import)", len(unm)],
+               ["checks passed", f"{sum(1 for c in checks if c[1])} of {len(checks)}"], ["text fields withheld on this page (they name a held-out paper)", "{withheld}"]]
     check_html = "".join(f"<tr class='{'pass' if c[1] else 'fail'}'><td>{esc(c[0])}</td><td>{'pass' if c[1] else 'FAIL'}</td><td>{esc(c[2])}</td>"
                          f"<td>{'<ul>' + ''.join(f'<li>{esc(b)}</li>' for b in c[3]) + '</ul>' if c[3] else '—'}</td></tr>" for c in checks)
     ent_html = ""
@@ -829,7 +978,9 @@ def report_page():
             f"<p>Written by psed_v2/ontology/grow.py (report / apply) from ontology.yaml, units.yaml, history.csv, rounds.csv, pending.csv, never.csv and "
             f"unmapped.csv. Held-out papers are never shown.</p>"
             f"<h2>1. Kinds</h2><pre>{esc(chr(10).join(X.kinds_lines(o)))}</pre>"
-            f"<h2>2. Summary</h2>{table(['item', 'value'], summary)}"
+            f"<h2>2. Summary</h2><pre>{esc(chr(10).join(draw(trees[0])))}</pre>"
+            f"<pre class='{'pass' if tree_check[0].startswith('sum check: pass') and tree_check[1] == 'unplaced: none' else 'fail'}'>{esc(chr(10).join(tree_check))}</pre>"
+            f"<pre>{esc(chr(10).join(ln for t in trees[1:] for ln in draw(t)))}</pre>{table(['item', 'value'], summary)}"
             f"<h2>3. Checks (export.py --check)</h2><table><tr><th>check</th><th>result</th><th>detail</th><th>rows</th></tr>{check_html}</table>"
             f"<h2>4. Entries by kind</h2>{ent_html}"
             f"<h2>5. Values</h2>{table(['categorical', 'values_from', 'current values', 'value aliases'], values_rows(o))}"
@@ -851,6 +1002,7 @@ def report_page():
     assert not HELD_RX.search(page), "a held-out paper in ontology.html"
     REPORT.write_text(page, encoding="utf-8")
     print(f"{REPORT}: {len(entries)} entries, {len(hist)} history rows, {len(pend)} pending, checks {sum(1 for c in checks if c[1])}/{len(checks)}")
+    print("\n".join(draw(trees[0]) + tree_check))                              # P157: the tree and its check, printed next to each other
 
 
 def main(argv=None):
