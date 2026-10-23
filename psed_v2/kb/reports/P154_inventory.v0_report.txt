@@ -1,0 +1,13 @@
+The v0 completion-report generator
+
+Where: psed_v2/ontology/make_report.py -> psed_v2/ontology/report.html (not kb/reports/). Sections: 1 Summary, 2 Graph, 2b Hierarchy,
+2c Structure classes, 3 Entries, 3b Values, 3c Families, 3d Proposals, 3d External identifiers, 3e Pending entries, 4 schema-miner diff,
+5 Units, 6 Unmapped; it runs 15 checks first and exits 1 when one fails (the page is still written).
+Who calls it: nobody (no import, no subprocess; not export.py, not check.py). Last run committed: P132 (1f20974, 2026-10-19), outside the
+last 30 commits.
+Does it run: yes. Run on a copy of psed_v2/ontology in the scratchpad (the repo untouched): it wrote the page (235 entries, 81 unmapped
+labels) and exited 1: FAIL 11 (family 'electrical': a family needs two or more members) and FAIL 14 (pending rows that clash with an
+entry: pore_density, porous_sphere, porous_cylinder, porous_slab, model_reactant, tortuosity, pore_volume - the P138 hand entries);
+checks 1-10, 12, 13, 15 pass. Output: make_report_run.txt.
+It needs sources/experimental-ideal-schema.json (check 1, section 4), which is gitignored: a fresh clone lacks it.
+Its reader takes method entries, kinds, terms and layouts as they are today (no kinds / terms / layouts blocks exist in ontology.yaml).

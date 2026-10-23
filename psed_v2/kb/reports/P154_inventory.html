@@ -1,0 +1,474 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P154_inventory</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P154_inventory</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P154_inventory.summary.txt</p>
+<pre>P154-inventory: psed_v2/ontology/ - what is there, what each file reads and writes, what still runs. Zero calls, no change (this report
+and its tables only). Held-out papers (yim22, gre23, mat23): their rows are counted, not shown.
+
+1. Files (files.csv): 20 in ontology/ (17 tracked; sources/ is gitignored) plus 7 elsewhere that write into it or read its data files.
+   Ran in the last 30 commits (47fe794..HEAD, judged by their tracked outputs): export.py only (vocab.py, form.json, form_pass0.json,
+   FORM.md, CODEBOOK.md in P146-P150), plus pass0_paper.py / compile.py outside the folder. pending_decide.py, merge_pending.py,
+   alias_audit.py, apply_external_ids.py, entry_definitions.py, make_report.py, figures_import.py and absorption.py did not.
+   Callers: check.py runs export.py --check; pass0_paper.py imports the P143 layouts from export.py; merge_pending.py imports
+   pending_decide and alias_audit; everything else is run by hand; make_report.py is called by nothing.
+2. Data files (data_counts.csv, rows in pending.csv, pending_decisions.csv, unmapped.csv, external_ids.csv): pending.csv 10 rows, all
+   pending, 7 of them already entries in ontology.yaml (P138); pending_decisions.csv 10 rows, all rule none / pending; unmapped.csv 81
+   rows (45 pilot hand rows, 36 figure-import rows; 12 belong to held-out papers); external_ids.csv 122 rows (91 sure, 31 check).
+   compile.py writes none of them (writers.csv): its unmapped list is kb/compiled/&lt;pid&gt;.unmapped.csv. pending / pending_decisions /
+   external_ids are pilot-era; unmapped.csv is fed by the figure import, whose figures.json v2 compile reads.
+3. Pending flow (flow.csv, flow.txt): hand row (P83) or --labels candidate (P131b) -&gt; pending_decide.py rules a-d (P98) -&gt; merge_pending.py
+   (P131b) -&gt; alias_audit.py -&gt; export.py / make_report.py. The v2 compile output does not connect: candidate(), rules a and c and the
+   alias audit read only kb/pilot (gold) and figures.json; nothing reads kb/compiled/*.unmapped.csv; compile has no from_other re-key.
+4. v0 report generator (v0_report.txt): ontology/make_report.py -&gt; ontology/report.html; called by nothing; last run P132; it runs today
+   (scratch copy) and exits 1 on check 11 (family electrical) and check 14 (the seven P138 duplicates).
+</pre>
+<h2>1. Files: purpose, reads, writes, callers, run in the last 30 commits</h2><p>psed_v2/kb/reports/P154_inventory.files.csv</p>
+<table><tr><th>path</th><th>size</th><th>tracked</th><th>last_commit</th><th>purpose</th><th>reads</th><th>writes</th><th>called_by</th><th>ran_in_last_30_commits</th></tr>
+<tr><td>psed_v2/ontology/ontology.yaml</td><td>179070</td><td>yes</td><td>b68e73c 2026-10-20 P150 X1: crystallinity value set += polycrystalline (form enum now); codebook c cited: own </td><td>the ontology: entries (quantity, categorical, species, structure, mechanism, method, model), hierarchy, structure classes, families, transforms, qualifiers, units, vocabularies, proposals</td><td>-</td><td>-</td><td>read by export.py, make_report.py, merge_pending.py, pending_decide.py (ids), alias_audit.py, apply_external_ids.py, entry_definitions.py, kb/verify/d14/five_entries.py; written by hand and by merge_pending / alias_audit --apply / apply_external_ids / entry_definitions</td><td>changed in b68e73c</td></tr>
+<tr><td>psed_v2/ontology/units.yaml</td><td>14967</td><td>yes</td><td>bf07612 2026-10-20 P142b: held-out rollback, methods as entries, model names, qualifier meanings</td><td>the unit table: symbol, variants, dimension, factor</td><td>-</td><td>-</td><td>read by export.py (vocab UNIT tables), make_report.py (check 15), kb/pilot/check.py, kb/figures_import.py; written by hand</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/pilot_map.csv</td><td>9331</td><td>yes</td><td>7a17136 2026-10-16 psed_v2: P58: the exclusion table against the stored data (Sec. 18.7, decision D2). knudsen</td><td>P49/P58 disposition of every pilot id (direct, alias, qualifier, transform, new_entry, attribute, reserved, dropped, to_absorb)</td><td>-</td><td>-</td><td>read by export.py, kb/pilot/metrics.py; written by hand</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/pending.csv</td><td>4726</td><td>yes</td><td>ba77854 2026-10-19 P131b-12c: definitions, names and categories of the five free-label entries; ela03 evacuate</td><td>P83 provisional extension entries a paper needed (status pending | accepted, evidence column since P131b)</td><td>-</td><td>-</td><td>read by export.py (PENDING in vocab.py), make_report.py (check 14, section 3e), alias_audit.py, pending_decide.py, merge_pending.py; written by hand (P83), pending_decide.py (status, evidence, --labels candidate rows), merge_pending.py (drops merged rows)</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/pending_decisions.csv</td><td>908</td><td>yes</td><td>ba77854 2026-10-19 P131b-12c: definitions, names and categories of the five free-label entries; ela03 evacuate</td><td>P98 the rule applied to each pending row (a, b, c, d, none) and the decision</td><td>-</td><td>-</td><td>written by pending_decide.py; read by merge_pending.py and make_report.py check 14</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/unmapped.csv</td><td>7993</td><td>yes</td><td>b30fec3 2026-10-20 P138 outputs: figures.json x12 regenerated, yli18 + yim20 re-extracted (65 calls, $1.08), c</td><td>labels and figure fields no entry takes: the pilot&#x27;s hand rows (field pilot, Sec. 18.7 reasons) and the figure import&#x27;s unresolved fields</td><td>-</td><td>-</td><td>written by kb/figures_import.py (keeps the field=pilot rows, replaces the papers it runs); read by make_report.py (check 12, section 6) and kb/pilot/check.py check_figures_import (P84)</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/external_ids.csv</td><td>7981</td><td>yes</td><td>e6e80b1 2026-10-18 P98–P101: pending by rule, element vs molecule, external ids store-only, card edges, family</td><td>P100 QUDT quantity kind / unit and PubChem CID per entry, confidence sure | check, written from knowledge (store-only)</td><td>-</td><td>-</td><td>written by hand; read by apply_external_ids.py and make_report.py (coverage)</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/absorption.csv</td><td>605</td><td>yes</td><td>f1f0980 2026-10-18 kb-12: twelve papers on figures.json</td><td>P83 absorption curve: one line per ingested paper (records, direct, alias, qualifier, new_pending, attribute, dropped, unmapped)</td><td>-</td><td>-</td><td>written by kb/pilot/absorption.py; read by nothing found</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/CRITERIA.md</td><td>35879</td><td>yes</td><td>5b9bc20 2026-10-19 P131b-12b: ontology v1 fix-up (cap, rule 6, base pressure, five template entries, sicl4 for</td><td>the ontology criteria (sections the code cites: Sec. 10 base list, Sec. 11 growth rules and cap, Sec. 12, Sec. 18.x)</td><td>-</td><td>-</td><td>read by people; cited in make_report.py / export.py comments</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/report.html</td><td>150516</td><td>yes</td><td>1f20974 2026-10-19 P132 extraction form (schema/form.json, pass-0 form, FORM.md, round trip)</td><td>the v0 / v1 completion report (Summary, Graph, Hierarchy, Structure classes, Entries, Values, Families, Proposals, External ids, Pending, schema-miner diff, Units, Unmapped)</td><td>-</td><td>-</td><td>written by make_report.py</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/sources/experimental-ideal-schema.json</td><td>9414</td><td>no (gitignored)</td><td></td><td>the schema-miner reference schema (gitignored: not in a fresh clone)</td><td>-</td><td>-</td><td>read by make_report.py (check 1, section 4)</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/sources/cremers2019.pdf</td><td>6730791</td><td>no (gitignored)</td><td></td><td>Cremers 2019 review (gitignored)</td><td>-</td><td>-</td><td>read by people (CREMERS sections in pending_decide.py written from it)</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/sources/popov2025.pdf</td><td>8225521</td><td>no (gitignored)</td><td></td><td>Popov 2025 review (gitignored)</td><td>-</td><td>-</td><td>read by people</td><td>not changed in the last 30 commits</td></tr>
+<tr><td>psed_v2/ontology/export.py</td><td>46378</td><td>yes</td><td>5308b1e 2026-10-20 P149 F3: crystallinity&#x27;s value set (vocabularies: amorphous, crystalline = the dev golds&#x27; v</td><td>ontology.yaml -&gt; the generated vocabularies and the extraction form; --check compares them with the files on disk</td><td>ontology.yaml, units.yaml, pilot_map.csv, pending.csv; kb/pilot/lists.py, facts.py, check.py messages (CODEBOOK)</td><td>kb/pilot/vocab.py, kb/schema/form.json, form_pass0.json, FORM.md, CODEBOOK.md</td><td>kb/pilot/check.py (subprocess export.py --check in the full check); imported by merge_pending.py, pending_decide.py (pending_entry, unit_dimension), kb/extract/pass0_paper.py (P143 layouts); by hand</td><td>yes: vocab.py in b68e73c 5308b1e; form.json in b68e73c 5308b1e 430b54c; form_pass0.json in b68e73c b8e7d74; FORM.md in b68e73c 5308b1e 430b54c b8e7d74; CODEBOOK.md in b68e73c 3fae3c8 17205e7 b8e7d74</td></tr>
+<tr><td>psed_v2/ontology/make_report.py</td><td>33736</td><td>yes</td><td>5b9bc20 2026-10-19 P131b-12b: ontology v1 fix-up (cap, rule 6, base pressure, five template entries, sicl4 for</td><td>the v0 completion-report generator: runs 15 checks, writes report.html</td><td>ontology.yaml, units.yaml, unmapped.csv, pending.csv, pending_decisions.csv, external_ids.csv, sources/experimental-ideal-schema.json</td><td>ontology/report.html</td><td>nobody (by hand only)</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/ontology/pending_decide.py</td><td>12371</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>P98 decide every pending row by rule (a two papers, b Cremers &#x27;sure&#x27;, c named by an experiment, d converts_to an accepted entry); P131b --labels: candidate rows from free other[...] labels</td><td>pending.csv, ontology.yaml (ids), kb/pilot/*.facts.csv (the gold trees), kb/*.figures.json, kb/pilot/experiments.csv</td><td>pending_decisions.csv, pending.csv</td><td>by hand (&#x27;run after a paper is added&#x27;); imported by merge_pending.py</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/ontology/merge_pending.py</td><td>7886</td><td>yes</td><td>bf07612 2026-10-20 P142b: held-out rollback, methods as entries, model names, qualifier meanings</td><td>P131b every accepted pending row -&gt; an entry in ontology.yaml (export.pending_entry + citation, deviation, evidence, from_other); stops on an id with another definition</td><td>pending.csv, pending_decisions.csv, ontology.yaml (via export, pending_decide, alias_audit)</td><td>ontology.yaml, pending.csv, pending_decisions.csv</td><td>by hand</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/ontology/alias_audit.py</td><td>10414</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>P131b alias audit of every printed form against the entries; --apply adds missing aliases; move_ambiguous() (12b)</td><td>kb/pilot/*.facts.csv of the 12 papers, element texts, ontology.yaml, pending.csv</td><td>kb/verify/d14/alias_audit.csv; with --apply ontology.yaml</td><td>by hand; imported by merge_pending.py (move_ambiguous) and entry_definitions.py (set_field)</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/ontology/apply_external_ids.py</td><td>2198</td><td>yes</td><td>e6e80b1 2026-10-18 P98–P101: pending by rule, element vs molecule, external ids store-only, card edges, family</td><td>P100 copy external_ids.csv into ontology.yaml (qudt_quantity_kind, qudt_unit, pubchem_cid lines)</td><td>external_ids.csv, ontology.yaml</td><td>ontology.yaml</td><td>by hand</td><td>no: writes only ontology.yaml (also hand-edited); last run recorded P100 (e6e80b1)</td></tr>
+<tr><td>psed_v2/ontology/entry_definitions.py</td><td>6121</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>P131b-12c the user&#x27;s names, definitions and categories of the five free-label entries (one-off)</td><td>ontology.yaml, element texts</td><td>ontology.yaml</td><td>by hand (once)</td><td>no: one-off, P131b-12c (ba77854)</td></tr>
+<tr><td>psed_v2/kb/figures_import.py</td><td>58680</td><td>yes</td><td>fc66cd2 2026-10-19 P138 commit 3: figures_import.py parse_value — a power of ten needs a caret or a sign</td><td>P84-P88 figure records by rule from ingest figures.json; writes into ontology/</td><td>ingest/final/&lt;pid&gt;/figures.json, ontology/units.yaml, vocab</td><td>kb/&lt;pid&gt;.figures.json, kb/import_report.csv, kb/import_panels.csv, kb/problems.txt, ontology/unmapped.csv</td><td>by hand</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/kb/pilot/absorption.py</td><td>2697</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>P83 one absorption line per paper</td><td>kb/pilot/&lt;pid&gt;.facts.csv, vocab</td><td>ontology/absorption.csv</td><td>by hand</td><td>no (no output changed in the last 30 commits)</td></tr>
+<tr><td>psed_v2/kb/pilot/check.py</td><td>155008</td><td>yes</td><td>79921b7 2026-10-22 P152 code: model inputs as conditions (experiments.is_condition, check.py vector); card pag</td><td>the one check; reads ontology files in the dataset checks</td><td>ontology/unmapped.csv, ontology/units.yaml; runs export.py --check</td><td>kb/problems.txt, kb/pilot/battery_per_paper.csv (full run)</td><td>kb/extract/score.py calls check() per paper (no ontology file read there); the full run by hand</td><td>check() per paper ran in P151 and P152 (score.py); the full run is not visible in commits</td></tr>
+<tr><td>psed_v2/kb/pilot/metrics.py</td><td>4736</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>pilot metrics; the absorption curve from pilot_map.csv</td><td>ontology/pilot_map.csv</td><td>-</td><td>kb/pilot/check.py</td><td>with the full check.py run (not visible in commits)</td></tr>
+<tr><td>psed_v2/kb/extract/pass0_paper.py</td><td>4763</td><td>yes</td><td>b8e7d74 2026-10-20 P146 code (zero-call part): TERMS run / simulation / model run; pass-0 form evidence_quote </td><td>pass 0 prompt: imports the P143 layout definitions from export.py</td><td>ontology/export.py (P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS)</td><td>kb/records/&lt;pid&gt;.jsonl (provider calls)</td><td>by hand</td><td>yes: 10.1063_1.5028178.jsonl in 7d14907 5066033 8809846 47fe794; 10.1039_d0cp03358h.jsonl in 7d14907 8809846 47fe794; 10.1021_acs.chemmater.2c01154.jsonl in 7d14907 8809846 47fe794</td></tr>
+<tr><td>psed_v2/kb/extract/compile.py</td><td>69332</td><td>yes</td><td>fe35312 2026-10-20 P151 compiler: C1 conditions from pass 1 only (figures.json gives data rows, points_ref); C</td><td>v2 compiler (for contrast): writes no ontology file; its unmapped list goes to kb/compiled/</td><td>vocab.py (generated from the ontology), records, figures.json</td><td>kb/compiled/&lt;pid&gt;.unmapped.csv (not ontology/unmapped.csv)</td><td>kb/extract/score.py</td><td>yes: 10.1063_1.5028178.experiments.csv in b258cd9 9ac3c37 34a75b3 7d14907; 10.1063_1.5028178.facts.csv in 9ac3c37 34a75b3 7d14907</td></tr>
+<tr><td>psed_v2/kb/verify/d14/five_entries.py</td><td>2806</td><td>yes</td><td>63e12e7 2026-10-19 P135a: move pilot/extract/schema/records/cache/compiled/verify under kb/</td><td>P131b-12b the five free-label entries&#x27; paper text (verify)</td><td>ontology/ontology.yaml</td><td>five_entries.md (not tracked)</td><td>by hand</td><td>no: P131b-12b verify script, output not tracked</td></tr>
+</table>
+<h2>2. Data files, counts</h2><p>psed_v2/kb/reports/P154_inventory.data_counts.csv</p>
+<table><tr><th>file</th><th>rows</th><th>breakdown</th></tr>
+<tr><td>ontology/pending.csv</td><td>10</td><td>status pending 10; 7 rows are already entries in ontology.yaml</td></tr>
+<tr><td>ontology/pending_decisions.csv</td><td>10</td><td>decision pending 10; rule none 10</td></tr>
+<tr><td>ontology/unmapped.csv</td><td>81</td><td>source: pilot hand rows 45, figure import 36; reason label_unresolved 35, Model internals not in Sec. 8 11, Sec. 18.7 6, Instrument settings 6, Molecule properties 6, Plasma internals 6, Equipment details and sample codes 5, Interpretations, regimes 2, Fit quality 2, No row applies 1, the printed cell values have no resolved quantity (series_axis) 1; held-out papers&#x27; rows (not shown): {&#x27;yim22&#x27;: 4, &#x27;mat23&#x27;: 5, &#x27;gre23&#x27;: 3}</td></tr>
+<tr><td>ontology/external_ids.csv</td><td>122</td><td>confidence check 31, sure 91; kind quantity 84, species 38</td></tr>
+</table>
+<h2>2. Who writes them; does compile.py</h2><p>psed_v2/kb/reports/P154_inventory.writers.csv</p>
+<table><tr><th>file</th><th>written_by</th><th>compile_writes_today</th><th>era</th></tr>
+<tr><td>ontology/pending.csv</td><td>by hand (P83); pending_decide.py; merge_pending.py</td><td>no</td><td>pilot-era (inputs: kb/pilot gold facts)</td></tr>
+<tr><td>ontology/pending_decisions.csv</td><td>pending_decide.py</td><td>no</td><td>pilot-era</td></tr>
+<tr><td>ontology/unmapped.csv</td><td>kb/figures_import.py (+ pilot hand rows kept)</td><td>no (compile writes kb/compiled/&lt;pid&gt;.unmapped.csv)</td><td>shared: figures.json feeds v2 compile; last import P138</td></tr>
+<tr><td>ontology/external_ids.csv</td><td>by hand (P100)</td><td>no</td><td>pilot-era, store-only</td></tr>
+</table>
+<h2>2. pending.csv rows</h2><p>psed_v2/kb/reports/P154_inventory.pending.csv</p>
+<table><tr><th>id</th><th>kind</th><th>status</th><th>paper</th><th>unit</th><th>role</th><th>class</th><th>records</th><th>already_an_entry_in_ontology_yaml</th><th>note</th></tr>
+<tr><td>elam_monte_carlo</td><td>model</td><td>pending</td><td></td><td></td><td></td><td>computational</td><td>30</td><td></td><td></td></tr>
+<tr><td>pore_density</td><td>quantity</td><td>pending</td><td>ela03</td><td>cm-2</td><td>condition</td><td></td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>porous_sphere</td><td>structure</td><td>pending</td><td>hei24</td><td></td><td></td><td>porous_body</td><td>model runs</td><td>yes</td><td></td></tr>
+<tr><td>porous_cylinder</td><td>structure</td><td>pending</td><td>hei24</td><td></td><td></td><td>porous_body</td><td>model runs</td><td>yes</td><td></td></tr>
+<tr><td>porous_slab</td><td>structure</td><td>pending</td><td>hei24</td><td></td><td></td><td>porous_body</td><td>model runs</td><td>yes</td><td></td></tr>
+<tr><td>model_reactant</td><td>species</td><td>pending</td><td>hei24</td><td></td><td></td><td>molecule</td><td>model inputs</td><td>yes</td><td></td></tr>
+<tr><td>tortuosity</td><td>quantity</td><td>pending</td><td>hei24</td><td>1</td><td>model_parameter</td><td></td><td>model, claim</td><td>yes</td><td></td></tr>
+<tr><td>pore_volume</td><td>quantity</td><td>pending</td><td>hei24</td><td>m3/g</td><td>condition</td><td></td><td>model, claim</td><td>yes</td><td></td></tr>
+<tr><td>gap_height</td><td>quantity</td><td>pending</td><td>gre23</td><td></td><td></td><td></td><td></td><td></td><td>held-out paper (gre23): content not shown</td></tr>
+<tr><td>evacuated_below</td><td>quantity</td><td>pending</td><td>ela03</td><td>Torr</td><td>condition</td><td></td><td>1 records</td><td></td><td></td></tr>
+</table>
+<h2>2. pending_decisions.csv rows</h2><p>psed_v2/kb/reports/P154_inventory.pending_decisions.csv</p>
+<table><tr><th>id</th><th>kind</th><th>papers</th><th>rule</th><th>section</th><th>confidence</th><th>decision</th><th>note</th></tr>
+<tr><td>elam_monte_carlo</td><td>model</td><td></td><td>none</td><td>Sec. V A (Monte Carlo models; Elam 2003&#x27;s random walk among them)</td><td>check</td><td>pending</td><td>no record names it</td></tr>
+<tr><td>pore_density</td><td>quantity</td><td>ela03</td><td>none</td><td>not defined; Sec. III names porous membranes by pore diameter and thickness</td><td>check</td><td>pending</td><td>one paper, no Cremers definition</td></tr>
+<tr><td>porous_sphere</td><td>structure</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>a model-only record</td></tr>
+<tr><td>porous_cylinder</td><td>structure</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>a model-only record</td></tr>
+<tr><td>porous_slab</td><td>structure</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>a model-only record</td></tr>
+<tr><td>model_reactant</td><td>species</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>a model-only record</td></tr>
+<tr><td>tortuosity</td><td>quantity</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>one paper, no Cremers definition</td></tr>
+<tr><td>pore_volume</td><td>quantity</td><td>hei24</td><td>none</td><td></td><td></td><td>pending</td><td>one paper, no Cremers definition</td></tr>
+<tr><td>gap_height</td><td>quantity</td><td>gre23</td><td>none</td><td></td><td></td><td>pending</td><td>one paper, no Cremers definition</td></tr>
+<tr><td>evacuated_below</td><td>quantity</td><td>ela03</td><td>none</td><td></td><td></td><td>pending</td><td>one paper, no Cremers definition</td></tr>
+</table>
+<h2>2. unmapped.csv rows (held-out papers&#x27; rows not shown)</h2><p>psed_v2/kb/reports/P154_inventory.unmapped.csv</p>
+<table><tr><th>paper</th><th>figure</th><th>panel</th><th>field</th><th>raw</th><th>reason</th><th>source</th></tr>
+<tr><td>Yim2020</td><td>Fig. 3</td><td></td><td>pilot</td><td>Regions I-IV; knee; nanostep; leading edge</td><td>Interpretations, regimes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 5b</td><td></td><td>pilot</td><td>Intensity [a.u.]</td><td>Sec. 18.7: attribute entry signal_intensity</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 7</td><td></td><td>pilot</td><td>Magnification (spot size) [µm]</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Sample; sample code</td><td>Equipment details and sample codes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Pillar layout</td><td>Equipment details and sample codes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Reflectometer magnification</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Slope dθ/dx̃</td><td>Sec. 18.7: attribute entry front_slope</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Slope d(S/N)/dx̃ [nm]</td><td>Sec. 18.7: attribute entry front_slope</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 1</td><td></td><td>pilot</td><td>Linear fitting residual R2</td><td>Sec. 18.7: attribute entry fit_r2</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>pB [Pa]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>MA; MB [kg mol-1]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>dA; dB [pm]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>bfilm; bTMA</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>q [nm-2]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>Pd [s-1]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Sec. D</td><td></td><td>pilot</td><td>Mean free path of TMA [µm]</td><td>Sec. 18.7: promoted to mean_free_path (decision D2)</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>body text</td><td></td><td>pilot</td><td>Knudsen number</td><td>Sec. 18.7: promoted to knudsen_number (decision D2)</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Sec. C.C</td><td></td><td>pilot</td><td>Accelerating voltage [keV]</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Fig. 2</td><td></td><td>pilot</td><td>xt; xs [µm]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Figs. 2-5</td><td></td><td>pilot</td><td>MA; MB [kg/mol]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Figs. 2-5</td><td></td><td>pilot</td><td>dA; dB [pm]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Figs. 2-5</td><td></td><td>pilot</td><td>pB [Pa]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Figs. 2-5</td><td></td><td>pilot</td><td>q [m-2]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Table I</td><td></td><td>pilot</td><td>rms thickness error [nm]</td><td>Fit quality</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Sec. II</td><td></td><td>pilot</td><td>Viscosity of gas [µPa s]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Sec. VII</td><td></td><td>pilot</td><td>Spot size; objective lens [µm]</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Ylilammi2018</td><td>Sec. VII</td><td></td><td>pilot</td><td>Precision of the film thickness measurement [nm]</td><td>Fit quality</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 2</td><td></td><td>pilot</td><td>Closing of the gate valve [cm]</td><td>Equipment details and sample codes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 4</td><td></td><td>pilot</td><td>Counts/s vs Wavelength [counts/s; nm]</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 5</td><td></td><td>pilot</td><td>Counts/s vs Wavelength (infrared) [counts/s; nm]</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 6</td><td></td><td>pilot</td><td>Itotal</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 6</td><td></td><td>pilot</td><td>IO2+/Itotal; IO/Itotal</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 7</td><td></td><td>pilot</td><td>Counts/s vs Energy; m/z = +16; m/z = +32 [counts/s; eV]</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 8</td><td></td><td>pilot</td><td>Counts/s vs Energy; m/z = -16; m/z = -32 [counts/s; eV]</td><td>Plasma internals</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 13</td><td></td><td>pilot</td><td>Activated gas fraction</td><td>No row applies: decision procedure step 5 (data in one paper only)</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. III D</td><td></td><td>pilot</td><td>Fitted exposures (Ψ)</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. III D</td><td></td><td>pilot</td><td>Area per surface site s0 [m2]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. III D</td><td></td><td>pilot</td><td>Mass of atomic O [amu]</td><td>Molecule properties</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. II B</td><td></td><td>pilot</td><td>OES integration time [s]</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. II C</td><td></td><td>pilot</td><td>EQP energy step [eV]</td><td>Instrument settings</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Sec. II D</td><td></td><td>pilot</td><td>Gas-only stabilization sub-steps of the oxygen pulse [s]</td><td>Equipment details and sample codes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Table I</td><td></td><td>pilot</td><td>Technique; Reactor (ALD or EQP chamber)</td><td>Equipment details and sample codes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Werbrouck2021</td><td>Fig. 10</td><td></td><td>pilot</td><td>Growth regimes (saturation spread out in space)</td><td>Interpretations, regimes</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Fig. 10</td><td></td><td>pilot</td><td>rho (film density; model input) [kg m-3]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>Yim2020</td><td>Table 2</td><td></td><td>pilot</td><td>Alumina film density (footnote e; model input) [kg m-3]</td><td>Model internals not in Sec. 8</td><td>pilot hand row (field pilot)</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>4</td><td></td><td>cells.quantity</td><td>(no series_axis)</td><td>the printed cell values have no resolved quantity (series_axis)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>2</td><td>B</td><td>series_axis</td><td>material and exposure time</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1021_cm0303080</td><td>12</td><td>a</td><td>conditions.key</td><td>H</td><td>label_unresolved: ambiguous: element_fraction, feature_width</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1021_cm0303080</td><td>12</td><td>b</td><td>conditions.key</td><td>H</td><td>label_unresolved: ambiguous: element_fraction, feature_width</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>5</td><td>b</td><td>conditions.key</td><td>growth cycles</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>5</td><td>b</td><td>conditions.key</td><td>channel design height</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>5</td><td>b</td><td>series_axis</td><td>element</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>8</td><td>b</td><td>series_axis</td><td>Sample</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>4</td><td></td><td>x.label_raw</td><td>ξ_{θ=1/2,sphere} (-)</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:s8.p4#1; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>4</td><td></td><td>y.label_raw</td><td>1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>5</td><td>a</td><td>series_axis</td><td>\tau/\epsilon</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:s9.x1#2; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>5</td><td>b</td><td>series_axis</td><td>\tau/\epsilon</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:s9.x1#2; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>5</td><td>g</td><td>series_axis</td><td>\bar{s}</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:tabu1.r22c0#1; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>5</td><td>h</td><td>series_axis</td><td>\bar{s}</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:tabu1.r22c0#1; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>6</td><td>a</td><td>series_axis</td><td>\tau/\epsilon</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:s9.x1#2; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>6</td><td>b</td><td>series_axis</td><td>\tau/\epsilon</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:s9.x1#2; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>6</td><td>g</td><td>series_axis</td><td>\bar{s}</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:tabu1.r22c0#1; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>6</td><td>h</td><td>series_axis</td><td>\bar{s}</td><td>label_unresolved: defined by the paper without an ontology quantity (hei24:tabu1.r22c0#1; P89b)</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>2</td><td></td><td>series_axis</td><td>measurement technique and process</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>3</td><td></td><td>x.label_raw</td><td>Time (cycles)</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>4</td><td></td><td>x.label_raw</td><td></td><td>label_unresolved: empty</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>6</td><td>a</td><td>y.label_raw</td><td>Concentration (atoms/cm^{3})</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>6</td><td>b</td><td>y.label_raw</td><td>Concentration (atoms/cm^{3})</td><td>label_unresolved: no entry, alias or label matches</td><td>kb/figures_import.py</td></tr>
+<tr><td>10.1116_6.0002804</td><td>7</td><td>b</td><td>y.label_raw</td><td></td><td>label_unresolved: empty</td><td>kb/figures_import.py</td></tr>
+</table>
+<h2>2. external_ids.csv rows</h2><p>psed_v2/kb/reports/P154_inventory.external_ids.csv</p>
+<table><tr><th>id</th><th>kind</th><th>qudt_quantity_kind</th><th>qudt_unit</th><th>pubchem_cid</th><th>confidence</th><th>note</th></tr>
+<tr><td>absorption_coefficient</td><td>quantity</td><td>quantitykind:LinearAttenuationCoefficient</td><td>unit:PER-M</td><td></td><td>check</td><td>optical absorption coefficient</td></tr>
+<tr><td>adsorption_equilibrium_constant</td><td>quantity</td><td></td><td>unit:PER-PA</td><td></td><td>check</td><td>no QUDT kind for an inverse pressure</td></tr>
+<tr><td>annealing_temperature</td><td>quantity</td><td>quantitykind:Temperature</td><td>unit:DEG_C</td><td></td><td>sure</td><td></td></tr>
+<tr><td>aspect_ratio</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>atoms_per_cycle</td><td>quantity</td><td>quantitykind:InverseArea</td><td>unit:PER-NanoM2</td><td></td><td>check</td><td>areal number density per cycle</td></tr>
+<tr><td>binding_energy</td><td>quantity</td><td>quantitykind:Energy</td><td>unit:EV</td><td></td><td>sure</td><td></td></tr>
+<tr><td>body_diameter</td><td>quantity</td><td>quantitykind:Diameter</td><td>unit:MilliM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>body_thickness</td><td>quantity</td><td>quantitykind:Thickness</td><td>unit:MilliM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>carrier_density</td><td>quantity</td><td>quantitykind:NumberDensity</td><td>unit:PER-M3</td><td></td><td>sure</td><td></td></tr>
+<tr><td>coated_aspect_ratio</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>coating_mass_fraction</td><td>quantity</td><td>quantitykind:MassFraction</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>crystallite_size</td><td>quantity</td><td>quantitykind:Length</td><td>unit:NanoM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>cycle_number</td><td>quantity</td><td>quantitykind:Count</td><td>unit:NUM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>cycle_time</td><td>quantity</td><td>quantitykind:Time</td><td>unit:SEC</td><td></td><td>sure</td><td></td></tr>
+<tr><td>density_relative_to_bulk</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>deposited_moles_per_cycle</td><td>quantity</td><td>quantitykind:AmountOfSubstance</td><td>unit:MicroMOL</td><td></td><td>sure</td><td></td></tr>
+<tr><td>deposition_rate</td><td>quantity</td><td>quantitykind:LinearVelocity</td><td>unit:NanoM-PER-HR</td><td></td><td>check</td><td>growth rate as a length per time</td></tr>
+<tr><td>deposition_temperature</td><td>quantity</td><td>quantitykind:Temperature</td><td>unit:DEG_C</td><td></td><td>sure</td><td></td></tr>
+<tr><td>diffraction_angle</td><td>quantity</td><td>quantitykind:PlaneAngle</td><td>unit:DEG</td><td></td><td>sure</td><td></td></tr>
+<tr><td>dimensionless_distance</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>distance</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>element_fraction</td><td>quantity</td><td>quantitykind:AmountOfSubstanceFraction</td><td>unit:PERCENT</td><td></td><td>check</td><td>atomic percent</td></tr>
+<tr><td>element_ratio</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>equivalent_aspect_ratio</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>exposure</td><td>quantity</td><td></td><td>unit:PA-SEC</td><td></td><td>check</td><td>no QUDT kind for a pressure-time product</td></tr>
+<tr><td>feature_depth</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>feature_extent</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>feature_width</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>fill_fraction</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>film_density</td><td>quantity</td><td>quantitykind:MassDensity</td><td>unit:GM-PER-CentiM3</td><td></td><td>sure</td><td></td></tr>
+<tr><td>film_thickness</td><td>quantity</td><td>quantitykind:Thickness</td><td>unit:NanoM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>fit_r2</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>front_slope</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>gas_flow_rate</td><td>quantity</td><td>quantitykind:VolumeFlowRate</td><td>unit:CentiM3-PER-MIN</td><td></td><td>check</td><td>standard cm3/min (sccm) at standard conditions</td></tr>
+<tr><td>gas_moles_per_cycle</td><td>quantity</td><td>quantitykind:AmountOfSubstance</td><td>unit:MicroMOL</td><td></td><td>sure</td><td></td></tr>
+<tr><td>growth_per_cycle</td><td>quantity</td><td></td><td>unit:NanoM</td><td></td><td>check</td><td>a length per cycle; QUDT has no per-cycle unit</td></tr>
+<tr><td>initial_sticking_coefficient</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td>a probability</td></tr>
+<tr><td>knudsen_number</td><td>quantity</td><td>quantitykind:KnudsenNumber</td><td>unit:UNITLESS</td><td></td><td>check</td><td></td></tr>
+<tr><td>mass_gain</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:PERCENT</td><td></td><td>sure</td><td>relative mass change</td></tr>
+<tr><td>mean_free_path</td><td>quantity</td><td>quantitykind:MeanFreePath</td><td>unit:MicroM</td><td></td><td>check</td><td></td></tr>
+<tr><td>mobility</td><td>quantity</td><td>quantitykind:Mobility</td><td>unit:M2-PER-V-SEC</td><td></td><td>sure</td><td></td></tr>
+<tr><td>molar_mass</td><td>quantity</td><td>quantitykind:MolarMass</td><td>unit:GM-PER-MOL</td><td></td><td>sure</td><td></td></tr>
+<tr><td>molecule_diameter</td><td>quantity</td><td>quantitykind:Diameter</td><td>unit:PicoM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>moles_deposited</td><td>quantity</td><td>quantitykind:AmountOfSubstance</td><td>unit:MilliMOL</td><td></td><td>sure</td><td></td></tr>
+<tr><td>moles_from_mass_gain</td><td>quantity</td><td>quantitykind:AmountOfSubstance</td><td>unit:MilliMOL</td><td></td><td>sure</td><td></td></tr>
+<tr><td>normalized_thickness</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>nucleation_period</td><td>quantity</td><td>quantitykind:Count</td><td>unit:NUM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>objective_magnification</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>partial_pressure</td><td>quantity</td><td>quantitykind:PartialPressure</td><td>unit:PA</td><td></td><td>sure</td><td></td></tr>
+<tr><td>penetration_depth</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>phase_fraction</td><td>quantity</td><td>quantitykind:MassFraction</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>plasma_gas_ratio</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>plasma_power</td><td>quantity</td><td>quantitykind:Power</td><td>unit:W</td><td></td><td>sure</td><td></td></tr>
+<tr><td>pore_density</td><td>quantity</td><td>quantitykind:InverseArea</td><td>unit:PER-CentiM2</td><td></td><td>check</td><td></td></tr>
+<tr><td>porosity</td><td>quantity</td><td>quantitykind:Porosity</td><td>unit:PERCENT</td><td></td><td>check</td><td></td></tr>
+<tr><td>precursor_purity</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>pressure_rate</td><td>quantity</td><td></td><td></td><td></td><td>check</td><td>no QUDT unit for mTorr per minute</td></tr>
+<tr><td>pressure_rise</td><td>quantity</td><td>quantitykind:Pressure</td><td>unit:TORR</td><td></td><td>sure</td><td></td></tr>
+<tr><td>probe_resolution</td><td>quantity</td><td>quantitykind:Length</td><td>unit:MicroM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>process_pressure</td><td>quantity</td><td>quantitykind:Pressure</td><td>unit:PA</td><td></td><td>sure</td><td></td></tr>
+<tr><td>pulse_time</td><td>quantity</td><td>quantitykind:Time</td><td>unit:SEC</td><td></td><td>sure</td><td></td></tr>
+<tr><td>purge_time</td><td>quantity</td><td>quantitykind:Time</td><td>unit:SEC</td><td></td><td>sure</td><td></td></tr>
+<tr><td>raman_shift</td><td>quantity</td><td>quantitykind:Wavenumber</td><td>unit:PER-CentiM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>recombination_probability</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td>a probability</td></tr>
+<tr><td>refractive_index</td><td>quantity</td><td>quantitykind:RefractiveIndex</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>resistivity</td><td>quantity</td><td>quantitykind:Resistivity</td><td>unit:OHM-M</td><td></td><td>sure</td><td></td></tr>
+<tr><td>roughness</td><td>quantity</td><td>quantitykind:Length</td><td>unit:NanoM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>saturation_density</td><td>quantity</td><td>quantitykind:InverseArea</td><td>unit:PER-NanoM2</td><td></td><td>check</td><td></td></tr>
+<tr><td>saturation_growth_per_cycle</td><td>quantity</td><td></td><td>unit:NanoM</td><td></td><td>check</td><td>a length per cycle</td></tr>
+<tr><td>sheet_resistance</td><td>quantity</td><td>quantitykind:Resistance</td><td>unit:OHM</td><td></td><td>check</td><td>ohm per square</td></tr>
+<tr><td>shell_volume_fraction</td><td>quantity</td><td>quantitykind:VolumeFraction</td><td>unit:PERCENT</td><td></td><td>sure</td><td></td></tr>
+<tr><td>signal_intensity</td><td>quantity</td><td></td><td></td><td></td><td>check</td><td>arbitrary units</td></tr>
+<tr><td>source_temperature</td><td>quantity</td><td>quantitykind:Temperature</td><td>unit:DEG_C</td><td></td><td>sure</td><td></td></tr>
+<tr><td>specific_surface_area</td><td>quantity</td><td>quantitykind:SpecificSurfaceArea</td><td>unit:M2-PER-GM</td><td></td><td>check</td><td></td></tr>
+<tr><td>step_coverage</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>surface_coverage</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>thickness_nonuniformity</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>time</td><td>quantity</td><td>quantitykind:Time</td><td>unit:SEC</td><td></td><td>sure</td><td></td></tr>
+<tr><td>time_to_maximum</td><td>quantity</td><td>quantitykind:Time</td><td>unit:MIN</td><td></td><td>sure</td><td></td></tr>
+<tr><td>reaction_stoichiometry</td><td>quantity</td><td>quantitykind:DimensionlessRatio</td><td>unit:UNITLESS</td><td></td><td>sure</td><td></td></tr>
+<tr><td>particle_diameter</td><td>quantity</td><td>quantitykind:Diameter</td><td>unit:NanoM</td><td></td><td>sure</td><td></td></tr>
+<tr><td>knudsen_diffusion_coefficient</td><td>quantity</td><td>quantitykind:DiffusionCoefficient</td><td>unit:M2-PER-SEC</td><td></td><td>sure</td><td>pending entry (accepted)</td></tr>
+<tr><td>effective_diffusion_coefficient</td><td>quantity</td><td>quantitykind:DiffusionCoefficient</td><td>unit:M2-PER-SEC</td><td></td><td>sure</td><td>pending entry (accepted)</td></tr>
+<tr><td>gas_phase_diffusion_coefficient</td><td>quantity</td><td>quantitykind:DiffusionCoefficient</td><td>unit:M2-PER-SEC</td><td></td><td>sure</td><td>pending entry (accepted)</td></tr>
+<tr><td>tma</td><td>species</td><td></td><td></td><td>16682925</td><td>sure</td><td></td></tr>
+<tr><td>ticl4</td><td>species</td><td></td><td></td><td>24193</td><td>sure</td><td></td></tr>
+<tr><td>h2o</td><td>species</td><td></td><td></td><td>962</td><td>sure</td><td></td></tr>
+<tr><td>o2</td><td>species</td><td></td><td></td><td>977</td><td>sure</td><td></td></tr>
+<tr><td>o_atom</td><td>species</td><td></td><td></td><td>159832</td><td>check</td><td>atomic oxygen</td></tr>
+<tr><td>n2</td><td>species</td><td></td><td></td><td>947</td><td>sure</td><td></td></tr>
+<tr><td>al2o3</td><td>species</td><td></td><td></td><td>14769</td><td>sure</td><td></td></tr>
+<tr><td>tio2</td><td>species</td><td></td><td></td><td>26042</td><td>sure</td><td></td></tr>
+<tr><td>h2</td><td>species</td><td></td><td></td><td>783</td><td>sure</td><td></td></tr>
+<tr><td>h2s</td><td>species</td><td></td><td></td><td>402</td><td>sure</td><td></td></tr>
+<tr><td>ar</td><td>species</td><td></td><td></td><td>23968</td><td>sure</td><td></td></tr>
+<tr><td>air</td><td>species</td><td></td><td></td><td></td><td>sure</td><td>a mixture; no PubChem compound</td></tr>
+<tr><td>mos2</td><td>species</td><td></td><td></td><td>14823</td><td>sure</td><td></td></tr>
+<tr><td>ws2</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>tis2</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>zno</td><td>species</td><td></td><td></td><td>14806</td><td>sure</td><td></td></tr>
+<tr><td>mo</td><td>species</td><td></td><td></td><td>23932</td><td>sure</td><td></td></tr>
+<tr><td>zn</td><td>species</td><td></td><td></td><td>23994</td><td>sure</td><td></td></tr>
+<tr><td>moo3</td><td>species</td><td></td><td></td><td>14802</td><td>sure</td><td></td></tr>
+<tr><td>si</td><td>species</td><td></td><td></td><td>5461123</td><td>sure</td><td></td></tr>
+<tr><td>sio2</td><td>species</td><td></td><td></td><td>24261</td><td>sure</td><td></td></tr>
+<tr><td>glassy_carbon</td><td>species</td><td></td><td></td><td></td><td>sure</td><td>a material form; no PubChem compound</td></tr>
+<tr><td>pet</td><td>species</td><td></td><td></td><td></td><td>sure</td><td>a polymer; no PubChem compound</td></tr>
+<tr><td>tdmat</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>dez</td><td>species</td><td></td><td></td><td>11185</td><td>sure</td><td>diethylzinc</td></tr>
+<tr><td>mo_ntbu2_nme22</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled</td></tr>
+<tr><td>w_ntbu2_nme22</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled</td></tr>
+<tr><td>hfo2</td><td>species</td><td></td><td></td><td>292779</td><td>sure</td><td></td></tr>
+<tr><td>hf_nme2_4</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>sicl4</td><td>species</td><td></td><td></td><td>24816</td><td>sure</td><td></td></tr>
+<tr><td>bdeas</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>tdmacph</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled</td></tr>
+<tr><td>ga2s3</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>gasx</td><td>species</td><td></td><td></td><td></td><td>sure</td><td>a nonstoichiometric film; no PubChem compound</td></tr>
+<tr><td>ga2_nme2_6</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled</td></tr>
+<tr><td>mocl2o2</td><td>species</td><td></td><td></td><td></td><td>check</td><td>CID not recalled with confidence</td></tr>
+<tr><td>h_atom</td><td>species</td><td></td><td></td><td>5362549</td><td>check</td><td>hydrogen atom</td></tr>
+<tr><td>model_reactant</td><td>species</td><td></td><td></td><td></td><td>sure</td><td>a generic model reactant; no compound</td></tr>
+</table>
+<h2>3. The pending flow, step by step</h2><p>psed_v2/kb/reports/P154_inventory.flow.csv</p>
+<table><tr><th>step</th><th>record</th><th>script / command</th><th>inputs</th><th>outputs</th><th>v2 compile output connects here?</th></tr>
+<tr><td>0</td><td>P58 (pilot)</td><td>by hand</td><td>the pilot&#x27;s labels that never become entries (Sec. 18.7)</td><td>ontology/unmapped.csv rows with field pilot; ontology/pilot_map.csv dispositions</td><td>no</td></tr>
+<tr><td>1</td><td>P83</td><td>by hand while drafting a paper&#x27;s gold (kb/pilot/&lt;pid&gt;.facts.py)</td><td>a concept no entry fits</td><td>a pending.csv row (status pending: id, kind, unit, role, class, definition, citation, cq, paper, records); export.py puts it in vocab.py as PENDING so the gold can use the id; make_report check 14 and section 3e list it</td><td>no</td></tr>
+<tr><td>1b</td><td>P84-P88</td><td>python3 psed_v2/kb/figures_import.py [&lt;pid&gt;]</td><td>ingest/final/&lt;pid&gt;/figures.json, units.yaml</td><td>kb/&lt;pid&gt;.figures.json; unresolved figure fields -&gt; ontology/unmapped.csv (label_unresolved, ...)</td><td>partly: v2 compile reads kb/&lt;pid&gt;.figures.json, never ontology/unmapped.csv</td></tr>
+<tr><td>2</td><td>P131b</td><td>python3 psed_v2/ontology/pending_decide.py --labels &quot;a;b&quot;</td><td>other[&lt;label&gt;] records in kb/pilot/*.facts.csv (the gold trees)</td><td>a candidate pending.csv row per label (candidate(): id = label in snake case, the most common unit, role, definition = label + the first record&#x27;s statement); stopped when two dimensions or the id exists</td><td>NO: globs kb/pilot only; v2 other[...] rows are in kb/compiled/&lt;pid&gt;.facts.csv and kb/compiled/&lt;pid&gt;.unmapped.csv</td></tr>
+<tr><td>3</td><td>P98, P109</td><td>python3 psed_v2/ontology/pending_decide.py</td><td>pending.csv; kb/pilot/*.facts.csv + kb/*.figures.json (rule a), CREMERS dict (rule b), kb/pilot/experiments.csv (rule c), converts_to (rule d)</td><td>pending_decisions.csv; pending.csv status and evidence</td><td>NO: rules a and c read the pilot gold only</td></tr>
+<tr><td>4</td><td>P131b</td><td>python3 psed_v2/ontology/merge_pending.py [--dry-run]</td><td>accepted pending.csv rows, pending_decisions.csv, ontology.yaml</td><td>entries in ontology.yaml (export.pending_entry + citation, cq, deviation added with the P98 rule, evidence, from_other); rows leave pending.csv / pending_decisions.csv; alias_audit.move_ambiguous; stops on an id with another definition</td><td>yes, once a row is in pending.csv (works on ontology files only)</td></tr>
+<tr><td>5</td><td>P131b, 12b</td><td>python3 psed_v2/ontology/alias_audit.py [--apply]</td><td>kb/pilot/*.facts.csv printed forms, element texts, ontology.yaml, pending.csv</td><td>kb/verify/d14/alias_audit.csv; --apply: aliases into ontology.yaml</td><td>NO: pilot facts only</td></tr>
+<tr><td>6</td><td>P131b-12c</td><td>python3 psed_v2/ontology/entry_definitions.py (one-off)</td><td>the user&#x27;s definitions (in the script), element texts</td><td>names, definitions, categories of the five free-label entries in ontology.yaml</td><td>n/a (one-off)</td></tr>
+<tr><td>7</td><td>P49, P132, P143</td><td>python3 psed_v2/ontology/export.py; python3 psed_v2/ontology/make_report.py</td><td>ontology.yaml, units.yaml, pilot_map.csv, pending.csv</td><td>kb/pilot/vocab.py, kb/schema/form.json, form_pass0.json, FORM.md, CODEBOOK.md; ontology/report.html (15 checks)</td><td>yes: v2 compile and the pass-0/1 prompts read vocab.py and CODEBOOK.md</td></tr>
+<tr><td>8</td><td>facts.write (P131b)</td><td>kb/pilot/facts.py write()</td><td>from_other labels of the entries</td><td>re-keys gold other[label] records to the entry</td><td>NO: compile has no re-key step for from_other</td></tr>
+<tr><td>x</td><td>P138 (e894f9e)</td><td>by hand into ontology.yaml (bypassing steps 1-4)</td><td>REVIEW section 2</td><td>seven entries (pore_density, tortuosity, pore_volume, model_reactant, porous_sphere / slab / cylinder) while their pending.csv rows stayed: make_report check 14 fails since</td><td>-</td></tr>
+</table>
+<h2>3. Where v2 compile.py&#x27;s unmapped list would enter</h2><p>psed_v2/kb/reports/P154_inventory.flow.txt</p>
+<pre>Pending flow (from the code and the P83 / P98 / P131b / P138 records; table: flow.csv)
+
+Pilot sequence, unmapped label -&gt; entry:
+  1. P83, by hand: drafting a paper&#x27;s gold, a concept no entry fits becomes a pending.csv row (status pending); export.py carries it into
+     vocab.py as PENDING so the gold can use the id at once.
+  2. P131b: a free label (gold records keyed other[&lt;label&gt;]) becomes a candidate row: pending_decide.py --labels &quot;a;b&quot; (candidate()).
+  3. P98: pending_decide.py decides every row by rule a (two or more papers in kb/pilot/*.facts.csv or kb/*.figures.json), b (a Cremers
+     section marked sure), c (set on an experimental run in kb/pilot/experiments.csv, or the method of an observation), d (converts_to an
+     accepted entry); writes pending_decisions.csv and the status / evidence columns. &quot;Run after a paper is added&quot; (its docstring).
+  4. P131b: merge_pending.py turns accepted rows into ontology.yaml entries and drops them from pending.csv / pending_decisions.csv.
+  5. alias_audit.py (--apply) adds printed forms as aliases; 12b/12c: template definitions, then entry_definitions.py (the user&#x27;s text).
+  6. export.py regenerates vocab.py and the forms / codebook; make_report.py runs the 15 checks; facts.write() re-keys gold other[label]
+     records to the entry&#x27;s from_other label.
+  The figure path is separate: figures_import.py writes unresolved figure fields to ontology/unmapped.csv (and keeps the pilot&#x27;s hand rows);
+  those rows are listed by make_report (check 12, section 6) and checked by check.py (P84); nothing turns them into pending rows.
+
+Where v2 compile.py&#x27;s unmapped list would enter, and where it does not connect:
+  - compile.py writes kb/compiled/&lt;pid&gt;.unmapped.csv (100 rows for yli18, yim20, mat22: 87 quantity rows, id other with label_as_printed,
+    unit and a candidate definition_quote; 13 unit rows kept as printed; compiled_unmapped.csv) and other[...] rows into
+    kb/compiled/&lt;pid&gt;.facts.csv (82). It never writes ontology/unmapped.csv or pending.csv. Nothing reads kb/compiled/*.unmapped.csv.
+  - The natural entry is step 2 (candidate()), then step 3. Both read only kb/pilot (the gold trees, kb/pilot/experiments.csv) and
+    figures.json, so compiled labels and compiled papers count for nothing; a paper with no gold has no voice in rule a or c.
+  - candidate() writes the definition from the first gold record&#x27;s statement; compile&#x27;s candidate column (definition_quote, unit as
+    printed) is not used anywhere.
+  - Steps 4, 6 work on ontology files only and would take a row however it got into pending.csv.
+  - Compile has no from_other re-key (lists.FROM_OTHER is unused in kb/extract): a promoted free label stays other[...] in compiled facts
+    unless the label is also an alias.
+  - Unit rows (unit kept as printed) have no path at all: units.yaml grows by hand (P138 commit 1).
+  - P138 (e894f9e) added seven entries by hand straight into ontology.yaml while their pending.csv rows stayed (pore_density, tortuosity,
+    pore_volume, model_reactant, porous_sphere, porous_slab, porous_cylinder): make_report check 14 fails on exactly these.
+</pre>
+<h2>3. compile.py&#x27;s own unmapped lists (kb/compiled/&lt;pid&gt;.unmapped.csv)</h2><p>psed_v2/kb/reports/P154_inventory.compiled_unmapped.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>id</th><th>label_as_printed</th><th>unit</th><th>candidate_definition_quote</th><th>action</th></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p14</td><td>quantity</td><td>other</td><td>acceleration voltage</td><td>kV</td><td>SEM (Zeiss Sigma) using an acceleration voltage of 3 kV</td><td>kept</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p15</td><td>quantity</td><td>other</td><td>Laser power</td><td>mW</td><td>Laser power was estimated as 0.6 mW on the sample</td><td>kept</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p17</td><td>quantity</td><td>other</td><td>beam energy</td><td>MeV</td><td>using a 2 MeV He+ beam.</td><td>kept</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p18</td><td>quantity</td><td>other</td><td>voltage</td><td>kV</td><td>JEOL ARM 200F instrument operated at 200 kV.</td><td>kept</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p1</td><td>unit</td><td>mhz</td><td></td><td>MHz</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s6.p2</td><td>quantity</td><td>other</td><td>Series A</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p1</td><td>quantity</td><td>other</td><td>top membrane removal</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p2</td><td>quantity</td><td>other</td><td>accelerating voltage</td><td>keV</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p3</td><td>quantity</td><td>other</td><td>length of the line</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p3</td><td>quantity</td><td>other</td><td>measurement points interval</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p4</td><td>quantity</td><td>other</td><td>measurement area</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>other</td><td>total scan length</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>other</td><td>total scan length</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s7.p5</td><td>quantity</td><td>other</td><td>step</td><td>µm</td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>other</td><td>displacement</td><td>nm</td><td>displacement of ca. 25 nm</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>other</td><td>bent</td><td>nm</td><td>The 100 nm design channel height bent ca. 40 nm</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s16.p7</td><td>quantity</td><td>other</td><td>positioning uncertainty</td><td>µm</td><td>positioning uncertainty to be on the order of 2 μm</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig2.cap</td><td>quantity</td><td>other</td><td>\tilde{\xi}</td><td>1</td><td>\tilde{\xi} = x/L</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9.cap</td><td>quantity</td><td>other</td><td>Series C</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9.cap</td><td>quantity</td><td>other</td><td>Series D</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10.cap</td><td>quantity</td><td>other</td><td>b_{\text{TMA}}</td><td>1</td><td>b_{\text{TMA}} = 1</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11.cap</td><td>quantity</td><td>other</td><td>Series E</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11.cap</td><td>quantity</td><td>other</td><td>Series F</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r1c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r2c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r3c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r4c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r5c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r6c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r7c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r8c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r9c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r10c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r12c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r13c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r14c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r15c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r16c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tab1.r18c0</td><td>quantity</td><td>other</td><td>Series</td><td></td><td></td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r0c0</td><td>quantity</td><td>other</td><td></td><td></td><td>Distance between pillars (m)</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r0c1</td><td>quantity</td><td>other</td><td></td><td></td><td>Distance between pillars (m)</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r1c0</td><td>quantity</td><td>other</td><td></td><td></td><td>Surface area (\text{m}^2)</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r1c1</td><td>quantity</td><td>other</td><td></td><td></td><td>Surface area (\text{m}^2)</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c0</td><td>quantity</td><td>other</td><td></td><td></td><td>Pillar diameter (\mu\text{m})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c1</td><td>quantity</td><td>other</td><td></td><td></td><td>Pillar diameter (\mu\text{m})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r9c0</td><td>quantity</td><td>other</td><td></td><td></td><td>Diffusion coefficient without pillars (\text{m}^2 \text{s}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r9c1</td><td>quantity</td><td>other</td><td></td><td></td><td>Diffusion coefficient without pillars (\text{m}^2 \text{s}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r10c0</td><td>quantity</td><td>other</td><td></td><td></td><td>Flux of material in direction x (\text{mol m}^{-2} \text{s}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu1.r10c1</td><td>quantity</td><td>other</td><td></td><td></td><td>Flux of material in direction x (\text{mol m}^{-2} \text{s}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c0</td><td>quantity</td><td>other</td><td>l</td><td>µm</td><td>Distance between rows of pillars (\mu\text{m})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c1</td><td>quantity</td><td>other</td><td>Distance between rows of pillars</td><td>µm</td><td>Distance between rows of pillars (\mu\text{m})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r15c0</td><td>quantity</td><td>other</td><td>Q</td><td>m-2 s-1 Pa-1</td><td>Collision rate at unit pressure (\text{m}^{-2} \text{s}^{-1} \text{Pa}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r15c1</td><td>quantity</td><td>other</td><td>Collision rate at unit pressure</td><td>m-2 s-1 Pa-1</td><td>Collision rate at unit pressure (\text{m}^{-2} \text{s}^{-1} \text{Pa}^{-1})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r17c0</td><td>quantity</td><td>other</td><td>R</td><td>s m-3</td><td>Diffusion resistance of a rectangular channel (\text{s m}^{-3})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r17c1</td><td>quantity</td><td>other</td><td>Diffusion resistance of a rectangular channel</td><td>s m-3</td><td>Diffusion resistance of a rectangular channel (\text{s m}^{-3})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r18c0</td><td>quantity</td><td>other</td><td>R_row</td><td>s m-3</td><td>Diffusion resistance of one row of pillars (\text{s m}^{-3})</td><td>kept</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>tabu2.r18c1</td><td>quantity</td><td>other</td><td>Diffusion resistance of one row of pillars</td><td>s m-3</td><td>Diffusion resistance of one row of pillars (\text{s m}^{-3})</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq1</td><td>quantity</td><td>other</td><td>z_A</td><td>1/s</td><td>collision rate of A molecules in a gas mixture A + B</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq2</td><td>quantity</td><td>other</td><td>v_A</td><td>m/s</td><td>average speed of A molecules</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq5</td><td>quantity</td><td>other</td><td>h</td><td>m</td><td>hydraulic diameter of a rectangular channel of height  $H$  and width  $W$</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>s6.p3</td><td>quantity</td><td>other</td><td>g</td><td>1/(m2 s)</td><td>gas adsorption rate to the walls is  $g (1/\text{m}^2\text{s})$</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq11</td><td>quantity</td><td>other</td><td>f_ads</td><td>1/(m2 s)</td><td>rate of adsorption ( $1/\text{m}^2\text{s}$ )</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq12</td><td>quantity</td><td>other</td><td>f_des</td><td>1/(m2 s)</td><td>rate of desorption</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq14</td><td>quantity</td><td>other</td><td>Q</td><td>1/(m2 s Pa)</td><td>collision rate at unit pressure  $Q$</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq15</td><td>quantity</td><td>other</td><td>g</td><td>1/(m2 s)</td><td>net adsorption rate  $g (1/\text{m}^2\text{s})$  of gas A</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabI.cap</td><td>quantity</td><td>other</td><td>rms thickness error</td><td>nm</td><td>the rms value of the difference between the measured and fitted thickness values</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabI.r1c7</td><td>quantity</td><td>other</td><td>rms thickness error</td><td>nm</td><td>the rms value of the difference between the measured and fitted thickness values</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabI.r2c7</td><td>quantity</td><td>other</td><td>rms thickness error</td><td>nm</td><td>the rms value of the difference between the measured and fitted thickness values</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r3c0</td><td>quantity</td><td>other</td><td>Penetration depth parameter in the Gordon model</td><td>1/s</td><td>Penetration depth parameter in the Gordon model</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r4c0</td><td>quantity</td><td>other</td><td>Apparent longitudinal diffusion coefficient</td><td>m^2/s</td><td>Apparent longitudinal diffusion coefficient</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r4c2</td><td>quantity</td><td>other</td><td>Velocity of gas front</td><td>m/s</td><td>Velocity of gas front</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r5c2</td><td>quantity</td><td>other</td><td>Average speed of molecules A</td><td>m/s</td><td>Average speed of molecules A</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r9c0</td><td>quantity</td><td>other</td><td>Gas flow of the reactant</td><td>mol/s</td><td>Gas flow of the reactant</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r9c2</td><td>quantity</td><td>other</td><td>Distance where the linear part of the reactant pressure is zero</td><td>m</td><td>Distance where the linear part of the reactant pressure is zero</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r10c0</td><td>quantity</td><td>other</td><td>Adsorption rate</td><td>m^-2 s^-1</td><td>Adsorption rate</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r10c2</td><td>quantity</td><td>other</td><td>Length of the linear part of the pressure distribution</td><td>m</td><td>Length of the linear part of the pressure distribution</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r11c0</td><td>quantity</td><td>other</td><td>Desorption rate</td><td>m^-2 s^-1</td><td>Desorption rate</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r11c2</td><td>quantity</td><td>other</td><td>Collision rate of molecule A</td><td>1/s</td><td>Collision rate of molecule A</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r12c0</td><td>quantity</td><td>other</td><td>Net adsorption rate</td><td>m^-2 s^-1</td><td>Net adsorption rate</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r12c2</td><td>quantity</td><td>other</td><td>Error in thickness measurement</td><td>m</td><td>Error in thickness measurement</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r13c2</td><td>quantity</td><td>other</td><td>Viscosity of gas</td><td>Pa s</td><td>Viscosity of gas</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r15c0</td><td>quantity</td><td>other</td><td>Hydraulic diameter of the channel</td><td>m</td><td>Hydraulic diameter of the channel</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r15c2</td><td>quantity</td><td>other</td><td>Equilibrium surface coverage in the Langmuir model</td><td>1</td><td>Equilibrium surface coverage in the Langmuir model</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r17c2</td><td>quantity</td><td>other</td><td>Time constant of adsorption</td><td>s</td><td>Time constant of adsorption</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r22c0</td><td>quantity</td><td>other</td><td>Amount of reactant A</td><td>mol</td><td>Amount of reactant A</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r23c0</td><td>quantity</td><td>other</td><td>Avogadro constant</td><td>1/mol</td><td>Avogadro constant</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r28c0</td><td>quantity</td><td>other</td><td>Collision rate at unit pressure</td><td>m^-2 s^-1 Pa^-1</td><td>Collision rate at unit pressure</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r29c0</td><td>quantity</td><td>other</td><td>Gas constant</td><td>J K^-1 mol^-1</td><td>Gas constant</td><td>kept</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq2</td><td>unit</td><td>m/s</td><td>v_A</td><td>m/s</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>s6.p3</td><td>unit</td><td>1/(m2 s)</td><td>g</td><td>1/(m2 s)</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq11</td><td>unit</td><td>1/(m2 s)</td><td>f_ads</td><td>1/(m2 s)</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq12</td><td>unit</td><td>1/(m2 s)</td><td>f_des</td><td>1/(m2 s)</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>eq15</td><td>unit</td><td>1/(m2 s)</td><td>g</td><td>1/(m2 s)</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r4c2</td><td>unit</td><td>m/s</td><td>Velocity of gas front</td><td>m/s</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r5c2</td><td>unit</td><td>m/s</td><td>Average speed of molecules A</td><td>m/s</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r9c0</td><td>unit</td><td>mol/s</td><td>Gas flow of the reactant</td><td>mol/s</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r10c0</td><td>unit</td><td>m-2 s-1</td><td>Adsorption rate</td><td>m^-2 s^-1</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r11c0</td><td>unit</td><td>m-2 s-1</td><td>Desorption rate</td><td>m^-2 s^-1</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r12c0</td><td>unit</td><td>m-2 s-1</td><td>Net adsorption rate</td><td>m^-2 s^-1</td><td></td><td>kept (unit as printed)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>tabu1.r29c0</td><td>unit</td><td>j k-1 mol-1</td><td>Gas constant</td><td>J K^-1 mol^-1</td><td></td><td>kept (unit as printed)</td></tr>
+</table>
+<h2>4. The v0 completion-report generator</h2><p>psed_v2/kb/reports/P154_inventory.v0_report.txt</p>
+<pre>The v0 completion-report generator
+
+Where: psed_v2/ontology/make_report.py -&gt; psed_v2/ontology/report.html (not kb/reports/). Sections: 1 Summary, 2 Graph, 2b Hierarchy,
+2c Structure classes, 3 Entries, 3b Values, 3c Families, 3d Proposals, 3d External identifiers, 3e Pending entries, 4 schema-miner diff,
+5 Units, 6 Unmapped; it runs 15 checks first and exits 1 when one fails (the page is still written).
+Who calls it: nobody (no import, no subprocess; not export.py, not check.py). Last run committed: P132 (1f20974, 2026-10-19), outside the
+last 30 commits.
+Does it run: yes. Run on a copy of psed_v2/ontology in the scratchpad (the repo untouched): it wrote the page (235 entries, 81 unmapped
+labels) and exited 1: FAIL 11 (family &#x27;electrical&#x27;: a family needs two or more members) and FAIL 14 (pending rows that clash with an
+entry: pore_density, porous_sphere, porous_cylinder, porous_slab, model_reactant, tortuosity, pore_volume - the P138 hand entries);
+checks 1-10, 12, 13, 15 pass. Output: make_report_run.txt.
+It needs sources/experimental-ideal-schema.json (check 1, section 4), which is gitignored: a fresh clone lacks it.
+Its reader takes method entries, kinds, terms and layouts as they are today (no kinds / terms / layouts blocks exist in ontology.yaml).
+</pre>
+<h2>4. make_report.py run on a scratch copy (output)</h2><p>psed_v2/kb/reports/P154_inventory.make_report_run.txt</p>
+<pre>external ids (P100): quantities with a unit: 90; qudt_quantity_kind 71, qudt_unit 75; blank kind: growth_per_cycle, exposure, adsorption_equilibrium_constant, saturation_growth_per_cycle, pressure_rate, pore_density, tortuosity, pore_volume, diffraction_angle, molar_mass, molecule_diameter, knudsen_diffusion_coefficient, effective_diffusion_coefficient, gas_phase_diffusion_coefficient, reactant_number_density, wall_temperature, wavelength_range, base_pressure, p_d | species: 38; pubchem_cid 19; blank: model_reactant, mo_ntbu2_nme22, w_ntbu2_nme22, tdmat, air, ws2, tis2, glassy_carbon, pet, sicl4, hfo2, hf_nme2_4, bdeas, tdmacph, ga2s3, gasx, ga2_nme2_6, mocl2o2, h_atom | external_ids.csv rows 122: sure 91, check 31 (absorption_coefficient, adsorption_equilibrium_constant, atoms_per_cycle, deposition_rate, element_fraction, exposure, gas_flow_rate, growth_per_cycle, knudsen_number, mean_free_path, pore_density, porosity, pressure_rate, saturation_density, saturation_growth_per_cycle, sheet_resistance, signal_intensity, specific_surface_area, o_atom, ws2, tis2, tdmat, mo_ntbu2_nme22, w_ntbu2_nme22, hf_nme2_4, bdeas, tdmacph, ga2s3, ga2_nme2_6, mocl2o2, h_atom) | nothing at runtime reads these fields (export.py does not emit them)
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+FAIL 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals problems: [&#x27;electrical&#x27;]
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+FAIL 14. pending entries (pending.csv) have a kind from the list, a definition, a citation and a status that pending_decisions.csv decided by rule (P98: a, b or c -&gt; accepted, else pending), clash with no entry, and a pending structure names a class problems: [&#x27;pore_density&#x27;, &#x27;porous_sphere&#x27;, &#x27;porous_cylinder&#x27;, &#x27;porous_slab&#x27;, &#x27;model_reactant&#x27;, &#x27;tortuosity&#x27;, &#x27;pore_volume&#x27;]
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+&lt;scratch copy&gt;/psed_v2/ontology/report.html: 235 entries, 81 unmapped labels
+exit 1
+</pre>
+</body></html>

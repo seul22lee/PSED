@@ -1,0 +1,19 @@
+P154-inventory: psed_v2/ontology/ - what is there, what each file reads and writes, what still runs. Zero calls, no change (this report
+and its tables only). Held-out papers (yim22, gre23, mat23): their rows are counted, not shown.
+
+1. Files (files.csv): 20 in ontology/ (17 tracked; sources/ is gitignored) plus 7 elsewhere that write into it or read its data files.
+   Ran in the last 30 commits (47fe794..HEAD, judged by their tracked outputs): export.py only (vocab.py, form.json, form_pass0.json,
+   FORM.md, CODEBOOK.md in P146-P150), plus pass0_paper.py / compile.py outside the folder. pending_decide.py, merge_pending.py,
+   alias_audit.py, apply_external_ids.py, entry_definitions.py, make_report.py, figures_import.py and absorption.py did not.
+   Callers: check.py runs export.py --check; pass0_paper.py imports the P143 layouts from export.py; merge_pending.py imports
+   pending_decide and alias_audit; everything else is run by hand; make_report.py is called by nothing.
+2. Data files (data_counts.csv, rows in pending.csv, pending_decisions.csv, unmapped.csv, external_ids.csv): pending.csv 10 rows, all
+   pending, 7 of them already entries in ontology.yaml (P138); pending_decisions.csv 10 rows, all rule none / pending; unmapped.csv 81
+   rows (45 pilot hand rows, 36 figure-import rows; 12 belong to held-out papers); external_ids.csv 122 rows (91 sure, 31 check).
+   compile.py writes none of them (writers.csv): its unmapped list is kb/compiled/<pid>.unmapped.csv. pending / pending_decisions /
+   external_ids are pilot-era; unmapped.csv is fed by the figure import, whose figures.json v2 compile reads.
+3. Pending flow (flow.csv, flow.txt): hand row (P83) or --labels candidate (P131b) -> pending_decide.py rules a-d (P98) -> merge_pending.py
+   (P131b) -> alias_audit.py -> export.py / make_report.py. The v2 compile output does not connect: candidate(), rules a and c and the
+   alias audit read only kb/pilot (gold) and figures.json; nothing reads kb/compiled/*.unmapped.csv; compile has no from_other re-key.
+4. v0 report generator (v0_report.txt): ontology/make_report.py -> ontology/report.html; called by nothing; last run P132; it runs today
+   (scratch copy) and exits 1 on check 11 (family electrical) and check 14 (the seven P138 duplicates).

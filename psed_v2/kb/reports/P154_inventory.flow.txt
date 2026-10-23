@@ -1,0 +1,30 @@
+Pending flow (from the code and the P83 / P98 / P131b / P138 records; table: flow.csv)
+
+Pilot sequence, unmapped label -> entry:
+  1. P83, by hand: drafting a paper's gold, a concept no entry fits becomes a pending.csv row (status pending); export.py carries it into
+     vocab.py as PENDING so the gold can use the id at once.
+  2. P131b: a free label (gold records keyed other[<label>]) becomes a candidate row: pending_decide.py --labels "a;b" (candidate()).
+  3. P98: pending_decide.py decides every row by rule a (two or more papers in kb/pilot/*.facts.csv or kb/*.figures.json), b (a Cremers
+     section marked sure), c (set on an experimental run in kb/pilot/experiments.csv, or the method of an observation), d (converts_to an
+     accepted entry); writes pending_decisions.csv and the status / evidence columns. "Run after a paper is added" (its docstring).
+  4. P131b: merge_pending.py turns accepted rows into ontology.yaml entries and drops them from pending.csv / pending_decisions.csv.
+  5. alias_audit.py (--apply) adds printed forms as aliases; 12b/12c: template definitions, then entry_definitions.py (the user's text).
+  6. export.py regenerates vocab.py and the forms / codebook; make_report.py runs the 15 checks; facts.write() re-keys gold other[label]
+     records to the entry's from_other label.
+  The figure path is separate: figures_import.py writes unresolved figure fields to ontology/unmapped.csv (and keeps the pilot's hand rows);
+  those rows are listed by make_report (check 12, section 6) and checked by check.py (P84); nothing turns them into pending rows.
+
+Where v2 compile.py's unmapped list would enter, and where it does not connect:
+  - compile.py writes kb/compiled/<pid>.unmapped.csv (100 rows for yli18, yim20, mat22: 87 quantity rows, id other with label_as_printed,
+    unit and a candidate definition_quote; 13 unit rows kept as printed; compiled_unmapped.csv) and other[...] rows into
+    kb/compiled/<pid>.facts.csv (82). It never writes ontology/unmapped.csv or pending.csv. Nothing reads kb/compiled/*.unmapped.csv.
+  - The natural entry is step 2 (candidate()), then step 3. Both read only kb/pilot (the gold trees, kb/pilot/experiments.csv) and
+    figures.json, so compiled labels and compiled papers count for nothing; a paper with no gold has no voice in rule a or c.
+  - candidate() writes the definition from the first gold record's statement; compile's candidate column (definition_quote, unit as
+    printed) is not used anywhere.
+  - Steps 4, 6 work on ontology files only and would take a row however it got into pending.csv.
+  - Compile has no from_other re-key (lists.FROM_OTHER is unused in kb/extract): a promoted free label stays other[...] in compiled facts
+    unless the label is also an alias.
+  - Unit rows (unit kept as printed) have no path at all: units.yaml grows by hand (P138 commit 1).
+  - P138 (e894f9e) added seven entries by hand straight into ontology.yaml while their pending.csv rows stayed (pore_density, tortuosity,
+    pore_volume, model_reactant, porous_sphere, porous_slab, porous_cylinder): make_report check 14 fails on exactly these.
