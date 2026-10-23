@@ -93,6 +93,8 @@ psed_v2/
   `kb/pilot/check.py` is never edited to make an output pass.
 - No logic keyed on a paper, an element id or a value.
 - Papers 1–12 (the pilot golds) are development papers. Papers 13+ are held-out: never read for the ontology before extraction; growth from compile unmapped only.
+  The twelve pilot papers: yli18, yim20, mat22, ela03, hei24, gor03, art19, gao15, zou23, yim22, gre23, mat23. wer21 (10.1116_6.0001094) is
+  development paper 13: ingested, no gold, already cited by the pilot (never.csv, 52 evidence lines); it is extracted in a later round without a score (P159).
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

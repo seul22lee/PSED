@@ -1,0 +1,39 @@
+diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index 8846caa..1ef141b 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -156,7 +156,7 @@ def parent_class(rows, fid):
+ def main(arg):
+     pid, key_ = C.resolve(arg)
+     form = C.schema("form.json")
+-    val, props, qids = Draft202012Validator(form), form["properties"], set(form["$defs"]["quantity_id"]["enum"]) | {"other"}
++    val, props, qids = Draft202012Validator(K.before_freeze(form)), form["properties"], set(form["$defs"]["quantity_id"]["enum"]) | {"other"}   # P159: the gold predates the P158 rules
+     gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
+     run, records, fate, rows = traced_run(pid)
+     comp = [r for r in rows if "#" in r["fact_id"]]
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 87bf813..49e2e86 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -254,7 +254,7 @@ class Run:
+         from jsonschema import Draft202012Validator
+         form = C.schema("form.json")
+         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
+-        pre = Draft202012Validator({**form, "allOf": [x for x in form.get("allOf", []) if not str(x.get("$comment", "")).startswith("P158")]})
++        pre = Draft202012Validator(before_freeze(form))
+         branch = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)                     # noqa: E731
+         nums = {k_: branch(p).get("type") for k_, p in form["properties"].items() if branch(p).get("type") in ("number", "integer")}
+         qnum = {k_ for k_, p in form["properties"]["qualifiers"]["anyOf"][0]["properties"].items()
+@@ -1091,6 +1091,12 @@ class Run:
+         return rows
+ 
+ 
++def before_freeze(form):
++    """P158: form.json without its allOf rules marked "P158 rule n": the rules a record or a gold row written before the freeze was made
++    under (compile.py step a for lines without form_version; audit.py for the gold rows, P159)."""
++    return {**form, "allOf": [x for x in form.get("allOf", []) if not str(x.get("$comment", "")).startswith("P158")]}
++
++
+ def leaf(e):
+     """P148 D: the validator that names a form.json error; inside an anyOf (a nullable field) the one of its non-null branch."""
+     if e.validator == "anyOf":

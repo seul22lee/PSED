@@ -254,7 +254,7 @@ class Run:
         from jsonschema import Draft202012Validator
         form = C.schema("form.json")
         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
-        pre = Draft202012Validator({**form, "allOf": [x for x in form.get("allOf", []) if not str(x.get("$comment", "")).startswith("P158")]})
+        pre = Draft202012Validator(before_freeze(form))
         branch = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)                     # noqa: E731
         nums = {k_: branch(p).get("type") for k_, p in form["properties"].items() if branch(p).get("type") in ("number", "integer")}
         qnum = {k_ for k_, p in form["properties"]["qualifiers"]["anyOf"][0]["properties"].items()
@@ -1089,6 +1089,12 @@ class Run:
         finally:
             EX.HERE = here
         return rows
+
+
+def before_freeze(form):
+    """P158: form.json without its allOf rules marked "P158 rule n": the rules a record or a gold row written before the freeze was made
+    under (compile.py step a for lines without form_version; audit.py for the gold rows, P159)."""
+    return {**form, "allOf": [x for x in form.get("allOf", []) if not str(x.get("$comment", "")).startswith("P158")]}
 
 
 def leaf(e):

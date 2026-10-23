@@ -1,0 +1,448 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P159_pass0</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P159_pass0</h1>
+<h2>Summary</h2><p>psed_v2/kb/reports/P159.summary.txt</p>
+<pre>P159, round 2 turn 1: 3 provider calls (pass 0, gemini-3.8-flash, thinking MEDIUM, form version P158), $0.40 (ela03 $0.20, hei24 $0.13,
+gor03 $0.07); planned and run exactly 3, none from the cache. No pass 1.
+1. Audit: audit.py casts the gold rows against form.json without its &quot;P158 rule n&quot; entries (compile.before_freeze, shared with compile&#x27;s
+   pre-freeze records): the gold predates the frozen rules. score.py on yli18, yim20, mat22: matched_T6 138 / 425 / 273 again and every
+   score column equal to P157f, before P158 (T6_restore); T2 is back to the 2 mat22 gold rows it held before P158 (T_stages). Gold untouched.
+2. Papers: CLAUDE.md, under the held-out rule, lists the twelve pilot papers and wer21 as development paper 13 (claude_md.diff); history
+   round 0 edit PAPERS (history_row). Round 2 = ela03, hei24, gor03: all three resolve (paper key, elements.csv, document.md,
+   structure.json, figures.json, gold facts.csv) before any call.
+3. Pass 0 appended to kb/records (line 2 of each; line 1 is the pre-freeze pass-0 line of 2026-10-20) (cost, pass0_lines).
+4. Pass 0 vs gold units (render.pair_units: data, cell, evidence, tree; columns as P146):
+   ela03: gold 42 (run 14, specimen 14, simulation 1, model_run 13), pass 0 45 (model_run 16): run 3 matched / 11 missing / 11 extra, specimen
+     the same, simulation matched, model_run 4 merged+split / 1 missing / 4 extra; 18 evidence quotes not found in the paper text; layouts:
+     4 disagree, 13 not compared, 0 agree.
+   hei24: gold 84 (simulation 1, model_run 83), pass 0 1 (the simulation, not paired: missing + extra); 83 model runs missing; layouts 29 agree,
+     5 disagree, 5 not compared.
+   gor03: gold 10, pass 0 8: run and specimen merged+split (4 gold runs, 3 pass-0 runs), simulation and model_run matched; layouts 1 agree,
+     3 not compared.
+Pass 1 waits for the user.
+</pre>
+<h2>1. T6 restore: every score column, P157f -&gt; P158 -&gt; P159</h2><p>psed_v2/kb/reports/P159.T6_restore.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P157f (before P158)</th><th>P158</th><th>P159</th><th>P159 = P157f</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>159</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>137</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>142</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>30/63</td><td>30/63</td><td>30/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>306</td><td>306</td><td>306</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>425</td><td>407</td><td>425</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>2</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>512</td><td>460</td><td>512</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>99/108</td><td>99/108</td><td>99/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>80/154</td><td>80/154</td><td>80/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>27/92</td><td>27/92</td><td>27/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>263</td><td>263</td><td>263</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>269</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>334</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>133/249</td><td>133/249</td><td>133/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+</table>
+<h2>1. Audit stages per paper</h2><p>psed_v2/kb/reports/P159.T_stages.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>P157f</th><th>P158</th><th>P159</th></tr>
+<tr><td>yli18</td><td>T0 judgment</td><td>5</td><td>5</td><td>5</td></tr>
+<tr><td>yli18</td><td>T0 tree</td><td>28</td><td>28</td><td>28</td></tr>
+<tr><td>yli18</td><td>T3 prompt</td><td>41</td><td>36</td><td>41</td></tr>
+<tr><td>yli18</td><td>T3q</td><td>14</td><td>14</td><td>14</td></tr>
+<tr><td>yli18</td><td>T4 compiler</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>yli18</td><td>T5 mismatch</td><td>16</td><td>5</td><td>16</td></tr>
+<tr><td>yli18</td><td>T6 matched</td><td>138</td><td>137</td><td>138</td></tr>
+<tr><td>yli18</td><td>total</td><td>243</td><td>243</td><td>243</td></tr>
+<tr><td>yli18</td><td>T2 form</td><td>0</td><td>17</td><td>0</td></tr>
+<tr><td>yim20</td><td>T0 judgment</td><td>16</td><td>16</td><td>16</td></tr>
+<tr><td>yim20</td><td>T0 tree</td><td>138</td><td>138</td><td>138</td></tr>
+<tr><td>yim20</td><td>T3 prompt</td><td>148</td><td>125</td><td>148</td></tr>
+<tr><td>yim20</td><td>T3q</td><td>76</td><td>74</td><td>76</td></tr>
+<tr><td>yim20</td><td>T4 compiler</td><td>8</td><td>7</td><td>8</td></tr>
+<tr><td>yim20</td><td>T5 mismatch</td><td>89</td><td>55</td><td>89</td></tr>
+<tr><td>yim20</td><td>T6 matched</td><td>425</td><td>407</td><td>425</td></tr>
+<tr><td>yim20</td><td>total</td><td>900</td><td>900</td><td>900</td></tr>
+<tr><td>yim20</td><td>T2 form</td><td>0</td><td>78</td><td>0</td></tr>
+<tr><td>mat22</td><td>T0 judgment</td><td>4</td><td>4</td><td>4</td></tr>
+<tr><td>mat22</td><td>T0 tree</td><td>340</td><td>340</td><td>340</td></tr>
+<tr><td>mat22</td><td>T2 form</td><td>2</td><td>29</td><td>2</td></tr>
+<tr><td>mat22</td><td>T3 prompt</td><td>288</td><td>269</td><td>288</td></tr>
+<tr><td>mat22</td><td>T3q</td><td>94</td><td>94</td><td>94</td></tr>
+<tr><td>mat22</td><td>T4 compiler</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>mat22</td><td>T5 mismatch</td><td>69</td><td>65</td><td>69</td></tr>
+<tr><td>mat22</td><td>T6 matched</td><td>273</td><td>269</td><td>273</td></tr>
+<tr><td>mat22</td><td>total</td><td>1071</td><td>1071</td><td>1071</td></tr>
+</table>
+<h2>1. Code diff</h2><p>psed_v2/kb/reports/P159.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index 8846caa..1ef141b 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -156,7 +156,7 @@ def parent_class(rows, fid):
+ def main(arg):
+     pid, key_ = C.resolve(arg)
+     form = C.schema(&quot;form.json&quot;)
+-    val, props, qids = Draft202012Validator(form), form[&quot;properties&quot;], set(form[&quot;$defs&quot;][&quot;quantity_id&quot;][&quot;enum&quot;]) | {&quot;other&quot;}
++    val, props, qids = Draft202012Validator(K.before_freeze(form)), form[&quot;properties&quot;], set(form[&quot;$defs&quot;][&quot;quantity_id&quot;][&quot;enum&quot;]) | {&quot;other&quot;}   # P159: the gold predates the P158 rules
+     gold = list(csv.DictReader((C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{pid}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
+     run, records, fate, rows = traced_run(pid)
+     comp = [r for r in rows if &quot;#&quot; in r[&quot;fact_id&quot;]]
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 87bf813..49e2e86 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -254,7 +254,7 @@ class Run:
+         from jsonschema import Draft202012Validator
+         form = C.schema(&quot;form.json&quot;)
+         val, qids = Draft202012Validator(form), set(form[&quot;$defs&quot;][&quot;quantity_id&quot;][&quot;enum&quot;])
+-        pre = Draft202012Validator({**form, &quot;allOf&quot;: [x for x in form.get(&quot;allOf&quot;, []) if not str(x.get(&quot;$comment&quot;, &quot;&quot;)).startswith(&quot;P158&quot;)]})
++        pre = Draft202012Validator(before_freeze(form))
+         branch = lambda p: next((x for x in p.get(&quot;anyOf&quot;, []) if x.get(&quot;type&quot;) != &quot;null&quot;), p)                     # noqa: E731
+         nums = {k_: branch(p).get(&quot;type&quot;) for k_, p in form[&quot;properties&quot;].items() if branch(p).get(&quot;type&quot;) in (&quot;number&quot;, &quot;integer&quot;)}
+         qnum = {k_ for k_, p in form[&quot;properties&quot;][&quot;qualifiers&quot;][&quot;anyOf&quot;][0][&quot;properties&quot;].items()
+@@ -1091,6 +1091,12 @@ class Run:
+         return rows
+ 
+ 
++def before_freeze(form):
++    &quot;&quot;&quot;P158: form.json without its allOf rules marked &quot;P158 rule n&quot;: the rules a record or a gold row written before the freeze was made
++    under (compile.py step a for lines without form_version; audit.py for the gold rows, P159).&quot;&quot;&quot;
++    return {**form, &quot;allOf&quot;: [x for x in form.get(&quot;allOf&quot;, []) if not str(x.get(&quot;$comment&quot;, &quot;&quot;)).startswith(&quot;P158&quot;)]}
++
++
+ def leaf(e):
+     &quot;&quot;&quot;P148 D: the validator that names a form.json error; inside an anyOf (a nullable field) the one of its non-null branch.&quot;&quot;&quot;
+     if e.validator == &quot;anyOf&quot;:
+</pre>
+<h2>2. CLAUDE.md diff</h2><p>psed_v2/kb/reports/P159.claude_md.diff</p>
+<pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index b037440..0a8b5d5 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -93,6 +93,8 @@ psed_v2/
+   `kb/pilot/check.py` is never edited to make an output pass.
+ - No logic keyed on a paper, an element id or a value.
+ - Papers 1–12 (the pilot golds) are development papers. Papers 13+ are held-out: never read for the ontology before extraction; growth from compile unmapped only.
++  The twelve pilot papers: yli18, yim20, mat22, ela03, hei24, gor03, art19, gao15, zou23, yim22, gre23, mat23. wer21 (10.1116_6.0001094) is
++  development paper 13: ingested, no gold, already cited by the pilot (never.csv, 52 evidence lines); it is extracted in a later round without a score (P159).
+ - A unit is done when its report carries the gold row comparison.
+ - Models are pinned by name; the cost is stated before any provider call.
+ 
+</pre>
+<h2>2. History row</h2><p>psed_v2/kb/reports/P159.history_row.csv</p>
+<table><tr><th>date</th><th>round</th><th>action</th><th>id</th><th>kind</th><th>target</th><th>source_pids</th><th>source_dois</th><th>decided_by</th><th>reason</th><th>ontology_sha256_after</th></tr>
+<tr><td>2026-10-23</td><td>0</td><td>edit</td><td>PAPERS</td><td></td><td>twelve pilot papers + wer21 = development paper 13; round 2 = ela03, hei24, gor03</td><td>10.1116_6.0001094</td><td>10.1116/6.0001094</td><td>user</td><td>P159 (user): the twelve pilot papers are yli18, yim20, mat22, ela03, hei24, gor03, art19, gao15, zou23, yim22, gre23, mat23. wer21 (10.1116_6.0001094) is development paper 13: ingested, no gold, already cited by the pilot (never.csv, 52 evidence lines); it is extracted in a later round without a score. Round 2 = ela03 10.1021_cm0303080, hei24 10.1039_d3cp05639b, gor03 10.1002_cvde.200390005.</td><td>241cd9148d5a7c8c4d2eeb49f570cbaf88a9154d9411dedb9e79a8f42a91bc15</td></tr>
+</table>
+<h2>3. Pass 0: calls, tokens, dollars</h2><p>psed_v2/kb/reports/P159.cost.csv</p>
+<table><tr><th>paper</th><th>pid</th><th>line</th><th>pass</th><th>model</th><th>form_version</th><th>thinking</th><th>input_tokens</th><th>cached_input_tokens</th><th>output_tokens</th><th>usd</th><th>request_ts</th><th>calls</th></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080</td><td>2</td><td>0</td><td>gemini-3.8-flash</td><td>P158</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>47208</td><td>0</td><td>44624</td><td>0.2027</td><td>2026-10-23T16:24:29+00:00</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b</td><td>2</td><td>0</td><td>gemini-3.8-flash</td><td>P158</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>58591</td><td>0</td><td>23811</td><td>0.1332</td><td>2026-10-23T16:29:11+00:00</td><td></td></tr>
+<tr><td>gor03</td><td>10.1002_cvde.200390005</td><td>2</td><td>0</td><td>gemini-3.8-flash</td><td>P158</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>32026</td><td>21180</td><td>15370</td><td>0.0674</td><td>2026-10-23T16:31:58+00:00</td><td></td></tr>
+<tr><td>total</td><td></td><td></td><td></td><td></td><td></td><td></td><td>137825</td><td></td><td>83805</td><td>0.4033</td><td></td><td>3</td></tr>
+</table>
+<h2>3. The pass-0 lines of the three papers</h2><p>psed_v2/kb/reports/P159.pass0_lines.csv</p>
+<table><tr><th>paper</th><th>line</th><th>form_version</th><th>date</th><th>thinking</th><th>units</th><th>by_role</th><th>table_layouts</th><th>panel_layouts</th></tr>
+<tr><td>ela03</td><td>1</td><td></td><td>2026-10-20</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>54</td><td>run 14; specimen 14; simulation 1; model_run 16; series 7; cited_work 2</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>2</td><td>P158</td><td>2026-10-23</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>45</td><td>run 14; specimen 14; simulation 1; model_run 16</td><td>1</td><td>16</td></tr>
+<tr><td>hei24</td><td>1</td><td></td><td>2026-10-20</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>24</td><td>simulation 1; model_run 5; series 10; cited_work 8</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>2</td><td>P158</td><td>2026-10-23</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>1</td><td>simulation 1</td><td>4</td><td>35</td></tr>
+<tr><td>gor03</td><td>1</td><td></td><td>2026-10-20</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>17</td><td>cited_work 7; simulation 1; model_run 1; run 3; specimen 4; series 1</td><td></td><td></td></tr>
+<tr><td>gor03</td><td>2</td><td>P158</td><td>2026-10-23</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>8</td><td>simulation 1; model_run 1; run 3; specimen 3</td><td>0</td><td>4</td></tr>
+</table>
+<h2>4. Summary of the comparison</h2><p>psed_v2/kb/reports/P159.summary.csv</p>
+<table><tr><th>paper</th><th>pid</th><th>gold_units</th><th>gold_by_role</th><th>pass0_units</th><th>pass0_by_role</th><th>run matched</th><th>run missing</th><th>run extra</th><th>specimen matched</th><th>specimen missing</th><th>specimen extra</th><th>simulation matched</th><th>model_run merged+split</th><th>model_run missing</th><th>model_run extra</th><th>esi_only</th><th>quotes_not_found</th><th>layouts_agree</th><th>layouts_disagree</th><th>layouts_not_compared</th><th>simulation missing</th><th>simulation extra</th><th>run merged+split</th><th>specimen merged+split</th><th>model_run matched</th></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080</td><td>42</td><td>run 14; specimen 14; simulation 1; model_run 13</td><td>45</td><td>run 14; specimen 14; simulation 1; model_run 16</td><td>3</td><td>11</td><td>11</td><td>3</td><td>11</td><td>11</td><td>1</td><td>4</td><td>1</td><td>4</td><td>0</td><td>18</td><td>0</td><td>4</td><td>13</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b</td><td>84</td><td>simulation 1; model_run 83</td><td>1</td><td>simulation 1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>83</td><td></td><td>0</td><td>0</td><td>29</td><td>5</td><td>5</td><td>1</td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>10.1002_cvde.200390005</td><td>10</td><td>run 4; specimen 4; simulation 1; model_run 1</td><td>8</td><td>simulation 1; model_run 1; run 3; specimen 3</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>0</td><td>0</td><td>1</td><td>0</td><td>3</td><td></td><td></td><td>1</td><td>1</td><td>1</td></tr>
+</table>
+<h2>4. ela03 units, every row</h2><p>psed_v2/kb/reports/P159.ela03.units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>pass0_id</th><th>pass0_name</th><th>pass0_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>pass0_data</th></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:al2o3_1s</td><td>Al2O3, 1 s exposures</td><td></td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:al2o3_3s</td><td>Al2O3, 3 s exposures</td><td></td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:al2o3_10s</td><td>Al2O3, 10 s exposures</td><td></td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:al2o3_30s</td><td>Al2O3, 30 s exposures</td><td></td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:zno_1s</td><td>ZnO, 1 s exposures</td><td></td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:zno_3s</td><td>ZnO, 3 s exposures</td><td></td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:zno_10s</td><td>ZnO, 10 s exposures</td><td></td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:zno_30s</td><td>ZnO, 30 s exposures</td><td></td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:znod_19</td><td>ZnO, d 19 nm, 19 cycles</td><td></td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:znod_46</td><td>ZnO, d 46 nm, 45 cycles</td><td></td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>missing</td><td></td><td>ela03:dep:znod_65</td><td>ZnO, d 65 nm, 64 cycles</td><td></td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>matched</td><td>tree</td><td>ela03:dep:zno_ar5000</td><td>ZnO, AR 5000 membrane</td><td></td><td>s4.p11;s4.p12</td><td></td><td>run_zno_ar5000</td><td>L/d ≈ 5000</td><td></td><td>s3.p10;fig7.cap;fig7a;fig7b</td><td>This AA membrane had dimensions d = 19 nm and L = 92 µm yielding an aspect ratio L/d ≈ 5000... The membrane was coated using 19 ZnO ALD cycles with exposure times of 120 s and reactant pressures of 5 Torr at a deposition temperature of 177 °C.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>matched</td><td>tree</td><td>ela03:dep:ftir_al2o3</td><td>FTIR Al2O3 layer</td><td></td><td>s4.p14;s4.p15</td><td></td><td>run_ftir_al2o3</td><td>Al2O3 ALD</td><td></td><td>s3.p13;s3.p15;fig8.cap;fig8a</td><td>The hydroxyl-terminated Al2O3 surface was then subjected to successive, small TMA exposures at a substrate temperature of 177 °C using a TMA pressure of ~1 × 10^-3 Torr and various exposure times.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>matched</td><td>tree</td><td>ela03:dep:ftir_sio2</td><td>FTIR SiO2 layer</td><td></td><td>s4.p16;s4.p17</td><td></td><td>run_ftir_sio2</td><td>SiO2 ALD</td><td></td><td>s3.p16;s3.p17;fig8.cap;fig8b</td><td>The hydroxyl-terminated SiO2 surface was subjected to progressive SiCl4 exposures using a SiCl4 pressure of ~1 Torr and various exposure times at 427 °C.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_al2o3_sem_1s</td><td>1–5–1–5</td><td></td><td>s3.p1;fig3.cap;fig3</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_al2o3_sem_3s</td><td>3–6–3–6</td><td></td><td>s3.p1;fig3.cap;fig3</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_al2o3_sem_10s</td><td>10–30–10–30</td><td></td><td>s3.p1;fig3.cap;fig3</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_al2o3_sem_30s</td><td>30–30–30–30</td><td></td><td>s3.p1;fig3.cap;fig3</td><td>Four different experiments were performed using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_1s</td><td>1–5–1–5</td><td></td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_3s</td><td>3–6–3–6</td><td></td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_10s</td><td>10–30–10–30</td><td></td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_30s</td><td>30–30–30–30</td><td></td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Four AA membrane samples were coated in separate experiments using ALD timing sequences of 1–5–1–5, 3–6–3–6, 10–30–10–30, and 30–30–30–30.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_d19</td><td>19 nm</td><td></td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_d46</td><td>46 nm</td><td></td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_zno_d65</td><td>65 nm</td><td></td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>AA membranes with L = 50 µm and pore diameters of d = 19, 46, and 65 nm were coated in separate experiments using 19, 45, and 64 AB cycles for ZnO ALD, respectively.</td><td>not found</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:al2o3_1s</td><td>Al2O3, 1 s exposures</td><td>ela03:dep:al2o3_1s</td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:al2o3_3s</td><td>Al2O3, 3 s exposures</td><td>ela03:dep:al2o3_3s</td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:al2o3_10s</td><td>Al2O3, 10 s exposures</td><td>ela03:dep:al2o3_10s</td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:al2o3_30s</td><td>Al2O3, 30 s exposures</td><td>ela03:dep:al2o3_30s</td><td>s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:zno_1s</td><td>ZnO, 1 s exposures</td><td>ela03:dep:zno_1s</td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:zno_3s</td><td>ZnO, 3 s exposures</td><td>ela03:dep:zno_3s</td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:zno_10s</td><td>ZnO, 10 s exposures</td><td>ela03:dep:zno_10s</td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:zno_30s</td><td>ZnO, 30 s exposures</td><td>ela03:dep:zno_30s</td><td>s4.p4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:znod_19</td><td>ZnO, d 19 nm, 19 cycles</td><td>ela03:dep:znod_19</td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:znod_46</td><td>ZnO, d 46 nm, 45 cycles</td><td>ela03:dep:znod_46</td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>missing</td><td></td><td>ela03:ent:znod_65</td><td>ZnO, d 65 nm, 64 cycles</td><td>ela03:dep:znod_65</td><td>s4.p10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>matched</td><td>data</td><td>ela03:ent:zno_ar5000</td><td>ZnO, AR 5000 membrane</td><td>ela03:dep:zno_ar5000</td><td>s4.p11;s4.p12</td><td>ela03:fig7b#c1</td><td>spec_zno_ar5000</td><td>L/d ≈ 5000</td><td>run_zno_ar5000</td><td>s3.p10;fig7.cap;fig7a;fig7b</td><td>Zn elemental distribution map measured by EPMA and (b) relative ZnO coverage for AA membrane with an aspect ratio L/d ≈ 5000 following 19 AB cycles of ZnO ALD.</td><td>not found</td><td>ela03:fig7b#c1:measured; ela03:fig7b#d1_1:measured; ela03:fig7b#d1_2:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>matched</td><td>data</td><td>ela03:ent:ftir_al2o3</td><td>FTIR Al2O3 layer</td><td>ela03:dep:ftir_al2o3</td><td>s4.p14;s4.p15</td><td>ela03:fig8a#c1</td><td>spec_ftir_al2o3</td><td>Al2O3 ALD</td><td>run_ftir_al2o3</td><td>s3.p13;s3.p15;fig8.cap;fig8a</td><td>Loss in hydroxyl feature measured by FTIR spectroscopy during (a) Al2O3 ALD versus TMA exposure time</td><td>found</td><td>ela03:fig8a#c1:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>matched</td><td>data</td><td>ela03:ent:ftir_sio2</td><td>FTIR SiO2 layer</td><td>ela03:dep:ftir_sio2</td><td>s4.p16;s4.p17</td><td>ela03:fig8b#c1</td><td>spec_ftir_sio2</td><td>SiO2 ALD</td><td>run_ftir_sio2</td><td>s3.p16;s3.p17;fig8.cap;fig8b</td><td>Loss in hydroxyl feature measured by FTIR spectroscopy during ... (b) SiO2 ALD versus SiCl4 exposure time.</td><td>not found</td><td>ela03:fig8b#c1:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_al2o3_sem_1s</td><td>1 s</td><td>run_al2o3_sem_1s</td><td>s3.p1;fig3.cap;fig3</td><td>SEM images recorded from top, middle, and bottom portions of AA membranes following 100 AB cycles of Al2O3 ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_al2o3_sem_3s</td><td>3 s</td><td>run_al2o3_sem_3s</td><td>s3.p1;fig3.cap;fig3</td><td>SEM images recorded from top, middle, and bottom portions of AA membranes following 100 AB cycles of Al2O3 ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_al2o3_sem_10s</td><td>10 s</td><td>run_al2o3_sem_10s</td><td>s3.p1;fig3.cap;fig3</td><td>SEM images recorded from top, middle, and bottom portions of AA membranes following 100 AB cycles of Al2O3 ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_al2o3_sem_30s</td><td>30 s</td><td>run_al2o3_sem_30s</td><td>s3.p1;fig3.cap;fig3</td><td>SEM images recorded from top, middle, and bottom portions of AA membranes following 100 AB cycles of Al2O3 ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_1s</td><td>1</td><td>run_zno_1s</td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage following 64 AB cycles of ZnO ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig5a#c1:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_3s</td><td>3</td><td>run_zno_3s</td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage following 64 AB cycles of ZnO ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig5a#c2:measured; ela03:fig5a#d2_1:measured; ela03:fig5a#d2_2:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_10s</td><td>10</td><td>run_zno_10s</td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage following 64 AB cycles of ZnO ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig5a#c3:measured; ela03:fig5a#d3_1:measured; ela03:fig5a#d3_2:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_30s</td><td>30</td><td>run_zno_30s</td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage following 64 AB cycles of ZnO ALD using exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig5a#c4:measured; ela03:fig5a#d4_1:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_d19</td><td>19</td><td>run_zno_d19</td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage for AA membranes with pore diameters of 19, 46, and 65 nm following 19, 45, and 64 AB cycles, respectively, of ZnO ALD using exposure times of 5 s.</td><td>found</td><td>ela03:fig6a#c1:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_d46</td><td>46</td><td>run_zno_d46</td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage for AA membranes with pore diameters of 19, 46, and 65 nm following 19, 45, and 64 AB cycles, respectively, of ZnO ALD using exposure times of 5 s.</td><td>found</td><td>ela03:fig6a#c2:measured; ela03:fig6a#d2_1:measured; ela03:fig6a#d2_2:measured</td></tr>
+<tr><td>ela03</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>spec_zno_d65</td><td>65</td><td>run_zno_d65</td><td>s3.p8;fig6.cap;fig6a;fig6b</td><td>Relative ZnO coverage measured by EPMA line scan and (b) normalized integrated ZnO coverage for AA membranes with pore diameters of 19, 46, and 65 nm following 19, 45, and 64 AB cycles, respectively, of ZnO ALD using exposure times of 5 s.</td><td>found</td><td>ela03:fig6a#c3:measured; ela03:fig6a#d3_1:measured; ela03:fig6a#d3_2:measured</td></tr>
+<tr><td>ela03</td><td>simulation</td><td>matched</td><td>tree</td><td>ela03:sim</td><td>Monte Carlo model</td><td></td><td>s5.p1;s5.p2</td><td></td><td>sim_mc</td><td>Monte Carlo computer simulation</td><td></td><td>s4.p1;s4.h</td><td>To quantify the experimental results and also to predict the reactant exposures necessary to achieve conformal coating, a Monte Carlo computer simulation was developed.</td><td>found</td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:al2o3_1s;ela03:simrun:al2o3_3s;ela03:simrun:al2o3_10s</td><td>sim Al2O3, 1 s | sim Al2O3, 3 s | sim Al2O3, 10 s</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig9a;s5.p12 | fig9a;s5.p12 | fig9a;s5.p12</td><td></td><td>sim_al2o3_1s</td><td>1</td><td>sim_mc</td><td>s4.p8;fig9.cap;fig9a</td><td>Simulated Al2O3 coverage profiles versus distance into nanopore and (b) normalized integrated Al2O3 coverages for TMA exposure times of 1, 3, and 10 s.</td><td>found</td><td>ela03:fig9a#c1:simulated; ela03:fig9a#d1_1:simulated; ela03:fig9a#d1_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:al2o3_1s;ela03:simrun:al2o3_3s;ela03:simrun:al2o3_10s</td><td>sim Al2O3, 1 s | sim Al2O3, 3 s | sim Al2O3, 10 s</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig9a;s5.p12 | fig9a;s5.p12 | fig9a;s5.p12</td><td></td><td>sim_al2o3_3s</td><td>3</td><td>sim_mc</td><td>s4.p8;fig9.cap;fig9a</td><td>Simulated Al2O3 coverage profiles versus distance into nanopore and (b) normalized integrated Al2O3 coverages for TMA exposure times of 1, 3, and 10 s.</td><td>found</td><td>ela03:fig9a#c2:simulated; ela03:fig9a#d2_1:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:al2o3_1s;ela03:simrun:al2o3_3s;ela03:simrun:al2o3_10s</td><td>sim Al2O3, 1 s | sim Al2O3, 3 s | sim Al2O3, 10 s</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig9a;s5.p12 | fig9a;s5.p12 | fig9a;s5.p12</td><td></td><td>sim_al2o3_10s</td><td>10</td><td>sim_mc</td><td>s4.p8;fig9.cap;fig9a</td><td>Simulated Al2O3 coverage profiles versus distance into nanopore and (b) normalized integrated Al2O3 coverages for TMA exposure times of 1, 3, and 10 s.</td><td>found</td><td>ela03:fig9a#c3:simulated; ela03:fig9a#d3_1:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:zno_1s;ela03:simrun:zno_3s;ela03:simrun:zno_10s;ela03:simrun:zno_30s</td><td>sim ZnO, 1 s | sim ZnO, 3 s | sim ZnO, 10 s | sim ZnO, 30 s</td><td>ela03:sim;ela03:sim;ela03:sim;ela03:sim</td><td>fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15</td><td></td><td>sim_zno_1s</td><td>1</td><td>sim_mc</td><td>s4.p11;fig10.cap;fig10a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for DEZ exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig10a#c1:simulated; ela03:fig10a#d1_1:simulated; ela03:fig10a#d1_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:zno_1s;ela03:simrun:zno_3s;ela03:simrun:zno_10s;ela03:simrun:zno_30s</td><td>sim ZnO, 1 s | sim ZnO, 3 s | sim ZnO, 10 s | sim ZnO, 30 s</td><td>ela03:sim;ela03:sim;ela03:sim;ela03:sim</td><td>fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15</td><td></td><td>sim_zno_3s</td><td>3</td><td>sim_mc</td><td>s4.p11;fig10.cap;fig10a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for DEZ exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig10a#c2:simulated; ela03:fig10a#d2_1:simulated; ela03:fig10a#d2_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:zno_1s;ela03:simrun:zno_3s;ela03:simrun:zno_10s;ela03:simrun:zno_30s</td><td>sim ZnO, 1 s | sim ZnO, 3 s | sim ZnO, 10 s | sim ZnO, 30 s</td><td>ela03:sim;ela03:sim;ela03:sim;ela03:sim</td><td>fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15</td><td></td><td>sim_zno_10s</td><td>10</td><td>sim_mc</td><td>s4.p11;fig10.cap;fig10a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for DEZ exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig10a#c3:simulated; ela03:fig10a#d3_1:simulated; ela03:fig10a#d3_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:zno_1s;ela03:simrun:zno_3s;ela03:simrun:zno_10s;ela03:simrun:zno_30s</td><td>sim ZnO, 1 s | sim ZnO, 3 s | sim ZnO, 10 s | sim ZnO, 30 s</td><td>ela03:sim;ela03:sim;ela03:sim;ela03:sim</td><td>fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15 | fig10a;s5.p15</td><td></td><td>sim_zno_30s</td><td>30</td><td>sim_mc</td><td>s4.p11;fig10.cap;fig10a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for DEZ exposure times of 1, 3, 10, and 30 s.</td><td>found</td><td>ela03:fig10a#c4:simulated; ela03:fig10a#d4_1:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:znod_19;ela03:simrun:znod_47;ela03:simrun:znod_65</td><td>sim ZnO, d 19 nm | sim ZnO, d 47 nm | sim ZnO, d 65 nm</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig11a;s5.p16 | fig11a;s5.p16 | fig11a;s5.p16</td><td></td><td>sim_zno_d19</td><td>19</td><td>sim_mc</td><td>s4.p13;fig11.cap;fig11a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for nanopore diameters of 19, 46, and 65 nm using DEZ exposure times of 5 s.</td><td>found</td><td>ela03:fig11a#c1:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:znod_19;ela03:simrun:znod_47;ela03:simrun:znod_65</td><td>sim ZnO, d 19 nm | sim ZnO, d 47 nm | sim ZnO, d 65 nm</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig11a;s5.p16 | fig11a;s5.p16 | fig11a;s5.p16</td><td></td><td>sim_zno_d46</td><td>46</td><td>sim_mc</td><td>s4.p13;fig11.cap;fig11a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for nanopore diameters of 19, 46, and 65 nm using DEZ exposure times of 5 s.</td><td>found</td><td>ela03:fig11a#c2:simulated; ela03:fig11a#d2_1:simulated; ela03:fig11a#d2_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:znod_19;ela03:simrun:znod_47;ela03:simrun:znod_65</td><td>sim ZnO, d 19 nm | sim ZnO, d 47 nm | sim ZnO, d 65 nm</td><td>ela03:sim;ela03:sim;ela03:sim</td><td>fig11a;s5.p16 | fig11a;s5.p16 | fig11a;s5.p16</td><td></td><td>sim_zno_d65</td><td>65</td><td>sim_mc</td><td>s4.p13;fig11.cap;fig11a</td><td>Simulated ZnO coverage profiles versus distance into nanopore and (b) normalized integrated ZnO coverages for nanopore diameters of 19, 46, and 65 nm using DEZ exposure times of 5 s.</td><td>found</td><td>ela03:fig11a#c3:simulated; ela03:fig11a#d3_1:simulated; ela03:fig11a#d3_2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:fig12a;ela03:simrun:fig12b</td><td>sim Fig. 12a (diffusion-limited) | sim Fig. 12b (reaction-limited)</td><td>ela03:sim;ela03:sim</td><td>s5.x2;fig12.cap | s5.x2;fig12.cap</td><td></td><td>sim_diff_limited</td><td>diffusion-limited</td><td>sim_mc</td><td>s4.p17;fig12.cap;fig12a</td><td>Plot (a) for S ≫ H uses d = 65 nm, L = 50 µm, S = 7 × 10^-3, and H = 2.7 × 10^-5.</td><td>not found</td><td>ela03:fig12a#c1:simulated; ela03:fig12a#c2:fitted; ela03:fig12a#d1_1:simulated; ela03:fig12a#d2_1:fitted</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>merged+split</td><td>evidence</td><td>ela03:simrun:fig12a;ela03:simrun:fig12b</td><td>sim Fig. 12a (diffusion-limited) | sim Fig. 12b (reaction-limited)</td><td>ela03:sim;ela03:sim</td><td>s5.x2;fig12.cap | s5.x2;fig12.cap</td><td></td><td>sim_react_limited</td><td>reaction-limited</td><td>sim_mc</td><td>s4.p17;fig12.cap;fig12b</td><td>Plot (b) for S ≪ H uses d = 65 nm, L = 0.5 µm, S = 1 × 10^-4, and H = 2.7 × 10^-1.</td><td>not found</td><td>ela03:fig12b#c1:simulated; ela03:fig12b#c2:fitted; ela03:fig12b#d1_1:simulated; ela03:fig12b#d2_1:fitted</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>missing</td><td></td><td>ela03:simrun:eq10</td><td>sim Eq. (10), L/d 5000</td><td>ela03:sim</td><td>s5.p34</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_pred_p001</td><td>0.01 Torr</td><td>sim_mc</td><td>s4.p24;fig13.cap;fig13</td><td>Predicted minimum exposure times to achieve conformal ZnO ALD in AA membranes versus aspect ratio assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.</td><td>found</td><td>ela03:fig13#c1:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_pred_p01</td><td>0.1 Torr</td><td>sim_mc</td><td>s4.p24;fig13.cap;fig13</td><td>Predicted minimum exposure times to achieve conformal ZnO ALD in AA membranes versus aspect ratio assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.</td><td>found</td><td>ela03:fig13#c2:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_pred_p1</td><td>1.0 Torr</td><td>sim_mc</td><td>s4.p24;fig13.cap;fig13</td><td>Predicted minimum exposure times to achieve conformal ZnO ALD in AA membranes versus aspect ratio assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.</td><td>found</td><td>ela03:fig13#c3:simulated</td></tr>
+<tr><td>ela03</td><td>model_run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_pred_p10</td><td>10 Torr</td><td>sim_mc</td><td>s4.p24;fig13.cap;fig13</td><td>Predicted minimum exposure times to achieve conformal ZnO ALD in AA membranes versus aspect ratio assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.</td><td>found</td><td>ela03:fig13#c4:simulated</td></tr>
+</table>
+<h2>4. ela03 layouts</h2><p>psed_v2/kb/reports/P159.ela03.layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>minority_cells</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>ela03</td><td>table</td><td>tab1</td><td>row_per_unit (majority)</td><td>not_units</td><td>disagree</td><td>tab1.r0c0;tab1.r0c1;tab1.r0c2;tab1.r0c3;tab1.r0c4;tab1.r0c5</td><td>0</td><td>3</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig10a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig10b</td><td>unbound</td><td>point_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig11a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig11b</td><td>unbound</td><td>point_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig12a</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig12b</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig13</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig5a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig5b</td><td>unbound</td><td>point_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig6a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig6b</td><td>unbound</td><td>point_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig7b</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig8a</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig8b</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig9a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>panel</td><td>fig9b</td><td>unbound</td><td>point_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+</table>
+<h2>4. ela03 ESI-only gold units</h2><p>psed_v2/kb/reports/P159.ela03.esi_only.csv</p>
+<table><tr><th>paper</th><th>gid</th><th>role</th><th>name</th><th>evidence</th></tr>
+</table>
+<h2>4. hei24 units, every row</h2><p>psed_v2/kb/reports/P159.hei24.units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>pass0_id</th><th>pass0_name</th><th>pass0_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>pass0_data</th></tr>
+<tr><td>hei24</td><td>simulation</td><td>missing</td><td></td><td>hei24:sim</td><td>porous-particle model</td><td></td><td>s3.h;s4.h;tab1.cap;tab2.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>simulation</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>sim_dr</td><td>diffusion–reaction model</td><td></td><td>abs.g1;s1.p1</td><td>This work presents a diffusion–reaction model for atomic layer deposition (ALD)</td><td>found</td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:sphere</td><td>baseline run, sphere</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3;fig5a;fig6a;fig5c;fig6c;fig5e;fig6e;fig5k;fig6k</td><td>hei24:fig2a#c1;hei24:fig2b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:cylinder</td><td>baseline run, cylinder</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3</td><td>hei24:fig2a#c2;hei24:fig2b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig2:slab</td><td>baseline run, slab</td><td>hei24:sim</td><td>fig2.cap;fig2a;fig2b;s7.p1;fig3.cap;fig3;fig5b;fig6b;fig5d;fig6d;fig5f;fig6f;fig5l;fig6l</td><td>hei24:fig2a#c3;hei24:fig2b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:sphere:1e5</td><td>Fig. 3 run, sphere, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:sphere:1e4</td><td>Fig. 3 run, sphere, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:cylinder:1e5</td><td>Fig. 3 run, cylinder, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:cylinder:1e4</td><td>Fig. 3 run, cylinder, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:slab:1e5</td><td>Fig. 3 run, slab, 1e5 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig3:slab:1e4</td><td>Fig. 3 run, slab, 1e4 Pa s</td><td>hei24:sim</td><td>fig3.cap;fig3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:1e5</td><td>Fig. 4 runs, 1e5 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:5e4</td><td>Fig. 4 runs, 5e4 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig4:1e4</td><td>Fig. 4 runs, 1e4 Pa s</td><td>hei24:sim</td><td>fig4.cap;fig4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:1</td><td>Fig. 5(a) run, τ/ε 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c1;hei24:fig6a#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:3</td><td>Fig. 5(a) run, τ/ε 3</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c3;hei24:fig6a#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:4</td><td>Fig. 5(a) run, τ/ε 4</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c4;hei24:fig6a#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5a:tau:5</td><td>Fig. 5(a) run, τ/ε 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5a;fig6a</td><td>hei24:fig5a#c5;hei24:fig6a#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:1</td><td>Fig. 5(b) run, τ/ε 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c1;hei24:fig6b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:3</td><td>Fig. 5(b) run, τ/ε 3</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c3;hei24:fig6b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:4</td><td>Fig. 5(b) run, τ/ε 4</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c4;hei24:fig6b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5b:tau:5</td><td>Fig. 5(b) run, τ/ε 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5b;fig6b</td><td>hei24:fig5b#c5;hei24:fig6b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:50</td><td>Fig. 5(c) run, reactant molar mass 50</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:150</td><td>Fig. 5(c) run, reactant molar mass 150</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:200</td><td>Fig. 5(c) run, reactant molar mass 200</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td>hei24:fig5c#c4;hei24:fig6c#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5c:mR:250</td><td>Fig. 5(c) run, reactant molar mass 250</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5c;fig6c</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:50</td><td>Fig. 5(d) run, reactant molar mass 50</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:150</td><td>Fig. 5(d) run, reactant molar mass 150</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:200</td><td>Fig. 5(d) run, reactant molar mass 200</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td>hei24:fig5d#c4;hei24:fig6d#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5d:mR:250</td><td>Fig. 5(d) run, reactant molar mass 250</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5d;fig6d</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:1</td><td>Fig. 5(e) run, σ 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c1;hei24:fig6e#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:2</td><td>Fig. 5(e) run, σ 2</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c2;hei24:fig6e#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:6</td><td>Fig. 5(e) run, σ 6</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c4;hei24:fig6e#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5e:sigma:8</td><td>Fig. 5(e) run, σ 8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5e;fig6e</td><td>hei24:fig5e#c5;hei24:fig6e#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:1</td><td>Fig. 5(f) run, σ 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c1;hei24:fig6f#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:2</td><td>Fig. 5(f) run, σ 2</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c2;hei24:fig6f#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:6</td><td>Fig. 5(f) run, σ 6</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c4;hei24:fig6f#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5f:sigma:8</td><td>Fig. 5(f) run, σ 8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5f;fig6f</td><td>hei24:fig5f#c5;hei24:fig6f#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:1e8</td><td>Fig. 5(g) run, s̄ 1e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c1;hei24:fig6g#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:2e8</td><td>Fig. 5(g) run, s̄ 2e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c2;hei24:fig6g#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:3e8</td><td>Fig. 5(g) run, s̄ 3e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c3;hei24:fig6g#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:4e8</td><td>Fig. 5(g) run, s̄ 4e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c4;hei24:fig6g#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5g:sbar:5e8</td><td>Fig. 5(g) run, s̄ 5e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5g;fig6g</td><td>hei24:fig5g#c5;hei24:fig6g#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:1e8</td><td>Fig. 5(h) run, s̄ 1e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c1;hei24:fig6h#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:2e8</td><td>Fig. 5(h) run, s̄ 2e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c2;hei24:fig6h#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:3e8</td><td>Fig. 5(h) run, s̄ 3e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c3;hei24:fig6h#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:4e8</td><td>Fig. 5(h) run, s̄ 4e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c4;hei24:fig6h#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5h:sbar:5e8</td><td>Fig. 5(h) run, s̄ 5e8</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5h;fig6h</td><td>hei24:fig5h#c5;hei24:fig6h#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.0001</td><td>Fig. 5(i) run, sticking probability 0.0001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c1;hei24:fig6i#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.001</td><td>Fig. 5(i) run, sticking probability 0.001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c2;hei24:fig6i#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.01</td><td>Fig. 5(i) run, sticking probability 0.01</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c3;hei24:fig6i#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:0.1</td><td>Fig. 5(i) run, sticking probability 0.1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c4;hei24:fig6i#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5i:beta:1</td><td>Fig. 5(i) run, sticking probability 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5i;fig6i</td><td>hei24:fig5i#c5;hei24:fig6i#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.0001</td><td>Fig. 5(j) run, sticking probability 0.0001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c1;hei24:fig6j#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.001</td><td>Fig. 5(j) run, sticking probability 0.001</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c2;hei24:fig6j#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.01</td><td>Fig. 5(j) run, sticking probability 0.01</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c3;hei24:fig6j#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:0.1</td><td>Fig. 5(j) run, sticking probability 0.1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c4;hei24:fig6j#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5j:beta:1</td><td>Fig. 5(j) run, sticking probability 1</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5j;fig6j</td><td>hei24:fig5j#c5;hei24:fig6j#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:5</td><td>Fig. 5(k) run, d_pore 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c1;hei24:fig6k#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:10</td><td>Fig. 5(k) run, d_pore 10</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c2;hei24:fig6k#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:30</td><td>Fig. 5(k) run, d_pore 30</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c4;hei24:fig6k#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5k:dpore:40</td><td>Fig. 5(k) run, d_pore 40</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5k;fig6k</td><td>hei24:fig5k#c5;hei24:fig6k#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:5</td><td>Fig. 5(l) run, d_pore 5</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c1;hei24:fig6l#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:10</td><td>Fig. 5(l) run, d_pore 10</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c2;hei24:fig6l#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:30</td><td>Fig. 5(l) run, d_pore 30</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c4;hei24:fig6l#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig5l:dpore:40</td><td>Fig. 5(l) run, d_pore 40</td><td>hei24:sim</td><td>fig5.cap;fig6.cap;fig5l;fig6l</td><td>hei24:fig5l#c5;hei24:fig6l#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e5</td><td>Fig. 7 run, R 300 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c1;hei24:fig7b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e4</td><td>Fig. 7 run, R 300 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c4;hei24:fig7b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R300:1e3</td><td>Fig. 7 run, R 300 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c7;hei24:fig7b#c7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e5</td><td>Fig. 7 run, R 200 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c2;hei24:fig7b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e4</td><td>Fig. 7 run, R 200 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c5;hei24:fig7b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R200:1e3</td><td>Fig. 7 run, R 200 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c8;hei24:fig7b#c8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e5</td><td>Fig. 7 run, R 100 µm, 1e5 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c3;hei24:fig7b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e4</td><td>Fig. 7 run, R 100 µm, 1e4 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c6;hei24:fig7b#c6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig7:R100:1e3</td><td>Fig. 7 run, R 100 µm, 1e3 Pa s</td><td>hei24:sim</td><td>fig7.cap;fig7a;fig7b</td><td>hei24:fig7a#c9;hei24:fig7b#c9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T373</td><td>Fig. 8(a) run, 373 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T423</td><td>Fig. 8(a) run, 423 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T473</td><td>Fig. 8(a) run, 473 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T523</td><td>Fig. 8(a) run, 523 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8a:T573</td><td>Fig. 8(a) run, 573 K</td><td>hei24:sim</td><td>fig8.cap;fig8a</td><td>hei24:fig8a#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T373</td><td>Fig. 8(b) run, 373 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T423</td><td>Fig. 8(b) run, 423 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T473</td><td>Fig. 8(b) run, 473 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T523</td><td>Fig. 8(b) run, 523 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>missing</td><td></td><td>hei24:simrun:fig8b:T573</td><td>Fig. 8(b) run, 573 K</td><td>hei24:sim</td><td>fig8.cap;fig8b</td><td>hei24:fig8b#c5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>4. hei24 layouts</h2><p>psed_v2/kb/reports/P159.hei24.layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>minority_cells</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>hei24</td><td>table</td><td>tab1</td><td>not_units</td><td>not_units</td><td>agree</td><td></td><td>0</td><td>0</td></tr>
+<tr><td>hei24</td><td>table</td><td>tab2</td><td>row_per_unit (majority)</td><td>not_units</td><td>disagree</td><td>tab2.r6c1</td><td>0</td><td>3</td></tr>
+<tr><td>hei24</td><td>table</td><td>tabu1</td><td>not_units</td><td>not_units</td><td>agree</td><td></td><td>0</td><td>0</td></tr>
+<tr><td>hei24</td><td>table</td><td>tabu2</td><td>not_units</td><td>not_units</td><td>agree</td><td></td><td>0</td><td>0</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig2a</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>3</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig2b</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>3</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig3</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td></td><td>0</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5a</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5b</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5c</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5d</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5e</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5f</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5g</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5h</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5i</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5j</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5k</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig5l</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6a</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6b</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6c</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6d</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td></td><td></td><td>1</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6e</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6f</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6g</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6h</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6i</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6j</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6k</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig6l</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>4</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig7a</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>9</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig7b</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>9</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig8a</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig8b</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>5</td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig1a</td><td>(schematic)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig1b</td><td>(schematic)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig1c</td><td>(schematic)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>panel</td><td>fig4</td><td>(plot)</td><td>curve_per_unit</td><td>figure stage read nothing</td><td></td><td></td><td></td></tr>
+</table>
+<h2>4. hei24 ESI-only gold units</h2><p>psed_v2/kb/reports/P159.hei24.esi_only.csv</p>
+<table><tr><th>paper</th><th>gid</th><th>role</th><th>name</th><th>evidence</th></tr>
+</table>
+<h2>4. gor03 units, every row</h2><p>psed_v2/kb/reports/P159.gor03.units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>pass0_id</th><th>pass0_name</th><th>pass0_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>pass0_data</th></tr>
+<tr><td>gor03</td><td>run</td><td>merged+split</td><td>evidence</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>run 30 × 10^3 Langmuir, 250 cycles | run 4 × 10^3 Langmuir, 250 cycles | run 2 × 10^3 Langmuir, 350 cycles | flat-surface runs</td><td>;;;</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p1;s4.p3</td><td></td><td>run_30k_L</td><td>30 × 10^3 Langmuir</td><td></td><td>s4.p3;fig2;fig2.cap</td><td>Figure 2 shows an example of a cross section of a hole coated with 100 % step coverage using 30 × 10^3 Langmuir of exposure in each of 250 cycles.</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>merged+split</td><td>evidence</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>run 30 × 10^3 Langmuir, 250 cycles | run 4 × 10^3 Langmuir, 250 cycles | run 2 × 10^3 Langmuir, 350 cycles | flat-surface runs</td><td>;;;</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p1;s4.p3</td><td></td><td>run_4k_L</td><td>4 × 10^3 Langmuir</td><td></td><td>s4.p4;fig2;fig2.cap</td><td>The two holes coated using 4 × 10^3 Langmuir (250 cycles) were coated over about three quarters of their length.</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>merged+split</td><td>evidence</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>run 30 × 10^3 Langmuir, 250 cycles | run 4 × 10^3 Langmuir, 250 cycles | run 2 × 10^3 Langmuir, 350 cycles | flat-surface runs</td><td>;;;</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p1;s4.p3</td><td></td><td>run_2k_L</td><td>2 × 10^3 Langmuir</td><td></td><td>s4.p4;fig2;fig2.cap</td><td>The two holes coated using 2 × 10^3 Langmuir (350 cycles) were only coated along the top quarter of their length.</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gor03:ent:30k;gor03:ent:4k;gor03:ent:2k;gor03:ent:flat</td><td>holes, 30 × 10^3 Langmuir, 250 cycles | holes, 4 × 10^3 Langmuir, 250 cycles | holes, 2 × 10^3 Langmuir, 350 cycles | flat HfO2 film</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p3</td><td></td><td>specimen_30k_L</td><td>30</td><td>run_30k_L</td><td>s4.p3;fig2;fig2.cap</td><td>a hole coated with 100 % step coverage using 30 × 10^3 Langmuir of exposure in each of 250 cycles</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gor03:ent:30k;gor03:ent:4k;gor03:ent:2k;gor03:ent:flat</td><td>holes, 30 × 10^3 Langmuir, 250 cycles | holes, 4 × 10^3 Langmuir, 250 cycles | holes, 2 × 10^3 Langmuir, 350 cycles | flat HfO2 film</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p3</td><td></td><td>specimen_4k_L</td><td>4</td><td>run_4k_L</td><td>s4.p4;fig2;fig2.cap</td><td>The two holes coated using 4 × 10^3 Langmuir (250 cycles)</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gor03:ent:30k;gor03:ent:4k;gor03:ent:2k;gor03:ent:flat</td><td>holes, 30 × 10^3 Langmuir, 250 cycles | holes, 4 × 10^3 Langmuir, 250 cycles | holes, 2 × 10^3 Langmuir, 350 cycles | flat HfO2 film</td><td>gor03:dep:30k;gor03:dep:4k;gor03:dep:2k;gor03:dep:flat</td><td>s8.p3;fig2.cap | s8.p5;fig2.cap | s8.p5;fig2.cap | s4.p3</td><td></td><td>specimen_2k_L</td><td>2</td><td>run_2k_L</td><td>s4.p4;fig2;fig2.cap</td><td>The two holes coated using 2 × 10^3 Langmuir (350 cycles)</td><td>tokens in order</td><td></td></tr>
+<tr><td>gor03</td><td>simulation</td><td>matched</td><td>tree</td><td>gor03:sim</td><td>kinetic model</td><td></td><td>s5.h;s7.h</td><td></td><td>sim_kinetic_model</td><td>Kinetic Model</td><td></td><td>abs.g1;s3.h</td><td>A simple theory is developed for the conditions needed to deposit coatings with uniform thickness in narrow holes of arbitrary cross section.</td><td>found</td><td></td></tr>
+<tr><td>gor03</td><td>model_run</td><td>matched</td><td>data</td><td>gor03:simrun:fig3</td><td>Fig. 3 prediction</td><td>gor03:sim</td><td>fig3.cap;s8.p6</td><td>gor03:fig3#c1</td><td>model_run_predicted_exposure</td><td>predicted exposure</td><td>sim_kinetic_model</td><td>s4.p6;fig3;fig3.cap</td><td>The predicted exposure, according to Equation 15, needed for holes with a range of aspect ratios from 1 to 2000, is plotted in Figure 3.</td><td>found</td><td>gor03:fig3#c1:simulated</td></tr>
+</table>
+<h2>4. gor03 layouts</h2><p>psed_v2/kb/reports/P159.gor03.layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>minority_cells</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>gor03</td><td>panel</td><td>fig3</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td></td><td>1</td></tr>
+<tr><td>gor03</td><td>panel</td><td>fig1</td><td>(schematic)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>panel</td><td>fig2</td><td>(micrograph)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>panel</td><td>fig4</td><td>(schematic)</td><td></td><td>no data in figures.json</td><td></td><td></td><td></td></tr>
+</table>
+<h2>4. gor03 ESI-only gold units</h2><p>psed_v2/kb/reports/P159.gor03.esi_only.csv</p>
+<table><tr><th>paper</th><th>gid</th><th>role</th><th>name</th><th>evidence</th></tr>
+</table>
+<h2>score.py run (round-1 papers)</h2><p>psed_v2/kb/reports/P159.score_run.txt</p>
+<pre>yli18: 243 gold rows, 80 compiled facts without a gold match
+yli18: check --dir 159 problems; T6 138/243
+yim20: 900 gold rows, 165 compiled facts without a gold match
+yim20: check --dir 306 problems; T6 425/900
+mat22: 1071 gold rows, 106 compiled facts without a gold match
+mat22: check --dir 263 problems; T6 273/1071
+exit 0
+</pre>
+</body></html>
