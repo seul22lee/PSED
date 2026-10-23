@@ -272,7 +272,6 @@ def cmd_propose():
 
 # ---------------------------------------------------------------- decide.html
 DECIDE_SCRIPT = r"""
-const D=JSON.parse(document.getElementById('data').textContent);
 const COLS=D.cols, ROWS=D.rows, LINES=D.lines, F=['decision','alias_target','never_category','decision_note'];
 function q(v){return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function state(i){const r=document.getElementById('r'+i);if(!r)return ROWS[i];
@@ -343,7 +342,7 @@ def decide_page(rows, n):
             "Rows left without a choice stay pending.</p>"
             f"<table><tr>{''.join(f'<th>{h}</th>' for h in CAND_HEAD)}<th>decision</th></tr>{''.join(body)}</table>"
             f"<h2>Decided earlier (read-only)</h2><table><tr><th>id</th><th>kind</th><th>decision</th><th>alias target</th><th>never category</th><th>note</th><th>first round</th></tr>{done_html}</table>"
-            f"<script type='application/json' id='data'>{data}</script><script>{DECIDE_SCRIPT}</script></body></html>\n")
+            f"<script>const D={data};{DECIDE_SCRIPT}</script></body></html>\n")                       # the one script: the rows, then the form logic
     DECIDE.write_text(page, encoding="utf-8")
 
 

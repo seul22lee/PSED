@@ -1,0 +1,29 @@
+$ grow.py add <held-out>
+STOPPED: <held-out>: a held-out paper (CLAUDE.md: <held-out>, <held-out>, <held-out> are never extracted, never read, never shown); refused
+$ grow.py add 10.9999_not_a_paper
+STOPPED: not in ingest/final: 10.9999_not_a_paper
+$ grow.py add 10.1002_cvde.200390005
+STOPPED: missing: kb/compiled/10.1002_cvde.200390005.unmapped.csv
+not extracted; run pass 0 / pass 1 first (grow.py never calls a provider)
+$ grow.py add 10.1063_1.5028178 10.1039_d0cp03358h 10.1021_acs.chemmater.2c01154
+round 1 open: 3 papers (10.1063_1.5028178, 10.1039_d0cp03358h, 10.1021_acs.chemmater.2c01154); DOIs from corpus/manifest.csv
+$ grow.py propose
+round 1: 53 candidates (53 new, 0 merged with earlier undecided rows; 7 rows matched never.csv)
+pending.csv: 55 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+$ grow.py status
+open round: 1 (proposed; 10.1063_1.5028178;10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154)
+pending.csv: {'undecided': 55} (55 rows)
+  2026-10-22 round 0 never fitted_exposures () pilot: pilot hand row (unmapped.csv, field pilot): Fitted exposures (Ψ); moved to never
+  2026-10-22 round 0 never area_per_surface_site_s0 () pilot: pilot hand row (unmapped.csv, field pilot): Area per surface site s0 [m2]; moved
+  2026-10-22 round 0 never mass_of_atomic_o () pilot: pilot hand row (unmapped.csv, field pilot): Mass of atomic O [amu]; moved to nev
+  2026-10-22 round 0 never oes_integration_time () pilot: pilot hand row (unmapped.csv, field pilot): OES integration time [s]; moved to n
+  2026-10-22 round 0 never eqp_energy_step () pilot: pilot hand row (unmapped.csv, field pilot): EQP energy step [eV]; moved to never
+  2026-10-22 round 0 never gas_only_stabilization_sub_steps_of_the_oxygen_pulse () pilot: pilot hand row (unmapped.csv, field pilot): Gas-only stabilization sub-steps of 
+  2026-10-22 round 0 never technique_reactor () pilot: pilot hand row (unmapped.csv, field pilot): Technique; Reactor (ALD or EQP chamb
+  2026-10-22 round 0 never growth_regimes () pilot: pilot hand row (unmapped.csv, field pilot): Growth regimes (saturation spread ou
+  2026-10-22 round 0 never rho_film_density_model_input () pilot: pilot hand row (unmapped.csv, field pilot): rho (film density; model input) [kg 
+  2026-10-22 round 0 never alumina_film_density_footnote_e_model_input () pilot: pilot hand row (unmapped.csv, field pilot): Alumina film density (footnote e; mo
+
+DOIs: ingest/final/<pid>/ has no metadata file (document.md, figures/, figures.json, figures_repeat.json, structure.json); grow.py takes them from
+corpus/manifest.csv (doi by paper_id), the corpus's single source of truth.
+Rule hint c: pass-0 units carry no conditions (P151 C1: conditions come from pass 1), so c reads the other[...] conditions on the experimental runs of kb/compiled/<pid>.experiments.csv (model runs excluded).

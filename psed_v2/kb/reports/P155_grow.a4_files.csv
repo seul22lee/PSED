@@ -1,0 +1,13 @@
+file,action,note
+ontology/pending_decide.py,deleted,"candidate grouping, rule hints -> grow.py propose (rule c reads compiled run conditions: pass 0 carries none since P151)"
+ontology/merge_pending.py,deleted,writing accepted entries -> grow.py apply
+ontology/make_report.py,deleted,15 checks -> export.py --check; sections -> grow.py ontology.html
+ontology/report.html,deleted,replaced by ontology/ontology.html
+ontology/entry_definitions.py,deleted,"one-off (P131b-12c), done"
+kb/pilot/absorption.py + ontology/absorption.csv,deleted,nothing read them (the only reader of vocab.PENDING)
+ontology/pending_decisions.csv,deleted,its rule and note go into pending.csv rule_hint and decision_note
+ontology/alias_audit.py,kept unchanged,"NOTE: pending_forms() reads pending.csv columns status / label / aliases, which the grow.py columns no longer have: it raises KeyError when run"
+ontology/apply_external_ids.py,kept unchanged,reads external_ids.csv and ontology.yaml only
+ontology/export.py,"kept, extended","the 15 checks under --check, kinds at the top of CODEBOOK.md, stamp_header(); pending rows no longer enter vocab.py"
+kb/pilot/check.py,import confirmed,runs export.py --check as a subprocess; imports none of the deleted scripts
+kb/extract/pass0_paper.py,import confirmed,imports export (P143 layouts) only

@@ -1,0 +1,12 @@
+ psed_v2/kb/pilot/vocab.py         | 174 +++++++++-----------------------------
+ psed_v2/kb/schema/CODEBOOK.md     |  15 +++-
+ psed_v2/kb/schema/FORM.md         |   2 +-
+ psed_v2/kb/schema/form.json       |   4 +-
+ psed_v2/kb/schema/form_pass0.json |   4 +-
+ 5 files changed, 58 insertions(+), 141 deletions(-)
+
+vocab.py: the pending rows no longer enter the vocabulary. Gone: gap_height and evacuated_below (quantities), elam_monte_carlo (model);
+pore_density, pore_volume, tortuosity were listed twice in CONCEPTS (entry + pending row), now once; the seven duplicate ids now carry their
+ontology.yaml entry, not the pending row (model_reactant: aliases ['model reactant', 'reactant A (model)'], formula '' instead of the
+pending row's 'model reactant A' aliases; no gold or compiled value uses those, one hei24 statement mentions 'generic reactant').
+form.json, form_pass0.json, FORM.md: the ontology hash only. CODEBOOK.md: the hash and the kinds block (codebook_diff.txt).

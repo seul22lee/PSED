@@ -1,0 +1,9 @@
+Check 11 (family electrical) on the scratch copy in P154: its message read problems: ['electrical'], but no entry has family electrical.
+The problem id is the method entry electrical: its replaced_by is a list, ["four_point_probe", "two_point_through_thickness", "hall", "transistor_iv"], a split (Sec. 18.4: a four-point value on a film
+and a two-point through-thickness value on a porous composite are not comparable). make_report.py tested `e['replaced_by'] not in ids` with ids a
+list of strings, so a list is never found and every split is flagged. The four targets are entries: four_point_probe (method); two_point_through_thickness (method); hall (method); transistor_iv (method).
+The check itself was wrong for a list; not an ontology change (no round-0 history row). Fixed in export.py: each id of a list
+must be an entry (a missing one still fails, so the check is as strict as before). electrical is the only entry with a list replaced_by.
+Check 14 passes after A1 (the seven duplicates closed). Check 12 reads the pilot's hand labels from never.csv (same parsing, same Sec. 18.7
+filter). Check 14's message changed: pending_decisions.csv, the citation and the status it named are gone (A4); it now tests kind, definition or
+evidence, decision and its target, and no clash with an entry while undecided or accepted.

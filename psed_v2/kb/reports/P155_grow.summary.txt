@@ -1,0 +1,25 @@
+P155: the ontology growth pipeline in psed_v2/ontology, round 1 proposed on the three extracted papers. 0 calls. Not applied: the
+decisions are the user's.
+
+Commit 1 (dcfcd65), Part A + B. A1: the seven pending rows that were already entries closed (history.csv round 0, decided_by user; their
+  pending definitions differ from the entries', the entries' kept: a1_closed). A2: held-out rows deleted, counts only (a2_deleted).
+  A3: the 45 pilot hand rows -> never.csv (a3_never); unmapped.csv keeps the 24 figure-import rows. pending.csv in the grow.py columns:
+  the two pilot rows that stay (elam_monte_carlo, evacuated_below; old columns kept in a1_converted). A4: pending_decide.py,
+  merge_pending.py, make_report.py, report.html, entry_definitions.py, pending_decisions.csv, absorption.py + absorption.csv deleted;
+  alias_audit.py and apply_external_ids.py kept unchanged (alias_audit.py now raises KeyError on the new pending.csv: a4_files).
+  A5: the 15 checks run under export.py --check, all pass (a5_checks). Check 11 was the check's fault: a split replaced_by list
+  (electrical -> four method entries) was never found in the id list; fixed to check every listed id (a5_check11). Check 14 passes after
+  A1; its message changed with the input A4 deleted. Part B: the kinds text verbatim in ontology.yaml kinds:, at the top of
+  CODEBOOK.md (codebook_diff: 14 lines added, 1 changed) and ontology.html.
+  Also: pending rows no longer enter vocab.py (vocab_changes); the header hash restamped.
+  Full check.py, before -> after (check_full): P55 sentence-only 1 -> 1 (known); figures import 0 -> 7, all on the three held-out
+  papers whose unmapped.csv rows A2 deleted - reported, not worked around (R3); the decision is the user's.
+Commit 2 (65ada04), Part C: grow.py (init, add, propose, apply, status, report; imports export only), rounds.csv, history.csv (+280
+  round-0 rows; no entry without a row: round0), ontology.html (26 text fields that name a held-out paper withheld).
+Commit 3, Part D: grow.py add (refusals tested: a held-out pid, a pid not in ingest/final, a paper without compiled unmapped rows) and
+  propose: 53 candidates from 100 compiled unmapped rows (7 matched never.csv), 1 with rule hint a, 1 with c (round1_run,
+  round1_candidates). decide.html tested headless: no change -> byte for byte equal; one decision -> one line changed (decide_test).
+  grow.py apply tested on a scratch copy only (apply_test).
+Deviations to note: DOIs from corpus/manifest.csv (ingest/final has no metadata file); rule hint c from the compiled run conditions
+  (pass 0 has none); kind 'unit' is a candidate kind (a unit row without a label) and apply stops on accepting one (units.yaml is by hand);
+  playwright's own chromium (/opt/pw-browsers/chromium is absent).
