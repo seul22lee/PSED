@@ -11,6 +11,9 @@ alias (another entry's id), qualifier (an entry plus qualifiers), transform (the
 for it, under its own id), attribute (an entry with attribute: true), reserved (the escape id other), dropped (no data) or
 to_absorb (no disposition yet: P51 consumes the list) or pending (a disposition recorded, applied in a later step). Every to_absorb or
 pending id is emitted into the vocabulary provisionally so that the data keeps passing the vocabulary check until it is absorbed.
+P155: the 15 ontology checks (make_report.py until P155) run with --check, same numbering and messages (11 reads a split replaced_by
+list, 12 reads never.csv, 14 reads the grow.py pending.csv); the kinds: block of ontology.yaml opens CODEBOOK.md; pending.csv rows no
+longer enter the vocabulary (a candidate becomes vocabulary only when grow.py apply writes it into ontology.yaml).
 Needs PyYAML.
 """
 import csv
@@ -35,12 +38,29 @@ def load():
     return onto, pmap
 
 
+PENDING_COLUMNS = ["id", "kind", "proposed_definition", "unit", "n_papers", "pids", "dois", "evidence", "nearest_id", "nearest_definition", "rule_hint",
+                   "first_round", "decision", "alias_target", "never_category", "decision_note"]   # P155: grow.py propose writes them, the user decides
+DECISIONS = ("", "accept", "alias", "reject", "never")
+PENDING_KINDS = ("quantity", "species", "structure", "method", "model", "mechanism", "unit")
+
+
 def pending():
-    """ontology/pending.csv (P83): provisional extension entries a paper needed and nothing fitted (id, kind quantity | species | structure |
-    method | model | mechanism, unit, role, class, definition, citation, cq, paper, records, status). Emitted into the vocabulary
-    (ENTRIES carry pending: True while the status is pending; P98: pending_decide.py sets status accepted by rule a, b or c); never frozen."""
+    """ontology/pending.csv (P155, grow.py): the candidates of the growth rounds, one row each (PENDING_COLUMNS); decision empty = still
+    pending. Read by the checks (14) and grow.py; never emitted into the vocabulary."""
     f = HERE / "pending.csv"
     return [r for r in csv.DictReader(f.open(newline="", encoding="utf-8"))] if f.exists() else []
+
+
+def never_rows():
+    """ontology/never.csv (P155): the never-an-entry labels (label, category, paper, source): the pilot's Sec. 18.7 hand rows and grow.py's
+    never decisions."""
+    f = HERE / "never.csv"
+    return [r for r in csv.DictReader(f.open(newline="", encoding="utf-8"))] if f.exists() else []
+
+
+def strip_unit(label):
+    """A label without its trailing unit in brackets or parentheses: 'Intensity [a.u.]' -> 'Intensity'."""
+    return re.sub(r"\s*[\[(][^\])]*[\])]\s*$", "", str(label)).strip()
 
 
 _UNITS = {}
@@ -93,32 +113,26 @@ def unit_tables(onto):
     return base, alias, {**{d: d for d in by_dim}, **same}
 
 
-def pending_entry(r):
-    """The entry a pending.csv row stands for (P83); merge_pending.py writes the same dict into ontology.yaml when the row is accepted."""
-    e = dict(id=r["id"], type=r["kind"] if r["kind"] != "quantity" or r["role"] != "categorical" else "categorical", origin="extension", role=r.get("role", ""),
-             definition=r["definition"], unit=r.get("unit", ""), name=r["id"].replace("_", " "), label=r.get("label") or r["id"].replace("_", " "), aliases=[a for a in (r.get("aliases") or "").split("|") if a], pending=r.get("status", "pending") != "accepted",
-             dimension=unit_dimension(r.get("unit", "")),
-             category={"quantity": "test_structure" if "structure" in (r.get("cq") or "") else "measurement", "model": "models"}.get(r["kind"], ""))
-    if r["kind"] == "species":                                                  # a pending species: its formula is its first formula-like alias, else the
-        als = [a for a in (r.get("aliases") or "").split("|") if a]             # definition's "(formula X", verbatim (P131b: never derived from the id)
-        m = re.search(r"\(formula ([^;)]+)", r["definition"])
-        formula = next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), "") or (m.group(1).strip() if m else (als[0] if als else ""))
-        e.update(kind=r.get("class") or "molecule", formula=formula, aliases=als or ([formula] if formula else []))
+def pending_entry(r, labels=()):
+    """P155: the entry an accepted pending.csv row becomes (grow.py apply adds origin, source_pids and evidence): id, type = kind,
+    definition = proposed_definition, unit and its dimension, name, label and aliases = the printed labels; a species takes its formula
+    from its first formula-like label, verbatim (P131b: never derived from the id); a model an empty parameter list."""
+    als = list(dict.fromkeys(a for a in labels if a))
+    e = dict(id=r["id"], type=r["kind"], definition=r["proposed_definition"], unit=r.get("unit", ""), dimension=unit_dimension(r.get("unit", "")),
+             name=(als[0] if als else r["id"].replace("_", " ")), label=(als[0] if als else r["id"].replace("_", " ")), aliases=als,
+             category={"quantity": "measurement", "model": "models"}.get(r["kind"], ""))
+    if r["kind"] == "species":
+        e.update(kind="molecule", formula=next((a for a in als if re.match(r"^[A-Z][A-Za-z0-9()]*$", a)), ""))
     if r["kind"] == "structure":
-        e["class"] = r.get("class", "")
+        e["class"] = ""
     if r["kind"] == "model":
-        e.update(model_type=r.get("class", ""), parameters=[], category="models")
-    if r.get("converts_to"):                                                    # P109: target|rule|requires
-        t, rule, req = (r["converts_to"].split("|") + ["", ""])[:3]
-        e["converts_to"] = dict(target=t, rule=rule, requires=req)
-    return e
+        e.update(model_type="", parameters=[])
+    return {k: v for k, v in e.items() if v not in ("", None)}
 
 
 def build(onto, pmap):
-    entries = list(onto["entries"])
+    entries = list(onto["entries"])                                             # P155: pending.csv candidates are not vocabulary
     voc = onto["vocabularies"]
-    pend = pending()
-    entries += [pending_entry(r) for r in pend]                                 # P83: pending entries join the vocabulary provisionally
     live = [e for e in entries if not e.get("replaced_by")]
     concepts = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and not e.get("attribute"))
     attributes = sorted(e["id"] for e in live if e["type"] in ("quantity", "categorical") and e.get("attribute"))
@@ -136,8 +150,7 @@ def build(onto, pmap):
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
     methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""))
-               for e in onto["entries"] if e["type"] == "method"] \
-        + [dict(id=r["id"], **{"class": r.get("class") or r["id"]}, definition=r["definition"], pending=r.get("status", "pending") != "accepted") for r in pend if r["kind"] == "method"]   # P131b; P142b: methods are entries only
+               for e in onto["entries"] if e["type"] == "method"]                 # P142b: methods are entries only
     defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
     families = {}
@@ -180,7 +193,6 @@ def build(onto, pmap):
         AMBIGUOUS_ALIASES={a: [str(x) for x in v] for a, v in voc.get("ambiguous_aliases", {}).items()},
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
-        PENDING={r["id"]: dict(kind=r["kind"], paper=r["paper"], status=r["status"]) for r in pend},
         FROM_OTHER={lab: e["id"] for e in live for lab in e.get("from_other", [])},   # P131b: printed label -> the entry promoted from the free label other[label]
         TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
     )
@@ -487,6 +499,11 @@ def qualifier_text(q):
     return "citation", ""
 
 
+def kinds_lines(onto):
+    """P155: the kinds: block as the user wrote it, one line per kind, the text aligned after 'structure: ' (verbatim)."""
+    return [f"{k + ':':<11}{v}" for k, v in (onto.get("kinds") or {}).items()]
+
+
 def codebook(onto, L):
     """P143: kb/schema/CODEBOOK.md from ontology.yaml, units.yaml, kb/pilot/lists.py, facts.py and check.py (P148: the record types, NK
     reasons and the equation rule from lists.py, where pass1_elements.py RULES moved them)."""
@@ -498,6 +515,7 @@ def codebook(onto, L):
     missing = []
     out = [f"<!-- GENERATED by psed_v2/ontology/export.py (P143); do not edit. ontology version {onto['version']}, sha256 {ontology_hash()} -->",
            "# Codebook", ""]
+    out += ["Kinds (source: ontology/ontology.yaml kinds:, P155):", "", "```", *kinds_lines(onto), "```", ""]   # P155 Part B: verbatim, at the top
     # a. tree model
     ll = lists_txt.splitlines()
     i = next(n for n, x in enumerate(ll) if x.startswith("# tree rows (stage 3)"))
@@ -600,6 +618,284 @@ def form_files(onto):
             SCHEMA / "CODEBOOK.md": codebook(onto, L)}                         # P143
 
 
+# ---------------------------------------------------------------- P155: the 15 ontology checks (make_report.py until P155; same numbering and messages)
+MINER = HERE / "sources" / "experimental-ideal-schema.json"
+EXTENSION_CAP = 60          # Sec. 18.8: 40 for the three-paper pilot, 45 with the P78 dimension slots (Sec. 18.11), 60 at ontology v1 (P131b: 53 + 10 %, Sec. 11); the Sec. 11 gate is the control, the cap a tripwire
+CATEGORIZED = ("quantity", "categorical", "model")
+SPECIES_KINDS = ("molecule", "material", "atom")
+# Base quantity ids the criteria expect (Sec. 10). Categorical entries are checked separately
+# against vocabularies.categorical_conditions plus crystallinity (an output, Sec. 2).
+EXPECTED_BASE = {
+    "deposition_temperature", "process_pressure", "pulse_time", "purge_time", "growth_per_cycle",
+    "aspect_ratio", "coated_aspect_ratio", "nucleation_period", "refractive_index",
+    "absorption_coefficient", "resistivity", "carrier_density", "mobility", "thickness_nonuniformity",
+    "composition", "film_density", "film_thickness", "penetration_depth", "equivalent_aspect_ratio",
+    "initial_sticking_coefficient", "recombination_probability", "partial_pressure", "surface_coverage",
+    "feature_width", "feature_depth", "feature_extent", "exposure", "step_coverage", "source_temperature"}
+SUBSCRIPTS = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
+
+
+def norm_value(s):
+    """Sec. 6 value matching normalization."""
+    return re.sub(r"[ \-®™]", "", str(s).lower().translate(SUBSCRIPTS)).replace("aluminium", "aluminum")
+
+
+def _leaf_paths(node, prefix=""):
+    props = node.get("properties")
+    if not props:
+        return [prefix]
+    return [p for k, v in props.items() for p in _leaf_paths(v, f"{prefix}/{k}" if prefix else k)]
+
+
+def base_paths(entry):
+    path = (entry.get("base") or {}).get("path", [])
+    return [path] if isinstance(path, str) else list(path)
+
+
+def _bare(ref):
+    return re.sub(r"\{.*\}", "", ref)
+
+
+def hierarchy_tree(onto):
+    """Hierarchy as (node by id, children by parent id, leaf ids in depth-first order)."""
+    nodes = {n["id"]: n for n in onto["hierarchy"]}
+    children = {}
+    for n in onto["hierarchy"]:
+        children.setdefault(n.get("parent"), []).append(n["id"])
+    leaves = []
+
+    def walk(pid):
+        for c in children.get(pid, []):
+            walk(c) if children.get(c) else leaves.append(c)
+    walk(None)
+    return nodes, children, leaves
+
+
+def values_from_targets(entry, entries):
+    """Species or structure ids a categorical's values come from (Sec. 6)."""
+    vf = entry.get("values_from") or ""
+    if vf.startswith("species with kind"):
+        kind = vf.split("=")[-1].strip()
+        return [s["id"] for s in entries if s["type"] == "species" and s.get("kind") == kind]
+    if vf.startswith("structure"):
+        return [s["id"] for s in entries if s["type"] == "structure"]
+    return []
+
+
+def _never_label(raw):
+    """check 12 reads a never.csv label as make_report read the pilot's unmapped rows: the text before a trailing ' [unit]'."""
+    m = re.match(r"^(.*?)(?: \[([^\]]*)\])?$", raw or "")
+    return m.group(1) if m else raw
+
+
+def run_checks(onto):
+    """[(title, passed, detail, problem rows)] of the 15 checks."""
+    from collections import Counter, defaultdict
+    entries = onto["entries"]
+    ids = [e["id"] for e in entries]
+    quantities = [e for e in entries if e["type"] == "quantity"]
+    voc = onto["vocabularies"]
+    out = []
+
+    leaves = onto["base_sources"]["schema_miner"]["leaf_paths"]
+    note = ""
+    if MINER.exists():
+        if sorted(_leaf_paths(json.loads(MINER.read_text()))) != sorted(leaves):
+            note = "leaf_paths differ from sources/experimental-ideal-schema.json; "
+    else:
+        note = "(sources JSON absent; used leaf_paths in ontology.yaml) "
+    used = Counter(p for e in entries for p in base_paths(e))
+    used.update(x["path"] for x in onto["excluded_base"])
+    bad = [p for p in leaves if used[p] != 1] + [p for p in used if p not in leaves]
+    out.append(("1. every schema-miner leaf path appears exactly once", not bad and "differ" not in note,
+                note + (f"problems: {bad}" if bad else f"{len(leaves)} paths"), bad))
+
+    bad = [e["id"] for e in entries if not (e.get("definition") or "").strip()]
+    bad += [e["id"] for e in entries
+            if (e.get("base") or {}).get("source") in ("cremers_2019", "popov_2025")
+            and not re.search(r"Cremers|Popov", e["definition"])]
+    out.append(("2. every entry has a definition; review-defined terms cite the review", not bad, f"problems: {bad}" if bad else "", bad))
+
+    bad = [e["id"] for e in entries if e["origin"] == "extension" and not e.get("evidence")]
+    out.append(("3. every extension entry has gold evidence", not bad, f"problems: {bad}" if bad else "", bad))
+
+    seen = Counter(a.lower() for e in entries for a in e.get("aliases", []))
+    ambiguous = {a.lower() for a in voc["ambiguous_aliases"]}
+    bad = [a for a, n in seen.items() if n > 1] + [a for a in seen if a in ambiguous]
+    out.append(("4. no alias in two entries; ambiguous words only in ambiguous_aliases", not bad, f"problems: {bad}" if bad else "", bad))
+
+    ext = [e["id"] for e in quantities if e["origin"] == "extension" and not e.get("attribute") and not e.get("replaced_by")]   # concepts only (Sec. 18.7)
+    base = {e["id"] for e in quantities if e["origin"] == "base"}
+    diff = sorted(base ^ EXPECTED_BASE)
+    cats = {e["id"] for e in entries if e["type"] == "categorical"}
+    cat_diff = sorted(cats ^ (set(voc["categorical_conditions"]) | set(voc.get("categorical_outputs", ["crystallinity"])) | {e["id"] for e in entries if e["type"] == "categorical" and e.get("attribute")}))
+    out.append((f"5. extension quantities (concepts) <= {EXTENSION_CAP}; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes",
+                len(ext) <= EXTENSION_CAP and not diff and not cat_diff,
+                f"{len(ext)} extension quantities" + (f"; base differs: {diff}" if diff else "")
+                + (f"; categoricals differ: {cat_diff}" if cat_diff else ""),
+                ([f"{len(ext)} extension quantities > {EXTENSION_CAP}"] if len(ext) > EXTENSION_CAP else []) + [f"base differs: {d}" for d in diff] + [f"categoricals differ: {d}" for d in cat_diff]))
+
+    refs = [_bare(r) for t in onto["transforms"] for r in t["inputs"] + [t["output"]] if r not in ("any", "same")]
+    refs += [p for e in entries if e["type"] == "model" for p in e.get("parameters", [])]
+    bad = sorted({r for r in refs if r not in ids})
+    dup = [i for i, n in Counter(ids).items() if n > 1]
+    out.append(("6. transform inputs/outputs and model parameters are existing ids; ids unique", not bad and not dup,
+                f"problems: {bad + dup}" if bad or dup else "", bad + dup))
+
+    bad = [e["id"] for e in entries if e["type"] in ("species", "structure") and not e.get("evidence")]
+    out.append(("7. no species, structure or process taken from a review table (each has gold evidence)", not bad,
+                f"problems: {bad}" if bad else "", bad))
+
+    nodes, children, leaf_ids = hierarchy_tree(onto)
+    members = Counter(e.get("category") for e in entries if e["type"] in CATEGORIZED)
+    bad = [e["id"] for e in entries if e["type"] in CATEGORIZED and e.get("category") not in leaf_ids]
+    bad += [e["id"] for e in entries if e["type"] not in CATEGORIZED and e.get("category")]
+    bad += [n for n, d in nodes.items() if not (d.get("definition") or "").strip()
+            or not (re.search(r"Cremers|Popov", d.get("citation") or "") or (d.get("deviation") and d.get("citation")))]   # Sec. 18.10: a pilot-paper citation with a deviation
+    bad += [n for n in leaf_ids if not members[n]]                      # empty leaf
+    bad += [n for n, d in nodes.items() if d.get("parent") and d["parent"] not in nodes]
+    bad += [n for n in nodes if n in ids]                               # node id clashes with an entry id
+
+    def depth(n):
+        return 0 if not nodes[n].get("parent") else 1 + depth(nodes[n]["parent"])
+    top = children.get(None, [])
+    size = f"{len(nodes)} nodes, {len(top)} top-level, {len(leaf_ids)} leaves, depth {max(depth(n) for n in nodes) + 1}"
+    bad += [f"size: {size}"] if len(top) > 8 or any(depth(n) > 2 for n in nodes) else []
+    out.append(("8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty",
+                not bad, f"problems: {sorted(set(bad))}" if bad else size, sorted(set(bad))))
+
+    bad = [e["id"] for e in entries if e["type"] == "categorical" and not e.get("values_from")]
+    bad += [e["id"] for e in entries if e["type"] == "species" and e.get("kind") not in SPECIES_KINDS]
+    owners = defaultdict(set)
+    for e in entries:
+        if e["type"] in ("species", "structure"):
+            for a in e.get("aliases", []):
+                owners[norm_value(a)].add(e["id"])
+    for key, values in voc["value_aliases"].items():
+        for value, aliases in values.items():
+            if key == "joint":
+                owners[norm_value(value)].add(f"joint:{value}")
+            else:
+                for a in aliases:
+                    owners[norm_value(a)].add(f"{key}={value}")
+    bad += [f"{a} -> {sorted(o)}" for a, o in owners.items() if len(o) > 1]
+    out.append(("9. every categorical has values_from; every species has kind; no value alias under two values",
+                not bad, f"problems: {bad}" if bad else f"{len(owners)} value aliases", bad))
+
+    deg = Counter()                 # Sec. 9 edges + child_of + member_of + values_from
+    for t in onto["transforms"]:
+        for r in t["inputs"] + [t["output"]]:
+            if r not in ("any", "same"):
+                deg[_bare(r)] += 1
+    for e in entries:
+        for p in e.get("parameters", []):
+            deg[p] += 1
+            deg[e["id"]] += 1
+        if e.get("deviation") or e.get("base"):
+            deg[e["id"]] += 1
+        if any(e.get(k) for k in ("material_class", "ligand_class", "class")):
+            deg[e["id"]] += 1
+        if e.get("category"):
+            deg[e["id"]] += 1
+            deg[e["category"]] += 1
+        for s in values_from_targets(e, entries):
+            deg[s] += 1
+            deg[e["id"]] += 1
+    for v in voc["value_aliases"].get("joint", {}).values():
+        for s in v.values():
+            deg[s] += 1
+    for n, d in nodes.items():
+        if d.get("parent"):
+            deg[n] += 1
+            deg[d["parent"]] += 1
+    qualifier_keys = {k for k, q in onto["qualifiers"].items() if "species" in str(q.get("values")) or "material" in str(q.get("values"))}
+    via_qualifier = [e["id"] for e in entries if e["type"] == "species" and not deg[e["id"]]
+                     and any(k in q.get("qualifiers", []) for q in entries for k in qualifier_keys)]
+    via_claim = [e["id"] for e in entries if e["type"] == "mechanism" and e.get("evidence")]     # Sec. 18.6: a mechanism's edges are the claims that name it
+    bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier and i not in via_claim]
+    out.append(("10. no orphan: every entry and hierarchy node has at least one edge", not bad,
+                f"problems: {bad}" if bad else "all connected" + (f"; only as a qualifier value: {via_qualifier}" if via_qualifier else ""), bad))
+
+    fam = defaultdict(list)                                                     # Sec. 18.2: a family is a flat label on two or more live entries
+    for e in entries:
+        if e.get("family"):
+            fam[e["family"]].append(e["id"])
+    bad = [f"{f}: {m}" for f, m in fam.items() if len(m) < 2] + [e["id"] for e in entries if e.get("family") and e.get("replaced_by")]
+    bad += [e["id"] for e in entries if e.get("replaced_by")                    # P155: a split names its replacements as a list, every one an entry
+            and any(t not in ids for t in (e["replaced_by"] if isinstance(e["replaced_by"], list) else [e["replaced_by"]]))]
+    bad += [e["id"] for e in entries if e.get("attribute") and e["type"] not in ("quantity", "categorical")]
+    out.append(("11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals", not bad,
+                f"problems: {bad}" if bad else f"{len(fam)} families: " + "; ".join(f"{f} ({len(m)})" for f, m in fam.items()), bad))
+
+    never = {"knudsen_number", "mean_free_path", "front_slope", "fit_r2", "signal_intensity"}       # the Sec. 4 'never an entry' labels the pilot stores (Sec. 18.7)
+    bad = [e["id"] for e in entries if e["id"] in never and not (e.get("attribute") or (e.get("deviation") or {}).get("type") == "promoted")]
+    attrs = [e["id"] for e in entries if e.get("attribute")]
+    bad += [f"{e['id']}: an attribute with a family" for e in entries if e.get("attribute") and e.get("family")]
+    hand = [dict(label=_never_label(r["label"]), reason=r["category"]) for r in never_rows() if r["source"].startswith("pilot")]   # P155: the pilot's hand rows live in never.csv
+    bad += [r["label"] for r in hand if any(r["label"] == a for e in entries for a in e.get("aliases", []) if not e.get("attribute") and (e.get("deviation") or {}).get("type") != "promoted") and not r["reason"].startswith("Sec. 18.7")]
+    out.append(("12. a 'never an entry' label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry's alias", not bad,
+                f"problems: {bad}" if bad else f"attributes: {', '.join(attrs)}", bad))
+
+    classes = {c["id"]: c for c in onto.get("structure_classes", [])}          # Sec. 18.11 (P78): the structure taxonomy and its slots
+    by_id = {e["id"]: e for e in entries}
+    bad = [c for c, d in classes.items() if d.get("parent") and d["parent"] not in classes]
+    bad += [c for c, d in classes.items() if not d.get("parent") and c != "structure"]
+    bad += [f"{c}: no definition or citation" for c, d in classes.items() if not (d.get("definition") or "").strip() or not (d.get("citation") or "").strip()]
+    bad += [f"{e['id']}: class {e.get('class')!r} is not a structure class" for e in entries if e["type"] == "structure" and e.get("class") not in classes]
+    bad += [f"{c}: slot {sl} is not a test_structure entry" for c, d in classes.items() for sl in d.get("slots", []) if by_id.get(sl, {}).get("category") != "test_structure"]
+    slot_ids = {sl for d in classes.values() for sl in d.get("slots", [])}
+    bad += [f"{sl}: a slot without the CQ" for sl in slot_ids if by_id[sl].get("origin") == "extension" and (by_id[sl].get("deviation") or {}).get("type") == "added" and not by_id[sl].get("cq")]
+    bad += [f"{sl}: slot alias {a!r} in two slots" for a, n in Counter(x.lower() for sl in slot_ids for x in by_id[sl].get("structure_aliases", [])).items() if n > 1 for sl in slot_ids if a in [x.lower() for x in by_id[sl].get("structure_aliases", [])]]
+    bad += [f"structure_class vocabulary {sorted(set(voc.get('structure_class', [])) ^ set(classes))}"] if set(voc.get("structure_class", [])) != set(classes) else []
+    out.append(("13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots",
+                not bad, f"problems: {bad}" if bad else f"{len(classes)} classes, {len(slot_ids)} slot entries, {sum(1 for e in entries if e['type'] == 'structure')} structure instances", bad))
+
+    pend = pending()                                                            # P155: the grow.py candidates (PENDING_COLUMNS)
+    bad = [f"columns {list(pend[0])} are not {PENDING_COLUMNS}"] if pend and list(pend[0]) != PENDING_COLUMNS else []
+    bad += [f"{r['id']}: kind {r['kind']!r} not in {list(PENDING_KINDS)}" for r in pend if r["kind"] not in PENDING_KINDS]
+    bad += [f"{r['id']}: no proposed definition and no evidence" for r in pend if not (r["proposed_definition"] or "").strip() and not (r["evidence"] or "").strip()]
+    bad += [f"{r['id']}: decision {r['decision']!r} not in {list(DECISIONS)}" for r in pend if r["decision"] not in DECISIONS]
+    bad += [f"{r['id']}: alias target {r['alias_target']!r} is not an entry" for r in pend if r["decision"] == "alias" and r["alias_target"] not in ids]
+    bad += [f"{r['id']}: never without a never_category" for r in pend if r["decision"] == "never" and not (r["never_category"] or "").strip()]
+    bad += [f"{r['id']}: already an entry" for r in pend if r["id"] in ids and r["decision"] in ("", "accept")]
+    bad += [f"{i}: two rows" for i, n in Counter(r["id"] for r in pend).items() if n > 1]
+    dec = Counter(r["decision"] or "undecided" for r in pend)
+    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted",
+                not bad, f"problems: {bad}" if bad else f"{len(pend)} rows: " + ", ".join(f"{k} {n}" for k, n in sorted(dec.items())), bad))
+
+    units = {str(v): u for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}   # P100: family audit
+    fams = defaultdict(list)
+    for e in entries:
+        if e.get("family") and not e.get("replaced_by"):
+            fams[e["family"]].append(e)
+    decl = onto.get("families", {}) or {}
+    bad = [f"{f}: not declared under families:" for f in fams if f not in decl] + [f"{f}: declared but no member" for f in decl if f not in fams]
+    for f, ms in sorted(fams.items()):
+        dims = {e["id"]: (units.get(str(e.get("unit", "")), {}).get("qudt") or "?") for e in ms}
+        if len(set(dims.values())) > 1 and not (decl.get(f) or {}).get("mixed_dimensions"):
+            bad.append(f"{f}: dimensions differ {dims} and no mixed_dimensions")
+        if (decl.get(f) or {}).get("mixed_dimensions") and not (decl.get(f) or {}).get("reason"):
+            bad.append(f"{f}: mixed_dimensions without a reason")
+        if (decl.get(f) or {}).get("mixed_dimensions") and len(set(dims.values())) == 1:
+            bad.append(f"{f}: declared mixed but one dimension {set(dims.values())}")
+    out.append(("15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason",
+                not bad, f"problems: {bad}" if bad else "; ".join(f"{f}: {len(ms)} members, " + ("mixed (" + (decl[f].get("reason") or "")[:60] + "…)" if decl.get(f, {}).get("mixed_dimensions") else "one dimension " + next(iter({units.get(str(e.get("unit", "")), {}).get("qudt") for e in ms}))) for f, ms in sorted(fams.items())), bad))
+    return out
+
+
+def stamp_header():
+    """Rewrite the '# ontology v1 sha256 ...' header line of ontology.yaml with ontology_hash() (the convention since P131b; P150 did it by
+    hand). Returns the hash."""
+    p = HERE / "ontology.yaml"
+    text = p.read_text(encoding="utf-8")
+    m = re.search(r"(?m)^(# ontology v1 sha256 \([^)]*\): )([0-9a-f]{64})$", text)
+    assert m, "ontology.yaml has no '# ontology v1 sha256' header line"
+    h = ontology_hash()
+    if m.group(2) != h:
+        p.write_text(text[:m.start(2)] + h + text[m.end(2):], encoding="utf-8")
+    return h
+
+
 def render(v):
     out = [HEADER]
     for k, x in v.items():
@@ -615,13 +911,16 @@ def main():
         print("vocab.py", "up to date" if ok else "STALE: run python3 psed_v2/ontology/export.py")
         stale = [p.name for p, t in form_files(onto).items() if not p.exists() or p.read_text(encoding="utf-8") != t]   # P132
         print("schema/", "up to date" if not stale else "STALE: " + ", ".join(stale))
-        return 0 if ok and not stale else 1
+        checks = run_checks(onto)                                               # P155: the 15 ontology checks
+        for title, good, detail, _ in checks:
+            print("pass" if good else "FAIL", title, detail)
+        return 0 if ok and not stale and all(c[1] for c in checks) else 1
     OUT.write_text(text, encoding="utf-8")
     SCHEMA.mkdir(exist_ok=True)
     for p, t in form_files(onto).items():                                       # P132
         p.write_text(t, encoding="utf-8")
     v = build(onto, pmap)
-    print(f"{OUT}: {len(v['CONCEPTS'])} concepts, {len(v['ATTRIBUTES'])} attributes, {len(v['TO_ABSORB'])} pilot quantity ids to absorb, {len(v['PENDING'])} pending, "
+    print(f"{OUT}: {len(v['CONCEPTS'])} concepts, {len(v['ATTRIBUTES'])} attributes, {len(v['TO_ABSORB'])} pilot quantity ids to absorb, "
           f"{len(v['METHODS'])} methods, {len(v['MATERIALS'])} materials, {len(v['STRUCTURES'])} structures, {len(v['SPECIES'])} species, "
           f"{len(v['MECHANISMS'])} mechanisms, {len(v['QUALIFIERS'])} qualifier keys")
     if v["TO_ABSORB"]:

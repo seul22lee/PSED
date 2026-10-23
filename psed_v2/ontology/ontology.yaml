@@ -1,8 +1,18 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 3acb9bd2cd4b93a43970d7b33e4b231fb420dcbe8567e3abb7923d1692ef989c
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 8d8f32f470318c587df0f2b2961845c32df9314c2748dda2db8f95efd0c7d49d
 version: 1
+
+kinds:   # P155 Part B (user text, verbatim): the eight kinds the ontology holds; export.py prints them at the top of CODEBOOK.md and grow.py at the top of ontology.html
+  quantity: "something with a number: measured, set, fitted or computed; carries a unit (or \"1\" for dimensionless). Example: film_thickness, deposition_temperature."
+  unit: "how a quantity's number is scaled; symbol, variants and conversion factor live in units.yaml. Example: nm, Torr."
+  species: "a chemical thing: element, molecule, ion or radical, named as the paper names it. Example: TMA, H2O, O radical."
+  structure: "a physical object or shape the deposition acts on or produces: substrate, trench, pillar array, film, porous body. Example: lateral_high_aspect_ratio_channel."
+  mechanism: "a physical or chemical process the paper invokes to explain a result, not a number. Example: Knudsen diffusion, recombination."
+  method: "how something was deposited, measured or computed; a measurement method is what makes a measurement activity. Example: spectroscopic_ellipsometry, xps."
+  qualifier: "a label that narrows a fact without being a quantity: which step, which stage, which statistic. Example: step=reactant_A, stat=mean."
+  model: "a named mathematical or simulation model the paper fits or runs; its parameters are quantities with role model_parameter. Example: ylilammi_diffusion_model, elam_monte_carlo."
 
 base_sources:
   schema_miner:
