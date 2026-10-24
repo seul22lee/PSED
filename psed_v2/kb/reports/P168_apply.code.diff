@@ -1,0 +1,173 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index a8a49b3..41c6fdd 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -776,6 +776,7 @@ class Run:
+             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
+                             parent=f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"], statement=f"deposition run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
+         for it in role("simulation"):
++            self.model_of(it)                                                   # P168: the model entry its printed name resolves to
+             self.node[it["id"]] = (f"{k}:sim:{slug(it['id'])}", "simulation")
+             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="simulation", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
+                             parent=k, label_as_printed=it.get("name_as_printed") or it["id"], statement=f"simulation {it['id']} ({it.get('name_as_printed')!r})"))
+@@ -810,6 +811,30 @@ class Run:
+                 self.under[self.up[nid]].append(nid)
+         return rows
+ 
++    def model_of(self, it):
++        """P168 (user): a simulation unit's printed name through step a0's lookup against the model entries (vocab_hits kind model: the
++        id, the name, the aliases, this paper's symbols), as a record value goes: one id -> unit.model = id and a promoted.csv row (field
++        model); none (or two) -> an unmapped row of field model, so grow.py propose lists the name as a model candidate; a never.csv
++        word (or a symbol of this paper) carries its category, as in step a0. Nothing else changes."""
++        name = (it.get("name_as_printed") or "").strip()
++        if not name:
++            return
++        eid = next((e for e in it.get("introduced_in") or [] if e in self.order), self.els[0]["element_id"])
++        hits = vocab_hits(self.pid, "model", name)
++        if len(hits) == 1:
++            (i, how), = hits.items()
++            it["model"] = i
++            self.promoted.append(dict(r=dict(rec={}), element=eid, field="model", printed=name, meaning=name, lookup=f"model: {how}", id=i,
++                                      outcome=f"simulation {it['id']} -> model {i}"))
++            self.count("h", "simulation linked to a model entry")
++            self.note(f"h: simulation {it['id']} ({name!r}) -> model {i} ({how})")
++            return
++        nv = NEVER.get(C.X.norm_label(name)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(name)))
++        self.unmapped.append(dict(element=eid, field="model", id="other", label_as_printed=name, unit="", candidate="",
++                                  action=f"kept (ambiguous: {', '.join(sorted(hits))})" if hits else "kept (a simulation name no model entry has)",
++                                  never=nv["category"] if nv else "", nearest=""))
++        self.count("h", "simulation name unresolved (unmapped, field model)" if not hits else "simulation name ambiguous (unmapped)")
++
+     def measurement(self, ent, method):
+         """<ent>:meas:<method>; P148 (C1): "measurement" when the method is not in facts.MEAS_METHODS."""
+         method = method if method in F.MEAS_METHODS else ""
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index ada50b9..0658fee 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -185,11 +185,11 @@ def resolve_index(entries, materials):
+     aliases, symbols, replaced_by)} (vocab.ENTRIES or ontology.yaml); materials: the material species ids. Returns (words, symbols):
+     words[kind][norm_label(text)] = {id: how} over the id, the id with spaces, the name and the aliases (never the label);
+     symbols[kind][(paper, symbol_key(text))] = {id: text}. kind: quantity (quantity and categorical entries), method, structure,
+-    species, material. A key under two ids is ambiguous."""
++    species, material, model (P168: a simulation unit's printed name). A key under two ids is ambiguous."""
+     live = {i: e for i, e in entries.items() if not e.get("replaced_by")}
+     kinds = {"quantity": [i for i, e in live.items() if e["type"] in ("quantity", "categorical")], "method": [i for i, e in live.items() if e["type"] == "method"],
+              "structure": [i for i, e in live.items() if e["type"] == "structure"], "species": [i for i, e in live.items() if e["type"] == "species"],
+-             "material": [i for i in materials if i in live]}
++             "material": [i for i in materials if i in live], "model": [i for i, e in live.items() if e["type"] == "model"]}
+     words, symbols = {}, {}
+     for kind, ids in kinds.items():
+         w, sy = {}, {}
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index e4ed8b3..be939cb 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -209,9 +209,12 @@ def candidates(pids, extra=()):
+     on accept and into never.csv as paper-local rows on never.
+     6. P163: a candidate whose label is another's with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
+        become that candidate's aliases (log prefix_merges).
++    7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model; a row whose
++       field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+     Returns ({id: group}, log)."""
+     spell = unit_spellings()
+-    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
++    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[])
++    categ = {e["id"] for e in onto()["entries"] if e.get("type") == "categorical"}   # P168: a categorical's value row is no candidate
+     tables, rest = defaultdict(list), []
+     carried = defaultdict(list)
+     for u in extra:
+@@ -220,6 +223,9 @@ def candidates(pids, extra=()):
+         layouts = pass0_tables(pid)
+         own = {(u["element"], u["label"]): u["symbol"] for u in rows if u["field"] == "quantity" and u["symbol"]}
+         for u in rows:
++            if u["field"] in categ:                                             # P168 (user): its unit is nothing; no "unit" candidate
++                log["categorical"].append(u)
++                continue
+             if u["field"] == "unit" and not u["symbol"]:                       # a unit row follows the quantity row of its cell and label
+                 u["symbol"] = own.get((u["element"], u["label"]), "")
+             m = re.match(r"^(tab\w*)\.(r\d+)c\d+$", u["element"])
+@@ -306,7 +312,8 @@ def candidates(pids, extra=()):
+     for c in out.values():
+         units = Counter(u["unit"] for u in c["members"] if u["unit"])
+         c["unit"] = units.most_common(1)[0][0] if units else ""
+-        c["kind"] = "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] == "quantity" for u in c["members"]) else "unit"
++        c["kind"] = "model" if all(u["field"] == "model" for u in c["members"]) else \
++            "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] == "quantity" for u in c["members"]) else "unit"   # P168: a simulation name
+         ev = {}
+         for u in c["members"]:
+             ev.setdefault(u["pid"], f"{u['pid']}:{u['element']} — {u['quote']}" + (f" ({'; '.join(c['notes'])})" if c["notes"] else ""))
+@@ -636,6 +643,20 @@ def add_symbols(text, eid, pairs):
+     return text[:s] + blk + text[e:], add
+ 
+ 
++MODEL_PARAMS = r"\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)"
++
++
++def model_fields(row):
++    """P168 (user): an accepted model's class, parameters and the scope of its printed name, from its pending row: 'class analytical' or
++    'class computational' in the decision note; 'parameters <id>, <id>, ...' in the note, else in the proposed definition; 'printed name:
++    paper-local symbol' in the note keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
++    parameters, paper_local)."""
++    note = row["decision_note"]
++    cls = re.search(r"\bclass:?\s*(analytical|computational)\b", note)
++    pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row["proposed_definition"])
++    return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(r"printed name:?\s*paper-local symbol", note))
++
++
+ def split_labels(row, labels):
+     """P164 (user): a decision's printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word."""
+@@ -665,6 +686,13 @@ def cmd_apply():
+             stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
+         if x["decision"] == "never" and not x["never_category"].strip():
+             stops.append(f"{x['id']}: never without a never_category")
++        if x["decision"] == "accept" and x["kind"] == "model":                 # P168: a model's class and parameters (model_fields)
++            mt, params, _ = model_fields(x)
++            if not mt:
++                stops.append(f"{x['id']}: accept of a model without its class (decision note: 'class analytical' or 'class computational')")
++            bad = [q for q in params if q not in have and q not in {y["id"] for y in decided if y["decision"] == "accept"}]
++            if bad:
++                stops.append(f"{x['id']}: model parameters that are no entry: {bad}")
+     if stops:
+         raise Stop("nothing written:\n  " + "\n  ".join(stops))
+     backup = {p: p.read_bytes() for p in (ONTO, PENDING, NEVER, HISTORY, ROUNDS) if p.exists()}
+@@ -676,7 +704,12 @@ def cmd_apply():
+         labels, syms = printed_labels(x), candidate_symbols(x)
+         words, lsyms = split_labels(x, labels[:1])                             # P164: a symbol-like label is a symbol of its paper, never a word
+         if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
++            mt, params, local = model_fields(x) if x["kind"] == "model" else ("", [], False)
++            if local:                                                           # P168: the printed name a symbol of its paper, not an alias
++                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
++            if x["kind"] == "model":
++                e.update(model_type=mt, parameters=params)
+             e.update(origin=f"round {n}", source_pids=[p for p in x["pids"].split(";") if p], evidence=evidence_items(x))
+             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
+             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
+@@ -815,6 +848,7 @@ def open_rows(n, compiled, unm, snap):
+             ngrp[ck(u)] = nv
+     for u in log["values"]:
+         vals.add(ck(u))
++    cats = {ck(u) for u in log.get("categorical", [])}                         # P168
+     snap_of = {}
+     for r in snap:
+         snap_of.setdefault((r["pid"], r["element"], r["field"], r["label"], r["unit"]), []).append(r["candidate"])
+@@ -839,6 +873,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = "other", f"joined the symbol-table row of a never candidate through its symbol ({ngrp[k]}); propose drops the group"
+             elif k in vals:
+                 cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
++            elif k in cats:
++                cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
+             elif cid in decided_ids:
+                 h = decided_ids[cid]
+                 cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
+@@ -969,7 +1005,7 @@ def audit_round(n):
+     a2 = []
+     for p in sorted(compiled):
+         for x in pro[p]:
+-            if x["field"] == "quantity":
++            if x["field"] in ("quantity", "model"):                             # P168: a model promotion against the entry's name
+                 es = [entries.get(i, {}) for i in x["id"].split(" | ")]
+                 name, defi = " | ".join(e.get("name", "") for e in es), " | ".join(e.get("definition", "") for e in es)
+                 hd = head_noun(defi)

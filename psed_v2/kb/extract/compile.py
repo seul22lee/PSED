@@ -776,6 +776,7 @@ class Run:
             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="deposition", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
                             parent=f"{k}:recipe", label_as_printed=it.get("name_as_printed") or it["id"], statement=f"deposition run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
         for it in role("simulation"):
+            self.model_of(it)                                                   # P168: the model entry its printed name resolves to
             self.node[it["id"]] = (f"{k}:sim:{slug(it['id'])}", "simulation")
             rows.append(row(fact_id=self.node[it["id"]][0], type="activity", kind="simulation", how="stated", evidence=ok_ev(it.get("introduced_in") or []),
                             parent=k, label_as_printed=it.get("name_as_printed") or it["id"], statement=f"simulation {it['id']} ({it.get('name_as_printed')!r})"))
@@ -809,6 +810,30 @@ class Run:
             if role_ in ("specimen", "model_run"):
                 self.under[self.up[nid]].append(nid)
         return rows
+
+    def model_of(self, it):
+        """P168 (user): a simulation unit's printed name through step a0's lookup against the model entries (vocab_hits kind model: the
+        id, the name, the aliases, this paper's symbols), as a record value goes: one id -> unit.model = id and a promoted.csv row (field
+        model); none (or two) -> an unmapped row of field model, so grow.py propose lists the name as a model candidate; a never.csv
+        word (or a symbol of this paper) carries its category, as in step a0. Nothing else changes."""
+        name = (it.get("name_as_printed") or "").strip()
+        if not name:
+            return
+        eid = next((e for e in it.get("introduced_in") or [] if e in self.order), self.els[0]["element_id"])
+        hits = vocab_hits(self.pid, "model", name)
+        if len(hits) == 1:
+            (i, how), = hits.items()
+            it["model"] = i
+            self.promoted.append(dict(r=dict(rec={}), element=eid, field="model", printed=name, meaning=name, lookup=f"model: {how}", id=i,
+                                      outcome=f"simulation {it['id']} -> model {i}"))
+            self.count("h", "simulation linked to a model entry")
+            self.note(f"h: simulation {it['id']} ({name!r}) -> model {i} ({how})")
+            return
+        nv = NEVER.get(C.X.norm_label(name)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(name)))
+        self.unmapped.append(dict(element=eid, field="model", id="other", label_as_printed=name, unit="", candidate="",
+                                  action=f"kept (ambiguous: {', '.join(sorted(hits))})" if hits else "kept (a simulation name no model entry has)",
+                                  never=nv["category"] if nv else "", nearest=""))
+        self.count("h", "simulation name unresolved (unmapped, field model)" if not hits else "simulation name ambiguous (unmapped)")
 
     def measurement(self, ent, method):
         """<ent>:meas:<method>; P148 (C1): "measurement" when the method is not in facts.MEAS_METHODS."""

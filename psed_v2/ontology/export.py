@@ -185,11 +185,11 @@ def resolve_index(entries, materials):
     aliases, symbols, replaced_by)} (vocab.ENTRIES or ontology.yaml); materials: the material species ids. Returns (words, symbols):
     words[kind][norm_label(text)] = {id: how} over the id, the id with spaces, the name and the aliases (never the label);
     symbols[kind][(paper, symbol_key(text))] = {id: text}. kind: quantity (quantity and categorical entries), method, structure,
-    species, material. A key under two ids is ambiguous."""
+    species, material, model (P168: a simulation unit's printed name). A key under two ids is ambiguous."""
     live = {i: e for i, e in entries.items() if not e.get("replaced_by")}
     kinds = {"quantity": [i for i, e in live.items() if e["type"] in ("quantity", "categorical")], "method": [i for i, e in live.items() if e["type"] == "method"],
              "structure": [i for i, e in live.items() if e["type"] == "structure"], "species": [i for i, e in live.items() if e["type"] == "species"],
-             "material": [i for i in materials if i in live]}
+             "material": [i for i in materials if i in live], "model": [i for i, e in live.items() if e["type"] == "model"]}
     words, symbols = {}, {}
     for kind, ids in kinds.items():
         w, sy = {}, {}
