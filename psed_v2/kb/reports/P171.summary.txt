@@ -1,0 +1,29 @@
+P171: 0 provider calls. Round 4 applied (round-4 acceptance FAIL 1, a decision for the user); wer21 got its paper key and elements.csv, but
+its pass 0 did not run: wer21 has no figures.json (the figure stage never ran for it).
+
+1. Precondition met: accept 1 (pillar_spacing), alias 2, never 18 (Model internals 16, Instrument settings 2), undecided 24.
+   apply (code first): an accept's category from its note ('test_structure leaf'), a structure-class slot ('slot of the lateral_channel
+   class'), and an edited row whose evidence was merged across papers finds its candidate by its note's 'proposed id was
+   distance_between_pillars'. pillar_spacing: category test_structure, slot of lateral_channel, aliases 'Distance between pillars',
+   'distance between the oxide pillars' (the alias decision), symbol a (yim20), unit µm. ald_process_temperature -> deposition_temperature.
+   18 never. Export --check 15 of 15. Recompiled the twelve papers: every score column and every check.py count unchanged.
+   Round-4 acceptance after apply: FAIL (5). Four of them were a gap of mine: apply wrote only a candidate's first printed label, so the
+   prefix-merged label 'Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I' (yim22)
+   of the never decision collision_frequency stayed open (A1 2, A3 2). Fixed: apply writes every printed label; the never word added to
+   never.csv as apply now writes it, with a history edit row. Remaining FAIL (1), the user's decision: A3, the pending candidate gamma
+   (yim22 s10.p10 '\gamma', no definition) lost its row: the never decision on 'Excess number in the Yanguas-Gil and Elam model' wrote that
+   candidate's table symbol γ as a yim22 never symbol, which now also covers s10.p10's γ. Rounds 1-3 PASS. rounds.csv: round 4 applied.
+2. yim22 s9.p1-s9.p6 (the paragraphs on Model A and Model B) are in kb/reports/P171.yim22_s9.text.html, git-ignored (kb/reports/*.text.*:
+   paper text stays out of git); no decision made.
+3. wer21 (10.1116_6.0001094): paper key wer21 added to kb/pilot/elements.py; elements.py run (0 calls): 273 elements (abstract 8, heading 29,
+   paragraph 148, equation 9, caption 16, panel 15, table cell 48); the twelve existing elements.csv files are unchanged. wer21 has no PANELS
+   entry (the panel letters of the other papers were read from the crops; wer21's are not read), so each figure is one panel: elements.py now
+   allows that. document.md: yes. figures.json: NO (neither ingest/final/<pid>/figures.json nor kb/<pid>.figures.json): the figure stage
+   (ingest/figures.py, one vision call per captioned figure) has not run for wer21: 23 calls, ≈ $0.31 at the mean tokens of the 88 figure
+   calls on record (PSED_VLM_MODEL google:gemini-3.8-flash), then kb/figures_import.py (0 calls). Pass 0 (1 call) not run: its FIGURES
+   block would be empty. No units, no cost.
+4. Twelve-paper closing table (every line of each records file): T6 2075 / 5357 gold rows; check.py 2181 problems; pass-1 records 2890;
+   pass 0 36 calls $5.03, pass 1 347 calls $6.14; simulation -> model: every simulation unit of the twelve links to an entry except
+   yim22 Model A and Model B (model candidates, pending). Rounds: 1 (47 candidates; 0 / 2 / 1 / 39 accept / alias / reject / never; 5 pending
+   now), 2 (37; 3 / 5 / 6 / 14; 9), 3 (8; 2 / 8 / 3 / 1; 1), 4 (29; 1 / 2 / 0 / 18; 9). Ontology entries round 0 -> now: 231 -> 237 (model 4 -> 6,
+   quantity 92 -> 96; the rest unchanged); never.csv 45 -> 146 rows; history.csv 287 -> 411 rows; 24 undecided rows in pending.csv.

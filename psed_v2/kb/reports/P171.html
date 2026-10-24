@@ -1,0 +1,802 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P171</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P171</h1>
+<h2>Summary</h2><p>kb/reports/P171.summary.txt</p>
+<pre>P171: 0 provider calls. Round 4 applied (round-4 acceptance FAIL 1, a decision for the user); wer21 got its paper key and elements.csv, but
+its pass 0 did not run: wer21 has no figures.json (the figure stage never ran for it).
+
+1. Precondition met: accept 1 (pillar_spacing), alias 2, never 18 (Model internals 16, Instrument settings 2), undecided 24.
+   apply (code first): an accept&#x27;s category from its note (&#x27;test_structure leaf&#x27;), a structure-class slot (&#x27;slot of the lateral_channel
+   class&#x27;), and an edited row whose evidence was merged across papers finds its candidate by its note&#x27;s &#x27;proposed id was
+   distance_between_pillars&#x27;. pillar_spacing: category test_structure, slot of lateral_channel, aliases &#x27;Distance between pillars&#x27;,
+   &#x27;distance between the oxide pillars&#x27; (the alias decision), symbol a (yim20), unit µm. ald_process_temperature -&gt; deposition_temperature.
+   18 never. Export --check 15 of 15. Recompiled the twelve papers: every score column and every check.py count unchanged.
+   Round-4 acceptance after apply: FAIL (5). Four of them were a gap of mine: apply wrote only a candidate&#x27;s first printed label, so the
+   prefix-merged label &#x27;Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I&#x27; (yim22)
+   of the never decision collision_frequency stayed open (A1 2, A3 2). Fixed: apply writes every printed label; the never word added to
+   never.csv as apply now writes it, with a history edit row. Remaining FAIL (1), the user&#x27;s decision: A3, the pending candidate gamma
+   (yim22 s10.p10 &#x27;\gamma&#x27;, no definition) lost its row: the never decision on &#x27;Excess number in the Yanguas-Gil and Elam model&#x27; wrote that
+   candidate&#x27;s table symbol γ as a yim22 never symbol, which now also covers s10.p10&#x27;s γ. Rounds 1-3 PASS. rounds.csv: round 4 applied.
+2. yim22 s9.p1-s9.p6 (the paragraphs on Model A and Model B) are in kb/reports/P171.yim22_s9.text.html, git-ignored (kb/reports/*.text.*:
+   paper text stays out of git); no decision made.
+3. wer21 (10.1116_6.0001094): paper key wer21 added to kb/pilot/elements.py; elements.py run (0 calls): 273 elements (abstract 8, heading 29,
+   paragraph 148, equation 9, caption 16, panel 15, table cell 48); the twelve existing elements.csv files are unchanged. wer21 has no PANELS
+   entry (the panel letters of the other papers were read from the crops; wer21&#x27;s are not read), so each figure is one panel: elements.py now
+   allows that. document.md: yes. figures.json: NO (neither ingest/final/&lt;pid&gt;/figures.json nor kb/&lt;pid&gt;.figures.json): the figure stage
+   (ingest/figures.py, one vision call per captioned figure) has not run for wer21: 23 calls, ≈ $0.31 at the mean tokens of the 88 figure
+   calls on record (PSED_VLM_MODEL google:gemini-3.8-flash), then kb/figures_import.py (0 calls). Pass 0 (1 call) not run: its FIGURES
+   block would be empty. No units, no cost.
+4. Twelve-paper closing table (every line of each records file): T6 2075 / 5357 gold rows; check.py 2181 problems; pass-1 records 2890;
+   pass 0 36 calls $5.03, pass 1 347 calls $6.14; simulation -&gt; model: every simulation unit of the twelve links to an entry except
+   yim22 Model A and Model B (model candidates, pending). Rounds: 1 (47 candidates; 0 / 2 / 1 / 39 accept / alias / reject / never; 5 pending
+   now), 2 (37; 3 / 5 / 6 / 14; 9), 3 (8; 2 / 8 / 3 / 1; 1), 4 (29; 1 / 2 / 0 / 18; 9). Ontology entries round 0 -&gt; now: 231 -&gt; 237 (model 4 -&gt; 6,
+   quantity 92 -&gt; 96; the rest unchanged); never.csv 45 -&gt; 146 rows; history.csv 287 -&gt; 411 rows; 24 undecided rows in pending.csv.
+</pre>
+<h2>1: apply dry run</h2><p>kb/reports/P171.apply_dry_run.csv</p>
+<table><tr><th>id</th><th>decision</th><th>target</th><th>candidate</th><th>printed</th><th>word_labels</th><th>symbol_labels</th><th>table_symbols</th><th>category</th><th>slot_of</th></tr>
+<tr><td>pillar_spacing</td><td>accept</td><td></td><td>distance_between_pillars</td><td>Distance between pillars</td><td>Distance between pillars</td><td></td><td>a (yim20)</td><td>test_structure</td><td>lateral_channel</td></tr>
+<tr><td>absolute_tolerance</td><td>never</td><td>Model internals</td><td>absolute_tolerance</td><td>absolute tolerance</td><td>absolute tolerance</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>afm_scan_area</td><td>never</td><td>Instrument settings</td><td>afm_scan_area</td><td>AFM scan area</td><td>AFM scan area</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ald_process_temperature</td><td>alias</td><td>deposition_temperature</td><td>ald_process_temperature</td><td>ALD process temperature</td><td>ALD process temperature</td><td></td><td>Series (yim22)</td><td></td><td></td></tr>
+<tr><td>avogadro_s_constant</td><td>never</td><td>Model internals</td><td>avogadro_s_constant</td><td>Avogadro&#x27;s constant</td><td>Avogadro&#x27;s constant</td><td></td><td>N_0 (yim22)</td><td></td><td></td></tr>
+<tr><td>c_text_ext_c</td><td>never</td><td>Model internals</td><td>c_text_ext_c</td><td>c_{\text{ext}}/c</td><td></td><td>c_{\text{ext}}/c (yim22)</td><td></td><td></td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never</td><td>Model internals</td><td>collision_cross_section_between_the_molecules_i_and_j</td><td>Collision cross section between the molecules i and j</td><td>Collision cross section between the molecules i and j</td><td></td><td>\sigma_{ij} (yim22); \sigma_{i,j} (yim22)</td><td></td><td></td></tr>
+<tr><td>collision_frequency</td><td>never</td><td>Model internals</td><td>collision_frequency</td><td>collision frequency</td><td>collision frequency</td><td></td><td>z_A (yim22)</td><td></td><td></td></tr>
+<tr><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>never</td><td>Model internals</td><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model</td><td></td><td>Q (yim22)</td><td></td><td></td></tr>
+<tr><td>difference_between_those_two_discretisation_points</td><td>never</td><td>Model internals</td><td>difference_between_those_two_discretisation_points</td><td>difference between those two discretisation points</td><td>difference between those two discretisation points</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>distance_between_the_oxide_pillars</td><td>alias</td><td>pillar_spacing</td><td>distance_between_the_oxide_pillars</td><td>distance between the oxide pillars</td><td>distance between the oxide pillars</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>never</td><td>Model internals</td><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td></td><td>x_t (yim22)</td><td></td><td></td></tr>
+<tr><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>never</td><td>Model internals</td><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td></td><td>x_s (yim22)</td><td></td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never</td><td>Model internals</td><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td></td><td>\gamma (yim22)</td><td></td><td></td></tr>
+<tr><td>relative_tolerance</td><td>never</td><td>Model internals</td><td>relative_tolerance</td><td>relative tolerance</td><td>relative tolerance</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>surface_area_of_the_microchannel</td><td>never</td><td>Model internals</td><td>surface_area_of_the_microchannel</td><td>Surface area of the microchannel</td><td>Surface area of the microchannel</td><td></td><td>S (yim22)</td><td></td><td></td></tr>
+<tr><td>thermal_velocity</td><td>never</td><td>Model internals</td><td>thermal_velocity</td><td>thermal velocity</td><td>thermal velocity</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never</td><td>Model internals</td><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td></td><td>\nu (yim22)</td><td></td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never</td><td>Model internals</td><td>volume_of_the_microchannel</td><td>Volume of the microchannel</td><td>Volume of the microchannel</td><td></td><td>V (yim22)</td><td></td><td></td></tr>
+<tr><td>wall_collision_rate_at_unit_pressure</td><td>never</td><td>Model internals</td><td>wall_collision_rate_at_unit_pressure</td><td>wall-collision rate at unit pressure</td><td>wall-collision rate at unit pressure</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>x_ray_beam_energy</td><td>never</td><td>Instrument settings</td><td>x_ray_beam_energy</td><td>x-ray beam energy</td><td>x-ray beam energy</td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>1: what apply wrote</h2><p>kb/reports/R4_apply.written.csv</p>
+<table><tr><th>id</th><th>decision</th><th>candidate</th><th>aliases</th><th>symbols</th><th>note</th></tr>
+<tr><td>pillar_spacing</td><td>accept</td><td>distance_between_pillars</td><td>Distance between pillars</td><td>a (10.1039_d0cp03358h)</td><td></td></tr>
+<tr><td>ald_process_temperature</td><td>alias -&gt; deposition_temperature</td><td>ald_process_temperature</td><td>ALD process temperature</td><td></td><td></td></tr>
+<tr><td>distance_between_the_oxide_pillars</td><td>alias -&gt; pillar_spacing</td><td>distance_between_the_oxide_pillars</td><td>distance between the oxide pillars</td><td></td><td></td></tr>
+<tr><td>absolute_tolerance</td><td>never (Model internals)</td><td>absolute_tolerance</td><td>absolute tolerance</td><td></td><td></td></tr>
+<tr><td>afm_scan_area</td><td>never (Instrument settings)</td><td>afm_scan_area</td><td>AFM scan area</td><td></td><td></td></tr>
+<tr><td>avogadro_s_constant</td><td>never (Model internals)</td><td>avogadro_s_constant</td><td>Avogadro&#x27;s constant</td><td>N_0 (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>c_text_ext_c</td><td>never (Model internals)</td><td>c_text_ext_c</td><td></td><td>c_{\text{ext}}/c (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never (Model internals)</td><td>collision_cross_section_between_the_molecules_i_and_j</td><td>Collision cross section between the molecules i and j</td><td>\sigma_{ij} (10.1039_d1cp04758b); \sigma_{i,j} (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_frequency</td><td>never (Model internals)</td><td>collision_frequency</td><td>collision frequency</td><td>z_A (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model</td><td>Q (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>difference_between_those_two_discretisation_points</td><td>never (Model internals)</td><td>difference_between_those_two_discretisation_points</td><td>difference between those two discretisation points</td><td></td><td></td></tr>
+<tr><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td>x_t (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td>x_s (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never (Model internals)</td><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td>\gamma (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>relative_tolerance</td><td>never (Model internals)</td><td>relative_tolerance</td><td>relative tolerance</td><td></td><td></td></tr>
+<tr><td>surface_area_of_the_microchannel</td><td>never (Model internals)</td><td>surface_area_of_the_microchannel</td><td>Surface area of the microchannel</td><td>S (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>thermal_velocity</td><td>never (Model internals)</td><td>thermal_velocity</td><td>thermal velocity</td><td></td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>\nu (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never (Model internals)</td><td>volume_of_the_microchannel</td><td>Volume of the microchannel</td><td>V (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>wall_collision_rate_at_unit_pressure</td><td>never (Model internals)</td><td>wall_collision_rate_at_unit_pressure</td><td>wall-collision rate at unit pressure</td><td></td><td></td></tr>
+<tr><td>x_ray_beam_energy</td><td>never (Instrument settings)</td><td>x_ray_beam_energy</td><td>x-ray beam energy</td><td></td><td></td></tr>
+</table>
+<h2>1: score before -&gt; after, every column, twelve papers</h2><p>kb/reports/P171.score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>gor03</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gor03</td><td>matched_T6</td><td>55</td><td>55</td><td>yes</td></tr>
+<tr><td>gor03</td><td>gold_rows</td><td>157</td><td>157</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_no</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_setting</td><td>21/52</td><td>21/52</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_model</td><td>13/21</td><td>13/21</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_claim</td><td>7/18</td><td>7/18</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_cited</td><td>0/11</td><td>0/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_activity</td><td>6/11</td><td>6/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_observation</td><td>5/11</td><td>5/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_derived</td><td>7/10</td><td>7/10</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_definition</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_entity</td><td>4/6</td><td>4/6</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>267</td><td>267</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>135/249</td><td>135/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>check_dir_problems</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>art19</td><td>matched_T6</td><td>78</td><td>78</td><td>yes</td></tr>
+<tr><td>art19</td><td>gold_rows</td><td>214</td><td>214</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_no</td><td>114</td><td>114</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_setting</td><td>16/50</td><td>16/50</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_model</td><td>10/22</td><td>10/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_claim</td><td>7/13</td><td>7/13</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_cited</td><td>8/23</td><td>8/23</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_activity</td><td>11/22</td><td>11/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_observation</td><td>14/36</td><td>14/36</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_derived</td><td>5/7</td><td>5/7</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_caveat</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_entity</td><td>8/12</td><td>8/12</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_comparison</td><td>1/4</td><td>1/4</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>169</td><td>169</td><td>yes</td></tr>
+<tr><td>ela03</td><td>gold_rows</td><td>561</td><td>561</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>192</td><td>192</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>57/277</td><td>57/277</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>35/57</td><td>35/57</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_claim</td><td>9/37</td><td>9/37</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_cited</td><td>7/21</td><td>7/21</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>15/46</td><td>15/46</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>13/38</td><td>13/38</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_derived</td><td>4/17</td><td>4/17</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_definition</td><td>1/10</td><td>1/10</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_caveat</td><td>1/15</td><td>1/15</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_entity</td><td>13/34</td><td>13/34</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_comparison</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>435</td><td>435</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>522</td><td>522</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>107/206</td><td>107/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>81/154</td><td>81/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>101/108</td><td>101/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim22</td><td>check_dir_problems</td><td>199</td><td>199</td><td>yes</td></tr>
+<tr><td>yim22</td><td>matched_T6</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim22</td><td>gold_rows</td><td>608</td><td>608</td><td>yes</td></tr>
+<tr><td>yim22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim22</td><td>parent_flagged_no</td><td>350</td><td>350</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_setting</td><td>0/67</td><td>0/67</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_model</td><td>147/215</td><td>147/215</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_claim</td><td>19/77</td><td>19/77</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_cited</td><td>1/4</td><td>1/4</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_activity</td><td>0/7</td><td>0/7</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_observation</td><td></td><td></td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_derived</td><td>24/84</td><td>24/84</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_definition</td><td>31/62</td><td>31/62</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_caveat</td><td>4/8</td><td>4/8</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_entity</td><td>59/68</td><td>59/68</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_comparison</td><td>0/15</td><td>0/15</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>hei24</td><td>check_dir_problems</td><td>553</td><td>553</td><td>yes</td></tr>
+<tr><td>hei24</td><td>matched_T6</td><td>276</td><td>276</td><td>yes</td></tr>
+<tr><td>hei24</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_no</td><td>290</td><td>290</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_setting</td><td>73/172</td><td>73/172</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_claim</td><td>15/20</td><td>15/20</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_derived</td><td>0/16</td><td>0/16</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_definition</td><td>17/35</td><td>17/35</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_comparison</td><td>6/24</td><td>6/24</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>156</td><td>156</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>31/63</td><td>31/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gao15</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gao15</td><td>matched_T6</td><td>81</td><td>81</td><td>yes</td></tr>
+<tr><td>gao15</td><td>gold_rows</td><td>225</td><td>225</td><td>yes</td></tr>
+<tr><td>gao15</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gao15</td><td>parent_flagged_no</td><td>96</td><td>96</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_setting</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_model</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_claim</td><td>6/13</td><td>6/13</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_cited</td><td>4/12</td><td>4/12</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_activity</td><td>13/25</td><td>13/25</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_observation</td><td>16/44</td><td>16/44</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_derived</td><td>0/6</td><td>0/6</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_definition</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_caveat</td><td>1/7</td><td>1/7</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_entity</td><td>4/15</td><td>4/15</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_comparison</td><td>1/5</td><td>1/5</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>94</td><td>94</td><td>yes</td></tr>
+<tr><td>zou23</td><td>matched_T6</td><td>53</td><td>53</td><td>yes</td></tr>
+<tr><td>zou23</td><td>gold_rows</td><td>164</td><td>164</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_no</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_setting</td><td>14/47</td><td>14/47</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_model</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_claim</td><td>10/19</td><td>10/19</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_cited</td><td>1/11</td><td>1/11</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_activity</td><td>21/23</td><td>21/23</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_observation</td><td>25/45</td><td>25/45</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_derived</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_definition</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_caveat</td><td>0/6</td><td>0/6</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_entity</td><td>4/8</td><td>4/8</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat23</td><td>check_dir_problems</td><td>135</td><td>135</td><td>yes</td></tr>
+<tr><td>mat23</td><td>matched_T6</td><td>63</td><td>63</td><td>yes</td></tr>
+<tr><td>mat23</td><td>gold_rows</td><td>191</td><td>191</td><td>yes</td></tr>
+<tr><td>mat23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat23</td><td>parent_flagged_no</td><td>77</td><td>77</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_setting</td><td>18/54</td><td>18/54</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_model</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_claim</td><td>4/13</td><td>4/13</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_cited</td><td>4/9</td><td>4/9</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_activity</td><td>27/30</td><td>27/30</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_observation</td><td>29/51</td><td>29/51</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_derived</td><td>2/4</td><td>2/4</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_definition</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_caveat</td><td>2/5</td><td>2/5</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_entity</td><td>13/14</td><td>13/14</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_comparison</td><td>0/7</td><td>0/7</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_identity</td><td>0/2</td><td>0/2</td><td>yes</td></tr>
+<tr><td>gre23</td><td>check_dir_problems</td><td>130</td><td>130</td><td>yes</td></tr>
+<tr><td>gre23</td><td>matched_T6</td><td>136</td><td>136</td><td>yes</td></tr>
+<tr><td>gre23</td><td>gold_rows</td><td>474</td><td>474</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_no</td><td>184</td><td>184</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_setting</td><td>21/89</td><td>21/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_model</td><td>8/18</td><td>8/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_claim</td><td>11/57</td><td>11/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_cited</td><td>3/57</td><td>3/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_activity</td><td>29/41</td><td>29/41</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_observation</td><td>20/89</td><td>20/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_derived</td><td>21/31</td><td>21/31</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_caveat</td><td>7/53</td><td>7/53</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_entity</td><td>0/18</td><td>0/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_identity</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+</table>
+<h2>1: round-4 audit (after the fix)</h2><p>kb/reports/P171.audit_round4.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/grow.py audit 4` failed. (See above for error)
+round 4 acceptance (grow.py audit_round)
+A1: 21 decisions, 44 rows: effect {&#x27;yes&#x27;: 44}
+A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;agree&#x27;: 2}
+A3: 26 open rows: {&#x27;other&#x27;: 10, &#x27;pending&#x27;: 16}; pending candidates accounted 23/24
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: FAIL (1)
+FAIL A3 pending gamma: 10.1039_d1cp04758b:s10.p10 quantity &#x27;\gamma&#x27; is no longer open
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 241 entries, 411 history rows, 24 pending, checks 15/15
+entries 241
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-4 A1</h2><p>kb/reports/R4_apply.A1.csv</p>
+<table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
+<tr><td>pillar_spacing</td><td>add</td><td>pillar spacing</td><td>10.1039_d0cp03358h</td><td>tabu1.r0c0</td><td>quantity</td><td>Distance between pillars</td><td>fact: pillar_spacing (quantity: name &#x27;Distance between pillars&#x27;); fact yim20:tabu1.r0c0#1 (type definition, quantity pillar_spacing, parent yim20)</td><td>yes</td><td>resolves to the entry (not the candidate&#x27;s own row)</td></tr>
+<tr><td>pillar_spacing</td><td>add</td><td>pillar spacing</td><td>10.1039_d0cp03358h</td><td>tabu1.r0c1</td><td>quantity</td><td>Distance between pillars</td><td>fact: pillar_spacing (quantity: name &#x27;Distance between pillars&#x27;); fact yim20:tabu1.r0c1#1 (type definition, quantity pillar_spacing, parent yim20)</td><td>yes</td><td>resolves to the entry (not the candidate&#x27;s own row)</td></tr>
+<tr><td>pillar_spacing</td><td>add</td><td>pillar spacing</td><td>10.1116_1.4903941</td><td>s6.p4</td><td>quantity</td><td>distance between the oxide pillars</td><td>fact: pillar_spacing (quantity: alias &#x27;distance between the oxide pillars&#x27;); dropped at d: quote_not_found (quote)</td><td>yes</td><td>resolves to the entry (not the candidate&#x27;s own row)</td></tr>
+<tr><td>absolute_tolerance</td><td>never -&gt; Model internals</td><td>absolute tolerance (any paper)</td><td>10.1039_d1cp04758b</td><td>s9.p2</td><td>quantity</td><td>absolute tolerance</td><td>never: Model internals (kept (never: absolute tolerance))</td><td>yes</td><td></td></tr>
+<tr><td>absolute_tolerance</td><td>never -&gt; Model internals</td><td>absolute tolerance (any paper)</td><td>10.1039_d1cp04758b</td><td>s9.p6</td><td>quantity</td><td>absolute tolerance</td><td>never: Model internals (kept (never: absolute tolerance))</td><td>yes</td><td></td></tr>
+<tr><td>afm_scan_area</td><td>never -&gt; Instrument settings</td><td>AFM scan area (any paper)</td><td>10.1116_6.0002993</td><td>s10.p7</td><td>quantity</td><td>AFM scan area</td><td>never: Instrument settings (kept (never: AFM scan area))</td><td>yes</td><td></td></tr>
+<tr><td>afm_scan_area</td><td>never -&gt; Instrument settings</td><td>AFM scan area (any paper)</td><td>10.1116_6.0002993</td><td>s10.p7</td><td>unit</td><td>AFM scan area</td><td>never: Instrument settings (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>ald_process_temperature</td><td>alias -&gt; deposition_temperature</td><td>alias of deposition_temperature: ALD process temperature</td><td>10.1039_d1cp04758b</td><td>tab3.r1c0</td><td>quantity</td><td>ALD process temperature</td><td>fact: deposition_temperature (quantity: alias &#x27;ALD process temperature&#x27;); fact yim22:tab3.r1c0#1 (type setting, quantity deposition_temperature, parent yim22:sim:sim_model_a)</td><td>yes</td><td></td></tr>
+<tr><td>avogadro_s_constant</td><td>never -&gt; Model internals</td><td>Avogadro&#x27;s constant (any paper); N_0 (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu1.r25c0</td><td>quantity</td><td>Avogadro&#x27;s constant</td><td>never: Model internals (kept (never: Avogadro&#x27;s constant))</td><td>yes</td><td></td></tr>
+<tr><td>c_text_ext_c</td><td>never -&gt; Model internals</td><td>c_{\text{ext}}/c (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tab3.r1c7</td><td>quantity</td><td>c_{\text{ext}}/c</td><td>never: Model internals (kept (never: c_{\text{ext}}/c (symbol in 10.1039_d1cp04758b)))</td><td>yes</td><td></td></tr>
+<tr><td>c_text_ext_c</td><td>never -&gt; Model internals</td><td>c_{\text{ext}}/c (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tab3.r2c7</td><td>quantity</td><td>c_{\text{ext}}/c</td><td>never: Model internals (kept (never: c_{\text{ext}}/c (symbol in 10.1039_d1cp04758b)))</td><td>yes</td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never -&gt; Model internals</td><td>Collision cross section between the molecules i and j (any paper); \sigma_{ij} (symbol, yim22 only); \sigma_{i,j} (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r21c0</td><td>quantity</td><td>Collision cross section between the molecules i and j</td><td>never: Model internals (kept (never: Collision cross section between the molecules i and j))</td><td>yes</td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never -&gt; Model internals</td><td>Collision cross section between the molecules i and j (any paper); \sigma_{ij} (symbol, yim22 only); \sigma_{i,j} (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r21c1</td><td>quantity</td><td>Collision cross section between the molecules i and j</td><td>never: Model internals (kept (never: Collision cross section between the molecules i and j))</td><td>yes</td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never -&gt; Model internals</td><td>Collision cross section between the molecules i and j (any paper); \sigma_{ij} (symbol, yim22 only); \sigma_{i,j} (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>eq28</td><td>quantity</td><td>\sigma_{i,j}</td><td>never: Model internals (kept (never: \sigma_{i,j} (symbol in 10.1039_d1cp04758b)))</td><td>yes</td><td></td></tr>
+<tr><td>collision_frequency</td><td>never -&gt; Model internals</td><td>collision frequency (any paper); z_A (symbol, yim22 only); Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I (any paper)</td><td>10.1039_d1cp04758b</td><td>eq6</td><td>quantity</td><td>collision frequency</td><td>never: Model internals (kept (never: collision frequency))</td><td>yes</td><td></td></tr>
+<tr><td>collision_frequency</td><td>never -&gt; Model internals</td><td>collision frequency (any paper); z_A (symbol, yim22 only); Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I (any paper)</td><td>10.1039_d1cp04758b</td><td>tabu2.r17c0</td><td>quantity</td><td>Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I</td><td>never: Model internals (kept (never: Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I))</td><td>yes</td><td></td></tr>
+<tr><td>collision_frequency</td><td>never -&gt; Model internals</td><td>collision frequency (any paper); z_A (symbol, yim22 only); Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I (any paper)</td><td>10.1039_d1cp04758b</td><td>tabu2.r17c1</td><td>quantity</td><td>Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I</td><td>never: Model internals (kept (never: Collision frequency of Reactant A with other gas molecules in a gas mixture of Reactant A + inert gas I))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model (any paper); Q (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu1.r33c0</td><td>quantity</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model</td><td>never: Model internals (kept (never: Collision rate with surface at unit pressure in the Ylilammi et al.18 model))</td><td>yes</td><td></td></tr>
+<tr><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model (any paper); Q (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>s6.p4</td><td>quantity</td><td>Q</td><td>never: Model internals (kept (never: Q (symbol in 10.1039_d1cp04758b)))</td><td>yes</td><td></td></tr>
+<tr><td>difference_between_those_two_discretisation_points</td><td>never -&gt; Model internals</td><td>difference between those two discretisation points (any paper)</td><td>10.1039_d1cp04758b</td><td>s10.p1</td><td>quantity</td><td>difference between those two discretisation points</td><td>never: Model internals (kept (never: difference between those two discretisation points))</td><td>yes</td><td></td></tr>
+<tr><td>distance_between_the_oxide_pillars</td><td>alias -&gt; pillar_spacing</td><td>alias of pillar_spacing: distance between the oxide pillars</td><td>10.1116_1.4903941</td><td>s6.p4</td><td>quantity</td><td>distance between the oxide pillars</td><td>fact: pillar_spacing (quantity: alias &#x27;distance between the oxide pillars&#x27;); dropped at d: quote_not_found (quote)</td><td>yes</td><td></td></tr>
+<tr><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model (any paper); x_t (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r16c0</td><td>quantity</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model (any paper); x_t (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r16c1</td><td>quantity</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model (any paper); x_s (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r15c0</td><td>quantity</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model (any paper); x_s (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r15c1</td><td>quantity</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never -&gt; Model internals</td><td>Excess number in the Yanguas-Gil and Elam^20 model (any paper); \gamma (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r22c0</td><td>quantity</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td>never: Model internals (kept (never: Excess number in the Yanguas-Gil and Elam^20 model))</td><td>yes</td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never -&gt; Model internals</td><td>Excess number in the Yanguas-Gil and Elam^20 model (any paper); \gamma (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r22c1</td><td>quantity</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td>never: Model internals (kept (never: Excess number in the Yanguas-Gil and Elam^20 model))</td><td>yes</td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never -&gt; Model internals</td><td>Excess number in the Yanguas-Gil and Elam^20 model (any paper); \gamma (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>eq30</td><td>quantity</td><td>\gamma</td><td>never: Model internals (kept (never: \gamma (symbol in 10.1039_d1cp04758b)))</td><td>yes</td><td></td></tr>
+<tr><td>relative_tolerance</td><td>never -&gt; Model internals</td><td>relative tolerance (any paper)</td><td>10.1039_d1cp04758b</td><td>s9.p2</td><td>quantity</td><td>relative tolerance</td><td>never: Model internals (kept (never: relative tolerance))</td><td>yes</td><td></td></tr>
+<tr><td>relative_tolerance</td><td>never -&gt; Model internals</td><td>relative tolerance (any paper)</td><td>10.1039_d1cp04758b</td><td>s9.p6</td><td>quantity</td><td>relative tolerance</td><td>never: Model internals (kept (never: relative tolerance))</td><td>yes</td><td></td></tr>
+<tr><td>surface_area_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Surface area of the microchannel (any paper); S (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r3c0</td><td>quantity</td><td>Surface area of the microchannel</td><td>never: Model internals (kept (never: Surface area of the microchannel))</td><td>yes</td><td></td></tr>
+<tr><td>surface_area_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Surface area of the microchannel (any paper); S (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r3c1</td><td>quantity</td><td>Surface area of the microchannel</td><td>never: Model internals (kept (never: Surface area of the microchannel))</td><td>yes</td><td></td></tr>
+<tr><td>thermal_velocity</td><td>never -&gt; Model internals</td><td>thermal velocity (any paper)</td><td>10.1039_d1cp04758b</td><td>eq5</td><td>quantity</td><td>thermal velocity</td><td>never: Model internals (kept (never: thermal velocity))</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Velocity of gas front in the Ylilammi et al.^18 model (any paper); \nu (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r7c0</td><td>quantity</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Velocity of gas front in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Velocity of gas front in the Ylilammi et al.^18 model (any paper); \nu (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r7c1</td><td>quantity</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>never: Model internals (kept (never: Velocity of gas front in the Ylilammi et al.^18 model))</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Velocity of gas front in the Ylilammi et al.^18 model (any paper); \nu (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r7c0</td><td>unit</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never -&gt; Model internals</td><td>Velocity of gas front in the Ylilammi et al.^18 model (any paper); \nu (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r7c1</td><td>unit</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Volume of the microchannel (any paper); V (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r8c0</td><td>quantity</td><td>Volume of the microchannel</td><td>never: Model internals (kept (never: Volume of the microchannel))</td><td>yes</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Volume of the microchannel (any paper); V (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r8c1</td><td>quantity</td><td>Volume of the microchannel</td><td>never: Model internals (kept (never: Volume of the microchannel))</td><td>yes</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Volume of the microchannel (any paper); V (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r8c0</td><td>unit</td><td>Volume of the microchannel</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never -&gt; Model internals</td><td>Volume of the microchannel (any paper); V (symbol, yim22 only)</td><td>10.1039_d1cp04758b</td><td>tabu2.r8c1</td><td>unit</td><td>Volume of the microchannel</td><td>never: Model internals (unit row of a never record)</td><td>yes</td><td></td></tr>
+<tr><td>wall_collision_rate_at_unit_pressure</td><td>never -&gt; Model internals</td><td>wall-collision rate at unit pressure (any paper)</td><td>10.1039_d1cp04758b</td><td>eq15</td><td>quantity</td><td>wall-collision rate at unit pressure</td><td>never: Model internals (kept (never: wall-collision rate at unit pressure))</td><td>yes</td><td></td></tr>
+<tr><td>x_ray_beam_energy</td><td>never -&gt; Instrument settings</td><td>x-ray beam energy (any paper)</td><td>10.1116_6.0002993</td><td>s7.p3</td><td>quantity</td><td>x-ray beam energy</td><td>never: Instrument settings (kept (never: x-ray beam energy))</td><td>yes</td><td></td></tr>
+<tr><td>x_ray_beam_energy</td><td>never -&gt; Instrument settings</td><td>x-ray beam energy (any paper)</td><td>10.1116_6.0002993</td><td>s7.p3</td><td>quantity</td><td>x-ray beam energy</td><td>never: Instrument settings (kept (never: x-ray beam energy))</td><td>yes</td><td></td></tr>
+</table>
+<h2>1: round-4 A3</h2><p>kb/reports/R4_apply.A3.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq17</td><td>quantity</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq18</td><td>quantity</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq19</td><td>quantity</td><td>f_{\text{des}}</td><td>m-2 s-1</td><td>fdes</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s6.p6</td><td>quantity</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq20</td><td>quantity</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>pending candidate model_a</td><td>model_a</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>pending candidate model_b</td><td>model_b</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s10.p2</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq29</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>tabu1.r15c0</td><td>quantity</td><td>Thiele modulus</td><td></td><td>thiele modulus</td><td>pending candidate thiele_modulus</td><td>thiele_modulus</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c0</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c1</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq17</td><td>unit</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq18</td><td>unit</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq19</td><td>unit</td><td>f_{\text{des}}</td><td>m-2 s-1</td><td>fdes</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s6.p6</td><td>unit</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>eq20</td><td>unit</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model A</td><td></td><td>model a</td><td>pending candidate model_a</td><td>model_a</td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model B</td><td></td><td>model b</td><td>pending candidate model_b</td><td>model_b</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td>transmittance;transmittance</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td>transmittance;transmittance</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
+</table>
+<h2>1: round-4 A3 pending candidates</h2><p>kb/reports/R4_apply.A3_pending.csv</p>
+<table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
+<tr><td>bent</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>displacement</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>pillar_diameter</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>tilde_xi</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_charge_density</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_electrolyte</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_potential</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>excess_over_the_saturation_dose</td><td>2</td><td>10.1002_cvde.200390005</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1002_cvde.200390005 (its paper is not compiled)</td></tr>
+<tr><td>integrated_coverage</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>normalized_penetration_depth_for_sphere</td><td>2</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
+<tr><td>shape_factor</td><td>2</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
+<tr><td>slope_of_integrated_zno_coverage</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>surface_area_roughness_factor</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>total_isolated_deposition_volume</td><td>3</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
+<tr><td>bandgap</td><td>4</td><td>10.1116_6.0002993</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>gamma</td><td>4</td><td>10.1039_d1cp04758b</td><td>1</td><td>0</td><td>NO</td><td>10.1039_d1cp04758b:s10.p10 quantity &#x27;\gamma&#x27; is no longer open</td></tr>
+<tr><td>h_t</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>hard_sphere_radius_of_molecule_i</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>model_a</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>model_b</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+<tr><td>q</td><td>4</td><td>10.1116_6.0002993</td><td>3</td><td>3</td><td>yes</td><td></td></tr>
+<tr><td>thiele_modulus</td><td>4</td><td>10.1039_d1cp04758b</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>transmittance</td><td>4</td><td>10.1116_6.0002993</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
+</table>
+<h2>1: round-1 audit</h2><p>kb/reports/P171.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 40 promotions: {&#x27;agree&#x27;: 36, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 9 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 7}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 241 entries, 411 history rows, 24 pending, checks 15/15
+entries 241
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-2 audit</h2><p>kb/reports/P171.audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 8, &#x27;yes&#x27;: 84}
+A2: 180 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;agree&#x27;: 45, &#x27;alias (user decision)&#x27;: 14, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 36 open rows: {&#x27;pending&#x27;: 28, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 241 entries, 411 history rows, 24 pending, checks 15/15
+entries 241
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-3 audit</h2><p>kb/reports/P171.audit_round3.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 3}
+A3: 6 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 1}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 241 entries, 411 history rows, 24 pending, checks 15/15
+entries 241
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: export.py --check</h2><p>kb/reports/P171.export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 24 rows: undecided 24
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>4: the twelve papers</h2><p>kb/reports/P171.s4_papers.csv</p>
+<table><tr><th>paper</th><th>round</th><th>T6</th><th>gold_rows</th><th>check_problems</th><th>pass1_records</th><th>pass0_calls</th><th>pass0_usd</th><th>pass1_calls</th><th>pass1_usd</th><th>calls_unpriced</th><th>models</th><th>simulation_to_model</th></tr>
+<tr><td>yli18</td><td>1</td><td>138</td><td>243</td><td>156</td><td>285</td><td>9</td><td>0.761</td><td>125</td><td>1.837</td><td>0</td><td>gemini-3.8-flash</td><td>diffusion model -&gt; ylilammi_diffusion_reaction (analytical); Gordon model -&gt; gordon_plug_flow (analytical)</td></tr>
+<tr><td>yim20</td><td>1</td><td>435</td><td>900</td><td>318</td><td>582</td><td>6</td><td>1.189</td><td>100</td><td>1.922</td><td>0</td><td>gemini-3.8-flash</td><td>Yilammi et al. diffusion–reaction model -&gt; ylilammi_diffusion_reaction (analytical)</td></tr>
+<tr><td>mat22</td><td>1</td><td>273</td><td>1071</td><td>267</td><td>330</td><td>4</td><td>0.792</td><td>14</td><td>0.336</td><td>0</td><td>gemini-3.8-flash</td><td>(no simulation unit)</td></tr>
+<tr><td>ela03</td><td>2</td><td>169</td><td>561</td><td>159</td><td>247</td><td>2</td><td>0.343</td><td>19</td><td>0.289</td><td>0</td><td>gemini-3.8-flash</td><td>Monte Carlo computer simulation -&gt; elam_monte_carlo (computational)</td></tr>
+<tr><td>hei24</td><td>2</td><td>276</td><td>549</td><td>553</td><td>227</td><td>2</td><td>0.250</td><td>16</td><td>0.324</td><td>0</td><td>gemini-3.8-flash</td><td>diffusion–reaction model -&gt; heikkinen_porous_diffusion_reaction (computational)</td></tr>
+<tr><td>gor03</td><td>2</td><td>55</td><td>157</td><td>54</td><td>99</td><td>2</td><td>0.159</td><td>6</td><td>0.109</td><td>0</td><td>gemini-3.8-flash</td><td>Kinetic Model -&gt; gordon_plug_flow (analytical)</td></tr>
+<tr><td>gre23</td><td>3</td><td>136</td><td>474</td><td>130</td><td>200</td><td>2</td><td>0.350</td><td>13</td><td>0.250</td><td>0</td><td>gemini-3.8-flash</td><td>(no simulation unit)</td></tr>
+<tr><td>art19</td><td>3</td><td>78</td><td>214</td><td>62</td><td>101</td><td>3</td><td>0.376</td><td>11</td><td>0.138</td><td>0</td><td>gemini-3.8-flash</td><td>eq 6 -&gt; arts_slope (analytical)</td></tr>
+<tr><td>zou23</td><td>3</td><td>53</td><td>164</td><td>94</td><td>111</td><td>2</td><td>0.098</td><td>12</td><td>0.136</td><td>0</td><td>gemini-3.8-flash</td><td>(no simulation unit)</td></tr>
+<tr><td>gao15</td><td>4</td><td>81</td><td>225</td><td>54</td><td>103</td><td>2</td><td>0.324</td><td>8</td><td>0.115</td><td>0</td><td>gemini-3.8-flash</td><td>(no simulation unit)</td></tr>
+<tr><td>yim22</td><td>4</td><td>318</td><td>608</td><td>199</td><td>485</td><td>1</td><td>0.254</td><td>17</td><td>0.551</td><td>0</td><td>gemini-3.8-flash</td><td>Model A -&gt; (no entry); Model B -&gt; (no entry)</td></tr>
+<tr><td>mat23</td><td>4</td><td>63</td><td>191</td><td>135</td><td>120</td><td>1</td><td>0.130</td><td>6</td><td>0.137</td><td>0</td><td>gemini-3.8-flash</td><td>(no simulation unit)</td></tr>
+<tr><td>total</td><td></td><td>2075</td><td>5357</td><td>2181</td><td>2890</td><td>36</td><td>5.026</td><td>347</td><td>6.144</td><td>0</td><td></td><td></td></tr>
+</table>
+<h2>4: rounds</h2><p>kb/reports/P171.s4_rounds.csv</p>
+<table><tr><th>round</th><th>papers</th><th>status</th><th>candidates</th><th>accept</th><th>alias</th><th>reject</th><th>never</th><th>pending_now</th></tr>
+<tr><td>0</td><td>yim20;mat22;gre23;ela03;gor03;yli18;gao15;art19;yim22;hei24;mat23;zou23</td><td>applied</td><td></td><td>235</td><td>0</td><td>0</td><td>45</td><td>0</td></tr>
+<tr><td>1</td><td>yli18;yim20;mat22</td><td>applied</td><td>47</td><td>0</td><td>2</td><td>1</td><td>39</td><td>5</td></tr>
+<tr><td>2</td><td>ela03;hei24;gor03</td><td>applied</td><td>37</td><td>3</td><td>5</td><td>6</td><td>14</td><td>9</td></tr>
+<tr><td>3</td><td>gre23;art19;zou23</td><td>applied</td><td>8</td><td>2</td><td>8</td><td>3</td><td>1</td><td>1</td></tr>
+<tr><td>4</td><td>gao15;yim22;mat23</td><td>applied</td><td>29</td><td>1</td><td>2</td><td>0</td><td>18</td><td>9</td></tr>
+</table>
+<h2>4: ontology entries by type, round 0 -&gt; now</h2><p>kb/reports/P171.s4_entries.csv</p>
+<table><tr><th>type</th><th>round0</th><th>now</th><th>change</th></tr>
+<tr><td>categorical</td><td>15</td><td>15</td><td>0</td></tr>
+<tr><td>mechanism</td><td>36</td><td>36</td><td>0</td></tr>
+<tr><td>method</td><td>34</td><td>34</td><td>0</td></tr>
+<tr><td>model</td><td>4</td><td>6</td><td>2</td></tr>
+<tr><td>quantity</td><td>92</td><td>96</td><td>4</td></tr>
+<tr><td>species</td><td>38</td><td>38</td><td>0</td></tr>
+<tr><td>structure</td><td>12</td><td>12</td><td>0</td></tr>
+<tr><td>total</td><td>231</td><td>237</td><td>6</td></tr>
+</table>
+<h2>4: never.csv, history.csv, pending.csv rows</h2><p>kb/reports/P171.s4_files.csv</p>
+<table><tr><th>item</th><th>round0</th><th>now</th></tr>
+<tr><td>never.csv rows</td><td>45</td><td>146</td></tr>
+<tr><td>history.csv rows</td><td>287</td><td>411</td></tr>
+<tr><td>pending.csv rows (undecided)</td><td></td><td>24</td></tr>
+</table>
+<h2>Code diff (apply: category, slot, candidate by note)</h2><p>kb/reports/P171.code.diff</p>
+<pre>diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index df4d423..f7a1515 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -373,6 +373,9 @@ def candidate_of(row):
+         return cands[row[&quot;id&quot;]]
+     ev = sorted(evidence_items(row))
+     hits = [c for c in cands.values() if sorted(c[&quot;evidence&quot;].values()) == ev]
++    if len(hits) != 1:                                                          # P171: the evidence edited too (two papers merged): the
++        m = re.search(r&quot;proposed id was ([a-z0-9_]+)&quot;, row[&quot;decision_note&quot;])     # note&#x27;s &#x27;proposed id was &lt;id&gt;&#x27; names the candidate
++        hits = [cands[m.group(1)]] if m and m.group(1) in cands else hits
+     return hits[0] if len(hits) == 1 else None
+ 
+ 
+@@ -659,6 +662,27 @@ def model_fields(row):
+     return (cls.group(1) if cls else &quot;&quot;), ([t.strip() for t in pm.group(1).split(&quot;,&quot;)] if pm else []), bool(re.search(r&quot;printed name:?\s*paper-local symbol&quot;, note))
+ 
+ 
++def entry_fields(row, categories, classes):
++    &quot;&quot;&quot;P171 (user): an accepted entry&#x27;s category and structure-class slot from its decision note: &#x27;&lt;category&gt; leaf&#x27; (a category the
++    quantity entries use) -&gt; category; &#x27;slot of the &lt;class&gt; class&#x27; -&gt; the entry joins that structure class&#x27;s slots. Returns (category or &#x27;&#x27;,
++    class or &#x27;&#x27;).&quot;&quot;&quot;
++    note = row[&quot;decision_note&quot;]
++    cat = next((c for c in sorted(categories, key=len, reverse=True) if re.search(rf&quot;\b{re.escape(c)} leaf\b&quot;, note)), &quot;&quot;)
++    cl = re.search(r&quot;slot of the ([a-z_]+) class&quot;, note)
++    return cat, (cl.group(1) if cl and cl.group(1) in classes else &quot;&quot;)
++
++
++def add_slot(text, cls, eid):
++    &quot;&quot;&quot;P171: append an entry id to a structure class&#x27;s slots (its one-line flow mapping under structure_classes).&quot;&quot;&quot;
++    m = re.search(rf&quot;(?m)^  - \{{id: {re.escape(cls)}, .*slots: \[([^\]]*)\]\}}$&quot;, text)
++    if not m:
++        raise Stop(f&quot;structure class {cls}: no one-line entry with slots&quot;)
++    have = [x.strip() for x in m.group(1).split(&quot;,&quot;) if x.strip()]
++    if eid in have:
++        return text
++    return text[:m.start(1)] + &quot;, &quot;.join(have + [eid]) + text[m.end(1):]
++
++
+ def split_labels(row, labels):
+     &quot;&quot;&quot;P164 (user): a decision&#x27;s printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word.&quot;&quot;&quot;
+@@ -682,6 +706,8 @@ def cmd_apply():
+     rows = rd(PENDING)
+     decided = [x for x in rows if x[&quot;decision&quot;]]
+     stops = []
++    cats = {e.get(&quot;category&quot;) for e in o[&quot;entries&quot;] if e[&quot;type&quot;] in (&quot;quantity&quot;, &quot;categorical&quot;) and e.get(&quot;category&quot;)}   # P171
++    classes = {c[&quot;id&quot;] for c in o.get(&quot;structure_classes&quot;, [])}
+     for x in decided:
+         if x[&quot;decision&quot;] not in X.DECISIONS:
+             stops.append(f&quot;{x[&#x27;id&#x27;]}: decision {x[&#x27;decision&#x27;]!r}&quot;)
+@@ -693,6 +719,8 @@ def cmd_apply():
+             stops.append(f&quot;{x[&#x27;id&#x27;]}: alias target {x[&#x27;alias_target&#x27;]!r} is not an entry, nor accepted in this round&quot;)
+         if x[&quot;decision&quot;] == &quot;never&quot; and not x[&quot;never_category&quot;].strip():
+             stops.append(f&quot;{x[&#x27;id&#x27;]}: never without a never_category&quot;)
++        if x[&quot;decision&quot;] == &quot;accept&quot; and re.search(r&quot;slot of the ([a-z_]+) class&quot;, x[&quot;decision_note&quot;]) and not entry_fields(x, cats, classes)[1]:
++            stops.append(f&quot;{x[&#x27;id&#x27;]}: the note names a structure class that does not exist&quot;)
+         if x[&quot;decision&quot;] == &quot;accept&quot; and x[&quot;kind&quot;] == &quot;model&quot;:                 # P168: a model&#x27;s class and parameters (model_fields)
+             mt, params, _ = model_fields(x)
+             if not mt:
+@@ -706,7 +734,7 @@ def cmd_apply():
+     if not late:                                                                # a late decision&#x27;s rows are in the round&#x27;s snapshot already
+         snapshot(n, r[&quot;pids&quot;].split(&quot;;&quot;), rows)                                 # P157d: the rows each candidate covers, before anything changes
+     text = ONTO.read_text(encoding=&quot;utf-8&quot;)
+-    new, hist, nev, applied = [], [], X.never_rows(), []
++    new, hist, nev, applied, slots = [], [], X.never_rows(), [], []
+     order = {&quot;accept&quot;: 0, &quot;alias&quot;: 1}                                          # P164: accepts first (an alias may target an entry of this round)
+     for x in sorted(decided, key=lambda x: order.get(x[&quot;decision&quot;], 2)):
+         labels, syms = printed_labels(x), candidate_symbols(x)
+@@ -718,6 +746,11 @@ def cmd_apply():
+             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
+             if x[&quot;kind&quot;] == &quot;model&quot;:
+                 e.update(model_type=mt, parameters=params)
++            cat, slot = entry_fields(x, cats, classes)                          # P171: a category and a structure-class slot from the note
++            if cat:
++                e[&quot;category&quot;] = cat
++            if slot:
++                slots.append((slot, x[&quot;id&quot;]))
+             e.update(origin=f&quot;round {n}&quot;, source_pids=[p for p in x[&quot;pids&quot;].split(&quot;;&quot;) if p], evidence=evidence_items(x))
+             new.append({k: e[k] for k in ORDER if k in e and e[k] not in (&quot;&quot;, [], None)})
+             applied.append(dict(id=x[&quot;id&quot;], decision=&quot;accept&quot;, candidate=(candidate_of(x) or {}).get(&quot;id&quot;, &quot;&quot;), aliases=&quot;; &quot;.join(e.get(&quot;aliases&quot;) or []),
+@@ -753,6 +786,8 @@ def cmd_apply():
+         head, tail = text.split(mark)
+         text = head.rstrip(&quot;\n&quot;) + f&quot;\n\n  # ---------------------------------------------------------------- grow.py round {n}: accepted\n&quot; \
+             + &quot;&quot;.join(block(e) for e in new).rstrip(&quot;\n&quot;) + &quot;\n&quot; + mark + tail
++    for cls, eid in slots:                                                      # P171
++        text = add_slot(text, cls, eid)
+     ONTO.write_text(text, encoding=&quot;utf-8&quot;)
+     yaml.safe_load(ONTO.read_text(encoding=&quot;utf-8&quot;))                            # still parses
+     X.stamp_header()
+</pre>
+<h2>Code fix (apply writes every printed label)</h2><p>kb/reports/P171.code_fix.diff</p>
+<pre>diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index f7a1515..26bc784 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -738,7 +738,8 @@ def cmd_apply():
+     order = {&quot;accept&quot;: 0, &quot;alias&quot;: 1}                                          # P164: accepts first (an alias may target an entry of this round)
+     for x in sorted(decided, key=lambda x: order.get(x[&quot;decision&quot;], 2)):
+         labels, syms = printed_labels(x), candidate_symbols(x)
+-        words, lsyms = split_labels(x, labels[:1])                             # P164: a symbol-like label is a symbol of its paper, never a word
++        words, lsyms = split_labels(x, labels)                                 # P164: a symbol-like label is a symbol of its paper, never a word;
++                                                                                # P171 fix: every printed label (a prefix-merged label too)
+         if x[&quot;decision&quot;] == &quot;accept&quot; and x[&quot;id&quot;] not in have:                  # P157d: the printed label -&gt; aliases, the table symbols -&gt; symbols
+             mt, params, local = model_fields(x) if x[&quot;kind&quot;] == &quot;model&quot; else (&quot;&quot;, [], False)
+             if local:                                                           # P168: the printed name a symbol of its paper, not an alias
+</pre>
+</body></html>
