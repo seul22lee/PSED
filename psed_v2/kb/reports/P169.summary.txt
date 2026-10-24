@@ -1,0 +1,33 @@
+P169: 3 provider calls (round-4 pass 0), $0.570 (over the ≈ $0.4 stated: yim22's prompt is 62k tokens and the three answers ran 29k-54k
+output tokens). A: 0 calls. Audits rounds 1-3 PASS; export.py --check 15 of 15.
+
+A1. The round-3 apply snapshot regenerated with the fixed carried_rows, from the state apply read (kb/compiled and ontology/ at 28c63b9,
+  extracted to the scratchpad; only kb/reports/R3_apply.decision_rows.csv written): 11 -> 16 rows, +5 carried rows (Gordon model,
+  Yilammi et al. diffusion–reaction model, Monte Carlo computer simulation, diffusion model, Kinetic Model). History row: round 3 edit.
+A2. A1: an accept's effect = every compiled row resolving to the new entry by any path; elam_monte_carlo: yes, through the alias row 'Monte
+  Carlo computer simulation' (ela03 s4.p1).
+A3. A2: a promotion through an alias or symbol a user decision wrote is "alias (user decision)" / "symbol (user decision)" with its
+  history.csv row (an accepted entry's aliases and symbols; an alias decision's R<n>_apply.written.csv row, else its snake-form alias);
+  head nouns only for pre-existing names and aliases. Round 2: 81 symbol + 14 alias (user decision), 40 symbol (paper-local), 45 agree;
+  round 3: 3 symbol + 1 alias (user decision); round 1: 3 alias + 1 symbol (user decision), 34 agree. 'spatial resolution' and 'Monte Carlo
+  computer simulation' are now user-decision aliases.
+A4. pending.csv (decided in chat P169): 'diffusion model' (yli18) -> ylilammi_diffusion_reaction, 'Kinetic Model' (gor03) -> gordon_plug_flow,
+  'eq 6' (art19) -> arts_slope, each a paper-local symbol. Round 3 was applied, and apply took only a proposed round: apply now takes the
+  decided rows of one applied round as late decisions (no new snapshot; their rows are in the regenerated one; counts added). 7 of 7
+  simulation units now link to a model entry.
+A5. elam_monte_carlo name -> 'Elam Monte Carlo model' (history edit).
+  Two mistakes of mine, found and fixed in this unit: the late apply overwrote R3_apply.written.csv (the 8 rows of the round-3 apply
+  restored from 8665bde, apply now appends in late mode); the P168 change of A1's reason turned round 1's evacuated_below (an alias for an
+  ela03 row that no compiled row carries) into a failure: a decision with no snapshot row is now n/a only when no compiled row of its papers
+  carries its label, so a row that exists but is missing from a snapshot still fails.
+  Scores (P169.pre -> after) every column unchanged on the nine papers; check.py counts unchanged.
+B. Round 4: gao15 10.1116_1.4903941, yim22 10.1039_d1cp04758b, mat23 10.1116_6.0002993 resolve (key, elements.csv 99 / 583 / 110 rows,
+  document.md, figures.json, gold 225 / 608 / 191 rows). Pass 0 (MEDIUM, form P163): gao15 6 units ($0.186), yim22 74 ($0.254), mat23 20
+  ($0.130). Units from curves: none on the three; unbound items 0. Model-named check: no model entry named in any of the three; yim22's
+  simulations 'Model A', 'Model B' resolve to no model entry.
+  vs gold: gao15 (gold 23: run 9, specimen 14): run merged+split 1, missing 7; specimen matched 4, missing 10. yim22 (gold 70: simulation 2,
+  model run 68): Model A matched; Model B is listed but pairs with nothing (gold missing 1, pass-0 extra 1: no shared evidence or data);
+  model runs matched 46, merged+split 3, split 1, missing 2, extra 3; layouts 18 agree, 2 disagree (tab1, tab3: gold row_per_unit, pass 0
+  not_units). mat23 (gold 16: run 2, specimen 14): run matched 2, extra 11; specimen merged+split 2, missing 7. gao15 fig5a: gold
+  curve_per_unit, pass 0 panel_one_unit.
+Next: pass 1 for the three waits for the user's reading of this comparison.
