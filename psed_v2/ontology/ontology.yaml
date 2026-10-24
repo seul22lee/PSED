@@ -346,7 +346,6 @@ entries:
     unit: Pa
     qudt_quantity_kind: "quantitykind:Pressure"
     qudt_unit: "unit:PA"
-    qualifiers: [step]
     aliases: ["process pressure", "Chamber pressure", "Pressure (mbar)", "total pressure", "gas pressure"]
     symbols: [{text: p, paper: 10.1116_6.0003182}]
     base: {source: schema_miner, path: ProcessParameters/Pressure}
@@ -364,7 +363,6 @@ entries:
     dimension: length_per_cycle
     unit: nm/cycle
     qudt_unit: "unit:NanoM"
-    qualifiers: [position, over, kind]
     aliases: [GrowthPerCycle, growth per cycle, GPC, Thickness/cycles S/N (nm), SI/N (GPCI), SIIb/N (GPCIIb), Film growth per cycle, Thickness/cycles S/N]
     symbols: [{text: s/N, paper: 10.1039_d1cp04758b}]
     base: {source: schema_miner, path: ProcessParameters/ThicknessControl/GrowthPerCycle}
@@ -400,7 +398,6 @@ entries:
     unit: s
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:SEC"
-    qualifiers: [step]
     aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length, at-H pulse, DEZ exposure time, exposure time, Exposure Times, Minimum Exposure Time, 'MoCl_{2}O_{2} pulse', Plasma time, reactant exposure duration, reactant pulse length, SiCl4 Exposure Time, TMA Exposure Time]
     symbols: [{text: t_1, paper: 10.1039_d1cp04758b}, {text: t_hold, paper: 10.1116_6.0003182}, {text: t_p, paper: 10.1063_1.5028178}]
     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
@@ -419,7 +416,6 @@ entries:
     unit: s
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:SEC"
-    qualifiers: [step]
     aliases: [PurgeTime, purge time, Purge, pump time, at-H purge, 'MoCl_{2}O_{2} purge']
     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/PurgeTime/Precursor, ProcessParameters/ThicknessControl/PurgeTime/CoReactant]}
     deviation: {type: merged, reason: "the two fields become one entry with the step qualifier"}
@@ -556,7 +552,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [basis]
     aliases: [coated EAR, coated (E)AR]
     symbols: [{text: coated (E)AR, paper: 10.1039_d0cp03358h}, {text: coated (E)AR, paper: 10.1116_6.0003182}, {text: x̃50%, paper: ''}, {text: 'PD^{50%} / cavity height', paper: 10.1021_acs.jpcc.9b08176}]
     base: {source: cremers_2019, section: "Sec. II H; second half of the split of schema_miner MaterialProperties/Conformality/AspectRatio (path recorded on aspect_ratio)"}
@@ -573,7 +568,6 @@ entries:
     definition: "Atomic fraction of an element in the deposited film."
     dimension: dimensionless
     unit: "1"
-    qualifiers: [element]
     aliases: [ChemicalComposition]
     base: {source: schema_miner, path: MaterialProperties/ChemicalComposition}
     deviation: {type: split, reason: "schema-miner's ChemicalComposition became composition (at.% per element) in v0; Sec. 18.3 supersedes it by element_fraction (at.%), element_ratio (atoms per reference atom) and phase_fraction (wt% of a phase): three references that one key mixed; composition keeps the path and is replaced_by element_fraction"}
@@ -609,7 +603,6 @@ entries:
     unit: Pa
     qudt_quantity_kind: "quantitykind:PartialPressure"
     qudt_unit: "unit:PA"
-    qualifiers: [species]
     aliases: [Partial pressure of reactant A, Input partial pressure of reactant A, Pressure pA (Pa), Partial pressure of active species, vapour pressure, DEZ Pressure, Pressure p_A, SiCl4 Pressure, TMA Pressure]
     symbols: [{text: P_i, paper: 10.1063_1.5028178}, {text: P_i, paper: 10.1039_d0cp03358h}, {text: P_i, paper: 10.1116_6.0001094}, {text: pA0 (Pa), paper: ''}, {text: pO (mbar), paper: ''}, {text: p_A0, paper: 10.1039_d1cp04758b}, {text: p_i, paper: 10.1039_d1cp04758b}, {text: p_A0, paper: 10.1063_1.5028178}, {text: p_A0, paper: 10.1039_d3cp05639b}, {text: p_I, paper: 10.1039_d1cp04758b}, {text: p_O, paper: 10.1116_6.0001094}]
     base: {source: cremers_2019, section: "Sec. II D; second half of the split of schema_miner ProcessParameters/Pressure (path recorded on process_pressure)"}
@@ -626,7 +619,6 @@ entries:
     dimension: exposure
     unit: "Pa·s"
     qudt_unit: "unit:PA-SEC"
-    qualifiers: [species]
     aliases: [reactant exposure, Pt, 'Exposure, in Langmuirs']
     base: {source: cremers_2019, section: "Sec. II D"}
     evidence: ['alias ''Pt'': gor03 s6.p7 (P131b alias audit)']
@@ -643,7 +635,6 @@ entries:
     unit: "°C"
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
-    qualifiers: [species]
     aliases: ["source temperature"]
     base: {source: popov_2025, section: "Sec. IV"}
     evidence: []
@@ -660,7 +651,6 @@ entries:
     unit: nm
     qudt_quantity_kind: "quantitykind:Thickness"
     qudt_unit: "unit:NanoM"
-    qualifiers: [position]
     aliases: [Film thickness (nm), Film thickness S (nm), Thickness (nm), film thickness, Thickness outside SI (nm), Initial thickness SIIb (nm), interface layer thickness, onset of steady growth, Film thickness S]
     base: {source: cremers_2019, section: "Sec. II H, Fig. 7"}
     evidence: [Yim2020 Fig. 7, Yim2020 Fig. 8, Yim2020 Fig. 9a, Yim2020 Fig. 9d, Yim2020 Fig. 10a, Yim2020 Fig. 10d, Yim2020 Fig. 11, Yim2020 Table 1, Ylilammi2018 Fig. 4, Ylilammi2018 Fig. 6, Ylilammi2018 Fig. 7, Werbrouck2021 Fig. 11, Werbrouck2021 Fig. 12, 'alias ''interface layer thickness'': mat22 s3.p44 (P131b alias audit)', 'alias ''onset of steady growth'': zou23 s8.x1 (P131b alias audit)']
@@ -678,7 +668,6 @@ entries:
     unit: "µm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:MicroM"
-    qualifiers: [level]
     aliases: [Penetration depth xp (µm), Half-thickness penetration depth, 50% thickness penetration depth, Penetration depth x_p]
     symbols: [{text: PD50%, paper: 10.1039_d0cp03358h}, {text: PD50%, paper: 10.1063_1.5028178}, {text: PD50%, paper: ''}, {text: x50% (PD50%), paper: ''}, {text: x_50% (PD^50%), paper: 10.1039_d0cp03358h}, {text: 'r_{θ=1/2}', paper: 10.1039_d3cp05639b}]
     base: {source: cremers_2019, section: "Sec. II H"}
@@ -713,7 +702,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [position]
     aliases: [step coverage, SC]
     base: {source: cremers_2019, section: "Sec. II H"}
     evidence: []
@@ -730,7 +718,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [species]
     aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, sticking coefficient]
     symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}, {text: c, paper: 10.1063_1.5028178}, {text: \beta_0, paper: 10.1039_d3cp05639b}, {text: S, paper: 10.1021_cm0303080}]
     base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
@@ -748,7 +735,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [species, surface]
     aliases: [recombination probability, recombination coefficient]
     symbols: [{text: r, paper: 10.1116_6.0001094}]
     base: {source: cremers_2019, section: "Sec. II E, Table VII"}
@@ -872,7 +858,6 @@ entries:
     unit: sccm
     qudt_quantity_kind: "quantitykind:VolumeFlowRate"
     qudt_unit: "unit:CentiM3-PER-MIN"
-    qualifiers: [gas]
     aliases: [Flow (sccm), flow rate, gas flow, flow]
     base: {}
     evidence: ["Werbrouck2021 Fig. 2", "Werbrouck2021 Table I", "Werbrouck2021 Fig. 6", "Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII"]
@@ -891,7 +876,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [reference]
     aliases: [Normalized thickness (-), Normalized deposition thickness, Type 1 normalized saturation profile, normalized thickness, Relative Al_2O_3 Coverage, Relative ZnO Coverage]
     symbols: [{text: Coverage, paper: 10.1116_6.0001094}]
     base: {}
@@ -908,7 +892,6 @@ entries:
     dimension: inverse_pressure
     unit: 1/Pa
     qudt_unit: "unit:PER-PA"
-    qualifiers: [species]
     aliases: [Adsorption equilibrium constant, Adsorption equilibrium constant (1/Pa)]
     symbols: [{text: K (Pa-1), paper: ''}]
     base: {}
@@ -1098,7 +1081,6 @@ entries:
     unit: "%"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
-    qualifiers: [species]
     aliases: [purity, min. 95%]
     symbols: [{text: 99.5%, paper: ''}]
     base: {}
@@ -1116,7 +1098,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [gas, relative_to]
     aliases: [H2 flow ratio, H2 ratio, H₂ flow ratio]
     base: {}
     evidence: ["mat22 Eq. 1", "mat22 Table 2", "mat22 Fig. 2", "mat22 Fig. 4", "mat22 Fig. 7b", "mat22 Fig. 8"]
@@ -1164,7 +1145,6 @@ entries:
     unit: "%"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
-    qualifiers: [relative_to]
     aliases: ["mass gain", "Mass gain (%)"]
     base: {}
     evidence: ["gre23 Table I", "gre23 Sec. III A (s12.p1)"]
@@ -1234,7 +1214,6 @@ entries:
     unit: "nm-2"
     qudt_quantity_kind: "quantitykind:InverseArea"
     qudt_unit: "unit:PER-NanoM2"
-    qualifiers: [element, over]
     aliases: [atoms per cycle, metal atoms per cycle, Mo atoms deposited per cycle]
     base: {}
     evidence: [gre23 Sec. III A (s12.p1), yim20 Fig. 10 (model input q), 'alias ''Mo atoms deposited per cycle'': mat22 s3.p30 (P131b alias audit)']
@@ -1335,7 +1314,6 @@ entries:
     unit: "Torr"
     qudt_quantity_kind: "quantitykind:Pressure"
     qudt_unit: "unit:TORR"
-    qualifiers: [level, step]
     aliases: [pressure rise, δp maximum, 'Pressure change, \delta p']
     symbols: [{text: δp, paper: ''}, {text: δp_max, paper: ''}]
     base: {}
@@ -1351,7 +1329,6 @@ entries:
     definition: "The slope of the chamber pressure at the end of a reactant hold, the terminal slope TS of gre23: positive for gas-producing processes, negative when leaks dominate."
     dimension: pressure_per_time
     unit: "mTorr/min"
-    qualifiers: [step]
     aliases: [TS, terminal slope, terminal pressure slope, 'Terminal slope, TS']
     base: {}
     evidence: ["gre23 Fig. 3", "gre23 Sec. III A (s12.p7)"]
@@ -1368,7 +1345,6 @@ entries:
     unit: "min"
     qudt_quantity_kind: "quantitykind:Time"
     qudt_unit: "unit:MIN"
-    qualifiers: [step]
     aliases: [time to pressure maximum, time to δp maximum]
     symbols: [{text: t_max, paper: ''}]
     base: {}
@@ -1386,7 +1362,6 @@ entries:
     unit: "%"
     qudt_quantity_kind: "quantitykind:Porosity"
     qudt_unit: "unit:PERCENT"
-    qualifiers: [stage, relative_to]
     aliases: [porosity, 'Final porosity, φ_f (%)']
     symbols: [{text: φ_i, paper: ''}, {text: φ_f, paper: ''}]
     base: {}
@@ -1481,7 +1456,6 @@ entries:
     unit: "eV"
     qudt_quantity_kind: "quantitykind:Energy"
     qudt_unit: "unit:EV"
-    qualifiers: [element]
     aliases: [BE, binding energy, Mo 3d5/2 BE, S 2p3/2 BE, BE shift below S2-, Ga 2p3/2, S 2s]
     base: {}
     evidence: [mat22 Fig. 5, 'mat22 Sec. 3 (s3.p16, s3.p17)', 'alias ''Mo 3d5/2 BE'': mat22 s3.p16 (P131b alias audit)', 'alias ''S 2p3/2 BE'': mat22 s3.p17 (P131b alias audit)', 'alias ''BE shift below S2-'': mat22 s3.p17 (P131b alias audit)', 'alias ''Ga 2p3/2'': mat23 fig3a (P131b alias audit)', 'alias ''S 2s'': mat23 fig3b (P131b alias audit)']
@@ -1498,7 +1472,6 @@ entries:
     unit: "nm"
     qudt_quantity_kind: "quantitykind:Length"
     qudt_unit: "unit:NanoM"
-    qualifiers: [species]
     aliases: [crystallite size, grain size, nanocrystallite width, corundum grain size, ZnO (zincite) Crystallite size (nm), Zn (metallic) Crystallite size (nm)]
     base: {}
     evidence: [gre23 Table II, mat22 Sec. 3 (s3.p26), 'alias ''nanocrystallite width'': mat22 s3.p9 (P131b alias audit)', 'alias ''corundum grain size'': gre23 s10.p1 (P131b alias audit)', 'alias ''ZnO (zincite) Crystallite size (nm)'': gre23 tabII.r1c2 (P131b alias audit)', 'alias ''Zn (metallic) Crystallite size (nm)'': gre23 tabII.r2c4 (P131b alias audit)']
@@ -1547,7 +1520,6 @@ entries:
     name: "phase"
     definition: "Whether a named phase (the species qualifier) was detected in the film by the stated method: detected or not detected (P15)."
     dimension: categorical
-    qualifiers: [species]
     aliases: ["phase"]
     base: {}
     evidence: ["mat22 Fig. 4 (XPS)", "mat22 Sec. 3 (s3.p13)", "gre23 Fig. 5 (XRD)", "gre23 Table II"]
@@ -1565,7 +1537,6 @@ entries:
     unit: "°C"
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
-    qualifiers: [gas]
     aliases: [annealing temperature, annealing temperature in air]
     symbols: [{text: T_anneal, paper: ''}]
     base: {}
@@ -1668,7 +1639,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:KnudsenNumber"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [species]
     aliases: ["Knudsen number", "Kn"]
     base: {}
     deviation: {type: promoted, reason: "Sec. 18.7 (decision D2): data in yim20 (Sec. D) and in gre23 (the compact's pore size and the stated pressure give it), a CQ needs the flow regime (Case A7)"}
@@ -1686,7 +1656,6 @@ entries:
     unit: "µm"
     qudt_quantity_kind: "quantitykind:MeanFreePath"
     qudt_unit: "unit:MicroM"
-    qualifiers: [species]
     aliases: [mean free path]
     symbols: [{text: λ, paper: ''}]
     base: {}
@@ -1709,7 +1678,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [by, reference, definition]
     aliases: ["Slope dθ/dx̃", "Slope d(S/N)/dx̃", "front slope"]
     symbols: [{text: '|d(s/N)/dx̃| at x̃₅₀%', paper: 10.1039_d1cp04758b}]
     base: {}
@@ -1744,7 +1712,6 @@ entries:
     definition: "A detector signal against position or energy (an EDS, Raman, XPS or X-ray count or an arbitrary-unit intensity); a signal without a quantity (Sec. 4), stored as the trace it is, not a concept (Sec. 18.7)."
     dimension: signal
     unit: ""
-    qualifiers: [element, species]
     aliases: [Intensity, a.u., counts, Intensity (Arb. units), Intensity (Normalized to Si), 'Intensity [a.u.]', Normalized X-ray counts (Zn), Counts per second, Counts/s, Loss in Hydroxyl Feature, m/z = +16 (O⁺) Counts/s, m/z = -16 (O⁻) Counts/s, m/z = +32 (O₂⁺) Counts/s, m/z = -32 (O₂⁻) Counts/s, Normalized counts, Normalized X-ray counts]
     base: {}
     evidence: [yim20 Fig. 5b, mat22 Fig. 1a, mat22 Fig. 5, gre23 Fig. 6d-f, 'alias ''Intensity (Arb. units)'': mat22 fig1a (P131b alias audit)', 'alias ''Intensity (Normalized to Si)'': mat22 fig1b (P131b alias audit)', 'alias ''Intensity (arb. units)'': mat22 fig5a (P131b alias audit)', 'alias ''Intensity [a.u.]'': yim20 fig5b (P131b alias audit)', 'alias ''Normalized X-ray counts (Zn)'': gre23 fig6d (P131b alias audit)']
@@ -1763,7 +1730,6 @@ entries:
     unit: "at.%"
     qudt_quantity_kind: "quantitykind:AmountOfSubstanceFraction"
     qudt_unit: "unit:PERCENT"
-    qualifiers: [element]
     aliases: [at.%, at. %, atomic percent, H content, O content, N content, C content, C after sputtering, O after sputtering, Composition]
     symbols: [{text: H (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: C (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: N (at. %), paper: 10.1021_acs.chemmater.2c01154}, {text: O (at. %), paper: 10.1021_acs.chemmater.2c01154}]
     base: {}
@@ -1782,7 +1748,6 @@ entries:
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
-    qualifiers: [element, reference_element]
     aliases: [S/Mo, S/W, S/Mo ratio, stoichiometry, S/Mo ratio (RBS), S/Mo ratio (XPS), XPS S/Mo ratio]
     base: {}
     evidence: [mat22 Fig. 4, mat22 Table 1, mat22 Fig. 5, mat22 Sec. 3 (s3.p46), 'alias ''S/Mo ratio (RBS)'': mat22 tab1.r1c1 (P131b alias audit)', 'alias ''S/Mo ratio (XPS)'': mat22 tab1.r1c2 (P131b alias audit)', 'alias ''XPS S/Mo ratio'': mat22 fig4 (P131b alias audit)']
@@ -1800,7 +1765,6 @@ entries:
     unit: "wt%"
     qudt_quantity_kind: "quantitykind:MassFraction"
     qudt_unit: "unit:PERCENT"
-    qualifiers: [phase, relative_to]
     aliases: [wt%, Wt. %, weight percent, ZnO (zincite) Wt. %]
     base: {}
     evidence: [gre23 Table II, gre23 Fig. 5, 'alias ''ZnO (zincite) Wt. %'': gre23 tabII.r1c1 (P131b alias audit)']
@@ -2674,7 +2638,6 @@ entries:
     definition: The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.
     dimension: molar_mass
     unit: g/mol
-    qualifiers: [species]                                            # P179 (user): whose molecule
     aliases: [MA, molar mass, reactant molar mass, molar mass of reactant A]
     symbols: [{text: M_A, paper: ''}, {text: M_B, paper: ''}, {text: M, paper: 10.1039_d1cp04758b}]
     citation: Ylilammi 2018 Fig. 2 conditions (M_A, M_B); Yim 2022 Figs. 4c and 6c (M_A in g mol-1 and kg mol-1); Heikkinen 2024 Fig. 5 series (50 to 250 g mol-1)
@@ -2740,7 +2703,6 @@ entries:
     definition: The hard-sphere diameter of a reactant or carrier-gas molecule (d_A, d_B), a model input of the diffusion-reaction models (from the gas viscosity or the condensed-phase density).
     dimension: length
     unit: pm
-    qualifiers: [species]                                            # P179 (user): whose molecule
     aliases: [molecular diameter, diameter of molecule A]
     symbols: [{text: d_B, paper: ''}, {text: d_TMA, paper: 10.1063_1.5028178}, {text: d_TiCl4, paper: 10.1063_1.5028178}, {text: d_I, paper: 10.1039_d1cp04758b}]
     citation: Ylilammi 2018 Sec. II, Eqs. (7)-(8) (d_A = 418 pm for water, 591 pm for TMA, 703.9 pm for TiCl4); Yim 2022 Fig. 2 conditions (d_A)
@@ -3538,32 +3500,33 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: "lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)"}
   - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: "L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
-  definition: {meaning: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", values: definition ids, log: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)"}
-  step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds", value_definitions: {reactant_A: "the exposure step of the run's reactant_A species", purge_A: "the purge after the exposure step of the run's reactant_A species", reactant_B: "the exposure step of the run's reactant_B species", purge_B: "the purge after the exposure step of the run's reactant_B species", plasma: "the plasma exposure step (reactant_B delivered as a plasma)", hold_A: "a static (closed-valve) exposure of reactant A", hold_B: "a static (closed-valve) exposure of reactant B", none: "not step-specific"}}   # P181 (user): one definition per value, naming the run's recipe field
-  species:   {meaning: "the substance a value is about (a species id): a reactant, a carrier or background gas, or a detected phase", values: species ids, log: "P179 (user): the meaning; values: species entries only"}
-  gas:       {meaning: "the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure", values: species ids}
-  element:   {meaning: "the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy", values: element symbols}
-  reference_element: {meaning: "Sec. 18.3: the denominator atom of an element_ratio", values: element symbols, log: "Sec. 18.3: the denominator atom of an element_ratio"}
-  phase:     {meaning: "Sec. 18.3: the phase a phase_fraction is of", values: species ids, log: "Sec. 18.3: the phase a phase_fraction is of"}
-  position:  {meaning: "where on the structure the value was taken: planar (the flat surface), top (the entrance), sidewall, bottom, entrance, plateau (the constant-thickness region), local, outside (outside the channel), interface.", values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top", log: "local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer"}
-  reference: {meaning: "the thickness a normalized thickness is divided by: top, planar, plateau, entrance, maximum, assumed_saturation, stated (the authors give it), bulk.", values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: "plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)"}
-  level:     {meaning: "the thickness fraction or front position that defines a penetration depth: 50%, 80%, front_start, front_end, maximum.", values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum"}
-  basis:     {meaning: "the aspect ratio a value is computed on: AR (geometric) or EAR (equivalent).", values: [AR, EAR], source: "Cremers Sec. II G"}
-  surface:   {meaning: "the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3", values: material ids}
-  kind:      {meaning: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", values: [set_point, measured, default, option, target, estimated], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", evidence: ['gre23:s9.p6#12 (s9.p6;s12.p6)', 'gre23:s9.p6#13 (s9.p6)']}
-  by:        {meaning: "pilot: what a dimensionless distance is divided by", values: [H, 2H, d, w, lambda, none], log: "pilot: what a dimensionless distance is divided by"}
-  origin:    {meaning: "pilot: where a distance is measured from", values: [entrance, top_face, hole_centre, nearer_face, opening_centre], log: "pilot: where a distance is measured from"}
-  stage:     {meaning: "pilot: before or after the deposition (porosity, channel height)", values: [initial, final], log: "pilot: before or after the deposition (porosity, channel height)"}
-  stat:      {meaning: "pilot P1: a spread fact's statistic", values: [sd, relative_sd, half_range, tolerance, minimum, maximum], log: "pilot P1: a spread fact's statistic"}
-  between:   {meaning: "pilot P1: what varies between the repeats of a spread", values: [runs, pieces, position, repeat_measurement, items], log: "pilot P1: what varies between the repeats of a spread"}
-  n:         {meaning: "pilot P1: the number of repeats", values: a number or not_stated, log: "pilot P1: the number of repeats"}
-  relative_to: {meaning: "pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)", values: [initial_mass, final_mass, all_atoms, metal_atoms, crystalline_phases, total_volume, reactive_gases, all_gases, not_stated], log: "pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)"}
-  over:      {meaning: "pilot P5: what a per-cycle value is averaged over", values: [run, first_100_cycles, saturation, not_stated], log: "pilot P5: what a per-cycle value is averaged over"}
-  mode:      {meaning: "pilot P6: a measurement during or after the deposition", values: [in_situ, ex_situ, not_stated], log: "pilot P6: a measurement during or after the deposition"}
-  x:         {meaning: "pilot: the abscissa of a curve", values: quantity ids, log: "pilot: the abscissa of a curve"}
-  ratio:     {meaning: "pilot P17: the plasma_gas_ratio a keyed setting belongs to", values: a number, log: "pilot P17: the plasma_gas_ratio a keyed setting belongs to"}
-  specimen_class: {meaning: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis", values: [film, porous_composite], log: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis"}
-  structure_class: {meaning: "P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class", values: [structure, planar, har_feature, trench, via_hole, lateral_channel, porous_body, nanoparticle_compact, aerogel_monolith, nanopore_membrane], log: "P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class"}
+  # P182 (user): applies_to = which entries may carry the key: a list of entry ids and selectors ({field: value}; present = the field is set), any (every value fact) or unit (an attribute of a unit, never on a value fact); the entries' own qualifiers lists are derived from it (export.entry_qualifiers)
+  definition: {meaning: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", values: definition ids, log: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", applies_to: {definitions: present}, applies_to_reason: "an entry with definitions: front_slope"}
+  step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds", value_definitions: {reactant_A: "the exposure step of the run's reactant_A species", purge_A: "the purge after the exposure step of the run's reactant_A species", reactant_B: "the exposure step of the run's reactant_B species", purge_B: "the purge after the exposure step of the run's reactant_B species", plasma: "the plasma exposure step (reactant_B delivered as a plasma)", hold_A: "a static (closed-valve) exposure of reactant A", hold_B: "a static (closed-valve) exposure of reactant B", none: "not step-specific"}, applies_to: [pulse_time, purge_time, exposure, process_pressure, deposition_temperature, gas_flow_rate, plasma_power, pressure_rise, pressure_rate, time_to_maximum, gas_moles_per_cycle], applies_to_reason: "the cycle step a value is about: the step times, exposure (form rule P158 1), the conditions set per step (pressure, temperature, flows, plasma power) and the per-step monitoring values"}   # P181 (user): one definition per value, naming the run's recipe field
+  species:   {meaning: "the substance a value is about (a species id): a reactant, a carrier or background gas, or a detected phase", values: species ids, log: "P179 (user): the meaning; values: species entries only", applies_to: [pulse_time, purge_time, partial_pressure, exposure, source_temperature, precursor_purity, initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant, saturation_density, knudsen_number, mean_free_path, molar_mass, molecule_diameter, gas_phase_diffusion_coefficient, knudsen_diffusion_coefficient, effective_diffusion_coefficient, reactant_number_density, gas_moles_per_cycle, crystallite_size, phase, signal_intensity, film_density], applies_to_reason: "the substance a value is about: a property or amount of a reactant or gas molecule, a delivery setting of one reactant (P181 step fill; lists.SUBSTANCE_SCOPED), or a detected phase; + film_density: the gold's film density of a named phase, mos2 (mat22) (user, P182 step 3)"}
+  gas:       {meaning: "the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure", values: species ids, applies_to: [gas_flow_rate, plasma_gas_ratio, partial_pressure, annealing_temperature, molar_mass, molecule_diameter], applies_to_reason: "the gas of a flow rate, of a plasma-feed share or of a partial pressure; the annealing atmosphere; + molar_mass, molecule_diameter: the gold's molar mass and molecule diameter of the background gas n2 (yim22) (user, P182 step 3)"}
+  element:   {meaning: "the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy", values: element symbols, applies_to: [composition, element_fraction, element_ratio, signal_intensity, binding_energy, atoms_per_cycle], applies_to_reason: "the composition values, an XPS signal or binding energy; atoms_per_cycle counts atoms of one element"}
+  reference_element: {meaning: "Sec. 18.3: the denominator atom of an element_ratio", values: element symbols, log: "Sec. 18.3: the denominator atom of an element_ratio", applies_to: [element_ratio], applies_to_reason: "the denominator atom of an element_ratio"}
+  phase:     {meaning: "Sec. 18.3: the phase a phase_fraction is of", values: species ids, log: "Sec. 18.3: the phase a phase_fraction is of", applies_to: [phase_fraction], applies_to_reason: "the phase a phase_fraction is of"}
+  position:  {meaning: "where on the structure the value was taken: planar (the flat surface), top (the entrance), sidewall, bottom, entrance, plateau (the constant-thickness region), local, outside (outside the channel), interface.", values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top", log: "local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer", applies_to: [film_thickness, growth_per_cycle, step_coverage, surface_coverage, roughness, feature_width], applies_to_reason: "values taken at a place on the structure: thickness, growth, coverage, roughness, a structure dimension measured at a place"}
+  reference: {meaning: "the thickness a normalized thickness is divided by: top, planar, plateau, entrance, maximum, assumed_saturation, stated (the authors give it), bulk.", values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: "plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)", applies_to: [normalized_thickness, front_slope, film_density], applies_to_reason: "the thickness a normalized thickness (and the slope of a normalized profile) is divided by; + film_density: the gold's film density relative to bulk (mat22) (user, P182 step 3)"}
+  level:     {meaning: "the thickness fraction or front position that defines a penetration depth: 50%, 80%, front_start, front_end, maximum.", values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum", applies_to: [penetration_depth, pressure_rise, dimensionless_distance, coated_aspect_ratio], applies_to_reason: "the fraction or front position that defines a penetration depth (also as a dimensionless distance); the maximum of a pressure rise; + coated_aspect_ratio: the gold's coated aspect ratio at PD50% / front_start / front_end (art19, gao15, yim22) (user, P182 step 3)"}
+  basis:     {meaning: "the aspect ratio a value is computed on: AR (geometric) or EAR (equivalent).", values: [AR, EAR], source: "Cremers Sec. II G", applies_to: [coated_aspect_ratio], applies_to_reason: "the aspect ratio a coated aspect ratio is computed on"}
+  surface:   {meaning: "the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3", values: material ids, applies_to: [recombination_probability, reaction_stoichiometry], applies_to_reason: "the surface a surface reaction happens on; + reaction_stoichiometry: the gold's reaction stoichiometry on sio2 (gre23) (user, P182 step 3)"}
+  kind:      {meaning: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", values: [set_point, measured, default, option, target, estimated], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", evidence: ['gre23:s9.p6#12 (s9.p6;s12.p6)', 'gre23:s9.p6#13 (s9.p6)'], applies_to: any, applies_to_reason: "how a setting value is meant: a setting of any quantity; every value fact"}
+  by:        {meaning: "pilot: what a dimensionless distance is divided by", values: [H, 2H, d, w, lambda, none], log: "pilot: what a dimensionless distance is divided by", applies_to: [dimensionless_distance, front_slope], applies_to_reason: "what a dimensionless distance is divided by"}
+  origin:    {meaning: "pilot: where a distance is measured from", values: [entrance, top_face, hole_centre, nearer_face, opening_centre], log: "pilot: where a distance is measured from", applies_to: [distance, dimensionless_distance, penetration_depth], applies_to_reason: "where a distance is measured from: the distance coordinates and a penetration depth"}
+  stage:     {meaning: "pilot: before or after the deposition (porosity, channel height)", values: [initial, final], log: "pilot: before or after the deposition (porosity, channel height)", applies_to: [{category: test_structure}, roughness, film_thickness], applies_to_reason: "values that differ before and after the deposition: the structure-geometry and porous-medium entries (category test_structure) and roughness (user, P182); + film_thickness: the gold's film thickness before the deposition, stage=initial (zou23) (user, P182 step 3)"}
+  stat:      {meaning: "pilot P1: a spread fact's statistic", values: [sd, relative_sd, half_range, tolerance, minimum, maximum], log: "pilot P1: a spread fact's statistic", applies_to: any, applies_to_reason: "a spread of any value; every value fact"}
+  between:   {meaning: "pilot P1: what varies between the repeats of a spread", values: [runs, pieces, position, repeat_measurement, items], log: "pilot P1: what varies between the repeats of a spread", applies_to: any, applies_to_reason: "a spread of any value; every value fact"}
+  n:         {meaning: "pilot P1: the number of repeats", values: a number or not_stated, log: "pilot P1: the number of repeats", applies_to: any, applies_to_reason: "a spread of any value; every value fact"}
+  relative_to: {meaning: "pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)", values: [initial_mass, final_mass, all_atoms, metal_atoms, crystalline_phases, total_volume, reactive_gases, all_gases, not_stated], log: "pilot P4: what a fraction is a fraction of; reactive_gases, all_gases: the denominator of a plasma feed ratio (P51)", applies_to: [plasma_gas_ratio, mass_gain, porosity, phase_fraction, composition, element_fraction, atoms_per_cycle, coating_mass_fraction, shell_volume_fraction, fill_fraction], applies_to_reason: "what a fraction is a fraction of: the fractions and ratios (all_atoms / metal_atoms: element-fraction denominators)"}
+  over:      {meaning: "pilot P5: what a per-cycle value is averaged over", values: [run, first_100_cycles, saturation, not_stated], log: "pilot P5: what a per-cycle value is averaged over", applies_to: [growth_per_cycle, atoms_per_cycle, saturation_growth_per_cycle, deposited_moles_per_cycle, gas_moles_per_cycle, exposure], applies_to_reason: "what a per-cycle value is averaged over; exposure per run (lists.DERIVED exposure{over=run})"}
+  mode:      {meaning: "pilot P6: a measurement during or after the deposition", values: [in_situ, ex_situ, not_stated], log: "pilot P6: a measurement during or after the deposition", applies_to: unit, applies_to_reason: "names the measurement (in situ / ex situ), not the value: an attribute of a measurement activity"}
+  x:         {meaning: "pilot: the abscissa of a curve", values: quantity ids, log: "pilot: the abscissa of a curve", applies_to: any, applies_to_reason: "the abscissa of a curve of any quantity; every value fact"}
+  ratio:     {meaning: "pilot P17: the plasma_gas_ratio a keyed setting belongs to", values: a number, log: "pilot P17: the plasma_gas_ratio a keyed setting belongs to", applies_to: [gas_flow_rate], applies_to_reason: "the settings keyed to a plasma_gas_ratio (lists.KEYED, P17: a Table 2 flow for one H2 ratio) (user, P182)"}
+  specimen_class: {meaning: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis", values: [film, porous_composite], log: "Sec. 18.4 (P53): on an entity made by a deposition; a comparability axis", applies_to: unit, applies_to_reason: "names the sample: an attribute of a specimen entity"}
+  structure_class: {meaning: "P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class", values: [structure, planar, har_feature, trench, via_hole, lateral_channel, porous_body, nanoparticle_compact, aerogel_monolith, nanopore_membrane], log: "P78 (Sec. 18.11): the class of the structure a specimen or input entity sits on; vocabularies.structure_class", applies_to: unit, applies_to_reason: "names the sample's structure: an attribute of a specimen or input entity"}
 
 units:   # canonical unit per dimension, and the accepted units
   temperature:      {canonical: "°C",       accepted: ["°C", K]}

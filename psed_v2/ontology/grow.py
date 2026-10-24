@@ -1722,7 +1722,8 @@ def family_rows(o):
     for e in o["entries"]:
         if e.get("family") and not e.get("replaced_by"):
             fam[e["family"]].append(e)
-    return [[f, "; ".join(f"{e['id']} ({e.get('unit', '')}; {', '.join(e.get('qualifiers', []))})" for e in ms),
+    eq = X.entry_qualifiers(o)                                                  # P182: the entry's keys, from the qualifier scopes
+    return [[f, "; ".join(f"{e['id']} ({e.get('unit', '')}; {', '.join(eq.get(e['id'], []))})" for e in ms),
              " | ".join(f"{e['id']}: {e['definition'].split('.')[0]}" for e in ms)] for f, ms in sorted(fam.items())]
 
 

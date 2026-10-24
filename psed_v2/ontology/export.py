@@ -18,6 +18,7 @@ P157b: the one label normalization (norm_label) and the never.csv index (never_i
 import them.
 Needs PyYAML.
 """
+import ast
 import csv
 import hashlib
 import json
@@ -337,8 +338,9 @@ def build(onto, pmap):
         SPECIMEN_CLASSES=list(voc.get("specimen_class", [])),
         AMBIGUOUS=sorted(voc.get("ambiguous_aliases", {})),
         BASES=dict(voc.get("uncertainty_basis", {})),
+        QUALIFIER_SCOPE=qualifier_scopes(onto),                                # P182 (user): key -> any | unit | the entry ids
         ENTRIES={e["id"]: dict(type=e["type"], role=e.get("role", ""), category=e.get("category", ""), definition=e.get("definition", ""), unit=str(e.get("unit", "")),
-                               family=e.get("family", ""), qualifiers=list(e.get("qualifiers", [])), aliases=list(e.get("aliases", [])), label=e.get("label", ""),
+                               family=e.get("family", ""), qualifiers=entry_qualifiers(onto).get(e["id"], []), aliases=list(e.get("aliases", [])), label=e.get("label", ""),   # P182: derived
                                symbols=[dict(text=str(x["text"]), paper=str(x.get("paper", ""))) for x in e.get("symbols") or []],   # P157d: paper-local
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
                                dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
@@ -380,6 +382,49 @@ SPECIES_RULE = ("On a record of type model / definition / cited, `species` is wr
                 "observations take their species from the text and the run's recipe fields.")   # P181 (user): scoped   # P179 (user): CODEBOOK carries it in these words
 STEP_QUANTITIES = ["pulse_time", "purge_time", "exposure"]                      # P158 rule 1
 STEP_TYPES = ["setting", "observation"]                                         # P163 (user): rule 1 binds these record types only
+
+
+def qualifier_scopes(onto):
+    """P182 (user): each qualifier key's applies_to resolved: 'any' (every value fact), 'unit' (an attribute of a unit, never on a value
+    fact), or the sorted ids of the value entries (quantity, categorical) it names: an entry id, or a selector {field: value} matching
+    the entries ('present': the field is set). None when the key has no applies_to (export --check 19 refuses it)."""
+    vals = [e for e in onto["entries"] if e["type"] in ("quantity", "categorical")]
+    out = {}
+    for k, q in onto["qualifiers"].items():
+        a = q.get("applies_to")
+        if a is None or a in ("any", "unit"):
+            out[k] = a
+            continue
+        ids = set()
+        for x in (a if isinstance(a, list) else [a]):
+            if isinstance(x, dict):
+                ids |= {e["id"] for e in vals if all((bool(e.get(f)) if v == "present" else e.get(f) == v) for f, v in x.items())}
+            else:
+                ids.add(str(x))
+        out[k] = sorted(ids)
+    return out
+
+
+def entry_qualifiers(onto):
+    """P182 (user): a value entry's own qualifier keys, derived from the scopes (replacing the entries' hand lists): the keys whose
+    applies_to names it, in the order of ontology.yaml qualifiers. The any keys apply to every value fact and are not listed."""
+    sc = qualifier_scopes(onto)
+    return {e["id"]: [k for k, ids in sc.items() if isinstance(ids, list) and e["id"] in ids] for e in onto["entries"] if e["type"] in ("quantity", "categorical")}
+
+
+def scope_rules(onto):
+    """P182 (user): form.json allOf rules from the scopes, "$comment" "P182 scope <key>": a key whose applies_to names entries, on a record
+    whose quantity is one entry -> the entry is in the scope (other, null and a caveat's list of quantities are not checked); a unit key
+    -> no single quantity. The any keys have no rule. compile removes an out-of-scope key before form.json ('qualifier out of scope')."""
+    out = []
+    for k, ids in qualifier_scopes(onto).items():
+        if ids in ("any", None):
+            continue
+        allowed = [None] if ids == "unit" else ids + ["other", None]
+        out.append({"$comment": f"P182 scope {k}: " + ("a unit attribute, never on a value record" if ids == "unit" else f"applies to {', '.join(ids)}"),
+                    "if": {"properties": {"qualifiers": {"type": "object", "required": [k]}}, "required": ["qualifiers"]},
+                    "then": {"properties": {"quantity": {"anyOf": [{"enum": allowed}, {"type": "array", "items": {"$ref": "#/$defs/quantity_id"}}]}}}})
+    return out
 
 
 def p158_rules(onto):
@@ -515,6 +560,7 @@ def form_schema(onto, L, F):
             *[{"if": _is("quantity", q), "then": {"properties": {"value_text": nullable({"enum": [str(x) for x in onto["vocabularies"][q]]})}}}
               for q in FORM_CATEGORICALS],                                      # P149 F3
             *[{"$comment": f"P158 rule {n}: {t}", **rule} for n, (t, rule) in enumerate(p158_rules(onto), 1)],   # P158: frozen form rules
+            *scope_rules(onto),                                                 # P182 (user): the qualifier scopes
         ],
         "$defs": defs,
     }
@@ -607,7 +653,8 @@ def form_md(form, pass0, onto, F):
     for r in form["allOf"]:
         props = r["if"].get("properties", {})
         cond = ("no " + ", ".join(x["required"][0] for x in r["if"]["not"]["anyOf"])) if "not" in r["if"] \
-            else " and ".join(f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")])) for key in props)   # P138; P163: every key
+            else " and ".join(f"{key} holds " + ", ".join(f"`{x}`" for x in props[key]["required"]) if "required" in props[key]           # P182: a scope rule
+                              else f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")])) for key in props)   # P138; P163: every key
         for f in r.get("then", {}).get("required", []):
             req[f].append(f"required when {cond}")
         for f, v in r.get("then", {}).get("properties", {}).items():
@@ -767,6 +814,7 @@ def codebook(onto, L):
             f"- model: {L.RECORD_TYPES['model']}", f"- {L.EQUATION_VARIABLES}", f"- {P143_EQUATION_RULE} (P143)", ""]
     # d. quantities
     E = onto["entries"]
+    EQ = entry_qualifiers(onto)                                                 # P182 (user): the entry's qualifier keys, from the scopes
     qrows = []
     for e in E:
         if e["type"] not in ("quantity", "categorical") or e.get("replaced_by"):
@@ -775,23 +823,27 @@ def codebook(onto, L):
         qrows.append([e["id"], e.get("name", ""), e.get("definition", ""), e.get("aliases", []),
                       [f"{x['text']} (only in {x['paper'] or 'no paper recorded'})" for x in e.get("symbols") or []], e.get("unit", ""), e.get("dimension", ""), e.get("note", ""),
                       e.get("role", ""), "yes" if e["id"] in L.SETTING_QUANTITIES else "", "yes" if e["id"] in L.SUBSTANCE_SCOPED else "",
-                      "; ".join(f"{k}={v}" for k, v in dd.items())])
+                      "; ".join(f"{k}={v}" for k, v in dd.items()), ", ".join(EQ.get(e["id"], []))])
         for f, v in (("name", e.get("name")), ("definition", e.get("definition"))):
             if not str(v or "").strip():
                 missing.append(f"d. quantity {e['id']}: {f}")
     out += ["## d. Quantities (sources: ontology/ontology.yaml entries; kb/pilot/lists.py SETTING_QUANTITIES, SUBSTANCE_SCOPED, DEFAULT_DEFINITION)", ""]
     out += ["Symbols (P157d) are hints, local to the paper named: a symbol means its quantity only in that paper.", ""]
-    out += _table(["id", "name", "definition", "aliases", "symbols (paper)", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key"], qrows)
+    out += _table(["id", "name", "definition", "aliases", "symbols (paper)", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key", "qualifiers (P182 scopes; kind, stat, between, n, x on every value fact)"], qrows)
     # e. qualifiers and tying rules
-    out += ["", "## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)", ""]
+    out += ["", "## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)", "",
+            "applies_to (P182): the entries a key may sit on; any = every value fact; unit = an attribute of a unit (a specimen, a measurement), never on a value record. "
+            "A key outside its entry's scope is removed by the compiler and listed (qualifier out of scope).", ""]
     qr = []
     for k, q in onto["qualifiers"].items():
         kind_, text = qualifier_text(q)
-        qr.append([k, text, q.get("values", ""), q.get("source", ""), q.get("log", "") if kind_ == "citation" else ""])
-        qr += [[f"{k} = {v}", d, "", "", ""] for v, d in (q.get("value_definitions") or {}).items()]   # P181 (user): one definition per value
+        a = q.get("applies_to")
+        a = a if isinstance(a, str) else ", ".join("; ".join(f"{f}: {v}" for f, v in x.items()) if isinstance(x, dict) else str(x) for x in (a if isinstance(a, list) else [a]))
+        qr.append([k, text, q.get("values", ""), a, q.get("source", ""), q.get("log", "") if kind_ == "citation" else ""])
+        qr += [[f"{k} = {v}", d, "", "", "", ""] for v, d in (q.get("value_definitions") or {}).items()]   # P181 (user): one definition per value
         if kind_ == "citation":
             missing.append(f"e. qualifier {k}: only a citation or value provenance (source / log), no meaning")
-    out += _table(["key", "meaning (meaning, else log)", "values", "source", "log (citation only)"], qr)
+    out += _table(["key", "meaning (meaning, else log)", "values", "applies_to", "source", "log (citation only)"], qr)
 
     def msg(pattern, tag):
         for n, x in enumerate(check_lines, 1):
@@ -911,7 +963,7 @@ def _never_label(raw):
 
 
 def run_checks(onto):
-    """[(title, passed, detail, problem rows)] of the 18 checks (P179: 16, P179b: 17, P181: 18)."""
+    """[(title, passed, detail, problem rows)] of the 19 checks (P179: 16, P179b: 17, P181: 18, P182: 19)."""
     from collections import Counter, defaultdict
     entries = onto["entries"]
     ids = [e["id"] for e in entries]
@@ -1032,7 +1084,7 @@ def run_checks(onto):
             deg[d["parent"]] += 1
     qualifier_keys = {k for k, q in onto["qualifiers"].items() if "species" in str(q.get("values")) or "material" in str(q.get("values"))}
     via_qualifier = [e["id"] for e in entries if e["type"] == "species" and not deg[e["id"]]
-                     and any(k in q.get("qualifiers", []) for q in entries for k in qualifier_keys)]
+                     and any(k in entry_qualifiers(onto).get(q["id"], []) for q in entries for k in qualifier_keys)]
     via_claim = [e["id"] for e in entries if e["type"] == "mechanism" and e.get("evidence")]     # Sec. 18.6: a mechanism's edges are the claims that name it
     bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier and i not in via_claim]
     out.append(("10. no orphan: every entry and hierarchy node has at least one edge", not bad,
@@ -1117,7 +1169,7 @@ def run_checks(onto):
     if FORM_VERSION != "P179" or SPECIES_RULE not in cb:
         bad.append("1b: form version P179 and the species rule in CODEBOOK.md")
     by = {e["id"]: e for e in entries}
-    bad += [f"1c: {i} takes no species qualifier" for i in ("molar_mass", "molecule_diameter") if "species" not in (by.get(i, {}).get("qualifiers") or [])]
+    bad += [f"1c: {i} takes no species qualifier" for i in ("molar_mass", "molecule_diameter") if "species" not in entry_qualifiers(onto).get(i, [])]   # P182: derived
     p0 = json.loads((SCHEMA / "form_pass0.json").read_text(encoding="utf-8")) if (SCHEMA / "form_pass0.json").exists() else {}
     unit = (p0.get("properties", {}).get("units", {}).get("anyOf") or [{}])[0].get("items", {})
     pm = json.dumps(unit.get("properties", {}).get("process_mode", {}))
@@ -1154,6 +1206,32 @@ def run_checks(onto):
             bad.append(f"{f}: a value without its quote is not refused")
     out.append(("18. pass-0 recipe fields (P181): reactant_A, reactant_B, carrier_gas (species entries) and process_mode on the units of form_pass0.json, each value with its quote",
                 not bad, f"problems: {bad}" if bad else f"form_pass0 version {PASS0_FORM_VERSION}: {', '.join(RECIPE_FIELDS)}", bad))
+    bad, sc = [], qualifier_scopes(onto)                                        # P182 (user): the qualifier scopes
+    vals = {e["id"]: e for e in entries if e["type"] in ("quantity", "categorical")}
+    for k, q in onto["qualifiers"].items():
+        a = q.get("applies_to")
+        if a is None:
+            bad.append(f"{k}: no applies_to")
+        elif isinstance(sc[k], list):
+            bad += [f"{k}: {i} is not a value entry" for i in sc[k] if i not in vals] + ([f"{k}: applies_to names no entry"] if not sc[k] else [])
+            bad += [f"{k}: selector {x} matches no entry" for x in (a if isinstance(a, list) else [a]) if isinstance(x, dict)
+                    and not [e for e in vals.values() if all((bool(e.get(f)) if v == "present" else e.get(f) == v) for f, v in x.items())]]
+        elif a not in ("any", "unit"):
+            bad.append(f"{k}: applies_to {a!r} is not a list, a selector, any or unit")
+    lt = (HERE.parent / "kb" / "pilot" / "lists.py").read_text(encoding="utf-8")
+    used = 0
+    for m in re.finditer(r"\b([a-z_0-9]+)\{([^{}]*)\}", lt):                     # every 'entry{k=v;...}' of lists.py (DERIVED, labels, names, inputs)
+        if m.group(1) in vals:
+            for k in [x.split("=")[0].strip() for x in m.group(2).split(";") if "=" in x]:
+                used += 1
+                if k in sc and not (sc[k] == "any" or (isinstance(sc[k], list) and m.group(1) in sc[k])):
+                    bad.append(f"lists.py {m.group(0)}: {k} is outside {m.group(1)}'s scope")
+    keyed = ast.literal_eval(re.search(r"(?m)^KEYED = (\{.*\})", lt).group(1))
+    bad += [f"lists.py KEYED: {k} is not a value qualifier with entries" for k in keyed if not isinstance(sc.get(k), list)]
+    out.append(("19. qualifier scopes (P182, user): every key has applies_to (entry ids that exist, selectors that match, any or unit); every "
+                "qualifier kb/pilot/lists.py puts on an entry (DERIVED, labels, names, keyed settings) is within the entry's derived set",
+                not bad, f"problems: {bad}" if bad else f"{len(sc)} keys ({sum(isinstance(v, list) for v in sc.values())} entry lists, "
+                f"{sum(v == 'any' for v in sc.values())} any, {sum(v == 'unit' for v in sc.values())} unit); lists.py: {used} qualifier uses in scope", bad))
     return out
 
 

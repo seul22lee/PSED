@@ -36,6 +36,7 @@ UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candid
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "origin", "role", "how", "reason", "facts"]
+SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
@@ -395,6 +396,7 @@ def species_named(pid, label):
     return found
 
 
+SYMBOL_TYPES = ("model", "definition", "cited")                                  # P182 (user): the record types the symbol-species step reads
 SPECIES_EVIDENCED = ("kept: its own element names it", "backed by the definition", "from the definition", "corrected from the definition")   # P179c
 UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
 SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
@@ -404,22 +406,96 @@ RECIPE_FILL_PASS = "0rf"                                                        
 FILL_PASSES = (PROCESS_MODE_PASS, RECIPE_FILL_PASS)
 
 
-def recipe_fill(lines):
+VALUE_ENTRIES = {i for i, e in V.ENTRIES.items() if e["type"] in ("quantity", "categorical")}
+
+
+def out_of_scope(quantity, key):
+    """P182 (user): whether a qualifier key may not sit on a fact of this quantity (vocab.QUALIFIER_SCOPE, from ontology.yaml applies_to):
+    a fact without a quantity is no value fact (never); an any key or an unknown one (form.json judges it): never; a unit key: always; a
+    key with entries: when the quantity is a value entry outside them (other, a list of quantities: no single entry, not checked)."""
+    sc = V.QUALIFIER_SCOPE.get(key)
+    if not quantity or not isinstance(quantity, str) or sc in ("any", None):
+        return False
+    return sc == "unit" or (quantity in VALUE_ENTRIES and quantity not in sc)
+
+
+def recipe_fill(pid, lines=None):
     """P179, P181: the latest fill line of the pass-0 units (process_mode fill or recipe fill) as {unit id: {field, field_quote,
-    field_element}} for export.RECIPE_FIELDS (a process_mode fill holds process_mode with quote and element); (line number, fields)."""
+    field_element}} for export.RECIPE_FIELDS (a process_mode fill holds process_mode with quote and element). P182 (user): the importer's
+    contract: a value whose quote is null or not found (quote_found, the record's element as its own text) is set to null and listed;
+    a quote found across elements gets them all as its element (';'-separated). Then a user's recipe decision (history.csv kind
+    recipe_field, the paper in source_pids: id = the field, target = the value or null, parameters = the run ids, empty = every run of
+    the fill) sets the field, listed. -> (line number, fields, [listed: run, field, value, reason])."""
+    lines = C.lines(pid) if lines is None else lines
     n = max((i for i, x in enumerate(lines, 1) if x["pass"] in FILL_PASSES), default=None)
     if n is None:
-        return None, {}
-    out = {}
+        return None, {}, []
+    out, listed, text = {}, [], C.E.texts(pid)
     for x in (C.loads_json(lines[n - 1]["response"]).get("recipes") or []):
         if isinstance(x, dict) and x.get("id"):
             f_ = {}
             for f in C.X.RECIPE_FIELDS:
                 if f in x:
                     legacy = f == "process_mode" and f + "_quote" not in x
-                    f_.update({f: x.get(f), f + "_quote": x.get("quote") if legacy else x.get(f + "_quote"), f + "_element": x.get("element") if legacy else x.get(f + "_element")})
+                    v, q, e = x.get(f), x.get("quote") if legacy else x.get(f + "_quote"), x.get("element") if legacy else x.get(f + "_element")
+                    if v:
+                        how, els = quote_found(pid, q, normalize(text.get(e or "", "")), e)
+                        if not how:
+                            listed.append(dict(run=x["id"], field=f, value=v, reason="quote null" if not (q or "").strip() else f"quote not found ({e or 'no element'})"))
+                            v = q = e = None
+                        elif how == "span":
+                            e = ";".join(els)
+                    f_.update({f: v, f + "_quote": q, f + "_element": e})
             out[x["id"]] = f_
-    return n, out
+    hist = C.V2 / "ontology" / "history.csv"
+    for h in (csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []):
+        if h["kind"] != "recipe_field" or pid not in h["source_pids"].split(";") or h["id"] not in C.X.RECIPE_FIELDS:
+            continue
+        v = None if h["target"] in ("", "null") else h["target"]
+        for run in [r for r in h["parameters"].split(";") if r] or list(out):
+            if run in out:
+                listed.append(dict(run=run, field=h["id"], value=out[run].get(h["id"]), reason=f"the user's recipe decision (history.csv, {h['date']}): {v or 'null'}"))
+                out[run].update({h["id"]: v, h["id"] + "_quote": None, h["id"] + "_element": None})
+    return n, out, listed
+
+
+_PAPER_TEXT = {}
+
+
+def paper_text(pid):
+    """P182 (user, b): the paper's elements in element order (elements.load), each normalize()d, joined by one space -> (text,
+    [(start, end, element id)])."""
+    if pid not in _PAPER_TEXT:
+        text, parts, spans, i = C.E.texts(pid), [], [], 0
+        for r in C.E.load(pid):
+            t = normalize(text.get(r["element_id"], ""))
+            if t:
+                spans.append((i, i + len(t), r["element_id"]))
+                parts.append(t)
+                i += len(t) + 1
+        _PAPER_TEXT[pid] = (" ".join(parts), spans)
+    return _PAPER_TEXT[pid]
+
+
+def quote_found(pid, quote, own="", eid=None):
+    """P182 (user, b): the one quote check of compile step d and of the recipe-fill importer. The quote normalize()d; own = the
+    normalized texts it is checked against first (step d: scope(); the importer: the element it names). Found in own: 'own' (contiguous)
+    or 'own_in_order' (P140 C1: every token in order, gaps allowed) -> [eid]; else a substring of the paper's elements concatenated in
+    element order (paper_text): 'span' -> every element the occurrence spans (the first occurrence touching eid, else the first);
+    else ('', [])."""
+    q = normalize(quote or "")
+    if not q:
+        return "", []
+    if q in own:
+        return "own", [eid] if eid else []
+    if in_order(q.split(), own):
+        return "own_in_order", [eid] if eid else []
+    t, spans = paper_text(pid)
+    occ = [m.start() for m in re.finditer(re.escape(q), t)]
+    if not occ:
+        return "", []
+    hit = [[e for a, b, e in spans if a < o + len(q) and b > o] for o in occ]
+    return "span", next((h for h in hit if eid in h), hit[0])
 FORM_VERSIONS = C.V2 / "ontology" / "form_versions.csv"                          # P179b (user): the form versions compile reads
 
 
@@ -776,6 +852,7 @@ class Run:
     def __init__(self, pid):
         self.pid, self.key = pid, C.E.PAPERS[pid]
         self.log, self.dropped, self.unmapped, self.promoted = [], [], [], []
+        self.scope_rows = []                                                    # P182: qualifier out of scope
         self.steps = collections.OrderedDict()
         self.els = C.E.load(pid)
         self.order = {r["element_id"]: n for n, r in enumerate(self.els)}
@@ -835,10 +912,13 @@ class Run:
             if e in parsed[n]:
                 self.answers[e] = parsed[n][e]
                 self.form_version[e] = lines[n - 1].get("form_version", "")     # P158: '' = written before the freeze
-        fill, self.fill = recipe_fill(lines)                                    # P179, P181: the recipe fields (+ quote, element) on the units
+        fill, self.fill, self.fill_listed = recipe_fill(self.pid, lines)        # P179, P181: the recipe fields (+ quote, element) on the units; P182: contract
         for u in self.pass0:
             if isinstance(u, dict) and u.get("id") in self.fill:
                 u.update(self.fill[u["id"]])
+        for x in self.fill_listed:
+            self.note(f"input: recipe field set to null: {x['run']} {x['field']} {x['value']} ({x['reason']})" if "decision" not in x["reason"]
+                      else f"input: recipe field by the user's decision: {x['run']} {x['field']} {x['value']} -> ({x['reason']})")
         if fill:
             self.note(f"input: recipe fill = line {fill}: " + "; ".join(f"{i} " + ", ".join(f"{f} {x[f]}" for f in C.X.RECIPE_FIELDS if x.get(f)) for i, x in self.fill.items()))
         recs = []
@@ -923,8 +1003,9 @@ class Run:
 
     # ------------------------------------------------------------------------------------------------------------ a1 (P178, P179)
     def symbol_species(self, recs):
-        """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) whose quantity
-        takes the species qualifier rests on evidence, every form version:
+        """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) rests on evidence,
+        every form version; P182 (user): the records are selected by type, model / definition / cited (SYMBOL_TYPES), never by quantity;
+        settings and observations keep their own species:
           1. this paper's definition record of the symbol, else of its subscript (p_B -> B), whose own text (its quote, the meaning it
              copies, its table row) names one substance: a species name; 'carrier gas' (the paper's one carrier_gas setting); an
              unnamed reactant ('reactant X', or 'molecule(s) X' for a letter X the paper calls a reactant) = model_reactant. A
@@ -934,7 +1015,6 @@ class Run:
              it is a species name) naming the record's species keeps it.
           4. else the species is cleared, listed 'species cleared (no evidence)' (P179; P178 listed it 'unverified (record only)').
         A definition record is held to 3 and 4 on its own text. Every such record is a log line 'a1: symbol species ...' and r['a1']."""
-        takes = {i for i, e in V.ENTRIES.items() if "species" in (e.get("qualifiers") or [])}
         text, self.a1_rows = self.text, []
         letters = {m.group(1) for t in text.values() for m in UNNAMED_REACTANT.finditer(t)}
         carrier = {next(iter(vocab_hits(self.pid, "species", r["rec"]["value_text"])), r["rec"]["value_text"]) for r in recs
@@ -946,7 +1026,7 @@ class Run:
             return {next(iter(h))} if len(h) == 1 else set()
 
         def names(ts, lab):
-            sp = {s_ for t in ts for s_ in species_named(self.pid, t)} | subspecies(lab)
+            sp = {s_ for t in ts for s_ in species_named(self.pid, normalize(t))} | subspecies(lab)   # P182: the text normalize()d ($\\text{H}_2\\text{O}$ -> h2o)
             if any(UNNAMED_REACTANT.search(t) or any(re.search(rf"\b(?i:molecules?)\s+{x}\b", t) for x in letters) for t in ts):
                 sp.add("model_reactant")
             if len(carrier) == 1 and any(re.search(r"(?i)\bcarrier gas\b", t) for t in ts):
@@ -968,7 +1048,7 @@ class Run:
         for r in recs:
             rec = r["rec"]
             lab = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
-            if r.get("origin") or rec.get("quantity") not in takes or not C.X.symbol_like(lab) or not re.search(r"[A-Za-z\\]", lab):
+            if r.get("origin") or rec.get("type") not in SYMBOL_TYPES or not C.X.symbol_like(lab) or not re.search(r"[A-Za-z\\]", lab):
                 continue
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
             own = q.get("species") or ""
@@ -1078,6 +1158,39 @@ class Run:
             self.note(f"a1: step fill {r['eid']} {rec['quantity']} {rec.get('value')} species {sp or '-'} about {ab or '-'}: {step or '(empty)'} ({why})")
         return recs
 
+    def scope_row(self, eid, typ, quantity, key, v, where):
+        self.scope_rows.append(dict(paper=self.key, element=eid, type=typ or "", quantity=quantity, key=key,
+                                    value=num_text(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else v, where=where, recovered=""))
+        self.count("a1" if where == "record" else "n", f"qualifier out of scope: {key}")
+        self.note(f"{'a1' if where == 'record' else 'n'}: qualifier out of scope: {eid} {typ} {quantity} {key}={v} ({where})")
+
+    def qualifier_scope(self, recs):
+        """P182 (user), every form version: a record's qualifier key outside its quantity's scope (out_of_scope) is removed and listed
+        'qualifier out of scope' (kb/compiled/<pid>.qualifier_scope.csv); validate() checks whether the record was refused by form.json
+        with them and is accepted without them (recovered, counted)."""
+        for r in recs:
+            rec = r["rec"]
+            q = rec.get("qualifiers")
+            out = [k for k in q if out_of_scope(rec.get("quantity"), k)] if isinstance(q, dict) else []
+            if out:
+                r["scope_removed"], r["scope_rows"] = {k: q[k] for k in out}, len(self.scope_rows)
+                rec["qualifiers"] = {k: v for k, v in q.items() if k not in out}
+                for k in out:
+                    self.scope_row(r["eid"], rec.get("type"), rec["quantity"], k, q[k], "record")
+        return recs
+
+    def scope_facts(self, facts, where):
+        """P182: the same scope on facts no record holds (figures.json curves and values, derived facts), before dedupe; listed."""
+        for f in facts:
+            if f.get("qualifiers"):
+                kv = [x.split("=", 1) for x in f["qualifiers"].split(";") if "=" in x]
+                out = [(k, v) for k, v in kv if out_of_scope(f.get("quantity"), k)]
+                if out:
+                    f["qualifiers"] = ";".join(f"{k}={v}" for k, v in kv if (k, v) not in out)
+                    for k, v in out:
+                        self.scope_row(f.get("evidence", "").split(";")[0], f.get("type"), f["quantity"], k, v, where)
+        return facts
+
     def recipe_process_mode(self, recs):
         """P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit's process_mode with its quote, filled by
         kb/extract/process_mode_fill.py): one setting per run that has one, its evidence the quote's element; a pass-1 process_mode record
@@ -1092,7 +1205,8 @@ class Run:
             out.append(r)
         for u in runs.values():
             if u.get("process_mode"):
-                eid = u.get("process_mode_element") if u.get("process_mode_element") in self.order else (u.get("introduced_in") or [self.els[0]["element_id"]])[0]
+                pe = (u.get("process_mode_element") or "").split(";")[0]            # P182: a quote across elements names them all
+                eid = pe if pe in self.order else (u.get("introduced_in") or [self.els[0]["element_id"]])[0]
                 out.append(dict(eid=eid, rec=dict(type="setting", quantity="process_mode", value_text=u["process_mode"], label_as_printed="process mode",
                                                   quote=u.get("process_mode_quote") or "", about=u["id"], kind="stated", statement=None),
                                 seq=-1, form_version=C.X.FORM_VERSION, recipe_field=True))
@@ -1189,6 +1303,8 @@ class Run:
         form = C.schema("form.json")
         val, qids = Draft202012Validator(form), set(form["$defs"]["quantity_id"]["enum"])
         pre = Draft202012Validator(before_freeze(form))
+        noscope = lambda f: {**f, "allOf": [x for x in f.get("allOf", []) if not str(x.get("$comment", "")).startswith("P182 scope")]}   # noqa: E731
+        val_ns, pre_ns = Draft202012Validator(noscope(form)), Draft202012Validator(noscope(before_freeze(form)))   # P182: refused for another rule
         branch = lambda p: next((x for x in p.get("anyOf", []) if x.get("type") != "null"), p)                     # noqa: E731
         nums = {k_: branch(p).get("type") for k_, p in form["properties"].items() if branch(p).get("type") in ("number", "integer")}
         qnum = {k_ for k_, p in form["properties"]["qualifiers"]["anyOf"][0]["properties"].items()
@@ -1243,6 +1359,14 @@ class Run:
                                      if p_ == "allOf" and isinstance(p, int) and "$comment" in form["allOf"][p]), "")
                         self.count("a_p158", f"{rule} (predates the freeze, kept)")
                         self.note(f"a: {r['eid']}: {rule} would reject it ({'.'.join(map(str, e.path)) or e.validator}); a pre-freeze record, kept")
+            if r.get("scope_removed"):                                          # P182: refused (by a form rule other than the scopes) with the out-of-scope keys, accepted without
+                rq = {k_: (float(v) if k_ in qnum and isinstance(v, str) and NUMBER.fullmatch(v.strip()) else v) for k_, v in r["scope_removed"].items()}
+                un = {**r["rec"], "qualifiers": {**(r["rec"].get("qualifiers") or {}), **rq}}
+                if not errs and list((val_ns if r.get("form_version") else pre_ns).iter_errors(un)):
+                    self.count("a", "recovered: accepted once out-of-scope qualifiers removed (P182)")
+                    self.note(f"a: {r['eid']}: recovered: form.json accepts it without {', '.join(r['scope_removed'])} (P182)")
+                    for x in self.scope_rows[r["scope_rows"]:r["scope_rows"] + len(r["scope_removed"])]:
+                        x["recovered"] = "yes"
             if errs:                                                            # P148 D: every form.json error drops
                 e = errs[0]
                 field = ".".join(str(p) for p in e.path) or e.validator
@@ -1348,16 +1472,17 @@ class Run:
                 self.count("d", "derived condition (figures.json, no quote check)")
                 out.append(r)
                 continue
-            q, txt = normalize(r["rec"].get("quote") or ""), normalize(" ".join(self.scope(r["eid"])))
-            if not q:
+            how, els = quote_found(self.pid, r["rec"].get("quote"), normalize(" ".join(self.scope(r["eid"]))), r["eid"])   # P182 (user, b)
+            if not how:
                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
-            elif q in txt:
-                out.append(r)
-            elif in_order(q.split(), txt):                                      # P140 C1: every token in order, gaps allowed
+                continue
+            if how == "own_in_order":                                           # P140 C1: every token in order, gaps allowed
                 self.count("d", "quote_noncontiguous (kept)")
-                out.append(r)
-            else:
-                self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
+            elif how == "span":                                                 # P182: the quote spans elements or sits in another; evidence = those
+                self.count("d", "quote found in the paper's elements concatenated (P182)")
+                self.note(f"d: quote found across elements: {r['eid']} {r['rec'].get('type')} {r['rec'].get('quantity')} -> evidence {';'.join(els)}")
+                r["quote_elements"] = els
+            out.append(r)
         return out
 
     def units(self, recs):
@@ -1883,7 +2008,7 @@ class Run:
         if f["type"] == "definition":
             vs = rec.get("variables") or {}
             f["term"] = rec.get("term") or "|".join(s for s, q in vs.items() if q == f["quantity"])
-        f["evidence"], f["parent"], f["author"] = r["eid"], parent, self.pid
+        f["evidence"], f["parent"], f["author"] = ";".join(r.get("quote_elements") or [r["eid"]]), parent, self.pid   # P182: the elements a quote spans
         f["_statement"] = rec.get("statement") or rec.get("quote", "")          # P138: the extractor's own words; P139: the quote when null
         if not rec.get("statement"):
             self.count("m", "statement filled from the quote")
@@ -2064,6 +2189,7 @@ class Run:
         recs = self.symbol_species(recs)                                        # P178, P179 (user)
         recs = self.recipe_process_mode(recs)                                   # P179 (user)
         recs = self.step_fill(recs)                                             # P181 (user)
+        recs = self.qualifier_scope(recs)                                       # P182 (user)
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
         recs = self.type_rules(recs)
@@ -2095,7 +2221,7 @@ class Run:
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
                 f["parent"] = self.measurement(f["parent"][6:], "")
-        items = self.dedupe(items + fig_facts)
+        items = self.dedupe(items + self.scope_facts(fig_facts, "figure"))      # P182: figures.json facts held to the scopes
         self.count("i", "kept", len(items))
         items = self.ids(items)
         on = collections.defaultdict(list)
@@ -2112,6 +2238,7 @@ class Run:
         rows = tree + list(self.meas.values()) + items                         # tree holds the figure entities (rows_tree)
         rows = rows + self.comparisons(rows)                                    # P143b: from the condition vectors
         rows = self.derived(rows)
+        self.scope_facts([f for f in rows if f.get("type") == "derived"], "derived")   # P182
         rows = self.statements(rows)
         self.coverage(rows)
         self.write_facts(rows)
@@ -2123,6 +2250,7 @@ class Run:
         for f in rows:                                                          # dropped later); check.py --dir: a cleared species is no problem
             if f.get("_a1"):
                 facts_of[id(f["_a1"])].append(f["fact_id"])
+        write_csv(OUT / f"{self.pid}.qualifier_scope.csv", SCOPE_FIELDS, self.scope_rows)   # P182 (user)
         write_csv(OUT / f"{self.pid}.species.csv", SPECIES_FIELDS, [dict(x, fact_id=";".join(facts_of.get(id(x), []))) for x in self.a1_rows])
         made = collections.defaultdict(list)                                    # P177c (user): bind()'s outcome per item with the facts it gave
         for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)

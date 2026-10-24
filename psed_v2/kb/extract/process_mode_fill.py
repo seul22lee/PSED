@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 """P179 (user): the process_mode of each pass-0 recipe (a unit of role run), one call per paper with runs. Input: the runs of the pass-0
-line compile uses (id, name, evidence quote, the reactant, step and plasma settings pass 1 gave them or the paper) and the text of the
-method / experimental elements (the sections whose heading names an experiment, a method, a procedure or the materials, and the
-sections where a run is introduced). Output per run: process_mode (the ontology's values) or null, the quote that states it and the
+line compile uses (id, name, evidence quote, the reactant, step and plasma settings pass 1 gave them or the paper) and the text of
+every text element of the paper (TEXT_KINDS: abstract, headings, paragraphs, captions, table cells; P182 (user): no section-name
+selection). Output per run: process_mode (the ontology's values) or null, the quote that states it and the
 element id holding it. The response is one records line of pass PROCESS_MODE_PASS (compile reads the latest and merges the three fields
 into the runs); nothing else of pass 0 changes (asserted: the units without the new fields are byte-identical).
 
     ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/process_mode_fill.py yli18 [--plan]
 """
 import json
-import re
 import sys
 
 import common as C
 import compile as K
 
 THINKING = {"thinking_level": "LOW"}                                            # P179: a small reading task (pass 1's level)
-METHOD_HEADING = re.compile(r"(?i)experiment|method|procedure|material")
+TEXT_KINDS = ("abstract", "heading", "paragraph", "caption", "table_cell")     # P182 (user): every text element (not panels, equations)
 SETTING_Q = ("reactant_A", "reactant_B", "carrier_gas", "plasma_power", "plasma_configuration", "plasma_gas_ratio", "pulse_time", "purge_time")
 FIELDS = ("process_mode", "process_mode_quote", "process_mode_element")
 
@@ -46,17 +45,12 @@ def job(pid):
             qs = ";".join(f"{k}={v}" for k, v in q.items() if k in ("step", "species", "gas") and v)
             v = rec.get("value_text") or (f"{rec.get('value')} {rec.get('unit') or ''}".strip() if rec.get("value") is not None else "")
             sets.setdefault(rec["about"], []).append(f"{rec['quantity']}{'{' + qs + '}' if qs else ''}={v}")
-    rows = C.E.load(pid)
     text = C.E.texts(pid)
-    sec_of = {r["element_id"]: r["section"] for r in rows}
-    secs = {r["section"] for r in rows if r["kind"] == "heading" and METHOD_HEADING.search(text.get(r["element_id"], ""))}
-    secs |= {sec_of[e] for u in runs for e in u.get("introduced_in") or [] if e in sec_of and sec_of[e] not in ("figures", "")}
-    els = [r["element_id"] for r in rows if (r["section"] in secs and r["kind"] in ("heading", "paragraph"))
-           or r["element_id"] in {e for u in runs for e in u.get("introduced_in") or []}]   # and where each run is introduced (its name)
+    els = [r["element_id"] for r in C.E.load(pid) if r["kind"] in TEXT_KINDS and text.get(r["element_id"], "").strip()]
     values = list(K.V.CATEGORICAL_VALUES["process_mode"])
     defs = K.V.ENTRIES["process_mode"]["definition"]
     prompt = "\n\n".join([
-        f"You read the method / experimental text of one ALD paper and give, for each recipe (a deposition run) listed below, its process mode: one "
+        f"You read the text of one ALD paper and give, for each recipe (a deposition run) listed below, its process mode: one "
         f"of {', '.join(values)} ({defs}). The mode is stated for a run when the text states it for that run, for a set of runs it belongs to, or for "
         "every deposition of the paper (for example 'the films were deposited by plasma-enhanced ALD'); a run's own name in the text stating the mode "
         "states it too. Give the quote copied verbatim from the TEXT (the words that state the mode) and the id of the element holding it. A run "
@@ -106,8 +100,7 @@ def main(arg):
     for u in units:
         if u.get("role") == "run":
             x = fill.get(u["id"], {})
-            q, t = K.normalize(x.get("quote") or ""), K.normalize(text.get(x.get("element") or "", ""))
-            found = bool(q) and (q in t or K.in_order(q.split(), t))                # compile's step d test
+            found = bool(K.quote_found(pid, x.get("quote"), K.normalize(text.get(x.get("element") or "", "")), x.get("element"))[0])   # P182: the shared check
             print(f"{key} | {u['id']} | {x.get('process_mode') or 'null'} | {x.get('element') or '-'} | quote {'found' if found else ('-' if not x.get('quote') else 'NOT FOUND')} | {x.get('quote') or ''}")
     return 0
 

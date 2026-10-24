@@ -299,7 +299,7 @@ def units_block(pid):
     obj = C.loads_json(p0[-1]["response"])
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
-    _, fill = K.recipe_fill(C.lines(pid))                                       # P181 (user): the recipe fields, in words, null ones omitted
+    _, fill, _ = K.recipe_fill(pid)                                       # P181 (user): the recipe fields, in words, null ones omitted
     words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode"}
     recipe = lambda it: ", ".join(f"{words[f]} {fill[it['id']][f]}" for f in C.X.RECIPE_FIELDS if fill.get(it.get("id"), {}).get(f))   # noqa: E731
     line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"

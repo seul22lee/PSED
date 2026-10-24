@@ -2,12 +2,16 @@
 """P181 (user): the recipe fields of each pass-0 run, one call per paper with runs (the P179 process_mode fill's mechanism, process_mode_fill.py):
 reactant_A, reactant_B, carrier_gas (species entries) and process_mode (the ontology's values), each with the quote that states it and the
 element holding it, or null when the text does not state it. Input: the runs of the pass-0 line compile uses (id, name, evidence quote,
-the reactant, step and plasma settings pass 1 gave them or the paper) and the method / experimental text (the sections whose heading names
-an experiment, a method, a procedure or the materials, the sections and elements where a run is introduced). The response is one records
+the reactant, step and plasma settings pass 1 gave them or the paper) and every text element of the paper (process_mode_fill.TEXT_KINDS;
+P182 (user): no section-name selection). The response is one records
 line of pass RECIPE_FILL_PASS (compile and the pass-1 prompt read the latest fill); nothing else of pass 0 changes (asserted: the units
 without the recipe fields are byte-identical).
 
-    ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/recipe_fill.py yli18 [--plan]
+    ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/recipe_fill.py yli18 [--plan] [--refill]
+
+P182 (user): --refill calls only for a paper whose latest fill leaves a recipe field null on at least one run (null_fields). The
+response schema makes each quote a required string (empty for a null field); compile.recipe_fill, the importer, keeps a value only when
+its quote is found (compile.quote_found) and lists the others.
 """
 import json
 import sys
@@ -33,22 +37,32 @@ def job(pid):
     values = list(K.V.CATEGORICAL_VALUES["process_mode"])
     defs = "; ".join(f"{f}: {K.V.ENTRIES[f]['definition']}" for f in FIELDS)
     prompt = (
-        "You read the method / experimental text of one ALD paper and give, for each recipe (a deposition run) listed below, its recipe fields: "
+        "You read the text of one ALD paper and give, for each recipe (a deposition run) listed below, its recipe fields: "
         f"reactant_A, reactant_B, carrier_gas (species ids: {', '.join(species)}) and process_mode (one of {', '.join(values)}). The fields: {defs}. "
         "A field is stated for a run when the text states it for that run, for a set of runs it belongs to, or for every deposition of the paper; a "
         "run's own name in the text stating it states it too. reactant_A and reactant_B are the reactants in the order the text gives the cycle "
         "(the precursor dosed first, then the co-reactant). For each field give the quote copied verbatim from the TEXT (the words that state it) "
-        "and the id of the element holding it. A field the text does not state: the value null, its quote null, its element null. Never infer a "
+        "and the id of the element holding it. A field the text does not state: the value null, its quote an empty string, its element null. Never infer a "
         "field from another field, a number or a typical process."
         "\n\nRECIPES" + rest)
     item = {"id": {"enum": runs}}
     for f in FIELDS:
         item[f] = {"anyOf": [{"enum": species if f != "process_mode" else values}, {"type": "null"}]}
-        item[f + "_quote"] = {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]}
+        item[f + "_quote"] = {"type": "string"}                                # P182 (user): a required string; the importer checks it
         item[f + "_element"] = {"anyOf": [{"enum": els}, {"type": "null"}]}
     schema = {"type": "object", "additionalProperties": False, "required": ["recipes"],
               "properties": {"recipes": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(item), "properties": item}}}}
     return (K.RECIPE_FILL_PASS, "recipe", prompt, schema, els)
+
+
+def null_fields(pid):
+    """P182: {run id: [fields null]} of the pass-0 runs after the latest fill line (compile.recipe_fill: its contract applied); a field
+    the user decided (history.csv kind recipe_field) is not null in this sense; runs with none left out."""
+    _, fill, listed = K.recipe_fill(pid)
+    decided = {(x["run"], x["field"]) for x in listed if x["reason"].startswith("the user's recipe decision")}
+    _, _, units = PM.pass0_line(pid)
+    out = {u["id"]: [f for f in FIELDS if not (fill.get(u["id"]) or {}).get(f) and (u["id"], f) not in decided] for u in units if u.get("role") == "run" and u.get("id")}
+    return {i: fs for i, fs in out.items() if fs}
 
 
 def main(arg):
@@ -56,6 +70,9 @@ def main(arg):
     j = job(pid)
     if j is None:
         print(f"{key}: no run in pass 0: no call")
+        return 0
+    if "--refill" in sys.argv and not null_fields(pid):
+        print(f"{key}: no null recipe field: no call")
         return 0
     if "--plan" in sys.argv:
         C.plan(pid, [j], THINKING)
@@ -77,8 +94,8 @@ def main(arg):
             x = fill[u["id"]]
             cells = []
             for f in FIELDS:
-                q, t = K.normalize(x.get(f + "_quote") or ""), K.normalize(text.get(x.get(f + "_element") or "", ""))
-                found = "-" if not x.get(f) else ("found" if q and (q in t or K.in_order(q.split(), t)) else "NOT FOUND")
+                how, _ = K.quote_found(pid, x.get(f + "_quote"), K.normalize(text.get(x.get(f + "_element") or "", "")), x.get(f + "_element"))
+                found = "-" if not x.get(f) else ("found" if how else "NOT FOUND")       # P182: compile.quote_found, the importer's check
                 cells.append(f"{f} {x.get(f) or 'null'} [{x.get(f + '_element') or '-'}; quote {found}] {x.get(f + '_quote') or ''}")
             print(f"{key} | {u['id']} | " + " | ".join(cells))
     return 0
