@@ -35,7 +35,8 @@ FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never", "nearest"]   # P157b: never = the never.csv category; P158: nearest
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
-BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "origin", "role", "how", "reason", "facts"]   # P177c: binding_rows and the item's facts
+BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "origin", "role", "how", "reason", "facts"]
+SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
 
@@ -370,24 +371,6 @@ def unit_fits(q, unit):
     return d(V.UNIT_BASE[s][0]) == d(qd)
 
 
-def categorical_transform(t, facts):
-    """P178 (user): a categorical transform's value (ontology.yaml transforms: mapping) from an entity's condition-vector facts, first
-    match: an input of mapping.present the entity has (any value), then the species id of its other input (mapping.species), then that
-    species' kind (mapping.species_kind, lists.SPECIES). Returns (value, the facts used) or ('', [])."""
-    m = t["mapping"]
-    for q, v in (m.get("present") or {}).items():
-        f = next((f for f in facts if f["quantity"] == q and (f["value"] or f["value_text"] or f["value_min"] or f["value_max"])), None)
-        if f:
-            return v, [f]
-    sq = next((q for q in t["inputs"] if q not in (m.get("present") or {})), "")
-    f = next((f for f in facts if f["quantity"] == sq and f["value_text"]), None)
-    if f:
-        v = (m.get("species") or {}).get(f["value_text"]) or (m.get("species_kind") or {}).get(L.SPECIES.get(f["value_text"], {}).get("kind", ""))
-        if v:
-            return v, [f]
-    return "", []
-
-
 def legend_methods(pid, label):
     """P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
     legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
@@ -412,6 +395,10 @@ def species_named(pid, label):
     return found
 
 
+UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
+SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
+CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
+PROCESS_MODE_PASS = "0pm"                                                        # P179: the records line of the process_mode fill (process_mode_fill.py)
 PURGE_QUANTITIES = ("purge_time",)                                              # P177c: of form rule 1's step quantities (export.STEP_QUANTITIES)
 #                                                                                 a purge time names its half-cycle's purge, a pulse time or an exposure its dose
 CONDITION_KINDS = ("value", "name", "species", "other", "never")
@@ -776,13 +763,19 @@ class Run:
     def read(self):
         lines = [json.loads(x) for x in (C.RECORDS / f"{self.pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
         self.groups = P1.groups(self.pid)[0]
-        latest, p0 = {}, None
+        latest, p0, el_line, fill = {}, None, {}, None
+        grp_of = {r["element_id"]: g for g, rs in self.groups.items() for r in rs}
         for n, x in enumerate(lines, 1):
             if x["pass"] == 0:
                 p0 = n
             elif x["pass"] == 1:
                 latest[x["section"]] = n
-        used = {latest[g] for g in self.groups if g in latest}
+                for e in x.get("element_ids") or []:                            # P179: per element, the latest line of its group that holds
+                    if grp_of.get(e) == x["section"]:                           # it (a re-extraction line holds some of a group's elements)
+                        el_line[e] = n
+            elif x["pass"] == PROCESS_MODE_PASS:                                # P179: the latest process_mode fill of the pass-0 runs
+                fill = n
+        used = set(el_line.values())
         before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
         p0 = before[-1] if before else p0                                       # P143b: the pass-0 line the pass-1 lines in use were written against
         ignored = [n for n, x in enumerate(lines, 1) if x["pass"] == 1 and n not in used]
@@ -796,14 +789,20 @@ class Run:
         self.pass0 = (p0obj.get("units") or []) if isinstance(p0obj, dict) else p0obj    # P144: {units, table_layouts, panel_layouts}
         self.layouts = {k: (p0obj.get(k) or []) for k in ("table_layouts", "panel_layouts")} if isinstance(p0obj, dict) else {}
         self.answers, self.form_version = {}, {}                                # element id -> [record] | "NK:..."; P158: its line's form version
-        for g, rs in self.groups.items():
-            if g not in latest:
-                continue
-            a = P1.answers(C.loads_json(lines[latest[g] - 1]["response"]))
-            for r in rs:
-                if r["element_id"] in a:
-                    self.answers[r["element_id"]] = a[r["element_id"]]
-                    self.form_version[r["element_id"]] = lines[latest[g] - 1].get("form_version", "")   # P158: '' = written before the freeze
+        parsed = {n: P1.answers(C.loads_json(lines[n - 1]["response"])) for n in used}
+        for e, n in el_line.items():
+            if e in parsed[n]:
+                self.answers[e] = parsed[n][e]
+                self.form_version[e] = lines[n - 1].get("form_version", "")     # P158: '' = written before the freeze
+        self.fill = {}
+        if fill:                                                                # P179: the recipe field process_mode (+ quote, element) on the runs
+            resp = C.loads_json(lines[fill - 1]["response"])
+            self.fill = {x["id"]: x for x in (resp.get("recipes") or []) if isinstance(x, dict) and x.get("id")}
+            for u in self.pass0:
+                if isinstance(u, dict) and u.get("role") == "run" and u.get("id") in self.fill:
+                    x = self.fill[u["id"]]
+                    u.update(process_mode=x.get("process_mode"), process_mode_quote=x.get("quote"), process_mode_element=x.get("element"))
+            self.note(f"input: process_mode fill = line {fill}: " + ", ".join(f"{i} {x.get('process_mode') or 'null'}" for i, x in self.fill.items()))
         recs = []
         for eid, a in sorted(self.answers.items(), key=lambda x: self.order[x[0]]):
             if isinstance(a, list):
@@ -884,56 +883,110 @@ class Run:
         h = halves.pop()
         return (f"purge_{h}" if c["quantity"] in PURGE_QUANTITIES else f"reactant_{h}"), ""
 
-    # ------------------------------------------------------------------------------------------------------------ a1 (P178)
+    # ------------------------------------------------------------------------------------------------------------ a1 (P178, P179)
     def symbol_species(self, recs):
-        """a1, P178 (user): the species of a record labelled with a symbol (export.symbol_like) whose quantity takes the species qualifier
-        (its entry's qualifiers): this paper's definition record of the symbol (its term), else of the symbol's subscript (p_B -> B), gives
-        it: the definition's species qualifier, or for a definition of quantity reactant_A / reactant_B / carrier_gas the paper's one value
-        of that setting. A definition species wins over the record's own (the note: 'species corrected from the symbol definition'); a
-        record with none takes it; with no definition species the record keeps its own, listed 'species unverified (record only)'.
-        No species is ever taken from the recipe otherwise. Every such record is a log line 'a1: symbol species ...'."""
+        """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) whose quantity
+        takes the species qualifier rests on evidence, every form version:
+          1. this paper's definition record of the symbol, else of its subscript (p_B -> B), whose own text (its quote, the meaning it
+             copies, its table row) names one substance: a species name; 'carrier gas' (the paper's one carrier_gas setting); an
+             unnamed reactant ('reactant X', or 'molecule(s) X' for a letter X the paper calls a reactant) = model_reactant. A
+             definition naming a specific substance decides the species (the note: 'species corrected from the symbol definition').
+          2. a definition giving model_reactant backs model records only and gives way to a species the record's own element names.
+          3. else the record's own element (its text; a table cell with its column and row header cells; the label's subscript when
+             it is a species name) naming the record's species keeps it.
+          4. else the species is cleared, listed 'species cleared (no evidence)' (P179; P178 listed it 'unverified (record only)').
+        A definition record is held to 3 and 4 on its own text. Every such record is a log line 'a1: symbol species ...' and r['a1']."""
         takes = {i for i, e in V.ENTRIES.items() if "species" in (e.get("qualifiers") or [])}
-        one = lambda vs: next(iter(vs)) if len(vs) == 1 else ""                   # noqa: E731
-        recipe = collections.defaultdict(set)
-        for r in recs:
-            rec = r["rec"]
-            if rec.get("type") == "setting" and rec.get("quantity") in ("reactant_A", "reactant_B", "carrier_gas") and isinstance(rec.get("value_text"), str):
-                hit = vocab_hits(self.pid, "species", rec["value_text"])
-                recipe[rec["quantity"]].add(one(hit) or rec["value_text"])
+        text, self.a1_rows = self.text, []
+        letters = {m.group(1) for t in text.values() for m in UNNAMED_REACTANT.finditer(t)}
+        carrier = {next(iter(vocab_hits(self.pid, "species", r["rec"]["value_text"])), r["rec"]["value_text"]) for r in recs
+                   if r["rec"].get("type") == "setting" and r["rec"].get("quantity") == "carrier_gas" and isinstance(r["rec"].get("value_text"), str) and r["rec"]["value_text"]}
+
+        def subspecies(lab):
+            m = SUBSCRIPT.match(lab or "")
+            h = vocab_hits(self.pid, "species", m.group(1)) if m else {}
+            return {next(iter(h))} if len(h) == 1 else set()
+
+        def names(ts, lab):
+            sp = {s_ for t in ts for s_ in species_named(self.pid, t)} | subspecies(lab)
+            if any(UNNAMED_REACTANT.search(t) or any(re.search(rf"\b(?i:molecules?)\s+{x}\b", t) for x in letters) for t in ts):
+                sp.add("model_reactant")
+            if len(carrier) == 1 and any(re.search(r"(?i)\bcarrier gas\b", t) for t in ts):
+                sp |= carrier
+            return sp
+
+        def element(eid):                                                       # a cell with its column and row header cells
+            m = CELL_ID.match(eid)
+            return [t for t in [text.get(eid, "")] + ([text.get(f"{m.group(1)}.r0c{m.group(3)}", ""), text.get(f"{m.group(1)}.r{m.group(2)}c0", "")] if m else []) if t]
+
+        def row(eid):                                                           # a definition in a table: its row (the symbol and its meaning)
+            m = CELL_ID.match(eid)
+            return [t for x, t in text.items() if re.match(rf"^{re.escape(m.group(1))}\.r{m.group(2)}c\d+$", x)] if m else [text.get(eid, "")]
         defs = collections.defaultdict(list)
         for r in recs:
             rec = r["rec"]
             if rec.get("type") == "definition" and isinstance(rec.get("term"), str) and rec["term"].strip():
-                q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
-                sp = q.get("species") if q.get("species") in L.SPECIES else one(recipe.get(rec.get("quantity"), set()))
-                defs[C.X.symbol_key(rec["term"])].append((r["eid"], sp or ""))
+                defs[C.X.symbol_key(rec["term"])].append((r["eid"], names([rec.get("quote") or "", rec.get("label_as_printed") or ""] + row(r["eid"]), rec["term"])))
         for r in recs:
             rec = r["rec"]
             lab = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
-            if r.get("origin") or rec.get("type") == "definition" or rec.get("quantity") not in takes or not C.X.symbol_like(lab):
+            if r.get("origin") or rec.get("quantity") not in takes or not C.X.symbol_like(lab) or not re.search(r"[A-Za-z\\]", lab):
                 continue
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
             own = q.get("species") or ""
-            sub = re.match(r"^[^_]+_\{?(.+?)\}?$", lab)
-            found = next((ds for k in [C.X.symbol_key(lab)] + ([C.X.symbol_key(sub.group(1))] if sub else []) for ds in [[d for d in defs.get(k, []) if d[1]]] if ds), [])
-            sp = one({s for _, s in found})
-            ev = ", ".join(sorted({e for e, s in found if s == sp}))
-            if sp and own and sp != own:
-                rec["qualifiers"] = {**q, "species": sp}
-                rec["note"] = "; ".join(x for x in (rec.get("note"), f"species corrected from the symbol definition ({ev}): was {own}") if x)
-                how = "corrected"
-            elif sp and not own:
-                rec["qualifiers"] = {**q, "species": sp}
-                rec["note"] = "; ".join(x for x in (rec.get("note"), f"species from the symbol definition ({ev})") if x)
-                how = "from the definition"
-            elif sp:
-                how = "backed by the definition"
+            if rec.get("type") == "definition":
+                named, sp, found = names([rec.get("quote") or "", lab] + row(r["eid"]), rec.get("term") or lab), "", []
             else:
-                how = "species unverified (record only)" if own else "no species"
+                sub = SUBSCRIPT.match(lab)
+                found = next((ds for k in [C.X.symbol_key(lab)] + ([C.X.symbol_key(sub.group(1))] if sub else []) for ds in [[d for d in defs.get(k, []) if len(d[1]) == 1]] if ds), [])
+                sp = {next(iter(x)) for _, x in found}
+                sp = next(iter(sp)) if len(sp) == 1 else ""
+                named = names(element(r["eid"]), lab) - ({"model_reactant"} if rec.get("type") != "model" else set())
+            generic = sp == "model_reactant"
+            if sp and (not generic or (rec.get("type") == "model" and not (own and own in named and own != "model_reactant"))):
+                how = "backed by the definition" if own == sp else ("corrected from the definition" if own else "from the definition")
+            elif own and own in named:
+                how, sp = "kept: its own element names it", own
+            elif own:
+                how, sp = "species cleared (no evidence)", ""
+            else:
+                how, sp = "no species", ""
+            ev = ", ".join(sorted({e for e, x in found if sp in x})) if how.endswith("definition") else ""
+            if how.endswith("definition") and sp != own:
+                rec["qualifiers"] = {**q, "species": sp}
+                rec["note"] = "; ".join(x for x in (rec.get("note"), (f"species corrected from the symbol definition ({ev}): was {own}" if own
+                                                                      else f"species from the symbol definition ({ev})")) if x)
+            elif how.startswith("species cleared"):
+                rec["qualifiers"] = {k: v for k, v in q.items() if k != "species"} or None
+                rec["note"] = "; ".join(x for x in (rec.get("note"), f"species cleared (no evidence): was {own}") if x)
+            r["a1"] = dict(element=r["eid"], label=lab, type=rec.get("type"), quantity=rec.get("quantity"), record_species=own, definition=ev,
+                           own_element_names=",".join(sorted(named)), outcome=how, species=sp)
+            self.a1_rows.append(r["a1"])
             self.count("a1", f"symbol species: {how}")
             self.note(f"a1: symbol species {r['eid']} {lab!r} {rec.get('type')} {rec.get('quantity')}: record {own or '-'}, definition "
-                      f"{sp or ('disagree: ' + ', '.join(sorted({s for _, s in found})) if found else '-')}{' (' + ev + ')' if ev else ''} -> {how}")
+                      f"{', '.join(f'{e}: {x}' for e, x in found) or '-'} -> {how}" + (f" ({sp})" if sp and sp != own else ""))
         return recs
+
+    def recipe_process_mode(self, recs):
+        """P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit's process_mode with its quote, filled by
+        kb/extract/process_mode_fill.py): one setting per run that has one, its evidence the quote's element; a pass-1 process_mode record
+        about a pass-0 run is dropped (the recipe field holds it). A derived unit's legend condition stays (it has no recipe). No
+        process_mode is derived."""
+        runs = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and u.get("role") == "run" and not u.get("origin")}
+        out = []
+        for r in recs:
+            if r["rec"].get("quantity") == "process_mode" and r["rec"].get("about") in runs and not r.get("origin"):
+                self.drop("a1", r["eid"], r["rec"], "process_mode_from_the_recipe_field")
+                continue
+            out.append(r)
+        for u in runs.values():
+            if u.get("process_mode"):
+                eid = u.get("process_mode_element") if u.get("process_mode_element") in self.order else (u.get("introduced_in") or [self.els[0]["element_id"]])[0]
+                out.append(dict(eid=eid, rec=dict(type="setting", quantity="process_mode", value_text=u["process_mode"], label_as_printed="process mode",
+                                                  quote=u.get("process_mode_quote") or "", about=u["id"], kind="stated", statement=None),
+                                seq=-1, form_version=C.X.FORM_VERSION, recipe_field=True))
+                self.count("a1", f"process_mode from the recipe field: {u['process_mode']}")
+        return out
 
     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
     def resolve_other(self, recs):
@@ -1774,8 +1827,8 @@ class Run:
 
     def derived(self, rows):
         """j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
-        compiled fact (no assumed fact); P178 (user): the categorical transforms of ontology.yaml (a mapping: process_mode) per entity on
-        its condition vector, never over a stated value; caveats and claim nodes through query; comparisons not built (D8)."""
+        compiled fact (no assumed fact); caveats and claim nodes through query; comparisons not built (D8). P179 (user): no process_mode
+        is derived (the recipe field, Run.recipe_process_mode)."""
         import query as Q
         self.write_facts(rows)
         here, Q.HERE = Q.HERE, OUT
@@ -1807,23 +1860,6 @@ class Run:
                 f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
                 out.append(f)
                 self.count("j", f"derived {did}")
-        for t in [t for t in V.TRANSFORMS if t.get("mapping")]:                  # P178 (user): a categorical transform (process_mode) per entity:
-            for e in T.entities():                                              # a stated value wins, the derived one never overwrites it
-                vec = [f for fs in T.vector(e).values() for f in fs]
-                st = next((f for f in vec if f["quantity"] == t["output"] and f["value_text"]), None)
-                val, used = ("", []) if st else categorical_transform(t, vec)
-                self.note(f"j: transform {t['id']} {e}: " + (f"stated {st['value_text']} ({st['fact_id']})" if st else f"derived {val} from " +
-                          ", ".join(f"{f['quantity']} {f['value_text'] or f['value']} ({f['fact_id']})" for f in used) if val else "none (no input)"))
-                if not val:
-                    self.count("j", f"transform {t['id']}: " + ("stated" if st else "none")); continue
-                f = {x: "" for x in F.FIELDS}
-                ev = sorted({x for u in used for x in u["evidence"].split(";") if x in self.order}, key=self.order.get) or [self.els[0]["element_id"]]
-                f.update(type="derived", quantity=t["output"], value_text=val, data_kind="computed_by_kb", method="calculation", inputs=";".join(u["fact_id"] for u in used),
-                         evidence=";".join(ev), parent=e, author=self.pid, mentions=T.byid[e]["label_as_printed"], definition_note=f"transform {t['id']}: {t['formula']}")
-                self.id_count[ev[0]] += 1
-                f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
-                out.append(f)
-                self.count("j", f"transform {t['id']}: derived {val}")
         self.note(f"j: derived over {len(T.entities())} entities: {len(out)} rows; not derived: {dict(errors)}")
         cav = Q.caveats_of(T)
         self.note(f"j: caveats (query.caveats_of): {len(cav)}, linked to facts {sum(bool(c['facts']) for c in cav)}, to nodes {sum(bool(c['nodes']) for c in cav)}; "
@@ -1914,7 +1950,8 @@ class Run:
     def run(self):
         recs = self.read()
         recs = self.resolve_other(recs)                                         # P157b
-        recs = self.symbol_species(recs)                                        # P178 (user)
+        recs = self.symbol_species(recs)                                        # P178, P179 (user)
+        recs = self.recipe_process_mode(recs)                                   # P179 (user)
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
         recs = self.type_rules(recs)
@@ -1939,6 +1976,7 @@ class Run:
             items.append(self.fact_row(r, p))
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
             items[-1]["_promoted"] = mine.get(id(r), [])                         # P157b
+            items[-1]["_a1"] = r.get("a1")                                       # P179: the symbol species outcome
         fig_tree, fig_facts = self.figures()
         self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
@@ -1969,6 +2007,11 @@ class Run:
         write_csv(OUT / f"{self.pid}.coverage.csv", F.COV_FIELDS, self.cov)
         write_csv(OUT / f"{self.pid}.dropped.csv", DROPPED_FIELDS, self.dropped)
         write_csv(OUT / f"{self.pid}.unmapped.csv", UNMAPPED_FIELDS, self.unmapped)
+        facts_of = collections.defaultdict(list)                                # P179 (user): every symbol species outcome with its facts (none:
+        for f in rows:                                                          # dropped later); check.py --dir: a cleared species is no problem
+            if f.get("_a1"):
+                facts_of[id(f["_a1"])].append(f["fact_id"])
+        write_csv(OUT / f"{self.pid}.species.csv", SPECIES_FIELDS, [dict(x, fact_id=";".join(facts_of.get(id(x), []))) for x in self.a1_rows])
         made = collections.defaultdict(list)                                    # P177c (user): bind()'s outcome per item with the facts it gave
         for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)
             if f.get("_item"):

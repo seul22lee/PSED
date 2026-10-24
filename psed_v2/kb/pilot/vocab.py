@@ -796,7 +796,6 @@ TRANSFORM_OUTPUTS = ['aspect_ratio',
  'moles_from_mass_gain',
  'normalized_thickness',
  'plasma_gas_ratio{gas=h2;relative_to=all_gases}',
- 'process_mode',
  'sheet_resistance',
  'shell_volume_fraction',
  'step_coverage']
@@ -4503,7 +4502,7 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                 'name': 'molar mass',
                 'parameters': [],
                 'pending': False,
-                'qualifiers': [],
+                'qualifiers': ['species'],
                 'ratio_of': [],
                 'replaced_by': '',
                 'role': 'condition',
@@ -4526,7 +4525,7 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                        'name': 'molecule diameter',
                        'parameters': [],
                        'pending': False,
-                       'qualifiers': [],
+                       'qualifiers': ['species'],
                        'ratio_of': [],
                        'replaced_by': '',
                        'role': 'condition',
@@ -5638,7 +5637,8 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                   'converts_to': {},
                   'cq': '',
                   'definition': 'Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: '
-                                'three types of ALD processes).',
+                                'three types of ALD processes); P179 (user): or hot-wire (a co-reactant activated on a heated filament, van der Zouw '
+                                '2023 hot-wire ALD).',
                   'definitions': [],
                   'dimension': 'categorical',
                   'family': '',
@@ -7745,7 +7745,7 @@ STRUCTURE_CLASSES = {'aerogel_monolith': {'definition': 'A monolithic aerogel, p
 
 CATEGORICAL_VALUES = {'entry_sides': ['one', 'two'],
  'plasma_configuration': ['capacitive', 'inductive', 'remote', 'radical_enhanced'],
- 'process_mode': ['thermal', 'ozone', 'plasma'],
+ 'process_mode': ['thermal', 'ozone', 'plasma', 'hot_wire'],
  'reactor_type': ['pump_type', 'flow_type', 'atmospheric']}
 
 FORM_CATEGORICAL_VALUES = {'crystallinity': ['amorphous', 'crystalline', 'polycrystalline']}
@@ -7771,7 +7771,8 @@ AMBIGUOUS_ALIASES = {'AR': ['aspect_ratio', 'ar'],
 VALUE_ALIASES = {'plasma_configuration': {'capacitive': ['CCP', 'capacitively coupled'],
                           'inductive': ['ICP', 'inductively coupled', 'inductively coupled plasma'],
                           'remote': ['remote plasma', 'remote']},
- 'process_mode': {'ozone': ['ozone-based ALD', 'O3-based'],
+ 'process_mode': {'hot_wire': ['hot-wire ALD'],
+                  'ozone': ['ozone-based ALD', 'O3-based'],
                   'plasma': ['PEALD', 'PE-ALD', 'plasma-enhanced ALD', 'plasma-assisted ALD', 'plasma ALD'],
                   'thermal': ['thermal ALD', 'thermal']},
  'reactor_type': {'atmospheric': ['atmospheric pressure', 'AP-type'], 'flow_type': ['flow-type'], 'pump_type': ['pump-type', 'vacuum-type']}}
@@ -7962,12 +7963,4 @@ TRANSFORMS = [{'formula': 'unit table below', 'id': 'unit_conversion', 'inputs':
  {'formula': 'L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)',
   'id': 'body_thickness',
   'inputs': ['feature_depth', 'entry_sides'],
-  'output': 'body_thickness'},
- {'formula': 'plasma when a plasma power or plasma configuration is set; else by the co-reactant (reactant_B): water, H2S, NH3 and other molecular '
-             'co-reactants thermal, O3 ozone, the radicals O and H plasma (P178)',
-  'id': 'process_mode',
-  'inputs': ['reactant_B', 'plasma_power', 'plasma_configuration'],
-  'mapping': {'present': {'plasma_configuration': 'plasma', 'plasma_power': 'plasma'},
-              'species': {'h2o': 'thermal', 'h2s': 'thermal', 'h_atom': 'plasma', 'nh3': 'thermal', 'o3': 'ozone', 'o_atom': 'plasma'},
-              'species_kind': {'molecule': 'thermal'}},
-  'output': 'process_mode'}]
+  'output': 'body_thickness'}]

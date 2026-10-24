@@ -55,6 +55,7 @@ def check(pid):
     for i in {i for i in ids if ids.count(i) > 1}:
         err.append(f"duplicate fact_id {i}")
     F = {f["fact_id"]: f for f in facts}
+    cleared = {i for b in rd((DIR or HERE) / f"{pid}.species.csv") if b["outcome"] == "species cleared (no evidence)" for i in b["fact_id"].split(";") if i}   # P179 (user)
     bound = {i for b in rd((DIR or HERE) / f"{pid}.binding.csv") if b["unit"] for i in b["facts"].split(";") if i}   # P177c (user): the facts of
     texts = elements.texts(pid)                                                # an item compile.bind() bound (kb/compiled/<pid>.binding.csv)
     seen_key, seen_stmt = {}, {}
@@ -91,7 +92,8 @@ def check(pid):
             bad(f"substrate {f['value_text']!r} is not a material species id (the growth surface; P50)")
         if f["quantity"] in ("reactant_A", "reactant_B") and f["value_text"] not in L.SPECIES:
             bad(f"{f['quantity']} {f['value_text']!r} is not a species id (P50)")
-        if L.substance_scoped(f) and not ("species=" in f["qualifiers"] or "gas=" in f["qualifiers"]):
+        if L.substance_scoped(f) and not ("species=" in f["qualifiers"] or "gas=" in f["qualifiers"]) and fid not in cleared:   # P179: a species
+                                                                                # compile cleared for want of evidence is listed there, not here
             bad(f"{f['quantity']} setting without species= or gas=: which substance it is about lives only in prose (P50)")
         for q in L.qualifiers_ok(f["qualifiers"]):
             bad(f"qualifier {q}")

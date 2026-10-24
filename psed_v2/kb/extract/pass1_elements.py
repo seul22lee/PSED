@@ -294,27 +294,36 @@ def prefix(pid, form):
                          + "\nElement ids that may be linked: " + ", ".join(refs)]) + "\n\n"
 
 
-def jobs(pid, flat=True):
+def jobs(pid, flat=True, only=None):
     """[(1, group, prompt, response schema, element ids, prefix)]: prompt = the prefix, then the group's ELEMENTS (render.group);
     flat (the default, P148-cost2): the P139 record schema, accepted with the cached prefix; flat=False: record_schema() by type,
-    rejected (400) as a oneOf and as an anyOf with $defs."""
+    rejected (400) as a oneOf and as an anyOf with $defs. P179: only (element ids): a group's job holds only those of its elements (a
+    re-extraction; a table or figure group still shows its whole table or figure), groups holding none are left out."""
     form = C.schema("form.json")
     pre = prefix(pid, form)
     text, rows = C.E.texts(pid), C.E.load(pid)
     out = []
-    for sec, rs in groups(pid)[0].items():
+    for sec, whole in groups(pid)[0].items():
+        rs = [r for r in whole if only is None or r["element_id"] in only]
+        if not rs:
+            continue
         ids = [r["element_id"] for r in rs]
-        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, rs, text, rows), response_schema(form, ids, flat), ids, pre))
+        shown = rs if is_section(sec) else whole                                # P179: a table, figure or equation group shows its whole block
+        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, shown, text, rows), response_schema(form, ids, flat), ids, pre))
     return out
 
 
 def main(arg):
     from jsonschema import Draft202012Validator
     pid, key = C.resolve(arg)
-    js = jobs(pid, flat="--schema=typed" not in sys.argv)                      # P148-cost2: flat (P139) by default; the by-type schema drew a 400
-    only = [a for a in sys.argv[2:] if not a.startswith("--")]
-    if only:                                                                    # optional: only these groups
-        js = [j for j in js if j[1] in only]
+    only = None
+    if "--elements-from" in sys.argv:                                           # P179: a re-extraction set (csv: paper, element)
+        import csv
+        only = {r["element"] for r in csv.DictReader(open(sys.argv[sys.argv.index("--elements-from") + 1], encoding="utf-8")) if r["paper"] == key}
+    js = jobs(pid, flat="--schema=typed" not in sys.argv, only=only)           # P148-cost2: flat (P139) by default; the by-type schema drew a 400
+    groups_only = [a for a in sys.argv[2:] if not a.startswith("--") and not a.endswith(".csv")]
+    if groups_only:                                                             # optional: only these groups
+        js = [j for j in js if j[1] in groups_only]
     unmapped = [j[1] for j in js if not is_section(j[1])]
     print(f"{key} pass 1: {len(js)} groups ({', '.join(j[1] for j in js)}); figure/table/equation groups: {', '.join(unmapped) or 'none'}; "
           f"unpaired: {', '.join(groups(pid)[1]) or 'none'}")

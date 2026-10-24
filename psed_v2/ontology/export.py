@@ -11,7 +11,7 @@ alias (another entry's id), qualifier (an entry plus qualifiers), transform (the
 for it, under its own id), attribute (an entry with attribute: true), reserved (the escape id other), dropped (no data) or
 to_absorb (no disposition yet: P51 consumes the list) or pending (a disposition recorded, applied in a later step). Every to_absorb or
 pending id is emitted into the vocabulary provisionally so that the data keeps passing the vocabulary check until it is absorbed.
-P155: the 15 ontology checks (make_report.py until P155) run with --check, same numbering and messages (11 reads a split replaced_by
+P155: the 15 ontology checks (make_report.py until P155; P179: 16) run with --check, same numbering and messages (11 reads a split replaced_by
 list, 12 reads never.csv, 14 reads the grow.py pending.csv); the kinds: block of ontology.yaml opens CODEBOOK.md; pending.csv rows no
 longer enter the vocabulary (a candidate becomes vocabulary only when grow.py apply writes it into ontology.yaml).
 P157b: the one label normalization (norm_label) and the never.csv index (never_index) live here; kb/extract/compile.py and grow.py
@@ -353,8 +353,7 @@ def build(onto, pmap):
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
         FROM_OTHER={lab: e["id"] for e in live for lab in e.get("from_other", [])},   # P131b: printed label -> the entry promoted from the free label other[label]
-        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", ""), **({"mapping": t["mapping"]} if t.get("mapping") else {}))
-                    for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them; P178: a categorical transform's mapping
+        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
     )
 
 
@@ -372,7 +371,11 @@ FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  #
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
-FORM_VERSION = "P163"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; common.run writes it on every new line
+FORM_VERSION = "P179"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; P179: the species rule; common.run writes it on every new line
+PASS0_FORM_VERSION = 2                                                          # P179 (user): form_pass0.json version 2: process_mode on runs (1: P144-P178)
+SPECIES_RULE = ("On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or "
+                "header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's "
+                "letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty.")   # P179 (user): CODEBOOK carries it in these words
 STEP_QUANTITIES = ["pulse_time", "purge_time", "exposure"]                      # P158 rule 1
 STEP_TYPES = ["setting", "observation"]                                         # P163 (user): rule 1 binds these record types only
 
@@ -530,7 +533,9 @@ def pass0_schema(onto, L):
           "data": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": False, "required": ["id", "role"],   # P146: id + role
                                                               "properties": {"id": {"type": "string", "minLength": 1},
                                                                              "role": {"enum": ["measured", "fitted", "simulated"]}}}},
-          "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
+          "evidence_quote": {"type": "string", "minLength": 1},                                           # P142: a run's words on which samples it made
+          "process_mode": {"enum": [str(v) for v in onto["vocabularies"]["process_mode"]]},                # P179 (user): a run's process mode as the paper states it
+          "process_mode_quote": {"type": "string", "minLength": 1}}                                       # P179: the words that state it (required with a value)
     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
     qid = {"$ref": "#/$defs/quantity_id"}
     desc = {"type": "string", "minLength": 1}                                    # P177b: the description of a layout 'other'
@@ -542,7 +547,8 @@ def pass0_schema(onto, L):
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "urn:psed_v2:schema:form_pass0",
         "$defs": {"quantity_id": form_defs(onto)["quantity_id"]},
-        "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}; form version {FORM_VERSION} (frozen)",
+        "$comment": f"GENERATED by psed_v2/ontology/export.py; do not edit. ontology version {onto['version']}, sha256 {h}; form version {FORM_VERSION} (frozen); "
+                    f"pass-0 form version {PASS0_FORM_VERSION} (P179: process_mode on runs)",
         "title": "PSED v2 extraction form, pass 0: the experiment units of one paper and the layout of its tables and panels",
         "description": f"One paper = its experiment units (runs, specimens, simulations, model runs), the layout of each table and of each figure panel "
                        f"(ontology version {onto['version']}, sha256 {h}).",
@@ -550,7 +556,9 @@ def pass0_schema(onto, L):
         "properties": {name: nullable({"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(fields),
                                                                    "properties": {k: (v if (name, k) in P0_NOT_NULL else nullable(v)) for k, v in fields.items()},
                                                                    **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
-                                                                                  "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}}]}   # P146
+                                                                                  "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}},   # P146
+                                                                                 {"if": {"properties": {"process_mode": {"type": "string"}}, "required": ["process_mode"]},   # P179: a
+                                                                                  "then": {"properties": {"process_mode_quote": {"type": "string", "minLength": 1}}}}]}       # value needs its quote
                                                                       if name == "units" else {})}})
                        for name, fields in (("units", p0), ("table_layouts", tl), ("panel_layouts", pl))},
     }
@@ -745,6 +753,7 @@ def codebook(onto, L):
             *[f"- {t}: {d}" for t, d in L.RECORD_TYPES.items()], "",
             f"Form rules (P158, rule 1 scoped in P163; form version {FORM_VERSION}, frozen; form.json allOf \"P158 rule n\"):", "",
             *[f"- rule {n}, {t}." for n, (t, _) in enumerate(p158_rules(onto), 1)],
+            f"- species (form version {FORM_VERSION}, P179): {SPECIES_RULE}",
             "- nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.", "",
             f"Stances ({', '.join(L.STANCES)}): {stance_comment}", ""]
     for st in L.STANCES:
@@ -820,8 +829,8 @@ def form_files(onto):
     md = form_md(form, pass0, onto, F).replace("{FROZEN}", f"Form version {FORM_VERSION}, frozen (P158; P163: rule 1 binds settings and observations "
                                                             f"only): form.json sha256 `{hashlib.sha256(j(form).encode('utf-8')).hexdigest()}` at ontology sha256 "
                                                             f"`{ontology_hash()}`. Ontology growth changes the enums and this file hash, never the rules; a record "
-                                                            f"line carries the form version of its call (common.run): P158 from P158 to P162, {FORM_VERSION} from "
-                                                            "P163 on, older lines none; compile.py validates a line with a version against this form, a line "
+                                                            f"line carries the form version of its call (common.run): P158 from P158 to P162, P163 from P163 to "
+                                                            f"P178, {FORM_VERSION} from P179 on (the species rule), older lines none; compile.py validates a line with a version against this form, a line "
                                                             "without one without the P158 rules.")
     return {SCHEMA / "form.json": j(form), SCHEMA / "form_pass0.json": j(pass0), SCHEMA / "FORM.md": md,
             SCHEMA / "CODEBOOK.md": codebook(onto, L)}                         # P143
@@ -898,7 +907,7 @@ def _never_label(raw):
 
 
 def run_checks(onto):
-    """[(title, passed, detail, problem rows)] of the 15 checks."""
+    """[(title, passed, detail, problem rows)] of the 16 checks (P179: 16)."""
     from collections import Counter, defaultdict
     entries = onto["entries"]
     ids = [e["id"] for e in entries]
@@ -1093,6 +1102,30 @@ def run_checks(onto):
             bad.append(f"{f}: declared mixed but one dimension {set(dims.values())}")
     out.append(("15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason",
                 not bad, f"problems: {bad}" if bad else "; ".join(f"{f}: {len(ms)} members, " + ("mixed (" + (decl[f].get("reason") or "")[:60] + "…)" if decl.get(f, {}).get("mixed_dimensions") else "one dimension " + next(iter({units.get(str(e.get("unit", "")), {}).get("qudt") for e in ms}))) for f, ms in sorted(fams.items())), bad))
+    bad = []                                                                    # P179 (user): the form version P179 (1a-1e)
+    sq = onto["qualifiers"].get("species", {})
+    if sq.get("meaning") != "the substance a value is about (a species id): a reactant, a carrier or background gas, or a detected phase":
+        bad.append("1a: the species qualifier's meaning")
+    form = json.loads((SCHEMA / "form.json").read_text(encoding="utf-8")) if (SCHEMA / "form.json").exists() else {}
+    if sorted(form.get("$defs", {}).get("species", {}).get("enum", [])) != sorted(e["id"] for e in entries if e["type"] == "species"):
+        bad.append("1a: the species values are not the species entries")
+    cb = (SCHEMA / "CODEBOOK.md").read_text(encoding="utf-8") if (SCHEMA / "CODEBOOK.md").exists() else ""
+    if FORM_VERSION != "P179" or SPECIES_RULE not in cb:
+        bad.append("1b: form version P179 and the species rule in CODEBOOK.md")
+    by = {e["id"]: e for e in entries}
+    bad += [f"1c: {i} takes no species qualifier" for i in ("molar_mass", "molecule_diameter") if "species" not in (by.get(i, {}).get("qualifiers") or [])]
+    p0 = json.loads((SCHEMA / "form_pass0.json").read_text(encoding="utf-8")) if (SCHEMA / "form_pass0.json").exists() else {}
+    unit = (p0.get("properties", {}).get("units", {}).get("anyOf") or [{}])[0].get("items", {})
+    pm = json.dumps(unit.get("properties", {}).get("process_mode", {}))
+    if "hot_wire" not in onto["vocabularies"]["process_mode"] or "hot_wire" not in pm or "process_mode_quote" not in json.dumps(unit.get("allOf", [])):
+        bad.append("1d: process_mode (with hot_wire) and its quote on the pass-0 units")
+    bad += [f"1d: transform {t['id']} outputs process_mode" for t in onto.get("transforms", []) if str(t.get("output")) == "process_mode"]
+    fc = HERE / "form_candidates.csv"
+    bad += [f"1e: form candidate {r['id']} has no decision" for r in (csv.DictReader(fc.open(encoding="utf-8")) if fc.exists() else [])
+            if not r["status"].startswith(("included", "left"))]
+    out.append(("16. form version P179 (user): the species qualifier (meaning; species entries only), the species rule in CODEBOOK.md, molar_mass and "
+                "molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided",
+                not bad, f"problems: {bad}" if bad else f"form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}", bad))
     return out
 
 
@@ -1124,7 +1157,7 @@ def main():
         print("vocab.py", "up to date" if ok else "STALE: run python3 psed_v2/ontology/export.py")
         stale = [p.name for p, t in form_files(onto).items() if not p.exists() or p.read_text(encoding="utf-8") != t]   # P132
         print("schema/", "up to date" if not stale else "STALE: " + ", ".join(stale))
-        checks = run_checks(onto)                                               # P155: the 15 ontology checks
+        checks = run_checks(onto)                                               # P155: the 15 ontology checks (P179: 16)
         for title, good, detail, _ in checks:
             print("pass" if good else "FAIL", title, detail)
         return 0 if ok and not stale and all(c[1] for c in checks) else 1
