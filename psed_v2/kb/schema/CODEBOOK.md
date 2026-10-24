@@ -95,9 +95,9 @@ Record types:
 - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
 - cited: a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else other with a candidate; never null (P149). An element that states the paper's own value and a literature value yields both an observation (or setting) and a cited record (P150).
 
-Form rules (P158, form version P158, frozen; form.json allOf "P158 rule n"):
+Form rules (P158, rule 1 scoped in P163; form version P163, frozen; form.json allOf "P158 rule n"):
 
-- rule 1, step: a record of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it.
+- rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163).
 - rule 2, cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other records, never of a cited one).
 - rule 3, cited: kind cited only on a cited record (one field, one value: the record's type).
 - rule 4, definition and cited: quantity is never null: the entry the term or value stands for, else other with label_as_printed.

@@ -207,6 +207,8 @@ def candidates(pids, extra=()):
     5. The rest group across the papers by their record key, the id built with the unit group stripped (snake case of norm()).
     P157d: a candidate's symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
     on accept and into never.csv as paper-local rows on never.
+    6. P163: a candidate whose label is another's with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
+       become that candidate's aliases (log prefix_merges).
     Returns ({id: group}, log)."""
     spell = unit_spellings()
     log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
@@ -287,6 +289,20 @@ def candidates(pids, extra=()):
         c["definition"] = c["definition"] or g["definition"]
         c["members"] += g["members"]
         c["notes"] += [g["note"]] if g["note"] else []
+    log["prefix_merges"] = []                                                    # P163: a label = another label + a trailing symbol or qualifier
+    ids = sorted(out, key=lambda i: (len(label_tokens(out[i]["label"])), i))
+    for i in reversed(ids):                                                     # the longest first, into the closest shorter label
+        heads = [j for j in ids if j != i and j in out and extends(out[j]["label"], out[i]["label"])]
+        if not heads:
+            continue
+        j = max(heads, key=lambda j: (len(label_tokens(out[j]["label"])), j))
+        c, h = out.pop(i), out[j]
+        h["aliases"] += [a for a in [c["label"]] + c["aliases"] if a not in h["aliases"] and a != h["label"]]
+        h["symbols"] += [x for x in c["symbols"] if x not in h["symbols"]]
+        h["definition"] = h["definition"] or c["definition"]
+        h["members"] += c["members"]
+        h["notes"] += c["notes"]
+        log["prefix_merges"].append((i, j, c["label"], h["label"]))
     for c in out.values():
         units = Counter(u["unit"] for u in c["members"] if u["unit"])
         c["unit"] = units.most_common(1)[0][0] if units else ""
@@ -296,6 +312,27 @@ def candidates(pids, extra=()):
             ev.setdefault(u["pid"], f"{u['pid']}:{u['element']} — {u['quote']}" + (f" ({'; '.join(c['notes'])})" if c["notes"] else ""))
         c["evidence"] = ev
     return out, log
+
+
+PREPOSITIONS = {"for", "of", "in", "at", "with", "on", "per", "to", "by", "from", "under", "over"}
+
+
+def label_tokens(s):
+    """P163: a label as ordered words: LaTeX unwrapped, backslashes dropped, casefold, split at anything not a letter or digit; a, an, the
+    dropped."""
+    t = X.LATEX_TEXT.sub(r"\1", str(s or "")).replace("\\", " ").casefold()
+    return [w for w in re.findall(r"[^\W_]+", t) if w not in {"a", "an", "the"}]
+
+
+def extends(short, long):
+    """P163: the long label is the short one with a trailing symbol or qualifier: the short label's words begin the long one's, in order
+    (the long label holds the short one's words entirely), and what follows is one symbol (a word of at most two characters) or a phrase
+    that starts with a preposition ('Shape factor' -> 'shape factor s', 'Shape factor for a particle')."""
+    a, b = label_tokens(short), label_tokens(long)
+    if not a or len(b) <= len(a) or b[:len(a)] != a:
+        return False
+    rest = b[len(a):]
+    return rest[0] in PREPOSITIONS or (len(rest) == 1 and len(rest[0]) <= 2)
 
 
 _CAND = {}
@@ -431,7 +468,8 @@ def cmd_propose():
     print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of "
           f"round {n} rebuilt); {len(log['never'])} rows never (compile.py's never column), "
           f"{len(log['values'])} values without a quantity, {len(log['symbol_merges'])} symbol and {len(log['label_merges'])} label merges into "
-          f"{len(log['table_groups'])} symbol-table rows")
+          f"{len(log['table_groups'])} symbol-table rows; {len(log['prefix_merges'])} label-prefix merges (P163)"
+          + "".join(f"\n  merged: {a!r} into {b!r}" for _, _, a, b in log["prefix_merges"]))
     print(f"pending.csv: {len(rows)} rows; decide in {DECIDE}")
 
 

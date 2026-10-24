@@ -130,6 +130,8 @@ ela03:s4.p11#1,derived,,,,s4.p11,yielding an aspect ratio L/d ≈ 5000,aspect_ra
 ela03:s4.p12#1,setting,,,,s4.p12;fig7.cap,coated using 19 ZnO ALD cycles,cycle_number,,cycles,19,,,,cycle,,,,,,,stated,,L/d ≈ 5000,,ela03:run:run_zno_ar5000,,,,,,10.1021_cm0303080,,,,
 ela03:s4.p12#2,setting,,,,s4.p12,exposure times of 120 s,pulse_time,step=reactant_A,exposure times,120,,,,s,,,,,,,stated,,L/d ≈ 5000,,ela03:run:run_zno_ar5000,,,,,,10.1021_cm0303080,,,,
 ela03:s4.p12#3,setting,,,,s4.p12,reactant pressures of 5 Torr,partial_pressure,step=reactant_A,reactant pressures,5,,,,Torr,,,,,,,stated,,L/d ≈ 5000,,ela03:run:run_zno_ar5000,,,,,,10.1021_cm0303080,,,,
+ela03:s4.p13#1,cited,,,,s4.p13,TMA and H2O half-reactions require ~10^4 L for saturation in Al2O3 ALD.,exposure,species=tma;surface=al2o3,saturation exposures,10000,,,,L,,,,,,,cited,cited,,,ela03,,,,,,10.1021_cm0303080,,,,
+ela03:s4.p13#2,cited,,,,s4.p13,SiCl4 and H2O half-reactions require ~10^9 L to achieve saturation during SiO2 ALD.,exposure,species=sicl4,exposures,1000000000,,,,L,,,,,,,cited,cited,,,ela03,,,,,,10.1021_cm0303080,,,,
 ela03:s4.p15#1,model,,,,s4.p15,Fit of the loss of integrated absorbance for AlOH* to y = k t^(1/2).,,,function,,,,,,,,,,,,,calculation,Figure 8a,,ela03:recipe,ela03:fig8a#1,,,,,10.1021_cm0303080,,,,
 ela03:s4.p16#1,setting,,,,s4.p16,using 2 SiCl4/H2O cycles for SiO2 ALD,cycle_number,,cycles,2,,,,cycle,,,,,,,stated,,SiO2 ALD,,ela03:run:run_ftir_sio2,,,,,,10.1021_cm0303080,,,,
 ela03:s4.p16#2,setting,,,,s4.p16,SiCl4 and H2O pressures of 10 Torr,partial_pressure,between=items;mode=ex_situ;n=not_stated;over=run;relative_to=all_gases;species=sicl4;stage=initial;stat=maximum,pressures,10,,,,Torr,,,,,,,stated,,SiO2 ALD,,ela03:run:run_ftir_sio2,,,,,,10.1021_cm0303080,,,,
@@ -223,6 +225,7 @@ ela03:fig9b#1,model,,,,fig9b,normalized integrated \text{Al}_2\text{O}_3 coverag
 ela03:fig10.cap#1,setting,,,,fig10.cap;fig11.cap;fig13.cap,Simulated ZnO coverage profiles,material,,ZnO,,,,,,zno,,,,,,,simulation,,,ela03:sim:sim_mc,,,,,,10.1021_cm0303080,,,,
 ela03:fig10.cap#2,setting,,,,fig10.cap,DEZ exposure times,reactant_A,,DEZ,,,,,,dez,,,,,,,simulation,,,ela03:sim:sim_mc,,,,,,10.1021_cm0303080,,,,
 ela03:fig10b#1,claim,,,,fig10b,The integrated normalized coverage scales with the square root of the exposure time.,,,y ∝ t^1/2,,,,,,,,,,,,,,,,ela03,ela03:fig10b#2;ela03:fig10b#3,asserted,time,surface_coverage,increases,10.1021_cm0303080,,,,Integrated coverage scales with square root of time.
+ela03:fig11.cap#1,model,,,,fig11.cap,DEZ exposure times of 5 s,pulse_time,between=items;mode=in_situ;n=1;over=run;ratio=1;relative_to=all_gases;species=dez;specimen_class=porous_composite;stage=initial;stat=maximum;structure_class=nanopore_membrane;x=time,DEZ exposure times,5,,,,s,,,,,,,model_input,simulation,,,ela03:sim:sim_mc,,,,,,10.1021_cm0303080,,,,
 ela03:fig11a#1,model,,,,fig11a,19,feature_width,,nanopore diameters,19,,,,nm,,,,,,,model_input,simulation,19,,ela03:mrun:sim_zno_d19,,,,,,10.1021_cm0303080,,,,
 ela03:fig11a#2,model,,,,fig11a,46,feature_width,,nanopore diameters,46,,,,nm,,,,,,,model_input,simulation,46,,ela03:mrun:sim_zno_d46,,,,,,10.1021_cm0303080,,,,
 ela03:fig11a#3,model,,,,fig11a,65,feature_width,,nanopore diameters,65,,,,nm,,,,,,,model_input,simulation,65,,ela03:mrun:sim_zno_d65,,,,,,10.1021_cm0303080,,,,

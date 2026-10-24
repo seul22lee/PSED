@@ -68,23 +68,22 @@ THINKING = {"thinking_level": "MEDIUM"}                                         
 
 def consistency(pid, obj):
     """P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
-    (compile.panel_items: the curves; a per_point series' points, any other series, the cells) and the units that hold them: held by a
-    pass-0 unit's data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses."""
+    (compile.panel_items: the curves; a point_per_unit panel's series and cells) and the units that hold them: held by a pass-0 unit's
+    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses."""
     import compile as K                                                         # P161
     obj = obj if isinstance(obj, dict) else {}
     der = collections.defaultdict(set)
     for u in K.curve_units(pid, obj):
         for d in u["data"]:
-            der[(d["id"], d.get("point"))].add(u["id"])
+            der[d["id"]].add(u["id"])
     items, out = K.panel_items(pid, obj), []
     for x in obj.get("panel_layouts") or []:
         if not isinstance(x, dict) or x.get("layout") not in K.UNIT_LAYOUTS:
             continue
         its = items.get(x["panel"], [])
-        name = lambda i: i["curve"]["id"] + (f".p{i['point']}" if i["point"] else "")       # noqa: E731
         held0 = [i for i in its if i["held"]]
-        heldd = [i for i in its if not i["held"] and (der.get((i["curve"]["id"], None)) or der.get((i["curve"]["id"], i["point"])))]
-        unb = [name(i) for i in its if not i["held"] and name(i) not in {name(j) for j in heldd}]
+        heldd = [i for i in its if not i["held"] and der.get(i["curve"]["id"])]
+        unb = [i["curve"]["id"] for i in its if not i["held"] and not der.get(i["curve"]["id"])]
         out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=len(held0), held_derived=len(heldd), unbound=len(unb),
                         unit_ids=";".join(sorted({u for i in held0 for u in i["held"]})), unbound_ids=";".join(unb), flag=f"unbound: {len(unb)}" if unb else ""))
     return out

@@ -141,58 +141,127 @@ for _q, _vs in VALUES.items():                                                  
 NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
 DATA_ROLE = {"simulated": "simulated", "read_from_figure": "measured"}          # P161: figures.json kind (P87) -> the pass-0 data role
 UNIT_LAYOUTS = ("curve_per_unit", "point_per_unit")
+LEGEND_NUMBER = re.compile(r"[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?(?:\s*(?:×|x|\\times)\s*10\s*(?:\^\s*\{?\s*([-+−]?\d+)\s*\}?|([⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+)))?")
+SUPERSCRIPT = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺", "0123456789-+")
+
+
+def vocab_hits(pid, kind, text):
+    """The step-a0 lookup (P157b, P157d): {id: how} of a text against the generated vocab of one kind, whole (export.norm_label), and the
+    symbols of this paper (export.symbol_key, case kept)."""
+    hits = dict(WORDS[kind].get(C.X.norm_label(text), {}))
+    for i, t in SYMBOLS[kind].get((pid, C.X.symbol_key(text)), {}).items():
+        hits.setdefault(i, f"symbol '{t}' of this paper")
+    return hits
+
+
+def series_axis(pid):
+    """P163: {panel: the series_axis label as printed} of the figure stage's ingest/final/<pid>/figures.json (kb/<pid>.figures.json keeps
+    it only as a set's varied_raw, and a map's set names its axes instead)."""
+    p = C.V2 / "ingest" / "final" / pid / "figures.json"
+    d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    return {f"fig{f['number']}{x.get('panel', '')}": (x.get("series_axis") or "").strip() for f in d.get("figures", []) for x in f.get("panels") or []}
+
+
+def legend_number(t):
+    """P163: a text that is a number (n, n.n, n e m, n × 10^m, n × 10⁵) and then nothing or a unit units.yaml knows -> (value, unit as
+    printed); else None."""
+    t = t.strip()
+    m = LEGEND_NUMBER.match(t)
+    if not m:
+        return None
+    rest = t[m.end():].strip()
+    if rest and unit_symbol(rest) is None:
+        return None
+    base = float(re.match(r"[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?", m.group(0)).group(0).replace("−", "-"))
+    exp = (m.group(1) or (m.group(2) or "").translate(SUPERSCRIPT)).replace("−", "-")
+    return (base * 10 ** int(exp) if exp else base), rest
+
+
+def legend_parts(label):
+    """P163: a legend label split at its top-level commas (a comma inside brackets or braces stays)."""
+    parts, depth, cur = [], 0, ""
+    for ch in label:
+        depth += (ch in "([{") - (ch in ")]}")
+        if ch == "," and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    return [p.strip() for p in parts + [cur] if p.strip()]
+
+
+def legend_conditions(pid, label, axis):
+    """P163 rule 1: the conditions a legend label gives a derived unit, one per part (legend_parts). '<symbol> = <number> [unit]' (or
+    '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits, as
+    step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
+    the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
+    panel). A bare name is a value: a structure or categorical value (vocab_hits on the name, a trailing bracket dropped). A part that is
+    none of these is an other condition as before, flagged. Returns [dict(kind 'value' | 'name', key: the record's label_as_printed,
+    value, unit, quantity: the id the lookup gives, else other, how)]."""
+    parts = legend_parts(label)
+    out = []
+    for part in parts:
+        m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
+        sym, num = (m.group(1).strip(), legend_number(m.group(2))) if m and legend_number(m.group(2)) else ("", legend_number(part))
+        if num:
+            keys = ([sym] if sym else []) + ([axis] if axis and (len(parts) == 1 or not sym) else [])
+            keys = keys[::-1] if len(parts) == 1 else keys                    # one part: the axis label first (the rule), then its symbol
+            hit = next(((k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1), None)
+            key = hit[0] if hit else (axis if axis and (len(parts) == 1 or not sym) else sym or part)
+            q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'"))
+            out.append(dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
+                            how=how if hit is None else f"{'series_axis' if key == axis else 'symbol / name'} '{key}' -> {q} ({how})"))
+            continue
+        name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
+        hits = {(k_ if k_ == "structure" else k_[6:], i): h for k_ in ["structure"] + [f"value:{q}" for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
+        if len(hits) == 1:
+            ((q, i), h), = hits.items()
+            out.append(dict(kind="name", key=part, value_text=i, quantity=q, how=f"name '{name}' -> {q} = {i} ({h})"))
+        else:
+            out.append(dict(kind="name", key=part, quantity="other", how="parsed to nothing" + (f" (names {sorted(hits)})" if hits else ""), flag="legend label parsed to nothing"))
+    return out
 
 
 def panel_items(pid, obj):
-    """P162 (rules 2, 4): the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the unit refs that hold
-    it: {panel: [item]}, item = dict(curve, point, cell, held). curve_per_unit: one item per curve. point_per_unit: a series whose
-    figures.json series_structure is per_point gives one item per point (point = its 1-based index); any other series one item (its curve);
-    a cell one item. A unit's data ref {id} holds a curve or a cell, and every point of that curve; {id, point} holds that point. One
-    measure for curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds)."""
+    """P162 rule 2: the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the pass-0 units whose data
+    refs hold it: {panel: [dict(curve, cell, held)]}: one item per curve; a point_per_unit panel also one per cell. P163: no per-point path
+    (figures.json carries no series_structure curve / per_point): a point_per_unit series is one item, its curve. One measure for
+    curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds)."""
     p = C.V2 / "kb" / f"{pid}.figures.json"
     Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
     obj = obj if isinstance(obj, dict) else {}
     lay = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict) and x.get("layout") in UNIT_LAYOUTS}
-    refs = collections.defaultdict(list)                                       # (id, point or None) -> unit ids
+    refs = collections.defaultdict(list)                                       # data id -> the units naming it
     for u in obj.get("units") or []:
         for d in (u.get("data") or []) if isinstance(u, dict) else []:
-            refs[(d.get("id"), d.get("point")) if isinstance(d, dict) else (d, None)].append(u.get("id"))
+            refs[d.get("id") if isinstance(d, dict) else d].append(u.get("id"))
     out = collections.defaultdict(list)
     for c in Fj.get("curves", []) + [v for v in Fj.get("values", []) if v.get("kind") == "cell"]:
         panel = f"fig{c['figure']}{c.get('panel', '')}"
-        if panel not in lay:
-            continue
         cell = c.get("kind") == "cell"
-        if cell and lay[panel]["layout"] == "curve_per_unit":
-            continue
-        per_point = not cell and lay[panel]["layout"] == "point_per_unit" and c.get("series", {}).get("series_structure") == "per_point"
-        for n in range(1, len(c.get("points") or []) + 1) if per_point else [None]:
-            out[panel].append(dict(curve=c, point=n, cell=cell, held=refs.get((c["id"], None), []) + (refs.get((c["id"], n), []) if n else [])))
+        if panel in lay and not (cell and lay[panel]["layout"] == "curve_per_unit"):
+            out[panel].append(dict(curve=c, cell=cell, held=refs.get(c["id"], [])))
     return out
 
 
 def curve_units(pid, obj):
-    """P161 step 1, between pass 0 and pass 1 (no call), P162 rules 1 and 4: one unit per item of panel_items() that no pass-0 unit's
-    data refs hold. id <pid>:<panel>:<curve id> (a point: .p<n>). Role (P162 rule 1) from the paper's pass-0 units: a simulation and no
-    run -> model_run, a run and no simulation -> run, both (or neither) -> the figures.json kind (DATA_ROLE), the unit flagged "role from
-    figure kind"; the data role follows the role (model_run simulated, run measured) unless taken from the kind. Parent: the paper's one
-    simulation (model_run) or its one run (run), else null, flagged "parent unresolved". introduced_in the panel's caption element;
-    evidence_quote and name_as_printed the legend label as printed; data the curve ref with its role (a point: and its index);
-    conditions: the legend label (an other condition, resolved like a record value by compile step a0, P162 rule 3) and, for a point
-    (P162 rule 4), its coordinates on the axes the pass-0 layout names (axis_quantities; both axes when it names none: the layout's
-    axes are the unit's conditions); origin "derived: <layout>". Read by compile (input, tree), by pass1_elements.units_block (PASS-0
-    UNITS) and by pass0_paper.consistency."""
+    """P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit's data refs hold. id
+    <pid>:<panel>:<curve id>. Role (P162 rule 1) from the paper's pass-0 units: a simulation and no run -> model_run, a run and no
+    simulation -> run, both (or neither) -> the figures.json kind (DATA_ROLE), flagged "role from figure kind"; the data role follows
+    the role unless taken from the kind. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent
+    unresolved". introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
+    ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel's series_axis; origin
+    "derived: <layout>". Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS) and by pass0_paper.consistency."""
     obj = obj if isinstance(obj, dict) else {}
     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
     sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
     by_list = "model_run" if sims and not runs else "run" if runs and not sims else None
     lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict)}
-    ids = set(C.E.texts(pid))
+    ids, axes = set(C.E.texts(pid)), series_axis(pid)
     out = []
     for panel, items in panel_items(pid, obj).items():
-        lay = lays[panel]["layout"]
         for it in items:
-            c, n = it["curve"], it["point"]
+            c = it["curve"]
             if it["held"]:
                 continue
             kind_role = DATA_ROLE.get(c.get("data_kind") if it["cell"] else c.get("kind"), "measured")
@@ -201,19 +270,13 @@ def curve_units(pid, obj):
             par = sims if role == "model_run" else runs
             label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
             cap = f"fig{c['figure']}.cap"
-            conds = [dict(quantity="other", label_as_printed=label)] if label else []
-            if n:                                                               # P162 rule 4: a point's coordinates on the layout's axes
-                axes = lays[panel].get("axis_quantities") or []
-                for ax, v in zip(("x", "y"), c["points"][n - 1]):
-                    a = c.get(ax) or {}
-                    if a.get("quantity") in L.QUANTITIES and (not axes or a["quantity"] in axes) and v is not None:
-                        conds.append(dict(quantity=a["quantity"], value=v, unit=a.get("unit") or "", label_as_printed=a.get("label_raw") or a["quantity"]))
+            conds = legend_conditions(pid, label, axes.get(panel, "")) if label else []
             flags = ([] if by_list else ["role from figure kind"]) + ([] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) \
-                + ([] if cap in ids else ["no caption element"])
-            out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}" + (f".p{n}" if n else ""), parent=par[0] if len(par) == 1 else None,
-                            name_as_printed=label or None, role=role, structure_class=None, specimen_class=None, experiment_kind=None,
-                            introduced_in=[cap] if cap in ids else [], data=[dict(id=c["id"], role=drole, **({"point": n} if n else {}))],
-                            evidence_quote=label or None, origin=f"derived: {lay}", conditions=conds, panel=panel, curve=c["id"], point=n,
+                + ([] if cap in ids else ["no caption element"]) + sorted({x["flag"] for x in conds if x.get("flag")})
+            out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
+                            structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                            data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
+                            conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"],
                             role_from="unit list" if by_list else "figure kind", flag="; ".join(flags)))
     return out
 
@@ -288,12 +351,14 @@ class Run:
         self.pass0 = list(self.pass0) + self.from_curves
         for u in self.from_curves:
             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
-            for c in u["conditions"] if u["introduced_in"] else []:              # P162: the legend label (other) and a point's coordinates
-                rec = dict(type="setting", label_as_printed=c["label_as_printed"], quote=c["label_as_printed"], about=u["id"], quantity=c["quantity"])
-                if c["quantity"] != "other":
-                    rec.update(value=c["value"], unit=c["unit"] or None, kind="read_from_figure")
-                recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"]))
-                self.count("input", "condition of a derived unit: " + ("the legend label (other)" if c["quantity"] == "other" else "a point's coordinate"))
+            dkind = "model_input" if u["role"] == "model_run" else "stated"
+            for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values, resolved by step a0
+                rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])
+                if c["kind"] == "value":
+                    rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
+                recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"], derived=c["kind"],
+                                 dkind=dkind, once=(u["panel"], c["key"]) if c["kind"] == "value" else None))
+                self.count("input", f"condition of a derived unit ({c['kind']})")
         if self.from_curves:
             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
         return recs
@@ -308,27 +373,32 @@ class Run:
         entries). An entry's label is never read. A unit is left to step e. One id: the record takes it and goes on like any record
         (form.json, units, placement, fact); two ids: ambiguous, left as it is (unmapped.csv action 'kept (ambiguous: ids)'). A record still
         quantity other whose key is a never.csv word, or a never.csv symbol of this paper, carries the never category (unmapped.csv column
-        never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv. P162 rule 3: a
-        derived unit's legend label (quantity other) is first read like a record value: one categorical value (id or value alias, any
-        categorical with a value list) -> that quantity and value_text (Amorphous -> crystallinity = amorphous); else it goes on as other."""
+        never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv. P162 rule 3, P163: a
+        derived unit's legend name (curve_units: a part that is no number) is read like a record value: one structure or categorical value
+        (id or alias, the trailing bracket dropped) -> that quantity and value_text (Amorphous -> crystallinity = amorphous, Sphere (s = 2) ->
+        structure = porous_sphere); else it goes on as other. A derived value (a number) holds the series_axis label or its symbol as its key
+        and is resolved here like any quantity other."""
         enum = C.schema("form.json")["$defs"]
         for r in recs:
             rec = r["rec"]
             q = rec.get("quantity")
             q = q if isinstance(q, str) else ""
-            if r.get("origin") and q == "other":                                # P162 rule 3: a derived unit's legend label, read like a record value
+            if r.get("derived") == "name" and q == "other":                    # P162 rule 3, P163: a legend name is a structure or categorical value
                 lab = C.X.record_text(rec)
-                hits = {(cq, v): how for cq in VALUES for v, how in WORDS[f"value:{cq}"].get(C.X.norm_label(lab), {}).items()}
+                name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", lab).strip() or lab
+                hits = {(k_ if k_ == "structure" else k_[6:], v): how for k_ in ["structure"] + [f"value:{cq}" for cq in VALUES]
+                        for v, how in vocab_hits(self.pid, k_, name).items()}
                 if len(hits) == 1:
                     ((cq, v), how), = hits.items()
-                    rec.update(quantity=cq, value_text=v)
+                    rec.update(quantity=cq, value_text=v, kind=r["dkind"])
                     q = cq
-                    self.promoted.append(dict(r=r, element=r["eid"], field="value_text", printed=lab, meaning=lab, lookup=f"value:{cq}: {how}", id=v, outcome=""))
-                    self.count("a0", "derived legend label -> categorical value")
-                    self.note(f"a0: {r['eid']}: legend label {lab!r} -> {cq} = {v} (value:{cq}: {how})")
-                elif hits:
-                    self.count("a0", "derived legend label: two categorical values (left other)")
-                    self.note(f"a0: {r['eid']}: legend label {lab!r} names {sorted(hits)} (left other)")
+                    self.promoted.append(dict(r=r, element=r["eid"], field="value_text", printed=lab, meaning=lab,
+                                              lookup=f"{'structure' if cq == 'structure' else 'value:' + cq}: {how}", id=v, outcome=""))
+                    self.count("a0", f"derived legend name -> {'structure' if cq == 'structure' else 'categorical'} value")
+                    self.note(f"a0: {r['eid']}: legend name {lab!r} -> {cq} = {v} ({how})")
+                else:
+                    self.count("a0", "derived legend label parsed to nothing (other)" + (", two values" if hits else ""))
+                    self.note(f"a0: {r['eid']}: legend label {lab!r} parsed to nothing" + (f": names {sorted(hits)}" if hits else ""))
             todo = [("quantity", C.X.record_text(rec), "quantity")] if q == "other" else []
             vt = rec.get("value_text")
             if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]]["enum"]:
@@ -340,9 +410,7 @@ class Run:
             for field, text, kind in todo:
                 if not text.strip():
                     continue
-                hits = dict(WORDS[kind].get(C.X.norm_label(text), {}))
-                for i, t in SYMBOLS[kind].get((self.pid, C.X.symbol_key(text)), {}).items():
-                    hits.setdefault(i, f"symbol '{t}' of this paper")
+                hits = vocab_hits(self.pid, kind, text)
                 meaning = " ".join(((rec.get("candidate") or {}).get("definition_quote") or "").split()) if field == "quantity" else text
                 if len(hits) == 1:
                     (i, how), = hits.items()
@@ -465,7 +533,7 @@ class Run:
         return out
 
     def ground(self, recs):
-        out = []
+        out, self.once = [], set()
         for r in recs:
             rec, eid = r["rec"], r["eid"]
             q = rec.get("quantity", "")
@@ -485,7 +553,11 @@ class Run:
                                               candidate="", action="kept (bug: passed form.json)"))
                 self.count("c", "BUG: id not in the vocabulary after form.json (kept)")
                 self.note(f"c: BUG {eid}: {bad} not in the vocabulary after form.json (kept)")
-            if q == "other":
+            if q == "other" and r.get("once") and r["once"] in self.once:      # P163: a derived value's other condition, one row per panel
+                self.count("c", "quantity_other of a derived value (the panel's row written once)")
+            elif q == "other":
+                if r.get("once"):
+                    self.once.add(r["once"])
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
                                           action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous") else "kept",

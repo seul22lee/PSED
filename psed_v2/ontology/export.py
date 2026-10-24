@@ -344,8 +344,9 @@ FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  #
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
-FORM_VERSION = "P158"                                                           # P158 (user): the pass-1 form frozen before round 2; common.run writes it on every new line
+FORM_VERSION = "P163"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; common.run writes it on every new line
 STEP_QUANTITIES = ["pulse_time", "purge_time", "exposure"]                      # P158 rule 1
+STEP_TYPES = ["setting", "observation"]                                         # P163 (user): rule 1 binds these record types only
 
 
 def p158_rules(onto):
@@ -353,9 +354,10 @@ def p158_rules(onto):
     (compile.py applies them to records of form version P158 or later); CODEBOOK.md prints the texts (the provider gets no allOf)."""
     step_values = ", ".join(str(v) for v in onto["qualifiers"]["step"]["values"])
     return [
-        (f"step: a record of {', '.join(STEP_QUANTITIES)} names its step (qualifier step: {step_values}); a stage, stat or structure_class "
-         "qualifier does not stand in for it",
-         {"if": _is("quantity", STEP_QUANTITIES), "then": {"properties": {"qualifiers": {"type": "object", "required": ["step"]}}, "required": ["qualifiers"]}}),
+        (f"step: a {' or '.join(STEP_TYPES)} of {', '.join(STEP_QUANTITIES)} names its step (qualifier step: {step_values}); a stage, stat or "
+         "structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163)",
+         {"if": {"properties": {**_is("quantity", STEP_QUANTITIES)["properties"], **_is("type", STEP_TYPES)["properties"]}, "required": ["quantity", "type"]},
+          "then": {"properties": {"qualifiers": {"type": "object", "required": ["step"]}}, "required": ["qualifiers"]}}),
         ("cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other "
          "records, never of a cited one)",
          {"if": _is("type", "cited"), "then": {"properties": {"kind": {"enum": ["cited", None]}}}}),
@@ -564,9 +566,8 @@ def form_md(form, pass0, onto, F):
         req[f].append("always")
     for r in form["allOf"]:
         props = r["if"].get("properties", {})
-        key = next(iter(props), "")
         cond = ("no " + ", ".join(x["required"][0] for x in r["if"]["not"]["anyOf"])) if "not" in r["if"] \
-            else f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")]))       # P138
+            else " and ".join(f"{key} " + " / ".join(f"`{x}`" for x in props[key].get("enum", [props[key].get("const")])) for key in props)   # P138; P163: every key
         for f in r.get("then", {}).get("required", []):
             req[f].append(f"required when {cond}")
         for f, v in r.get("then", {}).get("properties", {}).items():
@@ -708,7 +709,7 @@ def codebook(onto, L):
     out += ["", "## c. Record types, stances, NK reasons, the equation rule (sources: kb/pilot/lists.py RECORD_TYPES, NK_REASONS, "
             "EQUATION_VARIABLES, STANCES and its comment; P143 equation rule in ontology/export.py)", "", "Record types:", "",
             *[f"- {t}: {d}" for t, d in L.RECORD_TYPES.items()], "",
-            f"Form rules (P158, form version {FORM_VERSION}, frozen; form.json allOf \"P158 rule n\"):", "",
+            f"Form rules (P158, rule 1 scoped in P163; form version {FORM_VERSION}, frozen; form.json allOf \"P158 rule n\"):", "",
             *[f"- rule {n}, {t}." for n, (t, _) in enumerate(p158_rules(onto), 1)],
             "- nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.", "",
             f"Stances ({', '.join(L.STANCES)}): {stance_comment}", ""]
@@ -782,10 +783,12 @@ def form_files(onto):
     L, F = _pilot()
     form, pass0 = form_schema(onto, L, F), pass0_schema(onto, L)
     j = lambda x: json.dumps(x, indent=1, ensure_ascii=False) + "\n"            # noqa: E731
-    md = form_md(form, pass0, onto, F).replace("{FROZEN}", f"Form version {FORM_VERSION}, frozen (P158): form.json sha256 "
-                                                            f"`{hashlib.sha256(j(form).encode('utf-8')).hexdigest()}` at ontology sha256 `{ontology_hash()}`. "
-                                                            "Ontology growth changes the enums and this file hash, never the rules; a record line "
-                                                            f"carries form_version {FORM_VERSION} from P158 on (common.run), older lines none.")
+    md = form_md(form, pass0, onto, F).replace("{FROZEN}", f"Form version {FORM_VERSION}, frozen (P158; P163: rule 1 binds settings and observations "
+                                                            f"only): form.json sha256 `{hashlib.sha256(j(form).encode('utf-8')).hexdigest()}` at ontology sha256 "
+                                                            f"`{ontology_hash()}`. Ontology growth changes the enums and this file hash, never the rules; a record "
+                                                            f"line carries the form version of its call (common.run): P158 from P158 to P162, {FORM_VERSION} from "
+                                                            "P163 on, older lines none; compile.py validates a line with a version against this form, a line "
+                                                            "without one without the P158 rules.")
     return {SCHEMA / "form.json": j(form), SCHEMA / "form_pass0.json": j(pass0), SCHEMA / "FORM.md": md,
             SCHEMA / "CODEBOOK.md": codebook(onto, L)}                         # P143
 

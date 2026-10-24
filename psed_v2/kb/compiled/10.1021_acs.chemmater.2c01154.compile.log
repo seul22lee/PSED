@@ -32,8 +32,8 @@ a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
 a0: fig2: value_text 'Crystalline' -> crystalline (value:crystallinity: value id 'crystalline')
-a0: fig2.cap: legend label 'Amorphous' -> crystallinity = amorphous (value:crystallinity: value id 'amorphous')
-a0: fig2.cap: legend label 'Crystalline' -> crystallinity = crystalline (value:crystallinity: value id 'crystalline')
+a0: fig2.cap: legend name 'Amorphous' -> crystallinity = amorphous (value id 'amorphous')
+a0: fig2.cap: legend name 'Crystalline' -> crystallinity = crystalline (value id 'crystalline')
 a: s2.p1: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: fig3b: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 g: s3.p6: mention_unmatched ['unit_fig1c']
@@ -174,8 +174,8 @@ j: derived over 44 entities: 4 rows; not derived: {'no fact for H': 85, 'no fact
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 29 nodes for 37 claims; claims without a full triple (query.node_of empty): 4
 j: comparisons from figures.json (1c): 8
-step input: {'records': 330, 'unit derived (derived: point_per_unit, run)': 2, 'condition of a derived unit: the legend label (other)': 2}
-step a0: {'quantity other: never.csv word': 4, 'value_text promoted (value:crystallinity: value)': 32, 'derived legend label -> categorical value': 2}
+step input: {'records': 330, 'unit derived (derived: point_per_unit, run)': 2, 'condition of a derived unit (name)': 2}
+step a0: {'quantity other: never.csv word': 4, 'value_text promoted (value:crystallinity: value)': 32, 'derived legend name -> categorical value': 2}
 step a_p158: {'P158 rule 4 (predates the freeze, kept)': 2}
 step a: {'kept': 332}
 step b: {'kept': 332}
