@@ -703,6 +703,65 @@ def split_labels(row, labels):
 
 
 def cmd_apply():
+    """P173 (user): apply is atomic. Every write happens in a sandbox (a temporary copy of ontology/ and kb/: kb/reports holds only the
+    R<n>_apply files; kb/cache, kb/records, kb/verify, ingest and corpus are read-only links); apply_here() runs there and ends with
+    export --check and the audits of every applied round. Only when all pass are the files it changed moved into the real tree and
+    committed; a failure leaves ontology/, kb/compiled and pending.csv untouched and prints what would have been written."""
+    import os
+    import shutil
+    import tempfile
+    if os.environ.get("GROW_SANDBOX"):
+        return apply_here()
+    tmp = Path(tempfile.mkdtemp(prefix="grow_apply_"))
+    T = tmp / V2.name
+    skip = shutil.ignore_patterns("__pycache__")
+    try:
+        (T / "kb" / "reports").mkdir(parents=True)
+        shutil.copytree(HERE, T / "ontology", ignore=skip)
+        for x in (V2 / "kb").iterdir():
+            if x.name in ("reports", "cache", "records", "verify", "__pycache__"):
+                continue
+            if x.is_dir():
+                shutil.copytree(x, T / "kb" / x.name, ignore=skip)
+            else:
+                shutil.copy2(x, T / "kb" / x.name)
+        for name in ("cache", "records", "verify"):
+            (T / "kb" / name).symlink_to(V2 / "kb" / name)
+        for f in (V2 / "kb" / "reports").glob("R*_apply.*"):
+            shutil.copy2(f, T / "kb" / "reports" / f.name)
+        for name in ("ingest", "corpus", ".env"):
+            if (V2 / name).exists():
+                (T / name).symlink_to(V2 / name)
+        p = subprocess.run([sys.executable, str(T / "ontology" / "grow.py"), "apply"], cwd=tmp, env={**os.environ, "GROW_SANDBOX": "1"}, capture_output=True, text=True)
+        print(p.stdout[-8000:] + p.stderr[-3000:])
+        changed = []
+        for top in ("ontology", "kb"):
+            for f in sorted((T / top).rglob("*")):
+                if f.is_symlink() or any(q.is_symlink() for q in f.parents if T in q.parents) or not f.is_file() or "__pycache__" in f.parts or f.name == ".apply_message":
+                    continue
+                rel = f.relative_to(T)
+                real = V2 / rel
+                if not real.exists() or real.read_bytes() != f.read_bytes():
+                    changed.append((rel, "new" if not real.exists() else "changed"))
+        if p.returncode:
+            print("APPLY FAILED in the sandbox: nothing was written. It would have written:")
+            for rel, st in changed:
+                print(f"  {st}: {rel}")
+            raise Stop("apply failed (see above); ontology/, kb/compiled and pending.csv untouched")
+        for rel, _ in changed:
+            (V2 / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(T / rel, V2 / rel)
+        msg = (T / "ontology" / ".apply_message").read_text(encoding="utf-8")
+        files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / "kb" / "pilot" / "vocab.py", V2 / "kb" / "schema", COMPILED, V2 / "kb" / "reports"]
+        subprocess.run(["git", "add", "--", *map(str, files)], cwd=ROOT, check=True)
+        subprocess.run(["git", "commit", "-q", "-m", msg], cwd=ROOT, check=True)
+        print(f"moved {len(changed)} files into place and committed: {msg.splitlines()[0]}")
+        return []
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def apply_here():
     r, late = current(("proposed",)), False
     if not r:                                                                   # P169: late decisions of an applied round (no new snapshot)
         dec = [x for x in rd(PENDING) if x["decision"]]
@@ -835,14 +894,17 @@ def cmd_apply():
     set_round(n, status="applied", applied=today(), n_accepted=plus("n_accepted", c["accept"]), n_alias=plus("n_alias", c["alias"]),
               n_rejected=plus("n_rejected", c["reject"]), n_never=plus("n_never", c["never"]))
     fails = audit_round(n)                                                      # P157d: A1-A3 and their acceptance, every round
+    for r2 in rounds():                                                         # P173: and every other applied round's audit
+        if r2["status"] == "applied" and r2["round"] != str(n) and (REPORTS / f"R{r2['round']}_apply.decision_rows.csv").exists():
+            fails += [f"round {r2['round']}: {x}" for x in audit_round(int(r2["round"]))]
     report_page()
-    files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / "kb" / "pilot" / "vocab.py", V2 / "kb" / "schema", COMPILED, V2 / "kb" / "reports"]
-    subprocess.run(["git", "add", "--", *map(str, files)], cwd=ROOT, check=True)
-    subprocess.run(["git", "commit", "-q", "-m", f"grow round {n} {'late decisions ' if late else ''}applied: {c['accept']} accepted, {c['alias']} aliases, {c['reject']} rejected, "
-                    f"{c['never']} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)"], cwd=ROOT, check=True)
-    print(f"round {n} applied: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}; committed")
+    (HERE / ".apply_message").write_text(f"grow round {n} {'late decisions ' if late else ''}applied: {c['accept']} accepted, {c['alias']} aliases, "
+                                         f"{c['reject']} rejected, {c['never']} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)", encoding="utf-8")
+    print(f"round {n} applied in the sandbox: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}")
     for f in fails:
         print(f"ACCEPTANCE FAIL round {n}: {f}")
+    if fails:
+        raise Stop(f"{len(fails)} audit failures: nothing moved into place")
     return fails
 
 
@@ -1217,8 +1279,8 @@ def cmd_run(args, yes=False, plan_only=False):
     --check -> grow.py add + propose -> decide.html -> stop. The planned provider calls and dollars are printed before the first call; a y/n is
     asked unless --yes; --plan stops after the plan. GATE (gates.py, ontology/gates.csv: the worst of the twelve development papers):
     a. pass 0 lists no run and no simulation, or fewer than 3 units; b. a pass-0 value worse than the worst development value; c. a provider
-    error or a cached-prefix failure (any non-zero exit of a provider step); d. (before pass 0) data panels with no verdict in
-    ingest/answers/figures.json, so the figures import (P84) imports nothing. After pass 1 (before propose): form failures or quotes not found
+    error or a cached-prefix failure (any non-zero exit of a provider step). P173: the figures import gives a paper 14+ its verdicts by rule
+    (kb/figures_import.py: the figure stage's flags), so gate d (no verdicts, P172) is gone. After pass 1 (before propose): form failures or quotes not found
     worse than the worst development value; an earlier round's audit FAIL; export --check FAIL. Every run writes kb/reports/RUN_<keys>.html
     with its plan, its gate tables and its steps."""
     if not 1 <= len(args) <= 3:
@@ -1288,16 +1350,8 @@ def cmd_run(args, yes=False, plan_only=False):
         if x["figure_calls"]:
             if step(f"figure stage {x['paper']} ({x['figure_calls']} vision calls)", [py, V2 / "ingest" / "figures.py", "--ids", x["pid"]])[0]:
                 return finish(f"gate c: the figure stage of {x['paper']} failed")
-            step(f"figures import {x['paper']} (0 calls)", [py, V2 / "kb" / "figures_import.py", x["pid"]])
             step(f"elements {x['paper']} again, with the figure stage's panels (0 calls)", [py, PILOT / "elements.py", "--ids", x["pid"]])
-    ans = json.loads((V2 / "ingest" / "answers" / "figures.json").read_text(encoding="utf-8")).get("items", [])
-    for k, pid in zip(keys, pids):                                              # P172: the import gate (P84) needs the panels' verdicts
-        f = FINAL / pid / "figures.json"
-        data = [x for g in (json.loads(f.read_text(encoding="utf-8")).get("figures", []) if f.exists() else []) for x in g.get("panels") or []
-                if x.get("panel_type") in ("plot", "spectrum", "map")]
-        if data and not any(v.get("paper_id") == pid for v in ans):
-            return finish(f"gate d: {k} has {len(data)} data panels and no verdicts in ingest/answers/figures.json: the figures import (P84) imports "
-                          "nothing; the verdicts (or a rule for them) come before pass 0")
+        step(f"figures import {x['paper']} (0 calls; P173 rule verdicts)", [py, V2 / "kb" / "figures_import.py", x["pid"]])
     for k in keys:
         if step(f"pass 0 {k}", [py, EXTRACT / "pass0_paper.py", k])[0]:
             return finish(f"gate c: pass 0 of {k} failed (provider error)")

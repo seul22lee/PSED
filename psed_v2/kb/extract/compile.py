@@ -917,6 +917,12 @@ class Run:
             r["author"] = self.pid
             return r
 
+        def flagged(f, item):                                                   # P173 (user): data of a panel the rule verdict flagged: the
+            if item.get("verdict") == "flagged":                                 # flag names in the fact's note, basis digitized
+                f["basis"] = "digitized"
+                f["definition_note"] = (item.get("uncertainty") or {}).get("note", "") or "figure-stage flags"
+                self.count("1c", "data of a flagged panel (rule verdict)")
+
         def result(cu, parent, typ):
             y = cu["y"]
             if y.get("quantity") not in L.QUANTITIES:
@@ -924,6 +930,7 @@ class Run:
             facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"],
                              data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
                              evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent, points_ref=cu["id"]))
+            flagged(facts[-1], cu)
             self.count("1c", f"curve -> {typ}")
         unowned = []
         for cu in Fj.get("curves", []):
@@ -965,6 +972,7 @@ class Run:
                              value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=vt, unit=u or "",
                              data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
                              parent="@meas:" + nid if dr == "measured" else nid, points_ref=v["id"]))
+            flagged(facts[-1], v)
             self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
         if unowned:                                                             # P144: no fallback
             self.count("1c", "curves no unit names (left out)", len(unowned))

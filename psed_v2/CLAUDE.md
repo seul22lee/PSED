@@ -103,6 +103,12 @@ psed_v2/
   prints the planned calls and dollars and asks y/n (--yes skips, --plan stops after the plan); then the user's decisions in decide.html;
   then `grow.py apply`. The gates read ontology/gates.csv (the worst of the twelve development papers, `kb/extract/gates.py reference`);
   every run writes kb/reports/RUN_<keys>.html.
+- Figure verdicts (P173, user): from paper 13 on, figure verdicts are by rule; no one judges figures. kb/figures_import.py imports every
+  data panel of a paper without human verdicts: no figure-stage flag -> pass, any flag -> flagged (imported; the flag names kept on the panel
+  and on every curve and cell, and on the facts compiled from them: basis digitized, the flags in the note). The twelve keep their human
+  verdicts; the rule's agreement with them is a reference row of ontology/gates.csv, not a gate.
+- grow.py apply is atomic (P173): it runs in a sandbox copy and moves its files into place only after export --check and every round's audit
+  pass; a failure writes nothing and prints what would have been written.
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

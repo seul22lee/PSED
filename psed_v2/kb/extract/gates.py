@@ -61,6 +61,31 @@ def pass1_values(pid):
     return {"form failures (share of records)": round(bad / max(n, 1), 3), "quotes not found (share of records)": round(nq / max(n, 1), 3)}, n
 
 
+def verdict_agreement():
+    """P173 (user): the figure verdict rule (kb/figures_import.py: no figure-stage flag -> pass, any flag -> flagged) against the human
+    verdicts of the twelve (ingest/answers/figures.json: ok -> pass agrees, any other verdict -> flagged agrees), per judged panel; every
+    panel written to kb/reports/gates_verdict_agreement.csv. Returns (agreement rate, agreeing, judged)."""
+    ans = json.loads((C.V2 / "ingest" / "answers" / "figures.json").read_text(encoding="utf-8"))["items"]
+    flags = {}
+    for pid in {v["paper_id"] for v in ans}:
+        f = C.V2 / "ingest" / "final" / pid / "figures.json"
+        for g in json.loads(f.read_text(encoding="utf-8")).get("figures", []) if f.exists() else []:
+            flags[(pid, str(g["number"]))] = [x["flag"] for x in g.get("flags") or []]
+    rows = []
+    for v in ans:
+        fl = flags.get((v["paper_id"], str(v["figure"])), [])
+        rule = "pass" if not fl else "flagged"
+        agree = (v["verdict"] == "ok") == (rule == "pass")
+        rows.append(dict(paper=C.E.PAPERS.get(v["paper_id"], v["paper_id"]), figure=v["figure"], panel=v["panel"], human_verdict=v["verdict"],
+                         flags=";".join(fl), rule_verdict=rule, agree="yes" if agree else "NO", note=v.get("note", "")))
+    with (C.V2 / "kb" / "reports" / "gates_verdict_agreement.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "human_verdict", "flags", "rule_verdict", "agree", "note"], lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    n_ag = sum(1 for r in rows if r["agree"] == "yes")
+    return round(n_ag / max(len(rows), 1), 3), n_ag, len(rows)
+
+
 def reference():
     rows, per = {}, []
     for pid, key in dev_papers():
@@ -72,6 +97,9 @@ def reference():
                 cur = rows.get(m)
                 if cur is None or ((v < cur["worst_dev_value"]) if m in LOWER_IS_WORSE else (v > cur["worst_dev_value"])):
                     rows[m] = dict(metric=m, stage=stage, worse="lower" if m in LOWER_IS_WORSE else "higher", worst_dev_value=v, paper=key)
+    rate, n_ag, n_all = verdict_agreement()                                     # P173: a reference, not a gate
+    rows["figure verdict rule agreement"] = dict(metric="figure verdict rule agreement", stage="reference (not a gate)", worse="",
+                                                 worst_dev_value=rate, paper=f"{n_ag} of {n_all} human-judged panels of the twelve")
     with GATES.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLS, lineterminator="\n")
         w.writeheader()

@@ -8,7 +8,10 @@ panel with its outcome and reason), ontology/unmapped.csv (every unresolved fiel
 
 No model call, no PDF, no paper named in any rule. Every rule is general; a paper, figure or label is never special-cased.
 
-Gate (P84): a plot, spectrum or map panel is imported when its verdict in answers/figures.json is ok and it carries no F5 or F6 flag;
+Gate (P84): a plot, spectrum or map panel is imported when its verdict in answers/figures.json is ok and it carries no F5 or F6 flag
+(the twelve pilot papers, judged by hand); P173 (user): from paper 13 on (a paper with no verdict in answers/figures.json) every data panel
+is imported, its verdict the figure stage's own flags: none -> pass, any -> flagged (the flag names kept on the panel, its curves and cells:
+uncertainty note, basis digitized); nothing is dropped;
 F1-F4 are kept on the records as flags. Every other data panel is listed with its reason. Resolution, closed, in this order:
   a. axis label -> quantity id (resolve_label): LaTeX and braces stripped, the bracketed unit, trailing symbols, case and whitespace
      normalised, then matched to the ids, names, labels and aliases of the entries with role coordinate, condition, output or
@@ -519,6 +522,7 @@ class Importer:
         self.problems = []
         ans = json.loads(ANSWERS.read_text(encoding="utf-8"))["items"] if ANSWERS.exists() else []
         self.verdict = {(v["paper_id"], str(v["figure"]), v["panel"]): v for v in ans}
+        self.judged = {v["paper_id"] for v in ans}                               # P173: papers with human verdicts (the twelve)
 
     def unm(self, pid, fig, panel, field, raw, reason):
         self.unmapped.append(dict(paper=pid, figure=fig, panel=panel, field=field, raw=raw, reason=reason))
@@ -672,13 +676,18 @@ class Importer:
                     continue
                 counts["data_panels"] += 1
                 v = self.verdict.get((pid, fig, pan))
-                row = dict(paper=pid, figure=fig, panel=pan, panel_type=p["panel_type"], verdict=v["verdict"] if v else "", flags=";".join(flags), outcome="", reason="")
+                rule = pid not in self.judged                                    # P173 (user): from paper 13 on the verdict is the rule's
+                if rule:
+                    v = dict(verdict="pass" if not flags else "flagged")         # no figure-stage flag -> pass; any flag -> flagged (imported)
+                row = dict(paper=pid, figure=fig, panel=pan, panel_type=p["panel_type"], verdict=(("rule: " if rule else "") + v["verdict"]) if v else "",
+                           flags=";".join(flags), outcome="", reason="")
                 self.panels.append(row)
+                inv["verdict"] = row["verdict"]
                 if not v:
                     row.update(outcome="not imported", reason="no verdict"); inv["status"] = "not judged"; continue
-                if v["verdict"] != "ok":
+                if v["verdict"] not in ("ok", "pass", "flagged"):
                     row.update(outcome="not imported", reason=f"verdict {v['verdict']}"); inv["status"] = f"verdict {v['verdict']}"; continue
-                if "F5" in flags or "F6" in flags:
+                if not rule and ("F5" in flags or "F6" in flags):                # the rule drops nothing (P173)
                     row.update(outcome="not imported", reason="flag " + ", ".join(x for x in flags if x in ("F5", "F6"))); inv["status"] = "flagged F5/F6"; continue
                 ax = {a: self.axis(pid, fig, pan, a, p.get(a) or {}) for a in ("x", "y")}
                 inv["quantities"] = [ax[a]["quantity"] for a in ("x", "y") if ax[a]["quantity"]]
@@ -788,6 +797,15 @@ class Importer:
                 row.update(outcome="imported", reason=row["reason"] or f"{n_imp} curves, {len(p.get('cells') or [])} cells, {len(p.get('peaks') or [])} peaks" + (f", set {sid}" if sid else ""))
         counts["derived"] = len(out["derived"]); counts["unmapped"] = sum(1 for u in self.unmapped if u["paper"] == pid)
         counts["resolved_p89"] = len(self.R.p89_hits); out["p89"] = [dict(label=l, quantity=q, note=n, definition=f) for l, (q, n, f) in self.R.p89_hits]
+        if pid not in self.judged:                                               # P173: a flagged panel's flag names on its curves and cells
+            vd = {(i["figure"], i["panel"]): i.get("verdict", "") for i in out["inventory"]}
+            for c in out["curves"] + out["values"]:
+                if vd.get((c["figure"], c.get("panel", ""))) == "rule: flagged":
+                    c["verdict"] = "flagged"
+                    c.setdefault("uncertainty", {})
+                    if isinstance(c["uncertainty"], dict):
+                        c["uncertainty"].setdefault("basis", "digitized")
+                        c["uncertainty"]["note"] = "figure-stage flags: " + "; ".join(dict.fromkeys(c.get("flags") or []))
         out["report"] = dict(counts)
         (HERE / f"{pid}.figures.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
         return out
