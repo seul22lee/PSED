@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): c5feffaa220cc168422145cab6a2317936d2fedd84a68e7be4f111dc039b9eee
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): c26d902dd189ac27cd726e8f10123cf6d41390aa0ee9ddc477527b02f5f7d54f
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -133,7 +133,7 @@ structure_classes:   # P78: the is-a tree of structure classes (Cremers 2019 Sec
   - {id: har_feature, parent: structure, definition: "A high-aspect-ratio feature with an opening of width w and a depth L along which the reactant diffuses; aspect ratio L/w, third dimension z.", citation: "Cremers 2019 Sec. II G, Fig. 5 (w, L, z; AR = L/w, Eq. 11)", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
   - {id: trench, parent: har_feature, definition: "A vertical trench etched into a substrate: width w, depth L, length z.", citation: "Cremers 2019 Sec. II G, Fig. 5 (the width of a trench)", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
   - {id: via_hole, parent: har_feature, definition: "A vertical hole: diameter w, depth L.", citation: "Cremers 2019 Sec. II G, Fig. 5 (the diameter of a hole)", slots: [feature_depth, feature_width, aspect_ratio]}
-  - {id: lateral_channel, parent: har_feature, definition: "A lateral high-aspect-ratio channel (LHAR) under a roof: channel height w, lateral length L along the diffusion (the channel length, feature_depth; the former mechanism channel_length is superseded by it, P82), channel width z. pillarhall_3 and other LHAR designs are instances.", citation: "Cremers 2019 Sec. II G, Fig. 5 (channel height w, channel length L of a lateral structure); Sec. III", slots: [feature_depth, feature_width, feature_extent, aspect_ratio]}
+  - {id: lateral_channel, parent: har_feature, definition: "A lateral high-aspect-ratio channel (LHAR) under a roof: channel height w, lateral length L along the diffusion (the channel length, feature_depth; the former mechanism channel_length is superseded by it, P82), channel width z. pillarhall_3 and other LHAR designs are instances.", citation: "Cremers 2019 Sec. II G, Fig. 5 (channel height w, channel length L of a lateral structure); Sec. III", slots: [feature_depth, feature_width, feature_extent, aspect_ratio, pillar_spacing]}
   - {id: porous_body, parent: structure, definition: "A body the reactant enters through a continuous pore network from one or two faces: full thickness 2L (body_thickness), entry sides, diffusion length L, pore diameter w as the smallest opening, particle diameter, porosity, specific surface area, lateral size.", citation: "Cremers 2019 Sec. II G ('porous substrates': the pore size as w); gre23 Sec. II A (s6.p8, s8.p1)", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
   - {id: nanoparticle_compact, parent: porous_body, definition: "A pressed compact of nanoparticles; the pores are the gaps between the particles, their diameter about the particle diameter.", citation: "gre23 Sec. II A (Fig. 1, s8.p1); Cremers 2019 Sec. II G", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
   - {id: aerogel_monolith, parent: porous_body, definition: "A monolithic aerogel, porosity above 90 %, the highest aspect ratios coated by ALD.", citation: "gre23 Sec. II A (s6.p8: aerogel monoliths of higher AR than the compacts); Cremers 2019 Sec. II G", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
@@ -314,7 +314,7 @@ entries:
     unit: "°C"
     qudt_quantity_kind: "quantitykind:Temperature"
     qudt_unit: "unit:DEG_C"
-    aliases: [Deposition temperature, substrate temperature, Temperature (°C), Temperature (K)]
+    aliases: [Deposition temperature, substrate temperature, Temperature (°C), Temperature (K), ALD process temperature]
     symbols: [{text: T, paper: 10.1039_d0cp03358h}, {text: T, paper: 10.1063_1.5028178}, {text: T, paper: 10.1116_6.0001094}, {text: T (°C), paper: ''}]
     base: {source: schema_miner, path: ProcessParameters/Temperature}
     deviation: {type: renamed, reason: "several temperatures exist (source, gas, annealing); only this one carries data"}
@@ -3445,6 +3445,22 @@ entries:
     - {text: diffusion–reaction model, paper: 10.1039_d3cp05639b}
     source_pids: [10.1039_d3cp05639b]
     evidence: ['10.1039_d3cp05639b:abs.g1 — diffusion–reaction model']
+
+  # ---------------------------------------------------------------- grow.py round 4: accepted
+  - id: pillar_spacing
+    type: quantity
+    label: Distance between pillars
+    name: Distance between pillars
+    origin: round 4
+    category: test_structure
+    definition: 'Distance between neighbouring pillars that hold up the roof of a lateral high-aspect-ratio channel (PillarHall): a dimension of the test structure that sets the pillar effect on transport (Yim 2020 Table 1; Gao 2015 Sec. II: oxide pillars 10 µm apart).'
+    dimension: length
+    unit: µm
+    aliases: [Distance between pillars, distance between the oxide pillars]
+    symbols:
+    - {text: a, paper: 10.1039_d0cp03358h}
+    source_pids: [10.1039_d0cp03358h, 10.1116_1.4903941]
+    evidence: ['10.1039_d0cp03358h:tabu1.r0c0 — Distance between pillars (m)', '10.1116_1.4903941:s6.p4 — The distance between the oxide pillars was 10 \mu m.']
 
 families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
   composition: {}
