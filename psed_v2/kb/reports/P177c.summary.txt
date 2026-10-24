@@ -1,0 +1,32 @@
+P177c: 0 provider calls. Acceptance 281 of 281 rows match (162 data panels, 119 others; kb/reports/P177a_panels.csv expected_outcome,
+29 rows corrected, note 'corrected P177c'). Six chat decisions in this unit (table 0); one score column fell (ela03 diff_activity, see 7).
+
+1. Expectations: the directive's corrections, with the chat answers: points no unit carries stay derived units (the directive's third
+   clause, "unbound 'no unit with this condition'", set back; zou23 fig1b, whose first point is x = 0, given the same text); mat23 fig4b
+   2 derived runs; wer21 fig4-8 'no items' read as no curve item, its peaks and empty panels listed unbound.
+2. Decisions (history.csv, decided_by user, round 0 = by hand outside a grow round, so the round audits 1-5 read none of them): alias
+   'SE' -> spectroscopic_ellipsometry; never 'X5 (50 µm)' Instrument settings; never.csv 'dA; dB [pm]' (yim20, yli18) symbol yes; D_A
+   {yim22} a symbol of gas_phase_diffusion_coefficient; and (chat, step 4) 'at-H' {zou23} a symbol of h_atom.
+3. ontology.yaml legend_separators / axis_separators (top-level keys under layouts:, which is a list); compile builds its splits from
+   them, CODEBOOK.md prints them. ',' '@' ' at ' always split, a dash only when that gives the series axis's part count (P175). Of the 530
+   legends of the thirteen, six parse differently (all mat23). Chat: a legend number takes a quantity only when its unit has that
+   quantity's dimension (compile.unit_fits): without it '150°C' became process_mode = 150 °C ('ALD process' is a process_mode alias).
+4. A setting derived from a coordinate axis of pulse_time / purge_time / exposure whose label names a species carries the species'
+   half-cycle step (the paper's reactant_A / reactant_B settings): zou23's 29 point settings (fig1a reactant_A, fig1b reactant_B, fig1c
+   purge_A, fig1d purge_B). zou23 form failures 0.145 -> 0.011 (2 pass-1 records left). Now that they pass the form, check.py flags 15
+   pulse_time settings without species= and 24 'same statement' rows (their statement is the axis label); reported, not changed (R3).
+   bind(): a point at x = 0 that no unit carries is unbound 'origin' (8 points: ela03 6, zou23 2).
+5. check.py --dir retires 'points_ref in a facts file' for the facts of an item bind() bound (compile writes kb/compiled/<pid>.binding.csv,
+   each item with its facts): 666 -> 0; every points_ref fact of the twelve comes from a bound item.
+6. hei24 under a paper-wide dedupe (scratch copy of compile.py, no change made): 58 gold rows stop matching (31 settings, 27 entities);
+   47 units absorb 107 per-panel units; each lost row is a panel's unit merged into the same-vector unit of another panel, leaving one
+   compiled row where the gold keeps one per panel (the matcher pairs one gold row with one compiled row).
+7. Scores of the twelve, P177b -> P177c: T6 2115 -> 2115; mat23 diff_comparison 0/7 -> 1/7; ela03 diff_activity 18/46 -> 16/46 (R5 15):
+   the two rows lost (gold 'SEM (method)', 'EPMA (method)') had matched measurement activities of derived point units only because both
+   rows have empty evidence, which compile.matches() reads as a shared element; reported, not worked around. check.py 2512 -> 1879.
+   Audits 1-5 PASS; export --check 15/15; cards: the thirteen pages, 0 errors. binding.py --check against the P177b file: 10 items
+   changed (the 8 origin points; zou23 fig2 c2, c4 now share c1, c3's units, SE being a method), then --write: 798 items.
+   Gates (chat: regenerate all): unbound items 11 -> 14 (ela03, its origin points), form failures 0.091 -> 0.100 (hei24), quotes not found
+   0.163 -> 0.164 (mat22). wer21's unbound items (21) are above 14: a gated run on such a paper stops at pass 0. A P177b error: the
+   committed kb/reports/gates_dev_values.csv was written before the per-panel dedupe (hei24 units per 100 elements 24.29; the committed
+   P177b code gives 67.61); gates.py reference has written it anew.

@@ -2,13 +2,14 @@
 <h2>Acceptance</h2><p>psed_v2/kb/reports/R4_apply.acceptance.txt</p>
 <pre>round 4 acceptance (grow.py audit_round)
 A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
-A2: 14 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 2, &#x27;symbol (user decision)&#x27;: 10}
-A3: 73 open rows: {&#x27;other&#x27;: 44, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 4}; pending candidates accounted 41/41
-A3 new since apply → next round (P162, carried, not a failure): 4 rows
+A2: 16 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 4, &#x27;symbol (user decision)&#x27;: 10}
+A3: 74 open rows: {&#x27;other&#x27;: 44, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 5}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 5 rows
   10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
   10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
-  10.1116_6.0002993:fig4.cap quantity &#x27;Thermal ALD@150°C&#x27;
-  10.1116_6.0002993:fig4.cap quantity &#x27;PE-ALD @150°C&#x27;
+  10.1039_d1cp04758b:fig7a axis &#x27;d_A&#x27;
+  10.1039_d1cp04758b:fig7b axis &#x27;d_A&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;150°C&#x27;
 result: PASS
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R4_apply.A1.csv</p>
@@ -78,6 +79,8 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model A</td><td>Model A</td><td>model: symbol &#x27;Model A&#x27; of this paper</td><td>ylilammi_diffusion_reaction</td><td>Ylilammi diffusion-reaction model</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td><td>model</td><td>model</td><td>model</td><td>symbol (user decision)</td><td>Model A</td><td>history.csv row 414 (round 4, alias model_a)</td><td>simulation sim_model_a -&gt; model ylilammi_diffusion_reaction</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model B</td><td>Model B</td><td>model: symbol &#x27;Model B&#x27; of this paper</td><td>yanguas_gil_elam_diffusion_reaction</td><td>yanguas gil elam diffusion reaction</td><td>Diffusion–reaction model of ALD in a high-aspect-ratio feature by Yanguas-Gil and Elam (yim22 ref. 20): irreversible single-site adsorption (no desorption term), reactant partial pressure from the diffusion equation solved numerically together with the surface-coverage equation (yim22: MATLAB pdepe, slab symmetry, free molecular flow D_eff = D_Kn); the model behind the Arts et al. slope method (arts_slope). Distinct from yanguas_gil_markov_chain (a Markov-chain model).</td><td>model</td><td>reaction</td><td>model</td><td>symbol (user decision)</td><td>Model B</td><td>history.csv row 415 (round 4, add yanguas_gil_elam_diffusion_reaction)</td><td>simulation sim_model_b -&gt; model yanguas_gil_elam_diffusion_reaction</td></tr>
 <tr><td>10.1116_1.4903941</td><td>s6.p4</td><td>quantity</td><td>distance between the oxide pillars</td><td>The distance between the oxide pillars was 10 \mu m.</td><td>quantity: alias &#x27;distance between the oxide pillars&#x27;</td><td>pillar_spacing</td><td>Distance between pillars</td><td>Distance between neighbouring pillars that hold up the roof of a lateral high-aspect-ratio channel (PillarHall): a dimension of the test structure that sets the pillar effect on transport (Yim 2020 Table 1; Gao 2015 Sec. II: oxide pillars 10 µm apart).</td><td>distance</td><td>distance</td><td>distance</td><td>alias (user decision)</td><td></td><td>history.csv row 391 (round 4, add pillar_spacing)</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>value_text</td><td>Thermal ALD</td><td>Thermal ALD</td><td>value:process_mode: value alias &#x27;thermal ALD&#x27;</td><td>thermal</td><td>thermal</td><td>a value of process_mode</td><td>ald</td><td>thermal</td><td>kind</td><td>alias (curated)</td><td></td><td></td><td>fact mat23:fig4.cap#5 (type setting, quantity process_mode, parent mat23:run:10_1116_6_0002993_fig4b_c1)</td></tr>
+<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>value_text</td><td>PE-ALD</td><td>PE-ALD</td><td>value:process_mode: value alias &#x27;PE-ALD&#x27;</td><td>plasma</td><td>plasma</td><td>a value of process_mode</td><td>ald</td><td>plasma</td><td>kind</td><td>alias (curated)</td><td></td><td></td><td>fact mat23:fig4.cap#7 (type setting, quantity process_mode, parent mat23:run:10_1116_6_0002993_fig4b_c2)</td></tr>
 </table>
 <h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R4_apply.A3.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
@@ -134,9 +137,11 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>fig6b</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6c</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6d</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>d_A</td><td>m</td><td>da</td><td>new since apply → next round</td><td></td><td>candidate d_a decided in round 0 (alias -&gt; gas_phase_diffusion_coefficient): the row was born after apply; carried into the next propose</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>M_I</td><td>kg mol-1</td><td>mi</td><td>pending candidate m_i</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>q</td><td>nm-2</td><td>q</td><td>pending candidate q</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>d_A</td><td>m</td><td>da</td><td>new since apply → next round</td><td></td><td>candidate d_a decided in round 0 (alias -&gt; gas_phase_diffusion_coefficient): the row was born after apply; carried into the next propose</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>M_I</td><td>kg mol-1</td><td>mi</td><td>pending candidate m_i</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>q</td><td>nm-2</td><td>q</td><td>pending candidate q</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
@@ -147,8 +152,7 @@ result: PASS
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td>transmittance;transmittance</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>Thermal ALD@150°C</td><td></td><td>thermal ald@150°c</td><td>new since apply → next round</td><td></td><td>candidate thermal_ald_150_c decided in round 5 (reject): the row was born after apply; carried into the next propose</td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>PE-ALD @150°C</td><td></td><td>pe-ald @150°c</td><td>new since apply → next round</td><td></td><td>candidate pe_ald_150_c decided in round 5 (reject): the row was born after apply; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>150°C</td><td>°C</td><td>150°c</td><td>new since apply → next round</td><td></td><td>candidate 150_c: not in R4_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig1b</td><td>axis</td><td>process</td><td></td><td>process</td><td>pending candidate process</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4a</td><td>axis</td><td>Wavelength</td><td>nm</td><td>wavelength</td><td>pending candidate wavelength</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4a</td><td>axis</td><td>Transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td></td><td></td></tr>

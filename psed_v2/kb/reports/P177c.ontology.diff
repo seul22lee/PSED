@@ -1,0 +1,91 @@
+diff --git a/psed_v2/ontology/history.csv b/psed_v2/ontology/history.csv
+index e89522fb..2ec13be5 100644
+--- a/psed_v2/ontology/history.csv
++++ b/psed_v2/ontology/history.csv
+@@ -506,3 +506,8 @@ date,round,action,id,kind,target,source_pids,source_dois,decided_by,reason,ontol
+ 2026-10-24,5,alias,composition,quantity,element_fraction,10.1116_6.0002804,10.1116/6.0002804,user,P176 chat,efbe52021e6939ecf121d99cb83c0ee624d9de4d22450ba811c8859a59f227ca,,,,,
+ 2026-10-24,5,alias,h,quantity,feature_width,10.1039_d0cp03358h;10.1039_d1cp04758b;10.1063_1.5028178,10.1039/d0cp03358h;10.1039/d1cp04758b;10.1063/1.5028178,user,P176 chat,efbe52021e6939ecf121d99cb83c0ee624d9de4d22450ba811c8859a59f227ca,,,,,yim20;yim22;yli18
+ 2026-10-24,5,alias,time,quantity,time,10.1116_6.0002804,10.1116/6.0002804,user,P176 chat,efbe52021e6939ecf121d99cb83c0ee624d9de4d22450ba811c8859a59f227ca,,,,,
++2026-10-24,0,alias,se,method,spectroscopic_ellipsometry,10.1116_6.0002804,10.1116/6.0002804,user,P177c chat: legend 'SE' (zou23 fig2) is the method spectroscopic_ellipsometry,39c1d3b3d721db4b09cda25f71854ce2071f3f387dd06b7ae38b5902505da7ee,,,,,
++2026-10-24,0,never,x5_50_um,quantity,Instrument settings,10.1039_d0cp03358h,10.1039/d0cp03358h,user,P177c chat: 'X5 (50 µm)' (yim20 fig7) is the objective_magnification value,39c1d3b3d721db4b09cda25f71854ce2071f3f387dd06b7ae38b5902505da7ee,,,,,
++2026-10-24,0,edit,never.csv,,"'dA; dB [pm]' (yim20, yli18): symbol yes",10.1039_d0cp03358h;10.1063_1.5028178,10.1039/d0cp03358h;10.1063/1.5028178,user,P177c chat: history edit: a symbol-like pilot row P157f left as a word; as a word it matched yim22's D_A (fig6a),39c1d3b3d721db4b09cda25f71854ce2071f3f387dd06b7ae38b5902505da7ee,,,,,
++2026-10-24,0,alias,d_a,quantity,gas_phase_diffusion_coefficient,10.1039_d1cp04758b,10.1039/d1cp04758b,user,P177c chat: D_A {yim22} a symbol of gas_phase_diffusion_coefficient (P175: symbol_paper),39c1d3b3d721db4b09cda25f71854ce2071f3f387dd06b7ae38b5902505da7ee,,,,,yim22
++2026-10-24,0,alias,at_h,species,h_atom,10.1116_6.0002804,10.1116/6.0002804,user,"P177c chat: 'at-H' (zou23 fig1b, fig1d axes) a zou23 symbol of h_atom (P175: symbol_paper), so the step rule finds the species",ce2a3fab3c11852a3803cc10060daeef4f392d4b22ef3be8136ea6b6a8791197,,,,,zou23
+diff --git a/psed_v2/ontology/never.csv b/psed_v2/ontology/never.csv
+index 4683f94f..9840874e 100644
+--- a/psed_v2/ontology/never.csv
++++ b/psed_v2/ontology/never.csv
+@@ -10,7 +10,7 @@ Slope d(S/N)/dx̃ [nm],Sec. 18.7: attribute entry front_slope,10.1039_d0cp03358h
+ Linear fitting residual R2,Sec. 18.7: attribute entry fit_r2,10.1039_d0cp03358h,pilot Sec. 18.7,
+ pB [Pa],Model internals not in Sec. 8,10.1039_d0cp03358h,pilot Sec. 18.7,
+ MA; MB [kg mol-1],Molecule properties,10.1039_d0cp03358h,pilot Sec. 18.7,
+-dA; dB [pm],Molecule properties,10.1039_d0cp03358h,pilot Sec. 18.7,
++dA; dB [pm],Molecule properties,10.1039_d0cp03358h,pilot Sec. 18.7,yes
+ bfilm; bTMA,Model internals not in Sec. 8,10.1039_d0cp03358h,pilot Sec. 18.7,
+ q [nm-2],Model internals not in Sec. 8,10.1039_d0cp03358h,pilot Sec. 18.7,yes
+ Pd [s-1],Model internals not in Sec. 8,10.1039_d0cp03358h,pilot Sec. 18.7,
+@@ -19,7 +19,7 @@ Knudsen number,Sec. 18.7: promoted to knudsen_number (decision D2),10.1039_d0cp0
+ Accelerating voltage [keV],Instrument settings,10.1039_d0cp03358h,pilot Sec. 18.7,
+ xt; xs [µm],Model internals not in Sec. 8,10.1063_1.5028178,pilot Sec. 18.7,
+ MA; MB [kg/mol],Molecule properties,10.1063_1.5028178,pilot Sec. 18.7,
+-dA; dB [pm],Molecule properties,10.1063_1.5028178,pilot Sec. 18.7,
++dA; dB [pm],Molecule properties,10.1063_1.5028178,pilot Sec. 18.7,yes
+ pB [Pa],Model internals not in Sec. 8,10.1063_1.5028178,pilot Sec. 18.7,
+ q [m-2],Model internals not in Sec. 8,10.1063_1.5028178,pilot Sec. 18.7,yes
+ rms thickness error [nm],Fit quality,10.1063_1.5028178,pilot Sec. 18.7,
+@@ -148,3 +148,4 @@ Collision frequency of Reactant A with other gas molecules in a gas mixture of R
+ integration time,Instrument settings,10.1116_6.0001094,round 5: integration_time,
+ Energy,Plasma internals,10.1116_6.0001094,round 5: energy,
+ RF frequency,Instrument settings,10.1116_6.0001094,round 5: rf_frequency,
++X5 (50 µm),Instrument settings,10.1039_d0cp03358h,P177c chat: the objective_magnification value,
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index bb021068..773e40b4 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): c032a049fe8060525ab58dfdab0301145ef0a0ea72edc1ad75307d0227221e09
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 4b9fb509366d6fc8861370e9c6e5887e66646fed779f81c929c7ae6740e51e1c
+ version: 1
+ 
+ kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
+@@ -147,6 +147,11 @@ layouts:   # P177b (user): the layout vocabulary of pass 0, one entry per kind (
+   - {id: panel_one_unit, scope: panel, item: "panel", conditions_from: "caption", results_from: "caption", definition: "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only).", example: "an EDS panel = one specimen, its curves one measurement's results per element"}
+   - {id: row_per_unit, scope: table, item: "row", conditions_from: "row cells", results_from: "row cells", definition: "Each row is one experiment unit (a run, a specimen or a model run); the columns are its conditions and results."}
+   - {id: not_units, scope: table, item: "none", conditions_from: "none", results_from: "none", definition: "The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values)."}
++# P177c (user): the separators of the layouts' legend and axis labels (part of layouts:, which is a list). compile.parse_legend splits a legend
++# label at its top-level legend separators (a dash separator only when that gives the series axis's part count, P175); compile.axis_parts
++# splits a series axis at the axis separators. A leading or trailing space means whitespace there. export.py prints both into CODEBOOK.md.
++legend_separators: [" - ", " – ", ",", "@", " at "]
++axis_separators: [" and ", ","]
+ 
+ entries:
+ 
+@@ -2943,6 +2948,7 @@ entries:
+     kind: molecule
+     formula: atomic hydrogen
+     aliases: [atomic hydrogen, hydrogen atoms]
++    symbols: [{text: at-H, paper: 10.1116_6.0002804}]
+     citation: van der Zouw 2023 abstract and Sec. I-II (at-H from a heated W filament)
+     cq: Which reactants were used, at which exposure?
+     base: {}
+@@ -3010,7 +3016,7 @@ entries:
+     origin: base_vocabulary   # P142b: moved from vocabularies.measurement_method, content unchanged
+ 
+   - id: spectroscopic_ellipsometry
+-    aliases: [spectroscopic ellipsometer]
++    aliases: [spectroscopic ellipsometer, SE]
+     type: method
+     class: optical_thickness
+     definition: 'Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).'
+@@ -3272,7 +3278,7 @@ entries:
+     dimension: diffusivity
+     unit: m2/s
+     aliases: [Dmi, gas-phase diffusion coefficient, molecular diffusion coefficient]
+-    symbols: [{text: D_mi, paper: ''}]
++    symbols: [{text: D_mi, paper: ''}, {text: D_A, paper: 10.1039_d1cp04758b}]
+     citation: Cremers 2019 Sec. V B; Yim 2022 Table 1 and Sec. 5 (D_A); Heikkinen 2024 Table 1 (D_mi)
+     cq: How fast does the reactant diffuse into the structure?
+     base: {}
