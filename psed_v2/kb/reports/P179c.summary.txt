@@ -1,5 +1,6 @@
-P179c: 0 calls. STOPPED at step 4 (4b: yim22 diff_model 148/215 -> 146/215, two gold rows, both through compile's dedupe), so step 7 (the
-yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c check passes.
+P179c: steps 1-6 0 calls; step 4 stopped on 4b (yim22 diff_model 148 -> 146, two gold rows, both through compile's dedupe); the user
+accepted the two losses (open_decisions.csv: dedupe vs gold duplicate rows; mat22 process_mode level) and ran step 7: 12 calls, $0.36.
+Step 7, yli18 whole paper under form version P179: NOT adopted (whole-paper scores drop: matched 144 -> 136). kb/compiled unchanged.
 
 1. (the user's replacement) ontology/form_versions.csv: P179 not adopted (rejected) for all nine papers with P179 lines (reason: partial
    re-extraction is not a form test); the file's header carries the rule: a version is adopted for a paper only as a whole paper, when the
@@ -18,3 +19,10 @@ yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c chec
    of them), steps 2-3 +17, 2a clearing +1, other -45 (problems now on facts steps 2-3 changed). The gold holds no process_mode at any level.
 6. 4d: yli18 p_B, M_B, d_B = n2 on every record (d_B: s5.p15 by its element, the rest from the symbol's evidence; p_B, M_B by the user's
    decision); p_A0 = model_reactant (the pA0 definition); mat23 thermal 6 / plasma 9; zou23 hot_wire 4; mat22 plasma 42, art19 plasma 8, wer21 plasma 4.
+7. yli18 whole-paper form test: pass 1 under P179 for all 12 groups (314 elements; 12 calls, $0.36; pass 0 and the 3a fill unchanged);
+   compiled into kb/tmp/yli18_P179. Matched gold rows: P178 144, now 144, new 136: model 61 -> 59, setting 31 -> 23, derived 7 -> 9, others
+   equal. Rows that decided it: the 8 pulse / purge time settings of s8.p24 (TMA, H2O, TiCl4 cycles) lost: the new lines write them without
+   the step qualifier form.json requires (rule 1), so compile drops 6 at step a; fig2.cap W and M_A lost to the matcher's order (the new lines
+   hold W at fig2.cap); tabu1.r19c0 written as quantity other; a claim and a caveat moved; 5 rows gained (two tabI p_A0, a claim, a
+   definition, a caveat). None the species rule. Form failures 7 (6 step at s8.p24, 1 cited quantity at s8.p14). Species on the 65 symbol
+   records: 24 differ (records new or gone between the two extractions). form_versions.csv: P179 rejected for yli18 with these rows.

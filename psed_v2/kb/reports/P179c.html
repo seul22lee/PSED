@@ -1,7 +1,8 @@
 <!doctype html><html><head><meta charset='utf-8'><title>P179c</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P179c</h1>
 <h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.summary.txt</p>
-<pre>P179c: 0 calls. STOPPED at step 4 (4b: yim22 diff_model 148/215 -&gt; 146/215, two gold rows, both through compile&#x27;s dedupe), so step 7 (the
-yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c check passes.
+<pre>P179c: steps 1-6 0 calls; step 4 stopped on 4b (yim22 diff_model 148 -&gt; 146, two gold rows, both through compile&#x27;s dedupe); the user
+accepted the two losses (open_decisions.csv: dedupe vs gold duplicate rows; mat22 process_mode level) and ran step 7: 12 calls, $0.36.
+Step 7, yli18 whole paper under form version P179: NOT adopted (whole-paper scores drop: matched 144 -&gt; 136). kb/compiled unchanged.
 
 1. (the user&#x27;s replacement) ontology/form_versions.csv: P179 not adopted (rejected) for all nine papers with P179 lines (reason: partial
    re-extraction is not a form test); the file&#x27;s header carries the rule: a version is adopted for a paper only as a whole paper, when the
@@ -20,6 +21,13 @@ yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c chec
    of them), steps 2-3 +17, 2a clearing +1, other -45 (problems now on facts steps 2-3 changed). The gold holds no process_mode at any level.
 6. 4d: yli18 p_B, M_B, d_B = n2 on every record (d_B: s5.p15 by its element, the rest from the symbol&#x27;s evidence; p_B, M_B by the user&#x27;s
    decision); p_A0 = model_reactant (the pA0 definition); mat23 thermal 6 / plasma 9; zou23 hot_wire 4; mat22 plasma 42, art19 plasma 8, wer21 plasma 4.
+7. yli18 whole-paper form test: pass 1 under P179 for all 12 groups (314 elements; 12 calls, $0.36; pass 0 and the 3a fill unchanged);
+   compiled into kb/tmp/yli18_P179. Matched gold rows: P178 144, now 144, new 136: model 61 -&gt; 59, setting 31 -&gt; 23, derived 7 -&gt; 9, others
+   equal. Rows that decided it: the 8 pulse / purge time settings of s8.p24 (TMA, H2O, TiCl4 cycles) lost: the new lines write them without
+   the step qualifier form.json requires (rule 1), so compile drops 6 at step a; fig2.cap W and M_A lost to the matcher&#x27;s order (the new lines
+   hold W at fig2.cap); tabu1.r19c0 written as quantity other; a claim and a caveat moved; 5 rows gained (two tabI p_A0, a claim, a
+   definition, a caveat). None the species rule. Form failures 7 (6 step at s8.p24, 1 cited quantity at s8.p14). Species on the 65 symbol
+   records: 24 differ (records new or gone between the two extractions). form_versions.csv: P179 rejected for yli18 with these rows.
 </pre>
 <h2>Step 4 failure: the rows (stop before step 7)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_failure.csv</p>
 <table><tr><th>paper</th><th>gold_row</th><th>P178</th><th>now</th><th>cause</th></tr>
@@ -33,7 +41,7 @@ yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c chec
 <tr><td>P158</td><td></td><td>2026-10-23</td><td>accepted</td><td>user (P179b directive)</td><td>the frozen form (P158), in use through P178</td></tr>
 <tr><td>P163</td><td></td><td>2026-10-24</td><td>accepted</td><td>user (P179b directive)</td><td>P163: rule 1 scoped; in use through P178</td></tr>
 <tr><td>P179</td><td></td><td>2026-10-24</td><td>candidate</td><td>user (P179b directive)</td><td>the P179 species rule; the re-extraction of 155 elements (P179 3b) waits for adoption per paper (P179b step 4)</td></tr>
-<tr><td>P179</td><td>yli18</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>yli18</td><td>2026-10-24</td><td>rejected</td><td>Claude Code by the whole-paper rule (P179c step 7)</td><td>P179c step 7, the whole-paper form test: matched 144 -&gt; 136 (setting 31 -&gt; 23: the new lines write 6 pulse / purge time settings of s8.p24 without the step qualifier the form requires, dropped at step a; model 61 -&gt; 59: fig2.cap W and M_A, the matcher&#x27;s order; definition tabu1.r19c0 as quantity other); none the species rule</td></tr>
 <tr><td>P179</td><td>yim20</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
 <tr><td>P179</td><td>ela03</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
 <tr><td>P179</td><td>hei24</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
@@ -518,6 +526,160 @@ What the gold holds for process_mode: no row in any of the twelve golds (quantit
 <tr><td>wer21 process_mode</td><td>s25.p17</td><td>plasma 4</td><td></td><td></td></tr>
 <tr><td>zou23 process_mode</td><td>s4.p7</td><td>hot_wire 4</td><td></td><td></td></tr>
 <tr><td>mat23 process_mode</td><td>fig1.cap; fig2.cap; fig4.cap</td><td>thermal 6, plasma 9</td><td></td><td></td></tr>
+</table>
+<h2>7. The plan at the cost line (yli18, every group)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_plan.csv</p>
+<table><tr><th>group</th><th>elements</th><th>chars</th><th>cached</th></tr>
+<tr><td>abstract+s0+s1+s2+s3+s4+s5+s6</td><td>73</td><td>13849</td><td>no</td></tr>
+<tr><td>s7+s8+s9</td><td>84</td><td>18557</td><td>no</td></tr>
+<tr><td>s10+s11</td><td>22</td><td>4108</td><td>no</td></tr>
+<tr><td>fig1</td><td>2</td><td>322</td><td>no</td></tr>
+<tr><td>fig2</td><td>2</td><td>2427</td><td>no</td></tr>
+<tr><td>fig3</td><td>2</td><td>1963</td><td>no</td></tr>
+<tr><td>fig4</td><td>2</td><td>1405</td><td>no</td></tr>
+<tr><td>fig5</td><td>2</td><td>1318</td><td>no</td></tr>
+<tr><td>fig6</td><td>2</td><td>1017</td><td>no</td></tr>
+<tr><td>fig7</td><td>2</td><td>848</td><td>no</td></tr>
+<tr><td>tabI</td><td>25</td><td>1415</td><td>no</td></tr>
+<tr><td>tabu1</td><td>96</td><td>7159</td><td>no</td></tr>
+</table>
+<h2>7. The calls made</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_calls.csv</p>
+<table><tr><th>section</th><th>elements</th><th>form_version</th><th>input_tokens</th><th>cache_read_tokens</th><th>output_tokens</th><th>usd</th><th>request_ts</th></tr>
+<tr><td>abstract+s0+s1+s2+s3+s4+s5+s6</td><td>73</td><td>P179</td><td>33948</td><td>29736</td><td>12277</td><td>0.0514</td><td>2026-10-24T20:30:13+00:00</td></tr>
+<tr><td>s7+s8+s9</td><td>84</td><td>P179</td><td>36439</td><td>29736</td><td>31206</td><td>0.1243</td><td>2026-10-24T20:31:19+00:00</td></tr>
+<tr><td>s10+s11</td><td>22</td><td>P179</td><td>31090</td><td>29736</td><td>1678</td><td>0.0095</td><td>2026-10-24T20:33:58+00:00</td></tr>
+<tr><td>fig1</td><td>2</td><td>P179</td><td>29827</td><td>29736</td><td>822</td><td>0.0054</td><td>2026-10-24T20:34:08+00:00</td></tr>
+<tr><td>fig2</td><td>2</td><td>P179</td><td>30978</td><td>29736</td><td>3516</td><td>0.0163</td><td>2026-10-24T20:34:15+00:00</td></tr>
+<tr><td>fig3</td><td>2</td><td>P179</td><td>30738</td><td>29736</td><td>3507</td><td>0.0161</td><td>2026-10-24T20:34:32+00:00</td></tr>
+<tr><td>fig4</td><td>2</td><td>P179</td><td>30324</td><td>29736</td><td>3897</td><td>0.0173</td><td>2026-10-24T20:34:58+00:00</td></tr>
+<tr><td>fig5</td><td>2</td><td>P179</td><td>30299</td><td>29736</td><td>4091</td><td>0.018</td><td>2026-10-24T20:35:19+00:00</td></tr>
+<tr><td>fig6</td><td>2</td><td>P179</td><td>30143</td><td>29736</td><td>2445</td><td>0.0117</td><td>2026-10-24T20:35:39+00:00</td></tr>
+<tr><td>fig7</td><td>2</td><td>P179</td><td>30056</td><td>29736</td><td>2511</td><td>0.0119</td><td>2026-10-24T20:35:53+00:00</td></tr>
+<tr><td>tabI</td><td>25</td><td>P179</td><td>30340</td><td>29736</td><td>5504</td><td>0.0233</td><td>2026-10-24T20:36:07+00:00</td></tr>
+<tr><td>tabu1</td><td>96</td><td>P179</td><td>32146</td><td>29736</td><td>12844</td><td>0.0522</td><td>2026-10-24T20:36:36+00:00</td></tr>
+</table>
+<h2>7. Per type: gold, matched P178, now (kb/compiled after step 4), new (the whole-paper P179 lines)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_types.csv</p>
+<table><tr><th>type</th><th>gold</th><th>matched_P178</th><th>matched_now</th><th>matched_new</th><th>delta_new_vs_now</th></tr>
+<tr><td>model</td><td>67</td><td>61</td><td>61</td><td>59</td><td>-2</td></tr>
+<tr><td>setting</td><td>63</td><td>31</td><td>31</td><td>23</td><td>-8</td></tr>
+<tr><td>definition</td><td>38</td><td>23</td><td>23</td><td>23</td><td>0</td></tr>
+<tr><td>derived</td><td>15</td><td>7</td><td>7</td><td>9</td><td>2</td></tr>
+<tr><td>claim</td><td>13</td><td>8</td><td>8</td><td>8</td><td>0</td></tr>
+<tr><td>entity</td><td>12</td><td>6</td><td>6</td><td>6</td><td>0</td></tr>
+<tr><td>activity</td><td>11</td><td>4</td><td>4</td><td>4</td><td>0</td></tr>
+<tr><td>observation</td><td>7</td><td>2</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>caveat</td><td>7</td><td>2</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>cited</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>comparison</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>paper</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>identity</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+</table>
+<h2>7. Every gold row lost or gained (new vs now), with what the other side holds</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_rows.csv</p>
+<table><tr><th>change</th><th>element</th><th>gold</th><th>matched_by</th><th>other_side_holds</th></tr>
+<tr><td>gained (new matched, now not)</td><td>s5.p19</td><td>yli18:s5.p19#1 claim  &#x27;&#x27;  </td><td>yli18:s5.p19#1 claim  &#x27;&#x27;   []</td><td>nothing of this type at those elements</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p19;fig5.cap</td><td>yli18:s8.p19#2 claim  &#x27;&#x27;  </td><td>yli18:s8.p19#1 claim  &#x27;&#x27;   []</td><td>nothing of this type at those elements</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#3 setting pulse_time &#x27;&#x27; 0.1 s</td><td>yli18:s8.p24#1 setting pulse_time &#x27;pulse&#x27; 0.1 s [species=tma;stage=initial;stat=tolerance;structure_class=structure]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#4 setting purge_time &#x27;&#x27; 4.0 s</td><td>yli18:s8.p24#2 setting purge_time &#x27;purge&#x27; 4 s [species=tma]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#5 setting pulse_time &#x27;&#x27; 0.1 s</td><td>yli18:s8.p24#3 setting pulse_time &#x27;pulse&#x27; 0.1 s [species=h2o;stage=initial;stat=tolerance;structure_class=structure]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#6 setting purge_time &#x27;&#x27; 4.0 s</td><td>yli18:s8.p24#4 setting purge_time &#x27;purge&#x27; 4 s [species=h2o]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#10 setting pulse_time &#x27;&#x27; 0.1 s</td><td>yli18:s8.p24#6 setting pulse_time &#x27;pulse&#x27; 0.1 s [species=ticl4;stage=initial;stat=tolerance;structure_class=structure]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#11 setting purge_time &#x27;&#x27; 4.0 s</td><td>yli18:s8.p24#7 setting purge_time &#x27;purge&#x27; 4 s [species=ticl4]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#12 setting pulse_time &#x27;&#x27; 0.1 s</td><td>yli18:s8.p24#8 setting pulse_time &#x27;pulse&#x27; 0.1 s [species=h2o;stage=initial;stat=tolerance;structure_class=structure]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s8.p24</td><td>yli18:s8.p24#13 setting purge_time &#x27;&#x27; 4.0 s</td><td>yli18:s8.p24#9 setting purge_time &#x27;purge&#x27; 4 s [species=h2o]</td><td>yli18:s8.p24#1 setting gas_flow_rate &#x27;Nitrogen flow rates&#x27; 150 sccm [gas=n2]; yli18:s8.p24#2 setting cycle_number &#x27;pulse sequences&#x27; 1000 cycle []; yli18:s8.p24#3 setting process_pressure &#x27;Chamber pressures&#x27; 300 Pa []</td></tr>
+<tr><td>gained (new matched, now not)</td><td>tabI.r1c3;tabI.cap</td><td>yli18:tabI.r1c3#1 derived partial_pressure &#x27;p_A0&#x27; 147 Pa</td><td>yli18:tabI.r1c3#1 derived partial_pressure &#x27;p_{\\text{A0}}&#x27; 147 Pa [species=model_reactant]</td><td>nothing of this type at those elements</td></tr>
+<tr><td>gained (new matched, now not)</td><td>tabI.r2c3;tabI.cap</td><td>yli18:tabI.r2c3#1 derived partial_pressure &#x27;p_A0&#x27; 25.7 Pa</td><td>yli18:tabI.r2c3#1 derived partial_pressure &#x27;p_{\\text{A0}}&#x27; 25.7 Pa [species=model_reactant]</td><td>nothing of this type at those elements</td></tr>
+<tr><td>lost (now matched, new not)</td><td>tabu1.r19c0;tabu1.r19c1</td><td>yli18:tabu1.r19c0#1 definition molar_mass &#x27;&#x27;  </td><td>yli18:tabu1.r19c0#1 definition molar_mass &#x27;Molar mass of the deposited film&#x27;  kg/mol []</td><td>yli18:tabu1.r19c0#1 definition other &#x27;Molar mass of the deposited film&#x27;  kg/mol []</td></tr>
+<tr><td>gained (new matched, now not)</td><td>tabu1.r2c2;tabu1.r2c3</td><td>yli18:tabu1.r2c2#1 definition deposition_temperature &#x27;&#x27;  </td><td>yli18:tabu1.r2c2#1 definition deposition_temperature &#x27;Temperature&#x27;  K []</td><td>yli18:tabu1.r1c2#1 definition time &#x27;Time&#x27;  s []</td></tr>
+<tr><td>lost (now matched, new not)</td><td>fig2.cap;fig3.cap;fig5.cap</td><td>yli18:fig2.cap#2 model feature_extent &#x27;W&#x27; 0.1 mm</td><td>yli18:fig5.cap#2 model feature_extent &#x27;W&#x27; 0.1 mm []</td><td>yli18:fig2.cap#1 model feature_width &#x27;H&#x27; 0.5 µm []; yli18:fig2.cap#2 model feature_extent &#x27;W&#x27; 0.1 mm []; yli18:fig2.cap#3 model partial_pressure &#x27;p_{A0}&#x27; 100 Pa [origin=entrance;species=model_reactant]; yli18:fig2.cap#4 model molar_mass &#x27;M_A&#x27; 0.0749 kg/mol [species=model_reactant]</td></tr>
+<tr><td>lost (now matched, new not)</td><td>fig2.cap;fig3.cap;fig5.cap</td><td>yli18:fig2.cap#4 model molar_mass &#x27;M_A&#x27; 74.9 g/mol</td><td>yli18:s8.p3#4 model molar_mass &#x27;M_A&#x27; 0.0749 kg/mol [species=model_reactant]</td><td>yli18:fig2.cap#1 model feature_width &#x27;H&#x27; 0.5 µm []; yli18:fig2.cap#2 model feature_extent &#x27;W&#x27; 0.1 mm []; yli18:fig2.cap#3 model partial_pressure &#x27;p_{A0}&#x27; 100 Pa [origin=entrance;species=model_reactant]; yli18:fig2.cap#4 model molar_mass &#x27;M_A&#x27; 0.0749 kg/mol [species=model_reactant]</td></tr>
+<tr><td>lost (now matched, new not)</td><td>s5.p19</td><td>yli18:s5.p19#2 caveat  &#x27;&#x27;  </td><td>yli18:s5.p19#1 caveat  &#x27;&#x27;   []</td><td>nothing of this type at those elements</td></tr>
+<tr><td>gained (new matched, now not)</td><td>fig5.cap</td><td>yli18:fig5.cap#1 caveat  &#x27;&#x27;  </td><td>yli18:s8.p22#1 caveat  &#x27;&#x27;   []</td><td>nothing of this type at those elements</td></tr>
+</table>
+<h2>7. Species on every symbol record (now vs new, with the evidence)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_species.csv</p>
+<table><tr><th>element</th><th>label</th><th>quantity</th><th>type</th><th>species_now</th><th>outcome_now</th><th>species_new</th><th>outcome_new</th><th>evidence_new</th></tr>
+<tr><td>eq10</td><td>p_A</td><td>partial_pressure</td><td>model</td><td>model_reactant</td><td>from the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r24c0</td></tr>
+<tr><td>eq13</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>eq18</td><td>p_A(x,t)</td><td>partial_pressure</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>eq24</td><td>p_A(x, t)</td><td>partial_pressure</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>eq7</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>eq8</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>fig2.cap</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig2.cap</td><td>M_A</td><td>molar_mass</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r20c0</td></tr>
+<tr><td>fig2.cap</td><td>M_B</td><td>molar_mass</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig2.cap</td><td>c</td><td>initial_sticking_coefficient</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig2.cap</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>fig2.cap</td><td>d_B</td><td>molecule_diameter</td><td>model</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>fig2.cap</td><td>p_B</td><td>partial_pressure</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig2.cap</td><td>p_{A0}</td><td>partial_pressure</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r25c0</td></tr>
+<tr><td>fig3.cap</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig3.cap</td><td>M_A</td><td>molar_mass</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r20c0</td></tr>
+<tr><td>fig3.cap</td><td>M_B</td><td>molar_mass</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig3.cap</td><td>c</td><td>initial_sticking_coefficient</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig3.cap</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>fig3.cap</td><td>d_B</td><td>molecule_diameter</td><td>model</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>fig3.cap</td><td>p_B</td><td>partial_pressure</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig3.cap</td><td>p_{A0}</td><td>partial_pressure</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r25c0</td></tr>
+<tr><td>fig4.cap</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>(no record)</td><td></td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig4.cap</td><td>M_A</td><td>molar_mass</td><td>model</td><td>(no record)</td><td></td><td>model_reactant</td><td>backed by the definition</td><td>tabu1.r20c0</td></tr>
+<tr><td>fig4.cap</td><td>M_B</td><td>molar_mass</td><td>model</td><td>(no record)</td><td></td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig4.cap</td><td>c</td><td>initial_sticking_coefficient</td><td>model</td><td>(no record)</td><td></td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig4.cap</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>(no record)</td><td></td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>fig4.cap</td><td>d_B</td><td>molecule_diameter</td><td>model</td><td>(no record)</td><td></td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>fig4.cap</td><td>p_{A0}</td><td>partial_pressure</td><td>model</td><td>(no record)</td><td></td><td>model_reactant</td><td>backed by the definition</td><td>tabu1.r25c0</td></tr>
+<tr><td>fig5.cap</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig5.cap</td><td>M_A</td><td>molar_mass</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r20c0</td></tr>
+<tr><td>fig5.cap</td><td>M_B</td><td>molar_mass</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig5.cap</td><td>c</td><td>initial_sticking_coefficient</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>fig5.cap</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>fig5.cap</td><td>d_B</td><td>molecule_diameter</td><td>model</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>fig5.cap</td><td>p_A0</td><td>partial_pressure</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>fig5.cap</td><td>p_B</td><td>partial_pressure</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>fig5.cap</td><td>p_{A0}</td><td>partial_pressure</td><td>model</td><td>(no record)</td><td></td><td>model_reactant</td><td>from the definition</td><td>tabu1.r25c0</td></tr>
+<tr><td>s5.p15</td><td>d_A</td><td>molecule_diameter</td><td>cited</td><td>(no record)</td><td></td><td>-</td><td>symbol species conflict</td><td></td></tr>
+<tr><td>s5.p15</td><td>d_A</td><td>molecule_diameter</td><td>setting</td><td>-</td><td>symbol species conflict</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>s5.p15</td><td>d_B</td><td>molecule_diameter</td><td>cited</td><td>(no record)</td><td></td><td>n2</td><td>kept: its own element names it</td><td></td></tr>
+<tr><td>s5.p15</td><td>d_B</td><td>molecule_diameter</td><td>setting</td><td>n2</td><td>kept: its own element names it</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>s5.p16</td><td>d_TMA</td><td>molecule_diameter</td><td>setting</td><td>tma</td><td>kept: its own element names it</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>s5.p16</td><td>d_TiCl4</td><td>molecule_diameter</td><td>setting</td><td>ticl4</td><td>kept: its own element names it</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>s5.p16</td><td>d_{\text{TMA}}</td><td>molecule_diameter</td><td>setting</td><td>(no record)</td><td></td><td>tma</td><td>kept: its own element names it</td><td></td></tr>
+<tr><td>s5.p16</td><td>d_{\text{TiCl}_4}</td><td>molecule_diameter</td><td>setting</td><td>(no record)</td><td></td><td>ticl4</td><td>kept: its own element names it</td><td></td></tr>
+<tr><td>s8.p3</td><td>K</td><td>adsorption_equilibrium_constant</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>s8.p3</td><td>M_A</td><td>molar_mass</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r20c0</td></tr>
+<tr><td>s8.p3</td><td>M_B</td><td>molar_mass</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>s8.p3</td><td>c</td><td>initial_sticking_coefficient</td><td>model</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>s8.p3</td><td>d_A</td><td>molecule_diameter</td><td>model</td><td>-</td><td>symbol species conflict</td><td>-</td><td>symbol species conflict</td><td>tabu1.r5c0</td></tr>
+<tr><td>s8.p3</td><td>d_B</td><td>molecule_diameter</td><td>model</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>s8.p3</td><td>p_B</td><td>partial_pressure</td><td>model</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>from the user&#x27;s symbol decision</td><td></td></tr>
+<tr><td>s8.p3</td><td>p_{A0}</td><td>partial_pressure</td><td>model</td><td>model_reactant</td><td>backed by the definition</td><td>model_reactant</td><td>from the definition</td><td>tabu1.r25c0</td></tr>
+<tr><td>tabI.r0c3</td><td>p_{A0}</td><td>partial_pressure</td><td>definition</td><td>(no record)</td><td></td><td>model_reactant</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>tabI.r0c4</td><td>c</td><td>initial_sticking_coefficient</td><td>definition</td><td>(no record)</td><td></td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>tabI.r0c5</td><td>K</td><td>adsorption_equilibrium_constant</td><td>definition</td><td>(no record)</td><td></td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>tabI.r1c3</td><td>p_{\text{A0}}</td><td>partial_pressure</td><td>derived</td><td>(no record)</td><td></td><td>model_reactant</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>tabI.r1c3</td><td>p_{\text{A0}}</td><td>partial_pressure</td><td>setting</td><td>model_reactant</td><td>from the symbol&#x27;s evidence in this paper</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>tabI.r1c4</td><td>c</td><td>initial_sticking_coefficient</td><td>derived</td><td>-</td><td>species cleared (no evidence)</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>tabI.r1c5</td><td>K</td><td>adsorption_equilibrium_constant</td><td>derived</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>tabI.r2c3</td><td>p_{\text{A0}}</td><td>partial_pressure</td><td>derived</td><td>(no record)</td><td></td><td>model_reactant</td><td>from the symbol&#x27;s evidence in this paper</td><td></td></tr>
+<tr><td>tabI.r2c3</td><td>p_{\text{A0}}</td><td>partial_pressure</td><td>setting</td><td>model_reactant</td><td>from the symbol&#x27;s evidence in this paper</td><td>(no record)</td><td></td><td></td></tr>
+<tr><td>tabI.r2c4</td><td>c</td><td>initial_sticking_coefficient</td><td>derived</td><td>-</td><td>species cleared (no evidence)</td><td>-</td><td>no species</td><td></td></tr>
+<tr><td>tabI.r2c5</td><td>K</td><td>adsorption_equilibrium_constant</td><td>derived</td><td>-</td><td>no species</td><td>-</td><td>no species</td><td></td></tr>
+</table>
+<h2>7. Form failures of the new lines (dropped at step a)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s7_form_failures.csv</p>
+<table><tr><th>element</th><th>field</th><th>reason</th><th>type</th><th>quantity</th></tr>
+<tr><td>s8.p14</td><td>quantity</td><td>schema:not</td><td>cited</td><td></td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>pulse_time</td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>purge_time</td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>pulse_time</td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>purge_time</td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>pulse_time</td></tr>
+<tr><td>s8.p24</td><td>qualifiers</td><td>schema:required</td><td>setting</td><td>purge_time</td></tr>
+</table>
+<h2>ontology/open_decisions.csv</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/open_decisions.csv</p>
+<table><tr><th>id</th><th>unit</th><th>date</th><th>status</th><th>question</th><th>today</th><th>options</th><th>evidence</th></tr>
+<tr><td>species_on_molar_mass_and_diameter</td><td>P178</td><td>2026-10-24</td><td>included P179 (1c)</td><td>Should molar_mass and molecule_diameter accept the species qualifier (whose molecule)?</td><td>their entries list no species qualifier, so P178 a1 (a symbol&#x27;s species from the definition) and check.py&#x27;s substance rule do not cover them; the facts still carry a record&#x27;s own species (yli18 s5.p15 d_B species=n2, s8.p3 M_B / d_B species=h2o)</td><td>add species to their qualifiers (a1 then covers M_B, d_B) | keep as is</td><td>kb/reports/P178.s2_symbol_species.csv</td></tr>
+<tr><td>process_mode_from_inherited_plasma_power</td><td>P178</td><td>2026-10-24</td><td>included P179 (1d)</td><td>mat23: the paper&#x27;s one plasma_power setting (s7.p1#8, 200 W) sits on the recipe, so every entity inherits it and the process_mode transform derives plasma for the thermal-ALD specimens (tald_*) too. What should the transform read?</td><td>the transform reads the entity&#x27;s condition vector (its own settings and the activities above, recipe included), as the user&#x27;s P178 rule says; 5 tald_* entities of mat23 derive plasma (kb/reports/P178.s3_process_mode.csv)</td><td>keep (a placement matter of pass 1) | presence only from the entity&#x27;s own run (then mat23&#x27;s PE-ALD specimens fall back to H2S: thermal) | a stated process_mode on the run decides first (pass 1 states it for 3 entities only)</td><td>kb/reports/P178.s3_process_mode.csv</td></tr>
+<tr><td>h_atom_process_mode</td><td>P178</td><td>2026-10-24</td><td>included P179 (1d)</td><td>zou23: hot-wire atomic hydrogen (h_atom) maps to plasma in the P178 mapping, so its 68 entities derive plasma although no plasma is used. Keep, or map h_atom (hot-wire) to another value?</td><td>the mapping lists h_atom -&gt; plasma as the directive wrote it</td><td>keep | a value for radical-enhanced (non-plasma) ALD | no derivation for h_atom</td><td>kb/reports/P178.s3_process_mode.csv</td></tr>
+<tr><td>p179_reextraction_lines</td><td>P179</td><td>2026-10-24</td><td>decided (P179c, user): adopted for no paper (partial re-extraction is not a form test); yli18&#x27;s whole-paper test (step 7) not adopted</td><td>The 43 pass-1 lines of form version P179 (the re-extraction of the 155 elements, step 3b) failed 4a: besides 52 species changes, 104 paired records changed a non-species field, 149 records are gone and 176 new. They are in kb/records; compile&#x27;s per-element latest-line rule reads them at the next compile. Adopt or reject them?</td><td>kb/compiled is P178&#x27;s output (not recompiled: the unit stopped at 4a); the lines are recorded, nothing deleted</td><td>adopt (recompile; kb/reports/P179.s4a_record_diff.csv lists every change) | reject (a rule: compile reads, for these elements, the latest line before form version P179) | re-extract with a prompt that keeps the other fields (more calls)</td><td>kb/reports/P179.s4a_record_diff.csv; kb/reports/P179.s4a_counts.csv</td></tr>
+<tr><td>dedupe_vs_gold_duplicate_rows</td><td>P179c</td><td>2026-10-24</td><td>open (scoring)</td><td>dedupe vs gold duplicate rows: the score counts one merged fact against one gold row</td><td>compile&#x27;s dedupe (D3) merges equal-value records of different elements into one fact (evidence: every element); the gold keeps one row per element, and the first-come matcher pairs the merged fact with one gold row only. The user accepted P179c&#x27;s two yim22 losses on this ground (the KB is right): s14.p6#16 c = 0.01, fig6.cap#9 M = 28</td><td>a matcher that lets one merged fact serve each gold row of its evidence elements | keep (the losses stand) | decide with the scoring design</td><td>kb/reports/P179c.s4_failure.csv</td></tr>
+<tr><td>mat22_process_mode_level</td><td>P179c</td><td>2026-10-24</td><td>open (downstream design)</td><td>process_mode at run level or at recipe level: mat22&#x27;s 42 runs each carry the same process_mode setting with one quote, which check.py counts as &#x27;same as&#x27; / &#x27;same statement&#x27; / &#x27;statement repeats&#x27; (42 / 41 / 38)</td><td>process_mode is a pass-0 recipe field on every run (P179 1d); the golds hold no process_mode at any level</td><td>one setting at the recipe level, inherited by its runs | one per run (as now) | decide at the downstream design</td><td>kb/reports/P179c.s5_mat22_process_mode.txt</td></tr>
 </table>
 <h2>Code diff</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.code.diff</p>
 <pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
