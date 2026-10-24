@@ -866,7 +866,7 @@ def write_reports(imp, results):
     done = {r["paper_id"] for r in results}
     old = [r for r in csv.DictReader(UNMAPPED.open(newline="", encoding="utf-8")) if r.get("field") != "pilot" and r["paper"] not in done] if UNMAPPED.exists() else []
     with UNMAPPED.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "field", "raw", "reason"]); w.writeheader(); w.writerows(keep + old + imp.unmapped)
+        w = csv.DictWriter(f, fieldnames=["paper", "figure", "panel", "field", "raw", "reason"], lineterminator="\n"); w.writeheader(); w.writerows(keep + old + imp.unmapped)   # P173: LF, as the file is in git since P155
 
 
 def main(argv):
