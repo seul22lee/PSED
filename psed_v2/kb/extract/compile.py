@@ -502,6 +502,10 @@ class Run:
                     self.note(f"a0: {r['eid']}: {field} {text!r} ambiguous: {sorted(hits)}")
             if rec.get("quantity") == "other":
                 text = C.X.record_text(rec)
+                mh = vocab_hits(self.pid, "model", text) if text.strip() else {}
+                if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
+                    r["names_model"] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
+                    self.count("a0", "quantity other naming a model entry (kept)")
                 hit = (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(text)))) if text.strip() else None
                 if hit:
                     r["never"], r["never_label"] = hit["category"], hit["label"] + (f" (symbol in {hit['paper']})" if hit.get("symbol") == "yes" else "")
@@ -636,7 +640,8 @@ class Run:
                     self.once.add(r["once"])
                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
-                                          action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous") else "kept",
+                                          action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous")
+                                          else f"kept (names the model {r['names_model']})" if r.get("names_model") else "kept",   # P172
                                           never=r.get("never", ""), nearest=rec.get("nearest", "") or ""))
                 self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
             out.append(r)

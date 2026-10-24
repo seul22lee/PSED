@@ -1,0 +1,149 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 41c6fdd..5cb8511 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -502,6 +502,10 @@ class Run:
+                     self.note(f"a0: {r['eid']}: {field} {text!r} ambiguous: {sorted(hits)}")
+             if rec.get("quantity") == "other":
+                 text = C.X.record_text(rec)
++                mh = vocab_hits(self.pid, "model", text) if text.strip() else {}
++                if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
++                    r["names_model"] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
++                    self.count("a0", "quantity other naming a model entry (kept)")
+                 hit = (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(text)))) if text.strip() else None
+                 if hit:
+                     r["never"], r["never_label"] = hit["category"], hit["label"] + (f" (symbol in {hit['paper']})" if hit.get("symbol") == "yes" else "")
+@@ -636,7 +640,8 @@ class Run:
+                     self.once.add(r["once"])
+                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
+                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
+-                                          action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous") else "kept",
++                                          action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous")
++                                          else f"kept (names the model {r['names_model']})" if r.get("names_model") else "kept",   # P172
+                                           never=r.get("never", ""), nearest=rec.get("nearest", "") or ""))
+                 self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
+             out.append(r)
+diff --git a/psed_v2/kb/pilot/query.py b/psed_v2/kb/pilot/query.py
+index 9e55c08..42a62fb 100644
+--- a/psed_v2/kb/pilot/query.py
++++ b/psed_v2/kb/pilot/query.py
+@@ -391,7 +391,7 @@ def g(x, d=3):
+     return f"{x:.{d}g}"
+ 
+ 
+-TREES = {k: Tree(k) for k in KEY}
++TREES = {k: Tree(k) for k in KEY if (HERE / f"{KEY[k]}.facts.csv").exists()}   # P172: a paper without a gold file (wer21) has no gold tree
+ USER = list(csv.DictReader((HERE / "user.facts.csv").open(encoding="utf-8")))
+ 
+ 
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 26bc784..9b88f8d 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -151,7 +151,7 @@ def unmapped_rows(pid):
+         cand = json.loads(r["candidate"]) if r["candidate"].startswith("{") else {}
+         d = " ".join((cand.get("definition_quote") or "").split())
+         out.append(dict(pid=pid, element=r["element"], field=r["field"], label=r["label_as_printed"].strip(), unit=r["unit"], symbol=(cand.get("symbol") or "").strip(),
+-                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"], never=r.get("never", ""), text=X.record_text(r)))
++                        definition=d, quote=d or r["label_as_printed"].strip() or r["unit"], never=r.get("never", ""), text=X.record_text(r), action=r.get("action", "")))
+     return out
+ 
+ 
+@@ -214,7 +214,7 @@ def candidates(pids, extra=()):
+        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+     Returns ({id: group}, log)."""
+     spell = unit_spellings()
+-    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[])
++    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[], model_names=[])
+     categ = {e["id"] for e in onto()["entries"] if e.get("type") == "categorical"}   # P168: a categorical's value row is no candidate
+     tables, rest = defaultdict(list), []
+     carried = defaultdict(list)
+@@ -227,6 +227,9 @@ def candidates(pids, extra=()):
+             if u["field"] in categ:                                             # P168 (user): its unit is nothing; no "unit" candidate
+                 log["categorical"].append(u)
+                 continue
++            if u.get("action", "").startswith("kept (names the model "):        # P172: a record naming a model entry is no quantity candidate
++                log["model_names"].append(u)
++                continue
+             if u["field"] == "unit" and not u["symbol"]:                       # a unit row follows the quantity row of its cell and label
+                 u["symbol"] = own.get((u["element"], u["label"]), "")
+             m = re.match(r"^(tab\w*)\.(r\d+)c\d+$", u["element"])
+@@ -380,9 +383,14 @@ def candidate_of(row):
+ 
+ 
+ def printed_labels(row):
+-    """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id."""
++    """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id. P172: a row of a
++    round whose candidate is gone (its rows closed meanwhile) and whose evidence is one 'pid:element — <printed>' item: that printed label."""
+     c = candidate_of(row)
+-    return [c["label"]] + c["aliases"] if c else [row["id"].replace("_", " ")]
++    if c:
++        return [c["label"]] + c["aliases"]
++    ev = evidence_items(row)
++    m = re.match(r"^[^:]+:\S+ — (.+)$", ev[0]) if row["first_round"] not in ("", "0") and len(ev) == 1 else None
++    return [m.group(1).strip()] if m else [row["id"].replace("_", " ")]
+ 
+ 
+ def candidate_symbols(row):
+@@ -648,18 +656,19 @@ def add_symbols(text, eid, pairs):
+     return text[:s] + blk + text[e:], add
+ 
+ 
++PAPER_LOCAL = r"\bpaper-local symbol\b(?!s)"                                  # P172: 'paper-local symbol' anywhere in a note (not 'symbols')
+ MODEL_PARAMS = r"\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)"
+ 
+ 
+ def model_fields(row):
+     """P168 (user): an accepted model's class, parameters and the scope of its printed name, from its pending row: 'class analytical' or
+-    'class computational' in the decision note; 'parameters <id>, <id>, ...' in the note, else in the proposed definition; 'printed name:
+-    paper-local symbol' in the note keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
++    'class computational' in the decision note; 'parameters <id>, <id>, ...' in the note, else in the proposed definition; 'paper-local
++    symbol' in the note (PAPER_LOCAL, P172: anywhere) keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
+     parameters, paper_local)."""
+     note = row["decision_note"]
+     cls = re.search(r"\bclass:?\s*(analytical|computational)\b", note)
+     pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row["proposed_definition"])
+-    return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(r"printed name:?\s*paper-local symbol", note))
++    return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(PAPER_LOCAL, note))
+ 
+ 
+ def entry_fields(row, categories, classes):
+@@ -757,7 +766,7 @@ def cmd_apply():
+             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
+                                 symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in e.get("symbols") or []), note=""))
+         elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out);
+-            if re.search(r"printed name:?\s*paper-local symbol", x["decision_note"]):   # P169: the printed name a symbol of its paper
++            if re.search(PAPER_LOCAL, x["decision_note"]):                       # P169: the printed name a symbol of its paper
+                 lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+             t_new = next((e for e in new if e["id"] == x["alias_target"]), None)   # P164: a symbol-like label goes to the target's symbols
+             if t_new is not None:
+@@ -776,7 +785,8 @@ def cmd_apply():
+         elif x["decision"] == "never":                                         # P157d: the label (any paper) and each symbol (its paper only);
+             nev += [dict(label=w, category=x["never_category"], paper=x["pids"], source=f"round {n}: {x['id']}", symbol="") for w in words]
+             nev += [dict(label=t, category=x["never_category"], paper=p, source=f"round {n}: " + ("symbol of " if t not in labels[:1] else "") + x["id"],
+-                         symbol="yes") for t, p in dict.fromkeys(lsyms + syms)]    # P164: a symbol-like label is a symbol row of its paper
++                         symbol="yes") for t, p in dict.fromkeys(lsyms + syms)    # P164: a symbol-like label is a symbol row of its paper
++                    if not any(r["label"] == t and r["paper"] == p and r.get("symbol") == "yes" for r in nev)]   # P172: not twice
+             applied.append(dict(id=x["id"], decision=f"never ({x['never_category']})", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(words),
+                                 symbols="; ".join(f"{t} ({p})" for t, p in dict.fromkeys(lsyms + syms)), note=""))
+     old_w = rd(REPORTS / f"R{n}_apply.written.csv") if late else []             # P169: late decisions add to the round's rows
+@@ -924,6 +934,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
+             elif k in cats:
+                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
++            elif u.get("action", "").startswith("kept (names the model "):
++                cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
+             elif cid in decided_ids:
+                 h = decided_ids[cid]
+                 cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
+@@ -1090,6 +1102,10 @@ def audit_round(n):
+             if u["field"] == "unit" and act in ("alias", "add"):
+                 a1.append(dict(row, now="unmapped (open): unit row", effect="n/a", reason="the record is promoted; its unit is not in units.yaml"))
+                 continue
++            mm = re.match(r"kept \(names the model (\S+)\)", u["action"])
++            if mm and mm.group(1) == (h["target"] if act == "alias" else cid):      # P172: the record names the decision's model
++                a1.append(dict(row, now=f"unmapped: {u['action']}", effect="yes", reason="a record of no quantity naming the decided model entry"))
++                continue
+             key = X.record_key(u)
+             a1.append(dict(row, now="unmapped (open)" + (f": {u['action']}" if u["action"] != "kept" else ""), effect="no effect",
+                            reason=f"record key '{key}' (symbol key '{X.symbol_key(X.record_text(u))}') matches none of: {covers}"))

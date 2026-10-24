@@ -391,7 +391,7 @@ def g(x, d=3):
     return f"{x:.{d}g}"
 
 
-TREES = {k: Tree(k) for k in KEY}
+TREES = {k: Tree(k) for k in KEY if (HERE / f"{KEY[k]}.facts.csv").exists()}   # P172: a paper without a gold file (wer21) has no gold tree
 USER = list(csv.DictReader((HERE / "user.facts.csv").open(encoding="utf-8")))
 
 
