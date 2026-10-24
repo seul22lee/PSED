@@ -113,6 +113,25 @@ def model_named(pid, obj):
     return out
 
 
+DEPOSITION_WORDS = re.compile(r"\b(deposit\w*|grown|grow\w*|growth|coat\w*|ALD|cycles?)\b", re.I)
+
+
+def measurement_named(pid, obj):
+    """P170 (user), part of every pass-0 run, a flag only: a run or specimen unit whose printed name names a measurement-method entry
+    (compile.legend_methods: one to three consecutive words, or the name, resolve to a method vocab.METHOD_MEASUREMENT marks) and whose
+    evidence quote states no deposition (none of DEPOSITION_WORDS) -> "unit named after a measurement". Nothing is created or removed."""
+    import compile as K
+    out = []
+    for u in (obj.get("units") or []) if isinstance(obj, dict) else []:
+        if not isinstance(u, dict) or u.get("role") not in ("run", "specimen"):
+            continue
+        ms = K.legend_methods(pid, u.get("name_as_printed") or "")
+        dep = DEPOSITION_WORDS.search(u.get("evidence_quote") or "")
+        out.append(dict(unit=u.get("id"), role=u.get("role"), name=u.get("name_as_printed") or "", methods="; ".join(f"{m}: {w!r}" for m, w in ms.items()),
+                        deposition_word=dep.group(0) if dep else "", flag="unit named after a measurement" if ms and not dep else ""))
+    return out
+
+
 def main(arg):
     pid, key = C.resolve(arg)
     if "--check" in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
@@ -123,6 +142,9 @@ def main(arg):
         obj = C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"])
         for r in model_named(pid, obj):                                         # P166
             print(f"{key} model {r['model']} named ({r['named']!r}); simulations: {r['simulations'] or 'none'} {r['flag']}")
+        for r in measurement_named(pid, obj):                                   # P170
+            if r["flag"]:
+                print(f"{key} {r['role']} {r['unit']} ({r['name']!r}): {r['flag']} ({r['methods']})")
         return 0
     if "--plan" in sys.argv:                                                    # the planned call only, no call
         js = jobs(pid)
@@ -143,6 +165,9 @@ def main(arg):
     for r in model_named(pid, obj or {}):                                       # P166: a model the paper names, no simulation unit
         if r["flag"]:
             print(f"{key} model {r['model']} named ({r['named']!r}): {r['flag']}")
+    for r in measurement_named(pid, obj or {}):                                 # P170: a unit named after a measurement (flag only)
+        if r["flag"]:
+            print(f"{key} {r['role']} {r['unit']} ({r['name']!r}): {r['flag']} ({r['methods']})")
     return 0
 
 
