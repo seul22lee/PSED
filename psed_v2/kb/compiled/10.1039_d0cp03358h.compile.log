@@ -1,26 +1,38 @@
-input: 106 lines; pass 0 = line 88; 18 pass-1 lines for 18 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (s12), 16 (s13), 17 (s14), 18 (s15), 19 (s16), 20 (s17), 21 (s18), 22 (s19), 23 (s20), 24 (s21), 25 (s22), 26 (s23), 27 (s24), 28 (fig1), 29 (fig2), 30 (fig3), 31 (fig4), 32 (fig5), 33 (fig6), 34 (fig7), 35 (fig8), 36 (fig9), 37 (fig10), 38 (fig11), 39 (tab1), 40 (tab2), 41 (tabu1), 42 (tabu2), 44 (abstract), 45 (s0), 46 (s1), 47 (s2), 48 (s3), 49 (s4), 50 (s5), 51 (s6), 52 (s7), 53 (s8), 54 (s9), 55 (s10), 56 (s11), 57 (s12), 58 (s13), 59 (s14), 60 (s15), 61 (s16), 62 (s17), 63 (s18), 64 (s19), 65 (s20), 66 (s21), 67 (s22), 68 (s23), 69 (s24), 70 (fig1), 71 (fig2), 72 (fig3), 73 (fig4), 74 (fig5), 75 (fig6), 76 (fig7), 77 (fig8), 78 (fig9), 79 (fig10), 80 (fig11), 81 (tab1), 82 (tab2), 83 (tabu1), 84 (tabu2)
+input: 115 lines; pass 0 = line 88; 25 pass-1 lines for 18 groups; ignored lines 2 (abstract), 3 (s0), 4 (s1), 5 (s2), 6 (s3), 7 (s4), 8 (s5), 9 (s6), 10 (s7), 11 (s8), 12 (s9), 13 (s10), 14 (s11), 15 (s12), 16 (s13), 17 (s14), 18 (s15), 19 (s16), 20 (s17), 21 (s18), 22 (s19), 23 (s20), 24 (s21), 25 (s22), 26 (s23), 27 (s24), 28 (fig1), 29 (fig2), 30 (fig3), 31 (fig4), 32 (fig5), 33 (fig6), 34 (fig7), 35 (fig8), 36 (fig9), 37 (fig10), 38 (fig11), 39 (tab1), 40 (tab2), 41 (tabu1), 42 (tabu2), 44 (abstract), 45 (s0), 46 (s1), 47 (s2), 48 (s3), 49 (s4), 50 (s5), 51 (s6), 52 (s7), 53 (s8), 54 (s9), 55 (s10), 56 (s11), 57 (s12), 58 (s13), 59 (s14), 60 (s15), 61 (s16), 62 (s17), 63 (s18), 64 (s19), 65 (s20), 66 (s21), 67 (s22), 68 (s23), 69 (s24), 70 (fig1), 71 (fig2), 72 (fig3), 73 (fig4), 74 (fig5), 75 (fig6), 76 (fig7), 77 (fig8), 78 (fig9), 79 (fig10), 80 (fig11), 81 (tab1), 82 (tab2), 83 (tabu1), 84 (tabu2)
+input: process_mode fill = line 115: run_ser_a null, run_ser_b null, run_7 null, run_8 null, run_9 null, run_10 null, run_11 null, run_12 null, run_13 null, run_14 null, run_15 null, run_16 null
 a0: tabu1.r0c0: quantity 'Distance between pillars' -> pillar_spacing (quantity: name 'Distance between pillars')
 a0: tabu1.r0c1: quantity 'Distance between pillars' -> pillar_spacing (quantity: name 'Distance between pillars')
-a1: symbol species s8.p1 '\\lambda_{\\text{TMA}}' model mean_free_path: record tma, definition tma (tabu2.r26c0) -> backed by the definition
-a1: symbol species s18.p3 'c_H2O' cited initial_sticking_coefficient: record h2o, definition h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1) -> backed by the definition
-a1: symbol species s18.p3 'c_TMA' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species s19.p1 'c_A' model initial_sticking_coefficient: record -, definition model_reactant (s2.p2) -> from the definition
-a1: symbol species s19.p4 'c_TMA' derived initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species s19.p4 'c_H2O' derived initial_sticking_coefficient: record h2o, definition h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1) -> backed by the definition
-a1: symbol species fig10.cap '\\rho_{A0}' model partial_pressure: record tma, definition - -> species unverified (record only)
-a1: symbol species fig10.cap '\\rho_B' model partial_pressure: record -, definition - -> no species
+a1: symbol species s2.p2 'cA' definition initial_sticking_coefficient: record -, definition - -> no species
+a1: symbol species s8.p1 '\\lambda_{\\text{TMA}}' model mean_free_path: record tma, definition tabu2.r26c0: {'tma'} -> backed by the definition
+a1: symbol species s18.p3 'c_H2O' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species s18.p3 'c_H2O' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species s18.p3 'c_TMA' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species s19.p4 'c_TMA' derived initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species s19.p4 'c_H2O' derived initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species fig10.cap '\\rho_{A0}' model partial_pressure: record tma, definition - -> kept: its own element names it
+a1: symbol species fig10.cap 'M_A' model molar_mass: record tma, definition tabu2.r9c0: {'model_reactant'} -> kept: its own element names it
+a1: symbol species fig10.cap 'M_B' model molar_mass: record n2, definition tabu2.r8c0: {'n2'} -> backed by the definition
+a1: symbol species fig10.cap 'd_A' model molecule_diameter: record tma, definition tabu1.r6c0: {'model_reactant'} -> kept: its own element names it
+a1: symbol species fig10.cap 'd_B' model molecule_diameter: record n2, definition tabu1.r7c0: {'n2'} -> backed by the definition
 a1: symbol species fig10.cap 'K' model adsorption_equilibrium_constant: record -, definition - -> no species
-a1: symbol species fig10.cap 'c_{\\text{TMA}}' model initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r1c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r2c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r3c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r3c7 'c_{\\text{H}_2\\text{O}}' cited initial_sticking_coefficient: record h2o, definition h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1) -> backed by the definition
-a1: symbol species tab2.r4c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r5c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r5c7 'c_{\\text{H}_2\\text{O}}' cited initial_sticking_coefficient: record h2o, definition h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1) -> backed by the definition
-a1: symbol species tab2.r6c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r7c6 'c_{\\text{TMA}}' derived initial_sticking_coefficient: record tma, definition tma (tab2.cap, tabu1.r2c0, tabu1.r2c1) -> backed by the definition
-a1: symbol species tab2.r7c7 'c_{\\text{H}_2\\text{O}}' derived initial_sticking_coefficient: record h2o, definition h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1) -> backed by the definition
+a1: symbol species fig10.cap 'c_{\\text{TMA}}' model initial_sticking_coefficient: record -, definition tabu1.r2c0: {'tma'} -> from the definition (tma)
+a1: symbol species tab2.cap 'c_{\\text{TMA}}' definition initial_sticking_coefficient: record tma, definition - -> kept: its own element names it
+a1: symbol species tab2.cap 'c_{\\text{H}_2\\text{O}}' definition initial_sticking_coefficient: record h2o, definition - -> kept: its own element names it
+a1: symbol species tab2.r1c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r2c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r3c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r3c7 'c_{\\text{H}_2\\text{O}}' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species tab2.r4c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r5c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r5c7 'c_{\\text{H}_2\\text{O}}' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species tab2.r6c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r7c6 'c_{\\text{TMA}}' derived initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'} -> backed by the definition
+a1: symbol species tab2.r7c7 'c_{\\text{H}_2\\text{O}}' derived initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'} -> backed by the definition
+a1: symbol species tabu1.r2c0 'c_{\\text{TMA}}' definition initial_sticking_coefficient: record tma, definition - -> kept: its own element names it
+a1: symbol species tabu1.r3c0 'c_{\\text{H}_2\\text{O}}' definition initial_sticking_coefficient: record h2o, definition - -> kept: its own element names it
+a1: symbol species tabu1.r6c0 'd_{\\text{A}}' definition molecule_diameter: record -, definition - -> no species
+a1: symbol species tabu1.r7c0 'd_{\\text{B}}' definition molecule_diameter: record -, definition - -> no species
+a: fig10.cap: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
@@ -42,7 +54,6 @@ a: tab1.r18c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r18c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r18c2: qualifiers.n '1' -> 1.0 (C4)
 a: s2.p1: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
-a: s2.p2: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s2.p11: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s2.p12: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s3.p2: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
@@ -143,7 +154,6 @@ i: merged tab1.r12c5 into fig5.cap;tab1.r12c5 (cycle_number 1000)
 i: merged tab2.r1c3 into fig1.cap;tab2.r1c3 (aspect_ratio 200)
 i: merged tab2.r2c0 into tab2.r1c0;tab2.r2c0 (deposition_temperature 200)
 i: merged tab2.r3c5 into tab2.r1c5;tab2.r3c5 (reactor Home-built)
-i: merged tab2.r3c7 into s18.p3;tab2.r3c7 (initial_sticking_coefficient 0.0001)
 i: merged tab2.r5c1 into tab2.r4c1;tab2.r5c1 (structure pillarhall_3)
 i: merged tab2.r5c2 into tab2.r4c2;tab2.r5c2 (feature_width 0.5)
 i: merged tab2.r6c0 into tab2.r4c0;tab2.r6c0 (deposition_temperature 300)
@@ -159,64 +169,39 @@ i: definition ('yim20', 'd', 'd'): merged tabu1.r8c0 into tabu1.r5c0;tabu1.r8c0
 i: definition ('yim20', 'h', 'h'): merged tabu2.r3c0 into tabu2.r2c0;tabu2.r3c0
 i: definition ('yim20', 'l', 'l'): merged tabu2.r7c0 into tabu2.r6c0;tabu2.r7c0
 i: definition ('yim20', 'q', 'q'): merged tabu2.r16c0 into tabu2.r15c0;tabu2.r16c0
-j: transform process_mode yim20:ent:sample_1: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_2: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_3: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_4: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_5: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_6: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_7: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_8: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_9: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_10: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_11: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_12: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_13: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_14: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_15: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:ent:sample_16: derived thermal from reactant_B h2o (yim20:abs.g3#3)
-j: transform process_mode yim20:mrun:mr_h100: none (no input)
-j: transform process_mode yim20:mrun:mr_h200: none (no input)
-j: transform process_mode yim20:mrun:mr_h500_n500: none (no input)
-j: transform process_mode yim20:mrun:mr_h1000: none (no input)
-j: transform process_mode yim20:mrun:mr_h2000: none (no input)
-j: transform process_mode yim20:mrun:mr_n100: none (no input)
-j: transform process_mode yim20:mrun:mr_n250: none (no input)
-j: transform process_mode yim20:mrun:mr_n1000: none (no input)
-j: transform process_mode yim20:mrun:mr_n2000: none (no input)
-j: derived over 25 entities: 47 rows; not derived: {'no fact for t': 38, 'E: no fact for t': 16, 'no fact for rho': 25, 'stated: yim20:tab1.r1c9#1 0.1 nm/cycle': 1, 'no fact for H': 25, 'no fact for rb': 25, 'no fact for dn': 25, 'no fact for mg': 50, 'derive raised: cannot convert cycle to 1': 25, 'no fact for h2': 25, 'no fact for phi': 25, 'no fact for d': 25, 'lam: no fact for d': 25, 'tc: no fact for t': 13, 'stated: yim20:tab1.r2c9#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm/cycle': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm/cycle': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm/cycle': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm/cycle': 1, 'stated: yim20:tab1.r8c10#1 0.102 nm/cycle': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm/cycle': 1, 'stated: yim20:tab1.r10c10#1 0.104 nm/cycle': 1, 'stated: yim20:tab1.r12c10#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm/cycle': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm/cycle': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm/cycle': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm/cycle': 1, 'no fact for S': 9, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'gpc: n: no fact for gpc': 9}
+j: derived over 25 entities: 22 rows; not derived: {'no fact for t': 56, 'E: no fact for t': 25, 'no fact for rho': 25, 'stated: yim20:tab1.r1c9#1 0.1 nm/cycle': 1, 'no fact for H': 25, 'no fact for rb': 25, 'no fact for dn': 25, 'no fact for mg': 50, 'derive raised: cannot convert cycle to 1': 16, 'no fact for h2': 25, 'no fact for phi': 25, 'no fact for d': 25, 'lam: no fact for d': 25, 'tc: no fact for t': 13, 'stated: yim20:tab1.r2c9#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm/cycle': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm/cycle': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm/cycle': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm/cycle': 1, 'stated: yim20:tab1.r8c10#1 0.102 nm/cycle': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm/cycle': 1, 'stated: yim20:tab1.r10c10#1 0.104 nm/cycle': 1, 'stated: yim20:tab1.r12c10#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm/cycle': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm/cycle': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm/cycle': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm/cycle': 1, 'no fact for S': 9, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'gpc: n: no fact for gpc': 9}
 j: caveats (query.caveats_of): 5, linked to facts 2, to nodes 0; facts reached through query.caveats_for: 16
-j: claim nodes (query.claim_nodes): 19 nodes for 21 claims; claims without a full triple (query.node_of empty): 2
+j: claim nodes (query.claim_nodes): 21 nodes for 23 claims; claims without a full triple (query.node_of empty): 2
 j: comparisons from figures.json (1c): 10
-step input: {'records': 582}
+step input: {'records': 583}
 step a0: {'quantity other: never.csv word': 39, 'quantity promoted (quantity: name)': 2, 'quantity other: never.csv symbol': 3}
-step a1: {'symbol species: backed by the definition': 16, 'symbol species: from the definition': 1, 'symbol species: species unverified (record only)': 1, 'symbol species: no species': 2}
-step a: {'numeric string coerced (C4)': 20, 'schema:enum': 1, 'kept': 581}
-step a_p158: {'P158 rule 4 (predates the freeze, kept)': 13, 'P158 rule 1 (predates the freeze, kept)': 28, 'P158 rule 5 (predates the freeze, kept)': 8}
-step a_fields: {'value_text': 1}
+step a1: {'symbol species: no species': 4, 'symbol species: backed by the definition': 18, 'symbol species: kept: its own element names it': 7, 'symbol species: from the definition': 1}
+step a: {'numeric string coerced (C4)': 21, 'schema:not': 1, 'schema:enum': 1, 'kept': 581}
+step a_p158: {'P158 rule 4 (predates the freeze, kept)': 12, 'P158 rule 1 (predates the freeze, kept)': 28, 'P158 rule 5 (predates the freeze, kept)': 8}
+step a_fields: {'quantity': 1, 'value_text': 1}
 step b: {'model_with_value (kept)': 23, 'statement_only (kept: P138 form)': 2, 'kept': 581}
 step c: {'quantity_other never (kept)': 42, 'quantity_other (kept)': 8, 'kept': 581}
 step d: {'quote_noncontiguous (kept)': 3, 'quote_not_found': 9, 'kept': 572}
 step e: {'kept': 572}
 step f: {'species_resolved': 19, 'kept': 572}
 step g: {'mention_unmatched': 18}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 21, 'place: about paper -> recipe': 61, 'place: definition -> paper': 102, 'place: cited -> paper': 45, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 19, 'place: model about a simulation -> simulation': 25, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 186, 'place: setting about a specimen sharing its deposition -> specimen': 31, 'place: setting about a specimen -> deposition': 58, 'place: about unknown -> recipe (flagged)': 7}
-step m: {'statement filled from the quote': 492, 'label_as_printed filled with the quantity id': 13, 'links resolved': 22, 'links named elements without facts': 2}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 23, 'place: about paper -> recipe': 63, 'place: definition -> paper': 96, 'place: cited -> paper': 47, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 19, 'place: model about a simulation -> simulation': 25, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 186, 'place: setting about a specimen sharing its deposition -> specimen': 31, 'place: setting about a specimen -> deposition': 58, 'place: about unknown -> recipe (flagged)': 7}
+step m: {'statement filled from the quote': 487, 'label_as_printed filled with the quantity id': 14, 'links resolved': 22, 'links named elements without facts': 2}
 step 1c: {'figure label other (series), never': 2, 'image -> a measurement (a photograph)': 4, 'curve -> observation (legend qualifier)': 3, 'unbound item (image): no unit named': 1, 'curve -> observation': 25, 'unbound item (curve): no layout': 10, 'curve -> model': 30}
-step i: {'merged': 44, 'definition merged': 5, 'kept': 585}
+step i: {'merged': 43, 'definition merged': 5, 'kept': 586}
 step n: {'comparison replicate': 2, 'comparison labelled from a series-name setting': 5, 'comparison series': 4, 'comparison grid': 4}
-step j: {'derived feature_width{stage=final}': 16, 'derived_needs_outside_fact': 25, 'derived cycle_time': 12, 'derived deposition_rate': 3, 'transform process_mode: derived thermal': 16, 'transform process_mode: none': 9}
-step k: {'statement from the record': 523, 'statement_copies_text (reported by check)': 94, 'statement assembled': 109}
+step j: {'derived feature_width{stage=final}': 16, 'derived_needs_outside_fact': 16, 'derived cycle_time': 3, 'derived deposition_rate': 3}
+step k: {'statement from the record': 524, 'statement_copies_text (reported by check)': 93, 'statement assembled': 84}
 diff against the gold:
-  setting       206  164  107  0.65  0.52
+  setting       206  165  107  0.65  0.52
   observation   154  106   85  0.80  0.55
-  derived       108  156  101  0.65  0.94
-  cited          92   32   28  0.88  0.30
+  derived       108  131  101  0.77  0.94
+  cited          92   35   29  0.83  0.32
   activity       75   51   49  0.96  0.65
-  model          73   51   45  0.88  0.62
-  definition     66   97   24  0.25  0.36
+  model          73   52   46  0.88  0.63
+  definition     66   91   25  0.27  0.38
   caveat         45    5    3  0.60  0.07
-  claim          40   21   15  0.71  0.38
+  claim          40   23   15  0.65  0.38
   entity         31   25   25  1.00  0.81
   comparison      8   10    1  0.10  0.12
   identity        1    0    0     -  0.00

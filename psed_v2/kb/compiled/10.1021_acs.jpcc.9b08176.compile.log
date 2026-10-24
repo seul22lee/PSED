@@ -1,67 +1,56 @@
-input: 14 lines; pass 0 = line 3; 11 pass-1 lines for 11 groups; ignored lines 
+input: 20 lines; pass 0 = line 3; 13 pass-1 lines for 11 groups; ignored lines 6 (fig1), 9 (fig1C)
+input: process_mode fill = line 20: run_sio2_3_8s plasma, run_sio2_12s plasma, run_sio2_38s plasma, run_sio2_120s plasma, run_tio2_12s plasma, run_tio2_120s plasma, run_al2o3_120s plasma, run_hfo2_120s plasma
 a0: s5.p3: quantity 'spatial resolution' -> probe_resolution (quantity: alias 'spatial resolution')
-a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species s3.p3 'r' cited recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
+a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
+a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
+a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
+a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
+a1: symbol species s3.p3 'r' cited recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
 a1: symbol species s4.p3 's_0' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species s6.p5 'r' derived recombination_probability: record al2o3, definition o_atom (tab1.cap) -> corrected
-a1: symbol species s6.p5 'r' derived recombination_probability: record hfo2, definition o_atom (tab1.cap) -> corrected
-a1: symbol species fig1.cap 'r' model recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species fig1C 'r' model recombination_probability: record -, definition o_atom (tab1.cap) -> from the definition
-a1: symbol species fig3.cap 'r' derived recombination_probability: record sio2, definition o_atom (tab1.cap) -> corrected
-a1: symbol species fig3.cap 'r' derived recombination_probability: record tio2, definition o_atom (tab1.cap) -> corrected
+a1: symbol species s6.p5 'r' derived recombination_probability: record al2o3, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> species cleared (no evidence)
+a1: symbol species s6.p5 'r' derived recombination_probability: record hfo2, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> species cleared (no evidence)
+a1: symbol species fig1C 'r' model recombination_probability: record -, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> no species
+a1: symbol species fig3.cap 'r' derived recombination_probability: record sio2, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> kept: its own element names it
+a1: symbol species fig3.cap 'r' derived recombination_probability: record tio2, definition s3.p3: {'ar'}, tab1.cap: {'o_atom'} -> kept: its own element names it
 h: simulation sim_slope ('eq 6') -> model arts_slope (symbol 'eq 6' of this paper)
 h: tree from pass 0: run 8, simulation 1, specimen 8, model_run 2, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s5.p1 into s4.p10;s5.p1 (process_pressure 50)
 i: claim ('art19', 'surface_recombination', 'limits', 'penetration_depth', 'through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. this sets a practical limit on the penetration depth of the deposited film'): merged fig1A into fig1.cap;fig1A
-i: merged fig1C into fig1.cap;fig1C (recombination_probability 5e-05)
 i: claim ('art19', 'material', 'causes', 'surface_recombination', 'a strong variation in film penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent.'): merged fig2A into fig2.cap;fig2A
-i: merged tab1.r1c1 into fig3.cap;tab1.r1c1 (recombination_probability 6e-05)
-i: merged tab1.r2c1 into fig3.cap;tab1.r2c1 (recombination_probability 7e-05)
-j: transform process_mode art19:ent:specimen_sio2_3_8s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_sio2_12s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_sio2_38s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_sio2_120s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_tio2_12s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_tio2_120s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_al2o3_120s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:ent:specimen_hfo2_120s: derived plasma from plasma_power 600 (art19:s5.p1#4)
-j: transform process_mode art19:mrun:model_run_sio2: none (no input)
-j: transform process_mode art19:mrun:model_run_tio2: none (no input)
-j: derived over 10 entities: 16 rows; not derived: {'no fact for S': 8, 'no fact for p': 18, 'E: no fact for p': 10, 'no fact for rho': 20, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 12, 'no fact for dn': 10, 'no fact for mg': 20, 'no fact for t': 12, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'gpc: n: no fact for gpc': 10, 'no fact for T': 2, 'lam: no fact for T': 2}
+i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 6e-05)
+i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 7e-05)
+j: derived over 10 entities: 8 rows; not derived: {'no fact for S': 8, 'no fact for p': 18, 'E: no fact for p': 10, 'no fact for rho': 20, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 12, 'no fact for dn': 10, 'no fact for mg': 20, 'no fact for t': 12, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'gpc: n: no fact for gpc': 10, 'no fact for T': 2, 'lam: no fact for T': 2}
 j: caveats (query.caveats_of): 1, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 3
-j: claim nodes (query.claim_nodes): 11 nodes for 18 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 3
-step input: {'records': 101}
+j: claim nodes (query.claim_nodes): 12 nodes for 20 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 4
+step input: {'records': 106}
 step a0: {'quantity promoted (quantity: alias)': 1}
-step a1: {'symbol species: from the definition': 7, 'symbol species: no species': 1, 'symbol species: corrected': 4}
-step a: {'kept': 101}
-step b: {'model_with_value (kept)': 4, 'kept': 101}
-step c: {'kept': 101}
-step d: {'quote_not_found': 3, 'kept': 98}
-step e: {'kept': 98}
-step f: {'species_resolved': 8, 'species_unresolved (kept)': 1, 'kept': 98}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 20, 'place: about paper, method -> paper method activity': 7, 'place: about paper -> recipe': 22, 'place: cited -> paper': 12, 'place: definition -> paper': 10, 'place: model about a simulation -> simulation': 2, 'place: setting about a run -> deposition': 7, 'place: result about a run -> its specimen measurement': 2, 'place: derived about a model run -> model run': 8, 'place: caveat -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 2, 'place: setting about a specimen -> deposition': 2, 'place: result about a specimen -> its measurement': 2}
-step m: {'statement filled from the quote': 58, 'links resolved': 15}
+step a1: {'symbol species: no species': 7, 'symbol species: species cleared (no evidence)': 2, 'symbol species: kept: its own element names it': 2, 'process_mode from the recipe field: plasma': 8}
+step a: {'kept': 114}
+step b: {'model_with_value (kept)': 3, 'kept': 114}
+step c: {'kept': 114}
+step d: {'quote_not_found': 3, 'kept': 111}
+step e: {'kept': 111}
+step f: {'species_resolved': 11, 'species_unresolved (kept)': 1, 'kept': 111}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 22, 'place: about paper, method -> paper method activity': 7, 'place: about paper -> recipe': 26, 'place: definition -> paper': 11, 'place: cited -> paper': 12, 'place: setting about a run -> deposition': 15, 'place: result about a run -> its specimen measurement': 2, 'place: derived about a model run -> model run': 8, 'place: caveat -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 2, 'place: setting about a specimen -> deposition': 2, 'place: result about a specimen -> its measurement': 2}
+step m: {'statement filled from the quote': 69, 'links resolved': 17}
 step 1c: {'unbound item (image): ambiguous': 1, 'curve -> observation': 8, 'curve -> model': 2}
-step i: {'merged': 4, 'claim merged': 2, 'kept': 102}
-step n: {'comparison replicate': 1, 'comparison series': 2}
-step j: {'derived cycle_time': 8, 'transform process_mode: derived plasma': 8, 'transform process_mode: none': 2}
-step k: {'statement from the record': 92, 'statement_copies_text (reported by check)': 27, 'statement assembled': 26}
+step i: {'merged': 3, 'claim merged': 2, 'kept': 116}
+step n: {'comparison replicate': 1, 'comparison series': 3}
+step j: {'derived cycle_time': 8}
+step k: {'statement from the record': 106, 'statement_copies_text (reported by check)': 36, 'statement assembled': 18}
 diff against the gold:
-  setting        50   22   16  0.73  0.32
+  setting        50   33   18  0.55  0.36
   observation    36   15   14  0.93  0.39
   cited          23   12    8  0.67  0.35
   activity       22   21   11  0.52  0.50
   model          22   11   10  0.91  0.45
-  definition     16   10    2  0.20  0.12
-  claim          13   18    7  0.39  0.54
+  definition     16   11    3  0.27  0.19
+  claim          13   20    7  0.35  0.54
   entity         12   10    8  0.80  0.67
   caveat          8    1    0  0.00  0.00
-  derived         7   29    5  0.17  0.71
-  comparison      4    3    1  0.33  0.25
+  derived         7   21    5  0.24  0.71
+  comparison      4    4    1  0.25  0.25
   paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 0/16
 gold model rows with quantity and value: 2: {'aspect_ratio': 1, 'initial_sticking_coefficient': 1}

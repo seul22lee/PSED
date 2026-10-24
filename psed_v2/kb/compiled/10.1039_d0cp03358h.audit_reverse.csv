@@ -2,7 +2,10 @@ fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
 yim20:abs.g1#1,claim,,,,,abs.g1,yim20:abs.g1#2,type 'cited' vs 'claim'
 yim20:abs.g2#2,setting,aspect_ratio,10000,,,abs.g2;s5.p2;fig1.cap,yim20:s5.p2#1,"value '' '' vs '10000' '' (canonical None vs ('dimensionless', 10000.0))"
 yim20:abs.g4#1,claim,,,,,abs.g4,,no gold row on this element
-yim20:s2.p2#2,definition,initial_sticking_coefficient,,,,s2.p2,yim20:s2.p2#3,quantity 'exposure' vs 'initial_sticking_coefficient'
+yim20:s2.p2#1,definition,aspect_ratio,,,,s2.p2,yim20:s2.p2#3,quantity 'exposure' vs 'aspect_ratio'
+yim20:s2.p2#3,definition,initial_sticking_coefficient,,,,s2.p2,yim20:s2.p2#3,quantity 'exposure' vs 'initial_sticking_coefficient'
+yim20:s2.p2#4,claim,,,,,s2.p2,yim20:s2.p2#1,type 'cited' vs 'claim'
+yim20:s2.p2#5,claim,,,,,s2.p2,yim20:s2.p2#1,type 'cited' vs 'claim'
 yim20:s2.p3#1,definition,step_coverage,,,,s2.p3,yim20:s2.p3#2,quantity '' vs 'step_coverage'
 yim20:s5.p1#2,setting,feature_width,,nm,,s5.p1,yim20:s5.p1#3,"value '100' 'nm' vs '' 'nm' (canonical ('length', 100.0) vs None)"
 yim20:s5.p2#1,setting,feature_depth,5000,µm,,s5.p2,yim20:s5.p2#1,"quantity 'aspect_ratio' vs 'feature_depth'; value '' '' vs '5000' 'µm' (canonical None vs ('length', 5000000.0))"
@@ -26,6 +29,8 @@ yim20:s16.p4#1,setting,feature_width,,nm,,s16.p4,yim20:s16.p4#1,"type 'observati
 yim20:s16.p7#1,setting,other,2,µm,,s16.p7,yim20:s16.p7#2,type 'observation' vs 'setting'
 yim20:s16.p8#1,caveat,,,,,s16.p8,yim20:s3.p9#8,quantity 'film_thickness;growth_per_cycle' vs ''
 yim20:s16.p10#1,derived,film_thickness,,nm,,s16.p10,yim20:s16.p10#4,"value '2.8' 'nm' vs '' 'nm' (canonical ('length', 2.8) vs None)"
+yim20:s18.p3#2,cited,feature_depth,2000,µm,,s18.p3,yim20:s18.p3#1,"quantity 'film_density' vs 'feature_depth'; value '4000' 'kg m-3' vs '2000' 'µm' (canonical ('density', 4.0) vs ('length', 2000000.0))"
+yim20:s18.p3#7,setting,film_density,3100,kg/m3,,s18.p3,yim20:fig10.cap#16,type 'model' vs 'setting'
 yim20:s19.p3#3,derived,feature_width,1,µm,,s19.p3,yim20:s19.p3#1,"quantity 'mean_free_path' vs 'feature_width'; value '40' 'µm' vs '1' 'µm' (canonical ('length', 40000.0) vs ('length', 1000.0))"
 yim20:fig1.cap#2,definition,feature_depth,,,,fig1.cap,yim20:s2.p4#1,quantity '' vs 'feature_depth'
 yim20:fig2.cap#2,definition,other,,,,fig2.cap,yim20:s3.p2#2,quantity '' vs 'other'
@@ -98,10 +103,10 @@ yim20:tabu1.r4c0#1,definition,b_film,,,,tabu1.r4c0,yim20:tabu1.r4c0#1,quantity '
 yim20:tabu1.r4c1#1,definition,b_film,,,,tabu1.r4c1,yim20:tabu1.r4c0#1,quantity '' vs 'b_film'
 yim20:tabu1.r5c0#1,definition,other,,,,tabu1.r5c0;tabu1.r8c0,yim20:tabu1.r5c0#1,quantity '' vs 'other'
 yim20:tabu1.r5c1#1,definition,other,,,,tabu1.r5c1,yim20:tabu1.r5c0#1,quantity '' vs 'other'
-yim20:tabu1.r6c0#1,definition,molecule_diameter,,,,tabu1.r6c0,yim20:tabu1.r6c0#1,quantity '' vs 'molecule_diameter'
-yim20:tabu1.r6c1#1,definition,molecule_diameter,,,,tabu1.r6c1,yim20:tabu1.r6c0#1,quantity '' vs 'molecule_diameter'
-yim20:tabu1.r7c0#1,definition,molecule_diameter,,,,tabu1.r7c0,yim20:tabu1.r7c0#1,quantity '' vs 'molecule_diameter'
-yim20:tabu1.r7c1#1,definition,molecule_diameter,,,,tabu1.r7c1,yim20:tabu1.r7c0#1,quantity '' vs 'molecule_diameter'
+yim20:tabu1.r6c0#1,definition,molecule_diameter,,pm,,tabu1.r6c0,yim20:tabu1.r6c0#1,quantity '' vs 'molecule_diameter'
+yim20:tabu1.r6c1#1,definition,molecule_diameter,,pm,,tabu1.r6c1,yim20:tabu1.r6c0#1,quantity '' vs 'molecule_diameter'
+yim20:tabu1.r7c0#1,definition,molecule_diameter,,pm,,tabu1.r7c0,yim20:tabu1.r7c0#1,quantity '' vs 'molecule_diameter'
+yim20:tabu1.r7c1#1,definition,molecule_diameter,,pm,,tabu1.r7c1,yim20:tabu1.r7c0#1,quantity '' vs 'molecule_diameter'
 yim20:tabu1.r8c1#1,definition,effective_diffusion_coefficient,,,,tabu1.r8c1,yim20:tabu1.r8c0#1,quantity '' vs 'effective_diffusion_coefficient'
 yim20:tabu1.r9c0#1,definition,other,,,,tabu1.r9c0,yim20:tabu1.r9c0#1,quantity '' vs 'other'
 yim20:tabu1.r9c1#1,definition,other,,,,tabu1.r9c1,yim20:tabu1.r9c0#1,quantity '' vs 'other'
@@ -111,16 +116,12 @@ yim20:tabu2.r1c0#1,definition,saturation_growth_per_cycle,,nm,,tabu2.r1c0,yim20:
 yim20:tabu2.r1c1#1,definition,saturation_growth_per_cycle,,nm,,tabu2.r1c1,yim20:tabu2.r1c0#1,quantity 'growth_per_cycle' vs 'saturation_growth_per_cycle'
 yim20:tabu2.r3c1#1,definition,feature_width,,µm,,tabu2.r3c1,yim20:s19.p3#3,type 'model' vs 'definition'; quantity '' vs 'feature_width'
 yim20:tabu2.r4c0#1,definition,adsorption_equilibrium_constant,,1/Pa,,tabu2.r4c0,yim20:tabu2.r4c0#1,quantity '' vs 'adsorption_equilibrium_constant'
-yim20:tabu2.r4c1#1,definition,adsorption_equilibrium_constant,,1/Pa,,tabu2.r4c1,yim20:tabu2.r4c0#1,quantity '' vs 'adsorption_equilibrium_constant'
 yim20:tabu2.r6c0#1,definition,feature_depth,,µm,,tabu2.r6c0;tabu2.r7c0,yim20:fig1.cap#2,quantity '' vs 'feature_depth'
 yim20:tabu2.r6c1#1,definition,feature_depth,,µm,,tabu2.r6c1,yim20:fig1.cap#2,quantity '' vs 'feature_depth'
 yim20:tabu2.r7c1#1,definition,other,,µm,,tabu2.r7c1,yim20:tabu2.r7c0#1,quantity '' vs 'other'
 yim20:tabu2.r8c0#1,definition,molar_mass,,kg/mol,,tabu2.r8c0,yim20:tabu2.r8c0#1,quantity '' vs 'molar_mass'
-yim20:tabu2.r8c1#1,definition,molar_mass,,kg/mol,,tabu2.r8c1,yim20:tabu2.r8c0#1,quantity '' vs 'molar_mass'
 yim20:tabu2.r9c0#1,definition,molar_mass,,kg/mol,,tabu2.r9c0,yim20:tabu2.r9c0#1,quantity '' vs 'molar_mass'
-yim20:tabu2.r9c1#1,definition,molar_mass,,kg/mol,,tabu2.r9c1,yim20:tabu2.r9c0#1,quantity '' vs 'molar_mass'
 yim20:tabu2.r12c0#1,definition,partial_pressure,,Pa,,tabu2.r12c0,yim20:tabu2.r12c0#1,quantity '' vs 'partial_pressure'
-yim20:tabu2.r12c1#1,definition,partial_pressure,,Pa,,tabu2.r12c1,yim20:tabu2.r12c0#1,quantity '' vs 'partial_pressure'
 yim20:tabu2.r14c0#1,definition,p_d,,1/s,,tabu2.r14c0,yim20:tabu2.r14c0#1,quantity '' vs 'p_d'
 yim20:tabu2.r14c1#1,definition,p_d,,1/s,,tabu2.r14c1,yim20:tabu2.r14c0#1,quantity '' vs 'p_d'
 yim20:tabu2.r15c0#1,definition,other,,m-2 s-1 Pa-1,,tabu2.r15c0;tabu2.r16c0,yim20:tabu2.r15c0#1,quantity '' vs 'other'
@@ -157,28 +158,3 @@ yim20:fig11b#10,derived,deposition_rate,363.6,nm/h,,fig11b;tab1.r16c9,yim20:tab1
 yim20:tab1.r18c3#2,derived,feature_width,402.2,nm,,tab1.r18c3;tab1.r18c8,yim20:tab1.r18c3#1,"type 'setting' vs 'derived'; value '500' 'nm' vs '402.2' 'nm' (canonical ('length', 500.0) vs ('length', 402.2))"
 yim20:fig11b#11,derived,cycle_time,10,s,,fig11b,yim20:fig11b#1,"type 'observation' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '10' 's' (canonical None vs ('time', 10.0))"
 yim20:fig11b#12,derived,deposition_rate,32.29,nm/h,,fig11b;tab1.r18c9,yim20:tab1.r18c9#1,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '0.0897' 'nm/cycle' vs '32.29' 'nm/h' (canonical ('length_per_cycle', 0.0897) vs ('length_per_time', 32.29))"
-yim20:fig10.cap#18,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#19,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#20,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#21,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#22,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#23,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#24,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#25,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:fig10.cap#26,derived,cycle_time,0.1,s,,fig10.cap,yim20:s8.p1#1,"type 'model' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '0.1' 's' (canonical None vs ('time', 0.1))"
-yim20:abs.g3#4,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#5,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#6,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#7,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#8,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#9,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#10,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#11,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#12,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#13,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#14,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#15,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#16,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#17,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#18,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-yim20:abs.g3#19,derived,process_mode,,,thermal,abs.g3,yim20:abs.g3#2,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'

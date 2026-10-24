@@ -1,0 +1,115 @@
+diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 65af334c..1168b888 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -152,6 +152,10 @@ psed_v2/
+   the run's setting and drops a pass-1 process_mode about a pass-0 run; nothing derives it. Compile reads, per element, the latest
+   pass-1 line of its group that holds it (pass1_elements.py --elements-from re-extracts a set). Decisions of a unit go by its
+   criterion; the user vetoes by name afterwards.
++- P179b (user): compile reads a pass-1 line only if its form version is accepted in ontology/form_versions.csv (version, paper, date,
++  status, decided_by, reason; a row with a paper overrides the row for every paper; 'none' = a line written before the freeze); the
++  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there. A candidate
++  version is adopted per paper by comparing two sandbox compiles (kb/tmp/A without, kb/tmp/B with it) against the gold.
+ - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
+   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
+   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 3bdc453a..1a5eeb5a 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -399,6 +399,21 @@ UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    #
+ SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
+ CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
+ PROCESS_MODE_PASS = "0pm"                                                        # P179: the records line of the process_mode fill (process_mode_fill.py)
++FORM_VERSIONS = C.V2 / "ontology" / "form_versions.csv"                          # P179b (user): the form versions compile reads
++
++
++def line_version(x):
++    """P179b: a records line's form version; 'none' for a line written before the freeze (no form_version field)."""
++    return x.get("form_version") or "none"
++
++
++def accepted_versions(key):
++    """P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
++    for that paper (a row with its key), else for every paper (a row with no paper)."""
++    rows = list(csv.DictReader(FORM_VERSIONS.open(encoding="utf-8"))) if FORM_VERSIONS.exists() else []
++    st = {r["version"]: r["status"] for r in rows if not r["paper"]}
++    st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
++    return {v for v, x in st.items() if x == "accepted"}
+ PURGE_QUANTITIES = ("purge_time",)                                              # P177c: of form rule 1's step quantities (export.STEP_QUANTITIES)
+ #                                                                                 a purge time names its half-cycle's purge, a pulse time or an exposure its dose
+ CONDITION_KINDS = ("value", "name", "species", "other", "never")
+@@ -765,10 +780,12 @@ class Run:
+         self.groups = P1.groups(self.pid)[0]
+         latest, p0, el_line, fill = {}, None, {}, None
+         grp_of = {r["element_id"]: g for g, rs in self.groups.items() for r in rs}
++        ok = accepted_versions(self.key)                                        # P179b (user): only lines of an accepted form version
++        self.versions_skipped = collections.Counter(line_version(x) for x in lines if x["pass"] == 1 and line_version(x) not in ok)
+         for n, x in enumerate(lines, 1):
+             if x["pass"] == 0:
+                 p0 = n
+-            elif x["pass"] == 1:
++            elif x["pass"] == 1 and line_version(x) in ok:
+                 latest[x["section"]] = n
+                 for e in x.get("element_ids") or []:                            # P179: per element, the latest line of its group that holds
+                     if grp_of.get(e) == x["section"]:                           # it (a re-extraction line holds some of a group's elements)
+@@ -779,6 +796,9 @@ class Run:
+         before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
+         p0 = before[-1] if before else p0                                       # P143b: the pass-0 line the pass-1 lines in use were written against
+         ignored = [n for n, x in enumerate(lines, 1) if x["pass"] == 1 and n not in used]
++        if self.versions_skipped:
++            self.note("input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: "
++                      + ", ".join(f"{v} {n}" for v, n in self.versions_skipped.items()))
+         self.lines_used, self.lines_ignored = sorted(used | {p0}), ignored
+         self.note(f"input: {len(lines)} lines; pass 0 = line {p0}; {len(used)} pass-1 lines for {len(self.groups)} groups; ignored lines "
+                   + ", ".join(f"{n} ({lines[n - 1]['section']})" for n in ignored))
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index b92061fa..3e9cb264 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -907,7 +907,7 @@ def _never_label(raw):
+ 
+ 
+ def run_checks(onto):
+-    """[(title, passed, detail, problem rows)] of the 16 checks (P179: 16)."""
++    """[(title, passed, detail, problem rows)] of the 17 checks (P179: 16, P179b: 17)."""
+     from collections import Counter, defaultdict
+     entries = onto["entries"]
+     ids = [e["id"] for e in entries]
+@@ -1126,6 +1126,16 @@ def run_checks(onto):
+     out.append(("16. form version P179 (user): the species qualifier (meaning; species entries only), the species rule in CODEBOOK.md, molar_mass and "
+                 "molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided",
+                 not bad, f"problems: {bad}" if bad else f"form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}", bad))
++    fv = HERE / "form_versions.csv"                                             # P179b (user): the form versions compile reads
++    listed = {r["version"] for r in csv.DictReader(fv.open(encoding="utf-8"))} if fv.exists() else set()
++    found = Counter()
++    for f in sorted((HERE.parent / "kb" / "records").glob("*.jsonl")):
++        for ln in f.read_text(encoding="utf-8").splitlines():
++            if ln.strip():
++                found[json.loads(ln).get("form_version") or "none"] += 1
++    bad = [f"{v} ({n} lines) not in form_versions.csv" for v, n in sorted(found.items()) if v not in listed]
++    out.append(("17. every form version of kb/records is listed in ontology/form_versions.csv (P179b: compile reads a pass-1 line of an accepted version only)",
++                not bad, f"problems: {bad}" if bad else "; ".join(f"{v}: {n} lines" for v, n in sorted(found.items())), bad))
+     return out
+ 
+ 
+diff --git a/ontology/form_versions.csv b/ontology/form_versions.csv
+new file mode 100644
+index 00000000..109a3045
+--- /dev/null
++++ b/ontology/form_versions.csv
+@@ -0,0 +1,14 @@
++version,paper,date,status,decided_by,reason
++none,,2026-10-20,accepted,user (P179b directive),"lines written before the form freeze (no form_version field), in use through P178"
++P158,,2026-10-23,accepted,user (P179b directive),"the frozen form (P158), in use through P178"
++P163,,2026-10-24,accepted,user (P179b directive),P163: rule 1 scoped; in use through P178
++P179,,2026-10-24,candidate,user (P179b directive),the P179 species rule; the re-extraction of 155 elements (P179 3b) waits for adoption per paper (P179b step 4)
++P179,yli18,2026-10-24,rejected,Claude Code by the P179b adoption rule (user),3b: definition 23 -> 16; every lost row a record the re-extraction did not write (none the species rule)
++P179,yim20,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained cited 28 -> 29; model 45 -> 46; definition 23 -> 24
++P179,ela03,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained setting 10 -> 11; model 20 -> 21; claim 4 -> 6; derived 4 -> 5
++P179,hei24,2026-10-24,rejected,Claude Code by the P179b adoption rule (user),3b: definition 16 -> 15; every lost row a record the re-extraction did not write (none the species rule)
++P179,gor03,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained -
++P179,art19,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained setting 16 -> 18; definition 2 -> 3
++P179,zou23,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained claim 4 -> 5
++P179,yim22,2026-10-24,accepted,Claude Code by the P179b adoption rule (user),3b (the re-extracted groups): no type dropped; gained model 82 -> 105
++P179,wer21,2026-10-24,rejected,Claude Code by the P179b adoption rule (user),no gold: 3b cannot show 'no drop'; the inspection 5a-5h differs in 7 rows (kb/reports/P179b.s3_wer21_audit_diff.csv)

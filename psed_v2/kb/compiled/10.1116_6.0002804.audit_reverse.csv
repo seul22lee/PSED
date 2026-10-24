@@ -20,10 +20,9 @@ zou23:s9.p3#1,observation,element_fraction,,,,s9.p3,,no gold row on this element
 zou23:s9.p4#1,observation,carrier_density,,,,s9.p4,,no gold row on this element
 zou23:s9.p5#1,observation,carrier_density,1e+20,1/cm3,,s9.p5,zou23:fig6a#1,quantity 'other' vs 'carrier_density'
 zou23:s10.p1#1,setting,film_thickness,24,nm,,s10.p1,zou23:s8.x1#2,"quantity 'deposition_temperature' vs 'film_thickness'; value '350' '°C' vs '24' 'nm' (canonical ('temperature', 350.0) vs ('length', 24.0))"
-zou23:s10.p2#1,setting,film_thickness,25,nm,,s10.p2,zou23:s10.p2#3,"type 'observation' vs 'setting'; value '50' 'nm' vs '25' 'nm' (canonical ('length', 50.0) vs ('length', 25.0))"
-zou23:s10.p2#3,observation,diffraction_angle,41,°,,s10.p2,zou23:fig7b#1,"quantity 'resistivity' vs 'diffraction_angle'; value '' '' vs '41' '°' (canonical None vs ('angle', 41.0))"
-zou23:s10.p2#4,observation,diffraction_angle,59,°,,s10.p2,zou23:fig7b#1,"quantity 'resistivity' vs 'diffraction_angle'; value '' '' vs '59' '°' (canonical None vs ('angle', 59.0))"
-zou23:s10.p2#5,observation,diffraction_angle,74,°,,s10.p2,zou23:fig7b#1,"quantity 'resistivity' vs 'diffraction_angle'; value '' '' vs '74' '°' (canonical None vs ('angle', 74.0))"
+zou23:s10.p2#1,cited,mean_free_path,11.2,nm,,s10.p2,zou23:s10.p2#2,quantity 'other' vs 'mean_free_path'
+zou23:s10.p2#2,setting,film_thickness,25,nm,,s10.p2,zou23:s10.p2#3,"type 'observation' vs 'setting'; value '50' 'nm' vs '25' 'nm' (canonical ('length', 50.0) vs ('length', 25.0))"
+zou23:s10.p2#4,observation,phase,,,detected,s10.p2,zou23:fig7b#1,quantity 'resistivity' vs 'phase'; value_text '' vs 'detected'
 zou23:s11.p2#1,observation,resistivity,,,,s11.p2,,no gold row on this element
 zou23:s11.p3#1,observation,crystallinity,,,,s11.p3,,no gold row on this element
 zou23:s11.p5#2,definition,step_coverage,,,,s11.p5,zou23:s11.p5#5,"type 'observation' vs 'definition'; value '0.95' '' vs '' '' (canonical ('dimensionless', 0.95) vs None)"
@@ -106,6 +105,10 @@ zou23:fig7.cap#11,setting,deposition_temperature,250,°C,,fig7.cap,zou23:s8.x1#2
 zou23:fig7.cap#12,setting,other,,,,fig7.cap,zou23:s8.x1#2,"quantity 'deposition_temperature' vs 'other'; value '350' '°C' vs '' '' (canonical ('temperature', 350.0) vs None)"
 zou23:fig7.cap#14,setting,other,,,,fig7.cap,zou23:s8.x1#2,"quantity 'deposition_temperature' vs 'other'; value '350' '°C' vs '' '' (canonical ('temperature', 350.0) vs None)"
 zou23:fig7.cap#15,setting,deposition_temperature,450,°C,,fig7.cap,zou23:s8.x1#2,"value '350' '°C' vs '450' '°C' (canonical ('temperature', 350.0) vs ('temperature', 450.0))"
+zou23:s4.p7#2,setting,process_mode,,,hot_wire,s4.p7,zou23:abs.g1#1,quantity '' vs 'process_mode'; value_text '' vs 'hot_wire'
+zou23:s4.p7#3,setting,process_mode,,,hot_wire,s4.p7,zou23:abs.g1#1,quantity '' vs 'process_mode'; value_text '' vs 'hot_wire'
+zou23:s4.p7#4,setting,process_mode,,,hot_wire,s4.p7,zou23:abs.g1#1,quantity '' vs 'process_mode'; value_text '' vs 'hot_wire'
+zou23:s4.p7#5,setting,process_mode,,,hot_wire,s4.p7,zou23:abs.g1#1,quantity '' vs 'process_mode'; value_text '' vs 'hot_wire'
 zou23:fig1a#2,observation,growth_per_cycle,0.017,nm/cycle,,fig1a;fig1.cap,zou23:fig1a#1,"value '' '' vs '0.017' 'nm/cycle' (canonical None vs ('length_per_cycle', 0.017))"
 zou23:fig1a#3,observation,growth_per_cycle,0.02,nm/cycle,,fig1a;fig1.cap,zou23:fig1a#1,"value '' '' vs '0.02' 'nm/cycle' (canonical None vs ('length_per_cycle', 0.02))"
 zou23:fig1a#4,observation,growth_per_cycle,0.0218,nm/cycle,,fig1a;fig1.cap,zou23:fig1a#1,"value '' '' vs '0.0218' 'nm/cycle' (canonical None vs ('length_per_cycle', 0.0218))"
@@ -261,71 +264,3 @@ zou23:fig1.cap#101,derived,cycle_time,8,s,,fig1.cap,zou23:s7.p1#1,"type 'claim' 
 zou23:fig1.cap#102,derived,deposition_rate,9,nm/h,,fig1.cap;fig1d,zou23:s7.p1#1,"type 'claim' vs 'derived'; quantity '' vs 'deposition_rate'; value '' '' vs '9' 'nm/h' (canonical None vs ('length_per_time', 9.0))"
 zou23:fig1.cap#103,derived,cycle_time,10,s,,fig1.cap,zou23:s7.p1#1,"type 'claim' vs 'derived'; quantity '' vs 'cycle_time'; value '' '' vs '10' 's' (canonical None vs ('time', 10.0))"
 zou23:fig1.cap#104,derived,deposition_rate,7.2,nm/h,,fig1.cap;fig1d,zou23:s7.p1#1,"type 'claim' vs 'derived'; quantity '' vs 'deposition_rate'; value '' '' vs '7.2' 'nm/h' (canonical None vs ('length_per_time', 7.2))"
-zou23:s5.p1#10,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#11,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#12,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#13,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#14,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#15,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:fig4.cap#3,derived,process_mode,,,plasma,fig4.cap,zou23:s8.p3#1,type 'claim' vs 'derived'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-zou23:s5.p1#16,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#17,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#18,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#19,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#20,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#21,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#22,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#23,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#24,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#25,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#26,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#27,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#28,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#29,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#30,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#31,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#32,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#33,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#34,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#35,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#36,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#37,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#38,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#39,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#40,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#41,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#42,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#43,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#44,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#45,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#46,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#47,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#48,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#49,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#50,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#51,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#52,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#53,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#54,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#55,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#56,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#57,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#58,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#59,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#60,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#61,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#62,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#63,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#64,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#65,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#66,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#67,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#68,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#69,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#70,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#71,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#72,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#73,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#74,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#75,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'
-zou23:s5.p1#76,derived,process_mode,,,plasma,s5.p1,zou23:s5.p1#1,type 'setting' vs 'derived'; quantity 'reactor' vs 'process_mode'; value_text 'home-built hot-wall HWALD reactor' vs 'plasma'

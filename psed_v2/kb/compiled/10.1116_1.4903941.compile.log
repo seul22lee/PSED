@@ -1,4 +1,5 @@
-input: 10 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 
+input: 12 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 
+input: process_mode fill = line 12: run_al2o3_300c null, run_tio2_110c null
 a0: s6.p4: quantity 'distance between the oxide pillars' -> pillar_spacing (quantity: alias 'distance between the oxide pillars')
 a: s6.p5: qualifiers.n '1' -> 1.0 (C4)
 a: fig3.cap: qualifiers.n '1' -> 1.0 (C4)
@@ -24,10 +25,6 @@ i: merged fig5.cap into s7.p3;fig5.cap (film_thickness 100)
 i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (deposition_temperature 300)
 i: merged fig6.cap into s7.p4;fig6.cap (aspect_ratio 400)
 i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (feature_width 500)
-j: transform process_mode gao15:ent:specimen_al2o3_500nm: none (no input)
-j: transform process_mode gao15:ent:specimen_tio2_200nm: none (no input)
-j: transform process_mode gao15:ent:specimen_tio2_500nm: none (no input)
-j: transform process_mode gao15:ent:specimen_tio2_1000nm: none (no input)
 j: derived over 4 entities: 4 rows; not derived: {'no fact for S': 4, 'no fact for p': 8, 'E: no fact for p': 4, 'no fact for rho': 8, 'n: no fact for gpc': 4, 'gpc: no fact for n': 4, 'no fact for H': 4, 'no fact for dn': 4, 'no fact for mg': 8, 'derive raised: cannot convert cycle to 1': 1, 'no fact for h2': 4, 'no fact for phi': 4, 'lam: no fact for p': 4, 'gpc: n: no fact for gpc': 4, 'no fact for t': 3}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 8 nodes for 11 claims; claims without a full triple (query.node_of empty): 3
@@ -46,7 +43,7 @@ step m: {'statement filled from the quote': 70, 'label_as_printed filled with th
 step 1c: {'unbound item (image): no unit named': 11, 'image -> a measurement (a photograph)': 2, 'curve -> observation': 4}
 step i: {'merged': 21, 'kept': 75}
 step n: {'comparison series': 1}
-step j: {'derived cycle_time': 4, 'transform process_mode: none': 4}
+step j: {'derived cycle_time': 4}
 step k: {'statement from the record': 69, 'statement_copies_text (reported by check)': 23, 'statement assembled': 10}
 diff against the gold:
   setting        92   38   28  0.74  0.30

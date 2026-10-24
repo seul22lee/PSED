@@ -1,7 +1,14 @@
 round 2 acceptance (grow.py audit_round)
-A1: 28 decisions, 92 rows: effect {'n/a': 5, 'yes': 84, 'no effect': 3}
+A1: 28 decisions, 92 rows: effect {'n/a': 5, 'yes': 82, 'no effect': 5}
 A2: 222 promotions: {'symbol (user decision)': 81, 'alias (curated)': 39, 'alias (user decision)': 35, 'agree': 15, 'id (curated)': 12, 'symbol (paper-local)': 40}
-A3: 58 open rows: {'pending': 37, 'other': 19, 'unit': 1, 'new': 1}; pending candidates accounted 41/41
-A3 new since apply → next round (P162, carried, not a failure): 1 rows
+A3: 63 open rows: {'pending': 37, 'new': 6, 'other': 19, 'unit': 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 6 rows
+  10.1021_cm0303080:s5.p10 quantity 'ΦA'
+  10.1021_cm0303080:s5.p10 quantity 'N/(ΦA)'
+  10.1021_cm0303080:s5.p10 quantity '(ΦA)/N'
+  10.1021_cm0303080:s5.p25 quantity 'time dependence'
+  10.1021_cm0303080:s5.p26 quantity 'time dependence'
   10.1039_d3cp05639b:fig4 axis '1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]'
-result: PASS
+result: FAIL (2)
+FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity 'H': row not found
+FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity 'H': row not found
