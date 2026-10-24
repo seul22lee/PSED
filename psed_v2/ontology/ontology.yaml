@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): c26d902dd189ac27cd726e8f10123cf6d41390aa0ee9ddc477527b02f5f7d54f
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 35b632836612bb159df4d9aa7e8fdb951801277b155d624eb8ac124eb4fa06e5
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -2511,7 +2511,7 @@ entries:
   # ---------------------------------------------------------------- models
   - id: ylilammi_diffusion_reaction
     aliases: [Yilammi et al. diffusion–reaction model]
-    symbols: [{text: diffusion model, paper: 10.1063_1.5028178}]
+    symbols: [{text: diffusion model, paper: 10.1063_1.5028178}, {text: Model A, paper: 10.1039_d1cp04758b}]
     type: model
     name: "Ylilammi diffusion-reaction model"                     # P142b
     origin: base
@@ -3461,6 +3461,22 @@ entries:
     - {text: a, paper: 10.1039_d0cp03358h}
     source_pids: [10.1039_d0cp03358h, 10.1116_1.4903941]
     evidence: ['10.1039_d0cp03358h:tabu1.r0c0 — Distance between pillars (m)', '10.1116_1.4903941:s6.p4 — The distance between the oxide pillars was 10 \mu m.']
+
+  # ---------------------------------------------------------------- grow.py round 4: accepted
+  - id: yanguas_gil_elam_diffusion_reaction
+    type: model
+    label: yanguas gil elam diffusion reaction
+    name: yanguas gil elam diffusion reaction
+    origin: round 4
+    category: models
+    definition: 'Diffusion–reaction model of ALD in a high-aspect-ratio feature by Yanguas-Gil and Elam (yim22 ref. 20): irreversible single-site adsorption (no desorption term), reactant partial pressure from the diffusion equation solved numerically together with the surface-coverage equation (yim22: MATLAB pdepe, slab symmetry, free molecular flow D_eff = D_Kn); the model behind the Arts et al. slope method (arts_slope). Distinct from yanguas_gil_markov_chain (a Markov-chain model).'
+    dimension: dimensionless
+    model_type: computational
+    parameters: [initial_sticking_coefficient, saturation_density, knudsen_diffusion_coefficient, feature_width, feature_depth, partial_pressure, pulse_time]
+    symbols:
+    - {text: Model B, paper: 10.1039_d1cp04758b}
+    source_pids: [10.1039_d1cp04758b]
+    evidence: ['10.1039_d1cp04758b:s9.p1 — Model B']
 
 families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
   composition: {}

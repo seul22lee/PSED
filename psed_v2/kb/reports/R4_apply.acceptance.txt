@@ -1,7 +1,9 @@
 round 4 acceptance (grow.py audit_round)
-A1: 21 decisions, 44 rows: effect {'yes': 44}
-A2: 4 promotions: {'alias (user decision)': 2, 'agree': 2}
-A3: 26 open rows: {'other': 10, 'pending': 16}; pending candidates accounted 23/24
+A1: 24 decisions, 48 rows: effect {'yes': 47, 'no effect': 1}
+A2: 6 promotions: {'alias (user decision)': 2, 'agree': 2, 'symbol (user decision)': 2}
+A3: 24 open rows: {'other': 11, 'unclassified': 1, 'pending': 12}; pending candidates accounted 21/21
 A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: FAIL (1)
-FAIL A3 pending gamma: 10.1039_d1cp04758b:s10.p10 quantity '\gamma' is no longer open
+result: FAIL (3)
+FAIL A1 model_a: 10.1039_d1cp04758b:s9.p1 quantity 'Model A' open
+FAIL A3 10.1039_d1cp04758b:s9.p1 quantity 'Model A': candidate model_a decided in round 4 (alias -> ylilammi_diffusion_reaction): decided, but the row is still open
+FAIL A3 10.1039_d1cp04758b:s9.p1 quantity 'Model B': candidate model_b: not pending, not decided

@@ -18,6 +18,8 @@ a: eq18: variable 'Q' -> saturation_density (C5, from the paper's definition)
 a: eq21: variable 'Q' -> saturation_density (C5, from the paper's definition)
 a: eq22: variable 'Q' -> saturation_density (C5, from the paper's definition)
 g: fig5.cap: mention_unmatched ['500 nm']
+h: simulation sim_model_a ('Model A') -> model ylilammi_diffusion_reaction (symbol 'Model A' of this paper)
+h: simulation sim_model_b ('Model B') -> model yanguas_gil_elam_diffusion_reaction (symbol 'Model B' of this paper)
 h: tree from pass 0: run 0, simulation 2, specimen 0, model_run 72, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s14.p6 into s12.p5;s14.p6 (feature_extent 10)
 i: merged s14.p6 into s14.p2;s14.p6 (cycle_number 1)
@@ -109,14 +111,14 @@ step d: {'quote_not_found': 41, 'kept': 442}
 step e: {'unit_unresolved (kept as printed)': 13, 'kept': 442}
 step f: {'kept': 442}
 step g: {'mention_unmatched': 1}
-step h: {'simulation name unresolved (unmapped, field model)': 2, 'place: claim -> paper': 34, 'place: cited -> paper': 2, 'place: model about a simulation -> simulation': 130, 'place: definition -> paper': 100, 'place: caveat -> paper': 14, 'place: setting about a simulation -> simulation': 11, 'place: about paper -> recipe': 8, 'place: derived about a simulation -> simulation': 8, 'place: model about a model run -> model run': 118, 'place: derived about a model run -> model run': 17}
+step h: {'simulation linked to a model entry': 2, 'place: claim -> paper': 34, 'place: cited -> paper': 2, 'place: model about a simulation -> simulation': 130, 'place: definition -> paper': 100, 'place: caveat -> paper': 14, 'place: setting about a simulation -> simulation': 11, 'place: about paper -> recipe': 8, 'place: derived about a simulation -> simulation': 8, 'place: model about a model run -> model run': 118, 'place: derived about a model run -> model run': 17}
 step m: {'label_as_printed filled with the quantity id': 10, 'statement filled from the quote': 359, 'links resolved': 20, 'links named elements without facts': 3}
 step 1c: {'curve -> model': 90, 'data role simulated': 90}
 step i: {'merged': 71, 'definition merged': 5, 'kept': 456}
 step n: {'comparison replicate': 1}
 step j: {'derived cycle_time': 72}
 step k: {'statement from the record': 366, 'statement_copies_text (reported by check)': 41, 'statement assembled': 162}
-diff against the gold (type, gold, compiled, matched, precision, recall):
+diff against the gold:
   model         215  273  147  0.54  0.68
   derived        84   97   24  0.25  0.29
   claim          77   34   19  0.56  0.25
