@@ -641,6 +641,12 @@ def layouts(scope, onto=None):
     return [(x["id"], x["definition"], x.get("example", "")) for x in onto.get("layouts") or [] if x["scope"] == scope]
 
 
+def separators(onto=None):
+    """P177c (user): ontology.yaml legend_separators and axis_separators (the layouts' label separators) as {legend: [...], axis: [...]}."""
+    onto = onto or yaml.safe_load((HERE / "ontology.yaml").read_text(encoding="utf-8"))
+    return {"legend": [str(s) for s in onto.get("legend_separators") or []], "axis": [str(s) for s in onto.get("axis_separators") or []]}
+
+
 LAYOUT_OTHER = "other"
 P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the paragraphs around the equation."
 # term -> [(source key, verbatim phrase)]; [] = no written definition in lists.py's tree comment or facts.retree()'s docstring
@@ -717,6 +723,10 @@ def codebook(onto, L):
     out += [f"- **{k}**: {d}{item(k)}" for k, d, _ in layouts("table", onto)]
     out += ["", "Panel layouts:", ""] + [f"- **{k}**: {d}{item(k)} Example: {ex}." for k, d, ex in layouts("panel", onto)]
     out += ["", f"- **{LAYOUT_OTHER}**: none of the above; give its description (it becomes a layout candidate)."]
+    sep = separators(onto)                                                      # P177c (user)
+    out += ["", "Label separators (ontology.yaml legend_separators, axis_separators; P177c):", "",
+            f"- legend: {', '.join(repr(s) for s in sep['legend'])} (top level, outside brackets; a dash separator only when that gives the series axis's part count)",
+            f"- series axis: {', '.join(repr(s) for s in sep['axis'])}"]
     # c. record types, stances, NK, equation rule
     flat = lists_txt.replace("\n#   ", " ")                                       # P143b: the comment, the asserted line included
     m_ = re.search(r"# a claim's stance, from the paper's own wording \((.*?limitation)\)( asserted: [^\n]*)?\n", flat)

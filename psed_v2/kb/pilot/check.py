@@ -55,7 +55,8 @@ def check(pid):
     for i in {i for i in ids if ids.count(i) > 1}:
         err.append(f"duplicate fact_id {i}")
     F = {f["fact_id"]: f for f in facts}
-    texts = elements.texts(pid)
+    bound = {i for b in rd((DIR or HERE) / f"{pid}.binding.csv") if b["unit"] for i in b["facts"].split(";") if i}   # P177c (user): the facts of
+    texts = elements.texts(pid)                                                # an item compile.bind() bound (kb/compiled/<pid>.binding.csv)
     seen_key, seen_stmt = {}, {}
     used_points = set()
     for f in facts:
@@ -110,7 +111,7 @@ def check(pid):
         if ev[0] in L.COLOUR_PANELS.get(KEYS[pid], {}) and (f["value"] or f["value_min"] or f["value_max"] or f["value_text"]) \
                 and "read from colour" not in f["statement"]:                      # the fact's own element is a colour-bar panel
             bad("a value from a colour-bar panel must say 'read from colour'")
-        if f["points_ref"]:
+        if f["points_ref"] and fid not in bound:                              # P177c (user): retired for a fact of a bound item
             bad("points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)")
         if f["type"] == "definition" and f["quantity"] and not f.get("term"):
             bad("a definition that names a quantity has no term (the symbol or phrase as printed; P89)")

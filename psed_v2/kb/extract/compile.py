@@ -35,6 +35,7 @@ FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never", "nearest"]   # P157b: never = the never.csv category; P158: nearest
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
+BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "origin", "role", "how", "reason", "facts"]   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
 
@@ -193,21 +194,30 @@ def legend_number(t):
     return (base * 10 ** int(exp) if exp else base), rest
 
 
-def legend_parts(label):
-    """P163: a legend label split at its top-level commas (a comma inside brackets or braces stays)."""
-    parts, depth, cur = [], 0, ""
-    for ch in label:
-        depth += (ch in "([{") - (ch in ")]}")
-        if ch == "," and depth == 0:
-            parts.append(cur)
-            cur = ""
-        else:
-            cur += ch
-    return [p.strip() for p in parts + [cur] if p.strip()]
+def sep_rx(seps):
+    """P177c: a separator list (ontology.yaml legend_separators / axis_separators) as one regex; a leading or trailing space means
+    whitespace there (' and ' -> \\s+and\\s+, ',' -> \\s*,\\s*)."""
+    return re.compile("|".join((r"\s+" if s[:1].isspace() else r"\s*") + re.escape(s.strip()) + (r"\s+" if s[-1:].isspace() else r"\s*") for s in seps if s.strip()))
 
 
-AXIS_SPLIT = re.compile(r"\s+and\s+|\s*,\s*")                                 # P175: the parts of a two-quantity axis label
-LEGEND_DASH = re.compile(r"\s+[-–]\s+")                                         # P175: ' - ' / ' – ' between the values of a legend label
+SEPARATORS = C.X.separators()                                                   # P177c (user): the layouts' label separators
+LEGEND_DASHES = [s for s in SEPARATORS["legend"] if len(s.strip()) == 1 and unicodedata.category(s.strip()) == "Pd"]
+LEGEND_SPLIT = sep_rx([s for s in SEPARATORS["legend"] if s not in LEGEND_DASHES])   # P163 ',', P177c '@', ' at ': always
+LEGEND_ALL = sep_rx(SEPARATORS["legend"])                                       # P175: with ' - ' / ' – ' when that gives the axis's count
+AXIS_SPLIT = sep_rx(SEPARATORS["axis"])                                         # P175: the parts of a two-quantity axis label
+
+
+def legend_parts(label, rx=LEGEND_SPLIT):
+    """P163, P177c: a legend label split at its top-level separators (one inside brackets or braces stays)."""
+    parts, last = [], 0
+    for m in rx.finditer(label):
+        pre = label[:m.start()]
+        if sum(map(pre.count, "([{")) == sum(map(pre.count, ")]}")):
+            parts.append(label[last:m.start()])
+            last = m.end()
+    return [p.strip() for p in parts + [label[last:]] if p.strip()]
+
+
 RANGE = re.compile(r"(.+?)\s*=\s*([-+−]?(?:\d+\.?\d*|\.\d+))\s*to\s*([-+−]?(?:\d+\.?\d*|\.\d+))\s*(.*)")
 QUALIFIER_AXES = ("element", "species", "step")                                 # P175 (user): an axis naming one of these qualifiers
 
@@ -252,9 +262,10 @@ def data_role_word(part):
 
 
 def parse_legend(pid, label, axis):
-    """P163 rule 1, P175, P177b (user): a legend label's parts (legend_parts at top-level commas; an axis of two or more parts (' and ',
-    ',') pairs with them by order, the legend split at ' - ' / ' – ' when its commas do not give that count), each resolved on the one path
-    and classed by the kind of what it resolved to:
+    """P163 rule 1, P175, P177b, P177c (user): a legend label's parts (legend_parts at its top-level legend separators of ontology.yaml:
+    ',', '@', ' at '; an axis of two or more parts (axis separators ' and ', ',') pairs with them by order, the legend split at the dash
+    separators ' - ' / ' – ' too when the others do not give that count), each resolved on the one path and classed by the kind of what it
+    resolved to:
       value     '<symbol> = <number> [unit]', '<name>: <number> [unit]', '<number> [unit]', '<symbol> = <a> to <b> [unit]' (value_min /
                 value_max): the quantity of its own symbol or name, else of its axis part (vocab_hits, as step a0); unresolved: other;
       species   a species name on a material / reactant axis; name: a structure or categorical value;
@@ -269,7 +280,7 @@ def parse_legend(pid, label, axis):
     parts = legend_parts(label)
     aparts = axis_parts(axis)
     if len(aparts) >= 2 and len(parts) != len(aparts):
-        dash = [x.strip() for x in LEGEND_DASH.split(label) if x.strip()]
+        dash = legend_parts(label, LEGEND_ALL)
         parts = dash if len(dash) == len(aparts) else parts
     paired = len(aparts) >= 2 and len(parts) == len(aparts)
     qk = qualifier_key(axis)
@@ -301,9 +312,11 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
     if num:
         keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
         keys = keys[::-1] if one and not sym else keys
-        hit = next(((k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1), None)
-        key = hit[0] if hit else (ax_ if ax_ and (one or not sym) else sym or part)
-        q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'"))
+        found = [(k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1]
+        hit = next(((k, h) for k, h in found if unit_fits(next(iter(h)), num[1])), None)   # P177c (user, chat): the dimension guard
+        key = hit[0] if hit else sym or part if found else (ax_ if ax_ and (one or not sym) else sym or part)
+        q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'" + (
+            f" ('{found[0][0]}' names {next(iter(found[0][1]))}, whose dimension the unit '{num[1]}' does not have)" if found else "")))
         return [dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
                      how=how if hit is None else f"{'series_axis' if key == ax_ else 'symbol / name'} '{key}' -> {q} ({how})")]
     name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
@@ -345,6 +358,18 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
     return [dict(kind="other", key=part, quantity="other", how="parsed to nothing" + (f" (names {sorted(hits)})" if hits else ""), flag="legend label parsed to nothing")]
 
 
+def unit_fits(q, unit):
+    """P177c (user, chat): a legend number may take quantity q when its unit is empty or unknown to units.yaml, or has q's dimension
+    (vocab.UNIT_BASE against vocab.ENTRIES; a count reads as dimensionless; q with no dimension: no evidence, it fits). A number with a
+    unit never takes a categorical quantity ('Thermal ALD@150°C' on the axis 'ALD process' = process_mode: 150 °C stays other)."""
+    s = unit_symbol(unit) if unit else None
+    qd = V.ENTRIES.get(q, {}).get("dimension")
+    if s is None or s not in V.UNIT_BASE or not qd:
+        return True
+    d = lambda x: "dimensionless" if x == "count" else x                      # noqa: E731
+    return d(V.UNIT_BASE[s][0]) == d(qd)
+
+
 def legend_methods(pid, label):
     """P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
     legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
@@ -358,6 +383,19 @@ def legend_methods(pid, label):
     return found
 
 
+def species_named(pid, label):
+    """P177c: the species entries a label names: the whole label, or one, two or three consecutive words of it (split as legend_methods
+    splits), resolved by vocab_hits (kind species) -> {species id: the words}."""
+    ws = [w for w in re.split(r"[\s,;/()\[\]]+", label or "") if w]
+    found = {}
+    for t in [label or ""] + [" ".join(ws[i:i + n]) for n in (3, 2, 1) for i in range(len(ws) - n + 1)]:
+        for s in vocab_hits(pid, "species", t) if t.strip() else {}:
+            found.setdefault(s, t)
+    return found
+
+
+PURGE_QUANTITIES = ("purge_time",)                                              # P177c: of form rule 1's step quantities (export.STEP_QUANTITIES)
+#                                                                                 a purge time names its half-cycle's purge, a pulse time or an exposure its dose
 CONDITION_KINDS = ("value", "name", "species", "other", "never")
 
 
@@ -442,7 +480,8 @@ def bind(pid, obj, recs=None):
        the figure; a model-name item: a model run under the simulation linked to that model (created when the paper has none); else the
        one pass-0 run, specimen or model run (a simulated item: model runs; a measured one: runs and specimens) whose conditions (unit_
        vectors) contain every resolved condition of the vector (an item with an other condition matches none), among the units the figure
-       names when it names any, an ancestor giving way to its descendant; several -> unbound 'ambiguous: ids'; none -> a derived unit:
+       names when it names any, an ancestor giving way to its descendant; several -> unbound 'ambiguous: ids'; none -> a point at x = 0
+       unbound 'origin' (P177c, user), else a derived unit:
        role model_run for an explicit simulated or fit mark (or a model name), else run (runs only) / model_run (a simulation only), else
        null flagged 'role unresolved'; a panel item a specimen (measured) or a model run; parent the model's simulation, else the single
        simulation (a model run) or the single run (a specimen), else null flagged 'parent unresolved'; one unit per (role, model, vector)
@@ -569,6 +608,10 @@ def bind(pid, obj, recs=None):
             if hits:
                 it.update(reason="ambiguous: " + ", ".join(sorted(hits)))
                 return
+        x = next((c for c in it["vector"] if c.get("coord") == "x"), None)
+        if it["kind"] == "point" and x is not None and x.get("value") == 0:      # P177c (user, chat): an origin point no unit carries
+            it.update(reason="origin")
+            return
         role, why = role_of(it)
         parent, flags = parent_of(role, it)
         it.update(unit=derive(it, role, parent, flags, layout, label, fig, why), origin="derived", how="derived", role_flag="; ".join(flags))
@@ -633,7 +676,7 @@ def bind(pid, obj, recs=None):
                     xq, xkey = c["x"]["quantity"], c["x"].get("key") or c["x"].get("label_raw") or ""
                     for n, (pt, raw) in enumerate(zip(c.get("points") or [], c.get("points_raw") or c.get("points") or []), 1):
                         coord = dict(kind="value" if xq != "other" else "other", key=xkey, quantity=xq, value=raw[0], unit=c["x"].get("unit_raw") or c["x"].get("unit") or "",
-                                     how=f"x coordinate ({xq})")
+                                     how=f"x coordinate ({xq})", coord="x")
                         its.append(dict(base, kind="point", ref=f"{c['id']}:p{n}", curve=c["id"], n=n - 1, panel=pel, vector=base["vector"] + [coord], unit="", reason="",
                                         y=c["y"]["quantity"]))
                 else:
@@ -642,7 +685,7 @@ def bind(pid, obj, recs=None):
                 for v in cells:
                     at = [dict(kind="value" if not str(q).startswith("other:") else "other", key=str(q).removeprefix("other:"), quantity=q if not str(q).startswith("other:") else "other",
                                value=x, unit=next((c_[a]["unit"] for c_ in curves for a in ("x", "y") if c_[a]["quantity"] == q), "") if not str(q).startswith("other:") else "",
-                               how="cell coordinate") for q, x in (v.get("at") or {}).items()]
+                               how="cell coordinate", coord="cell") for q, x in (v.get("at") or {}).items()]
                     its.append(dict(kind="cell", ref=v["id"], panel=pel, vector=at, qualifiers=[], y_quantity="", model="", method="", parts=[], data_role="", label=str(v.get("value_text") or v.get("value")),
                                     unit="", reason="", y=v.get("quantity") or ""))
             elif cells:
@@ -766,6 +809,7 @@ class Run:
             self.note(f"input: binding invariant: {v}")
         self.from_curves = self.binding["units"]
         self.pass0 = list(self.pass0) + self.from_curves
+        recipe = self.recipe(recs)
         for u in self.from_curves:
             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
@@ -775,6 +819,13 @@ class Run:
                     rec.update(value_min=c["value_min"], value_max=c["value_max"], unit=c["unit"] or None, kind=dkind)
                 elif c["kind"] == "value":
                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
+                if c.get("coord") and c.get("quantity") in C.X.STEP_QUANTITIES:  # P177c (user): a coordinate axis that names a species
+                    step = self.axis_step(c, recipe)
+                    if step:
+                        rec["qualifiers"] = {"step": step[0]}
+                        if step[1]:
+                            rec["note"] = step[1]
+                        self.count("input", f"coordinate setting step {step[0]}" + (" (flagged)" if step[1] else ""))
                 if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
                     rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"],
@@ -784,6 +835,32 @@ class Run:
         if self.from_curves:
             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
         return recs
+
+    def recipe(self, recs):
+        """P177c (user): the paper's recipe as {species id: 'A' | 'B'}: the half-cycle whose reactant_A / reactant_B setting (pass 1) names
+        the species (value_text resolved by vocab_hits); a species named in both halves is in neither."""
+        half = collections.defaultdict(set)
+        for r in recs:
+            rec = r["rec"]
+            if rec.get("type") == "setting" and rec.get("quantity") in ("reactant_A", "reactant_B") and isinstance(rec.get("value_text"), str):
+                hit = vocab_hits(self.pid, "species", rec["value_text"])
+                if len(hit) == 1:
+                    half[next(iter(hit))].add(rec["quantity"][-1])
+        return {s: next(iter(h)) for s, h in half.items() if len(h) == 1}
+
+    def axis_step(self, c, recipe):
+        """P177c (user): the step of a setting derived from a coordinate axis whose label names a species (species_named): the half-cycle
+        in which the recipe lists it (reactant_A -> reactant_A / purge_A, reactant_B -> reactant_B / purge_B; a purge time its purge, a
+        pulse time or an exposure its dose); a species not in the recipe -> none, flagged. Returns (step, flag); None when the label names
+        no species."""
+        sp = species_named(self.pid, c["key"])
+        if not sp:
+            return None
+        halves = {recipe.get(s) for s in sp}
+        if len(halves) != 1 or None in halves:
+            return "none", f"step none: the axis '{c['key']}' names {', '.join(sorted(sp))}, no one species of the paper's recipe (reactant_A / reactant_B) (P177c)"
+        h = halves.pop()
+        return (f"purge_{h}" if c["quantity"] in PURGE_QUANTITIES else f"reactant_{h}"), ""
 
     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
     def resolve_other(self, recs):
@@ -1264,10 +1341,13 @@ class Run:
         def els(fig, panel=""):
             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
 
+        cur = dict(item="")
+
         def row(**kw):
             r = {x: "" for x in F.FIELDS}
             r.update(kw)
             r["author"] = self.pid
+            r["_item"] = cur["item"]                                            # P177c: the bound item (kb/compiled/<pid>.binding.csv)
             return r
 
         def flagged(f, item):                                                   # P173 (user): data of a panel the rule verdict flagged: the
@@ -1337,6 +1417,7 @@ class Run:
             if it["unit"] not in self.node:
                 self.count("1c", f"item bound to a unit with no row ({it['kind']})"); continue
             nid, role = self.node[it["unit"]]
+            cur["item"] = it["ref"]                                             # P177c: row() marks each fact with its bound item
             if role not in ("model_run", "specimen", "run", "unresolved"):
                 self.count("1c", f"item bound to a {role} (left out)"); continue
             if it["kind"] == "curve":
@@ -1796,6 +1877,11 @@ class Run:
         write_csv(OUT / f"{self.pid}.coverage.csv", F.COV_FIELDS, self.cov)
         write_csv(OUT / f"{self.pid}.dropped.csv", DROPPED_FIELDS, self.dropped)
         write_csv(OUT / f"{self.pid}.unmapped.csv", UNMAPPED_FIELDS, self.unmapped)
+        made = collections.defaultdict(list)                                    # P177c (user): bind()'s outcome per item with the facts it gave
+        for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)
+            if f.get("_item"):
+                made[f["_item"]].append(f["fact_id"])
+        write_csv(OUT / f"{self.pid}.binding.csv", BINDING_FIELDS, [dict(b, facts=";".join(made.get(b["item"], []))) for b in binding_rows(self.pid, self.binding)])
         for x in self.promoted:                                                 # P157b: the fact a promoted record became
             if not x["outcome"]:
                 f = next((f for f in rows if any(y is x for y in f.get("_promoted", []))), None)
