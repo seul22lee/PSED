@@ -1,47 +1,64 @@
 metric,value
-ontology_hash,e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
+ontology_hash,9f94fb6aa79b009a5c9a035420201c994a6fc225d4c274dff815e967bd472e53
 lines_used,2;3;4;5;6;7;8;9;10;11;12;13;14;15
 lines_ignored,
-facts,202
+facts,198
 tree_rows,42
 derived_by_kb,6
-dropped,13
+dropped,9
 unmapped,9
 unmapped_never,2
 promoted,2
 step_input:records,200
 step_a0:quantity promoted (quantity: symbol),2
 step_a0:quantity other: never.csv word,2
+step_a1:symbol species: species cleared (no evidence),4
+step_a1:symbol species: no species,6
+step_a1:symbol species: kept: its own element names it,3
 step_a1:step fill: reactant_A (the run's recipe field),1
-step_a1:step fill: reactant_B (the run's recipe field),1
+step_a1:step fill: empty (no species),1
 step_a1:step fill: purge_A (the run's recipe field),1
+step_a1:qualifier out of scope: stage,3
+step_a1:qualifier out of scope: relative_to,5
+step_a1:qualifier out of scope: over,3
+step_a1:qualifier out of scope: mode,3
+step_a1:qualifier out of scope: ratio,3
+step_a1:qualifier out of scope: specimen_class,16
+step_a1:qualifier out of scope: structure_class,24
+step_a1:qualifier out of scope: phase,9
+step_a1:qualifier out of scope: position,3
+step_a1:qualifier out of scope: step,1
+step_a1:qualifier out of scope: species,9
 step_a:variables_unmapped (set to null),5
 step_a:variable filled from a definition (C5),1
-step_a:kept,200
-step_b:kept,200
+step_a:schema:required,1
+step_a:kept,199
+step_a_fields:qualifiers,1
+step_b:kept,199
 step_c:quantity_other (kept),5
 step_c:quantity_other never (kept),2
-step_c:kept,200
-step_d:quote_not_found,13
+step_c:kept,199
+step_d:quote_not_found,8
 step_d:quote_noncontiguous (kept),1
-step_d:kept,187
-step_e:kept,187
+step_d:quote found in the paper's elements concatenated (P182),5
+step_d:kept,191
+step_e:kept,191
 step_f:species_resolved,8
-step_f:kept,187
+step_f:kept,191
 step_g:mention_unmatched,9
 step_h:place: claim -> paper,17
-step_h:place: about paper -> recipe,51
-step_h:place: result about a specimen -> its measurement,51
+step_h:place: about paper -> recipe,50
+step_h:place: result about a specimen -> its measurement,54
 step_h:place: definition -> paper,11
 step_h:place: caveat -> paper,9
-step_h:place: setting about a run -> deposition,12
+step_h:place: setting about a run -> deposition,14
 "step_h:place: about paper, method -> paper method activity",8
 step_h:place: cited -> paper,3
 step_h:place: result about a run -> its specimen measurement,21
 step_h:specimen_created,1
 step_h:place: result about a run -> film measurement,1
 step_h:place: setting about a specimen -> deposition,3
-step_m:statement filled from the quote,150
+step_m:statement filled from the quote,154
 step_m:links resolved,14
 step_m:links named elements without facts,2
 step_1c:figure label other (condition),1
@@ -52,21 +69,22 @@ step_1c:image -> a measurement (photograph),3
 step_1c:unbound item (panel): ambiguous,1
 step_1c:image -> a measurement (sem),3
 step_1c:curve -> observation (legend qualifier),12
-step_i:merged,18
+step_n:qualifier out of scope: element,12
+step_n:comparison series,1
+step_i:merged,26
 step_i:caveat merged,2
 step_i:definition merged,2
-step_i:kept,196
-step_n:comparison series,1
+step_i:kept,192
 step_j:derived_needs_outside_fact,9
 step_j:derived coating_mass_fraction,3
 step_j:derived deposition_rate,3
-step_k:statement from the record,165
-step_k:statement_copies_text (reported by check),73
+step_k:statement from the record,161
+step_k:statement_copies_text (reported by check),75
 step_k:statement assembled,37
-diff:observation,gold 89 compiled 76 matched 26 P 0.34 R 0.29
-diff:setting,gold 89 compiled 43 matched 23 P 0.53 R 0.26
-diff:cited,gold 57 compiled 3 matched 3 P 1.00 R 0.05
+diff:observation,gold 89 compiled 73 matched 26 P 0.36 R 0.29
+diff:setting,gold 89 compiled 42 matched 22 P 0.52 R 0.25
 diff:claim,gold 57 compiled 17 matched 11 P 0.65 R 0.19
+diff:cited,gold 57 compiled 3 matched 3 P 1.00 R 0.05
 diff:caveat,gold 53 compiled 7 matched 7 P 1.00 R 0.13
 diff:activity,gold 41 compiled 36 matched 31 P 0.86 R 0.76
 diff:derived,gold 31 compiled 39 matched 21 P 0.54 R 0.68

@@ -1,11 +1,11 @@
 metric,value
-ontology_hash,e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
+ontology_hash,9f94fb6aa79b009a5c9a035420201c994a6fc225d4c274dff815e967bd472e53
 lines_used,2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21
 lines_ignored,23;24;25;26
-facts,284
+facts,286
 tree_rows,83
-derived_by_kb,15
-dropped,56
+derived_by_kb,14
+dropped,53
 unmapped,51
 unmapped_never,14
 promoted,24
@@ -20,8 +20,20 @@ step_a0:quantity other: never.csv symbol,7
 step_a0:quantity promoted (quantity: alias),19
 step_a0:quantity promoted (quantity: name),3
 step_a0:derived legend label parsed to nothing (other),14
-step_a1:symbol species: no species,3
+step_a1:symbol species: no species,4
 step_a1:symbol species: species cleared (no evidence),2
+step_a1:qualifier out of scope: structure_class,19
+step_a1:qualifier out of scope: species,7
+step_a1:qualifier out of scope: step,3
+step_a1:qualifier out of scope: element,1
+step_a1:qualifier out of scope: surface,1
+step_a1:qualifier out of scope: stage,8
+step_a1:qualifier out of scope: relative_to,8
+step_a1:qualifier out of scope: over,8
+step_a1:qualifier out of scope: mode,8
+step_a1:qualifier out of scope: position,7
+step_a1:qualifier out of scope: ratio,5
+step_a1:qualifier out of scope: specimen_class,5
 step_a:numeric string coerced (C4),5
 step_a:schema:type,17
 step_a:kept,262
@@ -31,37 +43,38 @@ step_b:kept,262
 step_c:quantity_other never (kept),12
 step_c:quantity_other (kept),27
 step_c:kept,262
-step_d:quote_not_found,35
+step_d:quote found in the paper's elements concatenated (P182),3
+step_d:quote_not_found,32
 step_d:quote_noncontiguous (kept),1
 "step_d:derived condition (figures.json, no quote check)",15
-step_d:kept,227
+step_d:kept,230
 step_e:unit_unresolved (kept as printed),1
-step_e:kept,227
+step_e:kept,230
 step_f:species_resolved,24
-step_f:kept,227
+step_f:kept,230
 step_g:mention_unmatched,5
 step_h:simulation linked to a model entry,1
 step_h:derived unit of role null (role unresolved: a row under the paper),3
 step_h:place: about paper -> recipe,47
-step_h:place: claim -> paper,20
+step_h:place: claim -> paper,21
 step_h:place: result about a specimen -> its measurement,23
 step_h:place: cited -> paper,8
 "step_h:place: about paper, method -> paper method activity",3
-step_h:place: setting about a run -> deposition,47
+step_h:place: setting about a run -> deposition,48
 step_h:place: setting about a specimen -> deposition,5
 step_h:place: result about a run -> its specimen measurement,1
 step_h:place: caveat -> paper,1
 step_h:place: model about a simulation -> simulation,13
 step_h:place: model about a model run -> model run,33
-step_h:place: derived about a simulation -> simulation,1
+step_h:place: derived about a simulation -> simulation,2
 step_h:place: definition -> paper,3
 step_h:place: derived about a model run -> model run,3
 step_h:place: model about a model run -> simulation,4
 step_h:place: setting about a model run sharing its simulation -> model run,15
-step_m:statement filled from the quote,185
+step_m:statement filled from the quote,187
 step_m:label_as_printed filled with the quantity id,4
 step_m:links named elements without facts,1
-step_m:links resolved,14
+step_m:links resolved,16
 step_1c:data_id_not_in_figures_json,4
 step_1c:figure label other (y),7
 step_1c:figure label other (condition),2
@@ -75,23 +88,22 @@ step_1c:image -> a measurement (a photograph),1
 step_1c:curve -> model,18
 step_1c:point -> model,23
 step_i:merged,16
-step_i:kept,269
+step_i:kept,272
 step_n:comparison replicate,2
 step_n:comparison series,1
 step_n:comparison grid,1
 step_j:derived cycle_time,14
-step_j:derived exposure,1
-step_k:statement from the record,211
-step_k:statement_copies_text (reported by check),56
-step_k:statement assembled,73
-diff:setting,gold 277 compiled 95 matched 57 P 0.60 R 0.21
+step_k:statement from the record,214
+step_k:statement_copies_text (reported by check),57
+step_k:statement assembled,72
+diff:setting,gold 277 compiled 96 matched 57 P 0.59 R 0.21
 diff:model,gold 57 compiled 91 matched 35 P 0.38 R 0.61
 diff:activity,gold 46 compiled 30 matched 16 P 0.53 R 0.35
 diff:observation,gold 38 compiled 38 matched 13 P 0.34 R 0.34
-diff:claim,gold 37 compiled 20 matched 9 P 0.45 R 0.24
+diff:claim,gold 37 compiled 21 matched 10 P 0.48 R 0.27
 diff:entity,gold 34 compiled 48 matched 13 P 0.27 R 0.38
 diff:cited,gold 21 compiled 8 matched 7 P 0.88 R 0.33
-diff:derived,gold 17 compiled 28 matched 4 P 0.14 R 0.24
+diff:derived,gold 17 compiled 28 matched 5 P 0.18 R 0.29
 diff:caveat,gold 15 compiled 1 matched 1 P 1.00 R 0.07
 diff:definition,gold 10 compiled 3 matched 1 P 0.33 R 0.10
 diff:comparison,gold 8 compiled 4 matched 0 P 0.00 R 0.00

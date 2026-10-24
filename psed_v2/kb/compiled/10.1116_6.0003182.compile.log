@@ -1,16 +1,121 @@
-input: 18 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
-input: recipe fill = line 18: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_test reactant_B h2o, carrier_gas n2
+input: 19 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
+input: recipe field set to null: run_120 process_mode thermal (quote null)
+input: recipe field set to null: run_160 process_mode thermal (quote null)
+input: recipe field set to null: run_120_160 process_mode thermal (quote null)
+input: recipe field set to null: run_test process_mode thermal (quote null)
+input: recipe fill = line 19: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_test reactant_A dez, reactant_B h2o, carrier_gas n2
 a0: s9.p7: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
 a0: eq1: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
+a1: symbol species s9.p2 'd_NP' definition particle_diameter: record -, definition - -> no species
+a1: symbol species s9.p2 'L' definition feature_depth: record -, definition - -> no species
+a1: symbol species s9.p2 'φ_i' definition porosity: record -, definition - -> no species
+a1: symbol species s9.p7 't_hold' definition pulse_time: record -, definition - -> no species
+a1: symbol species eq1 't_hold' model pulse_time: record -, definition - -> no species
+a1: symbol species s9.p8 't_purge' definition purge_time: record -, definition - -> no species
+a1: symbol species eq2 't_purge' model purge_time: record -, definition - -> no species
+a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species eq6 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species eq7 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species eq8 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species fig2.cap 'T' definition deposition_temperature: record -, definition - -> no species
+a1: symbol species fig1.cap 'd_NP' definition particle_diameter: record -, definition - -> no species
+a1: symbol species fig1.cap 'L' definition feature_depth: record -, definition - -> no species
+a1: symbol species fig1.cap '\\phi_i' definition porosity: record -, definition - -> no species
 a1: step fill s9.p4 pulse_time None species dez about paper: reactant_A (the run's recipe field)
 a1: step fill s9.p4 pulse_time None species h2o about paper: reactant_B (the run's recipe field)
 a1: step fill s14.p6 purge_time 48.0 species dez about paper: purge_A (the run's recipe field)
+a1: qualifier out of scope: s9.p4 setting pulse_time stage=initial (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time relative_to=not_stated (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time over=run (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time mode=not_stated (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time ratio=1.0 (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time specimen_class=film (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time structure_class=structure (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time stage=initial (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time relative_to=not_stated (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time over=run (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time mode=not_stated (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time ratio=1.0 (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time specimen_class=film (record)
+a1: qualifier out of scope: s9.p4 setting pulse_time structure_class=structure (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p1 observation mass_gain structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 setting porosity structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived porosity structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived porosity structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived porosity structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived growth_per_cycle structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived growth_per_cycle structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p1 derived growth_per_cycle structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rise specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rise structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rate specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rate structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.x1 observation time_to_maximum specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.x1 observation time_to_maximum structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rise specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rise structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rate specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.x1 observation pressure_rate structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p7 observation pressure_rate specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p7 observation pressure_rate structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p7 observation pressure_rise specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p7 observation pressure_rise structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry specimen_class=porous_composite (record)
+a1: qualifier out of scope: s12.p15 derived reaction_stoichiometry structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: s13.p2 observation phase phase=al2o3 (record)
+a1: qualifier out of scope: s13.p2 observation phase position=top (record)
+a1: qualifier out of scope: s13.p2 observation phase phase=zno (record)
+a1: qualifier out of scope: s13.p2 observation phase position=top (record)
+a1: qualifier out of scope: s13.p2 observation phase phase=zn (record)
+a1: qualifier out of scope: s13.p2 observation phase position=top (record)
+a1: qualifier out of scope: s14.p6 setting purge_time relative_to=not_stated (record)
+a1: qualifier out of scope: s14.p6 setting purge_time over=run (record)
+a1: qualifier out of scope: s14.p6 setting purge_time mode=not_stated (record)
+a1: qualifier out of scope: s14.p6 setting purge_time ratio=1.0 (record)
+a1: qualifier out of scope: s14.p6 setting purge_time specimen_class=porous_composite (record)
+a1: qualifier out of scope: s14.p6 setting purge_time structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: fig3.cap setting cycle_number step=hold_A (record)
+a1: qualifier out of scope: fig3.cap setting cycle_number species=dez (record)
+a1: qualifier out of scope: fig3.cap setting process_pressure species=dez (record)
+a1: qualifier out of scope: fig3.cap setting process_pressure stage=initial (record)
+a1: qualifier out of scope: fig3.cap definition pressure_rate species=dez (record)
+a1: qualifier out of scope: fig3a observation pressure_rise species=dez (record)
+a1: qualifier out of scope: fig3a observation pressure_rise species=dez (record)
+a1: qualifier out of scope: fig3a observation pressure_rise species=dez (record)
+a1: qualifier out of scope: fig3c derived pressure_rate species=dez (record)
+a1: qualifier out of scope: fig3c derived pressure_rate species=dez (record)
+a1: qualifier out of scope: fig3c derived pressure_rate species=dez (record)
+a1: qualifier out of scope: tabI.cap observation porosity structure_class=nanoparticle_compact (record)
+a1: qualifier out of scope: tabII.r1c2 derived crystallite_size phase=zno (record)
+a1: qualifier out of scope: tabII.r1c3 observation phase phase=zn (record)
+a1: qualifier out of scope: tabII.r1c3 observation phase relative_to=crystalline_phases (record)
+a1: qualifier out of scope: tabII.r2c2 derived crystallite_size phase=zno (record)
+a1: qualifier out of scope: tabII.r2c4 derived crystallite_size phase=zn (record)
+a1: qualifier out of scope: tabII.r3c2 derived crystallite_size phase=zno (record)
+a1: qualifier out of scope: tabII.r3c3 observation phase phase=zn (record)
+a1: qualifier out of scope: tabII.r3c3 observation phase relative_to=crystalline_phases (record)
 a: eq1: variables_unmapped 't_hold' -> 'other'
 a: eq1: variables_unmapped 'L_pore' -> 'other'
 a: eq1: variables_unmapped '\\gamma' -> 'other'
 a: eq2: variables_unmapped '\\nu' -> 'other'
 a: eq2: variables_unmapped 'E_des' -> 'other'
 a: eq1: variable 't_hold' -> pulse_time (C5, from the paper's definition)
+d: quote found across elements: s12.p15 derived reaction_stoichiometry -> evidence s12.p14;s12.p15
+d: quote found across elements: s12.p15 derived reaction_stoichiometry -> evidence s12.p14;s12.p15
+d: quote found across elements: s12.p15 derived reaction_stoichiometry -> evidence s12.p14;s12.p15
+d: quote found across elements: fig1b setting deposition_temperature -> evidence abs.g3
+d: quote found across elements: fig1b setting deposition_temperature -> evidence abs.g3
 g: s9.p9: mention_unmatched ['160 °C']
 g: s12.p2: mention_unmatched ['Fig. 2']
 g: s12.x1: mention_unmatched ['Figure 3(a)']
@@ -25,6 +130,18 @@ h: 4 result rows moved to gre23:ent:specimen_120
 h: 4 result rows moved to gre23:ent:specimen_120_160
 h: 4 result rows moved to gre23:ent:specimen_160
 h: 1 result rows moved to gre23:run:run_test:film
+n: qualifier out of scope: fig6d observation distance element=C (figure)
+n: qualifier out of scope: fig6d observation distance element=O (figure)
+n: qualifier out of scope: fig6d observation distance element=Zn (figure)
+n: qualifier out of scope: fig6d observation distance element=Al (figure)
+n: qualifier out of scope: fig6e observation distance element=C (figure)
+n: qualifier out of scope: fig6e observation distance element=O (figure)
+n: qualifier out of scope: fig6e observation distance element=Zn (figure)
+n: qualifier out of scope: fig6e observation distance element=Al (figure)
+n: qualifier out of scope: fig6f observation distance element=C (figure)
+n: qualifier out of scope: fig6f observation distance element=O (figure)
+n: qualifier out of scope: fig6f observation distance element=Zn (figure)
+n: qualifier out of scope: fig6f observation distance element=Al (figure)
 i: merged s6.p8 into abs.g3;s6.p8 (aspect_ratio 7800)
 i: merged s8.p1 into abs.g3;s8.p1 (body_thickness 1.55)
 i: merged s9.p4 into s6.p8;s9.p4 (cycle_number 20)
@@ -41,38 +158,46 @@ i: definition ('gre23', 'dnp', 'np diameter dnp'): merged fig1.cap into s9.p2;fi
 i: definition ('gre23', 'l', 'half-thickness l'): merged fig1.cap into s9.p2;fig1.cap
 i: merged fig1a into s9.p1;fig2.cap;fig1a (material zno)
 i: merged fig1a into fig2.cap;fig1a (structure nanoparticle_compact)
-i: merged tabI.r1c0 into s9.p6;fig2.cap;fig6a;tabI.r1c0 (deposition_temperature 120)
-i: merged tabI.r2c0 into s9.p6;fig2.cap;fig6b;tabI.r2c0 (deposition_temperature 160)
+i: merged abs.g3 into abs.g3;s9.p6;fig2.cap;fig6a (deposition_temperature 120)
+i: merged abs.g3 into abs.g3;s9.p6;fig2.cap;fig6b (deposition_temperature 160)
+i: merged tabI.r1c0 into abs.g3;s9.p6;fig2.cap;fig6a;tabI.r1c0 (deposition_temperature 120)
+i: merged tabI.r1c1 into s12.p1;tabI.r1c1 (mass_gain 28.4)
+i: merged tabI.r1c6 into s12.p14;s12.p15;tabI.r1c6 (reaction_stoichiometry 1.395)
+i: merged tabI.r2c0 into abs.g3;s9.p6;fig2.cap;fig6b;tabI.r2c0 (deposition_temperature 160)
+i: merged tabI.r2c1 into s12.p1;tabI.r2c1 (mass_gain 36.4)
+i: merged tabI.r2c6 into s12.p14;s12.p15;tabI.r2c6 (reaction_stoichiometry 1.88)
 i: merged tabI.r3c0 into s9.p6;fig6c;tabI.r3c0 (deposition_temperature )
-i: merged tabII.r1c0 into s9.p6;fig2.cap;fig6a;tabI.r1c0;tabII.r1c0 (deposition_temperature 120)
-i: merged tabII.r2c0 into s9.p6;fig2.cap;fig6b;tabI.r2c0;tabII.r2c0 (deposition_temperature 160)
+i: merged tabI.r3c1 into s12.p1;tabI.r3c1 (mass_gain 26.4)
+i: merged tabI.r3c6 into s12.p14;s12.p15;tabI.r3c6 (reaction_stoichiometry 1.365)
+i: merged tabII.r1c0 into abs.g3;s9.p6;fig2.cap;fig6a;tabI.r1c0;tabII.r1c0 (deposition_temperature 120)
+i: merged tabII.r2c0 into abs.g3;s9.p6;fig2.cap;fig6b;tabI.r2c0;tabII.r2c0 (deposition_temperature 160)
 i: merged tabII.r3c0 into s9.p6;fig6c;tabI.r3c0;tabII.r3c0 (deposition_temperature )
-j: derived over 4 entities: 6 rows; not derived: {'no fact for H': 8, 'stated: gre23:s6.p8#5 17000 Torr·s': 4, 'derive raised: cannot convert cycle to 1': 7, 'no fact for t': 7, 'stated: gre23:s12.p1#9 2.37 Å/cycle': 1, 'no fact for rb': 4, 'no fact for m0': 3, 'no fact for h2': 4, 'no fact for phi': 4, 'stated: gre23:s9.p4#6 160 min': 4, 'stated: gre23:s12.p1#10 3.48 Å/cycle': 1, 'stated: gre23:abs.g4#2 2.1 Å/cycle': 1, 'no fact for rho': 1, 'n: no fact for gpc': 1, 'gpc: no fact for n': 1, 'no fact for dn': 1, 'no fact for mg': 2, 'no fact for T': 1, 'lam: no fact for T': 1, 'gpc: n: no fact for gpc': 1}
+j: derived over 4 entities: 6 rows; not derived: {'no fact for H': 8, 'stated: gre23:s6.p8#5 17000 Torr·s': 4, 'no fact for N': 7, 'no fact for t': 7, 'stated: gre23:s12.p1#9 2.37 Å/cycle': 1, 'no fact for rb': 4, 'no fact for m0': 3, 'no fact for h2': 4, 'no fact for phi': 4, 'stated: gre23:s9.p4#6 160 min': 4, 'stated: gre23:s12.p1#10 3.48 Å/cycle': 1, 'stated: gre23:abs.g4#2 2.1 Å/cycle': 1, 'no fact for rho': 1, 'n: no fact for gpc': 1, 'gpc: no fact for n': 1, 'no fact for dn': 1, 'no fact for mg': 2, 'no fact for T': 1, 'lam: no fact for T': 1, 'gpc: n: no fact for gpc': 1}
 j: caveats (query.caveats_of): 7, linked to facts 3, to nodes 0; facts reached through query.caveats_for: 22
 j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 1
 step input: {'records': 200}
 step a0: {'quantity promoted (quantity: symbol)': 2, 'quantity other: never.csv word': 2}
-step a1: {"step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1}
+step a1: {'symbol species: no species': 17, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 5, 'qualifier out of scope: over': 3, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 3, 'qualifier out of scope: specimen_class': 16, 'qualifier out of scope: structure_class': 24, 'qualifier out of scope: phase': 9, 'qualifier out of scope: position': 3, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 9}
 step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'kept': 200}
 step b: {'kept': 200}
 step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 200}
-step d: {'quote_not_found': 13, 'quote_noncontiguous (kept)': 1, 'kept': 187}
-step e: {'kept': 187}
-step f: {'species_resolved': 8, 'kept': 187}
+step d: {'quote_not_found': 8, 'quote_noncontiguous (kept)': 1, "quote found in the paper's elements concatenated (P182)": 5, 'kept': 192}
+step e: {'kept': 192}
+step f: {'species_resolved': 8, 'kept': 192}
 step g: {'mention_unmatched': 9}
-step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 51, 'place: result about a specimen -> its measurement': 51, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
-step m: {'statement filled from the quote': 150, 'links resolved': 14, 'links named elements without facts': 2}
+step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 51, 'place: result about a specimen -> its measurement': 54, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 14, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
+step m: {'statement filled from the quote': 155, 'links resolved': 14, 'links named elements without facts': 2}
 step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem)': 3, 'curve -> observation (legend qualifier)': 12}
-step i: {'merged': 18, 'caveat merged': 2, 'definition merged': 2, 'kept': 196}
-step n: {'comparison series': 1}
+step n: {'qualifier out of scope: element': 12, 'comparison series': 1}
+step i: {'merged': 26, 'caveat merged': 2, 'definition merged': 2, 'kept': 193}
 step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3}
-step k: {'statement from the record': 165, 'statement_copies_text (reported by check)': 73, 'statement assembled': 37}
+step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 75, 'statement assembled': 37}
 diff against the gold:
   setting        89   43   23  0.53  0.26
-  observation    89   76   26  0.34  0.29
-  cited          57    3    3  1.00  0.05
+  observation    89   73   26  0.36  0.29
   claim          57   17   11  0.65  0.19
+  cited          57    3    3  1.00  0.05
   caveat         53    7    7  1.00  0.13
   activity       41   36   31  0.86  0.76
   derived        31   39   21  0.54  0.68
@@ -80,8 +205,8 @@ diff against the gold:
   model          18    8    8  1.00  0.44
   definition     16    9    2  0.22  0.12
   identity        3    0    0     -  0.00
-  comparison      1    1    0  0.00  0.00
   paper           1    1    1  1.00  1.00
+  comparison      1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 6/16
 gold model rows with quantity and value: 2: {'other': 2}
-observations: gold 89, compiled 76, matched 26
+observations: gold 89, compiled 73, matched 26

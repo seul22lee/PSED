@@ -71,8 +71,39 @@ a0: fig7.cap: legend label 'CVD' parsed to nothing
 a0: fig7.cap: quantity 'Temperature' -> deposition_temperature (quantity: name 'temperature')
 a1: step fill s5.p3 pulse_time 1.0 species mocl2o2 about zou23:run:std_ald_350: reactant_A (the run's recipe field)
 a1: step fill s5.p3 pulse_time 29.0 species h_atom about zou23:run:std_ald_350: reactant_B (the run's recipe field)
+a1: qualifier out of scope: s5.p3 setting pulse_time stage=initial (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time relative_to=all_atoms (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time over=run (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time mode=ex_situ (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time ratio=1.0 (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time specimen_class=film (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time structure_class=planar (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time stage=initial (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time relative_to=all_atoms (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time over=run (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time mode=ex_situ (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time ratio=1.0 (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time specimen_class=film (record)
+a1: qualifier out of scope: s5.p3 setting pulse_time structure_class=planar (record)
+a1: qualifier out of scope: s8.p1 setting deposition_temperature species=si (record)
+a1: qualifier out of scope: s11.p5 setting aspect_ratio structure_class=trench (record)
+a1: qualifier out of scope: fig1a observation growth_per_cycle structure_class=planar (record)
+a1: qualifier out of scope: fig1b observation growth_per_cycle structure_class=planar (record)
+a1: qualifier out of scope: fig1c observation growth_per_cycle structure_class=planar (record)
+a1: qualifier out of scope: fig1d observation growth_per_cycle structure_class=planar (record)
+a1: qualifier out of scope: fig1e observation growth_per_cycle structure_class=planar (record)
+a1: qualifier out of scope: fig3.cap observation material specimen_class=film (record)
+a1: qualifier out of scope: fig3 observation growth_per_cycle stage=initial (record)
+a1: qualifier out of scope: fig4.cap setting reactant_A step=reactant_A (record)
+a1: qualifier out of scope: fig4.cap setting reactant_B step=reactant_B (record)
+a1: qualifier out of scope: fig4 observation signal_intensity gas=h2o (record)
+a1: qualifier out of scope: fig4 observation signal_intensity mode=in_situ (record)
+a1: qualifier out of scope: fig8 observation diffraction_angle phase=mo (record)
+a1: qualifier out of scope: fig8 observation diffraction_angle phase=mo (record)
+a1: qualifier out of scope: fig8 observation diffraction_angle phase=mo (record)
 a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
 a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
+d: quote found across elements: s10.p2 cited mean_free_path -> evidence s10.p1;s10.p2
 h: tree from pass 0: run 64, simulation 0, specimen 6, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 h: specimen_created zou23:run:zou23_run_ms_run:film
 h: specimen_created zou23:run:zou23_run_std_ald_350:film
@@ -198,41 +229,46 @@ h: specimen_created zou23:run:10_1116_6_0002804_fig7b_c2_p3:film
 h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig7b_c2_p3:film
 h: 2 result rows moved to zou23:run:zou23_run_ms_run:film
 h: 1 result rows moved to zou23:run:zou23_run_std_ald_350:film
+n: qualifier out of scope: fig4 observation process_pressure species=h2o (figure)
+n: qualifier out of scope: fig4 observation process_pressure species=h2o (figure)
 i: merged fig1.cap into s8.p1;fig1.cap (deposition_temperature 350)
 i: merged fig8.cap into s5.p1;fig8.cap (material mo)
+i: merged fig8;fig8.cap into fig8.cap;fig8 (diffraction_angle 40.5)
 i: merged fig8;fig8.cap into fig8.cap;fig8 (diffraction_angle 53)
+i: merged fig8;fig8.cap into fig8.cap;fig8 (diffraction_angle 58.6)
+i: merged fig8;fig8.cap into fig8.cap;fig8 (diffraction_angle 73.8)
 j: derived over 68 entities: 64 rows; not derived: {'no fact for H': 132, 'no fact for p': 136, 'E: no fact for p': 68, 'no fact for rho': 182, 'n: no fact for gpc': 22, 'gpc: no fact for n': 22, 'no fact for dn': 68, 'no fact for mg': 136, 'no fact for N': 1, 'no fact for h2': 68, 'no fact for phi': 68, 'lam: no fact for p': 68, 'gpc: n: no fact for gpc': 22, 'no fact for t': 100, 'no fact for SMo': 4, 'stated: zou23:fig1a#2 0.017 nm/cycle': 1, 'stated: zou23:fig1a#3 0.02 nm/cycle': 1, 'stated: zou23:fig1a#4 0.0218 nm/cycle': 1, 'stated: zou23:fig1a#5 0.0258 nm/cycle': 1, 'stated: zou23:fig1b#10 0.0239 nm/cycle': 1, 'stated: zou23:fig1b#11 0.025 nm/cycle': 1, 'stated: zou23:fig1b#12 0.0241 nm/cycle': 1, 'stated: zou23:fig1b#2 0.0113 nm/cycle': 1, 'stated: zou23:fig1b#3 0.015199999999999998 nm/cycle': 1, 'stated: zou23:fig1b#4 0.0181 nm/cycle': 1, 'stated: zou23:fig1b#5 0.0213 nm/cycle': 1, 'stated: zou23:fig1b#6 0.0229 nm/cycle': 1, 'stated: zou23:fig1b#7 0.0225 nm/cycle': 1, 'stated: zou23:fig1b#8 0.023 nm/cycle': 1, 'stated: zou23:fig1b#9 0.0235 nm/cycle': 1, 'stated: zou23:fig1c#2 0.0483 nm/cycle': 1, 'stated: zou23:fig1c#3 0.0372 nm/cycle': 1, 'stated: zou23:fig1c#4 0.0312 nm/cycle': 1, 'stated: zou23:fig1c#5 0.028 nm/cycle': 1, 'stated: zou23:fig1c#6 0.0248 nm/cycle': 1, 'stated: zou23:fig1c#7 0.0239 nm/cycle': 1, 'stated: zou23:fig1c#8 0.0228 nm/cycle': 1, 'stated: zou23:fig1d#2 0.02 nm/cycle': 1, 'stated: zou23:fig1d#3 0.023 nm/cycle': 1, 'stated: zou23:fig1d#4 0.0213 nm/cycle': 1, 'stated: zou23:fig1d#5 0.0211 nm/cycle': 1, 'stated: zou23:fig1d#6 0.02 nm/cycle': 1, 'stated: zou23:fig1d#7 0.02 nm/cycle': 1, 'stated: zou23:fig1d#8 0.02 nm/cycle': 1, 'stated: zou23:fig1e#2 0.0006 nm/cycle': 1, 'tc: no fact for t': 17, 'stated: zou23:fig1e#11 0.023 nm/cycle': 1, 'stated: zou23:fig1e#12 0.0239 nm/cycle': 1, 'stated: zou23:fig1e#13 0.024 nm/cycle': 1, 'stated: zou23:fig1e#14 0.0227 nm/cycle': 1, 'stated: zou23:fig1e#15 0.0224 nm/cycle': 1, 'stated: zou23:fig1e#16 0.0224 nm/cycle': 1, 'stated: zou23:fig1e#17 0.0219 nm/cycle': 1, 'stated: zou23:fig1e#18 0.0224 nm/cycle': 1, 'stated: zou23:fig1e#3 0.0013 nm/cycle': 1, 'stated: zou23:fig1e#4 0.0025 nm/cycle': 1, 'stated: zou23:fig1e#5 0.0037999999999999996 nm/cycle': 1, 'stated: zou23:fig1e#6 0.0057 nm/cycle': 1, 'stated: zou23:fig1e#7 0.0078 nm/cycle': 1, 'stated: zou23:fig1e#8 0.0118 nm/cycle': 1, 'stated: zou23:fig1e#9 0.0143 nm/cycle': 1, 'stated: zou23:fig1e#10 0.0173 nm/cycle': 1}
 j: caveats (query.caveats_of): 2, linked to facts 2, to nodes 0; facts reached through query.caveats_for: 6
 j: claim nodes (query.claim_nodes): 17 nodes for 19 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 11
+j: comparisons from figures.json (1c): 12
 step input: {'records': 111, 'unit derived (derived: point_per_unit, run)': 58, 'coordinate setting species (the axis names it)': 29, 'coordinate setting step reactant_A': 4, 'condition of a derived unit (value)': 41, 'coordinate setting step reactant_B': 11, 'coordinate setting step purge_A': 7, 'coordinate setting step purge_B': 7, 'condition of a derived unit (other)': 26, 'unit derived (derived: curve_per_unit, run)': 2}
 step a0: {'quantity promoted (quantity: alias)': 29, 'derived legend label parsed to nothing (other)': 26, 'quantity promoted (quantity: name)': 12}
-step a1: {'process_mode from the recipe field: hot_wire': 4, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1}
+step a1: {'process_mode from the recipe field: hot_wire': 4, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 2, 'qualifier out of scope: over': 2, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 3, 'qualifier out of scope: structure_class': 8, 'qualifier out of scope: species': 1, 'qualifier out of scope: step': 2, 'qualifier out of scope: gas': 1, 'qualifier out of scope: phase': 3}
 step a: {'numeric string coerced (C4)': 2, 'kept': 182}
 step b: {'statement_only (kept: P138 form)': 1, 'kept': 182}
 step c: {'quantity_other (kept)': 26, 'kept': 182}
-step d: {'quote_not_found': 7, 'quote_noncontiguous (kept)': 4, 'derived condition (figures.json, no quote check)': 67, 'kept': 175}
-step e: {'kept': 175}
-step f: {'species_resolved': 12, 'kept': 175}
-step h: {'place: claim -> paper': 19, 'place: cited -> paper': 2, 'place: about paper -> recipe': 20, 'place: setting about a run -> deposition': 81, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 2, 'specimen_created': 62, 'place: result about a run -> film measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'film of a run with several specimens': 8, 'place: result about a run -> film (several specimens) measurement': 7, 'place: result about a specimen -> its measurement': 21, 'place: definition -> paper': 1, 'place: result about a run -> its specimen measurement': 1, 'place: about unknown -> recipe (flagged)': 5}
+step d: {'quote_not_found': 6, "quote found in the paper's elements concatenated (P182)": 1, 'quote_noncontiguous (kept)': 4, 'derived condition (figures.json, no quote check)': 67, 'kept': 176}
+step e: {'kept': 176}
+step f: {'species_resolved': 12, 'kept': 176}
+step h: {'place: claim -> paper': 19, 'place: cited -> paper': 3, 'place: about paper -> recipe': 20, 'place: setting about a run -> deposition': 81, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 2, 'specimen_created': 62, 'place: result about a run -> film measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'film of a run with several specimens': 8, 'place: result about a run -> film (several specimens) measurement': 7, 'place: result about a specimen -> its measurement': 21, 'place: definition -> paper': 1, 'place: result about a run -> its specimen measurement': 1, 'place: about unknown -> recipe (flagged)': 5}
 step m: {'label_as_printed filled with the quantity id': 15, 'statement filled from the quote': 151, 'links resolved': 11}
 step 1c: {'figure label other (x)': 2, 'figure label other (series)': 2, 'figure axis dimension mismatch (values as printed)': 1, 'figure axis unit unknown (values as printed)': 1, 'figure label other (y)': 3, 'unbound item (point): origin': 2, 'point -> observation': 82, 'unbound item (point): ambiguous': 8, 'curve -> observation (legend method)': 4, 'curve -> observation': 2, 'curve -> observation (legend qualifier)': 10, 'data of a flagged panel (rule verdict)': 17, 'peak -> observation': 4, 'image -> a measurement (a photograph)': 8}
-step i: {'merged': 3, 'kept': 282}
-step n: {'comparison replicate': 5, 'comparison grid': 1, 'comparison series': 5}
+step n: {'qualifier out of scope: species': 2, 'comparison replicate': 6, 'comparison grid': 1, 'comparison series': 5}
+step i: {'merged': 6, 'kept': 280}
 step j: {'derived cycle_time': 35, 'derived deposition_rate': 29}
-step k: {'statement from the record': 173, 'statement_copies_text (reported by check)': 39, 'statement assembled': 173}
+step k: {'statement from the record': 174, 'statement_copies_text (reported by check)': 39, 'statement assembled': 170}
 diff against the gold:
   setting        47  105   18  0.17  0.38
-  observation    45  153   28  0.18  0.62
+  observation    45  150   28  0.19  0.62
   activity       23  144   21  0.15  0.91
   claim          19   19   10  0.53  0.53
-  cited          11    2    1  0.50  0.09
+  cited          11    3    1  0.33  0.09
   entity          8   68    8  0.12  1.00
   caveat          6    2    0  0.00  0.00
-  comparison      3   11    1  0.09  0.33
-  paper           1    1    0  0.00  0.00
+  comparison      3   12    1  0.08  0.33
   derived         1   64    0  0.00  0.00
+  paper           1    1    0  0.00  0.00
   definition      0    1    0  0.00     -
 gold definitions with an eq* element in evidence: 0/0
 gold model rows with quantity and value: 0: {}
-observations: gold 45, compiled 153, matched 28
+observations: gold 45, compiled 150, matched 28

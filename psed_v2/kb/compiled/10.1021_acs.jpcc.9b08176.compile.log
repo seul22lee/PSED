@@ -1,56 +1,83 @@
 input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 4
-input: 21 lines; pass 0 = line 3; 11 pass-1 lines for 11 groups; ignored lines 16 (abstract+s1+s2+s3+s4+s5), 17 (fig1), 18 (fig1C), 19 (tab1)
-input: recipe fill = line 21: run_sio2_3_8s reactant_A bdeas, reactant_B o_atom, process_mode plasma; run_sio2_12s reactant_A bdeas, reactant_B o_atom, process_mode plasma; run_sio2_38s reactant_A bdeas, reactant_B o_atom, process_mode plasma; run_sio2_120s reactant_A bdeas, reactant_B o_atom, process_mode plasma; run_tio2_12s reactant_A tdmat, reactant_B o_atom, process_mode plasma; run_tio2_120s reactant_A tdmat, reactant_B o_atom, process_mode plasma; run_al2o3_120s reactant_A tma, reactant_B o_atom, process_mode plasma; run_hfo2_120s reactant_A tdmacph, reactant_B o_atom, process_mode plasma
+input: 22 lines; pass 0 = line 3; 11 pass-1 lines for 11 groups; ignored lines 16 (abstract+s1+s2+s3+s4+s5), 17 (fig1), 18 (fig1C), 19 (tab1)
+input: recipe fill = line 22: run_sio2_3_8s reactant_A bdeas, reactant_B o2, process_mode plasma; run_sio2_12s reactant_A bdeas, reactant_B o2, process_mode plasma; run_sio2_38s reactant_A bdeas, reactant_B o2, process_mode plasma; run_sio2_120s reactant_A bdeas, reactant_B o2, process_mode plasma; run_tio2_12s reactant_A tdmat, reactant_B o2, process_mode plasma; run_tio2_120s reactant_A tdmat, reactant_B o2, process_mode plasma; run_al2o3_120s reactant_A tma, reactant_B o2, process_mode plasma; run_hfo2_120s reactant_A tdmacph, reactant_B o2, process_mode plasma
 a0: s5.p3: quantity 'spatial resolution' -> probe_resolution (quantity: alias 'spatial resolution')
-a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
-a1: symbol species abs.g2 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
-a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
-a1: symbol species abs.g3 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
 a1: symbol species s3.p3 'r' cited recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
+a1: symbol species s4.p1 'θ(z, t)' definition surface_coverage: record -, definition - -> no species
+a1: symbol species eq1 'eq 1' model reactant_number_density: record -, definition - -> no species
+a1: symbol species eq2 'eq 2' model surface_coverage: record -, definition - -> no species
+a1: symbol species s4.p3 'AR' model aspect_ratio: record -, definition - -> no species
 a1: symbol species s4.p3 's_0' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species s6.p5 'r' derived recombination_probability: record al2o3, definition tab1.cap: {'o_atom'} -> corrected from the definition (o_atom)
-a1: symbol species s6.p5 'r' derived recombination_probability: record hfo2, definition tab1.cap: {'o_atom'} -> corrected from the definition (o_atom)
+a1: symbol species eq3 'eq 3' model reactant_number_density: record -, definition - -> no species
+a1: symbol species eq4 'eq 4' model reactant_number_density: record -, definition - -> no species
+a1: symbol species eq5 'eq 5' model dimensionless_distance: record -, definition - -> no species
+a1: symbol species eq6 'eq 6' model coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species s4.p11 'z̃_50%' definition coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species s6.p2 'AR' cited aspect_ratio: record hfo2, definition - -> kept: its own element names it
+a1: symbol species s6.p4 'z̃_50%' definition dimensionless_distance: record -, definition - -> no species
 a1: symbol species fig1.cap 'r' model recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
 a1: symbol species fig1C 'r' model recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
-a1: symbol species fig3.cap 'r' derived recombination_probability: record sio2, definition tab1.cap: {'o_atom'} -> corrected from the definition (o_atom)
-a1: symbol species fig3.cap 'r' derived recombination_probability: record tio2, definition tab1.cap: {'o_atom'} -> corrected from the definition (o_atom)
+a1: symbol species fig2.cap 'PD^{50%}' definition penetration_depth: record -, definition - -> no species
 a1: symbol species tab1.cap 'r' definition recombination_probability: record o_atom, definition - -> kept: its own element names it
+a1: symbol species s4.p3 'AR': species hfo2 from the symbol's evidence in this paper (s6.p2)
+a1: qualifier out of scope: s4.p3 model aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s5.p3 observation film_thickness species=sio2 (record)
+a1: qualifier out of scope: s5.p3 observation film_thickness species=tio2 (record)
+a1: qualifier out of scope: s5.p3 observation film_thickness species=al2o3 (record)
+a1: qualifier out of scope: s5.p3 observation film_thickness species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=sio2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=al2o3 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=tio2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time level=50% (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time relative_to=not_stated (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time over=not_stated (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time mode=not_stated (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time level=50% (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time relative_to=not_stated (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time over=not_stated (record)
+a1: qualifier out of scope: s6.p5 derived pulse_time mode=not_stated (record)
+a1: qualifier out of scope: fig2.cap setting structure species=sio2 (record)
+a1: qualifier out of scope: fig2.cap setting structure structure_class=lateral_channel (record)
+d: quote found across elements: s6.p9 claim None -> evidence s6.p8;s6.p9
 h: simulation sim_slope ('eq 6') -> model arts_slope (symbol 'eq 6' of this paper)
 h: tree from pass 0: run 8, simulation 1, specimen 8, model_run 2, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s5.p1 into s4.p10;s5.p1 (process_pressure 50)
 i: claim ('art19', 'surface_recombination', 'limits', 'penetration_depth', 'through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. this sets a practical limit on the penetration depth of the deposited film'): merged fig1A into fig1.cap;fig1A
 i: merged fig1C into fig1.cap;fig1C (recombination_probability 5e-05)
+i: merged fig2.cap into s5.p2;fig2.cap (structure pillarhall_3)
 i: claim ('art19', 'material', 'causes', 'surface_recombination', 'a strong variation in film penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent.'): merged fig2A into fig2.cap;fig2A
-i: merged tab1.r1c1 into fig3.cap;tab1.r1c1 (recombination_probability 6e-05)
-i: merged tab1.r2c1 into fig3.cap;tab1.r2c1 (recombination_probability 7e-05)
+i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 6e-05)
+i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 7e-05)
 j: derived over 10 entities: 8 rows; not derived: {'no fact for S': 8, 'no fact for p': 18, 'E: no fact for p': 10, 'no fact for rho': 20, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 12, 'no fact for dn': 10, 'no fact for mg': 20, 'no fact for t': 12, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'gpc: n: no fact for gpc': 10, 'no fact for T': 2, 'lam: no fact for T': 2}
 j: caveats (query.caveats_of): 1, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 3
-j: claim nodes (query.claim_nodes): 11 nodes for 18 claims; claims without a full triple (query.node_of empty): 0
+j: claim nodes (query.claim_nodes): 12 nodes for 19 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 3
 step input: {'records': 101}
 step a0: {'quantity promoted (quantity: alias)': 1}
-step a1: {'symbol species: from the definition': 7, 'symbol species: no species': 1, 'symbol species: corrected from the definition': 4, 'symbol species: kept: its own element names it': 1, 'process_mode from the recipe field: plasma': 8}
+step a1: {'symbol species: from the definition': 3, 'symbol species: no species': 12, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: plasma': 8, 'qualifier out of scope: species': 11, 'qualifier out of scope: level': 2, 'qualifier out of scope: relative_to': 2, 'qualifier out of scope: over': 2, 'qualifier out of scope: mode': 2, 'qualifier out of scope: structure_class': 1}
 step a: {'kept': 109}
 step b: {'model_with_value (kept)': 4, 'kept': 109}
 step c: {'kept': 109}
-step d: {'quote_not_found': 3, 'kept': 106}
-step e: {'kept': 106}
-step f: {'species_resolved': 8, 'species_unresolved (kept)': 1, 'kept': 106}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 20, 'place: about paper, method -> paper method activity': 7, 'place: about paper -> recipe': 22, 'place: cited -> paper': 12, 'place: definition -> paper': 10, 'place: model about a simulation -> simulation': 2, 'place: setting about a run -> deposition': 15, 'place: result about a run -> its specimen measurement': 2, 'place: derived about a model run -> model run': 8, 'place: caveat -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 2, 'place: setting about a specimen -> deposition': 2, 'place: result about a specimen -> its measurement': 2}
+step d: {'quote_not_found': 2, "quote found in the paper's elements concatenated (P182)": 1, 'kept': 107}
+step e: {'kept': 107}
+step f: {'species_resolved': 8, 'species_unresolved (kept)': 1, 'kept': 107}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 21, 'place: about paper, method -> paper method activity': 7, 'place: about paper -> recipe': 22, 'place: cited -> paper': 12, 'place: definition -> paper': 10, 'place: model about a simulation -> simulation': 2, 'place: setting about a run -> deposition': 15, 'place: result about a run -> its specimen measurement': 2, 'place: derived about a model run -> model run': 8, 'place: caveat -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 2, 'place: setting about a specimen -> deposition': 2, 'place: result about a specimen -> its measurement': 2}
 step m: {'statement filled from the quote': 66, 'links resolved': 15}
 step 1c: {'unbound item (image): ambiguous': 1, 'curve -> observation': 8, 'curve -> model': 2}
-step i: {'merged': 4, 'claim merged': 2, 'kept': 110}
+step i: {'merged': 5, 'claim merged': 2, 'kept': 110}
 step n: {'comparison replicate': 1, 'comparison series': 2}
 step j: {'derived cycle_time': 8}
-step k: {'statement from the record': 100, 'statement_copies_text (reported by check)': 27, 'statement assembled': 18}
+step k: {'statement from the record': 100, 'statement_copies_text (reported by check)': 24, 'statement assembled': 18}
 diff against the gold:
-  setting        50   30   16  0.53  0.32
+  setting        50   29   16  0.55  0.32
   observation    36   15   14  0.93  0.39
   cited          23   12    8  0.67  0.35
   activity       22   21   11  0.52  0.50
   model          22   11   10  0.91  0.45
   definition     16   10    2  0.20  0.12
-  claim          13   18    7  0.39  0.54
+  claim          13   19    7  0.37  0.54
   entity         12   10    8  0.80  0.67
   caveat          8    1    0  0.00  0.00
   derived         7   21    5  0.24  0.71

@@ -1,11 +1,11 @@
 metric,value
-ontology_hash,e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
+ontology_hash,9f94fb6aa79b009a5c9a035420201c994a6fc225d4c274dff815e967bd472e53
 lines_used,4;5;6;7;8;9;10;11;12;13;14;15;16;17;18
 lines_ignored,
 facts,370
 tree_rows,197
 derived_by_kb,4
-dropped,54
+dropped,52
 unmapped,5
 unmapped_never,4
 promoted,32
@@ -13,20 +13,30 @@ step_input:records,330
 step_a0:quantity other: never.csv word,4
 step_a0:value_text promoted (value:crystallinity: value),32
 step_a1:process_mode from the recipe field: plasma,42
+step_a1:qualifier out of scope: species,30
+step_a1:qualifier out of scope: phase,5
+step_a1:qualifier out of scope: position,2
+step_a1:qualifier out of scope: reference,2
+step_a1:qualifier out of scope: relative_to,2
+step_a1:qualifier out of scope: specimen_class,7
+step_a1:qualifier out of scope: structure_class,2
+step_a1:qualifier out of scope: mode,5
 "step_a_p158:P158 rule 4 (predates the freeze, kept)",2
 step_a:kept,372
 step_b:kept,372
 step_c:quantity_other never (kept),4
 step_c:kept,372
-step_d:quote_not_found,54
-step_d:kept,318
+step_d:quote found in the paper's elements concatenated (P182),2
+step_d:quote_not_found,52
+step_d:kept,320
 step_e:unit_unresolved (kept as printed),1
-step_e:kept,318
+step_e:kept,320
 step_f:species_resolved,5
-step_f:kept,318
+step_f:kept,320
 step_g:mention_unmatched,32
-step_h:place: claim -> paper,37
+step_h:place: claim -> paper,38
 step_h:place: cited -> paper,11
+step_h:place: definition -> paper,1
 step_h:place: about paper -> recipe,75
 step_h:specimen_created,42
 step_h:place: result about a run -> film measurement,91
@@ -34,8 +44,8 @@ step_h:place: result about a run -> film measurement,91
 step_h:place: setting about a run -> deposition,88
 step_h:place: caveat -> paper,1
 step_m:label_as_printed filled with the quantity id,17
-step_m:statement filled from the quote,269
-step_m:links resolved,10
+step_m:statement filled from the quote,270
+step_m:links resolved,11
 step_m:links named elements without facts,3
 step_1c:peak -> observation,25
 step_1c:image -> a measurement (a photograph),4
@@ -45,7 +55,7 @@ step_1c:cell without a quantity id (result left out),32
 step_1c:image -> a measurement (tem),2
 step_1c:curve -> observation,6
 step_1c:unbound item (image): no unit named,2
-step_i:merged,21
+step_i:merged,23
 step_i:kept,366
 step_n:comparison replicate,3
 step_n:comparison series,3
@@ -53,18 +63,18 @@ step_n:comparison grid,1
 step_j:derived sheet_resistance,1
 step_j:derived element_ratio{element=H;reference_element=Mo},3
 step_k:statement from the record,297
-step_k:statement_copies_text (reported by check),44
+step_k:statement_copies_text (reported by check),45
 step_k:statement assembled,73
 diff:observation,gold 313 compiled 167 matched 115 P 0.69 R 0.37
-diff:setting,gold 251 compiled 149 matched 67 P 0.45 R 0.27
+diff:setting,gold 251 compiled 147 matched 67 P 0.46 R 0.27
 diff:activity,gold 249 compiled 147 matched 137 P 0.93 R 0.55
 diff:cited,gold 58 compiled 11 matched 6 P 0.55 R 0.10
 diff:entity,gold 54 compiled 42 matched 42 P 1.00 R 0.78
 diff:caveat,gold 54 compiled 1 matched 1 P 1.00 R 0.02
-diff:claim,gold 52 compiled 37 matched 27 P 0.73 R 0.52
-diff:definition,gold 14 compiled 0 matched 0 P - R 0.00
+diff:claim,gold 52 compiled 38 matched 27 P 0.71 R 0.52
+diff:definition,gold 14 compiled 1 matched 1 P 1.00 R 0.07
 diff:comparison,gold 12 compiled 7 matched 2 P 0.29 R 0.17
 diff:model,gold 8 compiled 1 matched 1 P 1.00 R 0.12
 diff:derived,gold 4 compiled 4 matched 0 P 0.00 R 0.00
-diff:identity,gold 1 compiled 0 matched 0 P - R 0.00
 diff:paper,gold 1 compiled 1 matched 1 P 1.00 R 1.00
+diff:identity,gold 1 compiled 0 matched 0 P - R 0.00

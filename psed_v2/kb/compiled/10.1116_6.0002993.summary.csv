@@ -1,11 +1,11 @@
 metric,value
-ontology_hash,e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
+ontology_hash,9f94fb6aa79b009a5c9a035420201c994a6fc225d4c274dff815e967bd472e53
 lines_used,1;2;3;4;5;6;7
 lines_ignored,
-facts,171
+facts,172
 tree_rows,74
 derived_by_kb,21
-dropped,2
+dropped,1
 unmapped,17
 unmapped_never,4
 promoted,2
@@ -18,6 +18,11 @@ step_a0:derived legend name -> categorical value,2
 step_a1:process_mode_from_the_recipe_field,1
 step_a1:process_mode from the recipe field: plasma,8
 step_a1:process_mode from the recipe field: thermal,5
+step_a1:qualifier out of scope: gas,1
+step_a1:qualifier out of scope: species,1
+step_a1:qualifier out of scope: phase,2
+step_a1:qualifier out of scope: position,3
+step_a1:qualifier out of scope: mode,8
 step_a:kept,136
 step_b:kept,136
 step_c:quantity_other never (kept),3
@@ -25,14 +30,14 @@ step_c:quantity_other (kept),8
 step_c:quantity_other of a derived value (the panel's row written once),1
 step_c:kept,136
 step_d:quote_noncontiguous (kept),1
-step_d:quote_not_found,1
+step_d:quote found in the paper's elements concatenated (P182),1
 "step_d:derived condition (figures.json, no quote check)",4
-step_d:kept,135
+step_d:kept,136
 step_e:unit_unresolved (kept as printed),1
-step_e:kept,135
-step_f:kept,135
+step_e:kept,136
+step_f:kept,136
 step_g:mention_unmatched,5
-step_h:place: claim -> paper,7
+step_h:place: claim -> paper,8
 step_h:place: setting about a run -> deposition,30
 step_h:specimen_created,8
 step_h:place: result about a run -> film measurement,18
@@ -45,7 +50,7 @@ step_h:place: setting about a specimen -> deposition,10
 step_h:place: caveat -> paper,2
 step_m:statement filled from the quote,120
 step_m:label_as_printed filled with the quantity id,2
-step_m:links resolved,3
+step_m:links resolved,4
 step_1c:figure label other (series),1
 step_1c:figure label other (x),2
 step_1c:figure label other (y),2
@@ -54,24 +59,24 @@ step_1c:image -> a measurement (a photograph),9
 step_1c:peak -> observation,4
 step_1c:unbound item (panel): ambiguous,3
 step_i:merged,8
-step_i:kept,150
+step_i:kept,151
 step_n:comparison replicate,2
 step_n:comparison series,4
 step_n:comparison grid,3
 step_j:derived cycle_time,15
 step_j:derived deposition_rate,6
-step_k:statement from the record,131
+step_k:statement from the record,132
 step_k:statement_copies_text (reported by check),72
 step_k:statement assembled,40
 diff:setting,gold 54 compiled 55 matched 18 P 0.33 R 0.33
 diff:observation,gold 51 compiled 74 matched 33 P 0.45 R 0.65
 diff:activity,gold 30 compiled 49 matched 27 P 0.55 R 0.90
 diff:entity,gold 14 compiled 15 matched 13 P 0.87 R 0.93
-diff:claim,gold 13 compiled 7 matched 4 P 0.57 R 0.31
+diff:claim,gold 13 compiled 8 matched 5 P 0.62 R 0.38
 diff:cited,gold 9 compiled 6 matched 4 P 0.67 R 0.44
 diff:comparison,gold 7 compiled 9 matched 1 P 0.11 R 0.14
 diff:caveat,gold 5 compiled 2 matched 2 P 1.00 R 0.40
 diff:derived,gold 4 compiled 27 matched 2 P 0.07 R 0.50
 diff:identity,gold 2 compiled 0 matched 0 P - R 0.00
-diff:model,gold 1 compiled 0 matched 0 P - R 0.00
 diff:paper,gold 1 compiled 1 matched 0 P 0.00 R 0.00
+diff:model,gold 1 compiled 0 matched 0 P - R 0.00

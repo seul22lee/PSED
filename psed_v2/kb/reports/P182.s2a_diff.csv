@@ -1,0 +1,16 @@
+entry,hand_list,derived_list,key,difference,reason
+pulse_time,step,"step, species",species,"derived, not in the hand list","accepted (user, P182): P181's step fill reads the species of a pulse_time; lists.SUBSTANCE_SCOPED"
+purge_time,step,"step, species",species,"derived, not in the hand list","accepted (user, P182): P181's step fill reads the species of a purge_time"
+coated_aspect_ratio,basis,"level, basis",level,"derived, not in the hand list","the user's P182 step 3: the gold's coated aspect ratio at PD50% / front_start / front_end (art19, gao15, yim22)"
+composition,element,"element, relative_to",relative_to,"derived, not in the hand list","accepted (user, P182): relative_to values all_atoms / metal_atoms are element-fraction denominators"
+partial_pressure,species,"species, gas",gas,"derived, not in the hand list","accepted (user, P182): the gas qualifier's meaning names a partial pressure"
+exposure,species,"step, species, over",step,"derived, not in the hand list","accepted (user, P182): form rule P158 1 requires a step on an exposure setting"
+exposure,species,"step, species, over",over,"derived, not in the hand list","accepted (user, P182): lists.DERIVED exposure{over=run}"
+film_thickness,position,"position, stage",stage,"derived, not in the hand list","the user's P182 step 3: the gold's film thickness before the deposition, stage=initial (zou23)"
+penetration_depth,level,"level, origin",origin,"derived, not in the hand list","accepted (user, P182): lists.py label penetration_depth{level=50%;origin=entrance} 'PD50'"
+gas_flow_rate,gas,"step, gas, ratio",step,"derived, not in the hand list","accepted (user, P182): lists.py labels gas_flow_rate{step=plasma;gas=h2s} 'H2S flow'"
+gas_flow_rate,gas,"step, gas, ratio",ratio,"derived, not in the hand list",the user's P182 ratio scope: the settings lists.KEYED keys to a plasma_gas_ratio (gas_flow_rate; the gold's mat22 Table 2 flows)
+atoms_per_cycle,"element, over","element, relative_to, over",relative_to,"derived, not in the hand list","accepted (user, P182): lists.py label atoms_per_cycle{element=Mo;over=run;relative_to=...}"
+element_fraction,element,"element, relative_to",relative_to,"derived, not in the hand list","accepted (user, P182): relative_to values all_atoms / metal_atoms are element-fraction denominators"
+molar_mass,species,"species, gas",gas,"derived, not in the hand list",the user's P182 step 3: the gold's molar mass of the background gas n2 (yim22)
+molecule_diameter,species,"species, gas",gas,"derived, not in the hand list",the user's P182 step 3: the gold's molecule diameter of the background gas n2 (yim22)
