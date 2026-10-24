@@ -19,6 +19,15 @@ a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure
 a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure')
 a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure')
 a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure')
+a1: symbol species s24.p2 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species s24.p2 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species s24.p2 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species s24.p2 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species s25.p18 's_0' model initial_sticking_coefficient: record -, definition - -> no species
+a1: symbol species fig9a 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species fig9b 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species fig9c 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
+a1: symbol species fig9d 'O_2 pressures' setting partial_pressure: record -, definition - -> no species
 a: s18.p1: qualifiers.n '1' -> 1.0 (C4)
 a: s18.p1: qualifiers.n '1' -> 1.0 (C4)
 a: s18.p1: qualifiers.n '1' -> 1.0 (C4)
@@ -76,12 +85,36 @@ i: merged tabI.r5c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.c
 i: merged tabI.r6c3 into s25.p13;s25.p15;fig11.cap;fig13.cap;tabI.r6c3 (process_pressure 0.005)
 i: merged tabI.r7c3 into tabI.r2c3;tabI.r3c3;tabI.r7c3 (process_pressure )
 i: merged tabI.r7c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4 (plasma_power 150)
-j: derived over 23 entities: 10 rows; not derived: {'no fact for S': 10, 'no fact for p': 34, 'E: no fact for p': 23, 'no fact for rho': 46, 'n: no fact for gpc': 23, 'gpc: no fact for n': 23, 'no fact for H': 36, 'no fact for dn': 23, 'no fact for mg': 46, 'no fact for t': 36, 'no fact for h2': 23, 'no fact for phi': 23, 'no fact for T': 12, 'lam: no fact for T': 12, 'gpc: n: no fact for gpc': 23, 'lam: no fact for p': 11}
+j: transform process_mode wer21:ent:specimen_fig9a: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:ent:specimen_fig9b: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:ent:specimen_fig9c: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:ent:specimen_fig9d: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c1: derived plasma from plasma_power 50 (wer21:fig11.cap#1)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c2: derived plasma from plasma_power 75 (wer21:fig11.cap#2)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c3: derived plasma from plasma_power 75 (wer21:fig11.cap#3)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c4: derived plasma from plasma_power 125 (wer21:fig11.cap#4)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c5: derived plasma from plasma_power 150 (wer21:fig11.cap#5)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig11_c6: derived plasma from plasma_power 200 (wer21:fig11.cap#6)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig12_c1: none (no input)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig12_c2: none (no input)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig12_c3: none (no input)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig12_c4: none (no input)
+j: transform process_mode wer21:mrun:10_1116_6_0001094_fig12_c5: none (no input)
+j: transform process_mode wer21:unit:10_1116_6_0001094_fig13_c1: none (no input)
+j: transform process_mode wer21:unit:10_1116_6_0001094_fig14_c1: none (no input)
+j: transform process_mode wer21:run:run_fig2_c1:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:run:run_fig2_c2:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:run:run_fig2_c3:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:run:run_fig2_c4:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:run:run_fig2_c5:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: transform process_mode wer21:run:run_fig2_c6:film: derived plasma from plasma_configuration inductive (wer21:s15.p1#2)
+j: derived over 23 entities: 26 rows; not derived: {'no fact for S': 10, 'no fact for p': 34, 'E: no fact for p': 23, 'no fact for rho': 46, 'n: no fact for gpc': 23, 'gpc: no fact for n': 23, 'no fact for H': 36, 'no fact for dn': 23, 'no fact for mg': 46, 'no fact for t': 36, 'no fact for h2': 23, 'no fact for phi': 23, 'no fact for T': 12, 'lam: no fact for T': 12, 'gpc: n: no fact for gpc': 23, 'lam: no fact for p': 11}
 j: caveats (query.caveats_of): 15, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
 j: claim nodes (query.claim_nodes): 17 nodes for 23 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 5
 step input: {'records': 173, 'unit derived (derived: curve_per_unit, model_run)': 11, 'condition of a derived unit (value)': 17, 'unit derived (derived: curve_per_unit, None)': 2}
 step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other naming a method entry (kept)': 1, 'quantity promoted (quantity: symbol)': 7, 'quantity other: never.csv word': 1, 'quantity promoted (quantity: id)': 6, 'quantity promoted (quantity: name)': 5}
+step a1: {'symbol species: no species': 9}
 step a: {'numeric string coerced (C4)': 6, 'schema:enum': 2, 'schema:required': 2, 'schema:type': 6, 'kept': 180}
 step a_fields: {'effect': 2, 'qualifiers': 8}
 step b: {'model_with_value (kept)': 5, 'kept': 180}
@@ -94,7 +127,7 @@ step m: {'statement filled from the quote': 126, 'label_as_printed filled with t
 step 1c: {'figure label other (condition), never': 2, 'figure label other (x)': 2, 'figure label other (y), never': 4, 'figure label other (x), never': 5, 'data of a flagged panel (rule verdict)': 31, 'curve -> observation': 32, 'unbound item (peak): no unit named': 16, 'unbound item (panel): no unit named': 5, 'image -> a measurement (a photograph)': 4, 'curve -> model': 11}
 step i: {'merged': 37, 'kept': 187}
 step n: {'comparison series': 4, 'comparison replicate': 1}
-step j: {'derived cycle_time': 10}
-step k: {'statement from the record': 140, 'statement_copies_text (reported by check)': 28, 'statement assembled': 57}
+step j: {'derived cycle_time': 10, 'transform process_mode: derived plasma': 16, 'transform process_mode: none': 7}
+step k: {'statement from the record': 140, 'statement_copies_text (reported by check)': 28, 'statement assembled': 73}
 diff against the gold (type, gold, compiled, matched, precision, recall):
 no gold: kb/pilot/10.1116_6.0001094.facts.csv absent (not scored)

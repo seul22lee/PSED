@@ -43,7 +43,11 @@ i: merged tabI.r3c0 into s9.p6;fig6c;tabI.r3c0 (deposition_temperature )
 i: merged tabII.r1c0 into s9.p6;fig2.cap;fig6a;tabI.r1c0;tabII.r1c0 (deposition_temperature 120)
 i: merged tabII.r2c0 into s9.p6;fig2.cap;fig6b;tabI.r2c0;tabII.r2c0 (deposition_temperature 160)
 i: merged tabII.r3c0 into s9.p6;fig6c;tabI.r3c0;tabII.r3c0 (deposition_temperature )
-j: derived over 4 entities: 6 rows; not derived: {'no fact for H': 8, 'stated: gre23:s6.p8#5 17000 Torr·s': 4, 'derive raised: cannot convert cycle to 1': 7, 'no fact for t': 7, 'stated: gre23:s12.p1#9 2.37 Å/cycle': 1, 'no fact for rb': 4, 'no fact for m0': 3, 'no fact for h2': 4, 'no fact for phi': 4, 'stated: gre23:s9.p4#6 160 min': 4, 'stated: gre23:s12.p1#10 3.48 Å/cycle': 1, 'stated: gre23:abs.g4#2 2.1 Å/cycle': 1, 'no fact for rho': 1, 'n: no fact for gpc': 1, 'gpc: no fact for n': 1, 'no fact for dn': 1, 'no fact for mg': 2, 'no fact for T': 1, 'lam: no fact for T': 1, 'gpc: n: no fact for gpc': 1}
+j: transform process_mode gre23:ent:specimen_120: derived thermal from reactant_B h2o (gre23:s9.p4#3)
+j: transform process_mode gre23:ent:specimen_160: derived thermal from reactant_B h2o (gre23:s9.p4#3)
+j: transform process_mode gre23:ent:specimen_120_160: derived thermal from reactant_B h2o (gre23:s9.p4#3)
+j: transform process_mode gre23:run:run_test:film: derived thermal from reactant_B h2o (gre23:s9.p4#3)
+j: derived over 4 entities: 10 rows; not derived: {'no fact for H': 8, 'stated: gre23:s6.p8#5 17000 Torr·s': 4, 'derive raised: cannot convert cycle to 1': 7, 'no fact for t': 7, 'stated: gre23:s12.p1#9 2.37 Å/cycle': 1, 'no fact for rb': 4, 'no fact for m0': 3, 'no fact for h2': 4, 'no fact for phi': 4, 'stated: gre23:s9.p4#6 160 min': 4, 'stated: gre23:s12.p1#10 3.48 Å/cycle': 1, 'stated: gre23:abs.g4#2 2.1 Å/cycle': 1, 'no fact for rho': 1, 'n: no fact for gpc': 1, 'gpc: no fact for n': 1, 'no fact for dn': 1, 'no fact for mg': 2, 'no fact for T': 1, 'lam: no fact for T': 1, 'gpc: n: no fact for gpc': 1}
 j: caveats (query.caveats_of): 7, linked to facts 3, to nodes 0; facts reached through query.caveats_for: 22
 j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 1
@@ -62,22 +66,22 @@ step m: {'statement filled from the quote': 147, 'links resolved': 14, 'links na
 step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem)': 3, 'curve -> observation (legend qualifier)': 12}
 step i: {'merged': 18, 'caveat merged': 2, 'definition merged': 2, 'kept': 193}
 step n: {'comparison series': 1}
-step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3}
-step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 72, 'statement assembled': 37}
+step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3, 'transform process_mode: derived thermal': 4}
+step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 72, 'statement assembled': 41}
 diff against the gold:
-  setting        89   40   21  0.53  0.24
   observation    89   76   26  0.34  0.29
-  cited          57    3    3  1.00  0.05
+  setting        89   40   21  0.53  0.24
   claim          57   17   11  0.65  0.19
+  cited          57    3    3  1.00  0.05
   caveat         53    7    7  1.00  0.13
   activity       41   36   31  0.86  0.76
-  derived        31   39   21  0.54  0.68
+  derived        31   43   21  0.49  0.68
   model          18    8    8  1.00  0.44
   entity         18    4    0  0.00  0.00
   definition     16    9    2  0.22  0.12
   identity        3    0    0     -  0.00
-  paper           1    1    1  1.00  1.00
   comparison      1    1    0  0.00  0.00
+  paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 6/16
 gold model rows with quantity and value: 2: {'other': 2}
 observations: gold 89, compiled 76, matched 26

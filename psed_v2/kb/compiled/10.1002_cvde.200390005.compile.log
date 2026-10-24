@@ -1,4 +1,10 @@
 input: 8 lines; pass 0 = line 2; 6 pass-1 lines for 6 groups; ignored lines 
+a1: symbol species eq7 'Pt' model exposure: record -, definition - -> no species
+a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> species unverified (record only)
+a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> species unverified (record only)
+a1: symbol species eq13 '(Pt)_{\\text{sidewalls}}' model exposure: record -, definition - -> no species
+a1: symbol species eq14 '(Pt)_{\\text{bottom}}' model exposure: record -, definition - -> no species
+a1: symbol species eq15 '(Pt)_{\\text{total}}' model exposure: record -, definition - -> no species
 h: simulation sim_kinetic_model ('Kinetic Model') -> model gordon_plug_flow (symbol 'Kinetic Model' of this paper)
 h: tree from pass 0: run 3, simulation 1, specimen 3, model_run 1, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s3.p5 into abs.g2;s3.p5 (reactant_A hf_nme2_4)
@@ -9,12 +15,15 @@ i: merged s10.p4 into abs.g2;s3.p5;s10.p4 (reactant_A hf_nme2_4)
 i: merged fig2.cap into abs.g2;s3.p10;fig2.cap (material hfo2)
 i: merged fig4 into s10.p1;fig4 (carrier_gas n2)
 i: merged fig4 into abs.g2;s3.p5;s10.p3;fig4 (reactant_B h2o)
-j: derived over 2 entities: 1 rows; not derived: {'no fact for S': 1, 'stated: gor03:s8.p1#7 9000 L': 1, 'derive raised: cannot convert cycle to 1': 1, 'no fact for rho': 4, 'n: no fact for gpc': 2, 'gpc: no fact for n': 2, 'no fact for H': 3, 'no fact for dn': 2, 'no fact for mg': 4, 'no fact for t': 3, 'no fact for h2': 2, 'no fact for phi': 2, 'no fact for d': 1, 'lam: no fact for d': 1, 'gpc: n: no fact for gpc': 2, 'no fact for p': 2, 'E: no fact for p': 1, 'lam: no fact for p': 1}
+j: transform process_mode gor03:ent:specimen_30k_l: derived thermal from reactant_B h2o (gor03:abs.g2#3)
+j: transform process_mode gor03:mrun:model_run_predicted_exposure: none (no input)
+j: derived over 2 entities: 2 rows; not derived: {'no fact for S': 1, 'stated: gor03:s8.p1#7 9000 L': 1, 'derive raised: cannot convert cycle to 1': 1, 'no fact for rho': 4, 'n: no fact for gpc': 2, 'gpc: no fact for n': 2, 'no fact for H': 3, 'no fact for dn': 2, 'no fact for mg': 4, 'no fact for t': 3, 'no fact for h2': 2, 'no fact for phi': 2, 'no fact for d': 1, 'lam: no fact for d': 1, 'gpc: n: no fact for gpc': 2, 'no fact for p': 2, 'E: no fact for p': 1, 'lam: no fact for p': 1}
 j: caveats (query.caveats_of): 4, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
 j: claim nodes (query.claim_nodes): 8 nodes for 10 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 2
 step input: {'records': 99}
 step a0: {'quantity other: never.csv word': 1}
+step a1: {'symbol species: no species': 4, 'symbol species: species unverified (record only)': 2}
 step a: {'schema:not': 2, 'schema:type': 3, 'schema:enum': 1, 'schema:required': 3, 'kept': 90}
 step a_fields: {'quantity': 2, 'qualifiers': 6, 'value_text': 1}
 step b: {'kept': 90}
@@ -27,21 +36,21 @@ step m: {'label_as_printed filled with the quantity id': 4, 'statement filled fr
 step 1c: {'curve -> model': 1, 'unbound item (image): ambiguous': 1}
 step i: {'merged': 8, 'kept': 80}
 step n: {'comparison replicate': 1, 'comparison series': 1}
-step j: {'derived cycle_time': 1}
-step k: {'statement from the record': 79, 'statement_copies_text (reported by check)': 29, 'statement assembled': 2}
+step j: {'derived cycle_time': 1, 'transform process_mode: derived thermal': 1, 'transform process_mode: none': 1}
+step k: {'statement from the record': 79, 'statement_copies_text (reported by check)': 29, 'statement assembled': 3}
 diff against the gold:
   setting        52   25   21  0.84  0.40
   model          21   19   13  0.68  0.62
   claim          18   10    7  0.70  0.39
+  observation    11   11    5  0.45  0.45
   activity       11    8    6  0.75  0.55
   cited          11    0    0     -  0.00
-  observation    11   11    5  0.45  0.45
-  derived        10   10    7  0.70  0.70
+  derived        10   11    7  0.64  0.70
   definition      8    2    0  0.00  0.00
   caveat          7    4    2  0.50  0.29
   entity          6    4    4  1.00  0.67
-  paper           1    1    0  0.00  0.00
   comparison      1    2    0  0.00  0.00
+  paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 2/8
 gold model rows with quantity and value: 0: {}
 observations: gold 11, compiled 11, matched 5

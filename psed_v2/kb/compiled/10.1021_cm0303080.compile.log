@@ -37,6 +37,10 @@ a0: fig10.cap: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure
 a0: fig10.cap: legend label 'y ∝ t^1/2' parsed to nothing
 a0: fig10.cap: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig11.cap: quantity 'Pore Diameter' -> feature_width (quantity: alias 'Pore Diameter')
+a1: symbol species s5.x2 'S' model initial_sticking_coefficient: record dez, definition - -> species unverified (record only)
+a1: symbol species s5.x2 'S' model initial_sticking_coefficient: record dez, definition - -> species unverified (record only)
+a1: symbol species fig12.cap 'S' model initial_sticking_coefficient: record -, definition - -> no species
+a1: symbol species fig12.cap 'S' model initial_sticking_coefficient: record -, definition - -> no species
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
@@ -63,12 +67,57 @@ i: merged fig12.cap into s5.x2;fig12.cap (feature_depth 0.5)
 i: merged fig12.cap into s5.x2;fig12.cap (other 0.27)
 i: merged fig13.cap into fig10.cap;fig11.cap;fig13.cap (material zno)
 i: merged tab1.cap into fig1.cap;fig4.cap;fig6.cap;tab1.cap (structure anodic_alumina_membrane)
-j: derived over 44 entities: 15 rows; not derived: {'no fact for S': 17, 'no fact for p': 43, 'E: no fact for p': 43, 'no fact for rho': 88, 'n: no fact for gpc': 44, 'gpc: no fact for n': 44, 'no fact for H': 71, 'no fact for dn': 44, 'no fact for mg': 88, 'no fact for t': 74, 'no fact for h2': 44, 'no fact for phi': 44, 'no fact for d': 41, 'lam: no fact for d': 41, 'gpc: n: no fact for gpc': 44, 'derive raised: cannot convert cycle to 1': 1, 'no fact for T': 3, 'lam: no fact for T': 3}
+j: transform process_mode ela03:ent:spec_zno_1s: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_3s: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_10s: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_30s: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_d19: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_d46: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_d65: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_zno_ar5000: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_ftir_al2o3: derived thermal from reactant_B h2o (ela03:s3.p23#2)
+j: transform process_mode ela03:ent:spec_ftir_sio2: derived thermal from reactant_B h2o (ela03:s3.p34#4)
+j: transform process_mode ela03:mrun:sim_al2o3_1s: none (no input)
+j: transform process_mode ela03:mrun:sim_al2o3_3s: none (no input)
+j: transform process_mode ela03:mrun:sim_al2o3_10s: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_1s: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_3s: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_10s: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_30s: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_d19: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_d46: none (no input)
+j: transform process_mode ela03:mrun:sim_zno_d65: none (no input)
+j: transform process_mode ela03:mrun:sim_diff_limited: none (no input)
+j: transform process_mode ela03:mrun:sim_react_limited: none (no input)
+j: transform process_mode ela03:mrun:sim_pred_p001: none (no input)
+j: transform process_mode ela03:mrun:sim_pred_p01: none (no input)
+j: transform process_mode ela03:mrun:sim_pred_p1: none (no input)
+j: transform process_mode ela03:mrun:sim_pred_p10: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p2: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p3: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p4: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p5: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p6: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p7: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p8: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p9: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p10: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p11: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p12: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p13: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p14: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig10b_c2_p15: none (no input)
+j: transform process_mode ela03:mrun:10_1021_cm0303080_fig11b_c1_p3: none (no input)
+j: transform process_mode ela03:unit:10_1021_cm0303080_fig5b_c1_p2: none (no input)
+j: transform process_mode ela03:unit:10_1021_cm0303080_fig5b_c1_p3: none (no input)
+j: transform process_mode ela03:unit:10_1021_cm0303080_fig5b_c1_p4: none (no input)
+j: derived over 44 entities: 25 rows; not derived: {'no fact for S': 17, 'no fact for p': 43, 'E: no fact for p': 43, 'no fact for rho': 88, 'n: no fact for gpc': 44, 'gpc: no fact for n': 44, 'no fact for H': 71, 'no fact for dn': 44, 'no fact for mg': 88, 'no fact for t': 74, 'no fact for h2': 44, 'no fact for phi': 44, 'no fact for d': 41, 'lam: no fact for d': 41, 'gpc: n: no fact for gpc': 44, 'derive raised: cannot convert cycle to 1': 1, 'no fact for T': 3, 'lam: no fact for T': 3}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 17 nodes for 20 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 4
 step input: {'records': 247, 'unit derived (derived: point_per_unit, None)': 3, 'condition of a derived unit (value)': 18, 'unit derived (derived: point_per_unit, model_run)': 15, 'condition of a derived unit (other)': 14}
 step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 7, 'quantity promoted (quantity: alias)': 19, 'quantity promoted (quantity: name)': 3, 'derived legend label parsed to nothing (other)': 14}
+step a1: {'symbol species: species unverified (record only)': 2, 'symbol species: no species': 2}
 step a: {'numeric string coerced (C4)': 5, 'schema:type': 17, 'kept': 262}
 step a_fields: {'qualifiers': 17}
 step b: {'model_with_value (kept)': 42, 'kept': 262}
@@ -82,8 +131,8 @@ step m: {'statement filled from the quote': 185, 'label_as_printed filled with t
 step 1c: {'data_id_not_in_figures_json': 4, 'figure label other (y)': 7, 'figure label other (condition)': 2, 'figure label other (condition), never': 2, 'unbound item (image): no unit named': 3, 'unbound item (image): ambiguous': 5, 'curve -> observation': 10, 'unbound item (point): origin': 6, 'point -> observation': 6, 'image -> a measurement (a photograph)': 1, 'curve -> model': 18, 'point -> model': 23}
 step i: {'merged': 14, 'kept': 271}
 step n: {'comparison replicate': 2, 'comparison series': 1, 'comparison grid': 1}
-step j: {'derived cycle_time': 14, 'derived exposure': 1}
-step k: {'statement from the record': 213, 'statement_copies_text (reported by check)': 56, 'statement assembled': 73}
+step j: {'derived cycle_time': 14, 'derived exposure': 1, 'transform process_mode: derived thermal': 10, 'transform process_mode: none': 34}
+step k: {'statement from the record': 213, 'statement_copies_text (reported by check)': 56, 'statement assembled': 83}
 diff against the gold:
   setting       277   95   57  0.60  0.21
   model          57   93   35  0.38  0.61
@@ -92,7 +141,7 @@ diff against the gold:
   claim          37   20    9  0.45  0.24
   entity         34   48   13  0.27  0.38
   cited          21    8    7  0.88  0.33
-  derived        17   28    4  0.14  0.24
+  derived        17   38    4  0.11  0.24
   caveat         15    1    1  1.00  0.07
   definition     10    3    1  0.33  0.10
   comparison      8    4    0  0.00  0.00

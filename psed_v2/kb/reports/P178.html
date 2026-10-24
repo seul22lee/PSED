@@ -1,0 +1,1411 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P178</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P178</h1>
+<h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.summary.txt</p>
+<pre>P178: 0 provider calls; thirteen papers recompiled. No score column fell (T6 2115 -&gt; 2115); binding regression unchanged (798 items, 0 lost
+their unit); audits 1-5 PASS; export --check 15/15; cards 0 errors; check.py 1879 -&gt; 1882. Report name P178.html (chat; the directive
+said P179.html).
+
+1. No code default fills a species (s1: every code place that writes or substitutes one). yli18 s8.p3 p_B / M_B / d_B = h2o is the
+   pass-1 record&#x27;s own qualifier. Chat rule (user): a symbol&#x27;s definition wins on conflict, else the record&#x27;s species is kept and listed.
+   So p_B keeps h2o, listed &#x27;species unverified (record only)&#x27;; M_B and d_B keep h2o outside the rule (molar_mass, molecule_diameter take
+   no species qualifier: ontology/open_decisions.csv). 47 fact rows change species (s1): 29 axis settings (step 4), 14 fills from a
+   definition (yli18 p_A, yim20 c_A, yim22 p_A0 x6, art19 r x6), and art19&#x27;s two corrected records (fig3.cap: sio2 / tio2 -&gt; o_atom),
+   which no longer merge with s6.p5&#x27;s facts: 2 facts new, 2 gone (merged).
+2. Step a1 (compile.symbol_species), per paper in s2: corrected 4 (art19; 2 of them dropped later at step d, quote not found), from the
+   definition 15, backed 19, species unverified (record only) 18, no species 83. ontology/form_candidates.csv: a symbol record&#x27;s
+   species must cite the paper&#x27;s definition or a prose quote.
+3. process_mode transform (ontology.yaml transforms, mapping; compile step j per entity, computed_by_kb, never over a stated value): of 495
+   entities, stated 3 (mat23), derived 179 (thermal 33, plasma 146), none 313. The golds hold no process_mode: every derived value is
+   derived-only. Two results for the user (ontology/open_decisions.csv): mat23&#x27;s one plasma_power sits on the recipe, so its 5 thermal-ALD
+   entities derive plasma; zou23&#x27;s 68 entities derive plasma from h_atom (hot-wire), as the mapping says.
+4. A setting derived from a species-named axis carries species=: zou23&#x27;s 29 point settings (mocl2o2 11, h_atom 18); check.py&#x27;s 15
+   &#x27;pulse_time setting without species=&#x27; gone, &#x27;same as&#x27; +8 and &#x27;same statement&#x27; +8 (the same settings), art19 &#x27;statement repeats&#x27; +2.
+</pre>
+<h2>0. The chat decisions of this unit</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s0_chat.csv</p>
+<table><tr><th>question</th><th>answer</th><th>effect</th></tr>
+<tr><td>steps 1-2: no code default exists; a symbol&#x27;s species and the record&#x27;s own</td><td>definition wins on conflict (flagged), else the record&#x27;s species kept; list &#x27;species unverified (record only)&#x27;</td><td>compile step a1 (symbol_species); ontology/form_candidates.csv: a symbol record&#x27;s species must cite the definition or a prose quote; ontology/open_decisions.csv: species on molar_mass / molecule_diameter</td></tr>
+<tr><td>report name (the directive said P179.html)</td><td>P178.html</td><td>this file</td></tr>
+</table>
+<h2>1. Every code place that writes or substitutes a species (no default fills one)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s1_no_default.txt</p>
+<pre>P178 step 1: every place in the pipeline code that writes or substitutes a species (grep of kb/extract, kb/pilot (non-gold), ontology/export.py; P177c code):
+
+kb/extract/compile.py:829:                if c[&quot;kind&quot;] == &quot;species&quot;:                                      # P166: step a0 resolves the species name (value_text)
+kb/extract/compile.py:1156:                r[&quot;species&quot;] = hit
+kb/pilot/lists.py:226:# inputs it reads (name; a quantity id, or other:&lt;label&gt;, alternatives with |; the qualifiers a fact must carry, @material and @A
+kb/pilot/lists.py:281:                                   _in(&quot;d&quot;, &quot;other:molecular diameter&quot;, &quot;species=@A&quot;, &quot;nm&quot;), _in(&quot;kB&quot;, &quot;other:Boltzmann constant&quot;, &quot;&quot;, &quot;J/K&quot;)],
+kb/pilot/query.py:275:    def reactant_A(self, ent):
+kb/pilot/query.py:821:    subs = {&quot;@material&quot;: T.material(ent), &quot;@A&quot;: T.reactant_A(ent)}
+ontology/export.py:196:             &quot;structure&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;structure&quot;], &quot;species&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;species&quot;],
+ontology/export.py:419:            &quot;species&quot;: {&quot;enum&quot;: ids(&quot;species&quot;)},
+
+Reading: compile.py writes a species only where the record or a figure names it (P166 a legend species, P175 / P177b legend qualifier parts; step f resolves the value_text of a species setting, line 1156). query.Tree.reactant_A and the &#x27;@A&#x27; / &#x27;@material&#x27; of lists.DERIVED select an input fact for a derivation (mean_free_path, atoms_per_cycle); they write no species onto a fact. The pass-1 instruction (pass1_elements.py) and form.json carry no species default. So no code default fills a missing species; yli18 s8.p3 p_B / M_B / d_B = h2o is the pass-1 record&#x27;s own qualifier (the extractor&#x27;s), kept under the user&#x27;s P178 chat rule and listed in s2 as &#x27;species unverified (record only)&#x27; (p_B; M_B and d_B are outside a1: their entries take no species qualifier, see ontology/open_decisions.csv).
+</pre>
+<h2>1-4. Every fact whose species changed, P177c -&gt; P178</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s1_species_changes.csv</p>
+<table><tr><th>paper</th><th>fact_id</th><th>type</th><th>quantity</th><th>label</th><th>species_before</th><th>species_after</th><th>qualifiers_after</th><th>note</th></tr>
+<tr><td>yli18</td><td>yli18:eq10#1</td><td>model</td><td>partial_pressure</td><td>p_A</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r24c0)</td></tr>
+<tr><td>yim20</td><td>yim20:s19.p1#1</td><td>model</td><td>initial_sticking_coefficient</td><td>c_A</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (s2.p2)</td></tr>
+<tr><td>art19</td><td>art19:abs.g2#2</td><td>derived</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom;surface=sio2</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:abs.g2#3</td><td>derived</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom;surface=tio2</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:abs.g3#3</td><td>derived</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom;surface=al2o3</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:abs.g3#4</td><td>derived</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom;surface=hfo2</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:s3.p3#1</td><td>cited</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:fig1.cap#2</td><td>model</td><td>recombination_probability</td><td>r</td><td>-</td><td>o_atom</td><td>species=o_atom</td><td>species from the symbol definition (tab1.cap)</td></tr>
+<tr><td>art19</td><td>art19:fig3.cap#2</td><td>derived</td><td>recombination_probability</td><td>r</td><td>(no such fact)</td><td>o_atom</td><td>species=o_atom;surface=sio2</td><td>new fact (evidence fig3.cap;tab1.r1c1): no longer merged by dedupe with a fact of another species; species corrected from the symbol definition (tab1.cap): was sio2</td></tr>
+<tr><td>art19</td><td>art19:fig3.cap#3</td><td>derived</td><td>recombination_probability</td><td>r</td><td>(no such fact)</td><td>o_atom</td><td>species=o_atom;surface=tio2</td><td>new fact (evidence fig3.cap;tab1.r2c1): no longer merged by dedupe with a fact of another species; species corrected from the symbol definition (tab1.cap): was tio2</td></tr>
+<tr><td>art19</td><td>art19:tab1.r1c1#1</td><td>derived</td><td>recombination_probability</td><td>determined r</td><td>o_atom</td><td>(fact gone)</td><td></td><td>evidence tab1.r1c1: now merged by dedupe into the fact with the same species (see the new facts)</td></tr>
+<tr><td>art19</td><td>art19:tab1.r2c1#1</td><td>derived</td><td>recombination_probability</td><td>determined r</td><td>o_atom</td><td>(fact gone)</td><td></td><td>evidence tab1.r2c1: now merged by dedupe into the fact with the same species (see the new facts)</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#1</td><td>setting</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=reactant_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#2</td><td>setting</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=reactant_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#3</td><td>setting</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=reactant_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#4</td><td>setting</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=reactant_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#5</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#6</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#7</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#8</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#9</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#10</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#11</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#12</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#13</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#14</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#15</td><td>setting</td><td>pulse_time</td><td>at-H pulse</td><td>-</td><td>h_atom</td><td>species=h_atom;step=reactant_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#16</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#17</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#18</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#19</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#20</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#21</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#22</td><td>setting</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>-</td><td>mocl2o2</td><td>species=mocl2o2;step=purge_A</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#23</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#24</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#25</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#26</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#27</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#28</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#29</td><td>setting</td><td>purge_time</td><td>at-H purge</td><td>-</td><td>h_atom</td><td>species=h_atom;step=purge_B</td><td></td></tr>
+<tr><td>yim22</td><td>yim22:fig2.cap#2</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>position=entrance;species=model_reactant;stage=initial</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+<tr><td>yim22</td><td>yim22:tab1.r1c1#1</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+<tr><td>yim22</td><td>yim22:tab1.r1c1#2</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+<tr><td>yim22</td><td>yim22:tab1.r1c1#3</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+<tr><td>yim22</td><td>yim22:tab1.r1c1#4</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+<tr><td>yim22</td><td>yim22:tab1.r1c1#5</td><td>model</td><td>partial_pressure</td><td>p_{A0}</td><td>-</td><td>model_reactant</td><td>species=model_reactant</td><td>species from the symbol definition (tabu1.r28c0)</td></tr>
+</table>
+<h2>2. Symbol species (step a1): counts per paper</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s2_counts.csv</p>
+<table><tr><th>paper</th><th>corrected</th><th>from the definition</th><th>backed by the definition</th><th>species unverified (record only)</th><th>no species</th></tr>
+<tr><td>yli18</td><td>0</td><td>1</td><td>0</td><td>10</td><td>15</td></tr>
+<tr><td>yim20</td><td>0</td><td>1</td><td>16</td><td>1</td><td>2</td></tr>
+<tr><td>mat22</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>ela03</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td></tr>
+<tr><td>hei24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>10</td></tr>
+<tr><td>gor03</td><td>0</td><td>0</td><td>0</td><td>2</td><td>4</td></tr>
+<tr><td>gre23</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>art19</td><td>4</td><td>7</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>zou23</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>gao15</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>yim22</td><td>0</td><td>6</td><td>3</td><td>2</td><td>40</td></tr>
+<tr><td>mat23</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>wer21</td><td>0</td><td>0</td><td>0</td><td>0</td><td>9</td></tr>
+</table>
+<h2>2. Symbol species (step a1): every record (symbol label, species-taking quantity)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s2_symbol_species.csv</p>
+<table><tr><th>paper</th><th>element</th><th>label</th><th>type</th><th>quantity</th><th>record_species</th><th>definition</th><th>outcome</th></tr>
+<tr><td>yli18</td><td>eq10</td><td>p_A</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r24c0)</td><td>from the definition</td></tr>
+<tr><td>yli18</td><td>eq13</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>eq18</td><td>p_A(x,t)</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>eq24</td><td>p_A(x, t)</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>h2o</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>n2</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>p_A0</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>tabI.r1c3</td><td>p_{\\text{A0}}</td><td>setting</td><td>partial_pressure</td><td>tma</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>tabI.r1c4</td><td>c</td><td>derived</td><td>initial_sticking_coefficient</td><td>tma</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>tabI.r1c5</td><td>K</td><td>derived</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yli18</td><td>tabI.r2c3</td><td>p_{\\text{A0}}</td><td>setting</td><td>partial_pressure</td><td>ticl4</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>tabI.r2c4</td><td>c</td><td>derived</td><td>initial_sticking_coefficient</td><td>ticl4</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yli18</td><td>tabI.r2c5</td><td>K</td><td>derived</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim20</td><td>s8.p1</td><td>\\lambda_{\\text{TMA}}</td><td>model</td><td>mean_free_path</td><td>tma</td><td>tma (tabu2.r26c0)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>s18.p3</td><td>c_H2O</td><td>cited</td><td>initial_sticking_coefficient</td><td>h2o</td><td>h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>s18.p3</td><td>c_TMA</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>s19.p1</td><td>c_A</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>model_reactant (s2.p2)</td><td>from the definition</td></tr>
+<tr><td>yim20</td><td>s19.p4</td><td>c_TMA</td><td>derived</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>s19.p4</td><td>c_H2O</td><td>derived</td><td>initial_sticking_coefficient</td><td>h2o</td><td>h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>\\rho_{A0}</td><td>model</td><td>partial_pressure</td><td>tma</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>\\rho_B</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim20</td><td>fig10.cap</td><td>c_{\\text{TMA}}</td><td>model</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r1c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r2c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r3c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r3c7</td><td>c_{\\text{H}_2\\text{O}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>h2o</td><td>h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r4c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r5c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r5c7</td><td>c_{\\text{H}_2\\text{O}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>h2o</td><td>h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r6c6</td><td>c_{\\text{TMA}}</td><td>cited</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r7c6</td><td>c_{\\text{TMA}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>tma</td><td>tma (tab2.cap, tabu1.r2c0, tabu1.r2c1)</td><td>backed by the definition</td></tr>
+<tr><td>yim20</td><td>tab2.r7c7</td><td>c_{\\text{H}_2\\text{O}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>h2o</td><td>h2o (tab2.cap, tabu1.r3c0, tabu1.r3c1)</td><td>backed by the definition</td></tr>
+<tr><td>ela03</td><td>s5.x2</td><td>S</td><td>model</td><td>initial_sticking_coefficient</td><td>dez</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>ela03</td><td>s5.x2</td><td>S</td><td>model</td><td>initial_sticking_coefficient</td><td>dez</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>ela03</td><td>fig12.cap</td><td>S</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>ela03</td><td>fig12.cap</td><td>S</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>\\beta_0</td><td>setting</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>gor03</td><td>eq7</td><td>Pt</td><td>model</td><td>exposure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>gor03</td><td>s6.p7</td><td>Pt</td><td>derived</td><td>exposure</td><td>hf_nme2_4</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>gor03</td><td>s6.p7</td><td>Pt</td><td>derived</td><td>exposure</td><td>hf_nme2_4</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>gor03</td><td>eq13</td><td>(Pt)_{\\text{sidewalls}}</td><td>model</td><td>exposure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>gor03</td><td>eq14</td><td>(Pt)_{\\text{bottom}}</td><td>model</td><td>exposure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>gor03</td><td>eq15</td><td>(Pt)_{\\text{total}}</td><td>model</td><td>exposure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>art19</td><td>abs.g2</td><td>r</td><td>derived</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>abs.g2</td><td>r</td><td>derived</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>abs.g3</td><td>r</td><td>derived</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>abs.g3</td><td>r</td><td>derived</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>s3.p3</td><td>r</td><td>cited</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>s4.p3</td><td>s_0</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>art19</td><td>s6.p5</td><td>r</td><td>derived</td><td>recombination_probability</td><td>al2o3</td><td>o_atom (tab1.cap)</td><td>corrected</td></tr>
+<tr><td>art19</td><td>s6.p5</td><td>r</td><td>derived</td><td>recombination_probability</td><td>hfo2</td><td>o_atom (tab1.cap)</td><td>corrected</td></tr>
+<tr><td>art19</td><td>fig1.cap</td><td>r</td><td>model</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>fig1C</td><td>r</td><td>model</td><td>recombination_probability</td><td>-</td><td>o_atom (tab1.cap)</td><td>from the definition</td></tr>
+<tr><td>art19</td><td>fig3.cap</td><td>r</td><td>derived</td><td>recombination_probability</td><td>sio2</td><td>o_atom (tab1.cap)</td><td>corrected</td></tr>
+<tr><td>art19</td><td>fig3.cap</td><td>r</td><td>derived</td><td>recombination_probability</td><td>tio2</td><td>o_atom (tab1.cap)</td><td>corrected</td></tr>
+<tr><td>yim22</td><td>eq21</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>s10.p2</td><td>Kn</td><td>setting</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>eq26</td><td>Kn</td><td>model</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>eq27</td><td>\\lambda</td><td>model</td><td>mean_free_path</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>eq31</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>s14.p6</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>model_reactant (tabu1.r28c0)</td><td>backed by the definition</td></tr>
+<tr><td>yim22</td><td>s14.p6</td><td>p_i</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>s14.p6</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yim22</td><td>s15.p1</td><td>K_n</td><td>setting</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>s15.p4</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>model_reactant (tabu1.r28c0)</td><td>backed by the definition</td></tr>
+<tr><td>yim22</td><td>s15.p4</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig2.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig2.cap</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>fig2.cap</td><td>\\rho_1</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig2.cap</td><td>K</td><td>model</td><td>adsorption_equilibrium_constant</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig6.cap</td><td>\\rho_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>yim22</td><td>fig6.cap</td><td>\\rho_1</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig6.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig7.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>fig7.cap</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>model_reactant</td><td>model_reactant (tabu1.r28c0)</td><td>backed by the definition</td></tr>
+<tr><td>yim22</td><td>fig7.cap</td><td>p_I</td><td>model</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab1.r1c1</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>tab1.r1c1</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>tab1.r1c1</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>tab1.r1c1</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>tab1.r1c1</td><td>p_{A0}</td><td>model</td><td>partial_pressure</td><td>-</td><td>model_reactant (tabu1.r28c0)</td><td>from the definition</td></tr>
+<tr><td>yim22</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r1c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r1c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r1c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r2c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r2c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r3c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r4c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r5c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r6c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r7c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r9c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r10c4</td><td>K_N</td><td>derived</td><td>knudsen_number</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r11c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r11c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r12c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r12c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r14c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r14c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r15c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>yim22</td><td>tab3.r15c6</td><td>c_{\\text{ext}}</td><td>derived</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>mat23</td><td>s7.p1</td><td>98%</td><td>setting</td><td>precursor_purity</td><td>ga2_nme2_6</td><td>-</td><td>species unverified (record only)</td></tr>
+<tr><td>wer21</td><td>s24.p2</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>s24.p2</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>s24.p2</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>s24.p2</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>s25.p18</td><td>s_0</td><td>model</td><td>initial_sticking_coefficient</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>fig9a</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>fig9b</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>fig9c</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+<tr><td>wer21</td><td>fig9d</td><td>O_2 pressures</td><td>setting</td><td>partial_pressure</td><td>-</td><td>-</td><td>no species</td></tr>
+</table>
+<h2>2. ontology/form_candidates.csv</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/form_candidates.csv</p>
+<table><tr><th>id</th><th>unit</th><th>date</th><th>status</th><th>candidate</th><th>why</th><th>evidence</th></tr>
+<tr><td>symbol_species_evidence</td><td>P178</td><td>2026-10-24</td><td>open</td><td>a record labelled with a symbol that carries a species qualifier cites the paper&#x27;s definition of the symbol (its element id) or a prose evidence quote that names the species</td><td>pass 1 sets species on symbol records the paper does not define (yli18 s8.p3 p_B = h2o, fig2.cap p_B = n2): the compiler cannot tell a species read from the paper from a guess; P178 a1 lists them as &#x27;species unverified (record only)&#x27;</td><td>kb/reports/P178.s2_symbol_species.csv</td></tr>
+</table>
+<h2>2. ontology/open_decisions.csv</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/open_decisions.csv</p>
+<table><tr><th>id</th><th>unit</th><th>date</th><th>status</th><th>question</th><th>today</th><th>options</th><th>evidence</th></tr>
+<tr><td>species_on_molar_mass_and_diameter</td><td>P178</td><td>2026-10-24</td><td>open (the user&#x27;s decision)</td><td>Should molar_mass and molecule_diameter accept the species qualifier (whose molecule)?</td><td>their entries list no species qualifier, so P178 a1 (a symbol&#x27;s species from the definition) and check.py&#x27;s substance rule do not cover them; the facts still carry a record&#x27;s own species (yli18 s5.p15 d_B species=n2, s8.p3 M_B / d_B species=h2o)</td><td>add species to their qualifiers (a1 then covers M_B, d_B) | keep as is</td><td>kb/reports/P178.s2_symbol_species.csv</td></tr>
+<tr><td>process_mode_from_inherited_plasma_power</td><td>P178</td><td>2026-10-24</td><td>open (the user&#x27;s decision)</td><td>mat23: the paper&#x27;s one plasma_power setting (s7.p1#8, 200 W) sits on the recipe, so every entity inherits it and the process_mode transform derives plasma for the thermal-ALD specimens (tald_*) too. What should the transform read?</td><td>the transform reads the entity&#x27;s condition vector (its own settings and the activities above, recipe included), as the user&#x27;s P178 rule says; 5 tald_* entities of mat23 derive plasma (kb/reports/P178.s3_process_mode.csv)</td><td>keep (a placement matter of pass 1) | presence only from the entity&#x27;s own run (then mat23&#x27;s PE-ALD specimens fall back to H2S: thermal) | a stated process_mode on the run decides first (pass 1 states it for 3 entities only)</td><td>kb/reports/P178.s3_process_mode.csv</td></tr>
+<tr><td>h_atom_process_mode</td><td>P178</td><td>2026-10-24</td><td>open (the user&#x27;s decision)</td><td>zou23: hot-wire atomic hydrogen (h_atom) maps to plasma in the P178 mapping, so its 68 entities derive plasma although no plasma is used. Keep, or map h_atom (hot-wire) to another value?</td><td>the mapping lists h_atom -&gt; plasma as the directive wrote it</td><td>keep | a value for radical-enhanced (non-plasma) ALD | no derivation for h_atom</td><td>kb/reports/P178.s3_process_mode.csv</td></tr>
+</table>
+<h2>3. process_mode transform: per paper (stated / derived / none; the gold compared)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s3_counts.csv</p>
+<table><tr><th>paper</th><th>entities</th><th>stated</th><th>derived</th><th>none</th><th>derived_values</th><th>gold_process_mode_rows</th><th>compared</th></tr>
+<tr><td>yli18</td><td>12</td><td>0</td><td>2</td><td>10</td><td>thermal 2</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>yim20</td><td>25</td><td>0</td><td>16</td><td>9</td><td>thermal 16</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>mat22</td><td>42</td><td>0</td><td>42</td><td>0</td><td>plasma 42</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>ela03</td><td>44</td><td>0</td><td>10</td><td>34</td><td>thermal 10</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>hei24</td><td>166</td><td>0</td><td>0</td><td>166</td><td></td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>2</td><td>0</td><td>1</td><td>1</td><td>thermal 1</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>gre23</td><td>4</td><td>0</td><td>4</td><td>0</td><td>thermal 4</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>art19</td><td>10</td><td>0</td><td>8</td><td>2</td><td>plasma 8</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>zou23</td><td>68</td><td>0</td><td>68</td><td>0</td><td>plasma 68</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>gao15</td><td>4</td><td>0</td><td>0</td><td>4</td><td></td><td>0</td><td></td></tr>
+<tr><td>yim22</td><td>80</td><td>0</td><td>0</td><td>80</td><td></td><td>0</td><td></td></tr>
+<tr><td>mat23</td><td>15</td><td>3</td><td>12</td><td>0</td><td>plasma 12</td><td>0</td><td>derived-only (the gold has no process_mode)</td></tr>
+<tr><td>wer21</td><td>23</td><td>0</td><td>16</td><td>7</td><td>plasma 16</td><td>(no gold)</td><td></td></tr>
+</table>
+<h2>3. process_mode transform: every entity with the inputs used</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s3_process_mode.csv</p>
+<table><tr><th>paper</th><th>entity</th><th>outcome</th><th>value</th><th>inputs</th></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_al2o3</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yli18:s8.p21#4)</td></tr>
+<tr><td>yli18</td><td>yli18:ent:specimen_tio2</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yli18:s8.p21#8)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_1s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_05s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_02s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_tp_0_01s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h05</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig4_h02</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_ylilammi</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yli18</td><td>yli18:mrun:mr_fig5_gordon</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_1</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_2</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_3</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_4</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_5</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_6</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_7</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_8</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_9</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_10</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_11</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_12</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_13</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_14</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_15</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:ent:sample_16</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (yim20:abs.g3#3)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_h100</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_h200</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_h500_n500</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_h1000</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_h2000</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_n100</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_n250</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_n1000</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim20</td><td>yim20:mrun:mr_n2000</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1d:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3a:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3b:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration remote (mat22:s5.p1#3)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_1s</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_3s</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_10s</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_30s</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_d19</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_d46</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_d65</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_zno_ar5000</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_ftir_al2o3</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p23#2)</td></tr>
+<tr><td>ela03</td><td>ela03:ent:spec_ftir_sio2</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (ela03:s3.p34#4)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_al2o3_1s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_al2o3_3s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_al2o3_10s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_1s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_3s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_10s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_30s</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_d19</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_d46</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_zno_d65</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_diff_limited</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_react_limited</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_pred_p001</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_pred_p01</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_pred_p1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:sim_pred_p10</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p8</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p9</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p10</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p11</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p12</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p13</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p14</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig10b_c2_p15</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:mrun:10_1021_cm0303080_fig11b_c1_p3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:unit:10_1021_cm0303080_fig5b_c1_p2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:unit:10_1021_cm0303080_fig5b_c1_p3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>ela03</td><td>ela03:unit:10_1021_cm0303080_fig5b_c1_p4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig2b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c8</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig3_c9</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig4_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig4_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig4_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5c_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5c_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5c_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5c_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5c_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5d_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5d_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5d_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5d_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5d_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5e_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5e_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5e_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5e_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5e_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5f_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5f_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5f_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5f_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5f_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5g_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5g_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5g_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5g_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5g_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5h_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5h_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5h_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5h_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5h_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5i_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5i_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5i_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5i_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5i_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5j_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5j_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5j_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5j_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5j_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5k_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5k_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5k_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5k_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5k_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5l_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5l_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5l_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5l_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig5l_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6c_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6c_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6c_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6c_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6c_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6d_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6d_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6d_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6d_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6d_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6e_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6e_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6e_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6e_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6e_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6f_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6f_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6f_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6f_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6f_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6g_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6g_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6g_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6g_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6g_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6h_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6h_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6h_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6h_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6h_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6i_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6i_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6i_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6i_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6i_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6j_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6j_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6j_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6j_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6j_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6k_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6k_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6k_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6k_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6k_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6l_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6l_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6l_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6l_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig6l_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c8</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7a_c9</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c8</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig7b_c9</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>hei24</td><td>hei24:mrun:10_1039_d3cp05639b_fig8b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>gor03</td><td>gor03:ent:specimen_30k_l</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (gor03:abs.g2#3)</td></tr>
+<tr><td>gor03</td><td>gor03:mrun:model_run_predicted_exposure</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_120</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (gre23:s9.p4#3)</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_160</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (gre23:s9.p4#3)</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_120_160</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (gre23:s9.p4#3)</td></tr>
+<tr><td>gre23</td><td>gre23:run:run_test:film</td><td>derived</td><td>thermal</td><td>from reactant_B h2o (gre23:s9.p4#3)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_sio2_3_8s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_sio2_12s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_sio2_38s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_sio2_120s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_tio2_12s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_tio2_120s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_al2o3_120s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:ent:specimen_hfo2_120s</td><td>derived</td><td>plasma</td><td>from plasma_power 600 (art19:s5.p1#4)</td></tr>
+<tr><td>art19</td><td>art19:mrun:model_run_sio2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>art19</td><td>art19:mrun:model_run_tio2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_20nm</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_sims</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_24nm</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_gixrd</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_150</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_trench_sample</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:zou23_run_ms_run:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:fig4.cap#2)</td></tr>
+<tr><td>zou23</td><td>zou23:run:zou23_run_std_ald_350:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p6:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p10:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p11:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p12:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p5:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p6:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p7:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p8:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p9:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p5:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p6:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p7:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p5:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p6:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p7:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p10:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p11:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p12:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p13:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p14:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p15:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p16:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p17:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p5:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p6:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p7:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p8:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p9:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig2_c1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig2_c3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig6b_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig6b_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p4:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p1:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p2:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p3:film</td><td>derived</td><td>plasma</td><td>from reactant_B h_atom (zou23:s5.p1#3)</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_al2o3_500nm</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_tio2_200nm</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_tio2_500nm</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_tio2_1000nm</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig2_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig2_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig2_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig2_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4c_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4c_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4c_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4c_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4c_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4d_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4d_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4d_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4d_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4d_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4e_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4e_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4e_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4e_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4e_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4f_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4f_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4f_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4f_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4f_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4g_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4g_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4g_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4g_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4g_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4h_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4h_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4h_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4h_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4h_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4i_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4i_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4i_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4i_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig4i_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5a_c7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c6</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig5b_c7</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6a_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6c_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6c_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6d_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:mr_fig6d_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig5e_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig5e_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig5f_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig5f_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig7a_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig7a_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig7b_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>yim22</td><td>yim22:mrun:10_1039_d1cp04758b_fig7b_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_peald_225_20nm</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_tald_225_10nm</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_tald_150_10nm</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_peald_150_21nm</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_peald_150_42nm</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_tald_150_quartz</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:ent:mat23_specimen_peald_150_quartz</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_peald_125:film</td><td>stated</td><td>plasma</td><td>(mat23:abs.g3#1)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_peald_temp:film</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_tald_temp:film</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_peald_ga_pulse:film</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_peald_h2s_pulse:film</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:mat23_run_tald_125:film</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (mat23:s7.p1#8)</td></tr>
+<tr><td>mat23</td><td>mat23:run:10_1116_6_0002993_fig4b_c1:film</td><td>stated</td><td>thermal</td><td>(mat23:fig4.cap#5)</td></tr>
+<tr><td>mat23</td><td>mat23:run:10_1116_6_0002993_fig4b_c2:film</td><td>stated</td><td>plasma</td><td>(mat23:fig4.cap#7)</td></tr>
+<tr><td>wer21</td><td>wer21:ent:specimen_fig9a</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:ent:specimen_fig9b</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:ent:specimen_fig9c</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:ent:specimen_fig9d</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c1</td><td>derived</td><td>plasma</td><td>from plasma_power 50 (wer21:fig11.cap#1)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c2</td><td>derived</td><td>plasma</td><td>from plasma_power 75 (wer21:fig11.cap#2)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c3</td><td>derived</td><td>plasma</td><td>from plasma_power 75 (wer21:fig11.cap#3)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c4</td><td>derived</td><td>plasma</td><td>from plasma_power 125 (wer21:fig11.cap#4)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c5</td><td>derived</td><td>plasma</td><td>from plasma_power 150 (wer21:fig11.cap#5)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig11_c6</td><td>derived</td><td>plasma</td><td>from plasma_power 200 (wer21:fig11.cap#6)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig12_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig12_c2</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig12_c3</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig12_c4</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:mrun:10_1116_6_0001094_fig12_c5</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:unit:10_1116_6_0001094_fig13_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:unit:10_1116_6_0001094_fig14_c1</td><td>none</td><td></td><td>input)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c1:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c2:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c3:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c4:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c5:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+<tr><td>wer21</td><td>wer21:run:run_fig2_c6:film</td><td>derived</td><td>plasma</td><td>from plasma_configuration inductive (wer21:s15.p1#2)</td></tr>
+</table>
+<h2>4. Settings derived from a species-named axis (their species qualifier)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s4_axis_species.csv</p>
+<table><tr><th>paper</th><th>fact_id</th><th>quantity</th><th>label</th><th>value</th><th>unit</th><th>qualifiers</th><th>parent</th></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#1</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>0.1</td><td>s</td><td>species=mocl2o2;step=reactant_A</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p2</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#2</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>0.21</td><td>s</td><td>species=mocl2o2;step=reactant_A</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p3</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#3</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>0.51</td><td>s</td><td>species=mocl2o2;step=reactant_A</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p4</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#4</td><td>pulse_time</td><td>MoCl_{2}O_{2} pulse</td><td>2</td><td>s</td><td>species=mocl2o2;step=reactant_A</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p6</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#5</td><td>pulse_time</td><td>at-H pulse</td><td>0.9</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p2</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#6</td><td>pulse_time</td><td>at-H pulse</td><td>1.8</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p3</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#7</td><td>pulse_time</td><td>at-H pulse</td><td>3</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p4</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#8</td><td>pulse_time</td><td>at-H pulse</td><td>5</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p5</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#9</td><td>pulse_time</td><td>at-H pulse</td><td>7</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p6</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#10</td><td>pulse_time</td><td>at-H pulse</td><td>8.9</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p7</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#11</td><td>pulse_time</td><td>at-H pulse</td><td>11.9</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p8</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#12</td><td>pulse_time</td><td>at-H pulse</td><td>15.1</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p9</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#13</td><td>pulse_time</td><td>at-H pulse</td><td>20</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p10</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#14</td><td>pulse_time</td><td>at-H pulse</td><td>25</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p11</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#15</td><td>pulse_time</td><td>at-H pulse</td><td>30</td><td>s</td><td>species=h_atom;step=reactant_B</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p12</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#16</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>1</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p1</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#17</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>2</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p2</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#18</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>3</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p3</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#19</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>4</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p4</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#20</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>6</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p5</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#21</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>8</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p6</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#22</td><td>purge_time</td><td>MoCl_{2}O_{2} purge</td><td>10</td><td>s</td><td>species=mocl2o2;step=purge_A</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p7</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#23</td><td>purge_time</td><td>at-H purge</td><td>1</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p1</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#24</td><td>purge_time</td><td>at-H purge</td><td>2</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p2</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#25</td><td>purge_time</td><td>at-H purge</td><td>3</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p3</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#26</td><td>purge_time</td><td>at-H purge</td><td>4</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p4</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#27</td><td>purge_time</td><td>at-H purge</td><td>6</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p5</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#28</td><td>purge_time</td><td>at-H purge</td><td>8</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p6</td></tr>
+<tr><td>zou23</td><td>zou23:fig1.cap#29</td><td>purge_time</td><td>at-H purge</td><td>10</td><td>s</td><td>species=h_atom;step=purge_B</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p7</td></tr>
+</table>
+<h2>5. binding.py --check against the P177c file</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_binding_check.txt</p>
+<pre>binding regression: 798 items, 0 lost their unit
+
+exit 0
+</pre>
+<h2>5. Scores of the twelve: every changed column (P177c -&gt; P178)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P177c</th><th>P178</th><th>fell</th></tr>
+<tr><td>art19</td><td>check_dir_problems</td><td>52</td><td>54</td><td></td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>221</td><td>222</td><td></td></tr>
+</table>
+<h2>5. Score totals</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_score_totals.csv</p>
+<table><tr><th>column</th><th>P177c</th><th>P178</th></tr>
+<tr><td>check_dir_problems</td><td>1879</td><td>1882</td></tr>
+<tr><td>matched_T6</td><td>2115</td><td>2115</td></tr>
+<tr><td>gold_rows</td><td>5357</td><td>5357</td></tr>
+</table>
+<h2>5. check.py of the twelve: every changed problem class</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_check_by_class.csv</p>
+<table><tr><th>paper</th><th>cls</th><th>P177c</th><th>P178</th></tr>
+<tr><td>art19</td><td>statement repeats eight words of · in a row</td><td>26</td><td>28</td></tr>
+<tr><td>zou23</td><td>pulse_time setting without species= or gas=: which substance it is about lives only in prose (·)</td><td>15</td><td>0</td></tr>
+<tr><td>zou23</td><td>same as ·</td><td>9</td><td>17</td></tr>
+<tr><td>zou23</td><td>same statement as ·</td><td>64</td><td>72</td></tr>
+</table>
+<h2>5. export --check</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted; P175: a class from the list, a slot that is a structure class, parameters that are entries 41 rows: undecided 41
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>5. Audit round 1</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 38 promotions: {&#x27;id (curated)&#x27;: 32, &#x27;agree&#x27;: 2, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 18 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 10}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 512 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5. Audit round 2</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 5, &#x27;yes&#x27;: 84, &#x27;no effect&#x27;: 3}
+A2: 222 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;alias (curated)&#x27;: 39, &#x27;alias (user decision)&#x27;: 35, &#x27;agree&#x27;: 15, &#x27;id (curated)&#x27;: 12, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 58 open rows: {&#x27;pending&#x27;: 37, &#x27;other&#x27;: 19, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
+  10.1039_d3cp05639b:fig4 axis &#x27;1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 512 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5. Audit round 3</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.audit_round3.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 45 promotions: {&#x27;alias (user decision)&#x27;: 30, &#x27;symbol (user decision)&#x27;: 3, &#x27;agree&#x27;: 12}
+A3: 43 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 32, &#x27;new&#x27;: 3}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 3 rows
+  10.1116_6.0002804:fig3 unit &#x27;Time&#x27;
+  10.1116_6.0002804:fig5a unit &#x27;Depth (\times 10^{15} at/cm^{2})&#x27;
+  10.1116_6.0003182:fig6f unit &#x27;temperature&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 512 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5. Audit round 4</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.audit_round4.txt</p>
+<pre>round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
+A2: 16 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 4, &#x27;symbol (user decision)&#x27;: 10}
+A3: 74 open rows: {&#x27;other&#x27;: 44, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 5}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 5 rows
+  10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
+  10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
+  10.1039_d1cp04758b:fig7a axis &#x27;d_A&#x27;
+  10.1039_d1cp04758b:fig7b axis &#x27;d_A&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;150°C&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 512 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5. Audit round 5</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.audit_round5.txt</p>
+<pre>round 5 acceptance (grow.py audit_round)
+A1: 92 decisions, 298 rows: effect {&#x27;yes&#x27;: 292, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 2}
+A2: 20 promotions: {&#x27;alias (curated)&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 7, &#x27;id (curated)&#x27;: 6, &#x27;agree&#x27;: 5}
+A3: 3 open rows: {&#x27;other&#x27;: 1, &#x27;pending&#x27;: 2}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 512 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5. Cards: one line per paper</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_cards.csv</p>
+<table><tr><th>paper</th><th>cards_gold</th><th>cards_compiled</th><th>paired</th><th>conditions_per_card_mean</th><th>conditions_per_card_median</th><th>model_run_cards</th><th>cards_with_model_link</th><th>comparison_rows_with_3_ticked</th><th>card_alone_panel</th><th>errors</th></tr>
+<tr><td>yli18</td><td>11</td><td>12</td><td>11</td><td>27.8</td><td>31.0</td><td>10</td><td>10</td><td>45</td><td>C 0.01 s (model run, c:yli18:mrun:mr_tp_0_01s)Conditionsenti</td><td>0</td></tr>
+<tr><td>yim20</td><td>31</td><td>25</td><td>25</td><td>33.6</td><td>39</td><td>9</td><td>9</td><td>39</td><td>C 100 nm (model run, c:yim20:mrun:mr_h100)Conditionssimulati</td><td>0</td></tr>
+<tr><td>mat22</td><td>54</td><td>42</td><td>34</td><td>63.9</td><td>63.0</td><td>0</td><td>0</td><td>100</td><td>C film of at plasma_gas_ratio=0.2; deposition_temperature=10</td><td>0</td></tr>
+<tr><td>ela03</td><td>28</td><td>44</td><td>15</td><td>13.3</td><td>10.0</td><td>31</td><td>31</td><td>44</td><td>C 10 (model run, c:ela03:mrun:sim_zno_10s)Conditionssimulati</td><td>0</td></tr>
+<tr><td>hei24</td><td>83</td><td>166</td><td>83</td><td>34.0</td><td>34.0</td><td>166</td><td>166</td><td>40</td><td>C Sphere (s = 2) (model run, c:hei24:mrun:10_1039_d3cp05639b</td><td>0</td></tr>
+<tr><td>gor03</td><td>6</td><td>2</td><td>2</td><td>12</td><td>12.0</td><td>1</td><td>1</td><td>47</td><td>C 30 (specimen, c:gor03:ent:specimen_30k_l)Conditionsdeposit</td><td>0</td></tr>
+<tr><td>gre23</td><td>18</td><td>4</td><td>0</td><td>32</td><td>32.0</td><td>0</td><td>0</td><td>101</td><td>C 120 (specimen, c:gre23:ent:specimen_120)Conditionsdepositi</td><td>0</td></tr>
+<tr><td>art19</td><td>12</td><td>10</td><td>10</td><td>8.7</td><td>9.5</td><td>2</td><td>2</td><td>35</td><td>C SiO2, 120 s (specimen, c:art19:ent:specimen_sio2_120s)Cond</td><td>0</td></tr>
+<tr><td>zou23</td><td>8</td><td>68</td><td>5</td><td>16.4</td><td>16.0</td><td>0</td><td>0</td><td>53</td><td>C ALD film obtained at 350 °C (specimen, c:zou23:ent:zou23_s</td><td>0</td></tr>
+<tr><td>gao15</td><td>15</td><td>4</td><td>4</td><td>27.5</td><td>27.0</td><td>0</td><td>0</td><td>41</td><td>C 1000 nm (specimen, c:gao15:ent:specimen_tio2_1000nm)Condit</td><td>0</td></tr>
+<tr><td>yim22</td><td>68</td><td>80</td><td>61</td><td>57.5</td><td>62.0</td><td>76</td><td>76</td><td>58</td><td>C 0.5 (model run, c:yim22:mrun:mr_fig5a_c3)Conditionsentity&#x27;</td><td>0</td></tr>
+<tr><td>mat23</td><td>14</td><td>15</td><td>7</td><td>19.6</td><td>20</td><td>0</td><td>0</td><td>56</td><td>C PE-ALD at 225 °C (20 nm) (specimen, c:mat23:ent:mat23_spec</td><td>0</td></tr>
+<tr><td>wer21</td><td>0</td><td>23</td><td>0</td><td>27.7</td><td>6</td><td>11</td><td>11</td><td>42</td><td>C film of 10.0 sccm (specimen, c:wer21:run:run_fig2_c1:film)</td><td>0</td></tr>
+</table>
+<h2>5. Cards: errors</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.s5_card_errors.csv</p>
+<table><tr><th>paper</th><th>where</th><th>error</th></tr>
+<tr><td></td><td></td><td>none</td></tr>
+</table>
+<h2>ontology.yaml (the transform): the diff</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.ontology.diff</p>
+<pre>diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index 773e40b4..de04d13e 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -3535,6 +3535,11 @@ transforms:   # Sec. 9; the pilot&#x27;s derived quantities (lists.DERIVED computes t
+   - {id: mean_free_path,      inputs: [deposition_temperature, partial_pressure], output: mean_free_path, formula: &quot;k_B T / (sqrt(2) pi d^2 p), d the molecular diameter (an assumed fact) (P58)&quot;}
+   - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: &quot;lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)&quot;}
+   - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: &quot;L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)&quot;}
++  # P178 (user): a categorical transform; compile.py step j runs it per entity on its condition vector (a stated process_mode always wins,
++  # the derived value never overwrites it; data_kind computed_by_kb). mapping, first match: present (an input the entity has, any value),
++  # then reactant_B&#x27;s species id, then that species&#x27; kind.
++  - {id: process_mode,        inputs: [reactant_B, plasma_power, plasma_configuration], output: process_mode, formula: &quot;plasma when a plasma power or plasma configuration is set; else by the co-reactant (reactant_B): water, H2S, NH3 and other molecular co-reactants thermal, O3 ozone, the radicals O and H plasma (P178)&quot;,
++     mapping: {present: {plasma_power: plasma, plasma_configuration: plasma}, species: {h2o: thermal, h2s: thermal, nh3: thermal, o3: ozone, o_atom: plasma, h_atom: plasma}, species_kind: {molecule: thermal}}}
+ qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
+   definition: {meaning: &quot;P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)&quot;, values: definition ids, log: &quot;P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)&quot;}
+   step:      {meaning: &quot;which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).&quot;, values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: &quot;Cremers Sec. I four steps; Popov Reactant A/B&quot;, log: &quot;plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds&quot;}
+</pre>
+<h2>Code diff</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P178.code.diff</p>
+<pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 39668f9e..b4103f1d 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -53,6 +53,7 @@ psed_v2/
+   kb/compiled/&lt;paper_id&gt;.*  # tracked: facts.csv, coverage.csv, experiments.csv, dropped.csv, unmapped.csv (P157b: column never), promoted.csv (P157b), binding.csv (P177c), compile.log, summary.csv (with the ontology hash); check: kb/pilot/check.py --dir kb/compiled
+   kb/schema/form.json       # tracked: generated by ontology/export.py: the extraction form (one record); form_pass0.json, FORM.md
+   ontology/ontology.yaml, ontology/units.yaml # tracked: the ontology and the unit table (export.py -&gt; kb/pilot/vocab.py, kb/schema/)
++  ontology/form_candidates.csv, ontology/open_decisions.csv # tracked (P178): form changes for the next form version; ontology questions for the user
+   kb/&lt;paper_id&gt;.figures.json # tracked: the figure records imported by rule (kb/figures_import.py)
+   kb/verify/                # tracked: frozen evidence of past units (d8-d15, ask-v4, kb-12, kb-fig3, figures-12)
+   kb/report.py, kb/reports/&lt;unit&gt;.html # tracked: one self-contained HTML report per unit (R2)
+@@ -133,6 +134,14 @@ psed_v2/
+   exposure whose label names a species carries step = that species&#x27; half-cycle in the paper&#x27;s reactant_A / reactant_B settings (a purge
+   time: purge_A / purge_B); a species not in that recipe: step none, flagged. compile writes kb/compiled/&lt;pid&gt;.binding.csv (each item&#x27;s
+   outcome and its facts); check.py --dir retires &#x27;points_ref in a facts file&#x27; for the facts of a bound item.
++- P178 (user): no species is filled from the recipe. Step a1 (compile.symbol_species): a record labelled with a symbol (export.symbol_like)
++  whose quantity&#x27;s entry takes the species qualifier gets its species from this paper&#x27;s definition record of the symbol, else of its
++  subscript (the definition&#x27;s species, or for a definition of reactant_A / reactant_B / carrier_gas the paper&#x27;s one value of that
++  setting); a definition species wins over the record&#x27;s own (note &#x27;species corrected from the symbol definition&#x27;); no definition species:
++  the record keeps its own, logged &#x27;species unverified (record only)&#x27;. A setting derived from a coordinate axis that names one species
++  carries species=. process_mode is a categorical transform (ontology.yaml transforms: mapping), run in step j per entity on its condition
++  vector: data_kind computed_by_kb, never over a stated process_mode. ontology/form_candidates.csv lists form changes for the next form
++  version; ontology/open_decisions.csv lists ontology questions for the user.
+ - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
+   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
+   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index f2393684..dc27f94e 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -6,7 +6,7 @@
+ 
+ Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
+ are ignored); the latest pass-0 line. Steps: a0 resolve_other (P157b: a value held as other or outside the vocabulary, matched to the
+-generated vocab by its record key, symbols only in their own paper (P157d); never.csv -&gt; unmapped.csv column never; &lt;pid&gt;.promoted.csv), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
++generated vocab by its record key, symbols only in their own paper (P157d); never.csv -&gt; unmapped.csv column never; &lt;pid&gt;.promoted.csv), a1 symbol species (P178: a symbol&#x27;s species from the paper&#x27;s definition), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
+ ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
+ m facts.csv. Then the diff against the gold pilot/&lt;pid&gt;.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
+ dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
+@@ -370,6 +370,24 @@ def unit_fits(q, unit):
+     return d(V.UNIT_BASE[s][0]) == d(qd)
+ 
+ 
++def categorical_transform(t, facts):
++    &quot;&quot;&quot;P178 (user): a categorical transform&#x27;s value (ontology.yaml transforms: mapping) from an entity&#x27;s condition-vector facts, first
++    match: an input of mapping.present the entity has (any value), then the species id of its other input (mapping.species), then that
++    species&#x27; kind (mapping.species_kind, lists.SPECIES). Returns (value, the facts used) or (&#x27;&#x27;, []).&quot;&quot;&quot;
++    m = t[&quot;mapping&quot;]
++    for q, v in (m.get(&quot;present&quot;) or {}).items():
++        f = next((f for f in facts if f[&quot;quantity&quot;] == q and (f[&quot;value&quot;] or f[&quot;value_text&quot;] or f[&quot;value_min&quot;] or f[&quot;value_max&quot;])), None)
++        if f:
++            return v, [f]
++    sq = next((q for q in t[&quot;inputs&quot;] if q not in (m.get(&quot;present&quot;) or {})), &quot;&quot;)
++    f = next((f for f in facts if f[&quot;quantity&quot;] == sq and f[&quot;value_text&quot;]), None)
++    if f:
++        v = (m.get(&quot;species&quot;) or {}).get(f[&quot;value_text&quot;]) or (m.get(&quot;species_kind&quot;) or {}).get(L.SPECIES.get(f[&quot;value_text&quot;], {}).get(&quot;kind&quot;, &quot;&quot;))
++        if v:
++            return v, [f]
++    return &quot;&quot;, []
++
++
+ def legend_methods(pid, label):
+     &quot;&quot;&quot;P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
+     legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
+@@ -819,10 +837,14 @@ class Run:
+                     rec.update(value_min=c[&quot;value_min&quot;], value_max=c[&quot;value_max&quot;], unit=c[&quot;unit&quot;] or None, kind=dkind)
+                 elif c[&quot;kind&quot;] == &quot;value&quot;:
+                     rec.update(value=c[&quot;value&quot;], unit=c[&quot;unit&quot;] or None, kind=dkind)
++                sp = species_named(self.pid, c[&quot;key&quot;]) if c.get(&quot;coord&quot;) else {}
++                if len(sp) == 1:                                                # P178 (user): a coordinate axis that names one species: species=
++                    rec[&quot;qualifiers&quot;] = {&quot;species&quot;: next(iter(sp))}
++                    self.count(&quot;input&quot;, &quot;coordinate setting species (the axis names it)&quot;)
+                 if c.get(&quot;coord&quot;) and c.get(&quot;quantity&quot;) in C.X.STEP_QUANTITIES:  # P177c (user): a coordinate axis that names a species
+                     step = self.axis_step(c, recipe)
+                     if step:
+-                        rec[&quot;qualifiers&quot;] = {&quot;step&quot;: step[0]}
++                        rec[&quot;qualifiers&quot;] = {&quot;step&quot;: step[0], **(rec.get(&quot;qualifiers&quot;) or {})}
+                         if step[1]:
+                             rec[&quot;note&quot;] = step[1]
+                         self.count(&quot;input&quot;, f&quot;coordinate setting step {step[0]}&quot; + (&quot; (flagged)&quot; if step[1] else &quot;&quot;))
+@@ -862,6 +884,57 @@ class Run:
+         h = halves.pop()
+         return (f&quot;purge_{h}&quot; if c[&quot;quantity&quot;] in PURGE_QUANTITIES else f&quot;reactant_{h}&quot;), &quot;&quot;
+ 
++    # ------------------------------------------------------------------------------------------------------------ a1 (P178)
++    def symbol_species(self, recs):
++        &quot;&quot;&quot;a1, P178 (user): the species of a record labelled with a symbol (export.symbol_like) whose quantity takes the species qualifier
++        (its entry&#x27;s qualifiers): this paper&#x27;s definition record of the symbol (its term), else of the symbol&#x27;s subscript (p_B -&gt; B), gives
++        it: the definition&#x27;s species qualifier, or for a definition of quantity reactant_A / reactant_B / carrier_gas the paper&#x27;s one value
++        of that setting. A definition species wins over the record&#x27;s own (the note: &#x27;species corrected from the symbol definition&#x27;); a
++        record with none takes it; with no definition species the record keeps its own, listed &#x27;species unverified (record only)&#x27;.
++        No species is ever taken from the recipe otherwise. Every such record is a log line &#x27;a1: symbol species ...&#x27;.&quot;&quot;&quot;
++        takes = {i for i, e in V.ENTRIES.items() if &quot;species&quot; in (e.get(&quot;qualifiers&quot;) or [])}
++        one = lambda vs: next(iter(vs)) if len(vs) == 1 else &quot;&quot;                   # noqa: E731
++        recipe = collections.defaultdict(set)
++        for r in recs:
++            rec = r[&quot;rec&quot;]
++            if rec.get(&quot;type&quot;) == &quot;setting&quot; and rec.get(&quot;quantity&quot;) in (&quot;reactant_A&quot;, &quot;reactant_B&quot;, &quot;carrier_gas&quot;) and isinstance(rec.get(&quot;value_text&quot;), str):
++                hit = vocab_hits(self.pid, &quot;species&quot;, rec[&quot;value_text&quot;])
++                recipe[rec[&quot;quantity&quot;]].add(one(hit) or rec[&quot;value_text&quot;])
++        defs = collections.defaultdict(list)
++        for r in recs:
++            rec = r[&quot;rec&quot;]
++            if rec.get(&quot;type&quot;) == &quot;definition&quot; and isinstance(rec.get(&quot;term&quot;), str) and rec[&quot;term&quot;].strip():
++                q = rec.get(&quot;qualifiers&quot;) if isinstance(rec.get(&quot;qualifiers&quot;), dict) else {}
++                sp = q.get(&quot;species&quot;) if q.get(&quot;species&quot;) in L.SPECIES else one(recipe.get(rec.get(&quot;quantity&quot;), set()))
++                defs[C.X.symbol_key(rec[&quot;term&quot;])].append((r[&quot;eid&quot;], sp or &quot;&quot;))
++        for r in recs:
++            rec = r[&quot;rec&quot;]
++            lab = rec.get(&quot;label_as_printed&quot;) if isinstance(rec.get(&quot;label_as_printed&quot;), str) else &quot;&quot;
++            if r.get(&quot;origin&quot;) or rec.get(&quot;type&quot;) == &quot;definition&quot; or rec.get(&quot;quantity&quot;) not in takes or not C.X.symbol_like(lab):
++                continue
++            q = rec.get(&quot;qualifiers&quot;) if isinstance(rec.get(&quot;qualifiers&quot;), dict) else {}
++            own = q.get(&quot;species&quot;) or &quot;&quot;
++            sub = re.match(r&quot;^[^_]+_\{?(.+?)\}?$&quot;, lab)
++            found = next((ds for k in [C.X.symbol_key(lab)] + ([C.X.symbol_key(sub.group(1))] if sub else []) for ds in [[d for d in defs.get(k, []) if d[1]]] if ds), [])
++            sp = one({s for _, s in found})
++            ev = &quot;, &quot;.join(sorted({e for e, s in found if s == sp}))
++            if sp and own and sp != own:
++                rec[&quot;qualifiers&quot;] = {**q, &quot;species&quot;: sp}
++                rec[&quot;note&quot;] = &quot;; &quot;.join(x for x in (rec.get(&quot;note&quot;), f&quot;species corrected from the symbol definition ({ev}): was {own}&quot;) if x)
++                how = &quot;corrected&quot;
++            elif sp and not own:
++                rec[&quot;qualifiers&quot;] = {**q, &quot;species&quot;: sp}
++                rec[&quot;note&quot;] = &quot;; &quot;.join(x for x in (rec.get(&quot;note&quot;), f&quot;species from the symbol definition ({ev})&quot;) if x)
++                how = &quot;from the definition&quot;
++            elif sp:
++                how = &quot;backed by the definition&quot;
++            else:
++                how = &quot;species unverified (record only)&quot; if own else &quot;no species&quot;
++            self.count(&quot;a1&quot;, f&quot;symbol species: {how}&quot;)
++            self.note(f&quot;a1: symbol species {r[&#x27;eid&#x27;]} {lab!r} {rec.get(&#x27;type&#x27;)} {rec.get(&#x27;quantity&#x27;)}: record {own or &#x27;-&#x27;}, definition &quot;
++                      f&quot;{sp or (&#x27;disagree: &#x27; + &#x27;, &#x27;.join(sorted({s for _, s in found})) if found else &#x27;-&#x27;)}{&#x27; (&#x27; + ev + &#x27;)&#x27; if ev else &#x27;&#x27;} -&gt; {how}&quot;)
++        return recs
++
+     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
+     def resolve_other(self, recs):
+         &quot;&quot;&quot;a0, before form.json: a value the record holds as other or outside the vocabulary, compared whole (never a substring) with
+@@ -1701,7 +1774,8 @@ class Run:
+ 
+     def derived(self, rows):
+         &quot;&quot;&quot;j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
+-        compiled fact (no assumed fact); caveats and claim nodes through query; comparisons not built (D8).&quot;&quot;&quot;
++        compiled fact (no assumed fact); P178 (user): the categorical transforms of ontology.yaml (a mapping: process_mode) per entity on
++        its condition vector, never over a stated value; caveats and claim nodes through query; comparisons not built (D8).&quot;&quot;&quot;
+         import query as Q
+         self.write_facts(rows)
+         here, Q.HERE = Q.HERE, OUT
+@@ -1733,6 +1807,23 @@ class Run:
+                 f[&quot;fact_id&quot;] = f&quot;{self.key}:{ev[0]}#{self.id_count[ev[0]]}&quot;
+                 out.append(f)
+                 self.count(&quot;j&quot;, f&quot;derived {did}&quot;)
++        for t in [t for t in V.TRANSFORMS if t.get(&quot;mapping&quot;)]:                  # P178 (user): a categorical transform (process_mode) per entity:
++            for e in T.entities():                                              # a stated value wins, the derived one never overwrites it
++                vec = [f for fs in T.vector(e).values() for f in fs]
++                st = next((f for f in vec if f[&quot;quantity&quot;] == t[&quot;output&quot;] and f[&quot;value_text&quot;]), None)
++                val, used = (&quot;&quot;, []) if st else categorical_transform(t, vec)
++                self.note(f&quot;j: transform {t[&#x27;id&#x27;]} {e}: &quot; + (f&quot;stated {st[&#x27;value_text&#x27;]} ({st[&#x27;fact_id&#x27;]})&quot; if st else f&quot;derived {val} from &quot; +
++                          &quot;, &quot;.join(f&quot;{f[&#x27;quantity&#x27;]} {f[&#x27;value_text&#x27;] or f[&#x27;value&#x27;]} ({f[&#x27;fact_id&#x27;]})&quot; for f in used) if val else &quot;none (no input)&quot;))
++                if not val:
++                    self.count(&quot;j&quot;, f&quot;transform {t[&#x27;id&#x27;]}: &quot; + (&quot;stated&quot; if st else &quot;none&quot;)); continue
++                f = {x: &quot;&quot; for x in F.FIELDS}
++                ev = sorted({x for u in used for x in u[&quot;evidence&quot;].split(&quot;;&quot;) if x in self.order}, key=self.order.get) or [self.els[0][&quot;element_id&quot;]]
++                f.update(type=&quot;derived&quot;, quantity=t[&quot;output&quot;], value_text=val, data_kind=&quot;computed_by_kb&quot;, method=&quot;calculation&quot;, inputs=&quot;;&quot;.join(u[&quot;fact_id&quot;] for u in used),
++                         evidence=&quot;;&quot;.join(ev), parent=e, author=self.pid, mentions=T.byid[e][&quot;label_as_printed&quot;], definition_note=f&quot;transform {t[&#x27;id&#x27;]}: {t[&#x27;formula&#x27;]}&quot;)
++                self.id_count[ev[0]] += 1
++                f[&quot;fact_id&quot;] = f&quot;{self.key}:{ev[0]}#{self.id_count[ev[0]]}&quot;
++                out.append(f)
++                self.count(&quot;j&quot;, f&quot;transform {t[&#x27;id&#x27;]}: derived {val}&quot;)
+         self.note(f&quot;j: derived over {len(T.entities())} entities: {len(out)} rows; not derived: {dict(errors)}&quot;)
+         cav = Q.caveats_of(T)
+         self.note(f&quot;j: caveats (query.caveats_of): {len(cav)}, linked to facts {sum(bool(c[&#x27;facts&#x27;]) for c in cav)}, to nodes {sum(bool(c[&#x27;nodes&#x27;]) for c in cav)}; &quot;
+@@ -1823,6 +1914,7 @@ class Run:
+     def run(self):
+         recs = self.read()
+         recs = self.resolve_other(recs)                                         # P157b
++        recs = self.symbol_species(recs)                                        # P178 (user)
+         recs = self.validate(recs)
+         self.count(&quot;a&quot;, &quot;kept&quot;, len(recs))
+         recs = self.type_rules(recs)
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 2f78baf1..10a8dc6c 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -110,6 +110,14 @@ def norm_label(label):
+     return &quot; &quot;.join(strip_latex(label).casefold().split())
+ 
+ 
++def symbol_like(t):
++    &quot;&quot;&quot;P164 (user): a label that is a symbol (one letter, a Greek letter, a subscript, LaTeX): the part before the first _ or ^, its LaTeX
++    commands removed, holds no word of three or more Latin letters (&#x27;R&#x27;, &#x27;\\sigma&#x27;, &#x27;\\beta_0&#x27;, &#x27;\\tau/\\epsilon&#x27;, &#x27;d_{pore}&#x27;; not &#x27;Particle
++    radius, R&#x27;). P178: here, for grow.py and compile.py.&quot;&quot;&quot;
++    base = re.sub(r&quot;\\[A-Za-z]+&quot;, &quot;&quot;, re.split(r&quot;[_^]&quot;, str(t), maxsplit=1)[0])
++    return bool(str(t).strip()) and not re.search(r&quot;[A-Za-z]{3,}&quot;, base)
++
++
+ def symbol_key(text):
+     &quot;&quot;&quot;A symbol key (P157d): LaTeX stripped, whitespace collapsed, case kept (R is not r, Q is not q; P156).&quot;&quot;&quot;
+     return &quot; &quot;.join(strip_latex(text).split())
+@@ -345,7 +353,8 @@ def build(onto, pmap):
+         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get(&quot;value_aliases&quot;, {}).items() if k != &quot;joint&quot;},
+         PILOT_MAP={r[&quot;pilot_id&quot;]: dict(kind=r[&quot;kind&quot;], disposition=r[&quot;disposition&quot;], entry_id=r[&quot;entry_id&quot;], qualifiers=r[&quot;qualifiers&quot;]) for r in pmap},
+         FROM_OTHER={lab: e[&quot;id&quot;] for e in live for lab in e.get(&quot;from_other&quot;, [])},   # P131b: printed label -&gt; the entry promoted from the free label other[label]
+-        TRANSFORMS=[dict(id=t[&quot;id&quot;], inputs=[str(x) for x in t[&quot;inputs&quot;]], output=str(t[&quot;output&quot;]), formula=t.get(&quot;formula&quot;, &quot;&quot;)) for t in onto.get(&quot;transforms&quot;, [])],   # P84: the A/B label rule reads them
++        TRANSFORMS=[dict(id=t[&quot;id&quot;], inputs=[str(x) for x in t[&quot;inputs&quot;]], output=str(t[&quot;output&quot;]), formula=t.get(&quot;formula&quot;, &quot;&quot;), **({&quot;mapping&quot;: t[&quot;mapping&quot;]} if t.get(&quot;mapping&quot;) else {}))
++                    for t in onto.get(&quot;transforms&quot;, [])],   # P84: the A/B label rule reads them; P178: a categorical transform&#x27;s mapping
+     )
+ 
+ 
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 78e79319..0d9c8d78 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -370,12 +370,7 @@ def label_papers(row, label):
+     return ps or [p for p in row[&quot;pids&quot;].split(&quot;;&quot;) if p]
+ 
+ 
+-def symbol_like(t):
+-    &quot;&quot;&quot;P164 (user): a label that is a symbol (one letter, a Greek letter, a subscript, LaTeX): the part before the first _ or ^, its LaTeX
+-    commands removed, holds no word of three or more Latin letters (&#x27;R&#x27;, &#x27;\\sigma&#x27;, &#x27;\\beta_0&#x27;, &#x27;\\tau/\\epsilon&#x27;, &#x27;d_{pore}&#x27;; not &#x27;Particle
+-    radius, R&#x27;).&quot;&quot;&quot;
+-    base = re.sub(r&quot;\\[A-Za-z]+&quot;, &quot;&quot;, re.split(r&quot;[_^]&quot;, str(t), maxsplit=1)[0])
+-    return bool(str(t).strip()) and not re.search(r&quot;[A-Za-z]{3,}&quot;, base)
++symbol_like = X.symbol_like                                                      # P178: moved to export.py (compile.py reads it too)
+ 
+ 
+ def run_conditions(pid):
+</pre>
+</body></html>

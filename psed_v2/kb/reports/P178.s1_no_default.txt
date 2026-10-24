@@ -1,0 +1,12 @@
+P178 step 1: every place in the pipeline code that writes or substitutes a species (grep of kb/extract, kb/pilot (non-gold), ontology/export.py; P177c code):
+
+kb/extract/compile.py:829:                if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
+kb/extract/compile.py:1156:                r["species"] = hit
+kb/pilot/lists.py:226:# inputs it reads (name; a quantity id, or other:<label>, alternatives with |; the qualifiers a fact must carry, @material and @A
+kb/pilot/lists.py:281:                                   _in("d", "other:molecular diameter", "species=@A", "nm"), _in("kB", "other:Boltzmann constant", "", "J/K")],
+kb/pilot/query.py:275:    def reactant_A(self, ent):
+kb/pilot/query.py:821:    subs = {"@material": T.material(ent), "@A": T.reactant_A(ent)}
+ontology/export.py:196:             "structure": [i for i, e in live.items() if e["type"] == "structure"], "species": [i for i, e in live.items() if e["type"] == "species"],
+ontology/export.py:419:            "species": {"enum": ids("species")},
+
+Reading: compile.py writes a species only where the record or a figure names it (P166 a legend species, P175 / P177b legend qualifier parts; step f resolves the value_text of a species setting, line 1156). query.Tree.reactant_A and the '@A' / '@material' of lists.DERIVED select an input fact for a derivation (mean_free_path, atoms_per_cycle); they write no species onto a fact. The pass-1 instruction (pass1_elements.py) and form.json carry no species default. So no code default fills a missing species; yli18 s8.p3 p_B / M_B / d_B = h2o is the pass-1 record's own qualifier (the extractor's), kept under the user's P178 chat rule and listed in s2 as 'species unverified (record only)' (p_B; M_B and d_B are outside a1: their entries take no species qualifier, see ontology/open_decisions.csv).
