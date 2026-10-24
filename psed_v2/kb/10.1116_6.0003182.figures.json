@@ -3,7 +3,7 @@
  "key": "gre23",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T10:03:01",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "gre23:fig2a",
@@ -12,7 +12,8 @@
    "panel_type": "plot",
    "content": "ALD chamber pressure during the first five cycles of ZnO ALD at 120 °C",
    "quantities": [
-    "time"
+    "time",
+    "process_pressure"
    ],
    "flags": [],
    "status": "imported",
@@ -36,8 +37,8 @@
      "label_raw": "p (Torr)",
      "key": "p",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "process_pressure",
+     "how": "symbol 'p' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -64,7 +65,8 @@
    "panel_type": "plot",
    "content": "ALD chamber pressure during the first five cycles of ZnO ALD at 160 °C",
    "quantities": [
-    "time"
+    "time",
+    "process_pressure"
    ],
    "flags": [],
    "status": "imported",
@@ -88,8 +90,8 @@
      "label_raw": "p (Torr)",
      "key": "p",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "process_pressure",
+     "how": "symbol 'p' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -116,7 +118,8 @@
    "panel_type": "plot",
    "content": "ALD chamber pressure during the first five cycles of ZnO ALD with temperature cycling",
    "quantities": [
-    "time"
+    "time",
+    "process_pressure"
    ],
    "flags": [],
    "status": "imported",
@@ -140,8 +143,8 @@
      "label_raw": "p (Torr)",
      "key": "p",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "process_pressure",
+     "how": "symbol 'p' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -156,7 +159,8 @@
    "panel_type": "plot",
    "content": "Interior quartz boat temperature during the temperature-cycled ZnO ALD test run",
    "quantities": [
-    "time"
+    "time",
+    "deposition_temperature"
    ],
    "flags": [],
    "status": "imported",
@@ -180,8 +184,8 @@
      "label_raw": "T (°C)",
      "key": "T",
      "unit": "°C",
-     "quantity": "other",
-     "how": "",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -195,7 +199,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Pressure change during cycle 15 DEZ hold versus elapsed time for different temperatures",
-   "quantities": [],
+   "quantities": [
+    "time",
+    "pressure_rise"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -206,8 +213,8 @@
      "label_raw": "Elapsed time, \\delta t (min)",
      "key": "Elapsed time, \\delta t",
      "unit": "min",
-     "quantity": "other",
-     "how": "",
+     "quantity": "time",
+     "how": "alias 'Elapsed time, \\delta t'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -218,8 +225,8 @@
      "label_raw": "Pressure change, \\delta p (Torr)",
      "key": "Pressure change, \\delta p",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pressure_rise",
+     "how": "alias 'Pressure change, \\delta p'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -258,7 +265,8 @@
    "panel_type": "plot",
    "content": "Net gain of gas moles during the DEZ hold step versus cycle number",
    "quantities": [
-    "cycle_number"
+    "cycle_number",
+    "gas_moles_per_cycle"
    ],
    "flags": [],
    "status": "imported",
@@ -282,8 +290,8 @@
      "label_raw": "Net gain of gas moles, \\Delta n_g (\\mumol)",
      "key": "Net gain of gas moles, \\Delta n_g",
      "unit": "\\mumol",
-     "quantity": "other",
-     "how": "",
+     "quantity": "gas_moles_per_cycle",
+     "how": "alias 'Net gain of gas moles, \\Delta n_g'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -310,7 +318,8 @@
    "panel_type": "plot",
    "content": "Terminal slope of DEZ hold step versus cycle number",
    "quantities": [
-    "cycle_number"
+    "cycle_number",
+    "pressure_rate"
    ],
    "flags": [],
    "status": "imported",
@@ -334,8 +343,8 @@
      "label_raw": "Terminal slope, TS (mTorr/min)",
      "key": "Terminal slope, TS",
      "unit": "mTorr/min",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pressure_rate",
+     "how": "alias 'Terminal slope, TS'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -401,7 +410,10 @@
    "panel": "",
    "panel_type": "spectrum",
    "content": "X-ray diffraction patterns of ZnO-coated Al2O3 NPCs at different temperatures with reference patterns",
-   "quantities": [],
+   "quantities": [
+    "diffraction_angle",
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -412,8 +424,8 @@
      "label_raw": "2θ (deg.)",
      "key": "2θ",
      "unit": "deg.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "diffraction_angle",
+     "how": "symbol '2θ' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -424,8 +436,8 @@
      "label_raw": "Normalized counts",
      "key": "Normalized counts",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Normalized counts'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -508,7 +520,10 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "EDS line scans of C, O, Zn, and Al for the 120 °C sample",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity",
+    "distance"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -532,8 +547,8 @@
      "label_raw": "Normalized X-ray counts",
      "key": "Normalized X-ray counts",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Normalized X-ray counts'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -544,8 +559,8 @@
      "label_raw": "Postion (mm)",
      "key": "Postion",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Postion' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -583,7 +598,10 @@
    "panel": "e",
    "panel_type": "plot",
    "content": "EDS line scans of C, O, Zn, and Al for the 160 °C sample",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity",
+    "distance"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -607,8 +625,8 @@
      "label_raw": "Normalized X-ray counts",
      "key": "Normalized X-ray counts",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Normalized X-ray counts'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -619,8 +637,8 @@
      "label_raw": "Postion (mm)",
      "key": "Postion",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Postion' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -658,7 +676,10 @@
    "panel": "f",
    "panel_type": "plot",
    "content": "EDS line scans of C, O, Zn, and Al for the 120/160 °C sample",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity",
+    "distance"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -682,8 +703,8 @@
      "label_raw": "Normalized X-ray counts",
      "key": "Normalized X-ray counts",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Normalized X-ray counts'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -694,8 +715,8 @@
      "label_raw": "Postion (mm)",
      "key": "Postion",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Postion' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -768,175 +789,175 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "Torr",
+    "quantity": "process_pressure",
+    "unit": "Pa",
     "transform": "",
     "label_raw": "p (Torr)",
     "unit_raw": "Torr",
     "key": "p",
-    "how": "",
+    "how": "symbol 'p' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
      0.0,
-     0.4
+     53.3288
     ],
     [
      288.0,
-     0.4
+     53.3288
     ],
     [
      324.0,
-     9.2
+     1226.5624
     ],
     [
      2556.0,
-     9.0
+     1199.8980000000001
     ],
     [
      2592.0,
-     0.6
+     79.9932
     ],
     [
      5112.0,
-     0.6
+     79.9932
     ],
     [
      5148.0,
-     9.8
+     1306.5556000000001
     ],
     [
      7056.0,
-     9.9
+     1319.8878
     ],
     [
      7092.0,
-     0.6
+     79.9932
     ],
     [
      9792.0,
-     0.6
+     79.9932
     ],
     [
      9828.0,
-     8.4
+     1119.9048
     ],
     [
      11916.0,
-     8.1
+     1079.9082
     ],
     [
      11952.0,
-     0.6
+     79.9932
     ],
     [
      14471.999999999998,
-     0.6
+     79.9932
     ],
     [
      14508.0,
-     9.8
+     1306.5556000000001
     ],
     [
      16416.0,
-     9.9
+     1319.8878
     ],
     [
      16452.0,
-     0.6
+     79.9932
     ],
     [
      19296.0,
-     0.6
+     79.9932
     ],
     [
      19332.0,
-     8.4
+     1119.9048
     ],
     [
      21420.0,
-     8.0
+     1066.576
     ],
     [
      21456.0,
-     0.6
+     79.9932
     ],
     [
      24084.0,
-     0.6
+     79.9932
     ],
     [
      24120.0,
-     9.9
+     1319.8878
     ],
     [
      25992.0,
-     10.0
+     1333.22
     ],
     [
      26028.0,
-     0.6
+     79.9932
     ],
     [
      29016.0,
-     0.6
+     79.9932
     ],
     [
      29052.0,
-     8.4
+     1119.9048
     ],
     [
      31068.000000000004,
-     8.0
+     1066.576
     ],
     [
      31104.000000000004,
-     0.6
+     79.9932
     ],
     [
      33696.0,
-     0.6
+     79.9932
     ],
     [
      33732.0,
-     9.8
+     1306.5556000000001
     ],
     [
      35640.0,
-     9.9
+     1319.8878
     ],
     [
      35676.0,
-     0.6
+     79.9932
     ],
     [
      38664.0,
-     0.6
+     79.9932
     ],
     [
      38700.0,
-     8.6
+     1146.5692
     ],
     [
      40788.0,
-     8.1
+     1079.9082
     ],
     [
      40824.0,
-     0.6
+     79.9932
     ],
     [
      43416.0,
-     0.6
+     79.9932
     ],
     [
      43452.0,
-     9.8
+     1306.5556000000001
     ],
     [
      45360.0,
-     9.9
+     1319.8878
     ]
    ],
    "points_raw": [
@@ -1120,7 +1141,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 453.6,
-    "y": 0.096
+    "y": 12.798912000000001
    },
    "set": "",
    "provenance": {
@@ -1150,175 +1171,175 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "Torr",
+    "quantity": "process_pressure",
+    "unit": "Pa",
     "transform": "",
     "label_raw": "p (Torr)",
     "unit_raw": "Torr",
     "key": "p",
-    "how": "",
+    "how": "symbol 'p' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
      0.0,
-     0.5
+     66.661
     ],
     [
      324.0,
-     0.5
+     66.661
     ],
     [
      360.0,
-     9.0
+     1199.8980000000001
     ],
     [
      2520.0,
-     8.7
+     1159.9014
     ],
     [
      2556.0,
-     0.6
+     79.9932
     ],
     [
      5004.0,
-     0.6
+     79.9932
     ],
     [
      5040.0,
-     9.4
+     1253.2268000000001
     ],
     [
      7128.0,
-     9.5
+     1266.559
     ],
     [
      7164.0,
-     0.5
+     66.661
     ],
     [
      9648.0,
-     0.5
+     66.661
     ],
     [
      9684.0,
-     8.4
+     1119.9048
     ],
     [
      11808.0,
-     8.1
+     1079.9082
     ],
     [
      11844.0,
-     0.5
+     66.661
     ],
     [
      14364.0,
-     0.5
+     66.661
     ],
     [
      14400.0,
-     9.4
+     1253.2268000000001
     ],
     [
      16452.0,
-     9.5
+     1266.559
     ],
     [
      16488.0,
-     0.5
+     66.661
     ],
     [
      19116.0,
-     0.5
+     66.661
     ],
     [
      19152.0,
-     8.4
+     1119.9048
     ],
     [
      21204.0,
-     8.1
+     1079.9082
     ],
     [
      21240.0,
-     0.5
+     66.661
     ],
     [
      23868.0,
-     0.5
+     66.661
     ],
     [
      23904.0,
-     9.4
+     1253.2268000000001
     ],
     [
      25920.0,
-     9.5
+     1266.559
     ],
     [
      25956.0,
-     0.5
+     66.661
     ],
     [
      28764.0,
-     0.5
+     66.661
     ],
     [
      28800.0,
-     8.4
+     1119.9048
     ],
     [
      30852.0,
-     8.0
+     1066.576
     ],
     [
      30888.0,
-     0.5
+     66.661
     ],
     [
      33480.0,
-     0.5
+     66.661
     ],
     [
      33516.0,
-     9.3
+     1239.8946
     ],
     [
      35568.0,
-     9.9
+     1319.8878
     ],
     [
      35604.0,
-     0.5
+     66.661
     ],
     [
      38376.0,
-     0.5
+     66.661
     ],
     [
      38412.0,
-     8.6
+     1146.5692
     ],
     [
      40428.0,
-     8.0
+     1066.576
     ],
     [
      40464.0,
-     0.5
+     66.661
     ],
     [
      43128.0,
-     0.5
+     66.661
     ],
     [
      43164.0,
-     9.4
+     1253.2268000000001
     ],
     [
      45216.0,
-     9.8
+     1306.5556000000001
     ]
    ],
    "points_raw": [
@@ -1502,7 +1523,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 452.16,
-    "y": 0.094
+    "y": 12.532268
    },
    "set": "",
    "provenance": {
@@ -1532,175 +1553,175 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "Torr",
+    "quantity": "process_pressure",
+    "unit": "Pa",
     "transform": "",
     "label_raw": "p (Torr)",
     "unit_raw": "Torr",
     "key": "p",
-    "how": "",
+    "how": "symbol 'p' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
      0.0,
-     0.5
+     66.661
     ],
     [
      288.0,
-     0.5
+     66.661
     ],
     [
      324.0,
-     9.0
+     1199.8980000000001
     ],
     [
      2556.0,
-     8.8
+     1173.2336
     ],
     [
      2592.0,
-     0.5
+     66.661
     ],
     [
      5112.0,
-     0.5
+     66.661
     ],
     [
      5148.0,
-     9.6
+     1279.8912
     ],
     [
      7092.0,
-     9.6
+     1279.8912
     ],
     [
      7128.0,
-     0.5
+     66.661
     ],
     [
      9828.0,
-     0.5
+     66.661
     ],
     [
      9864.0,
-     8.0
+     1066.576
     ],
     [
      11916.0,
-     7.9
+     1053.2438
     ],
     [
      11952.0,
-     0.5
+     66.661
     ],
     [
      14544.0,
-     0.5
+     66.661
     ],
     [
      14580.0,
-     9.4
+     1253.2268000000001
     ],
     [
      16488.0,
-     9.4
+     1253.2268000000001
     ],
     [
      16524.0,
-     0.5
+     66.661
     ],
     [
      19368.0,
-     0.5
+     66.661
     ],
     [
      19404.0,
-     8.4
+     1119.9048
     ],
     [
      21420.0,
-     7.7
+     1026.5794
     ],
     [
      21456.0,
-     0.5
+     66.661
     ],
     [
      24048.0,
-     0.5
+     66.661
     ],
     [
      24084.0,
-     9.4
+     1253.2268000000001
     ],
     [
      25992.0,
-     9.4
+     1253.2268000000001
     ],
     [
      26028.0,
-     0.5
+     66.661
     ],
     [
      29052.0,
-     0.5
+     66.661
     ],
     [
      29088.0,
-     8.3
+     1106.5726000000002
     ],
     [
      31068.000000000004,
-     7.7
+     1026.5794
     ],
     [
      31104.000000000004,
-     0.5
+     66.661
     ],
     [
      33732.0,
-     0.5
+     66.661
     ],
     [
      33768.0,
-     9.5
+     1266.559
     ],
     [
      35640.0,
-     9.5
+     1266.559
     ],
     [
      35676.0,
-     0.5
+     66.661
     ],
     [
      38664.0,
-     0.5
+     66.661
     ],
     [
      38700.0,
-     8.3
+     1106.5726000000002
     ],
     [
      40752.0,
-     7.8
+     1039.9116
     ],
     [
      40788.0,
-     0.5
+     66.661
     ],
     [
      43452.0,
-     0.5
+     66.661
     ],
     [
      43488.0,
-     9.7
+     1293.2233999999999
     ],
     [
      45360.0,
-     9.7
+     1293.2233999999999
     ]
    ],
    "points_raw": [
@@ -1872,7 +1893,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 453.6,
-    "y": 0.092
+    "y": 12.265623999999999
    },
    "set": "",
    "provenance": {
@@ -1902,13 +1923,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "deposition_temperature",
     "unit": "°C",
     "transform": "",
     "label_raw": "T (°C)",
     "unit_raw": "°C",
     "key": "T",
-    "how": "",
+    "how": "symbol 'T' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -2234,23 +2255,23 @@
     "unit": "°C"
    },
    "x": {
-    "quantity": "other",
-    "unit": "min",
+    "quantity": "time",
+    "unit": "s",
     "transform": "",
     "label_raw": "Elapsed time, \\delta t (min)",
     "unit_raw": "min",
     "key": "Elapsed time, \\delta t",
-    "how": "",
+    "how": "alias 'Elapsed time, \\delta t'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rise",
     "unit": "Torr",
     "transform": "",
     "label_raw": "Pressure change, \\delta p (Torr)",
     "unit_raw": "Torr",
     "key": "Pressure change, \\delta p",
-    "how": "",
+    "how": "alias 'Pressure change, \\delta p'",
     "unit_reason": ""
    },
    "points": [
@@ -2259,63 +2280,63 @@
      0.0
     ],
     [
-     1.5,
+     90.0,
      0.28
     ],
     [
-     3.0,
-     0.49
+     180.0,
+     0.49000000000000005
     ],
     [
-     5.0,
+     300.0,
      0.7
     ],
     [
-     7.5,
+     450.0,
      0.94
     ],
     [
-     10.0,
+     600.0,
      1.15
     ],
     [
-     12.5,
+     750.0,
      1.35
     ],
     [
-     15.0,
+     900.0,
      1.54
     ],
     [
-     17.5,
+     1050.0,
      1.72
     ],
     [
-     19.0,
+     1140.0,
      1.83
     ],
     [
-     20.0,
-     1.95
+     1200.0,
+     1.9499999999999997
     ],
     [
-     22.5,
+     1350.0,
      2.12
     ],
     [
-     25.0,
+     1500.0,
      2.3
     ],
     [
-     27.5,
+     1650.0,
      2.47
     ],
     [
-     30.0,
+     1800.0,
      2.63
     ],
     [
-     31.8,
+     1908.0,
      2.73
     ]
    ],
@@ -2404,7 +2425,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 19.080000000000002,
     "y": 0.0273
    },
    "set": "gre23:cmp:fig3a",
@@ -2429,23 +2450,23 @@
     "unit": "°C"
    },
    "x": {
-    "quantity": "other",
-    "unit": "min",
+    "quantity": "time",
+    "unit": "s",
     "transform": "",
     "label_raw": "Elapsed time, \\delta t (min)",
     "unit_raw": "min",
     "key": "Elapsed time, \\delta t",
-    "how": "",
+    "how": "alias 'Elapsed time, \\delta t'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rise",
     "unit": "Torr",
     "transform": "",
     "label_raw": "Pressure change, \\delta p (Torr)",
     "unit_raw": "Torr",
     "key": "Pressure change, \\delta p",
-    "how": "",
+    "how": "alias 'Pressure change, \\delta p'",
     "unit_reason": ""
    },
    "points": [
@@ -2454,43 +2475,43 @@
      0.0
     ],
     [
-     1.5,
+     90.0,
      0.23
     ],
     [
-     3.0,
+     180.0,
      0.35
     ],
     [
-     5.0,
+     300.0,
      0.43
     ],
     [
-     7.5,
+     450.0,
      0.47
     ],
     [
-     10.0,
+     600.0,
      0.48
     ],
     [
-     15.0,
-     0.49
+     900.0,
+     0.49000000000000005
     ],
     [
-     20.0,
-     0.49
+     1200.0,
+     0.49000000000000005
     ],
     [
-     25.0,
+     1500.0,
      0.48
     ],
     [
-     30.0,
+     1800.0,
      0.48
     ],
     [
-     31.9,
+     1914.0,
      0.48
     ]
    ],
@@ -2559,8 +2580,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0049
+    "x": 19.14,
+    "y": 0.004900000000000001
    },
    "set": "gre23:cmp:fig3a",
    "provenance": {
@@ -2581,23 +2602,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "min",
+    "quantity": "time",
+    "unit": "s",
     "transform": "",
     "label_raw": "Elapsed time, \\delta t (min)",
     "unit_raw": "min",
     "key": "Elapsed time, \\delta t",
-    "how": "",
+    "how": "alias 'Elapsed time, \\delta t'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rise",
     "unit": "Torr",
     "transform": "",
     "label_raw": "Pressure change, \\delta p (Torr)",
     "unit_raw": "Torr",
     "key": "Pressure change, \\delta p",
-    "how": "",
+    "how": "alias 'Pressure change, \\delta p'",
     "unit_reason": ""
    },
    "points": [
@@ -2606,43 +2627,43 @@
      0.0
     ],
     [
-     1.5,
+     90.0,
      0.22
     ],
     [
-     3.0,
+     180.0,
      0.33
     ],
     [
-     5.0,
+     300.0,
      0.4
     ],
     [
-     7.5,
+     450.0,
      0.43
     ],
     [
-     10.0,
+     600.0,
      0.44
     ],
     [
-     15.0,
+     900.0,
      0.44
     ],
     [
-     20.0,
+     1200.0,
      0.44
     ],
     [
-     25.0,
+     1500.0,
      0.43
     ],
     [
-     30.0,
+     1800.0,
      0.42
     ],
     [
-     31.9,
+     1914.0,
      0.42
     ]
    ],
@@ -2700,7 +2721,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 19.14,
     "y": 0.0044
    },
    "set": "gre23:cmp:fig3a",
@@ -2735,13 +2756,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "\\mumol",
+    "quantity": "gas_moles_per_cycle",
+    "unit": "µmol",
     "transform": "",
     "label_raw": "Net gain of gas moles, \\Delta n_g (\\mumol)",
     "unit_raw": "\\mumol",
     "key": "Net gain of gas moles, \\Delta n_g",
-    "how": "",
+    "how": "alias 'Net gain of gas moles, \\Delta n_g'",
     "unit_reason": ""
    },
    "points": [
@@ -2960,19 +2981,19 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "\\mumol",
+    "quantity": "gas_moles_per_cycle",
+    "unit": "µmol",
     "transform": "",
     "label_raw": "Net gain of gas moles, \\Delta n_g (\\mumol)",
     "unit_raw": "\\mumol",
     "key": "Net gain of gas moles, \\Delta n_g",
-    "how": "",
+    "how": "alias 'Net gain of gas moles, \\Delta n_g'",
     "unit_reason": ""
    },
    "points": [
     [
      1.0,
-     62.7
+     62.70000000000001
     ],
     [
      2.0,
@@ -3182,19 +3203,19 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "\\mumol",
+    "quantity": "gas_moles_per_cycle",
+    "unit": "µmol",
     "transform": "",
     "label_raw": "Net gain of gas moles, \\Delta n_g (\\mumol)",
     "unit_raw": "\\mumol",
     "key": "Net gain of gas moles, \\Delta n_g",
-    "how": "",
+    "how": "alias 'Net gain of gas moles, \\Delta n_g'",
     "unit_reason": ""
    },
    "points": [
     [
      1.0,
-     61.6
+     61.599999999999994
     ],
     [
      3.0,
@@ -3354,7 +3375,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 0.19,
-    "y": 0.19100000000000003
+    "y": 0.19099999999999995
    },
    "set": "gre23:cmp:fig3b",
    "provenance": {
@@ -3388,13 +3409,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rate",
     "unit": "mTorr/min",
     "transform": "",
     "label_raw": "Terminal slope, TS (mTorr/min)",
     "unit_raw": "mTorr/min",
     "key": "Terminal slope, TS",
-    "how": "",
+    "how": "alias 'Terminal slope, TS'",
     "unit_reason": ""
    },
    "points": [
@@ -3420,7 +3441,7 @@
     ],
     [
      6.0,
-     57.8
+     57.79999999999999
     ],
     [
      7.0,
@@ -3613,13 +3634,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rate",
     "unit": "mTorr/min",
     "transform": "",
     "label_raw": "Terminal slope, TS (mTorr/min)",
     "unit_raw": "mTorr/min",
     "key": "Terminal slope, TS",
-    "how": "",
+    "how": "alias 'Terminal slope, TS'",
     "unit_reason": ""
    },
    "points": [
@@ -3835,13 +3856,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pressure_rate",
     "unit": "mTorr/min",
     "transform": "",
     "label_raw": "Terminal slope, TS (mTorr/min)",
     "unit_raw": "mTorr/min",
     "key": "Terminal slope, TS",
-    "how": "",
+    "how": "alias 'Terminal slope, TS'",
     "unit_reason": ""
    },
    "points": [
@@ -4028,23 +4049,23 @@
     "element": "C"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4054,27 +4075,27 @@
     ],
     [
      0.71,
-     0.06
+     60.00000000000001
     ],
     [
      0.71,
-     0.4
+     400.00000000000006
     ],
     [
      0.7,
-     0.8
+     800.0000000000001
     ],
     [
      0.7,
-     1.2
+     1200.0
     ],
     [
      0.7,
-     1.44
+     1440.0
     ],
     [
      0.2,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -4138,8 +4159,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0051,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -4160,23 +4181,23 @@
     "element": "O"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4186,27 +4207,27 @@
     ],
     [
      1.23,
-     0.06
+     60.00000000000001
     ],
     [
      1.23,
-     0.4
+     400.00000000000006
     ],
     [
      1.22,
-     0.8
+     800.0000000000001
     ],
     [
      1.21,
-     1.2
+     1200.0
     ],
     [
      1.21,
-     1.44
+     1440.0
     ],
     [
      0.3,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -4270,8 +4291,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0093,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -4292,23 +4313,23 @@
     "element": "Zn"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4318,51 +4339,51 @@
     ],
     [
      0.25,
-     0.05
+     50.00000000000001
     ],
     [
      1.5,
-     0.06
+     60.00000000000001
     ],
     [
      3.4,
-     0.07
+     70.00000000000001
     ],
     [
      3.66,
-     0.1
+     100.00000000000001
     ],
     [
      3.72,
-     0.4
+     400.00000000000006
     ],
     [
      3.72,
-     0.7
+     700.0
     ],
     [
      3.77,
-     1.0
+     1000.0000000000001
     ],
     [
      3.78,
-     1.2
+     1200.0
     ],
     [
      3.73,
-     1.3
+     1300.0000000000002
     ],
     [
      3.48,
-     1.44
+     1440.0
     ],
     [
      2.5,
-     1.47
+     1470.0
     ],
     [
      0.2,
-     1.49
+     1490.0
     ]
    ],
    "points_raw": [
@@ -4450,8 +4471,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0149
+    "x": 0.0358,
+    "y": 14.9
    },
    "set": "",
    "provenance": {
@@ -4472,23 +4493,23 @@
     "element": "Al"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4498,51 +4519,51 @@
     ],
     [
      8.2,
-     0.05
+     50.00000000000001
     ],
     [
      8.1,
-     0.1
+     100.00000000000001
     ],
     [
      7.65,
-     0.2
+     200.00000000000003
     ],
     [
      7.63,
-     0.4
+     400.00000000000006
     ],
     [
      7.71,
-     0.6
+     600.0
     ],
     [
      7.66,
-     0.8
+     800.0000000000001
     ],
     [
      7.85,
-     1.0
+     1000.0000000000001
     ],
     [
      7.72,
-     1.2
+     1200.0
     ],
     [
      7.61,
-     1.35
+     1350.0000000000002
     ],
     [
      7.73,
-     1.44
+     1440.0
     ],
     [
      6.7,
-     1.47
+     1470.0
     ],
     [
      0.3,
-     1.49
+     1490.0
     ]
    ],
    "points_raw": [
@@ -4630,8 +4651,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0149
+    "x": 0.079,
+    "y": 14.9
    },
    "set": "",
    "provenance": {
@@ -4652,23 +4673,23 @@
     "element": "C"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4678,27 +4699,27 @@
     ],
     [
      0.2,
-     0.4
+     400.00000000000006
     ],
     [
      0.7,
-     0.43
+     430.0
     ],
     [
      0.71,
-     0.8
+     800.0000000000001
     ],
     [
      0.7,
-     1.2
+     1200.0
     ],
     [
      0.7,
-     1.45
+     1450.0
     ],
     [
      0.2,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -4762,8 +4783,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0051,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -4784,23 +4805,23 @@
     "element": "O"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4810,27 +4831,27 @@
     ],
     [
      0.3,
-     0.4
+     400.00000000000006
     ],
     [
      1.42,
-     0.43
+     430.0
     ],
     [
      1.43,
-     0.8
+     800.0000000000001
     ],
     [
      1.41,
-     1.2
+     1200.0
     ],
     [
      1.4,
-     1.45
+     1450.0
     ],
     [
      0.3,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -4894,8 +4915,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0113,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -4916,23 +4937,23 @@
     "element": "Zn"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -4942,47 +4963,47 @@
     ],
     [
      0.2,
-     0.41
+     410.0
     ],
     [
      1.5,
-     0.42
+     420.00000000000006
     ],
     [
      5.55,
-     0.43
+     430.0
     ],
     [
      5.74,
-     0.55
+     550.0000000000001
     ],
     [
      5.64,
-     0.8
+     800.0000000000001
     ],
     [
      5.36,
-     0.95
+     950.0
     ],
     [
      5.68,
-     1.1
+     1100.0000000000002
     ],
     [
      5.75,
-     1.2
+     1200.0
     ],
     [
      5.55,
-     1.35
+     1350.0000000000002
     ],
     [
      4.95,
-     1.45
+     1450.0
     ],
     [
      0.2,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -5066,8 +5087,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0555,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -5088,23 +5109,23 @@
     "element": "Al"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -5114,51 +5135,51 @@
     ],
     [
      0.3,
-     0.41
+     410.0
     ],
     [
      2.0,
-     0.42
+     420.00000000000006
     ],
     [
      7.8,
-     0.43
+     430.0
     ],
     [
      7.1,
-     0.5
+     500.00000000000006
     ],
     [
      6.98,
-     0.7
+     700.0
     ],
     [
      7.4,
-     0.85
+     850.0
     ],
     [
      7.82,
-     0.95
+     950.0
     ],
     [
      7.45,
-     1.05
+     1050.0000000000002
     ],
     [
      7.08,
-     1.2
+     1200.0
     ],
     [
      7.3,
-     1.35
+     1350.0000000000002
     ],
     [
      7.05,
-     1.44
+     1440.0
     ],
     [
      0.3,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -5246,8 +5267,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0752,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -5268,23 +5289,23 @@
     "element": "C"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -5294,27 +5315,27 @@
     ],
     [
      0.71,
-     0.05
+     50.00000000000001
     ],
     [
      0.71,
-     0.4
+     400.00000000000006
     ],
     [
      0.71,
-     0.8
+     800.0000000000001
     ],
     [
      0.7,
-     1.2
+     1200.0
     ],
     [
      0.7,
-     1.45
+     1450.0
     ],
     [
      0.2,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -5379,8 +5400,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0051,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -5401,23 +5422,23 @@
     "element": "O"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -5427,27 +5448,27 @@
     ],
     [
      1.22,
-     0.05
+     50.00000000000001
     ],
     [
      1.22,
-     0.4
+     400.00000000000006
     ],
     [
      1.23,
-     0.8
+     800.0000000000001
     ],
     [
      1.23,
-     1.2
+     1200.0
     ],
     [
      1.21,
-     1.45
+     1450.0
     ],
     [
      0.3,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -5512,8 +5533,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0093,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -5534,23 +5555,23 @@
     "element": "Zn"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -5560,47 +5581,47 @@
     ],
     [
      0.3,
-     0.04
+     40.00000000000001
     ],
     [
      1.6,
-     0.05
+     50.00000000000001
     ],
     [
      3.1,
-     0.07
+     70.00000000000001
     ],
     [
      3.38,
-     0.1
+     100.00000000000001
     ],
     [
      3.43,
-     0.4
+     400.00000000000006
     ],
     [
      3.41,
-     0.7
+     700.0
     ],
     [
      3.4,
-     1.0
+     1000.0000000000001
     ],
     [
      3.38,
-     1.25
+     1250.0
     ],
     [
      3.15,
-     1.42
+     1420.0
     ],
     [
      2.3,
-     1.46
+     1460.0
     ],
     [
      0.2,
-     1.48
+     1480.0
     ]
    ],
    "points_raw": [
@@ -5685,8 +5706,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0148
+    "x": 0.0323,
+    "y": 14.8
    },
    "set": "",
    "provenance": {
@@ -5707,23 +5728,23 @@
     "element": "Al"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "Normalized X-ray counts",
     "unit_raw": "",
     "key": "Normalized X-ray counts",
-    "how": "",
+    "how": "alias 'Normalized X-ray counts'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Postion (mm)",
     "unit_raw": "mm",
     "key": "Postion",
-    "how": "",
+    "how": "symbol 'Postion' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -5733,51 +5754,51 @@
     ],
     [
      8.2,
-     0.05
+     50.00000000000001
     ],
     [
      8.1,
-     0.1
+     100.00000000000001
     ],
     [
      7.8,
-     0.2
+     200.00000000000003
     ],
     [
      7.7,
-     0.4
+     400.00000000000006
     ],
     [
      7.71,
-     0.6
+     600.0
     ],
     [
      7.7,
-     0.8
+     800.0000000000001
     ],
     [
      7.95,
-     0.95
+     950.0
     ],
     [
      7.71,
-     1.15
+     1150.0
     ],
     [
      7.65,
-     1.35
+     1350.0000000000002
     ],
     [
      7.75,
-     1.44
+     1440.0
     ],
     [
      6.8,
-     1.47
+     1470.0
     ],
     [
      0.3,
-     1.49
+     1490.0
     ]
    ],
    "points_raw": [
@@ -5866,8 +5887,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 0.0149
+    "x": 0.079,
+    "y": 14.9
    },
    "set": "",
    "provenance": {
@@ -5935,6 +5956,6 @@
   "curves": 25,
   "sets": 3,
   "derived": 0,
-  "labels_other": 17
+  "labels_other": 1
  }
 }

@@ -3,7 +3,7 @@
  "key": "yli18",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T09:16:58",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "yli18:fig1",
@@ -21,7 +21,9 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Reactant pressure distribution along the channel for different pulse times comparing numerical and approximate models",
-   "quantities": [],
+   "quantities": [
+    "partial_pressure"
+   ],
    "flags": [
     "F3",
     "F3"
@@ -47,8 +49,8 @@
      "label_raw": "Pressure p_A (Pa)",
      "key": "Pressure p_A",
      "unit": "Pa",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "alias 'Pressure p_A'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -59,8 +61,8 @@
      "label_raw": "H",
      "key": "H",
      "unit": "μm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "symbol 'H' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -203,8 +205,8 @@
      "label_raw": "gpc_{sat}",
      "key": "gpc_{sat}",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_growth_per_cycle",
+     "how": "alias 'gpc_{sat}'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -269,8 +271,8 @@
      "label_raw": "H",
      "key": "H",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "symbol 'H' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -413,8 +415,8 @@
      "label_raw": "gpc_{sat}",
      "key": "gpc_{sat}",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_growth_per_cycle",
+     "how": "alias 'gpc_{sat}'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -477,8 +479,8 @@
      "label_raw": "cycle count",
      "key": "cycle count",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "cycle_number",
+     "how": "alias 'cycle count'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -489,8 +491,8 @@
      "label_raw": "reactant pulse length",
      "key": "reactant pulse length",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'reactant pulse length'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -513,8 +515,8 @@
      "label_raw": "channel height H",
      "key": "channel height H",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height H'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -529,7 +531,8 @@
    "panel_type": "plot",
    "content": "Penetration depth vs pulse length comparing Gordon model, analytical approximation, and numerical solution",
    "quantities": [
-    "pulse_time"
+    "pulse_time",
+    "penetration_depth"
    ],
    "flags": [],
    "status": "imported",
@@ -553,8 +556,8 @@
      "label_raw": "Penetration depth x_p (µm)",
      "key": "Penetration depth x_p",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "penetration_depth",
+     "how": "alias 'Penetration depth x_p'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -565,8 +568,8 @@
      "label_raw": "H",
      "key": "H",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "symbol 'H' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -709,8 +712,8 @@
      "label_raw": "t_p",
      "key": "t_p",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "symbol 't_p' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -721,8 +724,8 @@
      "label_raw": "gpc_{sat}",
      "key": "gpc_{sat}",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_growth_per_cycle",
+     "how": "alias 'gpc_{sat}'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -737,6 +740,7 @@
    "panel_type": "plot",
    "content": "Measured and calculated Al2O3 film thickness profiles along the lateral channel",
    "quantities": [
+    "distance",
     "film_thickness"
    ],
    "flags": [],
@@ -749,8 +753,8 @@
      "label_raw": "Location (µm)",
      "key": "Location",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "alias 'Location'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -773,8 +777,8 @@
      "label_raw": "cycle count",
      "key": "cycle count",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "cycle_number",
+     "how": "alias 'cycle count'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -789,6 +793,7 @@
    "panel_type": "plot",
    "content": "Measured and fitted thickness profiles of TiO2 thin film along a lateral channel",
    "quantities": [
+    "distance",
     "film_thickness"
    ],
    "flags": [],
@@ -801,8 +806,8 @@
      "label_raw": "Location (µm)",
      "key": "Location",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "alias 'Location'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -880,13 +885,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -1326,6 +1331,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -1361,6 +1375,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -1417,13 +1440,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -1527,6 +1550,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -1562,6 +1594,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -1618,13 +1659,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -1992,6 +2033,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -2027,6 +2077,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -2083,13 +2142,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -2193,6 +2252,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -2228,6 +2296,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -2284,13 +2361,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -2586,6 +2663,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -2621,6 +2707,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -2677,13 +2772,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -2795,6 +2890,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -2830,6 +2934,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -2886,13 +2999,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -3188,6 +3301,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -3223,6 +3345,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -3279,13 +3410,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -3389,6 +3520,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -3424,6 +3564,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -3480,13 +3629,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -3510,6 +3659,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -3545,6 +3703,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -3601,13 +3768,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "",
+    "how": "alias 'Pressure p_A'",
     "unit_reason": ""
    },
    "points": [
@@ -3631,6 +3798,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -3666,6 +3842,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -3912,6 +4097,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -3947,6 +4141,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -4120,6 +4323,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -4155,6 +4367,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -4400,6 +4621,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -4435,6 +4665,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -4600,6 +4839,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -4635,6 +4883,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -4848,6 +5105,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -4883,6 +5149,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -5048,6 +5323,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -5083,6 +5367,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -5304,6 +5597,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -5339,6 +5641,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -5512,6 +5823,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -5547,6 +5867,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -5736,6 +6065,24 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5773,8 +6120,11 @@
    "panel": "",
    "series": {
     "label_raw": "1 μm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 1.0,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "other",
@@ -5881,6 +6231,24 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -5889,6 +6257,16 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "feature_width": {
+     "key_raw": "channel height H",
+     "raw": "1 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -5918,8 +6296,11 @@
    "panel": "",
    "series": {
     "label_raw": "0.5 μm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.5,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "other",
@@ -6010,6 +6391,24 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -6018,6 +6417,16 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "feature_width": {
+     "key_raw": "channel height H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -6047,8 +6456,11 @@
    "panel": "",
    "series": {
     "label_raw": "0.2 μm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.2,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "other",
@@ -6131,6 +6543,24 @@
     ]
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -6139,6 +6569,16 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "feature_width": {
+     "key_raw": "channel height H",
+     "raw": "0.2 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -6182,13 +6622,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "penetration_depth",
     "unit": "µm",
     "transform": "",
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "",
+    "how": "alias 'Penetration depth x_p'",
     "unit_reason": ""
    },
    "points": [
@@ -6270,7 +6710,7 @@
     ],
     [
      0.085,
-     127.5
+     127.49999999999999
     ],
     [
      0.09,
@@ -6380,6 +6820,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -6415,6 +6864,24 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -6469,13 +6936,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "penetration_depth",
     "unit": "µm",
     "transform": "",
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "",
+    "how": "alias 'Penetration depth x_p'",
     "unit_reason": ""
    },
    "points": [
@@ -6497,7 +6964,7 @@
     ],
     [
      0.025,
-     63.1
+     63.10000000000001
     ],
     [
      0.03,
@@ -6643,6 +7110,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -6678,6 +7154,24 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -6732,13 +7226,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "penetration_depth",
     "unit": "µm",
     "transform": "",
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "",
+    "how": "alias 'Penetration depth x_p'",
     "unit_reason": ""
    },
    "points": [
@@ -6826,6 +7320,15 @@
     ]
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -6861,6 +7364,24 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "pulse_time": {
+     "key_raw": "t_p",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "conditions_raw": {
@@ -6905,13 +7426,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "",
+    "how": "alias 'Location'",
     "unit_reason": ""
    },
    "y": {
@@ -6970,7 +7491,7 @@
      46.0
     ],
     [
-     123.0,
+     122.99999999999999,
      42.5
     ],
     [
@@ -7128,7 +7649,17 @@
      0.5
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "conditions_raw": {
     "cycle count": "500"
    },
@@ -7136,7 +7667,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 1.6400000000000001,
     "y": 0.523
    },
    "set": "",
@@ -7158,13 +7689,13 @@
     "kind": "measured"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "",
+    "how": "alias 'Location'",
     "unit_reason": ""
    },
    "y": {
@@ -7219,7 +7750,7 @@
      53.3
     ],
     [
-     31.0,
+     31.000000000000004,
      53.3
     ],
     [
@@ -7263,7 +7794,7 @@
      52.7
     ],
     [
-     61.5,
+     61.49999999999999,
      52.5
     ],
     [
@@ -7355,11 +7886,11 @@
      46.5
     ],
     [
-     124.0,
+     124.00000000000001,
      43.3
     ],
     [
-     126.5,
+     126.49999999999999,
      40.0
     ],
     [
@@ -7685,7 +8216,17 @@
      2.8
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
    "conditions_raw": {
     "cycle count": "500"
    },
@@ -7693,7 +8234,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.615,
     "y": 0.512
    },
    "set": "",
@@ -7715,13 +8256,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "",
+    "how": "alias 'Location'",
     "unit_reason": ""
    },
    "y": {
@@ -7896,7 +8437,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 1.02,
     "y": 0.409
    },
    "set": "",
@@ -7918,13 +8459,13 @@
     "kind": "measured"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "",
+    "how": "alias 'Location'",
     "unit_reason": ""
    },
    "y": {
@@ -7947,7 +8488,7 @@
      48.0
     ],
     [
-     15.5,
+     15.500000000000002,
      47.7
     ],
     [
@@ -8259,7 +8800,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.02,
     "y": 0.48
    },
    "set": "",
@@ -8294,6 +8835,15 @@
     "yli18:fig2#c10"
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 μm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -8329,6 +8879,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "label": "Fig. 2 series (pulse time)"
@@ -8351,6 +8910,15 @@
     "yli18:fig3#c8"
    ],
    "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
      "key_raw": "p_{A0}",
      "raw": "100 Pa",
@@ -8386,6 +8954,15 @@
      "value": 0.01,
      "value_max": null,
      "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
     }
    },
    "label": "Fig. 3 series (Pulse time)"
@@ -8394,8 +8971,8 @@
    "id": "yli18:cmp:fig4",
    "figure": "4",
    "panel": "",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "feature_width",
    "varied_raw": "channel height H",
    "members": [
     "yli18:fig4#c1",
@@ -8404,6 +8981,24 @@
     "yli18:fig4#c4"
    ],
    "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
     "deposition_temperature": {
      "key_raw": "temperature",
      "raw": "500 K",
@@ -8414,17 +9009,192 @@
      "unit": "°C"
     }
    },
-   "label": "Fig. 4 replicates (channel height H)"
+   "label": "Fig. 4 series (channel height H)"
   }
  ],
- "derived": [],
+ "derived": [
+  {
+   "id": "yli18:fig6#d1_1",
+   "source": "yli18:fig6#c1",
+   "quantity": "film_thickness",
+   "qualifiers": "position=plateau",
+   "value": 52.34444444444444,
+   "unit": "nm",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "6",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig6#d1_2",
+   "source": "yli18:fig6#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 133.69666666666666,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "6",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig6#d2_1",
+   "source": "yli18:fig6#c2",
+   "quantity": "film_thickness",
+   "qualifiers": "position=plateau",
+   "value": 52.65,
+   "unit": "nm",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "6",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig6#d2_2",
+   "source": "yli18:fig6#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 134.41666666666666,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "6",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig7#d2_1",
+   "source": "yli18:fig7#c2",
+   "quantity": "film_thickness",
+   "qualifiers": "position=plateau",
+   "value": 47.26666666666667,
+   "unit": "nm",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel gap height",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "figure": "7",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig7#d2_2",
+   "source": "yli18:fig7#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 89.08771929824562,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel gap height",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "channel length",
+     "raw": "1 mm",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1000.0000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "figure": "7",
+   "panel": ""
+  }
+ ],
  "report": {
   "inventory": 7,
   "data_panels": 6,
   "sets": 3,
   "converted": 0,
   "curves": 29,
-  "derived": 0,
-  "labels_other": 39
+  "derived": 6,
+  "labels_other": 24
  }
 }

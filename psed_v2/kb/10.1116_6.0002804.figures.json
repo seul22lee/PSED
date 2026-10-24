@@ -3,7 +3,7 @@
  "key": "zou23",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T10:03:01",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "zou23:fig1a",
@@ -12,6 +12,7 @@
    "panel_type": "plot",
    "content": "GPC as a function of MoCl2O2 pulse time",
    "quantities": [
+    "pulse_time",
     "growth_per_cycle"
    ],
    "flags": [],
@@ -24,8 +25,8 @@
      "label_raw": "MoCl_{2}O_{2} pulse (s)",
      "key": "MoCl_{2}O_{2} pulse",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'MoCl_{2}O_{2} pulse'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -64,6 +65,7 @@
    "panel_type": "plot",
    "content": "GPC as a function of at-H pulse time",
    "quantities": [
+    "pulse_time",
     "growth_per_cycle"
    ],
    "flags": [],
@@ -76,8 +78,8 @@
      "label_raw": "at-H pulse (s)",
      "key": "at-H pulse",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'at-H pulse'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -116,6 +118,7 @@
    "panel_type": "plot",
    "content": "GPC as a function of MoCl2O2 purge time",
    "quantities": [
+    "purge_time",
     "growth_per_cycle"
    ],
    "flags": [],
@@ -128,8 +131,8 @@
      "label_raw": "MoCl_{2}O_{2} purge (s)",
      "key": "MoCl_{2}O_{2} purge",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "purge_time",
+     "how": "alias 'MoCl_{2}O_{2} purge'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -168,6 +171,7 @@
    "panel_type": "plot",
    "content": "GPC as a function of at-H purge time",
    "quantities": [
+    "purge_time",
     "growth_per_cycle"
    ],
    "flags": [],
@@ -180,8 +184,8 @@
      "label_raw": "at-H purge (s)",
      "key": "at-H purge",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "purge_time",
+     "how": "alias 'at-H purge'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -458,7 +462,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Compositional depth profile of an ALD film obtained at 350 °C",
-   "quantities": [],
+   "quantities": [
+    "distance",
+    "element_fraction"
+   ],
    "flags": [
     "F6"
    ],
@@ -473,20 +480,20 @@
      "label_raw": "Depth (\\times 10^{15} at/cm^{2})",
      "key": "Depth (\\times 10^{15} at/cm^{2})",
      "unit": "\\times 10^{15} at/cm^{2}",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Depth (\\times 10^{15} at/cm^{2})' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit_unknown"
     },
     {
      "axis": "y",
      "label_raw": "Composition (at%)",
      "key": "Composition",
      "unit": "at%",
-     "quantity": "other",
-     "how": "",
+     "quantity": "element_fraction",
+     "how": "alias 'Composition'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -525,7 +532,8 @@
    "panel_type": "plot",
    "content": "Averaged ALD film composition at various temperatures",
    "quantities": [
-    "deposition_temperature"
+    "deposition_temperature",
+    "element_fraction"
    ],
    "flags": [
     "F6"
@@ -553,8 +561,8 @@
      "label_raw": "Composition (at%)",
      "key": "Composition",
      "unit": "at%",
-     "quantity": "other",
-     "how": "",
+     "quantity": "element_fraction",
+     "how": "alias 'Composition'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -580,7 +588,9 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "SIMS concentration depth profile of elements in a Mo ALD film",
-   "quantities": [],
+   "quantities": [
+    "distance"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -591,8 +601,8 @@
      "label_raw": "Depth (nm)",
      "key": "Depth",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Depth' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -776,6 +786,7 @@
    "panel_type": "spectrum",
    "content": "GIXRD patterns of ALD Mo films deposited at 150 and 350 °C",
    "quantities": [
+    "diffraction_angle",
     "signal_intensity"
    ],
    "flags": [],
@@ -788,8 +799,8 @@
      "label_raw": "2Θ (°)",
      "key": "2Θ",
      "unit": "°",
-     "quantity": "other",
-     "how": "",
+     "quantity": "diffraction_angle",
+     "how": "symbol '2Θ' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -912,13 +923,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "MoCl_{2}O_{2} pulse (s)",
     "unit_raw": "s",
     "key": "MoCl_{2}O_{2} pulse",
-    "how": "",
+    "how": "alias 'MoCl_{2}O_{2} pulse'",
     "unit_reason": ""
    },
    "y": {
@@ -1001,7 +1012,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.02,
     "y": 0.000258
    },
    "set": "",
@@ -1022,13 +1033,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "at-H pulse (s)",
     "unit_raw": "s",
     "key": "at-H pulse",
-    "how": "",
+    "how": "alias 'at-H pulse'",
     "unit_reason": ""
    },
    "y": {
@@ -1159,7 +1170,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.3,
     "y": 0.00025
    },
    "set": "",
@@ -1180,13 +1191,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "purge_time",
     "unit": "s",
     "transform": "",
     "label_raw": "MoCl_{2}O_{2} purge (s)",
     "unit_raw": "s",
     "key": "MoCl_{2}O_{2} purge",
-    "how": "",
+    "how": "alias 'MoCl_{2}O_{2} purge'",
     "unit_reason": ""
    },
    "y": {
@@ -1285,7 +1296,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.14,
     "y": 0.000255
    },
    "set": "",
@@ -1306,13 +1317,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "purge_time",
     "unit": "s",
     "transform": "",
     "label_raw": "at-H purge (s)",
     "unit_raw": "s",
     "key": "at-H purge",
-    "how": "",
+    "how": "alias 'at-H purge'",
     "unit_reason": ""
    },
    "y": {
@@ -1411,7 +1422,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.14,
     "y": 2.9999999999999994e-05
    },
    "set": "",
@@ -2555,23 +2566,23 @@
     "element": "Mo"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "\\times 10^{15} at/cm^{2}",
     "transform": "",
     "label_raw": "Depth (\\times 10^{15} at/cm^{2})",
     "unit_raw": "\\times 10^{15} at/cm^{2}",
     "key": "Depth (\\times 10^{15} at/cm^{2})",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Depth (\\times 10^{15} at/cm^{2})' of this paper",
+    "unit_reason": "unit_unknown"
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -2581,7 +2592,7 @@
     ],
     [
      -45.0,
-     14.0
+     14.000000000000002
     ],
     [
      -40.0,
@@ -2605,7 +2616,7 @@
     ],
     [
      0.0,
-     56.0
+     56.00000000000001
     ],
     [
      8.0,
@@ -2653,7 +2664,7 @@
     ],
     [
      118.0,
-     56.0
+     56.00000000000001
     ],
     [
      128.0,
@@ -2673,7 +2684,7 @@
     ],
     [
      168.0,
-     29.0
+     28.999999999999996
     ],
     [
      178.0,
@@ -2701,7 +2712,7 @@
     ],
     [
      238.0,
-     14.0
+     14.000000000000002
     ],
     [
      248.0,
@@ -2725,7 +2736,7 @@
     ],
     [
      298.0,
-     7.0
+     7.000000000000001
     ],
     [
      308.0,
@@ -3006,23 +3017,23 @@
     "element": "Si"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "\\times 10^{15} at/cm^{2}",
     "transform": "",
     "label_raw": "Depth (\\times 10^{15} at/cm^{2})",
     "unit_raw": "\\times 10^{15} at/cm^{2}",
     "key": "Depth (\\times 10^{15} at/cm^{2})",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Depth (\\times 10^{15} at/cm^{2})' of this paper",
+    "unit_reason": "unit_unknown"
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -3136,7 +3147,7 @@
     ],
     [
      142.0,
-     59.0
+     58.99999999999999
     ],
     [
      150.0,
@@ -3521,23 +3532,23 @@
     "element": "O"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "\\times 10^{15} at/cm^{2}",
     "transform": "",
     "label_raw": "Depth (\\times 10^{15} at/cm^{2})",
     "unit_raw": "\\times 10^{15} at/cm^{2}",
     "key": "Depth (\\times 10^{15} at/cm^{2})",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Depth (\\times 10^{15} at/cm^{2})' of this paper",
+    "unit_reason": "unit_unknown"
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -3551,7 +3562,7 @@
     ],
     [
      -15.0,
-     3.5
+     3.5000000000000004
     ],
     [
      -8.0,
@@ -3571,7 +3582,7 @@
     ],
     [
      22.0,
-     14.8
+     14.800000000000002
     ],
     [
      30.0,
@@ -3623,7 +3634,7 @@
     ],
     [
      118.0,
-     3.3
+     3.3000000000000003
     ],
     [
      125.0,
@@ -3643,11 +3654,11 @@
     ],
     [
      158.0,
-     3.6
+     3.6000000000000005
     ],
     [
      165.0,
-     3.5
+     3.5000000000000004
     ],
     [
      172.0,
@@ -3655,7 +3666,7 @@
     ],
     [
      180.0,
-     3.4
+     3.4000000000000004
     ],
     [
      188.0,
@@ -3679,7 +3690,7 @@
     ],
     [
      225.0,
-     3.4
+     3.4000000000000004
     ],
     [
      232.0,
@@ -3687,11 +3698,11 @@
     ],
     [
      240.0,
-     1.7
+     1.7000000000000002
     ],
     [
      248.0,
-     3.7
+     3.7000000000000006
     ],
     [
      255.0,
@@ -3699,7 +3710,7 @@
     ],
     [
      262.0,
-     1.8
+     1.8000000000000003
     ],
     [
      270.0,
@@ -3715,7 +3726,7 @@
     ],
     [
      292.0,
-     0.9
+     0.9000000000000001
     ],
     [
      300.0,
@@ -4046,13 +4057,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -4133,13 +4144,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -4153,7 +4164,7 @@
     ],
     [
      350.0,
-     3.5
+     3.5000000000000004
     ],
     [
      450.0,
@@ -4220,13 +4231,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -4283,13 +4294,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -4354,13 +4365,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
@@ -4441,19 +4452,19 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "at%",
+    "quantity": "element_fraction",
+    "unit": "at.%",
     "transform": "",
     "label_raw": "Composition (at%)",
     "unit_raw": "at%",
     "key": "Composition",
-    "how": "",
+    "how": "alias 'Composition'",
     "unit_reason": ""
    },
    "points": [
     [
      150.0,
-     0.9
+     0.9000000000000001
     ],
     [
      250.0,
@@ -4495,7 +4506,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 3.0,
-    "y": 0.0048000000000000004,
+    "y": 0.004800000000000001,
     "note": "flagged (P174, kept): F6"
    },
    "set": "",
@@ -4518,13 +4529,13 @@
     "element": "O"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (nm)",
     "unit_raw": "nm",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
@@ -4539,167 +4550,167 @@
    },
    "points": [
     [
-     0.3,
+     0.00030000000000000003,
      1.4e+22
     ],
     [
-     0.9,
+     0.0009000000000000002,
      9e+21
     ],
     [
-     1.6,
+     0.0016000000000000003,
      2.3e+21
     ],
     [
-     2.4,
+     0.0024000000000000002,
      9.5e+20
     ],
     [
-     3.5,
+     0.0035000000000000005,
      4e+20
     ],
     [
-     4.6,
+     0.0046,
      2.1e+20
     ],
     [
-     6.0,
+     0.006000000000000001,
      1.4e+20
     ],
     [
-     7.7,
+     0.007700000000000001,
      1e+20
     ],
     [
-     9.4,
+     0.009400000000000002,
      7.8e+19
     ],
     [
-     11.1,
+     0.0111,
      6.5e+19
     ],
     [
-     12.6,
+     0.0126,
      6.3e+19
     ],
     [
-     14.2,
+     0.0142,
      6.5e+19
     ],
     [
-     15.8,
+     0.0158,
      7.2e+19
     ],
     [
-     17.3,
+     0.017300000000000003,
      7.9e+19
     ],
     [
-     19.2,
+     0.019200000000000002,
      7.5e+20
     ],
     [
-     20.2,
+     0.0202,
      4.8e+21
     ],
     [
-     21.2,
+     0.021200000000000004,
      1.2e+22
     ],
     [
-     22.1,
+     0.022100000000000005,
      1.9e+22
     ],
     [
-     23.2,
+     0.023200000000000002,
      2e+22
     ],
     [
-     24.5,
+     0.0245,
      1.1e+22
     ],
     [
-     25.8,
+     0.025800000000000003,
      5.4e+21
     ],
     [
-     27.0,
+     0.027000000000000003,
      3e+21
     ],
     [
-     28.2,
+     0.028200000000000003,
      1.7e+21
     ],
     [
-     29.5,
+     0.029500000000000005,
      1.1e+21
     ],
     [
-     30.7,
+     0.030700000000000005,
      7.1e+20
     ],
     [
-     31.8,
+     0.0318,
      4.8e+20
     ],
     [
-     33.0,
+     0.03300000000000001,
      3.4e+20
     ],
     [
-     34.2,
+     0.0342,
      2.3e+20
     ],
     [
-     35.4,
+     0.0354,
      1.7e+20
     ],
     [
-     36.6,
+     0.03660000000000001,
      1.2e+20
     ],
     [
-     37.8,
+     0.0378,
      8.2e+19
     ],
     [
-     39.0,
+     0.03900000000000001,
      6e+19
     ],
     [
-     40.2,
+     0.04020000000000001,
      4.1e+19
     ],
     [
-     41.3,
+     0.0413,
      3e+19
     ],
     [
-     42.5,
+     0.0425,
      2e+19
     ],
     [
-     43.6,
+     0.04360000000000001,
      1.4e+19
     ],
     [
-     44.8,
+     0.0448,
      1.1e+19
     ],
     [
-     46.0,
+     0.046000000000000006,
      8e+18
     ],
     [
-     47.1,
+     0.04710000000000001,
      7.2e+18
     ],
     [
-     48.3,
+     0.0483,
      7.1e+18
     ],
     [
-     49.3,
+     0.049300000000000004,
      6.8e+18
     ]
    ],
@@ -4887,7 +4898,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.00049,
     "y": 1.99932e+20
    },
    "set": "",
@@ -4909,13 +4920,13 @@
     "element": "Si"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (nm)",
     "unit_raw": "nm",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
@@ -4934,139 +4945,139 @@
      3.5e+21
     ],
     [
-     0.9,
+     0.0009000000000000002,
      1.1e+21
     ],
     [
-     1.9,
+     0.0019000000000000002,
      4.2e+20
     ],
     [
-     3.3,
+     0.0033000000000000004,
      4e+19
     ],
     [
-     4.5,
+     0.0045000000000000005,
      2.1e+19
     ],
     [
-     5.8,
+     0.0058000000000000005,
      2.7e+19
     ],
     [
-     7.3,
+     0.0073,
      3.2e+19
     ],
     [
-     8.9,
+     0.0089,
      3.1e+19
     ],
     [
-     10.4,
+     0.010400000000000001,
      2.2e+19
     ],
     [
-     11.9,
+     0.0119,
      1.8e+19
     ],
     [
-     13.2,
+     0.013200000000000002,
      9e+18
     ],
     [
-     14.5,
+     0.0145,
      2.1e+19
     ],
     [
-     15.7,
+     0.015700000000000002,
      3.5e+19
     ],
     [
-     16.8,
+     0.016800000000000002,
      4e+19
     ],
     [
-     18.0,
+     0.018000000000000002,
      9e+18
     ],
     [
-     19.8,
+     0.0198,
      1.6e+21
     ],
     [
-     20.8,
+     0.020800000000000003,
      8.5e+21
     ],
     [
-     21.8,
+     0.021800000000000003,
      2.8e+22
     ],
     [
-     22.7,
+     0.0227,
      4.3e+22
     ],
     [
-     23.8,
+     0.0238,
      5.1e+22
     ],
     [
-     25.0,
+     0.025000000000000005,
      5.6e+22
     ],
     [
-     26.4,
+     0.026400000000000003,
      5.9e+22
     ],
     [
-     27.9,
+     0.027900000000000005,
      6e+22
     ],
     [
-     29.5,
+     0.029500000000000005,
      6.1e+22
     ],
     [
-     31.2,
+     0.031200000000000002,
      6.1e+22
     ],
     [
-     33.0,
+     0.03300000000000001,
      6.1e+22
     ],
     [
-     34.9,
+     0.0349,
      6.1e+22
     ],
     [
-     36.8,
+     0.0368,
      6.1e+22
     ],
     [
-     38.7,
+     0.038700000000000005,
      6.1e+22
     ],
     [
-     40.6,
+     0.04060000000000001,
      6.1e+22
     ],
     [
-     42.5,
+     0.0425,
      6.1e+22
     ],
     [
-     44.4,
+     0.0444,
      6.1e+22
     ],
     [
-     46.3,
+     0.0463,
      6.1e+22
     ],
     [
-     48.2,
+     0.048200000000000014,
      6.1e+22
     ],
     [
-     49.8,
+     0.049800000000000004,
      6e+22
     ]
    ],
@@ -5230,7 +5241,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0004980000000000001,
     "y": 6.099099999999999e+20
    },
    "set": "",
@@ -5252,13 +5263,13 @@
     "element": "Cl"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (nm)",
     "unit_raw": "nm",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
@@ -5277,159 +5288,159 @@
      9.5e+19
     ],
     [
-     0.9,
+     0.0009000000000000002,
      2.8e+18
     ],
     [
-     1.9,
+     0.0019000000000000002,
      2e+17
     ],
     [
-     3.3,
+     0.0033000000000000004,
      7.9e+16
     ],
     [
-     4.7,
+     0.004700000000000001,
      4e+16
     ],
     [
-     6.2,
+     0.0062000000000000015,
      2.3e+16
     ],
     [
-     7.7,
+     0.007700000000000001,
      1.6e+16
     ],
     [
-     9.3,
+     0.009300000000000001,
      1.3e+16
     ],
     [
-     10.8,
+     0.0108,
      1.1e+16
     ],
     [
-     12.3,
+     0.012300000000000002,
      1.1e+16
     ],
     [
-     13.8,
+     0.013800000000000002,
      1.1e+16
     ],
     [
-     15.3,
+     0.015300000000000003,
      1.2e+16
     ],
     [
-     16.8,
+     0.016800000000000002,
      1.4e+16
     ],
     [
-     18.4,
+     0.0184,
      2.9e+17
     ],
     [
-     19.5,
+     0.019500000000000003,
      3e+18
     ],
     [
-     20.9,
+     0.0209,
      1.8e+19
     ],
     [
-     22.4,
+     0.0224,
      4.2e+19
     ],
     [
-     23.7,
+     0.023700000000000002,
      2.2e+19
     ],
     [
-     24.9,
+     0.024900000000000002,
      8.7e+18
     ],
     [
-     26.2,
+     0.0262,
      3.3e+18
     ],
     [
-     27.4,
+     0.0274,
      1.4e+18
     ],
     [
-     28.6,
+     0.028600000000000007,
      6.6e+17
     ],
     [
-     29.8,
+     0.029800000000000004,
      3.5e+17
     ],
     [
-     31.0,
+     0.031,
      2.1e+17
     ],
     [
-     32.2,
+     0.032200000000000006,
      1.3e+17
     ],
     [
-     33.4,
+     0.033400000000000006,
      7.8e+16
     ],
     [
-     34.5,
+     0.0345,
      5.1e+16
     ],
     [
-     35.6,
+     0.0356,
      3.8e+16
     ],
     [
-     36.8,
+     0.0368,
      3.2e+16
     ],
     [
-     38.0,
+     0.038000000000000006,
      2.8e+16
     ],
     [
-     39.2,
+     0.039200000000000006,
      2.4e+16
     ],
     [
-     40.3,
+     0.040299999999999996,
      2e+16
     ],
     [
-     41.4,
+     0.0414,
      1.8e+16
     ],
     [
-     42.5,
+     0.0425,
      1.7e+16
     ],
     [
-     43.6,
+     0.04360000000000001,
      1.7e+16
     ],
     [
-     44.7,
+     0.044700000000000004,
      1.6e+16
     ],
     [
-     45.8,
+     0.0458,
      1.5e+16
     ],
     [
-     47.0,
+     0.04700000000000001,
      1.5e+16
     ],
     [
-     48.1,
+     0.04810000000000001,
      1.5e+16
     ],
     [
-     49.3,
+     0.049300000000000004,
      1.4e+16
     ]
    ],
@@ -5613,7 +5624,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0004930000000000001,
     "y": 9.4989e+17
    },
    "set": "",
@@ -5635,13 +5646,13 @@
     "element": "C"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (nm)",
     "unit_raw": "nm",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
@@ -5660,139 +5671,139 @@
      3.3e+20
     ],
     [
-     1.0,
+     0.001,
      7.1e+20
     ],
     [
-     2.2,
+     0.0022000000000000006,
      3.3e+20
     ],
     [
-     3.5,
+     0.0035000000000000005,
      1.4e+20
     ],
     [
-     4.9,
+     0.004900000000000001,
      1.1e+20
     ],
     [
-     6.5,
+     0.006500000000000001,
      1e+20
     ],
     [
-     8.2,
+     0.008199999999999999,
      1e+20
     ],
     [
-     9.9,
+     0.0099,
      1e+20
     ],
     [
-     11.6,
+     0.011600000000000001,
      1e+20
     ],
     [
-     13.3,
+     0.013300000000000003,
      1e+20
     ],
     [
-     15.0,
+     0.015000000000000003,
      1e+20
     ],
     [
-     16.8,
+     0.016800000000000002,
      1e+20
     ],
     [
-     18.7,
+     0.0187,
      1e+20
     ],
     [
-     20.5,
+     0.0205,
      1e+20
     ],
     [
-     22.1,
+     0.022100000000000005,
      1e+20
     ],
     [
-     23.6,
+     0.023600000000000003,
      9.5e+19
     ],
     [
-     25.0,
+     0.025000000000000005,
      7.3e+19
     ],
     [
-     26.4,
+     0.026400000000000003,
      5e+19
     ],
     [
-     27.8,
+     0.027800000000000005,
      3.6e+19
     ],
     [
-     29.2,
+     0.0292,
      2.9e+19
     ],
     [
-     30.6,
+     0.030600000000000006,
      2.7e+19
     ],
     [
-     32.0,
+     0.032,
      2.6e+19
     ],
     [
-     33.4,
+     0.033400000000000006,
      2.5e+19
     ],
     [
-     34.8,
+     0.034800000000000005,
      2.4e+19
     ],
     [
-     36.2,
+     0.03620000000000001,
      2.3e+19
     ],
     [
-     37.6,
+     0.03760000000000001,
      2.2e+19
     ],
     [
-     39.0,
+     0.03900000000000001,
      2.1e+19
     ],
     [
-     40.4,
+     0.0404,
      2e+19
     ],
     [
-     41.8,
+     0.0418,
      1.9e+19
     ],
     [
-     43.2,
+     0.0432,
      1.8e+19
     ],
     [
-     44.5,
+     0.044500000000000005,
      1.7e+19
     ],
     [
-     45.8,
+     0.0458,
      1.6e+19
     ],
     [
-     47.1,
+     0.04710000000000001,
      1.5e+19
     ],
     [
-     48.4,
+     0.048400000000000006,
      1.4e+19
     ],
     [
-     49.6,
+     0.04960000000000001,
      1.5e+19
     ]
    ],
@@ -5956,7 +5967,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0004960000000000001,
     "y": 6.96e+18
    },
    "set": "",
@@ -5978,13 +5989,13 @@
     "element": "N"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (nm)",
     "unit_raw": "nm",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
@@ -6003,139 +6014,139 @@
      5.8e+21
     ],
     [
-     1.1,
+     0.0011000000000000003,
      1.8e+20
     ],
     [
-     2.4,
+     0.0024000000000000002,
      6.7e+19
     ],
     [
-     4.0,
+     0.004,
      5.5e+19
     ],
     [
-     5.9,
+     0.005900000000000001,
      6e+19
     ],
     [
-     7.8,
+     0.0078000000000000005,
      7.2e+19
     ],
     [
-     9.7,
+     0.0097,
      7.8e+19
     ],
     [
-     11.5,
+     0.011500000000000002,
      8e+19
     ],
     [
-     13.2,
+     0.013200000000000002,
      8.2e+19
     ],
     [
-     15.0,
+     0.015000000000000003,
      8.3e+19
     ],
     [
-     16.8,
+     0.016800000000000002,
      8.4e+19
     ],
     [
-     18.7,
+     0.0187,
      8.6e+19
     ],
     [
-     20.6,
+     0.020600000000000004,
      8.7e+19
     ],
     [
-     22.4,
+     0.0224,
      6.8e+19
     ],
     [
-     24.0,
+     0.024000000000000004,
      3.3e+19
     ],
     [
-     25.3,
+     0.025300000000000003,
      8.7e+17
     ],
     [
-     26.8,
+     0.026800000000000004,
      4.2e+18
     ],
     [
-     28.2,
+     0.028200000000000003,
      3.3e+18
     ],
     [
-     29.5,
+     0.029500000000000005,
      3.6e+18
     ],
     [
-     30.8,
+     0.030800000000000004,
      4.5e+18
     ],
     [
-     32.2,
+     0.032200000000000006,
      5.1e+18
     ],
     [
-     33.5,
+     0.0335,
      4.9e+18
     ],
     [
-     34.8,
+     0.034800000000000005,
      1.3e+17
     ],
     [
-     36.0,
+     0.036000000000000004,
      3e+18
     ],
     [
-     37.1,
+     0.0371,
      1.9e+18
     ],
     [
-     38.4,
+     0.038400000000000004,
      1.1e+18
     ],
     [
-     39.5,
+     0.03950000000000001,
      1.4e+17
     ],
     [
-     40.7,
+     0.04070000000000001,
      3.6e+18
     ],
     [
-     42.0,
+     0.04200000000000001,
      2e+18
     ],
     [
-     43.2,
+     0.0432,
      1.5e+18
     ],
     [
-     44.3,
+     0.0443,
      9.5e+17
     ],
     [
-     45.5,
+     0.045500000000000006,
      2.4e+18
     ],
     [
-     46.5,
+     0.04650000000000001,
      9.5e+17
     ],
     [
-     47.6,
+     0.0476,
      1e+18
     ],
     [
-     48.8,
+     0.0488,
      3.2e+18
     ]
    ],
@@ -6299,7 +6310,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.00048800000000000004,
     "y": 5.79987e+19
    },
    "set": "",
@@ -6949,7 +6960,7 @@
    "figure": "8",
    "panel": "",
    "kind": "peak",
-   "quantity": "other",
+   "quantity": "diffraction_angle",
    "value": 40.5,
    "value_raw": 40.5,
    "unit": "°",
@@ -6972,7 +6983,7 @@
    "figure": "8",
    "panel": "",
    "kind": "peak",
-   "quantity": "other",
+   "quantity": "diffraction_angle",
    "value": 53.0,
    "value_raw": 53.0,
    "unit": "°",
@@ -6995,8 +7006,8 @@
    "figure": "8",
    "panel": "",
    "kind": "peak",
-   "quantity": "other",
-   "value": 58.6,
+   "quantity": "diffraction_angle",
+   "value": 58.60000000000001,
    "value_raw": 58.6,
    "unit": "°",
    "label": "Mo(200)",
@@ -7018,7 +7029,7 @@
    "figure": "8",
    "panel": "",
    "kind": "peak",
-   "quantity": "other",
+   "quantity": "diffraction_angle",
    "value": 73.8,
    "value_raw": 73.8,
    "unit": "°",
@@ -7078,6 +7089,6 @@
   "sets": 2,
   "peaks": 4,
   "derived": 0,
-  "labels_other": 16
+  "labels_other": 7
  }
 }

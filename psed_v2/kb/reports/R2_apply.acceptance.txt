@@ -1,20 +1,7 @@
 round 2 acceptance (grow.py audit_round)
-A1: 28 decisions, 92 rows: effect {'n/a': 4, 'yes': 84, 'no effect': 4}
-A2: 204 promotions: {'symbol (user decision)': 81, 'agree': 66, 'alias (user decision)': 17, 'symbol (paper-local)': 40}
-A3: 166 open rows: {'pending': 148, 'unit': 1, 'other': 6, 'unclassified': 11}; pending candidates accounted 128/130
-A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: FAIL (14)
-FAIL A3 10.1021_cm0303080:fig13 axis 'Aspect Ratio (L/D)': candidate aspect_ratio decided in round 0 (add): decided, but the row is still open
-FAIL A3 10.1039_d3cp05639b:s4.p4 quantity 'shape factor s': candidate shape_factor_s: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s': candidate shape_factor_s: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s': candidate shape_factor_s: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s': candidate shape_factor_s: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2a quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2a quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2a quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2b quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2b quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:fig2b quantity 's': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 10.1039_d3cp05639b:tabu1.r21c0 quantity 'Shape factor for a particle': candidate shape_factor_for_a_particle: not pending, not decided
-FAIL A3 pending shape_factor: 10.1039_d3cp05639b:tabu1.r21c0 quantity 'Shape factor for a particle' is no longer open; 10.1039_d3cp05639b:fig2a quantity 's' is no longer open; 10.1039_d3cp05639b:fig2a quantity 's' is no longer open; 10.1039_d3cp05639b:fig2a quantity 's' is no longer open; 10.1039_d3cp05639b:fig2b quantity 's' is no longer open; 10.1039_d3cp05639b:fig2b quantity 's' is no longer open; 10.1039_d3cp05639b:fig2b quantity 's' is no longer open; 10.1039_d3cp05639b:s4.p4 quantity 'shape factor s' is no longer open; 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s' is no longer open; 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s' is no longer open; 10.1039_d3cp05639b:fig1.cap quantity 'shape factor s' is no longer open
-FAIL A3 pending h: 10.1021_cm0303080:s5.x2 quantity 'H' is no longer open; 10.1021_cm0303080:s5.x2 quantity 'H' is no longer open; 10.1021_cm0303080:fig12.cap quantity 'H' is no longer open; 10.1021_cm0303080:fig12.cap quantity 'H' is no longer open
+A1: 28 decisions, 92 rows: effect {'n/a': 6, 'yes': 84, 'no effect': 2}
+A2: 204 promotions: {'symbol (user decision)': 81, 'alias (curated)': 39, 'alias (user decision)': 17, 'agree': 15, 'id (curated)': 12, 'symbol (paper-local)': 40}
+A3: 46 open rows: {'pending': 37, 'other': 7, 'unit': 1, 'new': 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
+  10.1039_d3cp05639b:fig4 axis '1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]'
+result: PASS

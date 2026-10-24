@@ -3,7 +3,7 @@
  "key": "gao15",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T09:16:58",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "gao15:fig1",
@@ -300,8 +300,8 @@
      "label_raw": "LHAR gap size",
      "key": "LHAR gap size",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "alias 'LHAR gap size'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -746,8 +746,11 @@
    "panel": "b",
    "series": {
     "label_raw": "200 nm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.20000000000000004,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "aspect_ratio",
@@ -983,6 +986,16 @@
      "value": 2000.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "LHAR gap size",
+     "raw": "200 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.20000000000000004,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1013,8 +1026,11 @@
    "panel": "b",
    "series": {
     "label_raw": "500 nm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.5000000000000001,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "aspect_ratio",
@@ -1490,6 +1506,16 @@
      "value": 2000.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "LHAR gap size",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1520,8 +1546,11 @@
    "panel": "b",
    "series": {
     "label_raw": "1000 nm",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 1.0000000000000002,
+    "value_max": null,
+    "unit": "µm"
    },
    "x": {
     "quantity": "aspect_ratio",
@@ -1949,6 +1978,16 @@
      "value": 2000.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "LHAR gap size",
+     "raw": "1000 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 1.0000000000000002,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1980,8 +2019,8 @@
    "id": "gao15:cmp:fig5b",
    "figure": "5",
    "panel": "b",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "feature_width",
    "varied_raw": "LHAR gap size",
    "members": [
     "gao15:fig5b#c1",
@@ -2008,7 +2047,7 @@
      "unit": "cycle"
     }
    },
-   "label": "Fig. 5b replicates (LHAR gap size)"
+   "label": "Fig. 5b series (LHAR gap size)"
   }
  ],
  "derived": [
@@ -2084,6 +2123,6 @@
   "curves": 4,
   "sets": 1,
   "derived": 2,
-  "labels_other": 1
+  "labels_other": 0
  }
 }

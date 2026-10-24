@@ -5,6 +5,8 @@ a0: s5.p32: quantity 'density of ALD reactive sites' -> saturation_density (quan
 a0: tab1.r1c2: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
 a0: tab1.r2c2: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
 a0: tab1.r3c2: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
+a0: fig10.cap: legend label 'Simulation' parsed to nothing
+a0: fig10.cap: legend label 'y ∝ t^1/2' parsed to nothing
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
 a: fig10a: qualifiers.n '4' -> 4.0 (C4)
@@ -16,8 +18,7 @@ g: s4.p9: mention_unmatched ['Figure 5b']
 g: s4.p10: mention_unmatched ['Figure 6a']
 g: s4.p15: mention_unmatched ['Figure 8a']
 h: simulation sim_mc ('Monte Carlo computer simulation') -> model elam_monte_carlo (alias 'Monte Carlo computer simulation')
-h: tree from pass 0: run 14, simulation 1, specimen 14, model_run 16, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
-1c: 6 curves no pass-0 unit names, left out: ela03:fig5b#c1, ela03:fig6b#c1, ela03:fig9b#c1, ela03:fig10b#c1, ela03:fig10b#c2, ela03:fig11b#c1
+h: tree from pass 0: run 14, simulation 1, specimen 14, model_run 20, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s3.p24 into s3.p23;s3.p24 (reactant_B h2o)
 i: merged fig4.cap into fig1.cap;fig4.cap (structure anodic_alumina_membrane)
 i: merged fig5.cap into fig4.cap;fig5.cap (cycle_number 64)
@@ -32,33 +33,33 @@ i: merged fig12.cap into s5.x2;fig12.cap (feature_depth 0.5)
 i: merged fig12.cap into s5.x2;fig12.cap (other 0.27)
 i: merged fig13.cap into fig10.cap;fig11.cap;fig13.cap (material zno)
 i: merged tab1.cap into fig1.cap;fig4.cap;fig6.cap;tab1.cap (structure anodic_alumina_membrane)
-j: derived over 26 entities: 15 rows; not derived: {'no fact for S': 16, 'no fact for p': 25, 'E: no fact for p': 25, 'no fact for rho': 52, 'n: no fact for gpc': 26, 'gpc: no fact for n': 26, 'no fact for H': 36, 'no fact for dn': 26, 'no fact for mg': 52, 'no fact for t': 38, 'no fact for h2': 26, 'no fact for phi': 26, 'no fact for d': 26, 'lam: no fact for d': 26, 'gpc: n: no fact for gpc': 26, 'derive raised: cannot convert cycle to 1': 1}
+j: derived over 32 entities: 15 rows; not derived: {'no fact for S': 16, 'no fact for p': 31, 'E: no fact for p': 31, 'no fact for rho': 64, 'n: no fact for gpc': 32, 'gpc: no fact for n': 32, 'no fact for H': 48, 'no fact for dn': 32, 'no fact for mg': 64, 'no fact for t': 50, 'no fact for h2': 32, 'no fact for phi': 32, 'no fact for d': 30, 'lam: no fact for d': 30, 'gpc: n: no fact for gpc': 32, 'derive raised: cannot convert cycle to 1': 1, 'no fact for T': 2, 'lam: no fact for T': 2}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 17 nodes for 20 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 4
-step input: {'records': 247, 'unit derived (derived: point_per_unit, None)': 6, 'condition of a derived unit of role null (no row)': 2}
-step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 7, 'quantity promoted (quantity: alias)': 1, 'quantity promoted (quantity: name)': 3}
-step a: {'numeric string coerced (C4)': 5, 'kept': 247}
-step b: {'model_with_value (kept)': 42, 'kept': 247}
-step c: {'quantity_other never (kept)': 12, 'quantity_other (kept)': 13, 'kept': 247}
-step d: {'quote_not_found': 35, 'quote_noncontiguous (kept)': 1, 'kept': 212}
-step e: {'unit_unresolved (kept as printed)': 1, 'kept': 212}
-step f: {'species_resolved': 24, 'kept': 212}
+step input: {'records': 247, 'unit derived (derived: point_per_unit, None)': 2, 'unit derived (derived: point_per_unit, model_run)': 4, 'condition of a derived unit (name)': 2}
+step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 7, 'quantity promoted (quantity: alias)': 1, 'quantity promoted (quantity: name)': 3, 'derived legend label parsed to nothing (other)': 2, 'quantity other naming a method entry (kept)': 1}
+step a: {'numeric string coerced (C4)': 5, 'kept': 249}
+step b: {'model_with_value (kept)': 42, 'kept': 249}
+step c: {'quantity_other never (kept)': 12, 'quantity_other (kept)': 15, 'kept': 249}
+step d: {'quote_not_found': 35, 'quote_noncontiguous (kept)': 1, 'derived condition (figures.json, no quote check)': 2, 'kept': 214}
+step e: {'unit_unresolved (kept as printed)': 1, 'kept': 214}
+step f: {'species_resolved': 24, 'kept': 214}
 step g: {'mention_unmatched': 5}
-step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: no row)': 6, 'place: about paper -> recipe': 47, 'place: claim -> paper': 20, 'place: result about a specimen -> its measurement': 23, 'place: cited -> paper': 8, 'place: about paper, method -> paper method activity': 3, 'place: setting about a run -> deposition': 47, 'place: setting about a specimen -> deposition': 5, 'place: result about a run -> its specimen measurement': 1, 'place: caveat -> paper': 1, 'place: model about a simulation -> simulation': 13, 'place: model about a model run -> model run': 33, 'place: derived about a simulation -> simulation': 1, 'place: definition -> paper': 3, 'place: derived about a model run -> model run': 3, 'place: model about a model run -> simulation': 4}
-step m: {'statement filled from the quote': 170, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 2, 'links resolved': 13}
-step 1c: {'data_id_not_in_figures_json': 30, 'figure label other (y)': 16, 'figure label other (series)': 6, 'figure label other (x)': 10, 'figure label other (condition)': 12, 'figure label other (condition), never': 2, 'curve -> observation': 10, 'data role measured': 10, 'curve -> model': 18, 'data role simulated': 16, 'data role fitted': 2, 'curves no unit names (left out)': 6}
-step i: {'merged': 14, 'kept': 226}
+step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: a row under the paper)': 2, 'place: about paper -> recipe': 47, 'place: claim -> paper': 20, 'place: result about a specimen -> its measurement': 23, 'place: cited -> paper': 8, 'place: about paper, method -> paper method activity': 3, 'place: setting about a run -> deposition': 47, 'place: setting about a specimen -> deposition': 5, 'place: result about a run -> its specimen measurement': 1, 'place: caveat -> paper': 1, 'place: model about a simulation -> simulation': 13, 'place: model about a model run -> model run': 33, 'place: derived about a simulation -> simulation': 1, 'place: definition -> paper': 3, 'place: derived about a model run -> model run': 3, 'place: model about a model run -> simulation': 4, 'place: setting about a model run sharing its simulation -> model run': 2}
+step m: {'statement filled from the quote': 172, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 1, 'links resolved': 14}
+step 1c: {'data_id_not_in_figures_json': 4, 'figure label other (y)': 7, 'figure label other (condition)': 2, 'figure label other (condition), never': 2, 'curve -> observation': 12, 'data role measured': 12, 'curve -> model': 22, 'data role simulated': 20, 'data role fitted': 2}
+step i: {'merged': 14, 'kept': 234}
 step n: {'comparison replicate': 2, 'comparison series': 1, 'comparison grid': 1}
 step j: {'derived cycle_time': 14, 'derived exposure': 1}
-step k: {'statement from the record': 198, 'statement_copies_text (reported by check)': 56, 'statement assembled': 43}
+step k: {'statement from the record': 200, 'statement_copies_text (reported by check)': 56, 'statement assembled': 49}
 diff against the gold:
-  setting       277   80   57  0.71  0.21
-  model          57   70   34  0.49  0.60
-  activity       46   27   13  0.48  0.28
-  observation    38   31    4  0.13  0.11
+  setting       277   82   57  0.70  0.21
+  model          57   74   35  0.47  0.61
+  activity       46   29   15  0.52  0.33
+  observation    38   33   12  0.36  0.32
   claim          37   20    9  0.45  0.24
-  entity         34   30   13  0.43  0.38
+  entity         34   36   13  0.36  0.38
   cited          21    8    7  0.88  0.33
   derived        17   28    4  0.14  0.24
   caveat         15    1    1  1.00  0.07
@@ -67,4 +68,4 @@ diff against the gold:
   paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 0/10
 gold model rows with quantity and value: 6: {'other': 3, 'penetration_depth': 1, 'normalized_thickness': 1, 'surface_coverage': 1}
-observations: gold 38, compiled 31, matched 4
+observations: gold 38, compiled 33, matched 12

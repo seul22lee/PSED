@@ -3,7 +3,7 @@
  "key": "art19",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T10:03:01",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "art19:fig1A",
@@ -52,6 +52,7 @@
    "panel_type": "plot",
    "content": "Normalized thickness profiles along the cavity depth for SiO2, TiO2, Al2O3, and HfO2 films",
    "quantities": [
+    "dimensionless_distance",
     "normalized_thickness"
    ],
    "flags": [],
@@ -64,8 +65,8 @@
      "label_raw": "Distance / cavity height",
      "key": "Distance / cavity height",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Distance / cavity height'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -100,8 +101,8 @@
      "label_raw": "material and exposure time",
      "key": "exposure time",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -115,7 +116,10 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Film penetration versus the natural logarithm of plasma exposure time for SiO2 and TiO2",
-   "quantities": [],
+   "quantities": [
+    "pulse_time",
+    "coated_aspect_ratio"
+   ],
    "flags": [
     "F4"
    ],
@@ -128,8 +132,8 @@
      "label_raw": "ln(Plasma time (s))",
      "key": "Plasma time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Plasma time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -140,8 +144,8 @@
      "label_raw": "PD^{50%} / cavity height",
      "key": "PD^{50%} / cavity height",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "coated_aspect_ratio",
+     "how": "symbol 'PD^{50%} / cavity height' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -173,13 +177,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -324,13 +328,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "SiO2, 3.8 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.8,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 4.4910000000000005,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -352,13 +367,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -519,13 +534,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "SiO2, 12 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 12.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 6.667000000000001,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -547,13 +573,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -722,13 +748,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "SiO2, 38 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 38.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 8.506,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -750,13 +787,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -949,13 +986,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "SiO2, 120 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 120.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 9.77,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -977,13 +1025,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -1136,13 +1184,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "TiO2, 12 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 12.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 5.575,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1164,13 +1223,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -1339,13 +1398,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "TiO2, 120 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 120.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 9.368,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1367,13 +1437,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -1478,13 +1548,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "Al2O3, 120 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 120.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.149,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1506,13 +1587,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "dimensionless_distance",
+    "unit": "1",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
     "key": "Distance / cavity height",
-    "how": "",
+    "how": "alias 'Distance / cavity height'",
     "unit_reason": ""
    },
    "y": {
@@ -1609,13 +1690,24 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "HfO2, 120 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 120.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.517,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1637,23 +1729,23 @@
     "species": "sio2"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "ln",
     "label_raw": "ln(Plasma time (s))",
     "unit_raw": "",
     "key": "Plasma time",
-    "how": "",
+    "how": "alias 'Plasma time'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "coated_aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "PD^{50%} / cavity height",
     "unit_raw": "",
     "key": "PD^{50%} / cavity height",
-    "how": "",
+    "how": "symbol 'PD^{50%} / cavity height' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -1700,7 +1792,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.174437175451523,
     "y": 5.4
    },
    "set": "art19:cmp:fig3",
@@ -1722,23 +1814,23 @@
     "species": "tio2"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "ln",
     "label_raw": "ln(Plasma time (s))",
     "unit_raw": "",
     "key": "Plasma time",
-    "how": "",
+    "how": "alias 'Plasma time'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "coated_aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "PD^{50%} / cavity height",
     "unit_raw": "",
     "key": "PD^{50%} / cavity height",
-    "how": "",
+    "how": "symbol 'PD^{50%} / cavity height' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -1769,7 +1861,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.0927819228257387,
     "y": 3.45
    },
    "set": "art19:cmp:fig3",
@@ -1788,8 +1880,8 @@
    "id": "art19:cmp:fig2B",
    "figure": "2",
    "panel": "B",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "material;pulse_time",
    "varied_raw": "material and exposure time",
    "members": [
     "art19:fig2B#c1",
@@ -1802,7 +1894,7 @@
     "art19:fig2B#c8"
    ],
    "conditions": {},
-   "label": "Fig. 2B replicates (material and exposure time)"
+   "label": "Fig. 2B series (material and exposure time)"
   },
   {
    "id": "art19:cmp:fig3",
@@ -1827,6 +1919,6 @@
   "converted": 0,
   "curves": 10,
   "derived": 0,
-  "labels_other": 4
+  "labels_other": 0
  }
 }

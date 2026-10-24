@@ -3,7 +3,7 @@
  "key": "wer21",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T10:03:01",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "wer21:fig2",
@@ -12,7 +12,8 @@
    "panel_type": "plot",
    "content": "OES parameter space explored in terms of RF power and pressure for various oxygen gas flows",
    "quantities": [
-    "process_pressure"
+    "process_pressure",
+    "plasma_power"
    ],
    "flags": [
     "F3",
@@ -47,8 +48,8 @@
      "label_raw": "Power (W)",
      "key": "Power",
      "unit": "W",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'Power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -62,8 +63,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Instrument settings",
+     "never_label": "integration time",
      "unit_reason": ""
     },
     {
@@ -74,8 +75,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Instrument settings",
+     "never_label": "RF frequency",
      "unit_reason": ""
     },
     {
@@ -108,7 +109,9 @@
    "panel": "",
    "panel_type": "spectrum",
    "content": "Optical emission spectra of oxygen plasma at different RF powers",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -131,8 +134,8 @@
      "label_raw": "Counts/s",
      "key": "Counts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -158,7 +161,9 @@
    "panel": "",
    "panel_type": "spectrum",
    "content": "Infrared spectra at different RF powers and a gas flow of 200 sccm",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -181,8 +186,8 @@
      "label_raw": "Counts/s",
      "key": "Counts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -193,8 +198,8 @@
      "label_raw": "flow",
      "key": "flow",
      "unit": "sccm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "gas_flow_rate",
+     "how": "alias 'flow'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -208,7 +213,9 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Total intensity as a function of plasma power for various oxygen flow rates",
-   "quantities": [],
+   "quantities": [
+    "plasma_power"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -227,12 +234,12 @@
      "label_raw": "Power",
      "key": "Power",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'Power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit not printed"
     },
     {
      "axis": "y",
@@ -324,7 +331,9 @@
    "panel": "c",
    "panel_type": "plot",
    "content": "Intensity of the ionic line scaled with total intensity as a function of power",
-   "quantities": [],
+   "quantities": [
+    "plasma_power"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -343,12 +352,12 @@
      "label_raw": "Power",
      "key": "Power",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'Power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit not printed"
     },
     {
      "axis": "y",
@@ -382,7 +391,9 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "Intensity of the atomic line scaled with total intensity as a function of power",
-   "quantities": [],
+   "quantities": [
+    "plasma_power"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -401,12 +412,12 @@
      "label_raw": "Power",
      "key": "Power",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'Power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit not printed"
     },
     {
      "axis": "y",
@@ -440,7 +451,9 @@
    "panel": "a",
    "panel_type": "spectrum",
    "content": "Energy spectra of atomic oxygen ions (O+) across various pressures and RF powers",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -454,8 +467,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Plasma internals",
+     "never_label": "Energy",
      "unit_reason": ""
     },
     {
@@ -463,8 +476,8 @@
      "label_raw": "m/z = +16 (O⁺)\nCounts/s",
      "key": "m/z = +16 (O⁺)\nCounts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'm/z = +16 (O⁺) Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -478,7 +491,9 @@
    "panel": "b",
    "panel_type": "spectrum",
    "content": "Energy spectra of molecular oxygen ions (O2+) across various pressures and RF powers",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -492,8 +507,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Plasma internals",
+     "never_label": "Energy",
      "unit_reason": ""
     },
     {
@@ -501,8 +516,8 @@
      "label_raw": "m/z = +32 (O₂⁺)\nCounts/s",
      "key": "m/z = +32 (O₂⁺)\nCounts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'm/z = +32 (O₂⁺) Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -516,7 +531,9 @@
    "panel": "a",
    "panel_type": "spectrum",
    "content": "Energy spectra of atomic negative ions (O⁻) at various oxygen pressures/flows and RF powers",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -530,8 +547,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Plasma internals",
+     "never_label": "Energy",
      "unit_reason": ""
     },
     {
@@ -539,8 +556,8 @@
      "label_raw": "m/z = -16 (O⁻)\nCounts/s",
      "key": "m/z = -16 (O⁻)\nCounts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'm/z = -16 (O⁻) Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -554,7 +571,9 @@
    "panel": "b",
    "panel_type": "spectrum",
    "content": "Energy spectra of molecular negative ions (O₂⁻) at various oxygen pressures/flows and RF powers",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -568,8 +587,8 @@
      "quantity": "other",
      "how": "",
      "ambiguous": [],
-     "never": "",
-     "never_label": "",
+     "never": "Plasma internals",
+     "never_label": "Energy",
      "unit_reason": ""
     },
     {
@@ -577,8 +596,8 @@
      "label_raw": "m/z = -32 (O₂⁻)\nCounts/s",
      "key": "m/z = -32 (O₂⁻)\nCounts/s",
      "unit": "Counts/s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'm/z = -32 (O₂⁻) Counts/s'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -632,7 +651,10 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Normalized deposition thickness profiles and simulated conformality profiles for varying power and pulse time",
-   "quantities": [],
+   "quantities": [
+    "distance",
+    "normalized_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -643,8 +665,8 @@
      "label_raw": "Depth (m)",
      "key": "Depth",
      "unit": "m",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Depth' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -655,8 +677,8 @@
      "label_raw": "Coverage",
      "key": "Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "symbol 'Coverage' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -679,8 +701,8 @@
      "label_raw": "power and pulse time",
      "key": "power",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -706,7 +728,10 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Normalized deposition thickness profiles and simulated conformality profiles for varying pressures",
-   "quantities": [],
+   "quantities": [
+    "distance",
+    "normalized_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "rule: pass",
@@ -717,8 +742,8 @@
      "label_raw": "Depth (m)",
      "key": "Depth",
      "unit": "m",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "symbol 'Depth' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -729,8 +754,8 @@
      "label_raw": "Coverage",
      "key": "Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "symbol 'Coverage' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -741,8 +766,8 @@
      "label_raw": "power",
      "key": "power",
      "unit": "W",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -780,7 +805,10 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Partial pressure of active species and activated gas fraction versus plasma power",
-   "quantities": [],
+   "quantities": [
+    "plasma_power",
+    "partial_pressure"
+   ],
    "flags": [
     "F3"
    ],
@@ -795,8 +823,8 @@
      "label_raw": "Power (W)",
      "key": "Power",
      "unit": "W",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'Power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -807,8 +835,8 @@
      "label_raw": "p_O (mbar)",
      "key": "p_O",
      "unit": "mbar",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "symbol 'p_O' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -835,7 +863,8 @@
    "panel_type": "plot",
    "content": "Partial pressure of active species at different gas pressures",
    "quantities": [
-    "process_pressure"
+    "process_pressure",
+    "partial_pressure"
    ],
    "flags": [],
    "status": "imported",
@@ -859,8 +888,8 @@
      "label_raw": "p_O (mbar)",
      "key": "p_O",
      "unit": "mbar",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "symbol 'p_O' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -871,8 +900,8 @@
      "label_raw": "power",
      "key": "power",
      "unit": "W",
-     "quantity": "other",
-     "how": "",
+     "quantity": "plasma_power",
+     "how": "symbol 'power' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -935,13 +964,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -1205,13 +1234,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -1459,13 +1488,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -1737,13 +1766,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -2055,13 +2084,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -2509,13 +2538,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -2817,14 +2846,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -2962,14 +2991,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -3107,14 +3136,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -3252,14 +3281,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -3429,14 +3458,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -3590,14 +3619,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -4645,14 +4674,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -4798,14 +4827,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -4943,14 +4972,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5088,14 +5117,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5241,14 +5270,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5386,14 +5415,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5539,14 +5568,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5692,14 +5721,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5837,14 +5866,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -5982,14 +6011,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -6135,14 +6164,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -6280,14 +6309,14 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "",
     "transform": "",
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "",
-    "unit_reason": ""
+    "how": "symbol 'Power' of this paper",
+    "unit_reason": "unit not printed"
    },
    "y": {
     "quantity": "other",
@@ -6430,108 +6459,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.03
     ],
     [
-     0.0012,
+     1200.0,
      1.02
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.01
     ],
     [
-     0.0032,
+     3200.0000000000005,
      1.0
     ],
     [
-     0.0042,
+     4200.0,
      0.99
     ],
     [
-     0.0052,
+     5200.0,
      0.98
     ],
     [
-     0.0062,
+     6200.0,
      0.97
     ],
     [
-     0.0072,
+     7200.0,
      0.96
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.92
     ],
     [
-     0.0092,
+     9200.0,
      0.88
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.81
     ],
     [
-     0.0112,
+     11200.0,
      0.72
     ],
     [
-     0.0121,
+     12100.0,
      0.62
     ],
     [
-     0.0132,
+     13200.0,
      0.54
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.47
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.4
     ],
     [
-     0.0161,
+     16100.0,
      0.35
     ],
     [
-     0.0172,
+     17200.0,
      0.32
     ],
     [
-     0.0182,
+     18200.0,
      0.29
     ],
     [
-     0.0191,
+     19100.0,
      0.28
     ],
     [
-     0.0201,
+     20100.0,
      0.28
     ]
    ],
@@ -6631,6 +6660,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "50 W - 15s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "50 W - 15s",
@@ -6649,7 +6688,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.0075
    },
    "set": "wer21:cmp:fig11",
@@ -6671,108 +6710,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.01
     ],
     [
-     0.0012,
+     1200.0,
      1.01
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.0
     ],
     [
-     0.0032,
+     3200.0000000000005,
      0.99
     ],
     [
-     0.0042,
+     4200.0,
      0.98
     ],
     [
-     0.0052,
+     5200.0,
      0.96
     ],
     [
-     0.0062,
+     6200.0,
      0.94
     ],
     [
-     0.0072,
+     7200.0,
      0.92
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.88
     ],
     [
-     0.0092,
+     9200.0,
      0.83
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.67
     ],
     [
-     0.0112,
+     11200.0,
      0.57
     ],
     [
-     0.0121,
+     12100.0,
      0.51
     ],
     [
-     0.0132,
+     13200.0,
      0.45
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.4
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.34
     ],
     [
-     0.0161,
+     16100.0,
      0.3
     ],
     [
-     0.0172,
+     17200.0,
      0.27
     ],
     [
-     0.0182,
+     18200.0,
      0.25
     ],
     [
-     0.0191,
+     19100.0,
      0.24
     ],
     [
-     0.0201,
+     20100.0,
      0.23
     ]
    ],
@@ -6872,6 +6911,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 5s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "75 W - 5s",
@@ -6890,7 +6939,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.0078000000000000005
    },
    "set": "wer21:cmp:fig11",
@@ -6912,108 +6961,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.05
     ],
     [
-     0.0012,
+     1200.0,
      1.04
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.03
     ],
     [
-     0.0032,
+     3200.0000000000005,
      1.02
     ],
     [
-     0.0042,
+     4200.0,
      1.01
     ],
     [
-     0.0052,
+     5200.0,
      1.0
     ],
     [
-     0.0062,
+     6200.0,
      1.0
     ],
     [
-     0.0072,
+     7200.0,
      0.99
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.98
     ],
     [
-     0.0092,
+     9200.0,
      0.97
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.96
     ],
     [
-     0.0112,
+     11200.0,
      0.94
     ],
     [
-     0.0121,
+     12100.0,
      0.91
     ],
     [
-     0.0132,
+     13200.0,
      0.87
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.81
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.73
     ],
     [
-     0.0161,
+     16100.0,
      0.66
     ],
     [
-     0.0172,
+     17200.0,
      0.62
     ],
     [
-     0.0182,
+     18200.0,
      0.57
     ],
     [
-     0.0191,
+     19100.0,
      0.53
     ],
     [
-     0.0201,
+     20100.0,
      0.49
     ]
    ],
@@ -7113,6 +7162,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 10s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "75 W - 10s",
@@ -7131,7 +7190,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.005600000000000001
    },
    "set": "wer21:cmp:fig11",
@@ -7153,108 +7212,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.14
     ],
     [
-     0.0012,
+     1200.0,
      1.09
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.05
     ],
     [
-     0.0032,
+     3200.0000000000005,
      1.04
     ],
     [
-     0.0042,
+     4200.0,
      1.02
     ],
     [
-     0.0052,
+     5200.0,
      1.01
     ],
     [
-     0.0062,
+     6200.0,
      1.01
     ],
     [
-     0.0072,
+     7200.0,
      1.0
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.99
     ],
     [
-     0.0092,
+     9200.0,
      0.98
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.97
     ],
     [
-     0.0112,
+     11200.0,
      0.95
     ],
     [
-     0.0121,
+     12100.0,
      0.92
     ],
     [
-     0.0132,
+     13200.0,
      0.87
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.81
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.74
     ],
     [
-     0.0161,
+     16100.0,
      0.68
     ],
     [
-     0.0172,
+     17200.0,
      0.61
     ],
     [
-     0.0182,
+     18200.0,
      0.57
     ],
     [
-     0.0191,
+     19100.0,
      0.54
     ],
     [
-     0.0201,
+     20100.0,
      0.49
     ]
    ],
@@ -7354,6 +7413,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "125 W - 5s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 125.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "125 W - 5s",
@@ -7372,7 +7441,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.006499999999999999
    },
    "set": "wer21:cmp:fig11",
@@ -7394,108 +7463,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.06
     ],
     [
-     0.0012,
+     1200.0,
      1.04
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.03
     ],
     [
-     0.0032,
+     3200.0000000000005,
      1.02
     ],
     [
-     0.0042,
+     4200.0,
      1.01
     ],
     [
-     0.0052,
+     5200.0,
      1.0
     ],
     [
-     0.0062,
+     6200.0,
      0.99
     ],
     [
-     0.0072,
+     7200.0,
      0.98
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.97
     ],
     [
-     0.0092,
+     9200.0,
      0.96
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.94
     ],
     [
-     0.0112,
+     11200.0,
      0.91
     ],
     [
-     0.0121,
+     12100.0,
      0.88
     ],
     [
-     0.0132,
+     13200.0,
      0.83
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.78
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.71
     ],
     [
-     0.0161,
+     16100.0,
      0.63
     ],
     [
-     0.0172,
+     17200.0,
      0.58
     ],
     [
-     0.0182,
+     18200.0,
      0.53
     ],
     [
-     0.0191,
+     19100.0,
      0.49
     ],
     [
-     0.0201,
+     20100.0,
      0.43
     ]
    ],
@@ -7595,6 +7664,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W - 4s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "150 W - 4s",
@@ -7613,7 +7692,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.006300000000000001
    },
    "set": "wer21:cmp:fig11",
@@ -7635,108 +7714,108 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0002,
+     200.00000000000003,
      1.13
     ],
     [
-     0.0012,
+     1200.0,
      1.07
     ],
     [
-     0.0022,
+     2200.0000000000005,
      1.03
     ],
     [
-     0.0032,
+     3200.0000000000005,
      1.0
     ],
     [
-     0.0042,
+     4200.0,
      0.98
     ],
     [
-     0.0052,
+     5200.0,
      0.97
     ],
     [
-     0.0062,
+     6200.0,
      0.96
     ],
     [
-     0.0072,
+     7200.0,
      0.96
     ],
     [
-     0.0082,
+     8200.000000000002,
      0.95
     ],
     [
-     0.0092,
+     9200.0,
      0.95
     ],
     [
-     0.0102,
+     10200.000000000002,
      0.94
     ],
     [
-     0.0112,
+     11200.0,
      0.93
     ],
     [
-     0.0121,
+     12100.0,
      0.92
     ],
     [
-     0.0132,
+     13200.0,
      0.9
     ],
     [
-     0.0142,
+     14200.000000000002,
      0.87
     ],
     [
-     0.0151,
+     15100.000000000002,
      0.84
     ],
     [
-     0.0161,
+     16100.0,
      0.81
     ],
     [
-     0.0172,
+     17200.0,
      0.77
     ],
     [
-     0.0182,
+     18200.0,
      0.74
     ],
     [
-     0.0191,
+     19100.0,
      0.71
     ],
     [
-     0.0201,
+     20100.0,
      0.66
     ]
    ],
@@ -7836,6 +7915,16 @@
      "value_max": null,
      "unit": "Pa"
     },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "200 W - 4s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 200.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "200 W - 4s",
@@ -7854,7 +7943,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 199.0,
     "y": 0.0046999999999999984
    },
    "set": "wer21:cmp:fig11",
@@ -7879,23 +7968,23 @@
     "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -7904,83 +7993,83 @@
      1.11
     ],
     [
-     0.001,
+     1000.0000000000001,
      1.07
     ],
     [
-     0.002,
+     2000.0000000000002,
      1.03
     ],
     [
-     0.003,
+     3000.0,
      1.01
     ],
     [
-     0.004,
+     4000.0000000000005,
      0.99
     ],
     [
-     0.005,
+     5000.0,
      0.98
     ],
     [
-     0.006,
+     6000.0,
      0.97
     ],
     [
-     0.007,
+     7000.000000000001,
      0.96
     ],
     [
-     0.008,
+     8000.000000000001,
      0.95
     ],
     [
-     0.009,
+     9000.0,
      0.94
     ],
     [
-     0.01,
+     10000.0,
      0.93
     ],
     [
-     0.011,
+     11000.0,
      0.93
     ],
     [
-     0.012,
+     12000.0,
      0.91
     ],
     [
-     0.013,
+     13000.0,
      0.9
     ],
     [
-     0.014,
+     14000.000000000002,
      0.87
     ],
     [
-     0.015,
+     15000.0,
      0.84
     ],
     [
-     0.016,
+     16000.000000000002,
      0.81
     ],
     [
-     0.017,
+     17000.000000000004,
      0.78
     ],
     [
-     0.018,
+     18000.0,
      0.74
     ],
     [
-     0.019,
+     19000.0,
      0.7
     ],
     [
-     0.02,
+     20000.0,
      0.65
     ]
    ],
@@ -8071,6 +8160,15 @@
     ]
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -8099,7 +8197,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 200.0,
     "y": 0.004600000000000001
    },
    "set": "wer21:cmp:fig12",
@@ -8124,23 +8222,23 @@
     "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -8149,83 +8247,83 @@
      1.1
     ],
     [
-     0.001,
+     1000.0000000000001,
      1.06
     ],
     [
-     0.002,
+     2000.0000000000002,
      1.03
     ],
     [
-     0.003,
+     3000.0,
      1.0
     ],
     [
-     0.004,
+     4000.0000000000005,
      0.99
     ],
     [
-     0.005,
+     5000.0,
      0.98
     ],
     [
-     0.006,
+     6000.0,
      0.97
     ],
     [
-     0.007,
+     7000.000000000001,
      0.96
     ],
     [
-     0.008,
+     8000.000000000001,
      0.94
     ],
     [
-     0.009,
+     9000.0,
      0.93
     ],
     [
-     0.01,
+     10000.0,
      0.92
     ],
     [
-     0.011,
+     11000.0,
      0.91
     ],
     [
-     0.012,
+     12000.0,
      0.89
     ],
     [
-     0.013,
+     13000.0,
      0.88
     ],
     [
-     0.014,
+     14000.000000000002,
      0.85
     ],
     [
-     0.015,
+     15000.0,
      0.83
     ],
     [
-     0.016,
+     16000.000000000002,
      0.79
     ],
     [
-     0.017,
+     17000.000000000004,
      0.76
     ],
     [
-     0.018,
+     18000.0,
      0.72
     ],
     [
-     0.019,
+     19000.0,
      0.68
     ],
     [
-     0.02,
+     20000.0,
      0.65
     ]
    ],
@@ -8316,6 +8414,15 @@
     ]
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -8344,7 +8451,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 200.0,
     "y": 0.0045000000000000005
    },
    "set": "wer21:cmp:fig12",
@@ -8369,23 +8476,23 @@
     "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -8394,83 +8501,83 @@
      1.06
     ],
     [
-     0.001,
+     1000.0000000000001,
      1.05
     ],
     [
-     0.002,
+     2000.0000000000002,
      1.03
     ],
     [
-     0.003,
+     3000.0,
      0.99
     ],
     [
-     0.004,
+     4000.0000000000005,
      0.98
     ],
     [
-     0.005,
+     5000.0,
      0.96
     ],
     [
-     0.006,
+     6000.0,
      0.95
     ],
     [
-     0.007,
+     7000.000000000001,
      0.94
     ],
     [
-     0.008,
+     8000.000000000001,
      0.93
     ],
     [
-     0.009,
+     9000.0,
      0.9
     ],
     [
-     0.01,
+     10000.0,
      0.88
     ],
     [
-     0.011,
+     11000.0,
      0.86
     ],
     [
-     0.012,
+     12000.0,
      0.83
     ],
     [
-     0.013,
+     13000.0,
      0.79
     ],
     [
-     0.014,
+     14000.000000000002,
      0.76
     ],
     [
-     0.015,
+     15000.0,
      0.72
     ],
     [
-     0.016,
+     16000.000000000002,
      0.69
     ],
     [
-     0.017,
+     17000.000000000004,
      0.65
     ],
     [
-     0.018,
+     18000.0,
      0.62
     ],
     [
-     0.019,
+     19000.0,
      0.59
     ],
     [
-     0.02,
+     20000.0,
      0.55
     ]
    ],
@@ -8561,6 +8668,15 @@
     ]
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -8589,7 +8705,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 200.0,
     "y": 0.0051
    },
    "set": "wer21:cmp:fig12",
@@ -8614,23 +8730,23 @@
     "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -8639,83 +8755,83 @@
      1.1
     ],
     [
-     0.001,
+     1000.0000000000001,
      1.07
     ],
     [
-     0.002,
+     2000.0000000000002,
      1.03
     ],
     [
-     0.003,
+     3000.0,
      1.0
     ],
     [
-     0.004,
+     4000.0000000000005,
      0.99
     ],
     [
-     0.005,
+     5000.0,
      0.97
     ],
     [
-     0.006,
+     6000.0,
      0.96
     ],
     [
-     0.007,
+     7000.000000000001,
      0.95
     ],
     [
-     0.008,
+     8000.000000000001,
      0.93
     ],
     [
-     0.009,
+     9000.0,
      0.9
     ],
     [
-     0.01,
+     10000.0,
      0.89
     ],
     [
-     0.011,
+     11000.0,
      0.87
     ],
     [
-     0.012,
+     12000.0,
      0.83
     ],
     [
-     0.013,
+     13000.0,
      0.8
     ],
     [
-     0.014,
+     14000.000000000002,
      0.76
     ],
     [
-     0.015,
+     15000.0,
      0.72
     ],
     [
-     0.016,
+     16000.000000000002,
      0.68
     ],
     [
-     0.017,
+     17000.000000000004,
      0.64
     ],
     [
-     0.018,
+     18000.0,
      0.6
     ],
     [
-     0.019,
+     19000.0,
      0.57
     ],
     [
-     0.02,
+     20000.0,
      0.54
     ]
    ],
@@ -8806,6 +8922,15 @@
     ]
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -8834,7 +8959,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 200.0,
     "y": 0.005600000000000001
    },
    "set": "wer21:cmp:fig12",
@@ -8859,23 +8984,23 @@
     "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "m",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "",
+    "how": "symbol 'Depth' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "",
+    "how": "symbol 'Coverage' of this paper",
     "unit_reason": ""
    },
    "points": [
@@ -8884,83 +9009,83 @@
      1.1
     ],
     [
-     0.001,
+     1000.0000000000001,
      1.05
     ],
     [
-     0.002,
+     2000.0000000000002,
      1.01
     ],
     [
-     0.003,
+     3000.0,
      0.98
     ],
     [
-     0.004,
+     4000.0000000000005,
      0.97
     ],
     [
-     0.005,
+     5000.0,
      0.95
     ],
     [
-     0.006,
+     6000.0,
      0.94
     ],
     [
-     0.007,
+     7000.000000000001,
      0.92
     ],
     [
-     0.008,
+     8000.000000000001,
      0.88
     ],
     [
-     0.009,
+     9000.0,
      0.86
     ],
     [
-     0.01,
+     10000.0,
      0.84
     ],
     [
-     0.011,
+     11000.0,
      0.8
     ],
     [
-     0.012,
+     12000.0,
      0.76
     ],
     [
-     0.013,
+     13000.0,
      0.71
     ],
     [
-     0.014,
+     14000.000000000002,
      0.67
     ],
     [
-     0.015,
+     15000.0,
      0.63
     ],
     [
-     0.016,
+     16000.000000000002,
      0.59
     ],
     [
-     0.017,
+     17000.000000000004,
      0.55
     ],
     [
-     0.018,
+     18000.0,
      0.52
     ],
     [
-     0.019,
+     19000.0,
      0.49
     ],
     [
-     0.02,
+     20000.0,
      0.47
     ]
    ],
@@ -9051,6 +9176,15 @@
     ]
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -9079,7 +9213,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 200.0,
     "y": 0.006300000000000001
    },
    "set": "wer21:cmp:fig12",
@@ -9100,49 +9234,49 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "plasma_power",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "",
+    "how": "symbol 'Power' of this paper",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mbar",
+    "quantity": "partial_pressure",
+    "unit": "Pa",
     "transform": "",
     "label_raw": "p_O (mbar)",
     "unit_raw": "mbar",
     "key": "p_O",
-    "how": "",
+    "how": "symbol 'p_O' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
      50.0,
-     1.31e-05
+     0.00131
     ],
     [
      75.0,
-     2.72e-05
+     0.00272
     ],
     [
      75.0,
-     3.54e-05
+     0.00354
     ],
     [
      125.0,
-     5.78e-05
+     0.00578
     ],
     [
      150.0,
-     6.67e-05
+     0.00667
     ],
     [
      200.0,
-     8.04e-05
+     0.00804
     ]
    ],
    "points_raw": [
@@ -9192,8 +9326,8 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 6.730000000000001e-07,
+    "x": 1.5,
+    "y": 6.73e-05,
     "note": "figure-stage flags: F3"
    },
    "set": "",
@@ -9225,35 +9359,35 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "mbar",
+    "quantity": "partial_pressure",
+    "unit": "Pa",
     "transform": "",
     "label_raw": "p_O (mbar)",
     "unit_raw": "mbar",
     "key": "p_O",
-    "how": "",
+    "how": "symbol 'p_O' of this paper",
     "unit_reason": ""
    },
    "points": [
     [
      0.055999999999999994,
-     5.77e-05
+     0.00577
     ],
     [
      0.096,
-     6.1e-05
+     0.0060999999999999995
     ],
     [
      0.52,
-     6e-05
+     0.006
     ],
     [
      0.91,
-     6.8e-05
+     0.0068
     ],
     [
      1.0999999999999999,
-     6.93e-05
+     0.00693
     ]
    ],
    "points_raw": [
@@ -9278,7 +9412,17 @@
      6.93e-05
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    }
+   },
    "conditions_raw": {
     "power": "150 W"
    },
@@ -9287,7 +9431,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 0.010439999999999998,
-    "y": 1.1600000000000005e-07
+    "y": 1.1600000000000004e-05
    },
    "set": "",
    "provenance": {
@@ -9924,8 +10068,8 @@
    "id": "wer21:cmp:fig11",
    "figure": "11",
    "panel": "",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "plasma_power;pulse_time",
    "varied_raw": "power and pulse time",
    "members": [
     "wer21:fig11#c1",
@@ -9946,7 +10090,7 @@
      "unit": "Pa"
     }
    },
-   "label": "Fig. 11 replicates (power and pulse time)"
+   "label": "Fig. 11 series (power and pulse time)"
   },
   {
    "id": "wer21:cmp:fig12",
@@ -9963,6 +10107,15 @@
     "wer21:fig12#c5"
    ],
    "conditions": {
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W"
+    },
     "pulse_time": {
      "key_raw": "pulse time",
      "raw": "5 s",
@@ -9976,7 +10129,352 @@
    "label": "Fig. 12 series (pressure)"
   }
  ],
- "derived": [],
+ "derived": [
+  {
+   "id": "wer21:fig11#d1_1",
+   "source": "wer21:fig11#c1",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 1.005,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "50 W - 15s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "50 W - 15s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 15.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d1_2",
+   "source": "wer21:fig11#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 13735.714285714288,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "50 W - 15s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "50 W - 15s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 15.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d2_1",
+   "source": "wer21:fig11#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9916666666666667,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 5s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "75 W - 5s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d2_2",
+   "source": "wer21:fig11#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 12359.722222222223,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 5s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "75 W - 5s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d3_1",
+   "source": "wer21:fig11#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 1.0214285714285716,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 10s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "75 W - 10s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d3_2",
+   "source": "wer21:fig11#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 19582.142857142855,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "75 W - 10s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 75.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "75 W - 10s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d5_1",
+   "source": "wer21:fig11#c5",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 1.032,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W - 4s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "150 W - 4s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  },
+  {
+   "id": "wer21:fig11#d5_2",
+   "source": "wer21:fig11#c5",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 18515.0,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "plasma_power": {
+     "key_raw": "power",
+     "raw": "150 W - 4s",
+     "quantity": "plasma_power",
+     "role": "condition",
+     "value": 150.0,
+     "value_max": null,
+     "unit": "W",
+     "from_series_label": true
+    },
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "150 W - 4s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "s",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": ""
+  }
+ ],
  "report": {
   "inventory": 23,
   "data_panels": 15,
@@ -9984,7 +10482,7 @@
   "converted": 0,
   "curves": 43,
   "peaks": 16,
-  "derived": 0,
-  "labels_other": 34
+  "derived": 8,
+  "labels_other": 13
  }
 }

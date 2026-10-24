@@ -3,7 +3,7 @@
  "key": "gor03",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T09:16:58",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "gor03:fig1",
@@ -22,7 +22,8 @@
    "panel_type": "plot",
    "content": "Predicted exposure needed for holes with aspect ratios from 1 to 2000",
    "quantities": [
-    "aspect_ratio"
+    "aspect_ratio",
+    "exposure"
    ],
    "flags": [
     "F4"
@@ -48,8 +49,8 @@
      "label_raw": "log(Exposure, in Langmuirs)",
      "key": "Exposure, in Langmuirs",
      "unit": "Langmuirs",
-     "quantity": "other",
-     "how": "",
+     "quantity": "exposure",
+     "how": "alias 'Exposure, in Langmuirs'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -100,75 +101,75 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "Langmuirs",
+    "quantity": "exposure",
+    "unit": "Pa·s",
     "transform": "log",
     "label_raw": "log(Exposure, in Langmuirs)",
     "unit_raw": "Langmuirs",
     "key": "Exposure, in Langmuirs",
-    "how": "",
+    "how": "alias 'Exposure, in Langmuirs'",
     "unit_reason": ""
    },
    "points": [
     [
      1.0,
-     22.3872113856834
+     0.0029847077963620827
     ],
     [
      1.7782794100389228,
-     41.68693834703355
+     0.0055577859943032075
     ],
     [
      3.1622776601683795,
-     89.12509381337455
+     0.011882335757386722
     ],
     [
      5.623413251903491,
-     223.872113856834
+     0.029847077963620825
     ],
     [
      10.0,
-     630.957344480193
+     0.0841204950807883
     ],
     [
      17.78279410038923,
-     1778.2794100389228
+     0.2370837675052093
     ],
     [
      31.622776601683793,
-     5248.074602497728
+     0.6996838021542021
     ],
     [
      56.23413251903491,
-     15848.93192461114
+     2.113011302053007
     ],
     [
      100.0,
-     50118.72336272725
+     6.681928436165523
     ],
     [
      177.82794100389228,
-     158489.3192461114
+     21.130113020530068
     ],
     [
      316.22776601683796,
-     501187.2336272725
+     66.81928436165522
     ],
     [
      562.341325190349,
-     1584893.1924611141
+     211.30113020530067
     ],
     [
      1000.0,
-     5011872.336272725
+     668.1928436165523
     ],
     [
      1412.537544622754,
-     10000000.0
+     1333.22
     ],
     [
      1995.2623149688789,
-     19952623.149688788
+     2660.123623562809
     ]
    ],
    "points_raw": [
@@ -242,7 +243,7 @@
    "uncertainty": {
     "basis": "digitized",
     "x": 19.94262314968879,
-    "y": 199526.007624774
+    "y": 26.60120638855013
    },
    "set": "",
    "provenance": {
@@ -263,6 +264,6 @@
   "converted": 0,
   "curves": 1,
   "derived": 0,
-  "labels_other": 1
+  "labels_other": 0
  }
 }

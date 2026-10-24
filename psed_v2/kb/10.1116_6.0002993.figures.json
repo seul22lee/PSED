@@ -3,7 +3,7 @@
  "key": "mat23",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T10:03:01",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "mat23:fig1a",
@@ -53,6 +53,7 @@
    "panel_type": "plot",
    "content": "Film thickness vs ALD cycle number for PE-ALD and thermal ALD at 125 and 225 °C",
    "quantities": [
+    "cycle_number",
     "film_thickness"
    ],
    "flags": [],
@@ -65,8 +66,8 @@
      "label_raw": "#ALD cycle",
      "key": "#ALD cycle",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "cycle_number",
+     "how": "alias '#ALD cycle'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -200,6 +201,7 @@
    "panel_type": "spectrum",
    "content": "Azimuthally integrated XRD patterns of Ga2S3 and GaSx films deposited at 150 °C",
    "quantities": [
+    "diffraction_angle",
     "signal_intensity"
    ],
    "flags": [],
@@ -212,8 +214,8 @@
      "label_raw": "2θ(°)",
      "key": "2θ",
      "unit": "°",
-     "quantity": "other",
-     "how": "",
+     "quantity": "diffraction_angle",
+     "how": "symbol '2θ' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -312,7 +314,8 @@
    "panel_type": "spectrum",
    "content": "Ga 2p spectra of gallium sulfide films deposited by thermal ALD and PE-ALD at 150 °C",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -338,8 +341,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -366,7 +369,8 @@
    "panel_type": "spectrum",
    "content": "S 2s spectra of gallium sulfide films deposited by thermal ALD and PE-ALD at 150 °C",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -392,8 +396,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -420,7 +424,8 @@
    "panel_type": "spectrum",
    "content": "C 1s spectra of the PE-ALD film on the surface and after argon sputtering",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -446,8 +451,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -474,7 +479,8 @@
    "panel_type": "spectrum",
    "content": "O 1s spectra of the PE-ALD film on the surface and after argon sputtering",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -500,8 +506,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -528,7 +534,8 @@
    "panel_type": "spectrum",
    "content": "C 1s spectra of the thermal ALD film on the surface and after argon sputtering",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -554,8 +561,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -582,7 +589,8 @@
    "panel_type": "spectrum",
    "content": "O 1s spectra of the thermal ALD film on the surface and after argon sputtering",
    "quantities": [
-    "binding_energy"
+    "binding_energy",
+    "signal_intensity"
    ],
    "flags": [],
    "status": "imported",
@@ -608,8 +616,8 @@
      "label_raw": "Counts per second (a.u.)",
      "key": "Counts per second",
      "unit": "a.u.",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Counts per second'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -732,8 +740,8 @@
      "label_raw": "ALD process",
      "key": "ALD process",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "process_mode",
+     "how": "alias 'ALD process'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -927,13 +935,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "cycle_number",
+    "unit": "cycle",
     "transform": "",
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "",
+    "how": "alias '#ALD cycle'",
     "unit_reason": ""
    },
    "y": {
@@ -1036,7 +1044,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.5,
     "y": 0.258
    },
    "set": "mat23:cmp:fig1b",
@@ -1058,13 +1066,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "cycle_number",
+    "unit": "cycle",
     "transform": "",
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "",
+    "how": "alias '#ALD cycle'",
     "unit_reason": ""
    },
    "y": {
@@ -1167,7 +1175,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.5,
     "y": 0.23399999999999999
    },
    "set": "mat23:cmp:fig1b",
@@ -1189,13 +1197,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "cycle_number",
+    "unit": "cycle",
     "transform": "",
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "",
+    "how": "alias '#ALD cycle'",
     "unit_reason": ""
    },
    "y": {
@@ -1298,7 +1306,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.5,
     "y": 0.14300000000000002
    },
    "set": "mat23:cmp:fig1b",
@@ -1320,13 +1328,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "cycle_number",
+    "unit": "cycle",
     "transform": "",
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "",
+    "how": "alias '#ALD cycle'",
     "unit_reason": ""
    },
    "y": {
@@ -1429,7 +1437,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 1.5,
     "y": 0.07500000000000001
    },
    "set": "mat23:cmp:fig1b",
@@ -1988,7 +1996,7 @@
    "figure": "2",
    "panel": "d",
    "kind": "peak",
-   "quantity": "other",
+   "quantity": "diffraction_angle",
    "value": 29.1,
    "value_raw": 29.1,
    "unit": "°",
@@ -2021,8 +2029,8 @@
    "figure": "2",
    "panel": "d",
    "kind": "peak",
-   "quantity": "other",
-   "value": 29.7,
+   "quantity": "diffraction_angle",
+   "value": 29.699999999999996,
    "value_raw": 29.7,
    "unit": "°",
    "label": "(111)",
@@ -2054,7 +2062,7 @@
    "figure": "2",
    "panel": "d",
    "kind": "peak",
-   "quantity": "other",
+   "quantity": "diffraction_angle",
    "value": 49.7,
    "value_raw": 49.7,
    "unit": "°",
@@ -2087,8 +2095,8 @@
    "figure": "2",
    "panel": "d",
    "kind": "peak",
-   "quantity": "other",
-   "value": 58.8,
+   "quantity": "diffraction_angle",
+   "value": 58.79999999999999,
    "value_raw": 58.8,
    "unit": "°",
    "label": "(311)",
@@ -2165,8 +2173,8 @@
    "id": "mat23:cmp:fig4b",
    "figure": "4",
    "panel": "b",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "process_mode",
    "varied_raw": "ALD process",
    "members": [
     "mat23:fig4b#c1",
@@ -2183,10 +2191,67 @@
      "unit": "°C"
     }
    },
-   "label": "Fig. 4b replicates (ALD process)"
+   "label": "Fig. 4b series (ALD process)"
   }
  ],
- "derived": [],
+ "derived": [
+  {
+   "id": "mat23:fig1b#d1_1",
+   "source": "mat23:fig1b#c1",
+   "quantity": "growth_per_cycle",
+   "qualifiers": "",
+   "value": 0.1685587761674718,
+   "unit": "nm/cycle",
+   "method": "linear_slope",
+   "rule": "P86: linear slope of film thickness against cycle number (R² 0.999 ≥ 0.98, 10 points)",
+   "r2": 0.9988827262427793,
+   "conditions": {},
+   "figure": "1",
+   "panel": "b"
+  },
+  {
+   "id": "mat23:fig1b#d2_1",
+   "source": "mat23:fig1b#c2",
+   "quantity": "growth_per_cycle",
+   "qualifiers": "",
+   "value": 0.1560547504025765,
+   "unit": "nm/cycle",
+   "method": "linear_slope",
+   "rule": "P86: linear slope of film thickness against cycle number (R² 1.000 ≥ 0.98, 10 points)",
+   "r2": 0.999680453032019,
+   "conditions": {},
+   "figure": "1",
+   "panel": "b"
+  },
+  {
+   "id": "mat23:fig1b#d3_1",
+   "source": "mat23:fig1b#c3",
+   "quantity": "growth_per_cycle",
+   "qualifiers": "",
+   "value": 0.0950402576489533,
+   "unit": "nm/cycle",
+   "method": "linear_slope",
+   "rule": "P86: linear slope of film thickness against cycle number (R² 1.000 ≥ 0.98, 10 points)",
+   "r2": 0.9999778953972304,
+   "conditions": {},
+   "figure": "1",
+   "panel": "b"
+  },
+  {
+   "id": "mat23:fig1b#d4_1",
+   "source": "mat23:fig1b#c4",
+   "quantity": "growth_per_cycle",
+   "qualifiers": "",
+   "value": 0.049927536231884076,
+   "unit": "nm/cycle",
+   "method": "linear_slope",
+   "rule": "P86: linear slope of film thickness against cycle number (R² 1.000 ≥ 0.98, 10 points)",
+   "r2": 0.9997437747801377,
+   "conditions": {},
+   "figure": "1",
+   "panel": "b"
+  }
+ ],
  "report": {
   "inventory": 21,
   "data_panels": 12,
@@ -2194,7 +2259,7 @@
   "converted": 0,
   "curves": 10,
   "peaks": 4,
-  "derived": 0,
-  "labels_other": 14
+  "derived": 4,
+  "labels_other": 5
  }
 }

@@ -3,7 +3,7 @@
  "key": "ela03",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T09:16:58",
+ "imported_at": "2026-10-24T11:17:29",
  "inventory": [
   {
    "id": "ela03:fig1",
@@ -112,7 +112,8 @@
    "panel_type": "plot",
    "content": "Relative ZnO coverage measured by EPMA line scan versus distance for various exposure times",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [],
    "status": "imported",
@@ -136,8 +137,8 @@
      "label_raw": "Relative ZnO Coverage",
      "key": "Relative ZnO Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative ZnO Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -160,8 +161,8 @@
      "label_raw": "Exposure Times (s)",
      "key": "Exposure Times",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Exposure Times'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -175,7 +176,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Normalized integrated ZnO coverage versus exposure time showing t^(1/2) dependence",
-   "quantities": [],
+   "quantities": [
+    "pulse_time"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -186,8 +189,8 @@
      "label_raw": "Exposure Time (s)",
      "key": "Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -226,7 +229,8 @@
    "panel_type": "plot",
    "content": "Relative ZnO coverage profiles measured by EPMA line scan for different pore diameters",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [
     "F2"
@@ -252,8 +256,8 @@
      "label_raw": "Relative ZnO Coverage",
      "key": "Relative ZnO Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative ZnO Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -264,8 +268,8 @@
      "label_raw": "exposure time",
      "key": "exposure time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -276,8 +280,8 @@
      "label_raw": "Pore Diameter (nm)",
      "key": "Pore Diameter",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "alias 'Pore Diameter'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -291,7 +295,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Normalized integrated ZnO coverage as a function of pore diameter",
-   "quantities": [],
+   "quantities": [
+    "feature_width"
+   ],
    "flags": [
     "F2"
    ],
@@ -304,8 +310,8 @@
      "label_raw": "Pore Diameter (nm)",
      "key": "Pore Diameter",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "alias 'Pore Diameter'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -328,8 +334,8 @@
      "label_raw": "exposure time",
      "key": "exposure time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -356,7 +362,8 @@
    "panel_type": "plot",
    "content": "Relative ZnO coverage as a function of distance along the nanopores",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [
     "F2"
@@ -382,8 +389,8 @@
      "label_raw": "Relative ZnO Coverage",
      "key": "Relative ZnO Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative ZnO Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -409,7 +416,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Loss in hydroxyl feature during Al2O3 ALD versus TMA exposure time",
-   "quantities": [],
+   "quantities": [
+    "pulse_time",
+    "signal_intensity"
+   ],
    "flags": [
     "F2"
    ],
@@ -422,8 +432,8 @@
      "label_raw": "TMA Exposure Time (s)",
      "key": "TMA Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'TMA Exposure Time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -434,8 +444,8 @@
      "label_raw": "Loss in Hydroxyl Feature (AU)",
      "key": "Loss in Hydroxyl Feature",
      "unit": "AU",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Loss in Hydroxyl Feature'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -446,8 +456,8 @@
      "label_raw": "TMA Pressure",
      "key": "TMA Pressure",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "alias 'TMA Pressure'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -461,7 +471,10 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Loss in hydroxyl feature during SiO2 ALD versus SiCl4 exposure time",
-   "quantities": [],
+   "quantities": [
+    "pulse_time",
+    "signal_intensity"
+   ],
    "flags": [
     "F2"
    ],
@@ -474,8 +487,8 @@
      "label_raw": "SiCl4 Exposure Time (s)",
      "key": "SiCl4 Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'SiCl4 Exposure Time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -486,8 +499,8 @@
      "label_raw": "Loss in Hydroxyl Feature (AU)",
      "key": "Loss in Hydroxyl Feature",
      "unit": "AU",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Loss in Hydroxyl Feature'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -498,8 +511,8 @@
      "label_raw": "SiCl4 Pressure",
      "key": "SiCl4 Pressure",
      "unit": "Torr",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "alias 'SiCl4 Pressure'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -514,7 +527,8 @@
    "panel_type": "plot",
    "content": "Simulated Al2O3 coverage profiles versus distance into nanopore",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [],
    "status": "imported",
@@ -538,8 +552,8 @@
      "label_raw": "Relative Al_2O_3 Coverage",
      "key": "Relative Al_2O_3 Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative Al_2O_3 Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -550,8 +564,8 @@
      "label_raw": "Exposure Times (s)",
      "key": "Exposure Times",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Exposure Times'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -565,7 +579,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Normalized integrated Al2O3 coverages for various exposure times",
-   "quantities": [],
+   "quantities": [
+    "pulse_time"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -576,8 +592,8 @@
      "label_raw": "Exposure Time (s)",
      "key": "Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -604,7 +620,8 @@
    "panel_type": "plot",
    "content": "Simulated ZnO coverage profiles versus distance into nanopore for different exposure times",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [],
    "status": "imported",
@@ -628,8 +645,8 @@
      "label_raw": "Relative ZnO Coverage",
      "key": "Relative ZnO Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative ZnO Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -640,8 +657,8 @@
      "label_raw": "Exposure Times (s)",
      "key": "Exposure Times",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Exposure Times'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -655,7 +672,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Normalized integrated ZnO coverage versus exposure time showing t^1/2 dependence",
-   "quantities": [],
+   "quantities": [
+    "pulse_time"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -666,8 +685,8 @@
      "label_raw": "Exposure Time (s)",
      "key": "Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -694,7 +713,8 @@
    "panel_type": "plot",
    "content": "Simulated relative ZnO coverage profiles versus distance into nanopore for different pore diameters",
    "quantities": [
-    "distance"
+    "distance",
+    "normalized_thickness"
    ],
    "flags": [],
    "status": "imported",
@@ -718,8 +738,8 @@
      "label_raw": "Relative ZnO Coverage",
      "key": "Relative ZnO Coverage",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "normalized_thickness",
+     "how": "alias 'Relative ZnO Coverage'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -730,8 +750,8 @@
      "label_raw": "DEZ exposure time",
      "key": "DEZ exposure time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'DEZ exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -742,8 +762,8 @@
      "label_raw": "Exposure Times (s)",
      "key": "Exposure Times",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Exposure Times'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -757,7 +777,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Normalized integrated ZnO coverage as a function of pore diameter",
-   "quantities": [],
+   "quantities": [
+    "feature_width"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -768,8 +790,8 @@
      "label_raw": "Pore Diameter (nm)",
      "key": "Pore Diameter",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "alias 'Pore Diameter'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -792,8 +814,8 @@
      "label_raw": "DEZ exposure time",
      "key": "DEZ exposure time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'DEZ exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -807,7 +829,9 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Simulated normalized integrated coverage versus exposure time under diffusion-limited conditions",
-   "quantities": [],
+   "quantities": [
+    "pulse_time"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -818,8 +842,8 @@
      "label_raw": "Exposure Time (s)",
      "key": "Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -842,8 +866,8 @@
      "label_raw": "d",
      "key": "d",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "symbol 'd' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -866,8 +890,8 @@
      "label_raw": "S",
      "key": "S",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "initial_sticking_coefficient",
+     "how": "symbol 'S' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -893,7 +917,9 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Simulated normalized integrated coverage versus exposure time under reaction-limited conditions",
-   "quantities": [],
+   "quantities": [
+    "pulse_time"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -904,8 +930,8 @@
      "label_raw": "Exposure Time (s)",
      "key": "Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'exposure time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -928,8 +954,8 @@
      "label_raw": "d",
      "key": "d",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_width",
+     "how": "symbol 'd' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -952,8 +978,8 @@
      "label_raw": "S",
      "key": "S",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "initial_sticking_coefficient",
+     "how": "symbol 'S' of this paper",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -979,7 +1005,10 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Predicted minimum exposure times versus aspect ratio for ZnO ALD at various DEZ pressures",
-   "quantities": [],
+   "quantities": [
+    "aspect_ratio",
+    "pulse_time"
+   ],
    "flags": [
     "F4"
    ],
@@ -992,8 +1021,8 @@
      "label_raw": "Aspect Ratio (L/D)",
      "key": "Aspect Ratio (L/D)",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "aspect_ratio",
+     "how": "alias 'Aspect Ratio (L/D)'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1004,8 +1033,8 @@
      "label_raw": "Minimum Exposure Time (s)",
      "key": "Minimum Exposure Time",
      "unit": "s",
-     "quantity": "other",
-     "how": "",
+     "quantity": "pulse_time",
+     "how": "alias 'Minimum Exposure Time'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1016,8 +1045,8 @@
      "label_raw": "DEZ Pressure",
      "key": "DEZ Pressure",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "alias 'DEZ Pressure'",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1033,8 +1062,12 @@
    "panel": "a",
    "series": {
     "label_raw": "1",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 1.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -1047,13 +1080,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -1277,6 +1310,16 @@
      "value": 64.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1304,8 +1347,12 @@
    "panel": "a",
    "series": {
     "label_raw": "3",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 3.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -1318,13 +1365,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -1548,6 +1595,16 @@
      "value": 64.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1575,8 +1632,12 @@
    "panel": "a",
    "series": {
     "label_raw": "10",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -1589,13 +1650,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -1803,6 +1864,16 @@
      "value": 64.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -1830,8 +1901,12 @@
    "panel": "a",
    "series": {
     "label_raw": "30",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 30.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -1844,13 +1919,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -2074,6 +2149,16 @@
      "value": 64.0,
      "value_max": null,
      "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "30",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 30.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
     }
    },
    "conditions_raw": {
@@ -2104,13 +2189,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -2177,7 +2262,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.1,
     "y": 0.0072499999999999995
    },
    "set": "",
@@ -2195,8 +2280,12 @@
    "panel": "a",
    "series": {
     "label_raw": "19",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 19.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -2209,13 +2298,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -2406,7 +2495,27 @@
      0.02
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "19",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 19.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "exposure time": "5 s"
    },
@@ -2434,8 +2543,12 @@
    "panel": "a",
    "series": {
     "label_raw": "46",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 46.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -2448,13 +2561,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -2653,7 +2766,27 @@
      0.03
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "46",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "exposure time": "5 s"
    },
@@ -2681,8 +2814,12 @@
    "panel": "a",
    "series": {
     "label_raw": "65",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 65.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -2695,13 +2832,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -2900,7 +3037,27 @@
      0.2
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "65",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "exposure time": "5 s"
    },
@@ -2931,13 +3088,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "feature_width",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Pore Diameter (nm)",
     "unit_raw": "nm",
     "key": "Pore Diameter",
-    "how": "",
+    "how": "alias 'Pore Diameter'",
     "unit_reason": ""
    },
    "y": {
@@ -2956,15 +3113,15 @@
      0.0
     ],
     [
-     19.0,
+     0.019000000000000003,
      0.18
     ],
     [
-     46.0,
+     0.046000000000000006,
      0.44
     ],
     [
-     65.0,
+     0.065,
      0.68
     ]
    ],
@@ -2986,7 +3143,17 @@
      0.68
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    }
+   },
    "conditions_raw": {
     "exposure time": "5 s"
    },
@@ -2996,7 +3163,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0006500000000000001,
     "y": 0.0068000000000000005
    },
    "set": "",
@@ -3027,13 +3194,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -3353,23 +3520,23 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "TMA Exposure Time (s)",
     "unit_raw": "s",
     "key": "TMA Exposure Time",
-    "how": "",
+    "how": "alias 'TMA Exposure Time'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "AU",
+    "quantity": "signal_intensity",
+    "unit": "",
     "transform": "",
     "label_raw": "Loss in Hydroxyl Feature (AU)",
     "unit_raw": "AU",
     "key": "Loss in Hydroxyl Feature",
-    "how": "",
+    "how": "alias 'Loss in Hydroxyl Feature'",
     "unit_reason": ""
    },
    "points": [
@@ -3536,7 +3703,17 @@
      0.416
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "partial_pressure": {
+     "key_raw": "TMA Pressure",
+     "raw": "10^-3 Torr",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 0.133322,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
    "conditions_raw": {
     "TMA Pressure": "10^-3 Torr"
    },
@@ -3546,7 +3723,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 51.7,
     "y": 0.00413
    },
    "set": "",
@@ -3567,23 +3744,23 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "SiCl4 Exposure Time (s)",
     "unit_raw": "s",
     "key": "SiCl4 Exposure Time",
-    "how": "",
+    "how": "alias 'SiCl4 Exposure Time'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "AU",
+    "quantity": "signal_intensity",
+    "unit": "",
     "transform": "",
     "label_raw": "Loss in Hydroxyl Feature (AU)",
     "unit_raw": "AU",
     "key": "Loss in Hydroxyl Feature",
-    "how": "",
+    "how": "alias 'Loss in Hydroxyl Feature'",
     "unit_reason": ""
    },
    "points": [
@@ -3686,7 +3863,17 @@
      0.5
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "partial_pressure": {
+     "key_raw": "SiCl4 Pressure",
+     "raw": "1 Torr",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 133.322,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
    "conditions_raw": {
     "SiCl4 Pressure": "1 Torr"
    },
@@ -3696,7 +3883,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 10.0,
     "y": 0.005
    },
    "set": "",
@@ -3714,8 +3901,12 @@
    "panel": "a",
    "series": {
     "label_raw": "1",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 1.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -3728,13 +3919,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative Al_2O_3 Coverage",
     "unit_raw": "",
     "key": "Relative Al_2O_3 Coverage",
-    "how": "",
+    "how": "alias 'Relative Al_2O_3 Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -3941,7 +4132,18 @@
      0.08
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -3965,8 +4167,12 @@
    "panel": "a",
    "series": {
     "label_raw": "3",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 3.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -3979,13 +4185,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative Al_2O_3 Coverage",
     "unit_raw": "",
     "key": "Relative Al_2O_3 Coverage",
-    "how": "",
+    "how": "alias 'Relative Al_2O_3 Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -4192,7 +4398,18 @@
      0.94
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -4216,8 +4433,12 @@
    "panel": "a",
    "series": {
     "label_raw": "10",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -4230,13 +4451,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative Al_2O_3 Coverage",
     "unit_raw": "",
     "key": "Relative Al_2O_3 Coverage",
-    "how": "",
+    "how": "alias 'Relative Al_2O_3 Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -4443,7 +4664,18 @@
      1.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -4470,13 +4702,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -4531,7 +4763,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.1,
     "y": 0.01
    },
    "set": "",
@@ -4549,8 +4781,12 @@
    "panel": "a",
    "series": {
     "label_raw": "1",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 1.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -4563,13 +4799,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -4776,7 +5012,18 @@
      0.02
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -4800,8 +5047,12 @@
    "panel": "a",
    "series": {
     "label_raw": "3",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 3.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -4814,13 +5065,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -5019,7 +5270,18 @@
      0.01
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -5043,8 +5305,12 @@
    "panel": "a",
    "series": {
     "label_raw": "10",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -5057,13 +5323,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -5206,7 +5472,18 @@
      0.32
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -5230,8 +5507,12 @@
    "panel": "a",
    "series": {
     "label_raw": "30",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 30.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -5244,13 +5525,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -5401,7 +5682,18 @@
      1.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "30",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 30.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "simulated",
@@ -5429,13 +5721,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -5490,7 +5782,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.1,
     "y": 0.0088
    },
    "set": "",
@@ -5512,13 +5804,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -5661,7 +5953,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.1,
     "y": 0.0088
    },
    "set": "",
@@ -5679,8 +5971,12 @@
    "panel": "a",
    "series": {
     "label_raw": "19",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 19.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -5693,13 +5989,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -5906,7 +6202,18 @@
      0.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "19",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 19.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "DEZ exposure time": "5 s"
    },
@@ -5932,8 +6239,12 @@
    "panel": "a",
    "series": {
     "label_raw": "46",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 46.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -5946,13 +6257,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -6159,7 +6470,18 @@
      0.07
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "46",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "DEZ exposure time": "5 s"
    },
@@ -6185,8 +6507,12 @@
    "panel": "a",
    "series": {
     "label_raw": "65",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "pulse_time",
+    "value": 65.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
    },
    "x": {
     "quantity": "distance",
@@ -6199,13 +6525,13 @@
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "normalized_thickness",
+    "unit": "1",
     "transform": "",
     "label_raw": "Relative ZnO Coverage",
     "unit_raw": "",
     "key": "Relative ZnO Coverage",
-    "how": "",
+    "how": "alias 'Relative ZnO Coverage'",
     "unit_reason": ""
    },
    "points": [
@@ -6412,7 +6738,18 @@
      0.03
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "65",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {
     "DEZ exposure time": "5 s"
    },
@@ -6441,13 +6778,13 @@
     "cls": "empty"
    },
    "x": {
-    "quantity": "other",
-    "unit": "nm",
+    "quantity": "feature_width",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Pore Diameter (nm)",
     "unit_raw": "nm",
     "key": "Pore Diameter",
-    "how": "",
+    "how": "alias 'Pore Diameter'",
     "unit_reason": ""
    },
    "y": {
@@ -6466,15 +6803,15 @@
      0.0
     ],
     [
-     19.0,
+     0.019000000000000003,
      0.19
     ],
     [
-     45.0,
+     0.045000000000000005,
      0.46
     ],
     [
-     65.0,
+     0.065,
      0.64
     ]
    ],
@@ -6496,7 +6833,17 @@
      0.64
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "DEZ exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    }
+   },
    "conditions_raw": {
     "DEZ exposure time": "5 s"
    },
@@ -6504,7 +6851,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.0006500000000000001,
     "y": 0.0064
    },
    "set": "",
@@ -6526,13 +6873,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -6669,7 +7016,26 @@
      0.612
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "d",
+     "raw": "65 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.065,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "S",
+     "raw": "7 × 10^{-3}",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.007,
+     "value_max": null,
+     "unit": "1"
+    }
+   },
    "conditions_raw": {
     "d": "65 nm",
     "L": "50 µm",
@@ -6680,7 +7046,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.048,
     "y": 0.0061200000000000004
    },
    "set": "",
@@ -6702,13 +7068,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -6821,7 +7187,26 @@
      0.589
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "d",
+     "raw": "65 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.065,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "S",
+     "raw": "7 × 10^{-3}",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.007,
+     "value_max": null,
+     "unit": "1"
+    }
+   },
    "conditions_raw": {
     "d": "65 nm",
     "L": "50 µm",
@@ -6832,7 +7217,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.0475,
     "y": 0.00501
    },
    "set": "",
@@ -6854,13 +7239,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -6965,7 +7350,26 @@
      0.544
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "d",
+     "raw": "65 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.065,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "S",
+     "raw": "1 × 10^{-4}",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.0001,
+     "value_max": null,
+     "unit": "1"
+    }
+   },
    "conditions_raw": {
     "d": "65 nm",
     "L": "0.5 µm",
@@ -6976,7 +7380,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.01,
     "y": 0.00544
    },
    "set": "",
@@ -6998,13 +7402,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Exposure Time (s)",
     "unit_raw": "s",
     "key": "Exposure Time",
-    "how": "",
+    "how": "alias 'exposure time'",
     "unit_reason": ""
    },
    "y": {
@@ -7069,7 +7473,26 @@
      0.567
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "d",
+     "raw": "65 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.065,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "S",
+     "raw": "1 × 10^{-4}",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.0001,
+     "value_max": null,
+     "unit": "1"
+    }
+   },
    "conditions_raw": {
     "d": "65 nm",
     "L": "0.5 µm",
@@ -7080,7 +7503,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.01,
     "y": 0.005429999999999999
    },
    "set": "",
@@ -7102,23 +7525,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "Aspect Ratio (L/D)",
     "unit_raw": "",
     "key": "Aspect Ratio (L/D)",
-    "how": "",
+    "how": "alias 'Aspect Ratio (L/D)'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Minimum Exposure Time (s)",
     "unit_raw": "s",
     "key": "Minimum Exposure Time",
-    "how": "",
+    "how": "alias 'Minimum Exposure Time'",
     "unit_reason": ""
    },
    "points": [
@@ -7189,7 +7612,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 62.2,
     "y": 99.97500000000001
    },
    "set": "ela03:cmp:fig13",
@@ -7207,27 +7630,30 @@
    "panel": "",
    "series": {
     "label_raw": "0.1 Torr",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "partial_pressure",
+    "value": 13.3322,
+    "value_max": null,
+    "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "Aspect Ratio (L/D)",
     "unit_raw": "",
     "key": "Aspect Ratio (L/D)",
-    "how": "",
+    "how": "alias 'Aspect Ratio (L/D)'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Minimum Exposure Time (s)",
     "unit_raw": "s",
     "key": "Minimum Exposure Time",
-    "how": "",
+    "how": "alias 'Minimum Exposure Time'",
     "unit_reason": ""
    },
    "points": [
@@ -7298,7 +7724,18 @@
      10000.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "partial_pressure": {
+     "key_raw": "DEZ Pressure",
+     "raw": "0.1 Torr",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 13.3322,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [
     "F4"
@@ -7306,7 +7743,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 199.0,
     "y": 99.9975
    },
    "set": "ela03:cmp:fig13",
@@ -7324,27 +7761,30 @@
    "panel": "",
    "series": {
     "label_raw": "1.0 Torr",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "partial_pressure",
+    "value": 133.322,
+    "value_max": null,
+    "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "Aspect Ratio (L/D)",
     "unit_raw": "",
     "key": "Aspect Ratio (L/D)",
-    "how": "",
+    "how": "alias 'Aspect Ratio (L/D)'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Minimum Exposure Time (s)",
     "unit_raw": "s",
     "key": "Minimum Exposure Time",
-    "how": "",
+    "how": "alias 'Minimum Exposure Time'",
     "unit_reason": ""
    },
    "points": [
@@ -7423,7 +7863,18 @@
      10000.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "partial_pressure": {
+     "key_raw": "DEZ Pressure",
+     "raw": "1.0 Torr",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 133.322,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [
     "F4"
@@ -7431,7 +7882,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 630.0,
     "y": 99.999
    },
    "set": "ela03:cmp:fig13",
@@ -7449,27 +7900,30 @@
    "panel": "",
    "series": {
     "label_raw": "10 Torr",
-    "cls": "replicate",
-    "series_structure": "replicate"
+    "cls": "numeric",
+    "quantity": "partial_pressure",
+    "value": 1333.22,
+    "value_max": null,
+    "unit": "Pa"
    },
    "x": {
-    "quantity": "other",
-    "unit": "",
+    "quantity": "aspect_ratio",
+    "unit": "1",
     "transform": "",
     "label_raw": "Aspect Ratio (L/D)",
     "unit_raw": "",
     "key": "Aspect Ratio (L/D)",
-    "how": "",
+    "how": "alias 'Aspect Ratio (L/D)'",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "pulse_time",
     "unit": "s",
     "transform": "",
     "label_raw": "Minimum Exposure Time (s)",
     "unit_raw": "s",
     "key": "Minimum Exposure Time",
-    "how": "",
+    "how": "alias 'Minimum Exposure Time'",
     "unit_reason": ""
    },
    "points": [
@@ -7540,7 +7994,18 @@
      2500.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "partial_pressure": {
+     "key_raw": "DEZ Pressure",
+     "raw": "10 Torr",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 1333.22,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
    "conditions_raw": {},
    "flags": [
     "F4"
@@ -7548,7 +8013,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 993.6800000000001,
     "y": 24.999000000000002
    },
    "set": "ela03:cmp:fig13",
@@ -7567,8 +8032,8 @@
    "id": "ela03:cmp:fig5a",
    "figure": "5",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "pulse_time",
    "varied_raw": "Exposure Times (s)",
    "members": [
     "ela03:fig5a#c1",
@@ -7587,29 +8052,39 @@
      "unit": "cycle"
     }
    },
-   "label": "Fig. 5a replicates (Exposure Times (s))"
+   "label": "Fig. 5a series (Exposure Times (s))"
   },
   {
    "id": "ela03:cmp:fig6a",
    "figure": "6",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "feature_width",
    "varied_raw": "Pore Diameter (nm)",
    "members": [
     "ela03:fig6a#c1",
     "ela03:fig6a#c2",
     "ela03:fig6a#c3"
    ],
-   "conditions": {},
-   "label": "Fig. 6a replicates (Pore Diameter (nm))"
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    }
+   },
+   "label": "Fig. 6a series (Pore Diameter (nm))"
   },
   {
    "id": "ela03:cmp:fig9a",
    "figure": "9",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "pulse_time",
    "varied_raw": "Exposure Times (s)",
    "members": [
     "ela03:fig9a#c1",
@@ -7617,14 +8092,14 @@
     "ela03:fig9a#c3"
    ],
    "conditions": {},
-   "label": "Fig. 9a replicates (Exposure Times (s))"
+   "label": "Fig. 9a series (Exposure Times (s))"
   },
   {
    "id": "ela03:cmp:fig10a",
    "figure": "10",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "pulse_time",
    "varied_raw": "Exposure Times (s)",
    "members": [
     "ela03:fig10a#c1",
@@ -7633,29 +8108,39 @@
     "ela03:fig10a#c4"
    ],
    "conditions": {},
-   "label": "Fig. 10a replicates (Exposure Times (s))"
+   "label": "Fig. 10a series (Exposure Times (s))"
   },
   {
    "id": "ela03:cmp:fig11a",
    "figure": "11",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "pulse_time",
    "varied_raw": "Exposure Times (s)",
    "members": [
     "ela03:fig11a#c1",
     "ela03:fig11a#c2",
     "ela03:fig11a#c3"
    ],
-   "conditions": {},
-   "label": "Fig. 11a replicates (Exposure Times (s))"
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "DEZ exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    }
+   },
+   "label": "Fig. 11a series (Exposure Times (s))"
   },
   {
    "id": "ela03:cmp:fig13",
    "figure": "13",
    "panel": "",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "partial_pressure",
    "varied_raw": "DEZ Pressure",
    "members": [
     "ela03:fig13#c1",
@@ -7664,17 +8149,721 @@
     "ela03:fig13#c4"
    ],
    "conditions": {},
-   "label": "Fig. 13 replicates (DEZ Pressure)"
+   "label": "Fig. 13 series (DEZ Pressure)"
   }
  ],
- "derived": [],
+ "derived": [
+  {
+   "id": "ela03:fig5a#d2_1",
+   "source": "ela03:fig5a#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.745,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "64",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 64.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "5",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig5a#d2_2",
+   "source": "ela03:fig5a#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 10.678571428571429,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "64",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 64.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "5",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig5a#d3_1",
+   "source": "ela03:fig5a#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.875,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "64",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 64.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "5",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig5a#d3_2",
+   "source": "ela03:fig5a#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 20.0625,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "64",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 64.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "5",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig5a#d4_1",
+   "source": "ela03:fig5a#c4",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.8342857142857143,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "64",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 64.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "30",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 30.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "5",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig6a#d2_1",
+   "source": "ela03:fig6a#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.8266666666666667,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "46",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "6",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig6a#d2_2",
+   "source": "ela03:fig6a#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 10.393939393939394,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "46",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "6",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig6a#d3_1",
+   "source": "ela03:fig6a#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.8716666666666666,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "65",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "6",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig6a#d3_2",
+   "source": "ela03:fig6a#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 18.083333333333336,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "exposure time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "feature_width": {
+     "key_raw": "Pore Diameter (nm)",
+     "raw": "65",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "6",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig7b#d1_1",
+   "source": "ela03:fig7b#c1",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.7104,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "19 AB cycles",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 19.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "7",
+   "panel": "b"
+  },
+  {
+   "id": "ela03:fig7b#d1_2",
+   "source": "ela03:fig7b#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 97.62689655172413,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycles",
+     "raw": "19 AB cycles",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 19.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "figure": "7",
+   "panel": "b"
+  },
+  {
+   "id": "ela03:fig9a#d1_1",
+   "source": "ela03:fig9a#c1",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9990909090909091,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "9",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig9a#d1_2",
+   "source": "ela03:fig9a#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 15.377840909090912,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "9",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig9a#d2_1",
+   "source": "ela03:fig9a#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9983333333333334,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "9",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig9a#d3_1",
+   "source": "ela03:fig9a#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 1.0,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "9",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d1_1",
+   "source": "ela03:fig10a#c1",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.998,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d1_2",
+   "source": "ela03:fig10a#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 6.124,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "1",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d2_1",
+   "source": "ela03:fig10a#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9983333333333334,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d2_2",
+   "source": "ela03:fig10a#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 11.472222222222221,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "3",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 3.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d3_1",
+   "source": "ela03:fig10a#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9977777777777779,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d3_2",
+   "source": "ela03:fig10a#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 22.284444444444446,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "10",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig10a#d4_1",
+   "source": "ela03:fig10a#c4",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 1.0,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "30",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 30.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "10",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig11a#d2_1",
+   "source": "ela03:fig11a#c2",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9928571428571429,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "46",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig11a#d2_2",
+   "source": "ela03:fig11a#c2",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 11.357142857142858,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "46",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 46.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig11a#d3_1",
+   "source": "ela03:fig11a#c3",
+   "quantity": "normalized_thickness",
+   "qualifiers": "position=plateau",
+   "value": 0.9990909090909091,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "65",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": "a"
+  },
+  {
+   "id": "ela03:fig11a#d3_2",
+   "source": "ela03:fig11a#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 16.18388429752066,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "Exposure Times (s)",
+     "raw": "65",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 65.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "figure": "11",
+   "panel": "a"
+  }
+ ],
  "report": {
   "inventory": 27,
   "data_panels": 16,
   "sets": 6,
   "converted": 0,
   "curves": 34,
-  "derived": 0,
-  "labels_other": 46
+  "derived": 26,
+  "labels_other": 11
  }
 }

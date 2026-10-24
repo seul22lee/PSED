@@ -2,9 +2,13 @@
 <h2>Acceptance</h2><p>psed_v2/kb/reports/R4_apply.acceptance.txt</p>
 <pre>round 4 acceptance (grow.py audit_round)
 A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
-A2: 6 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;agree&#x27;: 2, &#x27;symbol (user decision)&#x27;: 2}
-A3: 137 open rows: {&#x27;other&#x27;: 49, &#x27;pending&#x27;: 88}; pending candidates accounted 130/130
-A3 new since apply → next round (P162, carried, not a failure): 0 rows
+A2: 14 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 2, &#x27;symbol (user decision)&#x27;: 10}
+A3: 77 open rows: {&#x27;other&#x27;: 48, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 4}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 4 rows
+  10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
+  10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;Thermal ALD@150°C&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;PE-ALD @150°C&#x27;
 result: PASS
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R4_apply.A1.csv</p>
@@ -61,8 +65,16 @@ result: PASS
 <h2>A2 promotions in the round&#x27;s papers, head-noun check</h2><p>psed_v2/kb/reports/R4_apply.A2.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>symbol</th><th>history</th><th>outcome</th></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tab3.r1c0</td><td>quantity</td><td>ALD process temperature</td><td>ALD process temperature</td><td>quantity: alias &#x27;ALD process temperature&#x27;</td><td>deposition_temperature</td><td>temperature</td><td>The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column &#x27;T&#x27;).</td><td>temperature</td><td>temperature</td><td>temperature</td><td>alias (user decision)</td><td></td><td>history.csv row 394 (round 4, alias ald_process_temperature)</td><td>fact yim22:tab3.r1c0#1 (type setting, quantity deposition_temperature, parent yim22:sim:sim_model_a)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>tab3.r6c1</td><td>quantity</td><td>Molar mass of Reactant A</td><td>Molar mass of Reactant A</td><td>quantity: alias &#x27;molar mass of reactant A&#x27;</td><td>molar_mass</td><td>molar mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>mass</td><td>mass</td><td>mass</td><td>agree</td><td></td><td></td><td>fact yim22:tab3.r6c1#1 (type setting, quantity molar_mass, parent yim22:sim:sim_model_a)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>tab3.r7c0</td><td>quantity</td><td>Sticking coefficient</td><td>Sticking coefficient</td><td>quantity: alias &#x27;sticking coefficient&#x27;</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td>coefficient</td><td>coefficient</td><td>probability</td><td>agree</td><td></td><td></td><td>fact yim22:tab3.r7c0#1 (type setting, quantity initial_sticking_coefficient, parent yim22:sim:sim_model_a)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>tab3.r6c1</td><td>quantity</td><td>Molar mass of Reactant A</td><td>Molar mass of Reactant A</td><td>quantity: alias &#x27;molar mass of reactant A&#x27;</td><td>molar_mass</td><td>molar mass</td><td>The molar mass M of a reactant molecule (M_A of reactant A, M_B of reactant B), a model input of the diffusion-reaction models and a series variable of their parameter studies.</td><td>mass</td><td>mass</td><td>mass</td><td>alias (curated)</td><td></td><td></td><td>fact yim22:tab3.r6c1#1 (type setting, quantity molar_mass, parent yim22:sim:sim_model_a)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>tab3.r7c0</td><td>quantity</td><td>Sticking coefficient</td><td>Sticking coefficient</td><td>quantity: alias &#x27;sticking coefficient&#x27;</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td>coefficient</td><td>coefficient</td><td>probability</td><td>alias (curated)</td><td></td><td></td><td>fact yim22:tab3.r7c0#1 (type setting, quantity initial_sticking_coefficient, parent yim22:sim:sim_model_a)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>quantity: symbol &#x27;N&#x27; of this paper</td><td>cycle_number</td><td>cycles</td><td>Number of ALD cycles applied in a deposition.</td><td></td><td>cycle</td><td>number</td><td>symbol (user decision)</td><td>N</td><td>history.csv row 460 (round 5, alias n)</td><td>fact yim22:fig5.cap#2 (type setting, quantity cycle_number, parent yim22:mrun:10_1039_d1cp04758b_fig5e_c1)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td></td><td>quantity: symbol &#x27;H&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (user decision)</td><td>H</td><td>history.csv row 507 (round 5, alias h)</td><td>fact yim22:fig5.cap#3 (type setting, quantity feature_width, parent yim22:mrun:10_1039_d1cp04758b_fig5e_c1)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>quantity: symbol &#x27;N&#x27; of this paper</td><td>cycle_number</td><td>cycles</td><td>Number of ALD cycles applied in a deposition.</td><td></td><td>cycle</td><td>number</td><td>symbol (user decision)</td><td>N</td><td>history.csv row 460 (round 5, alias n)</td><td>fact yim22:fig5.cap#4 (type setting, quantity cycle_number, parent yim22:mrun:10_1039_d1cp04758b_fig5e_c2)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td></td><td>quantity: symbol &#x27;H&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (user decision)</td><td>H</td><td>history.csv row 507 (round 5, alias h)</td><td>fact yim22:fig5.cap#5 (type setting, quantity feature_width, parent yim22:mrun:10_1039_d1cp04758b_fig5e_c2)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>quantity: symbol &#x27;N&#x27; of this paper</td><td>cycle_number</td><td>cycles</td><td>Number of ALD cycles applied in a deposition.</td><td></td><td>cycle</td><td>number</td><td>symbol (user decision)</td><td>N</td><td>history.csv row 460 (round 5, alias n)</td><td>fact yim22:fig5.cap#6 (type setting, quantity cycle_number, parent yim22:mrun:10_1039_d1cp04758b_fig5f_c1)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td></td><td>quantity: symbol &#x27;H&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (user decision)</td><td>H</td><td>history.csv row 507 (round 5, alias h)</td><td>fact yim22:fig5.cap#7 (type setting, quantity feature_width, parent yim22:mrun:10_1039_d1cp04758b_fig5f_c1)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>quantity: symbol &#x27;N&#x27; of this paper</td><td>cycle_number</td><td>cycles</td><td>Number of ALD cycles applied in a deposition.</td><td></td><td>cycle</td><td>number</td><td>symbol (user decision)</td><td>N</td><td>history.csv row 460 (round 5, alias n)</td><td>fact yim22:fig5.cap#8 (type setting, quantity cycle_number, parent yim22:mrun:10_1039_d1cp04758b_fig5f_c2)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td></td><td>quantity: symbol &#x27;H&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (user decision)</td><td>H</td><td>history.csv row 507 (round 5, alias h)</td><td>fact yim22:fig5.cap#9 (type setting, quantity feature_width, parent yim22:mrun:10_1039_d1cp04758b_fig5f_c2)</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model A</td><td>Model A</td><td>model: symbol &#x27;Model A&#x27; of this paper</td><td>ylilammi_diffusion_reaction</td><td>Ylilammi diffusion-reaction model</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td><td>model</td><td>model</td><td>model</td><td>symbol (user decision)</td><td>Model A</td><td>history.csv row 414 (round 4, alias model_a)</td><td>simulation sim_model_a -&gt; model ylilammi_diffusion_reaction</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s3.p1</td><td>model</td><td>Model B</td><td>Model B</td><td>model: symbol &#x27;Model B&#x27; of this paper</td><td>yanguas_gil_elam_diffusion_reaction</td><td>yanguas gil elam diffusion reaction</td><td>Diffusion–reaction model of ALD in a high-aspect-ratio feature by Yanguas-Gil and Elam (yim22 ref. 20): irreversible single-site adsorption (no desorption term), reactant partial pressure from the diffusion equation solved numerically together with the surface-coverage equation (yim22: MATLAB pdepe, slab symmetry, free molecular flow D_eff = D_Kn); the model behind the Arts et al. slope method (arts_slope). Distinct from yanguas_gil_markov_chain (a Markov-chain model).</td><td>model</td><td>reaction</td><td>model</td><td>symbol (user decision)</td><td>Model B</td><td>history.csv row 415 (round 4, add yanguas_gil_elam_diffusion_reaction)</td><td>simulation sim_model_b -&gt; model yanguas_gil_elam_diffusion_reaction</td></tr>
 <tr><td>10.1116_1.4903941</td><td>s6.p4</td><td>quantity</td><td>distance between the oxide pillars</td><td>The distance between the oxide pillars was 10 \mu m.</td><td>quantity: alias &#x27;distance between the oxide pillars&#x27;</td><td>pillar_spacing</td><td>Distance between pillars</td><td>Distance between neighbouring pillars that hold up the roof of a lateral high-aspect-ratio channel (PillarHall): a dimension of the test structure that sets the pillar effect on transport (Yim 2020 Table 1; Gao 2015 Sec. II: oxide pillars 10 µm apart).</td><td>distance</td><td>distance</td><td>distance</td><td>alias (user decision)</td><td></td><td>history.csv row 391 (round 4, add pillar_spacing)</td><td>dropped at d: quote_not_found (quote)</td></tr>
@@ -74,21 +86,17 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>eq19</td><td>quantity</td><td>f_{\text{des}}</td><td>m-2 s-1</td><td>fdes</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s6.p6</td><td>quantity</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq20</td><td>quantity</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td>model_a</td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td>model_b</td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td>model_a</td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172, P176)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td>model_b</td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172, P176)</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s10.p2</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq29</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu1.r15c0</td><td>quantity</td><td>Thiele modulus</td><td></td><td>thiele modulus</td><td>pending candidate thiele_modulus</td><td>thiele_modulus</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c0</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c1</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5.cap</td><td>quantity</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172)</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172, P176)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172, P176)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model A</td><td></td><td>model a</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model ylilammi_diffusion_reaction (P172, P176)</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig7.cap</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td></td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172, P176)</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq17</td><td>unit</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq18</td><td>unit</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq19</td><td>unit</td><td>f_{\text{des}}</td><td>m-2 s-1</td><td>fdes</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
@@ -96,13 +104,8 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>eq20</td><td>unit</td><td>g</td><td>m-2 s-1</td><td>g</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig2a</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig2a</td><td>axis</td><td>p_A</td><td>Pa</td><td>pa</td><td>pending candidate p_a</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig2a</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig2a</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig2a</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig2b</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig2b</td><td>axis</td><td>θ</td><td>-</td><td>θ</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig2b</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig2b</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig2b</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4a</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4a</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
@@ -112,7 +115,6 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>fig4c</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4d</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4d</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig4d</td><td>axis</td><td>rho</td><td></td><td>rho</td><td>pending candidate rho</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4e</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4e</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4e</td><td>axis</td><td>q</td><td></td><td>q</td><td>pending candidate q</td><td></td><td></td></tr>
@@ -122,67 +124,26 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>fig4g</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4h</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4h</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig4h</td><td>axis</td><td>T</td><td></td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4i</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig4i</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5a</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5a</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5a</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5b</td><td>axis</td><td>x</td><td>µm</td><td>x</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5b</td><td>axis</td><td>s</td><td>nm</td><td>s</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5b</td><td>axis</td><td>N</td><td>-</td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5c</td><td>axis</td><td>x̃</td><td>-</td><td>x̃</td><td>pending candidate x</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5c</td><td>axis</td><td>s/N</td><td>nm</td><td>s/n</td><td>pending candidate s_n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5c</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5d</td><td>axis</td><td>x̃</td><td>-</td><td>x̃</td><td>pending candidate x</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5d</td><td>axis</td><td>s/N</td><td>nm</td><td>s/n</td><td>pending candidate s_n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5d</td><td>axis</td><td>N</td><td>-</td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5e</td><td>axis</td><td>1-2s/H</td><td>-</td><td>1-2s/h</td><td>pending candidate 1_2s_h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5e</td><td>axis</td><td>x̃₅₀%</td><td>-</td><td>x̃₅₀%</td><td>pending candidate x</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig5f</td><td>axis</td><td>1-2s/H</td><td>-</td><td>1-2s/h</td><td>pending candidate 1_2s_h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig5f</td><td>axis</td><td>|d(s/N)/dx̃| at x̃₅₀%</td><td>nm</td><td>|d(s/n)/dx̃| at x̃₅₀%</td><td>pending candidate d_s_n_dx_at_x</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>Diffusion coefficient</td><td>m2/s</td><td>diffusion coefficient</td><td>pending candidate diffusion_coefficient</td><td></td><td></td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig5f</td><td>unit</td><td>|d(s/N)/dx̃| at x̃₅₀%</td><td>nm</td><td>|d(s/n)/dx̃| at x̃₅₀%</td><td>new since apply → next round</td><td></td><td>candidate d_s_n_dx_at_x decided in round 5 (alias -&gt; front_slope): the row was born after apply; carried into the next propose</td></tr>
+<tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>Diffusion coefficient</td><td>m2/s</td><td>diffusion coefficient</td><td>new since apply → next round</td><td></td><td>candidate diffusion_coefficient decided in round 5 (reject): the row was born after apply; carried into the next propose</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>H</td><td>μm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6a</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6b</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6b</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6b</td><td>axis</td><td>H</td><td>μm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6b</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6c</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6c</td><td>axis</td><td>H</td><td>μm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6c</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6c</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig6d</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6d</td><td>axis</td><td>H</td><td>μm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6d</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig6d</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>\tilde{x}</td><td>-</td><td>x̃</td><td>pending candidate tilde_x</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>\theta</td><td>-</td><td>θ</td><td>pending candidate theta</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>p_I</td><td>Pa</td><td>pi</td><td>pending candidate p_i</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>M_I</td><td>kg mol-1</td><td>mi</td><td>pending candidate m_i</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>d_I</td><td>m</td><td>di</td><td>pending candidate d_i</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>\rho</td><td>kg m-3</td><td>ρ</td><td>pending candidate rho</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>M</td><td>kg mol-1</td><td>m</td><td>pending candidate m</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>q</td><td>nm-2</td><td>q</td><td>pending candidate q</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7a</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>\tilde{x}</td><td>-</td><td>x̃</td><td>pending candidate tilde_x</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>\theta</td><td>-</td><td>θ</td><td>pending candidate theta</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>T</td><td>K</td><td>t</td><td>pending candidate t</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>N</td><td></td><td>n</td><td>pending candidate n</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>p_I</td><td>Pa</td><td>pi</td><td>pending candidate p_i</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>M_I</td><td>kg mol-1</td><td>mi</td><td>pending candidate m_i</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>d_I</td><td>m</td><td>di</td><td>pending candidate d_i</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>\rho</td><td>kg m-3</td><td>ρ</td><td>pending candidate rho</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>M</td><td>kg mol-1</td><td>m</td><td>pending candidate m</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>q</td><td>nm-2</td><td>q</td><td>pending candidate q</td><td></td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>pending candidate h</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>fig7b</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
-<tr><td>10.1116_1.4903941</td><td>fig5b</td><td>axis</td><td>LHAR gap size</td><td></td><td>lhar gap size</td><td>pending candidate lhar_gap_size</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p5</td><td>quantity</td><td>q</td><td>nm-1</td><td>q</td><td>pending candidate q</td><td>q;q;q</td><td></td></tr>
@@ -190,22 +151,13 @@ result: PASS
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td>transmittance;transmittance</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>s10.p15</td><td>quantity</td><td>bandgap</td><td>eV</td><td>bandgap</td><td>pending candidate bandgap</td><td>bandgap;bandgap</td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>Thermal ALD@150°C</td><td></td><td>thermal ald@150°c</td><td>pending candidate thermal_ald_150_c</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>PE-ALD @150°C</td><td></td><td>pe-ald @150°c</td><td>pending candidate pe_ald_150_c</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig1b</td><td>axis</td><td>#ALD cycle</td><td></td><td>#ald cycle</td><td>pending candidate ald_cycle</td><td></td><td></td></tr>
+<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>Thermal ALD@150°C</td><td></td><td>thermal ald@150°c</td><td>new since apply → next round</td><td></td><td>candidate thermal_ald_150_c decided in round 5 (reject): the row was born after apply; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002993</td><td>fig4.cap</td><td>quantity</td><td>PE-ALD @150°C</td><td></td><td>pe-ald @150°c</td><td>new since apply → next round</td><td></td><td>candidate pe_ald_150_c decided in round 5 (reject): the row was born after apply; carried into the next propose</td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig1b</td><td>axis</td><td>process</td><td></td><td>process</td><td>pending candidate process</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig2d</td><td>axis</td><td>2θ</td><td>°</td><td>2θ</td><td>pending candidate 2</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3a</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3b</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3c</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3d</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3e</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig3f</td><td>axis</td><td>Counts per second</td><td>a.u.</td><td>counts per second</td><td>pending candidate counts_per_second</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4a</td><td>axis</td><td>Wavelength</td><td>nm</td><td>wavelength</td><td>pending candidate wavelength</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4a</td><td>axis</td><td>Transmittance</td><td>%</td><td>transmittance</td><td>pending candidate transmittance</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4b</td><td>axis</td><td>Photon energy</td><td>eV</td><td>photon energy</td><td>pending candidate photon_energy</td><td></td><td></td></tr>
 <tr><td>10.1116_6.0002993</td><td>fig4b</td><td>axis</td><td>(αhν)²(eVcm⁻¹)²</td><td>(eVcm⁻¹)²</td><td>(αhν)²(evcm⁻¹)²</td><td>pending candidate h_evcm</td><td></td><td></td></tr>
-<tr><td>10.1116_6.0002993</td><td>fig4b</td><td>axis</td><td>ALD process</td><td></td><td>ald process</td><td>pending candidate ald_process</td><td></td><td></td></tr>
 </table>
 <h2>A3 pending candidates of the round&#x27;s papers</h2><p>psed_v2/kb/reports/R4_apply.A3_pending.csv</p>
 <table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
@@ -230,115 +182,26 @@ result: PASS
 <tr><td>q</td><td>4</td><td>10.1116_6.0002993</td><td>3</td><td>6</td><td>yes</td><td></td></tr>
 <tr><td>thiele_modulus</td><td>4</td><td>10.1039_d1cp04758b</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
 <tr><td>transmittance</td><td>4</td><td>10.1116_6.0002993</td><td>2</td><td>3</td><td>yes</td><td></td></tr>
-<tr><td>integration_time</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>markov_chain_approach</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>spectroscopic_ellipsometer</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>1</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
 <tr><td>1_2_sphere</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
 <tr><td>1_2s_h</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>2</td><td>5</td><td>10.1116_6.0002804;10.1116_6.0002993;10.1116_6.0003182</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
 <tr><td>ald</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>ald_cycle</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>ald_process</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>at_h_pulse</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>at_h_purge</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>channel_design_height</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>channel_height_h</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>composition</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
 <tr><td>concentration</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>counts_per_second</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>6</td><td>yes</td><td></td></tr>
-<tr><td>counts_s</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>coverage</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
 <tr><td>cvd</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>cycle_count</td><td>5</td><td>10.1039_d0cp03358h;10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h;10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>d</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>d_i</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>d_s_n_dx_at_x</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>depth</td><td>5</td><td>10.1116_6.0001094;10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094;10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>dez_exposure_time</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>dez_pressure</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>diffusion_coefficient</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>distance_cavity_height</td><td>5</td><td>10.1021_acs.jpcc.9b08176</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.jpcc.9b08176 (its paper is not compiled)</td></tr>
-<tr><td>distance_inside_the_channel_x</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>distance_x</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>elapsed_time_delta_t</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>energy</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>exposure_in_langmuirs</td><td>5</td><td>10.1002_cvde.200390005</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1002_cvde.200390005 (its paper is not compiled)</td></tr>
-<tr><td>exposure_time</td><td>5</td><td>10.1021_acs.jpcc.9b08176;10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.jpcc.9b08176;10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>exposure_times</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>film_thickness_s</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>flow</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
 <tr><td>geometry</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>gpc_sat</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>growth_cycles</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>h</td><td>5</td><td>10.1039_d0cp03358h;10.1039_d1cp04758b;10.1063_1.5028178</td><td>0</td><td>12</td><td>yes</td><td></td></tr>
 <tr><td>h_evcm</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>h_flow_ratio</td><td>5</td><td>10.1021_acs.chemmater.2c01154</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.chemmater.2c01154 (its paper is not compiled)</td></tr>
 <tr><td>hot_wire_temperature</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>lhar_gap_size</td><td>5</td><td>10.1116_1.4903941</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>location</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
 <tr><td>location_x</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>loss_in_hydroxyl_feature</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>m</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
 <tr><td>m_i</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>m_z_16_o_counts_s</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>m_z_32_o_counts_s</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
 <tr><td>measurement_technique</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>minimum_exposure_time</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>mocl_2_o_2_pulse</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>mocl_2_o_2_purge</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>n</td><td>5</td><td>10.1039_d0cp03358h;10.1039_d1cp04758b</td><td>0</td><td>10</td><td>yes</td><td></td></tr>
-<tr><td>n_p0</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>net_gain_of_gas_moles_delta_n_g</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>normalized_counts</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
 <tr><td>normalized_integrated_al_2o_3_coverage</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
 <tr><td>normalized_integrated_coverage</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
 <tr><td>normalized_integrated_zno_coverage</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>normalized_x_ray_counts</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>p</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
 <tr><td>p_a</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>p_a0</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>p_i</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>p_o</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>pd_50_cavity_height</td><td>5</td><td>10.1021_acs.jpcc.9b08176</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.jpcc.9b08176 (its paper is not compiled)</td></tr>
-<tr><td>pe_ald_150_c</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>penetration_depth_x_p</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
 <tr><td>photon_energy</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>plasma_time</td><td>5</td><td>10.1021_acs.jpcc.9b08176</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.jpcc.9b08176 (its paper is not compiled)</td></tr>
-<tr><td>pore_diameter</td><td>5</td><td>10.1021_cm0303080;10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080;10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>postion</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>power</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>pressure_change_delta_p</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>pressure_p_a</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
 <tr><td>process</td><td>5</td><td>10.1116_6.0002804;10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>r_1_2</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>r_theta_1_2</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>reactant_exposure_duration</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>reactant_number_density_n_p</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>reactant_pulse_length</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>relative_al_2o_3_coverage</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>relative_zno_coverage</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>rf_frequency</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
-<tr><td>rho</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>3</td><td>yes</td><td></td></tr>
-<tr><td>s</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>s_n</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>sicl4_exposure_time</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>sicl4_pressure</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>surface_coverage_theta</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
-<tr><td>t</td><td>5</td><td>10.1039_d1cp04758b;10.1116_6.0003182</td><td>0</td><td>9</td><td>yes</td><td></td></tr>
-<tr><td>t_deposition</td><td>5</td><td>10.1021_acs.chemmater.2c01154</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.chemmater.2c01154 (its paper is not compiled)</td></tr>
-<tr><td>t_p</td><td>5</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
-<tr><td>temperature</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>terminal_slope_ts</td><td>5</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
-<tr><td>thermal_ald_150_c</td><td>5</td><td>10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>theta</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>thickness_cycles_s_n</td><td>5</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
-<tr><td>tilde_x</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>time</td><td>5</td><td>10.1116_6.0002804</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002804 (its paper is not compiled)</td></tr>
-<tr><td>tma_exposure_time</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
-<tr><td>tma_pressure</td><td>5</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>shape_factor_for_a_particle</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
+<tr><td>shape_factor_s</td><td>5</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
 <tr><td>wavelength</td><td>5</td><td>10.1116_6.0001094;10.1116_6.0002993</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
-<tr><td>x</td><td>5</td><td>10.1039_d1cp04758b</td><td>0</td><td>3</td><td>yes</td><td></td></tr>
 </table>
 <h2>Snapshot: every row of the round before apply</h2><p>psed_v2/kb/reports/R4_apply.decision_rows.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>candidate</th><th>decision</th></tr>
