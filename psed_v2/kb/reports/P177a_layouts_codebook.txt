@@ -1,0 +1,17 @@
+Source: kb/schema/CODEBOOK.md section b (written by ontology/export.py from P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS; the codebook is part of every pass-0 and pass-1 prompt):
+
+## b. Layouts (source: ontology/export.py P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS: P143 definitions)
+
+Table layouts:
+
+- **row_per_unit**: Each row is one experiment unit (a run, a specimen or a model run); the columns are its conditions and results.
+- **column_per_unit**: Each column is one experiment unit; the rows are its conditions and results.
+- **cell_per_unit**: Each cell is one experiment unit: its row and column headers are its conditions, the cell holds its result.
+- **not_units**: The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values).
+
+Panel layouts:
+
+- **curve_per_unit**: Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names. Example: one curve per model run (Ylilammi Fig. 4).
+- **panel_one_unit**: The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only). Example: an EDS panel = one specimen, its curves one measurement's results per element.
+- **point_per_unit**: Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145). Example: a heat map whose grid points are runs (axes = conditions, colour = result).
+

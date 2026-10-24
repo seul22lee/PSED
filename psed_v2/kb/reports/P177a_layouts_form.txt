@@ -1,0 +1,167 @@
+Source: kb/schema/form_pass0.json (written by ontology/export.py, the P144 layout schema of the pass-0 answer):
+
+table_layouts:
+{
+ "anyOf": [
+  {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "table",
+     "layout",
+     "unit_name_cells",
+     "units"
+    ],
+    "properties": {
+     "table": {
+      "anyOf": [
+       {
+        "type": "string",
+        "minLength": 1
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "layout": {
+      "anyOf": [
+       {
+        "enum": [
+         "row_per_unit",
+         "column_per_unit",
+         "cell_per_unit",
+         "not_units"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "unit_name_cells": {
+      "anyOf": [
+       {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "units": {
+      "anyOf": [
+       {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "type": "null"
+  }
+ ]
+}
+
+panel_layouts:
+{
+ "anyOf": [
+  {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "panel",
+     "layout",
+     "unit",
+     "axis_quantities",
+     "value_quantity"
+    ],
+    "properties": {
+     "panel": {
+      "anyOf": [
+       {
+        "type": "string",
+        "minLength": 1
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "layout": {
+      "anyOf": [
+       {
+        "enum": [
+         "curve_per_unit",
+         "panel_one_unit",
+         "point_per_unit"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "minLength": 1
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "axis_quantities": {
+      "anyOf": [
+       {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "$ref": "#/$defs/quantity_id"
+        }
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "value_quantity": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/quantity_id"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "type": "null"
+  }
+ ]
+}
+

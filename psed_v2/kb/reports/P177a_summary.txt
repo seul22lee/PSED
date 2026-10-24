@@ -1,0 +1,18 @@
+P177a: figure-binding inventory of the thirteen papers. 0 provider calls, no code changed: every value below is read through the code as
+it is today (compile.Run.read, panel_items, method_panels, legend_conditions, render.gold_layouts / gold_units, kb/<pid>.figures.json).
+
+Table 1 (also kb/reports/P177a_panels.csv, with an empty expected_outcome column for the user): 281 rows: 259 figure panels (every panel
+of the figure stage's ingest/final/<pid>/figures.json: plot 139, micrograph 44, schematic 32, spectrum 21, map 17, photo 5, table_image 1)
+and 22 tables. Per row: the pass-0 layout ('none': 32 panels absent from pass 0's panel_layouts, 24 with layout null) and the unit it
+names; figures.json items (curves, points, cells, peaks; image = a panel that is no data panel); the x, y, series-axis and condition-key
+labels as printed with what each resolves to today (entry id / other / never / ambiguous / qualifier; a panel that is no data panel shows
+its printed axes unresolved); every legend label as printed and its parse (compile.legend_conditions against the panel's series axis);
+the units that hold its items (id, pass-0 or derived, role); items bound / unbound; the gold layout and gold units with their roles
+(render.gold_layouts, twelve papers); facts compiled from it (data: points_ref of its items; evidence: facts citing the panel element);
+notes (verdict and flags, legend naming methods, role unresolved, layout null, deduped units; a table's unit_name_cells).
+Counts: pass-0 layouts of the panels curve_per_unit 119, panel_one_unit 67, point_per_unit 17, none 56; tables not_units 17,
+row_per_unit 5. 149 panels hold data items: 594 bound, 51 unbound (11 panels). Gold layouts (132 panels): curve_per_unit 69, unbound 47,
+panel_one_unit 13, point_per_unit 2, mixed 1; the pass-0 layout equals the gold one on 63 of them.
+Table 2: the binding code paths, one row each, with file:line and the panels each touches (the role rule split by its reason).
+Table 3: the layout definitions verbatim as the pass-0 instruction, CODEBOOK.md and form_pass0.json carry them, and where each lives
+(the one written text: ontology/export.py P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS).
