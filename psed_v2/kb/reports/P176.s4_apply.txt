@@ -1,0 +1,145 @@
+
+step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 197}
+step d: {'quote_not_found': 13, 'quote_noncontiguous (kept)': 1, 'kept': 184}
+step e: {'kept': 184}
+step f: {'species_resolved': 8, 'kept': 184}
+step g: {'mention_unmatched': 9}
+step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 48, 'place: result about a specimen -> its measurement': 51, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
+step m: {'statement filled from the quote': 147, 'links resolved': 14, 'links named elements without facts': 2}
+step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'data role measured': 13, 'curves no unit names (left out)': 12}
+step i: {'merged': 18, 'caveat merged': 2, 'definition merged': 2, 'kept': 175}
+step n: {'comparison series': 1}
+step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3}
+step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 72, 'statement assembled': 19}
+diff against the gold (type, gold, compiled, matched, precision, recall):
+  setting        89   40   21  0.53  0.24
+  observation    89   58   20  0.34  0.22
+  cited          57    3    3  1.00  0.05
+  claim          57   17   11  0.65  0.19
+  caveat         53    7    7  1.00  0.13
+  activity       41   33   29  0.88  0.71
+  derived        31   39   21  0.54  0.68
+  model          18    8    8  1.00  0.44
+  entity         18    4    0  0.00  0.00
+  definition     16    9    2  0.22  0.12
+  identity        3    0    0     -  0.00
+  paper           1    1    1  1.00  1.00
+  comparison      1    1    0  0.00  0.00
+gold definitions with an eq* element in evidence: 6/16
+gold model rows with quantity and value: 2: {'other': 2}
+observations: gold 89, compiled 58, matched 20
+gor03: 157 gold rows, 22 compiled facts without a gold match
+gor03: check --dir 54 problems; T6 55/157
+mat22: 1071 gold rows, 110 compiled facts without a gold match
+mat22: check --dir 267 problems; T6 273/1071
+art19: 214 gold rows, 39 compiled facts without a gold match
+art19: check --dir 62 problems; T6 78/214
+ela03: 561 gold rows, 78 compiled facts without a gold match
+ela03: check --dir 161 problems; T6 168/561
+yim20: 900 gold rows, 167 compiled facts without a gold match
+yim20: check --dir 318 problems; T6 435/900
+yim22: 608 gold rows, 241 compiled facts without a gold match
+yim22: check --dir 232 problems; T6 318/608
+hei24: 549 gold rows, 125 compiled facts without a gold match
+hei24: check --dir 532 problems; T6 276/549
+yli18: 243 gold rows, 77 compiled facts without a gold match
+yli18: check --dir 156 problems; T6 138/243
+gao15: 225 gold rows, 19 compiled facts without a gold match
+gao15: check --dir 54 problems; T6 81/225
+zou23: 164 gold rows, 63 compiled facts without a gold match
+zou23: check --dir 109 problems; T6 53/164
+mat23: 191 gold rows, 84 compiled facts without a gold match
+mat23: check --dir 137 problems; T6 63/191
+gre23: 474 gold rows, 79 compiled facts without a gold match
+gre23: check --dir 130 problems; T6 136/474
+round 5 acceptance (grow.py audit_round)
+A1: 92 decisions, 298 rows: effect {'yes': 292, 'n/a': 6}
+A2: 44 promotions: {'alias (curated)': 25, 'symbol (paper-local)': 1, 'symbol (user decision)': 7, 'id (curated)': 6, 'agree': 5}
+A3: 3 open rows: {'other': 1, 'pending': 2}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {'n/a': 2, 'yes': 83}
+A2: 40 promotions: {'id (curated)': 34, 'agree': 2, 'alias (user decision)': 3, 'symbol (user decision)': 1}
+A3: 18 open rows: {'other': 8, 'pending': 10}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {'n/a': 6, 'yes': 84, 'no effect': 2}
+A2: 204 promotions: {'symbol (user decision)': 81, 'alias (curated)': 39, 'alias (user decision)': 17, 'agree': 15, 'id (curated)': 12, 'symbol (paper-local)': 40}
+A3: 46 open rows: {'pending': 37, 'other': 7, 'unit': 1, 'new': 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
+  10.1039_d3cp05639b:fig4 axis '1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]'
+result: PASS
+round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {'yes': 12, 'n/a': 4, 'no effect': 1}
+A2: 4 promotions: {'alias (user decision)': 1, 'symbol (user decision)': 3}
+A3: 19 open rows: {'other': 8, 'pending': 8, 'new': 3}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 3 rows
+  10.1116_6.0002804:fig3 unit 'Time'
+  10.1116_6.0002804:fig5a unit 'Depth (\times 10^{15} at/cm^{2})'
+  10.1116_6.0003182:fig6f unit 'temperature'
+result: PASS
+round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {'yes': 48}
+A2: 14 promotions: {'alias (user decision)': 2, 'alias (curated)': 2, 'symbol (user decision)': 10}
+A3: 77 open rows: {'other': 48, 'pending': 25, 'new': 4}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 4 rows
+  10.1039_d1cp04758b:fig5f unit '|d(s/N)/dx̃| at x̃₅₀%'
+  10.1039_d1cp04758b:fig6a axis 'Diffusion coefficient'
+  10.1116_6.0002993:fig4.cap quantity 'Thermal ALD@150°C'
+  10.1116_6.0002993:fig4.cap quantity 'PE-ALD @150°C'
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/kb/tmp/grow_apply_3q83ag0a/psed_v2/ontology/ontology.html: 242 entries, 507 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+round 5 applied in the sandbox: {'never': 3, 'alias': 85, 'reject': 4}; 41 rows stay pending; ontology.yaml sha256 efbe52021e69
+
+moved 249 files into place and committed: grow round 5 applied: 0 accepted, 85 aliases, 4 rejected, 3 never; recompiled 13 papers, scored 12 (0 calls)
+
+exit 0

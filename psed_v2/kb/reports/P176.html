@@ -1,0 +1,1073 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P176</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P176</h1>
+<h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.summary.txt</p>
+<pre>P176: 0 provider calls. Round 5 applied (atomic; the second attempt): audits 1-5 PASS, export --check 15 of 15; T6 2044 -&gt; 2074.
+Cards for the thirteen: 0 errors.
+
+1. Derived-unit role from explicit evidence only: model_run when the figure stage marks the curve simulated or fit (figures.json kind
+   simulated, P87: a model or fit word in its legend label, else in the panel&#x27;s content line or caption); else run (runs, no simulation) or
+   model_run (a simulation, no runs) from the unit list; else null, flagged &#x27;role unresolved&#x27;, and such a unit is an entity row under the
+   paper with its data and its legend settings (nothing dropped). ela03: 4 model_run (fig10b &#x27;Simulation&#x27; by its legend label; fig9b,
+   fig10b &#x27;y ∝ t^1/2&#x27;, fig11b by the panel text), 2 null (fig5b, fig6b: 14 runs and a simulation, no mark). wer21: 11 model_run (figs 11-14
+   by the panel text), 26 null (rows under the paper, their curves now observations). Every unit with its reason: table 1.
+2. Audit (the P162 rule): a row regrouped since apply, or born after apply under an id decided before it existed, is carried as new;
+   pending rows keyed by (id, first round). Before apply: audits 1-4 PASS; round 2 carried 12 rows (the 11 shape-factor rows, &#x27;Aspect Ratio
+   (L/D)&#x27;), which propose made round-5 candidates.
+3. The five decisions (P176 chat) written, each matched to its row: aspect_ratio (alias), h (alias feature_width, symbols of yim20, yim22,
+   yli18), composition (alias element_fraction), time (alias time), 1 (reject). export --check 15 of 15.
+4. apply round 5. The first attempt refused (atomic: nothing written, sandbox removed). Diagnosed in throwaway copies (apply_here without
+   the wrapper), four runs: (a) A1 could not trace a figure-axis row (the import resolves it; no promoted.csv row): it now reads the label
+   in kb/&lt;pid&gt;.figures.json; (b) apply wrote only a candidate&#x27;s label and aliases, not every member&#x27;s printed label (&#x27;Power&#x27; beside
+   &#x27;power&#x27;, &#x27;x̃₅₀%&#x27;, &#x27;m/z = -32 ...&#x27;): now every member&#x27;s label, one alias per word key (export --check 4 had failed on &#x27;exposure time&#x27; /
+   &#x27;Exposure Time&#x27;) and on one line (a printed line break turned the aliases flow list into a second &#x27;aliases:&#x27; key, losing aliases);
+   (c) A3&#x27;s pending accounting read open rows of the round&#x27;s own paper only, so carried rows looked closed: now the snapshot&#x27;s papers.
+   Two the user decided in chat: A2 counts a promotion through an alias of the entry, or its id, as curated (&#x27;pulse time&#x27; -&gt; pulse_time
+   matched through the id, the question had said alias); a quantity-other label naming one method entry is &#x27;names the method X&#x27;
+   (spectroscopic ellipsometer; it also catches ela03 fig10&#x27;s legend &#x27;Simulation&#x27; -&gt; the method simulation, no candidate now). Second real
+   apply: audits 1-5 PASS; 249 files moved into place and committed by apply (cf22d94): 85 aliases (57 alias labels, 41 symbols), 3 never,
+   4 rejects; 41 rows stay pending; rounds.csv round 5 applied; ontology.html. Scores before apply -&gt; after: T6 2044 -&gt; 2074 (yim20 +22,
+   ela03 +9, mat22 -1), gold rows 5357, check.py 2207 -&gt; 2212. (The role rule alone, P175 -&gt; before apply: ela03 check.py 152 -&gt; 161.)
+   wer21 5h carries the user&#x27;s note (fig11&#x27;s right axis &#x27;Thickness (nm)&#x27; not read by the figure stage), from kb/inspection_notes.csv,
+   which inspection.py now reads for every paper. The apply commit holds the files apply changed; outputs the working tree already had from
+   the same code (two coverage.csv, a dropped.csv, an audit file, decide.html) are in the report commit.
+5. Cards: kb/graph_page.py for the thirteen and the P152 comparison view driven headless (Playwright): 0 errors. wer21 failed first
+   (KeyError: the gold-curve binding of a paper without gold); graph_page now treats a paper without a gold file as having no gold side.
+   Per paper (table 5): cards gold / compiled, conditions per compiled card, model-run cards and those with a model link (all of them).
+</pre>
+<h2>1. Derived units of ela03 and wer21: the role each gets and why</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s1_roles.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>name</th><th>role</th><th>why</th><th>parent</th><th>tree_row</th><th>flag</th></tr>
+<tr><td>ela03</td><td>fig5b:c1</td><td></td><td>null</td><td>unresolved: the paper has 14 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved; no legend label</td></tr>
+<tr><td>ela03</td><td>fig6b:c1</td><td></td><td>null</td><td>unresolved: the paper has 14 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved; no legend label</td></tr>
+<tr><td>ela03</td><td>fig9b:c1</td><td></td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_mc</td><td>model run under its simulation</td><td>no legend label</td></tr>
+<tr><td>ela03</td><td>fig10b:c1</td><td>Simulation</td><td>model_run</td><td>figure stage: simulated or fit (its legend label)</td><td>sim_mc</td><td>model run under its simulation</td><td>legend label parsed to nothing</td></tr>
+<tr><td>ela03</td><td>fig10b:c2</td><td>y ∝ t^1/2</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_mc</td><td>model run under its simulation</td><td>legend label parsed to nothing</td></tr>
+<tr><td>ela03</td><td>fig11b:c1</td><td></td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_mc</td><td>model run under its simulation</td><td>no legend label</td></tr>
+<tr><td>wer21</td><td>fig6a:c1</td><td>10.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6a:c2</td><td>20.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6a:c3</td><td>50.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6a:c4</td><td>100.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6a:c5</td><td>200.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6a:c6</td><td>400.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c1</td><td>10.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c2</td><td>20.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c3</td><td>50.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c4</td><td>100.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c5</td><td>200.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6b:c6</td><td>400.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c1</td><td>10.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c2</td><td>20.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c3</td><td>50.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c4</td><td>100.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c5</td><td>200.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6c:c6</td><td>400.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c1</td><td>10.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c2</td><td>20.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c3</td><td>50.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c4</td><td>100.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c5</td><td>200.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig6d:c6</td><td>400.0 sccm</td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved</td></tr>
+<tr><td>wer21</td><td>fig11:c1</td><td>50 W - 15s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig11:c2</td><td>75 W - 5s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig11:c3</td><td>75 W - 10s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig11:c4</td><td>125 W - 5s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig11:c5</td><td>150 W - 4s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig11:c6</td><td>200 W - 4s</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig12:c1</td><td>1.1×10⁻² mbar</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig12:c2</td><td>9.4×10⁻³ mbar</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig12:c3</td><td>5.7×10⁻³ mbar</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig12:c4</td><td>1.0×10⁻³ mbar</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig12:c5</td><td>6×10⁻⁴ mbar</td><td>model_run</td><td>figure stage: simulated or fit (the panel&#x27;s content line or caption)</td><td>sim_markov_chain</td><td>model run under its simulation</td><td></td></tr>
+<tr><td>wer21</td><td>fig13:c1</td><td></td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved; no legend label</td></tr>
+<tr><td>wer21</td><td>fig14:c1</td><td></td><td>null</td><td>unresolved: the paper has 10 runs and 1 simulation(s) and the figure stage marks the curve neither simulated nor fit</td><td></td><td>entity under the paper (role unresolved)</td><td>role unresolved; no legend label</td></tr>
+</table>
+<h2>1. Scores that moved with the role rule (P175 -&gt; before apply)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s1_score_role_change.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P175</th><th>before_apply</th></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>152</td><td>161</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>188</td><td>189</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>13/46</td><td>15/46</td></tr>
+</table>
+<h2>2. Audits 1-4 after the audit change (before apply)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s2_audits.csv</p>
+<table><tr><th>round</th><th>result</th><th>a3</th><th>new_since_apply</th></tr>
+<tr><td>1</td><td>PASS</td><td>68 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 60}; pending candidates accounted 130/130</td><td>0</td></tr>
+<tr><td>2</td><td>PASS</td><td>168 open rows: {&#x27;pending&#x27;: 148, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 12}; pending candidates accounted 130/130</td><td>12</td></tr>
+<tr><td>3</td><td>PASS</td><td>47 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 39}; pending candidates accounted 130/130</td><td>0</td></tr>
+<tr><td>4</td><td>PASS</td><td>137 open rows: {&#x27;other&#x27;: 49, &#x27;pending&#x27;: 88}; pending candidates accounted 130/130</td><td>0</td></tr>
+</table>
+<h2>2. Audit round 1</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s2_audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 40 promotions: {&#x27;agree&#x27;: 36, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 68 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 60}; pending candidates accounted 130/130
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 415 history rows, 130 pending, checks 14/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>2. Audit round 2</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s2_audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 6, &#x27;yes&#x27;: 84, &#x27;no effect&#x27;: 2}
+A2: 204 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;agree&#x27;: 66, &#x27;alias (user decision)&#x27;: 17, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 168 open rows: {&#x27;pending&#x27;: 148, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 12}; pending candidates accounted 130/130
+A3 new since apply → next round (P162, carried, not a failure): 12 rows
+  10.1021_cm0303080:fig13 axis &#x27;Aspect Ratio (L/D)&#x27;
+  10.1039_d3cp05639b:s4.p4 quantity &#x27;shape factor s&#x27;
+  10.1039_d3cp05639b:fig1.cap quantity &#x27;shape factor s&#x27;
+  10.1039_d3cp05639b:fig1.cap quantity &#x27;shape factor s&#x27;
+  10.1039_d3cp05639b:fig1.cap quantity &#x27;shape factor s&#x27;
+  10.1039_d3cp05639b:fig2a quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:fig2a quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:fig2a quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:fig2b quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:fig2b quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:fig2b quantity &#x27;s&#x27;
+  10.1039_d3cp05639b:tabu1.r21c0 quantity &#x27;Shape factor for a particle&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 415 history rows, 130 pending, checks 14/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>2. Audit round 3</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s2_audit_round3.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 3}
+A3: 47 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 39}; pending candidates accounted 130/130
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 415 history rows, 130 pending, checks 14/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>2. Audit round 4</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s2_audit_round4.txt</p>
+<pre>round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
+A2: 6 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;agree&#x27;: 2, &#x27;symbol (user decision)&#x27;: 2}
+A3: 137 open rows: {&#x27;other&#x27;: 49, &#x27;pending&#x27;: 88}; pending candidates accounted 130/130
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 415 history rows, 130 pending, checks 14/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>3. The five decisions (P176 chat) and their rows</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s3_decisions.csv</p>
+<table><tr><th>label</th><th>decision</th><th>target</th><th>symbol_paper</th><th>row</th><th>first_round</th><th>row_papers</th><th>printed</th><th>result</th></tr>
+<tr><td>Aspect Ratio (L/D)</td><td>alias</td><td>aspect_ratio</td><td></td><td>aspect_ratio</td><td>5</td><td>ela03</td><td>Aspect Ratio (L/D)</td><td>written</td></tr>
+<tr><td>H</td><td>alias</td><td>feature_width</td><td>yim20;yim22;yli18</td><td>h</td><td>5</td><td>yim20;yim22;yli18</td><td>H</td><td>written</td></tr>
+<tr><td>Composition</td><td>alias</td><td>element_fraction</td><td></td><td>composition</td><td>5</td><td>zou23</td><td>Composition</td><td>written</td></tr>
+<tr><td>Time</td><td>alias</td><td>time</td><td></td><td>time</td><td>5</td><td>zou23</td><td>Time</td><td>written</td></tr>
+<tr><td>1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]</td><td>reject</td><td></td><td></td><td>1</td><td>5</td><td>hei24</td><td>1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]</td><td>written</td></tr>
+</table>
+<h2>3. propose (the carried rows)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s3_propose.txt</p>
+<pre>round 5: 25 candidates (25 new, 0 merged with earlier undecided rows; 22 undecided rows of round 5 rebuilt); 5 rows never (compile.py&#x27;s never column), 0 values without a quantity, 6 symbol and 0 label merges into 1 symbol-table rows
+pending.csv: 133 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+
+</pre>
+<h2>3. export --check after the decisions</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s3_export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted; P175: a class from the list, a slot that is a structure class, parameters that are entries 133 rows: alias 85, never 3, reject 4, undecided 41
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>4. grow.py apply round 5 (atomic)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_apply.txt</p>
+<pre>
+step c: {&#x27;quantity_other (kept)&#x27;: 5, &#x27;quantity_other never (kept)&#x27;: 2, &#x27;kept&#x27;: 197}
+step d: {&#x27;quote_not_found&#x27;: 13, &#x27;quote_noncontiguous (kept)&#x27;: 1, &#x27;kept&#x27;: 184}
+step e: {&#x27;kept&#x27;: 184}
+step f: {&#x27;species_resolved&#x27;: 8, &#x27;kept&#x27;: 184}
+step g: {&#x27;mention_unmatched&#x27;: 9}
+step h: {&#x27;place: claim -&gt; paper&#x27;: 17, &#x27;place: about paper -&gt; recipe&#x27;: 48, &#x27;place: result about a specimen -&gt; its measurement&#x27;: 51, &#x27;place: definition -&gt; paper&#x27;: 11, &#x27;place: caveat -&gt; paper&#x27;: 9, &#x27;place: setting about a run -&gt; deposition&#x27;: 12, &#x27;place: about paper, method -&gt; paper method activity&#x27;: 8, &#x27;place: cited -&gt; paper&#x27;: 3, &#x27;place: result about a run -&gt; its specimen measurement&#x27;: 21, &#x27;specimen_created&#x27;: 1, &#x27;place: result about a run -&gt; film measurement&#x27;: 1, &#x27;place: setting about a specimen -&gt; deposition&#x27;: 3}
+step m: {&#x27;statement filled from the quote&#x27;: 147, &#x27;links resolved&#x27;: 14, &#x27;links named elements without facts&#x27;: 2}
+step 1c: {&#x27;figure label other (condition)&#x27;: 1, &#x27;figure axis unit unknown (values as printed)&#x27;: 1, &#x27;curve -&gt; observation&#x27;: 13, &#x27;data role measured&#x27;: 13, &#x27;curves no unit names (left out)&#x27;: 12}
+step i: {&#x27;merged&#x27;: 18, &#x27;caveat merged&#x27;: 2, &#x27;definition merged&#x27;: 2, &#x27;kept&#x27;: 175}
+step n: {&#x27;comparison series&#x27;: 1}
+step j: {&#x27;derived_needs_outside_fact&#x27;: 9, &#x27;derived coating_mass_fraction&#x27;: 3, &#x27;derived deposition_rate&#x27;: 3}
+step k: {&#x27;statement from the record&#x27;: 162, &#x27;statement_copies_text (reported by check)&#x27;: 72, &#x27;statement assembled&#x27;: 19}
+diff against the gold (type, gold, compiled, matched, precision, recall):
+  setting        89   40   21  0.53  0.24
+  observation    89   58   20  0.34  0.22
+  cited          57    3    3  1.00  0.05
+  claim          57   17   11  0.65  0.19
+  caveat         53    7    7  1.00  0.13
+  activity       41   33   29  0.88  0.71
+  derived        31   39   21  0.54  0.68
+  model          18    8    8  1.00  0.44
+  entity         18    4    0  0.00  0.00
+  definition     16    9    2  0.22  0.12
+  identity        3    0    0     -  0.00
+  paper           1    1    1  1.00  1.00
+  comparison      1    1    0  0.00  0.00
+gold definitions with an eq* element in evidence: 6/16
+gold model rows with quantity and value: 2: {&#x27;other&#x27;: 2}
+observations: gold 89, compiled 58, matched 20
+gor03: 157 gold rows, 22 compiled facts without a gold match
+gor03: check --dir 54 problems; T6 55/157
+mat22: 1071 gold rows, 110 compiled facts without a gold match
+mat22: check --dir 267 problems; T6 273/1071
+art19: 214 gold rows, 39 compiled facts without a gold match
+art19: check --dir 62 problems; T6 78/214
+ela03: 561 gold rows, 78 compiled facts without a gold match
+ela03: check --dir 161 problems; T6 168/561
+yim20: 900 gold rows, 167 compiled facts without a gold match
+yim20: check --dir 318 problems; T6 435/900
+yim22: 608 gold rows, 241 compiled facts without a gold match
+yim22: check --dir 232 problems; T6 318/608
+hei24: 549 gold rows, 125 compiled facts without a gold match
+hei24: check --dir 532 problems; T6 276/549
+yli18: 243 gold rows, 77 compiled facts without a gold match
+yli18: check --dir 156 problems; T6 138/243
+gao15: 225 gold rows, 19 compiled facts without a gold match
+gao15: check --dir 54 problems; T6 81/225
+zou23: 164 gold rows, 63 compiled facts without a gold match
+zou23: check --dir 109 problems; T6 53/164
+mat23: 191 gold rows, 84 compiled facts without a gold match
+mat23: check --dir 137 problems; T6 63/191
+gre23: 474 gold rows, 79 compiled facts without a gold match
+gre23: check --dir 130 problems; T6 136/474
+round 5 acceptance (grow.py audit_round)
+A1: 92 decisions, 298 rows: effect {&#x27;yes&#x27;: 292, &#x27;n/a&#x27;: 6}
+A2: 44 promotions: {&#x27;alias (curated)&#x27;: 25, &#x27;symbol (paper-local)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 7, &#x27;id (curated)&#x27;: 6, &#x27;agree&#x27;: 5}
+A3: 3 open rows: {&#x27;other&#x27;: 1, &#x27;pending&#x27;: 2}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 40 promotions: {&#x27;id (curated)&#x27;: 34, &#x27;agree&#x27;: 2, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 18 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 10}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 6, &#x27;yes&#x27;: 84, &#x27;no effect&#x27;: 2}
+A2: 204 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;alias (curated)&#x27;: 39, &#x27;alias (user decision)&#x27;: 17, &#x27;agree&#x27;: 15, &#x27;id (curated)&#x27;: 12, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 46 open rows: {&#x27;pending&#x27;: 37, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
+  10.1039_d3cp05639b:fig4 axis &#x27;1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]&#x27;
+result: PASS
+round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 3}
+A3: 19 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 8, &#x27;new&#x27;: 3}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 3 rows
+  10.1116_6.0002804:fig3 unit &#x27;Time&#x27;
+  10.1116_6.0002804:fig5a unit &#x27;Depth (\times 10^{15} at/cm^{2})&#x27;
+  10.1116_6.0003182:fig6f unit &#x27;temperature&#x27;
+result: PASS
+round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
+A2: 14 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 2, &#x27;symbol (user decision)&#x27;: 10}
+A3: 77 open rows: {&#x27;other&#x27;: 48, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 4}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 4 rows
+  10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
+  10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;Thermal ALD@150°C&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;PE-ALD @150°C&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/kb/tmp/grow_apply_3q83ag0a/psed_v2/ontology/ontology.html: 242 entries, 507 history rows, 41 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+round 5 applied in the sandbox: {&#x27;never&#x27;: 3, &#x27;alias&#x27;: 85, &#x27;reject&#x27;: 4}; 41 rows stay pending; ontology.yaml sha256 efbe52021e69
+
+moved 249 files into place and committed: grow round 5 applied: 0 accepted, 85 aliases, 4 rejected, 3 never; recompiled 13 papers, scored 12 (0 calls)
+
+exit 0
+</pre>
+<h2>4. Written by apply, by decision</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_written_counts.csv</p>
+<table><tr><th>decision</th><th>rows</th><th>aliases</th><th>symbols</th></tr>
+<tr><td>alias</td><td>85</td><td>57</td><td>41</td></tr>
+<tr><td>never</td><td>3</td><td>3</td><td>0</td></tr>
+<tr><td>pending rows left</td><td>41</td><td></td><td></td></tr>
+</table>
+<h2>4. Every row apply wrote (R5_apply.written.csv)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/R5_apply.written.csv</p>
+<table><tr><th>id</th><th>decision</th><th>candidate</th><th>aliases</th><th>symbols</th><th>note</th></tr>
+<tr><td>markov_chain_approach</td><td>alias -&gt; yanguas_gil_markov_chain</td><td>markov_chain_approach</td><td></td><td>Markov chain approach (10.1116_6.0001094)</td><td></td></tr>
+<tr><td>spectroscopic_ellipsometer</td><td>alias -&gt; spectroscopic_ellipsometry</td><td>spectroscopic_ellipsometer</td><td>spectroscopic ellipsometer</td><td></td><td></td></tr>
+<tr><td>2</td><td>alias -&gt; diffraction_angle</td><td>2</td><td></td><td>2Θ (10.1116_6.0002804); 2θ (10.1116_6.0002993); 2θ (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>ald_cycle</td><td>alias -&gt; cycle_number</td><td>ald_cycle</td><td>#ALD cycle</td><td></td><td></td></tr>
+<tr><td>ald_process</td><td>alias -&gt; process_mode</td><td>ald_process</td><td>ALD process</td><td></td><td></td></tr>
+<tr><td>at_h_pulse</td><td>alias -&gt; pulse_time</td><td>at_h_pulse</td><td>at-H pulse</td><td></td><td></td></tr>
+<tr><td>at_h_purge</td><td>alias -&gt; purge_time</td><td>at_h_purge</td><td>at-H purge</td><td></td><td></td></tr>
+<tr><td>channel_design_height</td><td>alias -&gt; feature_width</td><td>channel_design_height</td><td>channel design height</td><td></td><td></td></tr>
+<tr><td>channel_height_h</td><td>alias -&gt; feature_width</td><td>channel_height_h</td><td>channel height H</td><td></td><td></td></tr>
+<tr><td>counts_per_second</td><td>alias -&gt; signal_intensity</td><td>counts_per_second</td><td>Counts per second</td><td></td><td></td></tr>
+<tr><td>counts_s</td><td>alias -&gt; signal_intensity</td><td>counts_s</td><td>Counts/s</td><td></td><td></td></tr>
+<tr><td>coverage</td><td>alias -&gt; normalized_thickness</td><td>coverage</td><td></td><td>Coverage (10.1116_6.0001094)</td><td></td></tr>
+<tr><td>cycle_count</td><td>alias -&gt; cycle_number</td><td>cycle_count</td><td>cycle count</td><td></td><td></td></tr>
+<tr><td>d</td><td>alias -&gt; feature_width</td><td>d</td><td></td><td>d (10.1021_cm0303080)</td><td></td></tr>
+<tr><td>d_i</td><td>alias -&gt; molecule_diameter</td><td>d_i</td><td></td><td>d_I (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>d_s_n_dx_at_x</td><td>alias -&gt; front_slope</td><td>d_s_n_dx_at_x</td><td></td><td>|d(s/N)/dx̃| at x̃₅₀% (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>depth</td><td>alias -&gt; distance</td><td>depth</td><td></td><td>Depth (10.1116_6.0001094); Depth (10.1116_6.0002804); Depth (\times 10^{15} at/cm^{2}) (10.1116_6.0001094); Depth (\times 10^{15} at/cm^{2}) (10.1116_6.0002804)</td><td></td></tr>
+<tr><td>dez_exposure_time</td><td>alias -&gt; pulse_time</td><td>dez_exposure_time</td><td>DEZ exposure time</td><td></td><td></td></tr>
+<tr><td>dez_pressure</td><td>alias -&gt; partial_pressure</td><td>dez_pressure</td><td>DEZ Pressure</td><td></td><td></td></tr>
+<tr><td>distance_cavity_height</td><td>alias -&gt; dimensionless_distance</td><td>distance_cavity_height</td><td>Distance / cavity height</td><td></td><td></td></tr>
+<tr><td>distance_inside_the_channel_x</td><td>alias -&gt; distance</td><td>distance_inside_the_channel_x</td><td>Distance inside the channel x</td><td></td><td></td></tr>
+<tr><td>distance_x</td><td>alias -&gt; distance</td><td>distance_x</td><td>Distance x</td><td></td><td></td></tr>
+<tr><td>elapsed_time_delta_t</td><td>alias -&gt; time</td><td>elapsed_time_delta_t</td><td>Elapsed time, \delta t</td><td></td><td></td></tr>
+<tr><td>exposure_in_langmuirs</td><td>alias -&gt; exposure</td><td>exposure_in_langmuirs</td><td>Exposure, in Langmuirs</td><td></td><td></td></tr>
+<tr><td>exposure_time</td><td>alias -&gt; pulse_time</td><td>exposure_time</td><td>exposure time</td><td></td><td></td></tr>
+<tr><td>exposure_times</td><td>alias -&gt; pulse_time</td><td>exposure_times</td><td>Exposure Times</td><td></td><td></td></tr>
+<tr><td>film_thickness_s</td><td>alias -&gt; film_thickness</td><td>film_thickness_s</td><td>Film thickness S</td><td></td><td></td></tr>
+<tr><td>flow</td><td>alias -&gt; gas_flow_rate</td><td>flow</td><td>flow</td><td></td><td></td></tr>
+<tr><td>gpc_sat</td><td>alias -&gt; saturation_growth_per_cycle</td><td>gpc_sat</td><td>gpc_{sat}</td><td></td><td></td></tr>
+<tr><td>growth_cycles</td><td>alias -&gt; cycle_number</td><td>growth_cycles</td><td>growth cycles</td><td></td><td></td></tr>
+<tr><td>h_flow_ratio</td><td>alias -&gt; plasma_gas_ratio</td><td>h_flow_ratio</td><td>H₂ flow ratio</td><td></td><td></td></tr>
+<tr><td>lhar_gap_size</td><td>alias -&gt; feature_width</td><td>lhar_gap_size</td><td>LHAR gap size</td><td></td><td></td></tr>
+<tr><td>location</td><td>alias -&gt; distance</td><td>location</td><td>Location</td><td></td><td></td></tr>
+<tr><td>loss_in_hydroxyl_feature</td><td>alias -&gt; signal_intensity</td><td>loss_in_hydroxyl_feature</td><td>Loss in Hydroxyl Feature</td><td></td><td></td></tr>
+<tr><td>m</td><td>alias -&gt; molar_mass</td><td>m</td><td></td><td>M (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>m_z_16_o_counts_s</td><td>alias -&gt; signal_intensity</td><td>m_z_16_o_counts_s</td><td>m/z = +16 (O⁺) Counts/s; m/z = -16 (O⁻) Counts/s</td><td></td><td></td></tr>
+<tr><td>m_z_32_o_counts_s</td><td>alias -&gt; signal_intensity</td><td>m_z_32_o_counts_s</td><td>m/z = +32 (O₂⁺) Counts/s; m/z = -32 (O₂⁻) Counts/s</td><td></td><td></td></tr>
+<tr><td>minimum_exposure_time</td><td>alias -&gt; pulse_time</td><td>minimum_exposure_time</td><td>Minimum Exposure Time</td><td></td><td></td></tr>
+<tr><td>mocl_2_o_2_pulse</td><td>alias -&gt; pulse_time</td><td>mocl_2_o_2_pulse</td><td>MoCl_{2}O_{2} pulse</td><td></td><td></td></tr>
+<tr><td>mocl_2_o_2_purge</td><td>alias -&gt; purge_time</td><td>mocl_2_o_2_purge</td><td>MoCl_{2}O_{2} purge</td><td></td><td></td></tr>
+<tr><td>n</td><td>alias -&gt; cycle_number</td><td>n</td><td></td><td>N (10.1039_d0cp03358h); N (10.1039_d1cp04758b); N (10.1116_6.0002804)</td><td></td></tr>
+<tr><td>n_p0</td><td>alias -&gt; reactant_number_density</td><td>n_p0</td><td></td><td>n_P0 (10.1039_d3cp05639b)</td><td></td></tr>
+<tr><td>net_gain_of_gas_moles_delta_n_g</td><td>alias -&gt; gas_moles_per_cycle</td><td>net_gain_of_gas_moles_delta_n_g</td><td>Net gain of gas moles, \Delta n_g</td><td></td><td></td></tr>
+<tr><td>normalized_counts</td><td>alias -&gt; signal_intensity</td><td>normalized_counts</td><td>Normalized counts</td><td></td><td></td></tr>
+<tr><td>normalized_x_ray_counts</td><td>alias -&gt; signal_intensity</td><td>normalized_x_ray_counts</td><td>Normalized X-ray counts</td><td></td><td></td></tr>
+<tr><td>p</td><td>alias -&gt; process_pressure</td><td>p</td><td></td><td>p (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>p_a0</td><td>alias -&gt; partial_pressure</td><td>p_a0</td><td></td><td>p_A0 (10.1039_d3cp05639b)</td><td></td></tr>
+<tr><td>p_i</td><td>alias -&gt; partial_pressure</td><td>p_i</td><td></td><td>p_I (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>p_o</td><td>alias -&gt; partial_pressure</td><td>p_o</td><td></td><td>p_O (10.1116_6.0001094)</td><td></td></tr>
+<tr><td>pd_50_cavity_height</td><td>alias -&gt; coated_aspect_ratio</td><td>pd_50_cavity_height</td><td></td><td>PD^{50%} / cavity height (10.1021_acs.jpcc.9b08176)</td><td></td></tr>
+<tr><td>penetration_depth_x_p</td><td>alias -&gt; penetration_depth</td><td>penetration_depth_x_p</td><td>Penetration depth x_p</td><td></td><td></td></tr>
+<tr><td>plasma_time</td><td>alias -&gt; pulse_time</td><td>plasma_time</td><td>Plasma time</td><td></td><td></td></tr>
+<tr><td>pore_diameter</td><td>alias -&gt; feature_width</td><td>pore_diameter</td><td>Pore Diameter</td><td></td><td></td></tr>
+<tr><td>postion</td><td>alias -&gt; distance</td><td>postion</td><td></td><td>Postion (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>power</td><td>alias -&gt; plasma_power</td><td>power</td><td></td><td>power (10.1116_6.0001094); Power (10.1116_6.0001094)</td><td></td></tr>
+<tr><td>pressure_change_delta_p</td><td>alias -&gt; pressure_rise</td><td>pressure_change_delta_p</td><td>Pressure change, \delta p</td><td></td><td></td></tr>
+<tr><td>pressure_p_a</td><td>alias -&gt; partial_pressure</td><td>pressure_p_a</td><td>Pressure p_A</td><td></td><td></td></tr>
+<tr><td>r_1_2</td><td>alias -&gt; penetration_depth</td><td>r_1_2</td><td></td><td>r_{θ=1/2} (10.1039_d3cp05639b)</td><td></td></tr>
+<tr><td>r_theta_1_2</td><td>alias -&gt; penetration_depth</td><td>r_theta_1_2</td><td></td><td></td><td>nothing new: the target already has this label or symbol</td></tr>
+<tr><td>reactant_exposure_duration</td><td>alias -&gt; pulse_time</td><td>reactant_exposure_duration</td><td>reactant exposure duration</td><td></td><td></td></tr>
+<tr><td>reactant_number_density_n_p</td><td>alias -&gt; reactant_number_density</td><td>reactant_number_density_n_p</td><td>Reactant number density, n_p</td><td></td><td></td></tr>
+<tr><td>reactant_pulse_length</td><td>alias -&gt; pulse_time</td><td>reactant_pulse_length</td><td>reactant pulse length</td><td></td><td></td></tr>
+<tr><td>relative_al_2o_3_coverage</td><td>alias -&gt; normalized_thickness</td><td>relative_al_2o_3_coverage</td><td>Relative Al_2O_3 Coverage</td><td></td><td></td></tr>
+<tr><td>relative_zno_coverage</td><td>alias -&gt; normalized_thickness</td><td>relative_zno_coverage</td><td>Relative ZnO Coverage</td><td></td><td></td></tr>
+<tr><td>rho</td><td>alias -&gt; film_density</td><td>rho</td><td></td><td>rho (10.1039_d1cp04758b); \rho (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>s</td><td>alias -&gt; initial_sticking_coefficient</td><td>s</td><td></td><td>S (10.1021_cm0303080)</td><td></td></tr>
+<tr><td>s_n</td><td>alias -&gt; growth_per_cycle</td><td>s_n</td><td></td><td>s/N (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>sicl4_exposure_time</td><td>alias -&gt; pulse_time</td><td>sicl4_exposure_time</td><td>SiCl4 Exposure Time</td><td></td><td></td></tr>
+<tr><td>sicl4_pressure</td><td>alias -&gt; partial_pressure</td><td>sicl4_pressure</td><td>SiCl4 Pressure</td><td></td><td></td></tr>
+<tr><td>surface_coverage_theta</td><td>alias -&gt; surface_coverage</td><td>surface_coverage_theta</td><td>Surface coverage, \theta</td><td></td><td></td></tr>
+<tr><td>t</td><td>alias -&gt; deposition_temperature</td><td>t</td><td></td><td>T (10.1039_d1cp04758b); T (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>t_deposition</td><td>alias -&gt; deposition_temperature</td><td>t_deposition</td><td></td><td>T_{deposition} (10.1021_acs.chemmater.2c01154)</td><td></td></tr>
+<tr><td>t_p</td><td>alias -&gt; pulse_time</td><td>t_p</td><td></td><td>t_p (10.1063_1.5028178)</td><td></td></tr>
+<tr><td>temperature</td><td>alias -&gt; deposition_temperature</td><td>temperature</td><td></td><td>temperature (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>terminal_slope_ts</td><td>alias -&gt; pressure_rate</td><td>terminal_slope_ts</td><td>Terminal slope, TS</td><td></td><td></td></tr>
+<tr><td>theta</td><td>alias -&gt; surface_coverage</td><td>theta</td><td></td><td>\theta (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>thickness_cycles_s_n</td><td>alias -&gt; growth_per_cycle</td><td>thickness_cycles_s_n</td><td>Thickness/cycles S/N</td><td></td><td></td></tr>
+<tr><td>tilde_x</td><td>alias -&gt; dimensionless_distance</td><td>tilde_x</td><td></td><td>\tilde{x} (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>tma_exposure_time</td><td>alias -&gt; pulse_time</td><td>tma_exposure_time</td><td>TMA Exposure Time</td><td></td><td></td></tr>
+<tr><td>tma_pressure</td><td>alias -&gt; partial_pressure</td><td>tma_pressure</td><td>TMA Pressure</td><td></td><td></td></tr>
+<tr><td>x</td><td>alias -&gt; dimensionless_distance</td><td>x</td><td></td><td>x̃₅₀% (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>aspect_ratio</td><td>alias -&gt; aspect_ratio</td><td>aspect_ratio</td><td>Aspect Ratio (L/D)</td><td></td><td></td></tr>
+<tr><td>composition</td><td>alias -&gt; element_fraction</td><td>composition</td><td>Composition</td><td></td><td></td></tr>
+<tr><td>h</td><td>alias -&gt; feature_width</td><td>h</td><td></td><td>H (10.1039_d0cp03358h); H (10.1039_d1cp04758b); H (10.1063_1.5028178)</td><td></td></tr>
+<tr><td>time</td><td>alias -&gt; time</td><td>time</td><td>Time</td><td></td><td></td></tr>
+<tr><td>integration_time</td><td>never (Instrument settings)</td><td>integration_time</td><td>integration time</td><td></td><td></td></tr>
+<tr><td>energy</td><td>never (Plasma internals)</td><td>energy</td><td>Energy</td><td></td><td></td></tr>
+<tr><td>rf_frequency</td><td>never (Instrument settings)</td><td>rf_frequency</td><td>RF frequency</td><td></td><td></td></tr>
+</table>
+<h2>4. Scores of the twelve: every changed column (before apply -&gt; after)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before</th><th>after</th></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>315</td><td>318</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>413</td><td>435</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>509</td><td>522</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>59/154</td><td>81/154</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>265</td><td>267</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>274</td><td>273</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>344</td><td>342</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>110/313</td><td>109/313</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>159</td><td>168</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>189</td><td>192</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>34/57</td><td>35/57</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>4/38</td><td>12/38</td></tr>
+<tr><td>gre23</td><td>check_dir_problems</td><td>126</td><td>130</td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>110</td><td>109</td></tr>
+<tr><td>yim22</td><td>parent_flagged_no</td><td>350</td><td>362</td></tr>
+<tr><td>mat23</td><td>check_dir_problems</td><td>140</td><td>137</td></tr>
+</table>
+<h2>4. Score totals</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_score_totals.csv</p>
+<table><tr><th>column</th><th>before</th><th>after</th></tr>
+<tr><td>check_dir_problems</td><td>2207</td><td>2212</td></tr>
+<tr><td>matched_T6</td><td>2044</td><td>2074</td></tr>
+<tr><td>gold_rows</td><td>5357</td><td>5357</td></tr>
+</table>
+<h2>4. check.py of the twelve: every changed problem class</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_check_by_class.csv</p>
+<table><tr><th>paper</th><th>cls</th><th>before</th><th>after</th></tr>
+<tr><td>yim20</td><td>growth_per_cycle without over= (its definition key; ·)</td><td>0</td><td>3</td></tr>
+<tr><td>mat22</td><td>observation with the setting quantity deposition_temperature (lists.SETTING_QUANTITIES)</td><td>0</td><td>2</td></tr>
+<tr><td>gre23</td><td>observation with the setting quantity deposition_temperature (lists.SETTING_QUANTITIES)</td><td>1</td><td>2</td></tr>
+<tr><td>gre23</td><td>observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td><td>4</td><td>7</td></tr>
+<tr><td>zou23</td><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (·)</td><td>25</td><td>24</td></tr>
+<tr><td>mat23</td><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (·)</td><td>14</td><td>10</td></tr>
+<tr><td>mat23</td><td>statement repeats eight words of · in a row</td><td>77</td><td>78</td></tr>
+</table>
+<h2>4. Audits 1-5 after apply</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s4_audits.csv</p>
+<table><tr><th>round</th><th>result</th><th>a3</th><th>new_since_apply</th></tr>
+<tr><td>1</td><td>PASS</td><td>18 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 10}; pending candidates accounted 41/41</td><td>0</td></tr>
+<tr><td>2</td><td>PASS</td><td>46 open rows: {&#x27;pending&#x27;: 37, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 1}; pending candidates accounted 41/41</td><td>1</td></tr>
+<tr><td>3</td><td>PASS</td><td>19 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 8, &#x27;new&#x27;: 3}; pending candidates accounted 41/41</td><td>3</td></tr>
+<tr><td>4</td><td>PASS</td><td>77 open rows: {&#x27;other&#x27;: 48, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 4}; pending candidates accounted 41/41</td><td>4</td></tr>
+<tr><td>5</td><td>PASS</td><td>3 open rows: {&#x27;other&#x27;: 1, &#x27;pending&#x27;: 2}; pending candidates accounted 41/41</td><td>0</td></tr>
+</table>
+<h2>4. rounds.csv</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/rounds.csv</p>
+<table><tr><th>round</th><th>opened</th><th>applied</th><th>pids</th><th>dois</th><th>status</th><th>n_candidates</th><th>n_accepted</th><th>n_alias</th><th>n_rejected</th><th>n_never</th></tr>
+<tr><td>0</td><td>2026-10-03</td><td>2026-10-22</td><td>10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804</td><td>10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154;10.1116/6.0003182;10.1021/cm0303080;10.1002/cvde.200390005;10.1063/1.5028178;10.1116/1.4903941;10.1021/acs.jpcc.9b08176;10.1039/d1cp04758b;10.1039/d3cp05639b;10.1116/6.0002993;10.1116/6.0002804</td><td>applied</td><td></td><td>235</td><td>0</td><td>0</td><td>45</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>2026-10-23</td><td>10.1063_1.5028178;10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154</td><td>10.1063/1.5028178;10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154</td><td>applied</td><td>47</td><td>0</td><td>2</td><td>1</td><td>39</td></tr>
+<tr><td>2</td><td>2026-10-23</td><td>2026-10-23</td><td>10.1021_cm0303080;10.1039_d3cp05639b;10.1002_cvde.200390005</td><td>10.1021/cm0303080;10.1039/d3cp05639b;10.1002/cvde.200390005</td><td>applied</td><td>37</td><td>3</td><td>5</td><td>6</td><td>14</td></tr>
+<tr><td>3</td><td>2026-10-23</td><td>2026-10-24</td><td>10.1116_6.0003182;10.1021_acs.jpcc.9b08176;10.1116_6.0002804</td><td>10.1116/6.0003182;10.1021/acs.jpcc.9b08176;10.1116/6.0002804</td><td>applied</td><td>8</td><td>2</td><td>8</td><td>3</td><td>1</td></tr>
+<tr><td>4</td><td>2026-10-24</td><td>2026-10-24</td><td>10.1116_1.4903941;10.1039_d1cp04758b;10.1116_6.0002993</td><td>10.1116/1.4903941;10.1039/d1cp04758b;10.1116/6.0002993</td><td>applied</td><td>29</td><td>2</td><td>3</td><td>0</td><td>19</td></tr>
+<tr><td>5</td><td>2026-10-24</td><td>2026-10-24</td><td>10.1116_6.0001094</td><td>10.1116/6.0001094</td><td>applied</td><td>25</td><td>0</td><td>85</td><td>4</td><td>3</td></tr>
+</table>
+<h2>4. wer21 5h (gaps seen first, with the user&#x27;s note)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.5h.csv</p>
+<table><tr><th>area</th><th>value</th><th>count</th><th>other_papers_compared</th></tr>
+<tr><td>compile step counter</td><td>step_1c:figure label other (y), never</td><td>4</td><td>12</td></tr>
+<tr><td>compile step counter</td><td>step_1c:peak not named by exactly one unit (left out)</td><td>16</td><td>12</td></tr>
+<tr><td>compile step counter</td><td>step_a_fields:effect</td><td>2</td><td>12</td></tr>
+<tr><td>compile step counter</td><td>step_h:place: setting about a unit of unresolved role -&gt; the unit</td><td>24</td><td>12</td></tr>
+<tr><td>compile step counter</td><td>step_input:unit derived (derived: curve_per_unit, None)</td><td>26</td><td>12</td></tr>
+<tr><td>figure label outcome</td><td>x: resolved, unit not printed</td><td>3</td><td>12</td></tr>
+<tr><td>figure label outcome</td><td>y: never</td><td>4</td><td>12</td></tr>
+<tr><td>figure stage (noted by the user, P176 (user))</td><td>fig11 right axis &#x27;Thickness (nm)&#x27; not read by the figure stage</td><td></td><td></td></tr>
+</table>
+<h2>5. Cards: one line per paper</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s5_cards.csv</p>
+<table><tr><th>paper</th><th>cards_gold</th><th>cards_compiled</th><th>paired</th><th>conditions_per_card_mean</th><th>conditions_per_card_median</th><th>model_run_cards</th><th>cards_with_model_link</th><th>comparison_rows_with_3_ticked</th><th>card_alone_panel</th><th>errors</th></tr>
+<tr><td>yli18</td><td>11</td><td>12</td><td>11</td><td>27.8</td><td>31.0</td><td>10</td><td>10</td><td>45</td><td>C 0.01 s (model run, c:yli18:mrun:mr_tp_0_01s)Conditionsenti</td><td>0</td></tr>
+<tr><td>yim20</td><td>31</td><td>25</td><td>25</td><td>33.6</td><td>39</td><td>9</td><td>9</td><td>39</td><td>C 100 nm (model run, c:yim20:mrun:mr_h100)Conditionssimulati</td><td>0</td></tr>
+<tr><td>mat22</td><td>54</td><td>44</td><td>34</td><td>63.9</td><td>63.0</td><td>0</td><td>0</td><td>99</td><td>C film of at plasma_gas_ratio=0.2; deposition_temperature=10</td><td>0</td></tr>
+<tr><td>ela03</td><td>28</td><td>32</td><td>15</td><td>14.8</td><td>10.0</td><td>20</td><td>20</td><td>43</td><td>C 10 (model run, c:ela03:mrun:sim_zno_10s)Conditionssimulati</td><td>0</td></tr>
+<tr><td>hei24</td><td>83</td><td>166</td><td>83</td><td>34.0</td><td>34.0</td><td>166</td><td>166</td><td>40</td><td>C Sphere (s = 2) (model run, c:hei24:mrun:10_1039_d3cp05639b</td><td>0</td></tr>
+<tr><td>gor03</td><td>6</td><td>2</td><td>2</td><td>12</td><td>12.0</td><td>1</td><td>1</td><td>46</td><td>C 30 (specimen, c:gor03:ent:specimen_30k_l)Conditionsdeposit</td><td>0</td></tr>
+<tr><td>gre23</td><td>18</td><td>4</td><td>0</td><td>32</td><td>32.0</td><td>0</td><td>0</td><td>92</td><td>C 120 (specimen, c:gre23:ent:specimen_120)Conditionsdepositi</td><td>0</td></tr>
+<tr><td>art19</td><td>12</td><td>10</td><td>10</td><td>8.7</td><td>9.5</td><td>2</td><td>2</td><td>34</td><td>C SiO2, 120 s (specimen, c:art19:ent:specimen_sio2_120s)Cond</td><td>0</td></tr>
+<tr><td>zou23</td><td>8</td><td>25</td><td>5</td><td>15.9</td><td>15</td><td>0</td><td>0</td><td>51</td><td>C ALD film obtained at 350 °C (specimen, c:zou23:ent:zou23_s</td><td>0</td></tr>
+<tr><td>gao15</td><td>15</td><td>4</td><td>4</td><td>27.5</td><td>27.0</td><td>0</td><td>0</td><td>41</td><td>C 1000 nm (specimen, c:gao15:ent:specimen_tio2_1000nm)Condit</td><td>0</td></tr>
+<tr><td>yim22</td><td>68</td><td>80</td><td>61</td><td>55.9</td><td>62.0</td><td>72</td><td>72</td><td>58</td><td>C 0.5 (model run, c:yim22:mrun:mr_fig5a_c3)Conditionsentity&#x27;</td><td>0</td></tr>
+<tr><td>mat23</td><td>14</td><td>15</td><td>7</td><td>19.5</td><td>20</td><td>0</td><td>0</td><td>53</td><td>C PE-ALD at 225 °C (20 nm) (specimen, c:mat23:ent:mat23_spec</td><td>0</td></tr>
+<tr><td>wer21</td><td>0</td><td>43</td><td>0</td><td>10.0</td><td>1</td><td>11</td><td>11</td><td>5</td><td>C 10.0 sccm (specimen, c:wer21:unit:10_1116_6_0001094_fig6a_</td><td>0</td></tr>
+</table>
+<h2>5. Errors (graph_page.py and the comparison view)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.s5_errors.csv</p>
+<table><tr><th>paper</th><th>where</th><th>error</th></tr>
+<tr><td></td><td></td><td>none</td></tr>
+</table>
+<h2>Code diff</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P176.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 48bc0a9..2e7b4be 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -356,9 +356,11 @@ def panel_items(pid, obj):
+ 
+ def curve_units(pid, obj):
+     &quot;&quot;&quot;P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit&#x27;s data refs hold. id
+-    &lt;pid&gt;:&lt;panel&gt;:&lt;curve id&gt;. Role (P162 rule 1) from the paper&#x27;s pass-0 units: a simulation and no run -&gt; model_run, a run and no
+-    simulation -&gt; run; P175 (user): both, or neither -&gt; role null, flagged &quot;role unresolved&quot; (the figure stage&#x27;s kind decides no role),
+-    its data role null. Parent: the paper&#x27;s one simulation (model_run) or its one run (run), else null, flagged &quot;parent unresolved&quot;.
++    &lt;pid&gt;:&lt;panel&gt;:&lt;curve id&gt;. Role (P176, user: explicit evidence only): model_run when the figure stage marks the curve simulated or fit
++    (figures.json kind simulated, P87: a model or fit word in its legend label, else in the panel&#x27;s content line or caption); else from the
++    paper&#x27;s pass-0 units: a run and no simulation -&gt; run, a simulation and no run -&gt; model_run; else null, flagged &quot;role unresolved&quot; (a row
++    under the paper all the same, compile tree()). role_from says which. Parent: the paper&#x27;s one simulation (model_run) or its one run
++    (run), else null, flagged &quot;parent unresolved&quot;.
+     introduced_in the panel&#x27;s caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with its
+     role; conditions (P163 rule 1, P175): legend_conditions() of the legend label against the panel&#x27;s series_axis; origin &quot;derived:
+     &lt;layout&gt;&quot;. P166: no unit in a panel whose legend names methods (method_panels). P175 (user): the units stay as derived, two with
+@@ -379,7 +381,10 @@ def curve_units(pid, obj):
+             c = it[&quot;curve&quot;]
+             if it[&quot;held&quot;]:
+                 continue
+-            role = by_list                                                     # P175: None when the unit list does not decide
++            marked = (c.get(&quot;data_kind&quot;) if it[&quot;cell&quot;] else c.get(&quot;kind&quot;)) == &quot;simulated&quot;   # P176: the figure stage&#x27;s explicit mark
++            role = &quot;model_run&quot; if marked else by_list
++            role_from = ((&quot;figure stage: simulated or fit (&quot; + (&quot;its legend label&quot; if c.get(&quot;series&quot;, {}).get(&quot;cls&quot;) == &quot;kind&quot; else &quot;the panel&#x27;s content line or caption&quot;)
++                          + &quot;)&quot;) if marked else {&quot;run&quot;: &quot;unit list: runs, no simulation&quot;, &quot;model_run&quot;: &quot;unit list: a simulation, no runs&quot;}.get(by_list, &quot;&quot;))
+             drole = {&quot;model_run&quot;: &quot;simulated&quot;, &quot;run&quot;: &quot;measured&quot;}.get(role)
+             par = sims if role == &quot;model_run&quot; else runs if role == &quot;run&quot; else []
+             label = ((c.get(&quot;label&quot;) or c.get(&quot;value_text&quot;) or &quot;&quot;) if it[&quot;cell&quot;] else c.get(&quot;series&quot;, {}).get(&quot;label_raw&quot;) or &quot;&quot;).strip()
+@@ -391,7 +396,7 @@ def curve_units(pid, obj):
+                             structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                             data=[dict(id=c[&quot;id&quot;], role=drole)], evidence_quote=label or None, origin=f&quot;derived: {lays[panel][&#x27;layout&#x27;]}&quot;,
+                             conditions=conds, series_axis=axes.get(panel, &quot;&quot;), panel=panel, curve=c[&quot;id&quot;], y=(c.get(&quot;quantity&quot;) if it[&quot;cell&quot;] else c.get(&quot;y&quot;, {}).get(&quot;quantity&quot;)) or &quot;&quot;,
+-                            flag=&quot;; &quot;.join(flags), aliases=[]))
++                            role_from=role_from, flag=&quot;; &quot;.join(flags), aliases=[]))
+     return dedupe_units(out)
+ 
+ 
+@@ -481,9 +486,6 @@ class Run:
+             self.count(&quot;input&quot;, f&quot;unit derived ({u[&#x27;origin&#x27;]}, {u[&#x27;role&#x27;]})&quot;)
+             dkind = &quot;model_input&quot; if u[&quot;role&quot;] == &quot;model_run&quot; else &quot;stated&quot;
+             for c in u[&quot;conditions&quot;] if u[&quot;introduced_in&quot;] else []:              # P163: the legend label&#x27;s values, resolved by step a0
+-                if not u[&quot;role&quot;]:                                               # P175: a unit of role null has no row, its legend no setting
+-                    self.count(&quot;input&quot;, &quot;condition of a derived unit of role null (no row)&quot;)
+-                    continue
+                 if c[&quot;kind&quot;] == &quot;qualifier&quot;:                                    # P175: a qualifier value qualifies the unit&#x27;s data (figures())
+                     self.count(&quot;input&quot;, &quot;legend qualifier of a derived unit (on its data)&quot;)
+                     continue
+@@ -864,9 +866,12 @@ class Run:
+             rows.append(row(fact_id=self.node[it[&quot;id&quot;]][0], type=&quot;entity&quot;, how=how(it), evidence=ok_ev(it.get(&quot;introduced_in&quot;) or []),
+                             parent=par[0] if par[1] == &quot;simulation&quot; else k, label_as_printed=it.get(&quot;name_as_printed&quot;) or it[&quot;id&quot;],
+                             statement=f&quot;model run {it[&#x27;id&#x27;]} ({it.get(&#x27;name_as_printed&#x27;)!r}{origin(it)})&quot;))
+-        for it in items:
+-            if it.get(&quot;origin&quot;) and not it.get(&quot;role&quot;):                         # P175: no row; the data it holds is left out (figures())
+-                self.count(&quot;h&quot;, &quot;derived unit of role null (role unresolved: no row)&quot;)
++        for it in items:                                                        # P176 (user): a derived unit of role null: a row under the paper
++            if it.get(&quot;origin&quot;) and not it.get(&quot;role&quot;):                         # with its data and its legend&#x27;s settings (nothing dropped)
++                self.node[it[&quot;id&quot;]] = (f&quot;{k}:unit:{slug(it[&#x27;id&#x27;])}&quot;, &quot;unresolved&quot;)
++                rows.append(row(fact_id=self.node[it[&quot;id&quot;]][0], type=&quot;entity&quot;, how=&quot;inferred&quot;, evidence=ok_ev(it.get(&quot;introduced_in&quot;) or []), parent=k,
++                                label_as_printed=it.get(&quot;name_as_printed&quot;) or it[&quot;id&quot;], statement=f&quot;derived unit {it[&#x27;id&#x27;]} ({it.get(&#x27;name_as_printed&#x27;)!r}{origin(it)}): role unresolved&quot;))
++                self.count(&quot;h&quot;, &quot;derived unit of role null (role unresolved: a row under the paper)&quot;)
+         for it in items:                                                        # P175: a deduplicated derived unit&#x27;s other ids name its row
+             for al in it.get(&quot;aliases&quot;) or [] if it[&quot;id&quot;] in self.node else []:
+                 self.node.setdefault(al, self.node[it[&quot;id&quot;]])
+@@ -1021,7 +1026,7 @@ class Run:
+                 unowned.append(cu); continue
+             nid, role = self.node[own[0]]
+             dr = drole[(own[0], cu[&quot;id&quot;])]                                      # P146: the row type from the data role (figures.json kind not read)
+-            if role not in (&quot;model_run&quot;, &quot;specimen&quot;, &quot;run&quot;):
++            if role not in (&quot;model_run&quot;, &quot;specimen&quot;, &quot;run&quot;, &quot;unresolved&quot;):
+                 self.count(&quot;1c&quot;, f&quot;curve named by a {role} (left out)&quot;); continue
+             if dr == &quot;measured&quot;:
+                 result(cu, &quot;@meas:&quot; + nid, &quot;observation&quot;, own[0])
+@@ -1195,6 +1200,10 @@ class Run:
+             r[&quot;parent_filled&quot;] = True
+             return recipe, f&quot;about {&#x27;null&#x27; if not a else &#x27;unknown&#x27;} -&gt; recipe (flagged)&quot;
+         rid, role = self.node[a]
++        if role == &quot;unresolved&quot;:                                                # P176: a derived unit of role null: its settings on its row,
++            if t in (&quot;observation&quot;, &quot;derived&quot;) or (t == &quot;setting&quot; and mm):     # its results under its measurement
++                return self.measurement(rid, mm), f&quot;{t} about a unit of unresolved role -&gt; its measurement&quot;
++            return rid, f&quot;{t} about a unit of unresolved role -&gt; the unit&quot;
+         setting_here = t == &quot;setting&quot; and not mm
+         if role in (&quot;run&quot;, &quot;specimen&quot;):
+             run = rid if role == &quot;run&quot; else (self.up[rid] if self.node_role(self.up[rid]) == &quot;run&quot; else &quot;&quot;)
+diff --git a/psed_v2/kb/extract/inspection.py b/psed_v2/kb/extract/inspection.py
+index b1c1bc5..df7bd2e 100644
+--- a/psed_v2/kb/extract/inspection.py
++++ b/psed_v2/kb/extract/inspection.py
+@@ -15,7 +15,7 @@ the run wrote (kb/records, kb/compiled, kb/&lt;pid&gt;.figures.json, kb/import_panels.
+      read as elements (a section by the numbering of its heading elements, a figure or a table by its element ids), and whether a compiled
+      fact of that entry sits at those elements: yes / other entry / none.
+   5h gaps seen first: every value of 5a-5f that no other compiled paper showed (unmapped field and action, drop step and reason, figure
+-     flag and label outcome, compile step counter, check.py problem class).
++     flag and label outcome, compile step counter, check.py problem class); P176: and the rows of kb/inspection_notes.csv for the paper.
+ 
+     python3 psed_v2/kb/extract/inspection.py &lt;paper&gt; [--prefix RUN_&lt;key&gt;]
+ &quot;&quot;&quot;
+@@ -34,6 +34,7 @@ import pass0_paper as P0
+ import score as S
+ 
+ REPORTS = C.V2 / &quot;kb&quot; / &quot;reports&quot;
++NOTES = C.V2 / &quot;kb&quot; / &quot;inspection_notes.csv&quot;                                   # P176 (user): gaps a person saw (paper key or id, area, note, source)
+ SECTIONS = (&quot;5a&quot;, &quot;5b&quot;, &quot;5c&quot;, &quot;5d_units&quot;, &quot;5d_consistency&quot;, &quot;5d_simulation&quot;, &quot;5d_no_record&quot;, &quot;5d_about_paper&quot;, &quot;5e&quot;, &quot;5f&quot;, &quot;5g&quot;, &quot;5h&quot;)
+ TITLES = {&quot;5a&quot;: &quot;5a. Coverage by element (every element)&quot;, &quot;5b&quot;: &quot;5b. Drops by step (every dropped record)&quot;, &quot;5c&quot;: &quot;5c. Unmapped by kind (every open label)&quot;,
+           &quot;5d_units&quot;: &quot;5d. Units: pass 0 and derived from curves&quot;, &quot;5d_consistency&quot;: &quot;5d. Units: panel consistency (pass0_paper)&quot;,
+@@ -165,7 +166,8 @@ def inspect(pid, prefix):
+     out[&quot;5d_units&quot;] = [dict(origin=&quot;pass 0&quot;, unit=u.get(&quot;id&quot;), role=u.get(&quot;role&quot;), name_as_printed=u.get(&quot;name_as_printed&quot;) or &quot;&quot;, parent=u.get(&quot;parent&quot;) or &quot;&quot;, panel=&quot;&quot;,
+                             data=len(u.get(&quot;data&quot;) or []), records_about=abouts.get(u.get(&quot;id&quot;), 0), conditions_from_legend=0, flag=&quot;&quot;) for u in own] + \
+         [dict(origin=u[&quot;origin&quot;], unit=u[&quot;id&quot;], role=u[&quot;role&quot;], name_as_printed=u[&quot;name_as_printed&quot;] or &quot;&quot;, parent=u[&quot;parent&quot;] or &quot;&quot;, panel=u[&quot;panel&quot;], data=len(u[&quot;data&quot;]),
+-              records_about=abouts.get(u[&quot;id&quot;], 0), conditions_from_legend=conds.get(u[&quot;id&quot;], 0), flag=&quot;; &quot;.join(x for x in (u.get(&quot;flag&quot;, &quot;&quot;), u.get(&quot;merge&quot;, &quot;&quot;)) if x)) for u in derived]
++              records_about=abouts.get(u[&quot;id&quot;], 0), conditions_from_legend=conds.get(u[&quot;id&quot;], 0), role_from=u.get(&quot;role_from&quot;, &quot;&quot;),
++              flag=&quot;; &quot;.join(x for x in (u.get(&quot;flag&quot;, &quot;&quot;), u.get(&quot;merge&quot;, &quot;&quot;)) if x)) for u in derived]
+     cons = P0.consistency(pid, p0obj)
+     out[&quot;5d_consistency&quot;] = [{k: (&quot;;&quot;.join(v) if isinstance(v, list) else v) for k, v in r.items()} for r in cons]
+     sims = []
+@@ -257,6 +259,8 @@ def inspect(pid, prefix):
+     for r in out[&quot;5f&quot;]:
+         mine[&quot;check.py problem class&quot;][r[&quot;cls&quot;]] += 1
+     out[&quot;5h&quot;] = [dict(area=a, value=v, count=n, other_papers_compared=len(others)) for a, c in mine.items() for v, n in sorted(c.items()) if v not in seen[a]]
++    out[&quot;5h&quot;] += [dict(area=f&quot;{x[&#x27;area&#x27;]} (noted by the user, {x[&#x27;source&#x27;]})&quot;, value=x[&quot;note&quot;], count=&quot;&quot;, other_papers_compared=&quot;&quot;)   # P176: what no code reports
++                  for x in rd(NOTES) if x[&quot;paper&quot;] in (pid, C.E.PAPERS[pid])]
+     for sec in SECTIONS:
+         write(prefix, sec, out.get(sec, []))
+     return out
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index d8df711..a96d388 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -982,6 +982,10 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = &quot;other&quot;, f&quot;the value row of the categorical {u[&#x27;field&#x27;]}: propose makes no candidate of it (P168)&quot;
+             elif u.get(&quot;action&quot;, &quot;&quot;).startswith(&quot;kept (names the model &quot;):
+                 cls, why = &quot;other&quot;, f&quot;a record of no quantity that names a model entry: {u[&#x27;action&#x27;][6:-1]} (P172)&quot;
++            elif cid in decided_ids and k not in snap_of:                      # P176 (user, the P162 rule): born after apply, its id decided
++                h = decided_ids[cid]                                            # before the row existed; carried
++                cls, why = NEW_SINCE_APPLY, (f&quot;candidate {cid} decided in round {h[&#x27;round&#x27;]} ({h[&#x27;action&#x27;]}&quot; + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;)
++                                             + &quot;): the row was born after apply; carried into the next propose&quot;)
+             elif cid in decided_ids and decided_ids[cid][&quot;action&quot;] != &quot;reject&quot; and scoped_elsewhere(p, u[&quot;label&quot;]):   # P175 (user)
+                 h = decided_ids[cid]
+                 cls, why = NEW_SINCE_APPLY, (f&quot;candidate {cid} decided in round {h[&#x27;round&#x27;]} ({h[&#x27;action&#x27;]}&quot; + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;)
+@@ -992,6 +996,8 @@ def open_rows(n, compiled, unm, snap):
+                     &quot;a rejected label is written nowhere (by design)&quot; if h[&quot;action&quot;] == &quot;reject&quot; else &quot;decided, but the row is still open&quot;)
+             elif not u[&quot;label&quot;]:
+                 cls, why = &quot;cell without printed label&quot;, f&quot;candidate {cid or &#x27;none&#x27;}&quot;
++            elif k in snap_of and cid not in snap_of[k]:                        # P176 (user, the P162 rule): regrouped since apply
++                cls, why = NEW_SINCE_APPLY, f&quot;regrouped since apply: candidate {&#x27;;&#x27;.join(sorted(set(snap_of[k])))} at the snapshot, {cid or &#x27;none&#x27;} now; carried into the next propose&quot;
+             elif k not in snap_of:                                              # P162: born after apply (absent from the snapshot)
+                 cls, why = NEW_SINCE_APPLY, f&quot;candidate {cid or &#x27;none&#x27;}: not in R{n}_apply.decision_rows.csv; carried into the next propose&quot;
+             else:
+@@ -1220,19 +1226,20 @@ def audit_round(n):
+     write(REPORTS / f&quot;R{n}_apply.A2.csv&quot;, A2_COLS, a2)
+     a3, fails3, _ = open_rows(n, compiled, unm, snap)
+     fails += fails3
+-    pend = {x[&quot;id&quot;]: x for x in rd(PENDING)}
+     write(REPORTS / f&quot;R{n}_apply.A3.csv&quot;, A3_COLS, a3)
+     a3p = []
+-    for cid, x in pend.items():
++    open_now = {(r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;field&quot;]) for r in a3}
++    for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
++        cid = x[&quot;id&quot;]
+         xp = [p for p in x[&quot;pids&quot;].split(&quot;;&quot;) if p]
+-        at = [r for r in snap if r[&quot;candidate&quot;] == cid]
+-        now = [r for r in a3 if r[&quot;class&quot;] == f&quot;pending candidate {cid}&quot;]
++        at = [r for r in snap if r[&quot;candidate&quot;] == cid] if int(x[&quot;first_round&quot;] or 0) &lt;= n else []   # P176: keyed by (id, first round): a later
++        now = [r for r in a3 if r[&quot;class&quot;] == f&quot;pending candidate {cid}&quot;]                             # round&#x27;s row of the same id is another candidate
+         if not set(xp) &amp; set(pids) and not at:
+             if not set(xp) &amp; {p.stem for p in COMPILED.glob(&quot;*.facts.csv&quot;)}:
+                 a3p.append(dict(candidate=cid, first_round=x[&quot;first_round&quot;], pids=x[&quot;pids&quot;], rows_at_snapshot=0, open_rows_now=0, accounted=&quot;yes&quot;,
+                                 detail=f&quot;no compiled output for {x[&#x27;pids&#x27;]} (its paper is not compiled)&quot;))
+             continue
+-        lost = [r for r in at if not any(o[&quot;pid&quot;] == r[&quot;pid&quot;] and o[&quot;element&quot;] == r[&quot;element&quot;] and o[&quot;field&quot;] == r[&quot;field&quot;] for o in now)]
++        lost = [r for r in at if (r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;field&quot;]) not in open_now]   # P176: closed; a row regrouped since apply is still open
+         ok = not lost and bool(now)
+         a3p.append(dict(candidate=cid, first_round=x[&quot;first_round&quot;], pids=x[&quot;pids&quot;], rows_at_snapshot=len(at), open_rows_now=len(now), accounted=&quot;yes&quot; if ok else &quot;NO&quot;,
+                         detail=&quot;; &quot;.join(f&quot;{r[&#x27;pid&#x27;]}:{r[&#x27;element&#x27;]} {r[&#x27;field&#x27;]} &#x27;{r[&#x27;label&#x27;]}&#x27; is no longer open&quot; for r in lost) or (&quot;&quot; if now else &quot;no open row&quot;)))
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 2e7b4be..1a7c97c 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -570,6 +570,10 @@ class Run:
+                 if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
+                     r[&quot;names_model&quot;] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
+                     self.count(&quot;a0&quot;, &quot;quantity other naming a model entry (kept)&quot;)
++                mt = vocab_hits(self.pid, &quot;method&quot;, text) if text.strip() and not mh else {}
++                if len(mt) == 1:                                                # P176 (user): one naming a method entry, as a model name
++                    r[&quot;names_method&quot;] = next(iter(mt))
++                    self.count(&quot;a0&quot;, &quot;quantity other naming a method entry (kept)&quot;)
+                 hit = never_of(self.pid, text)
+                 if hit:
+                     r[&quot;never&quot;], r[&quot;never_label&quot;] = hit[&quot;category&quot;], hit[&quot;label&quot;] + (f&quot; (symbol in {hit[&#x27;paper&#x27;]})&quot; if hit.get(&quot;symbol&quot;) == &quot;yes&quot; else &quot;&quot;)
+@@ -705,7 +709,8 @@ class Run:
+                 self.unmapped.append(dict(element=eid, field=&quot;quantity&quot;, id=&quot;other&quot;, label_as_printed=rec.get(&quot;label_as_printed&quot;, &quot;&quot;), unit=rec.get(&quot;unit&quot;, &quot;&quot;),
+                                           candidate=json.dumps(rec.get(&quot;candidate&quot;, {}), ensure_ascii=False),
+                                           action=f&quot;kept (never: {r[&#x27;never_label&#x27;]})&quot; if r.get(&quot;never&quot;) else f&quot;kept (ambiguous: {&#x27;, &#x27;.join(r[&#x27;ambiguous&#x27;])})&quot; if r.get(&quot;ambiguous&quot;)
+-                                          else f&quot;kept (names the model {r[&#x27;names_model&#x27;]})&quot; if r.get(&quot;names_model&quot;) else &quot;kept&quot;,   # P172
++                                          else f&quot;kept (names the model {r[&#x27;names_model&#x27;]})&quot; if r.get(&quot;names_model&quot;)
++                                          else f&quot;kept (names the method {r[&#x27;names_method&#x27;]})&quot; if r.get(&quot;names_method&quot;) else &quot;kept&quot;,   # P172, P176
+                                           never=r.get(&quot;never&quot;, &quot;&quot;), nearest=rec.get(&quot;nearest&quot;, &quot;&quot;) or &quot;&quot;))
+                 self.count(&quot;c&quot;, &quot;quantity_other never (kept)&quot; if r.get(&quot;never&quot;) else &quot;quantity_other (kept)&quot;)
+             out.append(r)
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index a96d388..c75a304 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -229,7 +229,7 @@ def candidates(pids, extra=()):
+             if u[&quot;field&quot;] in categ:                                             # P168 (user): its unit is nothing; no &quot;unit&quot; candidate
+                 log[&quot;categorical&quot;].append(u)
+                 continue
+-            if u.get(&quot;action&quot;, &quot;&quot;).startswith(&quot;kept (names the model &quot;):        # P172: a record naming a model entry is no quantity candidate
++            if u.get(&quot;action&quot;, &quot;&quot;).startswith((&quot;kept (names the model &quot;, &quot;kept (names the method &quot;)):   # P172, P176: a record naming a model or a method entry is no quantity candidate
+                 log[&quot;model_names&quot;].append(u)
+                 continue
+             if u[&quot;field&quot;] == &quot;unit&quot; and not u[&quot;symbol&quot;]:                       # a unit row follows the quantity row of its cell and label
+@@ -349,8 +349,8 @@ def printed_labels(row):
+     &quot;&quot;&quot;The printed labels behind a pending row: its candidate&#x27;s label, then its aliases (the symbols); a pilot row: its id. P172: a row of a
+     round whose candidate is gone (its rows closed meanwhile) and whose evidence is one &#x27;pid:element — &lt;printed&gt;&#x27; item: that printed label.&quot;&quot;&quot;
+     c = candidate_of(row)
+-    if c:
+-        return [c[&quot;label&quot;]] + c[&quot;aliases&quot;]
++    if c:                                                                       # P176: and every member&#x27;s printed label (one record key,
++        return list(dict.fromkeys([c[&quot;label&quot;]] + c[&quot;aliases&quot;] + [u[&quot;label&quot;] for u in c[&quot;members&quot;] if u[&quot;label&quot;]]))   # printed &#x27;Power&#x27; and &#x27;power&#x27;)
+     ev = evidence_items(row)
+     m = re.match(r&quot;^[^:]+:\S+ — (.+)$&quot;, ev[0]) if row[&quot;first_round&quot;] not in (&quot;&quot;, &quot;0&quot;) and len(ev) == 1 else None
+     return [m.group(1).strip()] if m else [row[&quot;id&quot;].replace(&quot;_&quot;, &quot; &quot;)]
+@@ -599,7 +599,8 @@ def add_alias(text, eid, labels):
+     blk = text[s:e]
+     m = re.search(r&quot;(?m)^    aliases: (\[.*\])$&quot;, blk)
+     have = yaml.safe_load(m.group(1)) if m else []
+-    add = [a for a in labels if a.casefold() not in {h.casefold() for h in have}]
++    seen = {X.norm_label(h) for h in have}                                  # P176: one alias per word key (export --check 4), the first printed,
++    add = [&quot; &quot;.join(a.split()) for a in labels if X.norm_label(a) not in seen and not seen.add(X.norm_label(a))]   # on one line
+     if not add:
+         return text
+     line = &quot;    aliases: &quot; + yaml.safe_dump(have + add, default_flow_style=True, allow_unicode=True, width=100000).strip()
+@@ -615,7 +616,7 @@ def add_symbols(text, eid, pairs):
+     m = re.search(r&quot;(?m)^    symbols: (\[.*\])$&quot;, blk)
+     have = yaml.safe_load(m.group(1)) if m else []
+     keys, add = {(X.symbol_key(h[&quot;text&quot;]), h.get(&quot;paper&quot;, &quot;&quot;)) for h in have}, []
+-    for t, p in pairs:
++    for t, p in [(&quot; &quot;.join(str(t).split()), p) for t, p in pairs]:            # P176: on one line
+         if (X.symbol_key(t), p) not in keys:
+             keys.add((X.symbol_key(t), p))
+             add.append(dict(text=t, paper=p))
+@@ -666,8 +667,9 @@ def add_slot(text, cls, eid):
+ def split_labels(row, labels):
+     &quot;&quot;&quot;P164 (user): a decision&#x27;s printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word.&quot;&quot;&quot;
+-    words = [t for t in labels if not symbol_like(t)]
+-    syms = [(t, p) for t in labels if symbol_like(t) for p in label_papers(row, t)]
++    one = lambda t: &quot; &quot;.join(str(t).split())                                   # noqa: E731  P176: a printed line break is layout (one-line YAML)
++    words = list({X.norm_label(t): one(t) for t in reversed([t for t in labels if not symbol_like(t)])}.values())[::-1]   # P176: one per word key (the first)
++    syms = [(one(t), p) for t in labels if symbol_like(t) for p in label_papers(row, t)]
+     return words, syms
+ 
+ 
+@@ -980,8 +982,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = &quot;other&quot;, &quot;a value without a quantity: no record key, or the label is only a units.yaml spelling&quot;
+             elif k in cats:
+                 cls, why = &quot;other&quot;, f&quot;the value row of the categorical {u[&#x27;field&#x27;]}: propose makes no candidate of it (P168)&quot;
+-            elif u.get(&quot;action&quot;, &quot;&quot;).startswith(&quot;kept (names the model &quot;):
+-                cls, why = &quot;other&quot;, f&quot;a record of no quantity that names a model entry: {u[&#x27;action&#x27;][6:-1]} (P172)&quot;
++            elif u.get(&quot;action&quot;, &quot;&quot;).startswith((&quot;kept (names the model &quot;, &quot;kept (names the method &quot;)):
++                cls, why = &quot;other&quot;, f&quot;a record of no quantity that names a {&#x27;model&#x27; if &#x27;the model&#x27; in u[&#x27;action&#x27;] else &#x27;method&#x27;} entry: {u[&#x27;action&#x27;][6:-1]} (P172, P176)&quot;
+             elif cid in decided_ids and k not in snap_of:                      # P176 (user, the P162 rule): born after apply, its id decided
+                 h = decided_ids[cid]                                            # before the row existed; carried
+                 cls, why = NEW_SINCE_APPLY, (f&quot;candidate {cid} decided in round {h[&#x27;round&#x27;]} ({h[&#x27;action&#x27;]}&quot; + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;)
+@@ -1010,6 +1012,20 @@ def open_rows(n, compiled, unm, snap):
+     return a3, fails, src
+ 
+ 
++def figure_label(pid, element, key):
++    &quot;&quot;&quot;P176: a figure label of kb/&lt;pid&gt;.figures.json (the inventory&#x27;s labels, P174) at an element and with a key, as the import resolved it:
++    dict(quantity, how), or None.&quot;&quot;&quot;
++    p = V2 / &quot;kb&quot; / f&quot;{pid}.figures.json&quot;
++    F = json.loads(p.read_text(encoding=&quot;utf-8&quot;)) if p.exists() else {}
++    for inv in F.get(&quot;inventory&quot;, []):
++        els = [f&quot;fig{inv[&#x27;figure&#x27;]}{inv.get(&#x27;panel&#x27;, &#x27;&#x27;)}&quot;, f&quot;fig{inv[&#x27;figure&#x27;]}&quot;, f&quot;fig{inv[&#x27;figure&#x27;]}.cap&quot;]
++        if element in els:
++            hit = next((x for x in inv.get(&quot;labels&quot;) or [] if x[&quot;key&quot;].strip() == key), None)
++            if hit:
++                return dict(quantity=hit[&quot;quantity&quot;], how=hit.get(&quot;how&quot;, &quot;&quot;))
++    return None
++
++
+ _SCOPE = {}
+ 
+ 
+@@ -1165,6 +1181,14 @@ def audit_round(n):
+             if r[&quot;pid&quot;] not in a1p:
+                 a1.append(dict(row, now=&quot;none&quot;, effect=&quot;n/a&quot;, reason=f&quot;no compiled output for {r[&#x27;pid&#x27;]}&quot;))
+                 continue
++            if u is None and r[&quot;field&quot;] == &quot;axis&quot;:                              # P176: a figure label closes at import (kb/&lt;pid&gt;.figures.json)
++                fl = figure_label(r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;label&quot;])
++                ok = bool(fl) and ((act == &quot;alias&quot; and fl[&quot;quantity&quot;] == h[&quot;target&quot;]) or (act == &quot;add&quot; and fl[&quot;quantity&quot;] == cid))
++                a1.append(dict(row, now=f&quot;figure label: {fl[&#x27;quantity&#x27;]} ({fl[&#x27;how&#x27;]})&quot; if fl else &quot;not in unmapped.csv, no figure label&quot;,
++                               effect=&quot;yes&quot; if ok else &quot;no effect&quot;, reason=&quot;&quot; if ok else (f&quot;resolves to {fl[&#x27;quantity&#x27;]}&quot; if fl else &quot;row not found&quot;)))
++                if not ok and act != &quot;reject&quot;:
++                    fails.append(f&quot;A1 {cid}: {r[&#x27;pid&#x27;]}:{r[&#x27;element&#x27;]} {r[&#x27;field&#x27;]} &#x27;{r[&#x27;label&#x27;]}&#x27;: &quot; + (f&quot;resolves to {fl[&#x27;quantity&#x27;]}&quot; if fl else &quot;row not found&quot;))
++                continue
+             if u is None:
+                 p = next((x for i, x in enumerate(pro[r[&quot;pid&quot;]]) if (r[&quot;pid&quot;], i) not in taken_pro and x[&quot;element&quot;] == r[&quot;element&quot;] and x[&quot;field&quot;] == r[&quot;field&quot;]
+                           and (x[&quot;printed&quot;] == r[&quot;label&quot;] or not r[&quot;label&quot;]) and not x[&quot;outcome&quot;].startswith(&quot;not promoted&quot;)), None)
+@@ -1189,9 +1213,9 @@ def audit_round(n):
+             if u[&quot;field&quot;] == &quot;unit&quot; and act in (&quot;alias&quot;, &quot;add&quot;):
+                 a1.append(dict(row, now=&quot;unmapped (open): unit row&quot;, effect=&quot;n/a&quot;, reason=&quot;the record is promoted; its unit is not in units.yaml&quot;))
+                 continue
+-            mm = re.match(r&quot;kept \(names the model (\S+)\)&quot;, u[&quot;action&quot;])
+-            if mm and mm.group(1) == (h[&quot;target&quot;] if act == &quot;alias&quot; else cid):      # P172: the record names the decision&#x27;s model
+-                a1.append(dict(row, now=f&quot;unmapped: {u[&#x27;action&#x27;]}&quot;, effect=&quot;yes&quot;, reason=&quot;a record of no quantity naming the decided model entry&quot;))
++            mm = re.match(r&quot;kept \(names the (model|method) (\S+)\)&quot;, u[&quot;action&quot;])
++            if mm and mm.group(2) == (h[&quot;target&quot;] if act == &quot;alias&quot; else cid):      # P172, P176: the record names the decision&#x27;s model or method
++                a1.append(dict(row, now=f&quot;unmapped: {u[&#x27;action&#x27;]}&quot;, effect=&quot;yes&quot;, reason=f&quot;a record of no quantity naming the decided {mm.group(1)} entry&quot;))
+                 continue
+             key = X.record_key(u)
+             a1.append(dict(row, now=&quot;unmapped (open)&quot; + (f&quot;: {u[&#x27;action&#x27;]}&quot; if u[&quot;action&quot;] != &quot;kept&quot; else &quot;&quot;), effect=&quot;no effect&quot;,
+@@ -1217,6 +1241,8 @@ def audit_round(n):
+             ref = (user.get((x[&quot;id&quot;], &quot;symbol&quot;, X.symbol_key(sym.group(1)))) if sym else user.get((x[&quot;id&quot;], &quot;alias&quot;, X.norm_label(al.group(1)))) if al else None)
+             verdict = &quot;not promoted (ambiguous)&quot; if x[&quot;outcome&quot;].startswith(&quot;not promoted&quot;) else \
+                 (f&quot;{&#x27;symbol&#x27; if sym else &#x27;alias&#x27;} (user decision)&quot; if ref else &quot;symbol (paper-local)&quot; if sym else    # P169: a user&#x27;s alias / symbol
++                 &quot;alias (curated)&quot; if al else &quot;id (curated)&quot; if re.search(r&quot;\bid &#x27;(.*)&#x27;$&quot;, x[&quot;lookup&quot;]) else   # P176 (user): an alias of the entry, or its id,
++                 #                                                                  is a curated equality
+                  &quot;agree&quot; if hr and hr in (hn, hd) else &quot;disagree&quot; if hr else &quot;no meaning text&quot;)
+             a2.append(dict(pid=p, element=x[&quot;element&quot;], field=x[&quot;field&quot;], printed=x[&quot;printed&quot;], record_meaning=x.get(&quot;meaning&quot;, &quot;&quot;), lookup=x[&quot;lookup&quot;], entry=x[&quot;id&quot;],
+                            entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict,
+@@ -1228,7 +1254,8 @@ def audit_round(n):
+     fails += fails3
+     write(REPORTS / f&quot;R{n}_apply.A3.csv&quot;, A3_COLS, a3)
+     a3p = []
+-    open_now = {(r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;field&quot;]) for r in a3}
++    open_now = {(u[&quot;pid&quot;], u[&quot;element&quot;], u[&quot;field&quot;]) for p in a1p for u in unmapped_rows(p) if not u[&quot;never&quot;]}   # P176: the snapshot&#x27;s papers, as A1
++    #                                                                             reads them (a carried row&#x27;s paper is not the round&#x27;s)
+     for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
+         cid = x[&quot;id&quot;]
+         xp = [p for p in x[&quot;pids&quot;].split(&quot;;&quot;) if p]
+@@ -1240,7 +1267,7 @@ def audit_round(n):
+                                 detail=f&quot;no compiled output for {x[&#x27;pids&#x27;]} (its paper is not compiled)&quot;))
+             continue
+         lost = [r for r in at if (r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;field&quot;]) not in open_now]   # P176: closed; a row regrouped since apply is still open
+-        ok = not lost and bool(now)
++        ok = not lost and bool(now or at)
+         a3p.append(dict(candidate=cid, first_round=x[&quot;first_round&quot;], pids=x[&quot;pids&quot;], rows_at_snapshot=len(at), open_rows_now=len(now), accounted=&quot;yes&quot; if ok else &quot;NO&quot;,
+                         detail=&quot;; &quot;.join(f&quot;{r[&#x27;pid&#x27;]}:{r[&#x27;element&#x27;]} {r[&#x27;field&#x27;]} &#x27;{r[&#x27;label&#x27;]}&#x27; is no longer open&quot; for r in lost) or (&quot;&quot; if now else &quot;no open row&quot;)))
+         if not ok:
+diff --git a/psed_v2/kb/graph_page.py b/psed_v2/kb/graph_page.py
+index 91ecc68f..33dd6d4f 100644
+--- a/psed_v2/kb/graph_page.py
++++ b/psed_v2/kb/graph_page.py
+@@ -592,6 +592,8 @@ def cards_page(pid, key):
+ 
+     def gold_data_(T):
+         out = collections.defaultdict(list)
++        if not T.rows:                                                          # P176: a paper without a gold file (14+) has no gold side
++            return out
+         for cid, e in render.gold_curve_units(key).items():
+             out[e].append((cid, fig.get(cid, {}).get(&quot;kind&quot;, &quot;?&quot;), panel(cid)))
+         return out
+@@ -600,7 +602,7 @@ def cards_page(pid, key):
+     run = K.Run(pid)
+     run.read()
+     run.tree()
+-    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)])
++    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)]) if G.rows else dict(pair_of={}, status_g={})   # P176: no gold, no pairs
+     pair, used = {}, set()
+     for want in (&quot;matched&quot;, None):
+         for g in G.cards:
+@@ -685,7 +687,8 @@ def cards_page(pid, key):
+     dr = sum(card_diffs(G, Cm, g, c)[1] for g, c in pairs)
+     stats = dict(paper=key, cards_gold=len(G.cards), cards_compiled=len(Cm.cards), paired=len(pairs), gold_without_counterpart=len(G.cards) - len(pairs),
+                  compiled_without_counterpart=len(Cm.cards) - len(pairs), differing_condition_cells=dc, differing_result_cells=dr)
+-    tbl = lambda T, d: REP.section(f&quot;experiments.csv ({d})&quot;, (V2 / &quot;kb&quot; / &quot;pilot&quot; if T is G else K.OUT) / f&quot;{pid}.experiments.csv&quot;)   # noqa: E731
++    tbl = lambda T, d: (REP.section(f&quot;experiments.csv ({d})&quot;, (V2 / &quot;kb&quot; / &quot;pilot&quot; if T is G else K.OUT) / f&quot;{pid}.experiments.csv&quot;)   # noqa: E731
++                        if ((V2 / &quot;kb&quot; / &quot;pilot&quot; if T is G else K.OUT) / f&quot;{pid}.experiments.csv&quot;).exists() else f&quot;&lt;p&gt;experiments.csv ({d}): no file (P176: a paper without gold)&lt;/p&gt;&quot;)
+     cards = {**card_payload(G, &quot;g&quot;), **card_payload(Cm, &quot;c&quot;)}
+     figs = fig_payload(Fj, dict.fromkeys(i for c in cards.values() for i in c[&quot;data&quot;]))
+     units = unit_table({v[&quot;u&quot;] for c in cards.values() for v in [x[-1] for x in c[&quot;cond&quot;] + c[&quot;res&quot;]]}
+</pre>
+</body></html>

@@ -1,0 +1,376 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 48bc0a9..2e7b4be 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -356,9 +356,11 @@ def panel_items(pid, obj):
+ 
+ def curve_units(pid, obj):
+     """P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit's data refs hold. id
+-    <pid>:<panel>:<curve id>. Role (P162 rule 1) from the paper's pass-0 units: a simulation and no run -> model_run, a run and no
+-    simulation -> run; P175 (user): both, or neither -> role null, flagged "role unresolved" (the figure stage's kind decides no role),
+-    its data role null. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent unresolved".
++    <pid>:<panel>:<curve id>. Role (P176, user: explicit evidence only): model_run when the figure stage marks the curve simulated or fit
++    (figures.json kind simulated, P87: a model or fit word in its legend label, else in the panel's content line or caption); else from the
++    paper's pass-0 units: a run and no simulation -> run, a simulation and no run -> model_run; else null, flagged "role unresolved" (a row
++    under the paper all the same, compile tree()). role_from says which. Parent: the paper's one simulation (model_run) or its one run
++    (run), else null, flagged "parent unresolved".
+     introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with its
+     role; conditions (P163 rule 1, P175): legend_conditions() of the legend label against the panel's series_axis; origin "derived:
+     <layout>". P166: no unit in a panel whose legend names methods (method_panels). P175 (user): the units stay as derived, two with
+@@ -379,7 +381,10 @@ def curve_units(pid, obj):
+             c = it["curve"]
+             if it["held"]:
+                 continue
+-            role = by_list                                                     # P175: None when the unit list does not decide
++            marked = (c.get("data_kind") if it["cell"] else c.get("kind")) == "simulated"   # P176: the figure stage's explicit mark
++            role = "model_run" if marked else by_list
++            role_from = (("figure stage: simulated or fit (" + ("its legend label" if c.get("series", {}).get("cls") == "kind" else "the panel's content line or caption")
++                          + ")") if marked else {"run": "unit list: runs, no simulation", "model_run": "unit list: a simulation, no runs"}.get(by_list, ""))
+             drole = {"model_run": "simulated", "run": "measured"}.get(role)
+             par = sims if role == "model_run" else runs if role == "run" else []
+             label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
+@@ -391,7 +396,7 @@ def curve_units(pid, obj):
+                             structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                             data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
+                             conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"], y=(c.get("quantity") if it["cell"] else c.get("y", {}).get("quantity")) or "",
+-                            flag="; ".join(flags), aliases=[]))
++                            role_from=role_from, flag="; ".join(flags), aliases=[]))
+     return dedupe_units(out)
+ 
+ 
+@@ -481,9 +486,6 @@ class Run:
+             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
+             dkind = "model_input" if u["role"] == "model_run" else "stated"
+             for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values, resolved by step a0
+-                if not u["role"]:                                               # P175: a unit of role null has no row, its legend no setting
+-                    self.count("input", "condition of a derived unit of role null (no row)")
+-                    continue
+                 if c["kind"] == "qualifier":                                    # P175: a qualifier value qualifies the unit's data (figures())
+                     self.count("input", "legend qualifier of a derived unit (on its data)")
+                     continue
+@@ -864,9 +866,12 @@ class Run:
+             rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
+                             parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
+                             statement=f"model run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
+-        for it in items:
+-            if it.get("origin") and not it.get("role"):                         # P175: no row; the data it holds is left out (figures())
+-                self.count("h", "derived unit of role null (role unresolved: no row)")
++        for it in items:                                                        # P176 (user): a derived unit of role null: a row under the paper
++            if it.get("origin") and not it.get("role"):                         # with its data and its legend's settings (nothing dropped)
++                self.node[it["id"]] = (f"{k}:unit:{slug(it['id'])}", "unresolved")
++                rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="inferred", evidence=ok_ev(it.get("introduced_in") or []), parent=k,
++                                label_as_printed=it.get("name_as_printed") or it["id"], statement=f"derived unit {it['id']} ({it.get('name_as_printed')!r}{origin(it)}): role unresolved"))
++                self.count("h", "derived unit of role null (role unresolved: a row under the paper)")
+         for it in items:                                                        # P175: a deduplicated derived unit's other ids name its row
+             for al in it.get("aliases") or [] if it["id"] in self.node else []:
+                 self.node.setdefault(al, self.node[it["id"]])
+@@ -1021,7 +1026,7 @@ class Run:
+                 unowned.append(cu); continue
+             nid, role = self.node[own[0]]
+             dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
+-            if role not in ("model_run", "specimen", "run"):
++            if role not in ("model_run", "specimen", "run", "unresolved"):
+                 self.count("1c", f"curve named by a {role} (left out)"); continue
+             if dr == "measured":
+                 result(cu, "@meas:" + nid, "observation", own[0])
+@@ -1195,6 +1200,10 @@ class Run:
+             r["parent_filled"] = True
+             return recipe, f"about {'null' if not a else 'unknown'} -> recipe (flagged)"
+         rid, role = self.node[a]
++        if role == "unresolved":                                                # P176: a derived unit of role null: its settings on its row,
++            if t in ("observation", "derived") or (t == "setting" and mm):     # its results under its measurement
++                return self.measurement(rid, mm), f"{t} about a unit of unresolved role -> its measurement"
++            return rid, f"{t} about a unit of unresolved role -> the unit"
+         setting_here = t == "setting" and not mm
+         if role in ("run", "specimen"):
+             run = rid if role == "run" else (self.up[rid] if self.node_role(self.up[rid]) == "run" else "")
+diff --git a/psed_v2/kb/extract/inspection.py b/psed_v2/kb/extract/inspection.py
+index b1c1bc5..df7bd2e 100644
+--- a/psed_v2/kb/extract/inspection.py
++++ b/psed_v2/kb/extract/inspection.py
+@@ -15,7 +15,7 @@ the run wrote (kb/records, kb/compiled, kb/<pid>.figures.json, kb/import_panels.
+      read as elements (a section by the numbering of its heading elements, a figure or a table by its element ids), and whether a compiled
+      fact of that entry sits at those elements: yes / other entry / none.
+   5h gaps seen first: every value of 5a-5f that no other compiled paper showed (unmapped field and action, drop step and reason, figure
+-     flag and label outcome, compile step counter, check.py problem class).
++     flag and label outcome, compile step counter, check.py problem class); P176: and the rows of kb/inspection_notes.csv for the paper.
+ 
+     python3 psed_v2/kb/extract/inspection.py <paper> [--prefix RUN_<key>]
+ """
+@@ -34,6 +34,7 @@ import pass0_paper as P0
+ import score as S
+ 
+ REPORTS = C.V2 / "kb" / "reports"
++NOTES = C.V2 / "kb" / "inspection_notes.csv"                                   # P176 (user): gaps a person saw (paper key or id, area, note, source)
+ SECTIONS = ("5a", "5b", "5c", "5d_units", "5d_consistency", "5d_simulation", "5d_no_record", "5d_about_paper", "5e", "5f", "5g", "5h")
+ TITLES = {"5a": "5a. Coverage by element (every element)", "5b": "5b. Drops by step (every dropped record)", "5c": "5c. Unmapped by kind (every open label)",
+           "5d_units": "5d. Units: pass 0 and derived from curves", "5d_consistency": "5d. Units: panel consistency (pass0_paper)",
+@@ -165,7 +166,8 @@ def inspect(pid, prefix):
+     out["5d_units"] = [dict(origin="pass 0", unit=u.get("id"), role=u.get("role"), name_as_printed=u.get("name_as_printed") or "", parent=u.get("parent") or "", panel="",
+                             data=len(u.get("data") or []), records_about=abouts.get(u.get("id"), 0), conditions_from_legend=0, flag="") for u in own] + \
+         [dict(origin=u["origin"], unit=u["id"], role=u["role"], name_as_printed=u["name_as_printed"] or "", parent=u["parent"] or "", panel=u["panel"], data=len(u["data"]),
+-              records_about=abouts.get(u["id"], 0), conditions_from_legend=conds.get(u["id"], 0), flag="; ".join(x for x in (u.get("flag", ""), u.get("merge", "")) if x)) for u in derived]
++              records_about=abouts.get(u["id"], 0), conditions_from_legend=conds.get(u["id"], 0), role_from=u.get("role_from", ""),
++              flag="; ".join(x for x in (u.get("flag", ""), u.get("merge", "")) if x)) for u in derived]
+     cons = P0.consistency(pid, p0obj)
+     out["5d_consistency"] = [{k: (";".join(v) if isinstance(v, list) else v) for k, v in r.items()} for r in cons]
+     sims = []
+@@ -257,6 +259,8 @@ def inspect(pid, prefix):
+     for r in out["5f"]:
+         mine["check.py problem class"][r["cls"]] += 1
+     out["5h"] = [dict(area=a, value=v, count=n, other_papers_compared=len(others)) for a, c in mine.items() for v, n in sorted(c.items()) if v not in seen[a]]
++    out["5h"] += [dict(area=f"{x['area']} (noted by the user, {x['source']})", value=x["note"], count="", other_papers_compared="")   # P176: what no code reports
++                  for x in rd(NOTES) if x["paper"] in (pid, C.E.PAPERS[pid])]
+     for sec in SECTIONS:
+         write(prefix, sec, out.get(sec, []))
+     return out
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index d8df711..a96d388 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -982,6 +982,10 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
+             elif u.get("action", "").startswith("kept (names the model "):
+                 cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
++            elif cid in decided_ids and k not in snap_of:                      # P176 (user, the P162 rule): born after apply, its id decided
++                h = decided_ids[cid]                                            # before the row existed; carried
++                cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
++                                             + "): the row was born after apply; carried into the next propose")
+             elif cid in decided_ids and decided_ids[cid]["action"] != "reject" and scoped_elsewhere(p, u["label"]):   # P175 (user)
+                 h = decided_ids[cid]
+                 cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
+@@ -992,6 +996,8 @@ def open_rows(n, compiled, unm, snap):
+                     "a rejected label is written nowhere (by design)" if h["action"] == "reject" else "decided, but the row is still open")
+             elif not u["label"]:
+                 cls, why = "cell without printed label", f"candidate {cid or 'none'}"
++            elif k in snap_of and cid not in snap_of[k]:                        # P176 (user, the P162 rule): regrouped since apply
++                cls, why = NEW_SINCE_APPLY, f"regrouped since apply: candidate {';'.join(sorted(set(snap_of[k])))} at the snapshot, {cid or 'none'} now; carried into the next propose"
+             elif k not in snap_of:                                              # P162: born after apply (absent from the snapshot)
+                 cls, why = NEW_SINCE_APPLY, f"candidate {cid or 'none'}: not in R{n}_apply.decision_rows.csv; carried into the next propose"
+             else:
+@@ -1220,19 +1226,20 @@ def audit_round(n):
+     write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)
+     a3, fails3, _ = open_rows(n, compiled, unm, snap)
+     fails += fails3
+-    pend = {x["id"]: x for x in rd(PENDING)}
+     write(REPORTS / f"R{n}_apply.A3.csv", A3_COLS, a3)
+     a3p = []
+-    for cid, x in pend.items():
++    open_now = {(r["pid"], r["element"], r["field"]) for r in a3}
++    for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
++        cid = x["id"]
+         xp = [p for p in x["pids"].split(";") if p]
+-        at = [r for r in snap if r["candidate"] == cid]
+-        now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]
++        at = [r for r in snap if r["candidate"] == cid] if int(x["first_round"] or 0) <= n else []   # P176: keyed by (id, first round): a later
++        now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]                             # round's row of the same id is another candidate
+         if not set(xp) & set(pids) and not at:
+             if not set(xp) & {p.stem for p in COMPILED.glob("*.facts.csv")}:
+                 a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=0, open_rows_now=0, accounted="yes",
+                                 detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
+             continue
+-        lost = [r for r in at if not any(o["pid"] == r["pid"] and o["element"] == r["element"] and o["field"] == r["field"] for o in now)]
++        lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now]   # P176: closed; a row regrouped since apply is still open
+         ok = not lost and bool(now)
+         a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now), accounted="yes" if ok else "NO",
+                         detail="; ".join(f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost) or ("" if now else "no open row")))
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 2e7b4be..1a7c97c 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -570,6 +570,10 @@ class Run:
+                 if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
+                     r["names_model"] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
+                     self.count("a0", "quantity other naming a model entry (kept)")
++                mt = vocab_hits(self.pid, "method", text) if text.strip() and not mh else {}
++                if len(mt) == 1:                                                # P176 (user): one naming a method entry, as a model name
++                    r["names_method"] = next(iter(mt))
++                    self.count("a0", "quantity other naming a method entry (kept)")
+                 hit = never_of(self.pid, text)
+                 if hit:
+                     r["never"], r["never_label"] = hit["category"], hit["label"] + (f" (symbol in {hit['paper']})" if hit.get("symbol") == "yes" else "")
+@@ -705,7 +709,8 @@ class Run:
+                 self.unmapped.append(dict(element=eid, field="quantity", id="other", label_as_printed=rec.get("label_as_printed", ""), unit=rec.get("unit", ""),
+                                           candidate=json.dumps(rec.get("candidate", {}), ensure_ascii=False),
+                                           action=f"kept (never: {r['never_label']})" if r.get("never") else f"kept (ambiguous: {', '.join(r['ambiguous'])})" if r.get("ambiguous")
+-                                          else f"kept (names the model {r['names_model']})" if r.get("names_model") else "kept",   # P172
++                                          else f"kept (names the model {r['names_model']})" if r.get("names_model")
++                                          else f"kept (names the method {r['names_method']})" if r.get("names_method") else "kept",   # P172, P176
+                                           never=r.get("never", ""), nearest=rec.get("nearest", "") or ""))
+                 self.count("c", "quantity_other never (kept)" if r.get("never") else "quantity_other (kept)")
+             out.append(r)
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index a96d388..c75a304 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -229,7 +229,7 @@ def candidates(pids, extra=()):
+             if u["field"] in categ:                                             # P168 (user): its unit is nothing; no "unit" candidate
+                 log["categorical"].append(u)
+                 continue
+-            if u.get("action", "").startswith("kept (names the model "):        # P172: a record naming a model entry is no quantity candidate
++            if u.get("action", "").startswith(("kept (names the model ", "kept (names the method ")):   # P172, P176: a record naming a model or a method entry is no quantity candidate
+                 log["model_names"].append(u)
+                 continue
+             if u["field"] == "unit" and not u["symbol"]:                       # a unit row follows the quantity row of its cell and label
+@@ -349,8 +349,8 @@ def printed_labels(row):
+     """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id. P172: a row of a
+     round whose candidate is gone (its rows closed meanwhile) and whose evidence is one 'pid:element — <printed>' item: that printed label."""
+     c = candidate_of(row)
+-    if c:
+-        return [c["label"]] + c["aliases"]
++    if c:                                                                       # P176: and every member's printed label (one record key,
++        return list(dict.fromkeys([c["label"]] + c["aliases"] + [u["label"] for u in c["members"] if u["label"]]))   # printed 'Power' and 'power')
+     ev = evidence_items(row)
+     m = re.match(r"^[^:]+:\S+ — (.+)$", ev[0]) if row["first_round"] not in ("", "0") and len(ev) == 1 else None
+     return [m.group(1).strip()] if m else [row["id"].replace("_", " ")]
+@@ -599,7 +599,8 @@ def add_alias(text, eid, labels):
+     blk = text[s:e]
+     m = re.search(r"(?m)^    aliases: (\[.*\])$", blk)
+     have = yaml.safe_load(m.group(1)) if m else []
+-    add = [a for a in labels if a.casefold() not in {h.casefold() for h in have}]
++    seen = {X.norm_label(h) for h in have}                                  # P176: one alias per word key (export --check 4), the first printed,
++    add = [" ".join(a.split()) for a in labels if X.norm_label(a) not in seen and not seen.add(X.norm_label(a))]   # on one line
+     if not add:
+         return text
+     line = "    aliases: " + yaml.safe_dump(have + add, default_flow_style=True, allow_unicode=True, width=100000).strip()
+@@ -615,7 +616,7 @@ def add_symbols(text, eid, pairs):
+     m = re.search(r"(?m)^    symbols: (\[.*\])$", blk)
+     have = yaml.safe_load(m.group(1)) if m else []
+     keys, add = {(X.symbol_key(h["text"]), h.get("paper", "")) for h in have}, []
+-    for t, p in pairs:
++    for t, p in [(" ".join(str(t).split()), p) for t, p in pairs]:            # P176: on one line
+         if (X.symbol_key(t), p) not in keys:
+             keys.add((X.symbol_key(t), p))
+             add.append(dict(text=t, paper=p))
+@@ -666,8 +667,9 @@ def add_slot(text, cls, eid):
+ def split_labels(row, labels):
+     """P164 (user): a decision's printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word."""
+-    words = [t for t in labels if not symbol_like(t)]
+-    syms = [(t, p) for t in labels if symbol_like(t) for p in label_papers(row, t)]
++    one = lambda t: " ".join(str(t).split())                                   # noqa: E731  P176: a printed line break is layout (one-line YAML)
++    words = list({X.norm_label(t): one(t) for t in reversed([t for t in labels if not symbol_like(t)])}.values())[::-1]   # P176: one per word key (the first)
++    syms = [(one(t), p) for t in labels if symbol_like(t) for p in label_papers(row, t)]
+     return words, syms
+ 
+ 
+@@ -980,8 +982,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = "other", "a value without a quantity: no record key, or the label is only a units.yaml spelling"
+             elif k in cats:
+                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
+-            elif u.get("action", "").startswith("kept (names the model "):
+-                cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
++            elif u.get("action", "").startswith(("kept (names the model ", "kept (names the method ")):
++                cls, why = "other", f"a record of no quantity that names a {'model' if 'the model' in u['action'] else 'method'} entry: {u['action'][6:-1]} (P172, P176)"
+             elif cid in decided_ids and k not in snap_of:                      # P176 (user, the P162 rule): born after apply, its id decided
+                 h = decided_ids[cid]                                            # before the row existed; carried
+                 cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
+@@ -1010,6 +1012,20 @@ def open_rows(n, compiled, unm, snap):
+     return a3, fails, src
+ 
+ 
++def figure_label(pid, element, key):
++    """P176: a figure label of kb/<pid>.figures.json (the inventory's labels, P174) at an element and with a key, as the import resolved it:
++    dict(quantity, how), or None."""
++    p = V2 / "kb" / f"{pid}.figures.json"
++    F = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
++    for inv in F.get("inventory", []):
++        els = [f"fig{inv['figure']}{inv.get('panel', '')}", f"fig{inv['figure']}", f"fig{inv['figure']}.cap"]
++        if element in els:
++            hit = next((x for x in inv.get("labels") or [] if x["key"].strip() == key), None)
++            if hit:
++                return dict(quantity=hit["quantity"], how=hit.get("how", ""))
++    return None
++
++
+ _SCOPE = {}
+ 
+ 
+@@ -1165,6 +1181,14 @@ def audit_round(n):
+             if r["pid"] not in a1p:
+                 a1.append(dict(row, now="none", effect="n/a", reason=f"no compiled output for {r['pid']}"))
+                 continue
++            if u is None and r["field"] == "axis":                              # P176: a figure label closes at import (kb/<pid>.figures.json)
++                fl = figure_label(r["pid"], r["element"], r["label"])
++                ok = bool(fl) and ((act == "alias" and fl["quantity"] == h["target"]) or (act == "add" and fl["quantity"] == cid))
++                a1.append(dict(row, now=f"figure label: {fl['quantity']} ({fl['how']})" if fl else "not in unmapped.csv, no figure label",
++                               effect="yes" if ok else "no effect", reason="" if ok else (f"resolves to {fl['quantity']}" if fl else "row not found")))
++                if not ok and act != "reject":
++                    fails.append(f"A1 {cid}: {r['pid']}:{r['element']} {r['field']} '{r['label']}': " + (f"resolves to {fl['quantity']}" if fl else "row not found"))
++                continue
+             if u is None:
+                 p = next((x for i, x in enumerate(pro[r["pid"]]) if (r["pid"], i) not in taken_pro and x["element"] == r["element"] and x["field"] == r["field"]
+                           and (x["printed"] == r["label"] or not r["label"]) and not x["outcome"].startswith("not promoted")), None)
+@@ -1189,9 +1213,9 @@ def audit_round(n):
+             if u["field"] == "unit" and act in ("alias", "add"):
+                 a1.append(dict(row, now="unmapped (open): unit row", effect="n/a", reason="the record is promoted; its unit is not in units.yaml"))
+                 continue
+-            mm = re.match(r"kept \(names the model (\S+)\)", u["action"])
+-            if mm and mm.group(1) == (h["target"] if act == "alias" else cid):      # P172: the record names the decision's model
+-                a1.append(dict(row, now=f"unmapped: {u['action']}", effect="yes", reason="a record of no quantity naming the decided model entry"))
++            mm = re.match(r"kept \(names the (model|method) (\S+)\)", u["action"])
++            if mm and mm.group(2) == (h["target"] if act == "alias" else cid):      # P172, P176: the record names the decision's model or method
++                a1.append(dict(row, now=f"unmapped: {u['action']}", effect="yes", reason=f"a record of no quantity naming the decided {mm.group(1)} entry"))
+                 continue
+             key = X.record_key(u)
+             a1.append(dict(row, now="unmapped (open)" + (f": {u['action']}" if u["action"] != "kept" else ""), effect="no effect",
+@@ -1217,6 +1241,8 @@ def audit_round(n):
+             ref = (user.get((x["id"], "symbol", X.symbol_key(sym.group(1)))) if sym else user.get((x["id"], "alias", X.norm_label(al.group(1)))) if al else None)
+             verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else \
+                 (f"{'symbol' if sym else 'alias'} (user decision)" if ref else "symbol (paper-local)" if sym else    # P169: a user's alias / symbol
++                 "alias (curated)" if al else "id (curated)" if re.search(r"\bid '(.*)'$", x["lookup"]) else   # P176 (user): an alias of the entry, or its id,
++                 #                                                                  is a curated equality
+                  "agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
+             a2.append(dict(pid=p, element=x["element"], field=x["field"], printed=x["printed"], record_meaning=x.get("meaning", ""), lookup=x["lookup"], entry=x["id"],
+                            entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict,
+@@ -1228,7 +1254,8 @@ def audit_round(n):
+     fails += fails3
+     write(REPORTS / f"R{n}_apply.A3.csv", A3_COLS, a3)
+     a3p = []
+-    open_now = {(r["pid"], r["element"], r["field"]) for r in a3}
++    open_now = {(u["pid"], u["element"], u["field"]) for p in a1p for u in unmapped_rows(p) if not u["never"]}   # P176: the snapshot's papers, as A1
++    #                                                                             reads them (a carried row's paper is not the round's)
+     for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
+         cid = x["id"]
+         xp = [p for p in x["pids"].split(";") if p]
+@@ -1240,7 +1267,7 @@ def audit_round(n):
+                                 detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
+             continue
+         lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now]   # P176: closed; a row regrouped since apply is still open
+-        ok = not lost and bool(now)
++        ok = not lost and bool(now or at)
+         a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now), accounted="yes" if ok else "NO",
+                         detail="; ".join(f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost) or ("" if now else "no open row")))
+         if not ok:
+diff --git a/psed_v2/kb/graph_page.py b/psed_v2/kb/graph_page.py
+index 91ecc68f..33dd6d4f 100644
+--- a/psed_v2/kb/graph_page.py
++++ b/psed_v2/kb/graph_page.py
+@@ -592,6 +592,8 @@ def cards_page(pid, key):
+ 
+     def gold_data_(T):
+         out = collections.defaultdict(list)
++        if not T.rows:                                                          # P176: a paper without a gold file (14+) has no gold side
++            return out
+         for cid, e in render.gold_curve_units(key).items():
+             out[e].append((cid, fig.get(cid, {}).get("kind", "?"), panel(cid)))
+         return out
+@@ -600,7 +602,7 @@ def cards_page(pid, key):
+     run = K.Run(pid)
+     run.read()
+     run.tree()
+-    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)])
++    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)]) if G.rows else dict(pair_of={}, status_g={})   # P176: no gold, no pairs
+     pair, used = {}, set()
+     for want in ("matched", None):
+         for g in G.cards:
+@@ -685,7 +687,8 @@ def cards_page(pid, key):
+     dr = sum(card_diffs(G, Cm, g, c)[1] for g, c in pairs)
+     stats = dict(paper=key, cards_gold=len(G.cards), cards_compiled=len(Cm.cards), paired=len(pairs), gold_without_counterpart=len(G.cards) - len(pairs),
+                  compiled_without_counterpart=len(Cm.cards) - len(pairs), differing_condition_cells=dc, differing_result_cells=dr)
+-    tbl = lambda T, d: REP.section(f"experiments.csv ({d})", (V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv")   # noqa: E731
++    tbl = lambda T, d: (REP.section(f"experiments.csv ({d})", (V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv")   # noqa: E731
++                        if ((V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv").exists() else f"<p>experiments.csv ({d}): no file (P176: a paper without gold)</p>")
+     cards = {**card_payload(G, "g"), **card_payload(Cm, "c")}
+     figs = fig_payload(Fj, dict.fromkeys(i for c in cards.values() for i in c["data"]))
+     units = unit_table({v["u"] for c in cards.values() for v in [x[-1] for x in c["cond"] + c["res"]]}

@@ -1,0 +1,32 @@
+P176: 0 provider calls. Round 5 applied (atomic; the second attempt): audits 1-5 PASS, export --check 15 of 15; T6 2044 -> 2074.
+Cards for the thirteen: 0 errors.
+
+1. Derived-unit role from explicit evidence only: model_run when the figure stage marks the curve simulated or fit (figures.json kind
+   simulated, P87: a model or fit word in its legend label, else in the panel's content line or caption); else run (runs, no simulation) or
+   model_run (a simulation, no runs) from the unit list; else null, flagged 'role unresolved', and such a unit is an entity row under the
+   paper with its data and its legend settings (nothing dropped). ela03: 4 model_run (fig10b 'Simulation' by its legend label; fig9b,
+   fig10b 'y ∝ t^1/2', fig11b by the panel text), 2 null (fig5b, fig6b: 14 runs and a simulation, no mark). wer21: 11 model_run (figs 11-14
+   by the panel text), 26 null (rows under the paper, their curves now observations). Every unit with its reason: table 1.
+2. Audit (the P162 rule): a row regrouped since apply, or born after apply under an id decided before it existed, is carried as new;
+   pending rows keyed by (id, first round). Before apply: audits 1-4 PASS; round 2 carried 12 rows (the 11 shape-factor rows, 'Aspect Ratio
+   (L/D)'), which propose made round-5 candidates.
+3. The five decisions (P176 chat) written, each matched to its row: aspect_ratio (alias), h (alias feature_width, symbols of yim20, yim22,
+   yli18), composition (alias element_fraction), time (alias time), 1 (reject). export --check 15 of 15.
+4. apply round 5. The first attempt refused (atomic: nothing written, sandbox removed). Diagnosed in throwaway copies (apply_here without
+   the wrapper), four runs: (a) A1 could not trace a figure-axis row (the import resolves it; no promoted.csv row): it now reads the label
+   in kb/<pid>.figures.json; (b) apply wrote only a candidate's label and aliases, not every member's printed label ('Power' beside
+   'power', 'x̃₅₀%', 'm/z = -32 ...'): now every member's label, one alias per word key (export --check 4 had failed on 'exposure time' /
+   'Exposure Time') and on one line (a printed line break turned the aliases flow list into a second 'aliases:' key, losing aliases);
+   (c) A3's pending accounting read open rows of the round's own paper only, so carried rows looked closed: now the snapshot's papers.
+   Two the user decided in chat: A2 counts a promotion through an alias of the entry, or its id, as curated ('pulse time' -> pulse_time
+   matched through the id, the question had said alias); a quantity-other label naming one method entry is 'names the method X'
+   (spectroscopic ellipsometer; it also catches ela03 fig10's legend 'Simulation' -> the method simulation, no candidate now). Second real
+   apply: audits 1-5 PASS; 249 files moved into place and committed by apply (cf22d94): 85 aliases (57 alias labels, 41 symbols), 3 never,
+   4 rejects; 41 rows stay pending; rounds.csv round 5 applied; ontology.html. Scores before apply -> after: T6 2044 -> 2074 (yim20 +22,
+   ela03 +9, mat22 -1), gold rows 5357, check.py 2207 -> 2212. (The role rule alone, P175 -> before apply: ela03 check.py 152 -> 161.)
+   wer21 5h carries the user's note (fig11's right axis 'Thickness (nm)' not read by the figure stage), from kb/inspection_notes.csv,
+   which inspection.py now reads for every paper. The apply commit holds the files apply changed; outputs the working tree already had from
+   the same code (two coverage.csv, a dropped.csv, an audit file, decide.html) are in the report commit.
+5. Cards: kb/graph_page.py for the thirteen and the P152 comparison view driven headless (Playwright): 0 errors. wer21 failed first
+   (KeyError: the gold-curve binding of a paper without gold); graph_page now treats a paper without a gold file as having no gold side.
+   Per paper (table 5): cards gold / compiled, conditions per compiled card, model-run cards and those with a model link (all of them).
