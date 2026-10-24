@@ -1,0 +1,14 @@
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index f7a1515..26bc784 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -738,7 +738,8 @@ def cmd_apply():
+     order = {"accept": 0, "alias": 1}                                          # P164: accepts first (an alias may target an entry of this round)
+     for x in sorted(decided, key=lambda x: order.get(x["decision"], 2)):
+         labels, syms = printed_labels(x), candidate_symbols(x)
+-        words, lsyms = split_labels(x, labels[:1])                             # P164: a symbol-like label is a symbol of its paper, never a word
++        words, lsyms = split_labels(x, labels)                                 # P164: a symbol-like label is a symbol of its paper, never a word;
++                                                                                # P171 fix: every printed label (a prefix-merged label too)
+         if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
+             mt, params, local = model_fields(x) if x["kind"] == "model" else ("", [], False)
+             if local:                                                           # P168: the printed name a symbol of its paper, not an alias
