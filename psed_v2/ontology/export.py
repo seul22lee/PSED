@@ -293,7 +293,7 @@ def build(onto, pmap):
                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
                for e in live if e["type"] == "species"}
     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
-    methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""))
+    methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""), measurement=e.get("measurement", True))
                for e in onto["entries"] if e["type"] == "method"]                 # P142b: methods are entries only
     defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
@@ -313,6 +313,7 @@ def build(onto, pmap):
         METHODS=sorted({m["id"] for m in methods if not m.get("replaced_by")} | set(absorb_values["method"])),
         OUTPUTS=sorted(e["id"] for e in live if e.get("role") == "output"),
         METHOD_CLASS={m["id"]: m["class"] for m in methods}, METHOD_DEFINITION={m["id"]: m["definition"] for m in methods},
+        METHOD_MEASUREMENT={m["id"]: bool(m.get("measurement", True)) for m in methods},   # P166: the ontology's measurement field
         SPECIES=species,
         MATERIALS=sorted({i for i, s in species.items() if s["kind"] == "material"} | set(absorb_values["material"])),
         STRUCTURES=sorted(set(structures) | set(absorb_values["structure"])), STRUCTURE_CLASS={i: s["cls"] for i, s in structures.items()},

@@ -1,0 +1,218 @@
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 07adf13..a8a49b3 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -195,10 +195,14 @@ def legend_conditions(pid, label, axis):
+     '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits, as
+     step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
+     the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
+-    panel). A bare name is a value: a structure or categorical value (vocab_hits on the name, a trailing bracket dropped). A part that is
+-    none of these is an other condition as before, flagged. Returns [dict(kind 'value' | 'name', key: the record's label_as_printed,
+-    value, unit, quantity: the id the lookup gives, else other, how)]."""
++    panel). A bare name is a value: on a material / reactant axis (the axis label resolves to material, substrate, reactant_A or
++    reactant_B) a species name of that kind (P166: art19 'SiO_{2}' -> material sio2); else a structure or categorical value (vocab_hits on
++    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. Returns [dict(kind
++    'value' | 'name' | 'species', key: the record's label_as_printed (a species: its value_text as printed), value, unit, quantity: the id
++    the lookup gives, else other, how)]."""
+     parts = legend_parts(label)
++    ax = vocab_hits(pid, "quantity", axis) if axis else {}
++    axis_q = next(iter(ax)) if len(ax) == 1 else ""                              # P166: a material / reactant axis reads species names
+     out = []
+     for part in parts:
+         m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
+@@ -213,6 +217,11 @@ def legend_conditions(pid, label, axis):
+                             how=how if hit is None else f"{'series_axis' if key == axis else 'symbol / name'} '{key}' -> {q} ({how})"))
+             continue
+         name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
++        sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
++        if len(sp) == 1:
++            (i, h), = sp.items()
++            out.append(dict(kind="species", key=part, value_text=i, quantity=axis_q, how=f"name '{name}' on the {axis_q} axis -> {i} ({h})"))
++            continue
+         hits = {(k_ if k_ == "structure" else k_[6:], i): h for k_ in ["structure"] + [f"value:{q}" for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
+         if len(hits) == 1:
+             ((q, i), h), = hits.items()
+@@ -222,6 +231,34 @@ def legend_conditions(pid, label, axis):
+     return out
+ 
+ 
++def legend_methods(pid, label):
++    """P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
++    legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
++    vocab_hits (kind method) -> {method id: the words}."""
++    ws = [w for w in re.split(r"[\s,;/()\[\]]+", label or "") if w]
++    found = {}
++    for t in [label or ""] + [" ".join(ws[i:i + n]) for n in (3, 2, 1) for i in range(len(ws) - n + 1)]:
++        for m in vocab_hits(pid, "method", t) if t.strip() else {}:
++            if V.METHOD_MEASUREMENT.get(m, True):
++                found.setdefault(m, t)
++    return found
++
++
++def method_panels(pid, obj):
++    """P166 (user): {panel: {method id: the words}} for every curve_per_unit / point_per_unit panel one of whose legend labels names a
++    method entry (legend_methods: 'ALD XRR' names xrr): its curves are measurements of the panel's unit(s), not units. curve_units creates
++    none there; pass0_paper.consistency flags the panel "legend names methods"."""
++    out = {}
++    for panel, items in panel_items(pid, obj).items():
++        ms = {}
++        for it in items:
++            c = it["curve"]
++            ms.update(legend_methods(pid, ((c.get("label") or "") if it["cell"] else c.get("series", {}).get("label_raw")) or ""))
++        if ms:
++            out[panel] = ms
++    return out
++
++
+ def panel_items(pid, obj):
+     """P162 rule 2: the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the pass-0 units whose data
+     refs hold it: {panel: [dict(curve, cell, held)]}: one item per curve; a point_per_unit panel also one per cell. P163: no per-point path
+@@ -251,7 +288,7 @@ def curve_units(pid, obj):
+     the role unless taken from the kind. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent
+     unresolved". introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
+     ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel's series_axis; origin
+-    "derived: <layout>". P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
++    "derived: <layout>". P166: no unit in a panel whose legend names methods (method_panels). P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
+     quantity, value and unit) are one unit (merge_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS)
+     and by pass0_paper.consistency."""
+     obj = obj if isinstance(obj, dict) else {}
+@@ -260,8 +297,11 @@ def curve_units(pid, obj):
+     by_list = "model_run" if sims and not runs else "run" if runs and not sims else None
+     lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict)}
+     ids, axes = set(C.E.texts(pid)), series_axis(pid)
++    meth = method_panels(pid, obj)                                              # P166: a legend that names methods makes no units
+     out = []
+     for panel, items in panel_items(pid, obj).items():
++        if panel in meth:
++            continue
+         for it in items:
+             c = it["curve"]
+             if it["held"]:
+@@ -390,6 +430,8 @@ class Run:
+                 rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])
+                 if c["kind"] == "value":
+                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
++                if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
++                    rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
+                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"], derived=c["kind"],
+                                  dkind=dkind, once=(u["panel"], c["key"]) if c["kind"] == "value" else None))
+                 self.count("input", f"condition of a derived unit ({c['kind']})")
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 742d6dc..6fc05fa 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -11,6 +11,7 @@ Writes one line (pass 0, section "paper") to kb/records/<pid>.jsonl.
+ """
+ import collections
+ import json
++import re
+ import sys
+ 
+ import common as C
+@@ -69,18 +70,24 @@ THINKING = {"thinking_level": "MEDIUM"}
+ def consistency(pid, obj):
+     """P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
+     (compile.panel_items: the curves; a point_per_unit panel's series and cells) and the units that hold them: held by a pass-0 unit's
+-    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses."""
++    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses. P166: a panel whose
++    legend names methods (compile.method_panels) is flagged "legend names methods", its items not counted unbound."""
+     import compile as K                                                         # P161
+     obj = obj if isinstance(obj, dict) else {}
+     der = collections.defaultdict(set)
+     for u in K.curve_units(pid, obj):
+         for d in u["data"]:
+             der[d["id"]].add(u["id"])
+-    items, out = K.panel_items(pid, obj), []
++    items, out, meth = K.panel_items(pid, obj), [], K.method_panels(pid, obj)
+     for x in obj.get("panel_layouts") or []:
+         if not isinstance(x, dict) or x.get("layout") not in K.UNIT_LAYOUTS:
+             continue
+         its = items.get(x["panel"], [])
++        if x["panel"] in meth:                                                  # P166: its curves are measurements of the panel's unit(s)
++            out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=sum(1 for i in its if i["held"]), held_derived=0, unbound=0,
++                            unit_ids=";".join(sorted({u for i in its for u in i["held"]})), unbound_ids="",
++                            flag="legend names methods (" + ", ".join(f"{m}: {w!r}" for m, w in meth[x["panel"]].items()) + "): no derived units"))
++            continue
+         held0 = [i for i in its if i["held"]]
+         heldd = [i for i in its if not i["held"] and der.get(i["curve"]["id"])]
+         unb = [i["curve"]["id"] for i in its if not i["held"] and not der.get(i["curve"]["id"])]
+@@ -89,6 +96,23 @@ def consistency(pid, obj):
+     return out
+ 
+ 
++def model_named(pid, obj):
++    """P166 (user), part of every pass-0 run: each ontology model entry (vocab.ENTRIES, type model) whose name or an alias occurs in
++    document.md as a whole phrase, case ignored; flagged "model named, no simulation unit" when the pass-0 units hold no simulation."""
++    import vocab as V
++    doc = render.document(pid)
++    units = (obj.get("units") or []) if isinstance(obj, dict) else []
++    sims = [u.get("id") for u in units if isinstance(u, dict) and u.get("role") == "simulation"]
++    out = []
++    for i, e in V.ENTRIES.items():
++        if e.get("type") != "model" or e.get("replaced_by"):
++            continue
++        for t in [e.get("name", "")] + list(e.get("aliases") or []):
++            if t and re.search(rf"(?<!\w){re.escape(t)}(?!\w)", doc, re.I):
++                out.append(dict(model=i, named=t, simulations=";".join(sims), flag="" if sims else "model named, no simulation unit"))
++    return out
++
++
+ def main(arg):
+     pid, key = C.resolve(arg)
+     if "--check" in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
+@@ -96,6 +120,9 @@ def main(arg):
+         rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
+         for r in rows:
+             print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units {r['flag']}")
++        obj = C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"])
++        for r in model_named(pid, obj):                                         # P166
++            print(f"{key} model {r['model']} named ({r['named']!r}); simulations: {r['simulations'] or 'none'} {r['flag']}")
+         return 0
+     if "--plan" in sys.argv:                                                    # the planned call only, no call
+         js = jobs(pid)
+@@ -113,6 +140,9 @@ def main(arg):
+     for r in consistency(pid, obj or {}):                                       # P160 B, P162: the items of a per-unit panel no unit holds
+         if r["flag"]:
+             print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units: {r['flag']}")
++    for r in model_named(pid, obj or {}):                                       # P166: a model the paper names, no simulation unit
++        if r["flag"]:
++            print(f"{key} model {r['model']} named ({r['named']!r}): {r['flag']}")
+     return 0
+ 
+ 
+diff --git a/psed_v2/kb/pilot/lists.py b/psed_v2/kb/pilot/lists.py
+index 139deb2..725c658 100644
+--- a/psed_v2/kb/pilot/lists.py
++++ b/psed_v2/kb/pilot/lists.py
+@@ -161,7 +161,9 @@ TERMS = {
+     "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
+     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
+                     "deposition activity's inputs.",
+-    "simulation": "one model. The paper's own model and a model it compares against are separate simulations.",   # P146 (user)
++    "simulation": "any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation "
++                  "fitted to or evaluated on the data; each evaluation with its own inputs is a model run (gor03's theory, art19's slope "
++                  "relation, gre23's eq 1–2). The paper's own model and a model it compares against are separate simulations.",   # P166 (user); P146 (user)
+     "model run": "one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same "
+                  "inputs are one model run.",   # P146 (user)
+     "fitted or simulated curve of a specimen": "a curve fitted or simulated to match a measured specimen is a result of that specimen, "
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 36c3ea1..ada50b9 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -293,7 +293,7 @@ def build(onto, pmap):
+                              aliases=list(e.get("aliases", [])), material_class=e.get("material_class", ""), ligand_class=e.get("ligand_class", ""))
+                for e in live if e["type"] == "species"}
+     structures = {e["id"]: dict(cls=e.get("class", ""), aliases=list(e.get("aliases", []))) for e in live if e["type"] == "structure"}
+-    methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""))
++    methods = [dict(id=e["id"], **{"class": e.get("class") or e["id"]}, definition=e["definition"], replaced_by=e.get("replaced_by", ""), measurement=e.get("measurement", True))
+                for e in onto["entries"] if e["type"] == "method"]                 # P142b: methods are entries only
+     defs = {d["id"] for e in live for d in (e.get("definitions") or [])}
+     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s["kind"] == "material"], defs) for k, q in onto["qualifiers"].items()}
+@@ -313,6 +313,7 @@ def build(onto, pmap):
+         METHODS=sorted({m["id"] for m in methods if not m.get("replaced_by")} | set(absorb_values["method"])),
+         OUTPUTS=sorted(e["id"] for e in live if e.get("role") == "output"),
+         METHOD_CLASS={m["id"]: m["class"] for m in methods}, METHOD_DEFINITION={m["id"]: m["definition"] for m in methods},
++        METHOD_MEASUREMENT={m["id"]: bool(m.get("measurement", True)) for m in methods},   # P166: the ontology's measurement field
+         SPECIES=species,
+         MATERIALS=sorted({i for i, s in species.items() if s["kind"] == "material"} | set(absorb_values["material"])),
+         STRUCTURES=sorted(set(structures) | set(absorb_values["structure"])), STRUCTURE_CLASS={i: s["cls"] for i, s in structures.items()},

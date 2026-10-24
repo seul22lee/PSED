@@ -11,6 +11,7 @@ Writes one line (pass 0, section "paper") to kb/records/<pid>.jsonl.
 """
 import collections
 import json
+import re
 import sys
 
 import common as C
@@ -69,23 +70,46 @@ THINKING = {"thinking_level": "MEDIUM"}                                         
 def consistency(pid, obj):
     """P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
     (compile.panel_items: the curves; a point_per_unit panel's series and cells) and the units that hold them: held by a pass-0 unit's
-    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses."""
+    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses. P166: a panel whose
+    legend names methods (compile.method_panels) is flagged "legend names methods", its items not counted unbound."""
     import compile as K                                                         # P161
     obj = obj if isinstance(obj, dict) else {}
     der = collections.defaultdict(set)
     for u in K.curve_units(pid, obj):
         for d in u["data"]:
             der[d["id"]].add(u["id"])
-    items, out = K.panel_items(pid, obj), []
+    items, out, meth = K.panel_items(pid, obj), [], K.method_panels(pid, obj)
     for x in obj.get("panel_layouts") or []:
         if not isinstance(x, dict) or x.get("layout") not in K.UNIT_LAYOUTS:
             continue
         its = items.get(x["panel"], [])
+        if x["panel"] in meth:                                                  # P166: its curves are measurements of the panel's unit(s)
+            out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=sum(1 for i in its if i["held"]), held_derived=0, unbound=0,
+                            unit_ids=";".join(sorted({u for i in its for u in i["held"]})), unbound_ids="",
+                            flag="legend names methods (" + ", ".join(f"{m}: {w!r}" for m, w in meth[x["panel"]].items()) + "): no derived units"))
+            continue
         held0 = [i for i in its if i["held"]]
         heldd = [i for i in its if not i["held"] and der.get(i["curve"]["id"])]
         unb = [i["curve"]["id"] for i in its if not i["held"] and not der.get(i["curve"]["id"])]
         out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=len(held0), held_derived=len(heldd), unbound=len(unb),
                         unit_ids=";".join(sorted({u for i in held0 for u in i["held"]})), unbound_ids=";".join(unb), flag=f"unbound: {len(unb)}" if unb else ""))
+    return out
+
+
+def model_named(pid, obj):
+    """P166 (user), part of every pass-0 run: each ontology model entry (vocab.ENTRIES, type model) whose name or an alias occurs in
+    document.md as a whole phrase, case ignored; flagged "model named, no simulation unit" when the pass-0 units hold no simulation."""
+    import vocab as V
+    doc = render.document(pid)
+    units = (obj.get("units") or []) if isinstance(obj, dict) else []
+    sims = [u.get("id") for u in units if isinstance(u, dict) and u.get("role") == "simulation"]
+    out = []
+    for i, e in V.ENTRIES.items():
+        if e.get("type") != "model" or e.get("replaced_by"):
+            continue
+        for t in [e.get("name", "")] + list(e.get("aliases") or []):
+            if t and re.search(rf"(?<!\w){re.escape(t)}(?!\w)", doc, re.I):
+                out.append(dict(model=i, named=t, simulations=";".join(sims), flag="" if sims else "model named, no simulation unit"))
     return out
 
 
@@ -96,6 +120,9 @@ def main(arg):
         rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
         for r in rows:
             print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units {r['flag']}")
+        obj = C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"])
+        for r in model_named(pid, obj):                                         # P166
+            print(f"{key} model {r['model']} named ({r['named']!r}); simulations: {r['simulations'] or 'none'} {r['flag']}")
         return 0
     if "--plan" in sys.argv:                                                    # the planned call only, no call
         js = jobs(pid)
@@ -113,6 +140,9 @@ def main(arg):
     for r in consistency(pid, obj or {}):                                       # P160 B, P162: the items of a per-unit panel no unit holds
         if r["flag"]:
             print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units: {r['flag']}")
+    for r in model_named(pid, obj or {}):                                       # P166: a model the paper names, no simulation unit
+        if r["flag"]:
+            print(f"{key} model {r['model']} named ({r['named']!r}): {r['flag']}")
     return 0
 
 

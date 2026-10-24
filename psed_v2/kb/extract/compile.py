@@ -195,10 +195,14 @@ def legend_conditions(pid, label, axis):
     '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits, as
     step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
     the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
-    panel). A bare name is a value: a structure or categorical value (vocab_hits on the name, a trailing bracket dropped). A part that is
-    none of these is an other condition as before, flagged. Returns [dict(kind 'value' | 'name', key: the record's label_as_printed,
-    value, unit, quantity: the id the lookup gives, else other, how)]."""
+    panel). A bare name is a value: on a material / reactant axis (the axis label resolves to material, substrate, reactant_A or
+    reactant_B) a species name of that kind (P166: art19 'SiO_{2}' -> material sio2); else a structure or categorical value (vocab_hits on
+    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. Returns [dict(kind
+    'value' | 'name' | 'species', key: the record's label_as_printed (a species: its value_text as printed), value, unit, quantity: the id
+    the lookup gives, else other, how)]."""
     parts = legend_parts(label)
+    ax = vocab_hits(pid, "quantity", axis) if axis else {}
+    axis_q = next(iter(ax)) if len(ax) == 1 else ""                              # P166: a material / reactant axis reads species names
     out = []
     for part in parts:
         m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
@@ -213,12 +217,45 @@ def legend_conditions(pid, label, axis):
                             how=how if hit is None else f"{'series_axis' if key == axis else 'symbol / name'} '{key}' -> {q} ({how})"))
             continue
         name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
+        sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
+        if len(sp) == 1:
+            (i, h), = sp.items()
+            out.append(dict(kind="species", key=part, value_text=i, quantity=axis_q, how=f"name '{name}' on the {axis_q} axis -> {i} ({h})"))
+            continue
         hits = {(k_ if k_ == "structure" else k_[6:], i): h for k_ in ["structure"] + [f"value:{q}" for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
         if len(hits) == 1:
             ((q, i), h), = hits.items()
             out.append(dict(kind="name", key=part, value_text=i, quantity=q, how=f"name '{name}' -> {q} = {i} ({h})"))
         else:
             out.append(dict(kind="name", key=part, quantity="other", how="parsed to nothing" + (f" (names {sorted(hits)})" if hits else ""), flag="legend label parsed to nothing"))
+    return out
+
+
+def legend_methods(pid, label):
+    """P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
+    legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
+    vocab_hits (kind method) -> {method id: the words}."""
+    ws = [w for w in re.split(r"[\s,;/()\[\]]+", label or "") if w]
+    found = {}
+    for t in [label or ""] + [" ".join(ws[i:i + n]) for n in (3, 2, 1) for i in range(len(ws) - n + 1)]:
+        for m in vocab_hits(pid, "method", t) if t.strip() else {}:
+            if V.METHOD_MEASUREMENT.get(m, True):
+                found.setdefault(m, t)
+    return found
+
+
+def method_panels(pid, obj):
+    """P166 (user): {panel: {method id: the words}} for every curve_per_unit / point_per_unit panel one of whose legend labels names a
+    method entry (legend_methods: 'ALD XRR' names xrr): its curves are measurements of the panel's unit(s), not units. curve_units creates
+    none there; pass0_paper.consistency flags the panel "legend names methods"."""
+    out = {}
+    for panel, items in panel_items(pid, obj).items():
+        ms = {}
+        for it in items:
+            c = it["curve"]
+            ms.update(legend_methods(pid, ((c.get("label") or "") if it["cell"] else c.get("series", {}).get("label_raw")) or ""))
+        if ms:
+            out[panel] = ms
     return out
 
 
@@ -251,7 +288,7 @@ def curve_units(pid, obj):
     the role unless taken from the kind. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent
     unresolved". introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
     ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel's series_axis; origin
-    "derived: <layout>". P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
+    "derived: <layout>". P166: no unit in a panel whose legend names methods (method_panels). P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
     quantity, value and unit) are one unit (merge_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS)
     and by pass0_paper.consistency."""
     obj = obj if isinstance(obj, dict) else {}
@@ -260,8 +297,11 @@ def curve_units(pid, obj):
     by_list = "model_run" if sims and not runs else "run" if runs and not sims else None
     lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict)}
     ids, axes = set(C.E.texts(pid)), series_axis(pid)
+    meth = method_panels(pid, obj)                                              # P166: a legend that names methods makes no units
     out = []
     for panel, items in panel_items(pid, obj).items():
+        if panel in meth:
+            continue
         for it in items:
             c = it["curve"]
             if it["held"]:
@@ -390,6 +430,8 @@ class Run:
                 rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])
                 if c["kind"] == "value":
                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
+                if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
+                    rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"], derived=c["kind"],
                                  dkind=dkind, once=(u["panel"], c["key"]) if c["kind"] == "value" else None))
                 self.count("input", f"condition of a derived unit ({c['kind']})")

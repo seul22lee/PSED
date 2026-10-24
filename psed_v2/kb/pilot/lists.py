@@ -161,7 +161,9 @@ TERMS = {
     "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
                     "deposition activity's inputs.",
-    "simulation": "one model. The paper's own model and a model it compares against are separate simulations.",   # P146 (user)
+    "simulation": "any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation "
+                  "fitted to or evaluated on the data; each evaluation with its own inputs is a model run (gor03's theory, art19's slope "
+                  "relation, gre23's eq 1–2). The paper's own model and a model it compares against are separate simulations.",   # P166 (user); P146 (user)
     "model run": "one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same "
                  "inputs are one model run.",   # P146 (user)
     "fitted or simulated curve of a specimen": "a curve fitted or simulated to match a measured specimen is a result of that specimen, "
