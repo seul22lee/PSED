@@ -1,0 +1,45 @@
+id,action,target,reason
+atomic_layer_deposition,reject,,"a term, not a quantity (table header)"
+average_surface_area_of_adsorption_sites,never,Model internals,
+bar_s,alias,surface_to_pore_volume_ratio,fig5 legend symbol \bar{s} of hei24: a symbol of the entry accepted in this round; store as symbols
+baseline_parameters_for_porous_media,reject,,a table caption
+beta_0,alias,initial_sticking_coefficient,"a symbol of hei24 (beta_0 = initial sticking probability, Table 2); store as symbols {text, paper: hei24}, not aliases"
+boltzmann_constant,never,Model internals,
+catalyst_particle_outer_surface_area_ideal_non_porous_sphere,never,Model internals,
+catalyst_particle_volume,never,Model internals,
+current,never,Instrument settings,
+density_of_ald_reactive_sites,alias,saturation_density,"Γ, areal density of ALD reactive sites (10^15 cm^-2 = 10 nm^-2): the same quantity"
+electron_beam_energy,never,Instrument settings,
+h,never,Model internals,
+hopping_coefficient,never,Model internals,
+k,never,Model internals,
+mass_for_a_single_reactant_molecule,never,Model internals,
+mean_thermal_velocity,never,Model internals,
+number_of_molecules_represented_by_one_trajectory,never,Model internals,
+particle_radius_and_reactant_exposure,reject,,"fig7's combined axis label: two conditions in one string (R and exposure); a parsing matter, not a quantity"
+particle_radius,add,,accept by rule c: a model input varied in Fig. 3 and 7; symbol R (hei24) -> symbols; alias 'Particle radius' (proposed id was particle_radius_r)
+r,alias,particle_radius,"fig7 legend symbol R of hei24: a symbol of the entry accepted in this round; apply accepts before aliases; store as symbols {R, hei24}"
+surface_to_pore_volume_ratio,add,,accept by rule c: a model input varied across hei24's model runs; symbol \bar{s} (hei24) -> symbols; alias 'Ratio of surface area and pore volume' (proposed id was ratio_of_surface_area_a_o_0_and_pore_volume)
+scale_bar,never,Instrument settings,
+shrinking_core_model,reject,,"a model name in a symbol table, not a quantity"
+sigma,alias,saturation_density,"already a symbol of saturation_density for hei24; unresolved only because the label is LaTeX \sigma, not σ — fix the normalizer (LaTeX Greek -> Unicode); store nothing new"
+simulation,reject,,"legend 'Simulation' marks the curve's data role (simulated), not a condition; same id as the method entry"
+spatial_domain_discretization_points,never,Model internals,
+tortuosity_over_porosity,add,,accept by rule c: the condition that distinguishes hei24's model runs; symbol τ/ε (hei24) -> symbols (proposed id was tau_epsilon)
+y_t_1_2,reject,,"a fitted expression, not a quantity"
+elam_monte_carlo,undecided (stays in pending.csv),,no record names it
+bent,undecided (stays in pending.csv),,
+displacement,undecided (stays in pending.csv),,
+distance_between_pillars,undecided (stays in pending.csv),,
+distance_between_rows_of_pillars,undecided (stays in pending.csv),,
+pillar_diameter,undecided (stays in pending.csv),,
+tilde_xi,undecided (stays in pending.csv),,
+anodization_conditions_charge_density,undecided (stays in pending.csv),,
+anodization_conditions_electrolyte,undecided (stays in pending.csv),,
+anodization_conditions_potential,undecided (stays in pending.csv),,
+excess_over_the_saturation_dose,undecided (stays in pending.csv),,
+integrated_coverage,undecided (stays in pending.csv),,
+normalized_penetration_depth_for_sphere,undecided (stays in pending.csv),,
+shape_factor,undecided (stays in pending.csv),,
+slope_of_integrated_zno_coverage,undecided (stays in pending.csv),,
+surface_area_roughness_factor,undecided (stays in pending.csv),,

@@ -1,0 +1,121 @@
+diff --git a/psed_v2/ontology/never.csv b/psed_v2/ontology/never.csv
+index 369d4f5..6f03604 100644
+--- a/psed_v2/ontology/never.csv
++++ b/psed_v2/ontology/never.csv
+@@ -94,3 +94,23 @@ Q,Model internals,10.1063_1.5028178,round 1: symbol of collision_rate_at_unit_pr
+ Q,Model internals,10.1039_d0cp03358h,round 1: symbol of collision_rate_at_unit_pressure,yes
+ R,Model internals,10.1039_d0cp03358h,round 1: symbol of diffusion_resistance_of_a_rectangular_channel,yes
+ R_row,Model internals,10.1039_d0cp03358h,round 1: symbol of diffusion_resistance_of_one_row_of_pillars,yes
++Average surface area of adsorption sites,Model internals,10.1039_d3cp05639b,round 2: average_surface_area_of_adsorption_sites,
++s_0,Model internals,10.1039_d3cp05639b,round 2: symbol of average_surface_area_of_adsorption_sites,yes
++Boltzmann constant,Model internals,10.1039_d3cp05639b,round 2: boltzmann_constant,
++k_B,Model internals,10.1039_d3cp05639b,round 2: symbol of boltzmann_constant,yes
++"Catalyst particle outer surface area, ideal non-porous sphere",Model internals,10.1039_d3cp05639b,round 2: catalyst_particle_outer_surface_area_ideal_non_porous_sphere,
++A_{Par},Model internals,10.1039_d3cp05639b,round 2: symbol of catalyst_particle_outer_surface_area_ideal_non_porous_sphere,yes
++Catalyst particle volume,Model internals,10.1039_d3cp05639b,round 2: catalyst_particle_volume,
++V_{\text{Par}},Model internals,10.1039_d3cp05639b,round 2: symbol of catalyst_particle_volume,yes
++current,Instrument settings,10.1021_cm0303080,round 2: current,
++electron beam energy,Instrument settings,10.1021_cm0303080,round 2: electron_beam_energy,
++H,Model internals,10.1021_cm0303080,round 2: h,yes
++hopping coefficient,Model internals,10.1021_cm0303080,round 2: hopping_coefficient,
++k,Model internals,10.1021_cm0303080,round 2: k,yes
++Mass for a single reactant molecule,Model internals,10.1039_d3cp05639b,round 2: mass_for_a_single_reactant_molecule,
++m_r,Model internals,10.1039_d3cp05639b,round 2: symbol of mass_for_a_single_reactant_molecule,yes
++Mean thermal velocity,Model internals,10.1039_d3cp05639b,round 2: mean_thermal_velocity,
++v_{th},Model internals,10.1039_d3cp05639b,round 2: symbol of mean_thermal_velocity,yes
++number of molecules represented by one trajectory,Model internals,10.1021_cm0303080,round 2: number_of_molecules_represented_by_one_trajectory,
++scale bar,Instrument settings,10.1002_cvde.200390005,round 2: scale_bar,
++spatial domain discretization points,Model internals,10.1039_d3cp05639b,round 2: spatial_domain_discretization_points,
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index 39718c3..426769b 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 45e55fd1bb4b52330c8d138469e0ba1d142353f9973d023ce3f61b3bb305557e
+ version: 1
+ 
+ kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
+@@ -715,7 +715,7 @@ entries:
+     qudt_unit: "unit:UNITLESS"
+     qualifiers: [species]
+     aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, sticking coefficient]
+-    symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}, {text: c, paper: 10.1063_1.5028178}]
++    symbols: [{text: s0, paper: 10.1063_1.5028178}, {text: s0, paper: 10.1039_d0cp03358h}, {text: s0, paper: 10.1116_6.0001094}, {text: cH2O, paper: ''}, {text: c, paper: 10.1039_d1cp04758b}, {text: c_ext, paper: 10.1039_d1cp04758b}, {text: c, paper: 10.1063_1.5028178}, {text: \beta_0, paper: 10.1039_d3cp05639b}]
+     base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
+     evidence: [Ylilammi2018 Table I, Ylilammi2018 Figs. 2-5, Yim2020 Table 2, Yim2020 Fig. 10, Werbrouck2021 Sec. III D, 'alias ''c'': yim22 tab1.r7c1; yli18 tabI.r1c4 (P131b alias audit)', 'alias ''c_ext'': yim22 tab3.r1c6 (P131b alias audit)']
+ 
+@@ -1562,7 +1562,7 @@ entries:
+     unit: "nm-2"
+     qudt_quantity_kind: "quantitykind:InverseArea"
+     qudt_unit: "unit:PER-NanoM2"
+-    aliases: [saturation density]
++    aliases: [saturation density, density of ALD reactive sites]
+     symbols: [{text: q, paper: ''}, {text: q_sat, paper: ''}, {text: S_Hf, paper: 10.1002_cvde.200390005}, {text: S_O, paper: 10.1002_cvde.200390005}, {text: Γ, paper: 10.1021_cm0303080}, {text: σ, paper: 10.1039_d3cp05639b}]
+     base: {}
+     evidence: [yim20 Fig. 10, yim20 Table 2, 'alias ''S_Hf'': gor03 s4.p1 (P131b alias audit)', 'alias ''S_O'': gor03 s4.p2 (P131b alias audit)', 'alias ''Γ'': ela03 s5.p34 (P131b alias audit)', 'alias ''σ'': hei24 fig5.cap (P131b alias audit)']
+@@ -3364,6 +3364,51 @@ entries:
+     definition_source: paper
+     evidence: [yim20 fig10.cap, yim22 fig4.cap fig4f fig6.cap fig7.cap s12.p1 s12.p2 s12.p5 s14.p6 s15.p4 tab1.cap tab1.r10c1 tab1.r11c1 (+10), 'quote yim22 fig4.cap: desorption probability, P_d', 'quote yli18 s6.p6: where $\theta$ is the surface coverage, $q$ the saturation adsorption density, and $P_d$ the desorption probability in unit time.']
+ 
++  # ---------------------------------------------------------------- grow.py round 2: accepted
++  - id: particle_radius
++    type: quantity
++    label: Particle radius, R
++    name: Particle radius, R
++    origin: round 2
++    category: measurement
++    definition: 'Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.'
++    dimension: length
++    unit: m
++    aliases: ['Particle radius, R']
++    symbols:
++    - {text: R, paper: 10.1039_d3cp05639b}
++    source_pids: [10.1039_d3cp05639b]
++    evidence: ['10.1039_d3cp05639b:tab1.r6c1 — Particle radius, R']
++
++  - id: surface_to_pore_volume_ratio
++    type: quantity
++    label: Ratio of surface area (A_{O_0}) and pore volume (V_P)
++    name: Ratio of surface area (A_{O_0}) and pore volume (V_P)
++    origin: round 2
++    category: measurement
++    definition: 'Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.'
++    dimension: inverse_length
++    unit: 1/m
++    aliases: ['Ratio of surface area (A_{O_0}) and pore volume (V_P)']
++    symbols:
++    - {text: '\bar{s}', paper: 10.1039_d3cp05639b}
++    source_pids: [10.1039_d3cp05639b]
++    evidence: ['10.1039_d3cp05639b:tabu1.r22c0 — Ratio of surface area (A_{O_0}) and pore volume (V_P)']
++
++  - id: tortuosity_over_porosity
++    type: quantity
++    label: tortuosity over porosity
++    name: tortuosity over porosity
++    origin: round 2
++    category: measurement
++    definition: 'Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.'
++    dimension: dimensionless
++    unit: '1'
++    symbols:
++    - {text: \tau/\epsilon, paper: 10.1039_d3cp05639b}
++    source_pids: [10.1039_d3cp05639b]
++    evidence: ['10.1039_d3cp05639b:fig5.cap — \tau/\epsilon']
++
+ families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
+   composition: {}
+   conformality: {mixed_dimensions: true, reason: "the depth the film reaches is given either as a length (penetration_depth) or scaled to the feature (coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction); the transform coated_ar links the two"}
+diff --git a/psed_v2/ontology/rounds.csv b/psed_v2/ontology/rounds.csv
+index f3689c4..e28937e 100644
+--- a/psed_v2/ontology/rounds.csv
++++ b/psed_v2/ontology/rounds.csv
+@@ -1,4 +1,4 @@
+ round,opened,applied,pids,dois,status,n_candidates,n_accepted,n_alias,n_rejected,n_never
+ 0,2026-10-03,2026-10-22,10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804,10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154;10.1116/6.0003182;10.1021/cm0303080;10.1002/cvde.200390005;10.1063/1.5028178;10.1116/1.4903941;10.1021/acs.jpcc.9b08176;10.1039/d1cp04758b;10.1039/d3cp05639b;10.1116/6.0002993;10.1116/6.0002804,applied,,235,0,0,45
+ 1,2026-10-22,2026-10-23,10.1063_1.5028178;10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154,10.1063/1.5028178;10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154,applied,47,0,2,1,39
+-2,2026-10-23,,10.1021_cm0303080;10.1039_d3cp05639b;10.1002_cvde.200390005,10.1021/cm0303080;10.1039/d3cp05639b;10.1002/cvde.200390005,proposed,37,,,,
++2,2026-10-23,2026-10-23,10.1021_cm0303080;10.1039_d3cp05639b;10.1002_cvde.200390005,10.1021/cm0303080;10.1039/d3cp05639b;10.1002/cvde.200390005,applied,37,3,5,6,14

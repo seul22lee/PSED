@@ -1,0 +1,33 @@
+P164, round 2 applied, 0 API calls. Round-2 acceptance FAILS (121, below); round 1 PASS; export.py --check 15 of 15.
+
+Precondition met: accept 3, alias 5, never 14 (Model internals 11, Instrument settings 3), reject 6, undecided 16.
+Fix 1 (export.strip_latex, the one function of norm_label and symbol_key): a LaTeX Greek command -> its Unicode letter (\epsilon and
+  \varepsilon -> ε), \bar{x} / \tilde{x} -> the letter with its combining accent. '\sigma' keyed 'sigma', now 'σ': hei24's legend σ values
+  resolve to saturation_density through its existing symbol σ. '\beta_0': 'beta0' -> 'β0'. Side effect: '\rho' keys 'ρ', so film_density's
+  alias 'rho' and yim20's never row 'rho (...)' no longer match a printed \rho; no compiled record of the six papers changed by it.
+Fix 2 (grow.py apply): a row whose id the user edited finds its candidate by its evidence (the 3 accepts: tau_epsilon,
+  ratio_of_surface_area_a_o_0_and_pore_volume, particle_radius_r); accepts before aliases; a symbol-like label (one letter, Greek, a subscript,
+  LaTeX) goes to the symbols of each paper that prints it, never to aliases, and a symbol the entry already has for that paper is not stored
+  again ('\sigma' -> nothing new). Not asked, same rule: a never decision on a symbol-like label (H, k of ela03) writes a paper-local symbol
+  row, not an any-paper word (never.csv held no symbol-like word before). R2_apply.written.csv lists what apply wrote.
+  Accepted: particle_radius (alias 'Particle radius, R', symbol R), surface_to_pore_volume_ratio (alias 'Ratio of surface area (A_{O_0}) and
+  pore volume (V_P)', symbol \bar{s}), tortuosity_over_porosity (symbol \tau/\epsilon); definition and unit from the rows, origin round 2.
+  Aliases: \beta_0 -> initial_sticking_coefficient symbols (hei24); 'density of ALD reactive sites' -> saturation_density aliases; R, \bar{s},
+  \sigma: nothing new. never.csv +20 rows (12 words, 8 paper-local symbols).
+Fix 3 (compile.merge_units): merged 3, fig2a/fig2b sphere, cylinder, slab. The fig5x / fig6x pairs are NOT merged. As written, the rule would
+  also merge a sphere and a slab panel: fig5c, fig5d, fig6c, fig6d all carry {molar_mass 100 g/mol}, and the geometry is only in the figure
+  stage's panel text. Guard added: a group holding two units of one y quantity stays split (44 groups, 148 units). Baseline across sweep
+  panels, split: 6 (P161's rule). hei24 units 163 -> 160.
+Apply: history.csv +28 rows; ontology.yaml +3 entries; rounds.csv round 2 applied (37 candidates; 3 accepted, 5 aliases, 6 rejected, 14 never);
+  pending.csv 16 undecided rows; CODEBOOK carries the three entries. Recompiled six papers. apply committed its own data (402e913).
+Scores: yli18, yim20, mat22, ela03, gor03 unchanged. hei24 T6 276 -> 258, settings 73 -> 55 / 172: 18 gold settings of quantity other (the τ/ε
+  values) no longer match, the compiled records now being tortuosity_over_porosity; the gold predates the entry. check.py --dir: hei24 645 ->
+  553 (-92); the other five unchanged. hei24 vs gold: 80 of 83 model runs paired (matched 10 -> 13).
+Round-2 acceptance FAIL (121), reported, not worked around:
+  A2 'no meaning text' 119: promotions through a paper symbol with no definition beside it: the derived legend values (τ/ε, σ, β₀, s̄,
+    d_pore 20 each, R 18) and one pass-1 \bar{s} (s10.p2). The head-noun check has nothing to compare.
+  A2 disagree 1: ela03 s2.p23 'flow-type' -> flow_type: the head noun keeps the hyphen ('flow-type' vs 'type').
+  A3 1: ela03 s5.p32, the unit row of 'density of ALD reactive sites' (unit '10^15 cm^-2' not in units.yaml) stays open; A1 treats a promoted
+    record's unit row as n/a, A3 does not.
+  A1: 46 rows yes, 8 n/a; 16 pending candidates accounted.
+Commits: the fixes (8d3d860), apply's data commit (402e913), this report (a third commit: apply commits before the report can be built).
