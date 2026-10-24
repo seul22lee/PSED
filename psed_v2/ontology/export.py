@@ -110,6 +110,14 @@ def norm_label(label):
     return " ".join(strip_latex(label).casefold().split())
 
 
+def symbol_like(t):
+    """P164 (user): a label that is a symbol (one letter, a Greek letter, a subscript, LaTeX): the part before the first _ or ^, its LaTeX
+    commands removed, holds no word of three or more Latin letters ('R', '\\sigma', '\\beta_0', '\\tau/\\epsilon', 'd_{pore}'; not 'Particle
+    radius, R'). P178: here, for grow.py and compile.py."""
+    base = re.sub(r"\\[A-Za-z]+", "", re.split(r"[_^]", str(t), maxsplit=1)[0])
+    return bool(str(t).strip()) and not re.search(r"[A-Za-z]{3,}", base)
+
+
 def symbol_key(text):
     """A symbol key (P157d): LaTeX stripped, whitespace collapsed, case kept (R is not r, Q is not q; P156)."""
     return " ".join(strip_latex(text).split())
@@ -345,7 +353,8 @@ def build(onto, pmap):
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
         FROM_OTHER={lab: e["id"] for e in live for lab in e.get("from_other", [])},   # P131b: printed label -> the entry promoted from the free label other[label]
-        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
+        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", ""), **({"mapping": t["mapping"]} if t.get("mapping") else {}))
+                    for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them; P178: a categorical transform's mapping
     )
 
 

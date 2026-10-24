@@ -370,12 +370,7 @@ def label_papers(row, label):
     return ps or [p for p in row["pids"].split(";") if p]
 
 
-def symbol_like(t):
-    """P164 (user): a label that is a symbol (one letter, a Greek letter, a subscript, LaTeX): the part before the first _ or ^, its LaTeX
-    commands removed, holds no word of three or more Latin letters ('R', '\\sigma', '\\beta_0', '\\tau/\\epsilon', 'd_{pore}'; not 'Particle
-    radius, R')."""
-    base = re.sub(r"\\[A-Za-z]+", "", re.split(r"[_^]", str(t), maxsplit=1)[0])
-    return bool(str(t).strip()) and not re.search(r"[A-Za-z]{3,}", base)
+symbol_like = X.symbol_like                                                      # P178: moved to export.py (compile.py reads it too)
 
 
 def run_conditions(pid):

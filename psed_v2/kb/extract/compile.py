@@ -6,7 +6,7 @@
 
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
 are ignored); the latest pass-0 line. Steps: a0 resolve_other (P157b: a value held as other or outside the vocabulary, matched to the
-generated vocab by its record key, symbols only in their own paper (P157d); never.csv -> unmapped.csv column never; <pid>.promoted.csv), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
+generated vocab by its record key, symbols only in their own paper (P157d); never.csv -> unmapped.csv column never; <pid>.promoted.csv), a1 symbol species (P178: a symbol's species from the paper's definition), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
 ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
 m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
 dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
@@ -368,6 +368,24 @@ def unit_fits(q, unit):
         return True
     d = lambda x: "dimensionless" if x == "count" else x                      # noqa: E731
     return d(V.UNIT_BASE[s][0]) == d(qd)
+
+
+def categorical_transform(t, facts):
+    """P178 (user): a categorical transform's value (ontology.yaml transforms: mapping) from an entity's condition-vector facts, first
+    match: an input of mapping.present the entity has (any value), then the species id of its other input (mapping.species), then that
+    species' kind (mapping.species_kind, lists.SPECIES). Returns (value, the facts used) or ('', [])."""
+    m = t["mapping"]
+    for q, v in (m.get("present") or {}).items():
+        f = next((f for f in facts if f["quantity"] == q and (f["value"] or f["value_text"] or f["value_min"] or f["value_max"])), None)
+        if f:
+            return v, [f]
+    sq = next((q for q in t["inputs"] if q not in (m.get("present") or {})), "")
+    f = next((f for f in facts if f["quantity"] == sq and f["value_text"]), None)
+    if f:
+        v = (m.get("species") or {}).get(f["value_text"]) or (m.get("species_kind") or {}).get(L.SPECIES.get(f["value_text"], {}).get("kind", ""))
+        if v:
+            return v, [f]
+    return "", []
 
 
 def legend_methods(pid, label):
@@ -819,10 +837,14 @@ class Run:
                     rec.update(value_min=c["value_min"], value_max=c["value_max"], unit=c["unit"] or None, kind=dkind)
                 elif c["kind"] == "value":
                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
+                sp = species_named(self.pid, c["key"]) if c.get("coord") else {}
+                if len(sp) == 1:                                                # P178 (user): a coordinate axis that names one species: species=
+                    rec["qualifiers"] = {"species": next(iter(sp))}
+                    self.count("input", "coordinate setting species (the axis names it)")
                 if c.get("coord") and c.get("quantity") in C.X.STEP_QUANTITIES:  # P177c (user): a coordinate axis that names a species
                     step = self.axis_step(c, recipe)
                     if step:
-                        rec["qualifiers"] = {"step": step[0]}
+                        rec["qualifiers"] = {"step": step[0], **(rec.get("qualifiers") or {})}
                         if step[1]:
                             rec["note"] = step[1]
                         self.count("input", f"coordinate setting step {step[0]}" + (" (flagged)" if step[1] else ""))
@@ -861,6 +883,57 @@ class Run:
             return "none", f"step none: the axis '{c['key']}' names {', '.join(sorted(sp))}, no one species of the paper's recipe (reactant_A / reactant_B) (P177c)"
         h = halves.pop()
         return (f"purge_{h}" if c["quantity"] in PURGE_QUANTITIES else f"reactant_{h}"), ""
+
+    # ------------------------------------------------------------------------------------------------------------ a1 (P178)
+    def symbol_species(self, recs):
+        """a1, P178 (user): the species of a record labelled with a symbol (export.symbol_like) whose quantity takes the species qualifier
+        (its entry's qualifiers): this paper's definition record of the symbol (its term), else of the symbol's subscript (p_B -> B), gives
+        it: the definition's species qualifier, or for a definition of quantity reactant_A / reactant_B / carrier_gas the paper's one value
+        of that setting. A definition species wins over the record's own (the note: 'species corrected from the symbol definition'); a
+        record with none takes it; with no definition species the record keeps its own, listed 'species unverified (record only)'.
+        No species is ever taken from the recipe otherwise. Every such record is a log line 'a1: symbol species ...'."""
+        takes = {i for i, e in V.ENTRIES.items() if "species" in (e.get("qualifiers") or [])}
+        one = lambda vs: next(iter(vs)) if len(vs) == 1 else ""                   # noqa: E731
+        recipe = collections.defaultdict(set)
+        for r in recs:
+            rec = r["rec"]
+            if rec.get("type") == "setting" and rec.get("quantity") in ("reactant_A", "reactant_B", "carrier_gas") and isinstance(rec.get("value_text"), str):
+                hit = vocab_hits(self.pid, "species", rec["value_text"])
+                recipe[rec["quantity"]].add(one(hit) or rec["value_text"])
+        defs = collections.defaultdict(list)
+        for r in recs:
+            rec = r["rec"]
+            if rec.get("type") == "definition" and isinstance(rec.get("term"), str) and rec["term"].strip():
+                q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+                sp = q.get("species") if q.get("species") in L.SPECIES else one(recipe.get(rec.get("quantity"), set()))
+                defs[C.X.symbol_key(rec["term"])].append((r["eid"], sp or ""))
+        for r in recs:
+            rec = r["rec"]
+            lab = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
+            if r.get("origin") or rec.get("type") == "definition" or rec.get("quantity") not in takes or not C.X.symbol_like(lab):
+                continue
+            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+            own = q.get("species") or ""
+            sub = re.match(r"^[^_]+_\{?(.+?)\}?$", lab)
+            found = next((ds for k in [C.X.symbol_key(lab)] + ([C.X.symbol_key(sub.group(1))] if sub else []) for ds in [[d for d in defs.get(k, []) if d[1]]] if ds), [])
+            sp = one({s for _, s in found})
+            ev = ", ".join(sorted({e for e, s in found if s == sp}))
+            if sp and own and sp != own:
+                rec["qualifiers"] = {**q, "species": sp}
+                rec["note"] = "; ".join(x for x in (rec.get("note"), f"species corrected from the symbol definition ({ev}): was {own}") if x)
+                how = "corrected"
+            elif sp and not own:
+                rec["qualifiers"] = {**q, "species": sp}
+                rec["note"] = "; ".join(x for x in (rec.get("note"), f"species from the symbol definition ({ev})") if x)
+                how = "from the definition"
+            elif sp:
+                how = "backed by the definition"
+            else:
+                how = "species unverified (record only)" if own else "no species"
+            self.count("a1", f"symbol species: {how}")
+            self.note(f"a1: symbol species {r['eid']} {lab!r} {rec.get('type')} {rec.get('quantity')}: record {own or '-'}, definition "
+                      f"{sp or ('disagree: ' + ', '.join(sorted({s for _, s in found})) if found else '-')}{' (' + ev + ')' if ev else ''} -> {how}")
+        return recs
 
     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
     def resolve_other(self, recs):
@@ -1701,7 +1774,8 @@ class Run:
 
     def derived(self, rows):
         """j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
-        compiled fact (no assumed fact); caveats and claim nodes through query; comparisons not built (D8)."""
+        compiled fact (no assumed fact); P178 (user): the categorical transforms of ontology.yaml (a mapping: process_mode) per entity on
+        its condition vector, never over a stated value; caveats and claim nodes through query; comparisons not built (D8)."""
         import query as Q
         self.write_facts(rows)
         here, Q.HERE = Q.HERE, OUT
@@ -1733,6 +1807,23 @@ class Run:
                 f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
                 out.append(f)
                 self.count("j", f"derived {did}")
+        for t in [t for t in V.TRANSFORMS if t.get("mapping")]:                  # P178 (user): a categorical transform (process_mode) per entity:
+            for e in T.entities():                                              # a stated value wins, the derived one never overwrites it
+                vec = [f for fs in T.vector(e).values() for f in fs]
+                st = next((f for f in vec if f["quantity"] == t["output"] and f["value_text"]), None)
+                val, used = ("", []) if st else categorical_transform(t, vec)
+                self.note(f"j: transform {t['id']} {e}: " + (f"stated {st['value_text']} ({st['fact_id']})" if st else f"derived {val} from " +
+                          ", ".join(f"{f['quantity']} {f['value_text'] or f['value']} ({f['fact_id']})" for f in used) if val else "none (no input)"))
+                if not val:
+                    self.count("j", f"transform {t['id']}: " + ("stated" if st else "none")); continue
+                f = {x: "" for x in F.FIELDS}
+                ev = sorted({x for u in used for x in u["evidence"].split(";") if x in self.order}, key=self.order.get) or [self.els[0]["element_id"]]
+                f.update(type="derived", quantity=t["output"], value_text=val, data_kind="computed_by_kb", method="calculation", inputs=";".join(u["fact_id"] for u in used),
+                         evidence=";".join(ev), parent=e, author=self.pid, mentions=T.byid[e]["label_as_printed"], definition_note=f"transform {t['id']}: {t['formula']}")
+                self.id_count[ev[0]] += 1
+                f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
+                out.append(f)
+                self.count("j", f"transform {t['id']}: derived {val}")
         self.note(f"j: derived over {len(T.entities())} entities: {len(out)} rows; not derived: {dict(errors)}")
         cav = Q.caveats_of(T)
         self.note(f"j: caveats (query.caveats_of): {len(cav)}, linked to facts {sum(bool(c['facts']) for c in cav)}, to nodes {sum(bool(c['nodes']) for c in cav)}; "
@@ -1823,6 +1914,7 @@ class Run:
     def run(self):
         recs = self.read()
         recs = self.resolve_other(recs)                                         # P157b
+        recs = self.symbol_species(recs)                                        # P178 (user)
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
         recs = self.type_rules(recs)

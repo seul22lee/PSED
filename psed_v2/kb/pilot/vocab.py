@@ -796,6 +796,7 @@ TRANSFORM_OUTPUTS = ['aspect_ratio',
  'moles_from_mass_gain',
  'normalized_thickness',
  'plasma_gas_ratio{gas=h2;relative_to=all_gases}',
+ 'process_mode',
  'sheet_resistance',
  'shell_volume_fraction',
  'step_coverage']
@@ -7961,4 +7962,12 @@ TRANSFORMS = [{'formula': 'unit table below', 'id': 'unit_conversion', 'inputs':
  {'formula': 'L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)',
   'id': 'body_thickness',
   'inputs': ['feature_depth', 'entry_sides'],
-  'output': 'body_thickness'}]
+  'output': 'body_thickness'},
+ {'formula': 'plasma when a plasma power or plasma configuration is set; else by the co-reactant (reactant_B): water, H2S, NH3 and other molecular '
+             'co-reactants thermal, O3 ozone, the radicals O and H plasma (P178)',
+  'id': 'process_mode',
+  'inputs': ['reactant_B', 'plasma_power', 'plasma_configuration'],
+  'mapping': {'present': {'plasma_configuration': 'plasma', 'plasma_power': 'plasma'},
+              'species': {'h2o': 'thermal', 'h2s': 'thermal', 'h_atom': 'plasma', 'nh3': 'thermal', 'o3': 'ozone', 'o_atom': 'plasma'},
+              'species_kind': {'molecule': 'thermal'}},
+  'output': 'process_mode'}]
