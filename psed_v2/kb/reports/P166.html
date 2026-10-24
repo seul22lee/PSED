@@ -1,0 +1,657 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P166</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P166</h1>
+<h2>Summary</h2><p>kb/reports/P166.summary.txt</p>
+<pre>P166: 2 provider calls (pass 0 again for gre23 and art19), $0.281. Stopped after step 3: gre23&#x27;s pass 0 again lists no simulation, so
+step 4 (pass 1 for the three, grow.py add / propose) did not run.
+
+1 (0 calls). lists.TERMS simulation (user text; the P146 sentence on separate simulations kept after it): &quot;any model the paper applies to
+  produce a computed value or curve — a numerical simulation, or an analytical equation fitted to or evaluated on the data; each evaluation
+  with its own inputs is a model run (gor03&#x27;s theory, art19&#x27;s slope relation, gre23&#x27;s eq 1–2)&quot;. The pass-0 instruction and CODEBOOK.md print
+  it. Instruction sha256 662a8f96 -&gt; 92092f6c. Left as it was: the P145 term &quot;a curve fitted or simulated to match a measured specimen is a
+  result of that specimen, not a model run&quot;, which the new text overlaps.
+  pass0_paper.model_named (printed after every pass 0 and by --check): an ontology model entry whose name or alias occurs in document.md
+  as a whole phrase while pass 0 lists no simulation. On the nine papers no model entry&#x27;s name occurs (the four model entries carry long
+  names, e.g. &#x27;Arts slope relation&#x27;, and no aliases), so nothing is flagged; gre23, art19 (before the re-run), zou23 and mat22 list no
+  simulation.
+2 (0 calls). A panel whose legend names a measurement method (one, two or three consecutive words of a label, or the label, resolve to a
+  method entry; vocab.METHOD_MEASUREMENT, new, from the ontology&#x27;s measurement field, leaves out simulation, calculation, cited,
+  schematic, tabulated) makes no derived units; the consistency check flags it &quot;legend names methods&quot;. zou23 fig2 (&#x27;CVD XRR&#x27;, &#x27;ALD XRR&#x27; name
+  xrr): 9 -&gt; 5 derived units. SE and EDS are no method alias in the ontology (&#x27;CVD SE&#x27; names nothing); the panel is caught through XRR. On
+  ela03 fig10b the legend &#x27;Simulation&#x27; names the method entry simulation, which is not a measurement: that panel keeps its 2 model runs.
+  The legend parser reads species names on a material / reactant axis: art19 fig3 (axis &#x27;material&#x27;) &#x27;SiO_{2}&#x27;, &#x27;TiO_{2}&#x27; -&gt; material sio2,
+  tio2. The six compiled papers&#x27; derived units are unchanged (mat22 2, ela03 6, hei24 160, the others 0).
+3 (2 calls). gre23 ($0.168): 7 units again (run 4, specimen 3), no simulation and no model run; the gold&#x27;s &#x27;sim · Eq. (2)&#x27; (eq1, eq2, s9.p9)
+  and its model run stay missing; specimens: missing 6 -&gt; 15 of 15, 3 extra (the new answer names other specimens). art19 ($0.112): 19 units
+  (run 8, specimen 8, simulation 1, model run 2): the simulation pairs with the gold&#x27;s &#x27;recombination-limited model&#x27; (sim_slope, &#x27;eq 6&#x27;),
+  its two model runs SiO2 and TiO2 hold fig3&#x27;s curves and pair with the gold fits; the gold&#x27;s Al2O3 and HfO2 fits (Table 1) stay missing;
+  derived units 2 -&gt; 0. zou23 keeps its P165 pass 0: derived units 9 -&gt; 5 (fig2 makes none), run extra 12 -&gt; 8, layouts 8 disagree as before.
+  Unbound items 0 on the three.
+For the user: gre23&#x27;s eq 1-2 model is not listed by pass 0 under the new term; art19 lacks the two fits only Table 1 shows. Pass 1 for the
+  three (about 35 calls) waits.
+</pre>
+<h2>1: pass-0 instruction hash and the simulation term</h2><p>kb/reports/P166.s12_instruction.txt</p>
+<pre>pass-0 instruction sha256 before 662a8f9645de92b7f195ec23c1cbd0f833ceb5139e8c9d74f2cac882e6c38a31
+after  92092f6c7f3e136d8882e60f2414085a306603a745c0d72249be3044b1b38b1d
+simulation (lists.TERMS, P166): any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation fitted to or evaluated on the data; each evaluation with its own inputs is a model run (gor03&#x27;s theory, art19&#x27;s slope relation, gre23&#x27;s eq 1–2). The paper&#x27;s own model and a model it compares against are separate simulations.
+</pre>
+<h2>1: model named in document.md, no simulation unit (nine papers)</h2><p>kb/reports/P166.s12_model_named.csv</p>
+<table><tr><th>paper</th><th>model</th><th>named</th><th>simulations</th><th>flag</th></tr>
+<tr><td>yli18</td><td>(no model entry named)</td><td></td><td>sim_ylilammi;sim_gordon</td><td></td></tr>
+<tr><td>yim20</td><td>(no model entry named)</td><td></td><td>sim_ylilammi</td><td></td></tr>
+<tr><td>mat22</td><td>(no model entry named)</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>(no model entry named)</td><td></td><td>sim_mc</td><td></td></tr>
+<tr><td>hei24</td><td>(no model entry named)</td><td></td><td>sim_dr</td><td></td></tr>
+<tr><td>gor03</td><td>(no model entry named)</td><td></td><td>sim_kinetic_model</td><td></td></tr>
+<tr><td>gre23</td><td>(no model entry named)</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>(no model entry named)</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>(no model entry named)</td><td></td><td></td><td></td></tr>
+</table>
+<h2>2: derived units per paper after the code change (nine papers; method panels)</h2><p>kb/reports/P166.s12_derived_per_paper.csv</p>
+<table><tr><th>paper</th><th>pass0_units</th><th>pass0_simulations</th><th>derived</th><th>by_role</th><th>method_panels</th><th>unbound</th></tr>
+<tr><td>yli18</td><td>16</td><td>2</td><td>0</td><td></td><td></td><td>0</td></tr>
+<tr><td>yim20</td><td>38</td><td>1</td><td>0</td><td></td><td></td><td>0</td></tr>
+<tr><td>mat22</td><td>42</td><td>0</td><td>2</td><td>run 2</td><td></td><td>0</td></tr>
+<tr><td>ela03</td><td>45</td><td>1</td><td>6</td><td>run 2; model_run 4</td><td></td><td>0</td></tr>
+<tr><td>hei24</td><td>1</td><td>1</td><td>160</td><td>model_run 160</td><td></td><td>0</td></tr>
+<tr><td>gor03</td><td>8</td><td>1</td><td>0</td><td></td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>7</td><td>0</td><td>0</td><td></td><td></td><td>0</td></tr>
+<tr><td>art19</td><td>16</td><td>0</td><td>2</td><td>run 2</td><td></td><td>0</td></tr>
+<tr><td>zou23</td><td>10</td><td>0</td><td>5</td><td>run 5</td><td>fig2 (xrr)</td><td>0</td></tr>
+</table>
+<h2>2: consistency per panel (nine papers, method panels flagged)</h2><p>kb/reports/P166.s12_consistency.csv</p>
+<table><tr><th>paper</th><th>panel</th><th>layout</th><th>items</th><th>held_pass0</th><th>held_derived</th><th>unbound</th><th>unit_ids</th><th>unbound_ids</th><th>flag</th></tr>
+<tr><td>yli18</td><td>fig2</td><td>curve_per_unit</td><td>10</td><td>10</td><td>0</td><td>0</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig3</td><td>curve_per_unit</td><td>8</td><td>8</td><td>0</td><td>0</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig4</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>mr_fig4_h02;mr_fig4_h05;mr_fig4_h1;mr_fig4_h2</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig5</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>mr_fig5_gordon;mr_fig5_ylilammi</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig7</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_4;sample_5;sample_6</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig8b</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sample_12;sample_2;sample_4;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_7;sample_8;sample_9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9d</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9e</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9f</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10a</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10b</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10c</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10d</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10e</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10f</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_12;sample_13;sample_14</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig11b</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_12;sample_15;sample_16</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig1a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig1b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig2</td><td>point_per_unit</td><td>34</td><td>32</td><td>2</td><td>0</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig4</td><td>point_per_unit</td><td>32</td><td>32</td><td>0</td><td>0</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig5a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig5b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig6a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig7a</td><td>curve_per_unit</td><td>6</td><td>6</td><td>0</td><td>0</td><td>run_grid_1;run_grid_14;run_grid_19;run_grid_24;run_grid_30;run_grid_6</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig8</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig9a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig9b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig5a</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>spec_zno_10s;spec_zno_1s;spec_zno_30s;spec_zno_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig5b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig6a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>spec_zno_d19;spec_zno_d46;spec_zno_d65</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig6b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sim_al2o3_10s;sim_al2o3_1s;sim_al2o3_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig9b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig10a</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sim_zno_10s;sim_zno_1s;sim_zno_30s;sim_zno_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig10b</td><td>point_per_unit</td><td>2</td><td>0</td><td>2</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sim_zno_d19;sim_zno_d46;sim_zno_d65</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig11b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig13</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sim_pred_p001;sim_pred_p01;sim_pred_p1;sim_pred_p10</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig2a</td><td>curve_per_unit</td><td>3</td><td>0</td><td>3</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig2b</td><td>curve_per_unit</td><td>3</td><td>0</td><td>3</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig4</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5c</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5d</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5e</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5f</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5g</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5h</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5i</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5j</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5k</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5l</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6c</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6d</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6e</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6f</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6g</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6h</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6k</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6l</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig7a</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig7b</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig8a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig8b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>fig3</td><td>curve_per_unit</td><td>1</td><td>1</td><td>0</td><td>0</td><td>model_run_predicted_exposure</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3b</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3c</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig5</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig2B</td><td>curve_per_unit</td><td>8</td><td>8</td><td>0</td><td>0</td><td>specimen_al2o3_120s;specimen_hfo2_120s;specimen_sio2_120s;specimen_sio2_12s;specimen_sio2_3.8s;specimen_sio2_38s;specimen_tio2_120s;specimen_tio2_12s</td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig3</td><td>curve_per_unit</td><td>2</td><td>0</td><td>2</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1a</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1c</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1d</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1e</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig2</td><td>curve_per_unit</td><td>4</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td>legend names methods (xrr: &#x27;XRR&#x27;): no derived units</td></tr>
+<tr><td>zou23</td><td>fig5b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig6b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+</table>
+<h2>2: species legend names resolved</h2><p>kb/reports/P166.s12_species_conditions.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>label</th><th>quantity</th><th>value</th><th>how</th></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176:fig3:c1</td><td>SiO_{2}</td><td>material</td><td>sio2</td><td>name &#x27;SiO_{2}&#x27; on the material axis -&gt; sio2 (id &#x27;sio2&#x27;)</td></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176:fig3:c2</td><td>TiO_{2}</td><td>material</td><td>tio2</td><td>name &#x27;TiO_{2}&#x27; on the material axis -&gt; tio2 (id &#x27;tio2&#x27;)</td></tr>
+</table>
+<h2>2: export.py --check</h2><p>kb/reports/P166.s12_export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 16 rows: undecided 16
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>3: planned calls</h2><p>kb/reports/P166.s3_plan.txt</p>
+<pre>10.1116_6.0003182: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+gre23: prompt 163370 chars, ~40842 tokens
+10.1021_acs.jpcc.9b08176: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+art19: prompt 127224 chars, ~31806 tokens
+</pre>
+<h2>3: pass-0 runs</h2><p>kb/reports/P166.s3_run.txt</p>
+<pre>10.1116_6.0003182: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0003182: 1 calls made, 0 from the cache
+gre23 pass 0: 7 units, by role {&#x27;run&#x27;: 4, &#x27;specimen&#x27;: 3}; table layouts 2, panel layouts 20
+10.1021_acs.jpcc.9b08176: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1021_acs.jpcc.9b08176: 1 calls made, 0 from the cache
+art19 pass 0: 19 units, by role {&#x27;run&#x27;: 8, &#x27;specimen&#x27;: 8, &#x27;simulation&#x27;: 1, &#x27;model_run&#x27;: 2}; table layouts 1, panel layouts 2
+</pre>
+<h2>3: cost (the zou23 row is its P165 line, not re-run)</h2><p>kb/reports/P166.s3_cost.csv</p>
+<table><tr><th>paper</th><th>calls</th><th>input_tokens</th><th>cached_input_tokens</th><th>output_tokens</th><th>usd</th><th>thinking</th><th>form_version</th></tr>
+<tr><td>gre23</td><td>1</td><td>49719</td><td>0</td><td>34933</td><td>0.1683</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+<tr><td>art19</td><td>1</td><td>37667</td><td>0</td><td>22431</td><td>0.1124</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+<tr><td>zou23</td><td>1</td><td>38116</td><td>21826</td><td>6453</td><td>0.0381</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+</table>
+<h2>3: pass-0 vs gold per paper, P165 -&gt; P166</h2><p>kb/reports/P166.s3_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P165</th><th>P166</th><th>same</th></tr>
+<tr><td>gre23</td><td>gold_units</td><td>21</td><td>21</td><td>yes</td></tr>
+<tr><td>gre23</td><td>gold_by_role</td><td>run 4; specimen 15; simulation 1; model_run 1</td><td>run 4; specimen 15; simulation 1; model_run 1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>pass0_units</td><td>7</td><td>7</td><td>yes</td></tr>
+<tr><td>gre23</td><td>pass0_by_role</td><td>run 4; specimen 3</td><td>run 4; specimen 3</td><td>yes</td></tr>
+<tr><td>gre23</td><td>derived_units</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>derived_by_role</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gre23</td><td>merged</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>unbound</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>run split</td><td>1</td><td></td><td>NO</td></tr>
+<tr><td>gre23</td><td>run missing</td><td>3</td><td>3</td><td>yes</td></tr>
+<tr><td>gre23</td><td>specimen merged+split</td><td>1</td><td></td><td>NO</td></tr>
+<tr><td>gre23</td><td>specimen missing</td><td>6</td><td>15</td><td>NO</td></tr>
+<tr><td>gre23</td><td>simulation missing</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>model_run missing</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>esi_only</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>quotes_not_found</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>layouts_agree</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>gre23</td><td>layouts_disagree</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>layouts_not_compared</td><td>20</td><td>20</td><td>yes</td></tr>
+<tr><td>gre23</td><td>run matched</td><td></td><td>1</td><td>NO</td></tr>
+<tr><td>gre23</td><td>run extra</td><td></td><td>3</td><td>NO</td></tr>
+<tr><td>gre23</td><td>specimen matched</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gre23</td><td>specimen extra</td><td></td><td>3</td><td>NO</td></tr>
+<tr><td>art19</td><td>gold_units</td><td>17</td><td>17</td><td>yes</td></tr>
+<tr><td>art19</td><td>gold_by_role</td><td>run 4; specimen 8; simulation 1; model_run 4</td><td>run 4; specimen 8; simulation 1; model_run 4</td><td>yes</td></tr>
+<tr><td>art19</td><td>pass0_units</td><td>16</td><td>19</td><td>NO</td></tr>
+<tr><td>art19</td><td>pass0_by_role</td><td>run 8; specimen 8</td><td>run 8; specimen 8; simulation 1; model_run 2</td><td>NO</td></tr>
+<tr><td>art19</td><td>derived_units</td><td>2</td><td>0</td><td>NO</td></tr>
+<tr><td>art19</td><td>derived_by_role</td><td>run 2</td><td></td><td>NO</td></tr>
+<tr><td>art19</td><td>merged</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>unbound</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>run split</td><td></td><td></td><td>yes</td></tr>
+<tr><td>art19</td><td>run missing</td><td></td><td></td><td>yes</td></tr>
+<tr><td>art19</td><td>specimen merged+split</td><td></td><td></td><td>yes</td></tr>
+<tr><td>art19</td><td>specimen missing</td><td></td><td></td><td>yes</td></tr>
+<tr><td>art19</td><td>simulation missing</td><td>1</td><td></td><td>NO</td></tr>
+<tr><td>art19</td><td>model_run missing</td><td>4</td><td>2</td><td>NO</td></tr>
+<tr><td>art19</td><td>esi_only</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>quotes_not_found</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>layouts_agree</td><td>2</td><td>2</td><td>yes</td></tr>
+<tr><td>art19</td><td>layouts_disagree</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>art19</td><td>layouts_not_compared</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>run matched</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>art19</td><td>run extra</td><td>6</td><td>4</td><td>NO</td></tr>
+<tr><td>art19</td><td>specimen matched</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>art19</td><td>specimen extra</td><td></td><td></td><td>yes</td></tr>
+<tr><td>art19</td><td>simulation matched</td><td></td><td>1</td><td>NO</td></tr>
+<tr><td>art19</td><td>model_run matched</td><td></td><td>2</td><td>NO</td></tr>
+<tr><td>zou23</td><td>gold_units</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>zou23</td><td>gold_by_role</td><td>run 2; specimen 8</td><td>run 2; specimen 8</td><td>yes</td></tr>
+<tr><td>zou23</td><td>pass0_units</td><td>10</td><td>10</td><td>yes</td></tr>
+<tr><td>zou23</td><td>pass0_by_role</td><td>run 4; specimen 6</td><td>run 4; specimen 6</td><td>yes</td></tr>
+<tr><td>zou23</td><td>derived_units</td><td>9</td><td>5</td><td>NO</td></tr>
+<tr><td>zou23</td><td>derived_by_role</td><td>run 9</td><td>run 5</td><td>NO</td></tr>
+<tr><td>zou23</td><td>merged</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>unbound</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>run split</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>run missing</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>specimen merged+split</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>specimen missing</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>zou23</td><td>simulation missing</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>model_run missing</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>esi_only</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>quotes_not_found</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>layouts_agree</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>layouts_disagree</td><td>8</td><td>8</td><td>yes</td></tr>
+<tr><td>zou23</td><td>layouts_not_compared</td><td>15</td><td>15</td><td>yes</td></tr>
+<tr><td>zou23</td><td>run matched</td><td>1</td><td>1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>run extra</td><td>12</td><td>8</td><td>NO</td></tr>
+<tr><td>zou23</td><td>specimen matched</td><td>4</td><td>4</td><td>yes</td></tr>
+<tr><td>zou23</td><td>specimen extra</td><td>2</td><td>2</td><td>yes</td></tr>
+</table>
+<h2>3: summary per paper</h2><p>kb/reports/P166.s3_summary.csv</p>
+<table><tr><th>paper</th><th>pid</th><th>gold_units</th><th>gold_by_role</th><th>pass0_units</th><th>pass0_by_role</th><th>derived_units</th><th>derived_by_role</th><th>merged</th><th>unbound</th><th>run matched</th><th>run missing</th><th>run extra</th><th>specimen missing</th><th>specimen extra</th><th>simulation missing</th><th>model_run missing</th><th>esi_only</th><th>quotes_not_found</th><th>layouts_agree</th><th>layouts_disagree</th><th>layouts_not_compared</th><th>specimen matched</th><th>simulation matched</th><th>model_run matched</th></tr>
+<tr><td>gre23</td><td>10.1116_6.0003182</td><td>21</td><td>run 4; specimen 15; simulation 1; model_run 1</td><td>7</td><td>run 4; specimen 3</td><td>0</td><td></td><td>0</td><td>0</td><td>1</td><td>3</td><td>3</td><td>15</td><td>3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>20</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176</td><td>17</td><td>run 4; specimen 8; simulation 1; model_run 4</td><td>19</td><td>run 8; specimen 8; simulation 1; model_run 2</td><td>0</td><td></td><td>0</td><td>0</td><td>4</td><td></td><td>4</td><td></td><td></td><td></td><td>2</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>8</td><td>1</td><td>2</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804</td><td>10</td><td>run 2; specimen 8</td><td>10</td><td>run 4; specimen 6</td><td>5</td><td>run 5</td><td>0</td><td>0</td><td>1</td><td>1</td><td>8</td><td>4</td><td>2</td><td></td><td></td><td>0</td><td>1</td><td>0</td><td>8</td><td>15</td><td>4</td><td></td><td></td></tr>
+</table>
+<h2>3: units from curves</h2><p>kb/reports/P166.s3_derived_units.csv</p>
+<table><tr><th>paper</th><th>id</th><th>panel</th><th>role</th><th>role_from</th><th>parent</th><th>label</th><th>conditions</th><th>merged</th><th>merge</th><th>flag</th></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1a:c1</td><td>fig1a</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1b:c1</td><td>fig1b</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1c:c1</td><td>fig1c</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1d:c1</td><td>fig1d</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1e:c1</td><td>fig1e</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+</table>
+<h2>3: consistency</h2><p>kb/reports/P166.s3_consistency.csv</p>
+<table><tr><th>paper</th><th>panel</th><th>layout</th><th>items</th><th>held_pass0</th><th>held_derived</th><th>unbound</th><th>unit_ids</th><th>unbound_ids</th><th>flag</th></tr>
+<tr><td>gre23</td><td>fig3a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3b</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3c</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig5</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig2B</td><td>curve_per_unit</td><td>8</td><td>8</td><td>0</td><td>0</td><td>specimen_al2o3_120s;specimen_hfo2_120s;specimen_sio2_120s;specimen_sio2_12s;specimen_sio2_38s;specimen_sio2_3_8s;specimen_tio2_120s;specimen_tio2_12s</td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig3</td><td>curve_per_unit</td><td>2</td><td>2</td><td>0</td><td>0</td><td>model_run_sio2;model_run_tio2</td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1a</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1c</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1d</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1e</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig2</td><td>curve_per_unit</td><td>4</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td>legend names methods (xrr: &#x27;XRR&#x27;): no derived units</td></tr>
+<tr><td>zou23</td><td>fig5b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig6b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+</table>
+<h2>3: gre23 units vs gold, every row</h2><p>kb/reports/P166.s3_gre23_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run120</td><td>120 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run160</td><td>160 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run120_160</td><td>120/160 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>matched</td><td>evidence</td><td>gre23:run_tc</td><td>test run</td><td></td><td>fig2d;fig2.cap</td><td></td><td>run_test</td><td>pass 0</td><td>ZnO ALD test run performed under the same conditions as (c)</td><td></td><td>fig2.cap;fig2d</td><td>ZnO ALD test run performed under the same conditions as (c)</td><td>found</td><td>gre23:fig2d#c1:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_120</td><td>pass 0</td><td>T held constant at 120 °C</td><td></td><td>s2.p4;fig2a;fig3a;fig3b;fig3c</td><td>with T held constant at 120 °C</td><td>found</td><td>gre23:fig2a#c1:measured; gre23:fig3a#c2:measured; gre23:fig3b#c2:measured; gre23:fig3c#c2:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_160</td><td>pass 0</td><td>T held constant at 160 °C</td><td></td><td>s2.p4;fig2b;fig3a;fig3b;fig3c</td><td>with T held constant at 160 °C</td><td>found</td><td>gre23:fig2b#c1:measured; gre23:fig3a#c1:measured; gre23:fig3b#c1:measured; gre23:fig3c#c1:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_120_160</td><td>pass 0</td><td>T cycled between 120 and 160 °C</td><td></td><td>s2.p4;fig2c;fig3a;fig3b;fig3c</td><td>with T cycled between 120 and 160 °C</td><td>found</td><td>gre23:fig2c#c1:measured; gre23:fig3a#c3:measured; gre23:fig3b#c3:measured; gre23:fig3c#c3:measured</td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:pair</td><td>120 °C NPC pair</td><td>gre23:run120</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:section</td><td>120 °C SEM-EDS section</td><td>gre23:run120</td><td>fig6.cap;s10.p3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:xrd</td><td>120 °C XRD</td><td>gre23:run120</td><td>fig5.cap;s10.p1;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:photo</td><td>120 °C photograph</td><td>gre23:run120</td><td>fig4.cap;s13.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:prism</td><td>120 °C ρ prism</td><td>gre23:run120</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:pair</td><td>160 °C NPC pair</td><td>gre23:run160</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:section</td><td>160 °C SEM-EDS section</td><td>gre23:run160</td><td>fig6.cap;s10.p3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:xrd</td><td>160 °C XRD</td><td>gre23:run160</td><td>fig5.cap;s10.p1;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:photo</td><td>160 °C photograph</td><td>gre23:run160</td><td>fig4.cap;s13.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:prism</td><td>160 °C ρ prism</td><td>gre23:run160</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:pair</td><td>120/160 °C NPC pair</td><td>gre23:run120_160</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:section</td><td>120/160 °C SEM-EDS section</td><td>gre23:run120_160</td><td>fig6.cap;s10.p3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:xrd</td><td>120/160 °C XRD</td><td>gre23:run120_160</td><td>fig5.cap;s10.p1;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:photo</td><td>120/160 °C photograph</td><td>gre23:run120_160</td><td>fig4.cap;s13.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:prism</td><td>120/160 °C ρ prism</td><td>gre23:run120_160</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>specimen_120</td><td>pass 0</td><td>120</td><td>run_120</td><td>tabI.r1c0;tabII.r1c0;fig4b;fig5;fig6a;fig6d</td><td>120</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>specimen_160</td><td>pass 0</td><td>160</td><td>run_160</td><td>tabI.r2c0;tabII.r2c0;fig4c;fig5;fig6b;fig6e</td><td>160</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>specimen_120_160</td><td>pass 0</td><td>120/160</td><td>run_120_160</td><td>tabI.r3c0;tabII.r3c0;fig4d;fig5;fig6c;fig6f</td><td>120/160</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>simulation</td><td>missing</td><td></td><td>gre23:simact:eq1_2</td><td>sim · Eq. (2)</td><td></td><td>eq1;eq2;s9.p9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>model_run</td><td>missing</td><td></td><td>gre23:simact:eq1_2:run</td><td>sim · Eq. (2)</td><td>gre23:simact:eq1_2</td><td>eq1;eq2;s9.p9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>3: gre23 layouts</h2><p>kb/reports/P166.s3_gre23_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>gre23</td><td>table</td><td>tabI</td><td>row_per_unit (majority)</td><td>row_per_unit</td><td>agree</td><td>3</td><td>3</td></tr>
+<tr><td>gre23</td><td>table</td><td>tabII</td><td>row_per_unit (majority)</td><td>row_per_unit</td><td>agree</td><td>3</td><td>6</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2a</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2b</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2c</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2d</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3b</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3c</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig1a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig1b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig5</td><td>(no gold layout)</td><td>curve_per_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6e</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6f</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+</table>
+<h2>3: art19 units vs gold, every row</h2><p>kb/reports/P166.s3_art19_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:sio2</td><td>SiO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_sio2_3_8s</td><td>pass 0</td><td>3.8 s SiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:tio2</td><td>TiO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_tio2_12s</td><td>pass 0</td><td>12 s TiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4 small chip vS2 (12 s TiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:al2o3</td><td>Al2O3 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_al2o3_120s</td><td>pass 0</td><td>120 s Al2O3</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (120 s Al2O3)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:hfo2</td><td>HfO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_hfo2_120s</td><td>pass 0</td><td>120 s HfO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4 small chip vS2 (120 s HfO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_12s</td><td>pass 0</td><td>12 s SiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_38s</td><td>pass 0</td><td>38 s SiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_120s</td><td>pass 0</td><td>120 s SiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR3-v1a trench W100L5mm (120 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_tio2_120s</td><td>pass 0</td><td>120 s TiO2</td><td></td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>vS1 (120 s TiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_3p8s</td><td>SiO2, 3.8 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c1</td><td>specimen_sio2_3_8s</td><td>pass 0</td><td>SiO2, 3.8 s</td><td>run_sio2_3_8s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td>art19:fig2B#c1:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_12s</td><td>SiO2, 12 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c2</td><td>specimen_sio2_12s</td><td>pass 0</td><td>SiO2, 12 s</td><td>run_sio2_12s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td>art19:fig2B#c2:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_38s</td><td>SiO2, 38 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c3</td><td>specimen_sio2_38s</td><td>pass 0</td><td>SiO2, 38 s</td><td>run_sio2_38s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td>art19:fig2B#c3:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_120s</td><td>SiO2, 120 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c4</td><td>specimen_sio2_120s</td><td>pass 0</td><td>SiO2, 120 s</td><td>run_sio2_120s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR3-v1a trench W100L5mm (120 s SiO2)</td><td>found</td><td>art19:fig2B#c4:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:tio2_12s</td><td>TiO2, 12 s plasma</td><td>art19:dep:tio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c5</td><td>specimen_tio2_12s</td><td>pass 0</td><td>TiO2, 12 s</td><td>run_tio2_12s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4 small chip vS2 (12 s TiO2)</td><td>found</td><td>art19:fig2B#c5:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:tio2_120s</td><td>TiO2, 120 s plasma</td><td>art19:dep:tio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c6</td><td>specimen_tio2_120s</td><td>pass 0</td><td>TiO2, 120 s</td><td>run_tio2_120s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>vS1 (120 s TiO2)</td><td>found</td><td>art19:fig2B#c6:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:al2o3_120s</td><td>Al2O3, 120 s plasma</td><td>art19:dep:al2o3</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c7</td><td>specimen_al2o3_120s</td><td>pass 0</td><td>Al2O3, 120 s</td><td>run_al2o3_120s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (120 s Al2O3)</td><td>found</td><td>art19:fig2B#c7:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:hfo2_120s</td><td>HfO2, 120 s plasma</td><td>art19:dep:hfo2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c8</td><td>specimen_hfo2_120s</td><td>pass 0</td><td>HfO2, 120 s</td><td>run_hfo2_120s</td><td>s3.p2;fig2.cap;fig2A;fig2B</td><td>LHAR4 small chip vS2 (120 s HfO2)</td><td>found</td><td>art19:fig2B#c8:measured</td></tr>
+<tr><td>art19</td><td>simulation</td><td>matched</td><td>tree</td><td>art19:sim</td><td>recombination-limited model</td><td></td><td>s4.h;s4.p1</td><td></td><td>sim_slope</td><td>pass 0</td><td>eq 6</td><td></td><td>eq6;s4.p12;fig3.cap;fig3</td><td>eq 6 can be written as \tilde{z}_{50\%}(t) = \frac{1}{\sqrt{\frac{3}{4} r}} \ln \left( \frac{t}{t_{50\%}} \right)</td><td>tokens in order</td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>matched</td><td>data</td><td>art19:fit:sio2</td><td>SiO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td>art19:fig3#c1</td><td>model_run_sio2</td><td>pass 0</td><td>SiO_{2}</td><td>sim_slope</td><td>fig3.cap;fig3;s6.p3</td><td>The slope of this plot provides the effective surface recombination probability of radicals during the plasma ALD process. For the \text{SiO}_2 and \text{TiO}_2 processes, very similar values of r = (6 \pm 2) \times 10^{-5} and (7 \pm 4) \times 10^{-5} are determined.</td><td>found</td><td>art19:fig3#c1:simulated</td></tr>
+<tr><td>art19</td><td>model_run</td><td>matched</td><td>data</td><td>art19:fit:tio2</td><td>TiO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td>art19:fig3#c2</td><td>model_run_tio2</td><td>pass 0</td><td>TiO_{2}</td><td>sim_slope</td><td>fig3.cap;fig3;s6.p3</td><td>For the \text{SiO}_2 and \text{TiO}_2 processes, very similar values of r = (6 \pm 2) \times 10^{-5} and (7 \pm 4) \times 10^{-5} are determined.</td><td>found</td><td>art19:fig3#c2:simulated</td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:al2o3</td><td>Al2O3 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:hfo2</td><td>HfO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>3: art19 layouts</h2><p>kb/reports/P166.s3_art19_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>art19</td><td>table</td><td>tab1</td><td>row_per_unit</td><td>not_units</td><td>disagree</td><td>0</td><td>4</td></tr>
+<tr><td>art19</td><td>panel</td><td>fig2B</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td>8</td></tr>
+<tr><td>art19</td><td>panel</td><td>fig3</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td>2</td></tr>
+</table>
+<h2>3: zou23 units vs gold, every row</h2><p>kb/reports/P166.s3_zou23_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>zou23</td><td>run</td><td>matched</td><td>tree</td><td>zou23:dep:ald</td><td>Mo ALD</td><td></td><td>s5.p3</td><td></td><td>zou23:run:std_ald_350</td><td>pass 0</td><td>standard ALD cycle</td><td></td><td>s2.p2;s3.p1</td><td>Based on Fig. 1, the standard ALD cycle was chosen as {t1/t2/t3/t4} = {1/15/29/15} s, since it provided the near-saturation behavior of the GPC.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>missing</td><td></td><td>zou23:dep:cvd</td><td>Mo pulsed CVD</td><td></td><td>s5.p3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:ald_150</td><td>pass 0</td><td>ALD film deposited at 150 °C</td><td></td><td>s7.p3;fig8.cap;fig8</td><td>GIXRD patterns of the ALD Mo films deposited at 150 and 350 °C.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:ms_run</td><td>pass 0</td><td>MoCl2O2 + at-H ALD process</td><td></td><td>s4.p6;fig4.cap;fig4</td><td>Mass spectroscopy (MS) was used to investigate the evolution of byproducts during the chemisorption of MoCl2O2 and its subsequent reaction with at-H, as depicted in Fig. 4.</td><td>found</td><td>zou23:fig4#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:trench_coating</td><td>pass 0</td><td>HAR trenches</td><td></td><td>s8.p3;fig9a;fig10.cap</td><td>Film conformality was investigated in HAR trenches (the aspect ratio varying between 2:1 and 10:1) by scanning TEM, as shown in Fig. 9(a). The Si trenches had a SiO2 capping, on which Mo was deposited.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1a:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1a#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1b:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1b#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1c:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1c#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1d:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1d#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1e:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1e#c1:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald350</td><td>ALD Mo film, 350 °C</td><td>zou23:dep:ald</td><td>s7.p1;fig1.cap;s9.p1</td><td>zou23:fig1a#c1;zou23:fig1b#c1;zou23:fig1c#c1;zou23:fig1d#c1;zou23:fig1e#c1;zou23:fig4#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:ald150</td><td>ALD Mo film, 150 °C</td><td>zou23:dep:ald</td><td>s9.p2;fig8.cap</td><td></td><td>zou23:specimen:ald_350_gixrd</td><td>pass 0</td><td>ALD film obtained at 350 °C</td><td>zou23:run:std_ald_350</td><td>s7.p4;fig8.cap;fig8</td><td>As shown in Fig. 8, a GIXRD measurement of the ALD film obtained at 350 °C reveals peaks at 41°, 59°, and 74°, which corresponds to the (110), (200), and (211) planes of BCC Mo, respectively.</td><td>found</td><td>zou23:fig8#k1:measured; zou23:fig8#k2:measured; zou23:fig8#k3:measured; zou23:fig8#k4:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald250</td><td>ALD Mo film, 250 °C</td><td>zou23:dep:ald</td><td>s9.p2;fig5.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald450</td><td>ALD Mo film, 450 °C</td><td>zou23:dep:ald</td><td>s7.p8;fig2.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:cvd250</td><td>CVD Mo film, 250 °C</td><td>zou23:dep:cvd</td><td>s9.p5;fig6.cap</td><td></td><td>zou23:specimen:ald_350_sims</td><td>pass 0</td><td>Mo ALD film obtained at 350 °C</td><td>zou23:run:std_ald_350</td><td>s5.p3;fig6.cap;fig6a</td><td>From the depth profile of an ALD film obtained at 350 °C on a Si substrate, as shown in Fig. 6(a), it can be seen that O, Cl, C, N, and Si contaminants are only present in trace amounts</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:cvd350</td><td>CVD Mo film, 350 °C</td><td>zou23:dep:cvd</td><td>s7.p8;fig2.cap</td><td>zou23:fig2#c1;zou23:fig2#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>data</td><td>zou23:ent:ald350_sio2</td><td>ALD Mo film on SiO2, 350 °C</td><td>zou23:dep:ald</td><td>s8.x1;fig3.cap;s10.p1;fig7.cap</td><td>zou23:fig7a#c1</td><td>zou23:specimen:ald_350_24nm</td><td>pass 0</td><td>24 nm thick ALD film deposited at 350 °C on SiO2</td><td>zou23:run:std_ald_350</td><td>abs.g4;s7.p1;fig7a</td><td>The resistivity approaches a bulk value of 18.6 μΩ cm for an approximately 24 nm thick ALD film deposited at 350 °C on SiO2.</td><td>not found</td><td>zou23:fig7a#c1:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:trench</td><td>Mo in Si trenches</td><td>zou23:dep:ald</td><td>s11.p5;fig9.cap;fig10.cap</td><td></td><td>zou23:specimen:trench_sample</td><td>pass 0</td><td>narrow trench</td><td>zou23:run:trench_coating</td><td>fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>EDX analysis, with STEM [(a) and (b)], molybdenum [(c) and (d)], and oxygen [(e) and (f)] elemental mapping, for the top [(a), (c), and (e)] and the bottom [(b), (d), and (f)] of a narrow trench.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:specimen:ald_350_20nm</td><td>pass 0</td><td>20 nm thick ALD film obtained at 350 °C on a Si substrate</td><td>zou23:run:std_ald_350</td><td>s5.p1;fig5a</td><td>Figure 5(a) depicts the TOF-ERDA depth profile of Mo, O, and Si in a 20 nm thick ALD film obtained at 350 °C on a Si substrate.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:specimen:ald_150</td><td>pass 0</td><td>ALD sample obtained at 150 °C</td><td>zou23:run:ald_150</td><td>s7.p3;s7.p4;fig8</td><td>In contrast, besides a peak from the (311) plane of the p-Si(100) substrate,68,69 no peaks are observed for the ALD sample obtained at 150 °C, which indicates an amorphous nature of the film.</td><td>found</td><td></td></tr>
+</table>
+<h2>3: zou23 layouts</h2><p>kb/reports/P166.s3_zou23_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>gold_units</th></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1a</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1b</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1c</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1d</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1e</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig2</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig4</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig7a</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig3</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig5a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig5b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig6a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig6b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig7b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig8</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig9a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig9b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10e</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10f</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+</table>
+<h2>Code diff</h2><p>kb/reports/P166.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 07adf13..a8a49b3 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -195,10 +195,14 @@ def legend_conditions(pid, label, axis):
+     &#x27;&lt;name&gt;: &lt;number&gt; [unit]&#x27;) and &#x27;&lt;number&gt; [unit]&#x27; are a value: its quantity is the panel&#x27;s series_axis label resolved (vocab_hits, as
+     step a0 resolves it), for a part&#x27;s own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
+     the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
+-    panel). A bare name is a value: a structure or categorical value (vocab_hits on the name, a trailing bracket dropped). A part that is
+-    none of these is an other condition as before, flagged. Returns [dict(kind &#x27;value&#x27; | &#x27;name&#x27;, key: the record&#x27;s label_as_printed,
+-    value, unit, quantity: the id the lookup gives, else other, how)].&quot;&quot;&quot;
++    panel). A bare name is a value: on a material / reactant axis (the axis label resolves to material, substrate, reactant_A or
++    reactant_B) a species name of that kind (P166: art19 &#x27;SiO_{2}&#x27; -&gt; material sio2); else a structure or categorical value (vocab_hits on
++    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. Returns [dict(kind
++    &#x27;value&#x27; | &#x27;name&#x27; | &#x27;species&#x27;, key: the record&#x27;s label_as_printed (a species: its value_text as printed), value, unit, quantity: the id
++    the lookup gives, else other, how)].&quot;&quot;&quot;
+     parts = legend_parts(label)
++    ax = vocab_hits(pid, &quot;quantity&quot;, axis) if axis else {}
++    axis_q = next(iter(ax)) if len(ax) == 1 else &quot;&quot;                              # P166: a material / reactant axis reads species names
+     out = []
+     for part in parts:
+         m = re.fullmatch(r&quot;(.+?)\s*[=:]\s*(.+)&quot;, part)
+@@ -213,6 +217,11 @@ def legend_conditions(pid, label, axis):
+                             how=how if hit is None else f&quot;{&#x27;series_axis&#x27; if key == axis else &#x27;symbol / name&#x27;} &#x27;{key}&#x27; -&gt; {q} ({how})&quot;))
+             continue
+         name = re.sub(r&quot;\s*[\(\[][^\)\]]*[\)\]]\s*$&quot;, &quot;&quot;, part).strip() or part
++        sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
++        if len(sp) == 1:
++            (i, h), = sp.items()
++            out.append(dict(kind=&quot;species&quot;, key=part, value_text=i, quantity=axis_q, how=f&quot;name &#x27;{name}&#x27; on the {axis_q} axis -&gt; {i} ({h})&quot;))
++            continue
+         hits = {(k_ if k_ == &quot;structure&quot; else k_[6:], i): h for k_ in [&quot;structure&quot;] + [f&quot;value:{q}&quot; for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
+         if len(hits) == 1:
+             ((q, i), h), = hits.items()
+@@ -222,6 +231,34 @@ def legend_conditions(pid, label, axis):
+     return out
+ 
+ 
++def legend_methods(pid, label):
++    &quot;&quot;&quot;P166: the measurement method entries (vocab.METHOD_MEASUREMENT: simulation, calculation, cited, schematic and tabulated are none) a
++    legend label names: one, two or three consecutive words of it (split at spaces and punctuation), or the whole label, resolved by
++    vocab_hits (kind method) -&gt; {method id: the words}.&quot;&quot;&quot;
++    ws = [w for w in re.split(r&quot;[\s,;/()\[\]]+&quot;, label or &quot;&quot;) if w]
++    found = {}
++    for t in [label or &quot;&quot;] + [&quot; &quot;.join(ws[i:i + n]) for n in (3, 2, 1) for i in range(len(ws) - n + 1)]:
++        for m in vocab_hits(pid, &quot;method&quot;, t) if t.strip() else {}:
++            if V.METHOD_MEASUREMENT.get(m, True):
++                found.setdefault(m, t)
++    return found
++
++
++def method_panels(pid, obj):
++    &quot;&quot;&quot;P166 (user): {panel: {method id: the words}} for every curve_per_unit / point_per_unit panel one of whose legend labels names a
++    method entry (legend_methods: &#x27;ALD XRR&#x27; names xrr): its curves are measurements of the panel&#x27;s unit(s), not units. curve_units creates
++    none there; pass0_paper.consistency flags the panel &quot;legend names methods&quot;.&quot;&quot;&quot;
++    out = {}
++    for panel, items in panel_items(pid, obj).items():
++        ms = {}
++        for it in items:
++            c = it[&quot;curve&quot;]
++            ms.update(legend_methods(pid, ((c.get(&quot;label&quot;) or &quot;&quot;) if it[&quot;cell&quot;] else c.get(&quot;series&quot;, {}).get(&quot;label_raw&quot;)) or &quot;&quot;))
++        if ms:
++            out[panel] = ms
++    return out
++
++
+ def panel_items(pid, obj):
+     &quot;&quot;&quot;P162 rule 2: the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the pass-0 units whose data
+     refs hold it: {panel: [dict(curve, cell, held)]}: one item per curve; a point_per_unit panel also one per cell. P163: no per-point path
+@@ -251,7 +288,7 @@ def curve_units(pid, obj):
+     the role unless taken from the kind. Parent: the paper&#x27;s one simulation (model_run) or its one run (run), else null, flagged &quot;parent
+     unresolved&quot;. introduced_in the panel&#x27;s caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
+     ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel&#x27;s series_axis; origin
+-    &quot;derived: &lt;layout&gt;&quot;. P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
++    &quot;derived: &lt;layout&gt;&quot;. P166: no unit in a panel whose legend names methods (method_panels). P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
+     quantity, value and unit) are one unit (merge_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS)
+     and by pass0_paper.consistency.&quot;&quot;&quot;
+     obj = obj if isinstance(obj, dict) else {}
+@@ -260,8 +297,11 @@ def curve_units(pid, obj):
+     by_list = &quot;model_run&quot; if sims and not runs else &quot;run&quot; if runs and not sims else None
+     lays = {x[&quot;panel&quot;]: x for x in obj.get(&quot;panel_layouts&quot;) or [] if isinstance(x, dict)}
+     ids, axes = set(C.E.texts(pid)), series_axis(pid)
++    meth = method_panels(pid, obj)                                              # P166: a legend that names methods makes no units
+     out = []
+     for panel, items in panel_items(pid, obj).items():
++        if panel in meth:
++            continue
+         for it in items:
+             c = it[&quot;curve&quot;]
+             if it[&quot;held&quot;]:
+@@ -390,6 +430,8 @@ class Run:
+                 rec = dict(type=&quot;setting&quot;, quantity=&quot;other&quot;, label_as_printed=c[&quot;key&quot;], quote=c[&quot;key&quot;], about=u[&quot;id&quot;])
+                 if c[&quot;kind&quot;] == &quot;value&quot;:
+                     rec.update(value=c[&quot;value&quot;], unit=c[&quot;unit&quot;] or None, kind=dkind)
++                if c[&quot;kind&quot;] == &quot;species&quot;:                                      # P166: step a0 resolves the species name (value_text)
++                    rec.update(quantity=c[&quot;quantity&quot;], value_text=c[&quot;key&quot;], kind=dkind, label_as_printed=u.get(&quot;series_axis&quot;) or c[&quot;quantity&quot;])
+                 recs.append(dict(eid=u[&quot;introduced_in&quot;][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u[&quot;origin&quot;], derived=c[&quot;kind&quot;],
+                                  dkind=dkind, once=(u[&quot;panel&quot;], c[&quot;key&quot;]) if c[&quot;kind&quot;] == &quot;value&quot; else None))
+                 self.count(&quot;input&quot;, f&quot;condition of a derived unit ({c[&#x27;kind&#x27;]})&quot;)
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 742d6dc..6fc05fa 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -11,6 +11,7 @@ Writes one line (pass 0, section &quot;paper&quot;) to kb/records/&lt;pid&gt;.jsonl.
+ &quot;&quot;&quot;
+ import collections
+ import json
++import re
+ import sys
+ 
+ import common as C
+@@ -69,18 +70,24 @@ THINKING = {&quot;thinking_level&quot;: &quot;MEDIUM&quot;}
+ def consistency(pid, obj):
+     &quot;&quot;&quot;P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
+     (compile.panel_items: the curves; a point_per_unit panel&#x27;s series and cells) and the units that hold them: held by a pass-0 unit&#x27;s
+-    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses.&quot;&quot;&quot;
++    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses. P166: a panel whose
++    legend names methods (compile.method_panels) is flagged &quot;legend names methods&quot;, its items not counted unbound.&quot;&quot;&quot;
+     import compile as K                                                         # P161
+     obj = obj if isinstance(obj, dict) else {}
+     der = collections.defaultdict(set)
+     for u in K.curve_units(pid, obj):
+         for d in u[&quot;data&quot;]:
+             der[d[&quot;id&quot;]].add(u[&quot;id&quot;])
+-    items, out = K.panel_items(pid, obj), []
++    items, out, meth = K.panel_items(pid, obj), [], K.method_panels(pid, obj)
+     for x in obj.get(&quot;panel_layouts&quot;) or []:
+         if not isinstance(x, dict) or x.get(&quot;layout&quot;) not in K.UNIT_LAYOUTS:
+             continue
+         its = items.get(x[&quot;panel&quot;], [])
++        if x[&quot;panel&quot;] in meth:                                                  # P166: its curves are measurements of the panel&#x27;s unit(s)
++            out.append(dict(panel=x[&quot;panel&quot;], layout=x[&quot;layout&quot;], items=len(its), held_pass0=sum(1 for i in its if i[&quot;held&quot;]), held_derived=0, unbound=0,
++                            unit_ids=&quot;;&quot;.join(sorted({u for i in its for u in i[&quot;held&quot;]})), unbound_ids=&quot;&quot;,
++                            flag=&quot;legend names methods (&quot; + &quot;, &quot;.join(f&quot;{m}: {w!r}&quot; for m, w in meth[x[&quot;panel&quot;]].items()) + &quot;): no derived units&quot;))
++            continue
+         held0 = [i for i in its if i[&quot;held&quot;]]
+         heldd = [i for i in its if not i[&quot;held&quot;] and der.get(i[&quot;curve&quot;][&quot;id&quot;])]
+         unb = [i[&quot;curve&quot;][&quot;id&quot;] for i in its if not i[&quot;held&quot;] and not der.get(i[&quot;curve&quot;][&quot;id&quot;])]
+@@ -89,6 +96,23 @@ def consistency(pid, obj):
+     return out
+ 
+ 
++def model_named(pid, obj):
++    &quot;&quot;&quot;P166 (user), part of every pass-0 run: each ontology model entry (vocab.ENTRIES, type model) whose name or an alias occurs in
++    document.md as a whole phrase, case ignored; flagged &quot;model named, no simulation unit&quot; when the pass-0 units hold no simulation.&quot;&quot;&quot;
++    import vocab as V
++    doc = render.document(pid)
++    units = (obj.get(&quot;units&quot;) or []) if isinstance(obj, dict) else []
++    sims = [u.get(&quot;id&quot;) for u in units if isinstance(u, dict) and u.get(&quot;role&quot;) == &quot;simulation&quot;]
++    out = []
++    for i, e in V.ENTRIES.items():
++        if e.get(&quot;type&quot;) != &quot;model&quot; or e.get(&quot;replaced_by&quot;):
++            continue
++        for t in [e.get(&quot;name&quot;, &quot;&quot;)] + list(e.get(&quot;aliases&quot;) or []):
++            if t and re.search(rf&quot;(?&lt;!\w){re.escape(t)}(?!\w)&quot;, doc, re.I):
++                out.append(dict(model=i, named=t, simulations=&quot;;&quot;.join(sims), flag=&quot;&quot; if sims else &quot;model named, no simulation unit&quot;))
++    return out
++
++
+ def main(arg):
+     pid, key = C.resolve(arg)
+     if &quot;--check&quot; in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
+@@ -96,6 +120,9 @@ def main(arg):
+         rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x[&quot;pass&quot;] == 0)[&quot;response&quot;]))
+         for r in rows:
+             print(f&quot;{key} {r[&#x27;panel&#x27;]} {r[&#x27;layout&#x27;]}: {r[&#x27;items&#x27;]} items, {r[&#x27;held_pass0&#x27;]} held by pass 0, {r[&#x27;held_derived&#x27;]} by derived units {r[&#x27;flag&#x27;]}&quot;)
++        obj = C.loads_json(next(x for x in reversed(lines) if x[&quot;pass&quot;] == 0)[&quot;response&quot;])
++        for r in model_named(pid, obj):                                         # P166
++            print(f&quot;{key} model {r[&#x27;model&#x27;]} named ({r[&#x27;named&#x27;]!r}); simulations: {r[&#x27;simulations&#x27;] or &#x27;none&#x27;} {r[&#x27;flag&#x27;]}&quot;)
+         return 0
+     if &quot;--plan&quot; in sys.argv:                                                    # the planned call only, no call
+         js = jobs(pid)
+@@ -113,6 +140,9 @@ def main(arg):
+     for r in consistency(pid, obj or {}):                                       # P160 B, P162: the items of a per-unit panel no unit holds
+         if r[&quot;flag&quot;]:
+             print(f&quot;{key} {r[&#x27;panel&#x27;]} {r[&#x27;layout&#x27;]}: {r[&#x27;items&#x27;]} items, {r[&#x27;held_pass0&#x27;]} held by pass 0, {r[&#x27;held_derived&#x27;]} by derived units: {r[&#x27;flag&#x27;]}&quot;)
++    for r in model_named(pid, obj or {}):                                       # P166: a model the paper names, no simulation unit
++        if r[&quot;flag&quot;]:
++            print(f&quot;{key} model {r[&#x27;model&#x27;]} named ({r[&#x27;named&#x27;]!r}): {r[&#x27;flag&#x27;]}&quot;)
+     return 0
+ 
+ 
+diff --git a/psed_v2/kb/pilot/lists.py b/psed_v2/kb/pilot/lists.py
+index 139deb2..725c658 100644
+--- a/psed_v2/kb/pilot/lists.py
++++ b/psed_v2/kb/pilot/lists.py
+@@ -161,7 +161,9 @@ TERMS = {
+     &quot;specimen&quot;: &quot;one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.&quot;,
+     &quot;input entity&quot;: &quot;a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a &quot;
+                     &quot;deposition activity&#x27;s inputs.&quot;,
+-    &quot;simulation&quot;: &quot;one model. The paper&#x27;s own model and a model it compares against are separate simulations.&quot;,   # P146 (user)
++    &quot;simulation&quot;: &quot;any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation &quot;
++                  &quot;fitted to or evaluated on the data; each evaluation with its own inputs is a model run (gor03&#x27;s theory, art19&#x27;s slope &quot;
++                  &quot;relation, gre23&#x27;s eq 1–2). The paper&#x27;s own model and a model it compares against are separate simulations.&quot;,   # P166 (user); P146 (user)
+     &quot;model run&quot;: &quot;one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same &quot;
+                  &quot;inputs are one model run.&quot;,   # P146 (user)
+     &quot;fitted or simulated curve of a specimen&quot;: &quot;a curve fitted or simulated to match a measured specimen is a result of that specimen, &quot;
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 36c3ea1..ada50b9 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -293,7 +293,7 @@ def build(onto, pmap):
+                              aliases=list(e.get(&quot;aliases&quot;, [])), material_class=e.get(&quot;material_class&quot;, &quot;&quot;), ligand_class=e.get(&quot;ligand_class&quot;, &quot;&quot;))
+                for e in live if e[&quot;type&quot;] == &quot;species&quot;}
+     structures = {e[&quot;id&quot;]: dict(cls=e.get(&quot;class&quot;, &quot;&quot;), aliases=list(e.get(&quot;aliases&quot;, []))) for e in live if e[&quot;type&quot;] == &quot;structure&quot;}
+-    methods = [dict(id=e[&quot;id&quot;], **{&quot;class&quot;: e.get(&quot;class&quot;) or e[&quot;id&quot;]}, definition=e[&quot;definition&quot;], replaced_by=e.get(&quot;replaced_by&quot;, &quot;&quot;))
++    methods = [dict(id=e[&quot;id&quot;], **{&quot;class&quot;: e.get(&quot;class&quot;) or e[&quot;id&quot;]}, definition=e[&quot;definition&quot;], replaced_by=e.get(&quot;replaced_by&quot;, &quot;&quot;), measurement=e.get(&quot;measurement&quot;, True))
+                for e in onto[&quot;entries&quot;] if e[&quot;type&quot;] == &quot;method&quot;]                 # P142b: methods are entries only
+     defs = {d[&quot;id&quot;] for e in live for d in (e.get(&quot;definitions&quot;) or [])}
+     quals = {k: qualifier_values(q, species, [i for i, s in species.items() if s[&quot;kind&quot;] == &quot;material&quot;], defs) for k, q in onto[&quot;qualifiers&quot;].items()}
+@@ -313,6 +313,7 @@ def build(onto, pmap):
+         METHODS=sorted({m[&quot;id&quot;] for m in methods if not m.get(&quot;replaced_by&quot;)} | set(absorb_values[&quot;method&quot;])),
+         OUTPUTS=sorted(e[&quot;id&quot;] for e in live if e.get(&quot;role&quot;) == &quot;output&quot;),
+         METHOD_CLASS={m[&quot;id&quot;]: m[&quot;class&quot;] for m in methods}, METHOD_DEFINITION={m[&quot;id&quot;]: m[&quot;definition&quot;] for m in methods},
++        METHOD_MEASUREMENT={m[&quot;id&quot;]: bool(m.get(&quot;measurement&quot;, True)) for m in methods},   # P166: the ontology&#x27;s measurement field
+         SPECIES=species,
+         MATERIALS=sorted({i for i, s in species.items() if s[&quot;kind&quot;] == &quot;material&quot;} | set(absorb_values[&quot;material&quot;])),
+         STRUCTURES=sorted(set(structures) | set(absorb_values[&quot;structure&quot;])), STRUCTURE_CLASS={i: s[&quot;cls&quot;] for i, s in structures.items()},
+</pre>
+</body></html>

@@ -1,0 +1,27 @@
+P166: 2 provider calls (pass 0 again for gre23 and art19), $0.281. Stopped after step 3: gre23's pass 0 again lists no simulation, so
+step 4 (pass 1 for the three, grow.py add / propose) did not run.
+
+1 (0 calls). lists.TERMS simulation (user text; the P146 sentence on separate simulations kept after it): "any model the paper applies to
+  produce a computed value or curve — a numerical simulation, or an analytical equation fitted to or evaluated on the data; each evaluation
+  with its own inputs is a model run (gor03's theory, art19's slope relation, gre23's eq 1–2)". The pass-0 instruction and CODEBOOK.md print
+  it. Instruction sha256 662a8f96 -> 92092f6c. Left as it was: the P145 term "a curve fitted or simulated to match a measured specimen is a
+  result of that specimen, not a model run", which the new text overlaps.
+  pass0_paper.model_named (printed after every pass 0 and by --check): an ontology model entry whose name or alias occurs in document.md
+  as a whole phrase while pass 0 lists no simulation. On the nine papers no model entry's name occurs (the four model entries carry long
+  names, e.g. 'Arts slope relation', and no aliases), so nothing is flagged; gre23, art19 (before the re-run), zou23 and mat22 list no
+  simulation.
+2 (0 calls). A panel whose legend names a measurement method (one, two or three consecutive words of a label, or the label, resolve to a
+  method entry; vocab.METHOD_MEASUREMENT, new, from the ontology's measurement field, leaves out simulation, calculation, cited,
+  schematic, tabulated) makes no derived units; the consistency check flags it "legend names methods". zou23 fig2 ('CVD XRR', 'ALD XRR' name
+  xrr): 9 -> 5 derived units. SE and EDS are no method alias in the ontology ('CVD SE' names nothing); the panel is caught through XRR. On
+  ela03 fig10b the legend 'Simulation' names the method entry simulation, which is not a measurement: that panel keeps its 2 model runs.
+  The legend parser reads species names on a material / reactant axis: art19 fig3 (axis 'material') 'SiO_{2}', 'TiO_{2}' -> material sio2,
+  tio2. The six compiled papers' derived units are unchanged (mat22 2, ela03 6, hei24 160, the others 0).
+3 (2 calls). gre23 ($0.168): 7 units again (run 4, specimen 3), no simulation and no model run; the gold's 'sim · Eq. (2)' (eq1, eq2, s9.p9)
+  and its model run stay missing; specimens: missing 6 -> 15 of 15, 3 extra (the new answer names other specimens). art19 ($0.112): 19 units
+  (run 8, specimen 8, simulation 1, model run 2): the simulation pairs with the gold's 'recombination-limited model' (sim_slope, 'eq 6'),
+  its two model runs SiO2 and TiO2 hold fig3's curves and pair with the gold fits; the gold's Al2O3 and HfO2 fits (Table 1) stay missing;
+  derived units 2 -> 0. zou23 keeps its P165 pass 0: derived units 9 -> 5 (fig2 makes none), run extra 12 -> 8, layouts 8 disagree as before.
+  Unbound items 0 on the three.
+For the user: gre23's eq 1-2 model is not listed by pass 0 under the new term; art19 lacks the two fits only Table 1 shows. Pass 1 for the
+  three (about 35 calls) waits.
