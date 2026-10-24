@@ -1,0 +1,56 @@
+input: 14 lines; pass 0 = line 2; 12 pass-1 lines for 12 groups; ignored lines 
+input: 5 units derived from curves (P161): 10.1116_6.0002804:fig1a:c1, 10.1116_6.0002804:fig1b:c1, 10.1116_6.0002804:fig1c:c1, 10.1116_6.0002804:fig1d:c1, 10.1116_6.0002804:fig1e:c1
+a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
+a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
+h: tree from pass 0: run 9, simulation 0, specimen 6, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+h: specimen_created zou23:run:zou23_run_ms_run:film
+h: specimen_created zou23:run:zou23_run_std_ald_350:film
+h: specimen_created zou23:run:10_1116_6_0002804_fig1a_c1:film
+h: specimen_created zou23:run:10_1116_6_0002804_fig1b_c1:film
+h: specimen_created zou23:run:10_1116_6_0002804_fig1c_c1:film
+h: specimen_created zou23:run:10_1116_6_0002804_fig1d_c1:film
+h: specimen_created zou23:run:10_1116_6_0002804_fig1e_c1:film
+1c: 4 curves no pass-0 unit names, left out: zou23:fig2#c1, zou23:fig2#c2, zou23:fig2#c3, zou23:fig2#c4
+h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig1a_c1:film
+h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig1b_c1:film
+h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig1c_c1:film
+h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig1d_c1:film
+h: 1 result rows moved to zou23:run:10_1116_6_0002804_fig1e_c1:film
+h: 1 result rows moved to zou23:run:zou23_run_ms_run:film
+i: merged fig1.cap into s8.p1;fig1.cap (deposition_temperature 350)
+i: merged fig8.cap into s5.p1;fig8.cap (material mo)
+i: merged fig8;fig8.cap into fig8.cap;fig8 (diffraction_angle 53)
+j: derived over 12 entities: 5 rows; not derived: {'no fact for H': 23, 'no fact for p': 24, 'E: no fact for p': 12, 'no fact for rho': 24, 'n: no fact for gpc': 12, 'gpc: no fact for n': 12, 'no fact for dn': 12, 'no fact for mg': 24, 'no fact for t': 19, 'no fact for h2': 12, 'no fact for phi': 12, 'lam: no fact for p': 12, 'gpc: n: no fact for gpc': 12, 'no fact for SMo': 1}
+j: caveats (query.caveats_of): 2, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
+j: claim nodes (query.claim_nodes): 17 nodes for 19 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 3
+step input: {'records': 111, 'unit derived (derived: point_per_unit, run)': 5}
+step a: {'numeric string coerced (C4)': 2, 'schema:required': 2, 'kept': 109}
+step a_fields: {'qualifiers': 2}
+step b: {'statement_only (kept: P138 form)': 1, 'kept': 109}
+step c: {'kept': 109}
+step d: {'quote_not_found': 7, 'quote_noncontiguous (kept)': 4, 'kept': 102}
+step e: {'kept': 102}
+step f: {'species_resolved': 12, 'kept': 102}
+step h: {'place: claim -> paper': 19, 'place: cited -> paper': 2, 'place: about paper -> recipe': 20, 'place: setting about a run -> deposition': 8, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 2, 'specimen_created': 7, 'place: result about a run -> film measurement': 7, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'film of a run with several specimens': 7, 'place: result about a run -> film (several specimens) measurement': 7, 'place: result about a specimen -> its measurement': 21, 'place: definition -> paper': 1, 'place: result about a run -> its specimen measurement': 1}
+step m: {'label_as_printed filled with the quantity id': 15, 'statement filled from the quote': 78, 'links resolved': 8, 'links named elements without facts': 3}
+step 1c: {'curve -> observation': 7, 'data role measured': 7, 'peak -> observation': 4, 'curves no unit names (left out)': 4}
+step i: {'merged': 3, 'kept': 110}
+step n: {'comparison replicate': 2, 'comparison grid': 1}
+step j: {'derived cycle_time': 5}
+step k: {'statement from the record': 100, 'statement_copies_text (reported by check)': 39, 'statement assembled': 15}
+diff against the gold:
+  setting        47   32   14  0.44  0.30
+  observation    45   54   25  0.46  0.56
+  activity       23   36   21  0.58  0.91
+  claim          19   19   10  0.53  0.53
+  cited          11    2    1  0.50  0.09
+  entity          8   13    4  0.31  0.50
+  caveat          6    2    0  0.00  0.00
+  comparison      3    3    0  0.00  0.00
+  derived         1    5    0  0.00  0.00
+  paper           1    1    0  0.00  0.00
+  definition      0    1    0  0.00     -
+gold definitions with an eq* element in evidence: 0/0
+gold model rows with quantity and value: 0: {}
+observations: gold 45, compiled 54, matched 25
