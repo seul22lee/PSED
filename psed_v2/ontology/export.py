@@ -907,7 +907,7 @@ def _never_label(raw):
 
 
 def run_checks(onto):
-    """[(title, passed, detail, problem rows)] of the 16 checks (P179: 16)."""
+    """[(title, passed, detail, problem rows)] of the 17 checks (P179: 16, P179b: 17)."""
     from collections import Counter, defaultdict
     entries = onto["entries"]
     ids = [e["id"] for e in entries]
@@ -1126,6 +1126,16 @@ def run_checks(onto):
     out.append(("16. form version P179 (user): the species qualifier (meaning; species entries only), the species rule in CODEBOOK.md, molar_mass and "
                 "molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided",
                 not bad, f"problems: {bad}" if bad else f"form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}", bad))
+    fv = HERE / "form_versions.csv"                                             # P179b (user): the form versions compile reads
+    listed = {r["version"] for r in csv.DictReader(fv.open(encoding="utf-8"))} if fv.exists() else set()
+    found = Counter()
+    for f in sorted((HERE.parent / "kb" / "records").glob("*.jsonl")):
+        for ln in f.read_text(encoding="utf-8").splitlines():
+            if ln.strip():
+                found[json.loads(ln).get("form_version") or "none"] += 1
+    bad = [f"{v} ({n} lines) not in form_versions.csv" for v, n in sorted(found.items()) if v not in listed]
+    out.append(("17. every form version of kb/records is listed in ontology/form_versions.csv (P179b: compile reads a pass-1 line of an accepted version only)",
+                not bad, f"problems: {bad}" if bad else "; ".join(f"{v}: {n} lines" for v, n in sorted(found.items())), bad))
     return out
 
 

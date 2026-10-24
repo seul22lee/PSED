@@ -399,6 +399,21 @@ UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    #
 SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
 CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
 PROCESS_MODE_PASS = "0pm"                                                        # P179: the records line of the process_mode fill (process_mode_fill.py)
+FORM_VERSIONS = C.V2 / "ontology" / "form_versions.csv"                          # P179b (user): the form versions compile reads
+
+
+def line_version(x):
+    """P179b: a records line's form version; 'none' for a line written before the freeze (no form_version field)."""
+    return x.get("form_version") or "none"
+
+
+def accepted_versions(key):
+    """P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
+    for that paper (a row with its key), else for every paper (a row with no paper)."""
+    rows = list(csv.DictReader(FORM_VERSIONS.open(encoding="utf-8"))) if FORM_VERSIONS.exists() else []
+    st = {r["version"]: r["status"] for r in rows if not r["paper"]}
+    st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
+    return {v for v, x in st.items() if x == "accepted"}
 PURGE_QUANTITIES = ("purge_time",)                                              # P177c: of form rule 1's step quantities (export.STEP_QUANTITIES)
 #                                                                                 a purge time names its half-cycle's purge, a pulse time or an exposure its dose
 CONDITION_KINDS = ("value", "name", "species", "other", "never")
@@ -765,10 +780,12 @@ class Run:
         self.groups = P1.groups(self.pid)[0]
         latest, p0, el_line, fill = {}, None, {}, None
         grp_of = {r["element_id"]: g for g, rs in self.groups.items() for r in rs}
+        ok = accepted_versions(self.key)                                        # P179b (user): only lines of an accepted form version
+        self.versions_skipped = collections.Counter(line_version(x) for x in lines if x["pass"] == 1 and line_version(x) not in ok)
         for n, x in enumerate(lines, 1):
             if x["pass"] == 0:
                 p0 = n
-            elif x["pass"] == 1:
+            elif x["pass"] == 1 and line_version(x) in ok:
                 latest[x["section"]] = n
                 for e in x.get("element_ids") or []:                            # P179: per element, the latest line of its group that holds
                     if grp_of.get(e) == x["section"]:                           # it (a re-extraction line holds some of a group's elements)
@@ -779,6 +796,9 @@ class Run:
         before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
         p0 = before[-1] if before else p0                                       # P143b: the pass-0 line the pass-1 lines in use were written against
         ignored = [n for n, x in enumerate(lines, 1) if x["pass"] == 1 and n not in used]
+        if self.versions_skipped:
+            self.note("input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: "
+                      + ", ".join(f"{v} {n}" for v, n in self.versions_skipped.items()))
         self.lines_used, self.lines_ignored = sorted(used | {p0}), ignored
         self.note(f"input: {len(lines)} lines; pass 0 = line {p0}; {len(used)} pass-1 lines for {len(self.groups)} groups; ignored lines "
                   + ", ".join(f"{n} ({lines[n - 1]['section']})" for n in ignored))

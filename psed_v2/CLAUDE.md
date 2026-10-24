@@ -152,6 +152,10 @@ psed_v2/
   the run's setting and drops a pass-1 process_mode about a pass-0 run; nothing derives it. Compile reads, per element, the latest
   pass-1 line of its group that holds it (pass1_elements.py --elements-from re-extracts a set). Decisions of a unit go by its
   criterion; the user vetoes by name afterwards.
+- P179b (user): compile reads a pass-1 line only if its form version is accepted in ontology/form_versions.csv (version, paper, date,
+  status, decided_by, reason; a row with a paper overrides the row for every paper; 'none' = a line written before the freeze); the
+  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there. A candidate
+  version is adopted per paper by comparing two sandbox compiles (kb/tmp/A without, kb/tmp/B with it) against the gold.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
