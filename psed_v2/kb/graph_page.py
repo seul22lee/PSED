@@ -592,6 +592,8 @@ def cards_page(pid, key):
 
     def gold_data_(T):
         out = collections.defaultdict(list)
+        if not T.rows:                                                          # P176: a paper without a gold file (14+) has no gold side
+            return out
         for cid, e in render.gold_curve_units(key).items():
             out[e].append((cid, fig.get(cid, {}).get("kind", "?"), panel(cid)))
         return out
@@ -600,7 +602,7 @@ def cards_page(pid, key):
     run = K.Run(pid)
     run.read()
     run.tree()
-    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)])
+    pu = render.pair_units(pid, key, [it for it in run.pass0 if isinstance(it, dict)]) if G.rows else dict(pair_of={}, status_g={})   # P176: no gold, no pairs
     pair, used = {}, set()
     for want in ("matched", None):
         for g in G.cards:
@@ -685,7 +687,8 @@ def cards_page(pid, key):
     dr = sum(card_diffs(G, Cm, g, c)[1] for g, c in pairs)
     stats = dict(paper=key, cards_gold=len(G.cards), cards_compiled=len(Cm.cards), paired=len(pairs), gold_without_counterpart=len(G.cards) - len(pairs),
                  compiled_without_counterpart=len(Cm.cards) - len(pairs), differing_condition_cells=dc, differing_result_cells=dr)
-    tbl = lambda T, d: REP.section(f"experiments.csv ({d})", (V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv")   # noqa: E731
+    tbl = lambda T, d: (REP.section(f"experiments.csv ({d})", (V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv")   # noqa: E731
+                        if ((V2 / "kb" / "pilot" if T is G else K.OUT) / f"{pid}.experiments.csv").exists() else f"<p>experiments.csv ({d}): no file (P176: a paper without gold)</p>")
     cards = {**card_payload(G, "g"), **card_payload(Cm, "c")}
     figs = fig_payload(Fj, dict.fromkeys(i for c in cards.values() for i in c["data"]))
     units = unit_table({v["u"] for c in cards.values() for v in [x[-1] for x in c["cond"] + c["res"]]}
