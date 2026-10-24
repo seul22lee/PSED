@@ -174,8 +174,8 @@ def words(s):
     return sorted(w for w in re.findall(r"[a-z0-9]+", X.strip_latex(X.strip_trailing_units(s)).casefold()) if w not in ARTICLES)
 
 
-SYMBOL_LAYOUT = next(k for k, d in X.P143_TABLE_LAYOUTS if "symbol table" in d)          # P143: not_units, 'a symbol table (symbol, meaning, value) or ...'
-SYMBOL_ROLES = re.search(r"symbol table \(([^)]*)\)", dict(X.P143_TABLE_LAYOUTS)[SYMBOL_LAYOUT]).group(1).split(", ")   # ['symbol', 'meaning', 'value']: no unit column
+SYMBOL_LAYOUT = next(k for k, d, _ in X.layouts("table") if "symbol table" in d)          # P143, P177b (ontology.yaml layouts): not_units, 'a symbol table ...'
+SYMBOL_ROLES = re.search(r"symbol table \(([^)]*)\)", {k: d for k, d, _ in X.layouts("table")}[SYMBOL_LAYOUT]).group(1).split(", ")   # ['symbol', 'meaning', 'value']: no unit column
 
 
 def pass0_tables(pid):
@@ -211,7 +211,8 @@ def candidates(pids, extra=()):
     P157d: a candidate's symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
     on accept and into never.csv as paper-local rows on never.
     6. P175 (user): candidates merge only when their record keys are identical (the P163 label-prefix merge and its P170 patch removed).
-    7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model (P170: any member
+    7. P177b: a row of field layout (a pass-0 layout 'other' and its description) makes a candidate of kind layout.
+       P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model (P170: any member
        of that field; a pass-1 record of the same printed name joins it); a row whose
        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
     Returns ({id: group}, log)."""
@@ -304,7 +305,7 @@ def candidates(pids, extra=()):
     for c in out.values():
         units = Counter(u["unit"] for u in c["members"] if u["unit"])
         c["unit"] = units.most_common(1)[0][0] if units else ""
-        c["kind"] = "model" if any(u["field"] == "model" for u in c["members"]) else \
+        c["kind"] = "layout" if any(u["field"] == "layout" for u in c["members"]) else "model" if any(u["field"] == "model" for u in c["members"]) else \
             "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] in ("quantity", "axis") for u in c["members"]) else "unit"   # P168: a simulation name; P174: a figure label
         ev = {}
         for u in c["members"]:
@@ -759,6 +760,8 @@ def apply_here():
             stops.append(f"{x['id']}: accept, but ontology.yaml has it with another definition: {have[x['id']].get('definition')!r}")
         if x["decision"] == "accept" and x["kind"] == "unit":
             stops.append(f"{x['id']}: accept of a unit; units go into units.yaml by hand, not into ontology.yaml")
+        if x["decision"] == "accept" and x["kind"] == "layout":                # P177b: a layout kind goes into ontology.yaml layouts: by hand
+            stops.append(f"{x['id']}: accept of a layout; a layout kind (item, conditions_from, results_from) goes into ontology.yaml layouts: by hand")
         if x["decision"] == "alias" and x["alias_target"] not in have and x["alias_target"] not in {y["id"] for y in decided if y["decision"] == "accept"}:
             stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
         if x["decision"] == "never" and not x["never_category"].strip():
@@ -863,6 +866,8 @@ def apply_here():
     gold = [pid for pid in extracted if (V2 / "kb" / "pilot" / f"{pid}.facts.csv").exists()]
     if gold:
         subprocess.run([py, str(V2 / "kb" / "extract" / "score.py"), f"R{n}", *gold], cwd=ROOT, check=True)
+    reg = subprocess.run([py, str(V2 / "kb" / "extract" / "binding.py"), "--check"], cwd=ROOT, capture_output=True, text=True)   # P177b (user): the
+    binding_fails = [f"binding regression: {x}" for x in reg.stdout.splitlines() if x and not x.startswith("binding regression:")]   # binding re-checked
     after = sha(ONTO)
     dois = doi_of()
     for x in decided:
@@ -876,7 +881,7 @@ def apply_here():
     plus = lambda k, v: int(r.get(k) or 0) + v if late else v                 # noqa: E731  P169: late decisions add to the round's counts
     set_round(n, status="applied", applied=today(), n_accepted=plus("n_accepted", c["accept"]), n_alias=plus("n_alias", c["alias"]),
               n_rejected=plus("n_rejected", c["reject"]), n_never=plus("n_never", c["never"]))
-    fails = audit_round(n)                                                      # P157d: A1-A3 and their acceptance, every round
+    fails = audit_round(n) + binding_fails                                      # P157d: A1-A3 and their acceptance, every round; P177b: binding
     for r2 in rounds():                                                         # P173: and every other applied round's audit
         if r2["status"] == "applied" and r2["round"] != str(n) and (REPORTS / f"R{r2['round']}_apply.decision_rows.csv").exists():
             fails += [f"round {r2['round']}: {x}" for x in audit_round(int(r2["round"]))]
@@ -888,6 +893,7 @@ def apply_here():
         print(f"ACCEPTANCE FAIL round {n}: {f}")
     if fails:
         raise Stop(f"{len(fails)} audit failures: nothing moved into place")
+    subprocess.run([py, str(V2 / "kb" / "extract" / "binding.py"), "--write"], cwd=ROOT, check=True, capture_output=True)   # P177b: the outcomes anew
     return fails
 
 

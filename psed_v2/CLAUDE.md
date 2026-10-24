@@ -116,9 +116,16 @@ psed_v2/
   the figures again before it recompiles.
 - grow.py apply is atomic (P173): it runs in a sandbox copy (P174: under psed_v2/kb/tmp/, git-ignored by psed_v2/.gitignore) and moves its
   files into place only after export --check and every round's audit pass; a failure writes nothing and prints what would have been written.
-- Four patch rules removed (P175, user): a derived unit's role comes from the paper's unit list only (runs and a simulation both, or
-  neither: role null, flagged "role unresolved"; such a unit has no row and its data is left out); candidates merge only on identical
-  record keys (no label-prefix merge); derived units are never merged by condition vector (two with identical data refs are one).
+- Candidates merge only on identical record keys (P175, user: no label-prefix merge).
+- Figure binding is one rule (P177b, user): compile.bind() (it replaces curve_units, panel_items, legend_conditions, method_panels, the
+  role fallbacks and the unit merge). Layout kinds live in ontology.yaml layouts: (item, conditions_from, results_from); export.py prints
+  them into the pass-0 instruction, form_pass0.json and CODEBOOK.md; a pass-0 layout 'other' with a description is a layout candidate.
+  Items per layout (a schematic none; an image panel one image item; a data panel with nothing read one panel item; no layout: unbound).
+  Each item's vector from its legend parts (parse_legend, classed by what they resolve to) and, for a point or cell, its coordinates.
+  Unit: pass 0's data ref, else (a panel or image) the layout's or the named unit, else the one pass-0 unit whose conditions contain the
+  vector (among the units the figure names when it names any; an ancestor yields to its descendant), else a derived unit (role from an
+  explicit simulated / fit mark, else the unit list, else null flagged; one per role and vector). Every item bound or unbound with a reason
+  (the gate's unbound count). kb/reports/binding_regression.csv holds the outcome; every apply re-checks it (kb/extract/binding.py).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

@@ -17,14 +17,14 @@ import sys
 import common as C
 import render
 from lists import TERMS
-from export import P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS
+from export import layouts, LAYOUT_OTHER
 
 
 def instruction():
-    """P144: the terms and layouts quoted from lists.TERMS and ontology/export.py (P143), the rules of the directive added."""
+    """P144: the terms and layouts quoted from lists.TERMS and ontology.yaml layouts: (P177b; P143 before), the rules of the directive added."""
     terms = "\n".join(f"- {k}: {v}" for k, v in TERMS.items())
-    tables = "\n".join(f"- {k}: {d}" for k, d in P143_TABLE_LAYOUTS)
-    panels = "\n".join(f"- {k}: {d} Example: {ex}." for k, d, ex in P143_PANEL_LAYOUTS)
+    tables = "\n".join(f"- {k}: {d}" for k, d, _ in layouts("table")) + f"\n- {LAYOUT_OTHER}: none of these; describe the layout (description)."   # P177b
+    panels = "\n".join(f"- {k}: {d} Example: {ex}." for k, d, ex in layouts("panel")) + f"\n- {LAYOUT_OTHER}: none of these; describe the layout (description)."
     return f"""You read one ALD paper and list its experiment units, the layout of each of its tables and the layout of each figure panel.
 
 TERMS (from the codebook):
@@ -68,31 +68,24 @@ THINKING = {"thinking_level": "MEDIUM"}                                         
 
 
 def consistency(pid, obj):
-    """P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
-    (compile.panel_items: the curves; a point_per_unit panel's series and cells) and the units that hold them: held by a pass-0 unit's
-    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses. P166: a panel whose
-    legend names methods (compile.method_panels) is flagged "legend names methods", its items not counted unbound."""
+    """P160 B, part of every pass-0 run; P177b (user): per figure panel, compile.bind()'s items on this pass-0 line (no pass-1 records yet:
+    pass 0's own data refs, the layout's unit, the panel or figure an introduced_in names, else a derived unit): held by a pass-0 unit,
+    by a derived unit, or unbound with its reason (no layout, ambiguous, no unit named, layout other). The invariant's count (the gate's
+    'unbound items'); it replaces the curve check, the method-legend flag and the image flag."""
     import compile as K                                                         # P161
     obj = obj if isinstance(obj, dict) else {}
-    der = collections.defaultdict(set)
-    for u in K.curve_units(pid, obj):
-        for d in u["data"]:
-            der[d["id"]].add(u["id"])
-    items, out, meth = K.panel_items(pid, obj), [], K.method_panels(pid, obj)
-    for x in obj.get("panel_layouts") or []:
-        if not isinstance(x, dict) or x.get("layout") not in K.UNIT_LAYOUTS:
+    B = K.bind(pid, obj, None)
+    out = []
+    for pel, P in B["panels"].items():
+        its = P["items"]
+        if not its:
             continue
-        its = items.get(x["panel"], [])
-        if x["panel"] in meth:                                                  # P166: its curves are measurements of the panel's unit(s)
-            out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=sum(1 for i in its if i["held"]), held_derived=0, unbound=0,
-                            unit_ids=";".join(sorted({u for i in its for u in i["held"]})), unbound_ids="",
-                            flag="legend names methods (" + ", ".join(f"{m}: {w!r}" for m, w in meth[x["panel"]].items()) + "): no derived units"))
-            continue
-        held0 = [i for i in its if i["held"]]
-        heldd = [i for i in its if not i["held"] and der.get(i["curve"]["id"])]
-        unb = [i["curve"]["id"] for i in its if not i["held"] and not der.get(i["curve"]["id"])]
-        out.append(dict(panel=x["panel"], layout=x["layout"], items=len(its), held_pass0=len(held0), held_derived=len(heldd), unbound=len(unb),
-                        unit_ids=";".join(sorted({u for i in held0 for u in i["held"]})), unbound_ids=";".join(unb), flag=f"unbound: {len(unb)}" if unb else ""))
+        unb = [it for it in its if not it["unit"]]
+        reasons = collections.Counter(it["reason"].split(":")[0] for it in unb)
+        out.append(dict(panel=pel, layout=P["layout"], kind=P["kind"], items=len(its), held_pass0=sum(1 for it in its if it["unit"] and it.get("origin") == "pass-0"),
+                        held_derived=sum(1 for it in its if it["unit"] and it.get("origin") == "derived"), unbound=len(unb),
+                        unit_ids=";".join(sorted({it["unit"] for it in its if it["unit"]})), unbound_ids=";".join(it["ref"] for it in unb),
+                        flag=("unbound: " + ", ".join(f"{k} {n}" for k, n in reasons.items())) if unb else ""))
     return out
 
 

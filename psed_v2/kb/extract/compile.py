@@ -139,7 +139,6 @@ for _q, _vs in VALUES.items():                                                  
         WORDS[f"value:{_q}"].setdefault(C.X.norm_label(_t), {}).setdefault(_v, f"{_how} '{_t}'")
     SYMBOLS[f"value:{_q}"] = {}
 NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
-UNIT_LAYOUTS = ("curve_per_unit", "point_per_unit")
 LEGEND_NUMBER = re.compile(r"[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?(?:\s*(?:×|x|\\times)\s*10\s*(?:\^\s*\{?\s*([-+−]?\d+)\s*\}?|([⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+)))?")
 SUPERSCRIPT = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺", "0123456789-+")
 
@@ -236,20 +235,37 @@ def qualifier_value(pid, key, part):
     return name if name in (L.QUALIFIERS.get(key) or set()) else ""
 
 
-def legend_conditions(pid, label, axis):
-    """P163 rule 1: the conditions a legend label gives a derived unit, one per part (legend_parts: top-level commas). '<symbol> = <number>
-    [unit]' (or '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits,
-    as step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
-    the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
-    panel). A bare name is a value: on a material / reactant axis (the axis label resolves to material, substrate, reactant_A or
-    reactant_B) a species name of that kind (P166: art19 'SiO_{2}' -> material sio2); else a structure or categorical value (vocab_hits on
-    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. P175 (user): an axis label
-    of two or more parts (axis_parts: ' and ', ',') pairs with the legend's parts by order when their counts match (the legend split at
-    ' - ' / ' – ' when its commas do not give that count); a paired part reads its axis part as the axis. '<symbol> = <a> to <b> [unit]' is a
-    range: value_min and value_max of the symbol's quantity. On an axis that names a qualifier key (element, species, step) every part is a
-    value of that qualifier (kind 'qualifier': C, Cl, O -> element), never a condition. Returns [dict(kind 'value' | 'name' | 'species' |
-    'qualifier', key: the record's label_as_printed (a species: its value_text as printed), value (value_min, value_max), unit, quantity: the
-    id the lookup gives, else other, how)]."""
+DATA_ROLE_WORDS = {"simulation": "simulated", "simulations": "simulated", "simulated": "simulated", "calculated": "simulated", "calculation": "simulated",
+                   "theory": "simulated", "numerical": "simulated", "fit": "fitted", "fits": "fitted", "fitted": "fitted", "fitting": "fitted",
+                   "measured": "measured", "measurement": "measured", "experimental": "measured", "experiment": "measured", "data": "measured"}
+DATA_ROLE_FILLER = {"result", "results", "line", "lines", "linear", "curve", "curves", "values", "points", "of", "the"}
+IMAGE_TYPES = ("micrograph", "photo", "table_image")
+ITEM_ROLES = {"simulated": ("model_run",), "measured": ("run", "specimen")}       # P177b: the units an explicitly marked item may bind to
+
+
+def data_role_word(part):
+    """P177b: the data role a legend part names when its words are data-role words only ('Simulation', 'Fitting result', 'Linear Fits',
+    'measured'): simulated | fitted | measured; else ''."""
+    ws = re.findall(r"[A-Za-z]+", (part or "").lower())
+    roles = [DATA_ROLE_WORDS[w] for w in ws if w in DATA_ROLE_WORDS]
+    return roles[0] if roles and all(w in DATA_ROLE_WORDS or w in DATA_ROLE_FILLER for w in ws) else ""
+
+
+def parse_legend(pid, label, axis):
+    """P163 rule 1, P175, P177b (user): a legend label's parts (legend_parts at top-level commas; an axis of two or more parts (' and ',
+    ',') pairs with them by order, the legend split at ' - ' / ' – ' when its commas do not give that count), each resolved on the one path
+    and classed by the kind of what it resolved to:
+      value     '<symbol> = <number> [unit]', '<name>: <number> [unit]', '<number> [unit]', '<symbol> = <a> to <b> [unit]' (value_min /
+                value_max): the quantity of its own symbol or name, else of its axis part (vocab_hits, as step a0); unresolved: other;
+      species   a species name on a material / reactant axis; name: a structure or categorical value;
+      qualifier a value of the qualifier the axis names (element, species, step): no unit boundary, on the item's result;
+      quantity  the part names a quantity entry, no number: the item's y quantity (no unit boundary);
+      model     the part names a model entry (name, alias, a symbol of this paper): the item is a model run of that model;
+      role      data-role words only (Simulation, Fit, Fitting result, measured): the item's data role (no unit boundary);
+      method    measurement-method words (legend_methods: SE, XRR, EDS): the method of the item's result; the rest of the part is classed again;
+      never     a never.csv word (or a symbol of this paper): a never condition (kept, no candidate);
+      other     none of these: an other condition (a candidate).
+    Returns [dict(kind, key, quantity, value, value_min, value_max, unit, value_text, qualifier, model, method, role, how, flag)]."""
     parts = legend_parts(label)
     aparts = axis_parts(axis)
     if len(aparts) >= 2 and len(parts) != len(aparts):
@@ -259,49 +275,74 @@ def legend_conditions(pid, label, axis):
     qk = qualifier_key(axis)
     out = []
     for n, part in enumerate(parts):
-        ax_ = aparts[n] if paired else axis                                      # P175: a paired part's own axis part
-        if qk:
-            v = qualifier_value(pid, qk, part)
-            out.append(dict(kind="qualifier", key=part, qualifier=qk, value_text=v, quantity="",
-                            how=f"axis '{axis}' names the qualifier {qk}: {qk}={v}" if v else f"axis '{axis}' names the qualifier {qk}; '{part}' is none of its values",
-                            **({} if v else dict(flag="legend part no value of the axis's qualifier"))))
-            continue
-        ax = vocab_hits(pid, "quantity", ax_) if ax_ else {}
-        axis_q = next(iter(ax)) if len(ax) == 1 else ""                          # P166: a material / reactant axis reads species names
-        rg = RANGE.fullmatch(part)
-        if rg and (not rg.group(4).strip() or unit_symbol(rg.group(4).strip()) is not None):   # P175: '<symbol> = <a> to <b> [unit]'
-            sym = rg.group(1).strip()
-            hit = vocab_hits(pid, "quantity", sym)
-            q, how = next(iter(hit.items())) if len(hit) == 1 else ("other", f"unresolved: other condition '{sym}'")
-            lo, hi = (float(x.replace("−", "-")) for x in (rg.group(2), rg.group(3)))
-            out.append(dict(kind="value", key=sym, value=None, value_min=lo, value_max=hi, unit=rg.group(4).strip(), quantity=q,
-                            how=f"range of '{sym}' -> {q} ({how})" if len(hit) == 1 else how))
-            continue
-        m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
-        sym, num = (m.group(1).strip(), legend_number(m.group(2))) if m and legend_number(m.group(2)) else ("", legend_number(part))
-        if num:
-            one = len(parts) == 1 or paired
-            keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
-            keys = keys[::-1] if len(parts) == 1 else keys                    # one part: the axis label first (the rule), then its symbol
-            hit = next(((k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1), None)
-            key = hit[0] if hit else (ax_ if ax_ and (one or not sym) else sym or part)
-            q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'"))
-            out.append(dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
-                            how=how if hit is None else f"{'series_axis' if key == ax_ else 'symbol / name'} '{key}' -> {q} ({how})"))
-            continue
-        name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
-        sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
-        if len(sp) == 1:
-            (i, h), = sp.items()
-            out.append(dict(kind="species", key=part, value_text=i, quantity=axis_q, how=f"name '{name}' on the {axis_q} axis -> {i} ({h})"))
-            continue
-        hits = {(k_ if k_ == "structure" else k_[6:], i): h for k_ in ["structure"] + [f"value:{q}" for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
-        if len(hits) == 1:
-            ((q, i), h), = hits.items()
-            out.append(dict(kind="name", key=part, value_text=i, quantity=q, how=f"name '{name}' -> {q} = {i} ({h})"))
-        else:
-            out.append(dict(kind="name", key=part, quantity="other", how="parsed to nothing" + (f" (names {sorted(hits)})" if hits else ""), flag="legend label parsed to nothing"))
+        out += classify_part(pid, part, aparts[n] if paired else axis, qk, len(parts) == 1 or paired, axis)
     return out
+
+
+def classify_part(pid, part, ax_, qk, one, axis, methods=True):
+    """P177b: one legend part classed (parse_legend)."""
+    if qk:
+        v = qualifier_value(pid, qk, part)
+        return [dict(kind="qualifier", key=part, qualifier=qk, value_text=v, quantity="",
+                     how=f"axis '{axis}' names the qualifier {qk}: {qk}={v}" if v else f"axis '{axis}' names the qualifier {qk}; '{part}' is none of its values",
+                     **({} if v else dict(flag="legend part no value of the axis's qualifier")))]
+    ax = vocab_hits(pid, "quantity", ax_) if ax_ else {}
+    axis_q = next(iter(ax)) if len(ax) == 1 else ""
+    rg = RANGE.fullmatch(part)
+    if rg and (not rg.group(4).strip() or unit_symbol(rg.group(4).strip()) is not None):
+        sym = rg.group(1).strip()
+        hit = vocab_hits(pid, "quantity", sym)
+        q, how = next(iter(hit.items())) if len(hit) == 1 else ("other", f"unresolved: other condition '{sym}'")
+        lo, hi = (float(x.replace("−", "-")) for x in (rg.group(2), rg.group(3)))
+        return [dict(kind="value", key=sym, value=None, value_min=lo, value_max=hi, unit=rg.group(4).strip(), quantity=q,
+                     how=f"range of '{sym}' -> {q} ({how})" if len(hit) == 1 else how)]
+    m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
+    sym, num = (m.group(1).strip(), legend_number(m.group(2))) if m and legend_number(m.group(2)) else ("", legend_number(part))
+    if num:
+        keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
+        keys = keys[::-1] if one and not sym else keys
+        hit = next(((k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1), None)
+        key = hit[0] if hit else (ax_ if ax_ and (one or not sym) else sym or part)
+        q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'"))
+        return [dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
+                     how=how if hit is None else f"{'series_axis' if key == ax_ else 'symbol / name'} '{key}' -> {q} ({how})")]
+    name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
+    mh = vocab_hits(pid, "model", name)
+    if len(mh) == 1:
+        (i, h), = mh.items()
+        return [dict(kind="model", key=part, model=i, quantity="", how=f"names the model {i} ({h})")]
+    dr = data_role_word(part)
+    if dr:
+        return [dict(kind="role", key=part, role=dr, quantity="", how=f"data-role words: {dr}")]
+    ms = legend_methods(pid, part) if methods else {}
+    if ms:
+        rest = part
+        for w in ms.values():
+            rest = re.sub(rf"(?i)(?<!\w){re.escape(w)}(?!\w)", " ", rest)
+        rest = " ".join(rest.split()).strip(" ,;-–")
+        return [dict(kind="method", key=w, method=mi, quantity="", how=f"names the method {mi}") for mi, w in ms.items()] \
+            + (classify_part(pid, rest, ax_, qk, one, axis, methods=False) if rest else [])
+    sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
+    if len(sp) == 1:
+        (i, h), = sp.items()
+        return [dict(kind="species", key=part, value_text=i, quantity=axis_q, how=f"name '{name}' on the {axis_q} axis -> {i} ({h})")]
+    if not ax_:                                                                 # P177b: a species name with no axis: the species qualifier
+        sq = vocab_hits(pid, "species", name)
+        if len(sq) == 1 and next(iter(sq)) in (L.QUALIFIERS.get("species") or set()):
+            (i, h), = sq.items()
+            return [dict(kind="qualifier", key=part, qualifier="species", value_text=i, quantity="", how=f"a species name, no axis: species={i} ({h})")]
+    hits = {(k_ if k_ == "structure" else k_[6:], i): h for k_ in ["structure"] + [f"value:{q}" for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
+    if len(hits) == 1:
+        ((q, i), h), = hits.items()
+        return [dict(kind="name", key=part, value_text=i, quantity=q, how=f"name '{name}' -> {q} = {i} ({h})")]
+    qh = vocab_hits(pid, "quantity", name)
+    if len(qh) == 1:
+        (i, h), = qh.items()
+        return [dict(kind="quantity", key=part, quantity=i, how=f"names the quantity {i} ({h})")]
+    nv = never_of(pid, name) or never_of(pid, part)
+    if nv:
+        return [dict(kind="never", key=part, quantity="other", never=nv["category"], how=f"never.csv: {nv['label']} ({nv['category']})")]
+    return [dict(kind="other", key=part, quantity="other", how="parsed to nothing" + (f" (names {sorted(hits)})" if hits else ""), flag="legend label parsed to nothing")]
 
 
 def legend_methods(pid, label):
@@ -317,101 +358,334 @@ def legend_methods(pid, label):
     return found
 
 
-def method_panels(pid, obj):
-    """P166 (user): {panel: {method id: the words}} for every curve_per_unit / point_per_unit panel one of whose legend labels names a
-    method entry (legend_methods: 'ALD XRR' names xrr): its curves are measurements of the panel's unit(s), not units. curve_units creates
-    none there; pass0_paper.consistency flags the panel "legend names methods"."""
+CONDITION_KINDS = ("value", "name", "species", "other", "never")
+
+
+def cond_key(c):
+    """P177b: a condition as a comparable key: (quantity, canonical value or value range or text); an other or never condition by its
+    label and printed value. None for a part that is no condition."""
+    if c["kind"] not in CONDITION_KINDS:
+        return None
+    if c["kind"] in ("other", "never") or c.get("quantity") in ("", "other"):
+        return ("other", C.X.norm_label(c["key"]), str(c.get("value", "")), str(c.get("value_min", "")), str(c.get("value_max", "")), c.get("unit") or "")
+    if c["kind"] in ("name", "species"):
+        return (c["quantity"], "text", str(c.get("value_text", "")).casefold())
+    if c.get("value") is None:
+        return (c["quantity"], "range", c.get("value_min"), c.get("value_max"), c.get("unit") or "")
+    k = canon(dict(value=num_text(c["value"]), unit=dimless(unit_symbol(c.get("unit") or "") or (c.get("unit") or "")), quantity=c["quantity"]))
+    return (c["quantity"], "value", k)
+
+
+def same_value(a, b):
+    """P177b: two condition keys equal: numbers within 0.1 % (canonical units), else equal."""
+    if a[:2] != b[:2]:
+        return False
+    if a[1] == "value" and isinstance(a[2], tuple) and isinstance(b[2], tuple) and len(a[2]) == 2 and len(b[2]) == 2 and a[2][0] == b[2][0]:
+        x, y = a[2][1], b[2][1]
+        return isinstance(x, float) and isinstance(y, float) and abs(x - y) <= 1e-3 * max(abs(x), abs(y), 1e-300)
+    return a == b
+
+
+def unit_vectors(pid, units, recs):
+    """P177b: {pass-0 unit id: [condition keys]}: the pass-1 settings (and valued model inputs) about it, the quantity its id or, for
+    other, the record key resolved by vocab_hits; a specimen inherits its run's, a model run its simulation's."""
+    own = collections.defaultdict(list)
+    for r in recs or []:
+        rec = r["rec"]
+        if r.get("origin") or rec.get("type") not in ("setting", "model") or not isinstance(rec.get("about"), str):
+            continue
+        q = rec.get("quantity") if isinstance(rec.get("quantity"), str) else ""
+        if q in ("", "other"):
+            h = vocab_hits(pid, "quantity", C.X.record_text(rec)) if C.X.record_text(rec).strip() else {}
+            q = next(iter(h)) if len(h) == 1 else ""
+        if not q or q not in L.QUANTITIES:
+            continue
+        if rec.get("value") not in (None, ""):
+            c = dict(kind="value", key="", quantity=q, value=rec["value"], unit=rec.get("unit") or "")
+        elif isinstance(rec.get("value_text"), str) and rec["value_text"]:
+            c = dict(kind="name", key="", quantity=q, value_text=categorical(q, rec["value_text"]) or rec["value_text"])
+        else:
+            continue
+        try:
+            own[rec["about"]].append(cond_key(c))
+        except (TypeError, ValueError):
+            continue
+    by = {u["id"]: u for u in units}
     out = {}
-    for panel, items in panel_items(pid, obj).items():
-        ms = {}
-        for it in items:
-            c = it["curve"]
-            ms.update(legend_methods(pid, ((c.get("label") or "") if it["cell"] else c.get("series", {}).get("label_raw")) or ""))
-        if ms:
-            out[panel] = ms
+    for u in units:
+        ks = list(own.get(u["id"], []))
+        if u.get("parent") in by:
+            ks += own.get(u["parent"], [])
+        out[u["id"]] = ks
     return out
 
 
-def panel_items(pid, obj):
-    """P162 rule 2: the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the pass-0 units whose data
-    refs hold it: {panel: [dict(curve, cell, held)]}: one item per curve; a point_per_unit panel also one per cell. P163: no per-point path
-    (figures.json carries no series_structure curve / per_point): a point_per_unit series is one item, its curve. One measure for
-    curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds)."""
+def figure_caption_images(pid):
+    """P177b: {figure number: the crop file(s) of the figure stage} (ingest/final/<pid>/structure.json captions)."""
+    p = C.V2 / "ingest" / "final" / pid / "structure.json"
+    st = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    return {str(c.get("number")): [str(x.get("file") if isinstance(x, dict) else x) for x in c.get("images") or []] for c in st.get("captions", []) if c.get("kind") == "figure"}
+
+
+def bind(pid, obj, recs=None):
+    """P177b (user): the one binding rule; it replaces curve_units, panel_items, legend_conditions, method_panels, the P161 / P162 / P176
+    role rules and the unit merge. Per figure-stage panel (ingest/final/<pid>/figures.json) with its pass-0 layout (ontology.yaml layouts:):
+    a. items: a schematic none, no flag; an image panel (micrograph, photo, table_image, a map with no items) one image item (the crop);
+       a data panel with no curve, cell or peak one panel item; else per the layout: curve_per_unit its curves, point_per_unit its cells
+       (a map with cells) else the points of its curves, panel_one_unit the panel (its curves, cells and peaks are its results); a peak
+       outside a panel_one_unit panel an item of its own. No layout -> its items unbound 'no layout'; a layout other -> 'layout other'.
+    b. each item's vector: its curve's legend parts (parse_legend); a point or cell adds its coordinates (the x / y axis quantities).
+       Values, structure, species and categorical values and other parts are conditions; a qualifier, a quantity name, a method, a
+       data-role word and a model name are no unit boundary; a never part is a never condition (kept, never matched on).
+    c. the unit: a pass-0 unit whose data names the item (pass 0's own binding; a point is never named by its curve); a panel or image
+       item: the layout's unit, else the one unit whose data names an item of the panel, else whose introduced_in names the panel, else
+       the figure; a model-name item: a model run under the simulation linked to that model (created when the paper has none); else the
+       one pass-0 run, specimen or model run (a simulated item: model runs; a measured one: runs and specimens) whose conditions (unit_
+       vectors) contain every resolved condition of the vector (an item with an other condition matches none), among the units the figure
+       names when it names any, an ancestor giving way to its descendant; several -> unbound 'ambiguous: ids'; none -> a derived unit:
+       role model_run for an explicit simulated or fit mark (or a model name), else run (runs only) / model_run (a simulation only), else
+       null flagged 'role unresolved'; a panel item a specimen (measured) or a model run; parent the model's simulation, else the single
+       simulation (a model run) or the single run (a specimen), else null flagged 'parent unresolved'; one unit per (role, model, vector)
+       within a panel (across panels a legend repeats for runs that differ in what the caption states). An image item or an empty data panel gets no derived unit: unbound 'no unit named'.
+    d. results: Run.figures (a curve its y quantity or the legend's quantity; a point or cell its value; an image a measurement).
+    e. invariant: every item bound to exactly one unit or unbound with its reason (binding_check); the gate counts the unbound.
+    recs: compile's records (the pass-1 settings give the pass-0 units' conditions); None before pass 1 (no vector match).
+    Returns dict(items, units: the derived units, panels: {panel: dict(kind, layout, items, flags)}, refs_unknown)."""
+    key = C.E.PAPERS.get(pid, pid)
+    obj = obj if isinstance(obj, dict) else {}
+    units = [u for u in obj.get("units") or [] if isinstance(u, dict) and u.get("id")]
+    by = {u["id"]: u for u in units}
     p = C.V2 / "kb" / f"{pid}.figures.json"
     Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-    obj = obj if isinstance(obj, dict) else {}
-    lay = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict) and x.get("layout") in UNIT_LAYOUTS}
-    refs = collections.defaultdict(list)                                       # data id -> the units naming it
-    for u in obj.get("units") or []:
-        for d in (u.get("data") or []) if isinstance(u, dict) else []:
-            refs[d.get("id") if isinstance(d, dict) else d].append(u.get("id"))
-    out = collections.defaultdict(list)
-    for c in Fj.get("curves", []) + [v for v in Fj.get("values", []) if v.get("kind") == "cell"]:
-        panel = f"fig{c['figure']}{c.get('panel', '')}"
-        cell = c.get("kind") == "cell"
-        if panel in lay and not (cell and lay[panel]["layout"] == "curve_per_unit"):
-            out[panel].append(dict(curve=c, cell=cell, held=refs.get(c["id"], [])))
-    return out
-
-
-def curve_units(pid, obj):
-    """P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit's data refs hold. id
-    <pid>:<panel>:<curve id>. Role (P176, user: explicit evidence only): model_run when the figure stage marks the curve simulated or fit
-    (figures.json kind simulated, P87: a model or fit word in its legend label, else in the panel's content line or caption); else from the
-    paper's pass-0 units: a run and no simulation -> run, a simulation and no run -> model_run; else null, flagged "role unresolved" (a row
-    under the paper all the same, compile tree()). role_from says which. Parent: the paper's one simulation (model_run) or its one run
-    (run), else null, flagged "parent unresolved".
-    introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with its
-    role; conditions (P163 rule 1, P175): legend_conditions() of the legend label against the panel's series_axis; origin "derived:
-    <layout>". P166: no unit in a panel whose legend names methods (method_panels). P175 (user): the units stay as derived, two with
-    identical data refs are one (dedupe_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS) and by
-    pass0_paper.consistency."""
-    obj = obj if isinstance(obj, dict) else {}
-    units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
-    sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
-    by_list = "model_run" if sims and not runs else "run" if runs and not sims else None
-    lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict)}
-    ids, axes = set(C.E.texts(pid)), series_axis(pid)
-    meth = method_panels(pid, obj)                                              # P166: a legend that names methods makes no units
-    out = []
-    for panel, items in panel_items(pid, obj).items():
-        if panel in meth:
-            continue
-        for it in items:
-            c = it["curve"]
-            if it["held"]:
-                continue
-            marked = (c.get("data_kind") if it["cell"] else c.get("kind")) == "simulated"   # P176: the figure stage's explicit mark
-            role = "model_run" if marked else by_list
-            role_from = (("figure stage: simulated or fit (" + ("its legend label" if c.get("series", {}).get("cls") == "kind" else "the panel's content line or caption")
-                          + ")") if marked else {"run": "unit list: runs, no simulation", "model_run": "unit list: a simulation, no runs"}.get(by_list, ""))
-            drole = {"model_run": "simulated", "run": "measured"}.get(role)
-            par = sims if role == "model_run" else runs if role == "run" else []
-            label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
-            cap = f"fig{c['figure']}.cap"
-            conds = legend_conditions(pid, label, axes.get(panel, "")) if label else []
-            flags = (["role unresolved"] if not role else [] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) \
-                + ([] if cap in ids else ["no caption element"]) + sorted({x["flag"] for x in conds if x.get("flag")})
-            out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
-                            structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
-                            data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
-                            conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"], y=(c.get("quantity") if it["cell"] else c.get("y", {}).get("quantity")) or "",
-                            role_from=role_from, flag="; ".join(flags), aliases=[]))
-    return dedupe_units(out)
-
-
-def dedupe_units(units):
-    """P175 (user): the derived units stay as derived; two with identical data refs are one: the first keeps its id, the others' ids become
-    its aliases (compile maps them to it)."""
-    first, out = {}, []
+    q_ = C.V2 / "ingest" / "final" / pid / "figures.json"
+    ing = json.loads(q_.read_text(encoding="utf-8")) if q_.exists() else {"figures": []}
+    lays = {x["panel"]: x for x in obj.get("panel_layouts") or [] if isinstance(x, dict) and x.get("panel")}
+    ids, axes, crops = set(C.E.texts(pid)), series_axis(pid), figure_caption_images(pid)
+    holders = collections.defaultdict(list)
     for u in units:
-        k = tuple(sorted(d["id"] for d in u["data"]))
-        if k in first:
-            first[k]["aliases"] += [u["id"]] + u["aliases"]
-            continue
-        first[k] = u
-        out.append(u)
-    return out
+        for d in u.get("data") or []:
+            holders[d.get("id") if isinstance(d, dict) else d].append((u["id"], d.get("role") if isinstance(d, dict) else None))
+    known = {x.get("id") for sec in ("curves", "values", "sets", "derived") for x in Fj.get(sec) or []}
+    refs_unknown = [(u, i) for i, us in holders.items() if i not in known for u, _ in us]
+    vecs = unit_vectors(pid, units, recs) if recs is not None else {}
+    sims, runs = [u["id"] for u in units if u.get("role") == "simulation"], [u["id"] for u in units if u.get("role") == "run"]
+    sim_model = {}
+    for s in sims:
+        mh = vocab_hits(pid, "model", (by[s].get("name_as_printed") or "").strip())
+        if len(mh) == 1:
+            sim_model.setdefault(next(iter(mh)), s)
+    named = collections.defaultdict(set)
+    for u in units:
+        for e in u.get("introduced_in") or []:
+            named[e].add(u["id"])
+    items, derived, dkey, panels = [], [], {}, {}
+
+    def leaves(cands):
+        return {c for c in cands if not any(by.get(o, {}).get("parent") == c for o in cands)}
+
+    def panel_unit(pel, fig, pitems):
+        pel = pel.split("~")[0]                                                 # a repeated panel id: its own id for the lookups
+        lay = lays.get(pel) or {}
+        if lay.get("unit") in by:
+            return lay["unit"], "the layout's unit", ""
+        refs = {u for x in pitems for u, _ in holders.get(x, [])}
+        if len(refs) == 1:
+            return next(iter(refs)), "pass-0 data", ""
+        for level in ([pel], [f"fig{fig}", f"fig{fig}.cap"]):
+            c = leaves({u for e in level for u in named.get(e, set())})
+            if len(c) == 1:
+                return next(iter(c)), f"introduced_in names {'the panel' if level == [pel] else 'the figure'}", ""
+            if c:
+                return "", "", "ambiguous: " + ", ".join(sorted(c))
+        return "", "", "no unit named"
+
+    def derive(it, role, parent, flags, layout, label, fig, role_from):
+        conds = [c for c in it["vector"] if c["kind"] in CONDITION_KINDS]
+        ks = tuple(sorted(str(cond_key(c)) for c in conds))
+        k = (role, it.get("model") or "", it["panel"], ks or "empty")          # one unit per role and vector within a panel (P177b: across
+        #                                                                         panels a legend repeats for runs that differ in the caption)
+        uid = f"{pid}:{it['panel']}:{it['ref'].split('#')[-1].replace(':', '_')}"
+        if k in dkey:                                                           # one unit per vector: the item's own id is its alias (pass 1 may
+            u = dkey[k]                                                         # name it; compile maps an alias to the unit's row)
+            u["data"].append(dict(id=it["ref"], role=it["data_role"] or None))
+            if uid != u["id"] and uid not in u["aliases"]:
+                u["aliases"].append(uid)
+            return u["id"]
+        cap = f"fig{fig}.cap"
+        u = dict(id=uid, parent=parent, name_as_printed=label or None, role=role,
+                 structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                 data=[dict(id=it["ref"], role=it["data_role"] or None)], evidence_quote=label or None, origin=f"derived: {layout or 'none'}",
+                 conditions=conds, series_axis=axes.get(it["panel"], ""), panel=it["panel"], curve=it["ref"], y=it.get("y") or "", role_from=role_from,
+                 flag="; ".join(flags), aliases=[], model=it.get("model") or "")
+        dkey[k] = u
+        derived.append(u)
+        return u["id"]
+
+    def role_of(it):
+        if it.get("model"):
+            return "model_run", f"names the model {it['model']}"
+        if it["data_role"] in ("simulated", "fitted"):
+            return "model_run", f"figure stage or legend: {it['data_role']}"
+        if runs and not sims:
+            return "run", "unit list: runs, no simulation"
+        if sims and not runs:
+            return "model_run", "unit list: a simulation, no runs"
+        return None, ""
+
+    def parent_of(role, it):
+        if role == "model_run":
+            if it.get("model"):
+                if it["model"] not in sim_model:                               # the paper has no simulation of this model: one derived
+                    sid = f"{pid}:sim:{it['model']}"
+                    derived.append(dict(id=sid, parent=None, name_as_printed=V.ENTRIES.get(it["model"], {}).get("name") or it["model"], role="simulation",
+                                        structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[], data=[], evidence_quote=None,
+                                        origin="derived: model name", conditions=[], series_axis="", panel=it["panel"], curve="", y="", role_from="names the model",
+                                        flag="", aliases=[], model=it["model"]))
+                    sim_model[it["model"]] = sid
+                return sim_model[it["model"]], []
+            return (sims[0], []) if len(sims) == 1 else (None, ["parent unresolved"])
+        if role == "specimen":
+            return (runs[0], []) if len(runs) == 1 else (None, ["parent unresolved"])
+        return None, ([] if role else ["role unresolved"])
+
+    def resolve(it, layout, fig, label, pel):
+        refs = holders.get(it["ref"], []) if it["kind"] != "point" else []
+        if len({u for u, _ in refs}) == 1:
+            it.update(unit=refs[0][0], origin="pass-0", how="pass-0 data", data_role=refs[0][1] or it["data_role"])
+            return
+        if refs:
+            it.update(reason="ambiguous: " + ", ".join(sorted({u for u, _ in refs})))
+            return
+        conds = [c for c in it["vector"] if c["kind"] in ("value", "name", "species", "other")]
+        if conds and not it.get("model") and recs is not None and all(c.get("quantity") not in ("", "other") for c in conds):
+            want = [cond_key(c) for c in conds]
+            pool = [u for u in units if u.get("role") in ITEM_ROLES.get(it["data_role"], ("run", "specimen", "model_run"))]
+            fig_named = {u for e in (pel.split("~")[0], f"fig{fig}", f"fig{fig}.cap") for u in named.get(e, set())}
+            pool = [u for u in pool if u["id"] in fig_named] or pool if any(u["id"] in fig_named for u in pool) else pool
+            hits = leaves({u["id"] for u in pool if all(any(same_value(w, h) for h in vecs.get(u["id"], [])) for w in want)})
+            if len(hits) == 1:
+                it.update(unit=next(iter(hits)), origin="pass-0", how="conditions match")
+                return
+            if hits:
+                it.update(reason="ambiguous: " + ", ".join(sorted(hits)))
+                return
+        role, why = role_of(it)
+        parent, flags = parent_of(role, it)
+        it.update(unit=derive(it, role, parent, flags, layout, label, fig, why), origin="derived", how="derived", role_flag="; ".join(flags))
+
+    seen = collections.Counter()
+    for f in ing.get("figures", []):
+        fig = str(f["number"])
+        for pn in f.get("panels") or []:
+            pel0 = f"fig{fig}{pn.get('panel', '')}"
+            seen[pel0] += 1
+            pel = pel0 if seen[pel0] == 1 else f"{pel0}~{seen[pel0]}"          # a panel id the figure stage gives twice: its second panel pel~2
+            ptype = pn.get("panel_type", "")
+            layout = (lays.get(pel0) or {}).get("layout")
+            first = seen[pel0] == 1                                            # figures.json keys data by figure and panel: the first panel takes it
+            curves = [c for c in Fj.get("curves", []) if c["figure"] == fig and c.get("panel", "") == pn.get("panel", "")] if first else []
+            vals = [v for v in Fj.get("values", []) if v["figure"] == fig and v.get("panel", "") == pn.get("panel", "")] if first else []
+            cells, peaks = [v for v in vals if v["kind"] == "cell"], [v for v in vals if v["kind"] == "peak"]
+            P = dict(kind="", layout=layout or "none", items=[], flags=[])
+            panels[pel] = P
+            if ptype == "schematic":
+                P["kind"] = "schematic"
+                continue
+            sa = axes.get(pel0, "")
+            if ptype in IMAGE_TYPES or (ptype == "map" and not curves and not cells):
+                it = dict(kind="image", ref=f"{key}:{pel}#img", panel=pel, file=";".join(crops.get(fig, [])), vector=[], data_role="", unit="", reason="")
+                u, how, why = panel_unit(pel, fig, [])
+                it.update(unit=u, origin="pass-0" if u else "", how=how, reason=why)
+                P.update(kind="image")
+                items.append(it); P["items"].append(it)
+                continue
+            if not curves and not cells and not peaks:
+                it = dict(kind="panel", ref=f"{key}:{pel}#panel", panel=pel, vector=[], data_role="", unit="", reason="", results=[])
+                u, how, why = panel_unit(pel, fig, [])
+                it.update(unit=u, origin="pass-0" if u else "", how=how, reason=why)
+                P.update(kind="empty data panel")
+                items.append(it); P["items"].append(it)
+                continue
+            P["kind"] = "data"
+            if layout == "panel_one_unit":
+                it = dict(kind="panel", ref=f"{key}:{pel}#panel", panel=pel, vector=[], data_role="simulated" if curves and all(c["kind"] == "simulated" for c in curves) else "",
+                          unit="", reason="", results=[c["id"] for c in curves] + [v["id"] for v in vals])
+                u, how, why = panel_unit(pel, fig, it["results"])
+                if u:
+                    it.update(unit=u, origin="pass-0", how=how)
+                elif why.startswith("ambiguous"):
+                    it.update(reason=why)
+                else:
+                    role = "model_run" if it["data_role"] == "simulated" else "specimen"
+                    parent, flags = parent_of(role, it)
+                    it.update(unit=derive(it, role, parent, flags, layout, pn.get("content", ""), fig, "a panel's one unit, not named"), origin="derived", how="derived",
+                              role_flag="; ".join(flags))
+                items.append(it); P["items"].append(it)
+                continue
+            its = []
+            for c in (curves if not (layout == "point_per_unit" and cells) else []):   # point_per_unit with cells: the cells (the series repeat them)
+                parts = parse_legend(pid, (c.get("series") or {}).get("label_raw", ""), sa)
+                base = dict(vector=[x for x in parts if x["kind"] in CONDITION_KINDS], qualifiers=[f"{x['qualifier']}={x['value_text']}" for x in parts if x["kind"] == "qualifier" and x.get("value_text")],
+                            y_quantity=next((x["quantity"] for x in parts if x["kind"] == "quantity"), ""), model=next((x["model"] for x in parts if x["kind"] == "model"), ""),
+                            method=next((x["method"] for x in parts if x["kind"] == "method"), ""), parts=parts,
+                            data_role=next((x["role"] for x in parts if x["kind"] == "role"), "") or ("simulated" if c.get("kind") == "simulated" else ""), label=(c.get("series") or {}).get("label_raw", ""))
+                if layout == "point_per_unit" and not cells:
+                    xq, xkey = c["x"]["quantity"], c["x"].get("key") or c["x"].get("label_raw") or ""
+                    for n, (pt, raw) in enumerate(zip(c.get("points") or [], c.get("points_raw") or c.get("points") or []), 1):
+                        coord = dict(kind="value" if xq != "other" else "other", key=xkey, quantity=xq, value=raw[0], unit=c["x"].get("unit_raw") or c["x"].get("unit") or "",
+                                     how=f"x coordinate ({xq})")
+                        its.append(dict(base, kind="point", ref=f"{c['id']}:p{n}", curve=c["id"], n=n - 1, panel=pel, vector=base["vector"] + [coord], unit="", reason="",
+                                        y=c["y"]["quantity"]))
+                else:
+                    its.append(dict(base, kind="curve", ref=c["id"], curve=c["id"], panel=pel, unit="", reason="", y=c["y"]["quantity"]))
+            if layout == "point_per_unit":
+                for v in cells:
+                    at = [dict(kind="value" if not str(q).startswith("other:") else "other", key=str(q).removeprefix("other:"), quantity=q if not str(q).startswith("other:") else "other",
+                               value=x, unit=next((c_[a]["unit"] for c_ in curves for a in ("x", "y") if c_[a]["quantity"] == q), "") if not str(q).startswith("other:") else "",
+                               how="cell coordinate") for q, x in (v.get("at") or {}).items()]
+                    its.append(dict(kind="cell", ref=v["id"], panel=pel, vector=at, qualifiers=[], y_quantity="", model="", method="", parts=[], data_role="", label=str(v.get("value_text") or v.get("value")),
+                                    unit="", reason="", y=v.get("quantity") or ""))
+            elif cells:
+                its += [dict(kind="cell", ref=v["id"], panel=pel, vector=[], qualifiers=[], y_quantity="", model="", method="", parts=[], data_role="", label="", unit="", reason="",
+                             y=v.get("quantity") or "") for v in cells]
+            its += [dict(kind="peak", ref=v["id"], panel=pel, vector=[], qualifiers=[], y_quantity="", model="", method="", parts=[], data_role="", label=v.get("label") or "", unit="",
+                         reason="", y=v.get("quantity") or "") for v in peaks]
+            for it in its:
+                if not layout:
+                    it["reason"] = "no layout"
+                elif layout == C.X.LAYOUT_OTHER:
+                    it["reason"] = "layout other"
+                elif it["kind"] in ("peak", "cell") and not it["vector"]:      # a peak (or a cell of a curve panel): pass 0's binding, else
+                    refs = {u for u, _ in holders.get(it["ref"], [])}           # the one curve's unit, else the panel's named unit
+                    if len(refs) == 1:
+                        it.update(unit=next(iter(refs)), origin="pass-0", how="pass-0 data")
+                    else:
+                        u, how, why = panel_unit(pel, fig, [])
+                        it.update(unit=u, origin="pass-0" if u else "", how=how, reason=why if not u else "")
+                else:
+                    resolve(it, layout, fig, it.get("label", ""), pel)
+                items.append(it); P["items"].append(it)
+            if not layout:
+                P["flags"].append("no layout")
+    origin = {u["id"]: ("derived", u) for u in derived}
+    for it in items:
+        if it["unit"]:
+            o = origin.get(it["unit"])
+            it.update(origin="derived" if o else it.get("origin") or "pass-0", role=(o[1] if o else by.get(it["unit"], {})).get("role"))
+    return dict(items=items, units=derived, panels=panels, refs_unknown=refs_unknown)
+
+
+def binding_check(B):
+    """P177b (e): the invariant: every item bound to exactly one unit, or unbound with a reason. Returns the violations."""
+    return [f"{it['ref']}: bound to no unit and no reason" for it in B["items"] if not it["unit"] and not it["reason"]] + \
+           [f"{it['ref']}: bound and unbound" for it in B["items"] if it["unit"] and it["reason"]]
+
+
+def binding_rows(pid, B):
+    """P177b: one row per item (kb/reports/binding_regression.csv): paper, panel, item, kind, unit, origin, role, how, reason."""
+    key = C.E.PAPERS.get(pid, pid)
+    return [dict(paper=key, panel=it["panel"], item=it["ref"], kind=it["kind"], unit=it["unit"], origin=it.get("origin", "") if it["unit"] else "",
+                 role=(it.get("role") or "null") if it["unit"] else "", how=it.get("how", ""), reason=it["reason"]) for it in B["items"]]
 
 
 class Run:
@@ -480,23 +754,31 @@ class Run:
                         self.count("input", "parent read as about (older line)")
                     recs.append(dict(eid=eid, rec=rec, seq=i, form_version=self.form_version.get(eid, "")))
         self.count("input", "records", len(recs))
-        self.from_curves = curve_units(self.pid, p0obj)                         # P161 step 1: units from curves, their legend labels as conditions
+        self.binding = bind(self.pid, p0obj, recs)                              # P177b (user): the one binding rule
+        self.layouts_other = {x.get("panel") or x.get("table"): x.get("description") or "(no description)"
+                              for x in self.layouts.get("panel_layouts", []) + self.layouts.get("table_layouts", [])
+                              if isinstance(x, dict) and x.get("layout") == C.X.LAYOUT_OTHER and (x.get("panel") or x.get("table"))}
+        self.cap_methods = collections.defaultdict(collections.Counter)         # P177b: the method of a figure's caption records (an image)
+        for r in recs:
+            if r["eid"].endswith(".cap") and isinstance(r["rec"].get("method"), str):
+                self.cap_methods[r["eid"]][r["rec"]["method"]] += 1
+        for v in binding_check(self.binding):
+            self.note(f"input: binding invariant: {v}")
+        self.from_curves = self.binding["units"]
         self.pass0 = list(self.pass0) + self.from_curves
         for u in self.from_curves:
             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
-            for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values, resolved by step a0
-                if c["kind"] == "qualifier":                                    # P175: a qualifier value qualifies the unit's data (figures())
-                    self.count("input", "legend qualifier of a derived unit (on its data)")
-                    continue
-                rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])
+            for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values (and P177b a point's
+                rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])   # coordinates), resolved by step a0
                 if c["kind"] == "value" and c.get("value_min") is not None:     # P175: '<symbol> = <a> to <b>'
                     rec.update(value_min=c["value_min"], value_max=c["value_max"], unit=c["unit"] or None, kind=dkind)
                 elif c["kind"] == "value":
                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
                 if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
                     rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
-                recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"], derived=c["kind"],
+                recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"],
+                                 derived="name" if c["kind"] in ("name", "other", "never") else c["kind"],
                                  dkind=dkind, once=(u["panel"], c["key"]) if c["kind"] == "value" else None))
                 self.count("input", f"condition of a derived unit ({c['kind']})")
         if self.from_curves:
@@ -514,7 +796,7 @@ class Run:
         (form.json, units, placement, fact); two ids: ambiguous, left as it is (unmapped.csv action 'kept (ambiguous: ids)'). A record still
         quantity other whose key is a never.csv word, or a never.csv symbol of this paper, carries the never category (unmapped.csv column
         never; export.never_index: a never label naming a live entry has no effect). Every promotion -> <pid>.promoted.csv. P162 rule 3, P163: a
-        derived unit's legend name (curve_units: a part that is no number) is read like a record value: one structure or categorical value
+        derived unit's legend name (parse_legend: a part that is no number) is read like a record value: one structure or categorical value
         (id or alias, the trailing bracket dropped) -> that quantity and value_text (Amorphous -> crystallinity = amorphous, Sphere (s = 2) ->
         structure = porous_sphere); else it goes on as other. A derived value (a number) holds the series_axis label or its symbol as its key
         and is resolved here like any quantity other."""
@@ -964,24 +1246,20 @@ class Run:
         return self.films[run]
 
     def figures(self):
-        """P143b: kb/<pid>.figures.json data through the pass-0 units' data field. P151 C1 (user): data rows only, never a setting: a
-        curve, cell or peak becomes the result row of the unit whose data names it, by its data role (P146): measured -> an observation
-        under the specimen's measurement, fitted -> a model row under the specimen (computed_by_authors), simulated -> a model row under
-        the model run; points_ref = the figures.json id. A unit's conditions are the pass-1 records about it (the figures.json
-        conditions and a cell's at coordinates make no row). Data no unit names -> logged and left out (no fallback). Returns (tree
-        rows, fact rows)."""
+        """P143b, P177b (user): kb/<pid>.figures.json data through bind()'s items (P151 C1: data rows only, never a setting). A bound item
+        becomes the result rows of its unit by its data role (pass 0's data role, else the legend's data-role word, else the figure stage's
+        simulated mark, else the unit's role): measured -> an observation under the unit's measurement, fitted -> a model row
+        (computed_by_authors), simulated -> a model row under the model run. A curve: its y quantity (or the legend's quantity), its
+        legend's qualifiers and method; a point: its y value; a cell or peak: its value; a panel item: its curves, cells and peaks; an image:
+        a statement-only observation under the unit's measurement of the caption's method (its records' method, else none: a photograph),
+        points_ref = the image item. points_ref = the figures.json id (a point: its curve). Unbound items -> logged by reason, left out."""
         p = C.V2 / "kb" / f"{self.pid}.figures.json"
         Fj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-        k, tree, facts = self.key, [], []
-        owner, drole = {}, {}
-        known = {x.get("id") for sec in ("curves", "values", "sets", "derived") for x in Fj.get(sec) or []}
-        for i, it in self.p0.items():
-            for d in (it.get("data") or it.get("curves") or []):               # P146: data = [{id, role}]; P145 ids, curves on older lines
-                cid = d.get("id") if isinstance(d, dict) else d
-                if cid not in known:                                            # C6: the third drop reason
-                    self.drop("1c", i, {"type": "data", "quantity": ""}, "data_id_not_in_figures_json", str(cid)); continue
-                owner.setdefault(cid, []).append(i)
-                drole[(i, cid)] = (d.get("role") if isinstance(d, dict) else None) or ("simulated" if it.get("role") == "model_run" else "measured")
+        tree, facts = [], []
+        curves = {c["id"]: c for c in Fj.get("curves", [])}
+        values = {v["id"]: v for v in Fj.get("values", [])}
+        for u, cid in self.binding["refs_unknown"]:                              # C6: the third drop reason
+            self.drop("1c", u, {"type": "data", "quantity": ""}, "data_id_not_in_figures_json", str(cid))
 
         def els(fig, panel=""):
             return list(dict.fromkeys(e for e in (f"fig{fig}{panel}", f"fig{fig}", f"fig{fig}.cap") if e in self.order))
@@ -998,16 +1276,43 @@ class Run:
                 f["definition_note"] = (item.get("uncertainty") or {}).get("note", "") or "figure-stage flags"
                 self.count("1c", "data of a flagged panel (rule verdict)")
 
-        def result(cu, parent, typ, unit):
-            y = cu["y"]
-            if y.get("quantity") not in L.QUANTITIES:
+        def place(nid, role, dr):
+            return ("observation", "@meas:" + nid) if dr == "measured" else ("model", nid)
+
+        def curve_row(cu, nid, role, it, parts=None):
+            parts = parse_legend(self.pid, cu.get("series", {}).get("label_raw", ""), series_axis(self.pid).get(f"fig{cu['figure']}{cu.get('panel', '')}", "")) if parts is None else parts
+            q = next((x["quantity"] for x in parts if x["kind"] == "quantity"), "") or cu["y"].get("quantity")
+            if q not in L.QUANTITIES:
                 self.count("1c", "curve y quantity not an id"); return
-            qual = [f"{c['qualifier']}={c['value_text']}" for c in self.p0.get(unit, {}).get("conditions") or [] if c.get("kind") == "qualifier" and c.get("value_text")]
-            facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], qualifiers=";".join(qual),   # P175: the legend's qualifier
-                             data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
+            dr = it.get("data_role") or next((x["role"] for x in parts if x["kind"] == "role"), "") or ("simulated" if cu.get("kind") == "simulated" else "") \
+                or ("simulated" if role in ("model_run",) else "measured")
+            qual = [f"{x['qualifier']}={x['value_text']}" for x in parts if x["kind"] == "qualifier" and x.get("value_text")]
+            meth = next((x["method"] for x in parts if x["kind"] == "method"), "")
+            typ, parent = place(nid, role, dr)
+            facts.append(row(type=typ, quantity=q, label_as_printed=cu["y"].get("label_raw", "") or q, qualifiers=";".join(qual), method=meth if meth in L.METHODS else "",
+                             data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), mentions=cu.get("series", {}).get("label_raw", ""),
                              evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent, points_ref=cu["id"]))
             flagged(facts[-1], cu)
-            self.count("1c", f"curve -> {typ}" + (" (legend qualifier)" if qual else ""))
+            self.count("1c", f"curve -> {typ}" + (" (legend qualifier)" if qual else "") + (" (legend method)" if meth else "") + (" (legend quantity)" if q != cu["y"].get("quantity") else ""))
+
+        def value_row(v, nid, role, dr):
+            q = v.get("quantity") or ""
+            if q not in L.QUANTITIES:
+                self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); return
+            u = dimless((unit_symbol(v["unit"]) or v["unit"]) if v.get("unit") else "")   # P174: a unit units.yaml lacks stays as printed
+            vt = v.get("value_text") or ""
+            if q in CATEGORICAL_ALIASES and vt:                                 # P149 F3: a cell's value_text resolved to the value id
+                hit = categorical(q, vt)
+                self.count("1c", f"{q} value_text resolved (F3)" if hit else f"{q} value_text not in its value set (kept as printed)")
+                vt = hit or vt
+            dr = dr or ("simulated" if role == "model_run" else "measured")
+            typ, parent = place(nid, role, dr)
+            facts.append(row(type=typ, quantity=q, label_as_printed=v.get("label") or q, value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=vt,
+                             unit=u or "", data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"),
+                             evidence=";".join(els(v["figure"], v.get("panel", ""))), parent=parent, points_ref=v["id"]))
+            flagged(facts[-1], v)
+            self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
+
         for inv in Fj.get("inventory", []):                                     # P174 (user): a figure's label the one path left other is an
             ev = els(inv["figure"], inv.get("panel", ""))                       # unmapped row (field axis) like any other label; a resolved
             for a in inv.get("labels") or []:                                   # axis whose printed unit units.yaml lacks, a unit row
@@ -1021,51 +1326,53 @@ class Run:
                     self.unmapped.append(dict(element=ev[0] if ev else self.els[0]["element_id"], field="unit", id=normalize(a.get("unit", "")), label_as_printed=a["key"],
                                               unit=a.get("unit", ""), candidate=cand, action=f"kept (axis {a['unit_reason'].replace('_', ' ')}: values as printed)", never=""))
                     self.count("1c", f"figure axis {a['unit_reason'].replace('_', ' ')} (values as printed)")
-        unowned = []
-        for cu in Fj.get("curves", []):
-            own = [i for i in owner.get(cu["id"], []) if i in self.node]
-            if len(own) != 1:
-                if own:
-                    self.count("1c", "curve named by several units (left out)")
-                    continue
-                unowned.append(cu); continue
-            nid, role = self.node[own[0]]
-            dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
+        for pel, x in (self.layouts_other or {}).items():                         # P177b: a pass-0 layout 'other' with its description
+            ev = [e for e in (pel, re.sub(r"[a-z]+$", "", pel)) if e in self.order]
+            self.unmapped.append(dict(element=ev[0] if ev else self.els[0]["element_id"], field="layout", id="other", label_as_printed=x, unit="", candidate="",
+                                      action="kept (a layout candidate)", never="", nearest=""))
+        for it in self.binding["items"]:
+            if not it["unit"]:
+                self.count("1c", f"unbound item ({it['kind']}): {it['reason'].split(':')[0]}")
+                continue
+            if it["unit"] not in self.node:
+                self.count("1c", f"item bound to a unit with no row ({it['kind']})"); continue
+            nid, role = self.node[it["unit"]]
             if role not in ("model_run", "specimen", "run", "unresolved"):
-                self.count("1c", f"curve named by a {role} (left out)"); continue
-            if dr == "measured":
-                result(cu, "@meas:" + nid, "observation", own[0])
-            else:
-                result(cu, nid, "model", own[0])
-                if dr == "fitted":
-                    facts[-1]["data_kind"] = "computed_by_authors"
-            self.count("1c", f"data role {dr}")
-
-        for v in Fj.get("values", []):                                          # P145: a cell or a peak a unit names
-            own = [i for i in owner.get(v["id"], []) if i in self.node]
-            if len(own) != 1:
-                self.count("1c", f"{v.get('kind', 'value')} not named by exactly one unit (left out)"); continue
-            nid, role = self.node[own[0]]
-            dr = drole[(own[0], v["id"])]
-            ev = ";".join(els(v["figure"], v.get("panel", "")))
-            q = v.get("quantity") or ""
-            if q not in L.QUANTITIES:
-                self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
-            u = dimless((unit_symbol(v["unit"]) or v["unit"]) if v.get("unit") else "")   # P174: a unit units.yaml lacks stays as printed
-            vt = v.get("value_text") or ""
-            if q in CATEGORICAL_ALIASES and vt:                                 # P149 F3: a cell's value_text resolved to the value id
-                hit = categorical(q, vt)
-                self.count("1c", f"{q} value_text resolved (F3)" if hit else f"{q} value_text not in its value set (kept as printed)")
-                vt = hit or vt
-            facts.append(row(type="observation" if dr == "measured" else "model", quantity=q, label_as_printed=v.get("label") or q,
-                             value=f"{v['value']:.6g}" if v.get("value") is not None else "", value_text=vt, unit=u or "",
-                             data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"), evidence=ev,
-                             parent="@meas:" + nid if dr == "measured" else nid, points_ref=v["id"]))
-            flagged(facts[-1], v)
-            self.count("1c", f"{v.get('kind', 'value')} -> {facts[-1]['type']}")
-        if unowned:                                                             # P144: no fallback
-            self.count("1c", "curves no unit names (left out)", len(unowned))
-            self.note(f"1c: {len(unowned)} curves no pass-0 unit names, left out: " + ", ".join(c["id"] for c in unowned))
+                self.count("1c", f"item bound to a {role} (left out)"); continue
+            if it["kind"] == "curve":
+                curve_row(curves[it["ref"]], nid, role, it, it.get("parts"))
+            elif it["kind"] == "point":
+                cu = curves[it["curve"]]
+                q = it.get("y_quantity") or cu["y"].get("quantity")
+                if q not in L.QUANTITIES:
+                    self.count("1c", "point y quantity not an id"); continue
+                dr = it.get("data_role") or ("simulated" if cu.get("kind") == "simulated" else "simulated" if role == "model_run" else "measured")
+                typ, parent = place(nid, role, dr)
+                y = cu["points"][it["n"]][1]
+                facts.append(row(type=typ, quantity=q, label_as_printed=cu["y"].get("label_raw", "") or q, value=num_text(y) if isinstance(y, (int, float)) else "",
+                                 unit=dimless(cu["y"].get("unit") or ""), qualifiers=";".join(it.get("qualifiers") or []),
+                                 data_kind={"measured": "read_from_figure", "fitted": "computed_by_authors"}.get(dr, "simulated"),
+                                 mentions=f"{cu.get('series', {}).get('label_raw', '')} point {it['n'] + 1}".strip(), evidence=";".join(els(cu["figure"], cu.get("panel", ""))),
+                                 parent=parent, points_ref=cu["id"]))
+                flagged(facts[-1], cu)
+                self.count("1c", f"point -> {typ}")
+            elif it["kind"] in ("cell", "peak"):
+                value_row(values[it["ref"]], nid, role, it.get("data_role") or "")
+            elif it["kind"] == "panel":
+                for r_ in it.get("results") or []:
+                    if r_ in curves:
+                        curve_row(curves[r_], nid, role, dict(data_role=""))
+                    elif r_ in values:
+                        value_row(values[r_], nid, role, "")
+            elif it["kind"] == "image":
+                fig = re.sub(r"^fig(\d+).*", r"\1", it["panel"])
+                ms = self.cap_methods.get(f"fig{fig}.cap", collections.Counter())
+                mm = next((m for m, _ in ms.most_common() if m in F.MEAS_METHODS), "")
+                ent = self.run_entity(nid)[0] if role == "run" else nid
+                facts.append(row(type="observation", label_as_printed=f"image {it['panel']}", how="stated", evidence=";".join(els(fig, it["panel"][len(f'fig{fig}'):])),
+                                 statement=f"the image of Fig. {it['panel'][3:]} (" + (mm.replace("_", " ") if mm else "a photograph") + ")" + (f": {it['file']}" if it.get("file") else ""),
+                                 parent=self.measurement(ent, mm), points_ref=it["ref"], data_kind="read_from_figure"))
+                self.count("1c", "image -> a measurement" + (f" ({mm})" if mm else " (a photograph)"))
         return tree, facts
 
     def specimens_for_runs(self, facts):

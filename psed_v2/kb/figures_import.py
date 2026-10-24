@@ -24,7 +24,7 @@ as flags. Resolution (P174, user: the one path):
      normalised axis whose denominator resolves to cycle_number reads a length unit as per cycle (the printed 'nm' of S/N).
   c. a normalised axis's denominator symbol resolves by the same path to a quantity, else a species, else stays as printed.
   d. P175 (user): a series axis naming a qualifier key (element, species, step) is no quantity (its legend names the qualifier's values); a
-     series axis of two or more parts (' and ', ',') resolves part by part, its legend labels paired by compile.legend_conditions.
+     series axis of two or more parts (' and ', ',') resolves part by part, its legend labels paired by compile.parse_legend.
      series labels: a number with a unit -> the series-axis quantity's value, a species or element -> species, a model or measurement
      word -> kind simulated or measured, anything else -> a replicate label kept raw, series_structure replicate. A series is simulated
      (P87) when its label is a model word or, failing a label word, when the panel's content line (else the caption's first sentence)
@@ -504,7 +504,7 @@ class Importer:
                     pts = [[self.to_canonical(x, ax["x"]), self.to_canonical(y, ax["y"])] for x, y in s["points"]]
                     kind = "simulated" if (lab.get("kind") or panel_kind) == "simulated" else "read_from_figure"
                     cconds = dict(conds)
-                    for c in K.legend_conditions(pid, s["label"] or "", sa_raw) if sa_parts else []:   # P175: the legend's parts by order
+                    for c in K.parse_legend(pid, s["label"] or "", sa_raw) if sa_parts else []:   # P175: the legend's parts by order
                         q = c["quantity"]
                         if c["kind"] == "value" and q not in ("", "other") and c.get("value") is not None:
                             u_, t_ = fit_unit(c["unit"], q), entry_unit_row(q)

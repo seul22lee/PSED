@@ -139,6 +139,15 @@ structure_classes:   # P78: the is-a tree of structure classes (Cremers 2019 Sec
   - {id: aerogel_monolith, parent: porous_body, definition: "A monolithic aerogel, porosity above 90 %, the highest aspect ratios coated by ALD.", citation: "gre23 Sec. II A (s6.p8: aerogel monoliths of higher AR than the compacts); Cremers 2019 Sec. II G", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
   - {id: nanopore_membrane, parent: porous_body, definition: "An ordered array of straight pores through a membrane (anodic alumina and similar).", citation: "Cremers 2019 Sec. III, Table I (anodic aluminium oxide membranes as a structure to quantify conformality)", slots: [body_thickness, entry_sides, feature_depth, feature_width, particle_diameter, porosity, specific_surface_area, body_diameter, aspect_ratio]}
 
+layouts:   # P177b (user): the layout vocabulary of pass 0, one entry per kind (item, conditions_from, results_from; the definition and example are the
+           # P143 text). export.py prints it into the pass-0 instruction, form_pass0.json and CODEBOOK.md; a pass-0 layout 'other' with its description
+           # becomes a layout candidate in grow.py propose. compile.bind() reads item, conditions_from and results_from.
+  - {id: curve_per_unit, scope: panel, item: "curve", conditions_from: "legend", results_from: "y", definition: "Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names.", example: "one curve per model run (Ylilammi Fig. 4)"}
+  - {id: point_per_unit, scope: panel, item: "point/cell", conditions_from: "coordinates", results_from: "value/colour", definition: "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145).", example: "a heat map whose grid points are runs (axes = conditions, colour = result)"}
+  - {id: panel_one_unit, scope: panel, item: "panel", conditions_from: "caption", results_from: "caption", definition: "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the solution-method sentence lives in TERMS model run only).", example: "an EDS panel = one specimen, its curves one measurement's results per element"}
+  - {id: row_per_unit, scope: table, item: "row", conditions_from: "row cells", results_from: "row cells", definition: "Each row is one experiment unit (a run, a specimen or a model run); the columns are its conditions and results."}
+  - {id: not_units, scope: table, item: "none", conditions_from: "none", results_from: "none", definition: "The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values)."}
+
 entries:
 
   # ---------------------------------------------------------------- categorical conditions (base)

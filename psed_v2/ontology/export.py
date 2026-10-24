@@ -49,7 +49,7 @@ PENDING_COLUMNS = ["id", "kind", "proposed_definition", "unit", "n_papers", "pid
 #                                       those papers, never an alias); decision_note is a human memo, never read
 MODEL_CLASSES = ("analytical", "computational")
 DECISIONS = ("", "accept", "alias", "reject", "never")
-PENDING_KINDS = ("quantity", "species", "structure", "method", "model", "mechanism", "unit")
+PENDING_KINDS = ("quantity", "species", "structure", "method", "model", "mechanism", "unit", "layout")   # P177b: a pass-0 layout 'other'
 
 
 def pending():
@@ -524,10 +524,11 @@ def pass0_schema(onto, L):
           "evidence_quote": {"type": "string", "minLength": 1}}                                           # P142: a run's words on which samples it made
     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
     qid = {"$ref": "#/$defs/quantity_id"}
-    tl = {"table": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _ in P143_TABLE_LAYOUTS]},           # P144: table layouts
-          "unit_name_cells": ids, "units": ids}
-    pl = {"panel": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _, _ in P143_PANEL_LAYOUTS]},       # P144: panel layouts
-          "unit": {"type": "string", "minLength": 1}, "axis_quantities": {"type": "array", "minItems": 1, "items": qid}, "value_quantity": qid}
+    desc = {"type": "string", "minLength": 1}                                    # P177b: the description of a layout 'other'
+    tl = {"table": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _, _ in layouts("table", onto)] + [LAYOUT_OTHER]},   # P144, P177b: ontology.yaml layouts
+          "description": desc, "unit_name_cells": ids, "units": ids}
+    pl = {"panel": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _, _ in layouts("panel", onto)] + [LAYOUT_OTHER]},
+          "description": desc, "unit": {"type": "string", "minLength": 1}, "axis_quantities": {"type": "array", "minItems": 1, "items": qid}, "value_quantity": qid}
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "urn:psed_v2:schema:form_pass0",
@@ -631,24 +632,16 @@ def form_md(form, pass0, onto, F):
 
 
 # P143: the codebook. Every line is read from a file (the section header names it); the only text written here is marked as the P143
-# definitions below (layouts, the equation rule). A term or field without written text is listed as "missing definition: <term>".
-P143_TABLE_LAYOUTS = [
-    ("row_per_unit", "Each row is one experiment unit (a run, a specimen or a model run); the columns are its conditions and results."),
-    ("column_per_unit", "Each column is one experiment unit; the rows are its conditions and results."),
-    ("cell_per_unit", "Each cell is one experiment unit: its row and column headers are its conditions, the cell holds its result."),
-    ("not_units", "The rows are not experiment units: a symbol table (symbol, meaning, value) or a comparison with the literature (cited values)."),
-]
-P143_PANEL_LAYOUTS = [
-    ("curve_per_unit", "Each curve is one experiment unit; the panel compares units that differ in the conditions the legend names.",
-     "one curve per model run (Ylilammi Fig. 4)"),
-    ("panel_one_unit", "The whole panel is one experiment unit; its curves are several results of one measurement or one model run: a panel "
-                       "whose curves are several results of one unit — a measured and a fitted profile, scans per element (P145; P146: the "
-                       "solution-method sentence lives in TERMS model run only).",
-     "an EDS panel = one specimen, its curves one measurement's results per element"),
-    ("point_per_unit", "Each point or grid cell is one experiment unit; the axes are its conditions, the value or colour its result. Each grid "
-                       "point or scatter point is one unit; list every point as a run (or specimen) with its coordinates as its evidence (P145).",
-     "a heat map whose grid points are runs (axes = conditions, colour = result)"),
-]
+# definitions below (the equation rule; P177b: the layouts live in ontology.yaml layouts:). A term or field without written text is listed as "missing definition: <term>".
+def layouts(scope, onto=None):
+    """P177b (user): the layout kinds of ontology.yaml layouts: of one scope (panel | table) as [(id, definition, example)]; they replace
+    the P143 constants in the pass-0 instruction, form_pass0.json and CODEBOOK.md. A pass-0 answer may also give LAYOUT_OTHER with a
+    description (a layout candidate in grow.py propose)."""
+    onto = onto or yaml.safe_load((HERE / "ontology.yaml").read_text(encoding="utf-8"))
+    return [(x["id"], x["definition"], x.get("example", "")) for x in onto.get("layouts") or [] if x["scope"] == scope]
+
+
+LAYOUT_OTHER = "other"
 P143_EQUATION_RULE = "Symbol meanings come from the paper's symbol table and the paragraphs around the equation."
 # term -> [(source key, verbatim phrase)]; [] = no written definition in lists.py's tree comment or facts.retree()'s docstring
 P143_TERMS = {                                                                  # P143b: quoted where lists.TERMS has none
@@ -718,9 +711,12 @@ def codebook(onto, L):
             assert " ".join(ph.split()) in src[k], f"P143 term {term}: phrase not in {k}"
         out.append(f"- **{term}**: " + "; ".join(f"\"{ph}\" ({'lists.py' if k == 'lists' else 'facts.py retree()'})" for k, ph in phrases))
     # b. layouts
-    out += ["", "## b. Layouts (source: ontology/export.py P143_TABLE_LAYOUTS, P143_PANEL_LAYOUTS: P143 definitions)", "", "Table layouts:", ""]
-    out += [f"- **{k}**: {d}" for k, d in P143_TABLE_LAYOUTS]
-    out += ["", "Panel layouts:", ""] + [f"- **{k}**: {d} Example: {ex}." for k, d, ex in P143_PANEL_LAYOUTS]
+    out += ["", "## b. Layouts (source: ontology.yaml layouts: P177b; item, conditions from, results from)", "", "Table layouts:", ""]
+    lay = {x["id"]: x for x in onto.get("layouts") or []}
+    item = lambda k: f" (item: {lay[k]['item']}; conditions from: {lay[k]['conditions_from']}; results from: {lay[k]['results_from']})"   # noqa: E731
+    out += [f"- **{k}**: {d}{item(k)}" for k, d, _ in layouts("table", onto)]
+    out += ["", "Panel layouts:", ""] + [f"- **{k}**: {d}{item(k)} Example: {ex}." for k, d, ex in layouts("panel", onto)]
+    out += ["", f"- **{LAYOUT_OTHER}**: none of the above; give its description (it becomes a layout candidate)."]
     # c. record types, stances, NK, equation rule
     flat = lists_txt.replace("\n#   ", " ")                                       # P143b: the comment, the asserted line included
     m_ = re.search(r"# a claim's stance, from the paper's own wording \((.*?limitation)\)( asserted: [^\n]*)?\n", flat)

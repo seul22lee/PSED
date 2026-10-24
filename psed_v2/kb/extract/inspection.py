@@ -7,7 +7,7 @@ the run wrote (kb/records, kb/compiled, kb/<pid>.figures.json, kb/import_panels.
   5b drops by step: every dropped.csv row.
   5c unmapped by kind: every open label of compile's unmapped.csv (quantity, species, material, structure, method, model, axis, unit,
      categorical value) with its evidence (element, label, definition) and the never.csv category that covers it, if any.
-  5d units: the pass-0 units and the units derived from curves (compile.curve_units) per panel; the panel consistency (pass0_paper:
+  5d units: the pass-0 units and the units compile.bind derives (P177b) per panel; the panel consistency (pass0_paper:
      unbound items); the simulation and its model link; the units no record is about; the records about the paper.
   5e figures: per data panel the verdict and flags, every label and how it resolved, curves and values, the units that hold them, facts.
   5f check.py problems: every problem with its class (score.err_class).

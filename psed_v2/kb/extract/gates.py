@@ -8,7 +8,7 @@
 
 Metrics (P174: ontology/gates.csv column direction, read by the gate: 'lower is worse' for units per 100 elements, 'higher is worse' for
 the rest):
-  pass 0  units per 100 elements: the pass-0 units and the units derived from curves (compile.curve_units) per 100 elements.csv rows;
+  pass 0  units per 100 elements: the pass-0 units and the units compile.bind derives (P177b) per 100 elements.csv rows;
           unbound items (pass0_paper.consistency); units named after a measurement (pass0_paper.measurement_named); panels with no layout:
           the share of pass 0's panel_layouts whose layout is null (a share, so the paper's size does not decide it).
           Gate a (no reference value): pass 0 lists no run and no simulation, or fewer than 3 units in all.
@@ -40,7 +40,7 @@ def pass0_values(pid):
     obj = C.loads_json(C.lines(pid, 0)[-1]["response"])
     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
     n_el = len(C.E.load(pid))
-    D = K.curve_units(pid, obj)
+    D = K.bind(pid, obj, None)["units"]                                         # P177b: the derived units of compile.bind
     pl = obj.get("panel_layouts") or []
     roles = collections.Counter(u.get("role") for u in units)
     return {"units per 100 elements": round(100 * (len(units) + len(D)) / max(n_el, 1), 2),
