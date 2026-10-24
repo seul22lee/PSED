@@ -1,0 +1,857 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P168_apply</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P168_apply</h1>
+<h2>Summary</h2><p>kb/reports/P168_apply.summary.txt</p>
+<pre>P168, round 3 applied, 0 API calls. Acceptance: round 1 PASS; round 2 FAIL (1, A2); round 3 FAIL (5: A1 4, A2 1). export.py --check 15 of 15.
+
+Precondition met: accept 1 (elam_monte_carlo, kind model), alias 2 (spatial_resolution -&gt; probe_resolution; t_hold -&gt; pulse_time), never 1
+  (prisms), reject 3 (dose, material, top_surfaces), undecided 16.
+1. compile.model_of: a simulation unit&#x27;s printed name goes through step a0&#x27;s lookup against the model entries (export.resolve_index kind
+   model: id, name, aliases, paper-local symbols): one id -&gt; unit.model and a promoted.csv row (field model); else an unmapped row of field
+   model, which propose makes a candidate of kind model.
+2. propose makes no candidate of a categorical&#x27;s value row (&quot;its unit is nothing&quot;): 1 row removed on the nine papers, art19 tab1.r0c0
+   (field material, label &#x27;material&#x27;; the user rejected it).
+3. Order: the code; a recompile (the 7 simulation names became unmapped rows; scores unchanged); propose on round 3 (still proposed: grow.py
+   cannot propose an applied round), whose 8 new candidates hold the 7 names (6 carried from rounds 1-2); the user&#x27;s and the chat&#x27;s
+   decisions written into pending.csv (committed before apply); one apply. Apply reads a model accept&#x27;s class and parameters from its
+   decision note (&#x27;class computational&#x27;; &#x27;parameters ...&#x27; from the note, else from the definition) and &#x27;printed name: paper-local symbol&#x27;.
+   Written: elam_monte_carlo (computational; parameters initial_sticking_coefficient, saturation_density, growth_per_cycle, from its
+   definition; aliases &#x27;elam monte carlo&#x27;, &#x27;Monte Carlo computer simulation&#x27;; the note&#x27;s &#x27;Monte Carlo simulation&#x27; is printed in no paper
+   and apply writes printed labels only, so it is not added); heikkinen_porous_diffusion_reaction (computational, the 9 parameters; the
+   printed &#x27;diffusion–reaction model&#x27; a symbol of hei24); aliases &#x27;Gordon model&#x27; -&gt; gordon_plug_flow (printed in yli18, not gor03),
+   &#x27;Yilammi et al. diffusion–reaction model&#x27; -&gt; ylilammi_diffusion_reaction, &#x27;spatial resolution&#x27; -&gt; probe_resolution; symbol t_hold
+   (gre23) of pulse_time; never prisms. Undecided: &#x27;diffusion model&#x27; (yli18), &#x27;Kinetic Model&#x27; (gor03), &#x27;eq 6&#x27; (art19). art19&#x27;s document.md
+   does not print &#x27;recombination-limited model&#x27; (0 times), so no alias was proposed.
+   Simulation -&gt; model (nine papers): yli18 Gordon model -&gt; gordon_plug_flow (analytical), diffusion model -&gt; none; yim20 -&gt; ylilammi (analytical);
+   ela03 -&gt; elam_monte_carlo (computational); hei24 -&gt; heikkinen_porous_diffusion_reaction (computational, by its paper symbol); gor03 Kinetic
+   Model -&gt; none; art19 eq 6 -&gt; none; mat22, gre23, zou23 no simulation unit.
+   Scores: every column unchanged on the nine papers; check.py --dir unchanged on all nine. rounds.csv: round 3 applied (2 accepted, 5
+   aliases, 3 rejected, 1 never); 19 rows pending.
+Audit failures, reported, not worked around:
+  Round 3 A1 (4): elam_monte_carlo, gordon_model, monte_carlo_computer_simulation, yilammi_...: no row of the decision in the apply snapshot.
+    The three aliases: a bug of P162&#x27;s carried_rows. It carried a row only while the row was new since apply; once propose had made it a
+    pending candidate, the snapshot dropped it (hei24&#x27;s row stayed in only because its id had been edited). A1 also gave the wrong reason
+    (&quot;no compiled output&quot;, the papers are compiled). Both fixed in grow.py for later rounds; the round-3 snapshot was taken by apply and is
+    not rewritten. elam_monte_carlo: a round-0 row has no compiled row of its own; its printed name reaches it through the alias. The
+    promotions themselves are in the rounds-1-2 A2 tables (Gordon, Yilammi agree; Monte Carlo below).
+  Round 3 A2 (1): art19 &#x27;spatial resolution&#x27; -&gt; probe_resolution: head nouns resolution / spot / size.
+  Round 2 A2 (1): ela03 &#x27;Monte Carlo computer simulation&#x27; -&gt; elam_monte_carlo: head nouns simulation / carlo / walk (the entry&#x27;s name is the
+    pilot id&#x27;s words).
+</pre>
+<h2>Simulation units of the nine papers and their model entry</h2><p>kb/reports/P168_apply.simulation_models.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>printed_name</th><th>model_entry</th><th>model_class</th><th>how</th></tr>
+<tr><td>yli18</td><td>sim_ylilammi</td><td>diffusion model</td><td>(none)</td><td></td><td>kept (a simulation name no model entry has)</td></tr>
+<tr><td>yli18</td><td>sim_gordon</td><td>Gordon model</td><td>gordon_plug_flow</td><td>analytical</td><td>model: alias &#x27;Gordon model&#x27;</td></tr>
+<tr><td>yim20</td><td>sim_ylilammi</td><td>Yilammi et al. diffusion–reaction model</td><td>ylilammi_diffusion_reaction</td><td>analytical</td><td>model: alias &#x27;Yilammi et al. diffusion–reaction model&#x27;</td></tr>
+<tr><td>mat22</td><td>(no simulation unit)</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>sim_mc</td><td>Monte Carlo computer simulation</td><td>elam_monte_carlo</td><td>computational</td><td>model: alias &#x27;Monte Carlo computer simulation&#x27;</td></tr>
+<tr><td>hei24</td><td>sim_dr</td><td>diffusion–reaction model</td><td>heikkinen_porous_diffusion_reaction</td><td>computational</td><td>model: symbol &#x27;diffusion–reaction model&#x27; of this paper</td></tr>
+<tr><td>gor03</td><td>sim_kinetic_model</td><td>Kinetic Model</td><td>(none)</td><td></td><td>kept (a simulation name no model entry has)</td></tr>
+<tr><td>gre23</td><td>(no simulation unit)</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>sim_slope</td><td>eq 6</td><td>(none)</td><td></td><td>kept (a simulation name no model entry has)</td></tr>
+<tr><td>zou23</td><td>(no simulation unit)</td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>Model candidates and their decisions</h2><p>kb/reports/P168_apply.model_candidates.csv</p>
+<table><tr><th>id</th><th>decision</th><th>target</th><th>reason</th></tr>
+<tr><td>elam_monte_carlo</td><td>add</td><td></td><td>accepted now: ela03&#x27;s simulation unit is printed &#x27;Monte Carlo computer simulation&#x27; (pass 0, P160); class computational; aliases &#x27;Monte Carlo computer simulation&#x27;, &#x27;Monte Carlo simulation&#x27; (paper-local symbols for ela03 if symbol-like); source ela03</td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>add</td><td></td><td>decided in chat P168; class computational; parameters tortuosity_over_porosity, surface_to_pore_volume_ratio, particle_radius, molar_mass, saturation_density, initial_sticking_coefficient, feature_width, deposition_temperature, exposure; printed name: paper-local symbol of hei24 (the phrase is generic), not a global alias</td></tr>
+<tr><td>gordon_model</td><td>alias</td><td>gordon_plug_flow</td><td>decided in chat P168 (&#x27;Gordon model&#x27; is printed in yli18, the directive named gor03)</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias</td><td>elam_monte_carlo</td><td>decided in chat P168 (the entry accepted in this apply; accepts before aliases)</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias</td><td>ylilammi_diffusion_reaction</td><td>decided in chat P168 (as printed, misspelling included)</td></tr>
+<tr><td>diffusion_model</td><td>undecided</td><td></td><td>10.1063_1.5028178:abs.g1 — diffusion model</td></tr>
+<tr><td>eq_6</td><td>undecided</td><td></td><td>10.1021_acs.jpcc.9b08176:eq6 — eq 6</td></tr>
+<tr><td>kinetic_model</td><td>undecided</td><td></td><td>10.1002_cvde.200390005:abs.g1 — Kinetic Model</td></tr>
+</table>
+<h2>Decisions (history.csv round 3) and the undecided rows</h2><p>kb/reports/P168_apply.decisions.csv</p>
+<table><tr><th>id</th><th>kind</th><th>action</th><th>target</th><th>reason</th></tr>
+<tr><td>elam_monte_carlo</td><td>model</td><td>add</td><td></td><td>accepted now: ela03&#x27;s simulation unit is printed &#x27;Monte Carlo computer simulation&#x27; (pass 0, P160); class computational; aliases &#x27;Monte Carlo computer simulation&#x27;, &#x27;Monte Carlo simulation&#x27; (paper-local symbols for ela03 if symbol-like); source ela03</td></tr>
+<tr><td>dose</td><td>quantity</td><td>reject</td><td></td><td>a term for the pulse+hold step sequence (fig1.cap defines it), not a quantity; its durations are pulse_time with step reactant_A / hold_A</td></tr>
+<tr><td>material</td><td>unit</td><td>reject</td><td></td><td>the unit row of a categorical: a categorical has no unit; propose must not make unit-row candidates for categoricals (fix)</td></tr>
+<tr><td>prisms</td><td>quantity</td><td>never</td><td>Equipment details and sample codes</td><td>specimen pieces cut for measurement (6 x 3 x 1.6 mm)</td></tr>
+<tr><td>spatial_resolution</td><td>quantity</td><td>alias</td><td>probe_resolution</td><td>EDS/line-scan spatial resolution = the probe size the entry defines (its definition names gre23&#x27;s EDS line width)</td></tr>
+<tr><td>t_hold</td><td>quantity</td><td>alias</td><td>pulse_time</td><td>hold time of a static exposure: pulse_time with step hold_A / hold_B (the step is the record&#x27;s); t_hold is symbol-like -&gt; symbols {t_hold, gre23}</td></tr>
+<tr><td>top_surfaces</td><td>quantity</td><td>reject</td><td></td><td>a position qualifier value (top) in a photograph caption, not a quantity</td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>model</td><td>add</td><td></td><td>decided in chat P168; class computational; parameters tortuosity_over_porosity, surface_to_pore_volume_ratio, particle_radius, molar_mass, saturation_density, initial_sticking_coefficient, feature_width, deposition_temperature, exposure; printed name: paper-local symbol of hei24 (the phrase is generic), not a global alias</td></tr>
+<tr><td>gordon_model</td><td>model</td><td>alias</td><td>gordon_plug_flow</td><td>decided in chat P168 (&#x27;Gordon model&#x27; is printed in yli18, the directive named gor03)</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>model</td><td>alias</td><td>elam_monte_carlo</td><td>decided in chat P168 (the entry accepted in this apply; accepts before aliases)</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>model</td><td>alias</td><td>ylilammi_diffusion_reaction</td><td>decided in chat P168 (as printed, misspelling included)</td></tr>
+<tr><td>bent</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>displacement</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>distance_between_pillars</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>pillar_diameter</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>tilde_xi</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>anodization_conditions_charge_density</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>anodization_conditions_electrolyte</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>anodization_conditions_potential</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>excess_over_the_saturation_dose</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>integrated_coverage</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>normalized_penetration_depth_for_sphere</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>shape_factor</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>slope_of_integrated_zno_coverage</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>surface_area_roughness_factor</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>diffusion_model</td><td>model</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>eq_6</td><td>model</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>kinetic_model</td><td>model</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+<tr><td>total_isolated_deposition_volume</td><td>quantity</td><td>undecided (stays in pending.csv)</td><td></td><td></td></tr>
+</table>
+<h2>Step 2: categorical value rows propose no longer makes candidates of</h2><p>kb/reports/P168_apply.categorical_rows_dropped.csv</p>
+<table><tr><th>paper</th><th>element</th><th>field</th><th>label</th></tr>
+<tr><td>art19</td><td>tab1.r0c0</td><td>material</td><td>material</td></tr>
+</table>
+<h2>Propose on round 3 (before apply)</h2><p>kb/reports/P168_apply.propose.txt</p>
+<pre>round 3: 8 candidates (8 new, 0 merged with earlier undecided rows; 1 undecided rows of round 3 rebuilt); 1 rows never (compile.py&#x27;s never column), 0 values without a quantity, 0 symbol and 0 label merges into 0 symbol-table rows; 0 label-prefix merges (P163)
+pending.csv: 30 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+</pre>
+<h2>Dry run before apply</h2><p>kb/reports/P168_apply.dry_run.csv</p>
+<table><tr><th>id</th><th>decision</th><th>target</th><th>kind</th><th>candidate</th><th>printed</th><th>word_labels</th><th>symbol_labels</th><th>table_symbols</th><th>model_type</th><th>parameters</th><th>printed_name_paper_local</th></tr>
+<tr><td>elam_monte_carlo</td><td>accept</td><td></td><td>model</td><td>(none)</td><td>elam monte carlo</td><td>elam monte carlo</td><td></td><td></td><td>computational</td><td>initial_sticking_coefficient; saturation_density; growth_per_cycle</td><td>False</td></tr>
+<tr><td>dose</td><td>reject</td><td></td><td>quantity</td><td>dose</td><td>dose</td><td>dose</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>material</td><td>reject</td><td></td><td>unit</td><td>(none)</td><td>material</td><td>material</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>prisms</td><td>never</td><td>Equipment details and sample codes</td><td>quantity</td><td>prisms</td><td>prisms</td><td>prisms</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>spatial_resolution</td><td>alias</td><td>probe_resolution</td><td>quantity</td><td>spatial_resolution</td><td>spatial resolution</td><td>spatial resolution</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>t_hold</td><td>alias</td><td>pulse_time</td><td>quantity</td><td>t_hold</td><td>t_hold</td><td></td><td>t_hold (gre23)</td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td></td><td>quantity</td><td>top_surfaces</td><td>top surfaces</td><td>top surfaces</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>accept</td><td></td><td>model</td><td>diffusion_reaction_model</td><td>diffusion–reaction model</td><td>diffusion–reaction model</td><td></td><td></td><td>computational</td><td>tortuosity_over_porosity; surface_to_pore_volume_ratio; particle_radius; molar_mass; saturation_density; initial_sticking_coefficient; feature_width; deposition_temperature; exposure</td><td>True</td></tr>
+<tr><td>gordon_model</td><td>alias</td><td>gordon_plug_flow</td><td>model</td><td>gordon_model</td><td>Gordon model</td><td>Gordon model</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias</td><td>elam_monte_carlo</td><td>model</td><td>monte_carlo_computer_simulation</td><td>Monte Carlo computer simulation</td><td>Monte Carlo computer simulation</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias</td><td>ylilammi_diffusion_reaction</td><td>model</td><td>yilammi_et_al_diffusion_reaction_model</td><td>Yilammi et al. diffusion–reaction model</td><td>Yilammi et al. diffusion–reaction model</td><td></td><td></td><td></td><td></td><td>False</td></tr>
+</table>
+<h2>What apply wrote</h2><p>kb/reports/R3_apply.written.csv</p>
+<table><tr><th>id</th><th>decision</th><th>candidate</th><th>aliases</th><th>symbols</th><th>note</th></tr>
+<tr><td>elam_monte_carlo</td><td>accept</td><td></td><td>elam monte carlo</td><td></td><td></td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>accept</td><td>diffusion_reaction_model</td><td></td><td>diffusion–reaction model (10.1039_d3cp05639b)</td><td></td></tr>
+<tr><td>spatial_resolution</td><td>alias -&gt; probe_resolution</td><td>spatial_resolution</td><td>spatial resolution</td><td></td><td></td></tr>
+<tr><td>t_hold</td><td>alias -&gt; pulse_time</td><td>t_hold</td><td></td><td>t_hold (10.1116_6.0003182)</td><td></td></tr>
+<tr><td>gordon_model</td><td>alias -&gt; gordon_plug_flow</td><td>gordon_model</td><td>Gordon model</td><td></td><td></td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias -&gt; elam_monte_carlo</td><td>monte_carlo_computer_simulation</td><td>Monte Carlo computer simulation</td><td></td><td></td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>yilammi_et_al_diffusion_reaction_model</td><td>Yilammi et al. diffusion–reaction model</td><td></td><td></td></tr>
+<tr><td>prisms</td><td>never (Equipment details and sample codes)</td><td>prisms</td><td>prisms</td><td></td><td></td></tr>
+</table>
+<h2>Ontology, never.csv, rounds.csv diff (apply commit)</h2><p>kb/reports/P168_apply.ontology.diff</p>
+<pre>diff --git a/psed_v2/ontology/never.csv b/psed_v2/ontology/never.csv
+index 6f03604..5034b29 100644
+--- a/psed_v2/ontology/never.csv
++++ b/psed_v2/ontology/never.csv
+@@ -114,3 +114,4 @@ v_{th},Model internals,10.1039_d3cp05639b,round 2: symbol of mean_thermal_veloci
+ number of molecules represented by one trajectory,Model internals,10.1021_cm0303080,round 2: number_of_molecules_represented_by_one_trajectory,
+ scale bar,Instrument settings,10.1002_cvde.200390005,round 2: scale_bar,
+ spatial domain discretization points,Model internals,10.1039_d3cp05639b,round 2: spatial_domain_discretization_points,
++prisms,Equipment details and sample codes,10.1116_6.0003182,round 3: prisms,
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index a0040dd..8555905 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 0afba98c16fb00be2da7827e1c308e4d7b4bef61ffe68919ff5dbd255147c2fe
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 5b46e456305eebdeef4eb276cbfe65d5155220f77df069e3722c14ac0d1a1090
+ version: 1
+ 
+ kinds:   # P157 (user text): the seven entry kinds (an entry&#x27;s type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user&#x27;s TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
+@@ -386,7 +386,7 @@ entries:
+     qudt_unit: &quot;unit:SEC&quot;
+     qualifiers: [step]
+     aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length]
+-    symbols: [{text: t_1, paper: 10.1039_d1cp04758b}]
++    symbols: [{text: t_1, paper: 10.1039_d1cp04758b}, {text: t_hold, paper: 10.1116_6.0003182}]
+     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
+     deviation: {type: renamed, reason: &quot;Cremers and all gold papers say pulse time; the two fields become one entry with the step qualifier&quot;}
+     evidence: [Yim2020 Table 1, Yim2020 Fig. 11a, Yim2020 Fig. 10, Ylilammi2018 Fig. 5, Ylilammi2018 Fig. 4, Ylilammi2018 Sec. VII, Werbrouck2021 Fig. 11, Werbrouck2021 Sec. II D, &#x27;alias &#x27;&#x27;t_1&#x27;&#x27;: yim22 tab1.r2c1 (P131b alias audit)&#x27;]
+@@ -1581,7 +1581,7 @@ entries:
+     unit: &quot;µm&quot;
+     qudt_quantity_kind: &quot;quantitykind:Length&quot;
+     qudt_unit: &quot;unit:MicroM&quot;
+-    aliases: [&quot;spot size&quot;, &quot;spot&quot;]
++    aliases: [spot size, spot, spatial resolution]
+     base: {}
+     evidence: [&quot;yim20 Fig. 7&quot;, &quot;yim20 Table 1&quot;, &quot;gre23 Sec. II C (s10.p4)&quot;]
+ 
+@@ -2510,6 +2510,7 @@ entries:
+ 
+   # ---------------------------------------------------------------- models
+   - id: ylilammi_diffusion_reaction
++    aliases: [Yilammi et al. diffusion–reaction model]
+     type: model
+     name: &quot;Ylilammi diffusion-reaction model&quot;                     # P142b
+     origin: base
+@@ -2522,6 +2523,7 @@ entries:
+     evidence: [&quot;Ylilammi2018 Figs. 2-7&quot;, &quot;Yim2020 Fig. 10&quot;]
+ 
+   - id: gordon_plug_flow
++    aliases: [Gordon model]
+     type: model
+     name: &quot;Gordon plug-flow model&quot;                     # P142b
+     origin: base
+@@ -3410,6 +3412,37 @@ entries:
+     source_pids: [10.1039_d3cp05639b]
+     evidence: [&#x27;10.1039_d3cp05639b:fig5.cap — \tau/\epsilon&#x27;]
+ 
++  # ---------------------------------------------------------------- grow.py round 3: accepted
++  - id: elam_monte_carlo
++    type: model
++    label: elam monte carlo
++    name: elam monte carlo
++    origin: round 3
++    category: models
++    definition: One-dimensional Monte Carlo random walk of reactant molecules in a cylindrical pore with Knudsen steps, self-limiting reaction with probability S, pore narrowing by 2G per reacted element; parameters initial_sticking_coefficient, saturation_density, growth_per_cycle.
++    dimension: dimensionless
++    model_type: computational
++    parameters: [initial_sticking_coefficient, saturation_density, growth_per_cycle]
++    aliases: [elam monte carlo, Monte Carlo computer simulation]
++    source_pids: [10.1021_cm0303080]
++    evidence: [&#x27;10.1021_cm0303080: pass-0 simulation unit sim_mc — &quot;a Monte Carlo computer simulation was developed&quot; (s4; P160 pass 0)&#x27;]
++    symbols: []
++
++  - id: heikkinen_porous_diffusion_reaction
++    type: model
++    label: heikkinen porous diffusion reaction
++    name: heikkinen porous diffusion reaction
++    origin: round 3
++    category: models
++    definition: &#x27;Diffusion–reaction model of ALD in a porous particle of slab, cylinder or sphere geometry (shape factor s): radial reactant transport by effective Knudsen diffusion with irreversible Langmuir adsorption, PDEs solved numerically (Heikkinen 2024, eqns 1–9)&#x27;
++    dimension: dimensionless
++    model_type: computational
++    parameters: [tortuosity_over_porosity, surface_to_pore_volume_ratio, particle_radius, molar_mass, saturation_density, initial_sticking_coefficient, feature_width, deposition_temperature, exposure]
++    symbols:
++    - {text: diffusion–reaction model, paper: 10.1039_d3cp05639b}
++    source_pids: [10.1039_d3cp05639b]
++    evidence: [&#x27;10.1039_d3cp05639b:abs.g1 — diffusion–reaction model&#x27;]
++
+ families:   # P100: the families the entries&#x27; family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
+   composition: {}
+   conformality: {mixed_dimensions: true, reason: &quot;the depth the film reaches is given either as a length (penetration_depth) or scaled to the feature (coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction); the transform coated_ar links the two&quot;}
+diff --git a/psed_v2/ontology/rounds.csv b/psed_v2/ontology/rounds.csv
+index 20f090f..ef4cff1 100644
+--- a/psed_v2/ontology/rounds.csv
++++ b/psed_v2/ontology/rounds.csv
+@@ -2,4 +2,4 @@ round,opened,applied,pids,dois,status,n_candidates,n_accepted,n_alias,n_rejected
+ 0,2026-10-03,2026-10-22,10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804,10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154;10.1116/6.0003182;10.1021/cm0303080;10.1002/cvde.200390005;10.1063/1.5028178;10.1116/1.4903941;10.1021/acs.jpcc.9b08176;10.1039/d1cp04758b;10.1039/d3cp05639b;10.1116/6.0002993;10.1116/6.0002804,applied,,235,0,0,45
+ 1,2026-10-22,2026-10-23,10.1063_1.5028178;10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154,10.1063/1.5028178;10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154,applied,47,0,2,1,39
+ 2,2026-10-23,2026-10-23,10.1021_cm0303080;10.1039_d3cp05639b;10.1002_cvde.200390005,10.1021/cm0303080;10.1039/d3cp05639b;10.1002/cvde.200390005,applied,37,3,5,6,14
+-3,2026-10-23,,10.1116_6.0003182;10.1021_acs.jpcc.9b08176;10.1116_6.0002804,10.1116/6.0003182;10.1021/acs.jpcc.9b08176;10.1116/6.0002804,proposed,8,,,,
++3,2026-10-23,2026-10-23,10.1116_6.0003182;10.1021_acs.jpcc.9b08176;10.1116_6.0002804,10.1116/6.0003182;10.1021/acs.jpcc.9b08176;10.1116/6.0002804,applied,8,2,5,3,1
+</pre>
+<h2>export.py --check</h2><p>kb/reports/P168_apply.export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 19 rows: undecided 19
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>Score before -&gt; after, every column, nine papers</h2><p>kb/reports/P168_apply.score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>gor03</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gor03</td><td>matched_T6</td><td>55</td><td>55</td><td>yes</td></tr>
+<tr><td>gor03</td><td>gold_rows</td><td>157</td><td>157</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_no</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_setting</td><td>21/52</td><td>21/52</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_model</td><td>13/21</td><td>13/21</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_claim</td><td>7/18</td><td>7/18</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_observation</td><td>5/11</td><td>5/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_cited</td><td>0/11</td><td>0/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_activity</td><td>6/11</td><td>6/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_derived</td><td>7/10</td><td>7/10</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_definition</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_entity</td><td>4/6</td><td>4/6</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>267</td><td>267</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>135/249</td><td>135/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>check_dir_problems</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>art19</td><td>matched_T6</td><td>78</td><td>78</td><td>yes</td></tr>
+<tr><td>art19</td><td>gold_rows</td><td>214</td><td>214</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_no</td><td>114</td><td>114</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_setting</td><td>16/50</td><td>16/50</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_model</td><td>10/22</td><td>10/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_claim</td><td>7/13</td><td>7/13</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_observation</td><td>14/36</td><td>14/36</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_cited</td><td>8/23</td><td>8/23</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_activity</td><td>11/22</td><td>11/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_derived</td><td>5/7</td><td>5/7</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_caveat</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_entity</td><td>8/12</td><td>8/12</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_comparison</td><td>1/4</td><td>1/4</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>169</td><td>169</td><td>yes</td></tr>
+<tr><td>ela03</td><td>gold_rows</td><td>561</td><td>561</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>192</td><td>192</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>57/277</td><td>57/277</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>35/57</td><td>35/57</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_claim</td><td>9/37</td><td>9/37</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>13/38</td><td>13/38</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_cited</td><td>7/21</td><td>7/21</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>15/46</td><td>15/46</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_derived</td><td>4/17</td><td>4/17</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_definition</td><td>1/10</td><td>1/10</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_caveat</td><td>1/15</td><td>1/15</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_entity</td><td>13/34</td><td>13/34</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_comparison</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>435</td><td>435</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>522</td><td>522</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>107/206</td><td>107/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>81/154</td><td>81/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>101/108</td><td>101/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>check_dir_problems</td><td>553</td><td>553</td><td>yes</td></tr>
+<tr><td>hei24</td><td>matched_T6</td><td>276</td><td>276</td><td>yes</td></tr>
+<tr><td>hei24</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_no</td><td>290</td><td>290</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_setting</td><td>73/172</td><td>73/172</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_claim</td><td>15/20</td><td>15/20</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_derived</td><td>0/16</td><td>0/16</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_definition</td><td>17/35</td><td>17/35</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_comparison</td><td>6/24</td><td>6/24</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>156</td><td>156</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>31/63</td><td>31/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>94</td><td>94</td><td>yes</td></tr>
+<tr><td>zou23</td><td>matched_T6</td><td>53</td><td>53</td><td>yes</td></tr>
+<tr><td>zou23</td><td>gold_rows</td><td>164</td><td>164</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_no</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_setting</td><td>14/47</td><td>14/47</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_model</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_claim</td><td>10/19</td><td>10/19</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_observation</td><td>25/45</td><td>25/45</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_cited</td><td>1/11</td><td>1/11</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_activity</td><td>21/23</td><td>21/23</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_derived</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_definition</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_caveat</td><td>0/6</td><td>0/6</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_entity</td><td>4/8</td><td>4/8</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gre23</td><td>check_dir_problems</td><td>130</td><td>130</td><td>yes</td></tr>
+<tr><td>gre23</td><td>matched_T6</td><td>136</td><td>136</td><td>yes</td></tr>
+<tr><td>gre23</td><td>gold_rows</td><td>474</td><td>474</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_no</td><td>184</td><td>184</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_setting</td><td>21/89</td><td>21/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_model</td><td>8/18</td><td>8/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_claim</td><td>11/57</td><td>11/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_observation</td><td>20/89</td><td>20/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_cited</td><td>3/57</td><td>3/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_activity</td><td>29/41</td><td>29/41</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_derived</td><td>21/31</td><td>21/31</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_caveat</td><td>7/53</td><td>7/53</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_entity</td><td>0/18</td><td>0/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_identity</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+</table>
+<h2>check.py --dir before -&gt; after</h2><p>kb/reports/P168_apply.check_dir.csv</p>
+<table><tr><th>paper</th><th>before</th><th>after</th><th>change</th><th>row</th></tr>
+<tr><td>gor03</td><td>54</td><td>54</td><td>0</td><td></td></tr>
+<tr><td>mat22</td><td>267</td><td>267</td><td>0</td><td></td></tr>
+<tr><td>art19</td><td>62</td><td>62</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>159</td><td>159</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>318</td><td>318</td><td>0</td><td></td></tr>
+<tr><td>hei24</td><td>553</td><td>553</td><td>0</td><td></td></tr>
+<tr><td>yli18</td><td>156</td><td>156</td><td>0</td><td></td></tr>
+<tr><td>zou23</td><td>94</td><td>94</td><td>0</td><td></td></tr>
+<tr><td>gre23</td><td>130</td><td>130</td><td>0</td><td></td></tr>
+</table>
+<h2>Round-3 audit (after the fix)</h2><p>kb/reports/P168_apply.audit_round3.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/grow.py audit 3` failed. (See above for error)
+round 3 acceptance (grow.py audit_round)
+A1: 11 decisions, 14 rows: effect {&#x27;no effect&#x27;: 5, &#x27;n/a&#x27;: 4, &#x27;yes&#x27;: 5}
+A2: 3 promotions: {&#x27;disagree&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 2}
+A3: 7 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 2}; pending candidates accounted 19/19
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: FAIL (5)
+FAIL A1 elam_monte_carlo: no row of this decision in the snapshot
+FAIL A1 gordon_model: no row of this decision in the snapshot
+FAIL A1 monte_carlo_computer_simulation: no row of this decision in the snapshot
+FAIL A1 yilammi_et_al_diffusion_reaction_model: no row of this decision in the snapshot
+FAIL A2 10.1021_acs.jpcc.9b08176:s5.p3 &#x27;spatial resolution&#x27; -&gt; probe_resolution: disagree (head nouns resolution / spot / size)
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 240 entries, 384 history rows, 19 pending, checks 15/15
+entries 240
+├─ quantity 97   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>Round-3 A1</h2><p>kb/reports/R3_apply.A1.csv</p>
+<table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
+<tr><td>elam_monte_carlo</td><td>add</td><td>elam monte carlo</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>dose</td><td>reject</td><td>dose</td><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>material</td><td>reject</td><td>material</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>prisms</td><td>never -&gt; Equipment details and sample codes</td><td>prisms (any paper)</td><td>10.1116_6.0003182</td><td>s10.p2</td><td>quantity</td><td>prisms</td><td>never: Equipment details and sample codes (kept (never: prisms))</td><td>yes</td><td></td></tr>
+<tr><td>spatial_resolution</td><td>alias -&gt; probe_resolution</td><td>alias of probe_resolution: spatial resolution</td><td>10.1021_acs.jpcc.9b08176</td><td>s5.p3</td><td>quantity</td><td>spatial resolution</td><td>fact: probe_resolution (quantity: alias &#x27;spatial resolution&#x27;); fact art19:s5.p3#2 (type setting, quantity probe_resolution, parent art19:method:reflectometry)</td><td>yes</td><td></td></tr>
+<tr><td>t_hold</td><td>alias -&gt; pulse_time</td><td>alias of pulse_time: </td><td>10.1116_6.0003182</td><td>s9.p7</td><td>quantity</td><td>t_hold</td><td>fact: pulse_time (quantity: symbol &#x27;t_hold&#x27; of this paper); fact gre23:s9.p7#1 (type definition, quantity pulse_time, parent gre23)</td><td>yes</td><td></td></tr>
+<tr><td>t_hold</td><td>alias -&gt; pulse_time</td><td>alias of pulse_time: </td><td>10.1116_6.0003182</td><td>eq1</td><td>quantity</td><td>t_hold</td><td>fact: pulse_time (quantity: symbol &#x27;t_hold&#x27; of this paper); fact gre23:eq1#1 (type model, quantity pulse_time, parent gre23:recipe)</td><td>yes</td><td></td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>add</td><td>heikkinen porous diffusion reaction</td><td>10.1039_d3cp05639b</td><td>abs.g1</td><td>model</td><td>diffusion–reaction model</td><td>fact: heikkinen_porous_diffusion_reaction (model: symbol &#x27;diffusion–reaction model&#x27; of this paper); simulation sim_dr -&gt; model heikkinen_porous_diffusion_reaction</td><td>yes</td><td></td></tr>
+<tr><td>gordon_model</td><td>alias -&gt; gordon_plug_flow</td><td>alias of gordon_plug_flow: Gordon model</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias -&gt; elam_monte_carlo</td><td>alias of elam_monte_carlo: Monte Carlo computer simulation</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>alias of ylilammi_diffusion_reaction: Yilammi et al. diffusion–reaction model</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+</table>
+<h2>Round-3 A2</h2><p>kb/reports/R3_apply.A2.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>symbol</th><th>outcome</th></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>s5.p3</td><td>quantity</td><td>spatial resolution</td><td>spatial resolution of 5 µm</td><td>quantity: alias &#x27;spatial resolution&#x27;</td><td>probe_resolution</td><td>probe spot</td><td>The lateral size of a measurement probe: the reflectometer spot (yim20) or the EDS line width (gre23) (an instrument setting, Sec. 4).</td><td>resolution</td><td>spot</td><td>size</td><td>disagree</td><td></td><td>fact art19:s5.p3#2 (type setting, quantity probe_resolution, parent art19:method:reflectometry)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p7</td><td>quantity</td><td>t_hold</td><td>our hold times, t_hold</td><td>quantity: symbol &#x27;t_hold&#x27; of this paper</td><td>pulse_time</td><td>pulse</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>time</td><td>pulse</td><td>duration</td><td>symbol (paper-local)</td><td>t_hold</td><td>fact gre23:s9.p7#1 (type definition, quantity pulse_time, parent gre23)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>eq1</td><td>quantity</td><td>t_hold</td><td>our hold times, t_hold, are determined by t_hold = L_pore^2 / (D \gamma)</td><td>quantity: symbol &#x27;t_hold&#x27; of this paper</td><td>pulse_time</td><td>pulse</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>time</td><td>pulse</td><td>duration</td><td>symbol (paper-local)</td><td>t_hold</td><td>fact gre23:eq1#1 (type model, quantity pulse_time, parent gre23:recipe)</td></tr>
+</table>
+<h2>Round-3 A3</h2><p>kb/reports/R3_apply.A3.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>tab1.r0c0</td><td>material</td><td>material</td><td></td><td>material</td><td>other</td><td></td><td>the value row of the categorical material: propose makes no candidate of it (P168)</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>eq6</td><td>model</td><td>eq 6</td><td></td><td>eq 6</td><td>pending candidate eq_6</td><td>eq_6</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p5</td><td>quantity</td><td>total isolated deposition volume</td><td>l</td><td>total isolated deposition volume</td><td>pending candidate total_isolated_deposition_volume</td><td>total_isolated_deposition_volume</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td></td><td>dose</td><td>other</td><td>dose</td><td>candidate dose decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+</table>
+<h2>Round-2 audit</h2><p>kb/reports/P168_apply.audit_round2.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/grow.py audit 2` failed. (See above for error)
+round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 54 rows: effect {&#x27;n/a&#x27;: 8, &#x27;yes&#x27;: 46}
+A2: 179 promotions: {&#x27;agree&#x27;: 58, &#x27;disagree&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 120}
+A3: 37 open rows: {&#x27;pending&#x27;: 29, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1}; pending candidates accounted 19/19
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: FAIL (1)
+FAIL A2 10.1021_cm0303080:s4.p1 &#x27;Monte Carlo computer simulation&#x27; -&gt; elam_monte_carlo: disagree (head nouns simulation / carlo / walk)
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 240 entries, 384 history rows, 19 pending, checks 15/15
+entries 240
+├─ quantity 97   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>Round-1 audit</h2><p>kb/reports/P168_apply.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 37 promotions: {&#x27;agree&#x27;: 37}
+A3: 12 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 10}; pending candidates accounted 19/19
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 240 entries, 384 history rows, 19 pending, checks 15/15
+entries 240
+├─ quantity 97   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 6   [split by hierarchy leaf]
+│  └─ modelling 6
+│     └─ models 6
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>Code diff</h2><p>kb/reports/P168_apply.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index a8a49b3..41c6fdd 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -776,6 +776,7 @@ class Run:
+             rows.append(row(fact_id=self.node[it[&quot;id&quot;]][0], type=&quot;activity&quot;, kind=&quot;deposition&quot;, how=how(it), evidence=ok_ev(it.get(&quot;introduced_in&quot;) or []),
+                             parent=f&quot;{k}:recipe&quot;, label_as_printed=it.get(&quot;name_as_printed&quot;) or it[&quot;id&quot;], statement=f&quot;deposition run {it[&#x27;id&#x27;]} ({it.get(&#x27;name_as_printed&#x27;)!r}{origin(it)})&quot;))
+         for it in role(&quot;simulation&quot;):
++            self.model_of(it)                                                   # P168: the model entry its printed name resolves to
+             self.node[it[&quot;id&quot;]] = (f&quot;{k}:sim:{slug(it[&#x27;id&#x27;])}&quot;, &quot;simulation&quot;)
+             rows.append(row(fact_id=self.node[it[&quot;id&quot;]][0], type=&quot;activity&quot;, kind=&quot;simulation&quot;, how=&quot;stated&quot;, evidence=ok_ev(it.get(&quot;introduced_in&quot;) or []),
+                             parent=k, label_as_printed=it.get(&quot;name_as_printed&quot;) or it[&quot;id&quot;], statement=f&quot;simulation {it[&#x27;id&#x27;]} ({it.get(&#x27;name_as_printed&#x27;)!r})&quot;))
+@@ -810,6 +811,30 @@ class Run:
+                 self.under[self.up[nid]].append(nid)
+         return rows
+ 
++    def model_of(self, it):
++        &quot;&quot;&quot;P168 (user): a simulation unit&#x27;s printed name through step a0&#x27;s lookup against the model entries (vocab_hits kind model: the
++        id, the name, the aliases, this paper&#x27;s symbols), as a record value goes: one id -&gt; unit.model = id and a promoted.csv row (field
++        model); none (or two) -&gt; an unmapped row of field model, so grow.py propose lists the name as a model candidate; a never.csv
++        word (or a symbol of this paper) carries its category, as in step a0. Nothing else changes.&quot;&quot;&quot;
++        name = (it.get(&quot;name_as_printed&quot;) or &quot;&quot;).strip()
++        if not name:
++            return
++        eid = next((e for e in it.get(&quot;introduced_in&quot;) or [] if e in self.order), self.els[0][&quot;element_id&quot;])
++        hits = vocab_hits(self.pid, &quot;model&quot;, name)
++        if len(hits) == 1:
++            (i, how), = hits.items()
++            it[&quot;model&quot;] = i
++            self.promoted.append(dict(r=dict(rec={}), element=eid, field=&quot;model&quot;, printed=name, meaning=name, lookup=f&quot;model: {how}&quot;, id=i,
++                                      outcome=f&quot;simulation {it[&#x27;id&#x27;]} -&gt; model {i}&quot;))
++            self.count(&quot;h&quot;, &quot;simulation linked to a model entry&quot;)
++            self.note(f&quot;h: simulation {it[&#x27;id&#x27;]} ({name!r}) -&gt; model {i} ({how})&quot;)
++            return
++        nv = NEVER.get(C.X.norm_label(name)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(name)))
++        self.unmapped.append(dict(element=eid, field=&quot;model&quot;, id=&quot;other&quot;, label_as_printed=name, unit=&quot;&quot;, candidate=&quot;&quot;,
++                                  action=f&quot;kept (ambiguous: {&#x27;, &#x27;.join(sorted(hits))})&quot; if hits else &quot;kept (a simulation name no model entry has)&quot;,
++                                  never=nv[&quot;category&quot;] if nv else &quot;&quot;, nearest=&quot;&quot;))
++        self.count(&quot;h&quot;, &quot;simulation name unresolved (unmapped, field model)&quot; if not hits else &quot;simulation name ambiguous (unmapped)&quot;)
++
+     def measurement(self, ent, method):
+         &quot;&quot;&quot;&lt;ent&gt;:meas:&lt;method&gt;; P148 (C1): &quot;measurement&quot; when the method is not in facts.MEAS_METHODS.&quot;&quot;&quot;
+         method = method if method in F.MEAS_METHODS else &quot;&quot;
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index ada50b9..0658fee 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -185,11 +185,11 @@ def resolve_index(entries, materials):
+     aliases, symbols, replaced_by)} (vocab.ENTRIES or ontology.yaml); materials: the material species ids. Returns (words, symbols):
+     words[kind][norm_label(text)] = {id: how} over the id, the id with spaces, the name and the aliases (never the label);
+     symbols[kind][(paper, symbol_key(text))] = {id: text}. kind: quantity (quantity and categorical entries), method, structure,
+-    species, material. A key under two ids is ambiguous.&quot;&quot;&quot;
++    species, material, model (P168: a simulation unit&#x27;s printed name). A key under two ids is ambiguous.&quot;&quot;&quot;
+     live = {i: e for i, e in entries.items() if not e.get(&quot;replaced_by&quot;)}
+     kinds = {&quot;quantity&quot;: [i for i, e in live.items() if e[&quot;type&quot;] in (&quot;quantity&quot;, &quot;categorical&quot;)], &quot;method&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;method&quot;],
+              &quot;structure&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;structure&quot;], &quot;species&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;species&quot;],
+-             &quot;material&quot;: [i for i in materials if i in live]}
++             &quot;material&quot;: [i for i in materials if i in live], &quot;model&quot;: [i for i, e in live.items() if e[&quot;type&quot;] == &quot;model&quot;]}
+     words, symbols = {}, {}
+     for kind, ids in kinds.items():
+         w, sy = {}, {}
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index e4ed8b3..be939cb 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -209,9 +209,12 @@ def candidates(pids, extra=()):
+     on accept and into never.csv as paper-local rows on never.
+     6. P163: a candidate whose label is another&#x27;s with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
+        become that candidate&#x27;s aliases (log prefix_merges).
++    7. P168: a row of field model (a simulation unit&#x27;s printed name no model entry has) makes a candidate of kind model; a row whose
++       field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+     Returns ({id: group}, log).&quot;&quot;&quot;
+     spell = unit_spellings()
+-    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
++    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[])
++    categ = {e[&quot;id&quot;] for e in onto()[&quot;entries&quot;] if e.get(&quot;type&quot;) == &quot;categorical&quot;}   # P168: a categorical&#x27;s value row is no candidate
+     tables, rest = defaultdict(list), []
+     carried = defaultdict(list)
+     for u in extra:
+@@ -220,6 +223,9 @@ def candidates(pids, extra=()):
+         layouts = pass0_tables(pid)
+         own = {(u[&quot;element&quot;], u[&quot;label&quot;]): u[&quot;symbol&quot;] for u in rows if u[&quot;field&quot;] == &quot;quantity&quot; and u[&quot;symbol&quot;]}
+         for u in rows:
++            if u[&quot;field&quot;] in categ:                                             # P168 (user): its unit is nothing; no &quot;unit&quot; candidate
++                log[&quot;categorical&quot;].append(u)
++                continue
+             if u[&quot;field&quot;] == &quot;unit&quot; and not u[&quot;symbol&quot;]:                       # a unit row follows the quantity row of its cell and label
+                 u[&quot;symbol&quot;] = own.get((u[&quot;element&quot;], u[&quot;label&quot;]), &quot;&quot;)
+             m = re.match(r&quot;^(tab\w*)\.(r\d+)c\d+$&quot;, u[&quot;element&quot;])
+@@ -306,7 +312,8 @@ def candidates(pids, extra=()):
+     for c in out.values():
+         units = Counter(u[&quot;unit&quot;] for u in c[&quot;members&quot;] if u[&quot;unit&quot;])
+         c[&quot;unit&quot;] = units.most_common(1)[0][0] if units else &quot;&quot;
+-        c[&quot;kind&quot;] = &quot;quantity&quot; if units or any(re.search(r&quot;\d&quot;, u[&quot;label&quot;] + u[&quot;quote&quot;]) for u in c[&quot;members&quot;]) or any(u[&quot;field&quot;] == &quot;quantity&quot; for u in c[&quot;members&quot;]) else &quot;unit&quot;
++        c[&quot;kind&quot;] = &quot;model&quot; if all(u[&quot;field&quot;] == &quot;model&quot; for u in c[&quot;members&quot;]) else \
++            &quot;quantity&quot; if units or any(re.search(r&quot;\d&quot;, u[&quot;label&quot;] + u[&quot;quote&quot;]) for u in c[&quot;members&quot;]) or any(u[&quot;field&quot;] == &quot;quantity&quot; for u in c[&quot;members&quot;]) else &quot;unit&quot;   # P168: a simulation name
+         ev = {}
+         for u in c[&quot;members&quot;]:
+             ev.setdefault(u[&quot;pid&quot;], f&quot;{u[&#x27;pid&#x27;]}:{u[&#x27;element&#x27;]} — {u[&#x27;quote&#x27;]}&quot; + (f&quot; ({&#x27;; &#x27;.join(c[&#x27;notes&#x27;])})&quot; if c[&quot;notes&quot;] else &quot;&quot;))
+@@ -636,6 +643,20 @@ def add_symbols(text, eid, pairs):
+     return text[:s] + blk + text[e:], add
+ 
+ 
++MODEL_PARAMS = r&quot;\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)&quot;
++
++
++def model_fields(row):
++    &quot;&quot;&quot;P168 (user): an accepted model&#x27;s class, parameters and the scope of its printed name, from its pending row: &#x27;class analytical&#x27; or
++    &#x27;class computational&#x27; in the decision note; &#x27;parameters &lt;id&gt;, &lt;id&gt;, ...&#x27; in the note, else in the proposed definition; &#x27;printed name:
++    paper-local symbol&#x27; in the note keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
++    parameters, paper_local).&quot;&quot;&quot;
++    note = row[&quot;decision_note&quot;]
++    cls = re.search(r&quot;\bclass:?\s*(analytical|computational)\b&quot;, note)
++    pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row[&quot;proposed_definition&quot;])
++    return (cls.group(1) if cls else &quot;&quot;), ([t.strip() for t in pm.group(1).split(&quot;,&quot;)] if pm else []), bool(re.search(r&quot;printed name:?\s*paper-local symbol&quot;, note))
++
++
+ def split_labels(row, labels):
+     &quot;&quot;&quot;P164 (user): a decision&#x27;s printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word.&quot;&quot;&quot;
+@@ -665,6 +686,13 @@ def cmd_apply():
+             stops.append(f&quot;{x[&#x27;id&#x27;]}: alias target {x[&#x27;alias_target&#x27;]!r} is not an entry, nor accepted in this round&quot;)
+         if x[&quot;decision&quot;] == &quot;never&quot; and not x[&quot;never_category&quot;].strip():
+             stops.append(f&quot;{x[&#x27;id&#x27;]}: never without a never_category&quot;)
++        if x[&quot;decision&quot;] == &quot;accept&quot; and x[&quot;kind&quot;] == &quot;model&quot;:                 # P168: a model&#x27;s class and parameters (model_fields)
++            mt, params, _ = model_fields(x)
++            if not mt:
++                stops.append(f&quot;{x[&#x27;id&#x27;]}: accept of a model without its class (decision note: &#x27;class analytical&#x27; or &#x27;class computational&#x27;)&quot;)
++            bad = [q for q in params if q not in have and q not in {y[&quot;id&quot;] for y in decided if y[&quot;decision&quot;] == &quot;accept&quot;}]
++            if bad:
++                stops.append(f&quot;{x[&#x27;id&#x27;]}: model parameters that are no entry: {bad}&quot;)
+     if stops:
+         raise Stop(&quot;nothing written:\n  &quot; + &quot;\n  &quot;.join(stops))
+     backup = {p: p.read_bytes() for p in (ONTO, PENDING, NEVER, HISTORY, ROUNDS) if p.exists()}
+@@ -676,7 +704,12 @@ def cmd_apply():
+         labels, syms = printed_labels(x), candidate_symbols(x)
+         words, lsyms = split_labels(x, labels[:1])                             # P164: a symbol-like label is a symbol of its paper, never a word
+         if x[&quot;decision&quot;] == &quot;accept&quot; and x[&quot;id&quot;] not in have:                  # P157d: the printed label -&gt; aliases, the table symbols -&gt; symbols
++            mt, params, local = model_fields(x) if x[&quot;kind&quot;] == &quot;model&quot; else (&quot;&quot;, [], False)
++            if local:                                                           # P168: the printed name a symbol of its paper, not an alias
++                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
++            if x[&quot;kind&quot;] == &quot;model&quot;:
++                e.update(model_type=mt, parameters=params)
+             e.update(origin=f&quot;round {n}&quot;, source_pids=[p for p in x[&quot;pids&quot;].split(&quot;;&quot;) if p], evidence=evidence_items(x))
+             new.append({k: e[k] for k in ORDER if k in e and e[k] not in (&quot;&quot;, [], None)})
+             applied.append(dict(id=x[&quot;id&quot;], decision=&quot;accept&quot;, candidate=(candidate_of(x) or {}).get(&quot;id&quot;, &quot;&quot;), aliases=&quot;; &quot;.join(e.get(&quot;aliases&quot;) or []),
+@@ -815,6 +848,7 @@ def open_rows(n, compiled, unm, snap):
+             ngrp[ck(u)] = nv
+     for u in log[&quot;values&quot;]:
+         vals.add(ck(u))
++    cats = {ck(u) for u in log.get(&quot;categorical&quot;, [])}                         # P168
+     snap_of = {}
+     for r in snap:
+         snap_of.setdefault((r[&quot;pid&quot;], r[&quot;element&quot;], r[&quot;field&quot;], r[&quot;label&quot;], r[&quot;unit&quot;]), []).append(r[&quot;candidate&quot;])
+@@ -839,6 +873,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = &quot;other&quot;, f&quot;joined the symbol-table row of a never candidate through its symbol ({ngrp[k]}); propose drops the group&quot;
+             elif k in vals:
+                 cls, why = &quot;other&quot;, &quot;a value without a quantity: no record key, or the label is only a units.yaml spelling&quot;
++            elif k in cats:
++                cls, why = &quot;other&quot;, f&quot;the value row of the categorical {u[&#x27;field&#x27;]}: propose makes no candidate of it (P168)&quot;
+             elif cid in decided_ids:
+                 h = decided_ids[cid]
+                 cls, why = &quot;other&quot;, f&quot;candidate {cid} decided in round {h[&#x27;round&#x27;]} ({h[&#x27;action&#x27;]}&quot; + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;) + &quot;): &quot; + (
+@@ -969,7 +1005,7 @@ def audit_round(n):
+     a2 = []
+     for p in sorted(compiled):
+         for x in pro[p]:
+-            if x[&quot;field&quot;] == &quot;quantity&quot;:
++            if x[&quot;field&quot;] in (&quot;quantity&quot;, &quot;model&quot;):                             # P168: a model promotion against the entry&#x27;s name
+                 es = [entries.get(i, {}) for i in x[&quot;id&quot;].split(&quot; | &quot;)]
+                 name, defi = &quot; | &quot;.join(e.get(&quot;name&quot;, &quot;&quot;) for e in es), &quot; | &quot;.join(e.get(&quot;definition&quot;, &quot;&quot;) for e in es)
+                 hd = head_noun(defi)
+</pre>
+<h2>Code fix after apply</h2><p>kb/reports/P168_apply.code_fix.diff</p>
+<pre>diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index be939cb..e590c37 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -895,7 +895,11 @@ def open_rows(n, compiled, unm, snap):
+ 
+ def carried_rows(exclude=()):
+     &quot;&quot;&quot;P162: the rows open_rows() classes NEW_SINCE_APPLY, of the papers of every applied round with an apply snapshot (a paper in two
+-    such rounds: the later one), the papers in exclude (the open round&#x27;s own, read whole) left out.&quot;&quot;&quot;
++    such rounds: the later one), the papers in exclude (the open round&#x27;s own, read whole) left out. P168 fix: also the rows already
++    pending under a candidate first proposed in the open round (a carried row stays carried once propose made it pending, so the
++    apply snapshot holds it).&quot;&quot;&quot;
++    cur = current((&quot;open&quot;, &quot;proposed&quot;))
++    first = {x[&quot;id&quot;] for x in rd(PENDING) if cur and x[&quot;first_round&quot;] == cur[&quot;round&quot;]}
+     out, done = [], set(exclude)
+     for r in sorted(rounds(), key=lambda r: -int(r[&quot;round&quot;])):
+         snap = rd(REPORTS / f&quot;R{r[&#x27;round&#x27;]}_apply.decision_rows.csv&quot;) if r[&quot;status&quot;] == &quot;applied&quot; else []
+@@ -904,7 +908,7 @@ def carried_rows(exclude=()):
+             continue
+         done |= set(pids)
+         rows, _, us = open_rows(int(r[&quot;round&quot;]), set(pids), {p: rd(COMPILED / f&quot;{p}.unmapped.csv&quot;) for p in pids}, snap)
+-        out += [u for x, u in zip(rows, us) if x[&quot;class&quot;] == NEW_SINCE_APPLY]
++        out += [u for x, u in zip(rows, us) if x[&quot;class&quot;] == NEW_SINCE_APPLY or (x[&quot;class&quot;].startswith(&quot;pending candidate &quot;) and x[&quot;class&quot;][18:] in first)]
+     return out
+ 
+ 
+@@ -958,7 +962,8 @@ def audit_round(n):
+         src = [p for p in h[&quot;source_pids&quot;].split(&quot;;&quot;) if p]
+         base = dict(id=cid, decision=act + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;), covers=covers)
+         if not rows:
+-            why = (f&quot;no compiled output for {&#x27;, &#x27;.join(src)}&quot; if src and not set(src) &amp; a1p else &quot;no row of this decision in the snapshot&quot;)
++            why = (f&quot;no compiled output for {&#x27;, &#x27;.join(src)}&quot; if src and not any((COMPILED / f&quot;{p}.facts.csv&quot;).exists() for p in src)   # P168 fix: the papers
++                   else &quot;no row of this decision in the snapshot&quot;)                                                                   # themselves
+             a1.append(dict(base, now=&quot;none&quot;, effect=&quot;n/a&quot; if &quot;no compiled output&quot; in why else &quot;no effect&quot;, reason=why))
+             if &quot;no compiled output&quot; not in why and act != &quot;reject&quot;:
+                 fails.append(f&quot;A1 {cid}: {why}&quot;)
+</pre>
+</body></html>

@@ -1,0 +1,35 @@
+P168, round 3 applied, 0 API calls. Acceptance: round 1 PASS; round 2 FAIL (1, A2); round 3 FAIL (5: A1 4, A2 1). export.py --check 15 of 15.
+
+Precondition met: accept 1 (elam_monte_carlo, kind model), alias 2 (spatial_resolution -> probe_resolution; t_hold -> pulse_time), never 1
+  (prisms), reject 3 (dose, material, top_surfaces), undecided 16.
+1. compile.model_of: a simulation unit's printed name goes through step a0's lookup against the model entries (export.resolve_index kind
+   model: id, name, aliases, paper-local symbols): one id -> unit.model and a promoted.csv row (field model); else an unmapped row of field
+   model, which propose makes a candidate of kind model.
+2. propose makes no candidate of a categorical's value row ("its unit is nothing"): 1 row removed on the nine papers, art19 tab1.r0c0
+   (field material, label 'material'; the user rejected it).
+3. Order: the code; a recompile (the 7 simulation names became unmapped rows; scores unchanged); propose on round 3 (still proposed: grow.py
+   cannot propose an applied round), whose 8 new candidates hold the 7 names (6 carried from rounds 1-2); the user's and the chat's
+   decisions written into pending.csv (committed before apply); one apply. Apply reads a model accept's class and parameters from its
+   decision note ('class computational'; 'parameters ...' from the note, else from the definition) and 'printed name: paper-local symbol'.
+   Written: elam_monte_carlo (computational; parameters initial_sticking_coefficient, saturation_density, growth_per_cycle, from its
+   definition; aliases 'elam monte carlo', 'Monte Carlo computer simulation'; the note's 'Monte Carlo simulation' is printed in no paper
+   and apply writes printed labels only, so it is not added); heikkinen_porous_diffusion_reaction (computational, the 9 parameters; the
+   printed 'diffusion–reaction model' a symbol of hei24); aliases 'Gordon model' -> gordon_plug_flow (printed in yli18, not gor03),
+   'Yilammi et al. diffusion–reaction model' -> ylilammi_diffusion_reaction, 'spatial resolution' -> probe_resolution; symbol t_hold
+   (gre23) of pulse_time; never prisms. Undecided: 'diffusion model' (yli18), 'Kinetic Model' (gor03), 'eq 6' (art19). art19's document.md
+   does not print 'recombination-limited model' (0 times), so no alias was proposed.
+   Simulation -> model (nine papers): yli18 Gordon model -> gordon_plug_flow (analytical), diffusion model -> none; yim20 -> ylilammi (analytical);
+   ela03 -> elam_monte_carlo (computational); hei24 -> heikkinen_porous_diffusion_reaction (computational, by its paper symbol); gor03 Kinetic
+   Model -> none; art19 eq 6 -> none; mat22, gre23, zou23 no simulation unit.
+   Scores: every column unchanged on the nine papers; check.py --dir unchanged on all nine. rounds.csv: round 3 applied (2 accepted, 5
+   aliases, 3 rejected, 1 never); 19 rows pending.
+Audit failures, reported, not worked around:
+  Round 3 A1 (4): elam_monte_carlo, gordon_model, monte_carlo_computer_simulation, yilammi_...: no row of the decision in the apply snapshot.
+    The three aliases: a bug of P162's carried_rows. It carried a row only while the row was new since apply; once propose had made it a
+    pending candidate, the snapshot dropped it (hei24's row stayed in only because its id had been edited). A1 also gave the wrong reason
+    ("no compiled output", the papers are compiled). Both fixed in grow.py for later rounds; the round-3 snapshot was taken by apply and is
+    not rewritten. elam_monte_carlo: a round-0 row has no compiled row of its own; its printed name reaches it through the alias. The
+    promotions themselves are in the rounds-1-2 A2 tables (Gordon, Yilammi agree; Monte Carlo below).
+  Round 3 A2 (1): art19 'spatial resolution' -> probe_resolution: head nouns resolution / spot / size.
+  Round 2 A2 (1): ela03 'Monte Carlo computer simulation' -> elam_monte_carlo: head nouns simulation / carlo / walk (the entry's name is the
+    pilot id's words).

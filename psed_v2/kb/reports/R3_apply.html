@@ -1,16 +1,20 @@
 <!doctype html><html><head><meta charset='utf-8'><title>R3_apply</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>R3_apply</h1>
 <h2>Acceptance</h2><p>psed_v2/kb/reports/R3_apply.acceptance.txt</p>
 <pre>round 3 acceptance (grow.py audit_round)
-A1: 11 decisions, 14 rows: effect {&#x27;n/a&#x27;: 8, &#x27;no effect&#x27;: 1, &#x27;yes&#x27;: 5}
+A1: 11 decisions, 14 rows: effect {&#x27;no effect&#x27;: 5, &#x27;n/a&#x27;: 4, &#x27;yes&#x27;: 5}
 A2: 3 promotions: {&#x27;disagree&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 2}
 A3: 7 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 2}; pending candidates accounted 19/19
 A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: FAIL (1)
+result: FAIL (5)
+FAIL A1 elam_monte_carlo: no row of this decision in the snapshot
+FAIL A1 gordon_model: no row of this decision in the snapshot
+FAIL A1 monte_carlo_computer_simulation: no row of this decision in the snapshot
+FAIL A1 yilammi_et_al_diffusion_reaction_model: no row of this decision in the snapshot
 FAIL A2 10.1021_acs.jpcc.9b08176:s5.p3 &#x27;spatial resolution&#x27; -&gt; probe_resolution: disagree (head nouns resolution / spot / size)
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R3_apply.A1.csv</p>
 <table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
-<tr><td>elam_monte_carlo</td><td>add</td><td>elam monte carlo</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1021_cm0303080</td></tr>
+<tr><td>elam_monte_carlo</td><td>add</td><td>elam monte carlo</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
 <tr><td>dose</td><td>reject</td><td>dose</td><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
 <tr><td>material</td><td>reject</td><td>material</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
 <tr><td>prisms</td><td>never -&gt; Equipment details and sample codes</td><td>prisms (any paper)</td><td>10.1116_6.0003182</td><td>s10.p2</td><td>quantity</td><td>prisms</td><td>never: Equipment details and sample codes (kept (never: prisms))</td><td>yes</td><td></td></tr>
@@ -21,9 +25,9 @@ FAIL A2 10.1021_acs.jpcc.9b08176:s5.p3 &#x27;spatial resolution&#x27; -&gt; prob
 <tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
 <tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
 <tr><td>heikkinen_porous_diffusion_reaction</td><td>add</td><td>heikkinen porous diffusion reaction</td><td>10.1039_d3cp05639b</td><td>abs.g1</td><td>model</td><td>diffusion–reaction model</td><td>fact: heikkinen_porous_diffusion_reaction (model: symbol &#x27;diffusion–reaction model&#x27; of this paper); simulation sim_dr -&gt; model heikkinen_porous_diffusion_reaction</td><td>yes</td><td></td></tr>
-<tr><td>gordon_model</td><td>alias -&gt; gordon_plug_flow</td><td>alias of gordon_plug_flow: Gordon model</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1063_1.5028178</td></tr>
-<tr><td>monte_carlo_computer_simulation</td><td>alias -&gt; elam_monte_carlo</td><td>alias of elam_monte_carlo: Monte Carlo computer simulation</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1021_cm0303080</td></tr>
-<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>alias of ylilammi_diffusion_reaction: Yilammi et al. diffusion–reaction model</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1039_d0cp03358h</td></tr>
+<tr><td>gordon_model</td><td>alias -&gt; gordon_plug_flow</td><td>alias of gordon_plug_flow: Gordon model</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias -&gt; elam_monte_carlo</td><td>alias of elam_monte_carlo: Monte Carlo computer simulation</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>alias of ylilammi_diffusion_reaction: Yilammi et al. diffusion–reaction model</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
 </table>
 <h2>A2 promotions in the round&#x27;s papers, head-noun check</h2><p>psed_v2/kb/reports/R3_apply.A2.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>symbol</th><th>outcome</th></tr>

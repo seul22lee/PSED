@@ -2,8 +2,8 @@
 <h2>Acceptance</h2><p>psed_v2/kb/reports/R1_apply.acceptance.txt</p>
 <pre>round 1 acceptance (grow.py audit_round)
 A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
-A2: 35 promotions: {&#x27;agree&#x27;: 35}
-A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 16/16
+A2: 37 promotions: {&#x27;agree&#x27;: 37}
+A3: 12 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 10}; pending candidates accounted 19/19
 A3 new since apply → next round (P162, carried, not a failure): 0 rows
 result: PASS
 </pre>
@@ -131,7 +131,9 @@ result: PASS
 <tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td></td><td>dropped at d: quote_not_found (quote)</td></tr>
 <tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2.cap</td><td>value_text</td><td>Amorphous</td><td>Amorphous</td><td>value:crystallinity: value id &#x27;amorphous&#x27;</td><td>amorphous</td><td>amorphous</td><td>a value of crystallinity</td><td>amorphous</td><td>amorphous</td><td>or</td><td>agree</td><td></td><td>fact mat22:fig2.cap#2 (type setting, quantity crystallinity, parent mat22:run:10_1021_acs_chemmater_2c01154_fig2_c1)</td></tr>
 <tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2.cap</td><td>value_text</td><td>Crystalline</td><td>Crystalline</td><td>value:crystallinity: value id &#x27;crystalline&#x27;</td><td>crystalline</td><td>crystalline</td><td>a value of crystallinity</td><td>crystalline</td><td>crystalline</td><td>or</td><td>agree</td><td></td><td>fact mat22:fig2.cap#3 (type setting, quantity crystallinity, parent mat22:run:10_1021_acs_chemmater_2c01154_fig2_c2)</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>s2.p13</td><td>model</td><td>Yilammi et al. diffusion–reaction model</td><td>Yilammi et al. diffusion–reaction model</td><td>model: alias &#x27;Yilammi et al. diffusion–reaction model&#x27;</td><td>ylilammi_diffusion_reaction</td><td>Ylilammi diffusion-reaction model</td><td>One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1).</td><td>model</td><td>model</td><td>model</td><td>agree</td><td></td><td>simulation sim_ylilammi -&gt; model ylilammi_diffusion_reaction</td></tr>
 <tr><td>10.1063_1.5028178</td><td>tabu1.r4c0</td><td>quantity</td><td>Apparent longitudinal diffusion coefficient</td><td>Apparent longitudinal diffusion coefficient</td><td>quantity: alias &#x27;Apparent longitudinal diffusion coefficient&#x27;</td><td>effective_diffusion_coefficient</td><td>effective diffusion coefficient</td><td>The effective diffusion coefficient D_eff of the reactant in a feature or pore: the Bosanquet interpolation 1/D_eff = 1/D_A + 1/D_Kn of the gas-phase and Knudsen coefficients, in a porous body further scaled by porosity over tortuosity (Heikkinen 2024 D_e); a model parameter of the diffusion-reaction models.</td><td>coefficient</td><td>coefficient</td><td>coefficient</td><td>agree</td><td></td><td>fact yli18:tabu1.r4c0#1 (type definition, quantity effective_diffusion_coefficient, parent yli18)</td></tr>
+<tr><td>10.1063_1.5028178</td><td>s1.p3</td><td>model</td><td>Gordon model</td><td>Gordon model</td><td>model: alias &#x27;Gordon model&#x27;</td><td>gordon_plug_flow</td><td>Gordon plug-flow model</td><td>Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1).</td><td>model</td><td>model</td><td>based</td><td>agree</td><td></td><td>simulation sim_gordon -&gt; model gordon_plug_flow</td></tr>
 </table>
 <h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R1_apply.A3.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
@@ -146,10 +148,10 @@ result: PASS
 <tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c1</td><td>quantity</td><td></td><td></td><td>pillar diameter</td><td>pending candidate pillar_diameter</td><td>pillar_diameter</td><td>cell without printed label, keyed by its meaning</td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c0</td><td>quantity</td><td>l</td><td>µm</td><td>l</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c1</td><td>quantity</td><td>Distance between rows of pillars</td><td>µm</td><td>distance between rows of pillars</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
+<tr><td>10.1063_1.5028178</td><td>abs.g1</td><td>model</td><td>diffusion model</td><td></td><td>diffusion model</td><td>pending candidate diffusion_model</td><td></td><td></td></tr>
 </table>
 <h2>A3 pending candidates of the round&#x27;s papers</h2><p>psed_v2/kb/reports/R1_apply.A3_pending.csv</p>
 <table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
-<tr><td>elam_monte_carlo</td><td>0</td><td></td><td>0</td><td>0</td><td>yes</td><td>no compiled output for  (its paper is not compiled)</td></tr>
 <tr><td>bent</td><td>1</td><td>10.1039_d0cp03358h</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
 <tr><td>displacement</td><td>1</td><td>10.1039_d0cp03358h</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
 <tr><td>distance_between_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
@@ -165,6 +167,10 @@ result: PASS
 <tr><td>shape_factor</td><td>2</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
 <tr><td>slope_of_integrated_zno_coverage</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
 <tr><td>surface_area_roughness_factor</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>diffusion_model</td><td>3</td><td>10.1063_1.5028178</td><td>0</td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>eq_6</td><td>3</td><td>10.1021_acs.jpcc.9b08176</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_acs.jpcc.9b08176 (its paper is not compiled)</td></tr>
+<tr><td>kinetic_model</td><td>3</td><td>10.1002_cvde.200390005</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1002_cvde.200390005 (its paper is not compiled)</td></tr>
+<tr><td>total_isolated_deposition_volume</td><td>3</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
 </table>
 <h2>Snapshot: every row of the round before apply</h2><p>psed_v2/kb/reports/R1_apply.decision_rows.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>candidate</th><th>decision</th></tr>

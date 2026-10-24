@@ -1,0 +1,104 @@
+diff --git a/psed_v2/ontology/never.csv b/psed_v2/ontology/never.csv
+index 6f03604..5034b29 100644
+--- a/psed_v2/ontology/never.csv
++++ b/psed_v2/ontology/never.csv
+@@ -114,3 +114,4 @@ v_{th},Model internals,10.1039_d3cp05639b,round 2: symbol of mean_thermal_veloci
+ number of molecules represented by one trajectory,Model internals,10.1021_cm0303080,round 2: number_of_molecules_represented_by_one_trajectory,
+ scale bar,Instrument settings,10.1002_cvde.200390005,round 2: scale_bar,
+ spatial domain discretization points,Model internals,10.1039_d3cp05639b,round 2: spatial_domain_discretization_points,
++prisms,Equipment details and sample codes,10.1116_6.0003182,round 3: prisms,
+diff --git a/psed_v2/ontology/ontology.yaml b/psed_v2/ontology/ontology.yaml
+index a0040dd..8555905 100644
+--- a/psed_v2/ontology/ontology.yaml
++++ b/psed_v2/ontology/ontology.yaml
+@@ -1,7 +1,7 @@
+ # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
+ # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+ # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 0afba98c16fb00be2da7827e1c308e4d7b4bef61ffe68919ff5dbd255147c2fe
++# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 5b46e456305eebdeef4eb276cbfe65d5155220f77df069e3722c14ac0d1a1090
+ version: 1
+ 
+ kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
+@@ -386,7 +386,7 @@ entries:
+     qudt_unit: "unit:SEC"
+     qualifiers: [step]
+     aliases: [DosingTime, pulse time, Pulse length (s), Length of the reactant pulse, TMA pulse, plasma pulse length, pulse length]
+-    symbols: [{text: t_1, paper: 10.1039_d1cp04758b}]
++    symbols: [{text: t_1, paper: 10.1039_d1cp04758b}, {text: t_hold, paper: 10.1116_6.0003182}]
+     base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
+     deviation: {type: renamed, reason: "Cremers and all gold papers say pulse time; the two fields become one entry with the step qualifier"}
+     evidence: [Yim2020 Table 1, Yim2020 Fig. 11a, Yim2020 Fig. 10, Ylilammi2018 Fig. 5, Ylilammi2018 Fig. 4, Ylilammi2018 Sec. VII, Werbrouck2021 Fig. 11, Werbrouck2021 Sec. II D, 'alias ''t_1'': yim22 tab1.r2c1 (P131b alias audit)']
+@@ -1581,7 +1581,7 @@ entries:
+     unit: "µm"
+     qudt_quantity_kind: "quantitykind:Length"
+     qudt_unit: "unit:MicroM"
+-    aliases: ["spot size", "spot"]
++    aliases: [spot size, spot, spatial resolution]
+     base: {}
+     evidence: ["yim20 Fig. 7", "yim20 Table 1", "gre23 Sec. II C (s10.p4)"]
+ 
+@@ -2510,6 +2510,7 @@ entries:
+ 
+   # ---------------------------------------------------------------- models
+   - id: ylilammi_diffusion_reaction
++    aliases: [Yilammi et al. diffusion–reaction model]
+     type: model
+     name: "Ylilammi diffusion-reaction model"                     # P142b
+     origin: base
+@@ -2522,6 +2523,7 @@ entries:
+     evidence: ["Ylilammi2018 Figs. 2-7", "Yim2020 Fig. 10"]
+ 
+   - id: gordon_plug_flow
++    aliases: [Gordon model]
+     type: model
+     name: "Gordon plug-flow model"                     # P142b
+     origin: base
+@@ -3410,6 +3412,37 @@ entries:
+     source_pids: [10.1039_d3cp05639b]
+     evidence: ['10.1039_d3cp05639b:fig5.cap — \tau/\epsilon']
+ 
++  # ---------------------------------------------------------------- grow.py round 3: accepted
++  - id: elam_monte_carlo
++    type: model
++    label: elam monte carlo
++    name: elam monte carlo
++    origin: round 3
++    category: models
++    definition: One-dimensional Monte Carlo random walk of reactant molecules in a cylindrical pore with Knudsen steps, self-limiting reaction with probability S, pore narrowing by 2G per reacted element; parameters initial_sticking_coefficient, saturation_density, growth_per_cycle.
++    dimension: dimensionless
++    model_type: computational
++    parameters: [initial_sticking_coefficient, saturation_density, growth_per_cycle]
++    aliases: [elam monte carlo, Monte Carlo computer simulation]
++    source_pids: [10.1021_cm0303080]
++    evidence: ['10.1021_cm0303080: pass-0 simulation unit sim_mc — "a Monte Carlo computer simulation was developed" (s4; P160 pass 0)']
++    symbols: []
++
++  - id: heikkinen_porous_diffusion_reaction
++    type: model
++    label: heikkinen porous diffusion reaction
++    name: heikkinen porous diffusion reaction
++    origin: round 3
++    category: models
++    definition: 'Diffusion–reaction model of ALD in a porous particle of slab, cylinder or sphere geometry (shape factor s): radial reactant transport by effective Knudsen diffusion with irreversible Langmuir adsorption, PDEs solved numerically (Heikkinen 2024, eqns 1–9)'
++    dimension: dimensionless
++    model_type: computational
++    parameters: [tortuosity_over_porosity, surface_to_pore_volume_ratio, particle_radius, molar_mass, saturation_density, initial_sticking_coefficient, feature_width, deposition_temperature, exposure]
++    symbols:
++    - {text: diffusion–reaction model, paper: 10.1039_d3cp05639b}
++    source_pids: [10.1039_d3cp05639b]
++    evidence: ['10.1039_d3cp05639b:abs.g1 — diffusion–reaction model']
++
+ families:   # P100: the families the entries' family: field names; a family whose members differ in QUDT dimension (units.yaml) declares it with a reason
+   composition: {}
+   conformality: {mixed_dimensions: true, reason: "the depth the film reaches is given either as a length (penetration_depth) or scaled to the feature (coated_aspect_ratio, step_coverage, normalized_thickness, fill_fraction); the transform coated_ar links the two"}
+diff --git a/psed_v2/ontology/rounds.csv b/psed_v2/ontology/rounds.csv
+index 20f090f..ef4cff1 100644
+--- a/psed_v2/ontology/rounds.csv
++++ b/psed_v2/ontology/rounds.csv
+@@ -2,4 +2,4 @@ round,opened,applied,pids,dois,status,n_candidates,n_accepted,n_alias,n_rejected
+ 0,2026-10-03,2026-10-22,10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154;10.1116_6.0003182;10.1021_cm0303080;10.1002_cvde.200390005;10.1063_1.5028178;10.1116_1.4903941;10.1021_acs.jpcc.9b08176;10.1039_d1cp04758b;10.1039_d3cp05639b;10.1116_6.0002993;10.1116_6.0002804,10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154;10.1116/6.0003182;10.1021/cm0303080;10.1002/cvde.200390005;10.1063/1.5028178;10.1116/1.4903941;10.1021/acs.jpcc.9b08176;10.1039/d1cp04758b;10.1039/d3cp05639b;10.1116/6.0002993;10.1116/6.0002804,applied,,235,0,0,45
+ 1,2026-10-22,2026-10-23,10.1063_1.5028178;10.1039_d0cp03358h;10.1021_acs.chemmater.2c01154,10.1063/1.5028178;10.1039/d0cp03358h;10.1021/acs.chemmater.2c01154,applied,47,0,2,1,39
+ 2,2026-10-23,2026-10-23,10.1021_cm0303080;10.1039_d3cp05639b;10.1002_cvde.200390005,10.1021/cm0303080;10.1039/d3cp05639b;10.1002/cvde.200390005,applied,37,3,5,6,14
+-3,2026-10-23,,10.1116_6.0003182;10.1021_acs.jpcc.9b08176;10.1116_6.0002804,10.1116/6.0003182;10.1021/acs.jpcc.9b08176;10.1116/6.0002804,proposed,8,,,,
++3,2026-10-23,2026-10-23,10.1116_6.0003182;10.1021_acs.jpcc.9b08176;10.1116_6.0002804,10.1116/6.0003182;10.1021/acs.jpcc.9b08176;10.1116/6.0002804,applied,8,2,5,3,1
