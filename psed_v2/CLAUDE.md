@@ -95,6 +95,9 @@ psed_v2/
 - Papers 1–12 (the pilot golds) are development papers. Papers 13+ are held-out: never read for the ontology before extraction; growth from compile unmapped only.
   The twelve pilot papers: yli18, yim20, mat22, ela03, hei24, gor03, art19, gao15, zou23, yim22, gre23, mat23. wer21 (10.1116_6.0001094) is
   development paper 13: ingested, no gold, already cited by the pilot (never.csv, 52 evidence lines); it is extracted in a later round without a score (P159).
+- Round plan (P165, user): round 1 = yli18, yim20, mat22 (applied); round 2 = ela03, hei24, gor03 (applied); round 3 = gre23 10.1116_6.0003182,
+  art19 10.1021_acs.jpcc.9b08176, zou23 10.1116_6.0002804; round 4 = gao15 10.1116_1.4903941, yim22 10.1039_d1cp04758b, mat23 10.1116_6.0002993;
+  then wer21 10.1116_6.0001094 (no gold) alone. grow.py add opens a round once its papers have pass 0 and pass 1 (it refuses before).
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

@@ -1,0 +1,34 @@
+P165: 3 provider calls (round-3 pass 0), $0.379. A and B: 0 calls.
+
+A. Round-2 audit closed: PASS (was FAIL 121).
+  1. A2: a promotion through a paper-local symbol of the record's own paper is "symbol (paper-local)", listed with its symbol, entry and paper
+     (R2_apply.A2.csv column symbol): 119 rows, hei24's legend values (τ/ε, σ, β₀, d_pore 20 each, s̄ 21, R 18). Head nouns are compared only
+     where the record has meaning text.
+  2. Head nouns split at hyphens: ela03 'flow-type' -> flow_type now agrees.
+  3. A3: ela03 s5.p32, the unit row of the promoted 'density of ALD reactive sites', is "unit unresolved" (unit '10^15 cm^-2'; units.yaml
+     unchanged).
+  4. compile.gold_rows, read by compile.diff, score.py and audit.py: a gold row of quantity other goes through step a0's lookup (its label
+     against the current ids, names, aliases and this paper's symbols); the gold files are untouched. Resolved: hei24 20
+     (surface_to_pore_volume_ratio 12, tortuosity_over_porosity 8), yim20 13 (feature_depth 7, structure 5, molar_mass 1), yli18 1
+     (effective_diffusion_coefficient), ela03 1 (base_pressure); mat22, gor03 0.
+  5. film_density: alias rho -> symbols {ρ, paper yim20}; history row (round 2, edit).
+  Round 2 PASS (A1 46 yes, 8 n/a; A2 58 agree, 119 symbol; A3 36 open: 28 pending, 7 other, 1 unit unresolved; 16 pending accounted).
+  Round 1 PASS. export.py --check 15 of 15. Scores R2 -> P165: hei24 T6 258 -> 276 (settings 55 -> 73 / 172), yim20 430 -> 435 (settings
+  105 -> 107), ela03 168 -> 169 (settings 56 -> 57); yli18, mat22, gor03 unchanged; check.py counts unchanged on all six.
+B. gre23, art19, zou23 resolve: key, elements.csv (208, 96, 121 rows), document.md, figures.json, gold (474, 214, 164 rows). grow.py add
+  refused, as it is built to: none of the three has a compiled unmapped.csv and gre23 has no records file ("not extracted; run pass 0 /
+  pass 1 first"). Round 3 is not open; it opens once pass 1 has run. CLAUDE.md: the round plan (round 3 the three, round 4 gao15, yim22,
+  mat23, then wer21 alone).
+C. Pass 0 (MEDIUM, form P163): gre23 7 units (run 4, specimen 3), $0.182; art19 16 (run 8, specimen 8), $0.160; zou23 10 (run 4, specimen 6),
+  $0.038 (22k of its input tokens from the provider's cache). Units from curves: art19 2 runs (fig3 'SiO_{2}', 'TiO_{2}': material names,
+  which the legend parser does not read; it reads structure and categorical names only), zou23 9 runs (fig1a-e one unlabelled curve
+  each; fig2 'CVD SE', 'CVD XRR', 'ALD SE', 'ALD XRR'); no merge. Unbound items: 0 on all three.
+  vs gold (pair_units, every row in the tables):
+  gre23 (gold 21: run 4, specimen 15, simulation 1, model run 1): run split 1, missing 3; specimen merged+split 1, missing 6; simulation and
+    model run missing. Tables 2 of 2 agree; 20 pass-0 panels have no gold layout.
+  art19 (gold 17: run 4, specimen 8, simulation 1, model run 4): run matched 4, extra 6; specimen matched 8; the simulation and its 4 model
+    runs missing (pass 0 lists none). Layouts 2 agree, 1 disagree.
+  zou23 (gold 10: run 2, specimen 8): run matched 1, missing 1, extra 12 (9 derived); specimen matched 4, missing 4, extra 2; 1 evidence quote
+    not found. Layouts 8 disagree: fig1a-e gold curve_per_unit, pass 0 point_per_unit; fig2 gold panel_one_unit (its curves are SE and XRR
+    measurements of two films), pass 0 curve_per_unit, so four derived runs; fig4, fig7a gold curve_per_unit, pass 0 panel_one_unit.
+Next: pass 1 for the three waits for the user's reading of this comparison; grow.py add follows pass 1.

@@ -1,0 +1,802 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P165</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P165</h1>
+<h2>Summary</h2><p>kb/reports/P165.summary.txt</p>
+<pre>P165: 3 provider calls (round-3 pass 0), $0.379. A and B: 0 calls.
+
+A. Round-2 audit closed: PASS (was FAIL 121).
+  1. A2: a promotion through a paper-local symbol of the record&#x27;s own paper is &quot;symbol (paper-local)&quot;, listed with its symbol, entry and paper
+     (R2_apply.A2.csv column symbol): 119 rows, hei24&#x27;s legend values (τ/ε, σ, β₀, d_pore 20 each, s̄ 21, R 18). Head nouns are compared only
+     where the record has meaning text.
+  2. Head nouns split at hyphens: ela03 &#x27;flow-type&#x27; -&gt; flow_type now agrees.
+  3. A3: ela03 s5.p32, the unit row of the promoted &#x27;density of ALD reactive sites&#x27;, is &quot;unit unresolved&quot; (unit &#x27;10^15 cm^-2&#x27;; units.yaml
+     unchanged).
+  4. compile.gold_rows, read by compile.diff, score.py and audit.py: a gold row of quantity other goes through step a0&#x27;s lookup (its label
+     against the current ids, names, aliases and this paper&#x27;s symbols); the gold files are untouched. Resolved: hei24 20
+     (surface_to_pore_volume_ratio 12, tortuosity_over_porosity 8), yim20 13 (feature_depth 7, structure 5, molar_mass 1), yli18 1
+     (effective_diffusion_coefficient), ela03 1 (base_pressure); mat22, gor03 0.
+  5. film_density: alias rho -&gt; symbols {ρ, paper yim20}; history row (round 2, edit).
+  Round 2 PASS (A1 46 yes, 8 n/a; A2 58 agree, 119 symbol; A3 36 open: 28 pending, 7 other, 1 unit unresolved; 16 pending accounted).
+  Round 1 PASS. export.py --check 15 of 15. Scores R2 -&gt; P165: hei24 T6 258 -&gt; 276 (settings 55 -&gt; 73 / 172), yim20 430 -&gt; 435 (settings
+  105 -&gt; 107), ela03 168 -&gt; 169 (settings 56 -&gt; 57); yli18, mat22, gor03 unchanged; check.py counts unchanged on all six.
+B. gre23, art19, zou23 resolve: key, elements.csv (208, 96, 121 rows), document.md, figures.json, gold (474, 214, 164 rows). grow.py add
+  refused, as it is built to: none of the three has a compiled unmapped.csv and gre23 has no records file (&quot;not extracted; run pass 0 /
+  pass 1 first&quot;). Round 3 is not open; it opens once pass 1 has run. CLAUDE.md: the round plan (round 3 the three, round 4 gao15, yim22,
+  mat23, then wer21 alone).
+C. Pass 0 (MEDIUM, form P163): gre23 7 units (run 4, specimen 3), $0.182; art19 16 (run 8, specimen 8), $0.160; zou23 10 (run 4, specimen 6),
+  $0.038 (22k of its input tokens from the provider&#x27;s cache). Units from curves: art19 2 runs (fig3 &#x27;SiO_{2}&#x27;, &#x27;TiO_{2}&#x27;: material names,
+  which the legend parser does not read; it reads structure and categorical names only), zou23 9 runs (fig1a-e one unlabelled curve
+  each; fig2 &#x27;CVD SE&#x27;, &#x27;CVD XRR&#x27;, &#x27;ALD SE&#x27;, &#x27;ALD XRR&#x27;); no merge. Unbound items: 0 on all three.
+  vs gold (pair_units, every row in the tables):
+  gre23 (gold 21: run 4, specimen 15, simulation 1, model run 1): run split 1, missing 3; specimen merged+split 1, missing 6; simulation and
+    model run missing. Tables 2 of 2 agree; 20 pass-0 panels have no gold layout.
+  art19 (gold 17: run 4, specimen 8, simulation 1, model run 4): run matched 4, extra 6; specimen matched 8; the simulation and its 4 model
+    runs missing (pass 0 lists none). Layouts 2 agree, 1 disagree.
+  zou23 (gold 10: run 2, specimen 8): run matched 1, missing 1, extra 12 (9 derived); specimen matched 4, missing 4, extra 2; 1 evidence quote
+    not found. Layouts 8 disagree: fig1a-e gold curve_per_unit, pass 0 point_per_unit; fig2 gold panel_one_unit (its curves are SE and XRR
+    measurements of two films), pass 0 curve_per_unit, so four derived runs; fig4, fig7a gold curve_per_unit, pass 0 panel_one_unit.
+Next: pass 1 for the three waits for the user&#x27;s reading of this comparison; grow.py add follows pass 1.
+</pre>
+<h2>A1: round-2 promotions classed symbol (paper-local), and the flow-type row (A2)</h2><p>kb/reports/P165.A_round2_A2_symbol_rows.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>symbol</th><th>outcome</th></tr>
+<tr><td>10.1039_d3cp05639b</td><td>s10.p2</td><td>quantity</td><td>\bar{s}</td><td>\bar{s} = A_0/V_{\text{p}} (m^{-1})</td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>dropped at d: quote_not_found (quote)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#2 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5a_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#3 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5a_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#4 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5a_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#5 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5a_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#6 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5a_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#7 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5b_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#8 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5b_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#9 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5b_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#10 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5b_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig5.cap#11 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig5b_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#22 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5e_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#23 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5e_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#24 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5e_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#25 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5e_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#26 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5e_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#27 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5f_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#28 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5f_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#29 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5f_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#30 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5f_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>fact hei24:fig5.cap#31 (type setting, quantity saturation_density, parent hei24:mrun:10_1039_d3cp05639b_fig5f_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#32 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5g_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#33 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5g_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#34 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5g_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#35 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5g_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#36 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5g_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#37 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5h_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#38 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5h_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#39 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5h_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#40 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5h_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig5.cap#41 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig5h_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#42 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5i_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#43 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5i_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#44 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5i_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#45 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5i_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#46 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5i_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#47 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5j_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#48 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5j_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#49 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5j_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#50 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5j_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>fact hei24:fig5.cap#51 (type setting, quantity initial_sticking_coefficient, parent hei24:mrun:10_1039_d3cp05639b_fig5j_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#52 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5k_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#53 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5k_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#54 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5k_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#55 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5k_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#56 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5k_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#57 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5l_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#58 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5l_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#59 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5l_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#60 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5l_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig5.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>fact hei24:fig5.cap#61 (type setting, quantity feature_width, parent hei24:mrun:10_1039_d3cp05639b_fig5l_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#42 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6a_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#43 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6a_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#44 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6a_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#45 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6a_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#46 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6a_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#47 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6b_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#48 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6b_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#49 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6b_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#50 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6b_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\tau/\epsilon</td><td></td><td>quantity: symbol &#x27;\tau/\epsilon&#x27; of this paper</td><td>tortuosity_over_porosity</td><td>tortuosity over porosity</td><td>Tortuosity over porosity, τ/ε: the factor by which the Knudsen diffusion coefficient is divided to give the effective diffusion coefficient of a porous body, D_e = (ε/τ) D_Kn (Heikkinen 2024, eqn 4); a model input swept in Fig. 5(a,b) and 6(a,b). Transform: tortuosity / porosity.</td><td></td><td>tortuosity</td><td>tortuosity</td><td>symbol (paper-local)</td><td>\tau/\epsilon</td><td>fact hei24:fig6.cap#51 (type setting, quantity tortuosity_over_porosity, parent hei24:mrun:10_1039_d3cp05639b_fig6b_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\sigma</td><td></td><td>quantity: symbol &#x27;σ&#x27; of this paper</td><td>saturation_density</td><td>saturation density</td><td>Areal density of adsorption sites at saturation, q of the Ylilammi model as used by yim20 (a model internal, Sec. 4; stored as an attribute of the model runs).</td><td></td><td>density</td><td>density</td><td>symbol (paper-local)</td><td>σ</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#52 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6g_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#53 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6g_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#54 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6g_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#55 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6g_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#56 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6g_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#57 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6h_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#58 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6h_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#59 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6h_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#60 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6h_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\bar{s}</td><td></td><td>quantity: symbol &#x27;\bar{s}&#x27; of this paper</td><td>surface_to_pore_volume_ratio</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>Ratio of the specific surface area to the pore volume of a porous body, s̄ = A_O / V_P (1/m), the surface area per pore volume that sets the adsorption loss term of the diffusion-reaction equation (Heikkinen 2024, eqn 1); a model input swept in Fig. 5(g,h). Transform: specific_surface_area / pore_volume.</td><td></td><td>ratio</td><td>ratio</td><td>symbol (paper-local)</td><td>\bar{s}</td><td>fact hei24:fig6.cap#61 (type setting, quantity surface_to_pore_volume_ratio, parent hei24:mrun:10_1039_d3cp05639b_fig6h_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>\beta_0</td><td></td><td>quantity: symbol &#x27;\beta_0&#x27; of this paper</td><td>initial_sticking_coefficient</td><td>initial sticking coefficient</td><td>The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5).</td><td></td><td>coefficient</td><td>probability</td><td>symbol (paper-local)</td><td>\beta_0</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig6.cap</td><td>quantity</td><td>d_{pore}</td><td></td><td>quantity: symbol &#x27;d_pore&#x27; of this paper</td><td>feature_width</td><td>feature width</td><td>The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole.</td><td></td><td>width</td><td>width</td><td>symbol (paper-local)</td><td>d_pore</td><td>merged by dedupe into another fact</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#4 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#6 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#8 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#10 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#12 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#14 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c6)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#16 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c7)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#18 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c8)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#20 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7a_c9)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#22 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c1)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#24 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c2)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#26 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c3)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#28 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c4)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#30 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c5)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#32 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c6)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#34 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c7)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#36 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c8)</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>fig7.cap</td><td>quantity</td><td>R</td><td></td><td>quantity: symbol &#x27;R&#x27; of this paper</td><td>particle_radius</td><td>Particle radius, R</td><td>Radius R of a porous particle (sphere or cylinder) or half thickness of a slab: the length the reactant must travel from the outer surface to the centre (Heikkinen 2024, Sec. 1, Table 1). Transform: particle_diameter / 2.</td><td></td><td>radius</td><td>radius</td><td>symbol (paper-local)</td><td>R</td><td>fact hei24:fig7.cap#38 (type setting, quantity particle_radius, parent hei24:mrun:10_1039_d3cp05639b_fig7b_c9)</td></tr>
+<tr><td>10.1021_cm0303080</td><td>s2.p23</td><td>value_text</td><td>flow-type</td><td>flow-type</td><td>value:reactor_type: value alias &#x27;flow-type&#x27;</td><td>flow_type</td><td>flow_type</td><td>a value of reactor_type</td><td>type</td><td>type</td><td>class</td><td>agree</td><td></td><td>fact ela03:s2.p23#3 (type setting, quantity reactor_type, parent ela03:recipe)</td></tr>
+</table>
+<h2>A3: unit rows classed unit unresolved</h2><p>kb/reports/P165.A_round2_A3_unit_rows.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
+<tr><td>10.1021_cm0303080</td><td>s5.p32</td><td>unit</td><td>density of ALD reactive sites</td><td>10^15 cm^-2</td><td>density of ald reactive sites</td><td>unit unresolved</td><td>density_of_ald_reactive_sites</td><td>the record is promoted to saturation_density; its unit &#x27;10^15 cm^-2&#x27; is not in units.yaml</td></tr>
+</table>
+<h2>A4: gold other rows that now resolve, per paper</h2><p>kb/reports/P165.A_gold_other_per_paper.csv</p>
+<table><tr><th>paper</th><th>gold_other_rows</th><th>resolved</th><th>to</th></tr>
+<tr><td>yli18</td><td>16</td><td>1</td><td>effective_diffusion_coefficient 1</td></tr>
+<tr><td>yim20</td><td>41</td><td>13</td><td>feature_depth 7; structure 5; molar_mass 1</td></tr>
+<tr><td>mat22</td><td>38</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>39</td><td>1</td><td>base_pressure 1</td></tr>
+<tr><td>hei24</td><td>36</td><td>20</td><td>surface_to_pore_volume_ratio 12; tortuosity_over_porosity 8</td></tr>
+<tr><td>gor03</td><td>15</td><td>0</td><td></td></tr>
+</table>
+<h2>A4: every gold other row that resolves</h2><p>kb/reports/P165.A_gold_other_resolved.csv</p>
+<table><tr><th>paper</th><th>fact_id</th><th>type</th><th>label</th><th>id</th><th>how</th></tr>
+<tr><td>yli18</td><td>yli18:s6.p1#3</td><td>model</td><td>D_eff</td><td>effective_diffusion_coefficient</td><td>alias &#x27;Deff&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:s7.p5#9</td><td>setting</td><td>lateral length L</td><td>feature_depth</td><td>alias &#x27;lateral length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:s7.p5#10</td><td>setting</td><td>lateral length L</td><td>feature_depth</td><td>alias &#x27;lateral length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:fig4.cap#1</td><td>setting</td><td>channel length L</td><td>feature_depth</td><td>alias &#x27;channel length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:fig10.cap#5</td><td>model</td><td>M_A</td><td>molar_mass</td><td>alias &#x27;MA&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r1c1#1</td><td>cited</td><td>LHAR type</td><td>structure</td><td>alias &#x27;LHAR type&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r2c1#1</td><td>cited</td><td>LHAR type</td><td>structure</td><td>alias &#x27;LHAR type&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r4c1#1</td><td>cited</td><td>LHAR type</td><td>structure</td><td>alias &#x27;LHAR type&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r5c1#1</td><td>cited</td><td>LHAR type</td><td>structure</td><td>alias &#x27;LHAR type&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:tab2.r6c1#1</td><td>setting</td><td>LHAR type</td><td>structure</td><td>alias &#x27;LHAR type&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:fig4.cap#2</td><td>setting</td><td>channel length L</td><td>feature_depth</td><td>alias &#x27;channel length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:fig4.cap#3</td><td>setting</td><td>channel length L</td><td>feature_depth</td><td>alias &#x27;channel length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:s7.p5#13</td><td>setting</td><td>lateral length L</td><td>feature_depth</td><td>alias &#x27;lateral length L&#x27;</td></tr>
+<tr><td>yim20</td><td>yim20:s7.p5#14</td><td>setting</td><td>lateral length L</td><td>feature_depth</td><td>alias &#x27;lateral length L&#x27;</td></tr>
+<tr><td>ela03</td><td>ela03:s3.p26#3</td><td>setting</td><td>evacuated below</td><td>base_pressure</td><td>alias &#x27;evacuated below&#x27;</td></tr>
+<tr><td>hei24</td><td>hei24:s4.p3#2</td><td>derived</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#3</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#5</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#7</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#9</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#11</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#13</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#15</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#17</td><td>setting</td><td>τ/ε</td><td>tortuosity_over_porosity</td><td>symbol &#x27;\tau/\epsilon&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#51</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#53</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#55</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#57</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#59</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#61</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#63</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#65</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#67</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:fig5.cap#69</td><td>setting</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+<tr><td>hei24</td><td>hei24:s10.p2#4</td><td>model</td><td>s̄</td><td>surface_to_pore_volume_ratio</td><td>symbol &#x27;\bar{s}&#x27; of this paper</td></tr>
+</table>
+<h2>A: round-2 audit</h2><p>kb/reports/P165.A_audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 54 rows: effect {&#x27;n/a&#x27;: 8, &#x27;yes&#x27;: 46}
+A2: 177 promotions: {&#x27;agree&#x27;: 58, &#x27;symbol (paper-local)&#x27;: 119}
+A3: 36 open rows: {&#x27;pending&#x27;: 28, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1}; pending candidates accounted 16/16
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 238 entries, 373 history rows, 16 pending, checks 15/15
+entries 238
+├─ quantity 97   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 4   [split by hierarchy leaf]
+│  └─ modelling 4
+│     └─ models 4
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>A: round-1 audit</h2><p>kb/reports/P165.A_audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 35 promotions: {&#x27;agree&#x27;: 35}
+A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 16/16
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 238 entries, 373 history rows, 16 pending, checks 15/15
+entries 238
+├─ quantity 97   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 4   [split by hierarchy leaf]
+│  └─ modelling 4
+│     └─ models 4
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>A: export.py --check</h2><p>kb/reports/P165.A_export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 16 rows: undecided 16
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>A: score R2 -&gt; P165, every column, six papers</h2><p>kb/reports/P165.A_score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>156</td><td>156</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>31/63</td><td>31/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>430</td><td>435</td><td>NO</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>519</td><td>522</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>105/206</td><td>107/206</td><td>NO</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>101/108</td><td>101/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>81/154</td><td>81/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>267</td><td>267</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>135/249</td><td>135/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>168</td><td>169</td><td>NO</td></tr>
+<tr><td>ela03</td><td>gold_rows</td><td>561</td><td>561</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>191</td><td>192</td><td>NO</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>35/57</td><td>35/57</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>56/277</td><td>57/277</td><td>NO</td></tr>
+<tr><td>ela03</td><td>diff_definition</td><td>1/10</td><td>1/10</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_derived</td><td>4/17</td><td>4/17</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_claim</td><td>9/37</td><td>9/37</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_entity</td><td>13/34</td><td>13/34</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>15/46</td><td>15/46</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_caveat</td><td>1/15</td><td>1/15</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>13/38</td><td>13/38</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_cited</td><td>7/21</td><td>7/21</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_comparison</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>check_dir_problems</td><td>553</td><td>553</td><td>yes</td></tr>
+<tr><td>hei24</td><td>matched_T6</td><td>258</td><td>276</td><td>NO</td></tr>
+<tr><td>hei24</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_no</td><td>272</td><td>290</td><td>NO</td></tr>
+<tr><td>hei24</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_setting</td><td>55/172</td><td>73/172</td><td>NO</td></tr>
+<tr><td>hei24</td><td>diff_definition</td><td>17/35</td><td>17/35</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_derived</td><td>0/16</td><td>0/16</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_claim</td><td>15/20</td><td>15/20</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_comparison</td><td>6/24</td><td>6/24</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gor03</td><td>matched_T6</td><td>55</td><td>55</td><td>yes</td></tr>
+<tr><td>gor03</td><td>gold_rows</td><td>157</td><td>157</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_no</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_model</td><td>13/21</td><td>13/21</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_setting</td><td>21/52</td><td>21/52</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_definition</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_derived</td><td>7/10</td><td>7/10</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_claim</td><td>7/18</td><td>7/18</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_entity</td><td>4/6</td><td>4/6</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_activity</td><td>6/11</td><td>6/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_observation</td><td>5/11</td><td>5/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_cited</td><td>0/11</td><td>0/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+</table>
+<h2>A: code diff</h2><p>kb/reports/P165.A_code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/audit.py b/psed_v2/kb/extract/audit.py
+index 1ef141b..30c5cf8 100644
+--- a/psed_v2/kb/extract/audit.py
++++ b/psed_v2/kb/extract/audit.py
+@@ -157,7 +157,7 @@ def main(arg):
+     pid, key_ = C.resolve(arg)
+     form = C.schema(&quot;form.json&quot;)
+     val, props, qids = Draft202012Validator(K.before_freeze(form)), form[&quot;properties&quot;], set(form[&quot;$defs&quot;][&quot;quantity_id&quot;][&quot;enum&quot;]) | {&quot;other&quot;}   # P159: the gold predates the P158 rules
+-    gold = list(csv.DictReader((C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{pid}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
++    gold = K.gold_rows(pid)                                                     # P165: a gold other row read through step a0&#x27;s lookup
+     run, records, fate, rows = traced_run(pid)
+     comp = [r for r in rows if &quot;#&quot; in r[&quot;fact_id&quot;]]
+     CR, GR = {r[&quot;fact_id&quot;]: r for r in rows}, {r[&quot;fact_id&quot;]: r for r in gold}
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 35a42b1..07adf13 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -1426,10 +1426,30 @@ def matches(g, c):
+     return match_key(g) == match_key(c)
+ 
+ 
++GOLD_RESOLVED = {}
++
++
++def gold_rows(pid):
++    &quot;&quot;&quot;P165 (user): the gold rows of kb/pilot/&lt;pid&gt;.facts.csv (the file is never written) as every matcher reads them: a row of quantity
++    other is read through step a0&#x27;s lookup (vocab_hits on its label_as_printed: the current ids, names, aliases and this paper&#x27;s
++    symbols); one id -&gt; that quantity, as the compiler would give the record. GOLD_RESOLVED[pid] lists each resolution.&quot;&quot;&quot;
++    rows = list(csv.DictReader((C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{pid}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
++    log = GOLD_RESOLVED.setdefault(pid, [])
++    log.clear()
++    for g in rows:
++        if g[&quot;quantity&quot;] == &quot;other&quot; and g[&quot;label_as_printed&quot;].strip():
++            hits = vocab_hits(pid, &quot;quantity&quot;, g[&quot;label_as_printed&quot;])
++            if len(hits) == 1:
++                (i, how), = hits.items()
++                log.append(dict(fact_id=g[&quot;fact_id&quot;], type=g[&quot;type&quot;], label=g[&quot;label_as_printed&quot;], id=i, how=how))
++                g[&quot;quantity&quot;] = i
++    return rows
++
++
+ def diff(run):
+-    &quot;&quot;&quot;Gold kb/pilot/&lt;pid&gt;.facts.csv against the compiled rows by matches() (P134 key, canonical units, D13); one gold row per compiled
+-    row, first come.&quot;&quot;&quot;
+-    gold = list(csv.DictReader((C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{run.pid}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
++    &quot;&quot;&quot;Gold kb/pilot/&lt;pid&gt;.facts.csv (gold_rows, P165) against the compiled rows by matches() (P134 key, canonical units, D13); one gold
++    row per compiled row, first come.&quot;&quot;&quot;
++    gold = gold_rows(run.pid)
+     comp = run.rows
+     free = list(range(len(gold)))
+     matched = collections.Counter()
+diff --git a/psed_v2/kb/extract/score.py b/psed_v2/kb/extract/score.py
+index ee28d03..786657d 100644
+--- a/psed_v2/kb/extract/score.py
++++ b/psed_v2/kb/extract/score.py
+@@ -62,7 +62,7 @@ def score_rows(key, run, table, tree_errs):
+             x = rec.get(&quot;about&quot;)
+             ab[&quot;paper&quot; if x == &quot;paper&quot; else &quot;null&quot; if not x else &quot;filled (a pass-0 unit)&quot; if x in run.node else &quot;unknown&quot;] += 1
+     out += [row(&quot;about&quot;, k, n) for k, n in ab.most_common()]
+-    gold = list(csv.DictReader((C.V2 / &quot;kb&quot; / &quot;pilot&quot; / f&quot;{run.pid}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
++    gold = K.gold_rows(run.pid)                                                 # P165: a gold other row read through step a0&#x27;s lookup
+     G, CR = {g[&quot;fact_id&quot;]: g for g in gold}, {c[&quot;fact_id&quot;]: c for c in run.rows}
+     free, pk = list(range(len(gold))), collections.Counter()
+     for c in run.rows:                                                          # the pairs of compile.diff: one gold row per compiled row, first come
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index de871c8..e4ed8b3 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -757,7 +757,7 @@ REPORTS = V2 / &quot;kb&quot; / &quot;reports&quot;
+ SNAP_COLS = [&quot;pid&quot;, &quot;element&quot;, &quot;field&quot;, &quot;label&quot;, &quot;unit&quot;, &quot;candidate&quot;, &quot;decision&quot;]
+ A1_COLS = [&quot;id&quot;, &quot;decision&quot;, &quot;covers&quot;, &quot;pid&quot;, &quot;element&quot;, &quot;field&quot;, &quot;row_label&quot;, &quot;now&quot;, &quot;effect&quot;, &quot;reason&quot;]
+ A2_COLS = [&quot;pid&quot;, &quot;element&quot;, &quot;field&quot;, &quot;printed&quot;, &quot;record_meaning&quot;, &quot;lookup&quot;, &quot;entry&quot;, &quot;entry_name&quot;, &quot;entry_definition&quot;, &quot;head_record&quot;, &quot;head_entry_name&quot;,
+-           &quot;head_entry_definition&quot;, &quot;verdict&quot;, &quot;outcome&quot;]
++           &quot;head_entry_definition&quot;, &quot;verdict&quot;, &quot;symbol&quot;, &quot;outcome&quot;]
+ A3_COLS = [&quot;pid&quot;, &quot;element&quot;, &quot;field&quot;, &quot;label&quot;, &quot;unit&quot;, &quot;record_key&quot;, &quot;class&quot;, &quot;candidate_at_snapshot&quot;, &quot;why&quot;]
+ A3P_COLS = [&quot;candidate&quot;, &quot;first_round&quot;, &quot;pids&quot;, &quot;rows_at_snapshot&quot;, &quot;open_rows_now&quot;, &quot;accounted&quot;, &quot;detail&quot;]
+ HEAD_STOPS = r&quot;\b(of|at|in|for|with|between|without|per|from|on|to|by|where|that|which|during|when|as|under|over)\b|[,;:(\[$]| - | – &quot;
+@@ -782,9 +782,10 @@ def snapshot(n, pids, pend):
+ 
+ def head_noun(text):
+     &quot;&quot;&quot;The head noun of a noun phrase (P157c): LaTeX unwrapped, casefold, the text before the first preposition / relative word / comma
+-    / bracket / &#x27;$&#x27;, its last alphabetic word of two or more letters, a plural s dropped (not ss, us, is).&quot;&quot;&quot;
++    / bracket / &#x27;$&#x27;, its last alphabetic word of two or more letters, a plural s dropped (not ss, us, is). P165: a hyphen is a word
++    boundary (&#x27;flow-type&#x27; -&gt; type).&quot;&quot;&quot;
+     t = re.split(HEAD_STOPS, X.LATEX_TEXT.sub(r&quot;\1&quot;, str(text or &quot;&quot;)).casefold(), maxsplit=1)[0]
+-    ws = [x for x in t.split() if re.fullmatch(r&quot;[a-zà-ÿ\-]{2,}&quot;, x)]
++    ws = [x for x in t.replace(&quot;-&quot;, &quot; &quot;).split() if re.fullmatch(r&quot;[a-zà-ÿ]{2,}&quot;, x)]
+     h = ws[-1] if ws else &quot;&quot;
+     return h[:-1] if h.endswith(&quot;s&quot;) and not h.endswith((&quot;ss&quot;, &quot;us&quot;, &quot;is&quot;)) and len(h) &gt; 3 else h
+ 
+@@ -796,8 +797,10 @@ def open_rows(n, compiled, unm, snap):
+     &quot;&quot;&quot;P157d A3, out of audit_round since P162: every open (not never) unmapped row of round n&#x27;s compiled papers (unm: their unmapped.csv
+     rows), classified. P162: a row that would be unclassified and is absent from the round&#x27;s apply snapshot (born after apply, e.g. a
+     derived unit&#x27;s condition) is NEW_SINCE_APPLY: counted, listed and carried into the next propose (carried_rows), not a failure.
++    P165: the unit row of a promoted record whose unit units.yaml lacks is &quot;unit unresolved&quot; (listed), not open.
+     Returns (A3 rows, failures, the unmapped_rows() row of each A3 row).&quot;&quot;&quot;
+     fails = []
++    pro = {p: rd(COMPILED / f&quot;{p}.promoted.csv&quot;) for p in compiled}
+     pend = {x[&quot;id&quot;]: x for x in rd(PENDING)}
+     decided_ids = {h[&quot;id&quot;]: h for h in rd(HISTORY) if h[&quot;action&quot;] in (&quot;add&quot;, &quot;alias&quot;, &quot;never&quot;, &quot;reject&quot;)}
+     _CAND.clear()
+@@ -825,8 +828,11 @@ def open_rows(n, compiled, unm, snap):
+             cid = cids[min(seen[k], len(cids) - 1)] if cids else &quot;&quot;
+             seen[k] += 1
+             raw = next(x for x in unm[p] if x[&quot;element&quot;] == u[&quot;element&quot;] and x[&quot;field&quot;] == u[&quot;field&quot;] and x[&quot;label_as_printed&quot;].strip() == u[&quot;label&quot;])
++            prom = next((x for x in pro.get(p, []) if x[&quot;element&quot;] == u[&quot;element&quot;] and x[&quot;printed&quot;] == u[&quot;label&quot;] and not x[&quot;outcome&quot;].startswith(&quot;not promoted&quot;)), None)
+             if cid in pend:
+                 cls, why = f&quot;pending candidate {cid}&quot;, (&quot;cell without printed label, keyed by its meaning&quot; if not u[&quot;label&quot;] else &quot;&quot;)
++            elif u[&quot;field&quot;] == &quot;unit&quot; and prom:                                 # P165 (user): its record is promoted; the unit is a units.yaml matter
++                cls, why = &quot;unit unresolved&quot;, f&quot;the record is promoted to {prom[&#x27;id&#x27;]}; its unit {u[&#x27;unit&#x27;]!r} is not in units.yaml&quot;
+             elif raw[&quot;action&quot;].startswith(&quot;kept (ambiguous&quot;):
+                 cls, why = &quot;other&quot;, f&quot;compile: {raw[&#x27;action&#x27;][6:-1]}; propose groups it as {cid or &#x27;nothing&#x27;}&quot;
+             elif k in ngrp:
+@@ -870,7 +876,8 @@ def audit_round(n):
+     &quot;&quot;&quot;P157d: A1-A3 of round n (the P157c audit), written to kb/reports/R&lt;n&gt;_apply.{A1,A2,A3,A3_pending}.csv, .acceptance.txt and .html.
+     A1: every decision of the round (history.csv; back-fill rows extend its never labels) and every row it covered (the snapshot), with
+     where the row is now: a fact (promoted.csv), never (unmapped.csv column never) or open. A2: every promotion in the round&#x27;s papers,
+-    agree when the record&#x27;s meaning and the entry share the head noun. A3: every open row, classified; every pending candidate of the
++    agree when the record&#x27;s meaning and the entry share the head noun (P165: a promotion through a paper-local symbol of the record&#x27;s
++    paper is &quot;symbol (paper-local)&quot;, no head-noun test). A3: every open row, classified; every pending candidate of the
+     round&#x27;s papers accounted for. Acceptance: A1 every covered row has its effect, except a reject (by design), a paper with no compiled
+     output and the unit row of a promoted record (a units.yaml matter); A2 no disagree; A3 no unclassified row, no pending candidate
+     lost a row. P162: A3 is open_rows() (a row born after apply: NEW_SINCE_APPLY, carried, not a failure); A1 also reads the papers of rows
+@@ -971,9 +978,12 @@ def audit_round(n):
+                 name, defi = x[&quot;id&quot;], f&quot;a value of {q}&quot;
+                 hd = head_noun(entries.get(q, {}).get(&quot;definition&quot;, &quot;&quot;))
+             hr, hn = head_noun(x.get(&quot;meaning&quot;) or x[&quot;printed&quot;]), head_noun(name.replace(&quot;_&quot;, &quot; &quot;))
+-            verdict = &quot;not promoted (ambiguous)&quot; if x[&quot;outcome&quot;].startswith(&quot;not promoted&quot;) else (&quot;agree&quot; if hr and hr in (hn, hd) else &quot;disagree&quot; if hr else &quot;no meaning text&quot;)
++            sym = re.search(r&quot;symbol &#x27;(.*)&#x27; of this paper&quot;, x[&quot;lookup&quot;])           # P165 (user): a paper-local symbol of the record&#x27;s own paper
++            verdict = &quot;not promoted (ambiguous)&quot; if x[&quot;outcome&quot;].startswith(&quot;not promoted&quot;) else &quot;symbol (paper-local)&quot; if sym else \
++                (&quot;agree&quot; if hr and hr in (hn, hd) else &quot;disagree&quot; if hr else &quot;no meaning text&quot;)
+             a2.append(dict(pid=p, element=x[&quot;element&quot;], field=x[&quot;field&quot;], printed=x[&quot;printed&quot;], record_meaning=x.get(&quot;meaning&quot;, &quot;&quot;), lookup=x[&quot;lookup&quot;], entry=x[&quot;id&quot;],
+-                           entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict, outcome=x[&quot;outcome&quot;]))
++                           entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict,
++                           symbol=sym.group(1) if sym else &quot;&quot;, outcome=x[&quot;outcome&quot;]))
+             if verdict in (&quot;disagree&quot;, &quot;no meaning text&quot;):
+                 fails.append(f&quot;A2 {p}:{x[&#x27;element&#x27;]} &#x27;{x[&#x27;printed&#x27;]}&#x27; -&gt; {x[&#x27;id&#x27;]}: {verdict} (head nouns {hr} / {hn} / {hd})&quot;)
+     write(REPORTS / f&quot;R{n}_apply.A2.csv&quot;, A2_COLS, a2)
+</pre>
+<h2>B: round-3 papers resolve</h2><p>kb/reports/P165.B_resolve.csv</p>
+<table><tr><th>pid</th><th>key</th><th>elements</th><th>document</th><th>figures</th><th>gold</th><th>records</th><th>unmapped</th><th>elements_rows</th><th>gold_rows</th><th>record_lines</th></tr>
+<tr><td>10.1116_6.0003182</td><td>gre23</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>NO</td><td>NO</td><td>208</td><td>474</td><td></td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>art19</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>NO</td><td>96</td><td>214</td><td>1</td></tr>
+<tr><td>10.1116_6.0002804</td><td>zou23</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>NO</td><td>121</td><td>164</td><td>1</td></tr>
+</table>
+<h2>B: grow.py add (refused)</h2><p>kb/reports/P165.B_grow_add.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/grow.py add 10.1116_6.0003182 10.1021_acs.jpcc.9b08176 10.1116_6.0002804` failed. (See above for error)
+STOPPED: missing: kb/records/10.1116_6.0003182.jsonl, kb/compiled/10.1116_6.0003182.unmapped.csv, kb/compiled/10.1021_acs.jpcc.9b08176.unmapped.csv, kb/compiled/10.1116_6.0002804.unmapped.csv
+not extracted; run pass 0 / pass 1 first (grow.py never calls a provider)
+</pre>
+<h2>C: planned calls</h2><p>kb/reports/P165.C_plan.txt</p>
+<pre>10.1116_6.0003182: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+gre23: prompt 162868 chars, ~40717 tokens
+10.1021_acs.jpcc.9b08176: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+art19: prompt 126722 chars, ~31680 tokens
+10.1116_6.0002804: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+zou23: prompt 127737 chars, ~31934 tokens
+</pre>
+<h2>C: pass-0 runs</h2><p>kb/reports/P165.C_run.txt</p>
+<pre>10.1116_6.0003182: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0003182: 1 calls made, 0 from the cache
+gre23 pass 0: 7 units, by role {&#x27;run&#x27;: 4, &#x27;specimen&#x27;: 3}; table layouts 2, panel layouts 20
+10.1021_acs.jpcc.9b08176: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1021_acs.jpcc.9b08176: 1 calls made, 0 from the cache
+art19 pass 0: 16 units, by role {&#x27;run&#x27;: 8, &#x27;specimen&#x27;: 8}; table layouts 1, panel layouts 2
+10.1116_6.0002804: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0002804: 1 calls made, 0 from the cache
+zou23 pass 0: 10 units, by role {&#x27;run&#x27;: 4, &#x27;specimen&#x27;: 6}; table layouts 0, panel layouts 23
+</pre>
+<h2>C: cost per paper</h2><p>kb/reports/P165.C_cost.csv</p>
+<table><tr><th>paper</th><th>calls</th><th>input_tokens</th><th>cached_input_tokens</th><th>output_tokens</th><th>usd</th><th>thinking</th><th>form_version</th></tr>
+<tr><td>gre23</td><td>1</td><td>49593</td><td>0</td><td>38489</td><td>0.1815</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+<tr><td>art19</td><td>1</td><td>37541</td><td>0</td><td>35061</td><td>0.1596</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+<tr><td>zou23</td><td>1</td><td>38116</td><td>21826</td><td>6453</td><td>0.0381</td><td>{&quot;thinking_level&quot;: &quot;MEDIUM&quot;}</td><td>P163</td></tr>
+</table>
+<h2>C: summary per paper</h2><p>kb/reports/P165.C_summary.csv</p>
+<table><tr><th>paper</th><th>pid</th><th>gold_units</th><th>gold_by_role</th><th>pass0_units</th><th>pass0_by_role</th><th>derived_units</th><th>derived_by_role</th><th>merged</th><th>unbound</th><th>run split</th><th>run missing</th><th>specimen merged+split</th><th>specimen missing</th><th>simulation missing</th><th>model_run missing</th><th>esi_only</th><th>quotes_not_found</th><th>layouts_agree</th><th>layouts_disagree</th><th>layouts_not_compared</th><th>run matched</th><th>run extra</th><th>specimen matched</th><th>specimen extra</th></tr>
+<tr><td>gre23</td><td>10.1116_6.0003182</td><td>21</td><td>run 4; specimen 15; simulation 1; model_run 1</td><td>7</td><td>run 4; specimen 3</td><td>0</td><td></td><td>0</td><td>0</td><td>1</td><td>3</td><td>1</td><td>6</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>20</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176</td><td>17</td><td>run 4; specimen 8; simulation 1; model_run 4</td><td>16</td><td>run 8; specimen 8</td><td>2</td><td>run 2</td><td>0</td><td>0</td><td></td><td></td><td></td><td></td><td>1</td><td>4</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>4</td><td>6</td><td>8</td><td></td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804</td><td>10</td><td>run 2; specimen 8</td><td>10</td><td>run 4; specimen 6</td><td>9</td><td>run 9</td><td>0</td><td>0</td><td></td><td>1</td><td></td><td>4</td><td></td><td></td><td>0</td><td>1</td><td>0</td><td>8</td><td>15</td><td>1</td><td>12</td><td>4</td><td>2</td></tr>
+</table>
+<h2>C: units from curves</h2><p>kb/reports/P165.C_derived_units.csv</p>
+<table><tr><th>paper</th><th>id</th><th>panel</th><th>role</th><th>role_from</th><th>parent</th><th>label</th><th>conditions</th><th>merged</th><th>merge</th><th>flag</th></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176:fig3:c1</td><td>fig3</td><td>run</td><td>unit list</td><td></td><td>SiO_{2}</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+<tr><td>art19</td><td>10.1021_acs.jpcc.9b08176:fig3:c2</td><td>fig3</td><td>run</td><td>unit list</td><td></td><td>TiO_{2}</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1a:c1</td><td>fig1a</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1b:c1</td><td>fig1b</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1c:c1</td><td>fig1c</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1d:c1</td><td>fig1d</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig1e:c1</td><td>fig1e</td><td>run</td><td>unit list</td><td></td><td></td><td></td><td></td><td></td><td>parent unresolved; no legend label</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig2:c1</td><td>fig2</td><td>run</td><td>unit list</td><td></td><td>CVD SE</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig2:c2</td><td>fig2</td><td>run</td><td>unit list</td><td></td><td>CVD XRR</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig2:c3</td><td>fig2</td><td>run</td><td>unit list</td><td></td><td>ALD SE</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+<tr><td>zou23</td><td>10.1116_6.0002804:fig2:c4</td><td>fig2</td><td>run</td><td>unit list</td><td></td><td>ALD XRR</td><td>other= (parsed to nothing)</td><td></td><td></td><td>parent unresolved; legend label parsed to nothing</td></tr>
+</table>
+<h2>C: consistency (unbound items)</h2><p>kb/reports/P165.C_consistency.csv</p>
+<table><tr><th>paper</th><th>panel</th><th>layout</th><th>items</th><th>held_pass0</th><th>held_derived</th><th>unbound</th><th>unit_ids</th><th>unbound_ids</th><th>flag</th></tr>
+<tr><td>gre23</td><td>fig3a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3b</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig3c</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>run_120;run_120_160;run_160</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>fig5</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig2B</td><td>curve_per_unit</td><td>8</td><td>8</td><td>0</td><td>0</td><td>specimen_al2o3_120s;specimen_hfo2_120s;specimen_sio2_120s;specimen_sio2_12s;specimen_sio2_3.8s;specimen_sio2_38s;specimen_tio2_120s;specimen_tio2_12s</td><td></td><td></td></tr>
+<tr><td>art19</td><td>fig3</td><td>curve_per_unit</td><td>2</td><td>0</td><td>2</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1a</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1c</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1d</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig1e</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig2</td><td>curve_per_unit</td><td>4</td><td>0</td><td>4</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig5b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig6b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+</table>
+<h2>C: gre23 units vs gold, every row</h2><p>kb/reports/P165.C_gre23_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run120</td><td>120 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run160</td><td>160 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>missing</td><td></td><td>gre23:run120_160</td><td>120/160 °C</td><td></td><td>s9.p6;fig1b</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>run</td><td>split</td><td>evidence</td><td>gre23:run_tc</td><td>test run</td><td></td><td>fig2d;fig2.cap</td><td></td><td>run_120</td><td>pass 0</td><td>120 °C</td><td></td><td>s2.p4;fig2.cap;fig2a;fig3.cap;fig3a;fig3b;fig3c</td><td>Three 20-cycle ALD runs were carried out: (1) with T held constant at 120 °C</td><td>found</td><td>gre23:fig2a#c1:measured; gre23:fig3a#c2:measured; gre23:fig3b#c2:measured; gre23:fig3c#c2:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>split</td><td>evidence</td><td>gre23:run_tc</td><td>test run</td><td></td><td>fig2d;fig2.cap</td><td></td><td>run_160</td><td>pass 0</td><td>160 °C</td><td></td><td>s2.p4;fig2.cap;fig2b;fig3.cap;fig3a;fig3b;fig3c</td><td>(2) with T held constant at 160 °C</td><td>found</td><td>gre23:fig2b#c1:measured; gre23:fig3a#c1:measured; gre23:fig3b#c1:measured; gre23:fig3c#c1:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>split</td><td>evidence</td><td>gre23:run_tc</td><td>test run</td><td></td><td>fig2d;fig2.cap</td><td></td><td>run_120_160</td><td>pass 0</td><td>120/160 °C</td><td></td><td>s2.p4;fig2.cap;fig2c;fig3.cap;fig3a;fig3b;fig3c</td><td>(3) with T cycled between 120 and 160 °C</td><td>found</td><td>gre23:fig2c#c1:measured; gre23:fig3a#c3:measured; gre23:fig3b#c3:measured; gre23:fig3c#c3:measured</td></tr>
+<tr><td>gre23</td><td>run</td><td>split</td><td>evidence</td><td>gre23:run_tc</td><td>test run</td><td></td><td>fig2d;fig2.cap</td><td></td><td>run_test</td><td>pass 0</td><td>ZnO ALD test run</td><td></td><td>fig2.cap;fig2d</td><td>a ZnO ALD test run performed under the same conditions as (c)</td><td>found</td><td>gre23:fig2d#c1:measured</td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:pair</td><td>120 °C NPC pair</td><td>gre23:run120</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gre23:ent:120:section;gre23:ent:120:xrd;gre23:ent:120:photo;gre23:ent:160:section;gre23:ent:160:xrd;gre23:ent:160:photo;gre23:ent:120_160:section;gre23:ent:120_160:xrd;gre23:ent:120_160:photo</td><td>120 °C SEM-EDS section | 120 °C XRD | 120 °C photograph | 160 °C SEM-EDS section | 160 °C XRD | 160 °C photograph | 120/160 °C SEM-EDS section | 120/160 °C XRD | 120/160 °C photograph</td><td>gre23:run120;gre23:run120;gre23:run120;gre23:run160;gre23:run160;gre23:run160;gre23:run120_160;gre23:run120_160;gre23:run120_160</td><td>fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1</td><td></td><td>specimen_120</td><td>pass 0</td><td>120</td><td>run_120</td><td>tabI.r1c0;tabII.r1c0;fig4.cap;fig4b;fig5.cap;fig5;fig6.cap;fig6a;fig6d</td><td>120</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gre23:ent:120:section;gre23:ent:120:xrd;gre23:ent:120:photo;gre23:ent:160:section;gre23:ent:160:xrd;gre23:ent:160:photo;gre23:ent:120_160:section;gre23:ent:120_160:xrd;gre23:ent:120_160:photo</td><td>120 °C SEM-EDS section | 120 °C XRD | 120 °C photograph | 160 °C SEM-EDS section | 160 °C XRD | 160 °C photograph | 120/160 °C SEM-EDS section | 120/160 °C XRD | 120/160 °C photograph</td><td>gre23:run120;gre23:run120;gre23:run120;gre23:run160;gre23:run160;gre23:run160;gre23:run120_160;gre23:run120_160;gre23:run120_160</td><td>fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1</td><td></td><td>specimen_160</td><td>pass 0</td><td>160</td><td>run_160</td><td>tabI.r2c0;tabII.r2c0;fig4.cap;fig4c;fig5.cap;fig5;fig6.cap;fig6b;fig6e</td><td>160</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>merged+split</td><td>evidence</td><td>gre23:ent:120:section;gre23:ent:120:xrd;gre23:ent:120:photo;gre23:ent:160:section;gre23:ent:160:xrd;gre23:ent:160:photo;gre23:ent:120_160:section;gre23:ent:120_160:xrd;gre23:ent:120_160:photo</td><td>120 °C SEM-EDS section | 120 °C XRD | 120 °C photograph | 160 °C SEM-EDS section | 160 °C XRD | 160 °C photograph | 120/160 °C SEM-EDS section | 120/160 °C XRD | 120/160 °C photograph</td><td>gre23:run120;gre23:run120;gre23:run120;gre23:run160;gre23:run160;gre23:run160;gre23:run120_160;gre23:run120_160;gre23:run120_160</td><td>fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1 | fig6.cap;s10.p3 | fig5.cap;s10.p1;tabII.cap | fig4.cap;s13.p1</td><td></td><td>specimen_120_160</td><td>pass 0</td><td>120/160</td><td>run_120_160</td><td>tabI.r3c0;tabII.r3c0;fig4.cap;fig4d;fig5.cap;fig5;fig6.cap;fig6c;fig6f</td><td>120/160</td><td>found</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120:prism</td><td>120 °C ρ prism</td><td>gre23:run120</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:pair</td><td>160 °C NPC pair</td><td>gre23:run160</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:160:prism</td><td>160 °C ρ prism</td><td>gre23:run160</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:pair</td><td>120/160 °C NPC pair</td><td>gre23:run120_160</td><td>s12.p1;s9.p3;tabI.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>missing</td><td></td><td>gre23:ent:120_160:prism</td><td>120/160 °C ρ prism</td><td>gre23:run120_160</td><td>s10.p2;s13.p4;tabII.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>simulation</td><td>missing</td><td></td><td>gre23:simact:eq1_2</td><td>sim · Eq. (2)</td><td></td><td>eq1;eq2;s9.p9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>gre23</td><td>model_run</td><td>missing</td><td></td><td>gre23:simact:eq1_2:run</td><td>sim · Eq. (2)</td><td>gre23:simact:eq1_2</td><td>eq1;eq2;s9.p9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>C: gre23 layouts</h2><p>kb/reports/P165.C_gre23_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>gre23</td><td>table</td><td>tabI</td><td>row_per_unit (majority)</td><td>row_per_unit</td><td>agree</td><td>3</td><td>3</td></tr>
+<tr><td>gre23</td><td>table</td><td>tabII</td><td>row_per_unit (majority)</td><td>row_per_unit</td><td>agree</td><td>3</td><td>6</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2a</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2b</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2c</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig2d</td><td>unbound</td><td>panel_one_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3a</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3b</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig3c</td><td>unbound</td><td>curve_per_unit</td><td>gold unbound</td><td></td><td>0</td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4a</td><td>(no gold layout)</td><td></td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig4d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig5</td><td>(no gold layout)</td><td>curve_per_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6e</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig6f</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig1a</td><td>(no gold layout)</td><td></td><td>not compared</td><td></td><td></td></tr>
+<tr><td>gre23</td><td>panel</td><td>fig1b</td><td>(no gold layout)</td><td></td><td>not compared</td><td></td><td></td></tr>
+</table>
+<h2>C: art19 units vs gold, every row</h2><p>kb/reports/P165.C_art19_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:sio2</td><td>SiO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_sio2_3.8s</td><td>pass 0</td><td>3.8 s SiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:tio2</td><td>TiO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_tio2_12s</td><td>pass 0</td><td>12 s TiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>LHAR4 small chip vS2 (12 s TiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:al2o3</td><td>Al2O3 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_al2o3_120s</td><td>pass 0</td><td>120 s Al2O3</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B</td><td>LHAR4-ADVANCED trench W90 L1020 (120 s Al2O3)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>matched</td><td>tree</td><td>art19:dep:hfo2</td><td>HfO2 plasma ALD</td><td></td><td>s5.p1;s5.p3</td><td></td><td>run_hfo2_120s</td><td>pass 0</td><td>120 s HfO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B</td><td>LHAR4 small chip vS2 (120 s HfO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_12s</td><td>pass 0</td><td>12 s SiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_38s</td><td>pass 0</td><td>38 s SiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>LHAR4-ADVANCED trench W90 L1020 (3.8, 12, and 38 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_sio2_120s</td><td>pass 0</td><td>120 s SiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>LHAR3-v1a trench W100L5mm (120 s SiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>run_tio2_120s</td><td>pass 0</td><td>120 s TiO2</td><td></td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>vS1 (120 s TiO2)</td><td>found</td><td></td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1021_acs.jpcc.9b08176:fig3:c1</td><td>derived: curve_per_unit</td><td>SiO_{2}</td><td></td><td>fig3.cap</td><td>SiO_{2}</td><td></td><td>art19:fig3#c1:measured</td></tr>
+<tr><td>art19</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1021_acs.jpcc.9b08176:fig3:c2</td><td>derived: curve_per_unit</td><td>TiO_{2}</td><td></td><td>fig3.cap</td><td>TiO_{2}</td><td></td><td>art19:fig3#c2:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_3p8s</td><td>SiO2, 3.8 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c1</td><td>specimen_sio2_3.8s</td><td>pass 0</td><td>SiO2, 3.8 s</td><td>run_sio2_3.8s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>3.8 s SiO2</td><td>tokens in order</td><td>art19:fig2B#c1:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_12s</td><td>SiO2, 12 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c2</td><td>specimen_sio2_12s</td><td>pass 0</td><td>SiO2, 12 s</td><td>run_sio2_12s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>12 s SiO2</td><td>tokens in order</td><td>art19:fig2B#c2:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_38s</td><td>SiO2, 38 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c3</td><td>specimen_sio2_38s</td><td>pass 0</td><td>SiO2, 38 s</td><td>run_sio2_38s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>38 s SiO2</td><td>found</td><td>art19:fig2B#c3:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:sio2_120s</td><td>SiO2, 120 s plasma</td><td>art19:dep:sio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c4</td><td>specimen_sio2_120s</td><td>pass 0</td><td>SiO2, 120 s</td><td>run_sio2_120s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>120 s SiO2</td><td>found</td><td>art19:fig2B#c4:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:tio2_12s</td><td>TiO2, 12 s plasma</td><td>art19:dep:tio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c5</td><td>specimen_tio2_12s</td><td>pass 0</td><td>TiO2, 12 s</td><td>run_tio2_12s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>12 s TiO2</td><td>found</td><td>art19:fig2B#c5:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:tio2_120s</td><td>TiO2, 120 s plasma</td><td>art19:dep:tio2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c6</td><td>specimen_tio2_120s</td><td>pass 0</td><td>TiO2, 120 s</td><td>run_tio2_120s</td><td>s3.p7;s3.p8;fig2A;fig2B;fig3</td><td>120 s TiO2</td><td>found</td><td>art19:fig2B#c6:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:al2o3_120s</td><td>Al2O3, 120 s plasma</td><td>art19:dep:al2o3</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c7</td><td>specimen_al2o3_120s</td><td>pass 0</td><td>Al2O3, 120 s</td><td>run_al2o3_120s</td><td>s3.p7;s3.p8;fig2A;fig2B</td><td>120 s Al2O3</td><td>found</td><td>art19:fig2B#c7:measured</td></tr>
+<tr><td>art19</td><td>specimen</td><td>matched</td><td>data</td><td>art19:ent:hfo2_120s</td><td>HfO2, 120 s plasma</td><td>art19:dep:hfo2</td><td>s5.p2;fig2.cap</td><td>art19:fig2B#c8</td><td>specimen_hfo2_120s</td><td>pass 0</td><td>HfO2, 120 s</td><td>run_hfo2_120s</td><td>s3.p7;s3.p8;fig2A;fig2B</td><td>120 s HfO2</td><td>found</td><td>art19:fig2B#c8:measured</td></tr>
+<tr><td>art19</td><td>simulation</td><td>missing</td><td></td><td>art19:sim</td><td>recombination-limited model</td><td></td><td>s4.h;s4.p1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:sio2</td><td>SiO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td>art19:fig3#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:tio2</td><td>TiO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td>art19:fig3#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:al2o3</td><td>Al2O3 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>missing</td><td></td><td>art19:fit:hfo2</td><td>HfO2 fit</td><td>art19:sim</td><td>s6.p5;tab1.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>C: art19 layouts</h2><p>kb/reports/P165.C_art19_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>pass0_units</th><th>gold_units</th></tr>
+<tr><td>art19</td><td>table</td><td>tab1</td><td>row_per_unit</td><td>not_units</td><td>disagree</td><td>0</td><td>4</td></tr>
+<tr><td>art19</td><td>panel</td><td>fig2B</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td>8</td></tr>
+<tr><td>art19</td><td>panel</td><td>fig3</td><td>curve_per_unit</td><td>curve_per_unit</td><td>agree</td><td></td><td>2</td></tr>
+</table>
+<h2>C: zou23 units vs gold, every row</h2><p>kb/reports/P165.C_zou23_units.csv</p>
+<table><tr><th>paper</th><th>role</th><th>outcome</th><th>paired_by</th><th>gold_ids</th><th>gold_names</th><th>gold_parent</th><th>gold_evidence</th><th>gold_data</th><th>unit_id</th><th>origin</th><th>unit_name</th><th>unit_parent</th><th>introduced_in</th><th>evidence_quote</th><th>quote_check</th><th>unit_data</th></tr>
+<tr><td>zou23</td><td>run</td><td>matched</td><td>tree</td><td>zou23:dep:ald</td><td>Mo ALD</td><td></td><td>s5.p3</td><td></td><td>zou23:run:std_ald_350</td><td>pass 0</td><td>standard ALD cycle</td><td></td><td>s2.p2;s3.p1</td><td>Based on Fig. 1, the standard ALD cycle was chosen as {t1/t2/t3/t4} = {1/15/29/15} s, since it provided the near-saturation behavior of the GPC.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>missing</td><td></td><td>zou23:dep:cvd</td><td>Mo pulsed CVD</td><td></td><td>s5.p3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:ald_150</td><td>pass 0</td><td>ALD film deposited at 150 °C</td><td></td><td>s7.p3;fig8.cap;fig8</td><td>GIXRD patterns of the ALD Mo films deposited at 150 and 350 °C.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:ms_run</td><td>pass 0</td><td>MoCl2O2 + at-H ALD process</td><td></td><td>s4.p6;fig4.cap;fig4</td><td>Mass spectroscopy (MS) was used to investigate the evolution of byproducts during the chemisorption of MoCl2O2 and its subsequent reaction with at-H, as depicted in Fig. 4.</td><td>found</td><td>zou23:fig4#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:run:trench_coating</td><td>pass 0</td><td>HAR trenches</td><td></td><td>s8.p3;fig9a;fig10.cap</td><td>Film conformality was investigated in HAR trenches (the aspect ratio varying between 2:1 and 10:1) by scanning TEM, as shown in Fig. 9(a). The Si trenches had a SiO2 capping, on which Mo was deposited.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1a:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1a#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1b:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1b#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1c:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1c#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1d:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1d#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig1e:c1</td><td>derived: point_per_unit</td><td></td><td></td><td>fig1.cap</td><td></td><td></td><td>zou23:fig1e#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig2:c1</td><td>derived: curve_per_unit</td><td>CVD SE</td><td></td><td>fig2.cap</td><td>CVD SE</td><td></td><td>zou23:fig2#c1:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig2:c2</td><td>derived: curve_per_unit</td><td>CVD XRR</td><td></td><td>fig2.cap</td><td>CVD XRR</td><td></td><td>zou23:fig2#c2:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig2:c3</td><td>derived: curve_per_unit</td><td>ALD SE</td><td></td><td>fig2.cap</td><td>ALD SE</td><td></td><td>zou23:fig2#c3:measured</td></tr>
+<tr><td>zou23</td><td>run</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10.1116_6.0002804:fig2:c4</td><td>derived: curve_per_unit</td><td>ALD XRR</td><td></td><td>fig2.cap</td><td>ALD XRR</td><td></td><td>zou23:fig2#c4:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald350</td><td>ALD Mo film, 350 °C</td><td>zou23:dep:ald</td><td>s7.p1;fig1.cap;s9.p1</td><td>zou23:fig1a#c1;zou23:fig1b#c1;zou23:fig1c#c1;zou23:fig1d#c1;zou23:fig1e#c1;zou23:fig4#c1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:ald150</td><td>ALD Mo film, 150 °C</td><td>zou23:dep:ald</td><td>s9.p2;fig8.cap</td><td></td><td>zou23:specimen:ald_350_gixrd</td><td>pass 0</td><td>ALD film obtained at 350 °C</td><td>zou23:run:std_ald_350</td><td>s7.p4;fig8.cap;fig8</td><td>As shown in Fig. 8, a GIXRD measurement of the ALD film obtained at 350 °C reveals peaks at 41°, 59°, and 74°, which corresponds to the (110), (200), and (211) planes of BCC Mo, respectively.</td><td>found</td><td>zou23:fig8#k1:measured; zou23:fig8#k2:measured; zou23:fig8#k3:measured; zou23:fig8#k4:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald250</td><td>ALD Mo film, 250 °C</td><td>zou23:dep:ald</td><td>s9.p2;fig5.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:ald450</td><td>ALD Mo film, 450 °C</td><td>zou23:dep:ald</td><td>s7.p8;fig2.cap</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:cvd250</td><td>CVD Mo film, 250 °C</td><td>zou23:dep:cvd</td><td>s9.p5;fig6.cap</td><td></td><td>zou23:specimen:ald_350_sims</td><td>pass 0</td><td>Mo ALD film obtained at 350 °C</td><td>zou23:run:std_ald_350</td><td>s5.p3;fig6.cap;fig6a</td><td>From the depth profile of an ALD film obtained at 350 °C on a Si substrate, as shown in Fig. 6(a), it can be seen that O, Cl, C, N, and Si contaminants are only present in trace amounts</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>missing</td><td></td><td>zou23:ent:cvd350</td><td>CVD Mo film, 350 °C</td><td>zou23:dep:cvd</td><td>s7.p8;fig2.cap</td><td>zou23:fig2#c1;zou23:fig2#c2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>data</td><td>zou23:ent:ald350_sio2</td><td>ALD Mo film on SiO2, 350 °C</td><td>zou23:dep:ald</td><td>s8.x1;fig3.cap;s10.p1;fig7.cap</td><td>zou23:fig7a#c1</td><td>zou23:specimen:ald_350_24nm</td><td>pass 0</td><td>24 nm thick ALD film deposited at 350 °C on SiO2</td><td>zou23:run:std_ald_350</td><td>abs.g4;s7.p1;fig7a</td><td>The resistivity approaches a bulk value of 18.6 μΩ cm for an approximately 24 nm thick ALD film deposited at 350 °C on SiO2.</td><td>not found</td><td>zou23:fig7a#c1:measured</td></tr>
+<tr><td>zou23</td><td>specimen</td><td>matched</td><td>evidence</td><td>zou23:ent:trench</td><td>Mo in Si trenches</td><td>zou23:dep:ald</td><td>s11.p5;fig9.cap;fig10.cap</td><td></td><td>zou23:specimen:trench_sample</td><td>pass 0</td><td>narrow trench</td><td>zou23:run:trench_coating</td><td>fig10.cap;fig10a;fig10b;fig10c;fig10d;fig10e;fig10f</td><td>EDX analysis, with STEM [(a) and (b)], molybdenum [(c) and (d)], and oxygen [(e) and (f)] elemental mapping, for the top [(a), (c), and (e)] and the bottom [(b), (d), and (f)] of a narrow trench.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:specimen:ald_350_20nm</td><td>pass 0</td><td>20 nm thick ALD film obtained at 350 °C on a Si substrate</td><td>zou23:run:std_ald_350</td><td>s5.p1;fig5a</td><td>Figure 5(a) depicts the TOF-ERDA depth profile of Mo, O, and Si in a 20 nm thick ALD film obtained at 350 °C on a Si substrate.</td><td>found</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>extra</td><td></td><td></td><td></td><td></td><td></td><td></td><td>zou23:specimen:ald_150</td><td>pass 0</td><td>ALD sample obtained at 150 °C</td><td>zou23:run:ald_150</td><td>s7.p3;s7.p4;fig8</td><td>In contrast, besides a peak from the (311) plane of the p-Si(100) substrate,68,69 no peaks are observed for the ALD sample obtained at 150 °C, which indicates an amorphous nature of the film.</td><td>found</td><td></td></tr>
+</table>
+<h2>C: zou23 layouts</h2><p>kb/reports/P165.C_zou23_layouts.csv</p>
+<table><tr><th>paper</th><th>kind</th><th>id</th><th>gold</th><th>pass0</th><th>status</th><th>gold_units</th></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1a</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1b</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1c</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1d</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig1e</td><td>curve_per_unit</td><td>point_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig2</td><td>panel_one_unit</td><td>curve_per_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig4</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig7a</td><td>curve_per_unit</td><td>panel_one_unit</td><td>disagree</td><td>1</td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig3</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig5a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig5b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig6a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig6b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig7b</td><td>(no gold layout)</td><td>point_per_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig8</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig9a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig9b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10a</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10b</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10c</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10d</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10e</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+<tr><td>zou23</td><td>panel</td><td>fig10f</td><td>(no gold layout)</td><td>panel_one_unit</td><td>not compared</td><td></td></tr>
+</table>
+</body></html>
