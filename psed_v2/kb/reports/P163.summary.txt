@@ -1,0 +1,35 @@
+P163, round 2 turn 5: 1 provider call (hei24, group s5-s10), $0.043 (+ at most $0.028 for its cached prefix). Steps 1, 2, 4, 5, 6: 0 calls.
+
+1. Legend values (compile.legend_conditions). A legend label is split at its top-level commas. A part '<symbol> = <n> [unit]' (also
+   '<name>: <n> [unit]', the form of hei24 fig3 'Exposure: 1 × 10⁵ Pa·s') or '<n> [unit]' (a unit units.yaml knows, or none) is a value: its
+   quantity is the panel's series_axis label (for a label of several parts, the part's own symbol or name), resolved by step a0 like any
+   quantity other; unresolved, an other condition carrying that label, its unmapped row written once per panel. A bare name is a structure
+   or categorical value (the trailing bracket dropped: 'Sphere (s = 2)' -> porous_sphere). Anything else stays other, flagged. series_axis
+   comes from ingest/final/<pid>/figures.json: kb/<pid>.figures.json keeps it only as a set's varied_raw, and mat22 fig2's set (a map) names
+   its axes there. Kind: model_input on a model run, stated on a run.
+   hei24 (163 units): structure 15, molar_mass 20, feature_width 20 (d_pore, a symbol of hei24), deposition_temperature 10 ('temperature'),
+   exposure 9, other 116 (τ/ε, σ, s̄, β₀, R, 'particle radius and reactant exposure'). σ and β₀ do not resolve through compile's lookup (the
+   figure importer resolved them with its own: saturation_density, initial_sticking_coefficient). mat22: crystallinity 2. ela03: 'Simulation'
+   and 'y ∝ t^1/2' parse to nothing (flagged).
+2. Rule 1 binds settings and observations only (definition, cited, model, derived, claim, caveat exempt); form version P163, form.json sha256
+   c66329ba; CODEBOOK rule 1 and the FORM.md line. A line of version P158 is validated against this form (as before: a line with a version,
+   the current form). Still failing rule 1, dropped at step a and counted: hei24 20 (11 pass-1 exposure settings, 9 derived fig3 exposures),
+   gor03 6 (exposure settings); ela03's 7 now pass.
+3. hei24 s5-s10 again (1 call): 36 records (23 before); 23 elements with records and 12 NK, none missing (18 before). The new answer for
+   s8.p4 has no 'percentage difference' or '\xi_{θ=1/2,sphere}' record, so both candidates are gone. hei24 T6 267 -> 276.
+4. The per-point code path is removed (compile.panel_items, curve_units, pass0_paper.consistency, the PASS-0 UNITS block): figures.json
+   carries no series_structure, so a point_per_unit series is one unit, its curve.
+5. Recompiled six papers. T6: ela03 166 -> 168, gor03 46 -> 55 (rule 1), hei24 229 -> 267 -> 276; yli18, yim20, mat22 unchanged. check.py --dir:
+   yli18 156, yim20 318, mat22 267, ela03 159 unchanged; gor03 48 -> 54 (6 statement copies on records rule 1 no longer drops); hei24 483 -> 646
+   (-> 645 after the call), net: 'same as' +111 (124 new, 13 gone: one baseline run drawn in several panels is several derived units, now
+   with equal valued conditions), 'same statement' +6, 'varies setting other X' +45 (comparisons over τ/ε, σ, β₀, s̄, R, the fig7 axis, s),
+   one statement copy +1. hei24 vs gold: 80 of
+   83 gold model runs paired, baseline duplicates 6 (P161's rule). Unbound items 0 on the six papers. Round-1 audit PASS.
+6. Re-propose round 2: 37 candidates (82 before): hei24 20, ela03 15, gor03 2; none in two or more papers. 8 come only from derived units:
+   τ/ε, σ, s̄, β₀ (one row per panel, 4 each), R and 'particle radius and reactant exposure' (2 each), ela03 'Simulation' and 'y ∝ t^1/2'. Label
+   merges (one label holds the other's words, the rest a trailing symbol or a phrase opening with a preposition): 'Shape factor for a
+   particle' and 'shape factor s' into 'Shape factor'. 'normalized penetration depth for sphere' / '\xi_{θ=1/2,sphere}': not a merge (neither
+   holds the other's words), and the \xi row is gone (3). decide.html: 44 undecided rows (37 of round 2, 7 earlier).
+Check failure (reported, not worked around): export.py --check 14 of 15. Check 14: the pending candidate 'simulation' (ela03's legend label
+   'Simulation') has the id of an existing entry; it is in pending.csv since P162's propose (adb8f81; P162 ran the check before propose). It
+   clears when that row is decided.

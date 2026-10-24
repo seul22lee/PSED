@@ -1,0 +1,1337 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P163</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P163</h1>
+<h2>Summary</h2><p>kb/reports/P163.summary.txt</p>
+<pre>P163, round 2 turn 5: 1 provider call (hei24, group s5-s10), $0.043 (+ at most $0.028 for its cached prefix). Steps 1, 2, 4, 5, 6: 0 calls.
+
+1. Legend values (compile.legend_conditions). A legend label is split at its top-level commas. A part &#x27;&lt;symbol&gt; = &lt;n&gt; [unit]&#x27; (also
+   &#x27;&lt;name&gt;: &lt;n&gt; [unit]&#x27;, the form of hei24 fig3 &#x27;Exposure: 1 × 10⁵ Pa·s&#x27;) or &#x27;&lt;n&gt; [unit]&#x27; (a unit units.yaml knows, or none) is a value: its
+   quantity is the panel&#x27;s series_axis label (for a label of several parts, the part&#x27;s own symbol or name), resolved by step a0 like any
+   quantity other; unresolved, an other condition carrying that label, its unmapped row written once per panel. A bare name is a structure
+   or categorical value (the trailing bracket dropped: &#x27;Sphere (s = 2)&#x27; -&gt; porous_sphere). Anything else stays other, flagged. series_axis
+   comes from ingest/final/&lt;pid&gt;/figures.json: kb/&lt;pid&gt;.figures.json keeps it only as a set&#x27;s varied_raw, and mat22 fig2&#x27;s set (a map) names
+   its axes there. Kind: model_input on a model run, stated on a run.
+   hei24 (163 units): structure 15, molar_mass 20, feature_width 20 (d_pore, a symbol of hei24), deposition_temperature 10 (&#x27;temperature&#x27;),
+   exposure 9, other 116 (τ/ε, σ, s̄, β₀, R, &#x27;particle radius and reactant exposure&#x27;). σ and β₀ do not resolve through compile&#x27;s lookup (the
+   figure importer resolved them with its own: saturation_density, initial_sticking_coefficient). mat22: crystallinity 2. ela03: &#x27;Simulation&#x27;
+   and &#x27;y ∝ t^1/2&#x27; parse to nothing (flagged).
+2. Rule 1 binds settings and observations only (definition, cited, model, derived, claim, caveat exempt); form version P163, form.json sha256
+   c66329ba; CODEBOOK rule 1 and the FORM.md line. A line of version P158 is validated against this form (as before: a line with a version,
+   the current form). Still failing rule 1, dropped at step a and counted: hei24 20 (11 pass-1 exposure settings, 9 derived fig3 exposures),
+   gor03 6 (exposure settings); ela03&#x27;s 7 now pass.
+3. hei24 s5-s10 again (1 call): 36 records (23 before); 23 elements with records and 12 NK, none missing (18 before). The new answer for
+   s8.p4 has no &#x27;percentage difference&#x27; or &#x27;\xi_{θ=1/2,sphere}&#x27; record, so both candidates are gone. hei24 T6 267 -&gt; 276.
+4. The per-point code path is removed (compile.panel_items, curve_units, pass0_paper.consistency, the PASS-0 UNITS block): figures.json
+   carries no series_structure, so a point_per_unit series is one unit, its curve.
+5. Recompiled six papers. T6: ela03 166 -&gt; 168, gor03 46 -&gt; 55 (rule 1), hei24 229 -&gt; 267 -&gt; 276; yli18, yim20, mat22 unchanged. check.py --dir:
+   yli18 156, yim20 318, mat22 267, ela03 159 unchanged; gor03 48 -&gt; 54 (6 statement copies on records rule 1 no longer drops); hei24 483 -&gt; 646
+   (-&gt; 645 after the call), net: &#x27;same as&#x27; +111 (124 new, 13 gone: one baseline run drawn in several panels is several derived units, now
+   with equal valued conditions), &#x27;same statement&#x27; +6, &#x27;varies setting other X&#x27; +45 (comparisons over τ/ε, σ, β₀, s̄, R, the fig7 axis, s),
+   one statement copy +1. hei24 vs gold: 80 of
+   83 gold model runs paired, baseline duplicates 6 (P161&#x27;s rule). Unbound items 0 on the six papers. Round-1 audit PASS.
+6. Re-propose round 2: 37 candidates (82 before): hei24 20, ela03 15, gor03 2; none in two or more papers. 8 come only from derived units:
+   τ/ε, σ, s̄, β₀ (one row per panel, 4 each), R and &#x27;particle radius and reactant exposure&#x27; (2 each), ela03 &#x27;Simulation&#x27; and &#x27;y ∝ t^1/2&#x27;. Label
+   merges (one label holds the other&#x27;s words, the rest a trailing symbol or a phrase opening with a preposition): &#x27;Shape factor for a
+   particle&#x27; and &#x27;shape factor s&#x27; into &#x27;Shape factor&#x27;. &#x27;normalized penetration depth for sphere&#x27; / &#x27;\xi_{θ=1/2,sphere}&#x27;: not a merge (neither
+   holds the other&#x27;s words), and the \xi row is gone (3). decide.html: 44 undecided rows (37 of round 2, 7 earlier).
+Check failure (reported, not worked around): export.py --check 14 of 15. Check 14: the pending candidate &#x27;simulation&#x27; (ela03&#x27;s legend label
+   &#x27;Simulation&#x27;) has the id of an existing entry; it is in pending.csv since P162&#x27;s propose (adb8f81; P162 ran the check before propose). It
+   clears when that row is decided.
+</pre>
+<h2>1: every derived unit&#x27;s conditions (quantity, value, unit, how resolved), six papers</h2><p>kb/reports/P163.s5_derived_conditions.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>panel</th><th>role</th><th>legend_label</th><th>series_axis</th><th>part_kind</th><th>key</th><th>quantity</th><th>value</th><th>unit_printed</th><th>how_resolved</th><th>flag</th></tr>
+<tr><td>mat22</td><td>10.1021_acs.chemmater.2c01154:fig2:c1</td><td>fig2</td><td>run</td><td>Amorphous</td><td>Crystallinity</td><td>name</td><td>Amorphous</td><td>crystallinity</td><td>amorphous</td><td></td><td>name &#x27;Amorphous&#x27; -&gt; crystallinity = amorphous (value id &#x27;amorphous&#x27;)</td><td>parent unresolved</td></tr>
+<tr><td>mat22</td><td>10.1021_acs.chemmater.2c01154:fig2:c2</td><td>fig2</td><td>run</td><td>Crystalline</td><td>Crystallinity</td><td>name</td><td>Crystalline</td><td>crystallinity</td><td>crystalline</td><td></td><td>name &#x27;Crystalline&#x27; -&gt; crystallinity = crystalline (value id &#x27;crystalline&#x27;)</td><td>parent unresolved</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig5b:c1</td><td>fig5b</td><td>run</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>(no legend label)</td><td>role from figure kind; parent unresolved; no legend label</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig6b:c1</td><td>fig6b</td><td>run</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>(no legend label)</td><td>role from figure kind; parent unresolved; no legend label</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig9b:c1</td><td>fig9b</td><td>model_run</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>(no legend label)</td><td>role from figure kind; no legend label</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig10b:c1</td><td>fig10b</td><td>model_run</td><td>Simulation</td><td></td><td>name</td><td>Simulation</td><td>other</td><td></td><td></td><td>parsed to nothing</td><td>role from figure kind; legend label parsed to nothing</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig10b:c2</td><td>fig10b</td><td>model_run</td><td>y ∝ t^1/2</td><td></td><td>name</td><td>y ∝ t^1/2</td><td>other</td><td></td><td></td><td>parsed to nothing</td><td>role from figure kind; legend label parsed to nothing</td></tr>
+<tr><td>ela03</td><td>10.1021_cm0303080:fig11b:c1</td><td>fig11b</td><td>model_run</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>(no legend label)</td><td>role from figure kind; no legend label</td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2a:c1</td><td>fig2a</td><td>model_run</td><td>Sphere (s = 2)</td><td>particle geometry</td><td>name</td><td>Sphere (s = 2)</td><td>structure</td><td>porous_sphere</td><td></td><td>name &#x27;Sphere&#x27; -&gt; structure = porous_sphere (alias &#x27;sphere&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2a:c2</td><td>fig2a</td><td>model_run</td><td>Cylinder (s = 1)</td><td>particle geometry</td><td>name</td><td>Cylinder (s = 1)</td><td>structure</td><td>porous_cylinder</td><td></td><td>name &#x27;Cylinder&#x27; -&gt; structure = porous_cylinder (alias &#x27;cylinder&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2a:c3</td><td>fig2a</td><td>model_run</td><td>Slab (s = 0)</td><td>particle geometry</td><td>name</td><td>Slab (s = 0)</td><td>structure</td><td>porous_slab</td><td></td><td>name &#x27;Slab&#x27; -&gt; structure = porous_slab (alias &#x27;slab&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2b:c1</td><td>fig2b</td><td>model_run</td><td>Sphere (s = 2)</td><td>particle geometry</td><td>name</td><td>Sphere (s = 2)</td><td>structure</td><td>porous_sphere</td><td></td><td>name &#x27;Sphere&#x27; -&gt; structure = porous_sphere (alias &#x27;sphere&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2b:c2</td><td>fig2b</td><td>model_run</td><td>Cylinder (s = 1)</td><td>particle geometry</td><td>name</td><td>Cylinder (s = 1)</td><td>structure</td><td>porous_cylinder</td><td></td><td>name &#x27;Cylinder&#x27; -&gt; structure = porous_cylinder (alias &#x27;cylinder&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig2b:c3</td><td>fig2b</td><td>model_run</td><td>Slab (s = 0)</td><td>particle geometry</td><td>name</td><td>Slab (s = 0)</td><td>structure</td><td>porous_slab</td><td></td><td>name &#x27;Slab&#x27; -&gt; structure = porous_slab (alias &#x27;slab&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c1</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Sphere (s = 2)</td><td>structure</td><td>porous_sphere</td><td></td><td>name &#x27;Sphere&#x27; -&gt; structure = porous_sphere (alias &#x27;sphere&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c1</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>100000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c2</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Cylinder (s = 1)</td><td>structure</td><td>porous_cylinder</td><td></td><td>name &#x27;Cylinder&#x27; -&gt; structure = porous_cylinder (alias &#x27;cylinder&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c2</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>100000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c3</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Slab (s = 0)</td><td>structure</td><td>porous_slab</td><td></td><td>name &#x27;Slab&#x27; -&gt; structure = porous_slab (alias &#x27;slab&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c3</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 1 × 10⁵ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>100000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c4</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Sphere (s = 2)</td><td>structure</td><td>porous_sphere</td><td></td><td>name &#x27;Sphere&#x27; -&gt; structure = porous_sphere (alias &#x27;sphere&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c4</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>50000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c5</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Cylinder (s = 1)</td><td>structure</td><td>porous_cylinder</td><td></td><td>name &#x27;Cylinder&#x27; -&gt; structure = porous_cylinder (alias &#x27;cylinder&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c5</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>50000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c6</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Slab (s = 0)</td><td>structure</td><td>porous_slab</td><td></td><td>name &#x27;Slab&#x27; -&gt; structure = porous_slab (alias &#x27;slab&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c6</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 5 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>50000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c7</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Sphere (s = 2)</td><td>structure</td><td>porous_sphere</td><td></td><td>name &#x27;Sphere&#x27; -&gt; structure = porous_sphere (alias &#x27;sphere&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c7</td><td>fig3</td><td>model_run</td><td>Sphere (s = 2), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>10000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c8</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Cylinder (s = 1)</td><td>structure</td><td>porous_cylinder</td><td></td><td>name &#x27;Cylinder&#x27; -&gt; structure = porous_cylinder (alias &#x27;cylinder&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c8</td><td>fig3</td><td>model_run</td><td>Cylinder (s = 1), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>10000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c9</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>name</td><td>Slab (s = 0)</td><td>structure</td><td>porous_slab</td><td></td><td>name &#x27;Slab&#x27; -&gt; structure = porous_slab (alias &#x27;slab&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig3:c9</td><td>fig3</td><td>model_run</td><td>Slab (s = 0), Exposure: 1 × 10⁴ Pa·s</td><td>geometry and exposure</td><td>value</td><td>Exposure</td><td>exposure</td><td>10000.0</td><td>Pa·s</td><td>symbol / name &#x27;Exposure&#x27; -&gt; exposure (id &#x27;exposure&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5a:c1</td><td>fig5a</td><td>model_run</td><td>\tau/\epsilon = 1</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5a:c2</td><td>fig5a</td><td>model_run</td><td>\tau/\epsilon = 2</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>2.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5a:c3</td><td>fig5a</td><td>model_run</td><td>\tau/\epsilon = 3</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>3.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5a:c4</td><td>fig5a</td><td>model_run</td><td>\tau/\epsilon = 4</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>4.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5a:c5</td><td>fig5a</td><td>model_run</td><td>\tau/\epsilon = 5</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>5.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5b:c1</td><td>fig5b</td><td>model_run</td><td>\tau/\epsilon = 1</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5b:c2</td><td>fig5b</td><td>model_run</td><td>\tau/\epsilon = 2</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>2.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5b:c3</td><td>fig5b</td><td>model_run</td><td>\tau/\epsilon = 3</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>3.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5b:c4</td><td>fig5b</td><td>model_run</td><td>\tau/\epsilon = 4</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>4.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5b:c5</td><td>fig5b</td><td>model_run</td><td>\tau/\epsilon = 5</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>5.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5c:c1</td><td>fig5c</td><td>model_run</td><td>50 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>50.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5c:c2</td><td>fig5c</td><td>model_run</td><td>100 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>100.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5c:c3</td><td>fig5c</td><td>model_run</td><td>150 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>150.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5c:c4</td><td>fig5c</td><td>model_run</td><td>200 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>200.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5c:c5</td><td>fig5c</td><td>model_run</td><td>250 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>250.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5d:c1</td><td>fig5d</td><td>model_run</td><td>50 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>50.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5d:c2</td><td>fig5d</td><td>model_run</td><td>100 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>100.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5d:c3</td><td>fig5d</td><td>model_run</td><td>150 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>150.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5d:c4</td><td>fig5d</td><td>model_run</td><td>200 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>200.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5d:c5</td><td>fig5d</td><td>model_run</td><td>250 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>250.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5e:c1</td><td>fig5e</td><td>model_run</td><td>\sigma = 1 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>1.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5e:c2</td><td>fig5e</td><td>model_run</td><td>\sigma = 2 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>2.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5e:c3</td><td>fig5e</td><td>model_run</td><td>\sigma = 4 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>4.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5e:c4</td><td>fig5e</td><td>model_run</td><td>\sigma = 6 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>6.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5e:c5</td><td>fig5e</td><td>model_run</td><td>\sigma = 8 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>8.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5f:c1</td><td>fig5f</td><td>model_run</td><td>\sigma = 1 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>1.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5f:c2</td><td>fig5f</td><td>model_run</td><td>\sigma = 2 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>2.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5f:c3</td><td>fig5f</td><td>model_run</td><td>\sigma = 4 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>4.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5f:c4</td><td>fig5f</td><td>model_run</td><td>\sigma = 6 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>6.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5f:c5</td><td>fig5f</td><td>model_run</td><td>\sigma = 8 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>8.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5g:c1</td><td>fig5g</td><td>model_run</td><td>\bar{s} = 1 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>100000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5g:c2</td><td>fig5g</td><td>model_run</td><td>\bar{s} = 2 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>200000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5g:c3</td><td>fig5g</td><td>model_run</td><td>\bar{s} = 3 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>300000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5g:c4</td><td>fig5g</td><td>model_run</td><td>\bar{s} = 4 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>400000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5g:c5</td><td>fig5g</td><td>model_run</td><td>\bar{s} = 5 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>500000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5h:c1</td><td>fig5h</td><td>model_run</td><td>\bar{s} = 1 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>100000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5h:c2</td><td>fig5h</td><td>model_run</td><td>\bar{s} = 2 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>200000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5h:c3</td><td>fig5h</td><td>model_run</td><td>\bar{s} = 3 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>300000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5h:c4</td><td>fig5h</td><td>model_run</td><td>\bar{s} = 4 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>400000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5h:c5</td><td>fig5h</td><td>model_run</td><td>\bar{s} = 5 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>500000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5i:c1</td><td>fig5i</td><td>model_run</td><td>\beta_0 = 0.0001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.0001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5i:c2</td><td>fig5i</td><td>model_run</td><td>\beta_0 = 0.001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5i:c3</td><td>fig5i</td><td>model_run</td><td>\beta_0 = 0.01</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.01</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5i:c4</td><td>fig5i</td><td>model_run</td><td>\beta_0 = 0.1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.1</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5i:c5</td><td>fig5i</td><td>model_run</td><td>\beta_0 = 1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5j:c1</td><td>fig5j</td><td>model_run</td><td>\beta_0 = 0.0001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.0001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5j:c2</td><td>fig5j</td><td>model_run</td><td>\beta_0 = 0.001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5j:c3</td><td>fig5j</td><td>model_run</td><td>\beta_0 = 0.01</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.01</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5j:c4</td><td>fig5j</td><td>model_run</td><td>\beta_0 = 0.1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.1</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5j:c5</td><td>fig5j</td><td>model_run</td><td>\beta_0 = 1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5k:c1</td><td>fig5k</td><td>model_run</td><td>d_{pore} = 5 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>5.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5k:c2</td><td>fig5k</td><td>model_run</td><td>d_{pore} = 10 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>10.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5k:c3</td><td>fig5k</td><td>model_run</td><td>d_{pore} = 20 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>20.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5k:c4</td><td>fig5k</td><td>model_run</td><td>d_{pore} = 30 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>30.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5k:c5</td><td>fig5k</td><td>model_run</td><td>d_{pore} = 40 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>40.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5l:c1</td><td>fig5l</td><td>model_run</td><td>d_{pore} = 5 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>5.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5l:c2</td><td>fig5l</td><td>model_run</td><td>d_{pore} = 10 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>10.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5l:c3</td><td>fig5l</td><td>model_run</td><td>d_{pore} = 20 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>20.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5l:c4</td><td>fig5l</td><td>model_run</td><td>d_{pore} = 30 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>30.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig5l:c5</td><td>fig5l</td><td>model_run</td><td>d_{pore} = 40 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>40.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6a:c1</td><td>fig6a</td><td>model_run</td><td>\tau/\epsilon = 1</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6a:c2</td><td>fig6a</td><td>model_run</td><td>\tau/\epsilon = 2</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>2.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6a:c3</td><td>fig6a</td><td>model_run</td><td>\tau/\epsilon = 3</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>3.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6a:c4</td><td>fig6a</td><td>model_run</td><td>\tau/\epsilon = 4</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>4.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6a:c5</td><td>fig6a</td><td>model_run</td><td>\tau/\epsilon = 5</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>5.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6b:c1</td><td>fig6b</td><td>model_run</td><td>\tau/\epsilon = 1</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6b:c2</td><td>fig6b</td><td>model_run</td><td>\tau/\epsilon = 2</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>2.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6b:c3</td><td>fig6b</td><td>model_run</td><td>\tau/\epsilon = 3</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>3.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6b:c4</td><td>fig6b</td><td>model_run</td><td>\tau/\epsilon = 4</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>4.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6b:c5</td><td>fig6b</td><td>model_run</td><td>\tau/\epsilon = 5</td><td>\tau/\epsilon</td><td>value</td><td>\tau/\epsilon</td><td>other</td><td>5.0</td><td></td><td>unresolved: other condition &#x27;\tau/\epsilon&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6c:c1</td><td>fig6c</td><td>model_run</td><td>50 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>50.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6c:c2</td><td>fig6c</td><td>model_run</td><td>100 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>100.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6c:c3</td><td>fig6c</td><td>model_run</td><td>150 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>150.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6c:c4</td><td>fig6c</td><td>model_run</td><td>200 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>200.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6c:c5</td><td>fig6c</td><td>model_run</td><td>250 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>250.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6d:c1</td><td>fig6d</td><td>model_run</td><td>50 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>50.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6d:c2</td><td>fig6d</td><td>model_run</td><td>100 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>100.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6d:c3</td><td>fig6d</td><td>model_run</td><td>150 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>150.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6d:c4</td><td>fig6d</td><td>model_run</td><td>200 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>200.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6d:c5</td><td>fig6d</td><td>model_run</td><td>250 g mol^{-1}</td><td>reactant molar mass</td><td>value</td><td>reactant molar mass</td><td>molar_mass</td><td>250.0</td><td>g mol^{-1}</td><td>series_axis &#x27;reactant molar mass&#x27; -&gt; molar_mass (alias &#x27;reactant molar mass&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6e:c1</td><td>fig6e</td><td>model_run</td><td>\sigma = 1 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>1.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6e:c2</td><td>fig6e</td><td>model_run</td><td>\sigma = 2 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>2.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6e:c3</td><td>fig6e</td><td>model_run</td><td>\sigma = 4 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>4.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6e:c4</td><td>fig6e</td><td>model_run</td><td>\sigma = 6 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>6.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6e:c5</td><td>fig6e</td><td>model_run</td><td>\sigma = 8 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>8.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6f:c1</td><td>fig6f</td><td>model_run</td><td>\sigma = 1 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>1.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6f:c2</td><td>fig6f</td><td>model_run</td><td>\sigma = 2 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>2.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6f:c3</td><td>fig6f</td><td>model_run</td><td>\sigma = 4 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>4.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6f:c4</td><td>fig6f</td><td>model_run</td><td>\sigma = 6 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>6.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6f:c5</td><td>fig6f</td><td>model_run</td><td>\sigma = 8 nm^{-2}</td><td>\sigma</td><td>value</td><td>\sigma</td><td>other</td><td>8.0</td><td>nm^{-2}</td><td>unresolved: other condition &#x27;\sigma&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6g:c1</td><td>fig6g</td><td>model_run</td><td>\bar{s} = 1 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>100000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6g:c2</td><td>fig6g</td><td>model_run</td><td>\bar{s} = 2 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>200000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6g:c3</td><td>fig6g</td><td>model_run</td><td>\bar{s} = 3 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>300000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6g:c4</td><td>fig6g</td><td>model_run</td><td>\bar{s} = 4 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>400000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6g:c5</td><td>fig6g</td><td>model_run</td><td>\bar{s} = 5 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>500000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6h:c1</td><td>fig6h</td><td>model_run</td><td>\bar{s} = 1 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>100000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6h:c2</td><td>fig6h</td><td>model_run</td><td>\bar{s} = 2 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>200000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6h:c3</td><td>fig6h</td><td>model_run</td><td>\bar{s} = 3 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>300000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6h:c4</td><td>fig6h</td><td>model_run</td><td>\bar{s} = 4 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>400000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6h:c5</td><td>fig6h</td><td>model_run</td><td>\bar{s} = 5 \times 10^8 m^{-1}</td><td>\bar{s}</td><td>value</td><td>\bar{s}</td><td>other</td><td>500000000.0</td><td>m^{-1}</td><td>unresolved: other condition &#x27;\bar{s}&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6i:c1</td><td>fig6i</td><td>model_run</td><td>\beta_0 = 0.0001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.0001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6i:c2</td><td>fig6i</td><td>model_run</td><td>\beta_0 = 0.001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6i:c3</td><td>fig6i</td><td>model_run</td><td>\beta_0 = 0.01</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.01</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6i:c4</td><td>fig6i</td><td>model_run</td><td>\beta_0 = 0.1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.1</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6i:c5</td><td>fig6i</td><td>model_run</td><td>\beta_0 = 1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6j:c1</td><td>fig6j</td><td>model_run</td><td>\beta_0 = 0.0001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.0001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6j:c2</td><td>fig6j</td><td>model_run</td><td>\beta_0 = 0.001</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.001</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6j:c3</td><td>fig6j</td><td>model_run</td><td>\beta_0 = 0.01</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.01</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6j:c4</td><td>fig6j</td><td>model_run</td><td>\beta_0 = 0.1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>0.1</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6j:c5</td><td>fig6j</td><td>model_run</td><td>\beta_0 = 1</td><td>\beta_0</td><td>value</td><td>\beta_0</td><td>other</td><td>1.0</td><td></td><td>unresolved: other condition &#x27;\beta_0&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6k:c1</td><td>fig6k</td><td>model_run</td><td>d_{pore} = 5 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>5.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6k:c2</td><td>fig6k</td><td>model_run</td><td>d_{pore} = 10 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>10.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6k:c3</td><td>fig6k</td><td>model_run</td><td>d_{pore} = 20 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>20.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6k:c4</td><td>fig6k</td><td>model_run</td><td>d_{pore} = 30 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>30.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6k:c5</td><td>fig6k</td><td>model_run</td><td>d_{pore} = 40 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>40.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6l:c1</td><td>fig6l</td><td>model_run</td><td>d_{pore} = 5 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>5.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6l:c2</td><td>fig6l</td><td>model_run</td><td>d_{pore} = 10 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>10.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6l:c3</td><td>fig6l</td><td>model_run</td><td>d_{pore} = 20 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>20.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6l:c4</td><td>fig6l</td><td>model_run</td><td>d_{pore} = 30 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>30.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig6l:c5</td><td>fig6l</td><td>model_run</td><td>d_{pore} = 40 nm</td><td>d_{pore}</td><td>value</td><td>d_{pore}</td><td>feature_width</td><td>40.0</td><td>nm</td><td>series_axis &#x27;d_{pore}&#x27; -&gt; feature_width (symbol &#x27;d_pore&#x27; of this paper)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c1</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c1</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c2</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c2</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c3</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c3</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c4</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c4</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c5</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c5</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c6</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c6</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c7</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c7</td><td>fig7a</td><td>model_run</td><td>R = 300 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c8</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c8</td><td>fig7a</td><td>model_run</td><td>R = 200 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c9</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7a:c9</td><td>fig7a</td><td>model_run</td><td>R = 100 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c1</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c1</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c2</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c2</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c3</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c3</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10⁵ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>100000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c4</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c4</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c5</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c5</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c6</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c6</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10⁴ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>10000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c7</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>300.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c7</td><td>fig7b</td><td>model_run</td><td>R = 300 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c8</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>200.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c8</td><td>fig7b</td><td>model_run</td><td>R = 200 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c9</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>R</td><td>other</td><td>100.0</td><td>µm</td><td>unresolved: other condition &#x27;R&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig7b:c9</td><td>fig7b</td><td>model_run</td><td>R = 100 µm, 1 × 10³ Pa s</td><td>particle radius and reactant exposure</td><td>value</td><td>particle radius and reactant exposure</td><td>other</td><td>1000.0</td><td>Pa s</td><td>unresolved: other condition &#x27;particle radius and reactant exposure&#x27;</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8a:c1</td><td>fig8a</td><td>model_run</td><td>373 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>373.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8a:c2</td><td>fig8a</td><td>model_run</td><td>423 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>423.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8a:c3</td><td>fig8a</td><td>model_run</td><td>473 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>473.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8a:c4</td><td>fig8a</td><td>model_run</td><td>523 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>523.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8a:c5</td><td>fig8a</td><td>model_run</td><td>573 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>573.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8b:c1</td><td>fig8b</td><td>model_run</td><td>373 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>373.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8b:c2</td><td>fig8b</td><td>model_run</td><td>423 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>423.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8b:c3</td><td>fig8b</td><td>model_run</td><td>473 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>473.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8b:c4</td><td>fig8b</td><td>model_run</td><td>523 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>523.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+<tr><td>hei24</td><td>10.1039_d3cp05639b:fig8b:c5</td><td>fig8b</td><td>model_run</td><td>573 K</td><td>temperature</td><td>value</td><td>temperature</td><td>deposition_temperature</td><td>573.0</td><td>K</td><td>series_axis &#x27;temperature&#x27; -&gt; deposition_temperature (name &#x27;temperature&#x27;)</td><td></td></tr>
+</table>
+<h2>1-4: consistency check (unbound items) per panel</h2><p>kb/reports/P163.s5_consistency.csv</p>
+<table><tr><th>paper</th><th>panel</th><th>layout</th><th>items</th><th>held_pass0</th><th>held_derived</th><th>unbound</th><th>unit_ids</th><th>unbound_ids</th><th>flag</th></tr>
+<tr><td>yli18</td><td>fig2</td><td>curve_per_unit</td><td>10</td><td>10</td><td>0</td><td>0</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig3</td><td>curve_per_unit</td><td>8</td><td>8</td><td>0</td><td>0</td><td>mr_tp_0_01s;mr_tp_0_02s;mr_tp_0_05s;mr_tp_0_1s</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig4</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>mr_fig4_h02;mr_fig4_h05;mr_fig4_h1;mr_fig4_h2</td><td></td><td></td></tr>
+<tr><td>yli18</td><td>fig5</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>mr_fig5_gordon;mr_fig5_ylilammi</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig7</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_4;sample_5;sample_6</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig8b</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sample_12;sample_2;sample_4;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_7;sample_8;sample_9</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9d</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9e</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig9f</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_10;sample_11;sample_8</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10a</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10b</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10c</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h100;mr_h1000;mr_h200;mr_h2000;mr_h500_n500</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10d</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10e</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig10f</td><td>curve_per_unit</td><td>5</td><td>5</td><td>0</td><td>0</td><td>mr_h500_n500;mr_n100;mr_n1000;mr_n2000;mr_n250</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_12;sample_13;sample_14</td><td></td><td></td></tr>
+<tr><td>yim20</td><td>fig11b</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sample_12;sample_15;sample_16</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig1a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig1b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig2</td><td>point_per_unit</td><td>34</td><td>32</td><td>2</td><td>0</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig4</td><td>point_per_unit</td><td>32</td><td>32</td><td>0</td><td>0</td><td>run_grid_1;run_grid_10;run_grid_11;run_grid_12;run_grid_13;run_grid_14;run_grid_15;run_grid_16;run_grid_17;run_grid_18;run_grid_19;run_grid_2;run_grid_20;run_grid_21;run_grid_22;run_grid_23;run_grid_24;run_grid_25;run_grid_26;run_grid_27;run_grid_28;run_grid_29;run_grid_3;run_grid_30;run_grid_31;run_grid_32;run_grid_4;run_grid_5;run_grid_6;run_grid_7;run_grid_8;run_grid_9</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig5a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig5b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig6a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig7a</td><td>curve_per_unit</td><td>6</td><td>6</td><td>0</td><td>0</td><td>run_grid_1;run_grid_14;run_grid_19;run_grid_24;run_grid_30;run_grid_6</td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig7b</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig8</td><td>point_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig9a</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>mat22</td><td>fig9b</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig5a</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>spec_zno_10s;spec_zno_1s;spec_zno_30s;spec_zno_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig5b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig6a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>spec_zno_d19;spec_zno_d46;spec_zno_d65</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig6b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig9a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sim_al2o3_10s;sim_al2o3_1s;sim_al2o3_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig9b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig10a</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sim_zno_10s;sim_zno_1s;sim_zno_30s;sim_zno_3s</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig10b</td><td>point_per_unit</td><td>2</td><td>0</td><td>2</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig11a</td><td>curve_per_unit</td><td>3</td><td>3</td><td>0</td><td>0</td><td>sim_zno_d19;sim_zno_d46;sim_zno_d65</td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig11b</td><td>point_per_unit</td><td>1</td><td>0</td><td>1</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>fig13</td><td>curve_per_unit</td><td>4</td><td>4</td><td>0</td><td>0</td><td>sim_pred_p001;sim_pred_p01;sim_pred_p1;sim_pred_p10</td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig2a</td><td>curve_per_unit</td><td>3</td><td>0</td><td>3</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig2b</td><td>curve_per_unit</td><td>3</td><td>0</td><td>3</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig4</td><td>curve_per_unit</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5c</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5d</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5e</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5f</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5g</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5h</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5i</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5j</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5k</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig5l</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6c</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6d</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6e</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6f</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6g</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6h</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6i</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6j</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6k</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig6l</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig7a</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig7b</td><td>curve_per_unit</td><td>9</td><td>0</td><td>9</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig8a</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>fig8b</td><td>curve_per_unit</td><td>5</td><td>0</td><td>5</td><td>0</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>fig3</td><td>curve_per_unit</td><td>1</td><td>1</td><td>0</td><td>0</td><td>model_run_predicted_exposure</td><td></td><td></td></tr>
+</table>
+<h2>2: records failing form.json per paper and rule (compile&#x27;s records, by form version)</h2><p>kb/reports/P163.s5_form_failures_per_paper.csv</p>
+<table><tr><th>paper</th><th>records</th><th>failing_form_json</th><th>failing_rule_1</th><th>by_rule</th></tr>
+<tr><td>yli18</td><td>285</td><td>14</td><td>0</td><td>type (variables) 14</td></tr>
+<tr><td>yim20</td><td>582</td><td>21</td><td>0</td><td>type (qualifiers) 20; enum (value_text) 1</td></tr>
+<tr><td>mat22</td><td>332</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>249</td><td>5</td><td>0</td><td>type (qualifiers) 5</td></tr>
+<tr><td>hei24</td><td>404</td><td>21</td><td>20</td><td>P158 rule 1 20; type (variables) 1</td></tr>
+<tr><td>gor03</td><td>99</td><td>9</td><td>6</td><td>P158 rule 1 6; P158 rule 4 2; enum (value_text) 1</td></tr>
+</table>
+<h2>2: every record that still fails rule 1 (dropped at step a, counted)</h2><p>kb/reports/P163.s5_rule1_failures.csv</p>
+<table><tr><th>paper</th><th>element</th><th>origin</th><th>form_version</th><th>type</th><th>quantity</th><th>label</th><th>value</th><th>unit</th><th>qualifiers</th><th>about</th><th>other_rules</th></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c1</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c2</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c3</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c4</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c5</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c6</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c7</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c8</td><td></td></tr>
+<tr><td>hei24</td><td>fig3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c9</td><td></td></tr>
+<tr><td>hei24</td><td>fig7a</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig7a:c1</td><td></td></tr>
+<tr><td>hei24</td><td>fig7b</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig7b:c1</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c1</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c2</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>100000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c3</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c4</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c5</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>50000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c6</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c7</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c8</td><td></td></tr>
+<tr><td>hei24</td><td>fig3.cap</td><td>derived: curve_per_unit</td><td>P163</td><td>setting</td><td>exposure</td><td>Exposure</td><td>10000.0</td><td>Pa·s</td><td></td><td>10.1039_d3cp05639b:fig3:c9</td><td></td></tr>
+<tr><td>gor03</td><td>s8.p3</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>exposure</td><td>30000.0</td><td>L</td><td></td><td>run_30k_L</td><td></td></tr>
+<tr><td>gor03</td><td>s8.p5</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Langmuir</td><td>2000.0</td><td>L</td><td></td><td>run_2k_L</td><td></td></tr>
+<tr><td>gor03</td><td>s8.p5</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Langmuir</td><td>4000.0</td><td>L</td><td></td><td>run_4k_L</td><td></td></tr>
+<tr><td>gor03</td><td>fig2</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Langmuir</td><td>2000.0</td><td>L</td><td>{&#x27;species&#x27;: &#x27;hf_nme2_4&#x27;, &#x27;by&#x27;: &#x27;none&#x27;}</td><td>run_2k_L</td><td></td></tr>
+<tr><td>gor03</td><td>fig2</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Langmuir</td><td>4000.0</td><td>L</td><td>{&#x27;species&#x27;: &#x27;hf_nme2_4&#x27;, &#x27;by&#x27;: &#x27;none&#x27;}</td><td>run_4k_L</td><td></td></tr>
+<tr><td>gor03</td><td>fig2</td><td>pass 1</td><td>P158</td><td>setting</td><td>exposure</td><td>Langmuir</td><td>30000.0</td><td>L</td><td>{&#x27;species&#x27;: &#x27;hf_nme2_4&#x27;, &#x27;by&#x27;: &#x27;none&#x27;}</td><td>run_30k_L</td><td></td></tr>
+</table>
+<h2>5: score P162 -&gt; P163 (code), every column, six papers</h2><p>kb/reports/P163.s5_score_before_after.csv</p>
+<table><tr><th>paper</th><th>before_unit</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>check_dir_problems</td><td>156</td><td>156</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_setting</td><td>31/63</td><td>31/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>P162.s4</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>check_dir_problems</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>matched_T6</td><td>430</td><td>430</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>parent_flagged_no</td><td>519</td><td>519</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_setting</td><td>105/206</td><td>105/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_derived</td><td>101/108</td><td>101/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_observation</td><td>81/154</td><td>81/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_cited</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>P162.s4</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>check_dir_problems</td><td>267</td><td>267</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_activity</td><td>135/249</td><td>135/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>P162.s4</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>matched_T6</td><td>166</td><td>168</td><td>NO</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>gold_rows</td><td>561</td><td>561</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>parent_flagged_no</td><td>189</td><td>191</td><td>NO</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_model</td><td>35/57</td><td>35/57</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_setting</td><td>56/277</td><td>56/277</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_definition</td><td>1/10</td><td>1/10</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_derived</td><td>4/17</td><td>4/17</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_claim</td><td>9/37</td><td>9/37</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_entity</td><td>13/34</td><td>13/34</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_activity</td><td>15/46</td><td>15/46</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_caveat</td><td>1/15</td><td>1/15</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_observation</td><td>13/38</td><td>13/38</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_cited</td><td>5/21</td><td>7/21</td><td>NO</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_comparison</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>ela03</td><td>P162.s5</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>check_dir_problems</td><td>483</td><td>646</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>matched_T6</td><td>229</td><td>267</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>parent_flagged_no</td><td>266</td><td>281</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_setting</td><td>39/172</td><td>73/172</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_definition</td><td>16/35</td><td>17/35</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_derived</td><td>1/16</td><td>1/16</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_claim</td><td>6/20</td><td>6/20</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_caveat</td><td>1/7</td><td>1/7</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_comparison</td><td>5/24</td><td>6/24</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P162.s5</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>check_dir_problems</td><td>48</td><td>54</td><td>NO</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>matched_T6</td><td>46</td><td>55</td><td>NO</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>gold_rows</td><td>157</td><td>157</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>parent_flagged_no</td><td>49</td><td>58</td><td>NO</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_model</td><td>8/21</td><td>13/21</td><td>NO</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_setting</td><td>21/52</td><td>21/52</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_definition</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_derived</td><td>3/10</td><td>7/10</td><td>NO</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_claim</td><td>7/18</td><td>7/18</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_entity</td><td>4/6</td><td>4/6</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_activity</td><td>6/11</td><td>6/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_observation</td><td>5/11</td><td>5/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_cited</td><td>0/11</td><td>0/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gor03</td><td>P162.s5</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+</table>
+<h2>5: check.py --dir P162 -&gt; P163, changes by class</h2><p>kb/reports/P163.s5_check_dir.csv</p>
+<table><tr><th>paper</th><th>before</th><th>after</th><th>change</th><th>row</th></tr>
+<tr><td>yli18</td><td>156</td><td>156</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>318</td><td>318</td><td>0</td><td></td></tr>
+<tr><td>mat22</td><td>267</td><td>267</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>159</td><td>159</td><td>0</td><td></td></tr>
+<tr><td>hei24</td><td>483</td><td>646</td><td>163</td><td></td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (144): same statement as heiN:figN.cap#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (124): same as heiN:figN.cap#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (26): points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (PN)</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (8): varies setting other &#x27;\sigma&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (8): varies setting other &#x27;\beta_N&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (7): varies setting other &#x27;\tau/\epsilon&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (7): varies setting other &#x27;\bar{s}&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (7): varies setting other &#x27;R&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (7): varies setting other &#x27;particle radius and reactant exposure&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (3): same statement as heiN:figNb#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (3): varies setting other &#x27;s&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): statement repeats eight words of sN.pN in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (103): same statement as heiN:figN.cap#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (26): points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (PN)</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same as heiN:figNc#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same as heiN:figNk#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNd#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNf#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNj#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNl#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNc#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (5): same statement as heiN:figNk#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (3): same as heiN:figNa#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (3): same statement as heiN:figNa#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (3): same statement as heiN:figNb#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (2): varies setting other &#x27;s&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): same statement as heiN:tabN.rNcN#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): same statement as heiN:sN.pN#N</td></tr>
+<tr><td>gor03</td><td>48</td><td>54</td><td>6</td><td></td></tr>
+<tr><td>gor03</td><td></td><td></td><td></td><td>new (6): statement repeats eight words of sN.pN in a row</td></tr>
+<tr><td>gor03</td><td></td><td></td><td></td><td>new (1): points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (PN)</td></tr>
+<tr><td>gor03</td><td></td><td></td><td></td><td>gone (1): points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (PN)</td></tr>
+</table>
+<h2>5: hei24 units vs gold, baseline duplicates</h2><p>kb/reports/P163.s5_hei24_vs_gold.txt</p>
+<pre>hei24: pass-0 units 1, derived 163 ({&#x27;model_run&#x27;: 163}); pair_units: model_run matched 10; model_run merged+split 2; model_run missing 3; model_run split 58; simulation matched 1; gold model runs paired 80 of 83; baseline duplicates (P161&#x27;s rule) 6
+</pre>
+<h2>5: round-1 audit (grow.py audit 1)</h2><p>kb/reports/P163.s5_audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 35 promotions: {&#x27;agree&#x27;: 35}
+A3: 11 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 9}; pending candidates accounted 89/89
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 235 entries, 344 history rows, 89 pending, checks 14/15
+entries 235
+├─ quantity 94   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 18
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 10
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 4   [split by hierarchy leaf]
+│  └─ modelling 4
+│     └─ models 4
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>5: export.py --check after the code change</h2><p>kb/reports/P163.s5_export_check.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/export.py --check` failed. (See above for error)
+vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+FAIL 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted problems: [&#x27;simulation: already an entry&#x27;]
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>3: planned call</h2><p>kb/reports/P163.s3_plan.txt</p>
+<pre>hei24 pass 1: 1 groups (s5+s6+s7+s8+s9+s10); figure/table/equation groups: none; unpaired: tabu1, tabu2
+10.1039_d3cp05639b: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+hei24: prefix 109494 chars (~27373 tokens at 4 chars/token), sent once as cached content; group parts 16450 chars in all, largest 16450 (s5+s6+s7+s8+s9+s10)
+</pre>
+<h2>3: the call</h2><p>kb/reports/P163.s3_run.txt</p>
+<pre>hei24 pass 1: 1 groups (s5+s6+s7+s8+s9+s10); figure/table/equation groups: none; unpaired: tabu1, tabu2
+10.1039_d3cp05639b: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1039_d3cp05639b: 1 calls made, 0 from the cache; prefix cached once (1 cached content)
+hei24 pass 1: 36 records by type {&#x27;claim&#x27;: 21, &#x27;setting&#x27;: 7, &#x27;observation&#x27;: 5, &#x27;definition&#x27;: 2, &#x27;caveat&#x27;: 1}; NK {&#x27;boilerplate&#x27;: 6, &#x27;no_knowledge&#x27;: 5, &#x27;duplicate&#x27;: 1}; elements missing 0; records failing form.json 1; unparsed responses none
+hei24 this run: 1 lines, tokens in 41692 (cache read 37453) out 9833
+</pre>
+<h2>3: cost</h2><p>kb/reports/P163.s3_cost.csv</p>
+<table><tr><th>paper</th><th>group</th><th>calls</th><th>cached_input_tokens</th><th>uncached_input_tokens</th><th>output_tokens</th><th>usd</th><th>note</th></tr>
+<tr><td>hei24</td><td>s5+s6+s7+s8+s9+s10</td><td>1</td><td>37453</td><td>4239</td><td>9833</td><td>0.0429</td><td>cached prefix registration not in the line: at most 37453 tokens x $0.75/M = $0.0281</td></tr>
+</table>
+<h2>3: group s5-s10, every element, P162 answer vs P163 answer</h2><p>kb/reports/P163.s3_group_answers.csv</p>
+<table><tr><th>element</th><th>kind</th><th>P162</th><th>P163</th></tr>
+<tr><td>s5.h</td><td>heading</td><td>NK:boilerplate</td><td>NK:boilerplate</td></tr>
+<tr><td>s5.p1</td><td>paragraph</td><td>setting 3</td><td>caveat 1</td></tr>
+<tr><td>s5.p2</td><td>paragraph</td><td>setting 2</td><td>setting 2</td></tr>
+<tr><td>s5.p3</td><td>paragraph</td><td>NK:no_knowledge</td><td>NK:no_knowledge</td></tr>
+<tr><td>s5.p4</td><td>paragraph</td><td>setting 2</td><td>NK:no_knowledge</td></tr>
+<tr><td>s6.h</td><td>heading</td><td>NK:boilerplate</td><td>NK:boilerplate</td></tr>
+<tr><td>s7.h</td><td>heading</td><td>NK:boilerplate</td><td>NK:boilerplate</td></tr>
+<tr><td>s7.p1</td><td>paragraph</td><td>definition 1; observation 3; claim 1</td><td>observation 3; claim 1</td></tr>
+<tr><td>s7.x1</td><td>paragraph</td><td>NK:no_knowledge</td><td>claim 1</td></tr>
+<tr><td>s7.p2</td><td>paragraph</td><td>claim 1</td><td>claim 1</td></tr>
+<tr><td>s7.p3</td><td>paragraph</td><td>claim 1</td><td>claim 1</td></tr>
+<tr><td>s8.h</td><td>heading</td><td>NK:boilerplate</td><td>NK:boilerplate</td></tr>
+<tr><td>s8.p1</td><td>paragraph</td><td>definition 1</td><td>definition 1</td></tr>
+<tr><td>s8.p2</td><td>paragraph</td><td>NK:no_knowledge</td><td>NK:duplicate:s7.p1</td></tr>
+<tr><td>s8.x1</td><td>paragraph</td><td>observation 3</td><td>claim 2</td></tr>
+<tr><td>s8.p3</td><td>paragraph</td><td>definition 1; observation 2</td><td>claim 1; definition 1; observation 1</td></tr>
+<tr><td>s8.p4</td><td>paragraph</td><td>derived 2</td><td>observation 1</td></tr>
+<tr><td>s8.x2</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.h</td><td>heading</td><td>missing</td><td>NK:boilerplate</td></tr>
+<tr><td>s9.p1</td><td>paragraph</td><td>missing</td><td>NK:no_knowledge</td></tr>
+<tr><td>s9.x1</td><td>paragraph</td><td>missing</td><td>NK:no_knowledge</td></tr>
+<tr><td>s9.p2</td><td>paragraph</td><td>missing</td><td>claim 2</td></tr>
+<tr><td>s9.p3</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.p4</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.p5</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.p6</td><td>paragraph</td><td>missing</td><td>claim 2</td></tr>
+<tr><td>s9.p7</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.p8</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.x2</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s9.p9</td><td>paragraph</td><td>missing</td><td>claim 1</td></tr>
+<tr><td>s10.h</td><td>heading</td><td>missing</td><td>NK:boilerplate</td></tr>
+<tr><td>s10.p1</td><td>paragraph</td><td>missing</td><td>NK:no_knowledge</td></tr>
+<tr><td>s10.p2</td><td>paragraph</td><td>missing</td><td>setting 4</td></tr>
+<tr><td>s10.p3</td><td>paragraph</td><td>missing</td><td>setting 1</td></tr>
+<tr><td>s10.p4</td><td>paragraph</td><td>missing</td><td>claim 2</td></tr>
+</table>
+<h2>3: hei24 score before (P163 code) -&gt; after the call, every column</h2><p>kb/reports/P163.s3_score_before_after.csv</p>
+<table><tr><th>paper</th><th>before_unit</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>check_dir_problems</td><td>646</td><td>645</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>matched_T6</td><td>267</td><td>276</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>parent_flagged_no</td><td>281</td><td>290</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_setting</td><td>73/172</td><td>73/172</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_definition</td><td>17/35</td><td>17/35</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_comparison</td><td>6/24</td><td>6/24</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_claim</td><td>6/20</td><td>15/20</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_derived</td><td>1/16</td><td>0/16</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_caveat</td><td>1/7</td><td>2/7</td><td>NO</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>P163.s5</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+</table>
+<h2>3: hei24 check.py --dir before -&gt; after the call</h2><p>kb/reports/P163.s3_check_dir.csv</p>
+<table><tr><th>paper</th><th>before</th><th>after</th><th>change</th><th>row</th></tr>
+<tr><td>hei24</td><td>646</td><td>645</td><td>-1</td><td></td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (4): statement repeats eight words of sN.pN in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (3): observation under heiN:mrun:N_N_dNcpNb_figNa_cN (entity ), not under a measurement activity or a comparison</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (2): varies setting other &#x27;s&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (2): varies setting other &#x27;\sigma&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (2): varies setting other &#x27;\beta_N&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): statement repeats eight words of figN.cap in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): same statement as heiN:figN.cap#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): same statement as heiN:sN.pN#N</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): claim without links</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): observation under heiN:mrun:N_N_dNcpNb_figN_cN (entity ), not under a measurement activity or a comparison</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): varies setting other &#x27;\tau/\epsilon&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): varies setting other &#x27;\bar{s}&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): varies setting other &#x27;R&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>new (1): varies setting other &#x27;particle radius and reactant exposure&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (4): statement repeats eight words of sN.pN in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (3): observation under heiN:mrun:N_N_dNcpNb_figNb_cN (entity ), not under a measurement activity or a comparison</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (3): observation under heiN:mrun:N_N_dNcpNb_figN_cN (entity ), not under a measurement activity or a comparison</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (2): varies setting other &#x27;\sigma&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (2): varies setting other &#x27;\beta_N&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (2): varies setting other &#x27;s&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): statement repeats eight words of sN.xN in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): statement repeats eight words of figN.cap in a row</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): range N–N is not a range its statement prints (PN)</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): varies setting other &#x27;\tau/\epsilon&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): varies setting other &#x27;\bar{s}&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): varies setting other &#x27;R&#x27; among its members; give it an id in lists.py</td></tr>
+<tr><td>hei24</td><td></td><td></td><td></td><td>gone (1): varies setting other &#x27;particle radius and reactant exposure&#x27; among its members; give it an id in lists.py</td></tr>
+</table>
+<h2>3: hei24 records failing form.json after the call</h2><p>kb/reports/P163.s3_form_failures_per_paper.csv</p>
+<table><tr><th>paper</th><th>records</th><th>failing_form_json</th><th>failing_rule_1</th><th>by_rule</th></tr>
+<tr><td>yli18</td><td>285</td><td>14</td><td>0</td><td>type (variables) 14</td></tr>
+<tr><td>yim20</td><td>582</td><td>21</td><td>0</td><td>type (qualifiers) 20; enum (value_text) 1</td></tr>
+<tr><td>mat22</td><td>332</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>249</td><td>5</td><td>0</td><td>type (qualifiers) 5</td></tr>
+<tr><td>hei24</td><td>417</td><td>21</td><td>20</td><td>P158 rule 1 20; type (variables) 1</td></tr>
+<tr><td>gor03</td><td>99</td><td>9</td><td>6</td><td>P158 rule 1 6; P158 rule 4 2; enum (value_text) 1</td></tr>
+</table>
+<h2>3: hei24 units vs gold after the call</h2><p>kb/reports/P163.s3_hei24_vs_gold.txt</p>
+<pre>hei24: pass-0 units 1, derived 163 ({&#x27;model_run&#x27;: 163}); pair_units: model_run matched 10; model_run merged+split 2; model_run missing 3; model_run split 58; simulation matched 1; gold model runs paired 80 of 83; baseline duplicates (P161&#x27;s rule) 6
+</pre>
+<h2>6: grow.py propose (round 2, with the label-prefix merges)</h2><p>kb/reports/P163.s6_propose.txt</p>
+<pre>round 2: 37 candidates (37 new, 0 merged with earlier undecided rows; 82 undecided rows of round 2 rebuilt); 0 rows never (compile.py&#x27;s never column), 0 values without a quantity, 7 symbol and 1 label merges into 21 symbol-table rows; 2 label-prefix merges (P163)
+  merged: &#x27;Shape factor for a particle&#x27; into &#x27;Shape factor&#x27;
+  merged: &#x27;shape factor s&#x27; into &#x27;Shape factor&#x27;
+pending.csv: 44 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+</pre>
+<h2>6: the candidates as decide.html lists them (undecided rows; none in two or more papers)</h2><p>kb/reports/P163.s6_decide_candidates.csv</p>
+<table><tr><th>position</th><th>multi</th><th>id</th><th>printed</th><th>kind</th><th>unit</th><th>n_papers</th><th>papers</th><th>first_round</th><th>rows</th><th>rows_from_derived_units</th><th>nearest_id</th><th>rule_hint</th><th>proposed_definition</th><th>evidence</th></tr>
+<tr><td>1</td><td></td><td>elam_monte_carlo</td><td>elam monte carlo</td><td>model</td><td></td><td>0</td><td></td><td>0</td><td>0</td><td>0</td><td></td><td>none</td><td>One-dimensional Monte Carlo random walk of reactant molecules in a cylindrical pore with Knudsen steps, self-limiting reaction with probability S, pore narrowin</td><td></td></tr>
+<tr><td>2</td><td></td><td>bent</td><td>bent</td><td>quantity</td><td>nm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>The 100 nm design channel height bent ca. 40 nm</td><td>10.1039_d0cp03358h:s16.p5 — The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>3</td><td></td><td>displacement</td><td>displacement</td><td>quantity</td><td>nm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>displacement of ca. 25 nm</td><td>10.1039_d0cp03358h:s16.p5 — displacement of ca. 25 nm</td></tr>
+<tr><td>4</td><td></td><td>distance_between_pillars</td><td>Distance between pillars</td><td>quantity</td><td></td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>membrane_sagging</td><td>none</td><td>Distance between pillars</td><td>10.1039_d0cp03358h:tabu1.r0c0 — Distance between pillars (m)</td></tr>
+<tr><td>5</td><td></td><td>distance_between_rows_of_pillars</td><td>Distance between rows of pillars</td><td>quantity</td><td>µm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>membrane_sagging</td><td>none</td><td>Distance between rows of pillars</td><td>10.1039_d0cp03358h:tabu2.r7c0 — Distance between rows of pillars (\mu\text{m})</td></tr>
+<tr><td>6</td><td></td><td>pillar_diameter</td><td>Pillar diameter</td><td>quantity</td><td></td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>body_diameter</td><td>none</td><td>Pillar diameter</td><td>10.1039_d0cp03358h:tabu1.r5c0 — Pillar diameter (\mu\text{m})</td></tr>
+<tr><td>7</td><td></td><td>tilde_xi</td><td>\tilde{\xi}</td><td>quantity</td><td>1</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>\tilde{\xi} = x/L</td><td>10.1039_d0cp03358h:fig2.cap — \tilde{\xi} = x/L</td></tr>
+<tr><td>8</td><td></td><td>anodization_conditions_charge_density</td><td>anodization conditions / charge density</td><td>quantity</td><td>C/cm2</td><td>1</td><td>ela03</td><td>2</td><td>4</td><td>0</td><td>carrier_density</td><td>none</td><td>anodization conditions / charge density</td><td>10.1021_cm0303080:tab1.r1c3 — anodization conditions / charge density (C/cm^2)</td></tr>
+<tr><td>9</td><td></td><td>anodization_conditions_electrolyte</td><td>anodization conditions / electrolyte</td><td>quantity</td><td></td><td>1</td><td>ela03</td><td>2</td><td>3</td><td>0</td><td></td><td>none</td><td>anodization conditions / electrolyte</td><td>10.1021_cm0303080:tab1.r1c0 — anodization conditions / electrolyte</td></tr>
+<tr><td>10</td><td></td><td>anodization_conditions_potential</td><td>anodization conditions / potential</td><td>quantity</td><td>V</td><td>1</td><td>ela03</td><td>2</td><td>3</td><td>0</td><td></td><td>none</td><td>anodization conditions / potential</td><td>10.1021_cm0303080:tab1.r1c1 — anodization conditions / potential (V)</td></tr>
+<tr><td>11</td><td></td><td>atomic_layer_deposition</td><td>Atomic layer deposition</td><td>quantity</td><td></td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>deposition_rate</td><td>none</td><td>Atomic layer deposition</td><td>10.1039_d3cp05639b:tabu1.r0c0 — Atomic layer deposition</td></tr>
+<tr><td>12</td><td></td><td>average_surface_area_of_adsorption_sites</td><td>Average surface area of adsorption sites</td><td>quantity</td><td>m2</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>specific_surface_area</td><td>none</td><td>Average surface area of adsorption sites</td><td>10.1039_d3cp05639b:tabu1.r23c0 — Average surface area of adsorption sites (\text{m}^2)</td></tr>
+<tr><td>13</td><td></td><td>bar_s</td><td>\bar{s}</td><td>quantity</td><td>m^{-1}</td><td>1</td><td>hei24</td><td>2</td><td>4</td><td>4</td><td></td><td>none</td><td></td><td>10.1039_d3cp05639b:fig5.cap — \bar{s}</td></tr>
+<tr><td>14</td><td></td><td>baseline_parameters_for_porous_media</td><td>Baseline parameters for porous media</td><td>quantity</td><td></td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>porous_cylinder</td><td>none</td><td></td><td>10.1039_d3cp05639b:tab1.cap — Baseline parameters for porous media</td></tr>
+<tr><td>15</td><td></td><td>beta_0</td><td>\beta_0</td><td>quantity</td><td></td><td>1</td><td>hei24</td><td>2</td><td>4</td><td>4</td><td></td><td>none</td><td></td><td>10.1039_d3cp05639b:fig5.cap — \beta_0</td></tr>
+<tr><td>16</td><td></td><td>boltzmann_constant</td><td>Boltzmann constant</td><td>quantity</td><td>J/K</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>adsorption_equilibrium_constant</td><td>none</td><td>Boltzmann constant</td><td>10.1039_d3cp05639b:tabu1.r14c0 — Boltzmann constant (\text{m}^2 \text{ kg s}^{-2} \text{ K}^{-1})</td></tr>
+<tr><td>17</td><td></td><td>catalyst_particle_outer_surface_area_ideal_non_porous_sphere</td><td>Catalyst particle outer surface area, ideal non-porous sphere</td><td>quantity</td><td>m2</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>specific_surface_area</td><td>none</td><td>Catalyst particle outer surface area, ideal non-porous sphere</td><td>10.1039_d3cp05639b:tabu1.r3c0 — Catalyst particle outer surface area, ideal non-porous sphere (\text{m}^2)</td></tr>
+<tr><td>18</td><td></td><td>catalyst_particle_volume</td><td>Catalyst particle volume</td><td>quantity</td><td>m3</td><td>1</td><td>hei24</td><td>2</td><td>4</td><td>0</td><td>interaction_volume</td><td>none</td><td>Catalyst particle volume</td><td>10.1039_d3cp05639b:tabu2.r2c0 — Catalyst particle volume (\text{m}^3)</td></tr>
+<tr><td>19</td><td></td><td>current</td><td>current</td><td>quantity</td><td>nA</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>percolation</td><td>c</td><td>current of 20 nanoamps</td><td>10.1021_cm0303080:s3.p32 — current of 20 nanoamps</td></tr>
+<tr><td>20</td><td></td><td>density_of_ald_reactive_sites</td><td>density of ALD reactive sites</td><td>quantity</td><td>10^15 cm^-2</td><td>1</td><td>ela03</td><td>2</td><td>2</td><td>0</td><td>precursor_adsorption</td><td>none</td><td>\Gamma is the density of ALD reactive sites in 10^{15} \text{ cm}^{-2}</td><td>10.1021_cm0303080:s5.p32 — \Gamma is the density of ALD reactive sites in 10^{15} \text{ cm}^{-2}</td></tr>
+<tr><td>21</td><td></td><td>electron_beam_energy</td><td>electron beam energy</td><td>quantity</td><td>keV</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>interaction_volume</td><td>c</td><td>electron beam energy of 15 keV</td><td>10.1021_cm0303080:s3.p32 — electron beam energy of 15 keV</td></tr>
+<tr><td>22</td><td></td><td>excess_over_the_saturation_dose</td><td>excess over the saturation dose</td><td>quantity</td><td>%</td><td>1</td><td>gor03</td><td>2</td><td>1</td><td>0</td><td>excess_sulfur</td><td>c</td><td>a slight excess (about 10 %) over the saturation dose of each reactant is used, in order to make sure that all parts of the surface are saturated</td><td>10.1002_cvde.200390005:s4.p4 — a slight excess (about 10 %) over the saturation dose of each reactant is used, in order to make sure that all parts of the surface are saturated</td></tr>
+<tr><td>23</td><td></td><td>h</td><td>H</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>4</td><td>0</td><td></td><td>none</td><td>The hopping coefficient is H = 2.7 \times 10^{-5}</td><td>10.1021_cm0303080:s5.x2 — The hopping coefficient is H = 2.7 \times 10^{-5}</td></tr>
+<tr><td>24</td><td></td><td>hopping_coefficient</td><td>hopping coefficient</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>2</td><td>0</td><td>absorption_coefficient</td><td>none</td><td>H , the “hopping coefficient”. H is the probability that a given hop reaches an empty site.</td><td>10.1021_cm0303080:s5.p20 — H , the “hopping coefficient”. H is the probability that a given hop reaches an empty site.</td></tr>
+<tr><td>25</td><td></td><td>integrated_coverage</td><td>integrated coverage</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>step_coverage</td><td>none</td><td>integrated coverage, \Theta^* , was empirically found to obey the following expression</td><td>10.1021_cm0303080:eq8 — integrated coverage, \Theta^* , was empirically found to obey the following expression</td></tr>
+<tr><td>26</td><td></td><td>k</td><td>k</td><td>quantity</td><td>s^-1/2</td><td>1</td><td>ela03</td><td>2</td><td>3</td><td>0</td><td></td><td>none</td><td>fit to the function y = kt^{1/2} with k = 0.28</td><td>10.1021_cm0303080:s5.x1 — fit to the function y = kt^{1/2} with k = 0.28</td></tr>
+<tr><td>27</td><td></td><td>mass_for_a_single_reactant_molecule</td><td>Mass for a single reactant molecule</td><td>quantity</td><td>g</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>molar_mass</td><td>none</td><td>Mass for a single reactant molecule</td><td>10.1039_d3cp05639b:tabu1.r15c0 — Mass for a single reactant molecule (g)</td></tr>
+<tr><td>28</td><td></td><td>mean_thermal_velocity</td><td>Mean thermal velocity</td><td>quantity</td><td>m/s</td><td>1</td><td>hei24</td><td>2</td><td>2</td><td>0</td><td>mean_free_path</td><td>none</td><td>Mean thermal velocity</td><td>10.1039_d3cp05639b:tabu1.r10c0 — Mean thermal velocity (\text{m s}^{-1})</td></tr>
+<tr><td>29</td><td></td><td>normalized_penetration_depth_for_sphere</td><td>normalized penetration depth for sphere</td><td>quantity</td><td>1</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>penetration_depth</td><td>none</td><td>normalized penetration depth for sphere, \zeta_{\theta=1/2, \text{sphere}} = \frac{r_{\theta=1/2, \text{sphere}}}{R}</td><td>10.1039_d3cp05639b:s8.p3 — normalized penetration depth for sphere, \zeta_{\theta=1/2, \text{sphere}} = \frac{r_{\theta=1/2, \text{sphere}}}{R}</td></tr>
+<tr><td>30</td><td></td><td>number_of_molecules_represented_by_one_trajectory</td><td>number of molecules represented by one trajectory</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>entry_sides</td><td>none</td><td>N = (\alpha\gamma)/x where \alpha is the surface area of the nanopore, \gamma is the areal density of reactive sites in units of sites \text{cm}^{-2} , and x is</td><td>10.1021_cm0303080:s5.p9 — N = (\alpha\gamma)/x where \alpha is the surface area of the nanopore, \gamma is the areal density of reactive sites in units of sites \text{cm}^{-2} , and x is the number of array elements</td></tr>
+<tr><td>31</td><td></td><td>particle_radius_and_reactant_exposure</td><td>particle radius and reactant exposure</td><td>quantity</td><td>Pa s</td><td>1</td><td>hei24</td><td>2</td><td>2</td><td>2</td><td>exposure</td><td>none</td><td></td><td>10.1039_d3cp05639b:fig7.cap — particle radius and reactant exposure</td></tr>
+<tr><td>32</td><td></td><td>particle_radius_r</td><td>Particle radius, R</td><td>quantity</td><td>m</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>particle_diameter</td><td>none</td><td>Particle radius, R</td><td>10.1039_d3cp05639b:tab1.r6c1 — Particle radius, R</td></tr>
+<tr><td>33</td><td></td><td>r</td><td>R</td><td>quantity</td><td>µm</td><td>1</td><td>hei24</td><td>2</td><td>2</td><td>2</td><td></td><td>none</td><td></td><td>10.1039_d3cp05639b:fig7.cap — R</td></tr>
+<tr><td>34</td><td></td><td>ratio_of_surface_area_a_o_0_and_pore_volume</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>quantity</td><td>1/m</td><td>1</td><td>hei24</td><td>2</td><td>2</td><td>0</td><td>feature_narrowing</td><td>none</td><td>Ratio of surface area (A_{O_0}) and pore volume (V_P)</td><td>10.1039_d3cp05639b:tabu1.r22c0 — Ratio of surface area (A_{O_0}) and pore volume (V_P)</td></tr>
+<tr><td>35</td><td></td><td>scale_bar</td><td>scale bar</td><td>quantity</td><td>µm</td><td>1</td><td>gor03</td><td>2</td><td>1</td><td>0</td><td></td><td>c</td><td>each white bar is 0.1 \mu\text{m} long</td><td>10.1002_cvde.200390005:fig2.cap — each white bar is 0.1 \mu\text{m} long</td></tr>
+<tr><td>36</td><td></td><td>shape_factor</td><td>Shape factor</td><td>quantity</td><td>1</td><td>1</td><td>hei24</td><td>2</td><td>13</td><td>0</td><td>porous_cylinder</td><td>none</td><td>Shape factor</td><td>10.1039_d3cp05639b:tabu1.r1c0 — Shape factor; a = s + 1(-)</td></tr>
+<tr><td>37</td><td></td><td>shrinking_core_model</td><td>Shrinking core model</td><td>quantity</td><td></td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td>feature_narrowing</td><td>none</td><td>Shrinking core model</td><td>10.1039_d3cp05639b:tabu1.r24c0 — Shrinking core model</td></tr>
+<tr><td>38</td><td></td><td>sigma</td><td>\sigma</td><td>quantity</td><td>nm^{-2}</td><td>1</td><td>hei24</td><td>2</td><td>4</td><td>4</td><td></td><td>none</td><td></td><td>10.1039_d3cp05639b:fig5.cap — \sigma</td></tr>
+<tr><td>39</td><td></td><td>simulation</td><td>Simulation</td><td>quantity</td><td></td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>1</td><td>simulation</td><td>none</td><td></td><td>10.1021_cm0303080:fig10.cap — Simulation</td></tr>
+<tr><td>40</td><td></td><td>slope_of_integrated_zno_coverage</td><td>slope of integrated ZnO coverage</td><td>quantity</td><td>nm-1</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>arts_slope</td><td>none</td><td>slope of 0.25 integrated ZnO coverage units per nm</td><td>10.1021_cm0303080:s5.p17 — slope of 0.25 integrated ZnO coverage units per nm</td></tr>
+<tr><td>41</td><td></td><td>spatial_domain_discretization_points</td><td>spatial domain discretization points</td><td>quantity</td><td>1</td><td>1</td><td>hei24</td><td>2</td><td>1</td><td>0</td><td></td><td>none</td><td>The spatial domain of the radius was discretized typically using 300 points.</td><td>10.1039_d3cp05639b:s4.p21 — The spatial domain of the radius was discretized typically using 300 points.</td></tr>
+<tr><td>42</td><td></td><td>surface_area_roughness_factor</td><td>surface area roughness factor</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>0</td><td>fin_growth</td><td>none</td><td>R = 1.5 is a surface area roughness factor determined experimentally for the nanoporous AA membranes</td><td>10.1021_cm0303080:s5.p9 — R = 1.5 is a surface area roughness factor determined experimentally for the nanoporous AA membranes</td></tr>
+<tr><td>43</td><td></td><td>tau_epsilon</td><td>\tau/\epsilon</td><td>quantity</td><td></td><td>1</td><td>hei24</td><td>2</td><td>4</td><td>4</td><td></td><td>none</td><td></td><td>10.1039_d3cp05639b:fig5.cap — \tau/\epsilon</td></tr>
+<tr><td>44</td><td></td><td>y_t_1_2</td><td>y ∝ t^1/2</td><td>quantity</td><td></td><td>1</td><td>ela03</td><td>2</td><td>1</td><td>1</td><td></td><td>none</td><td></td><td>10.1021_cm0303080:fig10.cap — y ∝ t^1/2</td></tr>
+</table>
+<h2>6: rows carried from applied rounds</h2><p>kb/reports/P163.s6_carried_rows.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th></tr>
+</table>
+<h2>6: export.py --check after propose (check 14 fails)</h2><p>kb/reports/P163.s6_export_check.txt</p>
+<pre>ERROR conda.cli.main_run:execute(127): `conda run python psed_v2/ontology/export.py --check` failed. (See above for error)
+vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 10 slot entries, 12 structure instances
+FAIL 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted problems: [&#x27;simulation: already an entry&#x27;]
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>Code diff (compile.py, pass0_paper.py, pass1_elements.py, export.py, grow.py, CODEBOOK.md, FORM.md, form.json)</h2><p>kb/reports/P163.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 284ccf0..3982e4c 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -141,58 +141,127 @@ for _q, _vs in VALUES.items():
+ NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
+ DATA_ROLE = {&quot;simulated&quot;: &quot;simulated&quot;, &quot;read_from_figure&quot;: &quot;measured&quot;}          # P161: figures.json kind (P87) -&gt; the pass-0 data role
+ UNIT_LAYOUTS = (&quot;curve_per_unit&quot;, &quot;point_per_unit&quot;)
++LEGEND_NUMBER = re.compile(r&quot;[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?(?:\s*(?:×|x|\\times)\s*10\s*(?:\^\s*\{?\s*([-+−]?\d+)\s*\}?|([⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+)))?&quot;)
++SUPERSCRIPT = str.maketrans(&quot;⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺&quot;, &quot;0123456789-+&quot;)
++
++
++def vocab_hits(pid, kind, text):
++    &quot;&quot;&quot;The step-a0 lookup (P157b, P157d): {id: how} of a text against the generated vocab of one kind, whole (export.norm_label), and the
++    symbols of this paper (export.symbol_key, case kept).&quot;&quot;&quot;
++    hits = dict(WORDS[kind].get(C.X.norm_label(text), {}))
++    for i, t in SYMBOLS[kind].get((pid, C.X.symbol_key(text)), {}).items():
++        hits.setdefault(i, f&quot;symbol &#x27;{t}&#x27; of this paper&quot;)
++    return hits
++
++
++def series_axis(pid):
++    &quot;&quot;&quot;P163: {panel: the series_axis label as printed} of the figure stage&#x27;s ingest/final/&lt;pid&gt;/figures.json (kb/&lt;pid&gt;.figures.json keeps
++    it only as a set&#x27;s varied_raw, and a map&#x27;s set names its axes instead).&quot;&quot;&quot;
++    p = C.V2 / &quot;ingest&quot; / &quot;final&quot; / pid / &quot;figures.json&quot;
++    d = json.loads(p.read_text(encoding=&quot;utf-8&quot;)) if p.exists() else {}
++    return {f&quot;fig{f[&#x27;number&#x27;]}{x.get(&#x27;panel&#x27;, &#x27;&#x27;)}&quot;: (x.get(&quot;series_axis&quot;) or &quot;&quot;).strip() for f in d.get(&quot;figures&quot;, []) for x in f.get(&quot;panels&quot;) or []}
++
++
++def legend_number(t):
++    &quot;&quot;&quot;P163: a text that is a number (n, n.n, n e m, n × 10^m, n × 10⁵) and then nothing or a unit units.yaml knows -&gt; (value, unit as
++    printed); else None.&quot;&quot;&quot;
++    t = t.strip()
++    m = LEGEND_NUMBER.match(t)
++    if not m:
++        return None
++    rest = t[m.end():].strip()
++    if rest and unit_symbol(rest) is None:
++        return None
++    base = float(re.match(r&quot;[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?&quot;, m.group(0)).group(0).replace(&quot;−&quot;, &quot;-&quot;))
++    exp = (m.group(1) or (m.group(2) or &quot;&quot;).translate(SUPERSCRIPT)).replace(&quot;−&quot;, &quot;-&quot;)
++    return (base * 10 ** int(exp) if exp else base), rest
++
++
++def legend_parts(label):
++    &quot;&quot;&quot;P163: a legend label split at its top-level commas (a comma inside brackets or braces stays).&quot;&quot;&quot;
++    parts, depth, cur = [], 0, &quot;&quot;
++    for ch in label:
++        depth += (ch in &quot;([{&quot;) - (ch in &quot;)]}&quot;)
++        if ch == &quot;,&quot; and depth == 0:
++            parts.append(cur)
++            cur = &quot;&quot;
++        else:
++            cur += ch
++    return [p.strip() for p in parts + [cur] if p.strip()]
++
++
++def legend_conditions(pid, label, axis):
++    &quot;&quot;&quot;P163 rule 1: the conditions a legend label gives a derived unit, one per part (legend_parts). &#x27;&lt;symbol&gt; = &lt;number&gt; [unit]&#x27; (or
++    &#x27;&lt;name&gt;: &lt;number&gt; [unit]&#x27;) and &#x27;&lt;number&gt; [unit]&#x27; are a value: its quantity is the panel&#x27;s series_axis label resolved (vocab_hits, as
++    step a0 resolves it), for a part&#x27;s own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
++    the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
++    panel). A bare name is a value: a structure or categorical value (vocab_hits on the name, a trailing bracket dropped). A part that is
++    none of these is an other condition as before, flagged. Returns [dict(kind &#x27;value&#x27; | &#x27;name&#x27;, key: the record&#x27;s label_as_printed,
++    value, unit, quantity: the id the lookup gives, else other, how)].&quot;&quot;&quot;
++    parts = legend_parts(label)
++    out = []
++    for part in parts:
++        m = re.fullmatch(r&quot;(.+?)\s*[=:]\s*(.+)&quot;, part)
++        sym, num = (m.group(1).strip(), legend_number(m.group(2))) if m and legend_number(m.group(2)) else (&quot;&quot;, legend_number(part))
++        if num:
++            keys = ([sym] if sym else []) + ([axis] if axis and (len(parts) == 1 or not sym) else [])
++            keys = keys[::-1] if len(parts) == 1 else keys                    # one part: the axis label first (the rule), then its symbol
++            hit = next(((k, h) for k in keys for h in [vocab_hits(pid, &quot;quantity&quot;, k)] if len(h) == 1), None)
++            key = hit[0] if hit else (axis if axis and (len(parts) == 1 or not sym) else sym or part)
++            q, how = (next(iter(hit[1].items())) if hit else (&quot;other&quot;, f&quot;unresolved: other condition &#x27;{key}&#x27;&quot;))
++            out.append(dict(kind=&quot;value&quot;, key=key, value=num[0], unit=num[1], quantity=q,
++                            how=how if hit is None else f&quot;{&#x27;series_axis&#x27; if key == axis else &#x27;symbol / name&#x27;} &#x27;{key}&#x27; -&gt; {q} ({how})&quot;))
++            continue
++        name = re.sub(r&quot;\s*[\(\[][^\)\]]*[\)\]]\s*$&quot;, &quot;&quot;, part).strip() or part
++        hits = {(k_ if k_ == &quot;structure&quot; else k_[6:], i): h for k_ in [&quot;structure&quot;] + [f&quot;value:{q}&quot; for q in VALUES] for i, h in vocab_hits(pid, k_, name).items()}
++        if len(hits) == 1:
++            ((q, i), h), = hits.items()
++            out.append(dict(kind=&quot;name&quot;, key=part, value_text=i, quantity=q, how=f&quot;name &#x27;{name}&#x27; -&gt; {q} = {i} ({h})&quot;))
++        else:
++            out.append(dict(kind=&quot;name&quot;, key=part, quantity=&quot;other&quot;, how=&quot;parsed to nothing&quot; + (f&quot; (names {sorted(hits)})&quot; if hits else &quot;&quot;), flag=&quot;legend label parsed to nothing&quot;))
++    return out
+ 
+ 
+ def panel_items(pid, obj):
+-    &quot;&quot;&quot;P162 (rules 2, 4): the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the unit refs that hold
+-    it: {panel: [item]}, item = dict(curve, point, cell, held). curve_per_unit: one item per curve. point_per_unit: a series whose
+-    figures.json series_structure is per_point gives one item per point (point = its 1-based index); any other series one item (its curve);
+-    a cell one item. A unit&#x27;s data ref {id} holds a curve or a cell, and every point of that curve; {id, point} holds that point. One
+-    measure for curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds).&quot;&quot;&quot;
++    &quot;&quot;&quot;P162 rule 2: the items of every curve_per_unit (point_per_unit) panel of the pass-0 line obj, each with the pass-0 units whose data
++    refs hold it: {panel: [dict(curve, cell, held)]}: one item per curve; a point_per_unit panel also one per cell. P163: no per-point path
++    (figures.json carries no series_structure curve / per_point): a point_per_unit series is one item, its curve. One measure for
++    curve_units() (an item no ref holds gets a unit) and pass0_paper.consistency (the items no ref holds).&quot;&quot;&quot;
+     p = C.V2 / &quot;kb&quot; / f&quot;{pid}.figures.json&quot;
+     Fj = json.loads(p.read_text(encoding=&quot;utf-8&quot;)) if p.exists() else {}
+     obj = obj if isinstance(obj, dict) else {}
+     lay = {x[&quot;panel&quot;]: x for x in obj.get(&quot;panel_layouts&quot;) or [] if isinstance(x, dict) and x.get(&quot;layout&quot;) in UNIT_LAYOUTS}
+-    refs = collections.defaultdict(list)                                       # (id, point or None) -&gt; unit ids
++    refs = collections.defaultdict(list)                                       # data id -&gt; the units naming it
+     for u in obj.get(&quot;units&quot;) or []:
+         for d in (u.get(&quot;data&quot;) or []) if isinstance(u, dict) else []:
+-            refs[(d.get(&quot;id&quot;), d.get(&quot;point&quot;)) if isinstance(d, dict) else (d, None)].append(u.get(&quot;id&quot;))
++            refs[d.get(&quot;id&quot;) if isinstance(d, dict) else d].append(u.get(&quot;id&quot;))
+     out = collections.defaultdict(list)
+     for c in Fj.get(&quot;curves&quot;, []) + [v for v in Fj.get(&quot;values&quot;, []) if v.get(&quot;kind&quot;) == &quot;cell&quot;]:
+         panel = f&quot;fig{c[&#x27;figure&#x27;]}{c.get(&#x27;panel&#x27;, &#x27;&#x27;)}&quot;
+-        if panel not in lay:
+-            continue
+         cell = c.get(&quot;kind&quot;) == &quot;cell&quot;
+-        if cell and lay[panel][&quot;layout&quot;] == &quot;curve_per_unit&quot;:
+-            continue
+-        per_point = not cell and lay[panel][&quot;layout&quot;] == &quot;point_per_unit&quot; and c.get(&quot;series&quot;, {}).get(&quot;series_structure&quot;) == &quot;per_point&quot;
+-        for n in range(1, len(c.get(&quot;points&quot;) or []) + 1) if per_point else [None]:
+-            out[panel].append(dict(curve=c, point=n, cell=cell, held=refs.get((c[&quot;id&quot;], None), []) + (refs.get((c[&quot;id&quot;], n), []) if n else [])))
++        if panel in lay and not (cell and lay[panel][&quot;layout&quot;] == &quot;curve_per_unit&quot;):
++            out[panel].append(dict(curve=c, cell=cell, held=refs.get(c[&quot;id&quot;], [])))
+     return out
+ 
+ 
+ def curve_units(pid, obj):
+-    &quot;&quot;&quot;P161 step 1, between pass 0 and pass 1 (no call), P162 rules 1 and 4: one unit per item of panel_items() that no pass-0 unit&#x27;s
+-    data refs hold. id &lt;pid&gt;:&lt;panel&gt;:&lt;curve id&gt; (a point: .p&lt;n&gt;). Role (P162 rule 1) from the paper&#x27;s pass-0 units: a simulation and no
+-    run -&gt; model_run, a run and no simulation -&gt; run, both (or neither) -&gt; the figures.json kind (DATA_ROLE), the unit flagged &quot;role from
+-    figure kind&quot;; the data role follows the role (model_run simulated, run measured) unless taken from the kind. Parent: the paper&#x27;s one
+-    simulation (model_run) or its one run (run), else null, flagged &quot;parent unresolved&quot;. introduced_in the panel&#x27;s caption element;
+-    evidence_quote and name_as_printed the legend label as printed; data the curve ref with its role (a point: and its index);
+-    conditions: the legend label (an other condition, resolved like a record value by compile step a0, P162 rule 3) and, for a point
+-    (P162 rule 4), its coordinates on the axes the pass-0 layout names (axis_quantities; both axes when it names none: the layout&#x27;s
+-    axes are the unit&#x27;s conditions); origin &quot;derived: &lt;layout&gt;&quot;. Read by compile (input, tree), by pass1_elements.units_block (PASS-0
+-    UNITS) and by pass0_paper.consistency.&quot;&quot;&quot;
++    &quot;&quot;&quot;P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit&#x27;s data refs hold. id
++    &lt;pid&gt;:&lt;panel&gt;:&lt;curve id&gt;. Role (P162 rule 1) from the paper&#x27;s pass-0 units: a simulation and no run -&gt; model_run, a run and no
++    simulation -&gt; run, both (or neither) -&gt; the figures.json kind (DATA_ROLE), flagged &quot;role from figure kind&quot;; the data role follows
++    the role unless taken from the kind. Parent: the paper&#x27;s one simulation (model_run) or its one run (run), else null, flagged &quot;parent
++    unresolved&quot;. introduced_in the panel&#x27;s caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
++    ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel&#x27;s series_axis; origin
++    &quot;derived: &lt;layout&gt;&quot;. Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS) and by pass0_paper.consistency.&quot;&quot;&quot;
+     obj = obj if isinstance(obj, dict) else {}
+     units = [u for u in obj.get(&quot;units&quot;) or [] if isinstance(u, dict)]
+     sims, runs = ([u[&quot;id&quot;] for u in units if u.get(&quot;role&quot;) == r] for r in (&quot;simulation&quot;, &quot;run&quot;))
+     by_list = &quot;model_run&quot; if sims and not runs else &quot;run&quot; if runs and not sims else None
+     lays = {x[&quot;panel&quot;]: x for x in obj.get(&quot;panel_layouts&quot;) or [] if isinstance(x, dict)}
+-    ids = set(C.E.texts(pid))
++    ids, axes = set(C.E.texts(pid)), series_axis(pid)
+     out = []
+     for panel, items in panel_items(pid, obj).items():
+-        lay = lays[panel][&quot;layout&quot;]
+         for it in items:
+-            c, n = it[&quot;curve&quot;], it[&quot;point&quot;]
++            c = it[&quot;curve&quot;]
+             if it[&quot;held&quot;]:
+                 continue
+             kind_role = DATA_ROLE.get(c.get(&quot;data_kind&quot;) if it[&quot;cell&quot;] else c.get(&quot;kind&quot;), &quot;measured&quot;)
+@@ -201,19 +270,13 @@ def curve_units(pid, obj):
+             par = sims if role == &quot;model_run&quot; else runs
+             label = ((c.get(&quot;label&quot;) or c.get(&quot;value_text&quot;) or &quot;&quot;) if it[&quot;cell&quot;] else c.get(&quot;series&quot;, {}).get(&quot;label_raw&quot;) or &quot;&quot;).strip()
+             cap = f&quot;fig{c[&#x27;figure&#x27;]}.cap&quot;
+-            conds = [dict(quantity=&quot;other&quot;, label_as_printed=label)] if label else []
+-            if n:                                                               # P162 rule 4: a point&#x27;s coordinates on the layout&#x27;s axes
+-                axes = lays[panel].get(&quot;axis_quantities&quot;) or []
+-                for ax, v in zip((&quot;x&quot;, &quot;y&quot;), c[&quot;points&quot;][n - 1]):
+-                    a = c.get(ax) or {}
+-                    if a.get(&quot;quantity&quot;) in L.QUANTITIES and (not axes or a[&quot;quantity&quot;] in axes) and v is not None:
+-                        conds.append(dict(quantity=a[&quot;quantity&quot;], value=v, unit=a.get(&quot;unit&quot;) or &quot;&quot;, label_as_printed=a.get(&quot;label_raw&quot;) or a[&quot;quantity&quot;]))
++            conds = legend_conditions(pid, label, axes.get(panel, &quot;&quot;)) if label else []
+             flags = ([] if by_list else [&quot;role from figure kind&quot;]) + ([] if len(par) == 1 else [&quot;parent unresolved&quot;]) + ([] if label else [&quot;no legend label&quot;]) \
+-                + ([] if cap in ids else [&quot;no caption element&quot;])
+-            out.append(dict(id=f&quot;{pid}:{panel}:{c[&#x27;id&#x27;].split(&#x27;#&#x27;)[-1]}&quot; + (f&quot;.p{n}&quot; if n else &quot;&quot;), parent=par[0] if len(par) == 1 else None,
+-                            name_as_printed=label or None, role=role, structure_class=None, specimen_class=None, experiment_kind=None,
+-                            introduced_in=[cap] if cap in ids else [], data=[dict(id=c[&quot;id&quot;], role=drole, **({&quot;point&quot;: n} if n else {}))],
+-                            evidence_quote=label or None, origin=f&quot;derived: {lay}&quot;, conditions=conds, panel=panel, curve=c[&quot;id&quot;], point=n,
++                + ([] if cap in ids else [&quot;no caption element&quot;]) + sorted({x[&quot;flag&quot;] for x in conds if x.get(&quot;flag&quot;)})
++            out.append(dict(id=f&quot;{pid}:{panel}:{c[&#x27;id&#x27;].split(&#x27;#&#x27;)[-1]}&quot;, parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
++                            structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
++                            data=[dict(id=c[&quot;id&quot;], role=drole)], evidence_quote=label or None, origin=f&quot;derived: {lays[panel][&#x27;layout&#x27;]}&quot;,
++                            conditions=conds, series_axis=axes.get(panel, &quot;&quot;), panel=panel, curve=c[&quot;id&quot;],
+                             role_from=&quot;unit list&quot; if by_list else &quot;figure kind&quot;, flag=&quot;; &quot;.join(flags)))
+     return out
+ 
+@@ -288,12 +351,14 @@ class Run:
+         self.pass0 = list(self.pass0) + self.from_curves
+         for u in self.from_curves:
+             self.count(&quot;input&quot;, f&quot;unit derived ({u[&#x27;origin&#x27;]}, {u[&#x27;role&#x27;]})&quot;)
+-            for c in u[&quot;conditions&quot;] if u[&quot;introduced_in&quot;] else []:              # P162: the legend label (other) and a point&#x27;s coordinates
+-                rec = dict(type=&quot;setting&quot;, label_as_printed=c[&quot;label_as_printed&quot;], quote=c[&quot;label_as_printed&quot;], about=u[&quot;id&quot;], quantity=c[&quot;quantity&quot;])
+-                if c[&quot;quantity&quot;] != &quot;other&quot;:
+-                    rec.update(value=c[&quot;value&quot;], unit=c[&quot;unit&quot;] or None, kind=&quot;read_from_figure&quot;)
+-                recs.append(dict(eid=u[&quot;introduced_in&quot;][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u[&quot;origin&quot;]))
+-                self.count(&quot;input&quot;, &quot;condition of a derived unit: &quot; + (&quot;the legend label (other)&quot; if c[&quot;quantity&quot;] == &quot;other&quot; else &quot;a point&#x27;s coordinate&quot;))
++            dkind = &quot;model_input&quot; if u[&quot;role&quot;] == &quot;model_run&quot; else &quot;stated&quot;
++            for c in u[&quot;conditions&quot;] if u[&quot;introduced_in&quot;] else []:              # P163: the legend label&#x27;s values, resolved by step a0
++                rec = dict(type=&quot;setting&quot;, quantity=&quot;other&quot;, label_as_printed=c[&quot;key&quot;], quote=c[&quot;key&quot;], about=u[&quot;id&quot;])
++                if c[&quot;kind&quot;] == &quot;value&quot;:
++                    rec.update(value=c[&quot;value&quot;], unit=c[&quot;unit&quot;] or None, kind=dkind)
++                recs.append(dict(eid=u[&quot;introduced_in&quot;][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u[&quot;origin&quot;], derived=c[&quot;kind&quot;],
++                                 dkind=dkind, once=(u[&quot;panel&quot;], c[&quot;key&quot;]) if c[&quot;kind&quot;] == &quot;value&quot; else None))
++                self.count(&quot;input&quot;, f&quot;condition of a derived unit ({c[&#x27;kind&#x27;]})&quot;)
+         if self.from_curves:
+             self.note(f&quot;input: {len(self.from_curves)} units derived from curves (P161): &quot; + &quot;, &quot;.join(u[&quot;id&quot;] for u in self.from_curves))
+         return recs
+@@ -308,27 +373,32 @@ class Run:
+         entries). An entry&#x27;s label is never read. A unit is left to step e. One id: the record takes it and goes on like any record
+         (form.json, units, placement, fact); two ids: ambiguous, left as it is (unmapped.csv action &#x27;kept (ambiguous: ids)&#x27;). A record still
+         quantity other whose key is a never.csv word, or a never.csv symbol of this paper, carries the never category (unmapped.csv column
+-        never; export.never_index: a never label naming a live entry has no effect). Every promotion -&gt; &lt;pid&gt;.promoted.csv. P162 rule 3: a
+-        derived unit&#x27;s legend label (quantity other) is first read like a record value: one categorical value (id or value alias, any
+-        categorical with a value list) -&gt; that quantity and value_text (Amorphous -&gt; crystallinity = amorphous); else it goes on as other.&quot;&quot;&quot;
++        never; export.never_index: a never label naming a live entry has no effect). Every promotion -&gt; &lt;pid&gt;.promoted.csv. P162 rule 3, P163: a
++        derived unit&#x27;s legend name (curve_units: a part that is no number) is read like a record value: one structure or categorical value
++        (id or alias, the trailing bracket dropped) -&gt; that quantity and value_text (Amorphous -&gt; crystallinity = amorphous, Sphere (s = 2) -&gt;
++        structure = porous_sphere); else it goes on as other. A derived value (a number) holds the series_axis label or its symbol as its key
++        and is resolved here like any quantity other.&quot;&quot;&quot;
+         enum = C.schema(&quot;form.json&quot;)[&quot;$defs&quot;]
+         for r in recs:
+             rec = r[&quot;rec&quot;]
+             q = rec.get(&quot;quantity&quot;)
+             q = q if isinstance(q, str) else &quot;&quot;
+-            if r.get(&quot;origin&quot;) and q == &quot;other&quot;:                                # P162 rule 3: a derived unit&#x27;s legend label, read like a record value
++            if r.get(&quot;derived&quot;) == &quot;name&quot; and q == &quot;other&quot;:                    # P162 rule 3, P163: a legend name is a structure or categorical value
+                 lab = C.X.record_text(rec)
+-                hits = {(cq, v): how for cq in VALUES for v, how in WORDS[f&quot;value:{cq}&quot;].get(C.X.norm_label(lab), {}).items()}
++                name = re.sub(r&quot;\s*[\(\[][^\)\]]*[\)\]]\s*$&quot;, &quot;&quot;, lab).strip() or lab
++                hits = {(k_ if k_ == &quot;structure&quot; else k_[6:], v): how for k_ in [&quot;structure&quot;] + [f&quot;value:{cq}&quot; for cq in VALUES]
++                        for v, how in vocab_hits(self.pid, k_, name).items()}
+                 if len(hits) == 1:
+                     ((cq, v), how), = hits.items()
+-                    rec.update(quantity=cq, value_text=v)
++                    rec.update(quantity=cq, value_text=v, kind=r[&quot;dkind&quot;])
+                     q = cq
+-                    self.promoted.append(dict(r=r, element=r[&quot;eid&quot;], field=&quot;value_text&quot;, printed=lab, meaning=lab, lookup=f&quot;value:{cq}: {how}&quot;, id=v, outcome=&quot;&quot;))
+-                    self.count(&quot;a0&quot;, &quot;derived legend label -&gt; categorical value&quot;)
+-                    self.note(f&quot;a0: {r[&#x27;eid&#x27;]}: legend label {lab!r} -&gt; {cq} = {v} (value:{cq}: {how})&quot;)
+-                elif hits:
+-                    self.count(&quot;a0&quot;, &quot;derived legend label: two categorical values (left other)&quot;)
+-                    self.note(f&quot;a0: {r[&#x27;eid&#x27;]}: legend label {lab!r} names {sorted(hits)} (left other)&quot;)
++                    self.promoted.append(dict(r=r, element=r[&quot;eid&quot;], field=&quot;value_text&quot;, printed=lab, meaning=lab,
++                                              lookup=f&quot;{&#x27;structure&#x27; if cq == &#x27;structure&#x27; else &#x27;value:&#x27; + cq}: {how}&quot;, id=v, outcome=&quot;&quot;))
++                    self.count(&quot;a0&quot;, f&quot;derived legend name -&gt; {&#x27;structure&#x27; if cq == &#x27;structure&#x27; else &#x27;categorical&#x27;} value&quot;)
++                    self.note(f&quot;a0: {r[&#x27;eid&#x27;]}: legend name {lab!r} -&gt; {cq} = {v} ({how})&quot;)
++                else:
++                    self.count(&quot;a0&quot;, &quot;derived legend label parsed to nothing (other)&quot; + (&quot;, two values&quot; if hits else &quot;&quot;))
++                    self.note(f&quot;a0: {r[&#x27;eid&#x27;]}: legend label {lab!r} parsed to nothing&quot; + (f&quot;: names {sorted(hits)}&quot; if hits else &quot;&quot;))
+             todo = [(&quot;quantity&quot;, C.X.record_text(rec), &quot;quantity&quot;)] if q == &quot;other&quot; else []
+             vt = rec.get(&quot;value_text&quot;)
+             if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]][&quot;enum&quot;]:
+@@ -340,9 +410,7 @@ class Run:
+             for field, text, kind in todo:
+                 if not text.strip():
+                     continue
+-                hits = dict(WORDS[kind].get(C.X.norm_label(text), {}))
+-                for i, t in SYMBOLS[kind].get((self.pid, C.X.symbol_key(text)), {}).items():
+-                    hits.setdefault(i, f&quot;symbol &#x27;{t}&#x27; of this paper&quot;)
++                hits = vocab_hits(self.pid, kind, text)
+                 meaning = &quot; &quot;.join(((rec.get(&quot;candidate&quot;) or {}).get(&quot;definition_quote&quot;) or &quot;&quot;).split()) if field == &quot;quantity&quot; else text
+                 if len(hits) == 1:
+                     (i, how), = hits.items()
+@@ -465,7 +533,7 @@ class Run:
+         return out
+ 
+     def ground(self, recs):
+-        out = []
++        out, self.once = [], set()
+         for r in recs:
+             rec, eid = r[&quot;rec&quot;], r[&quot;eid&quot;]
+             q = rec.get(&quot;quantity&quot;, &quot;&quot;)
+@@ -485,7 +553,11 @@ class Run:
+                                               candidate=&quot;&quot;, action=&quot;kept (bug: passed form.json)&quot;))
+                 self.count(&quot;c&quot;, &quot;BUG: id not in the vocabulary after form.json (kept)&quot;)
+                 self.note(f&quot;c: BUG {eid}: {bad} not in the vocabulary after form.json (kept)&quot;)
+-            if q == &quot;other&quot;:
++            if q == &quot;other&quot; and r.get(&quot;once&quot;) and r[&quot;once&quot;] in self.once:      # P163: a derived value&#x27;s other condition, one row per panel
++                self.count(&quot;c&quot;, &quot;quantity_other of a derived value (the panel&#x27;s row written once)&quot;)
++            elif q == &quot;other&quot;:
++                if r.get(&quot;once&quot;):
++                    self.once.add(r[&quot;once&quot;])
+                 self.unmapped.append(dict(element=eid, field=&quot;quantity&quot;, id=&quot;other&quot;, label_as_printed=rec.get(&quot;label_as_printed&quot;, &quot;&quot;), unit=rec.get(&quot;unit&quot;, &quot;&quot;),
+                                           candidate=json.dumps(rec.get(&quot;candidate&quot;, {}), ensure_ascii=False),
+                                           action=f&quot;kept (never: {r[&#x27;never_label&#x27;]})&quot; if r.get(&quot;never&quot;) else f&quot;kept (ambiguous: {&#x27;, &#x27;.join(r[&#x27;ambiguous&#x27;])})&quot; if r.get(&quot;ambiguous&quot;) else &quot;kept&quot;,
+diff --git a/psed_v2/kb/extract/pass0_paper.py b/psed_v2/kb/extract/pass0_paper.py
+index 0f70170..742d6dc 100644
+--- a/psed_v2/kb/extract/pass0_paper.py
++++ b/psed_v2/kb/extract/pass0_paper.py
+@@ -68,23 +68,22 @@ THINKING = {&quot;thinking_level&quot;: &quot;MEDIUM&quot;}
+ 
+ def consistency(pid, obj):
+     &quot;&quot;&quot;P160 B, part of every pass-0 run. P162 rule 2: for each curve_per_unit (point_per_unit) panel of the pass-0 line, its items
+-    (compile.panel_items: the curves; a per_point series&#x27; points, any other series, the cells) and the units that hold them: held by a
+-    pass-0 unit&#x27;s data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses.&quot;&quot;&quot;
++    (compile.panel_items: the curves; a point_per_unit panel&#x27;s series and cells) and the units that hold them: held by a pass-0 unit&#x27;s
++    data refs, held by a unit compile.curve_units() derives, or unbound (flagged). The measure the creation step uses.&quot;&quot;&quot;
+     import compile as K                                                         # P161
+     obj = obj if isinstance(obj, dict) else {}
+     der = collections.defaultdict(set)
+     for u in K.curve_units(pid, obj):
+         for d in u[&quot;data&quot;]:
+-            der[(d[&quot;id&quot;], d.get(&quot;point&quot;))].add(u[&quot;id&quot;])
++            der[d[&quot;id&quot;]].add(u[&quot;id&quot;])
+     items, out = K.panel_items(pid, obj), []
+     for x in obj.get(&quot;panel_layouts&quot;) or []:
+         if not isinstance(x, dict) or x.get(&quot;layout&quot;) not in K.UNIT_LAYOUTS:
+             continue
+         its = items.get(x[&quot;panel&quot;], [])
+-        name = lambda i: i[&quot;curve&quot;][&quot;id&quot;] + (f&quot;.p{i[&#x27;point&#x27;]}&quot; if i[&quot;point&quot;] else &quot;&quot;)       # noqa: E731
+         held0 = [i for i in its if i[&quot;held&quot;]]
+-        heldd = [i for i in its if not i[&quot;held&quot;] and (der.get((i[&quot;curve&quot;][&quot;id&quot;], None)) or der.get((i[&quot;curve&quot;][&quot;id&quot;], i[&quot;point&quot;])))]
+-        unb = [name(i) for i in its if not i[&quot;held&quot;] and name(i) not in {name(j) for j in heldd}]
++        heldd = [i for i in its if not i[&quot;held&quot;] and der.get(i[&quot;curve&quot;][&quot;id&quot;])]
++        unb = [i[&quot;curve&quot;][&quot;id&quot;] for i in its if not i[&quot;held&quot;] and not der.get(i[&quot;curve&quot;][&quot;id&quot;])]
+         out.append(dict(panel=x[&quot;panel&quot;], layout=x[&quot;layout&quot;], items=len(its), held_pass0=len(held0), held_derived=len(heldd), unbound=len(unb),
+                         unit_ids=&quot;;&quot;.join(sorted({u for i in held0 for u in i[&quot;held&quot;]})), unbound_ids=&quot;;&quot;.join(unb), flag=f&quot;unbound: {len(unb)}&quot; if unb else &quot;&quot;))
+     return out
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index fef21ec..95c42ff 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -275,12 +275,11 @@ def units_block(pid):
+         raise C.Stop(&quot;no pass-0 line in records/: run pass0_paper.py first&quot;)
+     obj = C.loads_json(p0[-1][&quot;response&quot;])
+     items = (obj.get(&quot;units&quot;) or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
+-    data = lambda it: &quot; &quot;.join(f&quot;{d.get(&#x27;id&#x27;)}&quot; + (f&quot; point {d[&#x27;point&#x27;]}&quot; if d.get(&quot;point&quot;) else &quot;&quot;) + f&quot;:{d.get(&#x27;role&#x27;)}&quot; if isinstance(d, dict) else str(d)   # noqa: E731
+-                               for d in (it.get(&quot;data&quot;) or [])) or &quot;-&quot;
++    data = lambda it: &quot; &quot;.join(f&quot;{d.get(&#x27;id&#x27;)}:{d.get(&#x27;role&#x27;)}&quot; if isinstance(d, dict) else str(d) for d in (it.get(&quot;data&quot;) or [])) or &quot;-&quot;   # noqa: E731
+     line = lambda it: f&quot;{it.get(&#x27;id&#x27;, &#x27;&#x27;)} | {it.get(&#x27;role&#x27;, &#x27;&#x27;)} | {it.get(&#x27;name_as_printed&#x27;) or &#x27;-&#x27;} | {it.get(&#x27;parent&#x27;) or &#x27;-&#x27;} | {data(it)}&quot;   # noqa: E731
+     der = K.curve_units(pid, obj)
+     return &quot;\n&quot;.join([line(it) for it in items if isinstance(it, dict)]
+-                     + ([&quot;Units the compiler derived from figure curves (one per curve, or point, no unit above names; name = the legend label):&quot;] if der else [])
++                     + ([&quot;Units the compiler derived from figure curves (one per curve no unit above names; name = the legend label):&quot;] if der else [])
+                      + [f&quot;{line(it)} | {it[&#x27;origin&#x27;]}&quot; for it in der])
+ 
+ 
+diff --git a/psed_v2/kb/schema/CODEBOOK.md b/psed_v2/kb/schema/CODEBOOK.md
+index d9662b0..1bdcd4e 100644
+--- a/psed_v2/kb/schema/CODEBOOK.md
++++ b/psed_v2/kb/schema/CODEBOOK.md
+@@ -95,9 +95,9 @@ Record types:
+ - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
+ - cited: a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else other with a candidate; never null (P149). An element that states the paper&#x27;s own value and a literature value yields both an observation (or setting) and a cited record (P150).
+ 
+-Form rules (P158, form version P158, frozen; form.json allOf &quot;P158 rule n&quot;):
++Form rules (P158, rule 1 scoped in P163; form version P163, frozen; form.json allOf &quot;P158 rule n&quot;):
+ 
+-- rule 1, step: a record of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it.
++- rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163).
+ - rule 2, cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other records, never of a cited one).
+ - rule 3, cited: kind cited only on a cited record (one field, one value: the record&#x27;s type).
+ - rule 4, definition and cited: quantity is never null: the entry the term or value stands for, else other with label_as_printed.
+diff --git a/psed_v2/kb/schema/FORM.md b/psed_v2/kb/schema/FORM.md
+index d5998fb..d340666 100644
+--- a/psed_v2/kb/schema/FORM.md
++++ b/psed_v2/kb/schema/FORM.md
+@@ -1,7 +1,7 @@
+ &lt;!-- GENERATED by psed_v2/ontology/export.py; do not edit --&gt;
+ # Extraction form
+ 
+-Form version P158, frozen (P158): form.json sha256 `226d4dcb1c73dfda6578d42be1404c4f1d8b3b1e24215a74052cc090ee6cdd6d` at ontology sha256 `4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754`. Ontology growth changes the enums and this file hash, never the rules; a record line carries form_version P158 from P158 on (common.run), older lines none.
++Form version P163, frozen (P158; P163: rule 1 binds settings and observations only): form.json sha256 `c66329ba2c4bcdc7c672856e5cef12b4bcedf726353259799bfda165da5efcac` at ontology sha256 `4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754`. Ontology growth changes the enums and this file hash, never the rules; a record line carries the form version of its call (common.run): P158 from P158 to P162, P163 from P163 on, older lines none; compile.py validates a line with a version against this form, a line without one without the P158 rules.
+ 
+ Ontology version 1, sha256 `4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754`. Schemas: `form.json` (one record, JSON Schema 2020-12, additionalProperties false), `form_pass0.json` (one paper&#x27;s named things). Per-type rules are if/then on `type` in the schema.
+ 
+@@ -16,7 +16,7 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s&lt;n
+ | type | enum, 8 values or {&#x27;type&#x27;: &#x27;null&#x27;} | always; `cited` when kind `cited` | extractor |
+ | quantity | enum, 108 values or list of enum, 107 values (quantity_id) or {&#x27;type&#x27;: &#x27;null&#x27;} | always; never null when type `definition` / `cited` | extractor |
+ | label_as_printed | string or {&#x27;type&#x27;: &#x27;null&#x27;} | always; string when quantity `other` | extractor |
+-| qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) or {&#x27;type&#x27;: &#x27;null&#x27;} | always; required when quantity `pulse_time` / `purge_time` / `exposure`; an object holding step when quantity `pulse_time` / `purge_time` / `exposure` | extractor |
++| qualifiers | object, keys closed (26: definition, step, species, gas, element, reference_element, phase, position, reference, level, basis, surface, kind, by, origin, stage, stat, between, n, relative_to, over, mode, x, ratio, specimen_class, structure_class) or {&#x27;type&#x27;: &#x27;null&#x27;} | always; required when quantity `pulse_time` / `purge_time` / `exposure` and type `setting` / `observation`; an object holding step when quantity `pulse_time` / `purge_time` / `exposure` and type `setting` / `observation` | extractor |
+ | value | number or {&#x27;type&#x27;: &#x27;null&#x27;} | always | extractor |
+ | value_min | number or {&#x27;type&#x27;: &#x27;null&#x27;} | always | extractor |
+ | value_max | number or {&#x27;type&#x27;: &#x27;null&#x27;} | always | extractor |
+diff --git a/psed_v2/kb/schema/form.json b/psed_v2/kb/schema/form.json
+index 960b3dd..dcbbc9c 100644
+--- a/psed_v2/kb/schema/form.json
++++ b/psed_v2/kb/schema/form.json
+@@ -1,7 +1,7 @@
+ {
+  &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;,
+  &quot;$id&quot;: &quot;urn:psed_v2:schema:form&quot;,
+- &quot;$comment&quot;: &quot;GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754; form version P158 (frozen)&quot;,
++ &quot;$comment&quot;: &quot;GENERATED by psed_v2/ontology/export.py; do not edit. ontology version 1, sha256 4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754; form version P163 (frozen)&quot;,
+  &quot;title&quot;: &quot;PSED v2 extraction form: one record&quot;,
+  &quot;description&quot;: &quot;One record as the extractor fills it. Vocabularies from ontology.yaml + units.yaml (ontology version 1, sha256 4be6d6fb6f5c0749aacfe7f9ccf634ff8f9a13d456fcb1b17911b370c5959754) and kb/pilot/lists.py; fields from kb/pilot/facts.py FIELDS less the compiler-only evidence, fact_id, statement, parent, links, inputs, author, figure_ref, basis, sized_by.&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+@@ -948,7 +948,7 @@
+    }
+   },
+   {
+-   &quot;$comment&quot;: &quot;P158 rule 1: step: a record of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it&quot;,
++   &quot;$comment&quot;: &quot;P158 rule 1: step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163)&quot;,
+    &quot;if&quot;: {
+     &quot;properties&quot;: {
+      &quot;quantity&quot;: {
+@@ -957,10 +957,17 @@
+        &quot;purge_time&quot;,
+        &quot;exposure&quot;
+       ]
++     },
++     &quot;type&quot;: {
++      &quot;enum&quot;: [
++       &quot;setting&quot;,
++       &quot;observation&quot;
++      ]
+      }
+     },
+     &quot;required&quot;: [
+-     &quot;quantity&quot;
++     &quot;quantity&quot;,
++     &quot;type&quot;
+     ]
+    },
+    &quot;then&quot;: {
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 05c2814..931ca6e 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -344,8 +344,9 @@ FROM_FACTS = {&quot;data_kind&quot;: &quot;kind&quot;, &quot;definition_note&quot;: &quot;note&quot;}                  #
+ NOTE_WORDS, STATEMENT_WORDS = 20, 40
+ PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
+ FORM_CATEGORICALS = [&quot;crystallinity&quot;]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
+-FORM_VERSION = &quot;P158&quot;                                                           # P158 (user): the pass-1 form frozen before round 2; common.run writes it on every new line
++FORM_VERSION = &quot;P163&quot;                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; common.run writes it on every new line
+ STEP_QUANTITIES = [&quot;pulse_time&quot;, &quot;purge_time&quot;, &quot;exposure&quot;]                      # P158 rule 1
++STEP_TYPES = [&quot;setting&quot;, &quot;observation&quot;]                                         # P163 (user): rule 1 binds these record types only
+ 
+ 
+ def p158_rules(onto):
+@@ -353,9 +354,10 @@ def p158_rules(onto):
+     (compile.py applies them to records of form version P158 or later); CODEBOOK.md prints the texts (the provider gets no allOf).&quot;&quot;&quot;
+     step_values = &quot;, &quot;.join(str(v) for v in onto[&quot;qualifiers&quot;][&quot;step&quot;][&quot;values&quot;])
+     return [
+-        (f&quot;step: a record of {&#x27;, &#x27;.join(STEP_QUANTITIES)} names its step (qualifier step: {step_values}); a stage, stat or structure_class &quot;
+-         &quot;qualifier does not stand in for it&quot;,
+-         {&quot;if&quot;: _is(&quot;quantity&quot;, STEP_QUANTITIES), &quot;then&quot;: {&quot;properties&quot;: {&quot;qualifiers&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;required&quot;: [&quot;step&quot;]}}, &quot;required&quot;: [&quot;qualifiers&quot;]}}),
++        (f&quot;step: a {&#x27; or &#x27;.join(STEP_TYPES)} of {&#x27;, &#x27;.join(STEP_QUANTITIES)} names its step (qualifier step: {step_values}); a stage, stat or &quot;
++         &quot;structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163)&quot;,
++         {&quot;if&quot;: {&quot;properties&quot;: {**_is(&quot;quantity&quot;, STEP_QUANTITIES)[&quot;properties&quot;], **_is(&quot;type&quot;, STEP_TYPES)[&quot;properties&quot;]}, &quot;required&quot;: [&quot;quantity&quot;, &quot;type&quot;]},
++          &quot;then&quot;: {&quot;properties&quot;: {&quot;qualifiers&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;required&quot;: [&quot;step&quot;]}}, &quot;required&quot;: [&quot;qualifiers&quot;]}}),
+         (&quot;cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other &quot;
+          &quot;records, never of a cited one)&quot;,
+          {&quot;if&quot;: _is(&quot;type&quot;, &quot;cited&quot;), &quot;then&quot;: {&quot;properties&quot;: {&quot;kind&quot;: {&quot;enum&quot;: [&quot;cited&quot;, None]}}}}),
+@@ -564,9 +566,8 @@ def form_md(form, pass0, onto, F):
+         req[f].append(&quot;always&quot;)
+     for r in form[&quot;allOf&quot;]:
+         props = r[&quot;if&quot;].get(&quot;properties&quot;, {})
+-        key = next(iter(props), &quot;&quot;)
+         cond = (&quot;no &quot; + &quot;, &quot;.join(x[&quot;required&quot;][0] for x in r[&quot;if&quot;][&quot;not&quot;][&quot;anyOf&quot;])) if &quot;not&quot; in r[&quot;if&quot;] \
+-            else f&quot;{key} &quot; + &quot; / &quot;.join(f&quot;`{x}`&quot; for x in props[key].get(&quot;enum&quot;, [props[key].get(&quot;const&quot;)]))       # P138
++            else &quot; and &quot;.join(f&quot;{key} &quot; + &quot; / &quot;.join(f&quot;`{x}`&quot; for x in props[key].get(&quot;enum&quot;, [props[key].get(&quot;const&quot;)])) for key in props)   # P138; P163: every key
+         for f in r.get(&quot;then&quot;, {}).get(&quot;required&quot;, []):
+             req[f].append(f&quot;required when {cond}&quot;)
+         for f, v in r.get(&quot;then&quot;, {}).get(&quot;properties&quot;, {}).items():
+@@ -708,7 +709,7 @@ def codebook(onto, L):
+     out += [&quot;&quot;, &quot;## c. Record types, stances, NK reasons, the equation rule (sources: kb/pilot/lists.py RECORD_TYPES, NK_REASONS, &quot;
+             &quot;EQUATION_VARIABLES, STANCES and its comment; P143 equation rule in ontology/export.py)&quot;, &quot;&quot;, &quot;Record types:&quot;, &quot;&quot;,
+             *[f&quot;- {t}: {d}&quot; for t, d in L.RECORD_TYPES.items()], &quot;&quot;,
+-            f&quot;Form rules (P158, form version {FORM_VERSION}, frozen; form.json allOf \&quot;P158 rule n\&quot;):&quot;, &quot;&quot;,
++            f&quot;Form rules (P158, rule 1 scoped in P163; form version {FORM_VERSION}, frozen; form.json allOf \&quot;P158 rule n\&quot;):&quot;, &quot;&quot;,
+             *[f&quot;- rule {n}, {t}.&quot; for n, (t, _) in enumerate(p158_rules(onto), 1)],
+             &quot;- nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.&quot;, &quot;&quot;,
+             f&quot;Stances ({&#x27;, &#x27;.join(L.STANCES)}): {stance_comment}&quot;, &quot;&quot;]
+@@ -782,10 +783,12 @@ def form_files(onto):
+     L, F = _pilot()
+     form, pass0 = form_schema(onto, L, F), pass0_schema(onto, L)
+     j = lambda x: json.dumps(x, indent=1, ensure_ascii=False) + &quot;\n&quot;            # noqa: E731
+-    md = form_md(form, pass0, onto, F).replace(&quot;{FROZEN}&quot;, f&quot;Form version {FORM_VERSION}, frozen (P158): form.json sha256 &quot;
+-                                                            f&quot;`{hashlib.sha256(j(form).encode(&#x27;utf-8&#x27;)).hexdigest()}` at ontology sha256 `{ontology_hash()}`. &quot;
+-                                                            &quot;Ontology growth changes the enums and this file hash, never the rules; a record line &quot;
+-                                                            f&quot;carries form_version {FORM_VERSION} from P158 on (common.run), older lines none.&quot;)
++    md = form_md(form, pass0, onto, F).replace(&quot;{FROZEN}&quot;, f&quot;Form version {FORM_VERSION}, frozen (P158; P163: rule 1 binds settings and observations &quot;
++                                                            f&quot;only): form.json sha256 `{hashlib.sha256(j(form).encode(&#x27;utf-8&#x27;)).hexdigest()}` at ontology sha256 &quot;
++                                                            f&quot;`{ontology_hash()}`. Ontology growth changes the enums and this file hash, never the rules; a record &quot;
++                                                            f&quot;line carries the form version of its call (common.run): P158 from P158 to P162, {FORM_VERSION} from &quot;
++                                                            &quot;P163 on, older lines none; compile.py validates a line with a version against this form, a line &quot;
++                                                            &quot;without one without the P158 rules.&quot;)
+     return {SCHEMA / &quot;form.json&quot;: j(form), SCHEMA / &quot;form_pass0.json&quot;: j(pass0), SCHEMA / &quot;FORM.md&quot;: md,
+             SCHEMA / &quot;CODEBOOK.md&quot;: codebook(onto, L)}                         # P143
+ 
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 32da0ca..f7bf414 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -207,6 +207,8 @@ def candidates(pids, extra=()):
+     5. The rest group across the papers by their record key, the id built with the unit group stripped (snake case of norm()).
+     P157d: a candidate&#x27;s symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
+     on accept and into never.csv as paper-local rows on never.
++    6. P163: a candidate whose label is another&#x27;s with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
++       become that candidate&#x27;s aliases (log prefix_merges).
+     Returns ({id: group}, log).&quot;&quot;&quot;
+     spell = unit_spellings()
+     log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[])
+@@ -287,6 +289,20 @@ def candidates(pids, extra=()):
+         c[&quot;definition&quot;] = c[&quot;definition&quot;] or g[&quot;definition&quot;]
+         c[&quot;members&quot;] += g[&quot;members&quot;]
+         c[&quot;notes&quot;] += [g[&quot;note&quot;]] if g[&quot;note&quot;] else []
++    log[&quot;prefix_merges&quot;] = []                                                    # P163: a label = another label + a trailing symbol or qualifier
++    ids = sorted(out, key=lambda i: (len(label_tokens(out[i][&quot;label&quot;])), i))
++    for i in reversed(ids):                                                     # the longest first, into the closest shorter label
++        heads = [j for j in ids if j != i and j in out and extends(out[j][&quot;label&quot;], out[i][&quot;label&quot;])]
++        if not heads:
++            continue
++        j = max(heads, key=lambda j: (len(label_tokens(out[j][&quot;label&quot;])), j))
++        c, h = out.pop(i), out[j]
++        h[&quot;aliases&quot;] += [a for a in [c[&quot;label&quot;]] + c[&quot;aliases&quot;] if a not in h[&quot;aliases&quot;] and a != h[&quot;label&quot;]]
++        h[&quot;symbols&quot;] += [x for x in c[&quot;symbols&quot;] if x not in h[&quot;symbols&quot;]]
++        h[&quot;definition&quot;] = h[&quot;definition&quot;] or c[&quot;definition&quot;]
++        h[&quot;members&quot;] += c[&quot;members&quot;]
++        h[&quot;notes&quot;] += c[&quot;notes&quot;]
++        log[&quot;prefix_merges&quot;].append((i, j, c[&quot;label&quot;], h[&quot;label&quot;]))
+     for c in out.values():
+         units = Counter(u[&quot;unit&quot;] for u in c[&quot;members&quot;] if u[&quot;unit&quot;])
+         c[&quot;unit&quot;] = units.most_common(1)[0][0] if units else &quot;&quot;
+@@ -298,6 +314,27 @@ def candidates(pids, extra=()):
+     return out, log
+ 
+ 
++PREPOSITIONS = {&quot;for&quot;, &quot;of&quot;, &quot;in&quot;, &quot;at&quot;, &quot;with&quot;, &quot;on&quot;, &quot;per&quot;, &quot;to&quot;, &quot;by&quot;, &quot;from&quot;, &quot;under&quot;, &quot;over&quot;}
++
++
++def label_tokens(s):
++    &quot;&quot;&quot;P163: a label as ordered words: LaTeX unwrapped, backslashes dropped, casefold, split at anything not a letter or digit; a, an, the
++    dropped.&quot;&quot;&quot;
++    t = X.LATEX_TEXT.sub(r&quot;\1&quot;, str(s or &quot;&quot;)).replace(&quot;\\&quot;, &quot; &quot;).casefold()
++    return [w for w in re.findall(r&quot;[^\W_]+&quot;, t) if w not in {&quot;a&quot;, &quot;an&quot;, &quot;the&quot;}]
++
++
++def extends(short, long):
++    &quot;&quot;&quot;P163: the long label is the short one with a trailing symbol or qualifier: the short label&#x27;s words begin the long one&#x27;s, in order
++    (the long label holds the short one&#x27;s words entirely), and what follows is one symbol (a word of at most two characters) or a phrase
++    that starts with a preposition (&#x27;Shape factor&#x27; -&gt; &#x27;shape factor s&#x27;, &#x27;Shape factor for a particle&#x27;).&quot;&quot;&quot;
++    a, b = label_tokens(short), label_tokens(long)
++    if not a or len(b) &lt;= len(a) or b[:len(a)] != a:
++        return False
++    rest = b[len(a):]
++    return rest[0] in PREPOSITIONS or (len(rest) == 1 and len(rest[0]) &lt;= 2)
++
++
+ _CAND = {}
+ 
+ 
+@@ -431,7 +468,8 @@ def cmd_propose():
+     print(f&quot;round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of &quot;
+           f&quot;round {n} rebuilt); {len(log[&#x27;never&#x27;])} rows never (compile.py&#x27;s never column), &quot;
+           f&quot;{len(log[&#x27;values&#x27;])} values without a quantity, {len(log[&#x27;symbol_merges&#x27;])} symbol and {len(log[&#x27;label_merges&#x27;])} label merges into &quot;
+-          f&quot;{len(log[&#x27;table_groups&#x27;])} symbol-table rows&quot;)
++          f&quot;{len(log[&#x27;table_groups&#x27;])} symbol-table rows; {len(log[&#x27;prefix_merges&#x27;])} label-prefix merges (P163)&quot;
++          + &quot;&quot;.join(f&quot;\n  merged: {a!r} into {b!r}&quot; for _, _, a, b in log[&quot;prefix_merges&quot;]))
+     print(f&quot;pending.csv: {len(rows)} rows; decide in {DECIDE}&quot;)
+ 
+ 
+</pre>
+</body></html>
