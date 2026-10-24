@@ -1,7 +1,10 @@
-input: 17 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
-input: process_mode fill = line 17: run_120 null, run_160 null, run_120_160 null, run_test null
+input: 18 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
+input: recipe fill = line 18: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_test reactant_B h2o, carrier_gas n2
 a0: s9.p7: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
 a0: eq1: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
+a1: step fill s9.p4 pulse_time None species dez about paper: reactant_A (the run's recipe field)
+a1: step fill s9.p4 pulse_time None species h2o about paper: reactant_B (the run's recipe field)
+a1: step fill s14.p6 purge_time 48.0 species dez about paper: purge_A (the run's recipe field)
 a: eq1: variables_unmapped 't_hold' -> 'other'
 a: eq1: variables_unmapped 'L_pore' -> 'other'
 a: eq1: variables_unmapped '\\gamma' -> 'other'
@@ -50,26 +53,26 @@ j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a ful
 j: comparisons from figures.json (1c): 1
 step input: {'records': 200}
 step a0: {'quantity promoted (quantity: symbol)': 2, 'quantity other: never.csv word': 2}
-step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'schema:required': 3, 'kept': 197}
-step a_fields: {'qualifiers': 3}
-step b: {'kept': 197}
-step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 197}
-step d: {'quote_not_found': 13, 'quote_noncontiguous (kept)': 1, 'kept': 184}
-step e: {'kept': 184}
-step f: {'species_resolved': 8, 'kept': 184}
+step a1: {"step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1}
+step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'kept': 200}
+step b: {'kept': 200}
+step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 200}
+step d: {'quote_not_found': 13, 'quote_noncontiguous (kept)': 1, 'kept': 187}
+step e: {'kept': 187}
+step f: {'species_resolved': 8, 'kept': 187}
 step g: {'mention_unmatched': 9}
-step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 48, 'place: result about a specimen -> its measurement': 51, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
-step m: {'statement filled from the quote': 147, 'links resolved': 14, 'links named elements without facts': 2}
+step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 51, 'place: result about a specimen -> its measurement': 51, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
+step m: {'statement filled from the quote': 150, 'links resolved': 14, 'links named elements without facts': 2}
 step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem)': 3, 'curve -> observation (legend qualifier)': 12}
-step i: {'merged': 18, 'caveat merged': 2, 'definition merged': 2, 'kept': 193}
+step i: {'merged': 18, 'caveat merged': 2, 'definition merged': 2, 'kept': 196}
 step n: {'comparison series': 1}
 step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3}
-step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 72, 'statement assembled': 37}
+step k: {'statement from the record': 165, 'statement_copies_text (reported by check)': 73, 'statement assembled': 37}
 diff against the gold:
+  setting        89   43   23  0.53  0.26
   observation    89   76   26  0.34  0.29
-  setting        89   40   21  0.53  0.24
-  claim          57   17   11  0.65  0.19
   cited          57    3    3  1.00  0.05
+  claim          57   17   11  0.65  0.19
   caveat         53    7    7  1.00  0.13
   activity       41   36   31  0.86  0.76
   derived        31   39   21  0.54  0.68
@@ -77,8 +80,8 @@ diff against the gold:
   model          18    8    8  1.00  0.44
   definition     16    9    2  0.22  0.12
   identity        3    0    0     -  0.00
-  paper           1    1    1  1.00  1.00
   comparison      1    1    0  0.00  0.00
+  paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 6/16
 gold model rows with quantity and value: 2: {'other': 2}
 observations: gold 89, compiled 76, matched 26

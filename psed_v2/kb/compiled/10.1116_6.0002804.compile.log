@@ -1,6 +1,6 @@
 input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 1
-input: 17 lines; pass 0 = line 2; 12 pass-1 lines for 12 groups; ignored lines 16 (s8+s9+s10+s11+s12)
-input: process_mode fill = line 17: zou23:run:std_ald_350 hot_wire, zou23:run:ald_150 hot_wire, zou23:run:ms_run hot_wire, zou23:run:trench_coating hot_wire
+input: 18 lines; pass 0 = line 2; 12 pass-1 lines for 12 groups; ignored lines 16 (s8+s9+s10+s11+s12)
+input: recipe fill = line 18: zou23:run:std_ald_350 reactant_A mocl2o2, reactant_B h_atom, carrier_gas n2, process_mode hot_wire; zou23:run:ald_150 reactant_A mocl2o2, reactant_B h_atom, carrier_gas n2, process_mode hot_wire; zou23:run:ms_run reactant_A mocl2o2, reactant_B h_atom, carrier_gas n2, process_mode hot_wire; zou23:run:trench_coating reactant_A mocl2o2, reactant_B h_atom, carrier_gas n2, process_mode hot_wire
 input: 60 units derived from curves (P161): 10.1116_6.0002804:fig1a:c1_p2, 10.1116_6.0002804:fig1a:c1_p3, 10.1116_6.0002804:fig1a:c1_p4, 10.1116_6.0002804:fig1a:c1_p6, 10.1116_6.0002804:fig1b:c1_p2, 10.1116_6.0002804:fig1b:c1_p3, 10.1116_6.0002804:fig1b:c1_p4, 10.1116_6.0002804:fig1b:c1_p5, 10.1116_6.0002804:fig1b:c1_p6, 10.1116_6.0002804:fig1b:c1_p7, 10.1116_6.0002804:fig1b:c1_p8, 10.1116_6.0002804:fig1b:c1_p9, 10.1116_6.0002804:fig1b:c1_p10, 10.1116_6.0002804:fig1b:c1_p11, 10.1116_6.0002804:fig1b:c1_p12, 10.1116_6.0002804:fig1c:c1_p1, 10.1116_6.0002804:fig1c:c1_p2, 10.1116_6.0002804:fig1c:c1_p3, 10.1116_6.0002804:fig1c:c1_p4, 10.1116_6.0002804:fig1c:c1_p5, 10.1116_6.0002804:fig1c:c1_p6, 10.1116_6.0002804:fig1c:c1_p7, 10.1116_6.0002804:fig1d:c1_p1, 10.1116_6.0002804:fig1d:c1_p2, 10.1116_6.0002804:fig1d:c1_p3, 10.1116_6.0002804:fig1d:c1_p4, 10.1116_6.0002804:fig1d:c1_p5, 10.1116_6.0002804:fig1d:c1_p6, 10.1116_6.0002804:fig1d:c1_p7, 10.1116_6.0002804:fig1e:c1_p1, 10.1116_6.0002804:fig1e:c1_p2, 10.1116_6.0002804:fig1e:c1_p3, 10.1116_6.0002804:fig1e:c1_p4, 10.1116_6.0002804:fig1e:c1_p5, 10.1116_6.0002804:fig1e:c1_p6, 10.1116_6.0002804:fig1e:c1_p7, 10.1116_6.0002804:fig1e:c1_p8, 10.1116_6.0002804:fig1e:c1_p9, 10.1116_6.0002804:fig1e:c1_p10, 10.1116_6.0002804:fig1e:c1_p11, 10.1116_6.0002804:fig1e:c1_p12, 10.1116_6.0002804:fig1e:c1_p13, 10.1116_6.0002804:fig1e:c1_p14, 10.1116_6.0002804:fig1e:c1_p15, 10.1116_6.0002804:fig1e:c1_p16, 10.1116_6.0002804:fig1e:c1_p17, 10.1116_6.0002804:fig2:c1, 10.1116_6.0002804:fig2:c3, 10.1116_6.0002804:fig5b:c1_p1, 10.1116_6.0002804:fig5b:c1_p2, 10.1116_6.0002804:fig5b:c1_p4, 10.1116_6.0002804:fig6b:c1_p1, 10.1116_6.0002804:fig6b:c1_p3, 10.1116_6.0002804:fig7b:c1_p1, 10.1116_6.0002804:fig7b:c1_p2, 10.1116_6.0002804:fig7b:c1_p3, 10.1116_6.0002804:fig7b:c1_p4, 10.1116_6.0002804:fig7b:c2_p1, 10.1116_6.0002804:fig7b:c2_p2, 10.1116_6.0002804:fig7b:c2_p3
 a0: fig1.cap: quantity 'MoCl_{2}O_{2} pulse' -> pulse_time (quantity: alias 'MoCl_{2}O_{2} pulse')
 a0: fig1.cap: quantity 'MoCl_{2}O_{2} pulse' -> pulse_time (quantity: alias 'MoCl_{2}O_{2} pulse')
@@ -69,6 +69,8 @@ a0: fig7.cap: legend label 'CVD' parsed to nothing
 a0: fig7.cap: quantity 'Temperature' -> deposition_temperature (quantity: name 'temperature')
 a0: fig7.cap: legend label 'CVD' parsed to nothing
 a0: fig7.cap: quantity 'Temperature' -> deposition_temperature (quantity: name 'temperature')
+a1: step fill s5.p3 pulse_time 1.0 species mocl2o2 about zou23:run:std_ald_350: reactant_A (the run's recipe field)
+a1: step fill s5.p3 pulse_time 29.0 species h_atom about zou23:run:std_ald_350: reactant_B (the run's recipe field)
 a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
 a: s5.p3: qualifiers.n '1' -> 1.0 (C4)
 h: tree from pass 0: run 64, simulation 0, specimen 6, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
@@ -205,23 +207,22 @@ j: claim nodes (query.claim_nodes): 17 nodes for 19 claims; claims without a ful
 j: comparisons from figures.json (1c): 11
 step input: {'records': 111, 'unit derived (derived: point_per_unit, run)': 58, 'coordinate setting species (the axis names it)': 29, 'coordinate setting step reactant_A': 4, 'condition of a derived unit (value)': 41, 'coordinate setting step reactant_B': 11, 'coordinate setting step purge_A': 7, 'coordinate setting step purge_B': 7, 'condition of a derived unit (other)': 26, 'unit derived (derived: curve_per_unit, run)': 2}
 step a0: {'quantity promoted (quantity: alias)': 29, 'derived legend label parsed to nothing (other)': 26, 'quantity promoted (quantity: name)': 12}
-step a1: {'process_mode from the recipe field: hot_wire': 4}
-step a: {'numeric string coerced (C4)': 2, 'schema:required': 2, 'kept': 180}
-step a_fields: {'qualifiers': 2}
-step b: {'statement_only (kept: P138 form)': 1, 'kept': 180}
-step c: {'quantity_other (kept)': 26, 'kept': 180}
-step d: {'quote_not_found': 7, 'quote_noncontiguous (kept)': 4, 'derived condition (figures.json, no quote check)': 67, 'kept': 173}
-step e: {'kept': 173}
-step f: {'species_resolved': 12, 'kept': 173}
-step h: {'place: claim -> paper': 19, 'place: cited -> paper': 2, 'place: about paper -> recipe': 20, 'place: setting about a run -> deposition': 79, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 2, 'specimen_created': 62, 'place: result about a run -> film measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'film of a run with several specimens': 8, 'place: result about a run -> film (several specimens) measurement': 7, 'place: result about a specimen -> its measurement': 21, 'place: definition -> paper': 1, 'place: result about a run -> its specimen measurement': 1, 'place: about unknown -> recipe (flagged)': 5}
-step m: {'label_as_printed filled with the quantity id': 15, 'statement filled from the quote': 149, 'links resolved': 11}
+step a1: {'process_mode from the recipe field: hot_wire': 4, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1}
+step a: {'numeric string coerced (C4)': 2, 'kept': 182}
+step b: {'statement_only (kept: P138 form)': 1, 'kept': 182}
+step c: {'quantity_other (kept)': 26, 'kept': 182}
+step d: {'quote_not_found': 7, 'quote_noncontiguous (kept)': 4, 'derived condition (figures.json, no quote check)': 67, 'kept': 175}
+step e: {'kept': 175}
+step f: {'species_resolved': 12, 'kept': 175}
+step h: {'place: claim -> paper': 19, 'place: cited -> paper': 2, 'place: about paper -> recipe': 20, 'place: setting about a run -> deposition': 81, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 2, 'specimen_created': 62, 'place: result about a run -> film measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'film of a run with several specimens': 8, 'place: result about a run -> film (several specimens) measurement': 7, 'place: result about a specimen -> its measurement': 21, 'place: definition -> paper': 1, 'place: result about a run -> its specimen measurement': 1, 'place: about unknown -> recipe (flagged)': 5}
+step m: {'label_as_printed filled with the quantity id': 15, 'statement filled from the quote': 151, 'links resolved': 11}
 step 1c: {'figure label other (x)': 2, 'figure label other (series)': 2, 'figure axis dimension mismatch (values as printed)': 1, 'figure axis unit unknown (values as printed)': 1, 'figure label other (y)': 3, 'unbound item (point): origin': 2, 'point -> observation': 82, 'unbound item (point): ambiguous': 8, 'curve -> observation (legend method)': 4, 'curve -> observation': 2, 'curve -> observation (legend qualifier)': 10, 'data of a flagged panel (rule verdict)': 17, 'peak -> observation': 4, 'image -> a measurement (a photograph)': 8}
-step i: {'merged': 3, 'kept': 280}
+step i: {'merged': 3, 'kept': 282}
 step n: {'comparison replicate': 5, 'comparison grid': 1, 'comparison series': 5}
 step j: {'derived cycle_time': 35, 'derived deposition_rate': 29}
-step k: {'statement from the record': 171, 'statement_copies_text (reported by check)': 43, 'statement assembled': 173}
+step k: {'statement from the record': 173, 'statement_copies_text (reported by check)': 39, 'statement assembled': 173}
 diff against the gold:
-  setting        47  103   16  0.16  0.34
+  setting        47  105   18  0.17  0.38
   observation    45  153   28  0.18  0.62
   activity       23  144   21  0.15  0.91
   claim          19   19   10  0.53  0.53

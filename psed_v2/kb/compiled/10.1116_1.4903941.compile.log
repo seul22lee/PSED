@@ -1,6 +1,7 @@
-input: 12 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 
-input: process_mode fill = line 12: run_al2o3_300c null, run_tio2_110c null
+input: 13 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 
+input: recipe fill = line 13: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2
 a0: s6.p4: quantity 'distance between the oxide pillars' -> pillar_spacing (quantity: alias 'distance between the oxide pillars')
+a1: step fill s6.p5 pulse_time 0.1 species h2o about paper: reactant_B (the run's recipe field)
 a: s6.p5: qualifiers.n '1' -> 1.0 (C4)
 a: fig3.cap: qualifiers.n '1' -> 1.0 (C4)
 h: tree from pass 0: run 2, simulation 0, specimen 4, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
@@ -31,22 +32,22 @@ j: claim nodes (query.claim_nodes): 8 nodes for 11 claims; claims without a full
 j: comparisons from figures.json (1c): 1
 step input: {'records': 103}
 step a0: {'quantity promoted (quantity: alias)': 1}
-step a: {'numeric string coerced (C4)': 2, 'schema:required': 1, 'kept': 102}
-step a_fields: {'qualifiers': 1}
-step b: {'statement_only (kept: P138 form)': 4, 'kept': 102}
-step c: {'kept': 102}
-step d: {'quote_not_found': 12, 'quote_noncontiguous (kept)': 2, 'kept': 90}
-step e: {'kept': 90}
-step f: {'species_resolved': 10, 'kept': 90}
-step h: {'place: claim -> paper': 11, 'place: about paper -> recipe': 28, 'place: cited -> paper': 4, 'place: about paper, method -> paper method activity': 3, 'place: setting about a run -> deposition': 21, 'place: setting about a specimen -> deposition': 8, 'place: result about a specimen -> its measurement': 9, 'place: caveat -> paper': 1, 'place: result about a run -> its specimen measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 3}
-step m: {'statement filled from the quote': 70, 'label_as_printed filled with the quantity id': 15, 'links resolved': 3}
+step a1: {"step fill: reactant_B (the run's recipe field)": 1}
+step a: {'numeric string coerced (C4)': 2, 'kept': 103}
+step b: {'statement_only (kept: P138 form)': 4, 'kept': 103}
+step c: {'kept': 103}
+step d: {'quote_not_found': 12, 'quote_noncontiguous (kept)': 2, 'kept': 91}
+step e: {'kept': 91}
+step f: {'species_resolved': 10, 'kept': 91}
+step h: {'place: claim -> paper': 11, 'place: about paper -> recipe': 29, 'place: cited -> paper': 4, 'place: about paper, method -> paper method activity': 3, 'place: setting about a run -> deposition': 21, 'place: setting about a specimen -> deposition': 8, 'place: result about a specimen -> its measurement': 9, 'place: caveat -> paper': 1, 'place: result about a run -> its specimen measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 3}
+step m: {'statement filled from the quote': 71, 'label_as_printed filled with the quantity id': 15, 'links resolved': 3}
 step 1c: {'unbound item (image): no unit named': 11, 'image -> a measurement (a photograph)': 2, 'curve -> observation': 4}
-step i: {'merged': 21, 'kept': 75}
+step i: {'merged': 21, 'kept': 76}
 step n: {'comparison series': 1}
 step j: {'derived cycle_time': 4}
-step k: {'statement from the record': 69, 'statement_copies_text (reported by check)': 23, 'statement assembled': 10}
+step k: {'statement from the record': 70, 'statement_copies_text (reported by check)': 23, 'statement assembled': 10}
 diff against the gold:
-  setting        92   38   28  0.74  0.30
+  setting        92   39   29  0.74  0.32
   observation    44   21   17  0.81  0.39
   activity       25   13   13  1.00  0.52
   entity         15    4    4  1.00  0.27

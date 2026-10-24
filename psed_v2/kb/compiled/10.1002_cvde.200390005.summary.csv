@@ -1,11 +1,11 @@
 metric,value
-ontology_hash,9fdf73a08b9a98e441f4cf1307d42df73cb63d0f10c935800b5c79b197183c08
+ontology_hash,e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
 lines_used,2;3;4;5;6;7;8
 lines_ignored,10;11;12;13
-facts,81
-tree_rows,15
+facts,85
+tree_rows,14
 derived_by_kb,1
-dropped,12
+dropped,11
 unmapped,2
 unmapped_never,1
 promoted,1
@@ -14,23 +14,25 @@ step_a0:quantity other: never.csv word,1
 step_a1:symbol species: no species,4
 step_a1:symbol species: kept: its own element names it,2
 step_a1:symbol species: from the symbol's evidence in this paper,1
+step_a1:process_mode from the recipe field: thermal,3
+step_a1:step fill: empty (no species),3
+step_a1:step fill: reactant_A (the run's recipe field),3
 step_a:schema:not,2
 step_a:schema:type,3
 step_a:schema:enum,1
-step_a:schema:required,3
-step_a:kept,90
+step_a:kept,96
 step_a_fields:quantity,2
-step_a_fields:qualifiers,6
+step_a_fields:qualifiers,3
 step_a_fields:value_text,1
-step_b:kept,90
+step_b:kept,96
 step_c:quantity_other (kept),1
 step_c:quantity_other never (kept),1
-step_c:kept,90
-step_d:quote_not_found,3
-step_d:kept,87
-step_e:kept,87
+step_c:kept,96
+step_d:quote_not_found,5
+step_d:kept,91
+step_e:kept,91
 step_f:species_resolved,11
-step_f:kept,87
+step_f:kept,91
 step_h:simulation linked to a model entry,1
 step_h:place: claim -> paper,10
 step_h:place: about paper -> recipe,39
@@ -40,32 +42,31 @@ step_h:place: setting about a simulation -> simulation,1
 step_h:place: derived about a simulation -> simulation,4
 step_h:place: caveat -> paper,4
 step_h:place: result about a specimen -> its measurement,5
-step_h:place: setting about a run -> deposition,3
+step_h:place: setting about a run -> deposition,7
 step_h:place: model about a model run -> model run,1
 step_h:place: model about a model run -> simulation,1
 step_h:place: definition -> paper,2
 step_m:label_as_printed filled with the quantity id,4
-step_m:statement filled from the quote,57
+step_m:statement filled from the quote,61
 step_m:links resolved,5
 step_1c:curve -> model,1
 step_1c:unbound item (image): ambiguous,1
 step_i:merged,8
-step_i:kept,80
+step_i:kept,84
 step_n:comparison replicate,1
-step_n:comparison series,1
 step_j:derived cycle_time,1
-step_k:statement from the record,79
+step_k:statement from the record,83
 step_k:statement_copies_text (reported by check),29
 step_k:statement assembled,2
-diff:setting,gold 52 compiled 25 matched 21 P 0.84 R 0.40
+diff:setting,gold 52 compiled 29 matched 21 P 0.72 R 0.40
 diff:model,gold 21 compiled 19 matched 13 P 0.68 R 0.62
 diff:claim,gold 18 compiled 10 matched 7 P 0.70 R 0.39
+diff:activity,gold 11 compiled 8 matched 6 P 0.75 R 0.55
 diff:observation,gold 11 compiled 11 matched 5 P 0.45 R 0.45
 diff:cited,gold 11 compiled 0 matched 0 P - R 0.00
-diff:activity,gold 11 compiled 8 matched 6 P 0.75 R 0.55
 diff:derived,gold 10 compiled 10 matched 7 P 0.70 R 0.70
 diff:definition,gold 8 compiled 2 matched 0 P 0.00 R 0.00
 diff:caveat,gold 7 compiled 4 matched 2 P 0.50 R 0.29
 diff:entity,gold 6 compiled 4 matched 4 P 1.00 R 0.67
-diff:comparison,gold 1 compiled 2 matched 0 P 0.00 R 0.00
+diff:comparison,gold 1 compiled 1 matched 0 P 0.00 R 0.00
 diff:paper,gold 1 compiled 1 matched 0 P 0.00 R 0.00

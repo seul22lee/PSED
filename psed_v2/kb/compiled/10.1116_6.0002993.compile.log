@@ -1,5 +1,5 @@
-input: 9 lines; pass 0 = line 1; 6 pass-1 lines for 6 groups; ignored lines 
-input: process_mode fill = line 9: mat23:run:peald_temp plasma, mat23:run:tald_temp thermal, mat23:run:peald_125 plasma, mat23:run:peald_225 plasma, mat23:run:tald_125 thermal, mat23:run:tald_225 thermal, mat23:run:peald_h2s_pulse plasma, mat23:run:peald_ga_pulse plasma, mat23:run:tald_150 thermal, mat23:run:peald_150_21nm plasma, mat23:run:peald_150_42nm plasma, mat23:run:tald_150_quartz thermal, mat23:run:peald_150_quartz plasma
+input: 10 lines; pass 0 = line 1; 6 pass-1 lines for 6 groups; ignored lines 
+input: recipe fill = line 10: mat23:run:peald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:tald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_h2s_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_ga_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_150 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_150_21nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_150_42nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma
 input: 2 units derived from curves (P161): 10.1116_6.0002993:fig4b:c1, 10.1116_6.0002993:fig4b:c2
 a0: fig4.cap: legend name 'Thermal ALD' -> process_mode = thermal (value alias 'thermal ALD')
 a0: fig4.cap: legend name 'PE-ALD' -> process_mode = plasma (value alias 'PE-ALD')
@@ -67,8 +67,8 @@ diff against the gold:
   caveat          5    2    2  1.00  0.40
   derived         4   27    2  0.07  0.50
   identity        2    0    0     -  0.00
-  paper           1    1    0  0.00  0.00
   model           1    0    0     -  0.00
+  paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 0/0
 gold model rows with quantity and value: 0: {}
 observations: gold 51, compiled 74, matched 33

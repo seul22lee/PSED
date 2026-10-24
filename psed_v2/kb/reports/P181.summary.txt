@@ -1,0 +1,35 @@
+P181: 11 calls (the recipe fill, gemini-3.8-flash, approved at the cost line: est. $0.15, made $0.13); every other step 0 calls.
+Every step done; no check failed.
+
+1. ontology.yaml (history round 0, decided_by user, history.csv lines 520-524): the step qualifier has one definition per value, naming the run's
+   recipe field (value_definitions; CODEBOOK prints 'step = <value>' rows under the step row); pulse_time 'steps reactant_A and
+   reactant_B', purge_time 'steps purge_A and purge_B' (exposure's definition names no step numbers: unchanged); the species rule ends
+   'This rule is about symbol records; settings and observations take their species from the text and the run's recipe fields.'
+2. form_pass0 version 3: runs carry reactant_A, reactant_B, carrier_gas (species entries) and process_mode, each with <field>_quote,
+   null when not stated (simulations / model runs: when the paper states it for the model). export --check 18 / 18 (18: the fields, the
+   species values, a value has a quote).
+3. Pass-1 prompt: the PASS-0 UNITS line of a run / simulation carries its recipe words (106 of the 191 run / simulation lines of the
+   thirteen; yli18's carry none: its fill is null); RULES '- step: by the run's recipe fields (CODEBOOK step values).'; EXAMPLES: two
+   P163 records copied (gre23 pulse_time dez reactant_A, mat23 pulse_time h2s reactant_B). No P163 purge_time record has a species, so
+   both examples are pulse_time. Diff: the yli18 prefix, P180 vs now.
+4. Recipe fill (kb/extract/recipe_fill.py, records pass '0rf'): 11 calls, 458 field rows, every quote found in its element; the
+   pass-0 units byte-identical apart from the fields (asserted). hei24, yim22: skipped (no stated model recipe). yli18: every field null:
+   the fill's text (method-named sections and the runs' introduced_in elements, s7 and tabI) does not hold s8.p24, the paragraph that
+   states the recipe. Reported, not worked around. Compile reads the latest fill line (0pm or 0rf), so process_mode now comes from this
+   fill: gor03 thermal (3 runs, null before); the quotes / elements of mat22, art19, zou23, wer21 changed (values the same).
+5. The per-case table first (P180 section 5's 61 empty-step settings), then compile.step_fill: 61 / 61 rows equal. Outcomes:
+   reactant_A 16, reactant_B 8, purge_A 6, purge_B 5, empty 26 (no species 18; run fields null 8, all yli18 s8.p24). No observation in
+   scope. My reading, disclosed: about 'paper' takes all the paper's runs and fills only when every run naming the species agrees.
+6. Score vs P179c, no drop: setting 455 -> 460 (gre23 +2, zou23 +2, gao15 +1), every other type equal. T6 2115 -> 2119: 4 rows, all
+   step fills (gre23 s9.p4 x2, zou23 s5.p3 x2: records form rule P158 1 dropped before for an empty step). Fact diff: 153 rows: 24 step
+   filled (yim20 tab1), 9 new facts with a filled step, 119 process_mode settings (step 4's fill), 1 comparison gone (gor03 'series of
+   3 units varying cycle_number': run_2k_L gained an exposure setting with a filled step, so the units' setting vectors now differ).
+   binding_regression 798 / 798; audits 1-5 PASS; export --check 18 / 18; cards 0 errors. check.py --dir: 267 problem rows changed,
+   mostly process_mode statement repeats (mat22 325 -> 286). yli18 s8.p24: 8 rows still empty (run fields null); yim20 tab1: 20 rows
+   now reactant_A / purge_A / reactant_B / purge_B.
+7. Qualifier count (read-only): the ontology lists qualifiers for 38 of its 242 entries (entry field qualifiers); quantities without
+   a list use the fallback the user gave (species / gas / step / position / level / reference / stat / over / n, for value facts),
+   stated per row. 1444 facts carry qualifiers; 445 carry at least one key outside the reference. Keys outside: species 142
+   (pulse_time 68, purge_time 29: their entry lists are [step] only), structure_class 99, stage 82, stat 55, mode 48, between 42,
+   over 41, n 41, ratio 37, element 33, kind 31, specimen_class 30, level 30, gas 25, position 24, relative_to 23, phase 22, origin 21,
+   x 12, step 11, by 8, basis 5, reference 4, surface 2, definition 1, reference_element 1. No change.
