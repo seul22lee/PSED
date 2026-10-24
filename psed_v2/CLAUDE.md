@@ -116,6 +116,18 @@ psed_v2/
   the figures again before it recompiles.
 - grow.py apply is atomic (P173): it runs in a sandbox copy (P174: under psed_v2/kb/tmp/, git-ignored by psed_v2/.gitignore) and moves its
   files into place only after export --check and every round's audit pass; a failure writes nothing and prints what would have been written.
+- Four patch rules removed (P175, user): a derived unit's role comes from the paper's unit list only (runs and a simulation both, or
+  neither: role null, flagged "role unresolved"; such a unit has no row and its data is left out); candidates merge only on identical
+  record keys (no label-prefix merge); derived units are never merged by condition vector (two with identical data refs are one).
+- apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
+  analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
+  (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
+  history.csv carries the same columns.
+- Multi-part labels (P175, user): a series axis splits at ' and ' / ',' into quantity parts, a legend at ',' (or ' - ' / ' – ' when that
+  gives the axis's count) into value parts, paired by order, each resolved on the one path; '<symbol> = <a> to <b>' is a range
+  (value_min / value_max); an axis naming a qualifier key (element, species, step) makes its legend parts that qualifier's values.
+- A3 (P175, user): an open row whose label is a paper-local symbol of other papers only, or an entry's id / name / label that is no alias,
+  is new since apply (carried into the next round), not a failure.
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

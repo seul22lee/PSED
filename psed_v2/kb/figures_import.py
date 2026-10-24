@@ -23,7 +23,9 @@ as flags. Resolution (P174, user: the one path):
      entry's, keeps the values as printed (unit_reason; compile.py writes a unit row); an other axis keeps its values as printed. A
      normalised axis whose denominator resolves to cycle_number reads a length unit as per cycle (the printed 'nm' of S/N).
   c. a normalised axis's denominator symbol resolves by the same path to a quantity, else a species, else stays as printed.
-  d. series labels: a number with a unit -> the series-axis quantity's value, a species or element -> species, a model or measurement
+  d. P175 (user): a series axis naming a qualifier key (element, species, step) is no quantity (its legend names the qualifier's values); a
+     series axis of two or more parts (' and ', ',') resolves part by part, its legend labels paired by compile.legend_conditions.
+     series labels: a number with a unit -> the series-axis quantity's value, a species or element -> species, a model or measurement
      word -> kind simulated or measured, anything else -> a replicate label kept raw, series_structure replicate. A series is simulated
      (P87) when its label is a model word or, failing a label word, when the panel's content line (else the caption's first sentence)
      holds a model word and no measurement word.
@@ -467,13 +469,21 @@ class Importer:
                     if den and den.get("quantity"):
                         conds.setdefault(den["quantity"], dict(key_raw=f"{a} denominator", raw=den["symbol"], quantity=den["quantity"], role=L.ENTRIES.get(den["quantity"], {}).get("role", ""), value=None, value_max=None, unit="", text=den["symbol"]))
                 sa_raw = p.get("series_axis") or ""
-                sa_q, sa_key = "", ""
+                sa_q, sa_key, sa_parts = "", "", []
                 if sa_raw and (len(p.get("series") or []) > 1 or p.get("cells")):
                     _, sa_key, sa_u = axis_title(sa_raw)
                     res = K.resolve_label(pid, sa_key)
                     kind_only = bool(p.get("series")) and all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or []) \
                         or bool(re.search(r"\b(type|kind|model|dataset|method|geometry|shape)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type', 'particle geometry'), not a quantity
-                    if res["id"] != "other":
+                    qk, aparts = K.qualifier_key(sa_key), K.axis_parts(sa_key)
+                    if qk:                                                      # P175 (user): an axis naming a qualifier key; its legend names the values
+                        self.label("series", sa_raw, sa_key, "", dict(id=f"qualifier:{qk}", how=f"names the qualifier {qk}", ambiguous=[], never="", never_label=""))
+                    elif len(aparts) >= 2:                                      # P175 (user): a two-quantity axis, each part on the one path
+                        for part in aparts:
+                            r_ = K.resolve_label(pid, part)
+                            self.label("series", sa_raw, part, "", r_)
+                            sa_parts.append(r_["id"])
+                    elif res["id"] != "other":
                         sa_q = res["id"]
                         self.label("series", sa_raw, sa_key, sa_u, res)
                     elif not kind_only:                                         # a series axis over kinds ('model', 'type': fitted vs measured) names no quantity
@@ -494,6 +504,13 @@ class Importer:
                     pts = [[self.to_canonical(x, ax["x"]), self.to_canonical(y, ax["y"])] for x, y in s["points"]]
                     kind = "simulated" if (lab.get("kind") or panel_kind) == "simulated" else "read_from_figure"
                     cconds = dict(conds)
+                    for c in K.legend_conditions(pid, s["label"] or "", sa_raw) if sa_parts else []:   # P175: the legend's parts by order
+                        q = c["quantity"]
+                        if c["kind"] == "value" and q not in ("", "other") and c.get("value") is not None:
+                            u_, t_ = fit_unit(c["unit"], q), entry_unit_row(q)
+                            ok = u_ and t_ and u_["dimension"] == t_["dimension"]
+                            cconds[q] = dict(key_raw=c["key"], raw=s["label"], quantity=q, role=L.ENTRIES.get(q, {}).get("role", ""), value=convert(c["value"], u_, t_) if ok else c["value"],
+                                             value_max=None, unit=t_["symbol"] if ok else c["unit"], from_series_label=True)
                     if lab["cls"] == "numeric" and lab.get("quantity"):
                         cconds[lab["quantity"]] = dict(key_raw=sa_raw, raw=lab["label_raw"], quantity=lab["quantity"], role=L.ENTRIES[lab["quantity"]].get("role", ""),
                                                       value=lab["value"], value_max=lab.get("value_max"), unit=lab.get("unit", ""), from_series_label=True)
@@ -509,10 +526,11 @@ class Importer:
                 for c in curves:
                     out["derived"] += self.derive(c)
                 sid = ""
+                varied = sa_q or (";".join(sa_parts) if sa_parts and "other" not in sa_parts else "")   # P175: every part of a two-quantity axis resolved
                 if len(curves) >= 2 and p["panel_type"] in ("plot", "map"):
-                    if sa_q:
+                    if varied:
                         sid = f"{key}:cmp:{pel}"
-                        out["sets"].append(dict(id=sid, figure=fig, panel=pan, kind="series", varied=sa_q, varied_raw=sa_raw, members=[c["id"] for c in curves],
+                        out["sets"].append(dict(id=sid, figure=fig, panel=pan, kind="series", varied=varied, varied_raw=sa_raw, members=[c["id"] for c in curves],
                                                 conditions={q: c for q, c in conds.items()}, label=f"Fig. {fig}{pan} series" + (f" ({sa_raw})" if sa_raw else "")))
                         for c in curves:
                             c["set"] = sid

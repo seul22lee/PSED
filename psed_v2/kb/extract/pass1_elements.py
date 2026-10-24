@@ -275,8 +275,8 @@ def units_block(pid):
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
     obj = C.loads_json(p0[-1]["response"])
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
-    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
-    line = lambda it: f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731
+    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
+    line = lambda it: f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731  P175
     der = K.curve_units(pid, obj)
     return "\n".join([line(it) for it in items if isinstance(it, dict)]
                      + (["Units the compiler derived from figure curves (one per curve no unit above names; name = the legend label):"] if der else [])

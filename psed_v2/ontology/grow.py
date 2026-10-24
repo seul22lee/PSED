@@ -51,7 +51,8 @@ DECIDE, REPORT = HERE / "decide.html", HERE / "ontology.html"                # P
 GATES_CSV = HERE / "gates.csv"                                                  # P172: written by kb/extract/gates.py reference
 COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
 ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
-HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"]
+DECISION_COLS = ["class", "category", "slot", "parameters", "symbol_paper"]   # P175 (user): what apply reads besides the decision (pending.csv)
+HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS
 NEVER_COLS = ["label", "category", "paper", "source", "symbol"]                 # P157d: symbol yes = matched only in its paper
 STOP_WORDS = {"of", "the", "an", "and", "or", "in", "on", "at", "to", "for", "by", "with", "is", "as", "from", "per", "its", "a"}
 
@@ -209,8 +210,7 @@ def candidates(pids, extra=()):
     5. The rest group across the papers by their record key, the id built with the unit group stripped (snake case of norm()).
     P157d: a candidate's symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
     on accept and into never.csv as paper-local rows on never.
-    6. P163: a candidate whose label is another's with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
-       become that candidate's aliases (log prefix_merges).
+    6. P175 (user): candidates merge only when their record keys are identical (the P163 label-prefix merge and its P170 patch removed).
     7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model (P170: any member
        of that field; a pass-1 record of the same printed name joins it); a row whose
        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
@@ -301,20 +301,6 @@ def candidates(pids, extra=()):
         c["definition"] = c["definition"] or g["definition"]
         c["members"] += g["members"]
         c["notes"] += [g["note"]] if g["note"] else []
-    log["prefix_merges"] = []                                                    # P163: a label = another label + a trailing symbol or qualifier
-    ids = sorted(out, key=lambda i: (len(label_tokens(out[i]["label"])), i))
-    for i in reversed(ids):                                                     # the longest first, into the closest shorter label
-        heads = [j for j in ids if j != i and j in out and extends(out[j]["label"], out[i]["label"])]
-        if not heads:
-            continue
-        j = max(heads, key=lambda j: (len(label_tokens(out[j]["label"])), j))
-        c, h = out.pop(i), out[j]
-        h["aliases"] += [a for a in [c["label"]] + c["aliases"] if a not in h["aliases"] and a != h["label"]]
-        h["symbols"] += [x for x in c["symbols"] if x not in h["symbols"]]
-        h["definition"] = h["definition"] or c["definition"]
-        h["members"] += c["members"]
-        h["notes"] += c["notes"]
-        log["prefix_merges"].append((i, j, c["label"], h["label"]))
     for c in out.values():
         units = Counter(u["unit"] for u in c["members"] if u["unit"])
         c["unit"] = units.most_common(1)[0][0] if units else ""
@@ -325,28 +311,6 @@ def candidates(pids, extra=()):
             ev.setdefault(u["pid"], f"{u['pid']}:{u['element']} — {u['quote']}" + (f" ({'; '.join(c['notes'])})" if c["notes"] else ""))
         c["evidence"] = ev
     return out, log
-
-
-PREPOSITIONS = {"for", "of", "in", "at", "with", "on", "per", "to", "by", "from", "under", "over"}
-
-
-def label_tokens(s):
-    """P163: a label as ordered words: LaTeX unwrapped, backslashes dropped, casefold, split at anything not a letter or digit; a, an, the
-    dropped where a word follows (P170 fix: a final 'a' is a letter label, 'Model A' is not 'model')."""
-    t = X.LATEX_TEXT.sub(r"\1", str(s or "")).replace("\\", " ").casefold()
-    ws = re.findall(r"[^\W_]+", t)
-    return [w for i, w in enumerate(ws) if w not in {"a", "an", "the"} or i == len(ws) - 1]
-
-
-def extends(short, long):
-    """P163: the long label is the short one with a trailing symbol or qualifier: the short label's words begin the long one's, in order
-    (the long label holds the short one's words entirely), and what follows is one symbol (a word of at most two characters) or a phrase
-    that starts with a preposition ('Shape factor' -> 'shape factor s', 'Shape factor for a particle')."""
-    a, b = label_tokens(short), label_tokens(long)
-    if not a or len(b) <= len(a) or b[:len(a)] != a:
-        return False
-    rest = b[len(a):]
-    return rest[0] in PREPOSITIONS or (len(rest) == 1 and len(rest[0]) <= 2)
 
 
 _CAND = {}
@@ -378,10 +342,7 @@ def candidate_of(row):
         return cands[row["id"]]
     ev = sorted(evidence_items(row))
     hits = [c for c in cands.values() if sorted(c["evidence"].values()) == ev]
-    if len(hits) != 1:                                                          # P171: the evidence edited too (two papers merged): the
-        m = re.search(r"proposed id was ([a-z0-9_]+)", row["decision_note"])     # note's 'proposed id was <id>' names the candidate
-        hits = [cands[m.group(1)]] if m and m.group(1) in cands else hits
-    return hits[0] if len(hits) == 1 else None
+    return hits[0] if len(hits) == 1 else None                                 # P175: the note names nothing (a memo)
 
 
 def printed_labels(row):
@@ -505,7 +466,8 @@ def cmd_propose():
         row = dict(id=cid, kind=old["kind"] if old else c["kind"], proposed_definition=(old or {}).get("proposed_definition") or c["definition"],
                    unit=(old or {}).get("unit") or c["unit"], n_papers=str(len(cpids)), pids=";".join(cpids), dois=";".join(dois.get(p, "") for p in cpids),
                    evidence=" || ".join(ev[p] for p in cpids), nearest_id=nid, nearest_definition=shown(ndef), rule_hint=hint,
-                   first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""))
+                   first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""),
+                   **{k: (old or {}).get(k, "") for k in DECISION_COLS})
         if old:
             old.update(row)
             touched.append(cid)
@@ -518,18 +480,19 @@ def cmd_propose():
     print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of "
           f"round {n} rebuilt); {len(log['never'])} rows never (compile.py's never column), "
           f"{len(log['values'])} values without a quantity, {len(log['symbol_merges'])} symbol and {len(log['label_merges'])} label merges into "
-          f"{len(log['table_groups'])} symbol-table rows; {len(log['prefix_merges'])} label-prefix merges (P163)"
-          + "".join(f"\n  merged: {a!r} into {b!r}" for _, _, a, b in log["prefix_merges"]))
+          f"{len(log['table_groups'])} symbol-table rows")
     print(f"pending.csv: {len(rows)} rows; decide in {DECIDE}")
 
 
 # ---------------------------------------------------------------- decide.html
 DECIDE_SCRIPT = r"""
-const COLS=D.cols, ROWS=D.rows, LINES=D.lines, F=['decision','alias_target','never_category','decision_note'];
+const COLS=D.cols, ROWS=D.rows, LINES=D.lines, F=['decision','alias_target','never_category','class','category','slot','parameters','symbol_paper','decision_note'];
 function q(v){return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function state(i){const r=document.getElementById('r'+i);if(!r)return ROWS[i];
   const o=Object.assign({},ROWS[i]);const c=r.querySelector('input[type=radio]:checked');o.decision=c?c.value:'';
   o.alias_target=o.decision==='alias'?r.querySelector('select.alias').value:'';o.never_category=o.decision==='never'?r.querySelector('select.never').value:'';
+  o['class']=r.querySelector('select.cls').value;o.category=r.querySelector('select.cat').value;o.slot=r.querySelector('select.slot').value;
+  o.parameters=r.querySelector('input.params').value.trim();o.symbol_paper=r.querySelector('input.sympap').value.trim();
   o.decision_note=r.querySelector('textarea').value;return o;}
 function csvText(){let out=D.header;ROWS.forEach((row,i)=>{const s=state(i);
   out+=F.every(k=>s[k]===row[k])?LINES[i]:COLS.map(c=>q(s[c]??'')).join(',')+'\n';});return out;}
@@ -576,6 +539,9 @@ def decide_page(rows, n):
     assert header + "".join(lines) == text == PENDING.read_text(encoding="utf-8"), "pending.csv does not reserialize byte for byte"
     opt_ids = "".join(f"<option value='{html.escape(i)}'>{html.escape(i)}</option>" for i in ids)
     opt_cats = "".join(f"<option value='{html.escape(c)}'>{html.escape(c)}</option>" for c in cats)
+    opt = lambda vs, cur: "".join(f"<option value='{html.escape(v)}'{' selected' if v == cur else ''}>{html.escape(v) or '—'}</option>" for v in vs)   # noqa: E731
+    leaves = sorted({e.get("category") for e in entries if e["type"] in ("quantity", "categorical") and e.get("category")})
+    scls = sorted(c["id"] for c in o.get("structure_classes", []))
     body = []
     multi = lambda r: int(r["n_papers"] or 0) >= 2                                # noqa: E731  P157b: rows in two or more papers first, marked
     for i, r in sorted(((i, r) for i, r in enumerate(rows) if not r["decision"]), key=lambda x: (not multi(x[1]), x[0])):
@@ -584,10 +550,16 @@ def decide_page(rows, n):
             cells[0] = f"<span class='multi'>▲ in {esc(r['n_papers'])} papers</span><br>" + cells[0]
         ctl = (f"<div class='ctl'>" + "".join(f"<label><input type='radio' name='d{i}' value='{v}'> {v}</label>" for v in ("accept", "alias", "reject", "never"))
                + f"<div>alias to: <input class='filter' placeholder='type to filter'><select class='alias'>{opt_ids}</select></div>"
-               + f"<div>never category: <select class='never'>{opt_cats}</select></div><textarea placeholder='note'>{html.escape(r['decision_note'])}</textarea></div>")
+               + f"<div>never category: <select class='never'>{opt_cats}</select></div>"
+               + f"<div>class (model): <select class='cls'>{opt(('',) + X.MODEL_CLASSES, r['class'])}</select></div>"   # P175: the columns apply reads
+               + f"<div>category (leaf): <select class='cat'>{opt([''] + leaves, r['category'])}</select></div>"
+               + f"<div>slot (structure class): <select class='slot'>{opt([''] + scls, r['slot'])}</select></div>"
+               + f"<div>parameters: <input class='params' placeholder='entry ids; ;-separated' value='{html.escape(r['parameters'])}'></div>"
+               + f"<div>symbol of papers: <input class='sympap' placeholder='paper keys; ;-separated' value='{html.escape(r['symbol_paper'])}'></div>"
+               + f"<textarea placeholder='note (a memo; apply reads none)'>{html.escape(r['decision_note'])}</textarea></div>")
         body.append(f"<tr id='r{i}'{' class=multi' if multi(r) else ''}>" + "".join(f"<td>{c}</td>" for c in cells) + f"<td>{ctl}</td></tr>")
     done = [r for r in rows if r["decision"]]
-    done_html = "".join("<tr>" + "".join(f"<td>{html.escape(r[k])}</td>" for k in ("id", "kind", "decision", "alias_target", "never_category", "decision_note", "first_round")) + "</tr>" for r in done)
+    done_html = "".join("<tr>" + "".join(f"<td>{html.escape(r[k])}</td>" for k in ("id", "kind", "decision", "alias_target", "never_category", *DECISION_COLS, "decision_note", "first_round")) + "</tr>" for r in done)
     data = json.dumps(dict(cols=X.PENDING_COLUMNS, rows=rows, lines=lines, header=header), ensure_ascii=False).replace("</", "<\\/")
     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>decide round {n}</title><style>{STYLE}"
             ".ctl label{display:block}.ctl select,.ctl input.filter{max-width:16em}.ctl textarea{width:16em;height:3em}.lab{color:#555;font-size:12px}"
@@ -597,7 +569,7 @@ def decide_page(rows, n):
             "<button id='dl'>download pending.csv</button> and save it over psed_v2/ontology/pending.csv; then run <code>python3 psed_v2/ontology/grow.py apply</code>. "
             "Rows left without a choice stay pending.</p>"
             f"<table><tr>{''.join(f'<th>{h}</th>' for h in CAND_HEAD)}<th>decision</th></tr>{''.join(body)}</table>"
-            f"<h2>Decided earlier (read-only)</h2><table><tr><th>id</th><th>kind</th><th>decision</th><th>alias target</th><th>never category</th><th>note</th><th>first round</th></tr>{done_html}</table>"
+            f"<h2>Decided earlier (read-only)</h2><table><tr><th>id</th><th>kind</th><th>decision</th><th>alias target</th><th>never category</th>{''.join(f'<th>{c}</th>' for c in DECISION_COLS)}<th>note</th><th>first round</th></tr>{done_html}</table>"
             f"<script>const D={data};{DECIDE_SCRIPT}</script></body></html>\n")                       # the one script: the rows, then the form logic
     DECIDE.write_text(page, encoding="utf-8")
 
@@ -658,29 +630,26 @@ def add_symbols(text, eid, pairs):
     return text[:s] + blk + text[e:], add
 
 
-PAPER_LOCAL = r"\bpaper-local symbol\b(?!s)"                                  # P172: 'paper-local symbol' anywhere in a note (not 'symbols')
-MODEL_PARAMS = r"\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)"
-
-
 def model_fields(row):
-    """P168 (user): an accepted model's class, parameters and the scope of its printed name, from its pending row: 'class analytical' or
-    'class computational' in the decision note; 'parameters <id>, <id>, ...' in the note, else in the proposed definition; 'paper-local
-    symbol' in the note (PAPER_LOCAL, P172: anywhere) keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
-    parameters, paper_local)."""
-    note = row["decision_note"]
-    cls = re.search(r"\bclass:?\s*(analytical|computational)\b", note)
-    pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row["proposed_definition"])
-    return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(PAPER_LOCAL, note))
+    """P168 (user), P175 (user: the columns, never the note): an accepted model's class (column class: analytical / computational) and its
+    parameters (column parameters: entry ids, ';'-separated). Returns (model_type, parameters)."""
+    return row.get("class", ""), [q for q in re.split(r"[;,\s]+", row.get("parameters") or "") if q]
 
 
 def entry_fields(row, categories, classes):
-    """P171 (user): an accepted entry's category and structure-class slot from its decision note: '<category> leaf' (a category the
-    quantity entries use) -> category; 'slot of the <class> class' -> the entry joins that structure class's slots. Returns (category or '',
-    class or '')."""
-    note = row["decision_note"]
-    cat = next((c for c in sorted(categories, key=len, reverse=True) if re.search(rf"\b{re.escape(c)} leaf\b", note)), "")
-    cl = re.search(r"slot of the ([a-z_]+) class", note)
-    return cat, (cl.group(1) if cl and cl.group(1) in classes else "")
+    """P171 (user), P175 (user: the columns, never the note): an accepted entry's category (column category: a hierarchy leaf the quantity
+    entries use) and structure-class slot (column slot: a structure class). Returns (category or '', class or '')."""
+    return (row.get("category", "") if row.get("category", "") in categories else ""), (row.get("slot", "") if row.get("slot", "") in classes else "")
+
+
+def symbol_papers(row):
+    """P175 (user): the papers of column symbol_paper (paper keys, ';'-separated) as paper ids: the decision's printed labels become symbols
+    of these papers, never aliases. Unknown keys -> Stop."""
+    keys = [k for k in re.split(r"[;,\s]+", row.get("symbol_paper") or "") if k]
+    bad = [k for k in keys if k not in KEY2PID and k not in PAPERS]
+    if bad:
+        raise Stop(f"{row['id']}: symbol_paper names no paper: {bad}")
+    return [KEY2PID.get(k, k) for k in keys]
 
 
 def add_slot(text, cls, eid):
@@ -792,12 +761,19 @@ def apply_here():
             stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
         if x["decision"] == "never" and not x["never_category"].strip():
             stops.append(f"{x['id']}: never without a never_category")
-        if x["decision"] == "accept" and re.search(r"slot of the ([a-z_]+) class", x["decision_note"]) and not entry_fields(x, cats, classes)[1]:
-            stops.append(f"{x['id']}: the note names a structure class that does not exist")
+        if x.get("slot") and x["slot"] not in classes:                          # P175: the columns, never the note
+            stops.append(f"{x['id']}: slot {x['slot']!r} is no structure class")
+        if x.get("category") and x["category"] not in cats:
+            stops.append(f"{x['id']}: category {x['category']!r} is no category of the quantity entries")
+        if x.get("symbol_paper"):
+            try:
+                symbol_papers(x)
+            except Stop as e:
+                stops.append(str(e))
         if x["decision"] == "accept" and x["kind"] == "model":                 # P168: a model's class and parameters (model_fields)
-            mt, params, _ = model_fields(x)
-            if not mt:
-                stops.append(f"{x['id']}: accept of a model without its class (decision note: 'class analytical' or 'class computational')")
+            mt, params = model_fields(x)
+            if mt not in X.MODEL_CLASSES:
+                stops.append(f"{x['id']}: accept of a model without its class (column class: analytical or computational)")
             bad = [q for q in params if q not in have and q not in {y["id"] for y in decided if y["decision"] == "accept"}]
             if bad:
                 stops.append(f"{x['id']}: model parameters that are no entry: {bad}")
@@ -813,14 +789,15 @@ def apply_here():
         labels, syms = printed_labels(x), candidate_symbols(x)
         words, lsyms = split_labels(x, labels)                                 # P164: a symbol-like label is a symbol of its paper, never a word;
                                                                                 # P171 fix: every printed label (a prefix-merged label too)
+        sp = symbol_papers(x)                                                   # P175 (user): column symbol_paper: the printed labels are
+        if sp:                                                                  # symbols of those papers, never aliases
+            lsyms, words = [(t, p) for t in labels for p in sp], []
         if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
-            mt, params, local = model_fields(x) if x["kind"] == "model" else ("", [], False)
-            if local:                                                           # P168: the printed name a symbol of its paper, not an alias
-                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+            mt, params = model_fields(x) if x["kind"] == "model" else ("", [])
             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
             if x["kind"] == "model":
                 e.update(model_type=mt, parameters=params)
-            cat, slot = entry_fields(x, cats, classes)                          # P171: a category and a structure-class slot from the note
+            cat, slot = entry_fields(x, cats, classes)                          # P171, P175: category and structure-class slot (the columns)
             if cat:
                 e["category"] = cat
             if slot:
@@ -829,9 +806,7 @@ def apply_here():
             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
                                 symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in e.get("symbols") or []), note=""))
-        elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out);
-            if re.search(PAPER_LOCAL, x["decision_note"]):                       # P169: the printed name a symbol of its paper
-                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+        elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out)
             t_new = next((e for e in new if e["id"] == x["alias_target"]), None)   # P164: a symbol-like label goes to the target's symbols
             if t_new is not None:
                 al = [w for w in words if X.norm_label(w) not in {X.norm_label(a) for a in t_new.get("aliases", [])}]
@@ -893,7 +868,7 @@ def apply_here():
         hist.append(dict(date=today(), round=n, action={"accept": "add"}.get(x["decision"], x["decision"]), id=x["id"], kind=x["kind"],
                          target=x["alias_target"] if x["decision"] == "alias" else x["never_category"] if x["decision"] == "never" else "",
                          source_pids=";".join(pids), source_dois=";".join(dois.get(p, "") for p in pids), decided_by="user", reason=x["decision_note"],
-                         ontology_sha256_after=after))
+                         ontology_sha256_after=after, **{k: x.get(k, "") for k in DECISION_COLS}))
     append(HISTORY, HISTORY_COLS, hist)
     c = Counter(x["decision"] for x in decided)
     plus = lambda k, v: int(r.get(k) or 0) + v if late else v                 # noqa: E731  P169: late decisions add to the round's counts
@@ -966,6 +941,7 @@ def open_rows(n, compiled, unm, snap):
     pend = {x["id"]: x for x in rd(PENDING)}
     decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
     _CAND.clear()
+    _SCOPE.clear()                                                              # P175: the ontology as it is now (apply writes it before the audits)
     cands, log = candidates_of(sorted(compiled)) if compiled else ({}, dict(never=[], values=[]))
     member, ngrp, vals = {}, {}, set()
     ck = lambda u: (u["pid"], u["element"], u["field"], u["label"], u["unit"])  # noqa: E731
@@ -1006,6 +982,10 @@ def open_rows(n, compiled, unm, snap):
                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
             elif u.get("action", "").startswith("kept (names the model "):
                 cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
+            elif cid in decided_ids and decided_ids[cid]["action"] != "reject" and scoped_elsewhere(p, u["label"]):   # P175 (user)
+                h = decided_ids[cid]
+                cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
+                                             + f"): {scoped_elsewhere(p, u['label'])}; carried into the next propose")
             elif cid in decided_ids:
                 h = decided_ids[cid]
                 cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
@@ -1022,6 +1002,37 @@ def open_rows(n, compiled, unm, snap):
                            candidate_at_snapshot=";".join(snap_of.get(k, [])), why=why))
             src.append(u)
     return a3, fails, src
+
+
+_SCOPE = {}
+
+
+def scoped_elsewhere(pid, label):
+    """P175 (user), A3: why a row's label is not covered by a decision of its candidate: the label is a paper-local symbol of other papers
+    only (a never.csv symbol row, or an entry's symbol; export.symbol_key), or it is an entry's id, name or label that is no alias of it
+    (export.norm_label; the one path reads ids, names and aliases of quantities only). '' when neither."""
+    if not _SCOPE:
+        live = [e for e in onto()["entries"] if not e.get("replaced_by")]
+        sym = defaultdict(set)
+        for r in X.never_rows():
+            if r.get("symbol") == "yes":
+                for q in str(r["paper"]).split(";"):
+                    sym[X.symbol_key(r["label"])].add(q)
+        for e in live:
+            for x in e.get("symbols") or []:
+                sym[X.symbol_key(x["text"])].add(x.get("paper", ""))
+        names = defaultdict(set)
+        for e in onto()["entries"]:                                             # an entry replaced by another is an entry too
+            al = {X.norm_label(str(a)) for a in e.get("aliases") or []}
+            for t in (e["id"], e["id"].replace("_", " "), e.get("name", ""), e.get("label", "")):
+                if str(t).strip() and X.norm_label(str(t)) not in al:
+                    names[X.norm_label(str(t))].add(e["id"])
+        _SCOPE.update(sym=sym, names=names)
+    ps = _SCOPE["sym"].get(X.symbol_key(label), set())
+    if ps and pid not in ps and "" not in ps:
+        return "the label is a paper-local symbol of " + ", ".join(sorted(PAPERS.get(q, q) for q in ps)) + " only"
+    ids = _SCOPE["names"].get(X.norm_label(label), set())
+    return f"the label is the id, name or label of {', '.join(sorted(ids))}, no alias" if ids else ""
 
 
 def carried_rows(exclude=()):

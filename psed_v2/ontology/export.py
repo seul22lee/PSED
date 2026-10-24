@@ -42,7 +42,12 @@ def load():
 
 
 PENDING_COLUMNS = ["id", "kind", "proposed_definition", "unit", "n_papers", "pids", "dois", "evidence", "nearest_id", "nearest_definition", "rule_hint",
-                   "first_round", "decision", "alias_target", "never_category", "decision_note"]   # P155: grow.py propose writes them, the user decides
+                   "first_round", "decision", "alias_target", "never_category", "class", "category", "slot", "parameters", "symbol_paper",
+                   "decision_note"]   # P155: grow.py propose writes them, the user decides; P175 (user): what apply reads besides the decision is
+#                                       class (a model: analytical / computational), category (a hierarchy leaf), slot (a structure class), parameters
+#                                       (a model's entry ids, ';'-separated) and symbol_paper (paper keys, ';'-separated: the printed label a symbol of
+#                                       those papers, never an alias); decision_note is a human memo, never read
+MODEL_CLASSES = ("analytical", "computational")
 DECISIONS = ("", "accept", "alias", "reject", "never")
 PENDING_KINDS = ("quantity", "species", "structure", "method", "model", "mechanism", "unit")
 
@@ -1046,10 +1051,14 @@ def run_checks(onto):
     bad += [f"{r['id']}: decision {r['decision']!r} not in {list(DECISIONS)}" for r in pend if r["decision"] not in DECISIONS]
     bad += [f"{r['id']}: alias target {r['alias_target']!r} is not an entry" for r in pend if r["decision"] == "alias" and r["alias_target"] not in ids]
     bad += [f"{r['id']}: never without a never_category" for r in pend if r["decision"] == "never" and not (r["never_category"] or "").strip()]
+    bad += [f"{r['id']}: class {r['class']!r} not in {list(MODEL_CLASSES)}" for r in pend if r.get("class") and r["class"] not in MODEL_CLASSES]   # P175
+    bad += [f"{r['id']}: slot {r['slot']!r} is no structure class" for r in pend if r.get("slot") and r["slot"] not in classes]
+    bad += [f"{r['id']}: parameter {q!r} is no entry" for r in pend for q in re.split(r"[;,\s]+", r.get("parameters") or "") if q and q not in ids
+            and q not in {x["id"] for x in pend if x["decision"] == "accept"}]
     bad += [f"{r['id']}: already an entry" for r in pend if r["id"] in ids and r["decision"] in ("", "accept")]
     bad += [f"{i}: two rows" for i, n in Counter(r["id"] for r in pend).items() if n > 1]
     dec = Counter(r["decision"] or "undecided" for r in pend)
-    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted",
+    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted; P175: a class from the list, a slot that is a structure class, parameters that are entries",
                 not bad, f"problems: {bad}" if bad else f"{len(pend)} rows: " + ", ".join(f"{k} {n}" for k, n in sorted(dec.items())), bad))
 
     units = {str(v): u for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}   # P100: family audit
