@@ -1,0 +1,28 @@
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index ac5ef5a..64aa8a4 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -743,7 +743,8 @@ def cmd_apply():
+                          symbol="yes") for t, p in dict.fromkeys(lsyms + syms)]    # P164: a symbol-like label is a symbol row of its paper
+             applied.append(dict(id=x["id"], decision=f"never ({x['never_category']})", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(words),
+                                 symbols="; ".join(f"{t} ({p})" for t, p in dict.fromkeys(lsyms + syms)), note=""))
+-    write(REPORTS / f"R{n}_apply.written.csv", ["id", "decision", "candidate", "aliases", "symbols", "note"], applied)   # P164: what apply wrote
++    old_w = rd(REPORTS / f"R{n}_apply.written.csv") if late else []             # P169: late decisions add to the round's rows
++    write(REPORTS / f"R{n}_apply.written.csv", ["id", "decision", "candidate", "aliases", "symbols", "note"], old_w + applied)   # P164: what apply wrote
+     if new:
+         mark = "\nfamilies:"
+         assert text.count(mark) == 1
+@@ -1008,8 +1009,12 @@ def audit_round(n):
+             if not rows and resolving.get(cid):
+                 continue
+         if not rows:
++            labs = {X.norm_label(t) for t in [cid.replace("_", " ")] + [a for a in (entries.get(h["target"], {}).get("aliases") or []) if snake(a) == cid]}
++            carried = [p for p in src if (COMPILED / f"{p}.facts.csv").exists() and any(X.norm_label(x.get("label_as_printed", x.get("printed", ""))) in labs
++                       for x in rd(COMPILED / f"{p}.unmapped.csv") + rd(COMPILED / f"{p}.promoted.csv"))]
+             why = (f"no compiled output for {', '.join(src)}" if src and not any((COMPILED / f"{p}.facts.csv").exists() for p in src)   # P168 fix: the papers
+-                   else "no row of this decision in the snapshot")                                                                   # themselves
++                   else "no row of this decision in the snapshot" if carried or not src                                              # themselves; P169:
++                   else f"no compiled row of {', '.join(PAPERS.get(p, p) for p in src)} carries its label (no compiled output)")    # nothing to trace
+             a1.append(dict(base, now="none", effect="n/a" if "no compiled output" in why else "no effect", reason=why))
+             if "no compiled output" not in why and act != "reject":
+                 fails.append(f"A1 {cid}: {why}")
