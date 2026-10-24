@@ -1,4 +1,5 @@
-input: 29 lines; pass 0 = line 1; 28 pass-1 lines for 17 groups; ignored lines 
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 11
+input: 29 lines; pass 0 = line 1; 17 pass-1 lines for 17 groups; ignored lines 19 (abstract+s0+s1+s2+s3+s4+s5), 20 (s6+s7+s8+s9+s10+s11), 21 (s12+s13+s14), 22 (s15+s16+s17+s18+s19+s20), 23 (fig2), 24 (fig6), 25 (fig7), 26 (tab1), 27 (tab3), 28 (tabu1), 29 (tabu2)
 input: 8 units derived from curves (P161): 10.1039_d1cp04758b:fig5e:c1, 10.1039_d1cp04758b:fig5e:c2, 10.1039_d1cp04758b:fig5f:c1, 10.1039_d1cp04758b:fig5f:c2, 10.1039_d1cp04758b:fig7a:c1, 10.1039_d1cp04758b:fig7a:c2, 10.1039_d1cp04758b:fig7b:c1, 10.1039_d1cp04758b:fig7b:c2
 a0: tab3.r1c0: quantity 'ALD process temperature' -> deposition_temperature (quantity: alias 'ALD process temperature')
 a0: tab3.r6c1: quantity 'Molar mass of Reactant A' -> molar_mass (quantity: alias 'molar mass of reactant A')
@@ -11,35 +12,30 @@ a0: fig5.cap: quantity 'N' -> cycle_number (quantity: symbol 'N' of this paper)
 a0: fig5.cap: quantity 'H' -> feature_width (quantity: symbol 'H' of this paper)
 a0: fig5.cap: quantity 'N' -> cycle_number (quantity: symbol 'N' of this paper)
 a0: fig5.cap: quantity 'H' -> feature_width (quantity: symbol 'H' of this paper)
+a1: symbol species s6.p7 'K' definition adsorption_equilibrium_constant: record -, definition - -> no species
 a1: symbol species eq21 'K' model adsorption_equilibrium_constant: record -, definition - -> no species
 a1: symbol species s10.p2 'Kn' setting knudsen_number: record -, definition - -> no species
 a1: symbol species eq26 'Kn' model knudsen_number: record -, definition - -> no species
 a1: symbol species eq27 '\\lambda' model mean_free_path: record -, definition - -> no species
 a1: symbol species eq31 'c' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species s12.p2 'Kn' derived knudsen_number: record -, definition - -> no species
 a1: symbol species s12.p5 'd_A' model molecule_diameter: record model_reactant, definition tabu1.r7c0: {'model_reactant'} -> backed by the definition
-a1: symbol species s12.p5 'd_I' model molecule_diameter: record -, definition - -> no species
-a1: symbol species s12.p5 'M_I' model molar_mass: record -, definition - -> no species
+a1: symbol species s12.p5 'd_I' model molecule_diameter: record n2, definition - -> species cleared (no evidence)
+a1: symbol species s12.p5 'M_I' model molar_mass: record n2, definition - -> species cleared (no evidence)
 a1: symbol species s12.p5 'M' model molar_mass: record -, definition - -> no species
 a1: symbol species s14.p6 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
 a1: symbol species s14.p6 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
 a1: symbol species s14.p6 'd_A' model molecule_diameter: record model_reactant, definition tabu1.r7c0: {'model_reactant'} -> backed by the definition
-a1: symbol species s14.p6 'M_i' model molar_mass: record -, definition - -> no species
-a1: symbol species s14.p6 'd_i' model molecule_diameter: record -, definition - -> no species
+a1: symbol species s14.p6 'M_i' model molar_mass: record n2, definition - -> species cleared (no evidence)
+a1: symbol species s14.p6 'd_i' model molecule_diameter: record n2, definition - -> species cleared (no evidence)
 a1: symbol species s14.p6 'p_i' model partial_pressure: record -, definition - -> no species
 a1: symbol species s14.p6 'M' model molar_mass: record -, definition - -> no species
-a1: symbol species s14.p6 'c' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species s14.p6 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species s14.p6 'p_i' model partial_pressure: record -, definition - -> no species
-a1: symbol species s14.p6 'p_i' model partial_pressure: record -, definition - -> no species
-a1: symbol species s14.p6 'p_i' model partial_pressure: record -, definition - -> no species
+a1: symbol species s14.p6 'c' model initial_sticking_coefficient: record model_reactant, definition - -> kept: its own element names it
 a1: symbol species s15.p1 'K_n' setting knudsen_number: record -, definition - -> no species
-a1: symbol species s15.p4 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
-a1: symbol species s15.p4 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
-a1: symbol species s15.p4 'd_A' model molecule_diameter: record -, definition tabu1.r7c0: {'model_reactant'} -> from the definition (model_reactant)
-a1: symbol species s15.p4 'M_I' model molar_mass: record -, definition - -> no species
-a1: symbol species s15.p4 'd_I' model molecule_diameter: record -, definition - -> no species
-a1: symbol species s15.p4 'p_I' model partial_pressure: record -, definition - -> no species
+a1: symbol species s15.p4 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
+a1: symbol species s15.p4 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
+a1: symbol species s15.p4 'd_A' model molecule_diameter: record model_reactant, definition tabu1.r7c0: {'model_reactant'} -> backed by the definition
+a1: symbol species s15.p4 'M_I' model molar_mass: record n2, definition - -> species cleared (no evidence)
+a1: symbol species s15.p4 'd_I' model molecule_diameter: record n2, definition - -> species cleared (no evidence)
 a1: symbol species s15.p4 'M' model molar_mass: record -, definition - -> no species
 a1: symbol species s15.p4 'c' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species fig2.cap 'c' model initial_sticking_coefficient: record -, definition - -> no species
@@ -50,7 +46,7 @@ a1: symbol species fig2.cap '\\rho_1' model partial_pressure: record -, definiti
 a1: symbol species fig2.cap 'M_l' model molar_mass: record -, definition - -> no species
 a1: symbol species fig2.cap 'd_l' model molecule_diameter: record -, definition - -> no species
 a1: symbol species fig2.cap 'K' model adsorption_equilibrium_constant: record -, definition - -> no species
-a1: symbol species fig6.cap '\\rho_{A0}' model partial_pressure: record -, definition - -> no species
+a1: symbol species fig6.cap '\\rho_{A0}' model partial_pressure: record model_reactant, definition - -> kept: its own element names it
 a1: symbol species fig6.cap 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
 a1: symbol species fig6.cap 'd_A' model molecule_diameter: record model_reactant, definition tabu1.r7c0: {'model_reactant'} -> backed by the definition
 a1: symbol species fig6.cap 'M_1' model molar_mass: record -, definition - -> no species
@@ -58,28 +54,27 @@ a1: symbol species fig6.cap 'd_1' model molecule_diameter: record -, definition 
 a1: symbol species fig6.cap '\\rho_1' model partial_pressure: record -, definition - -> no species
 a1: symbol species fig6.cap 'M' model molar_mass: record -, definition - -> no species
 a1: symbol species fig6.cap 'c' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species fig6.cap '\\rho_{A0}' model partial_pressure: record -, definition - -> no species
 a1: symbol species fig7.cap 'c' model initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species fig7.cap 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
-a1: symbol species fig7.cap 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
-a1: symbol species fig7.cap 'd_A' model molecule_diameter: record -, definition tabu1.r7c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species fig7.cap 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
+a1: symbol species fig7.cap 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
+a1: symbol species fig7.cap 'd_A' model molecule_diameter: record model_reactant, definition tabu1.r7c0: {'model_reactant'} -> backed by the definition
 a1: symbol species fig7.cap 'p_I' model partial_pressure: record -, definition - -> no species
 a1: symbol species fig7.cap 'M_I' model molar_mass: record -, definition - -> no species
 a1: symbol species fig7.cap 'd_I' model molecule_diameter: record -, definition - -> no species
 a1: symbol species fig7.cap 'M' model molar_mass: record -, definition - -> no species
-a1: symbol species tab1.r1c0 'p_{A0}' definition partial_pressure: record model_reactant, definition - -> species cleared (no evidence)
-a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record model_reactant, definition tabu1.r28c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r3c0 'M_A' definition molar_mass: record model_reactant, definition - -> species cleared (no evidence)
-a1: symbol species tab1.r3c1 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r3c1 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r3c1 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r3c1 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r3c1 'M_A' model molar_mass: record model_reactant, definition tabu1.r21c0: {'model_reactant'} -> backed by the definition
-a1: symbol species tab1.r7c0 'c' definition initial_sticking_coefficient: record -, definition - -> no species
+a1: symbol species tab1.r1c0 'p_{A0} (Pa)' definition partial_pressure: record -, definition - -> no species
+a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r1c1 'p_{A0}' model partial_pressure: record -, definition tabu1.r28c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r3c0 'M_A (kg mol^-1)' definition molar_mass: record -, definition - -> no species
+a1: symbol species tab1.r3c1 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r3c1 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r3c1 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r3c1 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r3c1 'M_A' model molar_mass: record -, definition tabu1.r21c0: {'model_reactant'} -> from the definition (model_reactant)
+a1: symbol species tab1.r7c0 'c (—)' definition initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species tab1.r7c1 'c' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species tab1.r7c1 'c' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species tab1.r7c1 'c' model initial_sticking_coefficient: record -, definition - -> no species
@@ -110,7 +105,21 @@ a1: symbol species tab3.r14c3 'c' model initial_sticking_coefficient: record -, 
 a1: symbol species tab3.r14c6 'c_{\\text{ext}}' derived initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species tab3.r15c3 'c' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species tab3.r15c6 'c_{\\text{ext}}' derived initial_sticking_coefficient: record -, definition - -> no species
-a1: symbol species tabu2.r20c0 '\\lambda' definition mean_free_path: record -, definition - -> no species
+a1: symbol species eq31 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species s15.p4 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species fig2.cap 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species fig6.cap 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species fig7.cap 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab1.r7c1 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab1.r7c1 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab1.r7c1 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab1.r7c1 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab1.r7c1 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab3.r1c3 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab3.r11c3 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab3.r12c3 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab3.r14c3 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
+a1: symbol species tab3.r15c3 'c': species model_reactant from the symbol's evidence in this paper (s14.p6)
 a: eq17: variables_unmapped 'f_{\\text{ads}}' -> 'other'
 a: eq18: variables_unmapped 'f_{\\text{ads}}' -> 'other'
 a: eq18: variables_unmapped 'Q' -> 'other'
@@ -118,42 +127,71 @@ a: eq19: variables_unmapped 'f_{\\text{des}}' -> 'other'
 a: eq20: variables_unmapped 'g' -> 'other'
 a: eq20: variables_unmapped 'f_{\\text{ads}}' -> 'other'
 a: eq20: variables_unmapped 'f_{\\text{des}}' -> 'other'
+a: eq21: variables_unmapped 'Q' -> 'other'
 a: eq22: variables_unmapped 'Q' -> 'other'
 a: eq28: variables_unmapped '\\sigma_{i,j}' -> 'other'
 a: eq29: variables_unmapped 'h_T' -> 'other'
 a: eq30: variables_unmapped '\\gamma' -> 'other'
-a: s15.p4: qualifiers.n '1' -> 1.0 (C4)
 a: eq18: variable 'Q' -> saturation_density (C5, from the paper's definition)
+a: eq21: variable 'Q' -> saturation_density (C5, from the paper's definition)
 a: eq22: variable 'Q' -> saturation_density (C5, from the paper's definition)
 g: fig5.cap: mention_unmatched ['500 nm']
-g: fig6.cap: mention_unmatched ['(a)']
 h: simulation sim_model_a ('Model A') -> model ylilammi_diffusion_reaction (symbol 'Model A' of this paper)
 h: simulation sim_model_b ('Model B') -> model yanguas_gil_elam_diffusion_reaction (symbol 'Model B' of this paper)
 h: tree from pass 0: run 0, simulation 2, specimen 0, model_run 80, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s14.p6 into s12.p5;s14.p6 (feature_extent 10)
 i: merged s14.p6 into s14.p2;s14.p6 (cycle_number 1)
 i: merged s14.p6 into s12.p1;s14.p6 (pulse_time 0.1)
-i: merged s14.p6 into s12.p5;s14.p6 (molecule_diameter 6e-10)
 i: merged s14.p6 into s12.p5;s14.p6 (molar_mass 0.028)
 i: merged s14.p6 into s12.p1;s14.p6 (saturation_density 4)
 i: merged s14.p6 into s12.p5;s14.p6 (molar_mass 0.05)
-i: merged fig2.cap into s14.p6;fig2.cap (initial_sticking_coefficient 0.01)
-i: merged fig2.cap into s14.p6;fig2.cap (feature_width 0.5)
+i: merged s15.p4 into s12.p5;s14.p6;s15.p4 (feature_extent 10)
+i: merged s15.p4 into s14.p2;s14.p6;s15.p4 (cycle_number 1)
+i: merged s15.p4 into s14.p6;s15.p4 (molar_mass 0.1)
+i: merged s15.p4 into s12.p5;s14.p6;s15.p4 (molar_mass 0.028)
+i: merged s15.p4 into s12.p1;s14.p6;s15.p4 (saturation_density 4)
+i: merged s15.p4 into s12.p5;s14.p6;s15.p4 (molar_mass 0.05)
+i: merged s15.p4 into s14.p6;s15.p4 (initial_sticking_coefficient 0.01)
+i: merged fig2.cap into s14.p6;s15.p4;fig2.cap (initial_sticking_coefficient 0.01)
+i: merged fig2.cap into s12.p5;s14.p6;s15.p4;fig2.cap (molar_mass 0.028)
+i: merged fig2.cap into s15.p4;fig2.cap (molecule_diameter 3.74e-10)
 i: merged fig2b into fig2a;fig2b (time 0.01)
 i: merged fig2b into fig2a;fig2b (time 0.02)
 i: merged fig2b into fig2a;fig2b (time 0.05)
 i: merged fig2b into fig2a;fig2b (time 0.1)
 i: merged fig5.cap into s12.p1;fig5.cap (feature_width 500)
-i: merged fig6.cap into s12.p5;s14.p6;fig6.cap (feature_extent 10)
-i: merged fig6.cap into s14.p2;s14.p6;fig6.cap (cycle_number 1)
-i: merged fig6.cap into s14.p6;fig6.cap (molar_mass 0.1)
-i: merged fig6.cap into s12.p5;s14.p6;fig6.cap (molecule_diameter 6e-10)
-i: merged fig6.cap into fig2.cap;fig6.cap (molar_mass 0.028)
-i: merged fig6.cap into fig2.cap;fig6.cap (molecule_diameter 3.74e-10)
-i: merged fig6.cap into s12.p1;s14.p6;fig6.cap (saturation_density 4)
-i: merged fig6.cap into s14.p6;fig6.cap (film_density 3500)
-i: merged fig6.cap into s12.p5;s14.p6;fig6.cap (molar_mass 0.05)
-i: merged fig6.cap into s14.p6;fig2.cap;fig6.cap (initial_sticking_coefficient 0.01)
+i: merged fig6.cap into s12.p5;s14.p6;s15.p4;fig6.cap (feature_extent 10)
+i: merged fig6.cap into s15.p4;fig6.cap (feature_width 0.1)
+i: merged fig6.cap into s14.p2;s14.p6;s15.p4;fig6.cap (cycle_number 1)
+i: merged fig6.cap into s15.p4;fig6.cap (deposition_temperature 523.15)
+i: merged fig6.cap into s14.p6;s15.p4;fig6.cap (molar_mass 0.1)
+i: merged fig6.cap into s12.p2;fig6.cap (molecule_diameter 600)
+i: merged fig6.cap into s12.p5;s14.p6;s15.p4;fig2.cap;fig6.cap (molar_mass 0.028)
+i: merged fig6.cap into s12.p1;s14.p6;s15.p4;fig6.cap (saturation_density 4)
+i: merged fig6.cap into s15.p4;fig6.cap (film_density 3500)
+i: merged fig6.cap into s12.p5;s14.p6;s15.p4;fig6.cap (molar_mass 0.05)
+i: merged fig6.cap into s15.p4;fig6.cap (p_d 1e-05)
+i: merged fig6.cap into s14.p6;s15.p4;fig2.cap;fig6.cap (initial_sticking_coefficient 0.01)
+i: merged fig7.cap into s14.p6;s15.p4;fig2.cap;fig6.cap;fig7.cap (initial_sticking_coefficient 0.01)
+i: merged fig7.cap into fig6.cap;fig7.cap (pulse_time 2)
+i: merged fig7.cap into s15.p4;fig6.cap;fig7.cap (deposition_temperature 523.15)
+i: merged fig7.cap into s15.p4;fig7.cap (partial_pressure 10)
+i: merged fig7.cap into s14.p2;s14.p6;s15.p4;fig6.cap;fig7.cap (cycle_number 1)
+i: merged fig7.cap into s14.p6;s15.p4;fig6.cap;fig7.cap (molar_mass 0.1)
+i: merged fig7.cap into s12.p2;fig6.cap;fig7.cap (molecule_diameter 600)
+i: merged fig7.cap into fig6.cap;fig7.cap (partial_pressure 50)
+i: merged fig7.cap into s12.p5;s14.p6;s15.p4;fig2.cap;fig6.cap;fig7.cap (molar_mass 0.028)
+i: merged fig7.cap into fig6.cap;fig7.cap (molecule_diameter 374)
+i: merged fig7.cap into s15.p4;fig6.cap;fig7.cap (film_density 3500)
+i: merged fig7.cap into s12.p5;s14.p6;s15.p4;fig6.cap;fig7.cap (molar_mass 0.05)
+i: merged fig7.cap into s15.p4;fig6.cap;fig7.cap (p_d 1e-05)
+i: merged fig7.cap into s12.p1;s14.p6;s15.p4;fig6.cap;fig7.cap (saturation_density 4)
+i: merged fig7.cap into fig2.cap;fig7.cap (feature_width 0.5)
+i: merged fig7.cap into s12.p5;s14.p6;s15.p4;fig6.cap;fig7.cap (feature_extent 10)
+i: merged tab1.r4c2 into tab1.r2c2;tab1.r4c2 (knudsen_number 7.6)
+i: merged tab1.r5c2 into tab1.r2c2;tab1.r4c2;tab1.r5c2 (knudsen_number 7.6)
+i: merged tab1.r6c2 into tab1.r2c2;tab1.r4c2;tab1.r5c2;tab1.r6c2 (knudsen_number 7.6)
+i: merged tab1.r7c2 into tab1.r2c2;tab1.r4c2;tab1.r5c2;tab1.r6c2;tab1.r7c2 (knudsen_number 7.6)
 i: merged tab1.r10c1 into fig5a;tab1.r10c1 (feature_width 0.1)
 i: merged tab1.r10c1 into fig5a;tab1.r10c1 (feature_width 0.2)
 i: merged tab1.r10c1 into fig5a;tab1.r10c1 (feature_width 0.5)
@@ -168,8 +206,9 @@ i: merged tab1.r11c1 into fig5b;tab1.r11c1 (cycle_number 50)
 i: merged tab1.r11c1 into fig5b;tab1.r11c1 (cycle_number 100)
 i: merged tab1.r11c1 into fig5b;tab1.r11c1 (cycle_number 250)
 i: merged tab1.r11c1 into fig5b;tab1.r11c1 (cycle_number 500)
-i: merged tab3.r1c2 into s14.p6;fig6.cap;tab3.r1c2 (molar_mass 0.1)
-i: merged tab3.r1c3 into s14.p6;fig2.cap;fig6.cap;tab3.r1c3 (initial_sticking_coefficient 0.01)
+i: merged tab1.r11c2 into tab1.r2c2;tab1.r4c2;tab1.r5c2;tab1.r6c2;tab1.r7c2;tab1.r11c2 (knudsen_number 7.6)
+i: merged tab3.r1c2 into s14.p6;s15.p4;fig6.cap;fig7.cap;tab3.r1c2 (molar_mass 0.1)
+i: merged tab3.r1c3 into s14.p6;s15.p4;fig2.cap;fig6.cap;fig7.cap;tab3.r1c3 (initial_sticking_coefficient 0.01)
 i: merged tab3.r6c2 into tab1.r3c1;tab3.r6c2 (molar_mass 0.025)
 i: merged tab3.r7c2 into tab1.r3c1;tab3.r7c2 (molar_mass 0.05)
 i: merged tab3.r9c2 into tab1.r3c1;tab3.r9c2 (molar_mass 0.2)
@@ -183,36 +222,35 @@ i: definition ('yim22', 'h', 'h'): merged tabu1.r14c0 into tabu1.r13c0;tabu1.r14
 i: definition ('yim22', 'q', 'q'): merged tabu1.r33c0 into tabu1.r32c0;tabu1.r33c0
 i: definition ('yim22', 's', 's'): merged tabu2.r3c0 into tabu2.r2c0;tabu2.r3c0
 i: definition ('yim22', 't', 't'): merged tabu2.r6c0 into tabu2.r4c0;tabu2.r6c0
-m: yim22:s2.p8#1: kind_filled stated
-j: derived over 80 entities: 5 rows; not derived: {'no fact for H': 149, 'no fact for p': 80, 'E: no fact for p': 80, 'no fact for rho': 86, 'n: no fact for gpc': 80, 'gpc: no fact for n': 80, 'no fact for rb': 74, 'no fact for dn': 80, 'no fact for mg': 160, 'no fact for t': 155, 'no fact for h2': 80, 'no fact for phi': 80, 'no fact for d': 74, 'stated: yim22:s15.p1#1 >100': 41, 'gpc: n: no fact for gpc': 80, 'stated: yim22:tab1.r1c2#1 8.2': 1, 'stated: yim22:tab1.r1c2#2 7.6': 1, 'stated: yim22:tab1.r1c2#3 6.5': 1, 'stated: yim22:tab1.r1c2#4 5': 1, 'stated: yim22:tab1.r1c2#5 3.5': 1, 'stated: yim22:tab1.r2c2#1 7.6': 1, 'stated: yim22:tab1.r3c2#1 10.7': 1, 'stated: yim22:tab1.r3c2#2 9.2': 1, 'stated: yim22:tab1.r3c2#3 7.6': 1, 'stated: yim22:tab1.r3c2#4 5.9': 1, 'stated: yim22:tab1.r3c2#5 4.5': 1, 'stated: yim22:tab1.r4c2#1 7.6': 1, 'stated: yim22:tab1.r5c2#1 7.6': 1, 'stated: yim22:tab1.r6c2#1 7.6': 1, 'stated: yim22:tab1.r7c2#1 7.6': 1, 'stated: yim22:tab1.r8c2#1 5.4': 1, 'stated: yim22:tab1.r8c2#2 6.1': 1, 'stated: yim22:tab1.r8c2#3 6.8': 1, 'stated: yim22:tab1.r8c2#4 7.6': 1, 'stated: yim22:tab1.r8c2#5 8.3': 1, 'stated: yim22:tab1.r9c2#1 45.2': 1, 'stated: yim22:tab1.r9c2#2 12.9': 1, 'stated: yim22:tab1.r9c2#3 7.6': 1, 'stated: yim22:tab1.r9c2#4 5.3': 1, 'stated: yim22:tab1.r9c2#5 4.1': 1, 'no fact for S': 11, 'stated: yim22:tab1.r10c2#1 37.8': 1, 'stated: yim22:tab1.r10c2#2 18.9': 1, 'stated: yim22:tab1.r10c2#3 7.6': 1, 'stated: yim22:tab1.r10c2#4 3.8': 1, 'stated: yim22:tab1.r10c2#5 1.9': 1, 'stated: yim22:tab1.r10c2#6 1.5': 1, 'stated: yim22:tab1.r10c2#7 0.9': 1, 'stated: yim22:tab1.r11c2#1 7.6': 1, 'no fact for T': 6, 'lam: no fact for T': 6}
+j: derived over 80 entities: 74 rows; not derived: {'no fact for H': 149, 'no fact for p': 80, 'E: no fact for p': 80, 'no fact for rho': 155, 'n: no fact for gpc': 80, 'gpc: no fact for n': 80, 'no fact for dn': 80, 'no fact for mg': 160, 'no fact for t': 86, 'no fact for h2': 80, 'no fact for phi': 80, 'no fact for T': 75, 'stated: yim22:s15.p1#1 >100': 47, 'gpc: n: no fact for gpc': 80, 'stated: yim22:tab1.r1c2#1 8.2': 1, 'stated: yim22:tab1.r1c2#2 7.6': 1, 'stated: yim22:tab1.r1c2#3 6.5': 1, 'stated: yim22:tab1.r1c2#4 5': 1, 'stated: yim22:tab1.r1c2#5 3.5': 1, 'stated: yim22:tab1.r3c2#1 10.7': 1, 'stated: yim22:tab1.r3c2#2 9.2': 1, 'stated: yim22:tab1.r3c2#3 7.6': 1, 'stated: yim22:tab1.r3c2#4 5.9': 1, 'stated: yim22:tab1.r3c2#5 4.5': 1, 'no fact for rb': 5, 'no fact for d': 5, 'stated: yim22:tab1.r8c2#1 5.4': 1, 'stated: yim22:tab1.r8c2#2 6.1': 1, 'stated: yim22:tab1.r8c2#3 6.8': 1, 'stated: yim22:tab1.r8c2#4 7.6': 1, 'stated: yim22:tab1.r8c2#5 8.3': 1, 'stated: yim22:tab1.r9c2#1 45.2': 1, 'stated: yim22:tab1.r9c2#2 12.9': 1, 'stated: yim22:tab1.r9c2#3 7.6': 1, 'stated: yim22:tab1.r9c2#4 5.3': 1, 'stated: yim22:tab1.r9c2#5 4.1': 1, 'no fact for S': 11, 'stated: yim22:tab1.r10c2#1 37.8': 1, 'stated: yim22:tab1.r10c2#2 18.9': 1, 'stated: yim22:tab1.r10c2#3 7.6': 1, 'stated: yim22:tab1.r10c2#4 3.8': 1, 'stated: yim22:tab1.r10c2#5 1.9': 1, 'stated: yim22:tab1.r10c2#6 1.5': 1, 'stated: yim22:tab1.r10c2#7 0.9': 1, 'lam: no fact for T': 6}
 j: caveats (query.caveats_of): 14, linked to facts 9, to nodes 0; facts reached through query.caveats_for: 10
 j: claim nodes (query.claim_nodes): 25 nodes for 34 claims; claims without a full triple (query.node_of empty): 7
 j: comparisons from figures.json (1c): 4
-step input: {'records': 495, 'unit derived (derived: curve_per_unit, model_run)': 8, 'condition of a derived unit (value)': 8}
+step input: {'records': 485, 'unit derived (derived: curve_per_unit, model_run)': 8, 'condition of a derived unit (value)': 8}
 step a0: {'quantity other: never.csv word': 35, 'quantity other: never.csv symbol': 6, 'quantity other naming a model entry (kept)': 2, 'quantity promoted (quantity: alias)': 3, 'quantity promoted (quantity: symbol)': 8}
-step a1: {'symbol species: no species': 67, 'symbol species: backed by the definition': 22, 'symbol species: from the definition': 9, 'symbol species: species cleared (no evidence)': 2}
-step a: {'variables_unmapped (set to null)': 11, 'numeric string coerced (C4)': 1, 'variable filled from a definition (C5)': 2, 'schema:type': 1, 'schema:enum': 1, 'kept': 501}
+step a1: {'symbol species: no species': 55, 'symbol species: backed by the definition': 17, 'symbol species: species cleared (no evidence)': 6, 'symbol species: kept: its own element names it': 2, 'symbol species: from the definition': 13, "symbol species: from the symbol's evidence in this paper": 15}
+step a: {'variables_unmapped (set to null)': 12, 'variable filled from a definition (C5)': 3, 'schema:type': 1, 'schema:enum': 1, 'kept': 491}
 step a_fields: {'label_as_printed': 1, 'value_text': 1}
-step b: {'model_with_value (kept)': 230, 'kept': 501}
-step c: {'quantity_other (kept)': 15, 'quantity_other never (kept)': 41, 'kept': 501}
-step d: {'quote_not_found': 35, 'derived condition (figures.json, no quote check)': 8, 'kept': 466}
-step e: {'unit_unresolved (kept as printed)': 13, 'kept': 466}
-step f: {'kept': 466}
-step g: {'mention_unmatched': 2}
-step h: {'simulation linked to a model entry': 2, 'model run without a simulation parent (under the paper)': 4, 'place: claim -> paper': 34, 'place: cited -> paper': 2, 'place: definition -> paper': 101, 'place: model about a simulation -> simulation': 121, 'place: caveat -> paper': 14, 'place: about paper -> recipe': 25, 'place: setting about a simulation -> simulation': 11, 'place: derived about a simulation -> simulation': 9, 'place: model about a model run -> model run': 124, 'place: derived about a model run -> model run': 17, 'place: setting about a model run sharing its simulation -> model run': 8}
-step m: {'label_as_printed filled with the quantity id': 6, 'statement filled from the quote': 387, 'kind_filled (stated)': 1, 'links resolved': 23}
+step b: {'model_with_value (kept)': 226, 'kept': 491}
+step c: {'quantity_other never (kept)': 41, 'quantity_other (kept)': 12, 'kept': 491}
+step d: {'quote_not_found': 41, 'derived condition (figures.json, no quote check)': 8, 'kept': 450}
+step e: {'unit_unresolved (kept as printed)': 13, 'kept': 450}
+step f: {'kept': 450}
+step g: {'mention_unmatched': 1}
+step h: {'simulation linked to a model entry': 2, 'model run without a simulation parent (under the paper)': 4, 'place: claim -> paper': 34, 'place: cited -> paper': 2, 'place: model about a simulation -> simulation': 130, 'place: definition -> paper': 100, 'place: caveat -> paper': 14, 'place: setting about a simulation -> simulation': 11, 'place: about paper -> recipe': 8, 'place: derived about a simulation -> simulation': 8, 'place: model about a model run -> model run': 118, 'place: derived about a model run -> model run': 17, 'place: setting about a model run sharing its simulation -> model run': 8}
+step m: {'label_as_printed filled with the quantity id': 10, 'statement filled from the quote': 367, 'links resolved': 23}
 step 1c: {'figure label other (x)': 15, 'figure label other (y)': 13, 'figure label other (condition)': 14, 'figure label other (series)': 1, 'figure axis dimension mismatch (values as printed)': 1, 'curve -> model': 95, 'curve -> model (legend quantity)': 3, 'data of a flagged panel (rule verdict)': 4}
-step i: {'merged': 48, 'definition merged': 5, 'kept': 511}
+step i: {'merged': 78, 'definition merged': 5, 'kept': 465}
 step n: {'comparison replicate': 3, 'comparison grid': 1}
-step j: {'derived cycle_time': 5}
-step k: {'statement from the record': 413, 'statement_copies_text (reported by check)': 52, 'statement assembled': 103}
+step j: {'derived cycle_time': 74}
+step k: {'statement from the record': 367, 'statement_copies_text (reported by check)': 40, 'statement assembled': 172}
 diff against the gold:
-  model         215  318  170  0.53  0.79
-  derived        84   31   24  0.77  0.29
+  model         215  274  146  0.53  0.68
+  derived        84   99   24  0.24  0.29
   claim          77   34   19  0.56  0.25
   entity         68   80   61  0.76  0.90
   setting        67   21    0  0.00  0.00
-  definition     62   96   31  0.32  0.50
+  definition     62   95   31  0.33  0.50
   comparison     15    4    1  0.25  0.07
   caveat          8   14    4  0.29  0.50
   activity        7    3    0  0.00  0.00

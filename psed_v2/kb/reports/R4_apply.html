@@ -3,10 +3,8 @@
 <pre>round 4 acceptance (grow.py audit_round)
 A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
 A2: 16 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 4, &#x27;symbol (user decision)&#x27;: 10}
-A3: 77 open rows: {&#x27;new&#x27;: 7, &#x27;other&#x27;: 44, &#x27;pending&#x27;: 26}; pending candidates accounted 41/41
-A3 new since apply → next round (P162, carried, not a failure): 7 rows
-  10.1039_d1cp04758b:s2.p8 quantity &#x27;continuum flow conditions&#x27;
-  10.1039_d1cp04758b:s12.p5 quantity &#x27;b_A&#x27;
+A3: 74 open rows: {&#x27;other&#x27;: 44, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 5}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 5 rows
   10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
   10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
   10.1039_d1cp04758b:fig7a axis &#x27;d_A&#x27;
@@ -86,7 +84,6 @@ result: PASS
 </table>
 <h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R4_apply.A3.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
-<tr><td>10.1039_d1cp04758b</td><td>s2.p8</td><td>quantity</td><td>continuum flow conditions</td><td></td><td>continuum flow conditions</td><td>new since apply → next round</td><td></td><td>candidate continuum_flow_conditions: not in R4_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq17</td><td>quantity</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq18</td><td>quantity</td><td>f_{\text{ads}}</td><td>m-2 s-1</td><td>fads</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq19</td><td>quantity</td><td>f_{\text{des}}</td><td>m-2 s-1</td><td>fdes</td><td>other</td><td></td><td>joined the symbol-table row of a never candidate through its symbol (Model internals (in a never group)); propose drops the group</td></tr>
@@ -96,8 +93,6 @@ result: PASS
 <tr><td>10.1039_d1cp04758b</td><td>s9.p1</td><td>quantity</td><td>Model B</td><td></td><td>model b</td><td>other</td><td>model_b</td><td>a record of no quantity that names a model entry: names the model yanguas_gil_elam_diffusion_reaction (P172, P176)</td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>s10.p2</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>eq29</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td>h_t</td><td></td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>s12.p5</td><td>quantity</td><td>b_A</td><td>1</td><td>ba</td><td>new since apply → next round</td><td></td><td>candidate b_a: not in R4_apply.decision_rows.csv; carried into the next propose</td></tr>
-<tr><td>10.1039_d1cp04758b</td><td>s12.p5</td><td>quantity</td><td>h_T</td><td>1</td><td>ht</td><td>pending candidate h_t</td><td></td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu1.r15c0</td><td>quantity</td><td>Thiele modulus</td><td></td><td>thiele modulus</td><td>pending candidate thiele_modulus</td><td>thiele_modulus</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c0</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
 <tr><td>10.1039_d1cp04758b</td><td>tabu2.r0c1</td><td>quantity</td><td>Hard-sphere radius of molecule i</td><td>m</td><td>hard-sphere radius of molecule i</td><td>pending candidate hard_sphere_radius_of_molecule_i</td><td>hard_sphere_radius_of_molecule_i</td><td></td></tr>
@@ -182,7 +177,7 @@ result: PASS
 <tr><td>surface_area_roughness_factor</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
 <tr><td>total_isolated_deposition_volume</td><td>3</td><td>10.1116_6.0003182</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0003182 (its paper is not compiled)</td></tr>
 <tr><td>bandgap</td><td>4</td><td>10.1116_6.0002993</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
-<tr><td>h_t</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>3</td><td>yes</td><td></td></tr>
+<tr><td>h_t</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
 <tr><td>hard_sphere_radius_of_molecule_i</td><td>4</td><td>10.1039_d1cp04758b</td><td>2</td><td>2</td><td>yes</td><td></td></tr>
 <tr><td>q</td><td>4</td><td>10.1116_6.0002993</td><td>3</td><td>6</td><td>yes</td><td></td></tr>
 <tr><td>thiele_modulus</td><td>4</td><td>10.1039_d1cp04758b</td><td>1</td><td>1</td><td>yes</td><td></td></tr>

@@ -1,19 +1,12 @@
 <!doctype html><html><head><meta charset='utf-8'><title>R2_apply</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>R2_apply</h1>
 <h2>Acceptance</h2><p>psed_v2/kb/reports/R2_apply.acceptance.txt</p>
 <pre>round 2 acceptance (grow.py audit_round)
-A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 5, &#x27;yes&#x27;: 82, &#x27;no effect&#x27;: 5}
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 5, &#x27;yes&#x27;: 84, &#x27;no effect&#x27;: 3}
 A2: 222 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;alias (curated)&#x27;: 39, &#x27;alias (user decision)&#x27;: 35, &#x27;agree&#x27;: 15, &#x27;id (curated)&#x27;: 12, &#x27;symbol (paper-local)&#x27;: 40}
-A3: 63 open rows: {&#x27;pending&#x27;: 37, &#x27;new&#x27;: 6, &#x27;other&#x27;: 19, &#x27;unit&#x27;: 1}; pending candidates accounted 41/41
-A3 new since apply → next round (P162, carried, not a failure): 6 rows
-  10.1021_cm0303080:s5.p10 quantity &#x27;ΦA&#x27;
-  10.1021_cm0303080:s5.p10 quantity &#x27;N/(ΦA)&#x27;
-  10.1021_cm0303080:s5.p10 quantity &#x27;(ΦA)/N&#x27;
-  10.1021_cm0303080:s5.p25 quantity &#x27;time dependence&#x27;
-  10.1021_cm0303080:s5.p26 quantity &#x27;time dependence&#x27;
+A3: 58 open rows: {&#x27;pending&#x27;: 37, &#x27;other&#x27;: 19, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
   10.1039_d3cp05639b:fig4 axis &#x27;1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]&#x27;
-result: FAIL (2)
-FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity &#x27;H&#x27;: row not found
-FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity &#x27;H&#x27;: row not found
+result: PASS
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R2_apply.A1.csv</p>
 <table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
@@ -38,8 +31,8 @@ FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity &#x27;H&#x27;: row not found
 <tr><td>density_of_ald_reactive_sites</td><td>alias -&gt; saturation_density</td><td>alias of saturation_density: density of ALD reactive sites</td><td>10.1021_cm0303080</td><td>s5.p32</td><td>quantity</td><td>density of ALD reactive sites</td><td>fact: saturation_density (quantity: alias &#x27;density of ALD reactive sites&#x27;); fact ela03:s5.p32#1 (type definition, quantity saturation_density, parent ela03)</td><td>yes</td><td></td></tr>
 <tr><td>density_of_ald_reactive_sites</td><td>alias -&gt; saturation_density</td><td>alias of saturation_density: density of ALD reactive sites</td><td>10.1021_cm0303080</td><td>s5.p32</td><td>unit</td><td>density of ALD reactive sites</td><td>unmapped (open): unit row</td><td>n/a</td><td>the record is promoted; its unit is not in units.yaml</td></tr>
 <tr><td>electron_beam_energy</td><td>never -&gt; Instrument settings</td><td>electron beam energy (any paper)</td><td>10.1021_cm0303080</td><td>s3.p32</td><td>quantity</td><td>electron beam energy</td><td>never: Instrument settings (kept (never: electron beam energy))</td><td>yes</td><td></td></tr>
-<tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>s5.x2</td><td>quantity</td><td>H</td><td>not in unmapped.csv, not promoted</td><td>no effect</td><td>row not found</td></tr>
-<tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>s5.x2</td><td>quantity</td><td>H</td><td>not in unmapped.csv, not promoted</td><td>no effect</td><td>row not found</td></tr>
+<tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>s5.x2</td><td>quantity</td><td>H</td><td>never: Model internals (kept (never: H (symbol in 10.1021_cm0303080)))</td><td>yes</td><td></td></tr>
+<tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>s5.x2</td><td>quantity</td><td>H</td><td>never: Model internals (kept (never: H (symbol in 10.1021_cm0303080)))</td><td>yes</td><td></td></tr>
 <tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>fig12.cap</td><td>quantity</td><td>H</td><td>never: Model internals (kept (never: H (symbol in 10.1021_cm0303080)))</td><td>yes</td><td></td></tr>
 <tr><td>h</td><td>never -&gt; Model internals</td><td>H (symbol, ela03 only)</td><td>10.1021_cm0303080</td><td>fig12.cap</td><td>quantity</td><td>H</td><td>never: Model internals (kept (never: H (symbol in 10.1021_cm0303080)))</td><td>yes</td><td></td></tr>
 <tr><td>hopping_coefficient</td><td>never -&gt; Model internals</td><td>hopping coefficient (any paper)</td><td>10.1021_cm0303080</td><td>s5.p20</td><td>quantity</td><td>hopping coefficient</td><td>never: Model internals (kept (never: hopping coefficient))</td><td>yes</td><td></td></tr>
@@ -339,12 +332,7 @@ FAIL A1 h: 10.1021_cm0303080:s5.x2 quantity &#x27;H&#x27;: row not found
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
 <tr><td>10.1002_cvde.200390005</td><td>s4.p4</td><td>quantity</td><td>excess over the saturation dose</td><td>%</td><td>excess over the saturation dose</td><td>pending candidate excess_over_the_saturation_dose</td><td>excess_over_the_saturation_dose</td><td></td></tr>
 <tr><td>10.1021_cm0303080</td><td>s5.p9</td><td>quantity</td><td>surface area roughness factor</td><td>1</td><td>surface area roughness factor</td><td>pending candidate surface_area_roughness_factor</td><td>surface_area_roughness_factor</td><td></td></tr>
-<tr><td>10.1021_cm0303080</td><td>s5.p10</td><td>quantity</td><td>ΦA</td><td>1/s</td><td>φa</td><td>new since apply → next round</td><td></td><td>candidate a: not in R2_apply.decision_rows.csv; carried into the next propose</td></tr>
-<tr><td>10.1021_cm0303080</td><td>s5.p10</td><td>quantity</td><td>N/(ΦA)</td><td>s</td><td>n/(φa)</td><td>new since apply → next round</td><td></td><td>candidate n decided in round 5 (alias -&gt; cycle_number): the row was born after apply; carried into the next propose</td></tr>
-<tr><td>10.1021_cm0303080</td><td>s5.p10</td><td>quantity</td><td>(ΦA)/N</td><td>1</td><td>(φa)/n</td><td>new since apply → next round</td><td></td><td>candidate a_n: not in R2_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1021_cm0303080</td><td>s5.p17</td><td>quantity</td><td>slope of integrated ZnO coverage</td><td>nm-1</td><td>slope of integrated zno coverage</td><td>pending candidate slope_of_integrated_zno_coverage</td><td>slope_of_integrated_zno_coverage</td><td></td></tr>
-<tr><td>10.1021_cm0303080</td><td>s5.p25</td><td>quantity</td><td>time dependence</td><td></td><td>time dependence</td><td>new since apply → next round</td><td></td><td>candidate time_dependence: not in R2_apply.decision_rows.csv; carried into the next propose</td></tr>
-<tr><td>10.1021_cm0303080</td><td>s5.p26</td><td>quantity</td><td>time dependence</td><td></td><td>time dependence</td><td>new since apply → next round</td><td></td><td>candidate time_dependence: not in R2_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1021_cm0303080</td><td>eq8</td><td>quantity</td><td>integrated coverage</td><td>1</td><td>integrated coverage</td><td>pending candidate integrated_coverage</td><td>integrated_coverage</td><td></td></tr>
 <tr><td>10.1021_cm0303080</td><td>tab1.r1c0</td><td>quantity</td><td>electrolyte</td><td></td><td>electrolyte</td><td>pending candidate anodization_conditions_electrolyte</td><td>anodization_conditions_electrolyte</td><td></td></tr>
 <tr><td>10.1021_cm0303080</td><td>tab1.r1c1</td><td>quantity</td><td>potential</td><td>V</td><td>potential</td><td>pending candidate anodization_conditions_potential</td><td>anodization_conditions_potential</td><td></td></tr>

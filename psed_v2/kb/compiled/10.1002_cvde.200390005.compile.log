@@ -1,4 +1,5 @@
-input: 14 lines; pass 0 = line 2; 10 pass-1 lines for 6 groups; ignored lines 
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 4
+input: 14 lines; pass 0 = line 2; 6 pass-1 lines for 6 groups; ignored lines 10 (abstract+s1+s2+s3+s4+s5+s6), 11 (s7+s8+s9+s10), 12 (fig3), 13 (fig4)
 input: process_mode fill = line 14: run_30k_L null, run_4k_L null, run_2k_L null
 a1: symbol species eq7 'Pt' model exposure: record -, definition - -> no species
 a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> kept: its own element names it
@@ -6,13 +7,7 @@ a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -
 a1: symbol species eq13 '(Pt)_{\\text{sidewalls}}' model exposure: record -, definition - -> no species
 a1: symbol species eq14 '(Pt)_{\\text{bottom}}' model exposure: record -, definition - -> no species
 a1: symbol species eq15 '(Pt)_{\\text{total}}' model exposure: record -, definition - -> no species
-a: eq3: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq4: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq8: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq9: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq10: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq11: variable 'p' -> process_pressure (C5, from the paper's definition)
-a: eq12: variable 'p' -> process_pressure (C5, from the paper's definition)
+a1: symbol species eq7 'Pt': species hf_nme2_4 from the symbol's evidence in this paper (s6.p7)
 h: simulation sim_kinetic_model ('Kinetic Model') -> model gordon_plug_flow (symbol 'Kinetic Model' of this paper)
 h: tree from pass 0: run 3, simulation 1, specimen 3, model_run 1, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s3.p5 into abs.g2;s3.p5 (reactant_A hf_nme2_4)
@@ -27,36 +22,36 @@ j: derived over 2 entities: 1 rows; not derived: {'no fact for S': 1, 'stated: g
 j: caveats (query.caveats_of): 4, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
 j: claim nodes (query.claim_nodes): 8 nodes for 10 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 2
-step input: {'records': 102}
+step input: {'records': 99}
 step a0: {'quantity other: never.csv word': 1}
-step a1: {'symbol species: no species': 4, 'symbol species: kept: its own element names it': 2}
-step a: {'variable filled from a definition (C5)': 7, 'schema:not': 2, 'schema:type': 3, 'schema:enum': 1, 'schema:required': 3, 'kept': 93}
+step a1: {'symbol species: no species': 4, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1}
+step a: {'schema:not': 2, 'schema:type': 3, 'schema:enum': 1, 'schema:required': 3, 'kept': 90}
 step a_fields: {'quantity': 2, 'qualifiers': 6, 'value_text': 1}
-step b: {'kept': 93}
-step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 93}
-step d: {'quote_not_found': 3, 'kept': 90}
-step e: {'kept': 90}
-step f: {'species_resolved': 12, 'kept': 90}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 10, 'place: about paper -> recipe': 39, 'place: about paper, method -> paper method activity': 3, 'place: model about a simulation -> simulation': 14, 'place: setting about a simulation -> simulation': 1, 'place: derived about a simulation -> simulation': 4, 'place: caveat -> paper': 4, 'place: result about a specimen -> its measurement': 5, 'place: setting about a run -> deposition': 3, 'place: model about a model run -> model run': 1, 'place: model about a model run -> simulation': 1, 'place: definition -> paper': 5}
-step m: {'label_as_printed filled with the quantity id': 4, 'statement filled from the quote': 63, 'links resolved': 5}
+step b: {'kept': 90}
+step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 90}
+step d: {'quote_not_found': 3, 'kept': 87}
+step e: {'kept': 87}
+step f: {'species_resolved': 11, 'kept': 87}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 10, 'place: about paper -> recipe': 39, 'place: about paper, method -> paper method activity': 3, 'place: model about a simulation -> simulation': 14, 'place: setting about a simulation -> simulation': 1, 'place: derived about a simulation -> simulation': 4, 'place: caveat -> paper': 4, 'place: result about a specimen -> its measurement': 5, 'place: setting about a run -> deposition': 3, 'place: model about a model run -> model run': 1, 'place: model about a model run -> simulation': 1, 'place: definition -> paper': 2}
+step m: {'label_as_printed filled with the quantity id': 4, 'statement filled from the quote': 57, 'links resolved': 5}
 step 1c: {'curve -> model': 1, 'unbound item (image): ambiguous': 1}
-step i: {'merged': 8, 'kept': 83}
+step i: {'merged': 8, 'kept': 80}
 step n: {'comparison replicate': 1, 'comparison series': 1}
 step j: {'derived cycle_time': 1}
-step k: {'statement from the record': 82, 'statement_copies_text (reported by check)': 33, 'statement assembled': 2}
+step k: {'statement from the record': 79, 'statement_copies_text (reported by check)': 29, 'statement assembled': 2}
 diff against the gold:
-  setting        52   26   21  0.81  0.40
+  setting        52   25   21  0.84  0.40
   model          21   19   13  0.68  0.62
   claim          18   10    7  0.70  0.39
-  cited          11    0    0     -  0.00
   activity       11    8    6  0.75  0.55
   observation    11   11    5  0.45  0.45
+  cited          11    0    0     -  0.00
   derived        10   10    7  0.70  0.70
-  definition      8    4    0  0.00  0.00
+  definition      8    2    0  0.00  0.00
   caveat          7    4    2  0.50  0.29
   entity          6    4    4  1.00  0.67
-  comparison      1    2    0  0.00  0.00
   paper           1    1    0  0.00  0.00
+  comparison      1    2    0  0.00  0.00
 gold definitions with an eq* element in evidence: 2/8
 gold model rows with quantity and value: 0: {}
 observations: gold 11, compiled 11, matched 5

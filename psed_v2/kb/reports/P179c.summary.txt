@@ -1,0 +1,20 @@
+P179c: 0 calls. STOPPED at step 4 (4b: yim22 diff_model 148/215 -> 146/215, two gold rows, both through compile's dedupe), so step 7 (the
+yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c check passes.
+
+1. (the user's replacement) ontology/form_versions.csv: P179 not adopted (rejected) for all nine papers with P179 lines (reason: partial
+   re-extraction is not a form test); the file's header carries the rule: a version is adopted for a paper only as a whole paper, when the
+   whole-paper scores drop on no type and every 4c check passes. kb/compiled reads exactly P178's pass-1 lines. (Before the replacement the
+   general rule gave: adopted yim22, gor03, art19, zou23; not yim20 (matched_T6 442 -> 441), ela03 (4c), yli18, hei24, wer21: superseded.)
+2. Paper-wide symbol species (compile a1, all versions): the table first (33 rows of the thirteen), then the code: equal on all 33.
+   26 records filled from the symbol's evidence in the paper (yim22 c x15 model_reactant, yli18 d_B x4 n2 and p_A0 x2 model_reactant,
+   yim20 c_A, M_A, d_A, d_B, gor03 Pt); 7 cleared as a conflict: yli18 d_A (h2o in s5.p15, model_reactant from the definition).
+3. The user's symbol decision (history.csv round 0, kind symbol, id B, species n2, paper 10.1063_1.5028178; history.csv gains a species
+   column): 8 records filled, yli18 M_B and p_B in s8.p3, fig2.cap, fig3.cap, fig5.cap.
+4. Recompile of the thirteen. 4b, P178 -> P179c: T6 2115 -> 2115; one column fell: yim22 diff_model 148 -> 146 (kb/reports/P179c.s4_failure.csv:
+   s14.p6#16 c = 0.01 lost because step 2 gives s15.p4's c the same species and dedupe merges it into s14.p6's fact; fig6.cap#9 M = 28 lost
+   because 2a clears n2 from the three M_I records and dedupe merges them). 4c: no gold row changed its T6 stage; binding_regression
+   798 / 798; audits 1-5 PASS; export --check 17 / 17; cards 0 errors.
+5. check.py 1882 -> 2028 (+146): 3a fill +173 (same as +62, same statement +57, statement repeats +54; mat22's 42 recipe settings: 42 / 41 / 38
+   of them), steps 2-3 +17, 2a clearing +1, other -45 (problems now on facts steps 2-3 changed). The gold holds no process_mode at any level.
+6. 4d: yli18 p_B, M_B, d_B = n2 on every record (d_B: s5.p15 by its element, the rest from the symbol's evidence; p_B, M_B by the user's
+   decision); p_A0 = model_reactant (the pA0 definition); mat23 thermal 6 / plasma 9; zou23 hot_wire 4; mat22 plasma 42, art19 plasma 8, wer21 plasma 4.

@@ -1,31 +1,38 @@
 element,label,type,quantity,record_species,definition,own_element_names,outcome,species,fact_id
-s2.p2,cA,definition,initial_sticking_coefficient,,,"ar,model_reactant",no species,,yim20:s2.p2#3
+s2.p2,cA,definition,initial_sticking_coefficient,model_reactant,,"ar,model_reactant",kept: its own element names it,model_reactant,yim20:s2.p2#2
 s8.p1,\lambda_{\text{TMA}},model,mean_free_path,tma,tabu2.r26c0,"model_reactant,tma",backed by the definition,tma,yim20:s8.p1#1
-s18.p3,c_H2O,cited,initial_sticking_coefficient,h2o,tabu1.r3c0,"al2o3,h2o,si",backed by the definition,h2o,yim20:s18.p3#3
-s18.p3,c_H2O,cited,initial_sticking_coefficient,h2o,tabu1.r3c0,"al2o3,h2o,si",backed by the definition,h2o,yim20:s18.p3#4
-s18.p3,c_TMA,cited,initial_sticking_coefficient,tma,tabu1.r2c0,"al2o3,si,tma",backed by the definition,tma,yim20:s18.p3#5
-s19.p4,c_TMA,derived,initial_sticking_coefficient,tma,tabu1.r2c0,"h2o,tma",backed by the definition,tma,yim20:s19.p4#1
-s19.p4,c_H2O,derived,initial_sticking_coefficient,h2o,tabu1.r3c0,"h2o,tma",backed by the definition,h2o,yim20:s19.p4#2
+s18.p3,c_H2O,cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1","al2o3,h2o,si",backed by the definition,h2o,yim20:s18.p3#1
+s18.p3,c_TMA,cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","al2o3,si,tma",backed by the definition,tma,yim20:s18.p3#2
+s19.p1,c_A,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim20:s19.p1#1
+s19.p2,K_n,definition,knudsen_number,,,,no species,,yim20:s19.p2#1
+s19.p4,c_TMA,derived,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","h2o,tma",backed by the definition,tma,yim20:s19.p4#1
+s19.p4,c_H2O,derived,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1","h2o,tma",backed by the definition,h2o,yim20:s19.p4#2
 fig10.cap,\rho_{A0},model,partial_pressure,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#4
+fig10.cap,\rho_B,model,partial_pressure,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#5
 fig10.cap,M_A,model,molar_mass,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#6
 fig10.cap,M_B,model,molar_mass,n2,tabu2.r8c0,"al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#7
 fig10.cap,d_A,model,molecule_diameter,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#8
-fig10.cap,d_B,model,molecule_diameter,n2,tabu1.r7c0,"al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#9
+fig10.cap,d_B,model,molecule_diameter,n2,"tabu1.r7c0, tabu1.r7c1","al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#9
 fig10.cap,K,model,adsorption_equilibrium_constant,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#15
-fig10.cap,c_{\text{TMA}},model,initial_sticking_coefficient,,tabu1.r2c0,"al2o3,n2,tma",from the definition,tma,yim20:fig10.cap#16
-tab2.cap,c_{\text{TMA}},definition,initial_sticking_coefficient,tma,,"al2o3,h2o,tma",kept: its own element names it,tma,yim20:tab2.cap#1
-tab2.cap,c_{\text{H}_2\text{O}},definition,initial_sticking_coefficient,h2o,,"al2o3,h2o,tma",kept: its own element names it,h2o,yim20:tab2.cap#2
-tab2.r1c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r1c6#1
-tab2.r2c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r2c6#1
-tab2.r3c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r3c6#1
-tab2.r3c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,yim20:tab2.r3c7#1
-tab2.r4c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r4c6#1
-tab2.r5c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r5c6#1
-tab2.r5c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,yim20:tab2.r5c7#1
-tab2.r6c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r6c6#1
-tab2.r7c6,c_{\text{TMA}},derived,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,
-tab2.r7c7,c_{\text{H}_2\text{O}},derived,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,
-tabu1.r2c0,c_{\text{TMA}},definition,initial_sticking_coefficient,tma,,tma,kept: its own element names it,tma,yim20:tabu1.r2c0#1
-tabu1.r3c0,c_{\text{H}_2\text{O}},definition,initial_sticking_coefficient,h2o,,h2o,kept: its own element names it,h2o,yim20:tabu1.r3c0#1
-tabu1.r6c0,d_{\text{A}},definition,molecule_diameter,,,model_reactant,no species,,yim20:tabu1.r6c0#1
-tabu1.r7c0,d_{\text{B}},definition,molecule_diameter,,,n2,no species,,yim20:tabu1.r7c0#1
+fig10.cap,c_{\text{TMA}},model,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","al2o3,n2,tma",backed by the definition,tma,yim20:fig10.cap#16
+tab2.r1c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r1c6#1
+tab2.r2c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r2c6#1
+tab2.r3c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r3c6#1
+tab2.r3c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,
+tab2.r4c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r4c6#1
+tab2.r5c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r5c6#1
+tab2.r5c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,yim20:tab2.r5c7#1
+tab2.r6c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r6c6#1
+tab2.r7c6,c_{\text{TMA}},derived,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,
+tab2.r7c7,c_{\text{H}_2\text{O}},derived,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,
+tabu1.r2c0,c_TMA,definition,initial_sticking_coefficient,tma,,tma,kept: its own element names it,tma,yim20:tabu1.r2c0#1
+tabu1.r3c0,c_H2O,definition,initial_sticking_coefficient,h2o,,h2o,kept: its own element names it,h2o,yim20:tabu1.r3c0#1
+tabu1.r6c0,d_A,definition,molecule_diameter,,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu1.r6c0#1
+tabu1.r7c0,d_B,definition,molecule_diameter,,,n2,from the symbol's evidence in this paper,n2,yim20:tabu1.r7c0#1
+tabu2.r4c0,K,definition,adsorption_equilibrium_constant,,,,no species,,yim20:tabu2.r4c0#1
+tabu2.r5c0,K_n,definition,knudsen_number,,,,no species,,yim20:tabu2.r5c0#1
+tabu2.r8c0,M_B,definition,molar_mass,n2,,n2,kept: its own element names it,n2,yim20:tabu2.r8c0#1
+tabu2.r9c0,M_A,definition,molar_mass,tma,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu2.r9c0#1
+tabu2.r11c0,p_A0,definition,partial_pressure,tma,,model_reactant,species cleared (no evidence),,yim20:tabu2.r11c0#1
+tabu2.r12c0,p_B,definition,partial_pressure,,,n2,no species,,yim20:tabu2.r12c0#1
+tabu2.r26c0,\lambda_TMA,definition,mean_free_path,tma,,tma,kept: its own element names it,tma,yim20:tabu2.r26c0#1

@@ -1,0 +1,642 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P179c</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P179c</h1>
+<h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.summary.txt</p>
+<pre>P179c: 0 calls. STOPPED at step 4 (4b: yim22 diff_model 148/215 -&gt; 146/215, two gold rows, both through compile&#x27;s dedupe), so step 7 (the
+yli18 whole-paper form test, calls) was not planned for OK or run. Every 4c check passes.
+
+1. (the user&#x27;s replacement) ontology/form_versions.csv: P179 not adopted (rejected) for all nine papers with P179 lines (reason: partial
+   re-extraction is not a form test); the file&#x27;s header carries the rule: a version is adopted for a paper only as a whole paper, when the
+   whole-paper scores drop on no type and every 4c check passes. kb/compiled reads exactly P178&#x27;s pass-1 lines. (Before the replacement the
+   general rule gave: adopted yim22, gor03, art19, zou23; not yim20 (matched_T6 442 -&gt; 441), ela03 (4c), yli18, hei24, wer21: superseded.)
+2. Paper-wide symbol species (compile a1, all versions): the table first (33 rows of the thirteen), then the code: equal on all 33.
+   26 records filled from the symbol&#x27;s evidence in the paper (yim22 c x15 model_reactant, yli18 d_B x4 n2 and p_A0 x2 model_reactant,
+   yim20 c_A, M_A, d_A, d_B, gor03 Pt); 7 cleared as a conflict: yli18 d_A (h2o in s5.p15, model_reactant from the definition).
+3. The user&#x27;s symbol decision (history.csv round 0, kind symbol, id B, species n2, paper 10.1063_1.5028178; history.csv gains a species
+   column): 8 records filled, yli18 M_B and p_B in s8.p3, fig2.cap, fig3.cap, fig5.cap.
+4. Recompile of the thirteen. 4b, P178 -&gt; P179c: T6 2115 -&gt; 2115; one column fell: yim22 diff_model 148 -&gt; 146 (kb/reports/P179c.s4_failure.csv:
+   s14.p6#16 c = 0.01 lost because step 2 gives s15.p4&#x27;s c the same species and dedupe merges it into s14.p6&#x27;s fact; fig6.cap#9 M = 28 lost
+   because 2a clears n2 from the three M_I records and dedupe merges them). 4c: no gold row changed its T6 stage; binding_regression
+   798 / 798; audits 1-5 PASS; export --check 17 / 17; cards 0 errors.
+5. check.py 1882 -&gt; 2028 (+146): 3a fill +173 (same as +62, same statement +57, statement repeats +54; mat22&#x27;s 42 recipe settings: 42 / 41 / 38
+   of them), steps 2-3 +17, 2a clearing +1, other -45 (problems now on facts steps 2-3 changed). The gold holds no process_mode at any level.
+6. 4d: yli18 p_B, M_B, d_B = n2 on every record (d_B: s5.p15 by its element, the rest from the symbol&#x27;s evidence; p_B, M_B by the user&#x27;s
+   decision); p_A0 = model_reactant (the pA0 definition); mat23 thermal 6 / plasma 9; zou23 hot_wire 4; mat22 plasma 42, art19 plasma 8, wer21 plasma 4.
+</pre>
+<h2>Step 4 failure: the rows (stop before step 7)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_failure.csv</p>
+<table><tr><th>paper</th><th>gold_row</th><th>P178</th><th>now</th><th>cause</th></tr>
+<tr><td>yim22</td><td>yim22:s14.p6#16 model initial_sticking_coefficient 0.01 (evidence s14.p6; tab2.cap)</td><td>matched by yim22:s14.p6#6 (c 0.01, species model_reactant, evidence s14.p6); s15.p4#10 (c 0.01, no species) a separate fact</td><td>step 2 gives s15.p4&#x27;s c the paper&#x27;s evidenced species model_reactant; the two records now share the dedupe key (D3: equal value records of different elements merge) and become one fact yim22:s14.p6#6 (evidence s14.p6; s15.p4; fig2.cap; fig6.cap; fig7.cap; tab3.r1c3), which the first-come matcher pairs with another gold c row</td><td>step 2 (paper-wide symbol species) through dedupe</td></tr>
+<tr><td>yim22</td><td>yim22:fig6.cap#9 model molar_mass 28 (evidence fig6.cap; s15.p4; fig7.cap)</td><td>matched by yim22:s12.p5#2 (M_I 0.028 kg/mol, species n2)</td><td>2a clears n2 from the three M_I records (s12.p5, s14.p6, s15.p4: no definition, no element names nitrogen); without a species they share the dedupe key and merge into one fact, which pairs with another gold M row</td><td>2a (species cleared) through dedupe</td></tr>
+</table>
+<h2>1. ontology/form_versions.csv (the rule in its header line)</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/form_versions.csv</p>
+<table><tr><th># RULE (P179c</th><th> user): a form version&#x27;s pass-1 lines are adopted for a paper only as a whole paper (every group of the paper re-extracted under that version)</th><th> when the whole-paper scores against the gold drop on no type and every 4c check passes (audits 1-5</th><th> binding_regression</th><th> export --check</th><th> cards). compile reads a pass-1 line only of a version accepted here (a row with a paper overrides the row for every paper). Lines starting with # are this header.</th></tr>
+<tr><td>version</td><td>paper</td><td>date</td><td>status</td><td>decided_by</td><td>reason</td></tr>
+<tr><td>none</td><td></td><td>2026-10-20</td><td>accepted</td><td>user (P179b directive)</td><td>lines written before the form freeze (no form_version field), in use through P178</td></tr>
+<tr><td>P158</td><td></td><td>2026-10-23</td><td>accepted</td><td>user (P179b directive)</td><td>the frozen form (P158), in use through P178</td></tr>
+<tr><td>P163</td><td></td><td>2026-10-24</td><td>accepted</td><td>user (P179b directive)</td><td>P163: rule 1 scoped; in use through P178</td></tr>
+<tr><td>P179</td><td></td><td>2026-10-24</td><td>candidate</td><td>user (P179b directive)</td><td>the P179 species rule; the re-extraction of 155 elements (P179 3b) waits for adoption per paper (P179b step 4)</td></tr>
+<tr><td>P179</td><td>yli18</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>yim20</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>ela03</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>hei24</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>gor03</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>art19</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>zou23</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>yim22</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+<tr><td>P179</td><td>wer21</td><td>2026-10-24</td><td>rejected</td><td>user (P179c)</td><td>P179c (user): partial re-extraction is not a form test</td></tr>
+</table>
+<h2>2. Paper-wide symbol species: per symbol</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s2_symbols.csv</p>
+<table><tr><th>paper</th><th>symbol</th><th>species</th><th>records</th><th>n_filled</th><th>evidence</th></tr>
+<tr><td>yli18</td><td>dA</td><td>conflict: h2o, model_reactant</td><td>7</td><td>0</td><td>eq7 model_reactant; eq8 model_reactant; fig2.cap model_reactant; fig3.cap model_reactant; fig5.cap model_reactant; s5.p15 h2o; s8.p3 model_reactant</td></tr>
+<tr><td>yli18</td><td>dB</td><td>n2</td><td>5</td><td>4</td><td>s5.p15</td></tr>
+<tr><td>yli18</td><td>dTMA</td><td>tma</td><td>1</td><td>0</td><td>s5.p16</td></tr>
+<tr><td>yli18</td><td>dTiCl4</td><td>ticl4</td><td>1</td><td>0</td><td>s5.p16</td></tr>
+<tr><td>yli18</td><td>pA</td><td>model_reactant</td><td>1</td><td>0</td><td>eq10</td></tr>
+<tr><td>yli18</td><td>pA0</td><td>model_reactant</td><td>6</td><td>2</td><td>fig2.cap; fig3.cap; fig5.cap; s8.p3</td></tr>
+<tr><td>yli18</td><td>MA</td><td>model_reactant</td><td>4</td><td>0</td><td>fig2.cap; fig3.cap; fig5.cap; s8.p3</td></tr>
+<tr><td>yim20</td><td>cA</td><td>model_reactant</td><td>2</td><td>1</td><td>s2.p2</td></tr>
+<tr><td>yim20</td><td>λTMA</td><td>tma</td><td>2</td><td>0</td><td>s8.p1; tabu2.r26c0</td></tr>
+<tr><td>yim20</td><td>cH2O</td><td>h2o</td><td>6</td><td>0</td><td>s18.p3; s19.p4; tab2.r3c7; tab2.r5c7; tab2.r7c7; tabu1.r3c0</td></tr>
+<tr><td>yim20</td><td>cTMA</td><td>tma</td><td>11</td><td>0</td><td>fig10.cap; s18.p3; s19.p4; tab2.r1c6; tab2.r2c6; tab2.r3c6; tab2.r4c6; tab2.r5c6; tab2.r6c6; tab2.r7c6; tabu1.r2c0</td></tr>
+<tr><td>yim20</td><td>ρA0</td><td>tma</td><td>1</td><td>0</td><td>fig10.cap</td></tr>
+<tr><td>yim20</td><td>MA</td><td>tma</td><td>2</td><td>1</td><td>fig10.cap</td></tr>
+<tr><td>yim20</td><td>MB</td><td>n2</td><td>2</td><td>0</td><td>fig10.cap; tabu2.r8c0</td></tr>
+<tr><td>yim20</td><td>dA</td><td>tma</td><td>2</td><td>1</td><td>fig10.cap</td></tr>
+<tr><td>yim20</td><td>dB</td><td>n2</td><td>2</td><td>1</td><td>fig10.cap</td></tr>
+<tr><td>gor03</td><td>Pt</td><td>hf_nme2_4</td><td>3</td><td>1</td><td>s6.p7</td></tr>
+<tr><td>art19</td><td>r</td><td>o_atom</td><td>12</td><td>0</td><td>abs.g2; abs.g3; fig1.cap; fig1C; fig3.cap; s3.p3; s6.p5; tab1.cap</td></tr>
+<tr><td>yim22</td><td>c</td><td>model_reactant</td><td>16</td><td>15</td><td>s14.p6</td></tr>
+<tr><td>yim22</td><td>dA</td><td>model_reactant</td><td>6</td><td>0</td><td>fig2.cap; fig6.cap; fig7.cap; s12.p5; s14.p6; s15.p4</td></tr>
+<tr><td>yim22</td><td>pA0</td><td>model_reactant</td><td>9</td><td>0</td><td>fig2.cap; fig7.cap; s14.p6; s15.p4; tab1.r1c1</td></tr>
+<tr><td>yim22</td><td>MA</td><td>model_reactant</td><td>15</td><td>0</td><td>fig2.cap; fig6.cap; fig7.cap; s14.p6; s15.p4; tab1.r3c1; tab3.r10c2; tab3.r1c2; tab3.r6c2; tab3.r7c2; tab3.r9c2</td></tr>
+<tr><td>yim22</td><td>ρA0</td><td>model_reactant</td><td>1</td><td>0</td><td>fig6.cap</td></tr>
+</table>
+<h2>2. The per-case table (written before the code; the code equals it on every row)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s2_table.csv</p>
+<table><tr><th>paper</th><th>symbol</th><th>element</th><th>label</th><th>type</th><th>quantity</th><th>a1_outcome</th><th>species_before</th><th>expected_outcome</th><th>expected_species</th></tr>
+<tr><td>yli18</td><td>dA</td><td>eq7</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>from the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>s5.p15</td><td>d_A</td><td>setting</td><td>molecule_diameter</td><td>kept: its own element names it</td><td>h2o</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>eq8</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>from the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>s8.p3</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>backed by the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>fig2.cap</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>backed by the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>fig3.cap</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>backed by the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dA</td><td>fig5.cap</td><td>d_A</td><td>model</td><td>molecule_diameter</td><td>backed by the definition</td><td>model_reactant</td><td>symbol species conflict</td><td>-</td></tr>
+<tr><td>yli18</td><td>dB</td><td>s8.p3</td><td>d_B</td><td>model</td><td>molecule_diameter</td><td>species cleared (no evidence)</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td></tr>
+<tr><td>yli18</td><td>dB</td><td>fig2.cap</td><td>d_B</td><td>model</td><td>molecule_diameter</td><td>species cleared (no evidence)</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td></tr>
+<tr><td>yli18</td><td>dB</td><td>fig3.cap</td><td>d_B</td><td>model</td><td>molecule_diameter</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td></tr>
+<tr><td>yli18</td><td>dB</td><td>fig5.cap</td><td>d_B</td><td>model</td><td>molecule_diameter</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td></tr>
+<tr><td>yli18</td><td>pA0</td><td>tabI.r1c3</td><td>p_{\text{A0}}</td><td>setting</td><td>partial_pressure</td><td>species cleared (no evidence)</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yli18</td><td>pA0</td><td>tabI.r2c3</td><td>p_{\text{A0}}</td><td>setting</td><td>partial_pressure</td><td>species cleared (no evidence)</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim20</td><td>cA</td><td>s19.p1</td><td>c_A</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim20</td><td>MA</td><td>tabu2.r9c0</td><td>M_A</td><td>definition</td><td>molar_mass</td><td>species cleared (no evidence)</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>tma</td></tr>
+<tr><td>yim20</td><td>dA</td><td>tabu1.r6c0</td><td>d_A</td><td>definition</td><td>molecule_diameter</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>tma</td></tr>
+<tr><td>yim20</td><td>dB</td><td>tabu1.r7c0</td><td>d_B</td><td>definition</td><td>molecule_diameter</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td></tr>
+<tr><td>gor03</td><td>Pt</td><td>eq7</td><td>Pt</td><td>model</td><td>exposure</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>hf_nme2_4</td></tr>
+<tr><td>yim22</td><td>c</td><td>eq31</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>s15.p4</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>fig2.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>fig6.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>fig7.cap</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab1.r7c1</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab3.r1c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab3.r11c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab3.r12c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab3.r14c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+<tr><td>yim22</td><td>c</td><td>tab3.r15c3</td><td>c</td><td>model</td><td>initial_sticking_coefficient</td><td>no species</td><td>-</td><td>from the symbol&#x27;s evidence in this paper</td><td>model_reactant</td></tr>
+</table>
+<h2>3. The rows the user&#x27;s symbol decision fills (subscript B, n2, yli18)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s3_decision_rows.csv</p>
+<table><tr><th>paper</th><th>element</th><th>label</th><th>type</th><th>quantity</th><th>record_species</th><th>species</th></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>M_B</td><td>model</td><td>molar_mass</td><td>h2o</td><td>n2</td></tr>
+<tr><td>yli18</td><td>s8.p3</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>h2o</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>M_B</td><td>model</td><td>molar_mass</td><td>n2</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig2.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>n2</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>M_B</td><td>model</td><td>molar_mass</td><td>-</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig3.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>-</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>M_B</td><td>model</td><td>molar_mass</td><td>-</td><td>n2</td></tr>
+<tr><td>yli18</td><td>fig5.cap</td><td>p_B</td><td>model</td><td>partial_pressure</td><td>-</td><td>n2</td></tr>
+</table>
+<h2>4b. Scores of the twelve: every changed column (P178 -&gt; P179c)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P178</th><th>P179c</th><th>fell</th></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>127</td><td>124</td><td></td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>204</td><td>325</td><td></td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>141</td><td>139</td><td></td></tr>
+<tr><td>art19</td><td>check_dir_problems</td><td>54</td><td>76</td><td></td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>222</td><td>216</td><td></td></tr>
+<tr><td>yim22</td><td>check_dir_problems</td><td>130</td><td>125</td><td></td></tr>
+<tr><td>yim22</td><td>diff_model</td><td>148/215</td><td>146/215</td><td>FELL</td></tr>
+<tr><td>mat23</td><td>check_dir_problems</td><td>138</td><td>157</td><td></td></tr>
+</table>
+<h2>4b. Score totals</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_score_totals.csv</p>
+<table><tr><th>column</th><th>P178</th><th>P179c</th></tr>
+<tr><td>check_dir_problems</td><td>1882</td><td>2028</td></tr>
+<tr><td>matched_T6</td><td>2115</td><td>2115</td></tr>
+<tr><td>gold_rows</td><td>5357</td><td>5357</td></tr>
+</table>
+<h2>4c. T6: every gold row whose T6 stage changed</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_t6_rows.csv</p>
+<table><tr><th>none</th></tr>
+</table>
+<h2>4c. binding.py --check</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_binding_check.txt</p>
+<pre>binding regression: 798 items, 0 lost their unit
+
+</pre>
+<h2>4c. export --check</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 187 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted; P175: a class from the list, a slot that is a structure class, parameters that are entries 41 rows: undecided 41
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+pass 16. form version P179 (user): the species qualifier (meaning; species entries only), the species rule in CODEBOOK.md, molar_mass and molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided form version P179, pass-0 form version 2
+pass 17. every form version of kb/records is listed in ontology/form_versions.csv (P179b: compile reads a pass-1 line of an accepted version only) P158: 43 lines; P163: 98 lines; P179: 65 lines; none: 264 lines
+
+</pre>
+<h2>4c. Audit round 1</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 38 promotions: {&#x27;id (curated)&#x27;: 32, &#x27;agree&#x27;: 2, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 18 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 10}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 518 history rows, 41 pending, checks 17/17
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>4c. Audit round 2</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 5, &#x27;yes&#x27;: 84, &#x27;no effect&#x27;: 3}
+A2: 222 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;alias (curated)&#x27;: 39, &#x27;alias (user decision)&#x27;: 35, &#x27;agree&#x27;: 15, &#x27;id (curated)&#x27;: 12, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 58 open rows: {&#x27;pending&#x27;: 37, &#x27;other&#x27;: 19, &#x27;unit&#x27;: 1, &#x27;new&#x27;: 1}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 1 rows
+  10.1039_d3cp05639b:fig4 axis &#x27;1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 518 history rows, 41 pending, checks 17/17
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>4c. Audit round 3</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.audit_round3.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 45 promotions: {&#x27;alias (user decision)&#x27;: 30, &#x27;symbol (user decision)&#x27;: 3, &#x27;agree&#x27;: 12}
+A3: 43 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 32, &#x27;new&#x27;: 3}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 3 rows
+  10.1116_6.0002804:fig3 unit &#x27;Time&#x27;
+  10.1116_6.0002804:fig5a unit &#x27;Depth (\times 10^{15} at/cm^{2})&#x27;
+  10.1116_6.0003182:fig6f unit &#x27;temperature&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 518 history rows, 41 pending, checks 17/17
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>4c. Audit round 4</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.audit_round4.txt</p>
+<pre>round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
+A2: 16 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;alias (curated)&#x27;: 4, &#x27;symbol (user decision)&#x27;: 10}
+A3: 74 open rows: {&#x27;other&#x27;: 44, &#x27;pending&#x27;: 25, &#x27;new&#x27;: 5}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 5 rows
+  10.1039_d1cp04758b:fig5f unit &#x27;|d(s/N)/dx̃| at x̃₅₀%&#x27;
+  10.1039_d1cp04758b:fig6a axis &#x27;Diffusion coefficient&#x27;
+  10.1039_d1cp04758b:fig7a axis &#x27;d_A&#x27;
+  10.1039_d1cp04758b:fig7b axis &#x27;d_A&#x27;
+  10.1116_6.0002993:fig4.cap quantity &#x27;150°C&#x27;
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 518 history rows, 41 pending, checks 17/17
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>4c. Audit round 5</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.audit_round5.txt</p>
+<pre>round 5 acceptance (grow.py audit_round)
+A1: 92 decisions, 298 rows: effect {&#x27;yes&#x27;: 292, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 2}
+A2: 20 promotions: {&#x27;alias (curated)&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 7, &#x27;id (curated)&#x27;: 6, &#x27;agree&#x27;: 5}
+A3: 3 open rows: {&#x27;other&#x27;: 1, &#x27;pending&#x27;: 2}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 518 history rows, 41 pending, checks 17/17
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>4c. Cards: one line per paper</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_cards.csv</p>
+<table><tr><th>paper</th><th>cards_gold</th><th>cards_compiled</th><th>paired</th><th>conditions_per_card_mean</th><th>conditions_per_card_median</th><th>model_run_cards</th><th>cards_with_model_link</th><th>comparison_rows_with_3_ticked</th><th>card_alone_panel</th><th>errors</th></tr>
+<tr><td>yli18</td><td>11</td><td>12</td><td>11</td><td>25.6</td><td>28.0</td><td>10</td><td>10</td><td>43</td><td>C 0.01 s (model run, c:yli18:mrun:mr_tp_0_01s)Conditionsenti</td><td>0</td></tr>
+<tr><td>yim20</td><td>31</td><td>25</td><td>25</td><td>33.6</td><td>39</td><td>9</td><td>9</td><td>39</td><td>C 100 nm (model run, c:yim20:mrun:mr_h100)Conditionssimulati</td><td>0</td></tr>
+<tr><td>mat22</td><td>54</td><td>42</td><td>34</td><td>64.9</td><td>64.0</td><td>0</td><td>0</td><td>100</td><td>C film of at plasma_gas_ratio=0.2; deposition_temperature=10</td><td>0</td></tr>
+<tr><td>ela03</td><td>28</td><td>44</td><td>15</td><td>13.3</td><td>10.0</td><td>31</td><td>31</td><td>44</td><td>C 10 (model run, c:ela03:mrun:sim_zno_10s)Conditionssimulati</td><td>0</td></tr>
+<tr><td>hei24</td><td>83</td><td>166</td><td>83</td><td>34.0</td><td>34.0</td><td>166</td><td>166</td><td>40</td><td>C Sphere (s = 2) (model run, c:hei24:mrun:10_1039_d3cp05639b</td><td>0</td></tr>
+<tr><td>gor03</td><td>6</td><td>2</td><td>2</td><td>12</td><td>12.0</td><td>1</td><td>1</td><td>46</td><td>C 30 (specimen, c:gor03:ent:specimen_30k_l)Conditionsdeposit</td><td>0</td></tr>
+<tr><td>gre23</td><td>18</td><td>4</td><td>0</td><td>32</td><td>32.0</td><td>0</td><td>0</td><td>100</td><td>C 120 (specimen, c:gre23:ent:specimen_120)Conditionsdepositi</td><td>0</td></tr>
+<tr><td>art19</td><td>12</td><td>10</td><td>10</td><td>9.5</td><td>10.5</td><td>2</td><td>2</td><td>35</td><td>C SiO2, 120 s (specimen, c:art19:ent:specimen_sio2_120s)Cond</td><td>0</td></tr>
+<tr><td>zou23</td><td>8</td><td>68</td><td>5</td><td>16.5</td><td>16.0</td><td>0</td><td>0</td><td>53</td><td>C ALD film obtained at 350 °C (specimen, c:zou23:ent:zou23_s</td><td>0</td></tr>
+<tr><td>gao15</td><td>15</td><td>4</td><td>4</td><td>27.5</td><td>27.0</td><td>0</td><td>0</td><td>41</td><td>C 1000 nm (specimen, c:gao15:ent:specimen_tio2_1000nm)Condit</td><td>0</td></tr>
+<tr><td>yim22</td><td>68</td><td>80</td><td>61</td><td>54.6</td><td>59.0</td><td>76</td><td>76</td><td>58</td><td>C 0.5 (model run, c:yim22:mrun:mr_fig5a_c3)Conditionsentity&#x27;</td><td>0</td></tr>
+<tr><td>mat23</td><td>14</td><td>15</td><td>7</td><td>20.4</td><td>20</td><td>0</td><td>0</td><td>56</td><td>C PE-ALD at 225 °C (20 nm) (specimen, c:mat23:ent:mat23_spec</td><td>0</td></tr>
+<tr><td>wer21</td><td>0</td><td>23</td><td>0</td><td>27.8</td><td>6</td><td>11</td><td>11</td><td>41</td><td>C film of 10.0 sccm (specimen, c:wer21:run:run_fig2_c1:film)</td><td>0</td></tr>
+</table>
+<h2>4c. Cards: errors</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s4_card_errors.csv</p>
+<table><tr><th>paper</th><th>where</th><th>error</th></tr>
+<tr><td></td><td></td><td>none</td></tr>
+</table>
+<h2>5. check.py delta by class and cause, one example each</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s5_check_delta.csv</p>
+<table><tr><th>cls</th><th>cause</th><th>P178</th><th>P179c</th><th>delta</th><th>example</th></tr>
+<tr><td>same as ·</td><td>3a fill</td><td>0</td><td>62</td><td>62</td><td>mat22: mat22:s5.p1#8: same as mat22:s5.p1#7</td></tr>
+<tr><td>same statement as ·</td><td>3a fill</td><td>0</td><td>57</td><td>57</td><td>mat22: mat22:s5.p1#8: same statement as mat22:s5.p1#7</td></tr>
+<tr><td>statement repeats eight words of · in a row</td><td>3a fill</td><td>0</td><td>54</td><td>54</td><td>mat22: mat22:s5.p1#7: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>same statement as ·</td><td>other</td><td>723</td><td>696</td><td>-27</td><td>yli18: yli18:s8.p24#8: same statement as yli18:s8.p24#6</td></tr>
+<tr><td>same as ·</td><td>other</td><td>166</td><td>154</td><td>-12</td><td>yli18: yli18:fig5.cap#1: same as yli18:s8.p3#1</td></tr>
+<tr><td>same statement as ·</td><td>steps 2-3</td><td>0</td><td>10</td><td>10</td><td>yli18: yli18:fig3.cap#1: same statement as yli18:s8.p3#6</td></tr>
+<tr><td>statement repeats eight words of · in a row</td><td>other</td><td>585</td><td>579</td><td>-6</td><td>yli18: yli18:abs.g1#1: statement repeats eight words of abs.g1 in a row</td></tr>
+<tr><td>same as ·</td><td>steps 2-3</td><td>0</td><td>4</td><td>4</td><td>yli18: yli18:fig5.cap#5: same as yli18:s8.p3#5</td></tr>
+<tr><td>statement repeats eight words of · in a row</td><td>steps 2-3</td><td>0</td><td>3</td><td>3</td><td>yli18: yli18:eq7#1: statement repeats eight words of eq7 in a row</td></tr>
+<tr><td>statement repeats eight words of · in a row</td><td>2a clearing</td><td>0</td><td>1</td><td>1</td><td>yim22: yim22:s15.p4#6: statement repeats eight words of s15.p4 in a row</td></tr>
+</table>
+<h2>5. mat22&#x27;s recipe settings of process_mode and the gold</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s5_mat22_process_mode.txt</p>
+<pre>mat22: 42 recipe settings of process_mode (one per pass-0 run, the 3a fill: plasma, each quoting the paper&#x27;s statement of the process, s5.p1 for 38 runs, fig1c, fig1d, s5.p8, s3.p48 for the others).
+What check.py counts on them: statement repeats eight words of its element: 42; same as (another setting of the same key): 41; same statement as (another fact): 38. The same quote is every setting&#x27;s statement (P139: a record without its own statement takes its quote), so each further run&#x27;s setting repeats the first (&#x27;same as&#x27;, &#x27;same statement&#x27;), and the quote copies the element (&#x27;statement repeats eight words&#x27;). No change (R3).
+What the gold holds for process_mode: no row in any of the twelve golds (quantity process_mode or a process_mode qualifier: 0 rows, at no level). mat22&#x27;s gold holds the plasma side as plasma_gas_ratio settings (51 under the depositions, 11 under the paper, 2 under references) and reactant_B under the recipe (4).
+</pre>
+<h2>6. 4d</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.s6_4d.csv</p>
+<table><tr><th>item</th><th>element</th><th>outcome</th><th>species</th><th>fact_id</th></tr>
+<tr><td>yli18 d_B</td><td>s5.p15</td><td>kept: its own element names it</td><td>n2</td><td>yli18:s5.p15#2</td></tr>
+<tr><td>yli18 p_{A0}</td><td>s8.p3</td><td>backed by the definition</td><td>model_reactant</td><td>yli18:s8.p3#3</td></tr>
+<tr><td>yli18 M_B</td><td>s8.p3</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:s8.p3#6</td></tr>
+<tr><td>yli18 d_B</td><td>s8.p3</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>yli18:s8.p3#7</td></tr>
+<tr><td>yli18 p_B</td><td>s8.p3</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:s8.p3#8</td></tr>
+<tr><td>yli18 p_{A0}</td><td>fig2.cap</td><td>backed by the definition</td><td>model_reactant</td><td>yli18:fig2.cap#1</td></tr>
+<tr><td>yli18 M_B</td><td>fig2.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>(no fact: merged or dropped)</td></tr>
+<tr><td>yli18 d_B</td><td>fig2.cap</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>(no fact: merged or dropped)</td></tr>
+<tr><td>yli18 p_B</td><td>fig2.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>(no fact: merged or dropped)</td></tr>
+<tr><td>yli18 p_{A0}</td><td>fig3.cap</td><td>backed by the definition</td><td>model_reactant</td><td>(no fact: merged or dropped)</td></tr>
+<tr><td>yli18 M_B</td><td>fig3.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:fig3.cap#1</td></tr>
+<tr><td>yli18 d_B</td><td>fig3.cap</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>yli18:fig3.cap#2</td></tr>
+<tr><td>yli18 p_B</td><td>fig3.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:fig3.cap#3</td></tr>
+<tr><td>yli18 p_A0</td><td>fig5.cap</td><td>backed by the definition</td><td>model_reactant</td><td>yli18:fig5.cap#3</td></tr>
+<tr><td>yli18 M_B</td><td>fig5.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:fig5.cap#6</td></tr>
+<tr><td>yli18 d_B</td><td>fig5.cap</td><td>from the symbol&#x27;s evidence in this paper</td><td>n2</td><td>yli18:fig5.cap#7</td></tr>
+<tr><td>yli18 p_B</td><td>fig5.cap</td><td>from the user&#x27;s symbol decision</td><td>n2</td><td>yli18:fig5.cap#8</td></tr>
+<tr><td>mat22 process_mode</td><td>fig1c; fig1d; s3.p48; s5.p1; s5.p8</td><td>plasma 42</td><td></td><td></td></tr>
+<tr><td>art19 process_mode</td><td>s3.p8</td><td>plasma 8</td><td></td><td></td></tr>
+<tr><td>wer21 process_mode</td><td>s25.p17</td><td>plasma 4</td><td></td><td></td></tr>
+<tr><td>zou23 process_mode</td><td>s4.p7</td><td>hot_wire 4</td><td></td><td></td></tr>
+<tr><td>mat23 process_mode</td><td>fig1.cap; fig2.cap; fig4.cap</td><td>thermal 6, plasma 9</td><td></td><td></td></tr>
+</table>
+<h2>Code diff</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P179c.code.diff</p>
+<pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 1168b888..c939bd6d 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -154,8 +154,13 @@ psed_v2/
+   criterion; the user vetoes by name afterwards.
+ - P179b (user): compile reads a pass-1 line only if its form version is accepted in ontology/form_versions.csv (version, paper, date,
+   status, decided_by, reason; a row with a paper overrides the row for every paper; &#x27;none&#x27; = a line written before the freeze); the
+-  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there. A candidate
+-  version is adopted per paper by comparing two sandbox compiles (kb/tmp/A without, kb/tmp/B with it) against the gold.
++  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there.
++- P179c (user): a version&#x27;s lines are adopted for a paper only as a whole paper (every group re-extracted under it), when the whole-paper
++  scores drop on no type and every 4c check passes (the rule heads form_versions.csv; P179&#x27;s partial re-extraction adopted for no paper).
++  A symbol&#x27;s species is paper-wide (a1 after the per-record rule): a symbol whose species is evidenced in any record of the paper gives
++  it to every record of the symbol that has none; differing evidenced species clear them all (&#x27;symbol species conflict&#x27;). A user&#x27;s
++  symbol decision (history.csv kind symbol, column species, the paper in source_pids) gives its species to the paper&#x27;s symbols whose
++  subscript is the decided letter, where still empty.
+ - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
+   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
+   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 1a5eeb5a..637619f0 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -395,6 +395,7 @@ def species_named(pid, label):
+     return found
+ 
+ 
++SPECIES_EVIDENCED = (&quot;kept: its own element names it&quot;, &quot;backed by the definition&quot;, &quot;from the definition&quot;, &quot;corrected from the definition&quot;)   # P179c
+ UNNAMED_REACTANT = re.compile(r&quot;\b(?i:reactants?|precursors?)\s+([A-Z])\b&quot;)    # P179 (user): a reactant presented unnamed (&#x27;reactant A&#x27;)
+ SUBSCRIPT = re.compile(r&quot;^[^_]+_\{?(.+?)\}?$&quot;)                                  # P178: a symbol&#x27;s subscript (p_B -&gt; B, c_{TMA} -&gt; TMA)
+ CELL_ID = re.compile(r&quot;^(tab\w*?)\.r(\d+)c(\d+)$&quot;)                              # a table cell id: table, row, column
+@@ -410,7 +411,7 @@ def line_version(x):
+ def accepted_versions(key):
+     &quot;&quot;&quot;P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
+     for that paper (a row with its key), else for every paper (a row with no paper).&quot;&quot;&quot;
+-    rows = list(csv.DictReader(FORM_VERSIONS.open(encoding=&quot;utf-8&quot;))) if FORM_VERSIONS.exists() else []
++    rows = list(csv.DictReader(x for x in FORM_VERSIONS.open(encoding=&quot;utf-8&quot;) if not x.startswith(&quot;#&quot;))) if FORM_VERSIONS.exists() else []   # P179c: # = the header
+     st = {r[&quot;version&quot;]: r[&quot;status&quot;] for r in rows if not r[&quot;paper&quot;]}
+     st.update({r[&quot;version&quot;]: r[&quot;status&quot;] for r in rows if r[&quot;paper&quot;] == key})
+     return {v for v, x in st.items() if x == &quot;accepted&quot;}
+@@ -985,8 +986,50 @@ class Run:
+             self.count(&quot;a1&quot;, f&quot;symbol species: {how}&quot;)
+             self.note(f&quot;a1: symbol species {r[&#x27;eid&#x27;]} {lab!r} {rec.get(&#x27;type&#x27;)} {rec.get(&#x27;quantity&#x27;)}: record {own or &#x27;-&#x27;}, definition &quot;
+                       f&quot;{&#x27;, &#x27;.join(f&#x27;{e}: {x}&#x27; for e, x in found) or &#x27;-&#x27;} -&gt; {how}&quot; + (f&quot; ({sp})&quot; if sp and sp != own else &quot;&quot;))
++        self.symbol_species_paper(recs)
+         return recs
+ 
++    def symbol_species_paper(self, recs):
++        &quot;&quot;&quot;a1, P179c (user): a symbol is paper-local, its species too (P157d). Within the paper, a symbol (export.symbol_key of the label)
++        whose species is evidenced in any record (kept, backed by, from or corrected from the definition) gives that species to every
++        record of the symbol that has none; differing evidenced species clear every record of the symbol (&#x27;symbol species conflict&#x27;).
++        Then a user&#x27;s symbol decision (history.csv kind symbol with a species, for this paper) gives its species to the paper&#x27;s symbols
++        whose subscript is the decided letter, where the species is still empty.&quot;&quot;&quot;
++        def put(r, sp, how, note):
++            rec = r[&quot;rec&quot;]
++            q = rec.get(&quot;qualifiers&quot;) if isinstance(rec.get(&quot;qualifiers&quot;), dict) else {}
++            rec[&quot;qualifiers&quot;] = ({**q, &quot;species&quot;: sp} if sp else {k: v for k, v in q.items() if k != &quot;species&quot;}) or None
++            rec[&quot;note&quot;] = &quot;; &quot;.join(x for x in (rec.get(&quot;note&quot;), note) if x)
++            r[&quot;a1&quot;].update(outcome=how, species=sp)
++            self.count(&quot;a1&quot;, f&quot;symbol species: {how}&quot;)
++            self.note(f&quot;a1: symbol species {r[&#x27;eid&#x27;]} {r[&#x27;a1&#x27;][&#x27;label&#x27;]!r}: {note}&quot;)
++        by = collections.defaultdict(list)
++        for r in recs:
++            if r.get(&quot;a1&quot;):
++                by[C.X.symbol_key(r[&quot;a1&quot;][&quot;label&quot;])].append(r)
++        for sym, rs in by.items():
++            ev = collections.defaultdict(set)
++            for r in rs:
++                if r[&quot;a1&quot;][&quot;outcome&quot;] in SPECIES_EVIDENCED and r[&quot;a1&quot;][&quot;species&quot;]:
++                    ev[r[&quot;a1&quot;][&quot;species&quot;]].add(r[&quot;eid&quot;])
++            if len(ev) == 1:
++                (sp, els), = ev.items()
++                for r in rs:
++                    if not r[&quot;a1&quot;][&quot;species&quot;]:
++                        put(r, sp, &quot;from the symbol&#x27;s evidence in this paper&quot;, f&quot;species {sp} from the symbol&#x27;s evidence in this paper ({&#x27;, &#x27;.join(sorted(els))})&quot;)
++            elif len(ev) &gt; 1:
++                for r in rs:
++                    put(r, &quot;&quot;, &quot;symbol species conflict&quot;, &quot;symbol species conflict: &quot; + &quot;; &quot;.join(f&quot;{sp} ({&#x27;, &#x27;.join(sorted(e))})&quot; for sp, e in sorted(ev.items())))
++        hist = C.V2 / &quot;ontology&quot; / &quot;history.csv&quot;
++        for h in csv.DictReader(hist.open(encoding=&quot;utf-8&quot;)) if hist.exists() else []:
++            if h[&quot;kind&quot;] != &quot;symbol&quot; or not h.get(&quot;species&quot;) or self.pid not in h[&quot;source_pids&quot;].split(&quot;;&quot;):
++                continue
++            for r in recs:
++                m = SUBSCRIPT.match(r[&quot;a1&quot;][&quot;label&quot;]) if r.get(&quot;a1&quot;) else None
++                if m and C.X.symbol_key(m.group(1)) == C.X.symbol_key(h[&quot;id&quot;]) and not r[&quot;a1&quot;][&quot;species&quot;]:
++                    put(r, h[&quot;species&quot;], &quot;from the user&#x27;s symbol decision&quot;, f&quot;species {h[&#x27;species&#x27;]}: the user&#x27;s decision on subscript {h[&#x27;id&#x27;]} (history.csv, {h[&#x27;date&#x27;]})&quot;)
++
++
+     def recipe_process_mode(self, recs):
+         &quot;&quot;&quot;P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit&#x27;s process_mode with its quote, filled by
+         kb/extract/process_mode_fill.py): one setting per run that has one, its evidence the quote&#x27;s element; a pass-1 process_mode record
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 3e9cb264..1afa09c6 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -1127,7 +1127,7 @@ def run_checks(onto):
+                 &quot;molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided&quot;,
+                 not bad, f&quot;problems: {bad}&quot; if bad else f&quot;form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}&quot;, bad))
+     fv = HERE / &quot;form_versions.csv&quot;                                             # P179b (user): the form versions compile reads
+-    listed = {r[&quot;version&quot;] for r in csv.DictReader(fv.open(encoding=&quot;utf-8&quot;))} if fv.exists() else set()
++    listed = {r[&quot;version&quot;] for r in csv.DictReader(x for x in fv.open(encoding=&quot;utf-8&quot;) if not x.startswith(&quot;#&quot;))} if fv.exists() else set()
+     found = Counter()
+     for f in sorted((HERE.parent / &quot;kb&quot; / &quot;records&quot;).glob(&quot;*.jsonl&quot;)):
+         for ln in f.read_text(encoding=&quot;utf-8&quot;).splitlines():
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 0d9c8d78..ef864118 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -52,7 +52,7 @@ GATES_CSV = HERE / &quot;gates.csv&quot;
+ COMPILED, RECORDS, FINAL = V2 / &quot;kb&quot; / &quot;compiled&quot;, V2 / &quot;kb&quot; / &quot;records&quot;, V2 / &quot;ingest&quot; / &quot;final&quot;
+ ROUND_COLS = [&quot;round&quot;, &quot;opened&quot;, &quot;applied&quot;, &quot;pids&quot;, &quot;dois&quot;, &quot;status&quot;, &quot;n_candidates&quot;, &quot;n_accepted&quot;, &quot;n_alias&quot;, &quot;n_rejected&quot;, &quot;n_never&quot;]
+ DECISION_COLS = [&quot;class&quot;, &quot;category&quot;, &quot;slot&quot;, &quot;parameters&quot;, &quot;symbol_paper&quot;]   # P175 (user): what apply reads besides the decision (pending.csv)
+-HISTORY_COLS = [&quot;date&quot;, &quot;round&quot;, &quot;action&quot;, &quot;id&quot;, &quot;kind&quot;, &quot;target&quot;, &quot;source_pids&quot;, &quot;source_dois&quot;, &quot;decided_by&quot;, &quot;reason&quot;, &quot;ontology_sha256_after&quot;] + DECISION_COLS
++HISTORY_COLS = [&quot;date&quot;, &quot;round&quot;, &quot;action&quot;, &quot;id&quot;, &quot;kind&quot;, &quot;target&quot;, &quot;source_pids&quot;, &quot;source_dois&quot;, &quot;decided_by&quot;, &quot;reason&quot;, &quot;ontology_sha256_after&quot;] + DECISION_COLS + [&quot;species&quot;]   # P179c (user): a symbol decision may carry the species its subscript denotes
+ NEVER_COLS = [&quot;label&quot;, &quot;category&quot;, &quot;paper&quot;, &quot;source&quot;, &quot;symbol&quot;]                 # P157d: symbol yes = matched only in its paper
+ STOP_WORDS = {&quot;of&quot;, &quot;the&quot;, &quot;an&quot;, &quot;and&quot;, &quot;or&quot;, &quot;in&quot;, &quot;on&quot;, &quot;at&quot;, &quot;to&quot;, &quot;for&quot;, &quot;by&quot;, &quot;with&quot;, &quot;is&quot;, &quot;as&quot;, &quot;from&quot;, &quot;per&quot;, &quot;its&quot;, &quot;a&quot;}
+ 
+</pre>
+</body></html>

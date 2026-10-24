@@ -50,6 +50,27 @@ a1: symbol species tabI.r1c5 'K' derived adsorption_equilibrium_constant: record
 a1: symbol species tabI.r2c3 'p_{\\text{A0}}' setting partial_pressure: record ticl4, definition tabu1.r25c0: {'model_reactant'} -> species cleared (no evidence)
 a1: symbol species tabI.r2c4 'c' derived initial_sticking_coefficient: record ticl4, definition - -> species cleared (no evidence)
 a1: symbol species tabI.r2c5 'K' derived adsorption_equilibrium_constant: record -, definition - -> no species
+a1: symbol species eq7 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species s5.p15 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species eq8 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species s8.p3 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species fig2.cap 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species fig3.cap 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species fig5.cap 'd_A': symbol species conflict: h2o (s5.p15); model_reactant (eq7, eq8, fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species s8.p3 'd_B': species n2 from the symbol's evidence in this paper (s5.p15)
+a1: symbol species fig2.cap 'd_B': species n2 from the symbol's evidence in this paper (s5.p15)
+a1: symbol species fig3.cap 'd_B': species n2 from the symbol's evidence in this paper (s5.p15)
+a1: symbol species fig5.cap 'd_B': species n2 from the symbol's evidence in this paper (s5.p15)
+a1: symbol species tabI.r1c3 'p_{\\text{A0}}': species model_reactant from the symbol's evidence in this paper (fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species tabI.r2c3 'p_{\\text{A0}}': species model_reactant from the symbol's evidence in this paper (fig2.cap, fig3.cap, fig5.cap, s8.p3)
+a1: symbol species s8.p3 'M_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species s8.p3 'p_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig2.cap 'M_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig2.cap 'p_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig3.cap 'M_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig3.cap 'p_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig5.cap 'M_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
+a1: symbol species fig5.cap 'p_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
 a: eq1: variables_unmapped 'z_A' -> 'other'
 a: eq2: variables_unmapped 'v_A' -> 'other'
 a: eq3: variables_unmapped 'v_A' -> 'other'
@@ -147,7 +168,7 @@ j: claim nodes (query.claim_nodes): 10 nodes for 15 claims; claims without a ful
 j: comparisons from figures.json (1c): 1
 step input: {'records': 285}
 step a0: {'quantity other: never.csv symbol': 8, 'quantity other: never.csv word': 22, 'quantity promoted (quantity: alias)': 1}
-step a1: {'symbol species: from the definition': 3, 'symbol species: kept: its own element names it': 4, 'symbol species: no species': 19, 'symbol species: backed by the definition': 12, 'symbol species: species cleared (no evidence)': 10}
+step a1: {'symbol species: from the definition': 3, 'symbol species: kept: its own element names it': 4, 'symbol species: no species': 19, 'symbol species: backed by the definition': 12, 'symbol species: species cleared (no evidence)': 10, 'symbol species: symbol species conflict': 7, "symbol species: from the symbol's evidence in this paper": 6, "symbol species: from the user's symbol decision": 8}
 step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 9, 'kept': 285}
 step a_p158: {'P158 rule 1 (predates the freeze, kept)': 8}
 step b: {'model_with_value (kept)': 76, 'kept': 285}
@@ -174,8 +195,8 @@ diff against the gold:
   observation     7    6    2  0.33  0.29
   cited           5    0    0     -  0.00
   comparison      3    1    0  0.00  0.00
-  identity        1    0    0     -  0.00
   paper           1    1    0  0.00  0.00
+  identity        1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 5/38
 gold model rows with quantity and value: 15: {'effective_diffusion_coefficient': 1, 'feature_width': 1, 'feature_extent': 1, 'partial_pressure': 2, 'molar_mass': 2, 'molecule_diameter': 2, 'saturation_density': 1, 'deposition_temperature': 1, 'adsorption_equilibrium_constant': 1, 'initial_sticking_coefficient': 1, 'saturation_growth_per_cycle': 1, 'pulse_time': 1}
 observations: gold 7, compiled 6, matched 2

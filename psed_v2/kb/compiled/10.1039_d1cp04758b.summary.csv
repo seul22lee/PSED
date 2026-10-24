@@ -1,15 +1,15 @@
 metric,value
 ontology_hash,9fdf73a08b9a98e441f4cf1307d42df73cb63d0f10c935800b5c79b197183c08
-lines_used,1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29
-lines_ignored,
-facts,516
+lines_used,1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18
+lines_ignored,19;20;21;22;23;24;25;26;27;28;29
+facts,539
 tree_rows,88
-derived_by_kb,5
-dropped,37
-unmapped,113
+derived_by_kb,74
+dropped,43
+unmapped,110
 unmapped_never,49
 promoted,13
-step_input:records,495
+step_input:records,485
 "step_input:unit derived (derived: curve_per_unit, model_run)",8
 step_input:condition of a derived unit (value),8
 step_a0:quantity other: never.csv word,35
@@ -17,46 +17,46 @@ step_a0:quantity other: never.csv symbol,6
 step_a0:quantity other naming a model entry (kept),2
 step_a0:quantity promoted (quantity: alias),3
 step_a0:quantity promoted (quantity: symbol),8
-step_a1:symbol species: no species,67
-step_a1:symbol species: backed by the definition,22
-step_a1:symbol species: from the definition,9
-step_a1:symbol species: species cleared (no evidence),2
-step_a:variables_unmapped (set to null),11
-step_a:numeric string coerced (C4),1
-step_a:variable filled from a definition (C5),2
+step_a1:symbol species: no species,55
+step_a1:symbol species: backed by the definition,17
+step_a1:symbol species: species cleared (no evidence),6
+step_a1:symbol species: kept: its own element names it,2
+step_a1:symbol species: from the definition,13
+step_a1:symbol species: from the symbol's evidence in this paper,15
+step_a:variables_unmapped (set to null),12
+step_a:variable filled from a definition (C5),3
 step_a:schema:type,1
 step_a:schema:enum,1
-step_a:kept,501
+step_a:kept,491
 step_a_fields:label_as_printed,1
 step_a_fields:value_text,1
-step_b:model_with_value (kept),230
-step_b:kept,501
-step_c:quantity_other (kept),15
+step_b:model_with_value (kept),226
+step_b:kept,491
 step_c:quantity_other never (kept),41
-step_c:kept,501
-step_d:quote_not_found,35
+step_c:quantity_other (kept),12
+step_c:kept,491
+step_d:quote_not_found,41
 "step_d:derived condition (figures.json, no quote check)",8
-step_d:kept,466
+step_d:kept,450
 step_e:unit_unresolved (kept as printed),13
-step_e:kept,466
-step_f:kept,466
-step_g:mention_unmatched,2
+step_e:kept,450
+step_f:kept,450
+step_g:mention_unmatched,1
 step_h:simulation linked to a model entry,2
 step_h:model run without a simulation parent (under the paper),4
 step_h:place: claim -> paper,34
 step_h:place: cited -> paper,2
-step_h:place: definition -> paper,101
-step_h:place: model about a simulation -> simulation,121
+step_h:place: model about a simulation -> simulation,130
+step_h:place: definition -> paper,100
 step_h:place: caveat -> paper,14
-step_h:place: about paper -> recipe,25
 step_h:place: setting about a simulation -> simulation,11
-step_h:place: derived about a simulation -> simulation,9
-step_h:place: model about a model run -> model run,124
+step_h:place: about paper -> recipe,8
+step_h:place: derived about a simulation -> simulation,8
+step_h:place: model about a model run -> model run,118
 step_h:place: derived about a model run -> model run,17
 step_h:place: setting about a model run sharing its simulation -> model run,8
-step_m:label_as_printed filled with the quantity id,6
-step_m:statement filled from the quote,387
-step_m:kind_filled (stated),1
+step_m:label_as_printed filled with the quantity id,10
+step_m:statement filled from the quote,367
 step_m:links resolved,23
 step_1c:figure label other (x),15
 step_1c:figure label other (y),13
@@ -66,21 +66,21 @@ step_1c:figure axis dimension mismatch (values as printed),1
 step_1c:curve -> model,95
 step_1c:curve -> model (legend quantity),3
 step_1c:data of a flagged panel (rule verdict),4
-step_i:merged,48
+step_i:merged,78
 step_i:definition merged,5
-step_i:kept,511
+step_i:kept,465
 step_n:comparison replicate,3
 step_n:comparison grid,1
-step_j:derived cycle_time,5
-step_k:statement from the record,413
-step_k:statement_copies_text (reported by check),52
-step_k:statement assembled,103
-diff:model,gold 215 compiled 318 matched 170 P 0.53 R 0.79
-diff:derived,gold 84 compiled 31 matched 24 P 0.77 R 0.29
+step_j:derived cycle_time,74
+step_k:statement from the record,367
+step_k:statement_copies_text (reported by check),40
+step_k:statement assembled,172
+diff:model,gold 215 compiled 274 matched 146 P 0.53 R 0.68
+diff:derived,gold 84 compiled 99 matched 24 P 0.24 R 0.29
 diff:claim,gold 77 compiled 34 matched 19 P 0.56 R 0.25
 diff:entity,gold 68 compiled 80 matched 61 P 0.76 R 0.90
 diff:setting,gold 67 compiled 21 matched 0 P 0.00 R 0.00
-diff:definition,gold 62 compiled 96 matched 31 P 0.32 R 0.50
+diff:definition,gold 62 compiled 95 matched 31 P 0.33 R 0.50
 diff:comparison,gold 15 compiled 4 matched 1 P 0.25 R 0.07
 diff:caveat,gold 8 compiled 14 matched 4 P 0.29 R 0.50
 diff:activity,gold 7 compiled 3 matched 0 P 0.00 R 0.00

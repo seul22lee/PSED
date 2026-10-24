@@ -1,0 +1,118 @@
+diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 1168b888..c939bd6d 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -154,8 +154,13 @@ psed_v2/
+   criterion; the user vetoes by name afterwards.
+ - P179b (user): compile reads a pass-1 line only if its form version is accepted in ontology/form_versions.csv (version, paper, date,
+   status, decided_by, reason; a row with a paper overrides the row for every paper; 'none' = a line written before the freeze); the
+-  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there. A candidate
+-  version is adopted per paper by comparing two sandbox compiles (kb/tmp/A without, kb/tmp/B with it) against the gold.
++  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there.
++- P179c (user): a version's lines are adopted for a paper only as a whole paper (every group re-extracted under it), when the whole-paper
++  scores drop on no type and every 4c check passes (the rule heads form_versions.csv; P179's partial re-extraction adopted for no paper).
++  A symbol's species is paper-wide (a1 after the per-record rule): a symbol whose species is evidenced in any record of the paper gives
++  it to every record of the symbol that has none; differing evidenced species clear them all ('symbol species conflict'). A user's
++  symbol decision (history.csv kind symbol, column species, the paper in source_pids) gives its species to the paper's symbols whose
++  subscript is the decided letter, where still empty.
+ - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
+   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
+   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 1a5eeb5a..637619f0 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -395,6 +395,7 @@ def species_named(pid, label):
+     return found
+ 
+ 
++SPECIES_EVIDENCED = ("kept: its own element names it", "backed by the definition", "from the definition", "corrected from the definition")   # P179c
+ UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
+ SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
+ CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
+@@ -410,7 +411,7 @@ def line_version(x):
+ def accepted_versions(key):
+     """P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
+     for that paper (a row with its key), else for every paper (a row with no paper)."""
+-    rows = list(csv.DictReader(FORM_VERSIONS.open(encoding="utf-8"))) if FORM_VERSIONS.exists() else []
++    rows = list(csv.DictReader(x for x in FORM_VERSIONS.open(encoding="utf-8") if not x.startswith("#"))) if FORM_VERSIONS.exists() else []   # P179c: # = the header
+     st = {r["version"]: r["status"] for r in rows if not r["paper"]}
+     st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
+     return {v for v, x in st.items() if x == "accepted"}
+@@ -985,8 +986,50 @@ class Run:
+             self.count("a1", f"symbol species: {how}")
+             self.note(f"a1: symbol species {r['eid']} {lab!r} {rec.get('type')} {rec.get('quantity')}: record {own or '-'}, definition "
+                       f"{', '.join(f'{e}: {x}' for e, x in found) or '-'} -> {how}" + (f" ({sp})" if sp and sp != own else ""))
++        self.symbol_species_paper(recs)
+         return recs
+ 
++    def symbol_species_paper(self, recs):
++        """a1, P179c (user): a symbol is paper-local, its species too (P157d). Within the paper, a symbol (export.symbol_key of the label)
++        whose species is evidenced in any record (kept, backed by, from or corrected from the definition) gives that species to every
++        record of the symbol that has none; differing evidenced species clear every record of the symbol ('symbol species conflict').
++        Then a user's symbol decision (history.csv kind symbol with a species, for this paper) gives its species to the paper's symbols
++        whose subscript is the decided letter, where the species is still empty."""
++        def put(r, sp, how, note):
++            rec = r["rec"]
++            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
++            rec["qualifiers"] = ({**q, "species": sp} if sp else {k: v for k, v in q.items() if k != "species"}) or None
++            rec["note"] = "; ".join(x for x in (rec.get("note"), note) if x)
++            r["a1"].update(outcome=how, species=sp)
++            self.count("a1", f"symbol species: {how}")
++            self.note(f"a1: symbol species {r['eid']} {r['a1']['label']!r}: {note}")
++        by = collections.defaultdict(list)
++        for r in recs:
++            if r.get("a1"):
++                by[C.X.symbol_key(r["a1"]["label"])].append(r)
++        for sym, rs in by.items():
++            ev = collections.defaultdict(set)
++            for r in rs:
++                if r["a1"]["outcome"] in SPECIES_EVIDENCED and r["a1"]["species"]:
++                    ev[r["a1"]["species"]].add(r["eid"])
++            if len(ev) == 1:
++                (sp, els), = ev.items()
++                for r in rs:
++                    if not r["a1"]["species"]:
++                        put(r, sp, "from the symbol's evidence in this paper", f"species {sp} from the symbol's evidence in this paper ({', '.join(sorted(els))})")
++            elif len(ev) > 1:
++                for r in rs:
++                    put(r, "", "symbol species conflict", "symbol species conflict: " + "; ".join(f"{sp} ({', '.join(sorted(e))})" for sp, e in sorted(ev.items())))
++        hist = C.V2 / "ontology" / "history.csv"
++        for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:
++            if h["kind"] != "symbol" or not h.get("species") or self.pid not in h["source_pids"].split(";"):
++                continue
++            for r in recs:
++                m = SUBSCRIPT.match(r["a1"]["label"]) if r.get("a1") else None
++                if m and C.X.symbol_key(m.group(1)) == C.X.symbol_key(h["id"]) and not r["a1"]["species"]:
++                    put(r, h["species"], "from the user's symbol decision", f"species {h['species']}: the user's decision on subscript {h['id']} (history.csv, {h['date']})")
++
++
+     def recipe_process_mode(self, recs):
+         """P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit's process_mode with its quote, filled by
+         kb/extract/process_mode_fill.py): one setting per run that has one, its evidence the quote's element; a pass-1 process_mode record
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 3e9cb264..1afa09c6 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -1127,7 +1127,7 @@ def run_checks(onto):
+                 "molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided",
+                 not bad, f"problems: {bad}" if bad else f"form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}", bad))
+     fv = HERE / "form_versions.csv"                                             # P179b (user): the form versions compile reads
+-    listed = {r["version"] for r in csv.DictReader(fv.open(encoding="utf-8"))} if fv.exists() else set()
++    listed = {r["version"] for r in csv.DictReader(x for x in fv.open(encoding="utf-8") if not x.startswith("#"))} if fv.exists() else set()
+     found = Counter()
+     for f in sorted((HERE.parent / "kb" / "records").glob("*.jsonl")):
+         for ln in f.read_text(encoding="utf-8").splitlines():
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 0d9c8d78..ef864118 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -52,7 +52,7 @@ GATES_CSV = HERE / "gates.csv"
+ COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
+ ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
+ DECISION_COLS = ["class", "category", "slot", "parameters", "symbol_paper"]   # P175 (user): what apply reads besides the decision (pending.csv)
+-HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS
++HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS + ["species"]   # P179c (user): a symbol decision may carry the species its subscript denotes
+ NEVER_COLS = ["label", "category", "paper", "source", "symbol"]                 # P157d: symbol yes = matched only in its paper
+ STOP_WORDS = {"of", "the", "an", "and", "or", "in", "on", "at", "to", "for", "by", "with", "is", "as", "from", "per", "its", "a"}
+ 
