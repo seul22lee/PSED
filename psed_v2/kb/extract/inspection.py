@@ -15,7 +15,7 @@ the run wrote (kb/records, kb/compiled, kb/<pid>.figures.json, kb/import_panels.
      read as elements (a section by the numbering of its heading elements, a figure or a table by its element ids), and whether a compiled
      fact of that entry sits at those elements: yes / other entry / none.
   5h gaps seen first: every value of 5a-5f that no other compiled paper showed (unmapped field and action, drop step and reason, figure
-     flag and label outcome, compile step counter, check.py problem class).
+     flag and label outcome, compile step counter, check.py problem class); P176: and the rows of kb/inspection_notes.csv for the paper.
 
     python3 psed_v2/kb/extract/inspection.py <paper> [--prefix RUN_<key>]
 """
@@ -34,6 +34,7 @@ import pass0_paper as P0
 import score as S
 
 REPORTS = C.V2 / "kb" / "reports"
+NOTES = C.V2 / "kb" / "inspection_notes.csv"                                   # P176 (user): gaps a person saw (paper key or id, area, note, source)
 SECTIONS = ("5a", "5b", "5c", "5d_units", "5d_consistency", "5d_simulation", "5d_no_record", "5d_about_paper", "5e", "5f", "5g", "5h")
 TITLES = {"5a": "5a. Coverage by element (every element)", "5b": "5b. Drops by step (every dropped record)", "5c": "5c. Unmapped by kind (every open label)",
           "5d_units": "5d. Units: pass 0 and derived from curves", "5d_consistency": "5d. Units: panel consistency (pass0_paper)",
@@ -165,7 +166,8 @@ def inspect(pid, prefix):
     out["5d_units"] = [dict(origin="pass 0", unit=u.get("id"), role=u.get("role"), name_as_printed=u.get("name_as_printed") or "", parent=u.get("parent") or "", panel="",
                             data=len(u.get("data") or []), records_about=abouts.get(u.get("id"), 0), conditions_from_legend=0, flag="") for u in own] + \
         [dict(origin=u["origin"], unit=u["id"], role=u["role"], name_as_printed=u["name_as_printed"] or "", parent=u["parent"] or "", panel=u["panel"], data=len(u["data"]),
-              records_about=abouts.get(u["id"], 0), conditions_from_legend=conds.get(u["id"], 0), flag="; ".join(x for x in (u.get("flag", ""), u.get("merge", "")) if x)) for u in derived]
+              records_about=abouts.get(u["id"], 0), conditions_from_legend=conds.get(u["id"], 0), role_from=u.get("role_from", ""),
+              flag="; ".join(x for x in (u.get("flag", ""), u.get("merge", "")) if x)) for u in derived]
     cons = P0.consistency(pid, p0obj)
     out["5d_consistency"] = [{k: (";".join(v) if isinstance(v, list) else v) for k, v in r.items()} for r in cons]
     sims = []
@@ -257,6 +259,8 @@ def inspect(pid, prefix):
     for r in out["5f"]:
         mine["check.py problem class"][r["cls"]] += 1
     out["5h"] = [dict(area=a, value=v, count=n, other_papers_compared=len(others)) for a, c in mine.items() for v, n in sorted(c.items()) if v not in seen[a]]
+    out["5h"] += [dict(area=f"{x['area']} (noted by the user, {x['source']})", value=x["note"], count="", other_papers_compared="")   # P176: what no code reports
+                  for x in rd(NOTES) if x["paper"] in (pid, C.E.PAPERS[pid])]
     for sec in SECTIONS:
         write(prefix, sec, out.get(sec, []))
     return out

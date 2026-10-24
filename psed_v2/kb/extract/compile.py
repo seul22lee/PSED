@@ -356,9 +356,11 @@ def panel_items(pid, obj):
 
 def curve_units(pid, obj):
     """P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit's data refs hold. id
-    <pid>:<panel>:<curve id>. Role (P162 rule 1) from the paper's pass-0 units: a simulation and no run -> model_run, a run and no
-    simulation -> run; P175 (user): both, or neither -> role null, flagged "role unresolved" (the figure stage's kind decides no role),
-    its data role null. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent unresolved".
+    <pid>:<panel>:<curve id>. Role (P176, user: explicit evidence only): model_run when the figure stage marks the curve simulated or fit
+    (figures.json kind simulated, P87: a model or fit word in its legend label, else in the panel's content line or caption); else from the
+    paper's pass-0 units: a run and no simulation -> run, a simulation and no run -> model_run; else null, flagged "role unresolved" (a row
+    under the paper all the same, compile tree()). role_from says which. Parent: the paper's one simulation (model_run) or its one run
+    (run), else null, flagged "parent unresolved".
     introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with its
     role; conditions (P163 rule 1, P175): legend_conditions() of the legend label against the panel's series_axis; origin "derived:
     <layout>". P166: no unit in a panel whose legend names methods (method_panels). P175 (user): the units stay as derived, two with
@@ -379,7 +381,10 @@ def curve_units(pid, obj):
             c = it["curve"]
             if it["held"]:
                 continue
-            role = by_list                                                     # P175: None when the unit list does not decide
+            marked = (c.get("data_kind") if it["cell"] else c.get("kind")) == "simulated"   # P176: the figure stage's explicit mark
+            role = "model_run" if marked else by_list
+            role_from = (("figure stage: simulated or fit (" + ("its legend label" if c.get("series", {}).get("cls") == "kind" else "the panel's content line or caption")
+                          + ")") if marked else {"run": "unit list: runs, no simulation", "model_run": "unit list: a simulation, no runs"}.get(by_list, ""))
             drole = {"model_run": "simulated", "run": "measured"}.get(role)
             par = sims if role == "model_run" else runs if role == "run" else []
             label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
@@ -391,7 +396,7 @@ def curve_units(pid, obj):
                             structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
                             data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
                             conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"], y=(c.get("quantity") if it["cell"] else c.get("y", {}).get("quantity")) or "",
-                            flag="; ".join(flags), aliases=[]))
+                            role_from=role_from, flag="; ".join(flags), aliases=[]))
     return dedupe_units(out)
 
 
@@ -481,9 +486,6 @@ class Run:
             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
             for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values, resolved by step a0
-                if not u["role"]:                                               # P175: a unit of role null has no row, its legend no setting
-                    self.count("input", "condition of a derived unit of role null (no row)")
-                    continue
                 if c["kind"] == "qualifier":                                    # P175: a qualifier value qualifies the unit's data (figures())
                     self.count("input", "legend qualifier of a derived unit (on its data)")
                     continue
@@ -864,9 +866,12 @@ class Run:
             rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
                             parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
                             statement=f"model run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
-        for it in items:
-            if it.get("origin") and not it.get("role"):                         # P175: no row; the data it holds is left out (figures())
-                self.count("h", "derived unit of role null (role unresolved: no row)")
+        for it in items:                                                        # P176 (user): a derived unit of role null: a row under the paper
+            if it.get("origin") and not it.get("role"):                         # with its data and its legend's settings (nothing dropped)
+                self.node[it["id"]] = (f"{k}:unit:{slug(it['id'])}", "unresolved")
+                rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how="inferred", evidence=ok_ev(it.get("introduced_in") or []), parent=k,
+                                label_as_printed=it.get("name_as_printed") or it["id"], statement=f"derived unit {it['id']} ({it.get('name_as_printed')!r}{origin(it)}): role unresolved"))
+                self.count("h", "derived unit of role null (role unresolved: a row under the paper)")
         for it in items:                                                        # P175: a deduplicated derived unit's other ids name its row
             for al in it.get("aliases") or [] if it["id"] in self.node else []:
                 self.node.setdefault(al, self.node[it["id"]])
@@ -1021,7 +1026,7 @@ class Run:
                 unowned.append(cu); continue
             nid, role = self.node[own[0]]
             dr = drole[(own[0], cu["id"])]                                      # P146: the row type from the data role (figures.json kind not read)
-            if role not in ("model_run", "specimen", "run"):
+            if role not in ("model_run", "specimen", "run", "unresolved"):
                 self.count("1c", f"curve named by a {role} (left out)"); continue
             if dr == "measured":
                 result(cu, "@meas:" + nid, "observation", own[0])
@@ -1195,6 +1200,10 @@ class Run:
             r["parent_filled"] = True
             return recipe, f"about {'null' if not a else 'unknown'} -> recipe (flagged)"
         rid, role = self.node[a]
+        if role == "unresolved":                                                # P176: a derived unit of role null: its settings on its row,
+            if t in ("observation", "derived") or (t == "setting" and mm):     # its results under its measurement
+                return self.measurement(rid, mm), f"{t} about a unit of unresolved role -> its measurement"
+            return rid, f"{t} about a unit of unresolved role -> the unit"
         setting_here = t == "setting" and not mm
         if role in ("run", "specimen"):
             run = rid if role == "run" else (self.up[rid] if self.node_role(self.up[rid]) == "run" else "")

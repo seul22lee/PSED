@@ -982,6 +982,10 @@ def open_rows(n, compiled, unm, snap):
                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
             elif u.get("action", "").startswith("kept (names the model "):
                 cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
+            elif cid in decided_ids and k not in snap_of:                      # P176 (user, the P162 rule): born after apply, its id decided
+                h = decided_ids[cid]                                            # before the row existed; carried
+                cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
+                                             + "): the row was born after apply; carried into the next propose")
             elif cid in decided_ids and decided_ids[cid]["action"] != "reject" and scoped_elsewhere(p, u["label"]):   # P175 (user)
                 h = decided_ids[cid]
                 cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
@@ -992,6 +996,8 @@ def open_rows(n, compiled, unm, snap):
                     "a rejected label is written nowhere (by design)" if h["action"] == "reject" else "decided, but the row is still open")
             elif not u["label"]:
                 cls, why = "cell without printed label", f"candidate {cid or 'none'}"
+            elif k in snap_of and cid not in snap_of[k]:                        # P176 (user, the P162 rule): regrouped since apply
+                cls, why = NEW_SINCE_APPLY, f"regrouped since apply: candidate {';'.join(sorted(set(snap_of[k])))} at the snapshot, {cid or 'none'} now; carried into the next propose"
             elif k not in snap_of:                                              # P162: born after apply (absent from the snapshot)
                 cls, why = NEW_SINCE_APPLY, f"candidate {cid or 'none'}: not in R{n}_apply.decision_rows.csv; carried into the next propose"
             else:
@@ -1220,19 +1226,20 @@ def audit_round(n):
     write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)
     a3, fails3, _ = open_rows(n, compiled, unm, snap)
     fails += fails3
-    pend = {x["id"]: x for x in rd(PENDING)}
     write(REPORTS / f"R{n}_apply.A3.csv", A3_COLS, a3)
     a3p = []
-    for cid, x in pend.items():
+    open_now = {(r["pid"], r["element"], r["field"]) for r in a3}
+    for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
+        cid = x["id"]
         xp = [p for p in x["pids"].split(";") if p]
-        at = [r for r in snap if r["candidate"] == cid]
-        now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]
+        at = [r for r in snap if r["candidate"] == cid] if int(x["first_round"] or 0) <= n else []   # P176: keyed by (id, first round): a later
+        now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]                             # round's row of the same id is another candidate
         if not set(xp) & set(pids) and not at:
             if not set(xp) & {p.stem for p in COMPILED.glob("*.facts.csv")}:
                 a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=0, open_rows_now=0, accounted="yes",
                                 detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
             continue
-        lost = [r for r in at if not any(o["pid"] == r["pid"] and o["element"] == r["element"] and o["field"] == r["field"] for o in now)]
+        lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now]   # P176: closed; a row regrouped since apply is still open
         ok = not lost and bool(now)
         a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now), accounted="yes" if ok else "NO",
                         detail="; ".join(f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost) or ("" if now else "no open row")))
