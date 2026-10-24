@@ -1,0 +1,569 @@
+paper,element,change,record,species_old,species_new,quote_new,fields_changed
+yli18,eq7,gone,model molecule_diameter 'd_A' ,,,,
+yli18,eq7,new,model molecule_diameter 'd_A' ,,,$$d_A \approx \sqrt{\frac{5}{16\eta N_0}} \sqrt{\frac{M_A RT}{\pi}}. \quad (7)$$,
+yli18,eq8,gone,model molecule_diameter 'd_A' ,,,,
+yli18,eq8,new,model molecule_diameter 'd_A' ,,,$$d_A \approx 2 \left( \frac{3M_A}{4\pi\rho N_0} \right)^{1/3}. \quad (8)$$,
+yli18,eq10,gone,model partial_pressure 'p_A' ,,,,
+yli18,eq10,new,model partial_pressure 'p_A' ,,,"$$\frac{\partial p_A}{\partial t} = D_{\text{eff}} \frac{\partial^2 p_A}{\partial x^2} - g \frac{4RT}{hN_0}, \quad (10)$$",
+yli18,eq13,gone,model adsorption_equilibrium_constant 'K' ,,,,
+yli18,eq13,new,model adsorption_equilibrium_constant 'K' ,,,"$$K = \frac{\theta_{\text{eq}}/p_A}{1 - \theta_{\text{eq}}} = \frac{cQ}{qP_d}, \quad (13)$$",
+yli18,eq18,species changed,"model partial_pressure 'p_A(x,t)' ",,model_reactant,"$$p_A(x,t) = p_{\text{A0}} \left( 1 - \frac{x}{x_s} \right), \quad x < x_s, \quad (18)$$",variables
+yli18,eq24,species changed,"model partial_pressure 'p_A(x, t)' ",,model_reactant,"$$\begin{aligned} p_A(x, t) &= p_{A0} \left( 1 - \frac{x}{x_s} \right), \quad x < x_t, \\ p_A(x, t) &= p_t \exp \left( -\frac{x - x_t}{x_s - x_t} \right), \quad x > x_t, \\ p_t &= p_{A0} \left( 1 - \frac{x_t}{x_s} \right), \\ x_s &= \sqrt{Dt}. \end{aligned} \quad (24)$$",variables
+yli18,s8.p3,gone,model feature_width 'H' 0.5,,,,
+yli18,s8.p3,gone,model feature_extent 'W' 0.1,,,,
+yli18,s8.p3,gone,model partial_pressure 'p_{A0}' 100.0,model_reactant,,,
+yli18,s8.p3,gone,model molar_mass 'M_A' 0.0749,model_reactant,,,
+yli18,s8.p3,gone,model molecule_diameter 'd_A' 591.0,model_reactant,,,
+yli18,s8.p3,gone,model molar_mass 'M_B' 0.028,h2o,,,
+yli18,s8.p3,gone,model molecule_diameter 'd_B' 374.0,h2o,,,
+yli18,s8.p3,gone,model partial_pressure 'p_B' 300.0,h2o,,,
+yli18,s8.p3,gone,model saturation_density 'q' 5.0,,,,
+yli18,s8.p3,gone,model deposition_temperature 'T' 500.0,,,,
+yli18,s8.p3,gone,model adsorption_equilibrium_constant 'K' 100.0,,,,
+yli18,s8.p3,gone,model initial_sticking_coefficient 'c' 0.01,,,,
+yli18,s8.p3,gone,model saturation_growth_per_cycle 'gpc_{\\text{sat}}' 106.0,,,,
+yli18,fig2.cap,regression (a non-species field changed),model feature_width 'H' 0.5,,,,method
+yli18,fig2.cap,regression (a non-species field changed),model feature_extent 'W' 0.1,,,,method
+yli18,fig2.cap,species changed,model partial_pressure 'p_{A0}' 100.0,model_reactant,,p_{A0} = 100 \text{ Pa},method; qualifiers (not species)
+yli18,fig2.cap,species changed,model molar_mass 'M_A' 0.0749,model_reactant,,M_A = 0.0749 \text{ kg/mol},method
+yli18,fig2.cap,species changed,model molecule_diameter 'd_A' 591.0,model_reactant,,d_A = 591 \text{ pm},method
+yli18,fig2.cap,species changed,model molar_mass 'M_B' 0.028,n2,,M_B = 0.028 \text{ kg/mol},method
+yli18,fig2.cap,species changed,model molecule_diameter 'd_B' 374.0,n2,,d_B = 374 \text{ pm},method
+yli18,fig2.cap,species changed,model partial_pressure 'p_B' 300.0,n2,,p_B = 300 \text{ Pa},method
+yli18,fig2.cap,regression (a non-species field changed),model saturation_density 'q' 5e+18,,,,method
+yli18,fig2.cap,regression (a non-species field changed),model deposition_temperature 'T' 500.0,,,,method
+yli18,fig2.cap,regression (a non-species field changed),model adsorption_equilibrium_constant 'K' 100.0,,,,method
+yli18,fig2.cap,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.01,,,,method
+yli18,fig2.cap,regression (a non-species field changed),model saturation_growth_per_cycle 'gpc_{\\text{sat}}' 106.0,,,,method
+yli18,fig3.cap,same,model feature_width 'H' 0.5,,,,
+yli18,fig3.cap,same,model feature_extent 'W' 0.1,,,,
+yli18,fig3.cap,species changed,model partial_pressure 'p_{A0}' 100.0,model_reactant,,p_{A0} = 100 \text{ Pa},qualifiers (not species)
+yli18,fig3.cap,species changed,model molar_mass 'M_A' 0.0749,model_reactant,,M_A = 0.0749 \text{ kg/mol},
+yli18,fig3.cap,species changed,model molecule_diameter 'd_A' 591.0,model_reactant,,d_A = 591 \text{ pm},
+yli18,fig3.cap,regression (a non-species field changed),model molar_mass 'M_B' 0.028,,,,qualifiers (not species)
+yli18,fig3.cap,regression (a non-species field changed),model molecule_diameter 'd_B' 374.0,,,,qualifiers (not species)
+yli18,fig3.cap,regression (a non-species field changed),model partial_pressure 'p_B' 300.0,,,,qualifiers (not species)
+yli18,fig3.cap,same,model saturation_density 'q' 5e+18,,,,
+yli18,fig3.cap,same,model deposition_temperature 'T' 500.0,,,,
+yli18,fig3.cap,same,model adsorption_equilibrium_constant 'K' 100.0,,,,
+yli18,fig3.cap,gone,model initial_sticking_coefficient 'c' 0.01,,,,
+yli18,fig3.cap,same,model saturation_growth_per_cycle 'gpc_{\\text{sat}}' 106.0,,,,
+yli18,fig3.cap,new,model initial_sticking_coefficient 'c' 0.01,,,c = 0.01,
+yli18,fig5.cap,same,model feature_width 'H' 0.5,,,,
+yli18,fig5.cap,same,model feature_extent 'W' 0.1,,,,
+yli18,fig5.cap,species changed,model partial_pressure 'p_A0' 100.0,model_reactant,,p_{A0} = 100 \text{ Pa},
+yli18,fig5.cap,species changed,model molar_mass 'M_A' 0.0749,model_reactant,,M_A = 0.0749 \text{ kg/mol},
+yli18,fig5.cap,species changed,model molecule_diameter 'd_A' 591.0,model_reactant,,d_A = 591 \text{ pm},
+yli18,fig5.cap,regression (a non-species field changed),model molar_mass 'M_B' 0.028,,,,qualifiers (not species)
+yli18,fig5.cap,regression (a non-species field changed),model molecule_diameter 'd_B' 374.0,,,,qualifiers (not species)
+yli18,fig5.cap,gone,model partial_pressure 'p_B' 300.0,,,,
+yli18,fig5.cap,same,model saturation_density 'q' 5e+18,,,,
+yli18,fig5.cap,same,model deposition_temperature 'T' 500.0,,,,
+yli18,fig5.cap,same,model adsorption_equilibrium_constant 'K' 100.0,,,,
+yli18,fig5.cap,gone,model initial_sticking_coefficient 'c' 0.01,,,,
+yli18,fig5.cap,same,model pulse_time 't_p' 0.1,,,,
+yli18,fig5.cap,same,model saturation_growth_per_cycle 'gpc_sat' 106.0,,,,
+yli18,fig5.cap,gone,claim None None ,,,,
+yli18,fig5.cap,new,model process_pressure 'p_B' 300.0,,,p_B = 300 \text{ Pa},
+yli18,fig5.cap,new,model initial_sticking_coefficient 'c' 0.01,,,c = 0.01,
+yli18,fig5.cap,new,caveat None None ,,,"In the Gordon model, only the Knudsen diffusion is considered which is slightly faster than the diffusion given by the effective diffusion coefficient in Eq. (6).",
+yli18,tabu1.r2c0,same,definition initial_sticking_coefficient 'Lumped sticking coefficient' ,,,,
+yli18,tabu1.r5c0,gone,definition molecule_diameter 'Diameter of molecule A' ,model_reactant,,,
+yli18,tabu1.r5c0,new,definition molecule_diameter 'Diameter of molecule A (m)' ,,,dA | Diameter of molecule A (m),
+yli18,tabu1.r17c0,gone,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant' ,,,,
+yli18,tabu1.r17c0,new,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant (1/Pa)' ,,,K | Adsorption equilibrium constant (1/Pa),
+yli18,tabu1.r19c0,gone,definition molar_mass 'Molar mass of the deposited film' ,,,,
+yli18,tabu1.r19c0,new,definition other 'Molar mass of the deposited film (kg/mol)' ,,,M | Molar mass of the deposited film (kg/mol),
+yli18,tabu1.r20c0,gone,definition molar_mass 'Molar mass of reactant A' ,model_reactant,,,
+yli18,tabu1.r20c0,new,definition molar_mass 'Molar mass of reactant A (kg/mol)' ,,,MA | Molar mass of reactant A (kg/mol),
+yli18,tabu1.r24c0,gone,definition partial_pressure 'Partial pressure of reactant A' ,model_reactant,,,
+yli18,tabu1.r24c0,new,definition partial_pressure 'Partial pressure of reactant A (Pa)' ,,,pA | Partial pressure of reactant A (Pa),
+yli18,tabu1.r25c0,gone,definition partial_pressure 'Input partial pressure of reactant A' ,,,,
+yli18,tabu1.r25c0,new,definition partial_pressure 'Input partial pressure of reactant A (Pa)' ,,,pA0 | Input partial pressure of reactant A (Pa),
+yim20,s2.p2,regression (a non-species field changed),cited None None ,,,,kind; stance; cause; effect; relation
+yim20,s2.p2,gone,definition initial_sticking_coefficient 'cA' ,model_reactant,,,
+yim20,s2.p2,new,definition aspect_ratio 'aspect ratio (AR)' ,,,aspect ratio (AR),
+yim20,s2.p2,new,definition exposure 'dose' ,,,dose equals partial pressure of reactant multiplied by exposure time,
+yim20,s2.p2,new,definition initial_sticking_coefficient 'cA' ,,,(lumped) sticking coefficient  $c_A$  (A stands for Reactant A),
+yim20,s2.p2,new,claim None None ,,,"The reactivity of the compounds, often described by a (lumped) sticking coefficient  $c_A$  (A stands for Reactant A), further influences the speed at which uniform thickness is attained.1,31,35,36",
+yim20,s2.p2,new,claim None None ,,,"Non-ideal reactions, such as unwanted CVD through decomposition of one of the reactants or through the mixing of reactant pulses, or non-saturation of the reactions, would compromise the conformality.1,37",
+yim20,s8.p1,regression (a non-species field changed),model mean_free_path '\\lambda_{\\text{TMA}}' 40.0,tma,tma,,kind; method
+yim20,s8.p1,same,caveat None None ,,,,
+yim20,s18.p3,gone,cited initial_sticking_coefficient 'c_H2O' 0.0001,h2o,,,
+yim20,s18.p3,gone,cited initial_sticking_coefficient 'c_TMA' 0.002,tma,,,
+yim20,s18.p3,gone,cited film_density 'film density' 4.0,,,,
+yim20,s18.p3,new,cited feature_width 'height' 5.0,,,The structure had a microscopic cavity with its height of 5  \mu\text{m},
+yim20,s18.p3,new,cited feature_depth 'lateral length' 2000.0,,,lateral length of 2000  \mu\text{m},
+yim20,s18.p3,new,cited initial_sticking_coefficient 'c_H2O' 0.0001,,h2o,"$c_{\text{H}_2\text{O}}$  of  $1 \times 10^{-4}$  and  $1 \times 10^{-6}$  at 300 °C and 100 °C, respectively",
+yim20,s18.p3,new,cited initial_sticking_coefficient 'c_H2O' 1e-06,,h2o,"$c_{\text{H}_2\text{O}}$  of  $1 \times 10^{-4}$  and  $1 \times 10^{-6}$  at 300 °C and 100 °C, respectively",
+yim20,s18.p3,new,cited initial_sticking_coefficient 'c_TMA' 0.002,,tma,$c_{\text{TMA}}$  of  $2 \times 10^{-3}$  (temperature-independent) were reported in the follow-up work Vandalon *et al.* (2017),
+yim20,s18.p3,new,cited film_density 'alumina film density' 4000.0,,,The alumina film density used by Yilammi *et al.*33 was 4000  \text{kg m}^{-3},
+yim20,s18.p3,new,setting film_density 'alumina film density' 3100.0,,,higher than in our study (3100  \text{kg m}^{-3} ),
+yim20,s19.p1,gone,model initial_sticking_coefficient 'c_A' ,,,,
+yim20,s19.p1,new,model front_slope '|dθ/d\\tilde{x}|' ,,,$|d\theta/d\tilde{x}| \approx \sqrt{\frac{c_A}{13.9}}$,
+yim20,s19.p2,gone,definition knudsen_number 'K_n' ,,,,
+yim20,s19.p2,new,model knudsen_number 'Knudsen number K_n' ,,,Knudsen number  $K_n = \lambda/h \gg 1$,
+yim20,fig10.cap,gone,model material 'ALD Al2O3' al2o3,,,,
+yim20,fig10.cap,same,model deposition_temperature 'T' 300.0,,,,
+yim20,fig10.cap,regression (a non-species field changed),model pulse_time 't_p' 0.1,tma,tma,,qualifiers (not species)
+yim20,fig10.cap,same,model partial_pressure '\\rho_{A0}' 65.0,tma,tma,,
+yim20,fig10.cap,gone,model partial_pressure '\\rho_B' 300.0,,,,
+yim20,fig10.cap,same,model molar_mass 'M_A' 0.075,tma,tma,,
+yim20,fig10.cap,same,model molar_mass 'M_B' 0.028,n2,n2,,
+yim20,fig10.cap,same,model molecule_diameter 'd_A' 591.0,tma,tma,,
+yim20,fig10.cap,same,model molecule_diameter 'd_B' 374.0,n2,n2,,
+yim20,fig10.cap,same,model b_film 'b_{\\text{film}}' 2.0,,,,
+yim20,fig10.cap,species changed,model other 'b_{\\text{TMA}}' 1.0,tma,,b_{\text{TMA}} = 1,
+yim20,fig10.cap,same,model saturation_growth_per_cycle 'gpc_{\\text{sat}}' 0.098,,,,
+yim20,fig10.cap,same,model film_density '\\rho' 3100.0,,,,
+yim20,fig10.cap,same,model saturation_density 'q' 3.6,,,,
+yim20,fig10.cap,same,model adsorption_equilibrium_constant 'K' 1000.0,,,,
+yim20,fig10.cap,species changed,model initial_sticking_coefficient 'c_{\\text{TMA}}' 0.012,tma,,c_{\text{TMA}} = 0.012,
+yim20,fig10.cap,same,model p_d 'P_d' 0.043,,,,
+yim20,fig10.cap,new,model material None al2o3,,,Simulated saturation profiles of ALD \text{Al}_2\text{O}_3,
+yim20,fig10.cap,new,model process_pressure '\\rho_B' 300.0,,n2,\rho_B = 300 Pa (B = \text{N}_2),
+yim20,tab2.cap,gone,definition initial_sticking_coefficient 'sticking coefficient for TMA c_{\\text{TMA}}' ,tma,,,
+yim20,tab2.cap,gone,definition initial_sticking_coefficient 'water c_{\\text{H}_2\\text{O}}' ,h2o,,,
+yim20,tab2.cap,new,definition initial_sticking_coefficient 'c_{\\text{TMA}}' ,,tma,sticking coefficient for TMA c_{\text{TMA}},
+yim20,tab2.cap,new,definition initial_sticking_coefficient 'c_{\\text{H}_2\\text{O}}' ,,h2o,water c_{\text{H}_2\text{O}},
+yim20,tab2.r1c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' 0.1,tma,tma,,qualifiers (not species)
+yim20,tab2.r2c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' 0.02,tma,tma,,qualifiers (not species)
+yim20,tab2.r3c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' 0.001,tma,tma,,qualifiers (not species)
+yim20,tab2.r3c7,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{H}_2\\text{O}}' 0.0001,h2o,h2o,,qualifiers (not species)
+yim20,tab2.r4c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' 0.00572,tma,tma,,qualifiers (not species)
+yim20,tab2.r5c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' ,tma,tma,,qualifiers (not species)
+yim20,tab2.r5c7,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{H}_2\\text{O}}' ,h2o,h2o,,qualifiers (not species)
+yim20,tab2.r6c6,regression (a non-species field changed),cited initial_sticking_coefficient 'c_{\\text{TMA}}' 0.0001,tma,tma,,qualifiers (not species)
+yim20,tabu1.r2c0,same,definition initial_sticking_coefficient 'c_TMA' ,tma,tma,,
+yim20,tabu1.r2c1,regression (a non-species field changed),definition initial_sticking_coefficient 'Lumped sticking coefficient of TMA' ,tma,tma,,term
+yim20,tabu1.r3c0,same,definition initial_sticking_coefficient 'c_H2O' ,h2o,h2o,,
+yim20,tabu1.r3c1,regression (a non-species field changed),definition initial_sticking_coefficient 'Lumped sticking coefficient of water' ,h2o,h2o,,term
+yim20,tabu1.r6c0,gone,definition molecule_diameter 'd_A' ,,,,
+yim20,tabu1.r6c0,new,definition molecule_diameter 'd_{\\text{A}}' ,,,d_{\text{A}},
+yim20,tabu1.r6c1,gone,definition molecule_diameter 'Molecular diameter of Reactant A' ,,,,
+yim20,tabu1.r6c1,new,definition molecule_diameter 'Molecular diameter of Reactant A' ,,,Molecular diameter of Reactant A (pm),
+yim20,tabu1.r7c0,gone,definition molecule_diameter 'd_B' ,,,,
+yim20,tabu1.r7c0,new,definition molecule_diameter 'd_{\\text{B}}' ,,,d_{\text{B}},
+yim20,tabu1.r7c1,gone,definition molecule_diameter 'Molecular diameter of carrier gas B' ,,,,
+yim20,tabu1.r7c1,new,definition molecule_diameter 'Molecular diameter of carrier gas B' ,,,Molecular diameter of carrier gas B (pm),
+yim20,tabu2.r4c0,gone,definition adsorption_equilibrium_constant 'K' ,,,,
+yim20,tabu2.r4c0,new,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant' ,,,K,
+yim20,tabu2.r4c1,gone,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant' ,,,,
+yim20,tabu2.r5c0,gone,definition knudsen_number 'K_n' ,,,,
+yim20,tabu2.r5c0,new,definition knudsen_number 'Knudsen number' ,,,K_n,
+yim20,tabu2.r5c1,gone,definition knudsen_number 'Knudsen number' ,,,,
+yim20,tabu2.r8c0,gone,definition molar_mass 'M_B' ,n2,,,
+yim20,tabu2.r8c0,new,definition molar_mass 'Molar mass of carrier gas B' ,,,M_{\text{B}},
+yim20,tabu2.r8c1,gone,definition molar_mass 'Molar mass of carrier gas B' ,n2,,,
+yim20,tabu2.r9c0,gone,definition molar_mass 'M_A' ,tma,,,
+yim20,tabu2.r9c0,new,definition molar_mass 'Molar mass of reactant A' ,,,M_{\text{A}},
+yim20,tabu2.r9c1,gone,definition molar_mass 'Molar mass of reactant A' ,tma,,,
+yim20,tabu2.r11c0,gone,definition partial_pressure 'p_A0' ,tma,,,
+yim20,tabu2.r11c0,new,definition partial_pressure 'Input partial pressure of Reactant A' ,,,p_{\text{A0}},
+yim20,tabu2.r11c1,gone,definition partial_pressure 'Input partial pressure of Reactant A' ,tma,,,
+yim20,tabu2.r12c0,gone,definition partial_pressure 'p_B' ,,,,
+yim20,tabu2.r12c0,new,definition partial_pressure 'Partial pressure of carrier gas B' ,,,p_{\text{B}},
+yim20,tabu2.r12c1,gone,definition partial_pressure 'Partial pressure of carrier gas B' ,,,,
+yim20,tabu2.r26c0,gone,definition mean_free_path '\\lambda_TMA' ,tma,,,
+yim20,tabu2.r26c0,new,definition mean_free_path 'Mean free path of TMA' ,,tma,\lambda_{\text{TMA}},
+yim20,tabu2.r26c1,gone,definition mean_free_path 'Mean free path of TMA' ,tma,,,
+ela03,s4.p13,species changed,cited exposure 'saturation exposures' 10000.0,tma,,The TMA and  \text{H}_2\text{O}  half reactions for  \text{Al}_2\text{O}_3  ALD require saturation exposures of  \sim 10^4  L.24,qualifiers (not species)
+ela03,s4.p13,species changed,cited exposure 'exposures' 1000000000.0,sicl4,,\text{SiCl}_4  and  \text{H}_2\text{O}  half reactions for  \text{SiO}_2  ALD require much larger exposures of  \sim 10^9  L to achieve saturation.39,
+ela03,s4.p13,new,claim initial_sticking_coefficient 'reactive sticking coefficients' ,,,These results imply that TMA and  \text{H}_2\text{O}  have much higher reactive sticking coefficients on the  \text{Al}_2\text{O}_3  ALD surface compared with the reactive sticking coefficients for  \text{SiCl}_4  and  \text{H}_2\text{O}  on the  \text{SiO}_2  ALD surface.,
+ela03,s5.p10,regression (a non-species field changed),model partial_pressure 'TMA partial pressure' 0.15,tma,tma,,kind; method; qualifiers (not species)
+ela03,s5.p10,gone,model deposition_temperature 'temperature' 177.0,,,,
+ela03,s5.p10,new,model deposition_temperature 'T' 177.0,,,at 177°C,
+ela03,s5.p10,new,model feature_width 'd' 65.0,,,using d = 65 nm,
+ela03,s5.p10,new,model other 'ΦA' 970000000.0,,,ΦA = 9.7 × 10^8 molecules/s,
+ela03,s5.p10,new,model other 'N/(ΦA)' 0.00072,,,N/(ΦA) = 7.2 × 10^-4 s,
+ela03,s5.p10,new,model other '(ΦA)/N' 1400.0,,,(ΦA)/N = 1.4 × 10^3,
+ela03,s5.p12,regression (a non-species field changed),model feature_width 'd' 65.0,,,,about; method
+ela03,s5.p12,regression (a non-species field changed),model feature_depth 'L' 50.0,,,,about; method
+ela03,s5.p12,gone,model cycle_number 'Al2O3 ALD cycles' 100.0,,,,
+ela03,s5.p12,gone,model initial_sticking_coefficient 'reactive sticking coefficient' 0.001,tma,,,
+ela03,s5.p12,new,model cycle_number 'cycles' 100.0,,,100 Al2O3 ALD cycles,
+ela03,s5.p12,new,model initial_sticking_coefficient 'S' 0.001,,al2o3,The reactive sticking coefficient for Al2O3 ALD was S = 1 × 10^-3,
+ela03,s5.p12,new,model penetration_depth 'uniform Al2O3 ALD coverage for the first' 11.0,,,1-s reactant exposures yield a uniform Al2O3 ALD coverage for the first ~11 µm into the nanopore,
+ela03,s5.p12,new,model normalized_thickness 'relative Al2O3 coverage' ,,,"At a distance of 25 µm, the relative Al2O3 coverage is only ~0.05–0.1",
+ela03,s5.p15,gone,model cycle_number 'ZnO ALD cycles' 64.0,,,,
+ela03,s5.p15,gone,model initial_sticking_coefficient 'reactive sticking coefficient' 0.007,dez,,,
+ela03,s5.p15,new,model feature_width 'd' 65.0,,,nanopore with d = 65 nm,
+ela03,s5.p15,new,model feature_depth 'L' 50.0,,,L = 50 µm,
+ela03,s5.p15,new,model cycle_number 'cycles' 64.0,,,64 ZnO ALD cycles,
+ela03,s5.p15,new,model initial_sticking_coefficient 'S' 0.007,,zno,The reactive sticking coefficient for ZnO ALD was S = 7 × 10^-3,
+ela03,s5.p15,new,claim None None ,,,The slight drop in relative coverage at 20–25 µm may result from nonidealities in the AA structure such as sections with reduced diameter or blocked pores.,
+ela03,s5.p19,gone,definition initial_sticking_coefficient 'S' ,,,,
+ela03,s5.p19,new,definition initial_sticking_coefficient 'reactive sticking coefficient' ,,,"The reaction rate is quantified by S, the reactive sticking coefficient. S is the probability that a surface collision results in reaction",
+ela03,s5.x2,regression (a non-species field changed),model feature_depth 'L' 50.0,,,,method; mentions
+ela03,s5.x2,species changed,model initial_sticking_coefficient 'S' 0.007,dez,,S = 7 × 10^-3,method; mentions
+ela03,s5.x2,gone,model other 'H' 2.7e-05,,,,
+ela03,s5.x2,regression (a non-species field changed),model feature_depth 'L' 0.5,,,,method; mentions
+ela03,s5.x2,species changed,model initial_sticking_coefficient 'S' 0.0001,dez,,S = 1 × 10^-4,method; mentions
+ela03,s5.x2,gone,model other 'H' 0.27,,,,
+ela03,s5.x2,new,claim None None ,,,Figure 12a predicts that the integrated coverage versus time in the diffusion-limited regime has a t^1/2 time dependence.,
+ela03,s5.x2,new,claim None None ,,,"In contrast, the reaction-limited case in Figure 12b shows a t^1 time dependence.",
+ela03,s5.x2,new,model feature_width 'd' 65.0,,,"using d = 65 nm, L = 50 µm, and S = 7 × 10^-3",
+ela03,s5.x2,new,model feature_width 'd' 65.0,,,"Figure 12b used d = 65 nm, L = 0.5 µm, and S = 1 × 10^-4",
+ela03,s5.x2,new,model other 'hopping coefficient' 2.7e-05,,,The hopping coefficient is H = 2.7 × 10^-5,
+ela03,s5.x2,new,model other 'hopping coefficient' 0.27,,,The hopping coefficient is H = 2.7 × 10^-1,
+ela03,s5.p24,regression (a non-species field changed),model partial_pressure 'DEZ pressure' 0.068,dez,dez,,about; method; mentions; qualifiers (not species)
+ela03,s5.p24,new,model surface_coverage 'normalized integrated coverages' 1.0,,,The simulations yield normalized integrated coverages of 1 following long exposures for both kinetic regimes.,
+ela03,s5.p25,species changed,cited initial_sticking_coefficient 'reactive sticking coefficient' 0.001,tma,al2o3,The reactive sticking coefficient during Al2O3 ALD is S ≈ 1 × 10^-3 [ref 24],about; mentions
+ela03,s5.p25,new,setting feature_width 'd' 47.0,,,nanoporous substrate with d = 47 nm and L = 50 µm,
+ela03,s5.p25,new,setting feature_depth 'L' 50.0,,,L = 50 µm,
+ela03,s5.p25,new,derived other 'H' 1.4e-05,,,yielding H = 1.4 × 10^-5,
+ela03,s5.p25,new,observation other 'time dependence' t^1/2,,,Figure 8a exhibits a t^1/2 time dependence,
+ela03,s5.p26,species changed,cited initial_sticking_coefficient 'reactive sticking coefficient' 1e-08,sicl4,sio2,The reactive sticking coefficient during SiO2 ALD is S ≈ 10^-8 [ref 39],about; mentions
+ela03,s5.p26,new,derived other 'H' 1.4e-05,,,same nanoporous substrate as in Figure 8a with H = 1.4 × 10^-5,
+ela03,s5.p26,new,observation other 'time dependence' t^1,,,Figure 8b exhibits a t^4 time dependence,
+ela03,fig12.cap,same,model feature_width 'd' 65.0,,,,
+ela03,fig12.cap,same,model feature_depth 'L' 50.0,,,,
+ela03,fig12.cap,same,model initial_sticking_coefficient 'S' 0.007,,,,
+ela03,fig12.cap,same,model other 'H' 2.7e-05,,,,
+ela03,fig12.cap,same,model feature_width 'd' 65.0,,,,
+ela03,fig12.cap,same,model feature_depth 'L' 0.5,,,,
+ela03,fig12.cap,same,model initial_sticking_coefficient 'S' 0.0001,,,,
+ela03,fig12.cap,same,model other 'H' 0.27,,,,
+ela03,fig13.cap,gone,model material 'ZnO' zno,,,,
+ela03,fig13.cap,gone,model structure 'AA membranes' anodic_alumina_membrane,,,,
+ela03,fig13.cap,species changed,model partial_pressure 'DEZ pressures' 0.01,dez,,"assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.",qualifiers (not species)
+ela03,fig13.cap,species changed,model partial_pressure 'DEZ pressures' 0.1,dez,,"assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.",qualifiers (not species)
+ela03,fig13.cap,species changed,model partial_pressure 'DEZ pressures' 1.0,dez,,"assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.",qualifiers (not species)
+ela03,fig13.cap,species changed,model partial_pressure 'DEZ pressures' 10.0,dez,,"assuming DEZ pressures of 0.01, 0.1, 1, and 10 Torr.",qualifiers (not species)
+hei24,s2.p3,gone,cited exposure 'reactant exposure' ,,,,
+hei24,s2.p3,new,claim None None ,,,"Gordon et al.18 present an analytical model to describe ALD growth inside high aspect ratio holes and trenches, where the reactant exposure required to achieve conformal coating increases quadratically with respect to the aspect ratio.",
+hei24,s2.p10,gone,cited exposure 'minimum exposure time' ,zno,,,
+hei24,s2.p10,new,claim None None ,,,spherical particle geometry has a significant effect on the decreasing reactant consumption towards the particle centre.,
+hei24,s4.p3,gone,definition exposure 'reactant exposure' ,,,,
+hei24,s4.p3,new,definition reactant_number_density 'n_P' ,,,n_P (m^{-3}) is the volumetric reactant number density,
+hei24,s4.p3,new,definition time 't' ,,,t (s) is the reactant exposure time.,
+hei24,s4.p3,new,definition surface_to_pore_volume_ratio 's̄' ,,,s̄.4 = A_0/V_p (m^{-1}) the ratio of specific surface area (m^2 g^{-1}) and pore volume (m^3 g^{-1}),
+hei24,s4.p3,new,definition initial_sticking_coefficient 'β_0' ,,,β_0 the reactant sticking probability,
+hei24,s4.p3,new,definition surface_coverage 'θ' ,,,θ the surface coverage (fraction of occupied adsorption sites),
+hei24,s11.p3,gone,model partial_pressure 'partial pressure' 100.0,,,,
+hei24,s11.p3,gone,model reactant_number_density 'n_P0' 1.94e+22,,,,
+hei24,s11.p3,gone,model reactant_number_density 'volumetric reactant number density' 1.26e+22,,,,
+hei24,s11.p3,regression (a non-species field changed),claim None None ,,,,about
+hei24,s11.p3,new,setting partial_pressure 'partial pressure ( $p_{A0}$ )' 100.0,,model_reactant,Fig. 8(b) illustrates profiles when volumetric reactant number density is determined from a fixed 100 Pa partial pressure ( $p_{A0}$ ) at varying temperatures.,
+hei24,s11.p3,new,derived reactant_number_density 'n_{P0}' 1.94e+22,,model_reactant,"at a temperature of 373 K, a 100 Pa partial pressure corresponds to  $n_{P0}$  of  $1.94 	imes 10^{22} 	ext{ m}^{-3}$",
+hei24,s11.p3,new,derived reactant_number_density 'volumetric reactant number density' 1.26e+22,,model_reactant,"at a temperature of 573 K, a 100 Pa partial pressure corresponds to  $1.26 	imes 10^{22} 	ext{ m}^{-3}$  volumetric reactant number density.",
+hei24,fig8.cap,same,model reactant_number_density 'volumetric reactant number density' 1.94e+22,,,,
+hei24,fig8.cap,same,model partial_pressure 'partial pressure' 100.0,,,,
+hei24,tab2.r1c0,regression (a non-species field changed),"definition molar_mass 'Reactant molar mass, m_R' ",,,,about
+hei24,tab2.r1c1,gone,"model molar_mass 'Reactant molar mass, m_R' 100.0",,,,
+hei24,tab2.r1c1,new,model molar_mass 'm_R' 100.0,,,100 \text{ g mol}^{-1},
+hei24,tab2.r2c0,regression (a non-species field changed),"definition initial_sticking_coefficient 'Initial sticking probability, \\beta_0' ",,,,about
+hei24,tab2.r2c1,gone,"model initial_sticking_coefficient 'Initial sticking probability, \\beta_0' 0.02",,,,
+hei24,tab2.r2c1,new,model initial_sticking_coefficient '\\beta_0' 0.02,,,2 \times 10^{-2},
+hei24,tabu1.r4c0,gone,definition initial_sticking_coefficient 'Initial sticking probability' ,,,,
+hei24,tabu1.r4c0,new,definition initial_sticking_coefficient '\\beta_0' ,,,\beta_0,
+hei24,tabu1.r17c0,gone,definition partial_pressure 'Partial pressure of component A' ,model_reactant,,,
+hei24,tabu1.r17c0,new,definition partial_pressure 'p_{A0}' ,,,p_{A0},
+gor03,eq7,gone,model exposure 'Pt' ,,,,
+gor03,eq7,new,model exposure 'Pt' ,,,$$Pt = S\sqrt{2\pi m k T} \quad (7)$$,
+gor03,eq13,regression (a non-species field changed),model exposure '(Pt)_{\\text{sidewalls}}' ,,,,variables
+gor03,eq14,regression (a non-species field changed),model exposure '(Pt)_{\\text{bottom}}' ,,,,variables
+gor03,eq15,regression (a non-species field changed),model exposure '(Pt)_{\\text{total}}' ,,,,variables
+gor03,fig3,gone,model exposure 'predicted exposure' ,,,,
+gor03,fig3,new,"model exposure 'Exposure, in Langmuirs' ",,,A plot of the predicted exposure needed for holes with a range of aspect ratios from 1 to 2000.,
+gor03,fig4.cap,same,definition source_temperature 'T(precursors)' ,,,,
+gor03,fig4.cap,same,definition deposition_temperature 'T(deposition)' ,,,,
+gor03,fig4.cap,new,definition carrier_gas '\\text{N}_2' n2,,n2,nitrogen mass flow controllers (\text{N}_2),
+gor03,fig4.cap,new,definition reactant_B '\\text{H}_2\\text{O}' h2o,,h2o,the water vapor reservoir (\text{H}_2\text{O}),
+gor03,fig4.cap,new,definition process_pressure 'P' ,,,the pressure measurement location (P),
+art19,s3.p3,same,cited recombination_probability 'r' ,,,,
+art19,s3.p3,regression (a non-species field changed),claim None None ,,,,cause; effect; relation
+art19,s3.p3,new,definition recombination_probability 'surface recombination probability r' ,,,"In these models, a surface recombination probability r is used to describe the probability that a radical recombines upon collision with the growth surface",
+art19,s3.p3,new,claim None None ,,,"Moreover, it has been established that surface recombination often limits the aspect ratio (AR) up to which conformal film growth is practically achievable.",
+art19,s4.p3,regression (a non-species field changed),model aspect_ratio 'AR' 2000.0,,,,about
+art19,s4.p3,regression (a non-species field changed),model initial_sticking_coefficient 's_0' 0.0001,,,,about
+art19,s4.p3,new,setting structure 'microscopic lateral high aspect ratio (LHAR) structures' pillarhall_3,,,"PillarHall LHAR generation 3 and 4, developed by Puurunen and co-workers",
+art19,s4.p3,new,setting structure 'microscopic lateral high aspect ratio (LHAR) structures' pillarhall_4,,,"PillarHall LHAR generation 3 and 4, developed by Puurunen and co-workers",
+art19,s4.p3,new,setting substrate 'c-Si substrate' si,,,suspended above a c-Si substrate using a network of Si pillars,
+art19,fig1.cap,same,claim None None ,,,,
+art19,fig1.cap,gone,model recombination_probability 'r' 5e-05,,,,
+art19,fig1.cap,new,claim None None ,,,panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the film penetration depth,
+art19,fig1C,regression (a non-species field changed),claim None None ,,,,cause; effect; relation
+art19,fig1C,same,model recombination_probability 'r' 5e-05,,,,
+art19,tab1.cap,gone,definition recombination_probability 'r' ,o_atom,,,
+art19,tab1.cap,new,definition recombination_probability 'Recombination Probabilities r' ,,o_atom,Recombination Probabilities r of O Radicals on Different Material Surfaces,
+art19,tab1.r0c1,regression (a non-species field changed),definition recombination_probability 'determined r' ,,,,term
+art19,tab1.r0c2,regression (a non-species field changed),definition recombination_probability 'literature value r' ,,,,term
+art19,tab1.r1c2,species changed,cited recombination_probability 'literature value r' 0.0002,o_atom,,(2 \pm 1) \times 10^{-4},
+art19,tab1.r1c2,species changed,cited recombination_probability 'literature value r' 0.00016,o_atom,,1.6 \times 10^{-4},
+art19,tab1.r1c2,species changed,cited recombination_probability 'literature value r' ,o_atom,,(3-5) \times 10^{-5},
+art19,tab1.r1c2,species changed,cited recombination_probability 'literature value r' ,o_atom,,(4-160) \times 10^{-4},
+art19,tab1.r1c2,species changed,cited recombination_probability 'literature value r' ,o_atom,,(0.8-3) \times 10^{-5},
+art19,tab1.r3c2,species changed,cited recombination_probability 'literature value r' 0.0021,o_atom,,2.1 \times 10^{-3},
+zou23,s10.p2,gone,cited mean_free_path 'electron MFP' 11.2,,,,
+zou23,s10.p2,regression (a non-species field changed),setting film_thickness 'thick' 25.0,,,,qualifiers (not species)
+zou23,s10.p2,gone,observation film_thickness 'thickness' 50.0,,,,
+zou23,s10.p2,gone,observation diffraction_angle 'peaks' 41.0,,,,
+zou23,s10.p2,gone,observation diffraction_angle 'peaks' 59.0,,,,
+zou23,s10.p2,gone,observation diffraction_angle 'peaks' 74.0,,,,
+zou23,s10.p2,gone,observation crystallinity None amorphous,,,,
+zou23,s10.p2,new,cited mean_free_path 'MFP' 11.2,,mo,MFP in molybdenum (at 11.2 nm).4,
+zou23,s10.p2,new,observation film_thickness 'film thickness' 50.0,,,"ALD film deposited at 150 °C, whose lower density resulted in a film thickness that approached 50 nm",
+zou23,s10.p2,new,observation phase 'BCC Mo' detected,,mo,"GIXRD measurement of the ALD film obtained at 350 °C reveals peaks at 41°, 59°, and 74°, which corresponds to the (110), (200), and (211) planes of BCC Mo",
+zou23,s10.p2,new,observation crystallinity 'amorphous' amorphous,,,"no peaks are observed for the ALD sample obtained at 150 °C, which indicates an amorphous nature of the film",
+zou23,s10.p2,new,claim None None ,,,The increase in film resistivity at lower temperatures can also originate from a loss of crystallinity.,
+yim22,s2.p8,gone,definition knudsen_number 'Knudsen number' 0.001,,,,
+yim22,s2.p8,new,definition knudsen_number 'Knudsen number  K_n' ,,,Knudsen number  $K_n = \lambda/h \leq 10^{-3}$,
+yim22,s2.p8,new,definition other 'continuum flow conditions' ,,,in this work the term is dedicated to continuum flow conditions where the mean free path of molecules  $\lambda$  (m) is orders of magnitude smaller than the limiting feature dimension  $h$  (m) (Knudsen number  $K_n = \lambda/h \leq 10^{-3}$ ),
+yim22,eq1,gone,model partial_pressure None ,model_reactant,,,
+yim22,eq1,new,model None None ,,,$$\frac{\partial p_A}{\partial t} = D_{\text{eff}} \frac{\partial^2 p_A}{\partial x^2} - \frac{4gRT}{hN_0} \quad (1)$$,
+yim22,eq8,gone,model partial_pressure None ,model_reactant,,,
+yim22,eq8,new,model None None ,,,"$$p_A(x, t) = p_{A0} \left( 1 - \frac{x}{x_s} \right), \quad x < x_t \quad (8)$$",
+yim22,eq9,gone,model partial_pressure None ,model_reactant,,,
+yim22,eq9,new,model None None ,,,"$$p_A(x, t) = p_{At} \exp \left( -\frac{x - x_t}{x_s - x_t} \right), \quad x > x_t \quad (9)$$",
+yim22,eq10,gone,model partial_pressure None ,model_reactant,,,
+yim22,eq10,new,model None None ,,,$$p_{At} = p_{A0} \left( 1 - \frac{x_t}{x_s} \right).$$,
+yim22,s6.p7,gone,definition adsorption_equilibrium_constant 'K' ,,,,
+yim22,eq21,regression (a non-species field changed),model adsorption_equilibrium_constant 'K' ,,,,about; variables
+yim22,eq26,regression (a non-species field changed),model knudsen_number 'Kn' ,,,,variables
+yim22,eq27,gone,model mean_free_path '\\lambda' ,,,,
+yim22,eq27,new,model mean_free_path '\\lambda' ,,,"\lambda = \frac{k_B T}{\sqrt{2p_{A0}\sigma_{A,A}} + \sqrt{1 + \frac{m_A}{m_I}p_I\sigma_{A,I}}}, \quad (26)",
+yim22,eq31,regression (a non-species field changed),model initial_sticking_coefficient 'c' ,,,,variables
+yim22,s12.p1,same,model feature_width 'H' 500.0,,,,
+yim22,s12.p1,same,model deposition_temperature 'temperature' 250.0,,,,
+yim22,s12.p1,gone,model partial_pressure 'partial pressure' 100.0,model_reactant,,,
+yim22,s12.p1,gone,model partial_pressure 'partial pressure' 500.0,,,,
+yim22,s12.p1,species changed,model pulse_time 'pulse length' 0.1,model_reactant,,the Reactant A pulse length was chosen as 0.1 s,qualifiers (not species)
+yim22,s12.p1,same,model saturation_density 'adsorption density' 4.0,,,,
+yim22,s12.p1,gone,model molar_mass 'molar mass' 100.0,model_reactant,,,
+yim22,s12.p1,gone,model molar_mass 'molar mass' 28.0,n2,,,
+yim22,s12.p1,new,model partial_pressure 'Partial pressure of Reactant A' 100.0,,model_reactant,The partial pressure of Reactant A and the inert gas were chosen as 100 Pa and 500 Pa,
+yim22,s12.p1,new,model partial_pressure 'inert gas' 500.0,,,"100 Pa and 500 Pa, respectively",
+yim22,s12.p1,new,model molar_mass 'molar mass of Reactant A' 100.0,,model_reactant,The molar mass of Reactant A was set to an arbitrary value of 100 g mol^{-1},
+yim22,s12.p1,new,model molar_mass 'purge gas' 28.0,,,purge gas was typical for nitrogen (28 g mol^{-1}),
+yim22,s12.p2,gone,model molecule_diameter 'diameters' 600.0,model_reactant,,,
+yim22,s12.p2,gone,model molecule_diameter 'diameters' 374.0,n2,,,
+yim22,s12.p2,gone,derived knudsen_number 'Knudsen number Kn' 7.6,,,,
+yim22,s12.p2,new,model molecule_diameter 'diameters of Reactant A' 600.0,,model_reactant,"The diameters of Reactant A and the inert gas were 600 and 374 pm, respectively",
+yim22,s12.p2,new,model molecule_diameter 'inert gas' 374.0,,,"600 and 374 pm, respectively",
+yim22,s12.p2,new,derived knudsen_number 'Kn' 7.6,,,resulted in the Knudsen number Kn for the baseline conditions being 7.6,
+yim22,s12.p5,same,model feature_extent 'W' 10.0,,,,
+yim22,s12.p5,gone,model molecule_diameter 'd_A' 0.6,model_reactant,,,
+yim22,s12.p5,gone,model molecule_diameter 'd_I' 0.374,n2,,,
+yim22,s12.p5,species changed,model molar_mass 'M_I' 0.028,n2,,M_I = 0.0280 kg mol-1,qualifiers (not species)
+yim22,s12.p5,same,model b_film 'b_film' 1.0,,,,
+yim22,s12.p5,same,model molar_mass 'M' 0.05,,,,
+yim22,s12.p5,new,model molecule_diameter 'd_A' 6e-10,,model_reactant,d_A = 6 \times 10^{-10} m,
+yim22,s12.p5,new,model molecule_diameter 'd_I' 3.74e-10,,,d_I = 3.74 \times 10^{-10} m,
+yim22,s12.p5,new,model other 'b_A' 1.0,,,b_A = 1,
+yim22,s12.p5,new,derived other 'h_T' 1.0,,,"Thiele modulus27,37 h_T > 1",
+yim22,s14.p6,same,model feature_extent 'W' 10.0,,,,
+yim22,s14.p6,same,model feature_width 'H' 0.05,,,,
+yim22,s14.p6,same,model cycle_number 'N' 1.0,,,,
+yim22,s14.p6,same,model deposition_temperature 'T' 573.15,,,,
+yim22,s14.p6,species changed,model pulse_time 't_1' 0.1,model_reactant,,t_1 = 0.1 \text{ s},qualifiers (not species)
+yim22,s14.p6,regression (a non-species field changed),model partial_pressure 'p_{A0}' 50.0,model_reactant,model_reactant,,qualifiers (not species)
+yim22,s14.p6,same,model molar_mass 'M_A' 0.1,model_reactant,model_reactant,,
+yim22,s14.p6,gone,model molecule_diameter 'd_A' 0.6,model_reactant,,,
+yim22,s14.p6,species changed,model molar_mass 'M_i' 0.028,n2,,M_i = 0.028 \text{ kg mol}^{-1},qualifiers (not species)
+yim22,s14.p6,gone,model molecule_diameter 'd_i' 0.4,n2,,,
+yim22,s14.p6,regression (a non-species field changed),model partial_pressure 'p_i' 250.0,,,,qualifiers (not species)
+yim22,s14.p6,same,model saturation_density 'q' 4.0,,,,
+yim22,s14.p6,same,model film_density 'ρ' 3500.0,,,,
+yim22,s14.p6,same,model molar_mass 'M' 0.05,,,,
+yim22,s14.p6,same,model p_d 'P_d' 0.01,,,,
+yim22,s14.p6,species changed,model initial_sticking_coefficient 'c' 0.01,model_reactant,,c = 0.01,
+yim22,s14.p6,new,model molecule_diameter 'd_A' 6e-10,,model_reactant,d_A = 6.0 \times 10^{-10} \text{ m},
+yim22,s14.p6,new,model molecule_diameter 'd_i' 4e-10,,,d_i = 4.0 \times 10^{-10} \text{ m},
+yim22,s14.p6,new,model feature_width 'H' 0.5,,,H = 0.5 \mu\text{m},
+yim22,s14.p6,new,model partial_pressure 'p_{A0}' 500.0,,model_reactant,p_{A0} = 500 \text{ Pa},
+yim22,s14.p6,new,model partial_pressure 'p_i' 2500.0,,,p_i = 2500 \text{ Pa},
+yim22,s14.p6,new,model partial_pressure 'p_i' ,,,increasing the partial pressure of the inert gas p_i from 0.5 to 250 Pa,
+yim22,s14.p6,new,model partial_pressure 'p_i' ,,,increasing the partial pressure of the inert gas p_i from 625 to 10 000 Pa,
+yim22,s14.p6,new,model partial_pressure 'initial partial pressure of Reactant A' ,,model_reactant,The initial partial pressure of Reactant A was varied from 1 to 100 Pa,
+yim22,s14.p6,new,model partial_pressure 'initial partial pressure of Reactant A' ,,model_reactant,The initial partial pressure of Reactant A was varied from 100 to 1000 Pa,
+yim22,s15.p4,regression (a non-species field changed),model feature_extent 'W' 10.0,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model feature_width 'H' 0.1,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model deposition_temperature 'T' 523.15,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model cycle_number 'N' 1.0,,,,qualifiers (not species)
+yim22,s15.p4,species changed,model pulse_time 't_1' 2.0,model_reactant,,t_1 = 2 s,qualifiers (not species)
+yim22,s15.p4,species changed,model partial_pressure 'p_{A0}' 10.0,model_reactant,,p_{A0} = 10 Pa,qualifiers (not species)
+yim22,s15.p4,species changed,model molar_mass 'M_A' 0.1,model_reactant,,M_A = 0.1 kg mol-1,qualifiers (not species)
+yim22,s15.p4,species changed,model molecule_diameter 'd_A' 6e-10,model_reactant,,d_A = 6.0 \times 10^{-10} m,qualifiers (not species)
+yim22,s15.p4,species changed,model molar_mass 'M_I' 0.028,n2,,M_I = 0.028 kg mol-1,qualifiers (not species)
+yim22,s15.p4,species changed,model molecule_diameter 'd_I' 3.74e-10,n2,,d_I = 3.74 \times 10^{-10} m,qualifiers (not species)
+yim22,s15.p4,gone,model process_pressure 'p_I' 50.0,,,,
+yim22,s15.p4,regression (a non-species field changed),model saturation_density 'q' 4.0,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model film_density 'ρ' 3500.0,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model molar_mass 'M' 0.05,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model p_d 'P_d' 1e-05,,,,qualifiers (not species)
+yim22,s15.p4,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.01,,,,qualifiers (not species)
+yim22,s15.p4,new,model partial_pressure 'p_I' 50.0,,,p_I = 50 Pa,
+yim22,fig2.cap,same,model initial_sticking_coefficient 'c' 0.01,,,,
+yim22,fig2.cap,same,model deposition_temperature 'T' 500.0,,,,
+yim22,fig2.cap,same,model partial_pressure 'p_{A0}' 100.0,,,,
+yim22,fig2.cap,gone,model molar_mass 'M_A' 0.0749,,,,
+yim22,fig2.cap,same,model molecule_diameter 'd_A' 5.91e-10,,,,
+yim22,fig2.cap,same,model partial_pressure '\\rho_1' 300.0,,,,
+yim22,fig2.cap,gone,model molar_mass 'M_l' 0.028,,,,
+yim22,fig2.cap,same,model molecule_diameter 'd_l' 3.74e-10,,,,
+yim22,fig2.cap,gone,model film_density '\\rho' 4000.0,,,,
+yim22,fig2.cap,same,model saturation_growth_per_cycle '\\text{gpc}_{\\text{sat}}' 1.06e-10,,,,
+yim22,fig2.cap,same,model adsorption_equilibrium_constant 'K' 100.0,,,,
+yim22,fig2.cap,same,model saturation_density 'q' 5.0,,,,
+yim22,fig2.cap,same,model feature_width 'H' 0.5,,,,
+yim22,fig2.cap,same,model feature_extent 'W' 0.1,,,,
+yim22,fig2.cap,new,model molar_mass 'M_A' 0.0749,,,M_A = 0.0749 \text{ kg mol}^{-1},
+yim22,fig2.cap,new,model molar_mass 'M_l' 0.028,,,M_l = 0.028 \text{ kg mol}^{-1},
+yim22,fig2.cap,new,model film_density '\\rho' 4000.0,,,\rho = 4000 \text{ kg m}^{-3},
+yim22,fig6.cap,same,model feature_extent 'W' 10.0,,,,
+yim22,fig6.cap,same,model feature_width 'H' 0.1,,,,
+yim22,fig6.cap,same,model cycle_number 'N' 1.0,,,,
+yim22,fig6.cap,same,model deposition_temperature 'T' 523.15,,,,
+yim22,fig6.cap,same,model pulse_time 't_1' 2.0,,,,
+yim22,fig6.cap,species changed,model partial_pressure '\\rho_{A0}' 10.0,model_reactant,,\rho_{A0} = 10 Pa,qualifiers (not species)
+yim22,fig6.cap,gone,model molar_mass 'M_A' 0.1,model_reactant,,,
+yim22,fig6.cap,gone,model molecule_diameter 'd_A' 600.0,model_reactant,,,
+yim22,fig6.cap,gone,model molar_mass 'M_1' 0.028,,,,
+yim22,fig6.cap,gone,model molecule_diameter 'd_1' 374.0,,,,
+yim22,fig6.cap,same,model partial_pressure '\\rho_1' 50.0,,,,
+yim22,fig6.cap,same,model saturation_density 'q' 4.0,,,,
+yim22,fig6.cap,gone,model film_density '\\rho' 3500.0,,,,
+yim22,fig6.cap,gone,model molar_mass 'M' 0.05,,,,
+yim22,fig6.cap,same,model p_d 'P_d' 1e-05,,,,
+yim22,fig6.cap,same,model initial_sticking_coefficient 'c' 0.01,,,,
+yim22,fig6.cap,new,model molar_mass 'M_A' 0.1,,model_reactant,M_A = 0.1 \text{kg mol}^{-1},
+yim22,fig6.cap,new,model molecule_diameter 'd_A' 6e-10,,model_reactant,d_A = 6.0 \times 10^{-10} m,
+yim22,fig6.cap,new,model molar_mass 'M_1' 0.028,,,M_1 = 0.028 \text{kg mol}^{-1},
+yim22,fig6.cap,new,model molecule_diameter 'd_1' 3.74e-10,,,d_1 = 3.74 \times 10^{-10} m,
+yim22,fig6.cap,new,model film_density '\\rho' 3500.0,,,\rho = 3500 \text{kg m}^{-3},
+yim22,fig6.cap,new,model molar_mass 'M' 0.05,,,M = 0.050 \text{kg mol}^{-1},
+yim22,fig6.cap,new,model partial_pressure '\\rho_{A0}' ,,,varying \rho_{A0} from 1 to 20 480 Pa,
+yim22,fig7.cap,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.01,,,,about
+yim22,fig7.cap,regression (a non-species field changed),model pulse_time 't_1' 2.0,,,,about
+yim22,fig7.cap,gone,model deposition_temperature 'T' 523.15,,,,
+yim22,fig7.cap,species changed,model partial_pressure 'p_{A0}' 10.0,model_reactant,,p_{A0} = 10 Pa,about; qualifiers (not species)
+yim22,fig7.cap,regression (a non-species field changed),model cycle_number 'N' 1.0,,,,about
+yim22,fig7.cap,gone,model molar_mass 'M_A' 0.1,model_reactant,,,
+yim22,fig7.cap,gone,model molecule_diameter 'd_A' 600.0,model_reactant,,,
+yim22,fig7.cap,regression (a non-species field changed),model partial_pressure 'p_I' 50.0,,,,about
+yim22,fig7.cap,gone,model molar_mass 'M_I' 0.028,,,,
+yim22,fig7.cap,gone,model molecule_diameter 'd_I' 374.0,,,,
+yim22,fig7.cap,gone,model film_density 'ρ' 3500.0,,,,
+yim22,fig7.cap,gone,model molar_mass 'M' 0.05,,,,
+yim22,fig7.cap,gone,model p_d 'P_d' 1e-05,,,,
+yim22,fig7.cap,regression (a non-species field changed),model saturation_density 'q' 4.0,,,,about
+yim22,fig7.cap,regression (a non-species field changed),model feature_width 'H' 0.5,,,,about
+yim22,fig7.cap,gone,model feature_extent 'W' 10.0,,,,
+yim22,fig7.cap,new,model deposition_temperature 'T' 250.0,,,T = 523.15 K,
+yim22,fig7.cap,new,model molar_mass 'M_A' 100.0,,,M_A = 0.1 kg mol-1,
+yim22,fig7.cap,new,model molecule_diameter 'd_A' 600.0,,,d_A = 6.0 \times 10^{-10} m,
+yim22,fig7.cap,new,model molar_mass 'M_I' 28.0,,,M_I = 0.028 kg mol-1,
+yim22,fig7.cap,new,model molecule_diameter 'd_I' 374.0,,,d_I = 3.74 \times 10^{-10} m,
+yim22,fig7.cap,new,model film_density '\\rho' 3.5,,,\rho = 3500 kg m-3,
+yim22,fig7.cap,new,model molar_mass 'M' 50.0,,,M = 0.050 kg mol-1,
+yim22,fig7.cap,new,model p_d 'P_d' 1e-05,,,P_d = 10^{-5} s-1,
+yim22,fig7.cap,new,model feature_extent 'W' 10000.0,,,W = 10 mm,
+yim22,tab1.r1c0,gone,definition partial_pressure 'p_{A0} (Pa)' ,,,,
+yim22,tab1.r1c0,new,definition partial_pressure 'p_{A0}' ,,model_reactant,p_{A0} (Pa),
+yim22,tab1.r1c1,species changed,model partial_pressure 'p_{A0}' 50.0,,model_reactant,50,
+yim22,tab1.r1c1,species changed,model partial_pressure 'p_{A0}' 100.0,,model_reactant,100,
+yim22,tab1.r1c1,species changed,model partial_pressure 'p_{A0}' 200.0,,model_reactant,200,
+yim22,tab1.r1c1,species changed,model partial_pressure 'p_{A0}' 400.0,,model_reactant,400,
+yim22,tab1.r1c1,species changed,model partial_pressure 'p_{A0}' 800.0,,model_reactant,800,
+yim22,tab1.r1c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 8.2,,,,kind
+yim22,tab1.r1c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,kind
+yim22,tab1.r1c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 6.5,,,,kind
+yim22,tab1.r1c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 5.0,,,,kind
+yim22,tab1.r1c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 3.5,,,,kind
+yim22,tab1.r2c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab1.r3c0,gone,definition molar_mass 'M_A (kg mol^-1)' ,,,,
+yim22,tab1.r3c0,new,definition molar_mass 'M_A' ,,model_reactant,M_A (kg mol^-1),
+yim22,tab1.r3c1,gone,model molar_mass 'M_A' 0.025,,,,
+yim22,tab1.r3c1,gone,model molar_mass 'M_A' 0.05,,,,
+yim22,tab1.r3c1,gone,model molar_mass 'M_A' 0.1,,,,
+yim22,tab1.r3c1,gone,model molar_mass 'M_A' 0.2,,,,
+yim22,tab1.r3c1,gone,model molar_mass 'M_A' 0.4,,,,
+yim22,tab1.r3c1,new,model molar_mass 'M_A' 0.025,,model_reactant,0.0250,
+yim22,tab1.r3c1,new,model molar_mass 'M_A' 0.05,,model_reactant,0.050,
+yim22,tab1.r3c1,new,model molar_mass 'M_A' 0.1,,model_reactant,0.100,
+yim22,tab1.r3c1,new,model molar_mass 'M_A' 0.2,,model_reactant,0.200,
+yim22,tab1.r3c1,new,model molar_mass 'M_A' 0.4,,model_reactant,0.400,
+yim22,tab1.r3c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 10.7,,,,kind
+yim22,tab1.r3c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 9.2,,,,kind
+yim22,tab1.r3c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,kind
+yim22,tab1.r3c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 5.9,,,,kind
+yim22,tab1.r3c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 4.5,,,,kind
+yim22,tab1.r4c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab1.r5c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab1.r6c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab1.r7c0,gone,definition initial_sticking_coefficient 'c (—)' ,,,,
+yim22,tab1.r7c0,new,definition initial_sticking_coefficient 'c' ,,,c (—),
+yim22,tab1.r7c1,same,model initial_sticking_coefficient 'c' 0.0001,,,,
+yim22,tab1.r7c1,same,model initial_sticking_coefficient 'c' 0.001,,,,
+yim22,tab1.r7c1,same,model initial_sticking_coefficient 'c' 0.01,,,,
+yim22,tab1.r7c1,same,model initial_sticking_coefficient 'c' 0.1,,,,
+yim22,tab1.r7c1,same,model initial_sticking_coefficient 'c' 1.0,,,,
+yim22,tab1.r7c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab1.r8c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 5.4,,,,kind
+yim22,tab1.r8c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 6.1,,,,kind
+yim22,tab1.r8c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 6.8,,,,kind
+yim22,tab1.r8c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,kind
+yim22,tab1.r8c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 8.3,,,,kind
+yim22,tab1.r9c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 45.2,,,,kind
+yim22,tab1.r9c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 12.9,,,,kind
+yim22,tab1.r9c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,kind
+yim22,tab1.r9c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 5.3,,,,kind
+yim22,tab1.r9c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 4.1,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 37.8,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 18.9,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 3.8,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 1.9,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 1.5,,,,kind
+yim22,tab1.r10c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 0.9,,,,kind
+yim22,tab1.r11c2,regression (a non-species field changed),model knudsen_number 'Effective Kn' 7.6,,,,about; kind; mentions
+yim22,tab3.r1c2,gone,model molar_mass 'M_A' 0.1,model_reactant,,,
+yim22,tab3.r1c2,new,model molar_mass 'M_A' 0.1,,model_reactant,0.1,
+yim22,tab3.r1c3,same,model initial_sticking_coefficient 'c' 0.01,,,,
+yim22,tab3.r6c2,gone,model molar_mass 'M_A' 0.025,model_reactant,,,
+yim22,tab3.r6c2,new,model molar_mass 'M_A' 0.025,,model_reactant,0.025,
+yim22,tab3.r7c2,gone,model molar_mass 'M_A' 0.05,model_reactant,,,
+yim22,tab3.r7c2,new,model molar_mass 'M_A' 0.05,,model_reactant,0.05,
+yim22,tab3.r9c2,gone,model molar_mass 'M_A' 0.2,model_reactant,,,
+yim22,tab3.r9c2,new,model molar_mass 'M_A' 0.2,,model_reactant,0.2,
+yim22,tab3.r10c2,gone,model molar_mass 'M_A' 0.4,model_reactant,,,
+yim22,tab3.r10c2,new,model molar_mass 'M_A' 0.4,,model_reactant,0.4,
+yim22,tab3.r11c3,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.0001,,,,mentions
+yim22,tab3.r12c3,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.001,,,,mentions
+yim22,tab3.r14c3,regression (a non-species field changed),model initial_sticking_coefficient 'c' 0.1,,,,mentions
+yim22,tab3.r15c3,regression (a non-species field changed),model initial_sticking_coefficient 'c' 1.0,,,,mentions
+yim22,tabu1.r1c0,same,definition initial_sticking_coefficient 'Sticking coefficient' ,,,,
+yim22,tabu1.r2c0,gone,definition initial_sticking_coefficient 'Sticking coefficient back-extracted with the slope method' ,,,,
+yim22,tabu1.r2c0,new,definition initial_sticking_coefficient 'Sticking coefficient back-extracted with the slope method^31' ,,,c_{\text{ext}},
+yim22,tabu1.r7c0,gone,definition molecule_diameter 'Hard-sphere diameter of molecule A' ,model_reactant,,,
+yim22,tabu1.r7c0,new,definition molecule_diameter 'Hard-sphere diameter of molecule A' ,,,d_A,
+yim22,tabu1.r8c0,gone,definition molecule_diameter 'Hard-sphere diameter of the inert gas molecule' ,,,,
+yim22,tabu1.r8c0,new,definition molecule_diameter 'Hard-sphere diameter of the inert gas molecule' ,,,d_t,
+yim22,tabu1.r16c0,gone,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant in the Ylilammi et al.18 model' ,,,,
+yim22,tabu1.r16c0,new,definition adsorption_equilibrium_constant 'Adsorption equilibrium constant in the Ylilammi et al.^18 model' ,,,K,
+yim22,tabu1.r17c0,same,definition knudsen_number 'Knudsen number' ,,,,
+yim22,tabu1.r20c0,gone,definition molar_mass 'Molar mass of the deposited film material' ,,,,
+yim22,tabu1.r20c0,new,definition molar_mass 'Molar mass of the deposited film material' ,,,M,
+yim22,tabu1.r21c0,gone,definition molar_mass 'Molar mass of Reactant A' ,model_reactant,,,
+yim22,tabu1.r21c0,new,definition molar_mass 'Molar mass of Reactant A' ,,,M_A,
+yim22,tabu1.r22c0,gone,definition molar_mass 'Molar mass of the inert gas I' ,,,,
+yim22,tabu1.r22c0,new,definition molar_mass 'Molar mass of the inert gas I' ,,,M_t,
+yim22,tabu1.r27c0,gone,definition partial_pressure 'Partial pressure of Reactant A' ,model_reactant,,,
+yim22,tabu1.r27c0,new,definition partial_pressure 'Partial pressure of Reactant A' ,,,p_A,
+yim22,tabu1.r28c0,gone,definition partial_pressure 'Initial partial pressure of Reactant A' ,model_reactant,,,
+yim22,tabu1.r28c0,new,definition partial_pressure 'Initial partial pressure of Reactant A' ,,,p_{\text{A0}},
+yim22,tabu1.r29c0,gone,definition partial_pressure 'Partial pressure of the inert gas I' ,,,,
+yim22,tabu1.r29c0,new,definition partial_pressure 'Partial pressure of the inert gas I' ,,,p_t,
+yim22,tabu1.r30c0,gone,definition partial_pressure 'Partial pressure of Reactant A at x_t' ,model_reactant,,,
+yim22,tabu1.r30c0,new,definition partial_pressure 'Partial pressure of Reactant A at x_t' ,,,p_{\text{At}},
+yim22,tabu2.r20c0,gone,definition mean_free_path 'Mean free path' ,,,,
+yim22,tabu2.r20c0,new,definition mean_free_path '\\lambda' ,,,\lambda,
+yim22,tabu2.r20c1,regression (a non-species field changed),definition mean_free_path 'Mean free path' ,,,,term
+wer21,s25.p6,gone,cited initial_sticking_coefficient 'sticking probability' 1.0,,,,
+wer21,s25.p12,species changed,model recombination_probability 'recombination coefficient' 0.0021,o_atom,,"The recombination coefficient was kept constant at the literature value of 0.0021,33",mentions
+wer21,s25.p12,species changed,cited recombination_probability 'recombination coefficient' ,o_atom,,within the range obtained by Arts et al.26 (between 0.01 and 0.001 on \text{Al}_2\text{O}_3),
+wer21,s25.p18,gone,model other 's_0' 1e-18,,,,
+wer21,s25.p18,regression (a non-species field changed),model molar_mass 'mass of atomic O' 16.0,o_atom,o_atom,,method; mentions
+wer21,s25.p18,regression (a non-species field changed),model deposition_temperature 'substrate temperature' 393.15,,,,method; mentions
+wer21,s25.p18,new,model other 'area per surface site' 1e-18,,,"$s_0 = 1 \times 10^{-18}$ m2, the area per surface site",

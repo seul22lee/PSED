@@ -1,0 +1,6 @@
+item,expected,result
+"yli18 p_B / M_B / d_B (s8.p3, fig2.cap, fig3.cap, fig5.cap)","n2 from the Sec. II nitrogen sentence or the 0.028 kg/mol caption, else empty",empty: no text of s8.p3 or fig2.cap names nitrogen (the code's lookup; the 2a table); the re-extraction left fig2.cap's three without species (n2 -> empty); it dropped s8.p3's three records and wrote fig5.cap's p_B as process_pressure (4a regressions)
+yli18 generic-model p_A0 = model_reactant,kept,"2a (code and table): backed by the definition tabu1.r25c0 ('Input partial pressure of reactant A'); the re-extraction wrote it without species (1b: the element does not name it), which 2a would refill from the definition at the next compile (not run: the unit stopped at 4a)"
+mat23 recipes,thermal / plasma by their own statements,"8 plasma (peald_*), 5 thermal (tald_*), each quoting its own caption (fig1.cap, fig2.cap, fig4.cap): s3a"
+zou23 recipes,hot_wire,"4 hot_wire, quote s4.p7 'Hot-wire (HW) assisted ALD (HWALD) is utilized ...': s3a"
+papers with no stated mode,"null, listed","all runs null: ela03, gao15, gor03, gre23, yim20, yli18; wer21's fig2 runs null, its fig9 runs plasma; hei24 and yim22 have no run"

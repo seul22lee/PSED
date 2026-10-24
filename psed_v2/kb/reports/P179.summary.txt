@@ -1,0 +1,28 @@
+P179: STOPPED at step 4a (a failure stops the unit). Calls: 22 fill + 43 re-extraction = 65 ($0.65, gemini-3.8-flash): 54 approved at
+the cost line, 11 more (a second fill) approved in chat after the first came back null for the wrong reason (my prompt). kb/compiled not
+recompiled (P178's output); 4b and 4c not run. The new record lines are in kb/records, nothing deleted (ontology/open_decisions.csv).
+
+0a. form_candidates.csv (1 row) and open_decisions.csv (3 rows): all included (1b; 1c; 1d twice), each with a table row it prevents.
+0b. check.py over the thirteen: 1979 problems in 47 groups (29 compile, 14 form, 4 expected); all left: no group's rows hold a wrong or
+    missing value a generic rule prevents (the zou23 figure points without over= state no averaging basis: filling one is a guess, R3).
+0c. Re-extraction set: N = 155 elements in 43 groups (278 model / definition / cited records of species-taking quantities, 118 with species).
+0d. 17 species values in use on symbol records, with their entries' definitions; model_reactant (36 records) stays.
+1.  ontology.yaml: the species qualifier's meaning; molar_mass and molecule_diameter take species; process_mode gains hot_wire ('hot-wire
+    ALD'); the process_mode transform removed (history round 0, decided_by user). Form version P179 (CODEBOOK carries the species rule
+    verbatim), form_pass0 version 2 (process_mode + process_mode_quote on runs, the quote required with a value). export --check 16/16
+    (check 16: 1a-1e).
+2a. The per-case table first (221 symbol records of the thirteen), then the code: compile.symbol_species equals the table on all 221
+    rows. Outcomes: no species 110, backed by the definition 47, from the definition 23, kept (own element names it) 17, corrected from
+    the definition 4 (art19 r: al2o3 / hfo2 / sio2 / tio2 -> o_atom, the definition's O atoms), cleared (no evidence) 20 (yli18 s8.p3 and
+    fig2.cap p_B / M_B / d_B, the tabI p_A0 / c of tma / ticl4 whose row names only the film, yim20 tabu2 M_A / p_A0, ela03 S, yim22
+    M_I / d_I). 2b: the one pass-1 process_mode about a pass-0 run (mat23 abs.g3) is dropped for the recipe field; the two legend
+    conditions of derived units stay. 2c: check.py --dir counts no cleared fact as a missing species. 2d: no compile group met the criterion.
+3a. Fill: mat23 8 plasma / 5 thermal (their captions), zou23 4 hot_wire (s4.p7), mat22 42 plasma, art19 8 plasma, wer21 4 plasma (fig9
+    runs) and 6 null; every run null in yli18, yim20, ela03, gor03, gre23, gao15; hei24 and yim22 have no run (no call). Quotes: all found.
+3b. 43 calls, every element answered, form failures 3 (yim20 2, yim22 1).
+4a. FAILED: of the old records of the 155 elements, 87 same, 52 species changed, 104 changed a non-species field (kind 36, qualifiers 28,
+    about 21, method 16, mentions 15, ...), 149 gone, 176 new (yim22 62 / 72). The re-extraction changes far more than species.
+4d. (no compile needed) yli18 p_B / M_B / d_B: empty (no text of s8.p3 or fig2.cap names nitrogen); the re-extraction dropped s8.p3's
+    three and wrote fig5.cap p_B as process_pressure. yli18 p_A0 = model_reactant by the pA0 definition (2a). mat23 thermal / plasma and
+    zou23 hot_wire by their own statements. Null: yli18, yim20, ela03, gor03, gre23, gao15.
+Note: the 3b prompts' CODEBOOK cited check.py line numbers two lines off (the 2c edit came after the export); content otherwise the same.
