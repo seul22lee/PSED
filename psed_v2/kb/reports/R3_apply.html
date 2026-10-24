@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset='utf-8'><title>R3_apply</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>R3_apply</h1>
+<h2>Acceptance</h2><p>psed_v2/kb/reports/R3_apply.acceptance.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 11 decisions, 14 rows: effect {&#x27;n/a&#x27;: 8, &#x27;no effect&#x27;: 1, &#x27;yes&#x27;: 5}
+A2: 3 promotions: {&#x27;disagree&#x27;: 1, &#x27;symbol (paper-local)&#x27;: 2}
+A3: 7 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 2}; pending candidates accounted 19/19
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: FAIL (1)
+FAIL A2 10.1021_acs.jpcc.9b08176:s5.p3 &#x27;spatial resolution&#x27; -&gt; probe_resolution: disagree (head nouns resolution / spot / size)
+</pre>
+<h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R3_apply.A1.csv</p>
+<table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
+<tr><td>elam_monte_carlo</td><td>add</td><td>elam monte carlo</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1021_cm0303080</td></tr>
+<tr><td>dose</td><td>reject</td><td>dose</td><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>material</td><td>reject</td><td>material</td><td></td><td></td><td></td><td></td><td>none</td><td>no effect</td><td>no row of this decision in the snapshot</td></tr>
+<tr><td>prisms</td><td>never -&gt; Equipment details and sample codes</td><td>prisms (any paper)</td><td>10.1116_6.0003182</td><td>s10.p2</td><td>quantity</td><td>prisms</td><td>never: Equipment details and sample codes (kept (never: prisms))</td><td>yes</td><td></td></tr>
+<tr><td>spatial_resolution</td><td>alias -&gt; probe_resolution</td><td>alias of probe_resolution: spatial resolution</td><td>10.1021_acs.jpcc.9b08176</td><td>s5.p3</td><td>quantity</td><td>spatial resolution</td><td>fact: probe_resolution (quantity: alias &#x27;spatial resolution&#x27;); fact art19:s5.p3#2 (type setting, quantity probe_resolution, parent art19:method:reflectometry)</td><td>yes</td><td></td></tr>
+<tr><td>t_hold</td><td>alias -&gt; pulse_time</td><td>alias of pulse_time: </td><td>10.1116_6.0003182</td><td>s9.p7</td><td>quantity</td><td>t_hold</td><td>fact: pulse_time (quantity: symbol &#x27;t_hold&#x27; of this paper); fact gre23:s9.p7#1 (type definition, quantity pulse_time, parent gre23)</td><td>yes</td><td></td></tr>
+<tr><td>t_hold</td><td>alias -&gt; pulse_time</td><td>alias of pulse_time: </td><td>10.1116_6.0003182</td><td>eq1</td><td>quantity</td><td>t_hold</td><td>fact: pulse_time (quantity: symbol &#x27;t_hold&#x27; of this paper); fact gre23:eq1#1 (type model, quantity pulse_time, parent gre23:recipe)</td><td>yes</td><td></td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>top_surfaces</td><td>reject</td><td>top surfaces</td><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td>unmapped (open)</td><td>n/a</td><td>reject writes nothing to ontology.yaml or never.csv (by design)</td></tr>
+<tr><td>heikkinen_porous_diffusion_reaction</td><td>add</td><td>heikkinen porous diffusion reaction</td><td>10.1039_d3cp05639b</td><td>abs.g1</td><td>model</td><td>diffusion–reaction model</td><td>fact: heikkinen_porous_diffusion_reaction (model: symbol &#x27;diffusion–reaction model&#x27; of this paper); simulation sim_dr -&gt; model heikkinen_porous_diffusion_reaction</td><td>yes</td><td></td></tr>
+<tr><td>gordon_model</td><td>alias -&gt; gordon_plug_flow</td><td>alias of gordon_plug_flow: Gordon model</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1063_1.5028178</td></tr>
+<tr><td>monte_carlo_computer_simulation</td><td>alias -&gt; elam_monte_carlo</td><td>alias of elam_monte_carlo: Monte Carlo computer simulation</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1021_cm0303080</td></tr>
+<tr><td>yilammi_et_al_diffusion_reaction_model</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>alias of ylilammi_diffusion_reaction: Yilammi et al. diffusion–reaction model</td><td></td><td></td><td></td><td></td><td>none</td><td>n/a</td><td>no compiled output for 10.1039_d0cp03358h</td></tr>
+</table>
+<h2>A2 promotions in the round&#x27;s papers, head-noun check</h2><p>psed_v2/kb/reports/R3_apply.A2.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>printed</th><th>record_meaning</th><th>lookup</th><th>entry</th><th>entry_name</th><th>entry_definition</th><th>head_record</th><th>head_entry_name</th><th>head_entry_definition</th><th>verdict</th><th>symbol</th><th>outcome</th></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>s5.p3</td><td>quantity</td><td>spatial resolution</td><td>spatial resolution of 5 µm</td><td>quantity: alias &#x27;spatial resolution&#x27;</td><td>probe_resolution</td><td>probe spot</td><td>The lateral size of a measurement probe: the reflectometer spot (yim20) or the EDS line width (gre23) (an instrument setting, Sec. 4).</td><td>resolution</td><td>spot</td><td>size</td><td>disagree</td><td></td><td>fact art19:s5.p3#2 (type setting, quantity probe_resolution, parent art19:method:reflectometry)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p7</td><td>quantity</td><td>t_hold</td><td>our hold times, t_hold</td><td>quantity: symbol &#x27;t_hold&#x27; of this paper</td><td>pulse_time</td><td>pulse</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>time</td><td>pulse</td><td>duration</td><td>symbol (paper-local)</td><td>t_hold</td><td>fact gre23:s9.p7#1 (type definition, quantity pulse_time, parent gre23)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>eq1</td><td>quantity</td><td>t_hold</td><td>our hold times, t_hold, are determined by t_hold = L_pore^2 / (D \gamma)</td><td>quantity: symbol &#x27;t_hold&#x27; of this paper</td><td>pulse_time</td><td>pulse</td><td>Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.</td><td>time</td><td>pulse</td><td>duration</td><td>symbol (paper-local)</td><td>t_hold</td><td>fact gre23:eq1#1 (type model, quantity pulse_time, parent gre23:recipe)</td></tr>
+</table>
+<h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R3_apply.A3.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>tab1.r0c0</td><td>material</td><td>material</td><td></td><td>material</td><td>other</td><td></td><td>the value row of the categorical material: propose makes no candidate of it (P168)</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>eq6</td><td>model</td><td>eq 6</td><td></td><td>eq 6</td><td>pending candidate eq_6</td><td>eq_6</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p5</td><td>quantity</td><td>total isolated deposition volume</td><td>l</td><td>total isolated deposition volume</td><td>pending candidate total_isolated_deposition_volume</td><td>total_isolated_deposition_volume</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td></td><td>dose</td><td>other</td><td>dose</td><td>candidate dose decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+</table>
+<h2>A3 pending candidates of the round&#x27;s papers</h2><p>psed_v2/kb/reports/R3_apply.A3_pending.csv</p>
+<table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
+<tr><td>bent</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>displacement</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>distance_between_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>distance_between_rows_of_pillars</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>pillar_diameter</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>tilde_xi</td><td>1</td><td>10.1039_d0cp03358h</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d0cp03358h (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_charge_density</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_electrolyte</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>anodization_conditions_potential</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>excess_over_the_saturation_dose</td><td>2</td><td>10.1002_cvde.200390005</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1002_cvde.200390005 (its paper is not compiled)</td></tr>
+<tr><td>integrated_coverage</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>normalized_penetration_depth_for_sphere</td><td>2</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
+<tr><td>shape_factor</td><td>2</td><td>10.1039_d3cp05639b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d3cp05639b (its paper is not compiled)</td></tr>
+<tr><td>slope_of_integrated_zno_coverage</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>surface_area_roughness_factor</td><td>2</td><td>10.1021_cm0303080</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1021_cm0303080 (its paper is not compiled)</td></tr>
+<tr><td>diffusion_model</td><td>3</td><td>10.1063_1.5028178</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1063_1.5028178 (its paper is not compiled)</td></tr>
+<tr><td>eq_6</td><td>3</td><td>10.1021_acs.jpcc.9b08176</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+<tr><td>kinetic_model</td><td>3</td><td>10.1002_cvde.200390005</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1002_cvde.200390005 (its paper is not compiled)</td></tr>
+<tr><td>total_isolated_deposition_volume</td><td>3</td><td>10.1116_6.0003182</td><td>1</td><td>1</td><td>yes</td><td></td></tr>
+</table>
+<h2>Snapshot: every row of the round before apply</h2><p>psed_v2/kb/reports/R3_apply.decision_rows.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>candidate</th><th>decision</th></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>s5.p3</td><td>quantity</td><td>spatial resolution</td><td>µm</td><td>spatial_resolution</td><td>alias</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>eq6</td><td>model</td><td>eq 6</td><td></td><td>eq_6</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p5</td><td>quantity</td><td>total isolated deposition volume</td><td>l</td><td>total_isolated_deposition_volume</td><td></td></tr>
+<tr><td>10.1116_6.0003182</td><td>s9.p7</td><td>quantity</td><td>t_hold</td><td></td><td>t_hold</td><td>alias</td></tr>
+<tr><td>10.1116_6.0003182</td><td>eq1</td><td>quantity</td><td>t_hold</td><td></td><td>t_hold</td><td>alias</td></tr>
+<tr><td>10.1116_6.0003182</td><td>s10.p2</td><td>quantity</td><td>prisms</td><td></td><td>prisms</td><td>never</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td></td><td>top_surfaces</td><td>reject</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td></td><td>top_surfaces</td><td>reject</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td></td><td>top_surfaces</td><td>reject</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td></td><td>dose</td><td>reject</td></tr>
+<tr><td>10.1039_d3cp05639b</td><td>abs.g1</td><td>model</td><td>diffusion–reaction model</td><td></td><td>heikkinen_porous_diffusion_reaction</td><td>accept</td></tr>
+</table>
+</body></html>

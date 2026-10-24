@@ -1,9 +1,12 @@
 input: 15 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
+a0: s9.p7: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
+a0: eq1: quantity 't_hold' -> pulse_time (quantity: symbol 't_hold' of this paper)
 a: eq1: variables_unmapped 't_hold' -> 'other'
 a: eq1: variables_unmapped 'L_pore' -> 'other'
 a: eq1: variables_unmapped '\\gamma' -> 'other'
 a: eq2: variables_unmapped '\\nu' -> 'other'
 a: eq2: variables_unmapped 'E_des' -> 'other'
+a: eq1: variable 't_hold' -> pulse_time (C5, from the paper's definition)
 g: s9.p9: mention_unmatched ['160 °C']
 g: s12.p2: mention_unmatched ['Fig. 2']
 g: s12.x1: mention_unmatched ['Figure 3(a)']
@@ -45,11 +48,11 @@ j: caveats (query.caveats_of): 7, linked to facts 3, to nodes 0; facts reached t
 j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 1
 step input: {'records': 200}
-step a0: {'quantity other: never.csv word': 1}
-step a: {'variables_unmapped (set to null)': 5, 'schema:required': 3, 'kept': 197}
+step a0: {'quantity promoted (quantity: symbol)': 2, 'quantity other: never.csv word': 2}
+step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'schema:required': 3, 'kept': 197}
 step a_fields: {'qualifiers': 3}
 step b: {'kept': 197}
-step c: {'quantity_other (kept)': 8, 'quantity_other never (kept)': 1, 'kept': 197}
+step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 197}
 step d: {'quote_not_found': 13, 'quote_noncontiguous (kept)': 1, 'kept': 184}
 step e: {'kept': 184}
 step f: {'species_resolved': 8, 'kept': 184}
@@ -64,8 +67,8 @@ step k: {'statement from the record': 162, 'statement_copies_text (reported by c
 diff against the gold:
   observation    89   58   20  0.34  0.22
   setting        89   40   21  0.53  0.24
-  cited          57    3    3  1.00  0.05
   claim          57   17   11  0.65  0.19
+  cited          57    3    3  1.00  0.05
   caveat         53    7    7  1.00  0.13
   activity       41   33   29  0.88  0.71
   derived        31   39   21  0.54  0.68

@@ -174,6 +174,7 @@ a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name '
 a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
 a: s8.p3: variables_unmapped '\\zeta_{\\theta=1/2, \\text{sphere}}' -> 'other'
 a: s8.p3: variables_unmapped 'R' -> 'other'
+h: simulation sim_dr ('diffusion–reaction model') -> model heikkinen_porous_diffusion_reaction (symbol 'diffusion–reaction model' of this paper)
 h: tree from pass 0: run 0, simulation 1, specimen 0, model_run 160, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s10.p3 into s5.p2;s10.p3 (deposition_temperature 150)
 i: merged fig2b into fig2a;fig2b (other 2)
@@ -242,7 +243,7 @@ step c: {'quantity_other (kept)': 19, 'quantity_other never (kept)': 8, "quantit
 step d: {'quote_not_found': 10, 'derived condition (figures.json, no quote check)': 178, 'kept': 384}
 step e: {'unit_unresolved (kept as printed)': 3, 'kept': 384}
 step f: {'species_resolved': 23, 'kept': 384}
-step h: {'simulation name unresolved (unmapped, field model)': 1, 'place: claim -> paper': 36, 'place: cited -> paper': 3, 'place: definition -> paper': 55, 'place: model about a simulation -> simulation': 40, 'place: caveat -> paper': 2, 'place: setting about a simulation -> simulation': 12, 'place: observation about a model run -> model run': 4, 'place: model about a model run -> model run': 12, 'place: setting about a model run sharing its simulation -> model run': 220}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 36, 'place: cited -> paper': 3, 'place: definition -> paper': 55, 'place: model about a simulation -> simulation': 40, 'place: caveat -> paper': 2, 'place: setting about a simulation -> simulation': 12, 'place: observation about a model run -> model run': 4, 'place: model about a model run -> model run': 12, 'place: setting about a model run sharing its simulation -> model run': 220}
 step m: {'statement filled from the quote': 328, 'label_as_printed filled with the quantity id': 13, 'links resolved': 33}
 step 1c: {'curve -> model': 163, 'data role simulated': 163}
 step i: {'merged': 54, 'kept': 493}
@@ -257,9 +258,9 @@ diff against the gold:
   claim          20   36   15  0.42  0.75
   derived        16    0    0     -  0.00
   caveat          7    2    2  1.00  0.29
-  activity        1    2    0  0.00  0.00
   identity        1    0    0     -  0.00
   paper           1    1    0  0.00  0.00
+  activity        1    2    0  0.00  0.00
   observation     0    4    0  0.00     -
   cited           0    3    0  0.00     -
 gold definitions with an eq* element in evidence: 0/35
