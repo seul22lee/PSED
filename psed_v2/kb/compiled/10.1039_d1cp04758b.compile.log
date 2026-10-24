@@ -3,10 +3,6 @@ input: 8 units derived from curves (P161): 10.1039_d1cp04758b:fig5e:c1, 10.1039_
 a0: tab3.r1c0: quantity 'ALD process temperature' -> deposition_temperature (quantity: alias 'ALD process temperature')
 a0: tab3.r6c1: quantity 'Molar mass of Reactant A' -> molar_mass (quantity: alias 'molar mass of reactant A')
 a0: tab3.r7c0: quantity 'Sticking coefficient' -> initial_sticking_coefficient (quantity: alias 'sticking coefficient')
-a0: fig5.cap: legend label 'H = 0.1 to 4.0 µm' parsed to nothing
-a0: fig5.cap: legend label 'N = 5 to 500' parsed to nothing
-a0: fig5.cap: legend label 'H = 0.1 to 4.0 µm' parsed to nothing
-a0: fig5.cap: legend label 'N = 5 to 500' parsed to nothing
 a0: fig7.cap: legend label 'Model A' parsed to nothing
 a0: fig7.cap: legend label 'Model B' parsed to nothing
 a0: fig7.cap: legend label 'Model A' parsed to nothing
@@ -110,12 +106,12 @@ j: derived over 80 entities: 72 rows; not derived: {'no fact for H': 153, 'no fa
 j: caveats (query.caveats_of): 14, linked to facts 9, to nodes 0; facts reached through query.caveats_for: 10
 j: claim nodes (query.claim_nodes): 25 nodes for 34 claims; claims without a full triple (query.node_of empty): 7
 j: comparisons from figures.json (1c): 1
-step input: {'records': 485, 'unit derived (derived: curve_per_unit, model_run)': 8, 'condition of a derived unit (value)': 4, 'condition of a derived unit (name)': 8}
-step a0: {'quantity other: never.csv word': 35, 'quantity other: never.csv symbol': 6, 'quantity other naming a model entry (kept)': 6, 'quantity promoted (quantity: alias)': 3, 'derived legend label parsed to nothing (other)': 8}
+step input: {'records': 485, 'unit derived (derived: curve_per_unit, model_run)': 8, 'condition of a derived unit (value)': 8, 'condition of a derived unit (name)': 4}
+step a0: {'quantity other: never.csv word': 35, 'quantity other: never.csv symbol': 6, 'quantity other naming a model entry (kept)': 6, 'quantity promoted (quantity: alias)': 3, 'derived legend label parsed to nothing (other)': 4}
 step a: {'variables_unmapped (set to null)': 12, 'variable filled from a definition (C5)': 3, 'schema:type': 1, 'schema:enum': 1, 'kept': 495}
 step a_fields: {'label_as_printed': 1, 'value_text': 1}
 step b: {'model_with_value (kept)': 226, 'kept': 495}
-step c: {'quantity_other never (kept)': 41, 'quantity_other (kept)': 24, 'kept': 495}
+step c: {'quantity_other never (kept)': 41, 'quantity_other (kept)': 20, "quantity_other of a derived value (the panel's row written once)": 4, 'kept': 495}
 step d: {'quote_not_found': 41, 'derived condition (figures.json, no quote check)': 12, 'kept': 454}
 step e: {'unit_unresolved (kept as printed)': 13, 'kept': 454}
 step f: {'kept': 454}
@@ -127,7 +123,7 @@ step i: {'merged': 71, 'definition merged': 5, 'kept': 476}
 step n: {'comparison replicate': 1}
 step j: {'derived cycle_time': 72}
 step k: {'statement from the record': 378, 'statement_copies_text (reported by check)': 41, 'statement assembled': 170}
-diff against the gold (type, gold, compiled, matched, precision, recall):
+diff against the gold:
   model         215  281  148  0.53  0.69
   derived        84   97   24  0.25  0.29
   claim          77   34   19  0.56  0.25

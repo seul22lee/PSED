@@ -1,0 +1,731 @@
+diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index 4519b3f..706bfc4 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -116,6 +116,18 @@ psed_v2/
+   the figures again before it recompiles.
+ - grow.py apply is atomic (P173): it runs in a sandbox copy (P174: under psed_v2/kb/tmp/, git-ignored by psed_v2/.gitignore) and moves its
+   files into place only after export --check and every round's audit pass; a failure writes nothing and prints what would have been written.
++- Four patch rules removed (P175, user): a derived unit's role comes from the paper's unit list only (runs and a simulation both, or
++  neither: role null, flagged "role unresolved"; such a unit has no row and its data is left out); candidates merge only on identical
++  record keys (no label-prefix merge); derived units are never merged by condition vector (two with identical data refs are one).
++- apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
++  analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
++  (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
++  history.csv carries the same columns.
++- Multi-part labels (P175, user): a series axis splits at ' and ' / ',' into quantity parts, a legend at ',' (or ' - ' / ' – ' when that
++  gives the axis's count) into value parts, paired by order, each resolved on the one path; '<symbol> = <a> to <b>' is a range
++  (value_min / value_max); an axis naming a qualifier key (element, species, step) makes its legend parts that qualifier's values.
++- A3 (P175, user): an open row whose label is a paper-local symbol of other papers only, or an entry's id / name / label that is no alias,
++  is new since apply (carried into the next round), not a failure.
+ - A unit is done when its report carries the gold row comparison.
+ - Models are pinned by name; the cost is stated before any provider call.
+ 
+diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index e6dd0cb..48bc0a9 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -139,7 +139,6 @@ for _q, _vs in VALUES.items():
+         WORDS[f"value:{_q}"].setdefault(C.X.norm_label(_t), {}).setdefault(_v, f"{_how} '{_t}'")
+     SYMBOLS[f"value:{_q}"] = {}
+ NEVER, _, NEVER_SYMBOLS = C.X.never_index([dict(id=i, **e) for i, e in LIVE.items()])   # ontology/never.csv: words (any paper), symbols (their paper)
+-DATA_ROLE = {"simulated": "simulated", "read_from_figure": "measured"}          # P161: figures.json kind (P87) -> the pass-0 data role
+ UNIT_LAYOUTS = ("curve_per_unit", "point_per_unit")
+ LEGEND_NUMBER = re.compile(r"[-+−]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+−]?\d+)?(?:\s*(?:×|x|\\times)\s*10\s*(?:\^\s*\{?\s*([-+−]?\d+)\s*\}?|([⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+)))?")
+ SUPERSCRIPT = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺", "0123456789-+")
+@@ -208,31 +207,87 @@ def legend_parts(label):
+     return [p.strip() for p in parts + [cur] if p.strip()]
+ 
+ 
++AXIS_SPLIT = re.compile(r"\s+and\s+|\s*,\s*")                                 # P175: the parts of a two-quantity axis label
++LEGEND_DASH = re.compile(r"\s+[-–]\s+")                                         # P175: ' - ' / ' – ' between the values of a legend label
++RANGE = re.compile(r"(.+?)\s*=\s*([-+−]?(?:\d+\.?\d*|\.\d+))\s*to\s*([-+−]?(?:\d+\.?\d*|\.\d+))\s*(.*)")
++QUALIFIER_AXES = ("element", "species", "step")                                 # P175 (user): an axis naming one of these qualifiers
++
++
++def axis_parts(axis):
++    """P175 (user): an axis label's quantity parts, split at ' and ' and at top-level commas ('power and pulse time' -> power, pulse time)."""
++    return [x.strip() for x in AXIS_SPLIT.split(axis or "") if x.strip()]
++
++
++def qualifier_key(axis):
++    """P175 (user): the qualifier key an axis label names whole (element, species, step), else ''."""
++    k = C.X.norm_label(axis or "")
++    return k if k in QUALIFIER_AXES else ""
++
++
++def qualifier_value(pid, key, part):
++    """P175: a legend part as a value of the qualifier key: an element symbol (element), a species id of lists.QUALIFIERS (species, via the
++    species vocab), a step of lists.QUALIFIERS (step); else ''."""
++    name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip()
++    if key == "element":
++        return name if re.fullmatch(r"[A-Z][a-z]?", name) else ""
++    if key == "species":
++        hit = vocab_hits(pid, "species", name)
++        return next(iter(hit)) if len(hit) == 1 and next(iter(hit)) in (L.QUALIFIERS.get("species") or set()) else ""
++    return name if name in (L.QUALIFIERS.get(key) or set()) else ""
++
++
+ def legend_conditions(pid, label, axis):
+-    """P163 rule 1: the conditions a legend label gives a derived unit, one per part (legend_parts). '<symbol> = <number> [unit]' (or
+-    '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits, as
+-    step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
++    """P163 rule 1: the conditions a legend label gives a derived unit, one per part (legend_parts: top-level commas). '<symbol> = <number>
++    [unit]' (or '<name>: <number> [unit]') and '<number> [unit]' are a value: its quantity is the panel's series_axis label resolved (vocab_hits,
++    as step a0 resolves it), for a part's own symbol or name first when the label has several parts or the axis does not resolve; unresolved,
+     the value stays an other condition carrying that label (the axis label when there is one; compile writes its unmapped row once per
+     panel). A bare name is a value: on a material / reactant axis (the axis label resolves to material, substrate, reactant_A or
+     reactant_B) a species name of that kind (P166: art19 'SiO_{2}' -> material sio2); else a structure or categorical value (vocab_hits on
+-    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. Returns [dict(kind
+-    'value' | 'name' | 'species', key: the record's label_as_printed (a species: its value_text as printed), value, unit, quantity: the id
+-    the lookup gives, else other, how)]."""
++    the name, a trailing bracket dropped). A part that is none of these is an other condition as before, flagged. P175 (user): an axis label
++    of two or more parts (axis_parts: ' and ', ',') pairs with the legend's parts by order when their counts match (the legend split at
++    ' - ' / ' – ' when its commas do not give that count); a paired part reads its axis part as the axis. '<symbol> = <a> to <b> [unit]' is a
++    range: value_min and value_max of the symbol's quantity. On an axis that names a qualifier key (element, species, step) every part is a
++    value of that qualifier (kind 'qualifier': C, Cl, O -> element), never a condition. Returns [dict(kind 'value' | 'name' | 'species' |
++    'qualifier', key: the record's label_as_printed (a species: its value_text as printed), value (value_min, value_max), unit, quantity: the
++    id the lookup gives, else other, how)]."""
+     parts = legend_parts(label)
+-    ax = vocab_hits(pid, "quantity", axis) if axis else {}
+-    axis_q = next(iter(ax)) if len(ax) == 1 else ""                              # P166: a material / reactant axis reads species names
++    aparts = axis_parts(axis)
++    if len(aparts) >= 2 and len(parts) != len(aparts):
++        dash = [x.strip() for x in LEGEND_DASH.split(label) if x.strip()]
++        parts = dash if len(dash) == len(aparts) else parts
++    paired = len(aparts) >= 2 and len(parts) == len(aparts)
++    qk = qualifier_key(axis)
+     out = []
+-    for part in parts:
++    for n, part in enumerate(parts):
++        ax_ = aparts[n] if paired else axis                                      # P175: a paired part's own axis part
++        if qk:
++            v = qualifier_value(pid, qk, part)
++            out.append(dict(kind="qualifier", key=part, qualifier=qk, value_text=v, quantity="",
++                            how=f"axis '{axis}' names the qualifier {qk}: {qk}={v}" if v else f"axis '{axis}' names the qualifier {qk}; '{part}' is none of its values",
++                            **({} if v else dict(flag="legend part no value of the axis's qualifier"))))
++            continue
++        ax = vocab_hits(pid, "quantity", ax_) if ax_ else {}
++        axis_q = next(iter(ax)) if len(ax) == 1 else ""                          # P166: a material / reactant axis reads species names
++        rg = RANGE.fullmatch(part)
++        if rg and (not rg.group(4).strip() or unit_symbol(rg.group(4).strip()) is not None):   # P175: '<symbol> = <a> to <b> [unit]'
++            sym = rg.group(1).strip()
++            hit = vocab_hits(pid, "quantity", sym)
++            q, how = next(iter(hit.items())) if len(hit) == 1 else ("other", f"unresolved: other condition '{sym}'")
++            lo, hi = (float(x.replace("−", "-")) for x in (rg.group(2), rg.group(3)))
++            out.append(dict(kind="value", key=sym, value=None, value_min=lo, value_max=hi, unit=rg.group(4).strip(), quantity=q,
++                            how=f"range of '{sym}' -> {q} ({how})" if len(hit) == 1 else how))
++            continue
+         m = re.fullmatch(r"(.+?)\s*[=:]\s*(.+)", part)
+         sym, num = (m.group(1).strip(), legend_number(m.group(2))) if m and legend_number(m.group(2)) else ("", legend_number(part))
+         if num:
+-            keys = ([sym] if sym else []) + ([axis] if axis and (len(parts) == 1 or not sym) else [])
++            one = len(parts) == 1 or paired
++            keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
+             keys = keys[::-1] if len(parts) == 1 else keys                    # one part: the axis label first (the rule), then its symbol
+             hit = next(((k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1), None)
+-            key = hit[0] if hit else (axis if axis and (len(parts) == 1 or not sym) else sym or part)
++            key = hit[0] if hit else (ax_ if ax_ and (one or not sym) else sym or part)
+             q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'"))
+             out.append(dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
+-                            how=how if hit is None else f"{'series_axis' if key == axis else 'symbol / name'} '{key}' -> {q} ({how})"))
++                            how=how if hit is None else f"{'series_axis' if key == ax_ else 'symbol / name'} '{key}' -> {q} ({how})"))
+             continue
+         name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
+         sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
+@@ -302,13 +357,13 @@ def panel_items(pid, obj):
+ def curve_units(pid, obj):
+     """P161 step 1, between pass 0 and pass 1 (no call): one unit per item of panel_items() that no pass-0 unit's data refs hold. id
+     <pid>:<panel>:<curve id>. Role (P162 rule 1) from the paper's pass-0 units: a simulation and no run -> model_run, a run and no
+-    simulation -> run, both (or neither) -> the figures.json kind (DATA_ROLE), flagged "role from figure kind"; the data role follows
+-    the role unless taken from the kind. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent
+-    unresolved". introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
+-    ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel's series_axis; origin
+-    "derived: <layout>". P166: no unit in a panel whose legend names methods (method_panels). P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
+-    quantity, value and unit) are one unit (merge_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS)
+-    and by pass0_paper.consistency."""
++    simulation -> run; P175 (user): both, or neither -> role null, flagged "role unresolved" (the figure stage's kind decides no role),
++    its data role null. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent unresolved".
++    introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve ref with its
++    role; conditions (P163 rule 1, P175): legend_conditions() of the legend label against the panel's series_axis; origin "derived:
++    <layout>". P166: no unit in a panel whose legend names methods (method_panels). P175 (user): the units stay as derived, two with
++    identical data refs are one (dedupe_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS) and by
++    pass0_paper.consistency."""
+     obj = obj if isinstance(obj, dict) else {}
+     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
+     sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
+@@ -324,53 +379,34 @@ def curve_units(pid, obj):
+             c = it["curve"]
+             if it["held"]:
+                 continue
+-            kind_role = DATA_ROLE.get(c.get("data_kind") if it["cell"] else c.get("kind"), "measured")
+-            role = by_list or ("model_run" if kind_role == "simulated" else "run")
+-            drole = kind_role if not by_list else "simulated" if role == "model_run" else "measured"
+-            par = sims if role == "model_run" else runs
++            role = by_list                                                     # P175: None when the unit list does not decide
++            drole = {"model_run": "simulated", "run": "measured"}.get(role)
++            par = sims if role == "model_run" else runs if role == "run" else []
+             label = ((c.get("label") or c.get("value_text") or "") if it["cell"] else c.get("series", {}).get("label_raw") or "").strip()
+             cap = f"fig{c['figure']}.cap"
+             conds = legend_conditions(pid, label, axes.get(panel, "")) if label else []
+-            flags = ([] if by_list else ["role from figure kind"]) + ([] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) \
++            flags = (["role unresolved"] if not role else [] if len(par) == 1 else ["parent unresolved"]) + ([] if label else ["no legend label"]) \
+                 + ([] if cap in ids else ["no caption element"]) + sorted({x["flag"] for x in conds if x.get("flag")})
+             out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
+                             structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
+                             data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
+                             conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"], y=(c.get("quantity") if it["cell"] else c.get("y", {}).get("quantity")) or "",
+-                            role_from="unit list" if by_list else "figure kind", flag="; ".join(flags), aliases=[]))
+-    return merge_units(out)
+-
+-
+-def condition_vector(u):
+-    """P164: a derived unit's conditions as a sorted tuple of (quantity, or other:<label>; value or value text; unit)."""
+-    return tuple(sorted((c["quantity"] if c["quantity"] != "other" else f"other:{c['key']}", f"{c['value']:.6g}" if isinstance(c.get("value"), float) else str(c.get("value_text", "")),
+-                         c.get("unit") or "") for c in u["conditions"]))
++                            flag="; ".join(flags), aliases=[]))
++    return dedupe_units(out)
+ 
+ 
+-def merge_units(units):
+-    """P164 fix 3 (user): derived units with the same parent and role and an equal, non-empty condition vector are one unit: the first
+-    keeps its id and takes the others' data refs and captions; their ids become its aliases (compile maps them to it). One curve per y
+-    quantity: when two units of a group show the same y quantity (two runs a vector does not tell apart, such as a sphere and a slab panel
+-    with the same legend), the group stays split, every unit marked. Returns the units left, the merged ones dropped."""
+-    groups = collections.defaultdict(list)
++def dedupe_units(units):
++    """P175 (user): the derived units stay as derived; two with identical data refs are one: the first keeps its id, the others' ids become
++    its aliases (compile maps them to it)."""
++    first, out = {}, []
+     for u in units:
+-        if u["conditions"]:
+-            groups[(u["parent"], u["role"], condition_vector(u))].append(u)
+-    for us in groups.values():
+-        if len(us) < 2:
+-            continue
+-        if len({u["y"] for u in us}) < len(us):
+-            for u in us:
+-                u["merge"] = f"split: {len(us)} units share the vector, {len(us) - len({x['y'] for x in us})} with a y quantity already in the group"
++        k = tuple(sorted(d["id"] for d in u["data"]))
++        if k in first:
++            first[k]["aliases"] += [u["id"]] + u["aliases"]
+             continue
+-        head = us[0]
+-        for u in us[1:]:
+-            head["data"] += u["data"]
+-            head["introduced_in"] += [e for e in u["introduced_in"] if e not in head["introduced_in"]]
+-            head["aliases"] += [u["id"]] + u["aliases"]
+-            u["merged_into"] = head["id"]
+-        head["merge"] = f"merged: {head['id']} + " + ", ".join(u["id"] for u in us[1:])
+-    return [u for u in units if not u.get("merged_into")]
++        first[k] = u
++        out.append(u)
++    return out
+ 
+ 
+ class Run:
+@@ -445,8 +481,16 @@ class Run:
+             self.count("input", f"unit derived ({u['origin']}, {u['role']})")
+             dkind = "model_input" if u["role"] == "model_run" else "stated"
+             for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values, resolved by step a0
++                if not u["role"]:                                               # P175: a unit of role null has no row, its legend no setting
++                    self.count("input", "condition of a derived unit of role null (no row)")
++                    continue
++                if c["kind"] == "qualifier":                                    # P175: a qualifier value qualifies the unit's data (figures())
++                    self.count("input", "legend qualifier of a derived unit (on its data)")
++                    continue
+                 rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])
+-                if c["kind"] == "value":
++                if c["kind"] == "value" and c.get("value_min") is not None:     # P175: '<symbol> = <a> to <b>'
++                    rec.update(value_min=c["value_min"], value_max=c["value_max"], unit=c["unit"] or None, kind=dkind)
++                elif c["kind"] == "value":
+                     rec.update(value=c["value"], unit=c["unit"] or None, kind=dkind)
+                 if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
+                     rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
+@@ -820,8 +864,11 @@ class Run:
+             rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
+                             parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
+                             statement=f"model run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
+-        for it in items:                                                        # P164: a merged derived unit's other ids name its row
+-            for al in it.get("aliases") or []:
++        for it in items:
++            if it.get("origin") and not it.get("role"):                         # P175: no row; the data it holds is left out (figures())
++                self.count("h", "derived unit of role null (role unresolved: no row)")
++        for it in items:                                                        # P175: a deduplicated derived unit's other ids name its row
++            for al in it.get("aliases") or [] if it["id"] in self.node else []:
+                 self.node.setdefault(al, self.node[it["id"]])
+         self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "model_run", "series", "cited_work"))
+                   + "; identity rows: none (pass 0 carries no identity)")
+@@ -941,15 +988,16 @@ class Run:
+                 f["definition_note"] = (item.get("uncertainty") or {}).get("note", "") or "figure-stage flags"
+                 self.count("1c", "data of a flagged panel (rule verdict)")
+ 
+-        def result(cu, parent, typ):
++        def result(cu, parent, typ, unit):
+             y = cu["y"]
+             if y.get("quantity") not in L.QUANTITIES:
+                 self.count("1c", "curve y quantity not an id"); return
+-            facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"],
++            qual = [f"{c['qualifier']}={c['value_text']}" for c in self.p0.get(unit, {}).get("conditions") or [] if c.get("kind") == "qualifier" and c.get("value_text")]
++            facts.append(row(type=typ, quantity=y["quantity"], label_as_printed=y.get("label_raw", "") or y["quantity"], qualifiers=";".join(qual),   # P175: the legend's qualifier
+                              data_kind="simulated" if typ == "model" else "read_from_figure", mentions=cu.get("series", {}).get("label_raw", ""),
+                              evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent, points_ref=cu["id"]))
+             flagged(facts[-1], cu)
+-            self.count("1c", f"curve -> {typ}")
++            self.count("1c", f"curve -> {typ}" + (" (legend qualifier)" if qual else ""))
+         for inv in Fj.get("inventory", []):                                     # P174 (user): a figure's label the one path left other is an
+             ev = els(inv["figure"], inv.get("panel", ""))                       # unmapped row (field axis) like any other label; a resolved
+             for a in inv.get("labels") or []:                                   # axis whose printed unit units.yaml lacks, a unit row
+@@ -976,9 +1024,9 @@ class Run:
+             if role not in ("model_run", "specimen", "run"):
+                 self.count("1c", f"curve named by a {role} (left out)"); continue
+             if dr == "measured":
+-                result(cu, "@meas:" + nid, "observation")
++                result(cu, "@meas:" + nid, "observation", own[0])
+             else:
+-                result(cu, nid, "model")
++                result(cu, nid, "model", own[0])
+                 if dr == "fitted":
+                     facts[-1]["data_kind"] = "computed_by_authors"
+             self.count("1c", f"data role {dr}")
+diff --git a/psed_v2/kb/extract/pass1_elements.py b/psed_v2/kb/extract/pass1_elements.py
+index 95c42ff..bd539fb 100644
+--- a/psed_v2/kb/extract/pass1_elements.py
++++ b/psed_v2/kb/extract/pass1_elements.py
+@@ -275,8 +275,8 @@ def units_block(pid):
+         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
+     obj = C.loads_json(p0[-1]["response"])
+     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
+-    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role')}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
+-    line = lambda it: f"{it.get('id', '')} | {it.get('role', '')} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731
++    data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
++    line = lambda it: f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731  P175
+     der = K.curve_units(pid, obj)
+     return "\n".join([line(it) for it in items if isinstance(it, dict)]
+                      + (["Units the compiler derived from figure curves (one per curve no unit above names; name = the legend label):"] if der else [])
+diff --git a/psed_v2/kb/figures_import.py b/psed_v2/kb/figures_import.py
+index 316611f..e47c148 100644
+--- a/psed_v2/kb/figures_import.py
++++ b/psed_v2/kb/figures_import.py
+@@ -23,7 +23,9 @@ as flags. Resolution (P174, user: the one path):
+      entry's, keeps the values as printed (unit_reason; compile.py writes a unit row); an other axis keeps its values as printed. A
+      normalised axis whose denominator resolves to cycle_number reads a length unit as per cycle (the printed 'nm' of S/N).
+   c. a normalised axis's denominator symbol resolves by the same path to a quantity, else a species, else stays as printed.
+-  d. series labels: a number with a unit -> the series-axis quantity's value, a species or element -> species, a model or measurement
++  d. P175 (user): a series axis naming a qualifier key (element, species, step) is no quantity (its legend names the qualifier's values); a
++     series axis of two or more parts (' and ', ',') resolves part by part, its legend labels paired by compile.legend_conditions.
++     series labels: a number with a unit -> the series-axis quantity's value, a species or element -> species, a model or measurement
+      word -> kind simulated or measured, anything else -> a replicate label kept raw, series_structure replicate. A series is simulated
+      (P87) when its label is a model word or, failing a label word, when the panel's content line (else the caption's first sentence)
+      holds a model word and no measurement word.
+@@ -467,13 +469,21 @@ class Importer:
+                     if den and den.get("quantity"):
+                         conds.setdefault(den["quantity"], dict(key_raw=f"{a} denominator", raw=den["symbol"], quantity=den["quantity"], role=L.ENTRIES.get(den["quantity"], {}).get("role", ""), value=None, value_max=None, unit="", text=den["symbol"]))
+                 sa_raw = p.get("series_axis") or ""
+-                sa_q, sa_key = "", ""
++                sa_q, sa_key, sa_parts = "", "", []
+                 if sa_raw and (len(p.get("series") or []) > 1 or p.get("cells")):
+                     _, sa_key, sa_u = axis_title(sa_raw)
+                     res = K.resolve_label(pid, sa_key)
+                     kind_only = bool(p.get("series")) and all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or []) \
+                         or bool(re.search(r"\b(type|kind|model|dataset|method|geometry|shape)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type', 'particle geometry'), not a quantity
+-                    if res["id"] != "other":
++                    qk, aparts = K.qualifier_key(sa_key), K.axis_parts(sa_key)
++                    if qk:                                                      # P175 (user): an axis naming a qualifier key; its legend names the values
++                        self.label("series", sa_raw, sa_key, "", dict(id=f"qualifier:{qk}", how=f"names the qualifier {qk}", ambiguous=[], never="", never_label=""))
++                    elif len(aparts) >= 2:                                      # P175 (user): a two-quantity axis, each part on the one path
++                        for part in aparts:
++                            r_ = K.resolve_label(pid, part)
++                            self.label("series", sa_raw, part, "", r_)
++                            sa_parts.append(r_["id"])
++                    elif res["id"] != "other":
+                         sa_q = res["id"]
+                         self.label("series", sa_raw, sa_key, sa_u, res)
+                     elif not kind_only:                                         # a series axis over kinds ('model', 'type': fitted vs measured) names no quantity
+@@ -494,6 +504,13 @@ class Importer:
+                     pts = [[self.to_canonical(x, ax["x"]), self.to_canonical(y, ax["y"])] for x, y in s["points"]]
+                     kind = "simulated" if (lab.get("kind") or panel_kind) == "simulated" else "read_from_figure"
+                     cconds = dict(conds)
++                    for c in K.legend_conditions(pid, s["label"] or "", sa_raw) if sa_parts else []:   # P175: the legend's parts by order
++                        q = c["quantity"]
++                        if c["kind"] == "value" and q not in ("", "other") and c.get("value") is not None:
++                            u_, t_ = fit_unit(c["unit"], q), entry_unit_row(q)
++                            ok = u_ and t_ and u_["dimension"] == t_["dimension"]
++                            cconds[q] = dict(key_raw=c["key"], raw=s["label"], quantity=q, role=L.ENTRIES.get(q, {}).get("role", ""), value=convert(c["value"], u_, t_) if ok else c["value"],
++                                             value_max=None, unit=t_["symbol"] if ok else c["unit"], from_series_label=True)
+                     if lab["cls"] == "numeric" and lab.get("quantity"):
+                         cconds[lab["quantity"]] = dict(key_raw=sa_raw, raw=lab["label_raw"], quantity=lab["quantity"], role=L.ENTRIES[lab["quantity"]].get("role", ""),
+                                                       value=lab["value"], value_max=lab.get("value_max"), unit=lab.get("unit", ""), from_series_label=True)
+@@ -509,10 +526,11 @@ class Importer:
+                 for c in curves:
+                     out["derived"] += self.derive(c)
+                 sid = ""
++                varied = sa_q or (";".join(sa_parts) if sa_parts and "other" not in sa_parts else "")   # P175: every part of a two-quantity axis resolved
+                 if len(curves) >= 2 and p["panel_type"] in ("plot", "map"):
+-                    if sa_q:
++                    if varied:
+                         sid = f"{key}:cmp:{pel}"
+-                        out["sets"].append(dict(id=sid, figure=fig, panel=pan, kind="series", varied=sa_q, varied_raw=sa_raw, members=[c["id"] for c in curves],
++                        out["sets"].append(dict(id=sid, figure=fig, panel=pan, kind="series", varied=varied, varied_raw=sa_raw, members=[c["id"] for c in curves],
+                                                 conditions={q: c for q, c in conds.items()}, label=f"Fig. {fig}{pan} series" + (f" ({sa_raw})" if sa_raw else "")))
+                         for c in curves:
+                             c["set"] = sid
+diff --git a/psed_v2/ontology/export.py b/psed_v2/ontology/export.py
+index 0658fee..19e9eee 100644
+--- a/psed_v2/ontology/export.py
++++ b/psed_v2/ontology/export.py
+@@ -42,7 +42,12 @@ def load():
+ 
+ 
+ PENDING_COLUMNS = ["id", "kind", "proposed_definition", "unit", "n_papers", "pids", "dois", "evidence", "nearest_id", "nearest_definition", "rule_hint",
+-                   "first_round", "decision", "alias_target", "never_category", "decision_note"]   # P155: grow.py propose writes them, the user decides
++                   "first_round", "decision", "alias_target", "never_category", "class", "category", "slot", "parameters", "symbol_paper",
++                   "decision_note"]   # P155: grow.py propose writes them, the user decides; P175 (user): what apply reads besides the decision is
++#                                       class (a model: analytical / computational), category (a hierarchy leaf), slot (a structure class), parameters
++#                                       (a model's entry ids, ';'-separated) and symbol_paper (paper keys, ';'-separated: the printed label a symbol of
++#                                       those papers, never an alias); decision_note is a human memo, never read
++MODEL_CLASSES = ("analytical", "computational")
+ DECISIONS = ("", "accept", "alias", "reject", "never")
+ PENDING_KINDS = ("quantity", "species", "structure", "method", "model", "mechanism", "unit")
+ 
+@@ -1046,10 +1051,14 @@ def run_checks(onto):
+     bad += [f"{r['id']}: decision {r['decision']!r} not in {list(DECISIONS)}" for r in pend if r["decision"] not in DECISIONS]
+     bad += [f"{r['id']}: alias target {r['alias_target']!r} is not an entry" for r in pend if r["decision"] == "alias" and r["alias_target"] not in ids]
+     bad += [f"{r['id']}: never without a never_category" for r in pend if r["decision"] == "never" and not (r["never_category"] or "").strip()]
++    bad += [f"{r['id']}: class {r['class']!r} not in {list(MODEL_CLASSES)}" for r in pend if r.get("class") and r["class"] not in MODEL_CLASSES]   # P175
++    bad += [f"{r['id']}: slot {r['slot']!r} is no structure class" for r in pend if r.get("slot") and r["slot"] not in classes]
++    bad += [f"{r['id']}: parameter {q!r} is no entry" for r in pend for q in re.split(r"[;,\s]+", r.get("parameters") or "") if q and q not in ids
++            and q not in {x["id"] for x in pend if x["decision"] == "accept"}]
+     bad += [f"{r['id']}: already an entry" for r in pend if r["id"] in ids and r["decision"] in ("", "accept")]
+     bad += [f"{i}: two rows" for i, n in Counter(r["id"] for r in pend).items() if n > 1]
+     dec = Counter(r["decision"] or "undecided" for r in pend)
+-    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted",
++    out.append(("14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted; P175: a class from the list, a slot that is a structure class, parameters that are entries",
+                 not bad, f"problems: {bad}" if bad else f"{len(pend)} rows: " + ", ".join(f"{k} {n}" for k, n in sorted(dec.items())), bad))
+ 
+     units = {str(v): u for u in yaml.safe_load((HERE / "units.yaml").read_text(encoding="utf-8"))["units"] for v in [u["symbol"]] + list(u["variants"])}   # P100: family audit
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 5138149..d8df711 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -51,7 +51,8 @@ DECIDE, REPORT = HERE / "decide.html", HERE / "ontology.html"                # P
+ GATES_CSV = HERE / "gates.csv"                                                  # P172: written by kb/extract/gates.py reference
+ COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
+ ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
+-HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"]
++DECISION_COLS = ["class", "category", "slot", "parameters", "symbol_paper"]   # P175 (user): what apply reads besides the decision (pending.csv)
++HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS
+ NEVER_COLS = ["label", "category", "paper", "source", "symbol"]                 # P157d: symbol yes = matched only in its paper
+ STOP_WORDS = {"of", "the", "an", "and", "or", "in", "on", "at", "to", "for", "by", "with", "is", "as", "from", "per", "its", "a"}
+ 
+@@ -209,8 +210,7 @@ def candidates(pids, extra=()):
+     5. The rest group across the papers by their record key, the id built with the unit group stripped (snake case of norm()).
+     P157d: a candidate's symbols ([(text, pid)]: the symbol of its table row, the rows joined by their symbol) go into ontology.yaml symbols
+     on accept and into never.csv as paper-local rows on never.
+-    6. P163: a candidate whose label is another's with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
+-       become that candidate's aliases (log prefix_merges).
++    6. P175 (user): candidates merge only when their record keys are identical (the P163 label-prefix merge and its P170 patch removed).
+     7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model (P170: any member
+        of that field; a pass-1 record of the same printed name joins it); a row whose
+        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+@@ -301,20 +301,6 @@ def candidates(pids, extra=()):
+         c["definition"] = c["definition"] or g["definition"]
+         c["members"] += g["members"]
+         c["notes"] += [g["note"]] if g["note"] else []
+-    log["prefix_merges"] = []                                                    # P163: a label = another label + a trailing symbol or qualifier
+-    ids = sorted(out, key=lambda i: (len(label_tokens(out[i]["label"])), i))
+-    for i in reversed(ids):                                                     # the longest first, into the closest shorter label
+-        heads = [j for j in ids if j != i and j in out and extends(out[j]["label"], out[i]["label"])]
+-        if not heads:
+-            continue
+-        j = max(heads, key=lambda j: (len(label_tokens(out[j]["label"])), j))
+-        c, h = out.pop(i), out[j]
+-        h["aliases"] += [a for a in [c["label"]] + c["aliases"] if a not in h["aliases"] and a != h["label"]]
+-        h["symbols"] += [x for x in c["symbols"] if x not in h["symbols"]]
+-        h["definition"] = h["definition"] or c["definition"]
+-        h["members"] += c["members"]
+-        h["notes"] += c["notes"]
+-        log["prefix_merges"].append((i, j, c["label"], h["label"]))
+     for c in out.values():
+         units = Counter(u["unit"] for u in c["members"] if u["unit"])
+         c["unit"] = units.most_common(1)[0][0] if units else ""
+@@ -327,28 +313,6 @@ def candidates(pids, extra=()):
+     return out, log
+ 
+ 
+-PREPOSITIONS = {"for", "of", "in", "at", "with", "on", "per", "to", "by", "from", "under", "over"}
+-
+-
+-def label_tokens(s):
+-    """P163: a label as ordered words: LaTeX unwrapped, backslashes dropped, casefold, split at anything not a letter or digit; a, an, the
+-    dropped where a word follows (P170 fix: a final 'a' is a letter label, 'Model A' is not 'model')."""
+-    t = X.LATEX_TEXT.sub(r"\1", str(s or "")).replace("\\", " ").casefold()
+-    ws = re.findall(r"[^\W_]+", t)
+-    return [w for i, w in enumerate(ws) if w not in {"a", "an", "the"} or i == len(ws) - 1]
+-
+-
+-def extends(short, long):
+-    """P163: the long label is the short one with a trailing symbol or qualifier: the short label's words begin the long one's, in order
+-    (the long label holds the short one's words entirely), and what follows is one symbol (a word of at most two characters) or a phrase
+-    that starts with a preposition ('Shape factor' -> 'shape factor s', 'Shape factor for a particle')."""
+-    a, b = label_tokens(short), label_tokens(long)
+-    if not a or len(b) <= len(a) or b[:len(a)] != a:
+-        return False
+-    rest = b[len(a):]
+-    return rest[0] in PREPOSITIONS or (len(rest) == 1 and len(rest[0]) <= 2)
+-
+-
+ _CAND = {}
+ 
+ 
+@@ -378,10 +342,7 @@ def candidate_of(row):
+         return cands[row["id"]]
+     ev = sorted(evidence_items(row))
+     hits = [c for c in cands.values() if sorted(c["evidence"].values()) == ev]
+-    if len(hits) != 1:                                                          # P171: the evidence edited too (two papers merged): the
+-        m = re.search(r"proposed id was ([a-z0-9_]+)", row["decision_note"])     # note's 'proposed id was <id>' names the candidate
+-        hits = [cands[m.group(1)]] if m and m.group(1) in cands else hits
+-    return hits[0] if len(hits) == 1 else None
++    return hits[0] if len(hits) == 1 else None                                 # P175: the note names nothing (a memo)
+ 
+ 
+ def printed_labels(row):
+@@ -505,7 +466,8 @@ def cmd_propose():
+         row = dict(id=cid, kind=old["kind"] if old else c["kind"], proposed_definition=(old or {}).get("proposed_definition") or c["definition"],
+                    unit=(old or {}).get("unit") or c["unit"], n_papers=str(len(cpids)), pids=";".join(cpids), dois=";".join(dois.get(p, "") for p in cpids),
+                    evidence=" || ".join(ev[p] for p in cpids), nearest_id=nid, nearest_definition=shown(ndef), rule_hint=hint,
+-                   first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""))
++                   first_round=(old or {}).get("first_round") or str(n), decision="", alias_target="", never_category="", decision_note=(old or {}).get("decision_note", ""),
++                   **{k: (old or {}).get(k, "") for k in DECISION_COLS})
+         if old:
+             old.update(row)
+             touched.append(cid)
+@@ -518,18 +480,19 @@ def cmd_propose():
+     print(f"round {n}: {len(new) + len(touched)} candidates ({len(new)} new, {len(touched)} merged with earlier undecided rows; {len(redo)} undecided rows of "
+           f"round {n} rebuilt); {len(log['never'])} rows never (compile.py's never column), "
+           f"{len(log['values'])} values without a quantity, {len(log['symbol_merges'])} symbol and {len(log['label_merges'])} label merges into "
+-          f"{len(log['table_groups'])} symbol-table rows; {len(log['prefix_merges'])} label-prefix merges (P163)"
+-          + "".join(f"\n  merged: {a!r} into {b!r}" for _, _, a, b in log["prefix_merges"]))
++          f"{len(log['table_groups'])} symbol-table rows")
+     print(f"pending.csv: {len(rows)} rows; decide in {DECIDE}")
+ 
+ 
+ # ---------------------------------------------------------------- decide.html
+ DECIDE_SCRIPT = r"""
+-const COLS=D.cols, ROWS=D.rows, LINES=D.lines, F=['decision','alias_target','never_category','decision_note'];
++const COLS=D.cols, ROWS=D.rows, LINES=D.lines, F=['decision','alias_target','never_category','class','category','slot','parameters','symbol_paper','decision_note'];
+ function q(v){return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+ function state(i){const r=document.getElementById('r'+i);if(!r)return ROWS[i];
+   const o=Object.assign({},ROWS[i]);const c=r.querySelector('input[type=radio]:checked');o.decision=c?c.value:'';
+   o.alias_target=o.decision==='alias'?r.querySelector('select.alias').value:'';o.never_category=o.decision==='never'?r.querySelector('select.never').value:'';
++  o['class']=r.querySelector('select.cls').value;o.category=r.querySelector('select.cat').value;o.slot=r.querySelector('select.slot').value;
++  o.parameters=r.querySelector('input.params').value.trim();o.symbol_paper=r.querySelector('input.sympap').value.trim();
+   o.decision_note=r.querySelector('textarea').value;return o;}
+ function csvText(){let out=D.header;ROWS.forEach((row,i)=>{const s=state(i);
+   out+=F.every(k=>s[k]===row[k])?LINES[i]:COLS.map(c=>q(s[c]??'')).join(',')+'\n';});return out;}
+@@ -576,6 +539,9 @@ def decide_page(rows, n):
+     assert header + "".join(lines) == text == PENDING.read_text(encoding="utf-8"), "pending.csv does not reserialize byte for byte"
+     opt_ids = "".join(f"<option value='{html.escape(i)}'>{html.escape(i)}</option>" for i in ids)
+     opt_cats = "".join(f"<option value='{html.escape(c)}'>{html.escape(c)}</option>" for c in cats)
++    opt = lambda vs, cur: "".join(f"<option value='{html.escape(v)}'{' selected' if v == cur else ''}>{html.escape(v) or '—'}</option>" for v in vs)   # noqa: E731
++    leaves = sorted({e.get("category") for e in entries if e["type"] in ("quantity", "categorical") and e.get("category")})
++    scls = sorted(c["id"] for c in o.get("structure_classes", []))
+     body = []
+     multi = lambda r: int(r["n_papers"] or 0) >= 2                                # noqa: E731  P157b: rows in two or more papers first, marked
+     for i, r in sorted(((i, r) for i, r in enumerate(rows) if not r["decision"]), key=lambda x: (not multi(x[1]), x[0])):
+@@ -584,10 +550,16 @@ def decide_page(rows, n):
+             cells[0] = f"<span class='multi'>▲ in {esc(r['n_papers'])} papers</span><br>" + cells[0]
+         ctl = (f"<div class='ctl'>" + "".join(f"<label><input type='radio' name='d{i}' value='{v}'> {v}</label>" for v in ("accept", "alias", "reject", "never"))
+                + f"<div>alias to: <input class='filter' placeholder='type to filter'><select class='alias'>{opt_ids}</select></div>"
+-               + f"<div>never category: <select class='never'>{opt_cats}</select></div><textarea placeholder='note'>{html.escape(r['decision_note'])}</textarea></div>")
++               + f"<div>never category: <select class='never'>{opt_cats}</select></div>"
++               + f"<div>class (model): <select class='cls'>{opt(('',) + X.MODEL_CLASSES, r['class'])}</select></div>"   # P175: the columns apply reads
++               + f"<div>category (leaf): <select class='cat'>{opt([''] + leaves, r['category'])}</select></div>"
++               + f"<div>slot (structure class): <select class='slot'>{opt([''] + scls, r['slot'])}</select></div>"
++               + f"<div>parameters: <input class='params' placeholder='entry ids; ;-separated' value='{html.escape(r['parameters'])}'></div>"
++               + f"<div>symbol of papers: <input class='sympap' placeholder='paper keys; ;-separated' value='{html.escape(r['symbol_paper'])}'></div>"
++               + f"<textarea placeholder='note (a memo; apply reads none)'>{html.escape(r['decision_note'])}</textarea></div>")
+         body.append(f"<tr id='r{i}'{' class=multi' if multi(r) else ''}>" + "".join(f"<td>{c}</td>" for c in cells) + f"<td>{ctl}</td></tr>")
+     done = [r for r in rows if r["decision"]]
+-    done_html = "".join("<tr>" + "".join(f"<td>{html.escape(r[k])}</td>" for k in ("id", "kind", "decision", "alias_target", "never_category", "decision_note", "first_round")) + "</tr>" for r in done)
++    done_html = "".join("<tr>" + "".join(f"<td>{html.escape(r[k])}</td>" for k in ("id", "kind", "decision", "alias_target", "never_category", *DECISION_COLS, "decision_note", "first_round")) + "</tr>" for r in done)
+     data = json.dumps(dict(cols=X.PENDING_COLUMNS, rows=rows, lines=lines, header=header), ensure_ascii=False).replace("</", "<\\/")
+     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>decide round {n}</title><style>{STYLE}"
+             ".ctl label{display:block}.ctl select,.ctl input.filter{max-width:16em}.ctl textarea{width:16em;height:3em}.lab{color:#555;font-size:12px}"
+@@ -597,7 +569,7 @@ def decide_page(rows, n):
+             "<button id='dl'>download pending.csv</button> and save it over psed_v2/ontology/pending.csv; then run <code>python3 psed_v2/ontology/grow.py apply</code>. "
+             "Rows left without a choice stay pending.</p>"
+             f"<table><tr>{''.join(f'<th>{h}</th>' for h in CAND_HEAD)}<th>decision</th></tr>{''.join(body)}</table>"
+-            f"<h2>Decided earlier (read-only)</h2><table><tr><th>id</th><th>kind</th><th>decision</th><th>alias target</th><th>never category</th><th>note</th><th>first round</th></tr>{done_html}</table>"
++            f"<h2>Decided earlier (read-only)</h2><table><tr><th>id</th><th>kind</th><th>decision</th><th>alias target</th><th>never category</th>{''.join(f'<th>{c}</th>' for c in DECISION_COLS)}<th>note</th><th>first round</th></tr>{done_html}</table>"
+             f"<script>const D={data};{DECIDE_SCRIPT}</script></body></html>\n")                       # the one script: the rows, then the form logic
+     DECIDE.write_text(page, encoding="utf-8")
+ 
+@@ -658,29 +630,26 @@ def add_symbols(text, eid, pairs):
+     return text[:s] + blk + text[e:], add
+ 
+ 
+-PAPER_LOCAL = r"\bpaper-local symbol\b(?!s)"                                  # P172: 'paper-local symbol' anywhere in a note (not 'symbols')
+-MODEL_PARAMS = r"\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)"
+-
+-
+ def model_fields(row):
+-    """P168 (user): an accepted model's class, parameters and the scope of its printed name, from its pending row: 'class analytical' or
+-    'class computational' in the decision note; 'parameters <id>, <id>, ...' in the note, else in the proposed definition; 'paper-local
+-    symbol' in the note (PAPER_LOCAL, P172: anywhere) keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
+-    parameters, paper_local)."""
+-    note = row["decision_note"]
+-    cls = re.search(r"\bclass:?\s*(analytical|computational)\b", note)
+-    pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row["proposed_definition"])
+-    return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(PAPER_LOCAL, note))
++    """P168 (user), P175 (user: the columns, never the note): an accepted model's class (column class: analytical / computational) and its
++    parameters (column parameters: entry ids, ';'-separated). Returns (model_type, parameters)."""
++    return row.get("class", ""), [q for q in re.split(r"[;,\s]+", row.get("parameters") or "") if q]
+ 
+ 
+ def entry_fields(row, categories, classes):
+-    """P171 (user): an accepted entry's category and structure-class slot from its decision note: '<category> leaf' (a category the
+-    quantity entries use) -> category; 'slot of the <class> class' -> the entry joins that structure class's slots. Returns (category or '',
+-    class or '')."""
+-    note = row["decision_note"]
+-    cat = next((c for c in sorted(categories, key=len, reverse=True) if re.search(rf"\b{re.escape(c)} leaf\b", note)), "")
+-    cl = re.search(r"slot of the ([a-z_]+) class", note)
+-    return cat, (cl.group(1) if cl and cl.group(1) in classes else "")
++    """P171 (user), P175 (user: the columns, never the note): an accepted entry's category (column category: a hierarchy leaf the quantity
++    entries use) and structure-class slot (column slot: a structure class). Returns (category or '', class or '')."""
++    return (row.get("category", "") if row.get("category", "") in categories else ""), (row.get("slot", "") if row.get("slot", "") in classes else "")
++
++
++def symbol_papers(row):
++    """P175 (user): the papers of column symbol_paper (paper keys, ';'-separated) as paper ids: the decision's printed labels become symbols
++    of these papers, never aliases. Unknown keys -> Stop."""
++    keys = [k for k in re.split(r"[;,\s]+", row.get("symbol_paper") or "") if k]
++    bad = [k for k in keys if k not in KEY2PID and k not in PAPERS]
++    if bad:
++        raise Stop(f"{row['id']}: symbol_paper names no paper: {bad}")
++    return [KEY2PID.get(k, k) for k in keys]
+ 
+ 
+ def add_slot(text, cls, eid):
+@@ -792,12 +761,19 @@ def apply_here():
+             stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
+         if x["decision"] == "never" and not x["never_category"].strip():
+             stops.append(f"{x['id']}: never without a never_category")
+-        if x["decision"] == "accept" and re.search(r"slot of the ([a-z_]+) class", x["decision_note"]) and not entry_fields(x, cats, classes)[1]:
+-            stops.append(f"{x['id']}: the note names a structure class that does not exist")
++        if x.get("slot") and x["slot"] not in classes:                          # P175: the columns, never the note
++            stops.append(f"{x['id']}: slot {x['slot']!r} is no structure class")
++        if x.get("category") and x["category"] not in cats:
++            stops.append(f"{x['id']}: category {x['category']!r} is no category of the quantity entries")
++        if x.get("symbol_paper"):
++            try:
++                symbol_papers(x)
++            except Stop as e:
++                stops.append(str(e))
+         if x["decision"] == "accept" and x["kind"] == "model":                 # P168: a model's class and parameters (model_fields)
+-            mt, params, _ = model_fields(x)
+-            if not mt:
+-                stops.append(f"{x['id']}: accept of a model without its class (decision note: 'class analytical' or 'class computational')")
++            mt, params = model_fields(x)
++            if mt not in X.MODEL_CLASSES:
++                stops.append(f"{x['id']}: accept of a model without its class (column class: analytical or computational)")
+             bad = [q for q in params if q not in have and q not in {y["id"] for y in decided if y["decision"] == "accept"}]
+             if bad:
+                 stops.append(f"{x['id']}: model parameters that are no entry: {bad}")
+@@ -813,14 +789,15 @@ def apply_here():
+         labels, syms = printed_labels(x), candidate_symbols(x)
+         words, lsyms = split_labels(x, labels)                                 # P164: a symbol-like label is a symbol of its paper, never a word;
+                                                                                 # P171 fix: every printed label (a prefix-merged label too)
++        sp = symbol_papers(x)                                                   # P175 (user): column symbol_paper: the printed labels are
++        if sp:                                                                  # symbols of those papers, never aliases
++            lsyms, words = [(t, p) for t in labels for p in sp], []
+         if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
+-            mt, params, local = model_fields(x) if x["kind"] == "model" else ("", [], False)
+-            if local:                                                           # P168: the printed name a symbol of its paper, not an alias
+-                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
++            mt, params = model_fields(x) if x["kind"] == "model" else ("", [])
+             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
+             if x["kind"] == "model":
+                 e.update(model_type=mt, parameters=params)
+-            cat, slot = entry_fields(x, cats, classes)                          # P171: a category and a structure-class slot from the note
++            cat, slot = entry_fields(x, cats, classes)                          # P171, P175: category and structure-class slot (the columns)
+             if cat:
+                 e["category"] = cat
+             if slot:
+@@ -829,9 +806,7 @@ def apply_here():
+             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
+             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
+                                 symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in e.get("symbols") or []), note=""))
+-        elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out);
+-            if re.search(PAPER_LOCAL, x["decision_note"]):                       # P169: the printed name a symbol of its paper
+-                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
++        elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out)
+             t_new = next((e for e in new if e["id"] == x["alias_target"]), None)   # P164: a symbol-like label goes to the target's symbols
+             if t_new is not None:
+                 al = [w for w in words if X.norm_label(w) not in {X.norm_label(a) for a in t_new.get("aliases", [])}]
+@@ -893,7 +868,7 @@ def apply_here():
+         hist.append(dict(date=today(), round=n, action={"accept": "add"}.get(x["decision"], x["decision"]), id=x["id"], kind=x["kind"],
+                          target=x["alias_target"] if x["decision"] == "alias" else x["never_category"] if x["decision"] == "never" else "",
+                          source_pids=";".join(pids), source_dois=";".join(dois.get(p, "") for p in pids), decided_by="user", reason=x["decision_note"],
+-                         ontology_sha256_after=after))
++                         ontology_sha256_after=after, **{k: x.get(k, "") for k in DECISION_COLS}))
+     append(HISTORY, HISTORY_COLS, hist)
+     c = Counter(x["decision"] for x in decided)
+     plus = lambda k, v: int(r.get(k) or 0) + v if late else v                 # noqa: E731  P169: late decisions add to the round's counts
+@@ -966,6 +941,7 @@ def open_rows(n, compiled, unm, snap):
+     pend = {x["id"]: x for x in rd(PENDING)}
+     decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
+     _CAND.clear()
++    _SCOPE.clear()                                                              # P175: the ontology as it is now (apply writes it before the audits)
+     cands, log = candidates_of(sorted(compiled)) if compiled else ({}, dict(never=[], values=[]))
+     member, ngrp, vals = {}, {}, set()
+     ck = lambda u: (u["pid"], u["element"], u["field"], u["label"], u["unit"])  # noqa: E731
+@@ -1006,6 +982,10 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = "other", f"the value row of the categorical {u['field']}: propose makes no candidate of it (P168)"
+             elif u.get("action", "").startswith("kept (names the model "):
+                 cls, why = "other", f"a record of no quantity that names a model entry: {u['action'][6:-1]} (P172)"
++            elif cid in decided_ids and decided_ids[cid]["action"] != "reject" and scoped_elsewhere(p, u["label"]):   # P175 (user)
++                h = decided_ids[cid]
++                cls, why = NEW_SINCE_APPLY, (f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "")
++                                             + f"): {scoped_elsewhere(p, u['label'])}; carried into the next propose")
+             elif cid in decided_ids:
+                 h = decided_ids[cid]
+                 cls, why = "other", f"candidate {cid} decided in round {h['round']} ({h['action']}" + (f" -> {h['target']}" if h["target"] else "") + "): " + (
+@@ -1024,6 +1004,37 @@ def open_rows(n, compiled, unm, snap):
+     return a3, fails, src
+ 
+ 
++_SCOPE = {}
++
++
++def scoped_elsewhere(pid, label):
++    """P175 (user), A3: why a row's label is not covered by a decision of its candidate: the label is a paper-local symbol of other papers
++    only (a never.csv symbol row, or an entry's symbol; export.symbol_key), or it is an entry's id, name or label that is no alias of it
++    (export.norm_label; the one path reads ids, names and aliases of quantities only). '' when neither."""
++    if not _SCOPE:
++        live = [e for e in onto()["entries"] if not e.get("replaced_by")]
++        sym = defaultdict(set)
++        for r in X.never_rows():
++            if r.get("symbol") == "yes":
++                for q in str(r["paper"]).split(";"):
++                    sym[X.symbol_key(r["label"])].add(q)
++        for e in live:
++            for x in e.get("symbols") or []:
++                sym[X.symbol_key(x["text"])].add(x.get("paper", ""))
++        names = defaultdict(set)
++        for e in onto()["entries"]:                                             # an entry replaced by another is an entry too
++            al = {X.norm_label(str(a)) for a in e.get("aliases") or []}
++            for t in (e["id"], e["id"].replace("_", " "), e.get("name", ""), e.get("label", "")):
++                if str(t).strip() and X.norm_label(str(t)) not in al:
++                    names[X.norm_label(str(t))].add(e["id"])
++        _SCOPE.update(sym=sym, names=names)
++    ps = _SCOPE["sym"].get(X.symbol_key(label), set())
++    if ps and pid not in ps and "" not in ps:
++        return "the label is a paper-local symbol of " + ", ".join(sorted(PAPERS.get(q, q) for q in ps)) + " only"
++    ids = _SCOPE["names"].get(X.norm_label(label), set())
++    return f"the label is the id, name or label of {', '.join(sorted(ids))}, no alias" if ids else ""
++
++
+ def carried_rows(exclude=()):
+     """P162: the rows open_rows() classes NEW_SINCE_APPLY, of the papers of every applied round with an apply snapshot (a paper in two
+     such rounds: the later one), the papers in exclude (the open round's own, read whole) left out. P168 fix: also the rows already

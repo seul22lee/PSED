@@ -1,0 +1,43 @@
+P175: 0 provider calls. Rounds 1, 3, 4 audit PASS; round 2 FAIL (14, three causes below, reported, not worked around: R3); export --check
+FAIL 14 (2 rows, item 6). Round 5
+re-proposed; 86 of the user's decisions written into pending.csv (87 rows of 130 decided), 23 not found. Stopped before apply.
+
+1. Derived-unit role: the branch 'runs and a simulation both (or neither) -> the figure stage's kind' deleted; such a unit keeps role null,
+   flagged 'role unresolved' (pass 1's units block prints 'null (role unresolved)'; its data role null). ela03: all 6 derived units
+   (fig5b, fig6b: run before; fig9b, fig10b c1-c2, fig11b: model_run before) now null; wer21: all 37. Not in the directive, my reading: a
+   unit of role null has no tree row, so compile leaves out its curves and makes no setting from its legend (counted in compile.log).
+2. The label-prefix merge (P163) and its final-letter patch (P170) deleted; candidates merge on identical record keys only. Round-5 groups
+   that split: d (d | d_I), location (Location | Location x), m (M | M_I), n (N | n_P0; zou23's N is now an element value, no row), p
+   (p | p_A | p_A0 | p_I | p_O), s (S | s/N), t (T | t_p); the shape-factor pair splits in round 2's pending row shape_factor (shape factor s;
+   Shape factor for a particle with its symbol s).
+3. merge_units (P164) and its 'same y quantity' guard deleted; derived units stay as derived, two with identical data refs are one. No unit
+   had been merged at P174 (239 derived units before and after): the guard had kept them split; hei24 fig2a/fig2b sphere, cylinder, slab
+   (the three fig2 units), fig5a/b, yim22 fig5e/f and fig7a/b are plain derived units now, without the merge note.
+4. apply reads no free text: pending.csv and history.csv carry class, category, slot, parameters, symbol_paper; apply reads only these
+   (the note's 'class', 'parameters', '<cat> leaf', 'slot of the', 'paper-local symbol' and candidate_of's 'proposed id was' readers removed;
+   decide.html has a control for each). Converted for the record (no re-apply): 9 notes (8 history rows, markov_chain_approach in pending:
+   symbol_paper wer21). export --check pass 14 checks class, slot and parameters.
+5. Multi-part labels: 39 derived units parse differently: yim22 fig5e/f 'N = 5 to 500', 'H = 0.1 to 4.0 µm' -> ranges (value_min/max);
+   hei24 fig7a/b '1 × 10⁵ Pa s' -> exposure (was other 'particle radius and reactant exposure'); zou23 fig5b/6b Mo, O, Cl, C, N, H, Si ->
+   element values on their curves' facts (no condition rows); wer21 fig11 '50 W - 15s' -> power 50 (other until the Power decision applies)
+   and pulse_time 15 s (no rows while those units have role null). 11 series axes resolve part by part (art19 material -> material, exposure
+   time -> other; hei24 exposure -> exposure, particle radius -> particle_radius; mat23 temperature -> deposition_temperature; zou23 element ->
+   the qualifier; wer21 pulse time -> pulse_time).
+6. A3: a row whose label is a paper-local symbol of other papers only, or an entry's id / name / label that is no alias (replaced entries
+   included), is new since apply. Rounds 1, 3, 4 PASS (P174: FAIL 6 / 6 / 15). Round 2 FAIL 14: (a) 12 from the shape-factor split: round-2
+   rows (in its snapshot under pending shape_factor) now under candidates shape_factor_s and shape_factor_for_a_particle, which no pending
+   row has, and pending shape_factor lost them; (b) 'Aspect Ratio (L/D)' (ela03 fig13): 'aspect ratio' is an alias of aspect_ratio, the row is
+   open for '(L/D)', which rule 6 does not cover; (c) pending h (round 5: the H rows of yim20, yim22, yli18 the rule carried) has the id of
+   round 2's never candidate h (an ela03 symbol), so round 2's audit reads it as its own. While round 2 fails, apply refuses (atomic) and
+   grow.py run stops before propose. Possible fixes, the user's: carry rows regrouped since apply like new ones; a decision for '(L/D)';
+   pending accounting by id and first round. export --check: 14 of 15, FAIL 14: the round-5 rows composition and time (rule 6 carried zou23's
+   'Composition' axis and its 'Time' unit row; propose names a candidate after its label, here an entry's id) are 'already an entry' while
+   undecided; an alias decision on each clears it. apply runs export --check, so it refuses until then.
+7. Thirteen re-imported and recompiled; twelve scored: T6 2044 -> 2044, gold rows 5357, check.py 2237 -> 2198 (hei24 -36, ela03 -7, zou23 -4,
+   yim22 +8). Round 5 re-proposed: 106 candidates + the 3 earlier decisions; pending.csv 130 rows. Decisions (decision_note 'P175 chat'):
+   86 written; 23 not found: 17 rejects whose rows step 5 parsed away (the W-s legends, the two ranges, C, Cl, O, element, the five generic
+   axes); '1 − [r_slab/r_sphere]' is printed '1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]' (hei24 fig4, row 1): not matched, left undecided;
+   'Thickness' (wer21 fig11 right axis): no row (the figure stage read one y axis); D_A, D_Kn, D_eff (yim22): no open row and no yim22 symbol in
+   the ontology, so nothing to write them on; '(αhν)²' (pending anyway) is printed '(αhν)²(eVcm⁻¹)²'. 12 listed 'decide later' rows stay
+   undecided. 'Minimum Exposure Time' (stat=minimum, kind computed) and 'PD^{50%} / cavity height' (level 50%): alias written, the qualifier
+   only in the note: no column carries one.
