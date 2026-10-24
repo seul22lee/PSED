@@ -1,0 +1,473 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P167</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P167</h1>
+<h2>Summary</h2><p>kb/reports/P167.summary.txt</p>
+<pre>P167: 36 provider calls (round-3 pass 1: gre23 13, art19 11, zou23 12), $0.524 (+ at most $0.062 for the three cached prefixes). No group
+left an element unanswered, so no re-run.
+
+1. Pass 1 (form P163, cached prefix): gre23 200 records ($0.250), art19 101 ($0.138), zou23 111 ($0.136); every element answered.
+2. Compiled and scored (T6 / gold rows; check.py --dir): gre23 136 / 474, 130 problems; art19 78 / 214, 62; zou23 53 / 164, 94. By type in
+   P167.score.csv (e.g. gre23 activity 29 / 41, derived 21 / 31, setting 21 / 89, observation 20 / 89; art19 model 10 / 22, entity 8 / 12;
+   zou23 observation 25 / 45, activity 21 / 23, setting 14 / 47). Records failing form.json: gre23 5 (P158 rule 1 3, variables type 2),
+   art19 0, zou23 2 (rule 1 2, qualifiers type 2).
+   Simulation units of the nine papers and the model entry each resolves to (its printed name or id, whole, against the model entries&#x27; id,
+   name and aliases: the vocabulary&#x27;s word key; no record carries a model id, and D13 is a matching rule for valueless model rows, not a
+   model link): none of the 7 resolves. yli18 &#x27;diffusion model&#x27; and &#x27;Gordon model&#x27;, yim20 &#x27;Yilammi et al. diffusion–reaction model&#x27;, ela03
+   &#x27;Monte Carlo computer simulation&#x27;, hei24 &#x27;diffusion–reaction model&#x27;, gor03 &#x27;Kinetic Model&#x27;, art19 &#x27;eq 6&#x27;; mat22, gre23, zou23 have no
+   simulation unit. The four model entries (ylilammi_diffusion_reaction, gordon_plug_flow, arts_slope: analytical; yanguas_gil_markov_chain:
+   computational) carry no aliases.
+3. grow.py add (round 3: gre23, art19, zou23) and propose: 7 new candidates (gre23 5: dose, prisms, t_hold, top surfaces, total isolated
+   deposition volume; art19 2: material (a unit row), spatial resolution), none in two or more papers; 1 row never; no carried row.
+   decide.html: 23 undecided rows (16 earlier, 7 of round 3). Candidates that name a model: &#x27;elam monte carlo&#x27; (round 0, kind model): a
+   model the ontology has no entry for; &#x27;slope of integrated ZnO coverage&#x27; (round 2, a quantity) shares only the word &#x27;slope&#x27; with
+   arts_slope&#x27;s name. No round-3 candidate is a short model name.
+4. gre23&#x27;s pass-1 records: eq1 -&gt; one model record, quantity other, label t_hold, about paper; eq2 -&gt; one model record, purge_time, label
+   t_purge, about paper; s9.p9 -&gt; a setting of purge_time and two derived purge_time (t_purge), about paper. The extractor returned eq 1-2 as
+   model records about the paper (pass 0 gave it no simulation unit to name); t_hold is also a round-3 candidate.
+</pre>
+<h2>1: planned calls</h2><p>kb/reports/P167.s1_plan.txt</p>
+<pre>gre23 pass 1: 13 groups (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8, s9+s10+s11, s12, s13+s14, s15, fig2, fig3, fig4, fig5, fig6, fig1, tabI, tabII); figure/table/equation groups: fig2, fig3, fig4, fig5, fig6, fig1, tabI, tabII; unpaired: none
+10.1116_6.0003182: 13 planned calls (0 cached, 13 to call), model gemini-3.8-flash
+gre23: prefix 91775 chars (~22943 tokens at 4 chars/token), sent once as cached content; group parts 69957 chars in all, largest 15013 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8)
+art19 pass 1: 11 groups (abstract+s1+s2+s3+s4+s5, s6+s7+s8+s9+s10+s11+s12+s13+s14, fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B, fig3, tab1); figure/table/equation groups: fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B, fig3, tab1; unpaired: fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B
+10.1021_acs.jpcc.9b08176: 11 planned calls (0 cached, 11 to call), model gemini-3.8-flash
+art19: prefix 92127 chars (~23031 tokens at 4 chars/token), sent once as cached content; group parts 36370 chars in all, largest 18362 (abstract+s1+s2+s3+s4+s5)
+zou23 pass 1: 12 groups (abstract+s1+s2+s3+s4+s5+s6+s7, s8+s9+s10+s11+s12, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig10, fig9); figure/table/equation groups: fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig10, fig9; unpaired: none
+10.1116_6.0002804: 12 planned calls (0 cached, 12 to call), model gemini-3.8-flash
+zou23: prefix 92646 chars (~23161 tokens at 4 chars/token), sent once as cached content; group parts 35179 chars in all, largest 17432 (abstract+s1+s2+s3+s4+s5+s6+s7)
+</pre>
+<h2>1: pass-1 runs</h2><p>kb/reports/P167.s1_run.txt</p>
+<pre>gre23 pass 1: 13 groups (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8, s9+s10+s11, s12, s13+s14, s15, fig2, fig3, fig4, fig5, fig6, fig1, tabI, tabII); figure/table/equation groups: fig2, fig3, fig4, fig5, fig6, fig1, tabI, tabII; unpaired: none
+10.1116_6.0003182: 13 planned calls (0 cached, 13 to call), model gemini-3.8-flash
+10.1116_6.0003182: 13 calls made, 0 from the cache; prefix cached once (1 cached content)
+gre23 pass 1: 200 records by type {&#x27;setting&#x27;: 68, &#x27;observation&#x27;: 45, &#x27;derived&#x27;: 36, &#x27;claim&#x27;: 18, &#x27;definition&#x27;: 11, &#x27;caveat&#x27;: 9, &#x27;model&#x27;: 8, &#x27;cited&#x27;: 5}; NK {&#x27;boilerplate&#x27;: 63, &#x27;no_knowledge&#x27;: 27, &#x27;duplicate&#x27;: 7}; elements missing 0; records failing form.json 5; unparsed responses none
+gre23 this run: 13 lines, tokens in 377637 (cache read 356551) out 55197
+art19 pass 1: 11 groups (abstract+s1+s2+s3+s4+s5, s6+s7+s8+s9+s10+s11+s12+s13+s14, fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B, fig3, tab1); figure/table/equation groups: fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B, fig3, tab1; unpaired: fig1, fig1A, fig1B, fig1C, fig2, fig2A, fig2B
+10.1021_acs.jpcc.9b08176: 11 planned calls (0 cached, 11 to call), model gemini-3.8-flash
+10.1021_acs.jpcc.9b08176: 11 calls made, 0 from the cache; prefix cached once (1 cached content)
+art19 pass 1: 101 records by type {&#x27;setting&#x27;: 22, &#x27;claim&#x27;: 21, &#x27;derived&#x27;: 17, &#x27;cited&#x27;: 12, &#x27;definition&#x27;: 10, &#x27;model&#x27;: 10, &#x27;observation&#x27;: 7, &#x27;caveat&#x27;: 2}; NK {&#x27;boilerplate&#x27;: 28, &#x27;no_knowledge&#x27;: 13, &#x27;duplicate&#x27;: 1, &#x27;citation_line&#x27;: 1}; elements missing 0; records failing form.json 0; unparsed responses none
+art19 this run: 11 lines, tokens in 314871 (cache read 304260) out 28564
+zou23 pass 1: 12 groups (abstract+s1+s2+s3+s4+s5+s6+s7, s8+s9+s10+s11+s12, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig10, fig9); figure/table/equation groups: fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig10, fig9; unpaired: none
+10.1116_6.0002804: 12 planned calls (0 cached, 12 to call), model gemini-3.8-flash
+10.1116_6.0002804: 12 calls made, 0 from the cache; prefix cached once (1 cached content)
+zou23 pass 1: 111 records by type {&#x27;observation&#x27;: 48, &#x27;setting&#x27;: 34, &#x27;claim&#x27;: 19, &#x27;cited&#x27;: 7, &#x27;caveat&#x27;: 2, &#x27;definition&#x27;: 1}; NK {&#x27;boilerplate&#x27;: 33, &#x27;no_knowledge&#x27;: 20, &#x27;citation_line&#x27;: 1, &#x27;duplicate&#x27;: 1}; elements missing 0; records failing form.json 2; unparsed responses none
+zou23 this run: 12 lines, tokens in 343710 (cache read 333888) out 27709
+</pre>
+<h2>1: cost per paper</h2><p>kb/reports/P167.s1_cost.csv</p>
+<table><tr><th>paper</th><th>calls</th><th>of_which_reruns</th><th>input_tokens</th><th>cached_input_tokens</th><th>output_tokens</th><th>usd</th><th>prefix_registrations</th><th>note</th></tr>
+<tr><td>gre23</td><td>13</td><td>0</td><td>377637</td><td>356551</td><td>55197</td><td>0.2495</td><td>1</td><td>each cached prefix registration not in the lines: at most 27427 tokens x $0.75/M = $0.0206</td></tr>
+<tr><td>art19</td><td>11</td><td>0</td><td>314871</td><td>304260</td><td>28564</td><td>0.1379</td><td>1</td><td>each cached prefix registration not in the lines: at most 27660 tokens x $0.75/M = $0.0207</td></tr>
+<tr><td>zou23</td><td>12</td><td>0</td><td>343710</td><td>333888</td><td>27709</td><td>0.1363</td><td>1</td><td>each cached prefix registration not in the lines: at most 27824 tokens x $0.75/M = $0.0209</td></tr>
+</table>
+<h2>1: every group&#x27;s unanswered elements</h2><p>kb/reports/P167.s1_unanswered.csv</p>
+<table><tr><th>paper</th><th>group</th><th>elements</th><th>answered</th><th>unanswered</th><th>unanswered_ids</th><th>line</th></tr>
+<tr><td>gre23</td><td>abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8</td><td>48</td><td>48</td><td>0</td><td></td><td>3</td></tr>
+<tr><td>gre23</td><td>s9+s10+s11</td><td>19</td><td>19</td><td>0</td><td></td><td>4</td></tr>
+<tr><td>gre23</td><td>s12</td><td>25</td><td>25</td><td>0</td><td></td><td>5</td></tr>
+<tr><td>gre23</td><td>s13+s14</td><td>17</td><td>17</td><td>0</td><td></td><td>6</td></tr>
+<tr><td>gre23</td><td>s15</td><td>19</td><td>19</td><td>0</td><td></td><td>7</td></tr>
+<tr><td>gre23</td><td>fig2</td><td>5</td><td>5</td><td>0</td><td></td><td>8</td></tr>
+<tr><td>gre23</td><td>fig3</td><td>4</td><td>4</td><td>0</td><td></td><td>9</td></tr>
+<tr><td>gre23</td><td>fig4</td><td>5</td><td>5</td><td>0</td><td></td><td>10</td></tr>
+<tr><td>gre23</td><td>fig5</td><td>2</td><td>2</td><td>0</td><td></td><td>11</td></tr>
+<tr><td>gre23</td><td>fig6</td><td>7</td><td>7</td><td>0</td><td></td><td>12</td></tr>
+<tr><td>gre23</td><td>fig1</td><td>3</td><td>3</td><td>0</td><td></td><td>13</td></tr>
+<tr><td>gre23</td><td>tabI</td><td>29</td><td>29</td><td>0</td><td></td><td>14</td></tr>
+<tr><td>gre23</td><td>tabII</td><td>25</td><td>25</td><td>0</td><td></td><td>15</td></tr>
+<tr><td>art19</td><td>abstract+s1+s2+s3+s4+s5</td><td>42</td><td>42</td><td>0</td><td></td><td>4</td></tr>
+<tr><td>art19</td><td>s6+s7+s8+s9+s10+s11+s12+s13+s14</td><td>31</td><td>31</td><td>0</td><td></td><td>5</td></tr>
+<tr><td>art19</td><td>fig1</td><td>1</td><td>1</td><td>0</td><td></td><td>6</td></tr>
+<tr><td>art19</td><td>fig1A</td><td>1</td><td>1</td><td>0</td><td></td><td>7</td></tr>
+<tr><td>art19</td><td>fig1B</td><td>1</td><td>1</td><td>0</td><td></td><td>8</td></tr>
+<tr><td>art19</td><td>fig1C</td><td>1</td><td>1</td><td>0</td><td></td><td>9</td></tr>
+<tr><td>art19</td><td>fig2</td><td>1</td><td>1</td><td>0</td><td></td><td>10</td></tr>
+<tr><td>art19</td><td>fig2A</td><td>1</td><td>1</td><td>0</td><td></td><td>11</td></tr>
+<tr><td>art19</td><td>fig2B</td><td>1</td><td>1</td><td>0</td><td></td><td>12</td></tr>
+<tr><td>art19</td><td>fig3</td><td>2</td><td>2</td><td>0</td><td></td><td>13</td></tr>
+<tr><td>art19</td><td>tab1</td><td>14</td><td>14</td><td>0</td><td></td><td>14</td></tr>
+<tr><td>zou23</td><td>abstract+s1+s2+s3+s4+s5+s6+s7</td><td>50</td><td>50</td><td>0</td><td></td><td>3</td></tr>
+<tr><td>zou23</td><td>s8+s9+s10+s11+s12</td><td>38</td><td>38</td><td>0</td><td></td><td>4</td></tr>
+<tr><td>zou23</td><td>fig1</td><td>6</td><td>6</td><td>0</td><td></td><td>5</td></tr>
+<tr><td>zou23</td><td>fig2</td><td>2</td><td>2</td><td>0</td><td></td><td>6</td></tr>
+<tr><td>zou23</td><td>fig3</td><td>2</td><td>2</td><td>0</td><td></td><td>7</td></tr>
+<tr><td>zou23</td><td>fig4</td><td>2</td><td>2</td><td>0</td><td></td><td>8</td></tr>
+<tr><td>zou23</td><td>fig5</td><td>3</td><td>3</td><td>0</td><td></td><td>9</td></tr>
+<tr><td>zou23</td><td>fig6</td><td>3</td><td>3</td><td>0</td><td></td><td>10</td></tr>
+<tr><td>zou23</td><td>fig7</td><td>3</td><td>3</td><td>0</td><td></td><td>11</td></tr>
+<tr><td>zou23</td><td>fig8</td><td>2</td><td>2</td><td>0</td><td></td><td>12</td></tr>
+<tr><td>zou23</td><td>fig10</td><td>7</td><td>7</td><td>0</td><td></td><td>13</td></tr>
+<tr><td>zou23</td><td>fig9</td><td>3</td><td>3</td><td>0</td><td></td><td>14</td></tr>
+</table>
+<h2>2: scores by type</h2><p>kb/reports/P167.score.csv</p>
+<table><tr><th>paper</th><th>check_dir_problems</th><th>matched_T6</th><th>gold_rows</th><th>parent_flagged_yes</th><th>parent_flagged_no</th><th>diff_observation</th><th>diff_setting</th><th>diff_cited</th><th>diff_claim</th><th>diff_caveat</th><th>diff_activity</th><th>diff_derived</th><th>diff_entity</th><th>diff_model</th><th>diff_definition</th><th>diff_identity</th><th>diff_comparison</th><th>diff_paper</th></tr>
+<tr><td>gre23</td><td>130</td><td>136</td><td>474</td><td>0</td><td>184</td><td>20/89</td><td>21/89</td><td>3/57</td><td>11/57</td><td>7/53</td><td>29/41</td><td>21/31</td><td>0/18</td><td>8/18</td><td>2/16</td><td>0/3</td><td>0/1</td><td>1/1</td></tr>
+<tr><td>art19</td><td>62</td><td>78</td><td>214</td><td>0</td><td>114</td><td>14/36</td><td>16/50</td><td>8/23</td><td>7/13</td><td>0/8</td><td>11/22</td><td>5/7</td><td>8/12</td><td>10/22</td><td>2/16</td><td></td><td>1/4</td><td>0/1</td></tr>
+<tr><td>zou23</td><td>94</td><td>53</td><td>164</td><td>0</td><td>62</td><td>25/45</td><td>14/47</td><td>1/11</td><td>10/19</td><td>0/6</td><td>21/23</td><td>0/1</td><td>4/8</td><td></td><td>0/0</td><td></td><td>0/3</td><td>0/1</td></tr>
+</table>
+<h2>2: records failing form.json per rule per paper</h2><p>kb/reports/P167.s2_form_failures_per_paper.csv</p>
+<table><tr><th>paper</th><th>records</th><th>failing_form_json</th><th>by_rule</th></tr>
+<tr><td>gre23</td><td>200</td><td>5</td><td>P158 rule 1 3; type (variables) 2</td></tr>
+<tr><td>art19</td><td>101</td><td>0</td><td></td></tr>
+<tr><td>zou23</td><td>111</td><td>2</td><td>P158 rule 1 2; type (qualifiers) 2</td></tr>
+</table>
+<h2>2: every record failing form.json</h2><p>kb/reports/P167.s2_form_failures.csv</p>
+<table><tr><th>paper</th><th>element</th><th>origin</th><th>type</th><th>quantity</th><th>label</th><th>rules</th></tr>
+<tr><td>gre23</td><td>s9.p4</td><td>pass 1</td><td>setting</td><td>pulse_time</td><td>DEZ pulse</td><td>P158 rule 1</td></tr>
+<tr><td>gre23</td><td>s9.p4</td><td>pass 1</td><td>setting</td><td>pulse_time</td><td>H_2O pulse</td><td>P158 rule 1</td></tr>
+<tr><td>gre23</td><td>eq1</td><td>pass 1</td><td>model</td><td>other</td><td>t_hold</td><td>type (variables)</td></tr>
+<tr><td>gre23</td><td>eq2</td><td>pass 1</td><td>model</td><td>purge_time</td><td>t_purge</td><td>type (variables)</td></tr>
+<tr><td>gre23</td><td>s14.p6</td><td>pass 1</td><td>setting</td><td>purge_time</td><td>DEZ purge time</td><td>P158 rule 1</td></tr>
+<tr><td>zou23</td><td>s5.p3</td><td>pass 1</td><td>setting</td><td>pulse_time</td><td>pulse durations</td><td>P158 rule 1; type (qualifiers)</td></tr>
+<tr><td>zou23</td><td>s5.p3</td><td>pass 1</td><td>setting</td><td>pulse_time</td><td>pulse durations</td><td>P158 rule 1; type (qualifiers)</td></tr>
+</table>
+<h2>2: simulation units of the nine papers and their model entry</h2><p>kb/reports/P167.s2_simulations.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>name_as_printed</th><th>model_entry</th><th>model_type</th><th>model_runs</th></tr>
+<tr><td>yli18</td><td>sim_ylilammi</td><td>diffusion model</td><td>(no model entry)</td><td></td><td>9</td></tr>
+<tr><td>yli18</td><td>sim_gordon</td><td>Gordon model</td><td>(no model entry)</td><td></td><td>1</td></tr>
+<tr><td>yim20</td><td>sim_ylilammi</td><td>Yilammi et al. diffusion–reaction model</td><td>(no model entry)</td><td></td><td>9</td></tr>
+<tr><td>ela03</td><td>sim_mc</td><td>Monte Carlo computer simulation</td><td>(no model entry)</td><td></td><td>20</td></tr>
+<tr><td>hei24</td><td>sim_dr</td><td>diffusion–reaction model</td><td>(no model entry)</td><td></td><td>160</td></tr>
+<tr><td>gor03</td><td>sim_kinetic_model</td><td>Kinetic Model</td><td>(no model entry)</td><td></td><td>1</td></tr>
+<tr><td>art19</td><td>sim_slope</td><td>eq 6</td><td>(no model entry)</td><td></td><td>2</td></tr>
+</table>
+<h2>2: gre23 check.py --dir</h2><p>kb/reports/P167.gre23.check_dir.csv</p>
+<table><tr><th>problem</th></tr>
+<tr><td>gre23:abs.g1#1: statement repeats eight words of abs.g1 in a row</td></tr>
+<tr><td>gre23:abs.g3#1: statement repeats eight words of abs.g3 in a row</td></tr>
+<tr><td>gre23:abs.g4#2: statement repeats eight words of abs.g4 in a row</td></tr>
+<tr><td>gre23:s6.p8#1: statement repeats eight words of s6.p8 in a row</td></tr>
+<tr><td>gre23:s8.p1#1: statement repeats eight words of s8.p1 in a row</td></tr>
+<tr><td>gre23:s8.p1#2: statement repeats eight words of s8.p1 in a row</td></tr>
+<tr><td>gre23:s9.p1#1: statement repeats eight words of s9.p1 in a row</td></tr>
+<tr><td>gre23:s9.p1#2: statement repeats eight words of s9.p1 in a row</td></tr>
+<tr><td>gre23:s9.p4#4: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>gre23:s9.p4#5: same statement as gre23:s9.p4#4</td></tr>
+<tr><td>gre23:s9.p4#5: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>gre23:s9.p4#6: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>gre23:s9.p4#8: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>gre23:s9.p4#9: partial_pressure setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>gre23:s9.p4#9: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>gre23:s9.p5#1: statement repeats eight words of s9.p5 in a row</td></tr>
+<tr><td>gre23:s9.p5#3: statement repeats eight words of s9.p5 in a row</td></tr>
+<tr><td>gre23:s9.p6#1: statement repeats eight words of s9.p6 in a row</td></tr>
+<tr><td>gre23:s9.p6#2: statement repeats eight words of s9.p6 in a row</td></tr>
+<tr><td>gre23:s9.p6#3: statement repeats eight words of s9.p6 in a row</td></tr>
+<tr><td>gre23:s9.p9#1: statement repeats eight words of s9.p9 in a row</td></tr>
+<tr><td>gre23:s9.p9#2: statement repeats eight words of s9.p9 in a row</td></tr>
+<tr><td>gre23:s9.p9#3: statement repeats eight words of s9.p9 in a row</td></tr>
+<tr><td>gre23:s10.p1#1: statement repeats eight words of s10.p1 in a row</td></tr>
+<tr><td>gre23:s10.p2#1: statement repeats eight words of s10.p2 in a row</td></tr>
+<tr><td>gre23:s12.p1#1: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#2: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#3: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#4: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#5: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#8: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#9: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p1#10: statement repeats eight words of s12.p1 in a row</td></tr>
+<tr><td>gre23:s12.p2#1: statement repeats eight words of s12.p2 in a row</td></tr>
+<tr><td>gre23:s12.x1#1: statement repeats eight words of s12.x1 in a row</td></tr>
+<tr><td>gre23:s12.x1#2: statement repeats eight words of s12.x1 in a row</td></tr>
+<tr><td>gre23:s12.x1#3: statement repeats eight words of s12.x1 in a row</td></tr>
+<tr><td>gre23:s12.x1#4: statement repeats eight words of s12.x1 in a row</td></tr>
+<tr><td>gre23:s12.x1#5: statement repeats eight words of s12.x1 in a row</td></tr>
+<tr><td>gre23:s12.p7#1: statement repeats eight words of s12.p7 in a row</td></tr>
+<tr><td>gre23:s12.p7#2: statement repeats eight words of s12.p7 in a row</td></tr>
+<tr><td>gre23:s13.p2#1: statement repeats eight words of s13.p2 in a row</td></tr>
+<tr><td>gre23:s13.p2#3: statement repeats eight words of s13.p2 in a row</td></tr>
+<tr><td>gre23:s13.p4#1: statement repeats eight words of s13.p4 in a row</td></tr>
+<tr><td>gre23:s13.p4#2: statement repeats eight words of s13.p4 in a row</td></tr>
+<tr><td>gre23:s13.p4#3: same statement as gre23:s13.p4#2</td></tr>
+<tr><td>gre23:s13.p4#3: statement repeats eight words of s13.p4 in a row</td></tr>
+<tr><td>gre23:fig2.cap#1: statement repeats eight words of fig2.cap in a row</td></tr>
+<tr><td>gre23:fig2.cap#3: same statement as gre23:s12.p12#1</td></tr>
+<tr><td>gre23:fig2.cap#4: statement repeats eight words of fig2.cap in a row</td></tr>
+<tr><td>gre23:fig2a#1: statement repeats eight words of fig2a in a row</td></tr>
+<tr><td>gre23:fig2c#1: statement repeats eight words of fig2c in a row</td></tr>
+<tr><td>gre23:fig2d#1: statement repeats eight words of fig2d in a row</td></tr>
+<tr><td>gre23:fig3.cap#1: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>gre23:fig3.cap#2: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>gre23:fig3.cap#3: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>gre23:fig3a#1: statement repeats eight words of fig3a in a row</td></tr>
+<tr><td>gre23:fig3a#2: same statement as gre23:fig3a#1</td></tr>
+<tr><td>gre23:fig3a#2: statement repeats eight words of fig3a in a row</td></tr>
+<tr><td>gre23:fig3a#3: same statement as gre23:fig3a#2</td></tr>
+<tr><td>gre23:fig3a#3: statement repeats eight words of fig3a in a row</td></tr>
+<tr><td>gre23:fig3b#1: statement repeats eight words of fig3b in a row</td></tr>
+<tr><td>gre23:fig3b#2: same statement as gre23:fig3b#1</td></tr>
+<tr><td>gre23:fig3b#2: statement repeats eight words of fig3b in a row</td></tr>
+<tr><td>gre23:fig3b#3: same statement as gre23:fig3b#2</td></tr>
+<tr><td>gre23:fig3b#3: statement repeats eight words of fig3b in a row</td></tr>
+<tr><td>gre23:fig3c#1: statement repeats eight words of fig3c in a row</td></tr>
+<tr><td>gre23:fig3c#2: same statement as gre23:fig3c#1</td></tr>
+<tr><td>gre23:fig3c#2: statement repeats eight words of fig3c in a row</td></tr>
+<tr><td>gre23:fig3c#3: same statement as gre23:fig3c#2</td></tr>
+<tr><td>gre23:fig3c#3: statement repeats eight words of fig3c in a row</td></tr>
+<tr><td>gre23:fig4b#1: statement repeats eight words of fig4b in a row</td></tr>
+<tr><td>gre23:fig4c#1: statement repeats eight words of fig4c in a row</td></tr>
+<tr><td>gre23:fig4d#1: statement repeats eight words of fig4d in a row</td></tr>
+<tr><td>gre23:fig6d#1: statement repeats eight words of fig6d in a row</td></tr>
+<tr><td>gre23:fig6e#1: same statement as gre23:fig6d#1</td></tr>
+<tr><td>gre23:fig6e#1: statement repeats eight words of fig6e in a row</td></tr>
+<tr><td>gre23:fig6f#1: same statement as gre23:fig6e#1</td></tr>
+<tr><td>gre23:fig6f#1: statement repeats eight words of fig6f in a row</td></tr>
+<tr><td>gre23:fig1.cap#1: same statement as gre23:s9.p2#3</td></tr>
+<tr><td>gre23:fig1.cap#2: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>gre23:tabI.cap#1: statement repeats eight words of tabI.cap in a row</td></tr>
+<tr><td>gre23:tabI.r2c2#1: same statement as gre23:s12.p1#6</td></tr>
+<tr><td>gre23:tabII.r1c5#1: statement repeats eight words of tabII.r1c5 in a row</td></tr>
+<tr><td>gre23:tabII.r2c5#1: statement repeats eight words of tabII.r2c5 in a row</td></tr>
+<tr><td>gre23:tabII.r3c3#1: same statement as gre23:tabII.r1c3#1</td></tr>
+<tr><td>gre23:tabII.r3c5#1: statement repeats eight words of tabII.r3c5 in a row</td></tr>
+<tr><td>gre23:fig2a#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig2b#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig2b#2: same statement as gre23:fig2a#2</td></tr>
+<tr><td>gre23:fig2c#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig2c#2: same statement as gre23:fig2b#2</td></tr>
+<tr><td>gre23:fig2d#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3a#4: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3a#5: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3a#6: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3b#4: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3b#5: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3b#6: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3c#4: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3c#5: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:fig3c#6: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>gre23:abs.g1#1: claim without links</td></tr>
+<tr><td>gre23:abs.g2#1: claim without links</td></tr>
+<tr><td>gre23:abs.g4#1: claim without links</td></tr>
+<tr><td>gre23:s12.p8#1: claim without links</td></tr>
+<tr><td>gre23:s12.p17#1: claim without links</td></tr>
+<tr><td>gre23:s13.p3#1: claim without links</td></tr>
+<tr><td>gre23:s13.p3#2: claim without links</td></tr>
+<tr><td>gre23:s13.p4#4: claim without links</td></tr>
+<tr><td>gre23:s14.p6#1: claim without links</td></tr>
+<tr><td>gre23:s14.p10#1: claim without links</td></tr>
+<tr><td>gre23:s14.p10#2: claim without links</td></tr>
+<tr><td>gre23:s10.p1#1: crystallite_size measured on the paper&#x27;s method activity gre23:method:xrd, not on an entity</td></tr>
+<tr><td>gre23:s12.p2#1: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:s12.p2#1: process_pressure measured on the paper&#x27;s method activity gre23:method:process_monitor, not on an entity</td></tr>
+<tr><td>gre23:s13.p2#1: phase without species= or with value_text not in lists.PHASE_VALUES (P15)</td></tr>
+<tr><td>gre23:s13.p2#2: phase without species= or with value_text not in lists.PHASE_VALUES (P15)</td></tr>
+<tr><td>gre23:s13.p2#3: phase without species= or with value_text not in lists.PHASE_VALUES (P15)</td></tr>
+<tr><td>gre23:fig2a#1: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2b#1: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2c#1: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2d#1: observation with the setting quantity deposition_temperature (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:tabI.cap#1: porosity measured on the paper&#x27;s method activity gre23:method:gravimetry, not on an entity</td></tr>
+<tr><td>gre23:tabII.r1c3#1: phase without species= or with value_text not in lists.PHASE_VALUES (P15)</td></tr>
+<tr><td>gre23:tabII.r3c3#1: phase without species= or with value_text not in lists.PHASE_VALUES (P15)</td></tr>
+<tr><td>gre23:fig2a#2: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2b#2: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2c#2: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+<tr><td>gre23:fig2d#2: observation with the setting quantity deposition_temperature (lists.SETTING_QUANTITIES)</td></tr>
+</table>
+<h2>2: art19 check.py --dir</h2><p>kb/reports/P167.art19.check_dir.csv</p>
+<table><tr><th>problem</th></tr>
+<tr><td>art19:abs.g2#1: statement repeats eight words of abs.g2 in a row</td></tr>
+<tr><td>art19:abs.g3#1: statement repeats eight words of abs.g3 in a row</td></tr>
+<tr><td>art19:s4.p1#1: statement repeats eight words of s4.p1 in a row</td></tr>
+<tr><td>art19:s4.p3#1: statement repeats eight words of s4.p3 in a row</td></tr>
+<tr><td>art19:s4.p3#2: statement repeats eight words of s4.p3 in a row</td></tr>
+<tr><td>art19:s4.p10#3: statement repeats eight words of s4.p10 in a row</td></tr>
+<tr><td>art19:s4.p11#1: statement repeats eight words of s4.p11 in a row</td></tr>
+<tr><td>art19:s5.p1#2: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>art19:s5.p1#3: same statement as art19:s5.p1#2</td></tr>
+<tr><td>art19:s5.p1#3: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>art19:s5.p1#6: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>art19:s5.p2#1: statement repeats eight words of s5.p2 in a row</td></tr>
+<tr><td>art19:s5.p2#2: statement repeats eight words of s5.p2 in a row</td></tr>
+<tr><td>art19:s5.p3#3: statement repeats eight words of s5.p3 in a row</td></tr>
+<tr><td>art19:s5.p3#6: same as art19:s5.p3#4</td></tr>
+<tr><td>art19:s5.p3#6: same statement as art19:s5.p3#5</td></tr>
+<tr><td>art19:s5.p3#7: statement repeats eight words of s5.p3 in a row</td></tr>
+<tr><td>art19:s5.p3#8: same statement as art19:s5.p3#7</td></tr>
+<tr><td>art19:s5.p3#8: statement repeats eight words of s5.p3 in a row</td></tr>
+<tr><td>art19:s5.p3#10: same statement as art19:s5.p3#9</td></tr>
+<tr><td>art19:s6.p2#5: statement repeats eight words of s6.p2 in a row</td></tr>
+<tr><td>art19:s6.p4#1: statement repeats eight words of s6.p4 in a row</td></tr>
+<tr><td>art19:s6.p5#1: statement repeats eight words of s6.p5 in a row</td></tr>
+<tr><td>art19:s6.p5#3: statement repeats eight words of s6.p5 in a row</td></tr>
+<tr><td>art19:fig1.cap#2: statement repeats eight words of fig1.cap in a row</td></tr>
+<tr><td>art19:fig1.cap#2: statement repeats eight words of fig1C in a row</td></tr>
+<tr><td>art19:fig1C#1: statement repeats eight words of fig1C in a row</td></tr>
+<tr><td>art19:fig2.cap#1: statement repeats eight words of fig2.cap in a row</td></tr>
+<tr><td>art19:fig2A#1: statement repeats eight words of fig2A in a row</td></tr>
+<tr><td>art19:fig3#1: statement repeats eight words of fig3 in a row</td></tr>
+<tr><td>art19:tab1.cap#1: statement repeats eight words of tab1.cap in a row</td></tr>
+<tr><td>art19:tab1.r0c0#1: material &#x27;&#x27; not in lists.MATERIALS</td></tr>
+<tr><td>art19:tab1.r2c1#1: same statement as art19:abs.g2#3</td></tr>
+<tr><td>art19:tab1.r3c1#1: same statement as art19:abs.g3#3</td></tr>
+<tr><td>art19:tab1.r4c1#1: same statement as art19:abs.g3#4</td></tr>
+<tr><td>art19:fig2B#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#3: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#4: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#5: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#6: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#7: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#8: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig2B#9: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig3#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:fig3#3: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>art19:abs.g1#1: claim without links</td></tr>
+<tr><td>art19:s3.p1#1: claim without links</td></tr>
+<tr><td>art19:s3.p3#2: claim without links</td></tr>
+<tr><td>art19:s4.p4#1: claim without links</td></tr>
+<tr><td>art19:s4.p4#2: claim without links</td></tr>
+<tr><td>art19:s6.p3#1: claim without links</td></tr>
+<tr><td>art19:s6.p8#1: claim without links</td></tr>
+<tr><td>art19:s6.p10#1: claim without links</td></tr>
+<tr><td>art19:abs.g2#1: &#x27;up to&#x27; stored as a plain value (a bound or a stat=minimum/maximum; P12)</td></tr>
+<tr><td>art19:abs.g2#1: coated_aspect_ratio measured on the paper&#x27;s method activity art19:method:reflectometry, not on an entity</td></tr>
+<tr><td>art19:abs.g3#1: &#x27;up to&#x27; stored as a plain value (a bound or a stat=minimum/maximum; P12)</td></tr>
+<tr><td>art19:abs.g3#1: coated_aspect_ratio measured on the paper&#x27;s method activity art19:method:reflectometry, not on an entity</td></tr>
+<tr><td>art19:abs.g3#2: coated_aspect_ratio measured on the paper&#x27;s method activity art19:method:reflectometry, not on an entity</td></tr>
+<tr><td>art19:s5.p1#6: range 3.8–120 is not a range its statement prints (P14)</td></tr>
+<tr><td>art19:s5.p3#3: film_thickness measured on the paper&#x27;s method activity art19:method:reflectometry, not on an entity</td></tr>
+<tr><td>art19:s5.p3#5: film_thickness measured on the paper&#x27;s method activity art19:method:reflectometry, not on an entity</td></tr>
+<tr><td>art19:fig2A#1: setting under art19 (paper), not under an activity or an entity (a comparison holds no setting)</td></tr>
+</table>
+<h2>2: zou23 check.py --dir</h2><p>kb/reports/P167.zou23.check_dir.csv</p>
+<table><tr><th>problem</th></tr>
+<tr><td>zou23:s5.p1#5: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>zou23:s5.p1#6: statement repeats eight words of s5.p1 in a row</td></tr>
+<tr><td>zou23:s5.p2#1: statement repeats eight words of s5.p2 in a row</td></tr>
+<tr><td>zou23:s5.p3#2: same statement as zou23:s5.p3#1</td></tr>
+<tr><td>zou23:s7.p1#1: statement repeats eight words of s7.p1 in a row</td></tr>
+<tr><td>zou23:s8.p1#1: statement repeats eight words of s8.p1 in a row</td></tr>
+<tr><td>zou23:s8.p2#1: statement repeats eight words of s8.p2 in a row</td></tr>
+<tr><td>zou23:s8.x1#2: statement repeats eight words of s8.x1 in a row</td></tr>
+<tr><td>zou23:s8.p3#1: statement repeats eight words of s8.p3 in a row</td></tr>
+<tr><td>zou23:s8.p4#1: statement repeats eight words of s8.p4 in a row</td></tr>
+<tr><td>zou23:s8.p5#1: statement repeats eight words of s8.p5 in a row</td></tr>
+<tr><td>zou23:s9.p1#1: statement repeats eight words of s9.p1 in a row</td></tr>
+<tr><td>zou23:s9.p1#2: statement repeats eight words of s9.p1 in a row</td></tr>
+<tr><td>zou23:s9.p2#3: statement repeats eight words of s9.p2 in a row</td></tr>
+<tr><td>zou23:s9.p3#1: statement repeats eight words of s9.p3 in a row</td></tr>
+<tr><td>zou23:s9.p4#1: statement repeats eight words of s9.p4 in a row</td></tr>
+<tr><td>zou23:s9.p5#1: statement repeats eight words of s9.p5 in a row</td></tr>
+<tr><td>zou23:s10.p1#1: statement repeats eight words of s10.p1 in a row</td></tr>
+<tr><td>zou23:s10.p2#1: statement repeats eight words of s10.p2 in a row</td></tr>
+<tr><td>zou23:s10.p2#2: statement repeats eight words of s10.p2 in a row</td></tr>
+<tr><td>zou23:s10.p2#3: statement repeats eight words of s10.p2 in a row</td></tr>
+<tr><td>zou23:s10.p2#6: statement repeats eight words of s10.p2 in a row</td></tr>
+<tr><td>zou23:s11.p2#1: statement repeats eight words of s11.p2 in a row</td></tr>
+<tr><td>zou23:s11.p3#1: statement repeats eight words of s11.p3 in a row</td></tr>
+<tr><td>zou23:s11.p5#1: statement repeats eight words of s11.p5 in a row</td></tr>
+<tr><td>zou23:s11.p5#2: statement repeats eight words of s11.p5 in a row</td></tr>
+<tr><td>zou23:s11.p5#4: statement repeats eight words of s11.p5 in a row</td></tr>
+<tr><td>zou23:s11.p7#1: statement repeats eight words of s11.p7 in a row</td></tr>
+<tr><td>zou23:s11.p8#1: statement repeats eight words of s11.p8 in a row</td></tr>
+<tr><td>zou23:fig1a#1: statement repeats eight words of fig1a in a row</td></tr>
+<tr><td>zou23:fig1b#1: statement repeats eight words of fig1b in a row</td></tr>
+<tr><td>zou23:fig1c#1: statement repeats eight words of fig1c in a row</td></tr>
+<tr><td>zou23:fig1d#1: statement repeats eight words of fig1d in a row</td></tr>
+<tr><td>zou23:fig1e#1: statement repeats eight words of fig1e in a row</td></tr>
+<tr><td>zou23:fig3.cap#1: same statement as zou23:s8.p2#1</td></tr>
+<tr><td>zou23:fig3.cap#1: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>zou23:fig4#1: statement repeats eight words of fig4 in a row</td></tr>
+<tr><td>zou23:fig5.cap#1: same statement as zou23:s9.p3#1</td></tr>
+<tr><td>zou23:fig5.cap#1: statement repeats eight words of fig5.cap in a row</td></tr>
+<tr><td>zou23:fig5.cap#2: statement repeats eight words of fig5.cap in a row</td></tr>
+<tr><td>zou23:fig5a#1: same statement as zou23:fig5.cap#1</td></tr>
+<tr><td>zou23:fig5a#1: statement repeats eight words of fig5a in a row</td></tr>
+<tr><td>zou23:fig7a#1: statement repeats eight words of fig7a in a row</td></tr>
+<tr><td>zou23:fig1a#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig1b#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig1b#2: same statement as zou23:fig1a#2</td></tr>
+<tr><td>zou23:fig1c#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig1c#2: same statement as zou23:fig1b#2</td></tr>
+<tr><td>zou23:fig1d#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig1d#2: same statement as zou23:fig1c#2</td></tr>
+<tr><td>zou23:fig1e#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig1e#2: same statement as zou23:fig1d#2</td></tr>
+<tr><td>zou23:fig4#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig7a#2: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig8#4: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig8#5: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:fig8#6: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>zou23:abs.g1#1: claim without links</td></tr>
+<tr><td>zou23:abs.g2#1: claim without links</td></tr>
+<tr><td>zou23:abs.g3#1: claim without links</td></tr>
+<tr><td>zou23:abs.g4#1: claim without links</td></tr>
+<tr><td>zou23:abs.g5#1: claim without links</td></tr>
+<tr><td>zou23:s4.p7#1: claim without links</td></tr>
+<tr><td>zou23:s7.p7#1: claim without links</td></tr>
+<tr><td>zou23:s7.p8#1: claim without links</td></tr>
+<tr><td>zou23:s11.p4#1: claim without links</td></tr>
+<tr><td>zou23:s11.p5#5: claim without links</td></tr>
+<tr><td>zou23:s11.p6#1: claim without links</td></tr>
+<tr><td>zou23:s11.p9#1: claim without links</td></tr>
+<tr><td>zou23:s5.p1#5: &#x27;down to&#x27; stored as a plain value (a bound or a stat=minimum/maximum; P12)</td></tr>
+<tr><td>zou23:s8.p2#1: film_thickness measured on the paper&#x27;s method activity zou23:method:spectroscopic_ellipsometry, not on an entity</td></tr>
+<tr><td>zou23:s8.x1#2: film_thickness measured on the paper&#x27;s method activity zou23:method:spectroscopic_ellipsometry, not on an entity</td></tr>
+<tr><td>zou23:s9.p2#6: observation under zou23:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>zou23:s9.p3#1: element_fraction without element= (P52)</td></tr>
+<tr><td>zou23:s10.p1#1: a film thickness setting that is not a target (thickness is a result; P18)</td></tr>
+<tr><td>zou23:s10.p2#1: a film thickness setting that is not a target (thickness is a result; P18)</td></tr>
+<tr><td>zou23:s11.p1#1: a spread fact (stat=) without between= and n= (P1)</td></tr>
+<tr><td>zou23:s11.p1#1: thickness_nonuniformity measured on the paper&#x27;s method activity zou23:method:spectroscopic_ellipsometry, not on an entity</td></tr>
+<tr><td>zou23:s11.p2#1: resistivity measured on the paper&#x27;s method activity zou23:method:four_point_probe, not on an entity</td></tr>
+<tr><td>zou23:s11.p3#1: crystallinity measured on the paper&#x27;s method activity zou23:method:xrd, not on an entity</td></tr>
+<tr><td>zou23:s11.p5#1: range 2–10 is not a range its statement prints (P14)</td></tr>
+<tr><td>zou23:fig3#1: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig5.cap#1: element_fraction without element= (P52)</td></tr>
+<tr><td>zou23:fig5.cap#2: observation under zou23:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>zou23:fig5.cap#2: element_fraction without element= (P52)</td></tr>
+<tr><td>zou23:fig5b#1: observation under zou23:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>zou23:fig5b#1: element_fraction without element= (P52)</td></tr>
+<tr><td>zou23:fig7b#1: resistivity measured on the paper&#x27;s method activity zou23:method:four_point_probe, not on an entity</td></tr>
+<tr><td>zou23:fig1a#2: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig1b#2: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig1c#2: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig1d#2: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig1e#2: growth_per_cycle without over= (its definition key; P5)</td></tr>
+<tr><td>zou23:fig4#2: observation with the setting quantity process_pressure (lists.SETTING_QUANTITIES)</td></tr>
+</table>
+<h2>3: grow.py add and propose</h2><p>kb/reports/P167.s3_grow.txt</p>
+<pre>round 3 open: 3 papers (10.1116_6.0003182, 10.1021_acs.jpcc.9b08176, 10.1116_6.0002804); DOIs from corpus/manifest.csv
+round 3: 7 candidates (7 new, 0 merged with earlier undecided rows; 0 undecided rows of round 3 rebuilt); 1 rows never (compile.py&#x27;s never column), 0 values without a quantity, 0 symbol and 0 label merges into 0 symbol-table rows; 0 label-prefix merges (P163)
+pending.csv: 23 rows; decide in /home/ftk3187/github/PSED/psed_v2/ontology/decide.html
+</pre>
+<h2>3: the candidates as decide.html lists them (undecided; none in two or more papers)</h2><p>kb/reports/P167.s3_decide_candidates.csv</p>
+<table><tr><th>position</th><th>multi</th><th>id</th><th>printed</th><th>kind</th><th>unit</th><th>n_papers</th><th>papers</th><th>first_round</th><th>rows</th><th>rows_from_derived_units</th><th>nearest_id</th><th>rule_hint</th><th>proposed_definition</th><th>evidence</th></tr>
+<tr><td>1</td><td></td><td>elam_monte_carlo</td><td>elam monte carlo</td><td>model</td><td></td><td>0</td><td></td><td>0</td><td>0</td><td>0</td><td></td><td>none</td><td>One-dimensional Monte Carlo random walk of reactant molecules in a cylindrical pore with Knudsen steps, self-limiting reaction with probability S, pore narrowin</td><td></td></tr>
+<tr><td>2</td><td></td><td>bent</td><td>bent</td><td>quantity</td><td>nm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>The 100 nm design channel height bent ca. 40 nm</td><td>10.1039_d0cp03358h:s16.p5 — The 100 nm design channel height bent ca. 40 nm</td></tr>
+<tr><td>3</td><td></td><td>displacement</td><td>displacement</td><td>quantity</td><td>nm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>displacement of ca. 25 nm</td><td>10.1039_d0cp03358h:s16.p5 — displacement of ca. 25 nm</td></tr>
+<tr><td>4</td><td></td><td>distance_between_pillars</td><td>Distance between pillars</td><td>quantity</td><td></td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>membrane_sagging</td><td>none</td><td>Distance between pillars</td><td>10.1039_d0cp03358h:tabu1.r0c0 — Distance between pillars (m)</td></tr>
+<tr><td>5</td><td></td><td>distance_between_rows_of_pillars</td><td>Distance between rows of pillars</td><td>quantity</td><td>µm</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>membrane_sagging</td><td>none</td><td>Distance between rows of pillars</td><td>10.1039_d0cp03358h:tabu2.r7c0 — Distance between rows of pillars (\mu\text{m})</td></tr>
+<tr><td>6</td><td></td><td>pillar_diameter</td><td>Pillar diameter</td><td>quantity</td><td></td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td>body_diameter</td><td>none</td><td>Pillar diameter</td><td>10.1039_d0cp03358h:tabu1.r5c0 — Pillar diameter (\mu\text{m})</td></tr>
+<tr><td>7</td><td></td><td>tilde_xi</td><td>\tilde{\xi}</td><td>quantity</td><td>1</td><td>1</td><td>yim20</td><td>1</td><td>0</td><td>0</td><td></td><td>none</td><td>\tilde{\xi} = x/L</td><td>10.1039_d0cp03358h:fig2.cap — \tilde{\xi} = x/L</td></tr>
+<tr><td>8</td><td></td><td>anodization_conditions_charge_density</td><td>anodization conditions / charge density</td><td>quantity</td><td>C/cm2</td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td>carrier_density</td><td>none</td><td>anodization conditions / charge density</td><td>10.1021_cm0303080:tab1.r1c3 — anodization conditions / charge density (C/cm^2)</td></tr>
+<tr><td>9</td><td></td><td>anodization_conditions_electrolyte</td><td>anodization conditions / electrolyte</td><td>quantity</td><td></td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td></td><td>none</td><td>anodization conditions / electrolyte</td><td>10.1021_cm0303080:tab1.r1c0 — anodization conditions / electrolyte</td></tr>
+<tr><td>10</td><td></td><td>anodization_conditions_potential</td><td>anodization conditions / potential</td><td>quantity</td><td>V</td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td></td><td>none</td><td>anodization conditions / potential</td><td>10.1021_cm0303080:tab1.r1c1 — anodization conditions / potential (V)</td></tr>
+<tr><td>11</td><td></td><td>excess_over_the_saturation_dose</td><td>excess over the saturation dose</td><td>quantity</td><td>%</td><td>1</td><td>gor03</td><td>2</td><td>0</td><td>0</td><td>excess_sulfur</td><td>c</td><td>a slight excess (about 10 %) over the saturation dose of each reactant is used, in order to make sure that all parts of the surface are saturated</td><td>10.1002_cvde.200390005:s4.p4 — a slight excess (about 10 %) over the saturation dose of each reactant is used, in order to make sure that all parts of the surface are saturated</td></tr>
+<tr><td>12</td><td></td><td>integrated_coverage</td><td>integrated coverage</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td>step_coverage</td><td>none</td><td>integrated coverage, \Theta^* , was empirically found to obey the following expression</td><td>10.1021_cm0303080:eq8 — integrated coverage, \Theta^* , was empirically found to obey the following expression</td></tr>
+<tr><td>13</td><td></td><td>normalized_penetration_depth_for_sphere</td><td>normalized penetration depth for sphere</td><td>quantity</td><td>1</td><td>1</td><td>hei24</td><td>2</td><td>0</td><td>0</td><td>penetration_depth</td><td>none</td><td>normalized penetration depth for sphere, \zeta_{\theta=1/2, \text{sphere}} = \frac{r_{\theta=1/2, \text{sphere}}}{R}</td><td>10.1039_d3cp05639b:s8.p3 — normalized penetration depth for sphere, \zeta_{\theta=1/2, \text{sphere}} = \frac{r_{\theta=1/2, \text{sphere}}}{R}</td></tr>
+<tr><td>14</td><td></td><td>shape_factor</td><td>Shape factor</td><td>quantity</td><td>1</td><td>1</td><td>hei24</td><td>2</td><td>0</td><td>0</td><td>porous_cylinder</td><td>none</td><td>Shape factor</td><td>10.1039_d3cp05639b:tabu1.r1c0 — Shape factor; a = s + 1(-)</td></tr>
+<tr><td>15</td><td></td><td>slope_of_integrated_zno_coverage</td><td>slope of integrated ZnO coverage</td><td>quantity</td><td>nm-1</td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td>arts_slope</td><td>none</td><td>slope of 0.25 integrated ZnO coverage units per nm</td><td>10.1021_cm0303080:s5.p17 — slope of 0.25 integrated ZnO coverage units per nm</td></tr>
+<tr><td>16</td><td></td><td>surface_area_roughness_factor</td><td>surface area roughness factor</td><td>quantity</td><td>1</td><td>1</td><td>ela03</td><td>2</td><td>0</td><td>0</td><td>fin_growth</td><td>none</td><td>R = 1.5 is a surface area roughness factor determined experimentally for the nanoporous AA membranes</td><td>10.1021_cm0303080:s5.p9 — R = 1.5 is a surface area roughness factor determined experimentally for the nanoporous AA membranes</td></tr>
+<tr><td>17</td><td></td><td>dose</td><td>dose</td><td>quantity</td><td></td><td>1</td><td>gre23</td><td>3</td><td>1</td><td>0</td><td>equivalent_aspect_ratio</td><td>none</td><td>A “dose” includes both the pulse step and the hold step.</td><td>10.1116_6.0003182:fig1.cap — A “dose” includes both the pulse step and the hold step.</td></tr>
+<tr><td>18</td><td></td><td>material</td><td>material</td><td>unit</td><td></td><td>1</td><td>art19</td><td>3</td><td>1</td><td>0</td><td>material</td><td>none</td><td></td><td>10.1021_acs.jpcc.9b08176:tab1.r0c0 — material</td></tr>
+<tr><td>19</td><td></td><td>prisms</td><td>prisms</td><td>quantity</td><td></td><td>1</td><td>gre23</td><td>3</td><td>1</td><td>0</td><td></td><td>c</td><td>prisms approximately 6 x 3 x 1.6 mm were cut out of the NPCs for measurement</td><td>10.1116_6.0003182:s10.p2 — prisms approximately 6 x 3 x 1.6 mm were cut out of the NPCs for measurement</td></tr>
+<tr><td>20</td><td></td><td>spatial_resolution</td><td>spatial resolution</td><td>quantity</td><td>µm</td><td>1</td><td>art19</td><td>3</td><td>1</td><td>0</td><td>probe_resolution</td><td>none</td><td>spatial resolution of 5 µm</td><td>10.1021_acs.jpcc.9b08176:s5.p3 — spatial resolution of 5 µm</td></tr>
+<tr><td>21</td><td></td><td>t_hold</td><td>t_hold</td><td>quantity</td><td></td><td>1</td><td>gre23</td><td>3</td><td>2</td><td>0</td><td>cycle_time</td><td>none</td><td>our hold times, t_hold</td><td>10.1116_6.0003182:s9.p7 — our hold times, t_hold</td></tr>
+<tr><td>22</td><td></td><td>top_surfaces</td><td>top surfaces</td><td>quantity</td><td></td><td>1</td><td>gre23</td><td>3</td><td>3</td><td>0</td><td>infrared_microscopy</td><td>none</td><td>Photographs of the top surfaces of Al2O3 NPCs</td><td>10.1116_6.0003182:fig4b — Photographs of the top surfaces of Al2O3 NPCs</td></tr>
+<tr><td>23</td><td></td><td>total_isolated_deposition_volume</td><td>total isolated deposition volume</td><td>quantity</td><td>l</td><td>1</td><td>gre23</td><td>3</td><td>1</td><td>0</td><td>porosity</td><td>c</td><td>total isolated deposition volume is 2.17 l, including contributions of other small volumes (e.g., 1/4 in. and KF25 tubing) in addition to the volume of the main</td><td>10.1116_6.0003182:s9.p5 — total isolated deposition volume is 2.17 l, including contributions of other small volumes (e.g., 1/4 in. and KF25 tubing) in addition to the volume of the main cylindrical chamber.</td></tr>
+</table>
+<h2>3: candidates that name a model</h2><p>kb/reports/P167.s3_model_names.csv</p>
+<table><tr><th>id</th><th>printed</th><th>kind</th><th>papers</th><th>first_round</th><th>shares_words_with</th><th>note</th></tr>
+<tr><td>elam_monte_carlo</td><td>elam monte carlo</td><td>model</td><td></td><td>0</td><td>(no model entry)</td><td>names a model the ontology has no entry for</td></tr>
+<tr><td>slope_of_integrated_zno_coverage</td><td>slope of integrated ZnO coverage</td><td>quantity</td><td>ela03</td><td>2</td><td>arts_slope</td><td>an alias decision for arts_slope</td></tr>
+</table>
+<h2>3: rows carried from applied rounds</h2><p>kb/reports/P167.s3_carried_rows.csv</p>
+<table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th></tr>
+</table>
+<h2>4: gre23 pass-1 records of eq1, eq2, s9.p9</h2><p>kb/reports/P167.s4_gre23_eq_records.csv</p>
+<table><tr><th>element</th><th>group</th><th>type</th><th>quantity</th><th>label</th><th>about</th><th>value</th><th>unit</th><th>variables</th><th>statement</th></tr>
+<tr><td>eq1</td><td>s9+s10+s11</td><td>model</td><td>other</td><td>t_hold</td><td>paper</td><td></td><td></td><td>[{&quot;symbol&quot;: &quot;t_hold&quot;, &quot;quantity&quot;: &quot;other&quot;}, {&quot;symbol&quot;: &quot;L_pore&quot;, &quot;quantity&quot;: &quot;other&quot;}, {&quot;symbol&quot;: &quot;D&quot;, &quot;quantity&quot;: &quot;knudsen_diffusion_coefficient&quot;}, {&quot;symbol&quot;: &quot;\\gamma&quot;, &quot;quantity&quot;: &quot;other&quot;}]</td><td>Hold time is calculated from average pore length squared divided by diffusion coefficient and reactant molecules per reaction site.</td></tr>
+<tr><td>eq2</td><td>s9+s10+s11</td><td>model</td><td>purge_time</td><td>t_purge</td><td>paper</td><td></td><td></td><td>[{&quot;symbol&quot;: &quot;t_purge&quot;, &quot;quantity&quot;: &quot;purge_time&quot;}, {&quot;symbol&quot;: &quot;\\theta_f&quot;, &quot;quantity&quot;: &quot;surface_coverage&quot;}, {&quot;symbol&quot;: &quot;\\nu&quot;, &quot;quantity&quot;: &quot;other&quot;}, {&quot;symbol&quot;: &quot;E_des&quot;, &quot;quantity&quot;: &quot;other&quot;}, {&quot;symbol&quot;: &quot;T&quot;, &quot;quantity&quot;: &quot;deposition_temperature&quot;}]</td><td>Purge time is modeled as the log inverse fractional coverage divided by the thermally activated desorption rate.</td></tr>
+<tr><td>s9.p9</td><td>s9+s10+s11</td><td>setting</td><td>purge_time</td><td>choose a time of</td><td>paper</td><td>48.0</td><td>min</td><td>null</td><td>We choose a time of 48 min to ensure that \theta_f &lt; 5 \times 10^{-3} can be attained in the 120/160 and 160 ^\circ\text{C} processes.</td></tr>
+<tr><td>s9.p9</td><td>s9+s10+s11</td><td>derived</td><td>purge_time</td><td>t_purge</td><td>paper</td><td>360.0</td><td>min</td><td>null</td><td>Eq. (2) yields t_{\text{purge}} = 360 \text{ min} at T = 120^\circ\text{C}</td></tr>
+<tr><td>s9.p9</td><td>s9+s10+s11</td><td>derived</td><td>purge_time</td><td>t_purge</td><td>paper</td><td>11.0</td><td>min</td><td>null</td><td>t_{\text{purge}} = 11 \text{ min} at T = 160^\circ\text{C}</td></tr>
+</table>
+</body></html>

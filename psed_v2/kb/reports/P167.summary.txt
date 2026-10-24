@@ -1,0 +1,22 @@
+P167: 36 provider calls (round-3 pass 1: gre23 13, art19 11, zou23 12), $0.524 (+ at most $0.062 for the three cached prefixes). No group
+left an element unanswered, so no re-run.
+
+1. Pass 1 (form P163, cached prefix): gre23 200 records ($0.250), art19 101 ($0.138), zou23 111 ($0.136); every element answered.
+2. Compiled and scored (T6 / gold rows; check.py --dir): gre23 136 / 474, 130 problems; art19 78 / 214, 62; zou23 53 / 164, 94. By type in
+   P167.score.csv (e.g. gre23 activity 29 / 41, derived 21 / 31, setting 21 / 89, observation 20 / 89; art19 model 10 / 22, entity 8 / 12;
+   zou23 observation 25 / 45, activity 21 / 23, setting 14 / 47). Records failing form.json: gre23 5 (P158 rule 1 3, variables type 2),
+   art19 0, zou23 2 (rule 1 2, qualifiers type 2).
+   Simulation units of the nine papers and the model entry each resolves to (its printed name or id, whole, against the model entries' id,
+   name and aliases: the vocabulary's word key; no record carries a model id, and D13 is a matching rule for valueless model rows, not a
+   model link): none of the 7 resolves. yli18 'diffusion model' and 'Gordon model', yim20 'Yilammi et al. diffusion–reaction model', ela03
+   'Monte Carlo computer simulation', hei24 'diffusion–reaction model', gor03 'Kinetic Model', art19 'eq 6'; mat22, gre23, zou23 have no
+   simulation unit. The four model entries (ylilammi_diffusion_reaction, gordon_plug_flow, arts_slope: analytical; yanguas_gil_markov_chain:
+   computational) carry no aliases.
+3. grow.py add (round 3: gre23, art19, zou23) and propose: 7 new candidates (gre23 5: dose, prisms, t_hold, top surfaces, total isolated
+   deposition volume; art19 2: material (a unit row), spatial resolution), none in two or more papers; 1 row never; no carried row.
+   decide.html: 23 undecided rows (16 earlier, 7 of round 3). Candidates that name a model: 'elam monte carlo' (round 0, kind model): a
+   model the ontology has no entry for; 'slope of integrated ZnO coverage' (round 2, a quantity) shares only the word 'slope' with
+   arts_slope's name. No round-3 candidate is a short model name.
+4. gre23's pass-1 records: eq1 -> one model record, quantity other, label t_hold, about paper; eq2 -> one model record, purge_time, label
+   t_purge, about paper; s9.p9 -> a setting of purge_time and two derived purge_time (t_purge), about paper. The extractor returned eq 1-2 as
+   model records about the paper (pass 0 gave it no simulation unit to name); t_hold is also a round-3 candidate.
